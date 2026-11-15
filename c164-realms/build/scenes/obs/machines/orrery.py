@@ -1,39 +1,72 @@
 """The great orrery (plan ART-PLAN 7.2 / 8; parts/A5-machines.md 2.3; card packages/machines/orrery.md).
 
-The star of the star hall: a brass solar system hung in the well on the entrance axis, between the
-telescope pier at the west end and the east wall. It reads from three places the plan asks it to
-hold (A0 #207): from the front door, looking west and up, the warm sun is the one note of light in
-the doorway; straight below, looking up, the six arms wheel round the sun; and from the gallery and
-the ring stair it stands at eye level.
+The star of the star hall and of V7, the first look through the front door: a brass solar system hung
+in the well on the entrance axis, between the telescope pier and the east wall, over the heads of
+the people who walk in. Everything of it is seen from below first, so the sun and the planets are
+the lowest things it has and nothing hangs in front of them; the arms, the works and the shaft
+stand above them against the dark ceiling.
 
-Coordinates are the skeleton's (the card's old centre (7.5,0) and diameter 7 are void):
+Coordinates are the skeleton's (the card's old centre (7.5, 0) and diameter 7 are void):
 
     ORRERY_CENTRE = (11.5, 0.5)   the hung centre (x, z)
-    ORRERY_R      = 2.5           outer radius; the ring of planets keeps inside it
+    ORRERY_R      = 2.5           outer radius; nothing of the machine reaches past it
     ORRERY_HANG_Y = 14.0          the ceiling's lower face: the hub seats on interiors' hang point
-    ORRERY_RING_Y = 7.5           the plane of the arms and the sun (A0 #357): a block below the eye of
-                                  a person on the gallery, who looks down on the orbits
+    ORRERY_RING_Y = 7.5           the plane of the sun and the orbits (A0 #30150): a block below the eye
+                                  of a person on the gallery, who looks down on the orbits
     ORRERY_BODY_Y = (6.5, 14.0)   the machine fills this; the floor below (y 0..6.5) stays walkable
 
-Two versions stand side by side until the review picks one (card: both six planets, both turn slow):
-  a  planar      the six arms share one plane, the gear train is open above them
-  b  tiered      the arms splay into a shallow bowl under a cage of brass meridian rings (armillary)
+How it is built, top to bottom (the same in both versions):
 
-The motion is A8's; this round places a still pose. The six arms are separate models so A8 can turn
-each on its own: EACH ARM'S ANCHOR IS THE CENTRE, AND ITS AXIS IS THE WORLD VERTICAL THROUGH THE
-CENTRE -- turning the display entity about that point sweeps the planet round its orbit. SPIN below
-gives a suggested rate per planet (six different, all slow); A8 settles the timing. The sun throws
-no light of its own; build() offers one warm source at its cell to A2, kept low (the hall's one warm
-core, bright area under a third).
+    hub      on the ceiling: the rose, three iron struts, the motor and its closed gear box
+    column   a fixed iron tube down to the works; the hollow drive shaft turns inside it and the
+             stay rod of the sun hangs down the middle of that
+    works    six sleeves, one inside the other, each with a wheel at its upper end and an arm at
+             its lower end. The innermost is the drive shaft itself and carries Mercury; its wheel
+             turns a lay shaft beside the column, and the lay shaft's five other wheels turn the
+             five other sleeves. An outer sleeve is a shorter one: Saturn's arm is the highest and
+             its wheel the lowest, so a longer arm always passes over the shorter ones
+    arms     flat brass bars in a stack; each planet hangs from the end of its arm on a rod
+    sun      an opal lamp globe on the stay rod, the lowest and brightest thing of the machine
 
-The combined pieces the card asked for -- gear() and grad_circle() -- live here, not in a shared
-machines/_kit.py (that file is not to be made yet); another machine imports them from this module.
+Two versions stand side by side until the review picks one (card; A0 #30150):
+
+  a  planar   the orbits lie flat in the ring plane inside a graduated zodiac band, which hangs
+              on three iron rods from a spider under the works. Mercury, the Earth, Jupiter and
+              Saturn hang just under the plane, Venus and Mars ride just over it; the Earth and
+              Jupiter each carry the hoop of their orbit. The works are open: two stepped cones
+              of wheels between brass plates
+  b  tiered   the planets climb outward from the sun into a bowl; a cradle of three brass ribs
+              holds an equator ring and a tilted ecliptic band round them (armillary); the works
+              are shut in a brass drum
+
+WHY THE PLANETS STAND WHERE THEY STAND. They turn at six rates, so sooner or later every planet
+passes every other at every angle: what one sweeps as it goes round must stay clear of what the
+others sweep. A rod sweeps a cylinder, a ball a ring. Balls large enough to be told apart from the
+door do not fit side by side inside ORRERY_R, so in version a they pass over and under one another
+(two levels, the rods of the lower ones going up between the upper ones), and in version b each
+stands higher than the one inside it. clearances() measures it; `python -m scenes.obs.machines.orrery`
+prints it and fails when two parts come closer than a third of a texel.
+
+WHAT TURNS (the motion line's, plan/parts/motion.md): the six arms, each one model with its anchor
+on the vertical axis through the centre, and in version a the lay shaft, anchored on its own axis.
+moving() lists them with the ticks each takes for a turn. Those follow from the teeth of the
+wheels, so wheels that are seen meshing stay in mesh: build() places the rest pose, in which every
+sleeve wheel has a tooth in a gap of its lay wheel.
+
+The sun throws no light of its own: build() offers one warm source in its cell to the light line
+(A0: one lamp, cell (11, 7, 0), level 12; interiors offers the same cell, sky/lights merges them).
+
+gear() and grad_circle() are the combined pieces the card asked for; another machine imports them
+from this module (machines/_kit.py is not to be made yet).
 
     from scenes.obs.machines import orrery
     n += orrery.build(canvas, origin, version="a")     # places one orrery; returns the entity count
 """
+import contextlib
 import functools
 import math
+
+import numpy as np
 
 from artkit import models as M
 
@@ -43,277 +76,764 @@ from ..props import _kit as K
 
 PREFIX = "mach_orrery_"
 VERSION = "a"                    # the version build() places until the review picks one
+PX = 1.0 / 16.0                  # a texel, in blocks: every length below is in blocks
 
 # --- materials (palette only) -------------------------------------------------------------------
 BRASS = P.mat("brass")
+BRASS_L = P.mat("brass", base=4)                 # polished: pillars, lips
 BRASS_D = P.mat("brass_dark")
+COPPER = P.mat("old_copper")
 IRON = P.mat("iron")
 IRON_D = P.mat("iron_dark")
-VERDIGRIS = P.mat("verdigris")
-OLD_COPPER = P.mat("old_copper")
-SUN = [P.mat("glow", kind="flat", base=i, bevel=0) for i in range(len(P.RAMPS["glow"]))]   # dark..light
+STEEL = P.mat("iron", base=5)                    # pinions
+ENAMEL = P.mat("enamel")
+GLOW = [K.flat("glow", i) for i in range(len(P.RAMPS["glow"]))]      # dark to light
+SCALE_LIGHT, SCALE_DARK = K.flat("cream", 2), K.flat("brass", 0)     # the two tones of a graduated scale
+STUD = K.flat("iron", 5)
 
 # --- where it hangs (all from the skeleton) -----------------------------------------------------
 CX, CZ = S.ORRERY_CENTRE                 # (11.5, 0.5)
 R = S.ORRERY_R                           # 2.5
 HANG_Y = S.ORRERY_HANG_Y                 # 14.0
-RING_Y = S.ORRERY_RING_Y                 # 7.5
+RING_Y = S.ORRERY_RING_Y                 # 7.5: heights below are measured from this plane
 FLOOR_Y = S.ORRERY_BODY_Y[0]             # 6.5: nothing the machine draws goes below this
 
+SUN_R = 0.42                             # a lamp globe: large enough to be the sun from the door, ten
+#                                          blocks off, small enough to leave the planets their room
+SUN_LIGHT = 12                           # the one warm source build() offers the light line, in the
+#                                          sun's cell (11, 7, 0). A0's figure: the sun is the hall's
+#                                          brightest point, the cell before the mother clock is set
+#                                          one below it, at 11
+
+# --- the planets ----------------------------------------------------------------------------------
+PLANETS = ("mercury", "venus", "earth", "mars", "jupiter", "saturn")          # inner to outer
+# radius of the ball. Six worlds told apart by size and by stuff (cr2-M1, A0 #30150): steel grey,
+# porcelain white, verdigris with white caps and a moon, old copper, belted brass, cream in rings
+BALL = dict(mercury=0.11, venus=0.14, earth=0.18, mars=0.13, jupiter=0.27, saturn=0.18)
+SATURN_RING = (0.22, 0.29)               # inner and outer edge
+MOON = 0.06                              # radius of the Earth's moon
+
+# --- the works --------------------------------------------------------------------------------------
+TOOTH = 4 * PX                           # the pitch of every wheel: a tooth of 2 px and a gap of 2 px
+#                                          (cr2-M1), so that teeth read as teeth and not as a rough rim
+# teeth of (the wheel on the planet's sleeve, the wheel on the lay shaft that turns it). Every pair
+# adds up to 20 teeth: one distance between the two shafts for all six pairs
+TEETH = dict(mercury=(5, 15), venus=(7, 13), earth=(8, 12), mars=(9, 11), jupiter=(13, 7), saturn=(15, 5))
+LAY_TURN = 3600.0                        # ticks the lay shaft takes for a turn; the planets follow from it
+PERIOD = {k: LAY_TURN * a / b for k, (a, b) in TEETH.items()}        # 1200 .. 10800 ticks
+SPIN = {k: PERIOD["mercury"] / PERIOD[k] for k in PLANETS}           # rate against Mercury's: 1 .. 0.11
+SLEEVE = dict(mercury=0.0625, venus=0.08, earth=0.10, mars=0.12, jupiter=0.14, saturn=0.16)   # radius
+
+# the rest pose: where each arm points, in degrees from east towards south (the yaw of its display).
+# Chosen on V7's picture, which looks west and up: the far side (about 180) is where a planet shows
+# the door its lit face under the sun; nothing stands before the sun or the works; no two long arms
+# make a line through the centre
+POSE = dict(mercury=265.0, venus=78.0, earth=196.0, mars=318.0, jupiter=228.0, saturn=150.0)
+
+ROD = PX                                 # radius of the rods the planets hang on: 2 px across
+ARM_T = 2 * PX                           # an arm is a bar 2 px thick; the arms are stacked 3 px apart
+ARM = {k: 0.625 + 3 * PX * i for i, k in enumerate(PLANETS)}         # the underside of each arm
+# Radius of each orbit. Version a: Mercury, the Earth, Jupiter and Saturn pass one another in the
+# lower level, with Venus and Mars in the upper level between their rods. Version b: every rod
+# clears the ball outside it, and what the balls still overlap is made up in height
+ORBIT = {
+    "a": dict(mercury=0.555, venus=0.7975, earth=1.04, mars=1.285, jupiter=1.53, saturn=2.13),
+    "b": dict(mercury=0.59, venus=0.845, earth=1.14, mars=1.385, jupiter=1.77, saturn=2.17),
+}
+HANG, RIDE = -0.14, 0.14                 # version a: the top of a ball that hangs under the plane, the
+#                                          underside of one that rides over it
+LEVEL = {                                # the middle of each planet over the ring plane
+    "a": dict(mercury=HANG - BALL["mercury"], venus=RIDE + BALL["venus"], earth=HANG - BALL["earth"],
+              mars=RIDE + BALL["mars"], jupiter=HANG - BALL["jupiter"], saturn=HANG - 0.03 - BALL["saturn"]),
+    "b": dict(mercury=-0.27, venus=-0.07, earth=0.20, mars=0.51, jupiter=0.80, saturn=1.21),
+}
+HOOPS = ("earth", "jupiter")             # version a: the planets that carry the hoop of their orbit.
+#                                          Six hoops a quarter of a block apart close up into one
+#                                          disc from the door; two, and the band, stay three rings
+HOOP = 2 * PX                            # the section of a hoop, 2 px square
+BAND = (2.245, 2.495)                    # version a: the zodiac band, inner and outer radius (the
+#                                          corners of its 72 sides come to ORRERY_R)
+STAYS = (60.0, 180.0, 300.0)             # the three hangers of a, the three ribs of b: never four
+STAY_R = 2.37                            # version a: the hangers stand on the middle of the band
+SPIDER_Y = 1.875                         # version a: underside of the iron spider the band hangs from
+MOVE_Y0 = 2.0                            # underside of the works
+WHEEL_Y = {k: MOVE_Y0 + 3 * PX * (i + 1) for i, k in enumerate(reversed(PLANETS))}   # underside of each pair
+MOVE_Y1 = 3.4375                         # top of the works: the column stands on it
+LAY_YAW = 60.0                           # where the lay shaft stands, seen from the centre
+EQUATOR = (2.37, 2.495)                  # version b: the level ring
+ECLIPTIC = dict(radius=2.36, thick=2 * PX, width=4 * PX, tilt=20.0)    # version b: the tilted band
+
 HUB_DROP = 0.95                          # the hub hangs this far below the ceiling
-STEM_TOP = HANG_Y - HUB_DROP - RING_Y    # blocks from the ring plane up to where the stem meets the hub
+COLUMN_AT = 11.6                         # the column's anchor: it takes the light of its own height
 
-SUN_R = 0.34                             # the sun's radius (a small warm core, not a dazzling globe)
-SUN_LIGHT = 12                           # the one warm source build() offers A2, in the sun's cell
-#                                          (11, 7, 0). A0's figure: the sun is the hall's brightest point,
-#                                          the cell before the mother clock is set one below it, at 11
 
-# planets, inner to outer: (name, orbit radius, planet radius, material, banded, ringed). The colours
-# set them apart with the palette's cast iron / brass / verdigris / old copper, and the sizes grow
-# outward (Mars, like the real one, a touch smaller than Earth); Saturn carries its ring, Jupiter
-# its band, so the six read as six worlds.  All radii keep the far edge inside R = 2.5.
-PLANETS = [
-    ("mercury", 0.72, 0.14, IRON_D, False, False),
-    ("venus", 0.98, 0.17, BRASS, False, False),
-    ("earth", 1.24, 0.20, VERDIGRIS, False, False),
-    ("mars", 1.48, 0.16, OLD_COPPER, False, False),
-    ("jupiter", 1.72, 0.30, BRASS_D, True, False),
-    ("saturn", 1.95, 0.22, BRASS, False, True),
-]
-# the still pose: scattered orbital angles so the planets do not line up (a snapshot of the orbits)
-POSE = (18.0, 84.0, 152.0, 212.0, 288.0, 338.0)
-# version b lifts each arm by this, inner low to outer high, into a shallow bowl
-BOWL = (0.0, 0.14, 0.30, 0.48, 0.68, 0.90)
-# A8's to settle: a slow rate per planet, inner fastest, all gentle (degrees per in-game minute, say)
-SPIN = {"mercury": 1.00, "venus": 0.62, "earth": 0.47, "mars": 0.38, "jupiter": 0.17, "saturn": 0.11}
+def pitch_radius(teeth):
+    """Pitch radius in blocks of a wheel with `teeth` teeth on the pitch TOOTH."""
+    return teeth * TOOTH / (2.0 * math.pi)
 
-CAGE = 2.35                              # version b: the brass meridian cage radius (inside R)
 
-SCALE = {}                              # model name -> the scale it is shown at (its px matches it)
+LAY_A = pitch_radius(sum(TEETH["mercury"]))      # 0.796: from the centre to the lay shaft
+
+
+# --- painting -------------------------------------------------------------------------------------
+@contextlib.contextmanager
+def _lit_from_below():
+    """artkit paints the tone steps of rings, tubes and balls for a light from above (models.LIGHT),
+    and the game shades a face that looks down to four tenths. This machine hangs over its own lamp
+    and over the people who look at it: with both, its undersides, which is what the door sees,
+    would be the darkest brass in the hall. So its models are painted for a light from below."""
+    keep = M.LIGHT
+    M.LIGHT = (0.0, -1.0, 0.0)
+    try:
+        yield
+    finally:
+        M.LIGHT = keep
+
+
+def _tone(mat, normal, toward):
+    """`mat` one step lighter where a face looks at the sun, one step darker where it looks away."""
+    d = sum(n * t for n, t in zip(normal, toward))
+    return mat.variant(1 if d > 0.3 else -1 if d < -0.4 else 0, 0)
+
+
+class _Draw:
+    """A model drawn in blocks. artkit's unit is 1/16 block of a model shown at scale 1; a model
+    shown at scale s is drawn s times smaller with s texels to the unit, 16 px to the block."""
+
+    def __init__(self, name, scale=1.0):
+        self.scale = float(scale)
+        self.u = 16.0 / self.scale
+        self.m = M.Model(PREFIX + name, px=self.scale)
+
+    def _v(self, p):
+        return tuple(v * self.u for v in p)
+
+    def box(self, a, b, mat, rot=None, **kw):
+        if rot is not None:
+            rot = (rot[0], rot[1], self._v(rot[2]))
+        self.m.box(self._v(a), self._v(b), mat, rot=rot, **kw)
+
+    def tube(self, axis, c, a0, a1, radius, mat, **kw):
+        self.m.tube(axis, self._v(c), a0 * self.u, a1 * self.u, radius * self.u, mat, **kw)
+
+    def taper(self, axis, c, a0, a1, r0, r1, mat, **kw):
+        self.m.taper(axis, self._v(c), a0 * self.u, a1 * self.u, r0 * self.u, r1 * self.u, mat, **kw)
+
+    def ring(self, axis, centre, radius, thick, width, mat, **kw):
+        self.m.ring(axis, self._v(centre), radius * self.u, thick * self.u, width * self.u, mat, **kw)
+
+    def beam(self, a, b, width, height, mat, **kw):
+        self.m.beam(self._v(a), self._v(b), width * self.u, height * self.u, mat, **kw)
+
+    def turned(self, *turns, about=(0.0, 0.0, 0.0)):
+        return self.m.turned(*turns, about=self._v(about))
+
+    def spoke(self, angle, r0, r1, y0, y1, width, mat, **kw):
+        """A bar from radius r0 to r1 about the model's axis, at `angle` from +x towards +z."""
+        kw.setdefault("grain", "x")
+        self.box((r0, y0, -width / 2.0), (r1, y1, width / 2.0), mat, rot=("y", -angle, (0.0, 0.0, 0.0)), **kw)
+
+    def stud(self, p, out="y", mat=STUD):
+        """A screw head: one texel square, half a texel proud. p is the middle of its foot."""
+        k = M.AXES.index(out[-1])
+        lo, hi = [v - PX / 2.0 for v in p], [v + PX / 2.0 for v in p]
+        lo[k], hi[k] = sorted((p[k], p[k] + (-PX / 2.0 if out.startswith("-") else PX / 2.0)))
+        self.box(lo, hi, mat)
+
+    def gear(self, c, y0, y1, teeth, body, **kw):
+        if "bore" in kw:
+            kw["bore"] *= self.u
+        return gear(self.m, (c[0] * self.u, c[1] * self.u), y0 * self.u, y1 * self.u, teeth, body, unit=self.u, **kw)
+
+    def orb(self, centre, radius, bands, sides=10, toward=None):
+        """A ball in bands of flat tone, bands = [(from, to, layers, material)] as in Model.ball. It
+        is lit by the sun and by nothing else: the half that looks at `toward` (left out, the
+        model's origin, where the sun is) is a step lighter, the half that looks away a step darker.
+        A planet on the far side of the sun shows the door its day, one on the near side its night."""
+        c = self._v(centre)
+        r = radius * self.u
+        toward = toward or tuple(-v for v in centre)
+        size = math.sqrt(sum(v * v for v in toward)) or 1.0
+        toward = tuple(v / size for v in toward)
+        hw = math.tan(math.pi / sides)
+        for t0, t1, layers, mat in bands:
+            self.m._n += 1
+            seed = self.m._n
+            for i in range(layers):
+                a0 = t0 + (t1 - t0) * i / layers
+                a1 = t0 + (t1 - t0) * (i + 1) / layers
+                tm = (a0 + a1) / 2.0
+                slope = math.sqrt(max(0.0, 1.0 - tm * tm))
+                if r * slope < 1e-6:
+                    continue
+                lo = (c[0] - r * slope * hw, c[1] + r * a0, c[2] - r * slope)
+                hi = (c[0] + r * slope * hw, c[1] + r * a1, c[2] + r * slope)
+                for s in range(sides // 2):
+                    ang = math.radians(360.0 * s / sides)
+                    faces = {"u": _tone(mat, (0.0, 1.0, 0.0), toward), "d": _tone(mat, (0.0, -1.0, 0.0), toward)}
+                    for letter, nz in (("n", -slope), ("s", slope)):
+                        faces[letter] = _tone(mat, (nz * math.sin(ang), tm, nz * math.cos(ang)), toward)
+                    self.m.box(lo, hi, mat, rot=("y", math.degrees(ang), c) if s else None, skip="ew",
+                               faces=faces, seed=seed, grain="x")
 
 
 # --- the combined pieces (gear, graduated circle): written here, imported by other machines -------
-def gear(m, c, y0, y1, pitch_r, teeth, body, tooth=None, hub_r=0.0, hub_mat=None, hub_ext=0.0,
-         body_sides=12):
-    """A spur gear about the vertical axis through c = (x, z), from y0 to y1 (model units), with
-    `teeth` teeth round a pitch radius `pitch_r`. A gear belongs where there is real drive (plan 2);
-    the teeth are boxes straddling the pitch circle so they read as teeth close up. hub_r > 0 adds a
-    boss on the shaft, hub_ext long past each face."""
+def gear(m, c, y0, y1, teeth, body, tooth=None, unit=16.0, phase=0.0, spokes=0, bore=0.0, collet=None):
+    """A spur wheel about the vertical axis through c = (x, z), from y0 to y1, with `teeth` teeth.
+
+    Lengths are in the model's units, `unit` of them to the block. The teeth stand on the pitch TOOTH
+    (2 px of tooth, 2 px of gap) whatever the size of the wheel, so two wheels mesh when the distance
+    between their axes is the sum of their pitch_radius(); `phase` is the angle of the middle of one
+    tooth, from +x towards +z. spokes > 0 crosses the wheel out: a rim, that many spokes (not four:
+    four make a cross) and a collet of radius `bore`. A wheel belongs where there is real drive
+    (plan 2). Returns the pitch radius in units."""
+    if spokes == 4:
+        raise ValueError(f"{m.name}: a wheel with four spokes reads as a cross")
     cx, cz = c
-    tooth = tooth or body
+    px = unit / 16.0
+    rp = pitch_radius(teeth) * unit
+    root = rp - px
     ym = (y0 + y1) / 2.0
-    depth = max(0.9, pitch_r * 0.18)
-    tw = max(0.9, 2.0 * math.pi * pitch_r / teeth * 0.52)
-    m.tube("y", c, y0, y1, pitch_r - depth * 0.5, body, sides=body_sides)
+    m._n += 1
+    seed = m._n
     for i in range(teeth):
-        ang = 360.0 * i / teeth
-        m.box((cx + pitch_r - depth - 0.1, y0 + 0.05, cz - tw / 2.0),
-              (cx + pitch_r + depth * 0.5, y1 - 0.05, cz + tw / 2.0), tooth,
-              rot=("y", ang, (cx, ym, cz)))
-    if hub_r > 0.0:
-        m.tube("y", c, y0 - hub_ext, y1 + hub_ext, hub_r, hub_mat or body, sides=8)
-    return m
+        m.box((cx + root - 0.2 * px, y0, cz - 0.875 * px), (cx + rp + 0.9 * px, y1, cz + 0.875 * px), tooth or body,
+              rot=("y", -(phase + 360.0 * i / teeth), (cx, ym, cz)), seed=seed, grain="x")
+    if spokes:
+        m.ring("y", (cx, ym, cz), root - px, 2.0 * px, y1 - y0, body, sides=max(16, 2 * teeth))
+        for i in range(spokes):
+            m.box((cx + bore * 0.7, y0, cz - px), (cx + root - 1.9 * px, y1, cz + px), body,
+                  rot=("y", -(phase + 360.0 * (i + 0.5) / spokes), (cx, ym, cz)), grain="x")
+    else:
+        m.tube("y", c, y0, y1, root, body, sides=min(16, 2 * teeth))
+    if bore > 0.0:
+        m.tube("y", c, y0 - 0.5 * px, y1 + 0.5 * px, bore, collet or body, sides=8)
+    return rp
 
 
-def grad_circle(m, axis, centre, radius, thick, width, body, ticks=0, tick_mat=None, tick_len=0.8,
-                sides=32, arc=(0.0, 360.0)):
-    """A graduated ring: a ring round `axis` (plan: the brass scale rings of the instruments), with
-    `ticks` marks standing out from its rim. Shared with the telescope and meridian circles."""
-    m.ring(axis, centre, radius, thick, width, body, sides=sides, arc=arc)
-    if not ticks:
+def grad_circle(m, axis, centre, radius, thick, width, body, marks=60, light=SCALE_LIGHT, dark=SCALE_DARK,
+                signs=0, sign_mat=ENAMEL, proud=0.0, arc=(0.0, 360.0)):
+    """A graduated circle: a ring round `axis` (as Model.ring: radius to the middle of its section,
+    thick across it, width along the axis) laid out as a scale of `marks` light marks with dark ones
+    between -- a silvered scale with its divisions, drawn as stuff and not as a rough edge (cr2-M1:
+    a mark wants 2 px, which is 36 marks and 12 signs, or 60 marks, on a radius of 2.4 blocks).
+    signs > 0 sets that many plaques of `sign_mat` into it, evenly, each as long as three marks and
+    `proud` proud of the scale on every side (the twelve signs of a zodiac band). marks=0 leaves a
+    plain ring of `body`."""
+    a0, a1 = arc
+    if not marks:
+        m.ring(axis, centre, radius, thick, width, body, sides=72, arc=arc)
         return m
-    k = M.AXES.index(axis)
-    o1, o2 = [i for i in range(3) if i != k]
-    tick_mat = tick_mat or body
-    for i in range(ticks):
-        ang = arc[0] + (arc[1] - arc[0]) * (i / ticks)
-        lo, hi = [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]
-        lo[k], hi[k] = centre[k] - width * 0.3, centre[k] + width * 0.3
-        lo[o1], hi[o1] = centre[o1] + radius, centre[o1] + radius + tick_len
-        lo[o2], hi[o2] = centre[o2] - 0.45, centre[o2] + 0.45
-        m.box(tuple(lo), tuple(hi), tick_mat, rot=(axis, ang, tuple(centre)))
-    return m
-
-
-def _planet(m, c, r, mat, banded=False, ringed=False):
-    """One planet: a ball of its material. A band (a proud belt of old copper) marks Jupiter; a
-    tilted pair of brass rings marks Saturn, so each reads for what it is."""
-    sides = 10 if r > 3.5 else 8
-    m.ball(c, r, mat, sides=sides, layers=max(3, int(round(r / 1.3))))
-    if banded:
-        m.tube("y", (c[0], c[2]), c[1] - r * 0.22, c[1] + r * 0.22, r * 1.03, OLD_COPPER, sides=sides)
-    if ringed:
-        with m.turned(("z", 18.0), about=c):
-            m.ring("y", c, r + 1.3, 0.9, 0.5, BRASS_D, sides=18)
-            m.ring("y", c, r + 2.5, 0.7, 0.4, BRASS, sides=18)
+    m._n += 3
+    seeds = (m._n - 2, m._n - 1, m._n)
+    sectors = signs or 1
+    span = (a1 - a0) / sectors
+    per = max(1, int(round(marks / sectors)))               # light marks to a sector
+    pieces = 2 * per + 1 if signs else 2 * per              # between two plaques: dark, light, ..., dark
+    step = span / (pieces + 3.0) if signs else span / pieces
+    plaque = 3.0 * step if signs else 0.0
+    for s in range(sectors):
+        start = a0 + span * s
+        if signs:
+            m.ring(axis, centre, radius, thick + 2.0 * proud, width + 2.0 * proud, sign_mat,
+                   sides=int(round(360.0 / plaque)), arc=(start - plaque / 2.0, start + plaque / 2.0), seed=seeds[2])
+        for i in range(pieces):
+            a = start + plaque / 2.0 + step * i
+            m.ring(axis, centre, radius, thick, width, dark if i % 2 == 0 else light,
+                   sides=int(round(360.0 / step)), arc=(a, a + step), seed=seeds[i % 2])
     return m
 
 
 # --- the shared models (both versions) ----------------------------------------------------------
 def _hub():
-    """The ceiling seat and the crown wheel it drives: brass canopy flush to the ceiling, four iron
-    straps, the open crown wheel, the collar the stem turns in. Anchor: the hang point on the
-    ceiling (interiors carries it); the model hangs down. Shown at scale 1."""
-    u = 16.0
-    m = M.Model(PREFIX + "hub", px=1.0)
-    m.tube("y", (0, 0), -0.28 * u, -0.05 * u, 0.95 * u, BRASS_D, sides=16)     # canopy rim
-    m.tube("y", (0, 0), -0.26 * u, 0.0, 0.80 * u, BRASS, sides=16)             # the boss on the ceiling
-    for a in range(3):                                                         # three hangers, never four:
-        m.box((0.52 * u, -0.64 * u, -0.07 * u), (0.80 * u, -0.08 * u, 0.07 * u), IRON,   # no cross from below
-              rot=("y", 30.0 + 120.0 * a, (0, 0, 0)), grain="y")
-    gear(m, (0, 0), -0.82 * u, -0.64 * u, 0.78 * u, 22, BRASS, tooth=BRASS_D,  # the crown wheel
-         hub_r=0.17 * u, hub_mat=IRON_D, hub_ext=0.04 * u)
-    m.tube("y", (0, 0), -0.98 * u, -0.82 * u, 0.24 * u, IRON_D, sides=12)      # the stem's bearing
-    return m
+    """The seat on the ceiling: a stepped brass rose, three iron struts to the gear box the column
+    hangs from, the motor beside it and its conduit into the ceiling. The wheels are shut in the
+    box: nothing up here is seen to turn, so nothing up here shows teeth. Anchor: the hang point
+    on the ceiling (interiors carries it); the model hangs down. Shown at scale 1."""
+    d = _Draw("hub", 1.0)
+    d.tube("y", (0, 0), -1 * PX, 0.0, 0.95, BRASS_D, sides=16)                 # the rose, flush to the ceiling
+    d.tube("y", (0, 0), -3 * PX, -1 * PX, 0.80, BRASS, sides=16)
+    d.tube("y", (0, 0), -4 * PX, -3 * PX, 0.42, BRASS_D, sides=12)
+    for a in (90.0, 210.0, 330.0):                                             # three struts, never four
+        dx, dz = math.cos(math.radians(a)), math.sin(math.radians(a))
+        d.beam((0.70 * dx, -3 * PX, 0.70 * dz), (0.30 * dx, -0.78, 0.30 * dz), 2 * PX, 2.5 * PX, IRON)
+        d.stud((0.70 * dx, -3 * PX, 0.70 * dz), "-y")
+    d.tube("y", (0, 0), -0.92, -0.50, 0.30, IRON, sides=12)                    # the gear box
+    d.tube("y", (0, 0), -0.50, -0.50 + PX, 0.33, IRON_D, sides=12)             # its lid
+    d.tube("y", (0, 0), -HUB_DROP, -0.92 + PX, 0.22, BRASS, sides=10)          # the bearing the shaft leaves by
+    for a in (30.0, 150.0, 270.0):
+        d.stud((0.26 * math.cos(math.radians(a)), -0.92, 0.26 * math.sin(math.radians(a))), "-y")
+    # the motor: an iron drum on its side, east of the box, brass end bells, a neck into the box
+    d.tube("z", (0.56, -0.50), -0.26, 0.26, 0.19, IRON_D, sides=10)
+    for z0, z1 in ((-0.31, -0.26), (0.26, 0.31)):
+        d.tube("z", (0.56, -0.50), z0, z1, 0.16, BRASS, sides=10)
+    for z in (-0.13, 0.0, 0.13):
+        d.ring("z", (0.56, -0.50, z), 0.19, PX, PX, IRON, sides=10)            # cooling ribs
+    d.box((0.28, -0.58, -0.09), (0.40, -0.42, 0.09), IRON)
+    d.box((0.50, -0.31, -0.08), (0.62, -0.25, 0.08), BRASS_D)                  # the terminal box
+    d.tube("y", (0.56, 0.0), -0.25, -3 * PX, PX, IRON, sides=6)                # the conduit into the ceiling
+    return d
+
+
+def _column():
+    """The fixed tube from the gear box down to the works: iron, with brass collars where its
+    lengths are joined and a brass foot on the works. Anchor: on the axis at COLUMN_AT, so that it
+    takes the light of its own height and the metal fades towards the ceiling. Shown at scale 1."""
+    d = _Draw("column", 1.0)
+    y0, y1 = RING_Y + MOVE_Y1 - COLUMN_AT, HANG_Y - HUB_DROP - COLUMN_AT
+    d.tube("y", (0, 0), y0, y0 + 2 * PX, 0.28, BRASS, sides=12)                # the foot
+    d.taper("y", (0, 0), y0 + 2 * PX, y0 + 5 * PX, 0.23, 0.16, BRASS_D, sides=10, steps=3)
+    d.tube("y", (0, 0), y0 + 5 * PX, y1, 0.13, IRON, sides=10)
+    for t in (0.36, 0.70):
+        y = y0 + (y1 - y0) * t
+        d.tube("y", (0, 0), y - 1.5 * PX, y + 1.5 * PX, 0.17, BRASS_D, sides=10)
+        d.tube("y", (0, 0), y - 0.5 * PX, y + 0.5 * PX, 0.20, BRASS, sides=10)
+    d.taper("y", (0, 0), y1 - 3 * PX, y1, 0.15, 0.21, BRASS_D, sides=10, steps=3)
+    return d
 
 
 def _sun():
-    """The central sun: a small amber core. Only its own faces glow (emit, face kept small); the
-    light it casts is an invisible source build() offers A2. Anchor: the centre. Shown at scale 1."""
-    u = 16.0
-    m = M.Model(PREFIX + "sun", px=1.0)
-    r = SUN_R * u
-    bands = [(-1.0, -0.45, 1, SUN[1]), (-0.45, 0.45, 1, SUN[3]), (0.45, 1.0, 1, SUN[1])]
-    for t0, t1, layers, mat in bands:
-        m.ball((0, 0, 0), r, mat, sides=10, layers=layers, part=(t0, t1),
-               faces={"n": mat, "s": mat, "u": mat, "d": mat}, emit=15, shade=False)
-    m.tube("y", (0, 0), r - 1.0, r + 1.6, 0.14 * u, BRASS, sides=8)            # the collar to the stem
-    return m
+    """The sun: an opal lamp globe hung on the stay rod. Only the glass glows (emit, no face
+    shading: its light and dark are painted as bands, the hot belt low on the globe, where the door
+    and the floor look at it, the crown dim); the light it casts is the source build() offers. A
+    brass holder grips its crown, a small finial closes it below. Anchor: the centre of the globe.
+    Shown at scale 1."""
+    d = _Draw("sun", 1.0)
+    r = SUN_R
+    bands = [(-1.0, -0.8, 1, GLOW[2]), (-0.8, -0.2, 3, GLOW[3]), (-0.2, 0.4, 3, GLOW[2]),
+             (0.4, 0.8, 2, GLOW[1]), (0.8, 1.0, 1, GLOW[0])]
+    K.glass_ball(d.m, (0.0, 0.0, 0.0), r * d.u, bands, sides=12)
+    d.tube("y", (0, 0), 0.70 * r, 0.70 * r + 0.08, 0.74 * r, BRASS_D, sides=12)        # the holder's rim
+    d.taper("y", (0, 0), 0.70 * r + 0.08, r + 0.10, 0.62 * r, 0.13, BRASS, sides=12, steps=3)
+    d.tube("y", (0, 0), r + 0.10, ARM["mercury"], 0.09, BRASS_D, sides=8)              # up to Mercury's collet
+    d.tube("y", (0, 0), -r - 0.07, -r + 0.02, 0.10, BRASS_D, sides=8)                  # the finial
+    d.tube("y", (0, 0), -r - 0.14, -r - 0.07, 0.0625, BRASS, sides=6)
+    return d
 
 
-# --- version a: planar, open gear train ---------------------------------------------------------
-def _stem_a():
-    """The hanging shaft and the open gear train that drives the flat system. Three crown wheels on
-    the shaft and two idlers geared to them, teeth in the open (plan 2: gears where there is drive).
-    Anchor: the centre, at the ring plane; the model rises to the hub. Shown at scale 2."""
-    u = 8.0
-    m = M.Model(PREFIX + "a_stem", px=2.0)
-    top = STEM_TOP
-    m.tube("y", (0, 0), 0.20 * u, 0.26 * u, 0.46 * u, BRASS_D, sides=12)       # boss over the arm clamps
-    m.tube("y", (0, 0), 0.26 * u, 0.70 * u, 0.42 * u, BRASS, sides=12)
-    m.tube("y", (0, 0), 0.55 * u, top * u, 0.13 * u, IRON, sides=8)            # the shaft
-    gear(m, (0, 0), 0.92 * u, 1.14 * u, 0.52 * u, 18, BRASS, tooth=BRASS_D, hub_r=0.14 * u, hub_mat=IRON_D)
-    gear(m, (0, 0), 1.36 * u, 1.56 * u, 0.40 * u, 14, BRASS_D, tooth=BRASS, hub_r=0.13 * u, hub_mat=IRON_D)
-    gear(m, (0, 0), 1.80 * u, 1.98 * u, 0.30 * u, 12, BRASS, tooth=BRASS_D, hub_r=0.12 * u, hub_mat=IRON_D)
-    for ang in (40.0, 220.0):
-        ix, iz = math.cos(math.radians(ang)) * 0.60 * u, math.sin(math.radians(ang)) * 0.60 * u
-        gear(m, (ix, iz), 1.02 * u, 1.46 * u, 0.26 * u, 10, BRASS_D, tooth=BRASS, hub_r=0.09 * u, hub_mat=IRON_D)
-        m.rod((ix, 1.24 * u, iz), (0.0, 1.24 * u, 0.0), 0.05 * u, IRON_D)      # idler axle to the shaft
-    m.tube("y", (0, 0), (top - 0.22) * u, top * u, 0.20 * u, BRASS_D, sides=12)
-    return m
+# --- the arms (both versions) ---------------------------------------------------------------------
+def _flat(name, step):
+    return K.flat(name, step)
 
 
-def _rings_a():
-    """The flat concentric orbit tracks of the planar version, in the ring plane, with a graduated
-    outer rim and three slim brass spiders. Anchor: the centre. Shown at scale 2."""
-    u = 8.0
-    m = M.Model(PREFIX + "a_rings", px=2.0)
-    for r in (0.98, 1.48, 1.95):
-        m.ring("y", (0, 0, 0), r * u, 0.08 * u, 0.09 * u, BRASS_D, sides=28)
-    grad_circle(m, "y", (0, 0, 0), 2.18 * u, 0.12 * u, 0.13 * u, BRASS, ticks=24, tick_mat=BRASS_D,
-                tick_len=0.55, sides=36)
-    for ang in (30.0, 150.0, 270.0):
-        dx, dz = math.cos(math.radians(ang)), math.sin(math.radians(ang))
-        m.rod((0.40 * u * dx, 0.0, 0.40 * u * dz), (2.18 * u * dx, 0.0, 2.18 * u * dz), 0.05 * u, BRASS_D)
-    return m
+def _planet(d, key, at):
+    """The ball of one planet at `at`, and what marks it out."""
+    r = BALL[key]
+    if key == "mercury":
+        d.orb(at, r, [(-1.0, 1.0, 3, _flat("iron", 5))])
+    elif key == "venus":
+        d.orb(at, r, [(-1.0, 1.0, 4, _flat("porcelain", 3))])
+    elif key == "earth":
+        d.orb(at, r, [(-1.0, -0.7, 1, _flat("porcelain", 3)), (-0.7, 0.7, 4, _flat("verdigris", 2)),
+                      (0.7, 1.0, 1, _flat("porcelain", 3))], sides=10)
+    elif key == "mars":
+        d.orb(at, r, [(-1.0, 0.5, 3, _flat("old_copper", 2)), (0.5, 1.0, 1, _flat("porcelain", 3))])
+    elif key == "jupiter":
+        belt, zone = _flat("old_copper", 1), _flat("brass", 4)
+        d.orb(at, r, [(-1.0, -0.75, 1, belt), (-0.75, -0.5, 1, _flat("brass", 3)), (-0.5, -0.25, 1, belt),
+                      (-0.25, 0.25, 2, zone), (0.25, 0.5, 1, belt), (0.5, 0.75, 1, _flat("brass", 3)),
+                      (0.75, 1.0, 1, belt)], sides=12)
+    elif key == "saturn":
+        d.orb(at, r, [(-1.0, -0.2, 2, _flat("cream", 2)), (-0.2, 0.2, 1, _flat("cream", 1)),
+                      (0.2, 1.0, 2, _flat("cream", 2))], sides=10)
+        r0, r1 = SATURN_RING
+        with d.turned(("x", 22.0), ("z", 6.0), about=at):                      # the ring, tilted
+            d.ring("y", at, (r0 + r1) / 2.0, r1 - r0, PX, BRASS_L, sides=18)
 
 
-# --- version b: tiered bowl under a cage of meridian rings (armillary) ---------------------------
-def _stem_b():
-    """The hanging shaft and a closed brass gear can -- the works are shut away, the ornament is the
-    ring cage outside (plan: version b is the richer, armillary one). Anchor: the centre, at the
-    ring plane. Shown at scale 2."""
-    u = 8.0
-    m = M.Model(PREFIX + "b_stem", px=2.0)
-    top = STEM_TOP
-    m.tube("y", (0, 0), 0.20 * u, 0.26 * u, 0.46 * u, BRASS_D, sides=12)
-    m.tube("y", (0, 0), 0.26 * u, 0.74 * u, 0.42 * u, BRASS, sides=12)
-    m.tube("y", (0, 0), 0.55 * u, top * u, 0.13 * u, IRON, sides=8)
-    m.tube("y", (0, 0), 0.86 * u, 0.90 * u, 0.40 * u, BRASS_D, sides=12)       # the gear can
-    m.tube("y", (0, 0), 0.90 * u, 1.74 * u, 0.36 * u, BRASS, sides=12)
-    m.tube("y", (0, 0), 1.74 * u, 1.78 * u, 0.40 * u, BRASS_D, sides=12)
-    gear(m, (0, 0), 1.78 * u, 1.96 * u, 0.30 * u, 12, BRASS, tooth=BRASS_D, hub_r=0.12 * u, hub_mat=IRON_D)
-    m.tube("y", (0, 0), (top - 0.22) * u, top * u, 0.20 * u, BRASS_D, sides=12)
-    return m
+def _moon(d, version, r, level):
+    """The Earth's moon. Where the Earth carries its hoop the moon hangs from the hoop a little way
+    on; where it does not, on a wire from the Earth's seat."""
+    earth = BALL["earth"]
+    if version == "a":
+        a = math.radians(16.0)
+        x, z = r * math.cos(a), r * math.sin(a)
+        d.orb((x, HANG - MOON, z), MOON, [(-1.0, 1.0, 2, _flat("porcelain", 2))], sides=6, toward=(-x, 0.25, -z))
+        d.tube("y", (x, z), HANG - 0.01, -HOOP / 2.0, PX / 2.0, BRASS_D, sides=4)
+    else:
+        off, y = 0.30, level + 0.05
+        top = level + earth + 0.04
+        d.orb((r, y, off), MOON, [(-1.0, 1.0, 2, _flat("porcelain", 2))], sides=6, toward=(-r, -level, 0.0))
+        d.box((r - PX / 2, top, 0.0), (r + PX / 2, top + PX, off + PX / 2), BRASS_D)
+        d.box((r - PX / 2, y + MOON - 0.01, off - PX / 2), (r + PX / 2, top + PX, off + PX / 2), BRASS_D)
+
+
+def _arm(version, key):
+    """One planet and all that turns with it, as one model: the sleeve with its wheel (version a;
+    in b the wheel is inside the drum), the arm at the sleeve's lower end, the rod the planet hangs
+    on, the planet, and in version a the hoop of its orbit if it carries one. The anchor is the
+    centre, in the ring plane; the arm runs out along +x. Shown at scale 2."""
+    d = _Draw(f"{version}_arm_{key}", 2.0)
+    r, level, ya, rs, ball = ORBIT[version][key], LEVEL[version][key], ARM[key], SLEEVE[key], BALL[key]
+    collet = rs + 1.5 * PX
+    top = level + ball
+
+    # the sleeve, up to its wheel (a) or into the drum (b)
+    if version == "a":
+        yw = WHEEL_Y[key]
+        teeth = TEETH[key][0]
+        d.tube("y", (0, 0), ya + ARM_T, yw + ARM_T, rs, BRASS_D, sides=8)
+        tone = STEEL if key == "mercury" else (BRASS, BRASS_D)[PLANETS.index(key) % 2]
+        d.gear((0, 0), yw, yw + ARM_T, teeth, tone, phase=LAY_YAW - POSE[key],
+               spokes=(0 if teeth < 12 else 5 if teeth < 15 else 6), bore=collet, collet=BRASS_D)
+    else:
+        d.tube("y", (0, 0), ya + ARM_T, MOVE_Y0 + PX, rs, BRASS_D, sides=8)
+
+    # the arm: a collet on the sleeve, a flat bar that narrows outward, an eye where the rod hangs
+    d.tube("y", (0, 0), ya, ya + ARM_T, collet, BRASS_D, sides=8)
+    d.stud((-collet, ya + ARM_T / 2.0, 0.0), "-x")                             # the set screw
+    mid = max(collet + 0.14, r * 0.42)
+    d.box((collet - 0.01, ya, -1.5 * PX), (mid, ya + ARM_T, 1.5 * PX), BRASS, grain="x")
+    d.box((mid, ya, -PX), (r + ROD, ya + ARM_T, PX), BRASS, grain="x")
+    d.tube("y", (r, 0), ya - PX, ya, ROD + PX / 4.0, BRASS_D, sides=8)
+
+    # the rod and the planet's seat
+    d.tube("y", (r, 0), top - 0.02, ya - PX, ROD, BRASS, sides=8)
+    d.tube("y", (r, 0), top - 0.03, top + 0.035, min(0.09, ball * 0.72), BRASS_D, sides=8)
+    _planet(d, key, (r, level, 0.0))
+    if key == "earth":
+        _moon(d, version, r, level)
+
+    # the hoop of its orbit, in the ring plane, clamped to the rod
+    if version == "a" and key in HOOPS:
+        d.ring("y", (0.0, 0.0, 0.0), r, HOOP, HOOP, COPPER, sides=2 * int(round(math.pi * r / 0.2)))
+        d.box((r - 1.25 * PX, -1.5 * PX, -1.5 * PX), (r + 1.25 * PX, 1.5 * PX, 1.5 * PX), BRASS_D)
+    return d
+
+
+# --- version a: planar, the works open ------------------------------------------------------------
+def _band_a():
+    """The zodiac band: a channel of brass in the ring plane with a silvered scale between its two
+    lips, twelve enamel plaques for the signs. It is the one fixed ring: it hangs on three iron rods
+    from a spider under the works, outside everything that turns above the plane. Anchor: the
+    centre, in the ring plane. Shown at scale 2."""
+    d = _Draw("a_band", 2.0)
+    r0, r1 = BAND
+    d.ring("y", (0, 0, 0), r0 + PX / 2.0, PX, 3 * PX, BRASS_L, sides=72)       # the inner lip, towards the sun
+    d.ring("y", (0, 0, 0), r1 - PX / 2.0, PX, 3 * PX, BRASS, sides=72)
+    grad_circle(d.m, "y", (0, 0, 0), (r0 + r1) / 2.0 * d.u, (r1 - r0 - 2 * PX) * d.u, 2 * PX * d.u, BRASS,
+                marks=36, signs=12, proud=0.75 * PX * d.u)
+    d.tube("y", (0, 0), SPIDER_Y, MOVE_Y0, 0.30, IRON, sides=12)               # the spider's middle
+    for a in STAYS:
+        x, z = STAY_R * math.cos(math.radians(a)), STAY_R * math.sin(math.radians(a))
+        d.spoke(a, 0.24, STAY_R + 0.07, SPIDER_Y, MOVE_Y0, 2.5 * PX, IRON)
+        d.tube("y", (x, z), 1.5 * PX, MOVE_Y0 + PX, ROD, IRON, sides=6)
+        d.tube("y", (x, z), 1.5 * PX, 3.5 * PX, 0.10, BRASS_D, sides=8)        # the foot on the band
+        d.tube("y", (x, z), SPIDER_Y - PX, SPIDER_Y, 0.10, IRON_D, sides=8)
+    return d
+
+
+def _pillars():
+    return [(1.60, 0.0)] + [(0.84 * math.cos(math.radians(a)), 0.84 * math.sin(math.radians(a))) for a in (120.0, 240.0)]
+
+
+def _plate(d, y0, y1, down):
+    """One plate of the works: three arms from the middle, the long one over the lay shaft."""
+    d.spoke(0.0, 0.0, 1.60, y0, y1, 4 * PX, BRASS)
+    for a in (120.0, 240.0):
+        d.spoke(a, 0.0, 0.84, y0, y1, 3 * PX, BRASS)
+    d.tube("y", (0, 0), y0 - PX / 2.0, y1 + PX / 2.0, 0.27, BRASS_D, sides=12)
+    d.tube("y", (LAY_A, 0), y0 - PX / 2.0, y1 + PX / 2.0, 0.15, BRASS_D, sides=8)
+    side = "-y" if down else "y"
+    for x, z in _pillars():
+        d.tube("y", (x, z), y0 - PX / 4.0, y1 + PX / 4.0, 0.125, BRASS_L, sides=8)
+        d.stud((x, y0 - PX / 4.0 if down else y1 + PX / 4.0, z), side)
+    d.stud((LAY_A, y0 - PX / 2.0 if down else y1 + PX / 2.0, 0.0), side, mat=K.flat("brass", 5))
+
+
+def _cage_a():
+    """The frame of the works: two brass plates and three turned pillars. The lower plate carries the
+    spider, the upper one the column; the lay shaft runs between them. Anchor: the centre, in the
+    ring plane; +x points at the lay shaft. Shown at scale 2."""
+    d = _Draw("a_cage", 2.0)
+    y0, y1 = MOVE_Y0, MOVE_Y1 - 2 * PX
+    _plate(d, y0, y0 + 2 * PX, True)
+    _plate(d, y1, y1 + 2 * PX, False)
+    lo, hi = y0 + 2 * PX, y1
+    for x, z in _pillars():
+        d.tube("y", (x, z), lo, hi, ROD, BRASS_L, sides=6)
+        for a, b in ((lo, lo + PX), (hi - PX, hi)):
+            d.tube("y", (x, z), a, b, 0.10, BRASS_D, sides=8)
+        d.tube("y", (x, z), (lo + hi) / 2.0 - PX, (lo + hi) / 2.0 + PX, 0.09, BRASS_D, sides=8)
+    return d
+
+
+def _lay_a():
+    """The lay shaft: a steel arbor with six wheels, each in mesh with the wheel of one sleeve. The
+    two stacks are stepped cones, one the other way up from the other, and every pair shares the
+    one distance between the shafts. Anchor: on its own axis, at the height of the ring plane (it
+    takes the light of the planets' level, like the wheels it turns). Shown at scale 1."""
+    d = _Draw("a_lay", 1.0)
+    d.tube("y", (0, 0), MOVE_Y0 + PX, MOVE_Y1 - PX, ROD, IRON, sides=6)
+    for i, key in enumerate(PLANETS):
+        teeth = TEETH[key][1]
+        y = WHEEL_Y[key]
+        tone = STEEL if key == "saturn" else (BRASS_D, BRASS)[i % 2]
+        # the main axis is LAY_YAW + 180 from here: a gap of this wheel looks at it
+        d.gear((0, 0), y, y + ARM_T, teeth, tone, phase=LAY_YAW + 180.0 + 180.0 / teeth,
+               spokes=(0 if teeth < 11 else 5 if teeth < 15 else 6), bore=0.14, collet=BRASS_D if teeth > 5 else STEEL)
+    return d
+
+
+# --- version b: tiered, armillary, the works shut ----------------------------------------------------
+RIB_R = 2.40                             # the ribs of the cradle meet the equator ring here
+
+
+def _rib(rho):
+    """The height of a rib of the cradle at radius rho, from the boss under the sun out to the ring."""
+    return -(SUN_R + 0.24) + (SUN_R + 0.14) * (rho / RIB_R) ** 2
 
 
 def _rings_b():
-    """The brass cage: a graduated equator ring, a shallow tilted ecliptic ring, three upper meridian
-    arcs that meet at the pole as six ribs (the lower halves left open, so nothing dips into the walk
-    line), and the crown where they meet. Anchor: the centre. Shown at scale 2."""
-    u = 8.0
-    m = M.Model(PREFIX + "b_rings", px=2.0)
-    grad_circle(m, "y", (0, 0, 0), CAGE * u, 0.12 * u, 0.16 * u, BRASS, ticks=24, tick_mat=BRASS_D,
-                tick_len=0.55, sides=36)
-    with m.turned(("x", 12.0), about=(0, 0, 0)):                               # the ecliptic ring
-        m.ring("y", (0, 0, 0), 1.85 * u, 0.10 * u, 0.11 * u, BRASS_D, sides=32)
-    for yaw in (0.0, 60.0, 120.0):                                             # three upper meridian arcs: six ribs
-        #                                                                        (two would cross at the pole)
-        with m.turned(("y", yaw), about=(0, 0, 0)):
-            m.ring("x", (0, 0, 0), CAGE * u, 0.12 * u, 0.16 * u, BRASS, sides=36, arc=(-90.0, 90.0))
-    m.tube("y", (0, 0), (CAGE - 0.14) * u, (CAGE + 0.10) * u, 0.20 * u, BRASS_D, sides=10)   # the crown
-    return m
+    """The cradle and its two rings: a boss under the sun (on the stay rod, which goes on through
+    the globe), three brass ribs that rise outward from it like the ribs of a shallow bowl, the
+    level equator ring they carry, graduated, and the broad ecliptic band with its twelve signs,
+    tilted twenty degrees and pinned to the equator at the two nodes. Anchor: the centre, in the
+    ring plane. Shown at scale 2."""
+    d = _Draw("b_rings", 2.0)
+    e0, e1 = EQUATOR
+    d.ring("y", (0, 0, 0), e0 + PX / 2.0, PX, 3 * PX, BRASS_L, sides=72)
+    grad_circle(d.m, "y", (0, 0, 0), (e1 - PX / 2.0) * d.u, PX * d.u, 3 * PX * d.u, BRASS, marks=60)
+    ec = ECLIPTIC
+    with d.turned(("x", ec["tilt"]), about=(0, 0, 0)):                          # the north side up
+        d.ring("y", (0, 0, 0), ec["radius"], ec["thick"], ec["width"], BRASS, sides=72)
+        for i in range(12):
+            a = 15.0 + 30.0 * i
+            d.ring("y", (0, 0, 0), ec["radius"], ec["thick"] + 0.5 * PX, 2 * PX, ENAMEL, sides=60, arc=(a - 3.0, a + 3.0))
+        for y in (-ec["width"] / 2.0 + PX / 4.0, ec["width"] / 2.0 - PX / 4.0):
+            d.ring("y", (0, y, 0), ec["radius"], ec["thick"] + 0.5 * PX, PX / 2.0, BRASS_L, sides=72)
+    for s in (-1.0, 1.0):                                                       # the pins at the nodes
+        d.tube("x", (0.0, 0.0), *sorted((s * (ec["radius"] - 0.10), s * e1)), 0.09, BRASS_D, sides=8)
+    y0 = -SUN_R - 0.14                                                          # the foot of the sun's finial
+    d.tube("y", (0, 0), y0 - 0.14, y0, 0.15, BRASS_D, sides=10)                 # the boss
+    d.tube("y", (0, 0), y0 - 0.20, y0 - 0.14, 0.10, BRASS, sides=8)
+    d.tube("y", (0, 0), y0 - 0.26, y0 - 0.20, 0.0625, BRASS_L, sides=6)
+    n = 9
+    for a in STAYS:
+        dx, dz = math.cos(math.radians(a)), math.sin(math.radians(a))
+        for i in range(n):
+            p0, p1 = 0.10 + (RIB_R - 0.10) * i / n, 0.10 + (RIB_R - 0.10) * (i + 1) / n
+            d.beam((p0 * dx, _rib(p0), p0 * dz), (p1 * dx, _rib(p1), p1 * dz), 2 * PX, 3 * PX, BRASS)
+        d.tube("y", (RIB_R * dx, RIB_R * dz), _rib(RIB_R) - 2 * PX, 1.5 * PX, 0.09, BRASS_D, sides=8)
+    return d
 
 
-def _arm(version, key, orbit, prad, pmat, banded, ringed, rise):
-    """One planet arm: a clamp collar at the axis, a slender brass bar, the planet at its end. The
-    anchor is the axis; the beam runs out along +x (and up by `rise` in version b). Shown at scale 1."""
-    u = 16.0
-    m = M.Model(PREFIX + version + "_arm_" + key, px=1.0)
-    end = (orbit * u, rise * u, 0.0)
-    m.tube("y", (0, 0), -0.22 * u, 0.22 * u, 0.15 * u, BRASS_D, sides=8)       # the clamp on the hub
-    m.box((-0.11 * u, -0.07 * u, -0.10 * u), (0.12 * u, 0.07 * u, 0.10 * u), BRASS)
-    m.beam((0.0, 0.0, 0.0), end, 0.18 * u, 0.13 * u, BRASS)                    # the arm
-    m.tube("y", (end[0], end[2]), end[1] - 0.14 * u, end[1] + 0.14 * u, 0.09 * u, BRASS_D, sides=6)  # the planet's seat
-    _planet(m, end, prad * u, pmat, banded=banded, ringed=ringed)
-    return m
+def _drum_b():
+    """The works shut away: a brass drum under the column, a band of enamel with twelve studs round
+    its waist, a stepped lid. The sleeves of the arms go up into it. Anchor: the centre, in the ring
+    plane. Shown at scale 1."""
+    d = _Draw("b_drum", 1.0)
+    y0 = MOVE_Y0
+    d.tube("y", (0, 0), y0, y0 + PX, 0.52, BRASS_D, sides=12)
+    d.tube("y", (0, 0), y0 + PX, y0 + 15 * PX, 0.47, BRASS, sides=12)
+    d.tube("y", (0, 0), y0 + 6 * PX, y0 + 10 * PX, 0.485, ENAMEL, sides=12)
+    for i in range(12):
+        d.box((0.485 - 0.01, y0 + 7.5 * PX, -PX / 2.0), (0.485 + PX / 2.0, y0 + 8.5 * PX, PX / 2.0), K.flat("cream", 3),
+              rot=("y", 30.0 * i, (0.0, 0.0, 0.0)))
+    d.tube("y", (0, 0), y0 + 15 * PX, y0 + 16 * PX, 0.52, BRASS_D, sides=12)
+    d.taper("y", (0, 0), y0 + 16 * PX, MOVE_Y1 - PX, 0.45, 0.27, BRASS, sides=12, steps=4)
+    d.tube("y", (0, 0), MOVE_Y1 - PX, MOVE_Y1, 0.30, BRASS_D, sides=12)
+    return d
 
 
 # --- the model set -------------------------------------------------------------------------------
 @functools.lru_cache(maxsize=None)
-def _models():
+def _drawn():
     out = {}
-    for name, model, scale in [("hub", _hub(), 1.0), ("sun", _sun(), 1.0),
-                               ("a_stem", _stem_a(), 2.0), ("a_rings", _rings_a(), 2.0),
-                               ("b_stem", _stem_b(), 2.0), ("b_rings", _rings_b(), 2.0)]:
-        out[model.name] = model
-        SCALE[model.name] = scale
-    for version in ("a", "b"):
-        for (key, orbit, prad, pmat, banded, ringed), rise in zip(PLANETS, BOWL):
-            model = _arm(version, key, orbit, prad, pmat, banded, ringed, rise if version == "b" else 0.0)
-            out[model.name] = model
-            SCALE[model.name] = 1.0
+    with _lit_from_below():
+        for d in [_hub(), _column(), _sun(), _band_a(), _cage_a(), _lay_a(), _rings_b(), _drum_b()] \
+                + [_arm(v, key) for v in ("a", "b") for key in PLANETS]:
+            out[d.m.name] = d
     return out
 
 
 def models():
-    return dict(_models())
+    return {name: d.m for name, d in _drawn().items()}
+
+
+def models_for(version):
+    """The names build() places for one version, for a gallery or a count."""
+    return [name for name, _pos, _yaw in placing(version)]
 
 
 # --- placing -------------------------------------------------------------------------------------
-def _place(canvas, name, pos, origin=(0, 0, 0), yaw=0.0, **opts):
-    built = _models()
-    x, y, z = (pos[i] + origin[i] for i in range(3))
-    canvas.add_entity(x, y, z, M.display(built[name], yaw=yaw, scale=SCALE[name], **opts))
-    return 1
+def _lay_at():
+    a = math.radians(LAY_YAW)
+    return (CX + LAY_A * math.cos(a), RING_Y, CZ + LAY_A * math.sin(a))
+
+
+def placing(version=VERSION):
+    """Where every model of one version stands: [(model name, (x, y, z), yaw)], scene coordinates
+    without an origin. The first three are the same in both versions."""
+    v, at = version, (CX, RING_Y, CZ)
+    out = [("hub", (CX, HANG_Y - K.NUDGE, CZ), 0.0),             # in the air cell under the ceiling
+           ("column", (CX, COLUMN_AT, CZ), 0.0), ("sun", at, 0.0)]
+    if v == "a":
+        out += [("a_band", at, 0.0), ("a_cage", at, LAY_YAW), ("a_lay", _lay_at(), 0.0)]
+    else:
+        out += [("b_rings", at, 0.0), ("b_drum", at, 0.0)]
+    out += [(f"{v}_arm_{key}", at, POSE[key]) for key in PLANETS]
+    return [(PREFIX + name, pos, yaw) for name, pos, yaw in out]
+
+
+def moving(version=VERSION):
+    """What turns, for the motion line: [dict(model, at, period, sense)]. `at` is the entity's place
+    (scene coordinates without an origin), which is on the part's vertical axis; period is the ticks
+    for one turn; sense is +1 for the way the planets go round (seen from above against the clock:
+    the yaw of the display falls) and -1 for the lay shaft, which the wheels turn the other way."""
+    at = (CX, RING_Y, CZ)
+    out = [dict(model=PREFIX + f"{version}_arm_{key}", at=at, period=PERIOD[key], sense=1) for key in PLANETS]
+    if version == "a":
+        out.append(dict(model=PREFIX + "a_lay", at=_lay_at(), period=LAY_TURN, sense=-1))
+    return out
 
 
 def build(canvas, origin=(0, 0, 0), version=VERSION):
     """Hang one orrery in the star hall and return the number of display entities. version "a" is
     planar, "b" the armillary bowl; the test scene builds both side by side, the review picks one."""
-    v = version
-    n = _place(canvas, PREFIX + "hub", (CX, HANG_Y - K.NUDGE, CZ), origin)   # in the air cell under the ceiling
-    n += _place(canvas, PREFIX + "sun", (CX, RING_Y, CZ), origin)
-    n += _place(canvas, PREFIX + v + "_stem", (CX, RING_Y, CZ), origin)
-    for (key, *_rest), yaw in zip(PLANETS, POSE):
-        n += _place(canvas, PREFIX + v + "_arm_" + key, (CX, RING_Y, CZ), origin, yaw=yaw)
-    n += _place(canvas, PREFIX + v + "_rings", (CX, RING_Y, CZ), origin)
+    drawn = _drawn()
+    n = 0
+    for name, pos, yaw in placing(version):
+        x, y, z = (pos[i] + origin[i] for i in range(3))
+        canvas.add_entity(x, y, z, M.display(drawn[name].m, yaw=yaw, scale=drawn[name].scale))
+        n += 1
     cell = (int(CX + origin[0]), int(RING_Y + origin[1]), int(CZ + origin[2]))
-    K.offer_lights(canvas, [(cell, SUN_LIGHT)], f"machines/orrery:{v}")
+    K.offer_lights(canvas, [(cell, SUN_LIGHT)], f"machines/orrery:{version}")
     return n
 
 
-def models_for(version):
-    """The names build() places for one version, for a gallery or a count."""
-    base = [PREFIX + "hub", PREFIX + "sun", PREFIX + version + "_stem", PREFIX + version + "_rings"]
-    return base + [PREFIX + version + "_arm_" + p[0] for p in PLANETS]
+# --- do the turning parts clear one another? ---------------------------------------------------------
+CELL = PX / 8.0                          # the grid the sweeps are drawn on
+REACH = 10                               # cells: gaps are measured up to this far
+HUB_ZONE = 0.34                          # inside this radius the sleeves run one inside the other by design
+TIGHT = PX / 3.0                         # two parts that pass closer than this are reported
+
+
+def _matrix(q):
+    x, y, z, w = q
+    return np.array([[1 - 2 * (y * y + z * z), 2 * (x * y - z * w), 2 * (x * z + y * w)],
+                     [2 * (x * y + z * w), 1 - 2 * (x * x + z * z), 2 * (y * z - x * w)],
+                     [2 * (x * z - y * w), 2 * (y * z + x * w), 1 - 2 * (x * x + y * y)]])
+
+
+def _surface(model, scale, step=CELL):
+    """Points over the faces of every box of a model, in blocks from its anchor, `step` apart."""
+    k = scale / 16.0
+    out = []
+    for p in model.parts:
+        lo, hi = np.array(p["lo"]), np.array(p["hi"])
+        c, h = (lo + hi) / 2.0, (hi - lo) / 2.0
+        axes = [np.linspace(-h[i], h[i], max(2, int(math.ceil(2.0 * h[i] * k / step)) + 1)) for i in range(3)]
+        pts = []
+        for i in range(3):
+            j, l = [a for a in range(3) if a != i]
+            g = np.stack(np.meshgrid(axes[j], axes[l], indexing="ij"), -1).reshape(-1, 2)
+            for side in (-h[i], h[i]):
+                f = np.zeros((len(g), 3))
+                f[:, i], f[:, j], f[:, l] = side, g[:, 0], g[:, 1]
+                pts.append(f)
+        pts = np.concatenate(pts)
+        if p["rot"]:
+            pts = pts @ _matrix(p["rot"][0]).T
+        out.append((pts + c) * k)
+    return np.concatenate(out)
+
+
+GRID = (int(math.ceil((R + 0.3) / CELL)), int(math.ceil((MOVE_Y0 + 1.2) / CELL)))    # rho 0..2.8, y -1.2..2.0
+
+
+def sweep(name, pos, moves):
+    """What a model standing at `pos` sweeps as it turns about the machine's axis, below the works:
+    a grid of cells (rho from the axis, y from 1.2 under the ring plane), true where it touches.
+    For a part that turns only what lies outside the nest of sleeves is kept."""
+    d = _drawn()[name]
+    pts = _surface(d.m, d.scale)
+    rho = np.hypot(pts[:, 0] + pos[0] - CX, pts[:, 2] + pos[2] - CZ)
+    y = pts[:, 1] + pos[1] - RING_Y
+    keep = (y < MOVE_Y0) & (y > -1.2) & (rho < R + 0.3)
+    if moves:
+        keep &= rho > HUB_ZONE
+    grid = np.zeros(GRID, dtype=bool)
+    grid[(rho[keep] / CELL).astype(int), ((y[keep] + 1.2) / CELL).astype(int)] = True
+    return grid
+
+
+def _near(grid):
+    """For every cell, how many cells it is from the nearest true cell of `grid`, up to REACH + 1."""
+    n = REACH
+    wide = np.pad(grid, n)
+    dist = np.where(grid, 0, n + 1)
+    for k in range(1, n + 1):
+        ring = np.zeros_like(grid)
+        for dx in range(-k, k + 1):
+            for dy in range(-k, k + 1):
+                if (k - 1) ** 2 < dx * dx + dy * dy <= k * k:
+                    ring |= wide[n + dx:n + dx + grid.shape[0], n + dy:n + dy + grid.shape[1]]
+        dist = np.where(ring & (dist > k), k, dist)
+    return dist
+
+
+def clearances(version=VERSION):
+    """The least distance in blocks between what one turning part sweeps and what every other part
+    sweeps or stands in, below the works and outside the nest of sleeves: [(gap, part, other)],
+    the tightest first, gaps measured up to REACH cells. Two parts that turn at different rates
+    meet sooner or later at every angle, so a gap of nothing here is a planet going through a rod."""
+    grids, near = {}, {}
+    for name, pos, _yaw in placing(version):
+        short = name[len(PREFIX):]
+        if short in ("hub", "column", "a_cage", "a_lay", "b_drum"):
+            continue
+        grids[short] = sweep(name, pos, "arm_" in short)
+        if "arm_" in short:
+            near[short] = _near(grids[short])
+    out = []
+    names = sorted(grids)
+    for a in sorted(near):
+        for b in names:
+            if b == a or (b in near and b < a):
+                continue
+            k = int(near[a][grids[b]].min()) if grids[b].any() else REACH + 1
+            out.append((max(0, k - 1) * CELL, a, b))
+    return sorted(out)
+
+
+def lowest(version=VERSION):
+    """The lowest point of a version, as a height in the scene."""
+    low = 1e9
+    for name, pos, _yaw in placing(version):
+        d = _drawn()[name]
+        low = min(low, float(_surface(d.m, d.scale, PX)[:, 1].min()) + pos[1])
+    return low
+
+
+def widest(version=VERSION):
+    """The farthest any part of a version reaches from the axis, in blocks."""
+    far = 0.0
+    for name, pos, yaw in placing(version):
+        d = _drawn()[name]
+        pts = _surface(d.m, d.scale, PX)
+        off = K.turn(yaw, (1.0, 0.0, 0.0))
+        x = pts[:, 0] * off[0] - pts[:, 2] * off[2] + pos[0] - CX
+        z = pts[:, 0] * off[2] + pts[:, 2] * off[0] + pos[2] - CZ
+        far = max(far, float(np.hypot(x, z).max()))
+    return far
+
+
+def _report():
+    ok = True
+    for v in ("a", "b"):
+        gaps = clearances(v)
+        low, far = lowest(v), widest(v)
+        tight = [g for g in gaps if g[0] < TIGHT]
+        ok = ok and not tight and low >= FLOOR_Y and far <= R + 1e-6
+        print(f"version {v}: lowest point y {low:.3f} (limit {FLOOR_Y}), widest {far:.3f} (limit {R}); "
+              f"{len(gaps)} pairs, {len(tight)} closer than {TIGHT:.3f}")
+        for gap, a, b in gaps[:10]:
+            print(f"    {gap:6.3f}  {a} / {b}")
+    print("teeth and turns: " + ", ".join(f"{k} {TEETH[k][0]}:{TEETH[k][1]} {PERIOD[k]:.0f}" for k in PLANETS)
+          + f"; lay shaft {LAY_TURN:.0f} the other way")
+    return ok
+
+
+if __name__ == "__main__":
+    raise SystemExit(0 if _report() else 1)
