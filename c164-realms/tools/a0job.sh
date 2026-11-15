@@ -131,9 +131,14 @@ ahead="$(waiting "$commit" | grep -n -x -F "$id" | cut -d: -f1)"
 echo "a0job: sent $id ($(( ${ahead:-1} - 1 )) ahead of it)"
 if [ "$wait_s" = 0 ]; then echo "a0job: later: bash tools/a0job.sh --receipt $id"; exit 0; fi
 
+# The machine this runs on is shared by every session: ask GitHub seldom. The first look comes
+# when the jobs ahead may be through (half a minute each), then one every 20 s.
 t0=$SECONDS
+nap=$(( (${ahead:-1} - 1) * 30 ))
+if [ "$nap" -lt 15 ]; then nap=15; fi
+if [ "$nap" -gt 300 ]; then nap=300; fi
 while [ $((SECONDS - t0)) -lt "$wait_s" ]; do
-  sleep 15
+  sleep "$nap"; nap=20
   t="$(tip)" || continue
   receipt "$t" "$id"; code=$?
   if [ "$code" != 75 ]; then exit "$code"; fi
