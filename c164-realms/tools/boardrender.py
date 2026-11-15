@@ -2,6 +2,9 @@
 """The twelve board views of the master scene, drawn offline and kept in the repository.
 
     boardrender.py                    all twelve, into renders/board/<assembly commit, 7 digits>/
+    boardrender.py --at <commit>      named after this commit of the assembly branch instead of its
+                                      head: the one the merge post announced, when commits that
+                                      leave build/ alone (the roster) have been pushed on top
     boardrender.py --only v01_arrival,v07_hall
     boardrender.py --tag <name>       into renders/board/<name>/ (a checkout that is not the assembly's)
 
@@ -12,9 +15,10 @@ On the render station's node (plan/roles/COMMON.md 2.2), after a push:
 The views are tools/boardshots.py's, worked out from the skeleton of this checkout; the pictures
 are build/render.py's (1280x720, look A unless a view says otherwise). The folder is named after
 the assembly commit whose build/ this checkout carries: the checkout's build/ has to be, file for
-file, that of the assembly branch's head as the last fetch left it, and committed. Then a picture
-shows what the assembly holds, whatever branch the tool ran on. A checkout whose build/ is
-something else is drawn only with --tag, and the note says which commit it was.
+file, that of the assembly branch's head as the last fetch left it (or of the commit named with
+--at, which has to be on that branch), and committed. Then a picture shows what the assembly
+holds, whatever branch the tool ran on. A checkout whose build/ is something else is drawn only
+with --tag, and the note says which commit it was.
 
 What lands in the folder:
     <view>.png      the twelve pictures
@@ -65,9 +69,9 @@ def digest(path):
         return hashlib.sha256(fh.read()).hexdigest()[:16]
 
 
-def which_commit(tag):
-    """(folder name, commit the pictures show). Without --tag the checkout's build/ must be the
-    assembly head's."""
+def which_commit(tag, at=None):
+    """(folder name, commit the pictures show). Without --tag the checkout's build/ must be that of
+    the assembly's head, or of the assembly commit named with `at`."""
     head = git("rev-parse", "--short=8", "HEAD")
     if not head:
         sys.exit(f"{PROJECT}: not a git checkout, so the pictures could not say what they show")
@@ -81,9 +85,17 @@ def which_commit(tag):
     if not assembly:
         sys.exit(f"{ASSEMBLY} is not here: git fetch origin {ASSEMBLY.split('/', 1)[1]} (tools/cloud_setup.sh does), "
                  f"or name the folder yourself with --tag")
-    ours, theirs = git("rev-parse", "HEAD:c164-realms/build"), git("rev-parse", f"{ASSEMBLY}:c164-realms/build")
+    what = "head"
+    if at:
+        named = git("rev-parse", "--short=8", "--verify", "--quiet", at + "^{commit}")
+        if not named:
+            sys.exit(f"--at {at}: no such commit here")
+        if git("merge-base", "--is-ancestor", named, ASSEMBLY) is None:
+            sys.exit(f"--at {named} is not a commit of the assembly branch (its head is {assembly})")
+        assembly, what = named, "commit"
+    ours, theirs = git("rev-parse", "HEAD:c164-realms/build"), git("rev-parse", f"{assembly}:c164-realms/build")
     if not ours or ours != theirs:
-        sys.exit(f"build/ of this checkout ({head}) is not build/ of the assembly head ({assembly}): merge the "
+        sys.exit(f"build/ of this checkout ({head}) is not build/ of the assembly {what} ({assembly}): merge the "
                  f"assembly, or draw this checkout as it is with --tag <name>")
     return assembly[:7], assembly
 
@@ -126,34 +138,59 @@ def read_note(path):
     return out
 
 
-def sheet(folder, names, title):
-    """All the views on one sheet, in the board's order; a view without a picture leaves its cell dark."""
-    rows = -(-len(names) // ACROSS)
+def _font():
     try:
-        font = ImageFont.load_default(size=20)      # Pillow's own outline font
+        return ImageFont.load_default(size=20)      # Pillow's own outline font
     except (TypeError, OSError):
-        font = ImageFont.load_default()
+        return ImageFont.load_default()
+
+
+def _cell(img, pen, font, at, path, label):
+    if os.path.exists(path):
+        with Image.open(path) as picture:
+            img.paste(picture.convert("RGB").resize(CELL, Image.LANCZOS), at)
+    box = pen.textbbox((at[0] + 5, at[1] + 2), label, font=font)
+    pen.rectangle((at[0], at[1], box[2] + 5, box[3] + 4), fill=(0, 0, 0))
+    pen.text((at[0] + 5, at[1] + 2), label, fill=(255, 255, 255), font=font)
+
+
+def sheet(folder, names, title, ext=".png", out="sheet.jpg"):
+    """All the views on one sheet, in the order given; a view without a picture leaves its cell dark."""
+    rows = -(-len(names) // ACROSS)
+    font = _font()
     band = 34
     img = Image.new("RGB", (CELL[0] * ACROSS, band + CELL[1] * rows), (16, 16, 20))
     pen = ImageDraw.Draw(img)
     pen.text((8, 5), title, fill=(230, 230, 230), font=font)
     for i, name in enumerate(names):
         at = (i % ACROSS * CELL[0], band + i // ACROSS * CELL[1])
-        path = os.path.join(folder, name + ".png")
-        if os.path.exists(path):
-            with Image.open(path) as picture:
-                img.paste(picture.convert("RGB").resize(CELL, Image.LANCZOS), at)
-        box = pen.textbbox((at[0] + 5, at[1] + 2), name, font=font)
-        pen.rectangle((at[0], at[1], box[2] + 5, box[3] + 4), fill=(0, 0, 0))
-        pen.text((at[0] + 5, at[1] + 2), name, fill=(255, 255, 255), font=font)
-    img.save(os.path.join(folder, "sheet.jpg"), "JPEG", quality=88)
+        _cell(img, pen, font, at, os.path.join(folder, name + ext), name)
+    img.save(os.path.join(folder, out), "JPEG", quality=88)
+
+
+def side_by_side(left, right, names, title, out, exts=(".png", ".jpg"), labels=("offline", "game")):
+    """Every view twice, the picture from `left` beside the one from `right`, two views a row."""
+    rows = -(-len(names) // 2)
+    font = _font()
+    band = 34
+    img = Image.new("RGB", (CELL[0] * 4, band + CELL[1] * rows), (16, 16, 20))
+    pen = ImageDraw.Draw(img)
+    pen.text((8, 5), title, fill=(230, 230, 230), font=font)
+    for i, name in enumerate(names):
+        x, y = i % 2 * 2 * CELL[0], band + i // 2 * CELL[1]
+        _cell(img, pen, font, (x, y), os.path.join(left, name + exts[0]), f"{name}  {labels[0]}")
+        _cell(img, pen, font, (x + CELL[0], y), os.path.join(right, name + exts[1]), f"{name}  {labels[1]}")
+    img.save(out, "JPEG", quality=88)
 
 
 def main():
     ap = argparse.ArgumentParser(description="the twelve board views of the master scene, drawn offline")
     ap.add_argument("--only", help="comma separated views")
     ap.add_argument("--tag", help="name of the folder under renders/board/ (default: the assembly commit)")
+    ap.add_argument("--at", metavar="COMMIT", help="the assembly commit the pictures are named after (default: its head)")
     args = ap.parse_args()
+    if args.tag and args.at:
+        sys.exit("--tag names the folder of a checkout that is not the assembly's; --at names an assembly commit: one of the two")
     t0 = time.time()
     views = [shot for shot, _, _ in boardshots.views()]
     names = [v["name"] for v in views]
@@ -161,7 +198,7 @@ def main():
     unknown = [n for n in only if n not in names]
     if unknown:
         sys.exit("not a board view: " + ", ".join(unknown))
-    tag, commit = which_commit(args.tag)
+    tag, commit = which_commit(args.tag, args.at)
     folder = os.path.join(PROJECT, "renders", "board", tag)
     os.makedirs(folder, exist_ok=True)
     board = os.path.join(folder, "board.json")
