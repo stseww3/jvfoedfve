@@ -1,0 +1,50 @@
+a0job 1115-225542-a6-furniture-f3-4ad1-20092: cursor/c164-a6-furniture-f3-4ad1 @ e0f7cc15 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.62 1.27 1.48, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.4 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/selfshots.py obs_props_furniture && python tools/selfshots.py obs_props_furniture_site && python tools/selfshots.py obs_props_seams && cd build && python -m scenes.obs_props_furniture_site --report ---- exit 0, 191 s, last
+  obs_props_furniture: display_table (tick 14000, 5 s)
+renders/obs_props_furniture/: 22 pictures of e0f7cc15 drawn, 4.2 MB
+  obs_props_furniture_site: 109284 blocks, 78 entities (1 s)
+  obs_props_furniture_site: resource pack written to /tmp/c164pack-s57doilu (2 s)
+  obs_props_furniture_site: water: 0 sources, 0 cells of running water (2 s)
+  obs_props_furniture_site: grid 213 x 93 x 213, 109284 blocks, 3916 entity boxes (2 s)
+  obs_props_furniture_site: 201 states -> 406 looks, 845 boxes, 116 pictures (3 s)
+  obs_props_furniture_site: light done (3 s)
+  obs_props_furniture_site: sunset_door (tick 14000, 2 s)
+  obs_props_furniture_site: sunset_door_c (tick 12900, 1 s)
+  obs_props_furniture_site: sunset_west (tick 14000, 1 s)
+  obs_props_furniture_site: sunset_row (tick 14000, 1 s)
+  obs_props_furniture_site: sunset_bench (tick 14000, 3 s)
+  obs_props_furniture_site: sunset_seat (tick 14000, 6 s)
+  obs_props_furniture_site: sunset_seat_outer (tick 14000, 6 s)
+  obs_props_furniture_site: sunset_plan (tick 14000, 1 s)
+  obs_props_furniture_site: lookout_bench (tick 14000, 2 s)
+  obs_props_furniture_site: lookout_v11 (tick 14000, 1 s)
+renders/obs_props_furniture_site/: 10 pictures of e0f7cc15 drawn, 2.9 MB
+  obs_props_seams: 477 blocks, 16 entities (0 s)
+  obs_props_seams: resource pack written to /tmp/c164pack-bv9xk0c2 (1 s)
+  obs_props_seams: water: 0 sources, 0 cells of running water (1 s)
+  obs_props_seams: grid 45 x 6 x 11, 477 blocks, 20 entity boxes (1 s)
+  obs_props_seams: 11 states -> 30 looks, 29 boxes, 44 pictures (1 s)
+  obs_props_seams: light done (1 s)
+  obs_props_seams: iron_plate__iron_riveted (tick 14000, 1 s)
+  obs_props_seams: iron_cast__brass_plate (tick 14000, 1 s)
+  obs_props_seams: brass_pattern__old_copper (tick 14000, 1 s)
+  obs_props_seams: old_copper_cut__ashlar_fine (tick 14000, 1 s)
+  obs_props_seams: ashlar_rough__dark_wood (tick 14000, 0 s)
+  obs_props_seams: row (tick 14000, 1 s)
+renders/obs_props_seams/: 6 pictures of e0f7cc15 drawn, 0.5 MB
+10 shots -> /tmp/dais_jobs/c164a0/c164-realms/build/scenes/obs_props_furniture_site/shots.json
+  no cameras for the group station: site/cablecar is not in this tree
+display entities: {'materials': 0, 'site': 4, 'main': 0, 'machines': 38, 'interiors': 0, 'props': 32, 'motion': 0, 'sky': 4}
+furniture of the site that stands: lookout bench x1, sunset bench x4
+  left out, no floor under it: station bench (79.55, -4.0, -38.0)
+  left out, no floor under it: station bench (81.5, -4.0, -35.55)
+  left out, no floor under it: station crate_small (85.0, -3.28125, -35.55)
+  left out, no floor under it: station trunk (84.75, -4.0, -35.55)
+==== NODEJOB RESULT ====
+exit=0 secs=194 host=cursor cores=4 head=e0f7cc15 commit=e751b228 pushed=yes branch=cursor/c164-a6-furniture-f3-4ad1 files=32
+a0job: exit=0 secs=195
