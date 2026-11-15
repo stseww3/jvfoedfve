@@ -94,9 +94,10 @@ def shots():
     # the drum's bays, level with them, from the air in front of the building: pilasters, niches and
     # windows, the corbel course and the gallery's cove from below
     shot("drum", (cx + 22.0, spring - 2.0, cz + 12.0), (cx + 10.0, spring - 3.5, cz + 6.0))
-    # standing on the gallery's walkway, north-east, looking along it to the south: the gutter, the
-    # ring beam and its axle boxes, the dome's foot on the right, the roofs and the court on the left
-    shot("gallery", (cx + 11.8, spring + S.EYE, cz - 9.2), (cx + 13.6, spring + 0.8, cz + 2.0))
+    # standing on the gallery's walkway, north-east, looking along it to the south: the walkway and
+    # the gutter going round, the ring beam and its axle boxes and the dome's foot on the right,
+    # the court on the left
+    shot("gallery", (cx + 10.5, spring + S.EYE, cz - 10.5), (cx + 17.2, spring + 0.2, cz - 2.5))
     # from the ridge of the south wing's roof, six blocks short of the gallery: the drum's bays and
     # the door of the dome room, the gallery from below, the dome over it (closer, under the
     # gallery, one sees only its underside)
