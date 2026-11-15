@@ -36,7 +36,7 @@
     - `RUN` 开：主管贴地 y 0，从 x 57 到 x 22；x 43..47 换成和铺地齐平的铁盖板（去南观景台的路从这里过）；(21, −1, 33) 一块铁套；x 19、20 两格永远不用（c241 的入地弯头在 (19, 0, 33)）。
   - 给别家的接口：
     - 光（c220）：`windows(version)` 给窗表，字段照 `sky/_lightkit.glazed`（front 是 `power.north|east|south|west`，storey 是 `main`、`furnace`，乙多两条 `gable`），`group="power"`。树里没有 `_lightkit` 时，本包自己在每个亮窗的窗洞中列 y −2 放一格 5 级 `light`（c220 #33352 的数）；`_lightkit` 进总装以后只走 `glazed`。亮窗窗洞那一格一直空着。
-    - 室内（interiors/powerhouse）：读 `ROOM`、`ROOM_Y`、`DOOR_AT`、`TOWER`、`windows()`。烟囱的方座伸进屋里 x 84..87、z 22..25；锅炉靠这个角。两处橙窗朝屋里的一面也是自己发亮的（materials/windows 的做法），锅炉的砖座要挡住它，或者请 c205 加内衬。
+    - 室内（interiors/powerhouse）：读 `ROOM`、`ROOM_Y`、`DOOR_AT`、`TOWER`、`PIPE_IN`、`windows()`。烟囱的方座伸进屋里 x 84..87、z 22..25；锅炉靠这个角。主管穿西墙的那两格 (67..68, 2, 33) 是铆接铁的穿墙套，屋里的主管从 `PIPE_IN` = (69, 2, 33) 接起。两处橙窗朝屋里的一面也是自己发亮的（materials/windows 的做法），锅炉的砖座要挡住它，或者请 c205 加内衬。
     - 管线（c241，props/pipes）：主管是整格方块，他给整格干管做了两件，用 `pipes.mount` 装（c241 #35562）。装在哪写成表 `FITTINGS`（kind、点、out／up，就是 `mount` 的参数）：阀头 `bonnet` 一只，在桥头竖管朝西的一面 (58.0, 1.5, 33.5)，全桥唯一的红手轮，对着前庭；箍 `band` 三道，骑在主管顶面的接缝 x 60.0、63.0、66.0 上（两个铆接套节的正中）。外壳自己不放（0 实体）：总场景里由 `pipes.dress()` 读这张表，照它的 `DRESS` 开关；本包的两个测试场景自己照表调 `pipes.mount`，树里没有 `pipes` 就不放。
     - 烟（motion）：`SMOKE`。
   - 机位十个，两个场景同名：`v6_power`（板上的 V6，站位不变；look_at 的 y 从 3 抬到 6，板上的数上沿切在烟囱 y 21.5，冠在画面外）、`yard_west`、`court_back`、`lip_south`（从前庭回看两张）、`chimney_up`、`bridge_near`、`bridge_head`（顺着上平台那段主管看桥头）、`lookout_east`（南观景台回看）、`aerial`、`aerial_back`。机位是照数算的，没有图；第一批图回来再调。

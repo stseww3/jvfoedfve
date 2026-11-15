@@ -6,7 +6,7 @@ interiors/powerhouse: here stands an empty shell, and windows() says where its g
 The house fills the skeleton's box (S.POWER_HOUSE): 23 by 23 cells, walls ten courses high from the
 lower platform's paving. It is the works building of the hill and speaks the main building's
 grammar in the lower platform's stone: a pier of one cell and a window of three (S.BAY), tuff brick
-between polished courses, the way the cable station is built.
+between polished courses.
 
   walls     Two planes. The pier plane is the edge of the box: a polished plinth course with a
             weathering, brick piers, a segmental arch over every bay, a polished cornice, an iron
@@ -35,7 +35,8 @@ between polished courses, the way the cable station is built.
             of two iron posts carries, over the terrace's railing without touching it (the girder's
             underside is half a block above the bars), to a shoe on the terrace, where it turns
             down into the ground. A cable runs over it. The row is south of the court and never
-            crosses the axis. Flanges, valves and handwheels are the props line's (pipes).
+            crosses the axis. The valve head and the straps on the main are the props line's
+            (props/pipes); FITTINGS says where they go.
   run       RUN lays the main on along the ground of the upper terrace to the foot of the main
             building. Off by default: the master scene shows the main going into the ground at the
             bridge head and nothing more of it up there.
@@ -91,9 +92,10 @@ SMOKE = (TX0 + 3.0, TOP + 1.0, TZ0 + 3.0)           # the middle of the flue's m
 PIPE_Z = Z0 + CORNER + 3 * BAY - 1                  # 33, the third pier of the west front
 PIPE_Y = EAVES - 1                                  # 2, the main; the girder is one below, the cable one above
 PIPE_OUT = (X0, PIPE_Y, PIPE_Z)                     # the pier cell the main leaves the house through
+PIPE_IN = (X0 + CORNER, PIPE_Y, PIPE_Z)             # the first cell of the room behind the sleeve: the main starts here
 HEAD_X = S.EAST_EDGE_X - 2                          # 58, where the main goes down into the upper terrace
 POSTS_X = (X0 - 5, X0 - 2)                          # 62 and 65, the portal in the alley
-JOINT_STEP = 3                                      # a riveted band on the main every third cell
+JOINT_STEP = 3                                      # a riveted collar on the main every third cell
 RUN_X = (K.FOOT_STRIP_X + 2, HEAD_X - 1)            # x 22..57, the main on the terrace's ground when RUN is on
 CROSSING = (43, 47)                                 # there the path to the south lookout crosses it (the site
 #                                                     lead's figures): the main dips under five cover plates
@@ -442,7 +444,8 @@ ROOFS = {"a": _roof_a, "b": _roof_b}
 # --- the pipe bridge ----------------------------------------------------------------------------------
 def _bridge(p, run):
     z = PIPE_Z
-    p.put(X0, PIPE_Y, z, IRON)                                  # the plate in the pier the main comes out of
+    for x in (X0, X0 + 1):
+        p.put(x, PIPE_Y, z, IRON)                               # the sleeve through the pier the main comes out of
     for x in range(HEAD_X, X0):
         p.put(x, PIPE_Y, z, IRON if (X0 - x) % JOINT_STEP == 0 else PLATE)
     # the girder under the main: half a block deep where it spans (its underside clears the
