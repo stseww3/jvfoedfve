@@ -14,7 +14,7 @@ Rows, bottom to top:
     y 18..19  the stone body, seven across and one block thick: it stands one block inside the
               dome's foot, so the dome reads as the larger of the two. A small dark window over a
               sunk panel on the east, south and north axes; an iron door on the west, onto the
-              pavilion's terrace.
+              pavilion's terrace, its leaf set back to the wall's inner face.
     y 20      the head of the drum: a stone corbel (stairs hung upside down) that widens the body
               to the nine of the dome. Its lip is flush with the pavilion's wall faces.
     y 21      the iron skirt, the ring the dome turns on.
@@ -27,8 +27,8 @@ the skirt up to the apex block, and beside it the shutter leaf slid open to the 
 iron lying half a block proud of the plates; three darker plates in the first row over the skirt.
 
 Not here: the pavilion walls and the deck under the drum (main/facade.py, c206); the astrograph
-(machines, A5); the terrace paving, the flashing at the drum's foot and the ridge walkway that
-leads here (main/roof.py, same card).
+(machines, A5); the terrace's gutters, the iron plate before the door, the roof light and the
+ridge walkway that leads here (main/roof.py, same card).
 
     python -m scenes.obs.main.smalldome          # text sections and a self-check
     python -m scenes.obs.main.smalldome check    # the self-check alone (exit code 1 on a finding)
@@ -118,8 +118,8 @@ def drum(canvas, origin=(0, 0, 0), glass=None):
         (x, z), = w["cells"]
         put(x, WINDOW_Y, z, w["glass"])
         put(x, WINDOW_Y - 1, z, PANEL.block)
-    for (x, y, z), half in zip(door_cells(), ("lower", "upper")):
-        put(x, y, z, f"{B.IRON_DOOR}[facing=east,half={half},hinge=left,open=false]")
+    for (x, y, z), half in zip(door_cells(), ("lower", "upper")):         # on the cell's inner edge
+        put(x, y, z, f"{B.IRON_DOOR}[facing=west,half={half},hinge=left,open=false]")
     O.Laying(canvas, None, origin, None).mould(BODY, HEAD_Y, STONE.stairs, "top")
     for x, z in RING:
         put(x, SKIRT_Y, z, SKIRT)
