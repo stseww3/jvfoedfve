@@ -37,6 +37,8 @@ What moves (scenes/obs/motion/_kit.py; nothing runs every tick):
     governor   about its spindle, once in MK.GOVERNOR_REV
     armature   with commutator and pulley, once in MK.DYNAMO_REV, the way the belt takes it
 The rest pose is the dead centre, the crank pin towards the cylinder, as the motion kit wants it.
+The belt itself stands still (the motion line's ruling for this version): it is painted in lines
+along its run and carries no mark, so between two turning wheels it does not read as standing.
 A part that turns is painted with no light from above: its tones depend on how a face stands to the
 axis only, so no painted highlight goes round with the wheel.
 
@@ -51,7 +53,10 @@ import contextlib
 import functools
 import math
 
+import numpy as np
+
 from artkit import models as M
+from artkit.pixelart import Mat
 
 from ..common import blocks as B
 from ..common import palette as P
@@ -166,7 +171,27 @@ COPPER = P.mat("old_copper")
 WOUND = P.mat("old_copper", kind="wood", bevel=0)       # windings: the wire runs with the grain
 PORCELAIN = P.mat("porcelain")
 RED = P.mat("signal")
-LEATHER = P.mat("dark_wood", kind="plain", noise=0.10, bevel=0, base=2)
+
+
+class _Belting(Mat):
+    """Leather as a running belt shows it: its tones lie in lines along the run, the two edges worn
+    light and the middle dark where the pulleys' crown rubs, and nothing across it. In this version
+    the belt stands still while both its wheels turn (plan/parts/motion.md 12.4), so nothing on it
+    may tell where along its run a point is: no joint, no lacing, no speck."""
+
+    def levels(self, w, h, grain, seed):
+        lv = np.full((h, w), self.base, dtype=np.int32)
+        if grain == "cap":
+            return lv
+        n = h if grain == "u" else w
+        across = np.zeros(n, dtype=np.int32)
+        if n >= 5:
+            across[0] = across[-1] = 1
+            across[n // 2 - 1 + n % 2:n // 2 + 1] = -1
+        return lv + (across[:, None] if grain == "u" else across[None, :])
+
+
+LEATHER = _Belting("dark_wood~belting", P.RAMPS["dark_wood"], bevel=0, base=2)
 CORD = P.mat("dark_wood", kind="flat", bevel=0, base=3)
 STUD = P.mat("iron", kind="flat", bevel=0, base=5)
 STUD_BRASS = P.mat("brass", kind="flat", bevel=0, base=4)
