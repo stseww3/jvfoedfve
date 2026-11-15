@@ -273,6 +273,9 @@ class Laying:
         """A moulding round `body`: stairs on the columns that touch it, each turned towards it, so
         the profile widens upwards (half "top") or spreads at the foot ("bottom"). A column that
         touches the body by a corner only is turned so that the game makes it the outer corner.
+        A column that touches it on two sides, the wall behind it and a pilaster beside it, is
+        turned towards the wall (the plan's own body before what stands in front of it): the run
+        along a front ends against the pilaster the same way on all four sides of a building.
 
         only    keep the moulding to these columns. Where it then runs along both sides of a
                 corner of the body, the corner column is added, so the moulding turns the corner
@@ -280,11 +283,12 @@ class Laying:
         Returns the columns it stands on."""
         around = ring(body)
         cells = around if only is None else around & set(only)
+        wall = body if self.plan is None else self.plan.body
         facing = {}
         for c in cells:
             near = [d for d in SIDES if step(c, d) in body]
             if near:
-                facing[c] = near[0]
+                facing[c] = min(near, key=lambda d: step(c, d) not in wall)
         corners = cells - set(facing)
         if only is not None:
             for c in around - cells:
