@@ -53,7 +53,8 @@ def shots():
     eye = S.MAST_PAD["feet"] + 1.7                      # a person standing on the pad or the terrace
     shot("base_near", (fx + 7.5, eye, fz + 6.5), (fx + 0.5, 1.2, fz))
     shot("base_tower", (fx + 11.0, eye + 0.5, fz - 9.0), (fx - 8.0, 12.0, fz + 8.0))
-    shot("base_court", (fx + 19.5, eye, fz + 19.5), (fx + 0.5, 5.0, fz))
+    # from the court, through the gap between the north end of the front and the meridian hut
+    shot("base_court", (fx + 4.5, eye, fz + 21.5), (fx + 0.5, 3.0, fz))
     shot("base_top", (fx + 0.5, 13.0, fz + 6.0), (fx + 0.5, 0.0, fz - 0.5))
     shot("v1_arrival", S.V1["pos"], S.V1["look_at"])
     shot("aerial", (fx + 29.0, 40.0, fz - 32.0), (fx - 3.0, 2.0, fz + 4.0))
