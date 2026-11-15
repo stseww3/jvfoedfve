@@ -1,0 +1,47 @@
+a0job 1115-234309-a4-walkin-f3-6824-19164: cursor/c164-a4-walkin-f3-6824 @ b29591b8 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 1.84 2.31 2.03, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- set -o pipefail; W=renders/_wip/walk/r2; mkdir -p $W; P=/tmp/c164_walk/obs-636ad21.pkl; R=plan/reviews/walk/in-route.json; python tools/walk.py round $R --round 636ad21 --no-pictures --out $W; python tools/walk.py floors --canvas $P --
+walk: ways from in-A01 (26.5, 0, 0.5): 44234 places reached
+walk: ways from in-J03 (12.5, 18, 10.5): 47108 places reached
+walk: ways from in-J19 (10.5, 18, 30.5): 95 places reached
+walk: ways from in-K03 (12.5, 18, -9.5): 47078 places reached
+walk: ways from in-K19 (11.5, 18, -29.5): 81 places reached
+stretch A (the entrance from the court): 7 stations, 32 pictures
+stretch B (the star hall, ground floor): 16 stations, 51 pictures; no floor at 1: in-B06; the leg to it is no plain walk at 3: in-B03 (no), in-B08 (no), in-B16 (no)
+stretch C (the way to the west door): 6 stations, 31 pictures
+stretch D (the grand stair, both flights): 7 stations, 32 pictures
+stretch E (the galleries of the main floor): 13 stations, 53 pictures
+stretch F (the time room (north wing)): 18 stations, 48 pictures
+stretch G (the chart room (south wing)): 18 stations, 48 pictures
+stretch H (the ring stair): 11 stations, 41 pictures
+stretch I (the dome room): 15 stations, 35 pictures
+stretch J (the south roofs: corner terrace, ridge walk, the end terrace, the small dome): 20 stations, 80 pictures; reached 'no' 18: in-J03 (walk from in-J03), in-J04 (walk from in-J03), in-J05 (walk from in-J03), in-J06 (walk from in-J03),
+stretch K (the north roofs: corner terrace, ridge walk, the end terrace, the clock tower's foot): 20 stations, 80 pictures; reached 'no' 18: in-K03 (walk from in-K03), in-K04 (walk from in-K03), in-K05 (walk from in-K03), in-K06 (walk from 
+stretch L (the power house, inside): 19 stations, 64 pictures; no floor at 1: in-L17
+stretch M (the meridian hut): 11 stations, 51 pictures
+walk: in-stations.json -> renders/_wip/walk/r2; nothing drawn
+walk: 216 lines -> renders/_wip/walk/r2/floors-main.txt
+walk: 23 lines -> renders/_wip/walk/r2/floors-hut.txt
+walk: 7 stations, 32 shots; drawing
+109236 blocks, 68 entities (0 s)
+resource pack written to /tmp/c164pack-e29eexuh (1 s)
+water: 0 sources, 0 cells of running water (1 s)
+grid 213 x 93 x 213, 109236 blocks, 3388 entity boxes (2 s)
+201 states -> 436 looks, 904 boxes, 118 pictures (2 s)
+light done (2 s)
+/tmp/c164_walk/in-636ad21/p-in-A01-f.png (tick 14000, 1 s)   [1 drawn, 3 s]
+/tmp/c164_walk/in-636ad21/p-in-A06-d.png (tick 14000, 0 s)   [26 drawn, 11 s]
+walk: 32 pictures in 10 s, 0.3 s each (the slowest 1 s), after 2 s of setting the scene up
+stretch A (the entrance from the court): 7 stations, 32 pictures
+walk: 3 sheets and in-stations.json -> renders/_wip/walk/r2
+
+real	0m12.332s
+user	0m28.491s
+sys	0m0.344s
+==== NODEJOB RESULT ====
+exit=0 secs=47 host=cursor cores=4 head=b29591b8 commit=23079037 pushed=yes branch=cursor/c164-a4-walkin-f3-wip-6824 files=8
+a0job: exit=0 secs=48
