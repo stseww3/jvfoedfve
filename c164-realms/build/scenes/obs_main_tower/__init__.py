@@ -54,7 +54,9 @@ def shots():
     face = tower.X1 + 1.0                           # its east face
     dial = tower.DIAL_CENTRES["east"][1]
     foot = float(tower.FOOT)
-    v1 = S.V1
+    # the arrival view as the director has it now: it looks up, at y 34. The skeleton that knows
+    # V1_CLEAR has that number; the one before it still looks at y 14
+    v1 = S.V1 if hasattr(S, "V1_CLEAR") else dict(pos=S.V1["pos"], look_at=(8, 34, 0.5))
 
     def shot(name, pos, look_at):
         return {"name": name, "pos": [round(v, 2) for v in pos], "look_at": [round(v, 2) for v in look_at], "time": TIME}
@@ -63,7 +65,7 @@ def shots():
         # V5, the up-view from the court: dial, lookout, top, ball and mast in one line
         shot("v5_up", (44.5, 1.7, -22.5), (cx, 33.0, cz)),
         shot("v5_far", (58.5, 1.7, -30.5), (cx, 30.0, cz)),
-        # V1, the arrival view from the station platform, exactly as the skeleton fixes it
+        # V1, the arrival view from the station platform, eye and look-at as they are fixed
         shot("v1_stamp", v1["pos"], v1["look_at"]),
         # close on a dial's recess, on the top from above and level with the lookout, and on where
         # the tower meets the building
