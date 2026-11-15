@@ -21,7 +21,10 @@ the iron to what the review asked of it (plan/aesthetics/S3-reviews-v4.md, revie
   8  glass that glows shows its tones as painted to who stands before the wall: the game lights
      an item's faces by where they look, whatever they emit (ironwork.TILT), so a glowing face
      that looks out of the wall has to be lit 0.9 at least, and none may lie on the edge between
-     two of its model's axes, where the last bit of a sum decides how it is lit
+     two of its model's axes, where the last bit of a sum decides how it is lit. The lamp under
+     the canopy is seen from all round and from under it: every glowing face of it is lit 0.9
+     at least (ironwork.SLIDE for those that look down). And every display shows its model as
+     the frame it was drawn in says, the anchor on the entity
   9  the lower third of a gate's leaves is shut: iron from stone to stone from the floor up, for
      a third of the rows under the transom at least (c164 #21988, #22558: a gate reads as a gate
      by what is solid below, the bars above it and the light behind them)
@@ -46,6 +49,8 @@ the small ones read as noise is for a picture to tell: closing them would step t
 """
 import math
 import sys
+
+import numpy as np
 
 from artkit import models as M
 from artkit.canvas import Canvas
@@ -414,19 +419,22 @@ def _dot(a, b):
     return sum(u * v for u, v in zip(a, b))
 
 
-def glow(model, turns, facing="east"):
-    """How the game lights the glowing faces of a piece on a wall that looks `facing`:
-    ({where a face looks: (the least it is lit, the most, faces)}, faces on an edge).
+def _unit(v):
+    return tuple(float(c) for c in np.asarray(v, dtype=float) / np.linalg.norm(v))
+
+
+def glow(kind, facing="east"):
+    """How the game lights the glowing faces of a piece of ironwork.SPEC on a wall that looks
+    `facing`: ({where a face looks: (the least it is lit, the most, faces)}, faces on an edge).
     A face is lit as if it looked along the axis of its model nearest to its normal -- the first of
     down, up, north, south, west, east where two are equally near (FaceBakery.findClosestDirection)
-    -- turned as the display turns the model; by the two lamps of gamescene.LAMPS, 0.4 at least
-    (the item shader)."""
-    q = M.IDENT
-    for axis, deg in turns:
-        q = M._qmul(M.quat(axis, deg), q)
+    -- as the display shows that axis: by the inverse transpose of its matrix (PoseStack.Pose
+    .mulPose, computeNormalMatrix), which is the turn itself where the display does no more than
+    turn (ironwork.frame). By the two lamps of gamescene.LAMPS, 0.4 at least (the item shader)."""
+    shown = np.linalg.inv(np.array(ironwork.frame(kind))).T
     yaw = K.FACING[facing]
     seen, edge = {}, 0
-    for part in model.parts:
+    for part in ironwork.models()[ironwork.PREFIX + kind].parts:
         if not part["emit"]:
             continue
         own = part["rot"][0] if part["rot"] else M.IDENT
@@ -436,9 +444,9 @@ def glow(model, turns, facing="east"):
             n = M._qrot(own, normal)
             near = sorted(((_dot(n, a), -i) for i, a in enumerate(AXIS)), reverse=True)
             edge += near[0][0] - near[1][0] < 1e-3
-            lit_as = K.turn(yaw, M._qrot(q, AXIS[-near[0][1]]))
+            lit_as = K.turn(yaw, _unit(shown @ AXIS[-near[0][1]]))
             shade = min(1.0, 0.4 + 0.6 * sum(max(0.0, _dot(lit_as, lamp)) for lamp in LAMPS))
-            x, y, z = M._qrot(q, n)                         # where it looks, in the wall's frame: z out of it
+            x, y, z = _unit(shown @ n)                      # where it looks, in the wall's frame: z out of it
             looks = max(((z, 0), (-z, 1), (abs(x), 2), (y, 3), (-y, 4)))[1]
             lo, hi, count = seen.get(looks, (1.0, 0.0, 0))
             seen[looks] = (min(lo, shade), max(hi, shade), count + 1)
@@ -447,9 +455,8 @@ def glow(model, turns, facing="east"):
 
 def lights(found):
     """One line for every piece of the family that glows; what is wrong goes to `found`."""
-    models = ironwork.models()
-    for kind, spec in ironwork.SPEC.items():
-        seen, edge = glow(models[ironwork.PREFIX + kind], spec.get("turns", ()))
+    for kind in ironwork.SPEC:
+        seen, edge = glow(kind)
         if not seen:
             continue
         print(f"{kind} glows: " + ", ".join(
@@ -457,9 +464,74 @@ def lights(found):
             for k, (lo, hi, count) in sorted(seen.items())))
         if edge:
             found.append(f"{kind}: {edge} glowing faces lie on the edge between two axes of the model")
-        lo = seen.get(0, (1.0,))[0]
-        if lo < BRIGHT:
-            found.append(f"{kind}: glass that looks out of the wall is lit {lo:.2f}, under {BRIGHT}")
+        for k, (lo, _, _) in sorted(seen.items()):
+            if lo < BRIGHT and (k == 0 or kind in ironwork.LAMP_PIECES):
+                found.append(f"{kind}: glass that looks {LOOKS[k]} is lit {lo:.2f}, under {BRIGHT}")
+
+
+def _true(kind):
+    """What the frame of a piece does to the faces it draws: (the most an edge is stretched, as a
+    part of its length; the most two edges of a face, which are square in the model, lean to each
+    other, as a cosine; faces). Nothing where the display does no more than turn; in the slid
+    frame nothing either as long as every face drawn is level."""
+    frame = np.array(ironwork.frame(kind))
+    stretch, lean, faces = 0.0, 0.0, 0
+    for part in ironwork.models()[ironwork.PREFIX + kind].parts:
+        own = part["rot"][0] if part["rot"] else M.IDENT
+        size = [part["hi"][i] - part["lo"][i] for i in range(3)]
+        for letter, normal in M.NORMAL.items():
+            if letter in part["skip"]:
+                continue
+            a, b = (frame @ np.array(M._qrot(own, tuple(float(i == k) for i in range(3))))
+                    for k in range(3) if not normal[k] and size[k] > 1e-9)
+            stretch = max(stretch, abs(np.linalg.norm(a) - 1.0), abs(np.linalg.norm(b) - 1.0))
+            lean = max(lean, abs(float(a @ b)) / float(np.linalg.norm(a) * np.linalg.norm(b)))
+            faces += 1
+    return stretch, lean, faces
+
+
+def displays(canvas, found):
+    """Every display of the family against the frame its model was drawn in: what its
+    transformation does to the model as the game puts it together (DisplayRenderer: left turn,
+    scale, right turn, and the item renderer's half turn about the model's middle), and where
+    the anchor lands. And a piece in the slid frame, whose display stretches along two axes
+    (tools/check.py reads that off its scale as a model not 16 pixels to the block): every face
+    it draws is shown as the rectangle it was drawn as. What is wrong goes to `found`."""
+    models = ironwork.models()
+    half = np.diag([-1.0, 1.0, -1.0])
+    axes = ((1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0))
+    off, away, kinds = 0.0, 0.0, {}
+    for _, _, _, nbt in canvas.entities:
+        name = nbt.get("item", {}).get("components", {}).get("minecraft:item_model", "").split(":")[-1]
+        if not name.startswith(ironwork.PREFIX):
+            continue
+        kind, model, tr = name[len(ironwork.PREFIX):], models[name], nbt["transformation"]
+        left, right = (np.array([M._qrot(tuple(float(v) for v in tr[key]), a) for a in axes]).T
+                       for key in ("left_rotation", "right_rotation"))
+        shows = left @ np.diag([float(v) for v in tr["scale"]]) @ right @ half
+        frame = np.array(ironwork.frame(kind)) * ironwork.SPEC[kind]["scale"]
+        shift = model.shift()
+        anchor = np.array([(model.anchor[i] + shift[i] - 8.0) / 16.0 for i in range(3)])
+        lands = np.array([float(v) for v in tr["translation"]]) + shows @ anchor
+        wrong = float(np.abs(half @ shows - frame).max()), float(np.abs(lands).max())
+        if max(wrong) > 1e-5:
+            found.append(f"{kind}: its display shows the model {wrong[0]:.2g} off its frame, the anchor "
+                         f"{wrong[1]:.2g} block off the entity")
+        off, away = max(off, wrong[0]), max(away, wrong[1])
+        kinds[kind] = kinds.get(kind, 0) + 1
+    print(f"{sum(kinds.values())} displays of {len(kinds)} pieces show their models as drawn: {off:.1g} off the "
+          f"frame at most, the anchor {away:.1g} block off the entity")
+    for kind in sorted(k for k in ironwork.SPEC if ironwork.SPEC[k].get("slide")):
+        stretch, lean, faces = _true(kind)
+        tr = ironwork._slid_display(models[ironwork.PREFIX + kind], kind)
+        dense = 16.0 * models[ironwork.PREFIX + kind].px / ironwork.SPEC[kind]["scale"]
+        print(f"{kind} is drawn in the slid frame (its display's scale {' x '.join(f'{float(v):.3f}' for v in tr['scale'])}): "
+              f"its {faces} faces are shown as the rectangles they were drawn as, {dense:g} pixels to the block "
+              f"(stretched {stretch:.1g}, leaning {lean:.1g})")
+        if max(stretch, lean) > 1e-6:
+            found.append(f"{kind}: a face in the slid frame is not level: stretched {stretch:.2g}, leaning {lean:.2g}")
+        if kind not in kinds:
+            found.append(f"{kind}: the scene shows no piece of it")
 
 
 def _block(canvas, at):
@@ -572,6 +644,7 @@ def main(args):
     print(f"left bare: {'; '.join(bare) or 'none'}")
     passage(canvas, door_table(), found)
     lights(found)
+    displays(canvas, found)
     print("\n".join(found) if found else f"fit: {len(rows)} dressed openings, nothing found")
     return 1 if found else 0
 

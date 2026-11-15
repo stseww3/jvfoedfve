@@ -20,7 +20,7 @@ All cast and riveted iron on the common palette, 16 texels to the block (px = sc
                          pair open like the entrance's: the door leads to the sunset terrace.
     canopy, canopy_lamp  the glazed canopy over the middle arch on two quarter-round braces, and the
                          opal lamp under it (canopy_lamp_in, _left, _right: the quarters of its globe
-                         that look at the wall and along it).
+                         that look at the wall and along it; canopy_lamp_under: what of it looks down).
     railing_panel        a cast scroll panel for the terrace balustrade, between two posts.
     ladder, ladder_cage  a three-block length of the inspection ladder, bare and caged; they stack.
     vent_cowl            a roof vent: a flanged pipe, a bent neck and a bell mouth.
@@ -29,14 +29,19 @@ All cast and riveted iron on the common palette, 16 texels to the block (px = sc
 Everything is placed through _kit (mounting, materials, rivets, glowing glass). windows() and
 doors() dress a wall from the tables main/_plan gives; build() does that for the main building.
 Glass that glows is a piece of its own, drawn in a tilted frame (TILT): only so does a face that
-looks out of an east wall show its picture as painted.
+looks out of an east wall show its picture as painted. What looks down needs more than a tilt, a
+frame whose level planes are slid over each other (SLIDE).
 
 The look is judged on texture and on style, so the test scene is build/scenes/obs_props_ironwork.
 """
+import contextlib
 import functools
 import math
 
+import numpy as np
+
 from artkit import models as M
+from artkit.nbtw import Float
 
 from ..common import blocks as B
 from ..common import palette as P
@@ -87,20 +92,74 @@ def _turns(way="out"):
 
 def _facing(m, first, way="out"):
     """Of the parts drawn since `first` in the frame tilted for `way`, keep the faces that look
-    more that way than any other of the four; those that look straight up or down stay with "out".
-    So the four quarters of a round thing, each in its own frame, make it whole without a face
-    drawn twice."""
+    more that way than any other of the four; those that look straight up stay with "out", and
+    those that look straight down are left to the piece in the slid frame (SLIDE). So the four
+    quarters of a round thing, each in its own frame, make it whole without a face drawn twice."""
     turn = M.quat(*WAYS[way][0])
     ways = {name: M._qrot(turn, d) for name, (_, d) in WAYS.items()}
+    up = M._qrot(turn, (0.0, 1.0, 0.0))
     for part in m.parts[first:]:
         q = part["rot"][0] if part["rot"] else M.IDENT
         for letter, normal in M.NORMAL.items():
             n = M._qrot(q, normal)
             along = {name: round(sum(a * b for a, b in zip(n, d)), 9) for name, d in ways.items()}
             best = max(along, key=along.get)                # of equals the first: "out" before "in" ...
-            if (best if along[best] > 1e-6 else "out") != way:
+            if along[best] > 1e-6:
+                keep = best == way
+            else:                                           # a level face
+                keep = way == "out" and sum(a * b for a, b in zip(n, up)) > 0.0
+            if not keep:
                 part["skip"].add(letter)
     m.parts[first:] = [part for part in m.parts[first:] if len(part["skip"]) < 6]
+
+
+# ---- glass that glows and looks down: the slid frame ------------------------------------------------
+# No tilt helps a face that looks straight down. It is lit by the axis of its model nearest to its
+# normal, which lies within 55 degrees of that normal however the model is turned -- under the
+# horizon still: 0.41 at the best -- and to show its picture as painted a face has to be lit as one
+# that looks some 40 degrees up. So the underside of the lamp's globe was a dark disc to everyone
+# who walked in under it. But the game lights by the display's whole transformation, not by its
+# turn alone (PoseStack.Pose.mulPose: the normals of a matrix that is more than a turn go by its
+# inverse transpose; artkit.gamescene draws the same), and a transformation need not keep angles.
+# What looks down is therefore a piece of its own, the level faces alone: drawn in the frame tilted
+# for "out" with every level plane moved along the wall's normal by SLIDE times its height, and
+# shown by a display that slides the planes back (frame, _slid_display). A level face is moved in
+# its own plane, so it stays the rectangle it was and lies where it lay, 16 px to the block; it is
+# lit as one that looks 50 degrees up: 1.00. Only level faces can be drawn so -- a box in that
+# frame leans. (tools/check.py reads the scale of such a display as a model that is not 16 px to
+# the block; obs_props_ironwork/fit.py measures the faces themselves, rule 8.)
+SLIDE = 2.4
+
+
+@contextlib.contextmanager
+def _slid(m, height):
+    """`with _slid(m, h):` draws the level faces at height h in the frame of what looks down; the
+    piece is shown by _slid_display."""
+    with _tilted(m), m.moved((0.0, 0.0, SLIDE * height)):
+        yield
+
+
+def _ball_under(m, centre, radius, bands, sides=8, squash=1.0, emit=15):
+    """What looks down of a ball of K.glass_ball (the same arguments, the bands from the bottom up):
+    the foot of every layer that is wider than the layer under it -- the steps of the lower half --
+    as the polygons Model.ball draws, each in the slid frame of its height."""
+    hw = math.tan(math.pi / sides)
+    under = 0.0
+    for t0, t1, layers, mat in bands:
+        for i in range(layers):
+            a, b = t0 + (t1 - t0) * i / layers, t0 + (t1 - t0) * (i + 1) / layers
+            r = radius * math.sqrt(max(0.0, 1.0 - ((a + b) / 2.0) ** 2))
+            y = centre[1] + radius * squash * a
+            seed = None
+            for s in range(sides // 2 if r > under + 1e-9 else 0):
+                angle = 360.0 * s / sides
+                with _slid(m, y):
+                    m.box((centre[0] - r * hw, y, centre[2] - r), (centre[0] + r * hw, y + 0.5, centre[2] + r), mat,
+                          rot=("y", angle, tuple(centre)) if angle else None, skip="nsewu", faces={"d": mat},
+                          grain="x", seed=seed, emit=emit, shade=not emit)
+                seed = m.parts[-1]["seed"]
+            under = r
+    return m
 
 
 # ---- the arched window frame ------------------------------------------------------------------------
@@ -491,20 +550,25 @@ def _brace(m, x, r, top):
 
 
 OPAL = [K.flat("opal", i) for i in range(len(P.RAMPS["opal"]))]
-LAMP_QUARTERS = ("in", "left", "right")       # the pieces of the lamp that are glass alone (_canopy_lamp)
+LAMP_QUARTERS = ("in", "left", "right")       # the pieces of the lamp that are glass alone (_canopy_lamp):
+LAMP_PIECES = ["canopy_lamp"] + ["canopy_lamp_" + way for way in LAMP_QUARTERS + ("under",)]      # ... and all of it
 
 
 def _canopy_lamp(way="out"):
     """The lamp under the canopy, the brightest point of the entrance (c164 #21442): an opal globe in
     an iron cage on a rod, at scale 1. Anchor: the point under the canopy it hangs from; the foot of
-    the lamp is 28.5 px below it. The lamp is four pieces (WAYS), each drawn in the frame tilted for
-    its quarter of the globe, so the globe shows its tones as painted from wherever one comes: the
-    piece that looks out of the wall has the iron as well, the other three are glass alone."""
+    the lamp is 28.5 px below it. The lamp is five pieces, so the globe shows its tones as painted
+    from wherever one comes: four (WAYS), each drawn in the frame tilted for its quarter of the
+    globe -- the one that looks out of the wall has the iron as well, the other three are glass
+    alone -- and "under", the steps of the globe's lower half, which look down (SLIDE)."""
     m = M.Model(PREFIX + "canopy_lamp" + ("" if way == "out" else "_" + way), px=1.0)
     bands = [(-1.0, -0.75, 1, OPAL[0]), (-0.75, -0.5, 1, OPAL[1]), (-0.5, -0.25, 1, OPAL[2]),
              (-0.25, 0.25, 1, OPAL[4]), (0.25, 0.5, 1, OPAL[3]), (0.5, 0.75, 1, OPAL[2]), (0.75, 1.0, 1, OPAL[1])]
+    globe = dict(centre=(0.0, -21.0, 0.0), radius=5.0, bands=bands, sides=12, squash=1.0)
+    if way == "under":
+        return _ball_under(m, **globe)
     with _tilted(m, way):
-        K.glass_ball(m, (0.0, -21.0, 0.0), 5.0, bands, sides=12, squash=1.0)
+        K.glass_ball(m, **globe)
         _facing(m, 0, way)
         if way != "out":
             return m
@@ -630,6 +694,8 @@ SPEC = {
                         turns=_turns()),
     **{"canopy_lamp_" + way: dict(build=lambda way=way: _canopy_lamp(way), mount="ceiling", scale=1.0,
                                   light=None, turns=_turns(way)) for way in LAMP_QUARTERS},
+    "canopy_lamp_under": dict(build=lambda: _canopy_lamp("under"), mount="ceiling", scale=1.0, light=None,
+                              turns=_turns(), slide=SLIDE),
     "railing_panel": dict(build=_railing_panel, mount="floor", scale=1.0, light=None),
     "ladder": dict(build=_ladder, mount="wall", scale=1.0, light=None),
     "ladder_cage": dict(build=lambda: _ladder(True), mount="wall", scale=1.0, light=None),
@@ -648,6 +714,58 @@ def models():
     return dict(_models())
 
 
+def frame(kind):
+    """What the display of a piece of SPEC does to its model, scale apart: the rows of the matrix
+    that takes the model's own frame to the wall's (x along the wall, y up, z out of it). A turn
+    for a piece drawn in a tilted frame; for one drawn in the slid frame the turn and then the
+    slide back, every level plane along the wall's normal by -SLIDE times its height."""
+    spec = SPEC[kind]
+    q = M.IDENT
+    for axis, deg in spec.get("turns", ()):
+        q = M._qmul(M.quat(axis, deg), q)
+    x, y, z = zip(*(M._qrot(q, axis) for axis in ((1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0))))
+    slide = spec.get("slide", 0.0)
+    return x, y, tuple(c - slide * b for b, c in zip(y, z))
+
+
+def _quat_of(turn):
+    """The quaternion (x, y, z, w) of a turn given as a matrix."""
+    m = [[float(v) for v in row] for row in turn]
+    k = max(range(3), key=lambda i: m[i][i])
+    if m[0][0] + m[1][1] + m[2][2] > 0.0:
+        w = math.sqrt(1.0 + m[0][0] + m[1][1] + m[2][2]) / 2.0
+        return ((m[2][1] - m[1][2]) / (4.0 * w), (m[0][2] - m[2][0]) / (4.0 * w), (m[1][0] - m[0][1]) / (4.0 * w), w)
+    i, j = (k + 1) % 3, (k + 2) % 3
+    v = [0.0, 0.0, 0.0]
+    v[k] = math.sqrt(1.0 + m[k][k] - m[i][i] - m[j][j]) / 2.0
+    v[i], v[j] = (m[i][k] + m[k][i]) / (4.0 * v[k]), (m[j][k] + m[k][j]) / (4.0 * v[k])
+    return (v[0], v[1], v[2], (m[j][i] - m[i][j]) / (4.0 * v[k]))
+
+
+def _slid_display(model, kind):
+    """The transformation of the display that shows a piece in frame(kind), for one drawn in the
+    slid frame: artkit.models.display gives a turn and a scale, and a slide is neither. A display
+    takes any matrix as a turn, a scale along the axes and a turn again (left_rotation, scale,
+    right_rotation: its singular values and vectors), here in the half-turned frame the item
+    renderer draws in; the translation brings the model's anchor to the entity, as display's does."""
+    half = np.diag([-1.0, 1.0, -1.0])
+    g = half @ (np.array(frame(kind)) * SPEC[kind]["scale"]) @ half
+    left, scale, right = np.linalg.svd(g)
+    for i in range(3):                                  # of the two ways to sign a pair of vectors, one always
+        if left[np.argmax(np.abs(left[:, i])), i] < 0.0:
+            left[:, i], right[i, :] = -left[:, i], -right[i, :]
+    if np.linalg.det(left) < 0.0:                       # two turns: the matrix mirrors nothing, so if one of
+        left[:, 2], right[2, :] = -left[:, 2], -right[2, :]         # them does, so does the other
+    shift = model.shift()
+    anchor = np.array([(model.anchor[i] + shift[i] - 8.0) / 16.0 for i in range(3)])
+    return {
+        "left_rotation": [Float(round(v, 7)) for v in _quat_of(left)],
+        "right_rotation": [Float(round(v, 7)) for v in _quat_of(right)],
+        "scale": [Float(round(float(v), 7)) for v in scale],
+        "translation": [Float(round(float(v), 7)) for v in -g @ half @ anchor],
+    }
+
+
 def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), width=None, light=True, level=None,
           yaw=None, **opts):
     """Place one piece and, if it is a lit one, offer its light to A2. Returns the entity count.
@@ -661,8 +779,11 @@ def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), width=None, light
     spec = SPEC[key]
     if spec.get("turns"):                               # a piece drawn in the tilted frame is turned back
         opts.setdefault("turns", spec["turns"])
-    n = K.put(canvas, _models()[PREFIX + key], pos, mount=spec["mount"], facing=facing, yaw=yaw,
-              scale=spec["scale"], origin=origin, **opts)
+    model = _models()[PREFIX + key]
+    n = K.put(canvas, model, pos, mount=spec["mount"], facing=facing, yaw=yaw, scale=spec["scale"],
+              origin=origin, **opts)
+    if spec.get("slide"):                               # ... and one drawn in the slid frame is slid back
+        canvas.entities[-1][3]["transformation"] = _slid_display(model, key)
     if light and spec.get("light") is not None:
         y = yaw if yaw is not None else K.FACING[facing]
         cell = K.light_cell(pos, y, spec["light"], origin)
@@ -825,7 +946,7 @@ def canopy(canvas, pos, y, facing="east", origin=(0, 0, 0)):
     face = tuple(pos[k] + 2.0 * fwd[k] for k in range(3))
     n = place(canvas, "canopy", (face[0], y, face[2]), facing=facing, origin=origin)
     lamp = tuple(face[k] + CANOPY_LAMP * fwd[k] for k in range(3))
-    for kind in ["canopy_lamp"] + ["canopy_lamp_" + way for way in LAMP_QUARTERS]:
+    for kind in LAMP_PIECES:
         n += place(canvas, kind, (lamp[0], y, lamp[2]), facing=facing, origin=origin)
     return n
 
