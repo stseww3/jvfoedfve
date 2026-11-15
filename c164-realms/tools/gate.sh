@@ -72,6 +72,10 @@ git -C "$repo" merge-base --is-ancestor "$full" HEAD \
   || { echo "gate: ${full:0:8} is not merged into HEAD; the gate looks at the merged tree" >&2; exit 2; }
 
 py="$(command -v python || command -v python3)"
+# The kept helper class (tools/win/helper) is what javac 25.0.5 builds; a node's own javac is 21 and
+# lays the same bytes out otherwise. Where the node has the 25.0.5 one, delivery.py is given it.
+jdk="${MC_ROOT:-/agent/realms-study}/jdk/jdk-25.0.5+8/bin/javac"
+if [ -z "${JAVAC:-}" ] && [ -x "$jdk" ]; then export JAVAC="$jdk"; fi
 out="$proj/renders/_wip/gate/$pkg"
 rm -rf "$out"; mkdir -p "$out"
 sum="$out/summary.txt"
