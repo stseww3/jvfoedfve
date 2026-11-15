@@ -2,25 +2,26 @@
 stands in the master scene, version a of its top (four arches under a four-sided copper roof).
 
 The lines are built whole, in the master scene's order (the mountain and the court, the main
-building with the tower on its north pavilion, the lamps, the sky's light), so the pictures keep up
-with them as their packages are merged. Version b (the octagonal kiosk under a dome) is the twin
-scene obs_main_tower_b: the same shots, picture by picture.
+building with the tower on its north pavilion, the machines, the lamps, the sky's light), so the
+pictures keep up with them as their packages are merged. Version b (the octagonal kiosk under a
+dome) is the twin scene obs_main_tower_b: the same shots, picture by picture.
 
-The dials and the time ball are machines/clock's and that line is not built here: the recesses show
-their iron backs and the mast stands bare until the clock is in the assembly.
+The dials, their hands and the time ball are machines/clock's: with the machines line built here
+the tower carries them as in the master scene, the dials in its recesses and the ball on its mast,
+and the radio mast stands north-east of it.
 
 The shots are written from the skeleton's numbers:  python -m scenes.obs_main_tower
 """
 from artkit.canvas import Canvas
 
-from scenes.obs import main, materials, props, site, sky
+from scenes.obs import machines, main, materials, props, site, sky
 from scenes.obs.common import skeleton as S
 from scenes.obs.main import tower
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 80
 BIOME_MARGIN_Y = 160
-LINES = (site, main, props, sky)
+LINES = (site, main, machines, props, sky)
 TOP = "a"
 TIME = 14000                    # the blue hour, the default look
 
@@ -70,7 +71,7 @@ def shots():
         # that the comet hangs clear of the top and not behind it
         shot("v5_board", board["pos"], board["look_at"]),
         shot("v5_up", (44.5, 1.7, -22.5), (cx, 33.0, cz)),
-        shot("v5_far", (58.5, 1.7, -16.5), (cx, 30.0, cz)),
+        shot("v5_far", (58.5, 1.7, -18.5), (cx, 30.0, cz)),
         # V1, the arrival view from the station platform, and V2, the court's axis: eye and look-at
         # are the skeleton's. The tower is the right-hand high point of both skylines
         shot("v1_stamp", S.V1["pos"], S.V1["look_at"]),
