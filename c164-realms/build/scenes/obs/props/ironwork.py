@@ -266,7 +266,7 @@ def _gate(width=3):
     of barred leaves that repeat the door's kick plate and ledges, at scale 2 (anchor as door_frame)."""
     m = M.Model(PREFIX + "gate", px=2.0)
     _fan(m, _frame(m, width, foot=False, jambs=(1.0, 1.0)), rays=7, wide=1.0, glass=False)
-    hw, z, zr, top = width * 4.0, (0.75, 1.75), (1.0, 1.5), LEAF_H - 1.0
+    hw, z, zr, top = width * 4.0, (0.75, 1.75), (1.0, 1.5), LEAF_H      # no slit of light under the transom
     for sx in (-1.0, 1.0):
         def span(x0, x1, y0, y1, mat, zz=z, **kw):
             a, b = sorted((sx * x0, sx * x1))
