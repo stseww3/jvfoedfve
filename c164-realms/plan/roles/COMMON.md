@@ -87,6 +87,7 @@ bash c164-realms/tools/nodejob.sh --no-push python tools/selfshots.py <场景> -
 - 回执几分钟后到你自己的 `read_chat`（投完就去等，或者接着干轻活）。回执最后一行在 `==== NODEJOB RESULT ====` 下面：`exit=0 … commit=… pushed=yes … files=…`。然后 `git pull`。
 - **回执是桥转述的，可能有出入**：以 `git pull` 拉到的提交和图为准；数字要紧的（检查通过没有、几条警告）让命令把结果写进 `renders/` 下的文件带回来，或者看回执里命令输出的最后 30 行（`--tail <n>` 可以加长）。
 - 一台节点一次只跑一单：上一单的回执没到，不投下一单。`timeout_sec` 最长 3600。
+- **每一单都有时限**：整单（装环境、你的命令、推回去）默认 1700 秒。到点 `nodejob.sh` 把命令连同它起的进程停掉，回执照发，写着 `exit=124` 和 `stopped after … s`。要跑更久就写明：`bash c164-realms/tools/nodejob.sh --limit 3500 <命令>`，同时 `timeout_sec=3600`（`--limit` 比 `timeout_sec` 小 100 秒，回执才由脚本发出来）。每次 fetch、push 最多等 3 分钟。回执过了 `timeout_sec` 十分钟还不到：别再往这台节点投，私信总控（ctrl）。
 - 命令失败时默认什么都不推（`--always` 照推）。别的选项看 `tools/nodejob.sh` 开头的说明。
 - 节点不往两条总装分支和 `main` 上推；图进总装只经过拿合并钥匙的人。
 - 游戏（服务端、客户端）只有拿出图钥匙的人开，开在他自己的节点上。
