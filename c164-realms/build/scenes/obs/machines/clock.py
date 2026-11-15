@@ -191,6 +191,11 @@ STEEL = P.mat("iron", base=5)
 COPPER = P.mat("old_copper")
 CREAM = P.mat("cream")
 
+# the iron of the ball's sleeves and collar, and of their undersides: a face that looks down is
+# drawn at four tenths of the light, and the dark iron went dead black there (cr3, 11-16)
+BALL_IRON = P.mat("iron", base=4)
+BALL_IRON_UNDER = K.flat("iron", 5)
+
 INK = P.colour("iron", 1)
 INK_FLAT = K.flat("iron", 1)                 # the hands of the small dial: one tone, like its marks
 ENAMEL = [P.colour("cream", i) for i in range(len(P.RAMPS["cream"]))]      # dark to light
@@ -431,34 +436,56 @@ def _ball_zone(normal):
     return sum(1 for edge in BALL_ZONES if light >= edge)
 
 
+def _ball_side(label, colours, r, y0, y1, turn, back):
+    """One side of a layer, painted pixel by pixel: each pixel takes the tone of the place on the
+    ball it covers, so the tones meet along curves a pixel fine and not along the edges of the
+    sides. The side is r from the axis, y0..y1 high, on the box turned `turn` degrees about the
+    mast; `back` is its far side (the box's north face), which is seen from the other way."""
+    width = 2.0 * r * math.tan(math.pi / BALL_SIDES)
+    w, h = max(1, int(round(width))), max(1, int(round(y1 - y0)))
+    px = np.zeros((h, w, 4), dtype=np.uint8)
+    for j in range(h):
+        y = y1 - (j + 0.5) * (y1 - y0) / h
+        up = max(-1.0, min(1.0, y / BALL_R))
+        flat = math.sqrt(1.0 - up * up)
+        for i in range(w):
+            across = ((i + 0.5) / w - 0.5) * width
+            x, z = (-across, -r) if back else (across, r)
+            at = math.atan2(x, z) + math.radians(turn + BALL_TURN)
+            px[j, i, :3] = colours[_ball_zone((flat * math.sin(at), up, flat * math.cos(at)))]
+            px[j, i, 3] = 255
+    return _Picture(label, px)
+
+
 def _ball(name, paint):
     """The ball about its anchor. Each layer is a prism of BALL_SIDES sides, half a side off the
-    model's axes so that no side is in doubt about the axis it is lit by. Every side is one flat
-    tone, picked by where that piece of the ball looks once the entity is turned BALL_TURN; so the
-    tones run round the light in rings and cut across the layers, which is what makes a ball of a
-    stack. An iron sleeve at each pole where the mast goes through; the collar under the lower one."""
+    model's axes so that no side is in doubt about the axis it is lit by. The sides are painted
+    for where the ball looks once the entity is turned BALL_TURN: the tones run round the light
+    in rings and cut across the layers, which is what makes a ball of a stack. The ledges between
+    the layers are one tone each. An iron sleeve at each pole where the mast goes through and the
+    collar under the lower one, their undersides a light iron: the ball is looked at from below."""
     ramp, zones, up, down = paint
+    colours = [P.colour(ramp, step) for step in zones]
     m = M.Model(PREFIX + name, px=1.0)
     half = math.tan(math.pi / BALL_SIDES)
     for sign in (1.0, -1.0):
         ledge = "u" if sign > 0 else "d"
-        for y0, y1 in zip(BALL_LAYERS, BALL_LAYERS[1:]):
-            mid = sign * (y0 + y1) / 2.0
+        for layer, (a0, a1) in enumerate(zip(BALL_LAYERS, BALL_LAYERS[1:])):
+            y0, y1 = min(sign * a0, sign * a1), max(sign * a0, sign * a1)
+            mid = (y0 + y1) / 2.0
             r = math.sqrt(BALL_R * BALL_R - mid * mid)
             for side in range(BALL_SIDES // 2):
                 turn = 360.0 * (side + 0.5) / BALL_SIDES
-                faces = {ledge: K.flat(ramp, up if sign > 0 else down)}
-                for letter, at in (("s", turn), ("n", turn + 180.0)):
-                    w = math.radians(at + BALL_TURN)
-                    normal = (r * math.sin(w) / BALL_R, mid / BALL_R, r * math.cos(w) / BALL_R)
-                    faces[letter] = K.flat(ramp, zones[_ball_zone(normal)])
-                m.box((-r * half, min(sign * y0, sign * y1), -r), (r * half, max(sign * y0, sign * y1), r),
-                      faces["s"], rot=("y", turn, (0.0, 0.0, 0.0)), skip="ew" + ("d" if sign > 0 else "u"),
-                      faces=faces, seed=1)
+                label = f"clock_{name}_{ledge}{layer}_{side}"
+                faces = {ledge: K.flat(ramp, up if sign > 0 else down),
+                         "s": _ball_side(label + "s", colours, r, y0, y1, turn, False),
+                         "n": _ball_side(label + "n", colours, r, y0, y1, turn, True)}
+                m.box((-r * half, y0, -r), (r * half, y1, r), faces[ledge], rot=("y", turn, (0.0, 0.0, 0.0)),
+                      skip="ew" + ("d" if sign > 0 else "u"), faces=faces, seed=1)
     top = BALL_LAYERS[-1]
-    m.tube("y", (0.0, 0.0), top - 0.5, BALL_R + 2.5, BALL_SLEEVE, IRON_DARK, sides=12)
-    m.tube("y", (0.0, 0.0), -top - 2.0, -top, BALL_PLATE, IRON_DARK, sides=16)
-    m.tube("y", (0.0, 0.0), -BALL_FOOT, -top - 2.0, BALL_SLEEVE, IRON_DARK, sides=12)
+    m.tube("y", (0.0, 0.0), top - 0.5, BALL_R + 2.5, BALL_SLEEVE, BALL_IRON, sides=12)
+    m.tube("y", (0.0, 0.0), -top - 2.0, -top, BALL_PLATE, BALL_IRON, sides=16, cap=BALL_IRON_UNDER)
+    m.tube("y", (0.0, 0.0), -BALL_FOOT, -top - 2.0, BALL_SLEEVE, BALL_IRON, sides=12, cap=BALL_IRON_UNDER)
     return m
 
 

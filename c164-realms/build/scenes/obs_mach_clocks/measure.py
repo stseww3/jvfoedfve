@@ -15,11 +15,13 @@ What is asked of the numbers:
               picture that holds both, differ by no more than 0.03
   ladder      on the east face the dial stands between the stone of the wall and the lit frosted
               window: stone < dial < window
-  ball        the time ball is lighter than the sky round it by 0.05 or more
+  ball        the time ball is lighter than the sky round it by 0.05 or more; seen from below, the
+              darkest tenth of its underside is not under 0.05 (no black cap of iron on it)
   sun         from V7 the orrery's sun is lighter than the master dial by 0.10 or more
   case        the darkest hundredth of the master clock's case is not under 0.03: no black hole
-  foot        the floor at the clock's foot against the floor farther out on the axis; a number to
-              look at, no limit (a pool of light with no lamp to be seen is what it would show)
+  foot        from V7, the pale floor in front of the clock's step against the same stone four
+              blocks out; a number to look at, no limit (a pool of light with no lamp to be seen
+              is what it would show)
 Exit 1 when a number is out or a picture is missing.
 """
 import argparse
@@ -45,6 +47,7 @@ STEP = 1.0 / 32.0                                      # the grid a piece is sam
 DIAL = (0.30, 0.40)
 DIAL_APART = 0.03
 BALL_OVER_SKY = 0.05
+BALL_UNDER = 0.05
 SUN_OVER_DIAL = 0.10
 CASE_FLOOR = 0.03
 TINT = {"dial": (255, 0, 255), "stone": (0, 255, 255), "window": (0, 255, 0), "ball": (255, 0, 255),
@@ -239,6 +242,18 @@ def time_ball(r):
         if None not in (b, sky):
             r.ask(b - sky >= BALL_OVER_SKY, f"{shot}: the ball {b:.3f} over the sky {sky:.3f} by {b - sky:.3f} "
                                             f"({BALL_OVER_SKY:.2f} or more)")
+    # from the foot of the tower the ball is seen from below: the collar and the sleeve under it
+    # may not be a black cap on it (cr3, 11-16). The strip the mast runs through is left out.
+    for shot in ("dial_close", "v5_up"):
+        got = r.picture(shot)
+        if got is None:
+            continue
+        right, up = got[1].facing(centre)
+        low = r.read(shot, "under the ball, darkest tenth",
+                     disc(centre - 0.5 * rad * up, right, up, 0.0, 0.45 * rad, keep=lambda x, y: np.abs(x) > 0.3 * rad),
+                     low=0.10)
+        if low is not None:
+            r.ask(low >= BALL_UNDER, f"{shot}: the darkest tenth under the ball reads {low:.3f} ({BALL_UNDER:.2f} or more)")
 
 
 def master_clock(r):
@@ -248,11 +263,13 @@ def master_clock(r):
     dial = disc(dial_at + (1.0 / 16.0, 0, 0), (0, 0, -1), (0, 1, 0), 0.0, 7.5 / 16.0)
     cx, cz = (math.floor(v) for v in S.ORRERY_CENTRE)
     sun_y = math.floor(S.ORRERY_RING_Y)
-    sun = patch((cx + 1.0, sun_y + 0.1, cz + 0.1), (0, 0.8, 0), (0, 0, 0.8))    # the east face of the lit block
+    sun = patch((cx + 0.1, sun_y, cz + 0.1), (0.8, 0, 0), (0, 0, 0.8))          # the underside of the lit block
     front = x + 0.75
     case = patch((front, y + 0.1, z - 0.55), (0, 3.8, 0), (0, 0, 1.1))
-    foot = patch((front + 0.25, y, z - 0.75), (1.0, 0, 0), (0, 0, 1.5))
-    floor = patch((front + 4.0, 0.0, z - 0.75), (1.0, 0, 0), (0, 0, 1.5))
+    # the pale band of the floor on the axis: the two cells in front of the grating round the step,
+    # and two cells of the same stone farther out, under the orrery
+    foot = patch((8.0, 0.0, z - 0.5), (1.0, 0, 0), (0, 0, 1.0))
+    floor = patch((12.0, 0.0, z - 0.5), (1.0, 0, 0), (0, 0, 1.0))
 
     print("the master clock")
     d = r.read("v7", "dial master", dial)
@@ -266,10 +283,10 @@ def master_clock(r):
     if low is not None:
         r.ask(low >= CASE_FLOOR, f"master_close: the darkest hundredth of the case reads {low:.3f} "
                                  f"({CASE_FLOOR:.2f} or more)")
-    a = r.read("master_gallery", "foot of the clock", foot)
-    b = r.read("master_gallery", "floor on the axis", floor)
+    a = r.read("v7", "foot of the clock", foot)
+    b = r.read("v7", "floor on the axis", floor)
     if None not in (a, b):
-        print(f"  note the floor at the clock's foot {a:.3f}, four blocks out {b:.3f}")
+        print(f"  note the floor in front of the clock's step {a:.3f}, four blocks out {b:.3f}")
 
 
 def main():
