@@ -43,6 +43,10 @@ entities、views 多报几样（第 6 节）。
 多了第一项 `shift`（历史里有第 2 班的提交就退回，`tools/provenance.sh`）；多了两个一趟跑完的工具：`tools/checkall.py`
 （全部场景的 check.py）、`tools/keptshots.py`（存的图哪些已经不是现在的代码画的）。消息一律私信（第 6 节）。已交付的包不用改。
 
+11-16 第二次补充（`motion/loop` 进总装带来的）：`tools/check.py` 多了 `motion` 一项（第 6 节的表），`build/place.py` 摆完场景就启动
+它登记的循环（`scenes/obs/motion/_kit.py`）。没登记会动的东西的场景这一项报 nothing moves，别的不变，已交付的包不用改。
+S2 一次合几个交付的时候用 `tools/gatestack.sh`：每个交付还是在它自己合进去的那棵树上过关口，后合的包让先合的图变样不算先合的账。
+
 ---
 
 ## 1. 目录和类别
