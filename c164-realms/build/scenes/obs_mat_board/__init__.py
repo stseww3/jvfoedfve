@@ -29,6 +29,7 @@ Versions are compared by scenes of their own (obs_mat_board_<tag>): the same boa
 compare(), with write_pack() calling materials._kit.pack_with() for the versions wanted.
 """
 import math
+import os
 
 from artkit.blocks import st
 from artkit.canvas import Canvas
@@ -51,6 +52,8 @@ FRONT = 20                      # the ground tier's floor comes this far forward
 FLOOR = B.SLATE_SMOOTH.block    # dark and plain: floors and the risers behind the walls
 LAMP = 13
 VERSIONS = {}                   # material package -> version; the default of every package when empty
+TRY = os.environ.get("A1_TRY", "")     # a look at a layout before it is chosen: letters, see ground() and build()
+SHELF = 11                      # TRY t: the ground tier's floor comes this far forward beside the emblem
 
 # the ground tier: x of each thing
 ROCK_AT, LEDGES_AT, SNOW_AT, INLAY_AT, CLOUD_AT = 0, PITCH, 2 * PITCH, 3 * PITCH, 5 * PITCH
@@ -163,7 +166,13 @@ def inlay(c, x, y, z):
 def ground(c, x, y, z):
     """The mountain (rock, a cliff with snow on its ledges, snow), the paving, the cloud sea. The
     mountain stands on its own rock, not on the board's floor."""
-    c.box(x - 1, y - 1, z, x + SNOW_AT + N, y - 1, z + FRONT, B.ROCK_COBBLED.block)
+    c.box(x - 1, y - 1, z, x + SNOW_AT + N, y - 1, z + (SHELF if "t" in TRY else FRONT), B.ROCK_COBBLED.block)
+    if "w" in TRY:                              # the cloud's tones flat at the mountain's foot, the lightest nearest
+        for i, block in enumerate(reversed(B.CLOUD)):
+            c.box(x + 9, y, z + 11 + 2 * i, x + SNOW_AT + N, y, z + 12 + 2 * i, block)
+    if "s" in TRY:                              # ... or only where the drift ends
+        for i, block in enumerate(reversed(B.CLOUD)):
+            c.box(x + SNOW_AT, y, z + 11 + 2 * i, x + SNOW_AT + N - 1, y, z + 12 + 2 * i, block)
     _board.rock(c, x + ROCK_AT, y, z)
     _board.ledges(c, x + LEDGES_AT, y, z)
     _board.snow(c, x + SNOW_AT, y, z, N)
@@ -261,7 +270,11 @@ def build():
     w = width()
     for k, (name, walls) in enumerate(TIERS):
         y, z = at(k)
-        c.box(-1, y - 1, z - 1, w, y - 1, z + (FRONT if k == 0 else BACK - 2), FLOOR)   # the floor, up to the tier below
+        if k == 0 and "t" in TRY:               # the floor only where something stands: a shelf, and the emblem's tongue
+            c.box(-1, y - 1, z - 1, w, y - 1, z + SHELF, FLOOR)
+            c.box(INLAY_AT, y - 1, z + SHELF + 1, INLAY_AT + 2 * EMBLEM_R + 6, y - 1, z + FRONT, FLOOR)
+        else:
+            c.box(-1, y - 1, z - 1, w, y - 1, z + (FRONT if k == 0 else BACK - 2), FLOOR)   # the floor, up to the tier below
         c.box(-1, y, z - 1, w, y + RISE - 2, z - 1, FLOOR)                              # the riser behind the walls
         if name in ROWS:
             ROWS[name](c, 0, y, z)
