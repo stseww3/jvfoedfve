@@ -11,9 +11,13 @@ stand at S.LOWER_GROUND; the paving course is S.LOWER_PAVING_Y.
           to be bright there (A0 #22564). The bands are polished tuff, the stone of the court's
           strips and walks (site/_kit), and they draw two things on the yard.
           The way in: a walk from the middle of the cable station's south side down to the main
-          axis, the walk on the axis from the east edge to the stair, and before the stair a
-          forecourt as wide as the stair's two foot pedestals stand, a band along each side of it
-          and an apron at the stair's foot.
+          axis; the walk on the axis from the east edge to the stair, in the rows of the court's
+          walk above and of the band on the stair's treads (the door bay with its two pilasters),
+          so the three are one line from this edge to the door; and before the stair a forecourt
+          as wide as the stair's two foot pedestals stand, a band along each side of it and an
+          apron at the stair's foot. Where the axis begins, on the east edge, the walk ends in a
+          block like that apron (A0 #28839), from one pier of the railing to another: a place to
+          stand on the axis and look up the stair at the front. Nothing stands on it.
           The building's grid: a band on every pilaster line that carries a buttress of the
           retaining wall, a course along the foot of that wall and one inside the kerb.
           Under the cable station and the power house the field is left plain: they build on it.
@@ -33,7 +37,7 @@ its numbers.
 from ..common import blocks as B
 from ..common import skeleton as S
 from . import _kit as K
-from .stair import APRON_X, APRON_Z, BUTTRESS_Z
+from .stair import APRON_X, APRON_Z, BUTTRESS_Z, FOOT_X, WALK_Z
 
 ORDER = 20      # after the terrain (10); before the stair (25), the court (60) and what stands on the platform
 
@@ -50,11 +54,14 @@ WALL_DEPTH = 7                          # courses of the outer wall under the ke
 WALL_BANDS = (1, 5)                     # which of them are polished, counted down from the kerb
 
 # --- the way in -----------------------------------------------------------------------------------
-WALK = 1                                            # a walk is three wide: this many either side of its middle
+# The walk on the axis is five wide: the rows of the stair's band (stair.WALK_Z, rows -2..2). It
+# ends on the east edge in a block as deep as the apron shows beyond the stair's foot.
+LINK = 1                                            # the walk from the station is three wide: 1 either side
 _MID = (CX0 + CX1) // 2                             # 83: the middle column of the cable station
-LINK_X = (_MID - WALK, _MID + WALK)                 # x 82..84: the walk from the station down to the axis
-LINK_Z = (CZ1 + 1, -WALK - 1)                       # z -25..-2: from the station's south side to the axis walk
+LINK_X = (_MID - LINK, _MID + LINK)                 # x 82..84: the walk from the station down to the axis
+LINK_Z = (CZ1 + 1, WALK_Z[0] - 1)                   # z -25..-3: from the station's south side to the axis
 COURT_Z = APRON_Z                                   # rows -10 and 10: the two bands of the forecourt
+START_X = X1 - (APRON_X - FOOT_X + 1)               # 88: the block where the axis begins is x 88..90
 LAMP_STEP = 2 * K.BEAT                              # 8: the lamps of the way stand this far apart, in pairs
 _GATE_X = (_MID - LAMP_STEP // 2, _MID + LAMP_STEP // 2)        # 79 and 87: either side of where the link comes in
 _LINK_LAMP_X = (LINK_X[0] - 2, LINK_X[1] + 2)                   # 80 and 86: a cell clear of the link
@@ -76,9 +83,9 @@ def _stone(x, z):
         return BAND                     # along the retaining wall's foot, and inside the kerb
     if z in BUTTRESS_Z or z in COURT_Z:
         return BAND
-    if APRON_Z[0] <= z <= APRON_Z[1] and x <= APRON_X:
-        return BAND                     # the apron (west of the foot it lies under the stair)
-    if abs(z) <= WALK:
+    if APRON_Z[0] <= z <= APRON_Z[1] and (x <= APRON_X or x >= START_X):
+        return BAND                     # the apron (west of the foot it lies under the stair) and its like
+    if WALK_Z[0] <= z <= WALK_Z[1]:
         return BAND                     # the walk on the axis
     if LINK_X[0] <= x <= LINK_X[1] and LINK_Z[0] <= z <= LINK_Z[1]:
         return BAND                     # the walk from the station

@@ -4,9 +4,15 @@ floor of the lower platform, its railing and its outer wall are the sibling modu
 site/lowerplatform.py.
 
 Both stand in the middle of the arrival view (S.V1): the wall is the dark band the building stands
-on, the stair comes down out of it on the left. Nothing here rises above the terrace floor except
-the cap slabs of the two pedestals at the stair's head, half a block: every block of solid height
-on that edge hides about three of the front (A0 #171; site/_kit; c235 #21906).
+on, the stair comes down out of it on the left. Two rules of that view shape them.
+Nothing here rises above the terrace floor except the cap slabs of the two pedestals at the stair's
+head, half a block: every block of solid height on that edge hides about three of the front (A0
+#171; site/_kit; c235 #21906).
+And nothing here is as bright as the front: only the building is (A0 #268, #28839). The faces S.V1
+sees of the stair look north and up, and the game shades those less than the front, which looks
+east; the same pale stone would show a third brighter here than on the building. So the stair is
+slate, dressed with the middle tone of the site's floors, polished tuff; the one pale stone left
+is the cap of a pedestal, half a block, as on the piers of every railing.
 
   wall       Column x 60, from under the kerb course of the terrace (y -1, site/court's) down to
              the lower paving: slate brick between a polished plinth course and a polished band
@@ -17,14 +23,21 @@ on that edge hides about three of the front (A0 #171; site/_kit; c235 #21906).
   stair      17 wide (rows z -8..8), x 61..72, half a block down per column (S.stair_top): polished
              slate treads -- the stone of the court floor -- on slate brick. The twelfth riser
              lands on the platform's paving.
+  band       The walk of the court above comes down the middle of the treads in its own stone and
+             goes on across the lower platform (site/lowerplatform): the door bay with its two
+             pilasters, rows z -2..2, one line from the yard's east edge to the door. A switch
+             (A0 #28839), on by default: BAND, or build(band=...).
   cheeks     A wall on each side, outside the 17 (rows z -9 and 9, in line with the end piers of
-             the terrace railing): slate brick like the retaining wall it grows out of, and on it
-             an ashlar parapet that rakes with the stair, one block above the treads.
-  pedestals  Where a cheek ends: plinth, panelled die, cap. At the head (x 61) one block square, the
-             cheek's own top end. At the foot two blocks square, beyond the last riser (x 72..73)
-             and standing out from the cheek away from the stair, so the 17 stay clear. They are
+             the terrace railing): slate brick like the retaining wall it grows out of, under one
+             course of coping that rakes with the stair, one block above the treads.
+  pedestals  Where a cheek ends: slate brick, a die of the coping's stone, a pale cap. At the head
+             (x 61) one block square, the cheek's own top end. At the foot two blocks square,
+             beyond the last riser (x 72..73) and standing out from the cheek away from the stair,
+             so the 17 stay clear and the outer rows (z -10 and 10) are pilaster lines. They are
              the lamp bases: LAMP_POINTS names the middle of the top of each for the props line
-             (the lamp) and the sky line (its light). No block is set above them.
+             (the lamp) and the sky line (its light). No block is set above them. A lamp at the
+             head stands on the lip, before the front for the arrival view: props/lamps gives a
+             point above S.GROUND the lip's low lamp, not a pole.
 
 Blocks only, no display entities.
 """
@@ -52,10 +65,19 @@ SPLASH = B.SLATE_SMOOTH.slab + "[type=bottom]"
 WEATHERING = B.SLATE_BRICK.stairs + "[facing=west,half=bottom]"     # the high side against the wall
 TREAD = B.SLATE_SMOOTH.block
 TREAD_SLAB = B.SLATE_SMOOTH.slab + "[type=bottom]"
-ASHLAR = B.ASHLAR_ROUGH.block
-ASHLAR_SLAB = B.ASHLAR_ROUGH.slab + "[type=bottom]"
-DIE = B.ASHLAR_PANEL.block
+DRESSING = B.TUFF_SMOOTH            # the middle tone (site/_kit.STRIP is its block): band, coping, dies
+BAND_TREAD = DRESSING.block
+BAND_SLAB = DRESSING.slab + "[type=bottom]"
+COPING = DRESSING.block
+COPING_SLAB = DRESSING.slab + "[type=bottom]"
+DIE = DRESSING.block
+CAP = B.ASHLAR_ROUGH.slab + "[type=bottom]"         # the stone of the railings' pier caps (site/_kit)
 GRATE = B.IRON_GRATE
+
+# The court's walk (site/court) is the door bay with its two pilasters. The band on the treads and
+# the walk across the lower platform (site/lowerplatform) keep its rows.
+BAND = True                         # the switch (A0 #28839): the walk's band lies on the treads
+WALK_Z = (S.pilaster_z(S.CENTRE_BAYS[1] - 1), S.pilaster_z(S.CENTRE_BAYS[1]))       # rows -2..2
 
 # The piers of the terrace railing stand on the pilaster lines (K.beat). The first line clear of a
 # cheek carries a buttress, and from there outwards every second one; the lines between carry a drain.
@@ -130,38 +152,41 @@ def _levels(top):
     return k, top > k
 
 
-def _tread(c, o, x, z):
+def _tread(c, o, x, z, walk):
+    """Slate brick under one course of tread: the top whole block, or the slab alone where the
+    height ends in a half. `walk`: the tread is of the walk's stone."""
     k, half = _levels(S.stair_top(x))
     for y in range(FEET, k):
-        _put(c, o, x, y, z, BRICK if half or y < k - 1 else TREAD)
+        _put(c, o, x, y, z, BRICK if half or y < k - 1 else BAND_TREAD if walk else TREAD)
     if half:
-        _put(c, o, x, k, z, TREAD_SLAB)
+        _put(c, o, x, k, z, BAND_SLAB if walk else TREAD_SLAB)
 
 
 def _cheek(c, o, x, z):
-    """Slate brick up to the parapet; the parapet is the top whole block, and the slab on it where
-    the rake ends in a half."""
+    """Slate brick under one course of coping: the top whole block, or the slab alone where the
+    rake ends in a half."""
     k, half = _levels(S.stair_top(x) + PARAPET)
     for y in range(FEET, k):
-        _put(c, o, x, y, z, BRICK if y < k - 1 else ASHLAR)
+        _put(c, o, x, y, z, BRICK if half or y < k - 1 else COPING)
     if half:
-        _put(c, o, x, k, z, ASHLAR_SLAB)
+        _put(c, o, x, k, z, COPING_SLAB)
 
 
 def _pedestal(c, o, cells, top):
-    """Plinth, die and cap over `cells`, the cap's top at `top`; slate brick under the plinth down
-    to the paving."""
+    """Die and cap over `cells`, the cap's top at `top`; slate brick under the die down to the
+    paving."""
     cap = int(math.floor(top))
     for x, z in cells:
-        for y in range(FEET, cap - 2):
+        for y in range(FEET, cap - 1):
             _put(c, o, x, y, z, BRICK)
-        _put(c, o, x, cap - 2, z, ASHLAR)
         _put(c, o, x, cap - 1, z, DIE)
-        _put(c, o, x, cap, z, ASHLAR_SLAB)
+        _put(c, o, x, cap, z, CAP)
 
 
-def build(canvas, origin=(0, 0, 0)):
+def build(canvas, origin=(0, 0, 0), band=None):
+    """band: whether the walk's band lies on the treads; None is the switch BAND."""
     c, o = canvas, origin
+    band = BAND if band is None else band
     _wall(c, o)
     for z in BUTTRESS_Z:
         _buttress(c, o, z)
@@ -169,7 +194,7 @@ def build(canvas, origin=(0, 0, 0)):
         _drain(c, o, z)
     for x in range(G["x0"], G["x1"] + 1):
         for z in range(G["z0"], G["z1"] + 1):
-            _tread(c, o, x, z)
+            _tread(c, o, x, z, band and WALK_Z[0] <= z <= WALK_Z[1])
         for z in CHEEK_Z:
             _cheek(c, o, x, z)
     for cells in HEAD_PEDESTALS:
