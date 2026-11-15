@@ -1,0 +1,25 @@
+check obs_mot_loop at fd01296
+[PASS] regen     2663 blocks, 16 entities, 13 models, 697 resource-pack files, 115 data-pack files, look: 1 biomes, 1 timelines (0.6 s)
+[PASS] conflicts the scene writes 696 files, no file written twice, the packages of motion write nothing into the pack
+[PASS] strays    137 pictures, every colour in the palette
+[PASS] refs      550 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    4 kinds of block placed, all in the occupancy table
+[SKIP] flatwall  a test scene of motion: its sample walls and backdrops are meant to be flat
+[PASS] entities  16 display entities, 1 drawn out along one axis, 1 models never placed
+[WARN] views     24 shots, most display entities in view: 16 (far), limit 600; counted without what walls hide
+                 the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(materials.pack(d) or []) + list(sky.pack(d) or [])
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[WARN] motion    12 parts and 0 points on 6 chains, 102 function files; 9 commands in the busiest tick (limit 40), 2.1 a tick on average (limit 10)
+                 mot_wheel: 4 steps in 48 ticks set by hand (lead 0); its model strays 0.00 pixels from its arc
+                 mot_arm: 8 steps in 1200 ticks set by hand (lead 2); its model strays 2.07 pixels from its arc
+                 chain of 40 ticks: 8 functions, 22 commands a cycle, starts 2 ticks after start
+                 chain of 48 ticks: 12 functions, 49 commands a cycle, starts 1 ticks after start
+                 chain of 60 ticks: 2 functions, 5 commands a cycle, starts 4 ticks after start
+                 chain of 120 ticks: 2 functions, 5 commands a cycle, starts 8 ticks after start
+                 chain of 240 ticks: 40 functions, 81 commands a cycle, starts 3 ticks after start
+                 chain of 1200 ticks: 32 functions, 66 commands a cycle, starts 6 ticks after start
+                 mot_arm: 25 steps in 1200 ticks: its middle lies 1.57 blocks off the axis
+                 mot_rod: 12 steps in 48 ticks; its model strays 0.33 pixels from its arc (its middle lies 2.00 blocks off the axis), within the half pixel a fast part is let off with
+                 mot_bar: 40 steps in 240 ticks: its middle lies 1.25 blocks off the axis
+result: PASS (0 failed, 2 with warnings)
