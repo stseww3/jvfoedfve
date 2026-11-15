@@ -53,6 +53,7 @@ def _steps(ramp):
 
 R = _steps("brass")             # R0..R5
 C = _steps("old_copper")        # C0..C4
+V = _steps("verdigris")         # V0, V1: the green that goes on old copper, see _patina
 W = _steps("dark_wood")         # W0..W4
 E = _steps("enamel")            # E0..E3
 M = _steps("cream")             # M0..M3
@@ -356,12 +357,42 @@ def _plaque(w, h):
 
 
 # ---- old copper ----------------------------------------------------------------------------------------
+PATINA = 0.04       # the share of a sheet's cells that goes green (review #8 asked for 3% to 5%)
+
+
+def _patina(px, x0, y0, x1, y1, seed, share=PATINA):
+    """Copper going green: the two darkest steps of the verdigris ramp (#2f6f5c, #3d8a70) on a share
+    `share` of the sheet x0..x1-1, y0..y1-1, kept to its raised rim and laid in runs of two or three
+    cells rather than as single dots. Water stands along a seam and runs down from it, so a rim is
+    where copper goes green first and where the green reads at a distance as a stain creeping in
+    from the joint; single cells spread over the face would read as speckle, and a whole rim in
+    green as a green joint.
+
+    The copper of this package is sheet metal with no screws in it (the screws are brass's), so the
+    rim is the whole of it: the review's "along the edges and round the screws" reduces here to the
+    edges."""
+    rim = ([(x, y0) for x in range(x0, x1)] + [(x1 - 1, y) for y in range(y0 + 1, y1)]
+           + [(x, y1 - 1) for x in range(x1 - 2, x0 - 1, -1)] + [(x0, y) for y in range(y1 - 2, y0, -1)])
+    want = max(1, round(share * (x1 - x0) * (y1 - y0)))
+    put, start = 0, int(_dice(x0, y0, seed + 77) * len(rim))
+    while put < want:
+        run = min(want - put, 2 + (put // 3) % 2)                    # runs of two and of three
+        step = int(_dice(start, put, seed) * 5) + 2                  # leave a gap between runs
+        for i in range(run):
+            x, y = rim[(start + i) % len(rim)]
+            _put(px, x, y, V[i % 2])
+        put += run
+        start = (start + run + step) % len(rim)
+
+
 def _copper(seed):
     """OLD_COPPER: one dull brown sheet with a shallow raised edge: copper that has stood outdoors,
     not polished. The face is one even tone with a few pits and rubbed spots; patches of stain
-    read as fired clay, not as metal. Three versions."""
+    read as fired clay, not as metal, so the only thing on the face is the green of it oxidizing.
+    Three versions."""
     px = _worn(C, 2, seed, pits=0.04, light=0.015)
     _raised(px, 0, 0, TILE, TILE, C[3], C[1])
+    _patina(px, 0, 0, TILE, TILE, seed)
     return px
 
 
@@ -371,11 +402,12 @@ def _copper_cut(seed):
     a ring round a drum or a roof of it is one even grid whichever way it runs, and half a block
     (a slab) is a row of whole sheets. Every sheet is the same tone: a sheet weathered darker than
     its neighbours reads as a patch on a roof and as a flaw in a gutter one sheet wide. The three
-    versions differ by their pits."""
+    versions differ by their pits, and each sheet has its own few cells of green on its rim."""
     px = np.zeros((TILE, TILE, 4), np.uint8)
     for n, (x, y) in enumerate(((0, 0), (8, 0), (0, 8), (8, 8))):
         px[y:y + 8, x:x + 8] = _worn(C, 2, seed * 4 + n, 8, 8, pits=0.03, light=0.01)
         _raised(px, x, y, x + 8, y + 8, C[3], C[1])
+        _patina(px, x, y, x + 8, y + 8, seed * 4 + n)
     return px
 
 
