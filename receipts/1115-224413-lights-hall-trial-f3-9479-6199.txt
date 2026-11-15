@@ -1,0 +1,15 @@
+a0job 1115-224413-lights-hall-trial-f3-9479-6199: cursor/c164-lights-hall-trial-f3-9479 @ 860719ba on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 1.90 1.81 1.64, Python 3.12.3
+  [cloud_setup    1s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.4 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- rm -rf renders/_wip/h3; mkdir -p renders/_wip/h3; (cd build && python -m scenes.obs_sky_lights_hall) > renders/_wip/h3/report.txt 2>&1; echo report=$?; python tools/selfshots.py obs_sky_lights_hall --out renders/_wip/h3 > renders/_wip/
+report=0
+hall=0
+19
+/tmp/dais_jobs/c164a0/c164-realms/renders/_wip/h3/obs_sky_lights_hall-*: 16 pictures of 860719ba drawn, 6.9 MB
+                for a look only: nothing went into renders/obs_sky_lights_hall/ (tools/nodejob.sh --wip pushes renders/_wip to your scratch branch)
+==== NODEJOB RESULT ====
+exit=0 secs=38 host=cursor cores=4 head=860719ba commit=b97ec4fc pushed=yes branch=cursor/c164-lights-hall-trial-f3-9479-wip files=19
+a0job: exit=0 secs=38
