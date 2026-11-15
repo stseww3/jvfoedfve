@@ -91,10 +91,13 @@ JOINS = ("_wall", "_fence")
 # sheet that colour, so the two layers meet in one value.
 TONE_EDGE = 2                    # the tone of RAMPS["cloud"] the far sea and the vanilla sheet share
 HORIZON = TONE_EDGE / 4.0        # that tone as the light value the shading rounds to
-# What that tone actually shows as in the blue hour, under the map's own light (a2's measurement off
-# c260's real-game pictures: tone 2's texture #b0a1a8 on a cloud top displays as #474c7a). mood.py
-# reads this to paint the vanilla layer, so the two layers meet in one value.
-EDGE_SHOWN = "#474c7a"
+# What a tone actually shows as under each look's light. The blue hour's is measured off c260's
+# real-game pictures (a2: tone 2's texture #b0a1a8 on a cloud top shows #474c7a); the other two
+# carry the same light factors from the same measurement, scaled by how far that look's cloud colour
+# stands from the blue hour's. mood.py reads OUTER[look] to paint the vanilla layer, so the two
+# layers meet in one value in every look (A0 11-16 01:21, a2 #48553).
+OUTER = {"blue": "#474c7a", "deep": "#242854", "glow": "#675c88"}
+EDGE_SHOWN = OUTER["blue"]       # tone 2's texture #b0a1a8 on a cloud top shows #474c7a in the blue hour
 HAZE = (130.0, 185.0)
 HAZE_KEEP = 0.0                  # the far sea lands flat on the edge tone (no shading kept)
 HAZE_WEST = 0.0                  # and does so all round: the west would otherwise show a seam of its own
