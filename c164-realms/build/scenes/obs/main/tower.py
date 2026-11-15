@@ -86,8 +86,9 @@ MAST_TOP = S.CLOCK_BALL_MAST + 1.0  # 53.0: the tip, the top of the skeleton's l
 MAST_THICK = 7 / 16.0               # the pole between its boot and the stop collar
 MAST_SCALE = 4.0                    # the model is shown at four times its size: 11 blocks are 44 units
 MAST_HOLD = 0.5                     # the entity stands this far above the foot: in the air over the finial
-CUPS_OUT = 0.875                    # the cup wheel's spindle stands this far north of the axis
-CUPS_AT = (AXIS[0], MAST_STOP + 0.4375, AXIS[1] - CUPS_OUT)     # (13.5, 51.4375, -30.375): its hub
+WIND = (S.WIND[0], S.WIND[2])       # (0, 1): one step downwind along x and z; the vane's tail points there
+CUPS_OUT = 0.875                    # the cup wheel's spindle stands this far upwind of the axis: north
+CUPS_AT = (AXIS[0] - CUPS_OUT * WIND[0], MAST_STOP + 0.4375, AXIS[1] - CUPS_OUT * WIND[1])   # (13.5, 51.4375, -30.375): its hub
 FAR = 4.0                           # view_range, as machines/clock gives the dials and the ball
 
 # --- the antenna's bracket ----------------------------------------------------------------------------
@@ -258,11 +259,14 @@ def _shaft(c, o, s):
 
 
 # --- the lookout and the top: version a ---------------------------------------------------------------------
-# The helm, ring by ring: (row, how far the ring stands from the middle column, what it is made of).
-# Half-widths by the half row from y 36: 3.5 3.5 | 3.5 3.0 | 2.5 2.5 | 2.5 2.0 | 1.5 1.0 | 0.5 -- two
-# steep tiers, a block and a stair to each, then 45 degrees to the finial
-HELM = ((HEAD, 3, "block"), (HEAD + 1, 3, "stairs"), (HEAD + 2, 2, "block"), (HEAD + 3, 2, "stairs"),
+# The roof, ring by ring: (row, how far the ring stands from the middle column, what it is made of).
+# Half-widths by the half row from y 36: 4.5 4.0 | 3.5 3.5 | 3.5 3.0 | 2.5 2.0 | 1.5 1.0 | 0.5 -- a kick
+# on the eaves, an upright foot on the wall line, a shoulder, and 45 degrees to the finial
+HELM = ((HEAD, 4, "stairs"), (HEAD + 1, 3, "block"), (HEAD + 2, 3, "stairs"), (HEAD + 3, 2, "stairs"),
         (HEAD + 4, 1, "stairs"))
+# trial: the same without the kick, upright from the wall line, a brim of slabs on the eaves
+HELM_UPRIGHT = ((HEAD, 3, "block"), (HEAD + 1, 3, "block"), (HEAD + 2, 3, "stairs"), (HEAD + 3, 2, "stairs"),
+                (HEAD + 4, 1, "stairs"))
 
 
 def _square(reach):
@@ -270,7 +274,22 @@ def _square(reach):
     return O.box(CX - reach, CZ - reach, CX + reach, CZ + reach)
 
 
-def _top_a(c, o, s, skirt=None):
+def _helm(c, o, s, rings, skirt=None):
+    """The copper of version a: `rings` as HELM; `skirt` is a family whose slabs lie on the eaves
+    round the helm's foot."""
+    if skirt:
+        _fill(c, o, O.ring(BODY), HEAD, st(skirt.slab, type="bottom"))
+    for y, reach, kind in rings:
+        inner = _square(reach - 1)
+        _fill(c, o, inner - INSIDE if y == HEAD else inner, y, COPPER.block)
+        if kind == "block":
+            _fill(c, o, _square(reach) - inner, y, COPPER.block)
+        else:
+            s.mould(inner, y, COPPER.stairs, "bottom")
+    _set(c, o, CX, APEX, CZ, FINIAL)
+
+
+def _top_a(c, o, s, skirt=None, helm=None):
     """Square: corner piers two columns wide (the quoin and one of dressed stone) and between them
     an arch of three with a railing in its foot. The eaves hang in the row of the arch heads. The
     copper helm stands on the wall line behind them: two steep tiers, then 45 degrees to the
@@ -301,17 +320,7 @@ def _top_a(c, o, s, skirt=None):
         for i in ARCH:
             s.put(face.cell(i, -1), y1, st(WALL.slab, type="top"))
     _fill(c, o, INSIDE, HEAD, CEILING.block)
-    if skirt:
-        _fill(c, o, O.ring(BODY), HEAD, st(skirt.slab, type="bottom"))
-    for y, reach, kind in HELM:
-        inner = _square(reach - 1)
-        if y > HEAD:
-            _fill(c, o, inner, y, COPPER.block)
-        if kind == "block":
-            _fill(c, o, _square(reach) - inner, y, COPPER.block)
-        else:
-            s.mould(inner, y, COPPER.stairs, "bottom")
-    _set(c, o, CX, APEX, CZ, FINIAL)
+    _helm(c, o, s, helm or HELM, skirt)
 
 
 # --- the lookout and the top: version b ---------------------------------------------------------------------
@@ -387,8 +396,7 @@ def _top_b2(c, o, s):
 
 
 TOPS = {"a": _top_a, "b": _top_b,
-        "a2": functools.partial(_top_a, skirt=COPPER), "a3": functools.partial(_top_a, skirt=B.OLD_COPPER_CUT),
-        "b2": _top_b2}
+        "a2": functools.partial(_top_a, skirt=COPPER, helm=HELM_UPRIGHT), "b2": _top_b2}
 VERSION = "a"                       # what the master scene shows until the director has picked one
 
 
@@ -441,6 +449,17 @@ def _models():
     # Units from the foot upwards. Between the boot and the stop collar the pole is plain: the time
     # ball of machines/clock and its sleeves (6 px in radius) travel there.
     m = M.Model(MAST_MODEL, px=MAST_SCALE, anchor=(0.0, MAST_HOLD * u, 0.0))
+
+    def plate(a0, a1, y0, y1):
+        """An iron plate half a unit thick in the plane of the wind: from a0 to a1 downwind of the
+        axis (upwind where negative), from y0 to y1."""
+        wx, wz = WIND
+        lo, hi = (a0, a1) if wx + wz > 0 else (-a1, -a0)
+        if wx:
+            m.box((lo, y0, -0.25), (hi, y1, 0.25), iron)
+        else:
+            m.box((-0.25, y0, lo), (0.25, y1, hi), iron)
+
     m.tube("y", on, 0.0, 0.5, 1.375, iron)                                  # the flange on the finial, 11 px across
     m.taper("y", on, 0.5, 2.5, 1.25, 0.875, dark, steps=2)                  # the boot
     m.tube("y", on, 2.5, stop, MAST_THICK * u / 2.0, dark)                  # the pole, 7 px
@@ -448,15 +467,15 @@ def _models():
     m.taper("y", on, stop + 0.75, stop + 3.0, 0.875, 0.375, dark, steps=3)  # the neck
     m.tube("y", on, stop + 3.0, stop + 6.0, 0.375, dark, sides=4)           # the rod, 3 px
     m.taper("y", on, stop + 6.0, top, 0.375, 0.25, dark, sides=4, steps=2)  # the tip, 2 px at the end
-    # the cup wheel's bracket, north: an arm out of the stop collar, the spindle upright on its end
-    m.box((-0.25, stop + 0.125, -out - 0.25), (0.25, stop + 0.625, -1.0), iron)
-    m.box((-0.25, stop + 0.125, -out - 0.25), (0.25, stop + 1.5, -out + 0.25), iron)
-    # the wind vane, south and three quarters of a block higher: a sleeve on the rod and a
+    # the cup wheel's bracket, upwind: an arm out of the stop collar, the spindle upright on its end
+    plate(-out - 0.25, -1.0, stop + 0.125, stop + 0.625)
+    plate(-out - 0.25, -out + 0.25, stop + 0.125, stop + 1.5)
+    # the wind vane, downwind and three quarters of a block higher: a sleeve on the rod and a
     # swallow-tailed flag. Arm and flag stand on opposite sides at different heights: no cross
     m.tube("y", on, stop + 3.25, stop + 6.25, 0.5, iron)
-    m.box((-0.25, stop + 3.5, 0.375), (0.25, stop + 6.0, 3.5), iron)
-    m.box((-0.25, stop + 5.25, 3.5), (0.25, stop + 6.0, 5.5), iron)
-    m.box((-0.25, stop + 3.5, 3.5), (0.25, stop + 4.25, 5.5), iron)
+    plate(0.375, 3.5, stop + 3.5, stop + 6.0)
+    plate(3.5, 5.5, stop + 5.25, stop + 6.0)
+    plate(3.5, 5.5, stop + 3.5, stop + 4.25)
 
     # The cup wheel, in pixels about its hub: three arms, never four. It turns about y through the
     # anchor; the box round the three cups has its middle 1.5 px north of that axis.
