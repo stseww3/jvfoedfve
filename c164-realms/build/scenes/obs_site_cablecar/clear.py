@@ -18,8 +18,11 @@ them) is cut by the planes of a block of the view, and what is left of the box i
      highest point of a box cut by a wedge that leaves out due west is one of its corners.)
 
 A point on a block's boundary counts as in it. Display entities are measured by the box round
-each of their pieces, which is larger than the piece. The corners are also put to
-skeleton.in_v1_clear(), the skeleton's own word, and the two answers are compared.
+each of their pieces, which is larger than the piece; the pieces are read from the pack the scene
+writes, with the models of all its lines. One that has no pieces to read (a text display; a model
+the pack does not hold) is not passed over: it is measured as the cell it stands in and one cell
+round it, and named. The corners are also put to skeleton.in_v1_clear(), the skeleton's own word,
+and the two answers are compared.
 
 Without --scene the station is measured as its package builds it on an empty canvas, a second's
 work. With --scene the whole test scene is built and everything that stands within the station's
@@ -55,6 +58,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.normpath(os.path.join(HERE, "..", "..", "..", "tools")))
 
 import sightline as SL  # noqa: E402
+from artkit import models as M  # noqa: E402
 from artkit.canvas import Canvas  # noqa: E402
 from artkit.gameassets import Assets  # noqa: E402
 from artkit.shapes import Shaper  # noqa: E402
@@ -75,6 +79,7 @@ FOV, ASPECT = 77.0, 16.0 / 9.0  # the billboard pictures (build/render.py, tools
 GRID = (480, 270)               # sight lines over V1's picture, for the station's share of it
 FRAME_LIGHT = 4                 # the most block light on what V1 sees of the waiting room (card, record 5)
 FRAME = "waiting room"
+OTHERS = "other packages"       # what stands at the station and is not its own
 # The same record's figures for a drawn picture of V1, in the picture's own brightness (0 .. 1):
 # the wall's median within `apart` of the sky's beside it and not over `wall`, the shut windows'
 # not under `blind`.
@@ -190,11 +195,36 @@ def part_of(cell):
     return "platform"
 
 
-def _pack():
-    """The materials line's pack, for the models of the repainted blocks."""
+def _pack(scene=None):
+    """The pack the boxes are read from. For the station alone the materials line's, with the
+    models of the repainted blocks; for the test scene its whole pack as tools/check.py makes it,
+    which holds the models of every line's display entities as well."""
     d = tempfile.mkdtemp(prefix="c164_clear_")
-    materials.pack(d)
+    if scene is None:
+        M.write_pack(d, list((materials.models() or {}).values()))
+        materials.pack(d)
+    else:
+        M.write_pack(d, list(scene.build_models().values()))
+        scene.write_pack(d)
     return d
+
+
+def _model(nbt):
+    """What a display entity shows, in tools/sightline.py's words: its item model, the block of a
+    block display; else its kind."""
+    ref = ((nbt.get("item") or {}).get("components") or {}).get("minecraft:item_model")
+    if ref:
+        return f"model {ref}"
+    if nbt.get("id") == "minecraft:block_display":
+        return "block display " + str((nbt.get("block_state") or {}).get("Name", "")).split(":", 1)[-1]
+    return str(nbt.get("id", "entity")).rpartition(":")[2].replace("_", " ")
+
+
+def _stand(entity):
+    """Where a display entity stands and what it shows: by this the station's own are told from
+    those another package set in the same place."""
+    x, y, z, nbt = entity
+    return (round(float(x), 3), round(float(y), 3), round(float(z), 3), _model(nbt))
 
 
 def station_cells(canvas=None):
@@ -214,45 +244,57 @@ def block_light(canvas):
                     (x1 + 2 * REACH, S.STATION_GROUND + 16, z1 + 2 * REACH))
 
 
-def boxes_of(cells, entities, shapes, names):
+def boxes_of(cells, entities, shapes, names, whose):
     """[(what, part, cell, lo, hi)] in scene coordinates: the boxes of the blocks `cells` (joined to
-    their neighbours) and the boxes round the pieces of the display entities."""
+    their neighbours) and the boxes round the pieces of the display entities; and [(what, cell)] of
+    the display entities that have no pieces to read, each taken as its cell and one cell round
+    it. names(cell) and whose(entity) say which part a block and a display entity belong to."""
     cells = dict(cells)
     Shaper(cells, shapes.is_cube).run()
-    out = []
+    out, unread = [], []
     for cell, state in sorted(cells.items()):
         base = np.array(cell, dtype=float)
         for lo, hi, _ in shapes.state(state)[1]:
             out.append((state.partition("[")[0], names(cell), cell, base + lo, base + hi))
-    for x, y, z, nbt in entities:
+    for entity in entities:
+        x, y, z, nbt = entity
         cell = tuple(int(math.floor(v)) for v in (x, y, z))
-        for inv, off, blo, bhi, _, label in SL.entity_boxes(shapes, x, y, z, nbt):
+        pieces = SL.entity_boxes(shapes, x, y, z, nbt)
+        for inv, off, blo, bhi, _, label in pieces:
             world = (SL._corners(blo, bhi) - off) @ np.linalg.inv(inv).T
-            out.append((label, names(cell), cell, world.min(axis=0), world.max(axis=0)))
-    return out
+            out.append((label, whose(entity), cell, world.min(axis=0), world.max(axis=0)))
+        if not pieces:
+            base = np.array(cell, dtype=float)
+            out.append((_model(nbt), whose(entity), cell, base - 1.0, base + 2.0))
+            unread.append((_model(nbt), cell))
+    return out, unread
 
 
-def picture(cells, entities, shapes, names, light=None):
-    """How much of V1's picture the given blocks take, part by part, and where: sight lines through
-    a grid over the picture, against these blocks alone. With `light` ({cell: level}) also the
-    block light on what each sight line meets: that of the cell the line is in when it arrives,
-    which is the cell before a whole block's face and a thin block's own cell, as the game lights
-    them. Per part: light, {level: share of the part's sight lines}."""
+def picture(cells, entities, shapes, names, whose, light=None):
+    """How much of V1's picture the given blocks and display entities take, part by part, and
+    where: sight lines through a grid over the picture, against these alone. With `light` ({cell:
+    level}) also the block light on what each sight line meets: that of the cell the line is in
+    when it arrives, which is the cell before a whole block's face and a thin block's own cell, as
+    the game lights them. Per part: light, {level: share of the part's sight lines}."""
     lo = np.array([min(p[i] for p in cells) for i in range(3)]) - 1
     hi = np.array([max(p[i] for p in cells) for i in range(3)]) + 1
     lo, hi = np.minimum(lo, np.floor(EYE).astype(int) - 1), np.maximum(hi, np.floor(EYE).astype(int) + 1)
     bl = SL.Blockers(dict(cells), entities, shapes, lo, hi)
+    shown = {(tuple(int(math.floor(v)) for v in e[:3]), _model(e[3])): whose(e) for e in entities}
     cam = SL.frame(EYE, S.V1["look_at"])
     w, h = GRID
     rays = SL.picture_rays(cam, FOV, ASPECT, w, h).reshape(-1, 3)
     got = bl.cast(EYE, rays, 400.0)
     first = np.minimum(got["t"], got["thru_t"])
     hit = np.isfinite(first)
-    cell = np.where((got["t"] <= got["thru_t"])[:, None], got["cell"], got["thru_cell"])
+    solid = got["t"] <= got["thru_t"]
+    cell = np.where(solid[:, None], got["cell"], got["thru_cell"])
+    box = np.where(solid, got["box"], got["thru_box"])
     rows, cols = np.divmod(np.arange(len(rays)), w)
     out = {"share": float(hit.mean()), "parts": {}}
     for i in np.nonzero(hit)[0]:
-        name = names(tuple(int(v) for v in cell[i]))
+        at = tuple(int(v) for v in cell[i])
+        name = names(at) if box[i] < 0 else shown.get((at, bl.labels[bl.boxes[box[i]]["what"]]), OTHERS)
         d = out["parts"].setdefault(name, dict(n=0, left=1.0, right=0.0, top=1.0, bottom=0.0, light={}))
         d["n"] += 1
         d["left"], d["right"] = min(d["left"], cols[i] / w), max(d["right"], (cols[i] + 1) / w)
@@ -336,17 +378,22 @@ def main():
         os.environ.get("MC_ROOT", "/agent/realms-study"), "client26", "versions", "26.3", "26.3.jar"))
     args = ap.parse_args()
 
-    shapes = SL.Shapes(Assets(args.jar, packs=(_pack(),)))
-    own, own_entities, alone = station_cells()
+    scene = None
     if args.scene:
         from scenes import obs_site_cablecar as scene
+    shapes = SL.Shapes(Assets(args.jar, packs=(_pack(scene),)))
+    own, own_entities, alone = station_cells()
+    mine = {_stand(e) for e in own_entities}
+    whose = lambda e: (part_of(tuple(int(math.floor(v)) for v in e[:3]))            # noqa: E731
+                       if _stand(e) in mine else OTHERS)
+    if scene is not None:
         canvas = scene.build()
         x0, z0, x1, z1 = S.CABLE_STATION
         inside = lambda p: (x0 - REACH <= p[0] <= x1 + REACH and z0 - REACH <= p[2] <= z1 + REACH   # noqa: E731
                             and p[1] >= S.STATION_GROUND - 1)
         cells = {p: s for p, s in canvas.b.items() if inside(p) or p in own}
         entities = [e for e in canvas.entities if inside(tuple(int(math.floor(v)) for v in e[:3]))]
-        names = lambda cell: part_of(cell) if cell in own else "other packages"     # noqa: E731
+        names = lambda cell: part_of(cell) if cell in own else OTHERS               # noqa: E731
         title = f"the test scene, within {REACH} cells of the station's box: {len(cells)} cells, {len(entities)} display entities"
         altered = sorted((p, s, canvas.b.get(p)) for p, s in own.items() if canvas.b.get(p) != s)
     else:
@@ -359,7 +406,8 @@ def main():
                      if p in light and s.startswith(B.LIGHT + "["))
 
     rows, parts, hits, disagree = [], {}, [], []
-    for what, part, cell, lo, hi in boxes_of(cells, entities, shapes, names):
+    boxes, unread = boxes_of(cells, entities, shapes, names, whose)
+    for what, part, cell, lo, hi in boxes:
         m = measure(lo, hi)
         rows.append((what, part, cell, lo, hi, m))
         d = parts.setdefault(part, dict(boxes=0, in_a=0, in_b=0, a_low=None, a_side=None, b_low=None, b_side=None))
@@ -416,7 +464,11 @@ def main():
         print(f"  ... and {len(hits) - 40} more")
     if disagree:
         print(f"  skeleton.in_v1_clear() names {len(disagree)} boxes this measure lets through: {disagree[:6]}")
-    seen = picture(cells, entities, shapes, names, light)
+    if unread:
+        print(f"  {len(unread)} display entities have no pieces to read; each is measured as its cell and one cell "
+              f"round it: " + ", ".join(f"{what} {cell}" for what, cell in unread[:8])
+              + (" ..." if len(unread) > 8 else ""))
+    seen = picture(cells, entities, shapes, names, whose, light)
     print(f"V1's picture: {100 * seen['share']:.1f}% of it is what was measured")
     for part, d in sorted(seen["parts"].items(), key=lambda kv: -kv[1]["share"]):
         levels = ", ".join(f"{k}: {100 * v:.0f}%" for k, v in d["light"].items())
@@ -461,6 +513,7 @@ def main():
                        "parts": {k: {kk: (list(vv) if isinstance(vv, tuple) else vv) for kk, vv in d.items()}
                                  for k, d in parts.items()},
                        "picture": seen, "frame_light": frame, "tones": read,
+                       "unread": [dict(what=w, cell=list(c)) for w, c in unread],
                        "altered": None if altered is None else [dict(cell=list(p), set=was, stands=now)
                                                                 for p, was, now in altered],
                        "sources": [dict(cell=list(p), level=n) for p, n in sources]}, fh, indent=1, default=str)
