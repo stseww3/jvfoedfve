@@ -1,0 +1,208 @@
+#!/usr/bin/env python3
+"""The twelve board views of the master scene, drawn offline and kept in the repository.
+
+    boardrender.py                    all twelve, into renders/board/<assembly commit, 7 digits>/
+    boardrender.py --only v01_arrival,v07_hall
+    boardrender.py --tag <name>       into renders/board/<name>/ (a checkout that is not the assembly's)
+
+On the render station's node (plan/roles/COMMON.md 2.2), after a push:
+
+    bash c164-realms/tools/nodejob.sh python tools/boardrender.py
+
+The views are tools/boardshots.py's, worked out from the skeleton of this checkout; the pictures
+are build/render.py's (1280x720, look A unless a view says otherwise). The folder is named after
+the assembly commit whose build/ this checkout carries: the checkout's build/ has to be, file for
+file, that of the assembly branch's head as the last fetch left it, and committed. Then a picture
+shows what the assembly holds, whatever branch the tool ran on. A checkout whose build/ is
+something else is drawn only with --tag, and the note says which commit it was.
+
+What lands in the folder:
+    <view>.png      the twelve pictures
+    board.json      the shot list they were taken with (tools/shoot.py reads the same file)
+    shots.txt       for every view its tick, the commit of the code it shows and the first 16
+                    digits of the picture file's SHA-256 (the note tools/selfshots.py writes)
+    sheet.jpg       all twelve on one sheet, four across, each with its name
+
+With --only the pictures named are drawn again and the others, the note's lines for them and the
+sheet's cells stay what they were.
+"""
+import argparse
+import hashlib
+import json
+import os
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+import time
+
+from PIL import Image, ImageDraw, ImageFont
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+PROJECT = os.path.dirname(HERE)
+BUILD = os.path.join(PROJECT, "build")
+ASSEMBLY = "origin/cursor/c164-assembly-fable-a9f5"
+SCENE = "obs"
+SIZE = "1280x720"
+NOTE = "shots.txt"
+HEAD = ("# shot, tick, commit of the code the picture shows, first 16 of the picture file's sha256 "
+        "(tools/boardrender.py; drawn offline, {size})")
+CELL = (640, 360)
+ACROSS = 4
+
+sys.path.insert(0, HERE)
+import boardshots  # noqa: E402
+
+
+def git(*args):
+    got = subprocess.run(("git", "-C", PROJECT) + args, capture_output=True, text=True)
+    return got.stdout.strip() if got.returncode == 0 else None
+
+
+def digest(path):
+    with open(path, "rb") as fh:
+        return hashlib.sha256(fh.read()).hexdigest()[:16]
+
+
+def which_commit(tag):
+    """(folder name, commit the pictures show). Without --tag the checkout's build/ must be the
+    assembly head's."""
+    head = git("rev-parse", "--short=8", "HEAD")
+    if not head:
+        sys.exit(f"{PROJECT}: not a git checkout, so the pictures could not say what they show")
+    dirty = git("status", "--porcelain", "--", "build")
+    if dirty:
+        sys.exit("build/ has changes that are not committed (" + ", ".join(line[3:] for line in dirty.splitlines()[:4])
+                 + "): commit them, the pictures are named after a commit")
+    if tag:
+        return tag, head
+    assembly = git("rev-parse", "--short=8", ASSEMBLY)
+    if not assembly:
+        sys.exit(f"{ASSEMBLY} is not here: git fetch origin {ASSEMBLY.split('/', 1)[1]} (tools/cloud_setup.sh does), "
+                 f"or name the folder yourself with --tag")
+    ours, theirs = git("rev-parse", "HEAD:c164-realms/build"), git("rev-parse", f"{ASSEMBLY}:c164-realms/build")
+    if not ours or ours != theirs:
+        sys.exit(f"build/ of this checkout ({head}) is not build/ of the assembly head ({assembly}): merge the "
+                 f"assembly, or draw this checkout as it is with --tag <name>")
+    return assembly[:7], assembly
+
+
+def draw(shots_file, only, out):
+    """build/render.py into the folder `out`; {view: (picture file, tick, seconds)}."""
+    prefix = os.path.join(out, "s")
+    cmd = [sys.executable, "-u", os.path.join(BUILD, "render.py"), SCENE, "--shots", shots_file, "--out", prefix,
+           "--size", SIZE]
+    if only:
+        cmd += ["--only", ",".join(only)]
+    made = {}
+    p = subprocess.Popen(cmd, cwd=BUILD, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
+                         encoding="utf-8", errors="replace")
+    said = []
+    for line in p.stdout:
+        line = line.rstrip("\n")
+        said.append(line)
+        m = re.match(re.escape(prefix) + r"-(.+)\.png \(tick (-?\d+), (\d+) s\)$", line)
+        if m:
+            made[m.group(1)] = (f"{prefix}-{m.group(1)}.png", m.group(2), int(m.group(3)))
+            line = f"{m.group(1)}.png (tick {m.group(2)}, {m.group(3)} s)"
+        print(f"  {line}", flush=True)
+    if p.wait() != 0:
+        sys.exit("build/render.py failed\n" + "\n".join(said[-15:]))
+    return made
+
+
+def read_note(path):
+    """{view: (tick, commit, digest)} of a note this tool wrote; {} without one."""
+    out = {}
+    try:
+        with open(path, encoding="utf-8") as fh:
+            for line in fh:
+                parts = line.rstrip("\n").split("\t")
+                if len(parts) == 4 and not line.startswith("#"):
+                    out[parts[0]] = tuple(parts[1:])
+    except OSError:
+        pass
+    return out
+
+
+def sheet(folder, names, title):
+    """All the views on one sheet, in the board's order; a view without a picture leaves its cell dark."""
+    rows = -(-len(names) // ACROSS)
+    try:
+        font = ImageFont.load_default(size=20)      # Pillow's own outline font
+    except (TypeError, OSError):
+        font = ImageFont.load_default()
+    band = 34
+    img = Image.new("RGB", (CELL[0] * ACROSS, band + CELL[1] * rows), (16, 16, 20))
+    pen = ImageDraw.Draw(img)
+    pen.text((8, 5), title, fill=(230, 230, 230), font=font)
+    for i, name in enumerate(names):
+        at = (i % ACROSS * CELL[0], band + i // ACROSS * CELL[1])
+        path = os.path.join(folder, name + ".png")
+        if os.path.exists(path):
+            with Image.open(path) as picture:
+                img.paste(picture.convert("RGB").resize(CELL, Image.LANCZOS), at)
+        box = pen.textbbox((at[0] + 5, at[1] + 2), name, font=font)
+        pen.rectangle((at[0], at[1], box[2] + 5, box[3] + 4), fill=(0, 0, 0))
+        pen.text((at[0] + 5, at[1] + 2), name, fill=(255, 255, 255), font=font)
+    img.save(os.path.join(folder, "sheet.jpg"), "JPEG", quality=88)
+
+
+def main():
+    ap = argparse.ArgumentParser(description="the twelve board views of the master scene, drawn offline")
+    ap.add_argument("--only", help="comma separated views")
+    ap.add_argument("--tag", help="name of the folder under renders/board/ (default: the assembly commit)")
+    args = ap.parse_args()
+    t0 = time.time()
+    views = [shot for shot, _, _ in boardshots.views()]
+    names = [v["name"] for v in views]
+    only = args.only.split(",") if args.only else []
+    unknown = [n for n in only if n not in names]
+    if unknown:
+        sys.exit("not a board view: " + ", ".join(unknown))
+    tag, commit = which_commit(args.tag)
+    folder = os.path.join(PROJECT, "renders", "board", tag)
+    os.makedirs(folder, exist_ok=True)
+    board = os.path.join(folder, "board.json")
+    with open(board, "w", encoding="utf-8", newline="\n") as fh:
+        fh.write(boardshots.text())
+    print(f"board of {commit} into renders/board/{tag}/: {len(only or names)} of {len(names)} views", flush=True)
+
+    note_path = os.path.join(folder, NOTE)
+    note = read_note(note_path) if only else {}
+    tmp = tempfile.mkdtemp(prefix="c164-board-")
+    try:
+        made = draw(board, only, tmp)
+        missing = [n for n in (only or names) if n not in made]
+        if missing:
+            sys.exit("build/render.py drew no picture of " + ", ".join(missing))
+        total, slow = 0, []
+        for name in only or names:
+            path, tick, secs = made[name]
+            target = os.path.join(folder, name + ".png")
+            with Image.open(path) as picture:
+                picture.save(target, optimize=True)
+            total += os.path.getsize(target)
+            note[name] = (tick, commit, digest(target))
+            slow.append((secs, name))
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    with open(note_path, "w", encoding="utf-8", newline="\n") as fh:
+        fh.write(HEAD.format(size=SIZE) + "\n")
+        for name in names:
+            if name in note:
+                fh.write("\t".join((name,) + tuple(note[name])) + "\n")
+    drawn = sorted({note[n][1] for n in names if n in note})
+    sheet(folder, names, f"c164 board, offline (build/render.py), the code of {', '.join(drawn)}, {SIZE}, look A")
+    slow.sort(reverse=True)
+    print(f"renders/board/{tag}/: {len(only or names)} pictures of {commit}, {total / 1048576:.1f} MB, "
+          f"{time.time() - t0:.0f} s in all; slowest " + ", ".join(f"{n} {s} s" for s, n in slow[:3]))
+    absent = [n for n in names if not os.path.exists(os.path.join(folder, n + ".png"))]
+    if absent:
+        print("still without a picture: " + ", ".join(absent))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
