@@ -1,0 +1,62 @@
+a0job 1115-222427-facade-walkout-f3-81a0-23453: cursor/c164-facade-walkout-f3-81a0 @ ca1e6189 on the director's machine
+  by a jump only: 15 nodes at [-13.5, 1.5, -18.0], x [-14.5, -12.5], z [-19.0, -17.0], y [-1.5, 1.5]; from [-15.0, 0.0, -17.5] (rise 1); [-12.5, 0.0, -18.0] (rise 1)
+  by a jump only: 15 nodes at [-13.5, 1.5, 19.0], x [-14.5, -12.5], z [18.0, 20.0], y [-1.5, 1.5]; from [-12.0, 0.0, 18.5] (rise 1); [-12.5, 0.0, 18.0] (rise 1)
+  by a jump only: 15 nodes at [-10.0, 1.5, 20.5], x [-11.0, -9.0], z [19.5, 21.5], y [-1.5, 1.5]; from [-9.0, 0.0, 21.5] (rise 1); [-9.0, 0.0, 19.5] (rise 1)
+  a gap of 1.5 closes the way: beside [60.5, 1.0, 32.5], x [60.5, 61.0], z [32.5, 32.5]
+  spawn: hop, 166 blocks from the start, at [88.5, -6.0, -32.5]
+  lower platform, before the stair: hop, 120 blocks from the start, at [75.5, -6.0, 0.5]
+  stair head: walk, 20 blocks from the start, at [58.5, 0.0, 0.5]
+  court, on the axis by the armillary: walk, 0 blocks from the start, at [38.5, 0.0, 0.5]
+  court, south end of the meridian: walk, 32 blocks from the start, at [35.5, 0.0, 29.5]
+  court, south-west corner: walk, 47 blocks from the start, at [19.5, 0.0, 28.5]
+  before the main door: walk, 18 blocks from the start, at [20.5, 0.0, 0.5]
+  court, north-west corner: walk, 47 blocks from the start, at [19.5, 0.0, -27.5]
+  court, north end of the meridian: walk, 27 blocks from the start, at [35.5, 0.0, -23.5]
+  meridian hut, before its door: walk, 28 blocks from the start, at [35.5, 0.0, -24.5]
+  mast pad: walk, 55 blocks from the start, at [23.5, 0.0, -39.5]
+  weather station: hop, 81 blocks from the start, at [3.5, -4.0, -45.5]
+  water tower: hop, 96 blocks from the start, at [-16.5, -2.0, -30.5]
+  west side, north: walk, 91 blocks from the start, at [-4.5, 0.0, -23.5]
+  sunset platform, west edge: walk, 137 blocks from the start, at [-26.5, 0.0, 0.5]
+  west side, south: walk, 91 blocks from the start, at [-4.5, 0.0, 24.5]
+  south lookout: hop, 59 blocks from the start, at [45.5, -5.0, 52.5]
+  power house, west side: hop, 78 blocks from the start, at [64.5, -6.0, 31.5]
+  power house, north side: hop, 106 blocks from the start, at [78.5, -6.0, 17.5]
+  lower platform, south-east: hop, 94 blocks from the start, at [88.5, -6.0, 43.5]
+  back at the spawn: hop, 166 blocks from the start, at [88.5, -6.0, -32.5]
+  spawn -> lower platform, before the stair: walk, 46 blocks
+  lower platform, before the stair -> stair head: hop, 124 blocks
+  stair head -> court, on the axis by the armillary: walk, 20 blocks
+  court, on the axis by the armillary -> court, south end of the meridian: walk, 32 blocks
+  court, south end of the meridian -> court, south-west corner: walk, 17 blocks
+  court, south-west corner -> before the main door: walk, 29 blocks
+  before the main door -> court, north-west corner: walk, 29 blocks
+  court, north-west corner -> court, north end of the meridian: walk, 20 blocks
+  court, north end of the meridian -> meridian hut, before its door: walk, 1 blocks
+  meridian hut, before its door -> mast pad: walk, 27 blocks
+  mast pad -> weather station: hop, 32 blocks
+  weather station -> water tower: hop, 35 blocks
+  water tower -> west side, north: hop, 19 blocks
+  west side, north -> sunset platform, west edge: walk, 46 blocks
+  sunset platform, west edge -> west side, south: walk, 46 blocks
+  west side, south -> south lookout: hop, 78 blocks
+  south lookout -> power house, west side: hop, 40 blocks
+  power house, west side -> power house, north side: walk, 28 blocks
+  power house, north side -> lower platform, south-east: walk, 40 blocks
+  lower platform, south-east -> back at the spawn: walk, 80 blocks
+written: renders/_wip/walk/b441655/reach-court.json, .txt, .png (1728x1736)
+102841 blocks, 22 entities (0 s)
+resource pack written to /tmp/c164pack-a1skx1yu (1 s)
+water: 0 sources, 0 cells of running water (1 s)
+grid 213 x 73 x 213, 102841 blocks, 1325 entity boxes (1 s)
+164 states -> 340 looks, 709 boxes, 90 pictures (1 s)
+light done (2 s)
+../renders/_wip/walk/b441655/site-top.png (tick 6000, 1 s)
+../renders/_wip/walk/b441655/site-top-night.png (tick 14000, 1 s)
+../renders/_wip/walk/b441655/site-ne.png (tick 6000, 1 s)
+../renders/_wip/walk/b441655/site-se.png (tick 6000, 1 s)
+../renders/_wip/walk/b441655/site-sw.png (tick 6000, 1 s)
+../renders/_wip/walk/b441655/site-nw.png (tick 6000, 1 s)
+==== NODEJOB RESULT ====
+exit=0 secs=187 host=cursor cores=4 head=ca1e6189 commit=a6dbf679 pushed=yes branch=cursor/c164-facade-walkout-f3-81a0-wip files=12
+a0job: exit=0 secs=187
