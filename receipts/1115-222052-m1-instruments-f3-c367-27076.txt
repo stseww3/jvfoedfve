@@ -1,0 +1,50 @@
+a0job 1115-222052-m1-instruments-f3-c367-27076: cursor/c164-m1-instruments-f3-c367 @ 15ca5265 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 2.33 2.27 1.86, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.4 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/check.py --scene obs_props_instruments && python tools/selfshots.py obs_props_instruments ---- exit 0, 122 s, last 40 lines of 45:
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    5 kinds of block placed, all in the occupancy table
+[SKIP] flatwall  a test scene of props: its sample walls and backdrops are meant to be flat
+[PASS] entities  20 display entities, 14 models never placed
+[PASS] views     25 shots, most display entities in view: 16 (hall), limit 600; counted without what walls hide; the game draws up to 20 (terrace): a display entity without width and height is drawn outside the view too
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    nothing moves
+result: PASS (0 failed, 0 with warnings)
+  obs_props_instruments: 1826 blocks, 20 entities (0 s)
+  obs_props_instruments: resource pack written to /tmp/c164pack-z4wsntbg (1 s)
+  obs_props_instruments: water: 0 sources, 0 cells of running water (1 s)
+  obs_props_instruments: grid 85 x 10 x 20, 1826 blocks, 1249 entity boxes (1 s)
+  obs_props_instruments: 5 states -> 11 looks, 9 boxes, 24 pictures (1 s)
+  obs_props_instruments: light done (1 s)
+  obs_props_instruments: terrace (tick 14000, 2 s)
+  obs_props_instruments: scope (tick 14000, 3 s)
+  obs_props_instruments: scope_near (tick 14000, 6 s)
+  obs_props_instruments: scope_behind (tick 14000, 5 s)
+  obs_props_instruments: scope_comet (tick 14000, 2 s)
+  obs_props_instruments: scope_comet_near (tick 14000, 4 s)
+  obs_props_instruments: scope_comet_aim (tick 14000, 3 s)
+  obs_props_instruments: louvre (tick 14000, 1 s)
+  obs_props_instruments: louvre_near (tick 14000, 2 s)
+  obs_props_instruments: sunshine (tick 14000, 5 s)
+  obs_props_instruments: sunshine_near (tick 14000, 5 s)
+  obs_props_instruments: hall (tick 14000, 2 s)
+  obs_props_instruments: globe (tick 14000, 8 s)
+  obs_props_instruments: globe_near (tick 14000, 11 s)
+  obs_props_instruments: globe_top (tick 14000, 6 s)
+  obs_props_instruments: globe_edge (tick 14000, 7 s)
+  obs_props_instruments: barometer (tick 14000, 3 s)
+  obs_props_instruments: barometer_dial (tick 14000, 4 s)
+  obs_props_instruments: clock (tick 14000, 3 s)
+  obs_props_instruments: clock_dial (tick 14000, 4 s)
+  obs_props_instruments: pendulum (tick 14000, 4 s)
+  obs_props_instruments: table (tick 14000, 4 s)
+  obs_props_instruments: table_globe_near (tick 14000, 9 s)
+  obs_props_instruments: sextant_near (tick 14000, 4 s)
+  obs_props_instruments: calc_near (tick 14000, 3 s)
+renders/obs_props_instruments/: 25 pictures of 15ca5265 drawn, 2.9 MB
+==== NODEJOB RESULT ====
+exit=0 secs=125 host=cursor cores=4 head=15ca5265 commit=0e5fa182 pushed=yes branch=cursor/c164-m1-instruments-f3-c367 files=26
+a0job: exit=0 secs=126
