@@ -242,18 +242,35 @@ def _recolour(ref, lamp=False):
     return out, meta
 
 
-def _grate(seed):
-    """IRON_GRATE: the game's grating, its bars in iron and its crossings caught by the light."""
-    px, _ = _recolour("block/oxidized_copper_grate")
-    seen = px[..., 3] > 0
-    r = P.mat("iron", base=3, noise=0.0)                    # a steady base so the mesh does not shimmer
-    flat = r.paint(TILE, TILE, seed=seed)
+_MESH = 4                                   # the grating's pitch: a two-pixel bar, a two-pixel hole
+_WORN = [(7, 3), (15, 7), (3, 11), (11, 15)]    # the crossings whose glint the second variant has lost
+
+
+def _grate(variant):
+    """IRON_GRATE: an open grating -- a square mesh on a four-pixel pitch, bars two pixels thick (I3
+    on the side that takes the light, I2 on the other), the lit corner of every crossing I5, the
+    holes clear. The plan's "4px mesh" is read as the pitch: the bars sit astride the tile's edges
+    (one pixel on each tile) and its middle lines, so a floor of gratings is one unbroken mesh,
+    a single grating set in a wall is closed all round by a one-pixel bar, and the holes are placed
+    alike seen from either side, so the eye goes straight through. Variant 1 has lost the glint on
+    four of its crossings, which keeps a floor of them from being one even field of dots."""
+    px = np.zeros((TILE, TILE, 4), dtype=np.uint8)
     for y in range(TILE):
         for x in range(TILE):
-            if seen[y, x]:
-                cross = seen[max(0, y - 1), x] and seen[min(TILE - 1, y + 1), x] \
-                    and seen[y, max(0, x - 1)] and seen[y, min(TILE - 1, x + 1)]
-                px[y, x, :3] = _i(5) if cross else flat[y, x, :3]
+            u, v = x % _MESH, y % _MESH
+            across, down = v in (0, 3), u in (0, 3)         # on a bar running across, on one running down
+            if across and down:
+                tone = 5 if (u, v) == (3, 3) else 2 if (u, v) == (0, 0) else 3
+            elif across:
+                tone = 3 if v == 3 else 2
+            elif down:
+                tone = 3 if u == 3 else 2
+            else:
+                continue                                    # the hole
+            _put(px, x, y, _i(tone))
+    if variant:
+        for x, y in _WORN:
+            _put(px, x, y, _i(4))
     return px
 
 
@@ -326,7 +343,7 @@ def pack(pack_dir):
     K.paint(pack_dir, "iron_plate", [_plain(s) for s in (1, 2, 3)])
     K.paint(pack_dir, "iron_riveted", [_riveted(s) for s in (1, 2, 3)])
     K.paint(pack_dir, "iron_cast", [_cast(1, "emblem"), _cast(2, "lozenge")])
-    K.paint(pack_dir, "iron_grate", [_grate(1), _grate(2)])
+    K.paint(pack_dir, "iron_grate", [_grate(0), _grate(1)])
     K.paint(pack_dir, "iron_hatch", [_hatch_lid(1), _hatch_louvre(2)])
     K.paint(pack_dir, "iron_door_bottom", _door_bottom())
     K.paint(pack_dir, "iron_door_top", _door_top())
