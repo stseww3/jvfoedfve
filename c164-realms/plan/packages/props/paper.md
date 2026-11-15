@@ -66,3 +66,9 @@
   4. 他的 `piece()` 有一道 `kind in peer.SPEC` 的闸——本包 `SPEC` 里 11 件全在，所以全部认得出。**这是三个房间（星厅、星图室、授时室）里唯一用 `SPEC` 判的，以后改 `KINDS` 必须同步改 `SPEC`。**
   5. 两件本子（`logbook`／`logbook_shut`）他自己按家具 TOP 放，本包只要 `place()` 接 `yaw=`，已满足。
   6. 星厅不要 `photo_plate`、`blackboard`、`moon_map`（黑板和月面图归星图室）。
+- 2026-11-16 凌晨 **停手存档（总监全组停手，#49512）**。lamps 这条线交到这里，给接手的人（fable 5.2 max 新进程）：
+  1. **两条件都已推上 GitHub，工作树干净**：`cursor/c164-m4-paper-7345` @ `e2001e0a`（本卡）、`cursor/c164-lamps-007c` @ `c2e5603b`（props/lamps，已收口已合总装）。两边 `git status` 空，remote 和 local 头一致。
+  2. **props/paper 的状态**：已交付、已合总装（1ae1fb20）。14 张图、`--verify` 14/14、check PASS 0 失 0 黄、delivery 七项全 PASS。**评审 c261 还没出正式评单**（我 #48629 请了，他先被叫停）。
+  3. **三个房间的接口全部对完了，都拿真代码跑过**：星图室 c291（六件，`build_chartroom` 里 paper 一件不缺）、授时室 c292（三件，蓝图直接立；两个本子等 props/furniture 进树，因为他的循环读 `furniture.TOP`）、星厅 c289（甲乙两版，`dress()` 里 paper 一件不缺，坐标一字不差）。**本包不需要改代码就能接上任何一间。**
+  4. **接手要知道的两个坑**：① 星厅的 `piece()` 用 `kind in peer.SPEC` 判本包有没有那件，所以改 `KINDS` 时必须同步改 `SPEC`，否则星厅静默不放；② 本包 `place()` 没有 `on=` 参数，那是调用方自己按支撑件的 `TOP` 加高度的（c292 就是这么做的），不要以为漏了。
+  5. **还没做的**：黑板挂多高在各屋不同（星图室 1.75、测试场景 2.25），本包只接坐标不判高度，所以不用改；大星图一对在回廊的实际观感等 c289 搬进壳后看图。
