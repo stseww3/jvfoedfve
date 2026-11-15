@@ -1,0 +1,2222 @@
+{
+ "round": "636ad21",
+ "scene": "obs",
+ "bounds": [
+  -23,
+  -45,
+  98,
+  50
+ ],
+ "line": -25.0,
+ "starts": [
+  {
+   "station": "in-A01",
+   "stations": 143,
+   "report": {
+    "start": [
+     26.5,
+     0.0,
+     0.5
+    ],
+    "nodes": {
+     "walk": 30267,
+     "hop": 12338,
+     "fall": 993,
+     "trap": 636
+    },
+    "ground": {
+     "walk": 7566.8,
+     "hop": 3084.5,
+     "fall": 248.2,
+     "trap": 159.0
+    },
+    "cut short": false,
+    "lowest block": -29,
+    "climbable blocks (not climbed here)": 0,
+    "joins worked out as the game does": "yes",
+    "shapes guessed as whole cubes": {},
+    "shapes written down": {
+     "smooth_sandstone_stairs": 828,
+     "oxidized_copper_bars": 662,
+     "waxed_exposed_cut_copper_slab": 606,
+     "snow": 349,
+     "oxidized_cut_copper_slab": 278,
+     "deepslate_tile_stairs": 273,
+     "waxed_oxidized_cut_copper_slab": 272,
+     "deepslate_tile_slab": 244,
+     "oxidized_copper_chain": 231,
+     "deepslate_brick_stairs": 230,
+     "oxidized_cut_copper_stairs": 131,
+     "sandstone_slab": 122,
+     "dark_oak_slab": 114,
+     "polished_tuff_stairs": 110,
+     "sandstone_wall": 102,
+     "polished_deepslate_slab": 78,
+     "tuff_brick_stairs": 76,
+     "oxidized_copper_trapdoor": 63,
+     "polished_tuff_slab": 51,
+     "waxed_weathered_cut_copper_slab": 46,
+     "oxidized_lightning_rod": 41,
+     "sandstone_stairs": 32,
+     "smooth_sandstone_slab": 27,
+     "cut_sandstone_slab": 20,
+     "waxed_exposed_cut_copper_stairs": 20,
+     "oxidized_copper_door": 8,
+     "gray_stained_glass_pane": 7,
+     "pale_oak_slab": 2
+    },
+    "no collision": {
+     "rail": 114,
+     "light": 40,
+     "activator_rail": 2,
+     "detector_rail": 1
+    },
+    "traps": [
+     {
+      "nodes": 410,
+      "at": [
+       -21.5,
+       -24.0,
+       37.5
+      ],
+      "x": [
+       -23.0,
+       -11.5
+      ],
+      "z": [
+       25.5,
+       51.0
+      ],
+      "y": [
+       -25.0,
+       -18.0
+      ],
+      "falls in from": [
+       {
+        "nodes": 98,
+        "at": [
+         -21.0,
+         -16.0,
+         37.5
+        ],
+        "x": [
+         -23.0,
+         -11.0
+        ],
+        "z": [
+         25.0,
+         51.0
+        ],
+        "y": [
+         -22.0,
+         -16.0
+        ],
+        "kinds": [
+         "hop"
+        ],
+        "drop": [
+         2.0,
+         8.0
+        ]
+       }
+      ],
+      "edges in": 1,
+      "ways in": 98,
+      "rise to get out": 2.0
+     },
+     {
+      "nodes": 116,
+      "at": [
+       10.5,
+       -23.0,
+       50.0
+      ],
+      "x": [
+       4.5,
+       15.5
+      ],
+      "z": [
+       47.5,
+       51.0
+      ],
+      "y": [
+       -23.0,
+       -17.0
+      ],
+      "falls in from": [
+       {
+        "nodes": 33,
+        "at": [
+         10.0,
+         -16.0,
+         48.0
+        ],
+        "x": [
+         4.0,
+         16.0
+        ],
+        "z": [
+         47.0,
+         51.0
+        ],
+        "y": [
+         -19.0,
+         -14.0
+        ],
+        "kinds": [
+         "hop"
+        ],
+        "drop": [
+         2.0,
+         7.0
+        ]
+       }
+      ],
+      "edges in": 1,
+      "ways in": 33,
+      "rise to get out": 2.0
+     },
+     {
+      "nodes": 64,
+      "at": [
+       -20.5,
+       -21.0,
+       -44.0
+      ],
+      "x": [
+       -23.0,
+       -16.5
+      ],
+      "z": [
+       -45.0,
+       -42.5
+      ],
+      "y": [
+       -24.0,
+       -17.0
+      ],
+      "falls in from": [
+       {
+        "nodes": 18,
+        "at": [
+         -19.0,
+         -17.0,
+         -43.0
+        ],
+        "x": [
+         -23.0,
+         -16.0
+        ],
+        "z": [
+         -45.0,
+         -42.0
+        ],
+        "y": [
+         -18.0,
+         -15.0
+        ],
+        "kinds": [
+         "hop",
+         "fall"
+        ],
+        "drop": [
+         2.0,
+         5.0
+        ]
+       }
+      ],
+      "edges in": 1,
+      "ways in": 18,
+      "rise to get out": 2.0
+     },
+     {
+      "nodes": 32,
+      "at": [
+       12.0,
+       -10.0,
+       -43.5
+      ],
+      "x": [
+       10.5,
+       13.5
+      ],
+      "z": [
+       -45.0,
+       -42.5
+      ],
+      "y": [
+       -13.0,
+       -8.0
+      ],
+      "falls in from": [
+       {
+        "nodes": 19,
+        "at": [
+         13.0,
+         -7.0,
+         -43.0
+        ],
+        "x": [
+         10.0,
+         14.0
+        ],
+        "z": [
+         -45.0,
+         -42.0
+        ],
+        "y": [
+         -7.0,
+         -5.0
+        ],
+        "kinds": [
+         "hop"
+        ],
+        "drop": [
+         2.0,
+         7.0
+        ]
+       }
+      ],
+      "edges in": 1,
+      "ways in": 19,
+      "rise to get out": 2.0
+     },
+     {
+      "nodes": 14,
+      "at": [
+       47.0,
+       -19.0,
+       -45.0
+      ],
+      "x": [
+       45.5,
+       48.5
+      ],
+      "z": [
+       -45.0,
+       -44.5
+      ],
+      "y": [
+       -19.0,
+       -14.0
+      ],
+      "falls in from": [
+       {
+        "nodes": 11,
+        "at": [
+         47.0,
+         -12.0,
+         -44.0
+        ],
+        "x": [
+         45.0,
+         49.0
+        ],
+        "z": [
+         -45.0,
+         -44.0
+        ],
+        "y": [
+         -12.0,
+         -12.0
+        ],
+        "kinds": [
+         "hop"
+        ],
+        "drop": [
+         2.0,
+         7.0
+        ]
+       }
+      ],
+      "edges in": 1,
+      "ways in": 11,
+      "rise to get out": 2.0
+     }
+    ],
+    "trap ground by height (square blocks in each two blocks of height, from the top)": {
+     "-8..-6": 2.5,
+     "-10..-8": 1.5,
+     "-12..-10": 2.8,
+     "-14..-12": 2.2,
+     "-18..-16": 10.5,
+     "-20..-18": 11.5,
+     "-22..-20": 25.5,
+     "-24..-22": 91.0,
+     "-26..-24": 11.5
+    },
+    "lowest feet on walk or hop ground": -22.0,
+    "line": -25.0,
+    "stuck (no way back and no way down to the line)": [],
+    "void": [
+     {
+      "nodes": 819,
+      "at": [
+       39.5,
+       -5.0,
+       51.0
+      ],
+      "x": [
+       -23.0,
+       99.0
+      ],
+      "z": [
+       -45.0,
+       51.0
+      ],
+      "y": [
+       -25.0,
+       1.5
+      ],
+      "kinds": [
+       "fall",
+       "hop",
+       "trap",
+       "walk"
+      ]
+     },
+     {
+      "nodes": 37,
+      "at": [
+       11.5,
+       -8.0,
+       -45.0
+      ],
+      "x": [
+       2.5,
+       20.5
+      ],
+      "z": [
+       -45.0,
+       -45.0
+      ],
+      "y": [
+       -13.0,
+       1.5
+      ],
+      "kinds": [
+       "fall",
+       "hop",
+       "trap",
+       "walk"
+      ]
+     }
+    ],
+    "void not listed (short)": 1,
+    "hop only": [
+     {
+      "nodes": 6016,
+      "at": [
+       74.0,
+       -3.5,
+       -8.0
+      ],
+      "x": [
+       29.0,
+       99.0
+      ],
+      "z": [
+       -45.0,
+       51.0
+      ],
+      "y": [
+       -22.0,
+       1.5
+      ],
+      "jumps in": [
+       {
+        "at": [
+         72.5,
+         -6.0,
+         -41.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         77.0,
+         -6.0,
+         -41.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         60.0,
+         0.0,
+         -35.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         53.5,
+         0.0,
+         -37.0
+        ],
+        "rise": 1.0
+       }
+      ]
+     },
+     {
+      "nodes": 3759,
+      "at": [
+       5.5,
+       -7.0,
+       40.5
+      ],
+      "x": [
+       -23.0,
+       44.0
+      ],
+      "z": [
+       12.5,
+       51.0
+      ],
+      "y": [
+       -22.0,
+       1.5
+      ],
+      "jumps in": [
+       {
+        "at": [
+         -20.5,
+         0.0,
+         14.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         29.0,
+         0.0,
+         38.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         -8.5,
+         0.0,
+         38.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         -11.5,
+         0.0,
+         19.0
+        ],
+        "rise": 1.0
+       }
+      ]
+     },
+     {
+      "nodes": 1512,
+      "at": [
+       -13.0,
+       -0.5,
+       -34.0
+      ],
+      "x": [
+       -23.0,
+       2.0
+      ],
+      "z": [
+       -45.0,
+       -11.5
+      ],
+      "y": [
+       -18.0,
+       1.5
+      ],
+      "jumps in": [
+       {
+        "at": [
+         -22.0,
+         0.0,
+         -12.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         -9.0,
+         0.0,
+         -35.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         -18.5,
+         0.0,
+         -15.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         -9.0,
+         0.0,
+         -23.0
+        ],
+        "rise": 1.0
+       }
+      ]
+     },
+     {
+      "nodes": 329,
+      "at": [
+       12.0,
+       -6.0,
+       -40.5
+      ],
+      "x": [
+       5.0,
+       18.0
+      ],
+      "z": [
+       -45.0,
+       -37.0
+      ],
+      "y": [
+       -7.0,
+       1.5
+      ],
+      "jumps in": [
+       {
+        "at": [
+         18.0,
+         0.0,
+         -42.5
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         16.5,
+         0.0,
+         -37.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         18.0,
+         0.0,
+         -44.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         11.0,
+         0.0,
+         -37.0
+        ],
+        "rise": 1.0
+       }
+      ]
+     },
+     {
+      "nodes": 202,
+      "at": [
+       61.0,
+       0.0,
+       16.0
+      ],
+      "x": [
+       60.0,
+       74.0
+      ],
+      "z": [
+       9.0,
+       32.5
+      ],
+      "y": [
+       -4.5,
+       1.5
+      ],
+      "jumps in": [
+       {
+        "at": [
+         60.0,
+         0.0,
+         23.5
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         68.5,
+         -4.0,
+         8.5
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         60.0,
+         0.0,
+         24.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         71.0,
+         -5.0,
+         8.5
+        ],
+        "rise": 1.0
+       }
+      ]
+     },
+     {
+      "nodes": 188,
+      "at": [
+       11.0,
+       7.0,
+       1.0
+      ],
+      "x": [
+       1.5,
+       15.5
+      ],
+      "z": [
+       -3.5,
+       4.5
+      ],
+      "y": [
+       7.0,
+       14.0
+      ],
+      "jumps in": [
+       {
+        "at": [
+         14.5,
+         7.0,
+         5.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         2.0,
+         7.0,
+         3.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         2.5,
+         12.0,
+         3.5
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         11.5,
+         7.0,
+         -4.0
+        ],
+        "rise": 1.0
+       }
+      ]
+     },
+     {
+      "nodes": 123,
+      "at": [
+       4.5,
+       18.0,
+       0.5
+      ],
+      "x": [
+       2.0,
+       7.0
+      ],
+      "z": [
+       -3.0,
+       3.0
+      ],
+      "y": [
+       18.0,
+       19.0
+      ],
+      "jumps in": [
+       {
+        "at": [
+         4.5,
+         18.0,
+         -2.5
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         3.5,
+         18.0,
+         -3.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         4.5,
+         18.0,
+         -3.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         7.0,
+         17.0,
+         -2.5
+        ],
+        "rise": 1.0
+       }
+      ]
+     },
+     {
+      "nodes": 61,
+      "at": [
+       4.5,
+       19.0,
+       4.5
+      ],
+      "x": [
+       0.5,
+       8.5
+      ],
+      "z": [
+       -3.5,
+       4.5
+      ],
+      "y": [
+       19.0,
+       19.0
+      ],
+      "jumps in": [
+       {
+        "at": [
+         7.5,
+         18.0,
+         -3.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         0.0,
+         18.0,
+         3.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         3.5,
+         18.0,
+         -4.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         3.0,
+         18.0,
+         5.0
+        ],
+        "rise": 1.0
+       }
+      ]
+     },
+     {
+      "nodes": 30,
+      "at": [
+       52.5,
+       -7.0,
+       49.5
+      ],
+      "x": [
+       51.5,
+       53.0
+      ],
+      "z": [
+       47.0,
+       51.0
+      ],
+      "y": [
+       -8.0,
+       -6.0
+      ],
+      "jumps in": []
+     },
+     {
+      "nodes": 21,
+      "at": [
+       1.0,
+       10.0,
+       -1.5
+      ],
+      "x": [
+       1.0,
+       4.0
+      ],
+      "z": [
+       -3.5,
+       2.5
+      ],
+      "y": [
+       8.0,
+       12.0
+      ],
+      "jumps in": [
+       {
+        "at": [
+         4.0,
+         8.0,
+         -2.5
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         2.0,
+         7.0,
+         -3.5
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         1.5,
+         9.0,
+         -1.5
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         2.5,
+         7.0,
+         -4.0
+        ],
+        "rise": 1.0
+       }
+      ]
+     },
+     {
+      "nodes": 13,
+      "at": [
+       -1.5,
+       8.0,
+       -1.5
+      ],
+      "x": [
+       -3.5,
+       -0.5
+      ],
+      "z": [
+       -4.5,
+       -1.5
+      ],
+      "y": [
+       8.0,
+       8.0
+      ],
+      "jumps in": [
+       {
+        "at": [
+         -1.0,
+         7.0,
+         -2.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         0.0,
+         7.0,
+         -4.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         0.0,
+         7.0,
+         -3.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         -1.0,
+         7.0,
+         -1.0
+        ],
+        "rise": 1.0
+       }
+      ]
+     },
+     {
+      "nodes": 13,
+      "at": [
+       -1.5,
+       8.0,
+       2.5
+      ],
+      "x": [
+       -3.5,
+       -0.5
+      ],
+      "z": [
+       2.5,
+       5.5
+      ],
+      "y": [
+       8.0,
+       8.0
+      ],
+      "jumps in": [
+       {
+        "at": [
+         -1.0,
+         7.0,
+         4.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         -1.5,
+         7.0,
+         3.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         -3.0,
+         7.0,
+         3.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         -1.0,
+         7.0,
+         5.0
+        ],
+        "rise": 1.0
+       }
+      ]
+     },
+     {
+      "nodes": 12,
+      "at": [
+       41.5,
+       -4.0,
+       48.5
+      ],
+      "x": [
+       40.5,
+       43.5
+      ],
+      "z": [
+       48.5,
+       51.0
+      ],
+      "y": [
+       -4.0,
+       -4.0
+      ],
+      "jumps in": [
+       {
+        "at": [
+         41.5,
+         -5.0,
+         49.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         44.0,
+         -5.0,
+         48.5
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         41.0,
+         -5.0,
+         49.5
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         40.0,
+         -5.0,
+         50.5
+        ],
+        "rise": 1.0
+       }
+      ]
+     },
+     {
+      "nodes": 12,
+      "at": [
+       49.5,
+       -4.0,
+       48.5
+      ],
+      "x": [
+       47.5,
+       50.5
+      ],
+      "z": [
+       48.5,
+       51.0
+      ],
+      "y": [
+       -4.0,
+       -4.0
+      ],
+      "jumps in": [
+       {
+        "at": [
+         49.0,
+         -5.0,
+         48.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         48.0,
+         -5.0,
+         48.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         49.0,
+         -5.0,
+         49.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         48.0,
+         -5.0,
+         49.0
+        ],
+        "rise": 1.0
+       }
+      ]
+     }
+    ],
+    "hop only not listed (small)": 6,
+    "low head room": [],
+    "closed by head room only": [
+     {
+      "nodes": 5,
+      "at": [
+       1.0,
+       7.0,
+       1.0
+      ],
+      "x": [
+       1.0,
+       2.0
+      ],
+      "z": [
+       0.5,
+       1.5
+      ],
+      "y": [
+       7.0,
+       8.0
+      ],
+      "room": 1.5
+     },
+     {
+      "nodes": 3,
+      "at": [
+       0.5,
+       7.0,
+       -1.0
+      ],
+      "x": [
+       0.5,
+       1.0
+      ],
+      "z": [
+       -1.5,
+       -0.5
+      ],
+      "y": [
+       7.0,
+       7.0
+      ],
+      "room": 1.5
+     },
+     {
+      "nodes": 2,
+      "at": [
+       6.0,
+       14.0,
+       3.5
+      ],
+      "x": [
+       6.0,
+       6.5
+      ],
+      "z": [
+       3.5,
+       3.5
+      ],
+      "y": [
+       14.0,
+       14.0
+      ],
+      "room": 1.5
+     },
+     {
+      "nodes": 1,
+      "at": [
+       2.0,
+       7.0,
+       -0.5
+      ],
+      "x": [
+       2.0,
+       2.0
+      ],
+      "z": [
+       -0.5,
+       -0.5
+      ],
+      "y": [
+       7.0,
+       7.0
+      ],
+      "room": 1.5
+     },
+     {
+      "nodes": 1,
+      "at": [
+       4.5,
+       14.0,
+       3.0
+      ],
+      "x": [
+       4.5,
+       4.5
+      ],
+      "z": [
+       3.0,
+       3.0
+      ],
+      "y": [
+       14.0,
+       14.0
+      ],
+      "room": 1.5
+     },
+     {
+      "nodes": 1,
+      "at": [
+       61.0,
+       0.0,
+       32.5
+      ],
+      "x": [
+       61.0,
+       61.0
+      ],
+      "z": [
+       32.5,
+       32.5
+      ],
+      "y": [
+       0.0,
+       0.0
+      ],
+      "room": 1.5
+     }
+    ]
+   }
+  },
+  {
+   "station": "in-J03",
+   "stations": 16,
+   "report": {
+    "start": [
+     12.5,
+     18.0,
+     10.5
+    ],
+    "nodes": {
+     "walk": 1270,
+     "hop": 19,
+     "fall": 0,
+     "trap": 45819
+    },
+    "ground": {
+     "walk": 317.5,
+     "hop": 4.8,
+     "fall": 0.0,
+     "trap": 11454.8
+    },
+    "cut short": false,
+    "lowest block": -29,
+    "climbable blocks (not climbed here)": 0,
+    "joins worked out as the game does": "yes",
+    "shapes guessed as whole cubes": {},
+    "shapes written down": {
+     "smooth_sandstone_stairs": 828,
+     "oxidized_copper_bars": 662,
+     "waxed_exposed_cut_copper_slab": 606,
+     "snow": 349,
+     "oxidized_cut_copper_slab": 278,
+     "deepslate_tile_stairs": 273,
+     "waxed_oxidized_cut_copper_slab": 272,
+     "deepslate_tile_slab": 244,
+     "oxidized_copper_chain": 231,
+     "deepslate_brick_stairs": 230,
+     "oxidized_cut_copper_stairs": 131,
+     "sandstone_slab": 122,
+     "dark_oak_slab": 114,
+     "polished_tuff_stairs": 110,
+     "sandstone_wall": 102,
+     "polished_deepslate_slab": 78,
+     "tuff_brick_stairs": 76,
+     "oxidized_copper_trapdoor": 63,
+     "polished_tuff_slab": 51,
+     "waxed_weathered_cut_copper_slab": 46,
+     "oxidized_lightning_rod": 41,
+     "sandstone_stairs": 32,
+     "smooth_sandstone_slab": 27,
+     "cut_sandstone_slab": 20,
+     "waxed_exposed_cut_copper_stairs": 20,
+     "oxidized_copper_door": 8,
+     "gray_stained_glass_pane": 7,
+     "pale_oak_slab": 2
+    },
+    "no collision": {
+     "rail": 114,
+     "light": 40,
+     "activator_rail": 2,
+     "detector_rail": 1
+    },
+    "traps": [
+     {
+      "nodes": 45814,
+      "at": [
+       37.5,
+       0.0,
+       2.5
+      ],
+      "x": [
+       -23.0,
+       99.0
+      ],
+      "z": [
+       -45.0,
+       51.0
+      ],
+      "y": [
+       -25.0,
+       19.0
+      ],
+      "falls in from": [
+       {
+        "nodes": 132,
+        "at": [
+         16.0,
+         18.0,
+         25.5
+        ],
+        "x": [
+         0.0,
+         17.0
+        ],
+        "z": [
+         8.5,
+         35.0
+        ],
+        "y": [
+         18.0,
+         18.0
+        ],
+        "kinds": [
+         "walk"
+        ],
+        "drop": [
+         1.5,
+         1.5
+        ]
+       }
+      ],
+      "edges in": 1,
+      "ways in": 132,
+      "rise to get out": 1.5
+     },
+     {
+      "nodes": 5,
+      "at": [
+       8.5,
+       18.0,
+       13.0
+      ],
+      "x": [
+       8.5,
+       9.5
+      ],
+      "z": [
+       12.5,
+       13.5
+      ],
+      "y": [
+       18.0,
+       18.0
+      ],
+      "falls in from": [
+       {
+        "nodes": 1,
+        "at": [
+         9.5,
+         20.0,
+         14.0
+        ],
+        "x": [
+         9.5,
+         9.5
+        ],
+        "z": [
+         14.0,
+         14.0
+        ],
+        "y": [
+         20.0,
+         20.0
+        ],
+        "kinds": [
+         "walk"
+        ],
+        "drop": [
+         2.0,
+         2.0
+        ]
+       }
+      ],
+      "edges in": 1,
+      "ways in": 1,
+      "rise to get out": 2.0
+     }
+    ],
+    "trap ground by height (square blocks in each two blocks of height, from the top)": {
+     "18..20": 347.2,
+     "16..18": 397.5,
+     "14..16": 3.5,
+     "12..14": 4.5,
+     "10..12": 7.0,
+     "8..10": 26.0,
+     "6..8": 546.5,
+     "4..6": 10.0,
+     "2..4": 11.0,
+     "0..2": 4622.8,
+     "-2..0": 274.8,
+     "-4..-2": 342.2,
+     "-6..-4": 2613.8,
+     "-8..-6": 610.2,
+     "-10..-8": 270.8,
+     "-12..-10": 320.2,
+     "-14..-12": 329.2,
+     "-16..-14": 349.5,
+     "-18..-16": 101.5,
+     "-20..-18": 120.5,
+     "-22..-20": 43.5,
+     "-24..-22": 91.0,
+     "-26..-24": 11.5
+    },
+    "lowest feet on walk or hop ground": 17.0,
+    "line": -25.0,
+    "stuck (no way back and no way down to the line)": [
+     {
+      "nodes": 5,
+      "at": [
+       8.5,
+       18.0,
+       13.0
+      ],
+      "x": [
+       8.5,
+       9.5
+      ],
+      "z": [
+       12.5,
+       13.5
+      ],
+      "y": [
+       18.0,
+       18.0
+      ],
+      "falls in from": [
+       {
+        "nodes": 1,
+        "at": [
+         9.5,
+         20.0,
+         14.0
+        ],
+        "x": [
+         9.5,
+         9.5
+        ],
+        "z": [
+         14.0,
+         14.0
+        ],
+        "y": [
+         20.0,
+         20.0
+        ],
+        "kinds": [
+         "walk"
+        ],
+        "drop": [
+         2.0,
+         2.0
+        ]
+       }
+      ],
+      "ways in from trap ground that is not stuck": 0,
+      "rise to get out": 2.0
+     }
+    ],
+    "void": [
+     {
+      "nodes": 819,
+      "at": [
+       39.5,
+       -5.0,
+       51.0
+      ],
+      "x": [
+       -23.0,
+       99.0
+      ],
+      "z": [
+       -45.0,
+       51.0
+      ],
+      "y": [
+       -25.0,
+       1.5
+      ],
+      "kinds": [
+       "trap"
+      ]
+     },
+     {
+      "nodes": 37,
+      "at": [
+       11.5,
+       -8.0,
+       -45.0
+      ],
+      "x": [
+       2.5,
+       20.5
+      ],
+      "z": [
+       -45.0,
+       -45.0
+      ],
+      "y": [
+       -13.0,
+       1.5
+      ],
+      "kinds": [
+       "trap"
+      ]
+     }
+    ],
+    "void not listed (short)": 1,
+    "hop only": [
+     {
+      "nodes": 14,
+      "at": [
+       8.0,
+       21.0,
+       26.5
+      ],
+      "x": [
+       7.0,
+       9.0
+      ],
+      "z": [
+       26.0,
+       27.0
+      ],
+      "y": [
+       21.0,
+       21.0
+      ],
+      "jumps in": [
+       {
+        "at": [
+         8.0,
+         20.0,
+         25.5
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         9.5,
+         20.0,
+         26.5
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         9.5,
+         20.0,
+         26.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         9.0,
+         20.0,
+         25.5
+        ],
+        "rise": 1.0
+       }
+      ]
+     }
+    ],
+    "hop only not listed (small)": 2,
+    "low head room": [],
+    "closed by head room only": [
+     {
+      "nodes": 7,
+      "at": [
+       9.0,
+       20.0,
+       15.5
+      ],
+      "x": [
+       7.5,
+       9.5
+      ],
+      "z": [
+       14.0,
+       15.5
+      ],
+      "y": [
+       20.0,
+       20.0
+      ],
+      "room": 1.5
+     },
+     {
+      "nodes": 5,
+      "at": [
+       12.5,
+       18.0,
+       25.5
+      ],
+      "x": [
+       11.5,
+       13.5
+      ],
+      "z": [
+       25.5,
+       26.0
+      ],
+      "y": [
+       18.0,
+       18.5
+      ],
+      "room": 1.5
+     }
+    ]
+   }
+  },
+  {
+   "station": "in-J19",
+   "stations": 2,
+   "report": {
+    "start": [
+     10.5,
+     18.0,
+     30.5
+    ],
+    "nodes": {
+     "walk": 65,
+     "hop": 30,
+     "fall": 0,
+     "trap": 0
+    },
+    "ground": {
+     "walk": 16.2,
+     "hop": 7.5,
+     "fall": 0.0,
+     "trap": 0.0
+    },
+    "cut short": false,
+    "lowest block": -29,
+    "climbable blocks (not climbed here)": 0,
+    "joins worked out as the game does": "yes",
+    "shapes guessed as whole cubes": {},
+    "shapes written down": {
+     "smooth_sandstone_stairs": 828,
+     "oxidized_copper_bars": 662,
+     "waxed_exposed_cut_copper_slab": 606,
+     "snow": 349,
+     "oxidized_cut_copper_slab": 278,
+     "deepslate_tile_stairs": 273,
+     "waxed_oxidized_cut_copper_slab": 272,
+     "deepslate_tile_slab": 244,
+     "oxidized_copper_chain": 231,
+     "deepslate_brick_stairs": 230,
+     "oxidized_cut_copper_stairs": 131,
+     "sandstone_slab": 122,
+     "dark_oak_slab": 114,
+     "polished_tuff_stairs": 110,
+     "sandstone_wall": 102,
+     "polished_deepslate_slab": 78,
+     "tuff_brick_stairs": 76,
+     "oxidized_copper_trapdoor": 63,
+     "polished_tuff_slab": 51,
+     "waxed_weathered_cut_copper_slab": 46,
+     "oxidized_lightning_rod": 41,
+     "sandstone_stairs": 32,
+     "smooth_sandstone_slab": 27,
+     "cut_sandstone_slab": 20,
+     "waxed_exposed_cut_copper_stairs": 20,
+     "oxidized_copper_door": 8,
+     "gray_stained_glass_pane": 7,
+     "pale_oak_slab": 2
+    },
+    "no collision": {
+     "rail": 114,
+     "light": 40,
+     "activator_rail": 2,
+     "detector_rail": 1
+    },
+    "traps": [],
+    "trap ground by height (square blocks in each two blocks of height, from the top)": {},
+    "lowest feet on walk or hop ground": 18.0,
+    "line": -25.0,
+    "stuck (no way back and no way down to the line)": [],
+    "void": [],
+    "void not listed (short)": 0,
+    "hop only": [],
+    "hop only not listed (small)": 3,
+    "low head room": [],
+    "closed by head room only": []
+   }
+  },
+  {
+   "station": "in-K03",
+   "stations": 16,
+   "report": {
+    "start": [
+     12.5,
+     18.0,
+     -9.5
+    ],
+    "nodes": {
+     "walk": 1239,
+     "hop": 20,
+     "fall": 0,
+     "trap": 45819
+    },
+    "ground": {
+     "walk": 309.8,
+     "hop": 5.0,
+     "fall": 0.0,
+     "trap": 11454.8
+    },
+    "cut short": false,
+    "lowest block": -29,
+    "climbable blocks (not climbed here)": 0,
+    "joins worked out as the game does": "yes",
+    "shapes guessed as whole cubes": {},
+    "shapes written down": {
+     "smooth_sandstone_stairs": 828,
+     "oxidized_copper_bars": 662,
+     "waxed_exposed_cut_copper_slab": 606,
+     "snow": 349,
+     "oxidized_cut_copper_slab": 278,
+     "deepslate_tile_stairs": 273,
+     "waxed_oxidized_cut_copper_slab": 272,
+     "deepslate_tile_slab": 244,
+     "oxidized_copper_chain": 231,
+     "deepslate_brick_stairs": 230,
+     "oxidized_cut_copper_stairs": 131,
+     "sandstone_slab": 122,
+     "dark_oak_slab": 114,
+     "polished_tuff_stairs": 110,
+     "sandstone_wall": 102,
+     "polished_deepslate_slab": 78,
+     "tuff_brick_stairs": 76,
+     "oxidized_copper_trapdoor": 63,
+     "polished_tuff_slab": 51,
+     "waxed_weathered_cut_copper_slab": 46,
+     "oxidized_lightning_rod": 41,
+     "sandstone_stairs": 32,
+     "smooth_sandstone_slab": 27,
+     "cut_sandstone_slab": 20,
+     "waxed_exposed_cut_copper_stairs": 20,
+     "oxidized_copper_door": 8,
+     "gray_stained_glass_pane": 7,
+     "pale_oak_slab": 2
+    },
+    "no collision": {
+     "rail": 114,
+     "light": 40,
+     "activator_rail": 2,
+     "detector_rail": 1
+    },
+    "traps": [
+     {
+      "nodes": 45814,
+      "at": [
+       37.5,
+       0.0,
+       2.5
+      ],
+      "x": [
+       -23.0,
+       99.0
+      ],
+      "z": [
+       -45.0,
+       51.0
+      ],
+      "y": [
+       -25.0,
+       19.0
+      ],
+      "falls in from": [
+       {
+        "nodes": 79,
+        "at": [
+         0.0,
+         18.0,
+         -28.0
+        ],
+        "x": [
+         0.0,
+         17.0
+        ],
+        "z": [
+         -34.0,
+         -12.5
+        ],
+        "y": [
+         18.0,
+         18.0
+        ],
+        "kinds": [
+         "walk"
+        ],
+        "drop": [
+         1.5,
+         1.5
+        ]
+       },
+       {
+        "nodes": 38,
+        "at": [
+         16.0,
+         18.0,
+         -16.5
+        ],
+        "x": [
+         16.0,
+         17.0
+        ],
+        "z": [
+         -25.5,
+         -7.5
+        ],
+        "y": [
+         18.0,
+         18.0
+        ],
+        "kinds": [
+         "walk"
+        ],
+        "drop": [
+         1.5,
+         1.5
+        ]
+       }
+      ],
+      "edges in": 2,
+      "ways in": 117,
+      "rise to get out": 1.5
+     },
+     {
+      "nodes": 5,
+      "at": [
+       8.5,
+       18.0,
+       -12.0
+      ],
+      "x": [
+       8.5,
+       9.5
+      ],
+      "z": [
+       -12.5,
+       -11.5
+      ],
+      "y": [
+       18.0,
+       18.0
+      ],
+      "falls in from": [
+       {
+        "nodes": 1,
+        "at": [
+         9.5,
+         20.0,
+         -13.0
+        ],
+        "x": [
+         9.5,
+         9.5
+        ],
+        "z": [
+         -13.0,
+         -13.0
+        ],
+        "y": [
+         20.0,
+         20.0
+        ],
+        "kinds": [
+         "walk"
+        ],
+        "drop": [
+         2.0,
+         2.0
+        ]
+       }
+      ],
+      "edges in": 1,
+      "ways in": 1,
+      "rise to get out": 2.0
+     }
+    ],
+    "trap ground by height (square blocks in each two blocks of height, from the top)": {
+     "18..20": 347.2,
+     "16..18": 397.5,
+     "14..16": 3.5,
+     "12..14": 4.5,
+     "10..12": 7.0,
+     "8..10": 26.0,
+     "6..8": 546.5,
+     "4..6": 10.0,
+     "2..4": 11.0,
+     "0..2": 4622.8,
+     "-2..0": 274.8,
+     "-4..-2": 342.2,
+     "-6..-4": 2613.8,
+     "-8..-6": 610.2,
+     "-10..-8": 270.8,
+     "-12..-10": 320.2,
+     "-14..-12": 329.2,
+     "-16..-14": 349.5,
+     "-18..-16": 101.5,
+     "-20..-18": 120.5,
+     "-22..-20": 43.5,
+     "-24..-22": 91.0,
+     "-26..-24": 11.5
+    },
+    "lowest feet on walk or hop ground": 17.0,
+    "line": -25.0,
+    "stuck (no way back and no way down to the line)": [
+     {
+      "nodes": 5,
+      "at": [
+       8.5,
+       18.0,
+       -12.0
+      ],
+      "x": [
+       8.5,
+       9.5
+      ],
+      "z": [
+       -12.5,
+       -11.5
+      ],
+      "y": [
+       18.0,
+       18.0
+      ],
+      "falls in from": [
+       {
+        "nodes": 1,
+        "at": [
+         9.5,
+         20.0,
+         -13.0
+        ],
+        "x": [
+         9.5,
+         9.5
+        ],
+        "z": [
+         -13.0,
+         -13.0
+        ],
+        "y": [
+         20.0,
+         20.0
+        ],
+        "kinds": [
+         "walk"
+        ],
+        "drop": [
+         2.0,
+         2.0
+        ]
+       }
+      ],
+      "ways in from trap ground that is not stuck": 0,
+      "rise to get out": 2.0
+     }
+    ],
+    "void": [
+     {
+      "nodes": 819,
+      "at": [
+       39.5,
+       -5.0,
+       51.0
+      ],
+      "x": [
+       -23.0,
+       99.0
+      ],
+      "z": [
+       -45.0,
+       51.0
+      ],
+      "y": [
+       -25.0,
+       1.5
+      ],
+      "kinds": [
+       "trap"
+      ]
+     },
+     {
+      "nodes": 37,
+      "at": [
+       11.5,
+       -8.0,
+       -45.0
+      ],
+      "x": [
+       2.5,
+       20.5
+      ],
+      "z": [
+       -45.0,
+       -45.0
+      ],
+      "y": [
+       -13.0,
+       1.5
+      ],
+      "kinds": [
+       "trap"
+      ]
+     }
+    ],
+    "void not listed (short)": 1,
+    "hop only": [
+     {
+      "nodes": 15,
+      "at": [
+       8.0,
+       21.0,
+       -25.5
+      ],
+      "x": [
+       7.0,
+       9.0
+      ],
+      "z": [
+       -26.0,
+       -25.0
+      ],
+      "y": [
+       21.0,
+       21.0
+      ],
+      "jumps in": [
+       {
+        "at": [
+         9.5,
+         20.0,
+         -26.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         9.0,
+         20.0,
+         -24.5
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         8.5,
+         20.0,
+         -24.5
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         6.5,
+         20.0,
+         -26.0
+        ],
+        "rise": 1.0
+       }
+      ]
+     }
+    ],
+    "hop only not listed (small)": 2,
+    "low head room": [],
+    "closed by head room only": [
+     {
+      "nodes": 7,
+      "at": [
+       9.0,
+       20.0,
+       -14.5
+      ],
+      "x": [
+       7.5,
+       9.5
+      ],
+      "z": [
+       -14.5,
+       -13.0
+      ],
+      "y": [
+       20.0,
+       20.0
+      ],
+      "room": 1.5
+     }
+    ]
+   }
+  },
+  {
+   "station": "in-K19",
+   "stations": 2,
+   "report": {
+    "start": [
+     11.5,
+     18.0,
+     -29.5
+    ],
+    "nodes": {
+     "walk": 81,
+     "hop": 0,
+     "fall": 0,
+     "trap": 0
+    },
+    "ground": {
+     "walk": 20.2,
+     "hop": 0.0,
+     "fall": 0.0,
+     "trap": 0.0
+    },
+    "cut short": false,
+    "lowest block": -29,
+    "climbable blocks (not climbed here)": 0,
+    "joins worked out as the game does": "yes",
+    "shapes guessed as whole cubes": {},
+    "shapes written down": {
+     "smooth_sandstone_stairs": 828,
+     "oxidized_copper_bars": 662,
+     "waxed_exposed_cut_copper_slab": 606,
+     "snow": 349,
+     "oxidized_cut_copper_slab": 278,
+     "deepslate_tile_stairs": 273,
+     "waxed_oxidized_cut_copper_slab": 272,
+     "deepslate_tile_slab": 244,
+     "oxidized_copper_chain": 231,
+     "deepslate_brick_stairs": 230,
+     "oxidized_cut_copper_stairs": 131,
+     "sandstone_slab": 122,
+     "dark_oak_slab": 114,
+     "polished_tuff_stairs": 110,
+     "sandstone_wall": 102,
+     "polished_deepslate_slab": 78,
+     "tuff_brick_stairs": 76,
+     "oxidized_copper_trapdoor": 63,
+     "polished_tuff_slab": 51,
+     "waxed_weathered_cut_copper_slab": 46,
+     "oxidized_lightning_rod": 41,
+     "sandstone_stairs": 32,
+     "smooth_sandstone_slab": 27,
+     "cut_sandstone_slab": 20,
+     "waxed_exposed_cut_copper_stairs": 20,
+     "oxidized_copper_door": 8,
+     "gray_stained_glass_pane": 7,
+     "pale_oak_slab": 2
+    },
+    "no collision": {
+     "rail": 114,
+     "light": 40,
+     "activator_rail": 2,
+     "detector_rail": 1
+    },
+    "traps": [],
+    "trap ground by height (square blocks in each two blocks of height, from the top)": {},
+    "lowest feet on walk or hop ground": 18.0,
+    "line": -25.0,
+    "stuck (no way back and no way down to the line)": [],
+    "void": [],
+    "void not listed (short)": 0,
+    "hop only": [],
+    "hop only not listed (small)": 0,
+    "low head room": [],
+    "closed by head room only": []
+   }
+  }
+ ]
+}
