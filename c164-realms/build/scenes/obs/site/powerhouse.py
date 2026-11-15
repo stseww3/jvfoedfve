@@ -90,6 +90,10 @@ GLASS_Y = (FEET + 3, EAVES - 1)                     # -3..2, six rows of glass
 ARCH_Y = EAVES - 1                                  # 2, the arch hangs in the top row of the opening
 IMPOST_Y = ARCH_Y - 1                               # 1, the polished course of a pier the arches spring from
 FURNACE_Y = (GLASS_Y[0], GLASS_Y[0] + 2)            # -3..-1, the rows that glow in a boiler bay
+# The light behind a fire window, as sky/_lightkit counts it (windows(): level): the top of the
+# second rank, what the lit windows of the main building have behind them and no window may pass
+# (c331 #59302). It leaves 9 on the jambs and the sill, and 9 is where stone begins to turn warm.
+FURNACE_LEVEL = 12
 GATE_ROWS = 4                                       # the door bay: a gate this high, a lintel, glass
 FURNACE_LIGHT = 5                                   # the source before a boiler bay's glow while the sky line's kit
 #                                                     is not in the tree (its figure for a low curtain window)
@@ -268,7 +272,11 @@ def windows(version=None):
     storey "main" is dark glass; "furnace" is the lower three rows of a boiler bay, which glow
     (the dark rows over them are that bay's "main"); "gable" is the middle light of the screen at
     either end of version b's vault, on the north and the south front (bay 0). Offsets are the
-    skeleton's: add the origin the house is built at."""
+    skeleton's: add the origin the house is built at.
+
+    A "furnace" record asks for its light by number (level, FURNACE_LEVEL): the fire window is the
+    one warm place of the works, and the tuff round it takes half the light ashlar does, so the
+    level a dim window gets leaves its bay black round the glass (review cr2-#7, 1)."""
     out = []
     for front in FRONTS.values():
         name = f"power.{front.name}"
@@ -277,7 +285,7 @@ def windows(version=None):
             common = dict(front=name, bay=bay, cells=[front.at(t0 + i, 1) for i in range(BAY - 1)],
                           inward=STEP[front.inward])
             if kind == FURNACE:
-                out.append(dict(common, storey="furnace", y=FURNACE_Y))
+                out.append(dict(common, storey="furnace", y=FURNACE_Y, level=FURNACE_LEVEL))
                 out.append(dict(common, storey="main", y=(FURNACE_Y[1] + 1, GLASS_Y[1])))
             elif kind == DOOR:
                 out.append(dict(common, storey="main", y=(FEET + GATE_ROWS + 1, GLASS_Y[1])))
