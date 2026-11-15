@@ -4,12 +4,12 @@
 **优先级**：P2，但 **`furn_bench` 长椅先做**（R1-6；site 落日平台、缆车站与 interiors 星厅已点名）。
 
 **约束**
-- 色板：木面/框 `dark_wood`，腿脚 `iron`，五金 `brass`；行李箱帆布 `cream_cloth`、皮带 `dark_wood`。
+- 色板：木面/框 `dark_wood`，腿脚 `iron`，五金 `brass`；行李箱帆布 `old_copper` 第 1 级按布面画（原定 `cream_cloth`，出图太白，见第 3 班记录第 4 条）、皮带 `dark_wood`；展柜垫布 `night_glass` 第 2 级。
 - 16 像素一格，`px=scale`。多落地，锚点在脚下空气格。
 
 **件清单**
 - `furn_bench` 长椅 2×0.5×1 **（R1 新增，先做）**：木条座靠+铸铁弯腿(`hose`)。
-- `furn_writing_desk` 写字台 2×1×1、`furn_drafting_table` 制图桌 2×1.5(斜面)、`furn_swivel_chair` 转椅 1×1、`furn_stool` 高凳 0.5×1.5、`furn_card_cabinet` 卡片柜 1×1×2(一排黄铜拉手)、`furn_library_ladder` 书架梯 0.5×3、`furn_coat_stand` 衣帽架 1×2、`furn_trunk` 行李箱 1.5×1(改自 skyobs `trunk`)、`furn_crate` 木箱 1×1(改自 skyobs `crate`)。
+- `furn_writing_desk` 写字台 2×1×1、`furn_drafting_table` 制图桌 2×1.5(斜面)、`furn_swivel_chair` 转椅 1×1、`furn_stool` 高凳 0.5×1.5、`furn_card_cabinet` 卡片柜 1×1×2(一排黄铜拉手)、`furn_library_ladder` 书架梯 0.5×3、`furn_coat_stand` 衣帽架 1×2、`furn_trunk` 行李箱 1.5×1(改自 skyobs `trunk`)、`furn_crate` 木箱 1×1(改自 skyobs `crate`)。第 3 班加 `furn_crate_small` 小木箱（10×8 像素、高 8，压在行李箱盖上的那一只）。
 
 **交付物**：`build/scenes/obs/props/furniture.py`；测试场景 `build/scenes/obs_props_furniture/`。
 **验收**：「风格和逻辑」（木+铁+黄铜成族）、「质感和像素」（木纹/铁腿近看经得住）。视角：近看每件、成组摆（室内一角）、和仪器并排看尺度。
@@ -38,3 +38,14 @@
       - 缆车站南立面墙脚那只长椅在 V1 右下角，被右沿和下沿各切一刀（c235 预审 #38109 的小处）：图上认不出是椅子就撤，只留西山墙亮窗下那一只。撤法是 c226 的 `BENCHES` 表里去掉 `front` 一项，本包不用改。
       - 落日平台里面一对长椅的外头正对 15° 那根栏杆柱：乱就往轴线挪半格（第 13 条）。
       - 行李箱上压的木箱：箱盖 11 像素、皮带 11.5，木箱底在 11，看得出压在皮带上还是陷进去半像素；陷就把木箱放到 11.5。
+- 2026-11-16 第 3 班接手（c334 接 c179，分支 `cursor/c164-a6-furniture-f3-4ad1`，从第 1 班有效头 8026cccb 起）。第 1 班一张图都没有；下面都是看着 node48 出的离线图改的，前后三轮。
+  1. 跑通：`check.py --scene obs_props_furniture` 过（30 个实体，15 种件）。第 15 条待看的几项：S 腿 1 像素厚，两格到六格看都连成线，不加厚；玻璃高光改了（下面第 3 条）；展柜边条改了（第 2 条）；行李箱上压的木箱换了（第 5 条）；缆车站墙脚那只长椅和落日平台里面一对，等场地的包合进总装后在 `obs_props_furniture_site` 里看（第 8 条）。
+  2. 黄铜：两种展柜的边条一圈亮框抢里面的东西，全换 `brass_dark`；行李箱八个包角也是 `brass_dark`。亮黄铜只留手碰的小件：拉手、挂钩、滑轨、锁、带扣、制图桌的手轮。
+  3. 玻璃：`_kit.pane(m, lo, hi, face, sheen=True)`。原来每块玻璃左上角两道白，出图是贴在空气里的五个白点。现在照 materials/windows 的画法：`night_glass` 第 4 级、两像素宽、往右上走的两道短划（`_kit.SHEEN`、`_kit.sheen_texels()`），玻璃上不再有白。`sheen=False` 不画，`sheen=<n>` 定长短；一件上相邻的玻璃不盖同一个章：卧式展柜三格只画两格、一长一短，仪器柜两扇门一长一短，立式展柜四面画、顶面不画（从上面看展品）。`_kit.GLINT` 去掉了（第 1 班各包的头里只有家具用过）。
+  4. 行李箱帆布：`cream_cloth` 出图是台上除了灯以外最白的东西，还花；换最暗一级的素 `cream`，读成一只刷白的箱子；换 `old_copper` 第 2 级，灯下发粉（总监把旧铜板降一级是同一个原因）；定在 `old_copper` 第 1 级、按布面画（素面、磨亮的边），箱盖口那道线是第 0 级。读成棕色帆布箱，皮带、包角、锁都分得开。约束栏那一句已照此改。
+  5. 木箱重画。原来四面是框加板心，读成一只深色木柜。现在是毛板一圈一圈钉在四角的立档上：板高 3 像素，板缝 1 像素（缝里是最深一级），立档比板面凸 1 像素，盖板 4 像素一条。钉子和板上一行模印的点划比板缝浅一到两级：铁色的钉子出图是蓝点，和缝一样深时两颗钉加一道缝读成一张脸。不贴标签（浅色标签读成插座，三只并排就是三个），不印箭头。木头用 `dark_wood` 最浅一级，色板里没有更浅的木头。行李箱上原来压的是大木箱，比箱盖深（12 比 10 像素）、比箱子还高：新加 `crate_small`（10×8，高 8），底落在皮带上（`TOP["trunk"] + STRAP`）。
+  6. 转椅：方座加一圈 2 像素高的扶手，从背后读成一只箍桶。改成圆座、一道细的扶手弓、背后升起一段靠背冠、五根细撑，正面背面都读成椅子。
+  7. 别的改动：展柜垫布由 `cream` 改成蓝丝绒（`night_glass` 第 2 级，一个平色）：最暗的 `cream` 和石墙一样亮，纸放上去看不见；蓝底上黄铜和纸都跳得出来，黄铜配夜蓝也是这座楼自己的颜色。制图板上那张图由铅笔圆加五个墨点（读成骰子的五点）改成北斗七星加连线、旁边三颗暗星。长椅的螺栓改成 `iron` 第 4 级的平点、凸 0.25 像素（原来的铆钉头出图是一排亮蓝的钉；`_kit.rivet(..., proud=)` 是新加的可选参数，默认不变，铁艺、灯具、纸品照旧）。
+  8. 测试场景。`obs_props_furniture` 重排：行李照 `furniture.luggage(point)` 摆（缆车站用的是同一个函数），每件一张走近了看的图（离 1.5 到 2.5 格、站着的视高），加六张成组的，一共 22 张。新加 `obs_props_furniture_site`：整个总场景加 `furniture.dress()`，看场地上的家具；一组的机位只在它的地面已经在树里的时候才写（现在是落日平台 8 张；site/cablecar、site/outbuildings 合入以后重新 `python -m scenes.obs_props_furniture_site`，就多出车站 4 张、观景台 2 张）。`--report` 列出哪些件站住了、哪些没有地面被留下（要建整个总场景，只在节点上跑）。现在的图里落日平台还是总装里第 1 稿的浅色铺地，a4 第三稿合入后重出。
+  9. 对外新加的：`furniture.luggage(point)`、`SPEC`/`TOP` 里的 `crate_small`、`furniture.STRAP`；`_kit.COPPER_D`（旧铜降一级那一档，室外雨水管用，总监 #53866）、`_kit.SHEEN`、`_kit.sheen_texels()`、`_kit.pane(..., sheen=)`、`_kit.rivet(..., proud=)`。室内各间照旧只用 `furniture.place()` 和 `furniture.rail()`，`kind` 的名字没有改。
+  10. 还欠着的：「和仪器并排看尺度」的机位等 props/instruments；车站和观景台两组的图等那两个包；真机图没有，图源都是离线图。
