@@ -1,42 +1,49 @@
 """props/electrics -- the exposed electrics of the observatory (plan ART-PLAN 2, 7.3; part A6-props
 2.4; card plan/packages/props/electrics-signs.md).
 
-One motif for the family (A6-props 2.4): porcelain-white insulators + a cast-iron bracket or box +
-brass terminals and blades, with an enamel-blue plate for a touch. They are held together by the
-insulator's stacked skirts, the iron carcase and the brass contacts. Examples: a cross-arm is an
-iron bar with a row of insulators; a knife switch is a brass blade on a slate base; a junction box
-is an iron box with the conduit entering it.
+One motif for the family: white porcelain on cast iron, brass where a hand or a hammer touches it,
+and the red flash of the voltage plates on what is live. A line has a start and an end and never
+just stops (plan 2): it comes out of the wall in a conduit, is carried along the wall on
+insulators and goes into a conduit again -- down to a junction box, into a lamp, or back into the
+wall.
 
-Everything is placed through _kit (mounting, materials, rivets). The family's own helpers -- the
-insulator skirt, the cable run that never dead-ends -- live here (not in _kit.py, which is shared).
+The pieces (16 texels to the block, px = scale; a wall piece is hung by a point of the wall's face,
+its own +z out of the wall, +x to the right of whoever looks at it):
 
-Eight pieces, all 16 texels to the block (px = scale):
-    insulator     a pin insulator on a wall bracket, a saddle on top for the line.
-    crossarm      an iron cross-arm carrying a row of insulators (2 x 0.5).
-    junction_box  a cast-iron junction box with a bolted lid and a conduit entry (1 x 1).
-    knife_switch  a brass knife switch on a slate base (1 x 1); the blade is a separate part (A8).
-    fuse_box      a small iron box with a row of porcelain fuse carriers (1 x 1).
-    bell          a brass gong bell with a striker (diameter 1).
-    wall_phone    a dark-wood wall telephone, brass bells and a handset (1 x 1.5).
-    telegraph_key a brass telegraph key on a wood base (0.5 x 0.5), the lever a separate part (A8).
+    insulator      a pin insulator on a wall bracket; the wire lies across its head, WIRE_UP over
+                   the anchor and WIRE_OUT off the wall.
+    lead_in        where the open wire ends: an iron fitting on a square flange, a porcelain nose
+                   the wire runs into, WIRE_OUT off the wall, and a hub under it for the conduit.
+    junction_box   a cast-iron box, the lid bolted on, the flash on an enamel label; a conduit
+                   leaves it at the top and another at the bottom turns into the wall.
+    elbow          a short conduit that turns into the wall: the end of a line with no box.
+    clip           the collar that holds a conduit to the wall.
+    bell           an electric bell: two coils, the armature and its hammer, a brass gong.
+    cable, conduit drawn out between two points (models.between): the wire, the pipe.
 
-For the other lines, the line that builds the wall or the room places the pieces and runs the cable:
+For the other lines:
 
     from scenes.obs.props import electrics as E
-    n += E.place(canvas, "junction_box", (x, y, z), facing="east", origin=origin)
-    n += E.run(canvas, (x, y, z), (x, y, z2), facing="east", origin=origin)   # insulators + cable
+    n += E.run(canvas, [(x, y, z0), (x, y, z1), (x, y, z2)], facing="east", origin=origin,
+               ends=(("box", 3.75), ("feed", 4.4)))
+    n += E.place(canvas, "bell", (x, y, z), facing="east", origin=origin)
 
-The cable run has a start and an end (A6-props 2.4, plan 2: no dead-ends): it is strung between its
-two endpoints -- junction boxes, a cross-arm, or the point where it turns into the wall.
+run() strings one line: a lead-in at the first and the last point, an insulator at each point
+between them, the wire from one to the next, and at each end what the wire comes from or goes to.
+The points lie on the faces the supports are fixed to (pilasters, as a rule) at the height of the
+wire. Where the wire passes a support nothing stands above it -- an insulator carries it on its
+head -- and where something does stand above it, at a lead-in, the wire ends: seen against a wall
+a line is a stroke with knobs under it and never a bar across an upright (plan red line 8).
+
+Mounting, materials and rivets are _kit's. The test scene is build/scenes/obs_props_elecsign
+(shared with props/signs).
 """
 import functools
-import math
 
 from artkit import models as M
+from artkit.pixelart import Sprite
 
-from ..common import blocks as B
 from ..common import palette as P
-from ..common import skeleton as S
 from . import _kit as K
 
 PREFIX = "prop_elec_"
@@ -45,183 +52,166 @@ DRESS = False                   # build() dresses the master scene only when on 
 IRON, IRON_D = K.IRON, K.IRON_D
 BRASS, BRASS_D = K.BRASS, K.BRASS_D
 PORC = P.mat("porcelain")
-PORC_D = P.mat("porcelain", base=1)
-SLATE = P.mat("slate")
-WOOD = P.mat("dark_wood")
-ENAMEL = K.ENAMEL
-CABLE = K.flat("old_copper", 1)
-RIVET = K.RIVET
+PORC_D = P.mat("porcelain", base=2)
+COIL = P.mat("old_copper", base=1)
+CABLE = K.flat("old_copper", 1)         # the wire: the tone of props/lamps' festoon cable
+CONDUIT = K.flat("iron", 2)             # a conduit that is drawn out: one tone, nothing to smear
 
-OUT = 0.42                      # how far a wall insulator's saddle stands off the wall, in blocks
-PITCH = 4.0                     # the bays' module: one insulator every this many blocks on a run
+# The line's measures, in blocks. Whoever hangs something on a line reads them from here.
+WIRE_OUT = 4.0 / 16.0           # the wire runs this far off the face its supports are fixed to
+WIRE_UP = 6.0 / 16.0            # ... and this far over the anchor of an insulator
+AXIS_OUT = 1.0 / 16.0           # a conduit's axis off the wall (as _kit.wall_entry has it)
+LEAD_DOWN = 4.5 / 16.0          # the conduit leaves a lead-in this far under its anchor
+BOX_UP = 7.5 / 16.0             # ... and enters a junction box this far over its anchor
+CLIP_EVERY = 1.0                # a riser is held by a clip to every so many blocks of its length
+HUB = 1.1                       # texels: the radius of a hub or a collar on a conduit of 0.75. With the
+                                # axis one texel off the wall its back still lies before the stone.
 
-
-# ---- the family's own helpers --------------------------------------------------------------------
-def _skirts(m, cx, cz, z0, z1, r0, r1, ribs=2, mat=PORC):
-    """A porcelain pin-insulator body stacked along +z from z0 to z1, widening to r0 at the foot and
-    tapering to r1 at the head, in `ribs` bells (each bell a flare)."""
-    step = (z1 - z0) / ribs
-    for i in range(ribs):
-        a0 = z0 + step * i
-        rr = r0 + (r1 - r0) * i / ribs
-        m.taper("z", (cx, cz), a0, a0 + step * 0.85, rr, rr * 0.62, mat, steps=2, sides=8)
-        m.tube("z", (cx, cz), a0 + step * 0.85, a0 + step, rr * 0.9, mat, sides=8)
+# the flash of the voltage plates (props/signs), on the white enamel label of a junction box
+_FLASH = Sprite("elec_flash", ["wwwwww", "wwwrrw", "wwrrww", "wrrrrw", "wwrrww", "wrrwww", "wwwwww"],
+                {"w": P.RAMPS["cream"][3], "r": P.RAMPS["signal"][2]})
 
 
+# ---- the models ----------------------------------------------------------------------------------------
 def _insulator():
-    """A pin insulator on a wall bracket: an iron bracket foot, a porcelain body standing off the
-    wall, and an iron saddle on top for the line. Anchor: on the wall, the bracket foot."""
+    """A pin insulator on a wall bracket: a plate on the wall, an arm with a strut under it, and on
+    the arm the porcelain -- a wide skirt, a waist, a shoulder, a groove and the head the wire
+    lies across. Anchor: on the wall, at the top of the arm; the wire passes WIRE_UP over it and
+    WIRE_OUT off the wall, along x. The plate's two rivets sit either side of the strut's foot,
+    where someone who looks up at the line sees them."""
     m = M.Model(PREFIX + "insulator", px=1.0)
-    cx = 4.0
-    m.box((cx - 1.5, 1.0, 0.0), (cx + 1.5, 6.0, 1.0), IRON, grain="y")      # bracket plate
-    m.tube("z", (cx, 3.5), 1.0, 2.0, 1.0, IRON)                             # pin stub
-    _skirts(m, cx, 3.5, 2.0, 6.5, 2.6, 1.3)                                 # porcelain bells
-    m.tube("z", (cx, 3.5), 6.5, 7.0, 1.5, PORC, sides=8)                    # head
-    m.box((cx - 2.0, 3.0, 7.0), (cx + 2.0, 4.0, 7.8), IRON)                 # the line saddle (along x)
+    m.box((-2.0, -4.0, 0.0), (2.0, 2.0, 1.0), IRON, grain="y")              # the plate on the wall
+    for x in (-1.0, 1.0):
+        K.rivet(m, (x, -3.0, 1.0))
+    m.box((-1.0, -1.5, 1.0), (1.0, 0.0, 5.25), IRON, grain="z")             # the arm
+    m.beam((0.0, -3.5, 1.0), (0.0, -1.5, 4.5), 1.0, 1.0, IRON_D)            # its strut
+    c = (0.0, 4.0)
+    m.tube("y", c, 0.0, 0.5, 1.0, IRON_D)                                   # the pin's collar
+    m.taper("y", c, 0.5, 2.5, 2.75, 1.75, PORC, steps=2)                    # the skirt
+    m.tube("y", c, 2.5, 3.25, 1.25, PORC_D)                                 # the waist
+    m.taper("y", c, 3.25, 4.75, 2.0, 1.5, PORC, steps=2)                    # the shoulder
+    m.tube("y", c, 4.75, 5.25, 1.0, PORC_D)                                 # the groove
+    m.tube("y", c, 5.25, 6.0, 1.5, PORC)                                    # the head
     return m
 
 
-def _crossarm():
-    """An iron cross-arm with a row of three insulators on top (2 x 0.5). Anchor: on the wall, the
-    arm's foot centre; the arm runs along x."""
-    m = M.Model(PREFIX + "crossarm", px=1.0)
-    m.box((0.0, 2.0, 0.0), (32.0, 5.0, 3.0), IRON, grain="x")               # the arm
-    m.beam((4.0, 2.0, 1.5), (4.0, -4.0, 1.5), 2.0, 2.0, IRON_D)             # a brace down to the wall
-    m.beam((28.0, 2.0, 1.5), (28.0, -4.0, 1.5), 2.0, 2.0, IRON_D)
-    for cx in (6.0, 16.0, 26.0):
-        m.tube("y", (cx, 1.5), 5.0, 6.0, 1.0, IRON)                         # pin
-        _skirts_y(m, cx, 1.5, 6.0, 10.0, 2.4, 1.2)
-        m.tube("y", (cx, 1.5), 10.0, 10.5, 1.4, PORC, sides=8)
+def _lead_in():
+    """Where the open wire goes into a conduit: a round iron fitting on a square flange bolted at
+    its four corners, a porcelain nose in the middle of it that the wire runs into from either
+    side, and under it the hub of the conduit. Anchor: on the wall, on the axis of the nose; the
+    wire ends WIRE_OUT off the wall, the conduit leaves LEAD_DOWN under the anchor."""
+    m = M.Model(PREFIX + "lead_in", px=1.0)
+    m.box((-3.0, -3.0, 0.0), (3.0, 3.0, 1.0), IRON, grain="y")              # the flange on the wall
+    for x in (-2.0, 2.0):
+        for y in (-2.0, 2.0):
+            K.rivet(m, (x, y, 1.0))
+    m.tube("z", (0.0, 0.0), 1.0, 3.0, 2.0, IRON_D)                          # the fitting
+    m.taper("z", (0.0, 0.0), 3.0, 5.0, 1.75, 1.25, PORC, steps=2)           # the nose
+    m.tube("z", (0.0, 0.0), 5.0, 5.5, 0.75, PORC_D)
+    m.tube("y", (0.0, 1.0), -4.5, -1.5, HUB, IRON)                          # the hub of the conduit
     return m
-
-
-def _skirts_y(m, cx, cz, y0, y1, r0, r1, ribs=2, mat=PORC):
-    """Insulator bells stacked up the +y axis (for a cross-arm, where the pin stands up)."""
-    step = (y1 - y0) / ribs
-    for i in range(ribs):
-        a0 = y0 + step * i
-        rr = r0 + (r1 - r0) * i / ribs
-        m.taper("y", (cx, cz), a0, a0 + step * 0.85, rr, rr * 0.62, mat, steps=2, sides=8)
-        m.tube("y", (cx, cz), a0 + step * 0.85, a0 + step, rr * 0.9, mat, sides=8)
 
 
 def _junction_box():
-    """A cast-iron junction box: a bolted lid, a brass gland and a conduit that turns down into the
-    wall so the run never just stops. Anchor: on the wall, the box's foot centre."""
+    """A cast-iron junction box: the lid bolted on at its four corners, on the lid a white enamel
+    label with the flash; a hub on top for the conduit that comes down to it, and under it a
+    conduit that turns into the wall. Anchor: on the wall, the middle of the box; the conduit from
+    above enters BOX_UP over it."""
     m = M.Model(PREFIX + "junction_box", px=1.0)
-    m.box((3.0, 3.0, 0.0), (13.0, 13.0, 4.0), IRON, grain="y")              # body
-    m.box((3.5, 3.5, 4.0), (12.5, 12.5, 5.0), IRON_D, grain="y")           # lid, standing a little proud
-    for x in (4.5, 11.5):
-        for y in (4.5, 11.5):
-            K.rivet(m, (x, y, 5.0))                                         # lid bolts
-    m.tube("y", (8.0, 2.5), -3.0, 3.0, 1.0, IRON_D)                         # conduit down into the wall
-    K.wall_entry(m, 8.0, -3.0)
-    m.tube("y", (8.0, 2.5), 13.0, 16.0, 1.0, IRON_D)                        # and up out of the lid
-    K.wall_entry(m, 8.0, 16.0)
-    m.tube("z", (8.0, 8.0), 5.0, 6.0, 1.5, BRASS)                           # a brass gland on the face
+    m.box((-6.0, -6.0, 0.0), (6.0, 6.0, 3.5), IRON, grain="y")              # the box
+    m.box((-5.5, -5.5, 3.5), (5.5, 5.5, 4.25), IRON_D, grain="y")           # the lid
+    for x in (-4.5, 4.5):
+        for y in (-4.5, 4.5):
+            K.rivet(m, (x, y, 4.25))
+    m.box((-3.0, -3.5, 4.25), (3.0, 3.5, 4.5), K.flat("cream", 1), faces={"s": _FLASH}, skip="n")
+    m.tube("y", (0.0, 1.0), 6.0, 7.5, HUB, IRON)                            # the hub on top
+    m.tube("y", (0.0, 1.0), -7.0, -6.0, HUB, IRON)                          # the hub underneath
+    m.tube("y", (0.0, 1.0), -10.5, -7.0, 0.75, IRON_D)                      # down and into the wall
+    K.wall_entry(m, 0.0, -10.5)
     return m
 
 
-def _knife_switch():
-    """A knife switch on a slate base: two brass jaws, the blade between them and a wood handle. The
-    blade is a separate part so A8 can throw it. Anchor: on the wall, the base's foot centre."""
-    m = M.Model(PREFIX + "knife_switch", px=1.0)
-    m.box((3.0, 2.0, 0.0), (13.0, 14.0, 1.5), SLATE, grain="y")            # slate base
-    for y in (4.0, 11.0):
-        m.box((4.0, y - 0.5, 1.5), (6.0, y + 0.5, 3.0), BRASS)             # lower / upper jaw block
-        m.box((10.0, y - 0.5, 1.5), (12.0, y + 0.5, 3.0), BRASS)
-    m.box((5.0, 4.0, 2.4), (6.5, 12.0, 3.0), BRASS_D, grain="y")            # the blade (A8's part)
-    m.box((6.0, 11.0, 2.4), (11.0, 12.5, 2.9), BRASS_D, grain="x")          # the blade's cross-bar
-    m.tube("z", (11.0, 12.0), 2.9, 4.5, 1.0, WOOD)                          # the handle knob
+def _elbow():
+    """The end of a conduit that goes straight into the wall: a short length and the turn. Anchor:
+    on the wall behind the conduit's axis, where the conduit from above ends."""
+    m = M.Model(PREFIX + "elbow", px=1.0)
+    m.tube("y", (0.0, 1.0), -3.0, 0.0, 0.75, IRON_D)
+    K.wall_entry(m, 0.0, -3.0)
     return m
 
 
-def _fuse_box():
-    """A small iron box with a row of three porcelain fuse carriers behind a half-open lid. Anchor:
-    on the wall, the box's foot centre."""
-    m = M.Model(PREFIX + "fuse_box", px=1.0)
-    m.box((3.0, 3.0, 0.0), (13.0, 13.0, 2.5), IRON, grain="y")             # body
-    m.box((3.0, 2.0, 2.5), (13.0, 13.0, 3.0), IRON_D, grain="x")           # a back board
-    for cx in (5.0, 8.0, 11.0):
-        m.tube("z", (cx, 7.0), 3.0, 5.0, 1.1, PORC, sides=8)              # porcelain carrier
-        m.tube("z", (cx, 7.0), 5.0, 5.5, 0.6, BRASS, sides=8)             # brass cap
-    m.box((2.5, 12.0, 3.0), (13.5, 13.0, 6.5), IRON_D, grain="x",
-          rot=("x", -70.0, (8.0, 12.5, 3.0)))                              # the lid, hinged open
+def _clip():
+    """What holds a conduit to the wall: a foot and a collar round the pipe, barely wider than the
+    pipe itself and taller than it is wide, so that it is a ring on the pipe and not a bar across
+    it. Anchor: on the wall behind the conduit's axis."""
+    m = M.Model(PREFIX + "clip", px=1.0)
+    m.box((-1.0, -1.0, 0.0), (1.0, 1.0, 0.25), IRON)
+    m.tube("y", (0.0, 1.0), -1.25, 1.25, HUB, IRON)
     return m
 
 
 def _bell():
-    """A brass gong bell with its striker and a small iron coil box (diameter 1). Anchor: on the
-    wall, the back-plate centre."""
+    """An electric bell on a cast back plate: two coils side by side under their yoke, the
+    armature across their feet with the hammer at its end, and under them the brass gong. A
+    conduit leaves the plate at the top and turns into the wall. Anchor: on the wall, the middle
+    of the back plate."""
     m = M.Model(PREFIX + "bell", px=1.0)
-    m.box((5.0, 2.0, 0.0), (11.0, 8.0, 1.5), IRON, grain="y")              # coil box on the wall
-    m.tube("z", (8.0, 10.0), 0.0, 1.5, 1.0, IRON_D)                         # the gong's stem up
-    with m.turned(("x", 90), about=(8.0, 11.0, 1.5)):                       # the dome looks down
-        m.ball((8.0, 11.0, 1.5), 4.0, BRASS, sides=12, part=(0.0, 1.0), squash=0.8)
-    m.tube("z", (8.0, 11.0), 1.5, 2.0, 0.6, BRASS_D)                        # the hub
-    m.rod((7.0, 6.0, 2.5), (6.0, 9.5, 4.0), 0.6, IRON_D)                    # the striker arm
-    m.tube("z", (6.0, 9.8), 4.0, 4.8, 1.0, IRON)                           # the striker head
-    return m
-
-
-def _wall_phone():
-    """A dark-wood wall telephone: the box, two brass bell domes, a mouthpiece, a crank and a handset
-    hung on a hook (1 x 1.5). Anchor: on the wall, the box's foot centre."""
-    m = M.Model(PREFIX + "wall_phone", px=1.0)
-    m.box((3.0, 2.0, 0.0), (13.0, 22.0, 4.0), WOOD, grain="y")             # the box
-    m.box((3.5, 2.5, 4.0), (12.5, 21.5, 4.6), WOOD, grain="y")             # a raised front panel
-    for cx in (6.0, 10.0):
-        with m.turned(("x", 90), about=(cx, 20.0, 4.0)):
-            m.ball((cx, 20.0, 4.0), 2.3, BRASS, sides=10, part=(0.0, 1.0), squash=0.8)  # bell dome
-    m.tube("z", (8.0, 13.0), 4.0, 7.0, 2.0, BRASS, sides=10)               # the mouthpiece
-    m.tube("z", (8.0, 13.0), 7.0, 7.5, 2.4, BRASS_D, sides=10)
-    m.tube("x", (6.0, 5.0), 12.5, 14.5, 1.0, BRASS)                        # the crank spindle
-    m.rod((14.5, 6.0, 5.0), (15.5, 4.0, 5.0), 0.7, BRASS_D)                # the crank handle
-    m.rod((1.5, 6.0, 4.0), (1.5, 11.0, 4.0), 1.2, IRON_D)                  # the handset, on its hook
-    m.tube("x", (6.0, 4.0), 0.5, 2.5, 1.4, WOOD)                           # the ear-piece
-    return m
-
-
-def _telegraph_key():
-    """A telegraph key on a wood base: a brass lever on a trunnion, a knob, the contacts and the
-    terminals. The lever is a separate part (A8). Anchor: the base's foot centre; it stands on a
-    table."""
-    m = M.Model(PREFIX + "telegraph_key", px=1.0)
-    m.box((0.5, 0.0, 0.5), (7.5, 1.5, 7.5), WOOD, grain="x")               # base
-    m.box((3.0, 1.5, 3.0), (5.0, 3.5, 5.0), BRASS_D)                        # trunnion
-    m.box((1.0, 3.0, 3.7), (6.5, 4.0, 4.3), BRASS, grain="x")               # the lever (A8's part)
-    m.tube("y", (2.0, 4.0), 4.0, 5.2, 1.3, BRASS, sides=10)                # the knob
-    for cx in (1.5, 6.5):
-        m.tube("y", (cx, 4.0), 1.5, 2.6, 0.6, BRASS)                        # terminal posts
+    m.box((-4.0, -8.0, 0.0), (4.0, 8.0, 1.0), IRON_D, grain="y")            # the back plate
+    for x in (-3.0, 3.0):
+        for y in (-7.0, 7.0):
+            K.rivet(m, (x, y, 1.0))
+    with m.turned(("x", 90.0), about=(0.0, -3.5, 1.0)):                     # the gong bulges out of the wall
+        m.ball((0.0, -3.5, 1.0), 3.5, BRASS, sides=12, layers=3, squash=0.6, part=(0.0, 1.0))
+    m.tube("z", (0.0, -3.5), 2.9, 3.6, 0.75, BRASS_D)                       # the nut that holds it
+    m.box((-3.0, 0.5, 1.75), (3.0, 1.25, 3.25), IRON, grain="x")            # the armature
+    m.box((2.5, -0.25, 2.25), (3.0, 0.5, 2.75), IRON_D)                     # the hammer's stem
+    m.tube("z", (2.75, -0.6), 1.9, 3.1, 0.75, IRON)                         # the hammer, at the gong's rim
+    for x in (-1.75, 1.75):                                                 # the coils
+        m.tube("y", (x, 2.5), 1.25, 1.75, 1.5, BRASS_D)
+        m.tube("y", (x, 2.5), 1.75, 4.75, 1.25, COIL)
+        m.tube("y", (x, 2.5), 4.75, 5.25, 1.5, BRASS_D)
+    m.box((-3.25, 5.25, 1.0), (3.25, 6.0, 3.5), IRON, grain="x")            # the yoke
+    m.tube("y", (0.0, 1.0), 8.0, 8.75, HUB, IRON)                           # the conduit: up and into the wall
+    m.tube("y", (0.0, 1.0), 8.75, 11.0, 0.75, IRON_D)
+    K.wall_entry(m, 0.0, 11.0)
     return m
 
 
 def _cable():
-    """The line: a thin wire running along +z from the anchor, 48 units long, one flat tone so that
-    stretching it between two insulators smears nothing (as lamps._wire)."""
+    """The wire: runs along +z from the anchor, 48 long, and is drawn out between two points. One
+    flat tone, so drawing it out smears nothing."""
     m = M.Model(PREFIX + "cable", px=1.0)
     m.box((-0.5, -0.5, 0.0), (0.5, 0.5, 48.0), CABLE, grain="z")
     return m
 
 
-# ---- models, placing and the cable run -----------------------------------------------------------
+def _conduit():
+    """A conduit between two fittings: runs along +z from the anchor, 48 long, in flat tones, and
+    is drawn out to the length wanted. Its axis is the line between the two points."""
+    m = M.Model(PREFIX + "conduit", px=1.0)
+    m.tube("z", (0.0, 0.0), 0.0, 48.0, 0.75, CONDUIT)
+    return m
+
+
+# ---- models and placing ------------------------------------------------------------------------------
 SPEC = {
-    "insulator": dict(build=_insulator, mount="wall", scale=1.0),
-    "crossarm": dict(build=_crossarm, mount="wall", scale=1.0),
-    "junction_box": dict(build=_junction_box, mount="wall", scale=1.0),
-    "knife_switch": dict(build=_knife_switch, mount="wall", scale=1.0),
-    "fuse_box": dict(build=_fuse_box, mount="wall", scale=1.0),
-    "bell": dict(build=_bell, mount="wall", scale=1.0),
-    "wall_phone": dict(build=_wall_phone, mount="wall", scale=1.0),
-    "telegraph_key": dict(build=_telegraph_key, mount="floor", scale=1.0),
-    "cable": dict(build=_cable, mount="wall", scale=1.0),
+    "insulator": dict(build=_insulator, mount="wall"),
+    "lead_in": dict(build=_lead_in, mount="wall"),
+    "junction_box": dict(build=_junction_box, mount="wall"),
+    "elbow": dict(build=_elbow, mount="wall"),
+    "clip": dict(build=_clip, mount="wall"),
+    "bell": dict(build=_bell, mount="wall"),
+    "cable": dict(build=_cable, mount="floor"),
+    "conduit": dict(build=_conduit, mount="floor"),
 }
-SCALE = {PREFIX + name: spec["scale"] for name, spec in SPEC.items()}
+SCALE = {PREFIX + kind: 1.0 for kind in SPEC}
+DRAWN = ("cable", "conduit")    # not placed by place(): drawn out between two points by run()
+ENDS = ("box", "feed")
 
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    return {PREFIX + name: spec["build"]() for name, spec in SPEC.items()}
+    return {PREFIX + kind: spec["build"]() for kind, spec in SPEC.items()}
 
 
 def models():
@@ -229,45 +219,75 @@ def models():
 
 
 def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), yaw=None, **opts):
-    """Place one fitting. Returns the entity count (1)."""
+    """Hang one fitting on a wall: pos is the point of the wall's face its anchor goes to (scene
+    coordinates), `facing` the way that face looks. Returns the number of display entities (1)."""
+    if kind in DRAWN:
+        raise KeyError(f"a {kind} is drawn out between two points: electrics.run() strings it")
     spec = SPEC[kind]
     yaw = K.FACING[facing] if yaw is None else yaw
-    return K.put(canvas, _models()[PREFIX + kind], pos, mount=spec["mount"], yaw=yaw,
-                 scale=spec["scale"], origin=origin, **opts)
+    return K.put(canvas, _models()[PREFIX + kind], pos, mount=spec["mount"], yaw=yaw, origin=origin, **opts)
 
 
-def run(canvas, a, b, facing="east", origin=(0, 0, 0), pitch=PITCH, ends=True):
-    """A cable run along a wall from a to b (points on the wall face, scene coordinates): an insulator
-    every `pitch` blocks and the line strung from one to the next, standing OUT off the wall. With
-    ends=True a junction box closes each end, so the line has a start and an end and never dead-ends
-    (A6-props 2.4, plan 2). Returns the entity count.
+def _draw(canvas, kind, a, b):
+    """One length of wire or conduit from a to b (scene coordinates, the origin already added)."""
+    canvas.add_entity(a[0], a[1], a[2], M.between(_models()[PREFIX + kind], a, b))
+    return 1
 
-    a and b lie in the same wall face; the run goes straight between them.
-    """
+
+def run(canvas, points, facing="east", origin=(0, 0, 0), ends=(None, None)):
+    """String one line along a wall. Returns the number of display entities.
+
+    points   where the wire is held, in order: points of the faces its supports are fixed to
+             (scene coordinates), y the height of the wire. The first and the last are the line's
+             ends and get a lead-in, the others an insulator. All the faces look the way `facing`
+             says; they need not lie in one plane (a pilaster, then a wall).
+    ends     what the conduit under each lead-in does, for the first and the last point:
+             ("box", y)   it runs down to a junction box, the middle of the box at height y;
+             ("feed", y)  it runs down to height y and ends there on the top of whatever it
+                          feeds (a lamp's wall plate), which the caller has put there;
+             None         it turns into the wall at once.
+    A line is never left open: both of its ends go somewhere."""
+    pts = [tuple(float(v) for v in p) for p in points]
+    if len(pts) < 2:
+        raise ValueError("a line has two ends: give it at least two points")
     yaw = K.FACING[facing]
-    out = K.turn(yaw, (0.0, 0.0, OUT))                  # the saddle stands this far off the wall
-    saddle_y = 0.78                                     # the line sits this high above the anchor
-    length = math.dist(a, b)
-    count = max(2, int(round(length / pitch)) + 1)
-    pts = [tuple(a[k] + (b[k] - a[k]) * i / (count - 1) for k in range(3)) for i in range(count)]
+    out = K.turn(yaw, (0.0, 0.0, 1.0))
+
+    def off(p, far, down=0.0):
+        """The point `far` off the wall in front of p and `down` under it, with the origin added."""
+        return tuple(p[i] + out[i] * far + origin[i] - (down if i == 1 else 0.0) for i in range(3))
+
     n = 0
-    for p in pts:
-        n += place(canvas, "insulator", p, facing=facing, origin=origin)
-    saddles = [tuple(p[k] + out[k] + origin[k] + (saddle_y if k == 1 else 0.0) for k in range(3))
-               for p in pts]
-    built = _models()
-    for p0, p1 in zip(saddles, saddles[1:]):
-        canvas.add_entity(p0[0], p0[1], p0[2], M.between(built[PREFIX + "cable"], p0, p1))
-        n += 1
-    if ends:
-        for p in (a, b):
-            n += place(canvas, "junction_box", (p[0], p[1] - 0.5, p[2]), facing=facing, origin=origin)
+    for i, p in enumerate(pts):
+        if i in (0, len(pts) - 1):
+            n += place(canvas, "lead_in", p, facing=facing, origin=origin)
+        else:
+            n += place(canvas, "insulator", (p[0], p[1] - WIRE_UP, p[2]), facing=facing, origin=origin)
+    for a, b in zip(pts, pts[1:]):
+        n += _draw(canvas, "cable", off(a, WIRE_OUT), off(b, WIRE_OUT))
+    for p, end in zip((pts[0], pts[-1]), ends):
+        top = p[1] - LEAD_DOWN
+        if end is None:
+            n += place(canvas, "elbow", (p[0], top, p[2]), facing=facing, origin=origin)
+            continue
+        what, y = end
+        if what not in ENDS:
+            raise ValueError(f"the end of a line is one of {ENDS} or None, not {what!r}")
+        foot = y + BOX_UP if what == "box" else float(y)
+        if foot >= top:
+            raise ValueError(f"the conduit of a lead-in at height {p[1]:g} cannot run down to {foot:g}")
+        n += _draw(canvas, "conduit", off(p, AXIS_OUT, p[1] - foot), off(p, AXIS_OUT, p[1] - top))
+        clips = int((top - foot) / CLIP_EVERY)
+        for j in range(clips):
+            at = foot + (top - foot) * (j + 1) / (clips + 1)
+            n += place(canvas, "clip", (p[0], at, p[2]), facing=facing, origin=origin)
+        if what == "box":
+            n += place(canvas, "junction_box", (p[0], y, p[2]), facing=facing, origin=origin)
     return n
 
 
 def build(canvas, origin=(0, 0, 0)):
-    """Nothing in the master scene until DRESS is on and A3's fronts are there to carry the run
-    (A0 #211). Off, so the master scene always generates."""
-    if not DRESS:
-        return 0
+    """What electrics place in the master scene: nothing. Where lines run on the real fronts is
+    not settled (A0 #211: what is hung over the whole building stays off until it has passed on
+    the real wall), and the line that builds a wall or a room strings its own with run()."""
     return 0
