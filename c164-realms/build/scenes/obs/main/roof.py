@@ -2,9 +2,6 @@
 roof light on each end terrace, the leaves of the dome room's doors, and an iron walkway on each
 wing's ridge, so that one walks from the dome room to the small dome and to the clock tower.
 
-DRAFT: written while the machine was closed to Python, not run yet. The underscore keeps the module
-out of the category's auto-discovery; it becomes main/roof.py when its self-check has passed.
-
 Card: plan/packages/main/smalldome.md (the same card as main/smalldome.py). Design: plan/ART-PLAN.md
 section 4 ("the roofs can be walked") and 5.1. The director's rulings: the doors and the walkways,
 plan/STATUS.md (A0 #20299); no railing on the parapets, no guard on the walkways, no cowls or flues
