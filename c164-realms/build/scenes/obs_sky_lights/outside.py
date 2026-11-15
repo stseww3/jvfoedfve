@@ -148,8 +148,11 @@ def compare(before, after, names=("before", "after")):
                        f"within reach of what changed: {', '.join(reach) or 'nothing'}")
             if side == 0:
                 total[f"{sign} before the glass"] += len(found)
-            if side == 2:
-                continue                                    # a room: the sum says it
+            if side == 2:                                   # a room: the sum says it, and where it is brightest now
+                c, w, _ = max(found, key=lambda hit: (lv1.get(hit[0], 0), lv0.get(hit[0], 0)))
+                out.append(f"      the brightest now: {tuple(c[i] - o[i] for i in range(3))} "
+                           f"{lv0.get(c, 0)}>{lv1.get(c, 0)}, behind {w['name']} ({_tier(w)})")
+                continue
             by_window = {}
             for c, w, recess in found:
                 by_window.setdefault((w["name"], _tier(w)), []).append((c, recess))
