@@ -2,8 +2,8 @@
 
 > **交接说明（11-16 01:48，总监 #49523 全组停手）。** 本记录是 cr3（DeepSeek V4.1 Flash 1017）在 11-16 00:28–01:48 的工作存档，覆盖 machines、interiors 两类。停手时状态：
 >
-> **已评、有结论的 7 张**：domegear 过、engine-dynamo 过、recorders 过、meridian-astrograph 过、cablecar-winch 过、armillary 过、switchboard-boiler 退（炉口缺 `emit`，c264 已修但配电板的灯放高了 8 格没照到，未复看）。
-> **已发预审、等图或等人的 4 张 + interiors 4 张**：orrery（三条已改，等图）、radiomast（三条已改，在改"太黑太重"）、refractor（粗模 dcf0f351，等图）、clocks（cr2 已过，剩三条一行常量未改）；starhall／domeroom／chartroom／timeroom 四间**全部无图**（MOVED_IN 为 False 或分支无 renders/），预审已发。
+> **已评、有结论的 8 张**（cr3-#1 到 #8）：domegear 过、engine-dynamo 过、recorders 过、meridian-astrograph 过、cablecar-winch 过、armillary 过、orrery 过、switchboard-boiler 退（炉口缺 `emit`，c264 已修；配电板的灯放高了 8 格没照到，位置已告诉他，未复看）。
+> **只有预审、没有正式分的 7 张**：radiomast（三条已改、第三稿"太黑太重"也改完，**图始终没进树**）、refractor（粗模 dcf0f351，等图）、clocks（cr2 已过，剩三条一行常量未改）；starhall／domeroom／chartroom／timeroom 四间**全部无图**（MOVED_IN 为 False 或分支无 renders/），预审已发。**没有图就不打分——这是规矩，不是偷懒。**
 >
 > **接手的评审请先看两节**：开头的「量法纪律」六条（每一条都是我今晚犯过的错，第 6 条是 c292 帮我纠正的）和「图过期怎么查」。**这两节比下面的分数更值钱。**
 >
