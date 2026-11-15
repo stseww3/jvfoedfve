@@ -165,13 +165,21 @@ def _tone(src, ramp, base, spread=3.0):
 
 # ---- brass: the flat faces (designed) ----------------------------------------------------------------
 def _plate(seed):
-    """BRASS_PLATE: a polished sheet screwed on at its corners, with the shallow raised edge of the
-    iron plates, so a wall of them reads as butted sheets. The face is one even tone: marks drawn
-    on it (streaks, reflections) repeat on every plate of a wall and read as slots. What differs
-    from version to version (three) is a few pixels of wear."""
+    """BRASS_PLATE: a polished sheet screwed on at its corners, so a wall of them reads as butted
+    sheets. The face is one even tone: marks drawn on it (streaks, reflections) repeat on every
+    plate of a wall and read as slots. What differs from version to version (three) is a few pixels
+    of wear.
+
+    The frame is all four edges a step under the face, not a light top and a dark bottom: a raised
+    edge lights only two sides of a sheet, and in a wall of them the lit side of one plate meets the
+    shadowed side of the next, which at twenty blocks averages out into one even field of yellow
+    (cr, review #8: the 8x8 wall measured a light-to-dark ratio of 2.03, flatter than cast iron).
+    A seam all the way round gives every plate an edge of its own that survives the distance, and
+    the screws in its corners at the top of the ramp give it the rivets. The face itself is left
+    as it was."""
     px = _worn(R, 3, seed, pits=0.02, light=0.012)
-    _raised(px, 0, 0, TILE, TILE, R[4], R[1])
-    _put(px, 1, 1, R[5])                                                # the glint in the lit corner
+    _ring(px, 0, 0, TILE, TILE, R[2])
+    _put(px, 1, 1, R[4])                                                # the glint in the lit corner
     _screws(px, [(2, 2), (TILE - 3, 2), (2, TILE - 4), (TILE - 3, TILE - 4)], R[5], R[1])
     return px
 
@@ -439,19 +447,27 @@ def _line_cross():
 
 
 def _line_star():
-    """BRASS_STAR: the emblem's star in one cell, solid metal: eight points round a full middle. The
-    four upright points are four pixels wide at the root and two at the tip, the four between them
-    a pixel wide, and all eight reach as far, so that near or far it is a star and never two bars
-    crossing (c219, 11-14)."""
+    """BRASS_STAR: the emblem's star in one cell: eight points a pixel wide round a centre dot that
+    stands clear of them. The star spans nine pixels, its arms each one pixel, and one clear ring
+    of pixels separates the middle from the arms, so it is a star and not a disc (cr, review #8:
+    the first one filled 55% of its cell, its eight points reached the cell's corners and it read
+    as a bright blob inside the ring; the line it stands in is four pixels wide, and the star has
+    to be of that same weight). The joint round it is the paving's shadow, as it is round the line.
+    All eight points reach as far, so near or far it is a star and never two bars crossing."""
     def body(x, y):
-        dx, dy = abs(2 * x - 15), abs(2 * y - 15)                   # twice the distance from the middle
-        lo, hi = min(dx, dy), max(dx, dy)
-        upright = (lo <= 1 and hi <= 13) or (lo <= 3 and hi <= 7)
-        slanted = dx == dy and dx <= 9
-        return upright or slanted or dx + dy <= 6
+        dx, dy = x - 7, y - 7
+        if dx == 0 and dy == 0:
+            return True                                             # the centre's one pixel
+        far = max(abs(dx), abs(dy))
+        if far < 2 or far > 4:
+            return False                                            # a clear ring, then the points
+        return dx == 0 or dy == 0 or abs(dx) == abs(dy)
 
     def joint(x, y):
-        return any(body(x + i, y + j) for i, j in ((1, 0), (-1, 0), (0, 1), (0, -1)))
+        """The shadow is one pixel to the lower right of each pixel of the star, the way the light
+        falls on every other inlaid line; a drop shadow round all of it would be more pixels than
+        the star itself."""
+        return body(x - 1, y - 1)
     return _inlaid(9, body, joint)
 
 
