@@ -51,6 +51,12 @@
 - `sky/ridges` **两份实现都在分支上、都没合**：c264 的 `cursor/c164-snow-ridges-b9be` @ `ba5f5d7d`（实体站 140 格、scale 推远；`refs` 与 `views` 都 PASS）和 c267 的 `cursor/c164-ridges-lights` @ `9bdd3a1d`（实体站露台、用 `transformation.translation` 推远，机制上更安全；`px` 只 0.05–0.07）。**硬限制（两个都要知道）**：① `artkit` 模型 48 单位上限 ⇒ 0.053 像素/格；② **导出器贴图上限 512×512** ⇒ 32 单位宽的面加补白最多 `PX = 15.9375`，512 像素铺 300 格 = **0.85 像素/格**，这是天花板（c267 实测）。而 380 格处忠实还原需约 **2.76 像素/格**（1280 宽、70° 视场）。⇒ **0.85 已经是现引擎能给的最好值，仍只有忠实的 31%**；再往上要改导出器的 512 上限（公共文件）。三条路（退卡 / 降为色带 / 拆 19×4 块）报给了总监，他留给接手人定。
 - `main/dome` 重出：c279 报的 `97241b20` **远端不存在**（未推）；他分支远端头仍是 `2570dca3`。
 - `machines/refractor`：代码能生成且全绿（`check.py --scene obs_mach_refractor` PASS），**25 张离线图未出**、未交付。
+- `machines/orrery`：c295 的 `e92a3145`（代码 0f1cf67f、卡 142f79fb）**交付但未合**——`check.py --scene obs_mach_orrery` **PASS 0 失 0 黄**（12 机位）、`delivery.py` 七项全 PASS、`--verify` 3/3 对；按 cr3-M1/cr2-M1 改了三处（日球整颗打底、甲的两组齿轮同 0.78 心距咬合、六球直径 0.18–0.38），`SUN_LIGHT` 12、环面 7.5 照 A0 #357。
+- `interiors/timeroom`：c292 的 `a1651b3b`（代码 510b6f8d、图 c0db23ff）**交付但未合**——`check.py` PASS 0 失 1 黄（盒子顶替壳的那面墙）；灯从 6 盏到 7 盏、房间实体 15→19；`MOVED_IN` 仍 False，**搬进总装那一轮要改读 `shell.ROOMS`／`shell.ROOM_DOOR_X`，卡末写着**。
+- `materials/ashlar` 打磨：c283 的 `156661a3`，三条打磨跑通、`faults()` 全空；`_b` 17 张已重出（135df56b），`_a` 对照场景的图待重跑。
+- `site/cablecar`：c273 的 `aafd02ab`，净空已自证（`in_v1_clear()` 1049 格命中 0）；**一处未改完**：canopy 两根柱的柱身用 `IRON_PIPE`，而 iron 把该方块画成钢缆，读成“两条链子吊下来”——四个备选画布已建、未选。
+- `machines/cablecar-winch`：c271 的 `eeaff434`（cr3 三条改完、14 张 14/14），已合 `03e8016e` 之后又进了一步。
+- `machines/armillary` 与其它：各人最后一笔卡片记录都已推在自己分支上。
 
 **冻结后 S2 在自己分支上又修了一处（未进总装，接手人可直接用）**：`selfshots.py --take` 不再排队。根因两处——venv hook 按脚本名把整个 `selfshots.py` 当重活，工具内部自己也调 `_slots.take()`；`--take` 只拷文件、算 SHA-256、一张不画。两处都改后实测：唯一名额被占时 `--take` **0.11 秒**（改前 5.1 秒，c273 实遇到卡 15 分钟），而 `--verify` 仍正常排队 7.2 秒。见 `cursor/c164-s2-integrator-927e` @ `475377bf`。
 
