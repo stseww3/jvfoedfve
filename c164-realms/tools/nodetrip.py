@@ -10,12 +10,14 @@ its twelve board views. The trip
 
   1. stops what an earlier job may have left running (nodemc.py down);
   2. makes the node ready (nodemc.py setup: the system's packages, Java 25, the game's files from
-     Mojang, the settings) with the distances asked for -- 12 chunks of view and a cloud range of
-     128 unless --view and --clouds say otherwise;
+     Mojang, the settings) with the distances asked for -- the client's render distance 12, the
+     server's view distance 10 and a cloud range of 128 unless --view, --server-view and --clouds
+     say otherwise;
   3. runs the shuttle (win/shuttle.py): the look, the server, the scenes on their plots, the
      resource pack, the game, the shots;
-  4. takes the pictures into renders/real/<scene>/ (realshots.py --take; pictures at another view
-     distance than 12 go to renders/real-view<n>/<scene>/, they are not the board's) and draws
+  4. takes the pictures into renders/real/<scene>/ (realshots.py --take; pictures at other
+     distances than the board's go to renders/real-view<n>/<scene>/ or
+     renders/real-server<n>/<scene>/, they are not the board's) and draws
      sheet.jpg beside them; for the master scene also compare.jpg, each board view as the offline
      renderer drew it (renders/board/<tag>/) beside the game's -- when the offline board of that
      commit is not drawn yet, boardrender.py draws the sheet as it comes, and a compare.jpg of an
@@ -58,7 +60,10 @@ scenes have in common side by side, one column a scene: renders/real/_beside/<na
     --sheet <name>           this trip's pictures on one sheet, renders/real/_sheets/<name>.jpg, in
                              the order --only names them, --across <n> a row (2): a few shots picked
                              for a comparison
-    --view <n> --clouds <n>  render distance and cloud range in chunks (12 and 128)
+    --view <n> --clouds <n>  the client's render distance and cloud range in chunks (12 and 128)
+    --server-view <n>        the server's view distance in chunks (10: what a Realm runs at and
+                             cannot change. The client draws the smaller of the two, so no block
+                             is seen further than 160 off; entities are sent no further either)
     --settle, --first-settle, --still   seconds, passed to the shuttle (10, 60, 60)
     --only, --shots, --gallery, --plot, --again, --step   passed to the shuttle as they are
     --after <scene>=<script> a script of the code that is shot (a path from its build/), run after
@@ -89,7 +94,9 @@ PROJECT = os.path.dirname(HERE)
 ROOT = os.path.abspath(os.environ.get("MC_ROOT", "/agent/realms-study"))
 WORK = os.environ.get("C164_TRIP_DIR", "/tmp/c164_s1/real")
 MASTER = "obs"
-BOARD_VIEW = 12         # the view distance the board is judged at
+BOARD_VIEW = 12         # the client's render distance the board is judged at
+REALM_VIEW = 10         # the server's view distance on a Realm (Realms Map Guidelines: "View distance is
+                        # set to 10. This cannot be altered."); the board is judged at it since 11-16 07:20
 CLOSING = 120           # seconds of a trip's time that are kept for taking the pictures and closing down
 
 sys.path.insert(0, HERE)
@@ -222,7 +229,7 @@ def other_code(branch, at):
     return project, commit[:8]
 
 
-def sheets(trip, scene, folder, tag, view, clouds):
+def sheets(trip, scene, folder, tag, at):
     """sheet.jpg of a scene's kept pictures; for the master scene compare.jpg beside the offline board."""
     import boardrender
     import realshots
@@ -231,7 +238,7 @@ def sheets(trip, scene, folder, tag, view, clouds):
     if not names:
         return
     commits = ", ".join(sorted({row[1] for row in kept.values()}))
-    drawn = f"the game 26.3 on a node, view distance {view}, cloud range {clouds}"
+    drawn = f"the game 26.3 on a node, {at}"
     boardrender.sheet(folder, names, f"c164 {scene}, {drawn}, the code of {commits}", ext=".jpg")
     made = ["sheet.jpg"]
     if scene == MASTER:
@@ -241,7 +248,7 @@ def sheets(trip, scene, folder, tag, view, clouds):
     trip.say(f"{scene}: {', '.join(m for m in made if m)} in {os.path.relpath(folder, PROJECT)}/")
 
 
-def look_sheets(trip, scene, base, runs, commit, view, clouds):
+def look_sheets(trip, scene, base, runs, commit, at):
     """<scene>-looks.jpg: the scene's views under every light version of the trip, one column a
     version; the versions shot with the building's own lights on have a sheet of their own."""
     import boardrender
@@ -261,14 +268,14 @@ def look_sheets(trip, scene, base, runs, commit, view, clouds):
         if not columns:
             continue
         out = os.path.join(base, f"{scene}-looks{'-dressed' if dressed else ''}.jpg")
-        boardrender.in_columns(columns, names, f"c164 {scene} of {commit}, the game 26.3 on a node, view distance {view}, "
-                               f"cloud range {clouds}: each light version at its tick, the windows lit by its table"
+        boardrender.in_columns(columns, names, f"c164 {scene} of {commit}, the game 26.3 on a node, {at}: "
+                               f"each light version at its tick, the windows lit by its table"
                                + (", the building's own lights on (DRESS, off in the code)" if dressed else ""), out,
                                size=(960, 540) if len(columns) <= 3 else (640, 360))
         trip.say(f"{scene}: {os.path.relpath(out, PROJECT)}, {len(names)} views under {len(columns)} light versions")
 
 
-def beside(trip, name, shot, tag, clouds, view):
+def beside(trip, name, shot, tag, at):
     """renders/real/_beside/<name>.jpg: what the scenes of this trip were shot of, one column a
     scene, one row a shot. `shot` is [(scene, its folder, [shots taken])]."""
     import boardrender
@@ -278,8 +285,7 @@ def beside(trip, name, shot, tag, clouds, view):
     out = os.path.join(PROJECT, "renders", "real", "_beside", name + ".jpg")
     os.makedirs(os.path.dirname(out), exist_ok=True)
     boardrender.in_columns([(scene, folder) for scene, folder, _ in shot], names,
-                           f"c164 {', '.join(scene for scene, _, _ in shot)} of {tag}: the game 26.3 on a node, "
-                           f"view distance {view}, cloud range {clouds}", out)
+                           f"c164 {', '.join(scene for scene, _, _ in shot)} of {tag}: the game 26.3 on a node, {at}", out)
     trip.say(f"{os.path.relpath(out, PROJECT)}: {len(names)} shots of {len(shot)} scenes side by side")
 
 
@@ -290,6 +296,7 @@ def main():
     ap.add_argument("--tag")
     ap.add_argument("--branch")
     ap.add_argument("--view", type=int, default=BOARD_VIEW)
+    ap.add_argument("--server-view", type=int, default=REALM_VIEW)
     ap.add_argument("--clouds", type=int, default=128)
     ap.add_argument("--settle", type=float, default=10.0)
     ap.add_argument("--first-settle", type=float, default=60.0)
@@ -343,9 +350,13 @@ def main():
         tag = commit[:7]
     else:
         tag, commit = boardrender.which_commit(args.tag, args.at)
-    kept_in = os.path.join("renders", "real" if args.view == BOARD_VIEW else f"real-view{args.view}")
+    # pictures at other distances than the board's are kept apart: they never stand in for the board's
+    apart = (f"-view{args.view}" if args.view != BOARD_VIEW else "") \
+        + (f"-server{args.server_view}" if args.server_view != REALM_VIEW else "")
+    kept_in = os.path.join("renders", "real" + apart)
+    at = f"view distance {args.view} (the server's {args.server_view}), cloud range {args.clouds}"
     # a branch's master scene is not the assembly's: it does not take the place of the board's pictures
-    own_in = os.path.join("renders", "real-branch", tag) if project else kept_in
+    own_in = os.path.join("renders", "real-branch" + apart, tag) if project else kept_in
     looks_in = os.path.join(own_in, "looks") if project else os.path.join("renders", kept_in.split(os.sep)[-1] + "-looks", tag)
     log_path = os.path.join(PROJECT, "renders", "real", "_trips", f"{time.strftime('%Y%m%d-%H%M', time.gmtime())}-{tag}.log")
     trip = Trip(log_path, args.budget)
@@ -359,11 +370,11 @@ def main():
         sys.exit(143)
     signal.signal(signal.SIGTERM, cut_short)
     station = os.path.join(HERE, "nodemc.py")
-    distances = {"MC_VIEW": str(args.view), "MC_CLOUDS": str(args.clouds)}
+    distances = {"MC_VIEW": str(args.view), "MC_SERVER_VIEW": str(args.server_view), "MC_CLOUDS": str(args.clouds)}
     trip.say(f"trip of {', '.join(args.scenes)}: the code of {commit} (tag {tag})"
              + (f" of {args.branch}, checked out at {os.path.dirname(project)}" if project else "")
              + (f", under the light versions {args.looks}" if args.looks else "")
-             + f", view distance {args.view}, cloud range {args.clouds}; {os.cpu_count()} cores, {args.budget:.0f} s at most")
+             + f", {at}; {os.cpu_count()} cores, {args.budget:.0f} s at most")
     failed, kept = [], []
     try:
         trip.stage("clean", station, "down", budget=180)
@@ -423,19 +434,18 @@ def main():
                     _, _, rows = realshots.read_sent(os.path.join(send, f"{scene}-{tag}-real.txt"))
                     shot.append((scene, os.path.join(PROJECT, into, scene), [row[0] for row in rows]))
                     try:
-                        sheets(trip, scene, os.path.join(PROJECT, into, scene), tag, args.view, args.clouds)
+                        sheets(trip, scene, os.path.join(PROJECT, into, scene), tag, at)
                     except Exception as exc:        # the pictures are kept; a sheet is a convenience
                         trip.say(f"{scene}: the sheet could not be drawn ({exc})")
             if args.looks:
                 for scene in args.scenes:
                     try:
-                        look_sheets(trip, scene, os.path.join(PROJECT, looks_in), [run[:2] for run in runs], commit,
-                                    args.view, args.clouds)
+                        look_sheets(trip, scene, os.path.join(PROJECT, looks_in), [run[:2] for run in runs], commit, at)
                     except Exception as exc:
                         trip.say(f"{scene}: the sheet of the light versions could not be drawn ({exc})")
             if args.beside and shot:
                 try:
-                    beside(trip, args.beside, shot, tag, args.clouds, args.view)
+                    beside(trip, args.beside, shot, tag, at)
                 except Exception as exc:
                     trip.say(f"--beside {args.beside}: the sheet could not be drawn ({exc})")
             if args.sheet and shot:
@@ -446,7 +456,7 @@ def main():
                 try:
                     realshots.sheet(args.sheet, picked, args.across,
                                     f"c164 {', '.join(scene for scene, _, _ in shot)} of {commit}: the game 26.3 on a "
-                                    f"node, view distance {args.view}, cloud range {args.clouds}",
+                                    f"node, {at}",
                                     kept_in=os.path.join(PROJECT, kept_in))
                     trip.say(f"{kept_in}/_sheets/{args.sheet}.jpg: {len(picked)} pictures, {args.across} a row")
                 except (Exception, SystemExit) as exc:

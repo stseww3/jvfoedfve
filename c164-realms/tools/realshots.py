@@ -4,6 +4,7 @@
     realshots.py --take <tag> [<scene> ...] [--from <folder>] [--into <folder>]
     realshots.py --list [<scene> ...] [--into <folder>]
     realshots.py --sheet <name> [--across <n>] [--title <text>] <scene>:<shot> ... [--into <folder>]
+    realshots.py --columns <name> --shots <a,b,...> [--title <text>] <label>=<folder> ...
 
 A trip of the render station (tools/nodetrip.py on a worker node, bin/trip.py on the admin's
 computer; both run tools/win/shuttle.py) leaves for every scene <scene>-<tag>-<shot>.jpg, the game's
@@ -15,11 +16,12 @@ itself; from the admin's computer they arrived in the inbox of the cloud machine
 --take checks every picture of a scene against the note (did it arrive, is it the file that was
 sent) and then puts them into renders/real/<scene>/<shot>.jpg of this checkout, with the scene's
 own note renders/real/<scene>/real.txt: shot, tick, commit, SHA-256, when it was taken, and the
-distances it was drawn at (view12,clouds128: 12 chunks of view, the smaller of the client's render
-distance and the server's view distance, and a cloud range of 128 chunks; after them windows-deep
-when the scene was built for a light version named to the shuttle, here "deep", and dressed when
-the building's own lights were turned on for the picture, which the code keeps off). When a
-picture of a scene is missing or is not the file the note describes, nothing of that scene is
+distances it was drawn at (view12,server10,clouds128: the client's render distance, the server's
+view distance -- the game draws the smaller of the two -- and the cloud range, in chunks; a line
+without server<n>, taken before 11-16 07:20, had the server at the client's distance; after them
+windows-deep when the scene was built for a light version named to the shuttle, here "deep", and
+dressed when the building's own lights were turned on for the picture, which the code keeps off).
+When a picture of a scene is missing or is not the file the note describes, nothing of that scene is
 touched and it says which; send again (bin/trip.py --send-only) and take again. A trip that shot
 only some of a scene's shots replaces those and leaves the others, each with its own commit in the
 note. Then commit and push: that is the render station's to do.
@@ -30,9 +32,16 @@ note. Then commit and push: that is the render station's to do.
 renders/real/_sheets/<name>.jpg, every picture under its scene, shot, tick and commit. For a
 question that is answered by a few pictures side by side.
 
---into names another folder of this checkout than renders/real: pictures drawn at another view
-distance than the board's 12 chunks are kept apart (renders/real-view32/<scene>/), so that they
-never stand in for the pictures the board is judged by.
+--columns puts the same shots of several kept folders side by side, one row a shot and one column
+a folder: renders/real/_sheets/<name>.jpg. A folder is a scene's folder of pictures, given from
+renders/ (real/obs, real-server12/obs, real-branch/<tag>/obs, board/<tag> for the offline board):
+the same views at two distances, of two commits, by the game and by the offline renderer. Every
+cell says its label and, where the folder has a note, the commit and the distances of its picture.
+
+--into names another folder of this checkout than renders/real: pictures drawn at other distances
+than the board's (the client's 12 chunks, the server's 10) are kept apart
+(renders/real-view32/<scene>/, renders/real-server12/<scene>/), so that they never stand in for
+the pictures the board is judged by.
 
 Real-machine pictures are the look of the finished thing: fog, particles, the game's clouds, the
 light as the client draws it. The pictures a package keeps of itself (renders/<scene>/, drawn
@@ -52,7 +61,8 @@ ROOT = os.environ.get("MC_ROOT", "/agent/realms-study")
 KEPT = os.path.join(PROJECT, "renders", "real")
 NOTE = "real.txt"
 HEAD = "# real-machine pictures (tools/realshots.py): shot, tick, commit of the code the picture shows, " \
-       "first 16 of the picture file's sha256, when it was taken, view distance and cloud range in chunks"
+       "first 16 of the picture file's sha256, when it was taken, the client's render distance, the server's " \
+       "view distance (where none is given: the client's) and the cloud range in chunks"
 NAME_OK = re.compile(r"[A-Za-z0-9_.\-]+\Z")
 
 
@@ -74,7 +84,7 @@ def read_sent(path):
                     taken = f"{m.group(1)}T{m.group(2)}"
                 m = re.search(r"render distance (\d+), server view distance (\d+), cloud range (\d+)", line)
                 if m:
-                    view = ",".join(filter(None, [f"view{min(int(m.group(1)), int(m.group(2)))},clouds{m.group(3)}", view]))
+                    view = ",".join(filter(None, [f"view{m.group(1)},server{m.group(2)},clouds{m.group(3)}", view]))
                 m = re.match(r"# windows: lit by the table of look (\w+)", line)
                 if m:
                     view = ",".join(filter(None, [view, f"windows-{m.group(1)}",
@@ -179,6 +189,33 @@ def sheet(name, picked, across, title, kept_in=None):
     print(f"{os.path.relpath(out, PROJECT)}: {len(pictures)} pictures, {across} across")
 
 
+def columns(name, shots, picked, title):
+    """renders/real/_sheets/<name>.jpg: the shots named, one row each, as several folders keep them,
+    one column each. `picked` is ['<label>=<folder from renders/>', ...]."""
+    import boardrender
+    renders = os.path.join(PROJECT, "renders")
+    folders = []
+    for pick in picked:
+        label, _, rel = pick.partition("=")
+        folder = os.path.normpath(os.path.join(renders, rel))
+        if not label or not rel or not folder.startswith(renders + os.sep) or not os.path.isdir(folder):
+            raise SystemExit(f"{pick}: <label>=<folder>, a folder of kept pictures given from renders/")
+        folders.append((label, folder, read_kept(os.path.join(folder, NOTE))))
+    pictures = []
+    for shot in shots:
+        for label, folder, kept in folders:
+            path = next((p for p in (os.path.join(folder, shot + ext) for ext in (".jpg", ".png")) if os.path.exists(p)), None)
+            if path is None:
+                raise SystemExit(f"{shot}: no such picture in {os.path.relpath(folder, PROJECT)}/")
+            row = kept.get(shot)
+            pictures.append((f"{shot}  {label}" + (f"  {row[1]}" + (f"  {row[4]}" if len(row) > 4 else "") if row else ""), path))
+    out = os.path.join(KEPT, "_sheets", name + ".jpg")
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    boardrender.cells(pictures, title or "c164, the same views side by side: " + ", ".join(label for label, _, _ in folders),
+                      out, across=len(folders), size=(960, 540) if len(folders) <= 2 else (640, 360))
+    print(f"{os.path.relpath(out, PROJECT)}: {len(shots)} views in {len(folders)} columns")
+
+
 def main():
     ap = argparse.ArgumentParser(description="real-machine pictures into renders/real/")
     ap.add_argument("scenes", nargs="*")
@@ -186,6 +223,8 @@ def main():
     ap.add_argument("--from", dest="source", default=os.path.join(ROOT, "inbox"), metavar="FOLDER")
     ap.add_argument("--list", action="store_true")
     ap.add_argument("--sheet", metavar="NAME")
+    ap.add_argument("--columns", metavar="NAME")
+    ap.add_argument("--shots", metavar="A,B", help="with --columns: the shots, one row each")
     ap.add_argument("--across", type=int, default=2)
     ap.add_argument("--title")
     ap.add_argument("--into", metavar="FOLDER", help="keep them in this folder of the checkout instead of renders/real")
@@ -199,8 +238,15 @@ def main():
             ap.error("--sheet <name> <scene>:<shot> ...: a name of letters, digits, - and _, and the pictures")
         sheet(args.sheet, args.scenes, args.across, args.title, kept_in)
         return 0
+    if args.columns:
+        shots = [name for name in (args.shots or "").split(",") if name]
+        if not NAME_OK.match(args.columns) or not shots or len(args.scenes) < 2:
+            ap.error("--columns <name> --shots <a,b,...> <label>=<folder> <label>=<folder> ...: a name of letters, "
+                     "digits, - and _, the shots, and two folders or more")
+        columns(args.columns, shots, args.scenes, args.title)
+        return 0
     if not args.take:
-        ap.error("--take <tag>, --list or --sheet <name>")
+        ap.error("--take <tag>, --list, --sheet <name> or --columns <name>")
     scenes = args.scenes
     if not scenes:
         tail = f"-{args.take}-real.txt"

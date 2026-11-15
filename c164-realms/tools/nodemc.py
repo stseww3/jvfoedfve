@@ -34,8 +34,9 @@ have left the game running: `down` also stops every server, client and display t
 from MC_ROOT, whoever noted its process id.
 
 Environment: MC_ROOT, MC_VERSION (26.3), MC_CAM (C164Cam), MC_SIZE (1280x720), MC_DISPLAY (164),
-MC_VIEW (render distance in chunks, 12: the distance the board is judged at), MC_CLOUDS (cloud
-range in chunks, 128), MC_SERVER_HEAP (1500M), MC_CLIENT_HEAP (3G), LP_NUM_THREADS (the cores),
+MC_VIEW (the client's render distance in chunks, 12), MC_SERVER_VIEW (the server's view distance,
+10: what a Realm runs at and cannot change -- the client draws the smaller of the two; these are
+the distances the board is judged at), MC_CLOUDS (cloud range in chunks, 128), MC_SERVER_HEAP (1500M), MC_CLIENT_HEAP (3G), LP_NUM_THREADS (the cores),
 MC_HELPER, JAVA (a Java 25 binary to use instead of looking for one).
 """
 import ctypes.util
@@ -68,6 +69,7 @@ CAM = os.environ.get("MC_CAM", "C164Cam")
 SIZE = os.environ.get("MC_SIZE", "1280x720")
 DISPLAY = os.environ.get("MC_DISPLAY", "164")
 VIEW = int(os.environ.get("MC_VIEW", "12"))
+SERVER_VIEW = int(os.environ.get("MC_SERVER_VIEW", "10"))
 CLOUDS = int(os.environ.get("MC_CLOUDS", "128"))
 HOST, PORT, RCON_PORT = "127.0.0.1", 25599, 25598
 JAVA_MAJOR = 25
@@ -487,9 +489,10 @@ def setup():
     props = os.path.join(SERVER, "server.properties")
     if not os.path.exists(props):
         with open(props, "w", encoding="utf-8") as fh:
-            fh.write(SERVER_PROPERTIES.format(password=password, rcon_port=RCON_PORT, host=HOST, port=PORT, view=VIEW))
+            fh.write(SERVER_PROPERTIES.format(password=password, rcon_port=RCON_PORT, host=HOST, port=PORT,
+                                              view=SERVER_VIEW))
         written.append(props)
-    elif set_line(props, "view-distance", "=", VIEW):
+    elif set_line(props, "view-distance", "=", SERVER_VIEW):
         written.append(props + " (view-distance)")
     eula = os.path.join(SERVER, "eula.txt")
     if not os.path.exists(eula):
@@ -507,7 +510,7 @@ def setup():
         if changed:
             written.append(options + " (" + ", ".join(changed) + ")")
     say("settings written: " + (", ".join(os.path.relpath(p, ROOT) for p in written) or "nothing, all there")
-        + f"; view distance {VIEW}, cloud range {CLOUDS}")
+        + f"; render distance {VIEW}, the server's view distance {SERVER_VIEW}, cloud range {CLOUDS}")
     if any("view-distance" in w or "renderDistance" in w or "cloudRange" in w for w in written):
         # a running game holds the old distances
         if running("client") or running("server"):
