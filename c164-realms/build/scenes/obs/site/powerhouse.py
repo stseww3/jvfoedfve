@@ -465,27 +465,33 @@ def _lunette(h, d):
 
 def _roof_b(p):
     """The barrel vault over the hall: riveted plates, a whole block under the top of every column,
-    so that a column closes against the next; a rib half a block proud of the plates on every pier
-    line of the long sides and on the two ends. An end is an iron screen, glazed. The monitor rides
-    the crown between the second pier line from either end, open to the house below. East of the
-    vault, behind the chimney, the boiler house has a flat of plates under the same ribs."""
+    so that a column closes against the next. Where the curve climbs a whole course from one
+    column to the next (the three columns at either foot) the plate is a stair, and the curve comes
+    out of the gutter in half steps; above them it rises by half a block at a time. A rib half a
+    block proud of the plates lies on every pier line of the long sides. An end is an iron screen,
+    glazed, under the vault's own last row. The monitor rides the crown between the second pier
+    line from either end, open to the house below. East of the vault, behind the chimney, the
+    boiler house has a flat of plates under the same ribs."""
     base = EAVES + 1
     mid = (VX0 + VX1) // 2
     m0, m1 = RZ0 + BAY, RZ1 - BAY
     for x in range(VX0, VX1 + 1):
-        rise = VAULT[min(x - VX0, VX1 - x)]
+        d = min(x - VX0, VX1 - x)
+        rise = VAULT[d]
         k = int(rise)
         top = base + k - 1
+        steep = rise - (VAULT[d - 1] if d else 0.0) >= 1.0
+        plate = f"{IRON_STAIRS}[facing={'east' if x < mid else 'west'},half=bottom]" if steep else IRON
         for z in range(RZ0, RZ1 + 1):
             if _in_tower(x, z):
                 continue
-            under_monitor = abs(x - mid) <= 1 and m0 <= z <= m1
+            rib = RZ0 < z < RZ1 and (z - RZ0) % BAY == 0 and not (abs(x - mid) <= 1 and m0 <= z <= m1)
             if not (x == mid and m0 < z < m1):
-                p.put(x, top, z, IRON)
+                p.put(x, top, z, IRON if rib else plate)
             if rise > k:
+                p.put(x, top + 1, z, IRON if rib else IRON_LOW)
+            elif rib and not steep:
                 p.put(x, top + 1, z, IRON_LOW)
-            if (z - RZ0) % BAY == 0 and not under_monitor:
-                p.put(x, top + 1, z, IRON if rise > k else IRON_LOW)
             if z in (RZ0, RZ1):
                 for y in range(base, top):
                     p.put(x, y, z, _lunette(y - base, abs(x - mid)))
@@ -500,7 +506,7 @@ def _roof_b(p):
     for x in range(VX1 + 1, RX1 + 1):
         for z in range(RZ0, RZ1 + 1):
             if not _in_tower(x, z):
-                p.put(x, base, z, IRON if (z - RZ0) % BAY == 0 else IRON_LOW)
+                p.put(x, base, z, IRON if RZ0 < z and (z - RZ0) % BAY == 0 else IRON_LOW)
 
 
 ROOFS = {"a": _roof_a, "b": _roof_b}
