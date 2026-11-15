@@ -38,6 +38,12 @@ def _edge_on(name, away):
     return (name, [(P + "celestial_globe", None, turned)], (0.0, 1.62, away), (0.0, 1.1, 0.0))
 
 
+def _from_behind(name, away):
+    """The comet's telescope seen from behind, as from the walk that leads up to it: the tube stands
+    over the fork and the tripod (red line 8, near and far)."""
+    return (name, [(P + "tripod_scope_comet", None, {"yaw": 180.0})], (0.0, 1.62, away), (0.0, 1.5, 0.0))
+
+
 _PIVOT = instruments.PENDULUM["pivot"]
 _PENDULUM = (P + "regulator_pendulum", (_PIVOT[0], 0.5 + _PIVOT[1], WALL_Z + _PIVOT[2]), {})
 
@@ -45,6 +51,9 @@ _PENDULUM = (P + "regulator_pendulum", (_PIVOT[0], 0.5 + _PIVOT[1], WALL_Z + _PI
 # camera, look-at
 GALLERY = [
     _floor("tripod_scope", 2.0, turn=-90.0),
+    _floor("tripod_scope_comet", 2.4, turn=-90.0),
+    _from_behind("tripod_scope_comet_behind", 4.0),
+    _from_behind("tripod_scope_comet_behind_far", 10.0),
     _floor("celestial_globe", 2.0),
     _edge_on("celestial_globe_edge", 3.5),
     _edge_on("celestial_globe_edge_far", 9.0),

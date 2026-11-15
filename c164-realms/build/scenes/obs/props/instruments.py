@@ -4,7 +4,9 @@
 One family, one motif: a graduated brass ring or arc, a knurled brass knob, a steady foot of dark
 wood, cast iron or stone. Phosphor green is on dials only and nothing else glows.
 
-    tripod_scope       a brass telescope on a wooden tripod, two blocks tall (the sunset terrace)
+    tripod_scope       a brass telescope on a wooden tripod, two blocks tall (the south lookout)
+    tripod_scope_comet the same telescope trained on the comet's head, 41 degrees up, with a star
+                       diagonal to look into from above (the sunset terrace)
     celestial_globe    a star globe 20 px across in a three-legged floor stand (the star hall)
     globe              a table globe: a verdigris ball in a brass half meridian on a turned foot
     sextant            a sextant in its wooden cradle, for a table
@@ -228,17 +230,33 @@ def _dial(m, name, rows, centre, z):
 
 
 # ---- the models ------------------------------------------------------------------------------------
-SCOPE_TILT = 18.0       # degrees above the horizon
+SCOPE_TILT = 18.0       # degrees above the horizon: the telescope as it stands about
+SCOPE_TILT_MAX = 46.0   # as far as the fork lets the tube rise: beyond, its underside meets the fork's foot
 SCOPE_PIVOT = 26.5      # height of the altitude axis
-SCOPE_HUB = 20.5        # height of the tripod head
+SCOPE_HUB = 19.5        # height of the tripod head
+COMET_TILT = 41.0       # where the director has the comet's head: due west, this far up (g2 #37928)
 
 
-def _tripod_scope():
-    """A brass refractor on a wooden tripod, 34 px tall and 30 px long. It looks along +z and up by
-    SCOPE_TILT; one leg stands forward under the objective and the observer steps between the other
-    two (the feet are 8.5 px from the middle). On the right of the fork the graduated altitude
-    sector, on the left the clamp. Anchor: the floor under the middle of the tripod."""
-    m = M.Model(PREFIX + "tripod_scope")
+def comet_tilt():
+    """Degrees above the horizon of the comet's head, which stands due west for every viewer. The
+    sky's own numbers while they can be read (the comet is painted into the moon's slot: sky/mood,
+    sky/comet), else COMET_TILT; no higher than the fork allows."""
+    try:
+        from ..sky import comet, mood
+        tilt = 90.0 - float(mood.MOON_ANGLE) - float(comet.HEAD_BELOW)
+    except (ImportError, AttributeError, TypeError, ValueError):
+        tilt = COMET_TILT
+    return min(tilt, SCOPE_TILT_MAX)
+
+
+def _scope(name, tilt, diagonal=False):
+    """A brass refractor on a wooden tripod. It looks along +z and up by `tilt` degrees; one leg
+    stands forward under the objective and the observer steps between the other two (the feet are
+    8.5 px from the middle). On the right of the fork the graduated altitude sector, on the left
+    the clamp. With `diagonal` the eyepiece stands up out of a prism housing on the end of the draw
+    tube, to be looked into from above: how a refractor is used when it points high. Anchor: the
+    floor under the middle of the tripod."""
+    m = M.Model(PREFIX + name)
     hub = SCOPE_HUB
     for turn in (0.0, 120.0, 240.0):
         with m.turned(("y", turn)):
@@ -254,7 +272,7 @@ def _tripod_scope():
         m.box((x, foot + 1.0, -1.5), (x + 1.0, SCOPE_PIVOT + 1.5, 1.5), IRON, grain="y")
     m.tube("x", (SCOPE_PIVOT, 0), -5.5, -4.0, 1.5, BRASS_D, cap=KNOB)                   # clamp knob, on the left
     limb = _scale("first", 3, 1, 1)
-    with m.turned(("x", -SCOPE_TILT), about=(0, SCOPE_PIVOT, 0)):
+    with m.turned(("x", -tilt), about=(0, SCOPE_PIVOT, 0)):
         c = (0, SCOPE_PIVOT)
         side, ends = 4.5, (101.25, 258.75)                                              # on the right the altitude
         m.ring("x", (side, SCOPE_PIVOT, 0), 5.5, 2.0, 0.75, BRASS, sides=16, arc=ends,
@@ -270,12 +288,27 @@ def _tripod_scope():
         m.tube("z", c, 12.0, 15.5, 2.5, BRASS_D, sides=12)                              # objective cell
         m.tube("z", c, 15.5, 15.75, 2.0, LENS, sides=12, cap=LENS)                      # the glass
         m.tube("z", c, -11.5, -7.0, 1.5, BRASS_D)                                       # draw tube
-        m.tube("z", c, -14.0, -11.5, 1.0, BRASS, cap=EYECUP)                            # eyepiece
+        if diagonal:
+            m.box((-1.5, SCOPE_PIVOT - 1.5, -14.5), (1.5, SCOPE_PIVOT + 1.5, -11.5), BRASS_D)   # prism housing
+            m.tube("y", (0, -13.0), SCOPE_PIVOT + 1.0, SCOPE_PIVOT + 4.5, 1.0, BRASS, cap=EYECUP)
+        else:
+            m.tube("z", c, -14.0, -11.5, 1.0, BRASS, cap=EYECUP)                        # eyepiece
         m.tube("x", (SCOPE_PIVOT - 0.5, -8.5), 1.25, 3.0, 1.0, BRASS_D, cap=KNOB)       # focus knob
         m.tube("z", (0, SCOPE_PIVOT + 3.25), 1.0, 9.5, 1.0, BRASS_D, cap=LENS)          # finder
         for z in (2.5, 7.0):
             m.box((-0.75, SCOPE_PIVOT + 1.75, z), (0.75, SCOPE_PIVOT + 2.5, z + 1.0), IRON_D)
     return m
+
+
+def _tripod_scope():
+    """The telescope as it stands about, SCOPE_TILT up: 34 px tall and 30 px long."""
+    return _scope("tripod_scope", SCOPE_TILT)
+
+
+def _tripod_scope_comet():
+    """The same telescope trained on the comet's head, with a star diagonal: 39 px tall and 27 px
+    long, the eyepiece 21 px above the floor and 13 px behind the middle."""
+    return _scope("tripod_scope_comet", comet_tilt(), diagonal=True)
 
 
 GLOBE_R = 10.0          # the sphere: 20 px across
@@ -531,6 +564,7 @@ def _sunshine_recorder():
 # name -> how it is mounted; "table" pieces stand on a floor too
 SPEC = {
     "tripod_scope": dict(build=_tripod_scope, mount="floor"),
+    "tripod_scope_comet": dict(build=_tripod_scope_comet, mount="floor"),
     "celestial_globe": dict(build=_celestial_globe, mount="floor"),
     "globe": dict(build=_globe, mount="floor"),
     "sextant": dict(build=_sextant, mount="floor"),
@@ -584,11 +618,11 @@ def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), yaw=None, **opts)
 # ---- the site --------------------------------------------------------------------------------------------
 # The rooms and the outbuildings place their instruments themselves, with place(). One piece is left
 # to this package, because site/terrain is blocks only: the telescope of the sunset terrace (plan
-# ART-PLAN 4). It stands on the axis at the west end of the walk from the west door, in line with the
-# inner pair of benches that props/furniture sets either side of the walk, and looks west over the
-# rail at the afterglow: who comes out of the west door walks straight up to its eyepiece. The two
-# blocks between it and the rail stay free to walk in. The switch, dress() and site() work like
-# those of props/furniture.
+# ART-PLAN 4; director, g2 #37928). It stands on the axis at the west end of the walk from the west
+# door, between the inner pair of benches that props/furniture sets either side of the walk, and is
+# trained on the head of the comet, due west and 41 degrees up: who comes out of the west door walks
+# straight up to its eyepiece and finds the comet in it. The two blocks between it and the rail
+# stay free to walk in. The switch, dress() and site() work like those of props/furniture.
 DRESS = False           # off in the master scene until the family has passed review; a test scene asks
                         # for the site's instruments with dress(canvas), or calls site()
 SUNSET_SCOPE = 16.0     # blocks west of the middle of the terrace's half-circle, on the axis
@@ -598,7 +632,8 @@ def site_pieces():
     """The instruments of the site as (group, kind, point, yaw). point is the middle of the piece's
     foot in scene coordinates before the origin."""
     cx, cz = S.SUNSET_PLATFORM["centre"]
-    return [("sunset", "tripod_scope", (S.mid(cx) - SUNSET_SCOPE, float(S.GROUND), S.mid(cz)), K.FACING["west"])]
+    point = (S.mid(cx) - SUNSET_SCOPE, float(S.GROUND), S.mid(cz))
+    return [("sunset", "tripod_scope_comet", point, K.FACING["west"])]
 
 
 def _stands(canvas, foot, origin=(0, 0, 0)):

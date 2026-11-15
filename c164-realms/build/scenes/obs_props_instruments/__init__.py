@@ -3,8 +3,9 @@
 The cameras stand south and look north. From west to east:
 
     the terrace (open paving west of the wall, one street lamp, the sky behind)
-        the tripod telescope side-on, looking west (placed by instruments.site(), as the one on
-        the sunset terrace is), the louvre box, and on a stone pedestal the sunshine recorder
+        the tripod telescope side-on, looking west, the louvre box, and on a stone pedestal the
+        sunshine recorder; behind them, nearer the terrace's west edge, the telescope that is
+        trained on the comet (placed by instruments.site(), as the one on the sunset terrace is)
     the hall (a wall of dressed stone that looks south, a wooden floor, bracket lamps)
         the celestial globe; on the wall the barometer, the regulator clock and, beside it, its
         pendulum once more by itself and swung out, to show the part that moves and its pivot; on
@@ -37,6 +38,7 @@ WALL_H = 6
 WALL_X0, WALL_X1 = -1, 17                       # the wall's first and last column
 TERRACE_X0 = -17                                # the paving runs west to here
 SCOPE = (-12.5, 0.0, 4.5)
+SCOPE_COMET = (-14.5, 0.0, 1.5)                 # open sky to its west and north, a clear row to its east
 STREET = (-10.5, 0.0, 4.5)                      # 8.5 blocks clear of the wall's end (lamps.STREET_CLEARANCE)
 LOUVRE = (-8.5, 0.0, 4.5)
 PEDESTAL = (-6, 4)                              # the cell of a one-block stone pedestal
@@ -65,10 +67,11 @@ def build():
     n = lamps.place(c, "street", STREET)
     for x in HALL_LAMPS:
         n += lamps.place(c, "bracket", (x, LAMP_Y, 0.0))
-    # the telescope is placed the way the master scene places the one of the sunset terrace, through
+    n += instruments.place(c, "tripod_scope", SCOPE, facing="west")
+    # the comet's telescope is placed the way the master scene places it on the sunset terrace, through
     # site(): the stage's paving lies where that terrace's would if the scene's origin were moved
     point = next(p for group, _, p, _ in instruments.site_pieces() if group == "sunset")
-    n += instruments.site(c, origin=tuple(a - b for a, b in zip(SCOPE, point)), groups=("sunset",))
+    n += instruments.site(c, origin=tuple(a - b for a, b in zip(SCOPE_COMET, point)), groups=("sunset",))
     n += instruments.place(c, "louvre_box", LOUVRE)
     n += instruments.place(c, "sunshine_recorder", SUNSHINE)
     n += instruments.place(c, "celestial_globe", GLOBE)
@@ -106,6 +109,14 @@ def shots():
     shot("scope", (sx, 1.62, sz + 3.5), (sx, 1.3, sz))
     shot("scope_near", (sx - 1.4, 1.9, sz + 1.6), (sx - 0.2, 1.6, sz))
     shot("scope_behind", (sx + 2.4, 1.8, sz + 0.9), (sx - 0.4, 1.6, sz))
+    # the comet's telescope: side-on, its eyepiece end, and from five blocks behind it as one comes up
+    # the walk, looking west and a little up: the tube is seen along its length there and has to run
+    # into the comet's head (and a tube standing over a fork must not read as a cross: red line 8)
+    kx, _, kz = SCOPE_COMET
+    shot("scope_comet", (kx, 1.62, kz + 3.2), (kx, 1.5, kz))
+    shot("scope_comet_near", (kx + 1.5, 1.9, kz + 1.4), (kx + 0.3, 1.45, kz))
+    up = math.radians(12.0)
+    shot("scope_comet_aim", (kx + 5.0, 1.62, kz), (kx + 5.0 - 10.0 * math.cos(up), 1.62 + 10.0 * math.sin(up), kz))
     shot("louvre", (lx + 0.9, 1.62, lz + 3.2), (lx, 1.2, lz))
     shot("louvre_near", (lx + 1.3, 1.8, lz + 1.5), (lx, 1.35, lz))
     px, py, pz = SUNSHINE
