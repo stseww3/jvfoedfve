@@ -73,6 +73,7 @@ WX = (IX[0] - 1, IX[1] + 1)                 # the walls: x 1 and 16
 WZ = (IZ[0] - 1, IZ[1] + 1)                 # z -7 and 7
 CEIL_Y = S.STAR_HALL_CEIL                   # 14, the ceiling block
 DOOR_Y = (0, 5)                             # the entrance, three wide
+JOINT_X = (S.PIER_SHAFT[0] - 1, int(S.MOTHER_CLOCK["back_x"]) + 1)      # 2..7: the grating ring round pier and step
 SUN_LIGHT = 12                              # the orrery's sun, the brightest thing in the hall (lights)
 V7 = getattr(S, "V7", dict(pos=(19.5, 1.62, 0.5), look_at=(10, 5.5, 0.5)))      # A0, 11-15
 
@@ -99,11 +100,12 @@ def _wall(a, y):
 
 def _floor(x, y, z):
     """The hall floor (A0, 11-15): a pale band three wide along the axis between two slate lines, a
-    chequer of two-block squares on either side; round the foot of the pier the iron grating that
-    covers the gap between the pier and the building (main/shell)."""
+    chequer of two-block squares on either side. Round the foot of the pier and of the clock's step
+    runs the iron grating that covers the gap between the pier and the building; inside that ring
+    the floor is the pier's own stone (main/shell, 11-15: the ring is x 2..7, z -2..2)."""
     d = abs(z)
-    if IX[0] <= x <= S.PIER_SHAFT[2] + 1 and d <= 2:
-        return GRATE
+    if JOINT_X[0] <= x <= JOINT_X[1] and d <= 2:
+        return GRATE if x in JOINT_X or d == 2 else SLATE
     if d <= 1:
         return LIGHT_STONE
     if d == 2:
@@ -123,7 +125,7 @@ def _hall(c):
     wx0, wx1 = WX
     wz0, wz1 = WZ
     c.box(wx0, FLOOR_Y, wz0, wx1, FLOOR_Y, wz1, _floor)
-    c.box(x0, FLOOR_Y - 1, -2, S.PIER_SHAFT[2] + 1, FLOOR_Y - 1, 2, DARK_STONE)     # the pit under the grating
+    c.box(JOINT_X[0], FLOOR_Y - 1, -2, JOINT_X[1], FLOOR_Y - 1, 2, DARK_STONE)      # the pit under the grating
     c.box(wx0, CEIL_Y, wz0, wx1, CEIL_Y, wz1, COURSE)
     for y in range(0, CEIL_Y):
         for x in range(wx0, wx1 + 1):
@@ -249,9 +251,16 @@ def _radiomast(c):
         px, py, pz = radiomast.LEAD_POST
         x, z = int(math.floor(px)), int(math.floor(pz))
         c.box(x, 0, z, x, int(math.ceil(py)) - 1, z, ROD)
-    hx, hy, hz = (int(math.floor(v)) for v in radiomast.TOWER_HOOK)
-    for x in range(min(TX[1], hx), hx + 1):
-        c.set(x, hy - 1, hz, B.IRON_BARS, keep=True)
+    hx, hy, hz = radiomast.TOWER_HOOK
+    x, y, z = int(math.floor(hx)), int(math.ceil(hy)) - 1, int(math.floor(hz))
+    if TX[0] <= x <= TX[1] and not TZ[0] <= z <= TZ[1]:
+        # off the north or the south face: a rod out of the wall, the hook at its end (main/tower)
+        for k in (range(z, TZ[0]) if z < TZ[0] else range(TZ[1] + 1, z + 1)):
+            c.set(x, y, k, st(B.IRON_ROD, facing="north"), keep=True)
+    else:
+        # off a corner or the east or west face: a row of bars under the hook
+        for k in (range(TX[1], x + 1) if x > TX[1] else range(x, TX[0] + 1)):
+            c.set(k, y, z, B.IRON_BARS, keep=True)
     return radiomast.build(c, (0, 0, 0))
 
 
