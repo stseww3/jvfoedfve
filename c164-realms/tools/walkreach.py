@@ -47,9 +47,15 @@ rule never sees.
 and besides: every piece reached by hopping only (a way that needs a jump is 走不通 for some), every
 standing place with less than two blocks over the head, every low gap beside the way that only
 head room closes, and the points named with --points (the route's landmarks) with how each is
-reached and what kind of way leads from each to the next. The shapes are the game's collision shapes of the blocks the occupancy table allows
-(build/scenes/obs/common/blocks.py); a block whose shape is not written down here counts as a
-whole cube and is named in the report, so nothing passes unseen for a guess.
+reached and what kind of way leads from each to the next. The shapes are the game's collision
+shapes of the blocks the occupancy table allows (build/scenes/obs/common/blocks.py); a block whose
+shape is not written down here counts as a whole cube and is named in the report, so nothing
+passes unseen for a guess.
+
+Scenes leave out what the game works out from the neighbours when the structure is placed: which
+way bars, panes, walls and fences join, where stairs turn a corner. Those are filled in first, by
+the rules the offline pictures use (build/artkit/shapes.py), on a copy of the blocks: a railing of
+bars written without them would be a row of thin posts with room to walk between.
 """
 import argparse
 import importlib
@@ -203,6 +209,24 @@ def shape(name, props):
     return FULL, "guess"
 
 
+def _is_cube(state):
+    return shape(*_props(state))[0] is FULL
+
+
+def complete(cells):
+    """(cells, done): the blocks with the properties the game works out from the neighbours filled
+    in, as artkit/shapes.py does it for the offline pictures; a copy when anything changes. done is
+    False when that module or its block table cannot be used (the blocks stay as they are written
+    then, and the report says so)."""
+    try:
+        from artkit.shapes import Shaper
+        out = dict(cells)
+        Shaper(out, _is_cube).run()
+    except Exception as err:                    # no artkit on the path, or a block its table does not know
+        return cells, f"no ({type(err).__name__}: {err})"
+    return out, "yes"
+
+
 def _props(state):
     name, _, rest = state.partition("[")
     props = {}
@@ -222,6 +246,7 @@ class World:
         looked at (cells outside are not read, and a step out of it counts as leaving)."""
         self.census = {"cube": {}, "none": {}, "shape": {}, "guess": {}}
         self.climbs = 0
+        cells, self.completed = complete(cells)
         shapes, full, part = {}, {}, {}
         ymin = None
         for (x, y, z), state in cells.items():
@@ -618,6 +643,7 @@ class Reach:
             "cut short": self.cut,
             "lowest block": world.ymin,
             "climbable blocks (not climbed here)": world.climbs,
+            "joins worked out as the game does": world.completed,
             "shapes guessed as whole cubes": dict(sorted(world.census["guess"].items(), key=lambda kv: -kv[1])),
             "shapes written down": dict(sorted(world.census["shape"].items(), key=lambda kv: -kv[1])),
             "no collision": dict(sorted(world.census["none"].items(), key=lambda kv: -kv[1])),
@@ -1003,6 +1029,9 @@ def say(report):
     for leg in report.get("legs") or ():
         lines.append(f"  {leg['from']} -> {leg['to']}: " + ("NO WAY" if leg["kind"] == "no" else
                      f"{leg['kind']}, {leg['blocks']:g} blocks"))
+    if report["joins worked out as the game does"] != "yes":
+        lines.append("  THE JOINS OF BARS, PANES, WALLS AND FENCES WERE NOT WORKED OUT: "
+                     + report["joins worked out as the game does"])
     guess = report["shapes guessed as whole cubes"]
     if guess:
         lines.append("  taken as whole cubes without a rule: " + ", ".join(f"{k} x{v}" for k, v in list(guess.items())[:20]))
@@ -1067,6 +1096,18 @@ def selftest():
         cells[(3, 0, 0)] = block
         reach, at = kinds(cells)
         check(f"beyond {block}", at(5.5, 0.5, 0.0), want)
+    # a railing as the scenes write it, without its joins: bars from wall to wall, and the same
+    # with a pier in the middle. The joins are worked out first, so nobody walks between two posts
+    for middle in ("oxidized_copper_bars", "sandstone_wall"):
+        cells = floor(0, 0, 8, 2)
+        cells.update({(x, y, z): "stone" for x in range(0, 9) for y in (0, 1, 2) for z in (-1, 3)})
+        cells.update({(4, 0, 0): "oxidized_copper_bars", (4, 0, 1): middle, (4, 0, 2): "oxidized_copper_bars"})
+        world = World(cells)
+        check("joins worked out", world.completed, "yes")
+        reach = world.reach((0.5, 0.0, 0.5))
+        check(f"beyond a railing written without its joins ({middle})", reach.kind_at(6.5, 1.5, 0.0, reach=0), "hop")
+        check(f"on the railing's middle ({middle})", reach.kind_at(4.5, 1.5, 1.5 if middle.endswith("wall") else 1.0, reach=0), "hop")
+        check("the blocks handed in are left as they were", cells[(4, 0, 0)], "oxidized_copper_bars")
     # two bars high is a wall again
     cells = passage(6)
     cells[(3, 0, 0)] = cells[(3, 1, 0)] = "oxidized_copper_bars[north=true,south=true]"
