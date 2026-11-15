@@ -30,12 +30,12 @@ the recess as it is built, never behind its back, and on a flush wall it is fixe
 The dial is smaller than the recess, so a dark ring stays round it. A drum behind the dial carries
 it from the back of the recess; in a flush wall the drum is buried and not seen.
 
-The time ball. A ball 2.5 blocks across, threaded on the mast of the tower (the mast, the vane and
-what else stands on it are main/tower's), with an iron sleeve at each pole and a catch plate tight
-under it, narrower than the ball: the plate travels with the ball, so it never stands alone on the
-mast as a bar (a cross is a red line). Two colours until A0 picks one on the pictures: old copper
-(BALL, the default) and dark red. Where no mast stands yet (the white model) the ball lies at the
-foot of the mast.
+The time ball. A ball 2.5 blocks across, threaded on the mast of the tower (the mast, a display
+model 7 pixels thick, and the cups and the vane above y 51 are main/tower's), with an iron sleeve
+at each pole and a catch plate tight under it, narrower than the ball: the plate travels with the
+ball, so it never stands alone on the mast as a bar (a cross is a red line). Two colours until A0
+picks one on the pictures: old copper (BALL, the default) and dark red. Where no mast stands yet
+(the white model) the ball lies at the foot of the mast.
 
 Models; px equals the scale each is shown at, so every texture is 16 pixels to the block:
   mach_clock_master          the case with its movement, coils and beat scale             scale 2
@@ -129,6 +129,7 @@ FAR = 4.0                        # view_range of everything on the tower: seen f
 # --- the time ball ------------------------------------------------------------------------------
 BALL = "copper"                  # the colour tower() hangs: "copper" or "red"
 BALL_AXIS = (S.mid(*S.CLOCK_SHAFT_X), S.mid(*S.CLOCK_SHAFT_Z))     # (13.5, -29.5): the mast
+MAST_MODEL = "bld_tower_mast"    # the model main/tower's mast is shown with: a rod 7 pixels thick, y 42.6..51
 BALL_R = 20.0                    # pixels: 2.5 blocks across (A0, 11-14)
 BALL_PLATE = 14.0                # the catch plate's radius: under eight tenths of the ball's (cr2)
 BALL_FOOT = BALL_R + 3.5         # from the ball's centre down to the foot of its lower sleeve
@@ -511,8 +512,25 @@ def dial_centre(canvas, facing, origin=(0, 0, 0)):
     return (plane, DIAL_Y, axis) if dx else (axis, DIAL_Y, plane)
 
 
+def _shown(nbt):
+    """The name of the model a display entity shows, without its namespace ("" for anything else)."""
+    ref = ((nbt.get("item") or {}).get("components") or {}).get("minecraft:item_model") or ""
+    return ref.rpartition(":")[2]
+
+
 def mast_stands(canvas, origin=(0, 0, 0)):
-    """Whether main/tower's mast is on the canvas: something on the axis where the ball hangs."""
+    """Whether the mast of the tower is on the canvas. main/tower's mast is a display model and
+    leaves no block on the axis (c223, 11-15): it is known by the model its entity shows,
+    tower.MAST_MODEL (MAST_MODEL while main/tower is not in the tree). A stand-in mast of blocks on
+    the axis where the ball hangs counts as well."""
+    try:
+        from ..main import tower
+        name = getattr(tower, "MAST_MODEL", MAST_MODEL)
+    except ImportError:
+        name = MAST_MODEL
+    name = str(getattr(name, "name", name)).rpartition(":")[2]
+    if any(_shown(e[3]) == name for e in canvas.entities):
+        return True
     x, z = (int(math.floor(v)) for v in BALL_AXIS)
     ox, oy, oz = (int(v) for v in origin)
     return any(_solid(canvas, x + ox, y + oy, z + oz)
