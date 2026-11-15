@@ -4,9 +4,9 @@ What lies on the desks and hangs on the walls of a working observatory: star cha
 a blackboard with tonight's orbit on it, a map of the Moon, log books, glass negatives. One
 vocabulary for all of them: cream paper; the chart blue of the enamel signs with the drawing left
 in cream; brass for whatever holds a sheet (a bead round it, a screw, a pin); an edge that curls
-where a sheet hangs free; and one heading wherever a sheet has one, a strip of the chart blue
-with its stars. The drawings are figures, lines and dots; nothing is written out, and no figure
-is a cross.
+where a sheet hangs free; and one heading wherever a sheet has one, a strip of the chart blue,
+graduated like the edge of a chart where it is two texels high. The drawings are figures, lines
+and dots; nothing is written out, and no figure is a cross.
 
 Every face is drawn here, texel by texel, on the common palette, 16 texels to the block.
 
@@ -31,7 +31,7 @@ from . import _kit as K
 PREFIX = "prop_paper_"
 
 EN, CR, BR, IR, SL, OP = (P.RAMPS[k] for k in ("enamel", "cream", "brass", "iron", "slate", "opal"))
-NG = P.RAMPS["night_glass"]
+NG, AS = P.RAMPS["night_glass"], P.RAMPS["ashlar"]
 
 BRASS = K.BRASS
 SCREW = K.flat("brass", 5)                                      # screw heads and pins catch the light
@@ -385,8 +385,10 @@ MOON = [".....hhhhhh.....",
         "..hhhhhtthhhhh..",
         "...hhhhtthhhh...",
         ".....hhhhhh....."]
-MOON_INK = {"p": CR[3], "e": EN[1], "g": EN[3], "o": CR[0], "i": CR[0],
-            "h": CR[2], "t": CR[3], "s": CR[1], "k": CR[0]}
+# The printer's ink is the warm grey one step under the cream ramp: on the cream ramp alone the
+# seas stood 26 levels off the disc under a lamp and the Moon was a smudge.
+MOON_INK = {"p": CR[3], "e": EN[1], "g": EN[3], "o": AS[0], "i": AS[0],
+            "h": CR[2], "t": CR[3], "s": CR[0], "k": AS[0]}
 
 
 def _moon_sheet():
