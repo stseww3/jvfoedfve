@@ -45,8 +45,10 @@ def build_models():
 
 def write_pack(pack_dir):
     """The tower paints no block itself; it stands in the repainted blocks as the materials line has
-    them today. Its two models (the mast and the cup wheel) come with build_models()."""
-    return materials.pack(pack_dir)
+    them today, under the sky's own pictures: the scene keeps the map's hour, and the sky's pack is
+    what blanks the sun on the western horizon and hangs the comet. Its two models (the mast and the
+    cup wheel) come with build_models()."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
 
 
 def shots():
