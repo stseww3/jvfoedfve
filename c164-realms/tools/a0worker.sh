@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 # The other end of tools/a0job.sh: the director's machine takes the jobs waiting on the branch
 # cursor/c164-jobs-a9f5, one at a time, oldest first, runs each through the tools/nodejob.sh of
-# the branch it names, and puts the receipt on the same branch. Only the director starts this,
-# on his own machine, in a tmux session:
+# the branch it names, and puts the receipt on the same branch. A gate (gate.sh, gatestack.sh,
+# checkall.py) takes ten minutes where a look takes one: the short jobs waiting behind a gate go
+# first, until the gate has waited ten minutes itself. Only the director starts this, on his own
+# machine, in a tmux session:
 #
 #   bash tools/a0worker.sh            run until the file <state>/stop appears
 #
@@ -17,6 +19,7 @@ STATE="${C164_WORKER_STATE:-/tmp/c164_a0/worker}"
 ROOT="${MC_ROOT:-/agent/realms-study}"
 LIMIT=900       # a job's time here, unless it says --limit
 HARD=1800       # nothing runs longer than this here
+LONG_WAIT=600   # a long job lets the short ones pass until it has waited this long
 export GIT_TERMINAL_PROMPT=0
 
 mkdir -p "$STATE/done" /tmp/dais_jobs
@@ -106,20 +109,35 @@ run_job() {
   : >"$STATE/done/$id"
 }
 
+# is_long <id> <tip>: the job is a gate, or checks every scene
+is_long() { g show "$2:queue/$1.job" 2>/dev/null | grep -q -E '^args=.*(gate\.sh|gatestack\.sh|checkall\.py)'; }
+# age <id>: the seconds since the job was sent, read off its id (MMDD-HHMMSS, UTC); a day when it cannot be read
+age() {
+  local then
+  then="$(date -u -d "$(date -u +%Y)-${1:0:2}-${1:2:2} ${1:5:2}:${1:7:2}:${1:9:2}" +%s 2>/dev/null)" || { echo 86400; return; }
+  echo $(( $(date -u +%s) - then ))
+}
+
 log "worker up (pid $$)"
 while :; do
   if [ -e "$STATE/stop" ]; then log "stop file found: leaving"; exit 0; fi
   if ! timeout -k 5 60 git -C "$JOB" fetch -q origin "$Q" >/dev/null 2>&1; then sleep 10; continue; fi
   tip="$(g rev-parse -q --verify FETCH_HEAD)" || { sleep 10; continue; }
   have="$(g ls-tree --name-only "$tip:receipts" 2>/dev/null)"
-  next=""
+  todo=()
   for f in $(g ls-tree --name-only "$tip:queue" 2>/dev/null | sort); do
     id="${f%.job}"
     if [ "$f" = "$id" ] || ! [[ "$id" =~ ^[A-Za-z0-9._-]+$ ]]; then continue; fi
     if [ -e "$STATE/done/$id" ]; then continue; fi
     if grep -qxF "$id.txt" <<<"$have"; then : >"$STATE/done/$id"; continue; fi
-    next="$id"; break
+    todo+=("$id")
   done
-  if [ -z "$next" ]; then sleep 8; continue; fi
+  if [ ${#todo[@]} -eq 0 ]; then sleep 8; continue; fi
+  next="${todo[0]}"
+  if is_long "$next" "$tip" && [ "$(age "$next")" -lt "$LONG_WAIT" ]; then
+    for id in "${todo[@]:1}"; do
+      if ! is_long "$id" "$tip"; then next="$id"; break; fi
+    done
+  fi
   run_job "$next" "$tip"
 done
