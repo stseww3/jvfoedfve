@@ -655,6 +655,19 @@ def check():
     for x, z in L.ceiling:
         if c.get(x, CEIL_Y, z) != (GIRDER if (x, z) in L.beams else BOARDS):
             out.append(f"ceiling: neither beam nor board at ({x}, {z})")
+    # 8. with the facade's stand-in behind the entrance gone, the hall still has a back: in every row
+    #    of every doorway of the entrance front something of the shell stands inside the walls (the
+    #    pier on the axis, the flights and their landings beside it), so nobody looks through a
+    #    doorway and straight out the far side (the facade's own check 5 keeps the stand-in; c206, 11-15)
+    stands = lambda x, y, z: c.has(x, y, z) and c.name(x, y, z) != B.LIGHT
+    for d in (facade.doors() if hasattr(facade, "doors") else ()):
+        if d.get("front") != "east":
+            continue
+        for x, z in d["cells"]:
+            inside = [n for n in range(S.WALL_W - S.DOME_R, x) if (n, z) in L.hall]
+            for y in range(d["y"][0], d["y"][1] + 1):
+                if inside and not any(stands(n, y, z) for n in inside):
+                    out.append(f"entrance: one looks right through the hall at z {z}, y {y}")
     return out
 
 
