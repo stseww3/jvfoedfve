@@ -80,6 +80,21 @@ def _take(prefix):
         time.sleep(1.0)
 
 
+def _light_args():
+    """Jobs that carry a heavy script's name but only shuffle files: no slot, no waiting.
+
+    selfshots.py --take copies pictures into renders/ and checks their SHA-256; it draws nothing
+    (c273 measured it stuck fifteen minutes behind an empty-looking queue while the same --take run
+    through python -c finished in two seconds).
+    """
+    try:
+        with open("/proc/self/cmdline", "rb") as fh:
+            parts = [p.decode("utf-8", "replace") for p in fh.read().split(b"\0") if p]
+    except OSError:
+        return False
+    return _script() == "selfshots.py" and "--take" in parts
+
+
 def _boot():
     if os.environ.get("C164_SLOT"):
         return                        # a parent already holds one: a child must not wait for a second
@@ -87,6 +102,8 @@ def _boot():
     if name is None:
         return
     if name in HEAVY:
+        if _light_args():
+            return                    # --take only copies files in: no slot to wait for
         try:
             os.nice(10)
         except (AttributeError, OSError):

@@ -511,7 +511,7 @@ except (AttributeError, OSError):
     pass
 try:
     import _slots
-    _slots.take()
+    _slots.take() if "--take" not in sys.argv else None    # --take only copies files in: no slot needed
 except Exception:
     pass
 
