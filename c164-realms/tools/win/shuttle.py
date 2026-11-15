@@ -38,11 +38,12 @@ For the scenes named the trip
                              beside the scene's plot) and shoot each bay by day: gal_<bay>. A
                              scene that has models but no shot list is shown by its gallery alone
     --plot <scene>=<n>       the plot of a scene the table does not hold yet
-    --look <name>            the scenes are built for this light version (blue, deep, glow) and
-                             every shot is taken at its tick, whatever the list says: its table
-                             says which windows are lit, and windows are blocks
-                             (tools/placelook.py; the scenes of the observatory, whose fronts ask
-                             the sky line's light kit). The note says so
+    --look <name>            the scenes are built for this light version (blue, deep, glow, or
+                             a trial of the sky line) and every shot is taken at its tick,
+                             whatever the list says: its table says which windows are lit, and
+                             windows are blocks (tools/placelook.py; the scenes of the
+                             observatory, whose fronts ask the sky line's light kit). The note
+                             says so
     --dress                  with --look: the building's own lights are on as well, which the
                              code keeps off (sky/lights DRESS). The note says so
     --again <scene>=<shot>[:<seconds>][,...]
@@ -346,7 +347,7 @@ def how_made(*said):
 
 
 def to_send(scene, tag, commit, at, shots, target, send, some, how="the game's own screenshots", time=None,
-            look=None, dress=False):
+            look=None, dress=False, trial=None):
     """Turn a scene's pictures into the files that go back to the cloud machine: JPEGs under the
     names the pipeline gives real-machine pictures, and the note that goes with them. When only
     some of the scene's shots were taken, what an earlier trip under this tag left stays."""
@@ -388,6 +389,7 @@ def to_send(scene, tag, commit, at, shots, target, send, some, how="the game's o
             f"# distances: {distances()}"]
     if look:
         head.append(f"# windows: lit by the table of look {look} (the scene was built for that light version)"
+                    + (f"; shot as its trial {trial}" if trial else "")
                     + ("; the building's own lights on (sky/lights DRESS, which the code keeps off)" if dress else ""))
     with open(note, "w", encoding="utf-8", newline="\n") as fh:
         fh.write("\n".join(head + list(rows.values())) + "\n")
@@ -479,12 +481,13 @@ def main():
                 plan.append((scene, where[scene], None, []))
             else:
                 plan.append((scene, where[scene], *shot_list(scene, lists, only, work, again)))
-        when = None
+        when = windows = None
         if args.look:
-            # the tick of that light version, as the code that is shot has it; an unknown look stops here
+            # the tick of that light version and the look whose windows it has, as the code that is
+            # shot says them; an unknown look stops here
             _, text = run(placelook, "--tick", args.look)
-            when = text.strip().splitlines()[-1].strip()
-            say(f"look {args.look}: shot at tick {when}")
+            when, windows = text.strip().splitlines()[-1].split()
+            say(f"look {args.look}: shot at tick {when}" + (f", a trial of {windows}" if windows != args.look else ""))
 
         # ---- 1. the look ----
         look = one_look(args.scenes)
@@ -580,7 +583,7 @@ def main():
             # ---- 5. ready to be sent ----
             if got:
                 to_send(scene, args.tag, commit, at, shots, target, send, scene in only, how_made(said, said_too),
-                        when, args.look, args.dress)
+                        when, windows, args.dress, args.look if windows != args.look else None)
     except Stop as stop:
         say(f"stopped: {stop}")
         failed.append(str(stop))
