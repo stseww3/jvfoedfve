@@ -119,3 +119,19 @@
   - 等图要看的：(1) `furnace_slant` 缩到邮票大，三排读成一片往上暗下去的炉火，还是三格；(2) `close_furnace` 第三排的顶和上面的暗窗接得上接不上（炉火窗是自发光的原色，暗窗吃天光，颜色一暖一冷，灰度差 0.02）；(3) 抖点近看像烟灰还是像纱网，像纱网就把中段的坡拉长、每格的起点再打乱；(4) 最下面那几点 `glow` 1 读成炉口的亮边还是一排灯珠，是灯珠就去掉。
   - 给 c228：角色进了总装、这张图交付以后，两跨的下三排换成 `B.WINDOW_FURNACE[y - FURNACE_Y[0]].block`，上三排暗窗不动；在那之前照旧用橙窗。给 c176：材质板上要不要加这三块归你。
   - 谁评（c219，g2 #38529）：炉火窗只用在发电房，由 c235 评，连它在 V6 里的样子一起；c219 不重复打分。c219 读过 09d31f6a（没看图），没有要先改的，三条记在这里等图：(1) 窗台那一排几乎是整片平的琥珀（窗台以上 3 到 13 像素没有抖点），远看可能是窗底一条一格高的橙色带子；读成色带就把棕点开始出现的高度从 13 像素降到 7 像素上下（`_RISE` 里第三个点的高度，一个数），第一排的上半格带一点棕，还是最亮的一排，中段的坡拉长三分之一；粗算下排从 0.39 降到 0.38，中排从 0.32 降到 0.31 上下，六条带还是一条比一条暗，`brightness` 的几条断言照理都还过（没跑）。(2) 抖点是规则的（中段一行里隔一个像素一个点，行与行错开），第二排整排读成纱网的可能不小，`close_furnace` 先看这一眼。(3) 待真机：近处走动时 1 像素的抖点闪不闪；远处游戏把贴图缩小混成平均色，不怕。
+
+## 记录 · 2026-11-16 凌晨（chart 接手 c205 的这两件，只跑没改代码）
+
+分支 `cursor/c164-m2-windows-7bb5`，头 `949a37d0`（并了总装 `cursor/c164-realms-map-b59c`，冲突只有 `STATUS.md`，按规矩取总装那一份）。**代码一行没改**，这一轮只验证。
+
+1. `check.py --scene obs_mat_windows_in`：**PASS 0 失败 0 黄**（3591 方块、6 实体、36 模型、714 资源包文件、11 机位）。
+2. `python -m scenes.obs_mat_windows_in.placement`（c205 #568 加的那个不看图的检查）：**全过**。四向 × 八种尺寸共 32 条，每条都是「每格盖一次、朝向屋里、全部内衬站在同一格」——`every window is covered once, its picture looks into the room, and its pieces stand in one cell`。3x6 两片、3x6+3x3 三片，都落在同一个 `(p, 灯格 a, 灯格 y)`。
+3. **硬条件「外立面一个像素不变」的方块级证明**（比像素级更硬，直接证到没有方块可动）：同一场景建两遍，一遍正常、一遍 `with windows.unlined():`，`dict(c.b)` **逐格相等**（3591 vs 3591，`BLOCKS IDENTICAL: True`）；实体 6 → 0。也就是说内衬真的全是展示实体，**没有动过任何一块方块**，外立面的像素不可能变。像素级的 `--diff` 自证要等出图，没跑（机器排队 + 全组停手令）。
+4. 实体 6 个，模型是 `mat_window_lining_curtain_3x3`、`_frosted_3x3`、`_lit_3x3`、`_lit_3x3_alt` 四件；36 个固定模型齐全（`regen` 里报 36 models）。
+5. **炉火窗**：`furnace_face`、`_heat`、`_SOOT`、`brightness` 的断言都在树里，`check.py` 的 `strays` 项过（152 张图无出界色）。但 #574 那两处小改（抖点乱序、窗台浅琥珀不匀）**只有代码没有图**：`obs_mat_windows` 的 `furnace` / `close_furnace` / `furnace_slant` 三个机位一张没出。等图要看的四条见上面 c205 写的那一段。
+6. **欠的**：图。`renders/obs_mat_windows_in/`、`renders/obs_mat_windows_in_off/`、以及 `obs_mat_windows` 的炉火窗三个机位，全都没有。总监 #49526 全组停手，我这条也没出。
+
+### 给接手的人
+- 先 `git merge origin/cursor/c164-realms-map-b59c`，再出 `obs_mat_windows_in` 的 `in_wall`、`in_lit`、`in_frosted`、`in_curtain`、`in_slant` 五张（c219 P13 点名要看的），然后 `obs_mat_windows_in_off` 同机位五张，三张外景相减证全零（`out_front`、`out_slant`、`out_near`）。
+- 炉火窗：`obs_mat_windows` 的 `furnace`、`close_furnace`、`furnace_slant` 三张，按 #574 那四条判。
+- 内衬的接口没动：`windows.line(canvas, cells, inward, glass, origin=)`、`windows.LINING`（默认开）、`windows.unlined()`、`windows.models()`。
