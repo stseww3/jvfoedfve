@@ -25,7 +25,7 @@
   - 实体预算：房间自己 ≤250，单视角 ≤400。现在是 13（家具 9、记录本 1、钟 2、观测椅 1）；props 三个模块都不在树里时是 1。
 - 交付物：
   - `build/scenes/obs/interiors/domeroom.py`：`ORDER = 80`；`dress(canvas, origin)` 装修站在画布上的壳，返回展示实体数；`models()` 给出房间自己的模型；`build(canvas, origin)` 是总场景调的入口，`MOVED_IN = False` 时什么都不放（等 c231 的壳和 c222 的穹顶进了总装、房间过审再打开）。给别家读的：`room()`、`leaf()`、`niches()`、`doorways()`、`observing_floor()`、`eyepiece()`、`stair_exit()`、`gear_cells()`、`OBSERVING`、`GEAR_SHAFT`、`GEAR_STAND`、`GEAR_SLIT`、`FURNITURE`、`CHAIR`、`lights()`。
-  - 测试场景 `build/scenes/obs_int_domeroom/`：总装里的鼓座和穹顶（`main/_dome`）加占位（地板、墩帽、墩口栏杆、两个门洞、一根铁板拼的镜筒，照 c237 #33181 乙版的数），占位随别家的包进总装逐个撤掉。`python -m scenes.obs_int_domeroom` 打印三个剖面、七层平面，再逐格自查十六条（见验收；c196 缝机构那一条只在树里的 main/dome 是甲版、缝开着时查，别的时候打印一行 skip）。机位 12 个：`v8`、`v8_deep`、`v8_glow`（镜筒南侧，三个光版本）、`v8_north`（镜筒北侧，望远镜定甲版时用）、`int_slit`、`int_desk`、`far_door`、`ribs_up`、`back_east`、`wall_north`、`ring_close`、`floor_close`。
+  - 测试场景 `build/scenes/obs_int_domeroom/`：总装里的鼓座和穹顶（`main/_dome`）加占位（地板、墩帽、墩口栏杆、两个门洞、一根铁板拼的镜筒，照 c237 #33181 乙版的数），占位随别家的包进总装逐个撤掉。`python -m scenes.obs_int_domeroom` 打印三个剖面、七层平面，再逐格自查十六条（见验收；c196 缝机构那一条只在树里的 main/dome 是甲版、缝开着时查，别的时候打印一行 skip）。机位 13 个：`v8`、`v8_deep`、`v8_glow`（镜筒南侧，三个光版本）、`v8_north`（镜筒北侧，望远镜定甲版时用）、`int_slit`、`int_desk`、`far_door`、`stair_exit`（从环梯上来踩上地板的第一眼，站位和朝向跟 c231 壳的同名机位一样，两张能对着看）、`ribs_up`、`back_east`、`wall_north`、`ring_close`、`floor_close`。
 - 验收：
   - V8（站在观测地板南半边、镜筒南侧，朝西偏上 25° 看）：第一眼是缝里的彗星和指着它的镜筒；铁肋读得出是一圈肋收到顶环；暗部不死黑；画面里看得到的红只有目镜旁那一盏，红色发光面不大于彗核（总监 #33812，c235 量）。
   - `int_slit` 镜筒和缝外的彗星；`int_desk` 记录桌和记录本，背后是墩、望远镜和配电板的指示灯；近看环梁、墙柱、肋脚（`ring_close`）和地板收边（`floor_close`）经得住。
