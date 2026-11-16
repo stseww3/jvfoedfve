@@ -2674,25 +2674,60 @@ def enqueue_resume_op(conv, launcher_node, requester: str = "ctrl", resume_promp
     return op_id
 
 
+_ctrl_resume_probe: dict[str, Any] = {}
+
+
 def ensure_controller_alive(force: bool = False) -> str | None:
-    """自愈保障：当唯一总控 ctrl 未上线（且没有在线节点上未超时的待执行启动单）时，挑一台健康 mainN 拉起 ctrl，避免重复派单。"""
+    """自愈保障：当唯一总控 ctrl 未在监听且积压未读消息（或长时间静默）时，优先通过 mainN 下发 TASK_RESUME 秒唤醒原会话；确认失效才重拉。"""
     ensure_main_conv()
     ctrl = conv_row("ctrl")
     if ctrl is None:
         return None
-    # 确保 ctrl 默认模型未缺失，且自动修正历史误记的 grok-4.7
     cur_ctrl_m = (ctrl["model"] or "").strip()
     if not cur_ctrl_m or cur_ctrl_m.lower() == "grok-4.7":
         update_conv_model("ctrl", DEFAULT_CTRL_MODEL)
         ctrl = conv_row("ctrl")
     ag = active_agent(ctrl)
     if ag is not None and not force:
+        if waiting.get(ag["id"]):
+            _ctrl_resume_probe.clear()
+            return None
         trow = store.one("SELECT * FROM agent_traces WHERE conv='ctrl'")
         think_stuck, _ = check_thinking_stuck(ctrl, trow)
-        idle_sec = now() - max(float(ag["last_seen"] or 0), STARTED)
-        if not think_stuck and (waiting.get(ag["id"]) or idle_sec < LOST_SEC):
+        raw_idle = now() - float(ag["last_seen"] or 0)
+        idle_since_boot = now() - max(float(ag["last_seen"] or 0), STARTED)
+        has_unread = any(r["wake"] for r in pending_rows("ctrl", ctrl["read_cursor"]))
+        need_wake = think_stuck or (has_unread and raw_idle >= 35.0 and (now() - STARTED) >= 8.0) or raw_idle >= 360.0
+        if not need_wake and idle_since_boot < LOST_SEC:
             return None
-        stop_identity(ag["id"], "总控会话失联或思考卡死超5分钟，自动自愈重拉")
+
+        tid = (ctrl["task_agent_id"] or "").strip()
+        best_main = select_best_launcher(for_conv="ctrl")
+        if tid and best_main is not None and is_main_node_id(best_main["id"]):
+            if _ctrl_resume_probe and float(ag["last_seen"] or 0) > float(_ctrl_resume_probe.get("ag_seen") or 0) + 1.0:
+                _ctrl_resume_probe.clear()
+            if not _ctrl_resume_probe or _ctrl_resume_probe.get("agent_id") != ag["id"]:
+                r_prompt = (
+                    f"总控 ctrl 收到新消息或待办巡检，请立即调用 read_chat(agent=\"{ag['id']}\") 读取处理；"
+                    "处理完毕后继续调用 read_chat 保持在线（若改用终端长等待请用 dais_runtime.pyz wait 并配合 AwaitShell 阻塞等待）。"
+                )
+                op_id = enqueue_resume_op(ctrl, best_main, requester="watchdog_ctrl_resume", resume_prompt=r_prompt)
+                _ctrl_resume_probe.update({
+                    "agent_id": ag["id"],
+                    "op_id": op_id,
+                    "sent_ts": now(),
+                    "ag_seen": float(ag["last_seen"] or 0),
+                })
+                log.info("auto-sent TASK_RESUME to %s to wake idle ctrl (%s)", best_main["id"], op_id)
+                return op_id
+            pop = store.one("SELECT status FROM dispatch_ops WHERE op_id=?", (_ctrl_resume_probe.get("op_id") or "",))
+            if pop is not None and pop["status"] == "pending" and (now() - float(_ctrl_resume_probe.get("sent_ts") or 0)) < 300.0:
+                return None
+            if (now() - float(_ctrl_resume_probe.get("sent_ts") or 0)) < 210.0:
+                return None
+
+        _ctrl_resume_probe.clear()
+        stop_identity(ag["id"], "总控会话失联且 resume 未恢复，自动自愈重拉")
     elif not force:
         if (ctrl["task_code"] or "") and (now() - float(ctrl["task_ts"] or 0)) < LOST_SEC:
             pending_ctrl = store.one(
@@ -5974,6 +6009,11 @@ async def t_submit_op_result(agent, args):
         return text_result(f"已登记启动回执 {op_id}。现在请立即调用 read_chat 继续等待下一条指令。")
 
     if op_type == "resume_subagent":
+        if requester == "watchdog_ctrl_resume":
+            if is_resume_dead_output(status, output):
+                _ctrl_resume_probe.clear()
+                ensure_controller_alive(force=True)
+            return text_result(f"已回传总控探活结果 {op_id}。现在请立即调用 read_chat 继续等待下一条指令。")
         if requester == "watchdog_runner_resume":
             if is_quota_exceeded_output(output):
                 if worker_pool_model():
