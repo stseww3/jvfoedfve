@@ -1,0 +1,11 @@
+delivery interiors/astroroom: 06611a1 against 7ea56af (forked at 7ea56af), 7 commits, 10 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[PASS] scope    10 of 10 files are the card's own
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[WARN] pictures 1 test scene, 9 shots with a picture kept
+                obs_int_astroroom: 9 pictures show b6c379c1; the card's code has changed since (astroroom.py): draw them again
+[PASS] merge    merges cleanly; 0 commits behind the base
+result: PASS (0 failed, 1 to look at)

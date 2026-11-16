@@ -1,0 +1,236 @@
+{
+ "scene": "obs_mach_refractor",
+ "commit": "2c8adaa",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "9552 blocks, 10 entities, 9 models, 715 resource-pack files, 28 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (0.9 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 714 files, no file written twice, the folders and the prefix of machines are kept (14 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "138 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "547 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "21 kinds of block placed, 18 barrier cells (x 3..5, y 18..19, z -1..1), all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "PASS",
+   "summary": "no wall face runs flat over more than 5x5",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "10 display entities",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "26 shots, most display entities in view: 10 (north_a), limit 600; counted without what walls hide; the game draws up to 10 (v8_a): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "v8_a",
+      "in_view": 5,
+      "drawn": 10,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v8_south_a",
+      "in_view": 5,
+      "drawn": 10,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "eye_a",
+      "in_view": 5,
+      "drawn": 10,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "south_a",
+      "in_view": 5,
+      "drawn": 10,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "north_a",
+      "in_view": 10,
+      "drawn": 10,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "east_a",
+      "in_view": 5,
+      "drawn": 10,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "mount_a",
+      "in_view": 5,
+      "drawn": 10,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "mount_north_a",
+      "in_view": 10,
+      "drawn": 10,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "tail_a",
+      "in_view": 5,
+      "drawn": 10,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "circle_a",
+      "in_view": 5,
+      "drawn": 10,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "lamp_a",
+      "in_view": 0,
+      "drawn": 10,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "top_a",
+      "in_view": 5,
+      "drawn": 10,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "slit_a",
+      "in_view": 5,
+      "drawn": 10,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v8_b",
+      "in_view": 5,
+      "drawn": 10,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v8_south_b",
+      "in_view": 5,
+      "drawn": 10,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "eye_b",
+      "in_view": 5,
+      "drawn": 10,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "south_b",
+      "in_view": 10,
+      "drawn": 10,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "north_b",
+      "in_view": 5,
+      "drawn": 10,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "east_b",
+      "in_view": 5,
+      "drawn": 10,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "mount_b",
+      "in_view": 10,
+      "drawn": 10,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "mount_north_b",
+      "in_view": 5,
+      "drawn": 10,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "tail_b",
+      "in_view": 10,
+      "drawn": 10,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "circle_b",
+      "in_view": 10,
+      "drawn": 10,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "lamp_b",
+      "in_view": 0,
+      "drawn": 10,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "top_b",
+      "in_view": 6,
+      "drawn": 10,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "slit_b",
+      "in_view": 10,
+      "drawn": 10,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "8 parts and 0 points on 2 chains, 18 function files; 8 commands in the busiest tick (limit 120), 0.6 a tick on average (limit 40)",
+   "details": [
+    "chain of 32 ticks: 4 functions, 14 commands a cycle, starts 1 ticks after start",
+    "chain of 480 ticks: 8 functions, 57 commands a cycle, starts 2 ticks after start"
+   ]
+  }
+ ]
+}
