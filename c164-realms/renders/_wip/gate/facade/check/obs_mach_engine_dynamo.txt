@@ -1,0 +1,18 @@
+check obs_mach_engine_dynamo at 7ea85f6
+[WARN] regen     6825 blocks, 14 entities, 28 models, 751 resource-pack files, 37 data-pack files, look: 1 biomes, 1 timelines (0.9 s)
+                 registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+[PASS] conflicts the scene writes 750 files, no file written twice, the folders and the prefix of machines are kept (9 packages run alone)
+[PASS] strays    152 pictures, every colour in the palette; 9 sky pictures not checked (drawn by adding light)
+[PASS] refs      580 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    19 kinds of block placed, all in the occupancy table
+[PASS] flatwall  no wall face runs flat over more than 5x5
+[PASS] entities  14 display entities, 14 models never placed
+[PASS] views     12 shots, most display entities in view: 14 (wicket), limit 600; counted without what walls hide; the game draws up to 14 (door): a display entity without width and height is drawn outside the view too
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    7 parts and 0 points on 3 chains, 26 function files; 7 commands in the busiest tick (limit 40), 2.4 a tick on average (limit 10)
+                 chain of 16 ticks: 4 functions, 10 commands a cycle, starts 2 ticks after start
+                 chain of 24 ticks: 4 functions, 9 commands a cycle, starts 4 ticks after start
+                 chain of 48 ticks: 12 functions, 65 commands a cycle, starts 1 ticks after start
+                 mach_engine_rod: 12 steps in 48 ticks; its model strays 0.34 pixels from its arc (its middle lies 2.06 blocks off the axis), within the half pixel a fast part is let off with
+result: PASS (0 failed, 1 with warnings)
