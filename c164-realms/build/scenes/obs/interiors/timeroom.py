@@ -80,12 +80,12 @@ than dark wood under one), so what is to sink is made dark and what is to be see
 only then lit: that is what the panelling and the boards in the recesses are for. Every lamp is a
 shaded one (LAMPS) and hangs low over what it is for. A shade throws its light down, so the source
 of a lamp is not offered at its bulb but under it, at the height of what it lights: over the shelf
-of the console, in the cell a desk stands in, at the dial of a clock. The light lies in pools on
+of the console, at the chair of a desk, at the dial of a clock. The light lies in pools on
 the floor and on the lower half of the walls; the heads of the windows stay out of it, and the
 linings of the lit ones have what their own sources give them. The rack gets the most (12 on the faces at the height of the hand, 9 on its
-frieze), a desk 8 and its chair 7, a clock 8 to 9. The lightmap is flat (a floor at 6 is hardly
+frieze), a desk 7 and its chair 8, a clock 8 to 9. The lightmap is flat (a floor at 6 is hardly
 darker than one at 10), so the pools are kept small and far apart: the floor rises from nothing at
-the door to 3 between the desks and to 9 before the console, and leads to the rack. And the floor
+the door to 2 to 4 between the desks and to 9 before the console, and leads to the rack. And the floor
 is relaid in dark boards: in the shell's pale ones it was the lightest large thing of the room,
 lit or not. The ceiling gets what the pools throw back and no more (BOUNCE): 3 to 5 over the
 middle of the room, less towards the door and before the rack's own light, enough for its beams
@@ -109,9 +109,11 @@ them when they are in the tree (PIECES: the furniture, the regulators and the ba
 and the telephone, the books and the drawing) and is left out, or stood in for by a block, until
 then. SLOTS says where the machines of machines/recorders go.
 
-build() is what the master scene calls; it places nothing until MOVED_IN is set (the shell in the
-master scene and the room past review). Until then the room lives in its box test scene,
-build/scenes/obs_int_timeroom.
+build() is what the master scene calls. The room has moved in (MOVED_IN): the shell is in the
+master scene, the room reads its box and its door from it, and dressed in the real building it
+came out block for block and picture for picture as in its box. The box test scene,
+build/scenes/obs_int_timeroom, stays the room's own scene: the same dressing in a stand-in of the
+shell, with the lamp of the hall and the light of the lit windows the room does not make itself.
 """
 import functools
 import importlib
@@ -125,24 +127,24 @@ from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
 from ..main import _plan as MP
+from ..main import shell
 from ..materials import panels
 from ..props import _kit as K
 from ..props import lamps
 
-MOVED_IN = False
+MOVED_IN = True
 NAME = "interiors/timeroom"
 PREFIX = "int_timeroom_"
 PX = 1 / 16.0
 
-# ---- the room (main/shell.ROOMS["time room"], c231; written from the skeleton until the shell is in the tree)
-X0, X1 = S.ROOM_X                                   # 2..13
-Z0, Z1 = S.pilaster_z(2) + 1, S.STAR_HALL_Z[0] - 1  # -25..-7
-FEET = S.STAND                                      # 7
-TOP = S.STAR_HALL_CEIL - 1                          # 13: the last clear row
+# ---- the room: the clear inside the shell leaves (main/shell.ROOMS["time room"]) and its door
+X0, Z0, X1, Z1 = shell.ROOMS["time room"]["box"]    # 2, -25, 13, -7
+FEET = shell.ROOMS["time room"]["feet"]             # 7
+CEIL_Y = shell.ROOMS["time room"]["ceiling"]        # 14: the ceiling block
+TOP = CEIL_Y - 1                                    # 13: the last clear row
 FLOOR_Y = FEET - 1                                  # 6: the floor block
-CEIL_Y = S.STAR_HALL_CEIL                           # 14: the ceiling block
 SILL = S.WINDOW[0]                                  # 8: the sill line
-DOOR_X = (7, 8)                                     # the door, in the wall on z -6
+DOOR_X = shell.ROOM_DOOR_X                          # (7, 8): the door, in the wall on z -6
 AXIS_X = S.mid(*DOOR_X)                             # 8.0: the long axis, between two cells
 PIER_Z = tuple(z for z in range(Z0, Z1 + 1) if MP.on_pilaster(z))               # -22, -18, -14, -10
 EAST_BAYS = tuple(b for b in range(1, S.N_BAYS + 1) if set(MP.window_rows(b)) <= set(range(Z0, Z1 + 1)))
@@ -185,6 +187,7 @@ MIDDLE = (                                          # the middle bay: what there
 )
 # pier, west flank bay, pier, middle bay, pier, east flank bay, pier
 RACK = [(p,) + w + (p,) + m + (p,) + e + (p,) for p, w, m, e in zip(PIER, FLANK_W, MIDDLE, FLANK_E)]
+assert len(RACK[0]) == RACK_X[1] - RACK_X[0] + 1, "the rack and the recess at each of its ends fill the end wall of the shell's room"
 QUIET = ("louvre", "drawers")                       # faces with nothing to read on them: where the eye rests
 PAIRED = QUIET + ("tubes", "patch_panel")           # what may stand as a pair either side of the middle: the quiet faces, the valves
 #                                                     at the heads of the piers, the two jack fields at the ends of the console
@@ -213,7 +216,7 @@ DESK_BAY, BENCH_BAY = 6, 5                          # the message desk's window 
 WAINSCOT_T = 3 * PX                                 # a panel of the wainscot, off its wall
 PANEL_TOP = TOP                                     # 13: the panelling runs up to the ceiling; at a beam's end its last row is the beam's shoe
 PANEL_E, PANEL_W, PANEL_S = EAST - WAINSCOT_T, WEST + WAINSCOT_T, SOUTH - WAINSCOT_T      # the faces of the panelling: what hangs on a panelled wall hangs on these
-DOOR_TOP = FEET + 2                                 # 9: the last row of the doorway
+DOOR_TOP = shell.ROOM_DOOR_Y[1]                     # 9: the last row of the doorway
 RISER = (X0, Z1)                                    # the south-west corner cell: the cased riser
 CORNER = (X1, Z1)                                   # the south-east corner cell: the south wall's panel, not the east wall's
 DESK_DEEP = 14 * PX                                 # props/furniture's writing desk, back to front
@@ -292,8 +295,8 @@ LAMPS = "b"                 # every lamp of the room is the shaded one (props/la
 #                             map's default: a shade keeps a lamp's glow to what is under it, and the opal globe of version A
 #                             is itself the lightest thing in a dark room, six times over
 CONSOLE_LAMP = (12, 2)      # the two drop lights over the ends of the console: the main light, on the instrument wall
-DESK_LAMP = (8, 3)          # the drop lights over the message desk and the rating bench: 8 on the desk, 7 at its chair, and five
-#                             cells on, on the room's long axis, 3 (at 10 the whole floor was lit, as light as the rack)
+DESK_LAMP = (8, 3)          # the drop lights over the message desk and the rating bench: 8 at the sitter's chair, 7 on the desk and
+#                             what lies on it, and on the room's long axis 3 to 4 (at 10 the whole floor was lit, as light as the rack)
 REGULATOR_LAMP = (9, 2)     # the bracket lamps over the two standard clocks
 CLOCK_LAMP = (9, 2)         # the bracket lamp over the world clocks: 8 on the middle dial, 6 on the end ones
 OVER = 20 * PX              # a bracket's arm above the top of what it hangs over: the shade ends half a block over it, a lamp
@@ -308,10 +311,11 @@ CORD = lamps.PREFIX + "wire"                        # the cord of a drop light: 
 # where the source of each lamp is offered (the room's cells): under the shade, at what the lamp is for
 CONSOLE_LIGHT = tuple((x, SILL + 1, CONSOLE_Z) for x in DUCT_X)                     # (6, 9, -24), (9, 9, -24): over the shelf, at the height of the hand
 REGULATOR_LIGHT = tuple((int(math.floor(x)), SILL, Z0) for x in REGULATOR_X)        # (2, 8, -25), (13, 8, -25): the cell the clock hangs in
-DESK_LIGHT = (int(math.floor(DESK_X)), FEET, int(math.floor(DESK_Z)))               # (13, 7, -12): the cell the desk stands in, against its wall and
-BENCH_LIGHT = (int(math.floor(BENCH_X)), FEET, int(math.floor(BENCH_Z)))            # (2, 7, -16)    as far from the middle of the room as a cell is
-#                                                                                     (while a board stands in for a desk that cell is
-#                                                                                     taken, and the light line puts the source at the chair)
+DESK_LIGHT = (int(math.floor(DESK_X - SEAT)), FEET, int(math.floor(DESK_Z)))        # (12, 7, -12): the cell the sitter's chair stands in. The desk's own
+BENCH_LIGHT = (int(math.floor(BENCH_X + SEAT)), FEET, int(math.floor(BENCH_Z)))     # (3, 7, -16)     cell, against the wall, holds the panel under the sill,
+#                                                                                     and a source takes a free cell (offered there, the light
+#                                                                                     line moved it here); the cell over it is the one behind
+#                                                                                     the glass, which is the window's
 CLOCK_LIGHT = (X0 + 1, int(math.floor(DIAL_Y)), int(math.floor(S.mid(*CLOCK_Z))))   # (3, 9, -10): before the middle dial (a panel stands in the dial's own cell)
 # What a lit desk and a lit clock board throw back at the ceiling: a weak source in the row under the ceiling, two
 # cells out from the wall the lamp is at. With every source low the boards and the beams over the middle of the
@@ -815,7 +819,8 @@ def _offer(canvas, cell, level, why, rank):
 
 
 def build(canvas, origin=(0, 0, 0)):
-    """The master scene's call: nothing until the room has moved in."""
+    """The master scene's call: the room in the shell the main line has built; nothing while
+    MOVED_IN is off. Returns the number of display entities placed."""
     if not MOVED_IN:
         return 0
     return build_timeroom(canvas, origin)["entities"]

@@ -5,7 +5,10 @@ will have in the building. Every block of it was read off the real walls (main/f
 main/shell of c231's branch 4b9d320b, built and read cell by cell). When the shell was in the
 assembly (18c28fb9, 11-16) the box was held against the real building once more, cell by cell: the
 heads of the window openings had been shut since and are shut here now, and the pictures of the
-room dressed in the real building and dressed in this box came out the same. Whose every part is:
+room dressed in the real building and dressed in this box came out the same. What still differs
+from the floor to the ceiling is in the stone leaf and is not seen from the room: there its course
+under the sills and its course over the heads of the windows are cut stone, and behind the
+rotunda's stretch of the west wall (z -10..-7) the leaf is not there. Whose every part is:
 
   main/shell (c231)    the floor and the ceiling of the room, the cross wall on z -6 with the door
                        to the gallery, the wall towards the end pavilion on z -26, the stretch of
