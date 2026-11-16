@@ -1,0 +1,457 @@
+[trip 00:49:49 +0s] trip of obs: the code of 3b8fe174 (tag 3b8fe17), view distance 12 (the server's 10), cloud range 128; 4 cores, 500 s at most
+[trip 00:49:49 +0s] clean: nodemc.py down  (up to 180 s)
+[trip 00:49:49 +0s] clean: exit 0, 0 s
+[trip 00:49:49 +0s] setup: nodemc.py setup  (up to 200 s)
+    [nodemc 00:49:49] vulkan: apiVersion 1.4.318, deviceName llvmpipe (LLVM 20.1.2, 256 bits), driverInfo Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+    [nodemc 00:49:49] java: /agent/realms-study/jdk/jdk-25.0.5+8-jre/bin/java
+    [nodemc 00:49:49] game files: whole ({"version": "26.3", "system": "linux", "mainClass": "net.minecraft.client.main.Main", "assetIndex": "34", "files": 5124, "downloaded": 5123, "assets_skipped": 9)
+    [nodemc 00:49:49] settings written: nothing, all there; render distance 12, the server's view distance 10, cloud range 128
+[trip 00:49:49 +0s] setup: exit 0, 0 s
+[trip 00:49:49 +0s] station: nodemc.py status  (up to 60 s)
+    server: no answer
+    client: not running
+    display: none
+    distances: client renderDistance 12, server view-distance 10, cloudRange 128
+    machine: 4 cores, load 0.14, 8907 MB of memory available, 241 GB of disk free under /agent/realms-study
+[trip 00:49:49 +0s] station: exit 0, 0 s
+[trip 00:49:49 +0s] shuttle: shuttle.py --tag 3b8fe17 --commit 3b8fe174 --settle 10.0 --first-settle 60.0 --still 60.0 --after-budget 300.0 --out /tmp/c164_s1/real obs  (up to 380 s)
+    [shuttle 00:49:49] the code that is shot: /tmp/dais_jobs/c319/c164-realms at 3b8fe174; tag 3b8fe17
+        written: /tmp/c164_s1/real/_trip/board-obs.json (12 views; skeleton: /tmp/dais_jobs/c319/c164-realms/build/scenes/obs/common)
+        server: no answer
+        client: not running
+        display: none
+        distances: client renderDistance 12, server view-distance 10, cloudRange 128
+        machine: 4 cores, load 0.14, 8911 MB of memory available, 241 GB of disk free under /agent/realms-study
+        [nodemc 00:49:57] server is up (8 s)
+    [shuttle 00:49:57] placing obs at 0 200 0
+        built 187790 blocks, 468 entities in 2.6s
+        exported 74 tiles (186892 + 898 blocks) in 0.4s
+        motion: 26 parts and 0 points registered, the loop is started once the scene stands
+        Reloading!
+        placed in 1.0s, 0 failed
+        biome c164art:obs_blue: 1673880 cells set in 16 boxes, x -262..327 y 8..319 z -284..292
+        function c164art:obs-motion/start -> Running function c164art:obs-motion/start
+        site_weather_head   34 elements,  45 texture patches, sheet 64px
+        site_weather_cups   16 elements,  33 texture patches, sheet 32px
+        site_weather_gauge  12 elements,  14 texture patches, sheet 32px
+        bld_tower_mast      42 elements,  59 texture patches, sheet 256px
+        bld_tower_cups      16 elements,  29 texture patches, sheet 32px
+        mach_armillary_a_stand  11 elements,  15 texture patches, sheet 64px
+        mach_armillary_a_meridian  64 elements,  23 texture patches, sheet 32px
+        mach_armillary_a_axis  37 elements,  27 texture patches, sheet 128px
+        mach_armillary_a_equator  32 elements,   5 texture patches, sheet 32px
+        mach_armillary_a_tropic  32 elements,   5 texture patches, sheet 32px
+        mach_armillary_a_ecliptic  36 elements,   6 texture patches, sheet 32px
+        mach_armillary_a_colure  46 elements,  25 texture patches, sheet 32px
+        mach_astro_tube    153 elements, 120 texture patches, sheet 128px
+        mach_astro_back     27 elements,  49 texture patches, sheet 64px
+        mach_astro_axis     94 elements,  78 texture patches, sheet 64px
+        mach_astro_mount   133 elements, 141 texture patches, sheet 128px
+        mach_board_panel_north  38 elements,  72 texture patches, sheet 128px
+        mach_board_panel_main  86 elements,  89 texture patches, sheet 128px
+        mach_board_panel_south  63 elements, 110 texture patches, sheet 128px
+        mach_board_needle    2 elements,   6 texture patches, sheet 16px
+        mach_boiler_body    91 elements,  56 texture patches, sheet 256px
+        mach_boiler_door_1  42 elements,  72 texture patches, sheet 128px
+        mach_boiler_door_2  43 elements,  72 texture patches, sheet 128px
+        mach_boiler_dome   107 elements,  64 texture patches, sheet 64px
+        mach_boiler_flue    30 elements,  12 texture patches, sheet 32px
+        mach_boiler_flue_turn  66 elements,  26 texture patches, sheet 64px
+        mach_clock_master   66 elements, 142 texture patches, sheet 128px
+        mach_clock_master_dial  17 elements,   6 texture patches, sheet 32px
+        mach_clock_master_hand_h   3 elements,   8 texture patches, sheet 16px
+        mach_clock_master_hand_m   6 elements,   9 texture patches, sheet 16px
+        mach_clock_pendulum  12 elements,  17 texture patches, sheet 32px
+        mach_clock_face     37 elements,  10 texture patches, sheet 64px
+        mach_clock_hand_h    9 elements,  13 texture patches, sheet 32px
+        mach_clock_hand_m    7 elements,  12 texture patches, sheet 32px
+        mach_clock_ball    188 elements, 349 texture patches, sheet 256px
+        mach_clock_ball_red 188 elements, 349 texture patches, sheet 256px
+        mach_dome_bar        5 elements,  11 texture patches, sheet 128px
+        mach_dome_brackets   4 elements,  11 texture patches, sheet 64px
+        mach_dome_handwheel  43 elements,  26 texture patches, sheet 32px
+        mach_dome_haul_n   199 elements,  44 texture patches, sheet 64px
+        mach_dome_haul_s   199 elements,  44 texture patches, sheet 64px
+        mach_dome_pedestal   8 elements,  14 texture patches, sheet 64px
+        mach_dome_pull      62 elements,  12 texture patches, sheet 32px
+        mach_dome_riser     88 elements,  38 texture patches, sheet 128px
+        mach_dome_roll      57 elements,  25 texture patches, sheet 128px
+        mach_dome_rollseat  10 elements,  13 texture patches, sheet 64px
+        mach_dome_runb_n    35 elements,  32 texture patches, sheet 128px
+        mach_dome_runb_s    35 elements,  32 texture patches, sheet 128px
+        mach_dome_seg       56 elements,  44 texture patches, sheet 64px
+        mach_dome_weight    29 elements,  21 texture patches, sheet 64px
+        mach_dome_winch    243 elements,  46 texture patches, sheet 128px
+        mach_dome_winchseat  16 elements,  26 texture patches, sheet 64px
+        mach_engine_bed     48 elements, 120 texture patches, sheet 256px
+        mach_engine_frame   74 elements, 105 texture patches, sheet 128px
+        mach_engine_cylinder 160 elements, 197 texture patches, sheet 128px
+        mach_engine_crosshead  24 elements,  33 texture patches, sheet 64px
+        mach_engine_rod      8 elements,  24 texture patches, sheet 64px
+        mach_engine_flywheel 210 elements, 141 texture patches, sheet 128px
+        mach_engine_eccentric  19 elements,  14 texture patches, sheet 128px
+        mach_engine_valve    4 elements,  11 texture patches, sheet 32px
+        mach_engine_governor  46 elements,  36 texture patches, sheet 32px
+        mach_engine_lap     20 elements,   3 texture patches, sheet 16px
+        mach_engine_belt    15 elements,   9 texture patches, sheet 128px
+        mach_engine_dynamo 134 elements, 187 texture patches, sheet 128px
+        mach_engine_armature 104 elements,  42 texture patches, sheet 128px
+        mach_mast_segment  188 elements,  23 texture patches, sheet 256px
+        mach_mast_web      168 elements,  20 texture patches, sheet 128px
+        mach_mast_foot     216 elements, 160 texture patches, sheet 256px
+        mach_mast_foot_web 204 elements, 157 texture patches, sheet 128px
+        mach_mast_head      41 elements,  38 texture patches, sheet 128px
+        mach_mast_light     24 elements,  31 texture patches, sheet 32px
+        mach_mast_light_off  24 elements,  31 texture patches, sheet 32px
+        mach_mast_guy        2 elements,   6 texture patches, sheet 64px
+        mach_mast_lead       1 elements,   3 texture patches, sheet 64px
+        mach_mast_insulator  20 elements,  20 texture patches, sheet 32px
+        mach_mast_stay      30 elements,  40 texture patches, sheet 32px
+        mach_meridian_tube 279 elements, 158 texture patches, sheet 128px
+        mach_meridian_circle  62 elements,  35 texture patches, sheet 64px
+        mach_meridian_pier  64 elements, 114 texture patches, sheet 128px
+        mach_meridian_lamp  30 elements,  38 texture patches, sheet 32px
+        mach_orrery_hub     98 elements,  69 texture patches, sheet 64px
+        mach_orrery_column  61 elements,  30 texture patches, sheet 64px
+        mach_orrery_sun     77 elements,  27 texture patches, sheet 64px
+        mach_orrery_sun_side0  84 elements,   9 texture patches, sheet 16px
+        mach_orrery_sun_side1  84 elements,   9 texture patches, sheet 16px
+        mach_orrery_sun_under  42 elements,   6 texture patches, sheet 32px
+        mach_orrery_a_band 291 elements, 120 texture patches, sheet 128px
+        mach_orrery_a_cage 103 elements, 100 texture patches, sheet 64px
+        mach_orrery_a_lay  225 elements,  93 texture patches, sheet 64px
+        mach_orrery_b_rings 599 elements, 175 texture patches, sheet 128px
+        mach_orrery_b_drum  66 elements,  54 texture patches, sheet 64px
+        mach_orrery_a_arm_mercury  52 elements,  35 texture patches, sheet 64px
+        mach_orrery_a_under_mercury  10 elements,   2 texture patches, sheet 16px
+        mach_orrery_a_arm_venus  61 elements,  35 texture patches, sheet 64px
+        mach_orrery_a_under_venus  10 elements,   2 texture patches, sheet 16px
+        mach_orrery_a_arm_earth 113 elements,  55 texture patches, sheet 64px
+        mach_orrery_a_under_earth  50 elements,   5 texture patches, sheet 16px
+        mach_orrery_a_arm_mars  64 elements,  38 texture patches, sheet 64px
+        mach_orrery_a_under_mars  10 elements,   2 texture patches, sheet 16px
+        mach_orrery_a_arm_jupiter 168 elements,  68 texture patches, sheet 64px
+        mach_orrery_a_under_jupiter  72 elements,   5 texture patches, sheet 16px
+        mach_orrery_a_arm_saturn 121 elements,  64 texture patches, sheet 64px
+        mach_orrery_a_under_saturn  15 elements,   3 texture patches, sheet 16px
+        mach_orrery_b_arm_mercury  38 elements,  27 texture patches, sheet 64px
+        mach_orrery_b_under_mercury  10 elements,   2 texture patches, sheet 16px
+        mach_orrery_b_arm_venus  43 elements,  27 texture patches, sheet 32px
+        mach_orrery_b_under_venus  10 elements,   2 texture patches, sheet 16px
+        mach_orrery_b_arm_earth  61 elements,  44 texture patches, sheet 64px
+        mach_orrery_b_under_earth  18 elements,   4 texture patches, sheet 16px
+        mach_orrery_b_arm_mars  43 elements,  30 texture patches, sheet 32px
+        mach_orrery_b_under_mars  10 elements,   2 texture patches, sheet 16px
+        mach_orrery_b_arm_jupiter  71 elements,  45 texture patches, sheet 64px
+        mach_orrery_b_under_jupiter  24 elements,   4 texture patches, sheet 16px
+        mach_orrery_b_arm_saturn  66 elements,  42 texture patches, sheet 64px
+        mach_orrery_b_under_saturn  15 elements,   3 texture patches, sheet 16px
+        mach_scope_pier_a  149 elements, 186 texture patches, sheet 256px
+        mach_scope_axis_a  123 elements, 109 texture patches, sheet 128px
+        mach_scope_tube_a  306 elements, 227 texture patches, sheet 256px
+        mach_scope_governor  49 elements,  37 texture patches, sheet 32px
+        mach_scope_lamp_a   37 elements,  46 texture patches, sheet 64px
+        int_power_coal      52 elements, 114 texture patches, sheet 128px
+        int_power_cable      1 elements,   3 texture patches, sheet 64px
+        int_power_rack      31 elements,  49 texture patches, sheet 64px
+        int_power_drop       4 elements,   4 texture patches, sheet 64px
+        int_power_flange    12 elements,  12 texture patches, sheet 32px
+        int_power_valve     39 elements,  36 texture patches, sheet 64px
+        int_power_gauge     21 elements,  24 texture patches, sheet 32px
+        int_power_toolboard  35 elements,  51 texture patches, sheet 64px
+        int_power_oilcan    26 elements,  27 texture patches, sheet 32px
+        int_timeroom_clock_e5  27 elements,  16 texture patches, sheet 64px
+        int_timeroom_clock_e2  27 elements,  16 texture patches, sheet 64px
+        int_timeroom_clock_home  27 elements,  16 texture patches, sheet 64px
+        int_timeroom_clock_w3  27 elements,  16 texture patches, sheet 64px
+        int_timeroom_clock_w5  27 elements,  16 texture patches, sheet 64px
+        int_timeroom_cords_w  22 elements,  48 texture patches, sheet 32px
+        int_timeroom_cords_e  22 elements,  48 texture patches, sheet 32px
+        int_timeroom_back_0   5 elements,  15 texture patches, sheet 64px
+        int_timeroom_back_1   5 elements,  15 texture patches, sheet 64px
+        int_timeroom_back_2   5 elements,  15 texture patches, sheet 64px
+        int_timeroom_chronometer   2 elements,   8 texture patches, sheet 32px
+        int_timeroom_mug    16 elements,  13 texture patches, sheet 16px
+        int_timeroom_forms  15 elements,  38 texture patches, sheet 32px
+        int_domeroom_chair  31 elements,  60 texture patches, sheet 128px
+        int_domeroom_ring   41 elements,  14 texture patches, sheet 64px
+        int_domeroom_ring_endm  14 elements,  14 texture patches, sheet 64px
+        int_domeroom_ring_endp  14 elements,  14 texture patches, sheet 64px
+        int_domeroom_rib_0626p  54 elements,  39 texture patches, sheet 64px
+        int_domeroom_rib_0402p  68 elements,  45 texture patches, sheet 128px
+        int_domeroom_rib_0319  73 elements,  51 texture patches, sheet 128px
+        int_domeroom_rib_0288  77 elements,  55 texture patches, sheet 128px
+        int_domeroom_rib_0402m  68 elements,  45 texture patches, sheet 128px
+        int_domeroom_rib_0626m  54 elements,  39 texture patches, sheet 64px
+        int_domeroom_arch   72 elements,  77 texture patches, sheet 128px
+        int_domeroom_cross  20 elements,  15 texture patches, sheet 128px
+        prop_elec_insulator  37 elements,  50 texture patches, sheet 32px
+        prop_elec_lead_in   25 elements,  28 texture patches, sheet 32px
+        prop_elec_junction_box  27 elements,  40 texture patches, sheet 64px
+        prop_elec_elbow     12 elements,  13 texture patches, sheet 16px
+        prop_elec_clip       5 elements,   8 texture patches, sheet 16px
+        prop_elec_bell      74 elements,  86 texture patches, sheet 64px
+        prop_elec_wall_phone  86 elements,  96 texture patches, sheet 64px
+        prop_elec_telegraph_key  26 elements,  46 texture patches, sheet 32px
+        prop_elec_cable      1 elements,   3 texture patches, sheet 64px
+        prop_elec_conduit    4 elements,   4 texture patches, sheet 64px
+        prop_furn_bench     79 elements, 161 texture patches, sheet 64px
+        prop_furn_writing_desk  59 elements, 132 texture patches, sheet 128px
+        prop_furn_display_table  60 elements, 127 texture patches, sheet 128px
+        prop_furn_drafting_table  80 elements, 120 texture patches, sheet 128px
+        prop_furn_swivel_chair  70 elements, 112 texture patches, sheet 64px
+        prop_furn_stool     41 elements,  64 texture patches, sheet 64px
+        prop_furn_card_cabinet  53 elements, 149 texture patches, sheet 128px
+        prop_furn_instrument_cabinet  50 elements,  85 texture patches, sheet 128px
+        prop_furn_library_ladder  28 elements,  52 texture patches, sheet 128px
+        prop_furn_ladder_rail   3 elements,   7 texture patches, sheet 32px
+        prop_furn_coat_stand  88 elements, 129 texture patches, sheet 64px
+        prop_furn_trunk     19 elements,  47 texture patches, sheet 64px
+        prop_furn_crate     14 elements,  34 texture patches, sheet 64px
+        prop_furn_crate_small  11 elements,  30 texture patches, sheet 64px
+        prop_furn_display_case  27 elements,  45 texture patches, sheet 64px
+        prop_inst_tripod_scope  88 elements, 109 texture patches, sheet 64px
+        prop_inst_tripod_scope_comet  89 elements, 109 texture patches, sheet 64px
+        prop_inst_celestial_globe 215 elements, 238 texture patches, sheet 128px
+        prop_inst_globe    133 elements, 138 texture patches, sheet 64px
+        prop_inst_sextant   34 elements,  56 texture patches, sheet 64px
+        prop_inst_barometer  37 elements,  32 texture patches, sheet 64px
+        prop_inst_louvre_box  26 elements,  70 texture patches, sheet 64px
+        prop_inst_regulator_clock  34 elements,  37 texture patches, sheet 64px
+        prop_inst_regulator_pendulum  12 elements,  13 texture patches, sheet 32px
+        prop_inst_calc_machine  29 elements,  42 texture patches, sheet 64px
+        prop_inst_sunshine_recorder  76 elements,  84 texture patches, sheet 64px
+        prop_iron_window_arch  51 elements, 104 texture patches, sheet 128px
+        prop_iron_window_arch_2  40 elements,  85 texture patches, sheet 128px
+        prop_iron_window_grille  25 elements,  52 texture patches, sheet 64px
+        prop_iron_window_grille_2  17 elements,  36 texture patches, sheet 64px
+        prop_iron_door_frame  75 elements, 109 texture patches, sheet 128px
+        prop_iron_fanlight  84 elements,  28 texture patches, sheet 64px
+        prop_iron_door_leaf 101 elements, 229 texture patches, sheet 128px
+        prop_iron_gate     121 elements, 215 texture patches, sheet 128px
+        prop_iron_glazed_leaf  69 elements, 185 texture patches, sheet 128px
+        prop_iron_canopy   196 elements, 288 texture patches, sheet 256px
+        prop_iron_canopy_lamp  77 elements,  52 texture patches, sheet 64px
+        prop_iron_canopy_lamp_in  21 elements,   7 texture patches, sheet 16px
+        prop_iron_canopy_lamp_left  21 elements,   7 texture patches, sheet 16px
+        prop_iron_canopy_lamp_right  21 elements,   7 texture patches, sheet 16px
+        prop_iron_canopy_lamp_under  24 elements,   4 texture patches, sheet 16px
+        prop_iron_railing_panel  54 elements,  38 texture patches, sheet 64px
+        prop_iron_ladder    30 elements,  40 texture patches, sheet 64px
+        prop_iron_ladder_cage  65 elements,  83 texture patches, sheet 128px
+        prop_iron_vent_cowl  90 elements,  52 texture patches, sheet 64px
+        prop_iron_grate_hatch  29 elements,  32 texture patches, sheet 64px
+        prop_lamp_street    86 elements,  75 texture patches, sheet 128px
+        prop_lamp_post      41 elements,  34 texture patches, sheet 32px
+        prop_lamp_bracket_a  58 elements,  42 texture patches, sheet 64px
+        prop_lamp_bracket_b  55 elements,  65 texture patches, sheet 64px
+        prop_lamp_cage_a    52 elements,  37 texture patches, sheet 32px
+        prop_lamp_cage_b    29 elements,  55 texture patches, sheet 64px
+        prop_lamp_pendant_a  65 elements,  46 texture patches, sheet 64px
+        prop_lamp_pendant_b  58 elements,  65 texture patches, sheet 64px
+        prop_lamp_desk_green  21 elements,  37 texture patches, sheet 32px
+        prop_lamp_signal    41 elements,  36 texture patches, sheet 32px
+        prop_lamp_signal_off  41 elements,  36 texture patches, sheet 32px
+        prop_lamp_uplight   23 elements,  25 texture patches, sheet 32px
+        prop_lamp_wire       1 elements,   3 texture patches, sheet 64px
+        prop_lamp_bulb      12 elements,  11 texture patches, sheet 16px
+        prop_lamp_hanger     3 elements,   8 texture patches, sheet 16px
+        prop_paper_star_chart   9 elements,  23 texture patches, sheet 64px
+        prop_paper_star_chart_b   9 elements,  23 texture patches, sheet 64px
+        prop_paper_sky_map   9 elements,  23 texture patches, sheet 128px
+        prop_paper_sky_map_b   9 elements,  23 texture patches, sheet 128px
+        prop_paper_blueprint   7 elements,  11 texture patches, sheet 32px
+        prop_paper_blueprint_b   7 elements,  11 texture patches, sheet 32px
+        prop_paper_blackboard  10 elements,  24 texture patches, sheet 64px
+        prop_paper_moon_map   6 elements,  16 texture patches, sheet 64px
+        prop_paper_logbook   6 elements,  17 texture patches, sheet 32px
+        prop_paper_logbook_shut   6 elements,  14 texture patches, sheet 32px
+        prop_paper_photo_plate   1 elements,   3 texture patches, sheet 16px
+        prop_paper_photo_plate_b   1 elements,   3 texture patches, sheet 16px
+        prop_paper_photo_plate_c   1 elements,   3 texture patches, sheet 16px
+        prop_pipe_down       4 elements,   5 texture patches, sheet 64px
+        prop_pipe_down_hopper_left  13 elements,  26 texture patches, sheet 64px
+        prop_pipe_down_hopper_right  13 elements,  26 texture patches, sheet 64px
+        prop_pipe_down_clip  10 elements,  17 texture patches, sheet 32px
+        prop_pipe_down_sleeve   4 elements,   5 texture patches, sheet 16px
+        prop_pipe_drain      4 elements,   5 texture patches, sheet 64px
+        prop_pipe_drain_head   7 elements,  20 texture patches, sheet 32px
+        prop_pipe_drain_clip  10 elements,  17 texture patches, sheet 32px
+        prop_pipe_drain_sleeve   4 elements,   5 texture patches, sheet 16px
+        prop_pipe_fine       4 elements,   5 texture patches, sheet 64px
+        prop_pipe_union     11 elements,  14 texture patches, sheet 16px
+        prop_pipe_main_l     4 elements,   5 texture patches, sheet 64px
+        prop_pipe_main_m     4 elements,   5 texture patches, sheet 64px
+        prop_pipe_flange_l  16 elements,  34 texture patches, sheet 32px
+        prop_pipe_flange_m  14 elements,  28 texture patches, sheet 32px
+        prop_pipe_plate_l   16 elements,  26 texture patches, sheet 32px
+        prop_pipe_plate_m   14 elements,  22 texture patches, sheet 32px
+        prop_pipe_elbow_l   44 elements,  82 texture patches, sheet 64px
+        prop_pipe_elbow_m   40 elements,  70 texture patches, sheet 64px
+        prop_pipe_tee_l     56 elements, 115 texture patches, sheet 64px
+        prop_pipe_tee_m     50 elements,  97 texture patches, sheet 64px
+        prop_pipe_expansion_l 100 elements, 147 texture patches, sheet 64px
+        prop_pipe_expansion_m  96 elements, 135 texture patches, sheet 64px
+        prop_pipe_valve_l   91 elements, 141 texture patches, sheet 64px
+        prop_pipe_valve_m   87 elements, 129 texture patches, sheet 64px
+        prop_pipe_valve_angle_l  91 elements, 138 texture patches, sheet 64px
+        prop_pipe_valve_angle_m  87 elements, 126 texture patches, sheet 64px
+        prop_pipe_bonnet    44 elements,  56 texture patches, sheet 64px
+        prop_pipe_band       6 elements,  17 texture patches, sheet 64px
+        prop_pipe_gauge     29 elements,  37 texture patches, sheet 32px
+        prop_pipe_clip_l    12 elements,  15 texture patches, sheet 32px
+        prop_pipe_clip_m    12 elements,  15 texture patches, sheet 32px
+        prop_sign_emblem    11 elements,   6 texture patches, sheet 64px
+        prop_sign_great_emblem  18 elements,   6 texture patches, sheet 128px
+        prop_sign_great_clock  51 elements,  18 texture patches, sheet 128px
+        prop_sign_station_board   5 elements,  11 texture patches, sheet 64px
+        prop_sign_flag      11 elements,  22 texture patches, sheet 64px
+        prop_sign_pole_foot  25 elements,  33 texture patches, sheet 32px
+        prop_sign_pole       4 elements,   4 texture patches, sheet 64px
+        prop_sign_pole_head  24 elements,  17 texture patches, sheet 32px
+        prop_sign_plate_1    1 elements,   3 texture patches, sheet 16px
+        prop_sign_plate_2    1 elements,   3 texture patches, sheet 16px
+        prop_sign_plate_3    1 elements,   3 texture patches, sheet 16px
+        prop_sign_plate_4    1 elements,   3 texture patches, sheet 16px
+        prop_sign_plate_5    1 elements,   3 texture patches, sheet 16px
+        prop_sign_plate_6    1 elements,   3 texture patches, sheet 16px
+        prop_sign_plate_7    1 elements,   3 texture patches, sheet 16px
+        prop_sign_plate_8    1 elements,   3 texture patches, sheet 16px
+        prop_sign_plate_9    1 elements,   3 texture patches, sheet 16px
+        prop_sign_plate_10   1 elements,   3 texture patches, sheet 16px
+        prop_sign_plate_11   1 elements,   3 texture patches, sheet 16px
+        prop_sign_plate_12   1 elements,   3 texture patches, sheet 16px
+        prop_sign_plate_left   1 elements,   3 texture patches, sheet 16px
+        prop_sign_plate_right   1 elements,   3 texture patches, sheet 16px
+        prop_sign_plate_n    1 elements,   3 texture patches, sheet 16px
+        prop_sign_plate_s    1 elements,   3 texture patches, sheet 16px
+        prop_sign_plate_220v   1 elements,   3 texture patches, sheet 32px
+        prop_sign_plate_110v   1 elements,   3 texture patches, sheet 32px
+        sandstone: 1 models x 3 -> ashlar_rough0, ashlar_rough1, ashlar_rough2, ashlar_rough_top0, ashlar_rough_top1, ashlar_rough_top2
+        sandstone_stairs: 3 models x 3 -> ashlar_rough0, ashlar_rough1, ashlar_rough2, ashlar_rough_top0, ashlar_rough_top1, ashlar_rough_top2
+        sandstone_slab: 3 models x 3 -> ashlar_rough0, ashlar_rough1, ashlar_rough2, ashlar_rough_top0, ashlar_rough_top1, ashlar_rough_top2
+        sandstone_wall: 3 models x 3 -> ashlar_rough0, ashlar_rough1, ashlar_rough2, ashlar_rough_top0, ashlar_rough_top1, ashlar_rough_top2
+        smooth_sandstone: 1 models x 6 -> ashlar_fine0, ashlar_fine1, ashlar_fine2, ashlar_fine3, ashlar_fine4, ashlar_fine5, ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2
+        smooth_sandstone_stairs: 3 models x 6 -> ashlar_fine0, ashlar_fine1, ashlar_fine2, ashlar_fine3, ashlar_fine4, ashlar_fine5, ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2
+        smooth_sandstone_slab: 3 models x 6 -> ashlar_fine0, ashlar_fine1, ashlar_fine2, ashlar_fine3, ashlar_fine4, ashlar_fine5, ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2
+        cut_sandstone: 1 models x 3 -> ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2, ashlar_panel
+        cut_sandstone_slab: 3 models x 3 -> ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2, ashlar_panel
+        chiseled_sandstone: 1 models x 3 -> ashlar_emblem, ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2
+        bamboo_planks: 1 models x 3 -> brass_plate0, brass_plate1, brass_plate2
+        bamboo_stairs: 3 models x 3 -> brass_plate0, brass_plate1, brass_plate2
+        bamboo_slab: 3 models x 3 -> brass_plate0, brass_plate1, brass_plate2
+        bamboo_mosaic: 1 models x 1 -> brass_tread
+        bamboo_mosaic_stairs: 3 models x 1 -> brass_tread
+        bamboo_mosaic_slab: 3 models x 1 -> brass_tread
+        bamboo_block: 3 models x 1 -> brass_pipe, brass_pipe_end
+        bamboo_fence: 5 models x 1 -> brass_plate0, brass_rail
+        bamboo_fence_gate: 4 models x 1 -> brass_gate, brass_plate0
+        bamboo_door: 8 models x 1 -> brass_door_bottom, brass_door_top
+        bamboo_trapdoor: 3 models x 1 -> brass_hatch
+        bamboo_button: 2 models x 3 -> brass_plate0, brass_plate1, brass_plate2
+        bamboo_sign: 4 models x 1 -> brass_plate0, brass_sign
+        bamboo_wall_sign: 1 models x 1 -> brass_plate0, brass_sign
+        bamboo_hanging_sign: 8 models x 1 -> brass_hanging_sign, brass_plate0
+        bamboo_wall_hanging_sign: 1 models x 1 -> brass_hanging_sign, brass_plate0
+        bamboo_shelf: 6 models x 1 -> brass_plate0, brass_shelf
+        waxed_exposed_copper: 1 models x 3 -> old_copper0, old_copper1, old_copper2
+        waxed_exposed_cut_copper: 1 models x 3 -> old_copper_cut0, old_copper_cut1, old_copper_cut2
+        waxed_exposed_cut_copper_stairs: 3 models x 3 -> old_copper_cut0, old_copper_cut1, old_copper_cut2
+        waxed_exposed_cut_copper_slab: 3 models x 3 -> old_copper_cut0, old_copper_cut1, old_copper_cut2
+        dark_oak_trapdoor: 3 models x 1 -> wainscot
+        yellow_carpet: 1 models x 3 -> brass_inlay0, brass_inlay1, brass_inlay2
+        rail: 4 models x 3 -> brass_line0, brass_line1, brass_line2, brass_line_corner0, brass_line_corner1, brass_line_corner2
+        activator_rail: 6 models x 1 -> brass_line_cross
+        detector_rail: 6 models x 1 -> brass_line_star
+        oak_sign: 4 models x 1 -> enamel_plate, enamel_sign
+        oak_wall_sign: 1 models x 1 -> enamel_plate, enamel_sign
+        oak_hanging_sign: 8 models x 1 -> enamel_hanging_sign, enamel_plate
+        oak_wall_hanging_sign: 1 models x 1 -> enamel_hanging_sign, enamel_plate
+        sounds.json: 20 events redirected
+        oxidized_copper: 1 models x 6 -> iron_plate0, iron_plate1, iron_plate2, iron_plate3, iron_plate4, iron_plate5
+        oxidized_cut_copper: 1 models x 6 -> iron_riveted0, iron_riveted1, iron_riveted2, iron_riveted3, iron_riveted4, iron_riveted5
+        oxidized_cut_copper_stairs: 3 models x 6 -> iron_riveted0, iron_riveted1, iron_riveted2, iron_riveted3, iron_riveted4, iron_riveted5
+        oxidized_cut_copper_slab: 3 models x 6 -> iron_riveted0, iron_riveted1, iron_riveted2, iron_riveted3, iron_riveted4, iron_riveted5
+        oxidized_chiseled_copper: 1 models x 1 -> iron_cast
+        oxidized_copper_grate: 1 models x 2 -> iron_grate0, iron_grate1
+        oxidized_copper_bars: 6 models x 1 -> iron_bars
+        oxidized_copper_chain: 1 models x 1 -> iron_chain
+        oxidized_lightning_rod: 2 models x 1 -> iron_rod
+        oxidized_copper_trapdoor: 3 models x 1 -> iron_hatch
+        oxidized_copper_door: 8 models x 1 -> iron_door_bottom, iron_door_top
+        oxidized_copper_bulb: 4 models x 1 -> iron_bulb, iron_bulb_lit
+        oxidized_copper_lantern: 2 models x 1 -> iron_lantern
+        white_glazed_terracotta: 1 models x 2 -> panel_case, panel_dial0, panel_dial1
+        orange_glazed_terracotta: 1 models x 1 -> panel_case, panel_knife_switch
+        magenta_glazed_terracotta: 1 models x 1 -> panel_case, panel_tubes, panel_tubes_glow
+        light_blue_glazed_terracotta: 1 models x 1 -> panel_case, panel_scope, panel_scope_glow
+        yellow_glazed_terracotta: 1 models x 1 -> panel_case, panel_counter
+        lime_glazed_terracotta: 1 models x 1 -> panel_case, panel_patch_panel
+        pink_glazed_terracotta: 1 models x 1 -> panel_case, panel_fuses
+        gray_glazed_terracotta: 1 models x 1 -> panel_bell, panel_case
+        light_gray_glazed_terracotta: 1 models x 1 -> panel_case, panel_pilot_lamps, panel_pilot_lamps_glow
+        cyan_glazed_terracotta: 1 models x 1 -> panel_case, panel_louvre
+        purple_glazed_terracotta: 1 models x 1 -> panel_case, panel_drawers
+        blue_glazed_terracotta: 1 models x 1 -> panel_case, panel_nameplate
+        brown_glazed_terracotta: 1 models x 1 -> panel_case, panel_relays
+        green_glazed_terracotta: 1 models x 1 -> panel_bus_switch, panel_case
+        red_glazed_terracotta: 1 models x 1 -> panel_case, panel_gauges
+        black_glazed_terracotta: 1 models x 1 -> panel_case, panel_recorder
+        snow_block: 1 models x 3 -> snow0, snow1, snow2
+        snow: 8 models x 3 -> snow0, snow1, snow2, snow_side0, snow_side1, snow_side2
+        windows: version a
+        yellow_stained_glass: 1 models x 1 -> window_lit
+        yellow_stained_glass_pane: 5 models x 1 -> window_came, window_lit
+        white_stained_glass: 1 models x 1 -> window_frosted
+        white_stained_glass_pane: 5 models x 1 -> window_came, window_frosted
+        orange_stained_glass: 1 models x 1 -> window_curtain
+        orange_stained_glass_pane: 5 models x 1 -> window_came, window_curtain
+        gray_stained_glass: 1 models x 4 -> window_dark0, window_dark1, window_dark2, window_dark3
+        gray_stained_glass_pane: 5 models x 4 -> window_came, window_dark0, window_dark1, window_dark2, window_dark3
+        black_stained_glass: 1 models x 1 -> window_blind
+        black_stained_glass_pane: 5 models x 1 -> window_blind, window_came
+        light_gray_stained_glass: 1 models x 4 -> window_skylight0, window_skylight1, window_skylight2, window_skylight3
+        light_gray_stained_glass_pane: 5 models x 4 -> window_came, window_skylight0, window_skylight1, window_skylight2, window_skylight3
+        stand-in glow: 1 blocks (red_stained_glass)
+        stand-in dark_wood: 2 blocks (brown_stained_glass, purple_stained_glass)
+        materials audit: 86 block states, 428 models, 119 pictures, nothing wrong
+        dead_horn_coral_block: 1 models x 1 -> sky_cloud_0
+        dead_fire_coral_block: 1 models x 1 -> sky_cloud_1
+        dead_bubble_coral_block: 1 models x 1 -> sky_cloud_2
+        dead_brain_coral_block: 1 models x 1 -> sky_cloud_3
+        dead_tube_coral_block: 1 models x 1 -> sky_cloud_4
+        clouds.png: blanked (the game draws no cloud layer; the sea is blocks)
+        comet (a) -> 8 moon phase pictures, test card in new_moon
+        sun picture blanked
+    [shuttle 00:50:10] resource pack: 1556 files written to client26/game/resourcepacks/c164art
+        [nodemc 00:50:20] C164Cam is online (10 s)
+        [nodemc 00:50:20] game: [00:50:15] [Render thread/INFO]: Backend library: LWJGL version 3.4.3+4
+        [nodemc 00:50:20] game: [00:50:15] [Render thread/ERROR]: Failed to create backend OpenGL
+        [nodemc 00:50:20] game: com.mojang.renderpearl.api.device.BackendCreationException: Failed to create window for OpenGL context: Couldn't find matching GLX visual
+        [nodemc 00:50:20] game: [00:50:15] [Render thread/INFO]: Using graphics backend Vulkan, using drivers: 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+        [nodemc 00:50:20] game: [00:50:15] [Render thread/INFO]: Using graphics device: llvmpipe (LLVM 20.1.2, 256 bits) (0x10005)
+        [nodemc 00:50:20] pictures: saved by the game itself (helper)
+    [shuttle 00:50:20] shooting obs: 12 shots of board-obs.json
+        /tmp/c164_s1/real/3b8fe17/obs/v01_arrival.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/3b8fe17/obs/v02_axis.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/3b8fe17/obs/v03_facade.png (still after 4 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/3b8fe17/obs/v04_entrance.png (still after 4 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/3b8fe17/obs/v05_tower.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/3b8fe17/obs/v06_power.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/3b8fe17/obs/v07_hall.png (still after 3 s more, 0.31% of it moved between the last two)
+        /tmp/c164_s1/real/3b8fe17/obs/v08_dome_room.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/3b8fe17/obs/v09_chart_room.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/3b8fe17/obs/v10_time_room.png (still after 3 s more, 0.04% of it moved between the last two)
+        /tmp/c164_s1/real/3b8fe17/obs/v11_lookout.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/3b8fe17/obs/v12_aerial.png (still after 3 s more, 0.00% of it moved between the last two)
+        pictures: 12 saved by the game itself, 0 taken off the display
+        [nodemc 00:53:57] client stopped
+    [shuttle 00:53:57] obs: 12 of 12 pictures in /tmp/c164_s1/real/3b8fe17/obs
+    [shuttle 00:53:57] trip done (248 s, the game was opened once and is closed again)
+[trip 00:53:57 +248s] shuttle: exit 0, 248 s
+[trip 00:53:57 +248s] obs: 12 pictures of 3b8fe174 in renders/real/obs/
+[trip 00:53:57 +249s] obs: sheet.jpg, no compare.jpg (renders/board/3b8fe17/ is not drawn yet; the sheet of an earlier board is removed) in renders/real/obs/
+[trip 00:53:57 +249s] close: nodemc.py down  (up to 180 s)
+    [nodemc 00:53:59] server stopped
+[trip 00:54:00 +251s] close: exit 0, 3 s
+[trip 00:54:00 +251s] trip done; pictures kept: renders/real/obs/; log renders/real/_trips/20261116-004949-3b8fe17-obs.log
