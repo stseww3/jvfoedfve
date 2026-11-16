@@ -1,0 +1,3 @@
+branch=cursor/c164-m1-instruments-f3-c367
+head=2075665ef0986bc98ac2719b510fbf950b949c63
+args=--no-push --tail 40 python\ tools/viewbands.py\ --lost\ props/instruments\ 2\>\&1\ \|\ tail\ -12\;\ python\ tools/check.py\ --scene\ obs_props_instruments\ 2\>\&1\ \|\ tail\ -14 
