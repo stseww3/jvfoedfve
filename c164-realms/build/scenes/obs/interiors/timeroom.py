@@ -50,8 +50,11 @@ What stands where (plan cells; north is -z, the camera of V10 looks north):
   world clocks      five slave dials in a row on a dark board, on the blind stretch of the west wall
                     (the rotunda is behind it), over a low cabinet of drawers, a lamp over the
                     middle one. Their dials are level with the regulators'. They show the one time
-                    every clock of the map is stopped at (the skeleton's CLOCK) in five places: the
-                    hours differ, the minutes do not. These are the room's own models.
+                    every clock of the map is placed at (the skeleton's CLOCK) in five places: the
+                    hours differ, the minutes do not. From there they run with every clock of the
+                    station (machines/clock.drive): the hour and the minute hand at the pace of
+                    the dials, the seconds hand a jump on every beat. These are the room's own
+                    models: a dial, and the three hands as pieces of their own.
   south wall        card cabinets under a drawing west of the door, a coat stand east of it
   panelling         dark panels on every solid stretch of wall, from the floor to the ceiling: the
                     piers between the windows, the blind stretch of the west wall, the south wall
@@ -123,16 +126,15 @@ import math
 
 from artkit import models as M
 from artkit.blocks import st
-from artkit.nbtw import Float
 from artkit.pixelart import Sprite
 
 from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
+from ..machines import clock as CK
 from ..main import _plan as MP
 from ..main import shell
 from ..materials import panels
-from ..motion import _kit as MK
 from ..props import _kit as K
 from ..props import lamps
 
@@ -243,7 +245,7 @@ DUCTS = (                                           # runs of duct in the floor,
 )
 
 # ---- the world clocks: a row of slave dials on one board, on the blind stretch of the west wall, one to a cell
-CLOCK = getattr(S, "CLOCK", (7, 55))                # the time every clock of the map is stopped at (A0, g2 #34136)
+CLOCK = getattr(S, "CLOCK", (7, 55))                # the time every clock of the map is placed at (A0, g2 #34136) and runs on from
 CLOCK_Z = (BLIND_Z[0] + 1, BLIND_Z[1] - 1)          # -12..-8
 WORLD = (5, 2, 0, -3, -5)                           # hours off the station's time, from the north end of the row: seen from the room the west is on the left
 CASE_R = 6.0                                        # px: the radius of a world clock's case
@@ -265,12 +267,14 @@ DIAL = (                                            # nine pixels across: twelve
 DIAL_COLOURS = dict(c=P.RAMPS["porcelain"][3], d=P.RAMPS["porcelain"][2], k=MARK, b=P.RAMPS["brass"][3])
 DIAL_FACE = Sprite(PREFIX + "clock_dial", DIAL, DIAL_COLOURS)       # one face for the five: the hands are not painted on it
 HAND = K.flat("iron", 0)                            # a hand: as dark as ink, as on props/instruments' dials
+HANDS = dict(h=(2.5, 3.6), m=(3.75, 3.8))           # px: the hour and the minute hand of a dial, a pixel wide: its length from the
+#                                                     pivot, how far off the wall it turns (the minute hand over the hour hand)
+HAND_THICK = 0.2                                    # px
 SECONDS = dict(tip=4.0, tail=1.25, wide=0.5, off=4.15, thick=0.15)      # px: a dial's seconds hand, from the pivot to its tip and
 #                                                     to the end of its tail, its width, how far off the wall it turns (over the
 #                                                     boss of the two hands), its thickness
-SECONDS_TURN = 60 * MK.SECOND                       # ticks: once round the dial in a minute, the five in step (slaves of one clock)
-VIEW = 0.5                                          # how far off a piece of the room is drawn, in 64 blocks: the "near" class of
-#                                                     plan/round2 2 (nothing of the room is looked at from further than the door)
+VIEW = M.NEAR                                       # how far off a piece of the room is drawn: the class of everything indoors
+#                                                     (plan/round2 2); no board view looks into the room through a window
 
 # ---- the patch cords: at the jack fields of the rack, which are the panels beside the two ends of the console
 JACK_FIELDS = tuple((RACK_X[0] + i, CORNICE_Y - 1 - j)                              # (5, 8) and (10, 8): the cells, x and y
@@ -529,13 +533,9 @@ SLOTS = {
 
 
 # ---- the room's own models: the world clocks ----------------------------------------------------------
-def hands(hour, minute):
-    """The two hands of a dial, the hour hand first (it lies under the other): (degrees right of
-    upright, length in pixels). They are made as props/instruments makes its regulator's (c335,
-    11-16): strips one pixel wide, each turned to its true angle about the middle of the dial.
-    Painted into nine pixels a hand was a stair of blocks, and a clock an hour on showed the same
-    stair one step round."""
-    return (((hour % 12 + minute / 60.0) * 30.0, 2.5), (minute * 6.0, 3.75))
+def hand_name(kind):
+    """The model of a world clock's hand: "h" the hour hand, "m" the minute hand, "s" the seconds hand."""
+    return PREFIX + {"h": "clock_hand_h", "m": "clock_hand_m", "s": "clock_seconds"}[kind]
 
 
 def clock_name(offset):
@@ -549,8 +549,9 @@ def _world_clock(offset):
     head of props/instruments' barometer (a turned wooden case, a brass bezel, the nine-pixel
     dial). The board is as wide as a cell, so the clocks of a row stand on one board: a plain dark
     band across the panelling, which makes the five dials one row and not five things on a wall.
-    Under the dial a brass label for the place whose time it keeps. The hands stand at the map's
-    one time, `offset` hours on. Anchor: the point on the wall behind the middle of the dial."""
+    Under the dial a brass label for the place whose time it keeps. The three hands are pieces of
+    their own (_hand), which the station's time turns; the boss on their pivot is the dial's.
+    Anchor: the point on the wall behind the middle of the dial."""
     name = clock_name(offset)
     wide, up, down = BOARD
     m = M.Model(name)
@@ -559,24 +560,28 @@ def _world_clock(offset):
     m.ring("z", (0, 0, 3.5), 5.0, 1.5, 1.0, K.BRASS, sides=16)                                                # the bezel
     half = len(DIAL) / 2.0
     m.box((-half, -half, 3.25), (half, half, 3.5), K.flat("porcelain", 3), skip="nudew", faces={"s": DIAL_FACE})
-    top = 3.6
-    for lean, length in hands(CLOCK[0] + offset, CLOCK[1]):
-        m.box((-0.5, 0.0, top), (0.5, length, top + 0.2), HAND, grain="y", rot=("z", -lean, (0.0, 0.0, top + 0.1)))
-        top += 0.2
+    top = HANDS["m"][1] + HAND_THICK
     m.box((-0.5, -0.5, top), (0.5, 0.5, top + 0.15), K.flat("brass", 4))                                      # the boss on the pivot
     m.box((-2.5, -CASE_R - 3.5, 1.0), (2.5, -CASE_R - 1.5, 1.5), K.BRASS_D, grain="x")                        # the label
     return m
 
 
-def _seconds_hand():
-    """The seconds hand of a world clock: a piece by itself, so that motion/_kit can turn it. A thin
-    strip of blued steel over the two hands and their boss, a short tail beyond the pivot. Anchor:
-    the clock's, the point on the wall behind the middle of the dial; the hand turns about the line
-    out of the wall through it. Placed upright, at the sixtieth second."""
-    m = M.Model(PREFIX + "clock_seconds")
-    half = SECONDS["wide"] / 2.0
-    m.box((-half, -SECONDS["tail"], SECONDS["off"]), (half, SECONDS["tip"], SECONDS["off"] + SECONDS["thick"]),
-          K.flat("enamel", 2), grain="y")
+def _hand(kind):
+    """A hand of a world clock, a piece by itself so that the station's time can turn it
+    (machines/clock.drive): the hour and the minute hand are made as props/instruments makes its
+    regulator's (c335, 11-16), strips one pixel wide and as dark as ink (painted into nine pixels a
+    hand was a stair of blocks); the seconds hand is a thin strip of blued steel over the two and
+    their boss, with a short tail beyond the pivot. Anchor: the clock's, the point on the wall
+    behind the middle of the dial; the hand turns about the line out of the wall through it. Made
+    upright, at twelve."""
+    m = M.Model(hand_name(kind))
+    if kind == "s":
+        half = SECONDS["wide"] / 2.0
+        m.box((-half, -SECONDS["tail"], SECONDS["off"]), (half, SECONDS["tip"], SECONDS["off"] + SECONDS["thick"]),
+              K.flat("enamel", 2), grain="y")
+        return m
+    length, off = HANDS[kind]
+    m.box((-0.5, 0.0, off), (0.5, length, off + HAND_THICK), HAND, grain="y")
     return m
 
 
@@ -763,7 +768,7 @@ def _back(i):
 @functools.lru_cache(maxsize=None)
 def _models():
     out = {clock_name(offset): _world_clock(offset) for offset in WORLD}
-    out[PREFIX + "clock_seconds"] = _seconds_hand()
+    out.update({hand_name(kind): _hand(kind) for kind in "hms"})
     out.update({cords_name(side): _cords(side) for side in CORDS})
     out.update({back_name(i): _back(i) for i in range(len(BACK))})
     out[PREFIX + "chronometer"] = _chronometer()
@@ -1000,11 +1005,19 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
         n += K.put(c, own[PREFIX + "jacket"], DESK_CHAIR[0], yaw=DESK_CHAIR[1], origin=origin)
 
     # ---- the world clocks on their board over a cabinet of drawers, and the lamp over the middle one
+    # The dials are slaves of the master clock: each is placed at the station's time, its own hours
+    # on, and from there its hands keep the station's time and beat (machines/clock.drive: the
+    # minute hand creeps, the seconds hand jumps on every beat)
     for z, offset in zip(range(CLOCK_Z[0], CLOCK_Z[1] + 1), WORLD):
         put(X0, FEET, z, st(roles.PANELS["drawers"], facing="east"))
-        n += K.put(c, own[clock_name(offset)], (PANEL_W, DIAL_Y, S.mid(z)), mount="wall", facing="east", origin=origin)
-        n += K.put(c, own[PREFIX + "clock_seconds"], (PANEL_W, DIAL_Y, S.mid(z)), mount="wall", facing="east", origin=origin)
-        n += MK.spin(c, "-z", SECONDS_TURN)         # about the line into the wall: clockwise for who looks at the dial
+        hung = dict(mount="wall", facing="east", origin=origin)
+        at = (PANEL_W, DIAL_Y, S.mid(z))
+        n += K.put(c, own[clock_name(offset)], at, **hung)
+        leans = dict(zip("hm", CK.hand_angles(CLOCK[0] + offset, CLOCK[1])))       # degrees past twelve; a seconds hand stands at twelve
+        for kind in "hms":
+            turned = dict(turns=(("z", -leans[kind]),)) if kind in leans else {}
+            n += K.put(c, own[hand_name(kind)], at, **turned, **hung)
+            CK.drive(c, kind)
     n += lamp("bracket", (PANEL_W, BRACKET_Y, S.mid(*CLOCK_Z)), CLOCK_LAMP, "world clocks", CLOCK_LIGHT, facing="east")
     bounce(CLOCKS_BOUNCE, CLOCK_BOUNCE, "ceiling over the world clocks")
 
@@ -1055,9 +1068,7 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
 
     # ---- how far off the room's pieces are drawn, whoever made them: the game draws a display entity through
     # walls, so one that is drawn from across the site costs every picture taken out of doors
-    for entity in c.entities[first:]:
-        if "view_range" in entity[3]:
-            entity[3]["view_range"] = Float(VIEW)
+    M.band(c, first, VIEW)
     return {"entities": n, "lights": lights}
 
 
