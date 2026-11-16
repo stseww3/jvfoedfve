@@ -550,6 +550,7 @@ def _brace(m, x, r, top):
 
 
 OPAL = [K.flat("opal", i) for i in range(len(P.RAMPS["opal"]))]
+LAMP_TOP = 2                                  # the brightest tone of the canopy lamp's globe: OPAL[LAMP_TOP]
 LAMP_QUARTERS = ("in", "left", "right")       # the pieces of the lamp that are glass alone (_canopy_lamp):
 LAMP_PIECES = ["canopy_lamp"] + ["canopy_lamp_" + way for way in LAMP_QUARTERS + ("under",)]      # ... and all of it
 
@@ -560,10 +561,16 @@ def _canopy_lamp(way="out"):
     the lamp is 28.5 px below it. The lamp is five pieces, so the globe shows its tones as painted
     from wherever one comes: four (WAYS), each drawn in the frame tilted for its quarter of the
     globe -- the one that looks out of the wall has the iron as well, the other three are glass
-    alone -- and "under", the steps of the globe's lower half, which look down (SLIDE)."""
+    alone -- and "under", the steps of the globe's lower half, which look down (SLIDE).
+
+    The globe's tones stop at LAMP_TOP, the third of the opal ramp (0.89), in the band round its
+    waist, and fall a tone a band to either end (c332, 11-16: with the two white tones of the ramp
+    the lamp was 0.98 on the boards, more white in sight than the head of the comet, which is to
+    be the one white of the map; the lamp is still the brightest point of the entrance)."""
     m = M.Model(PREFIX + "canopy_lamp" + ("" if way == "out" else "_" + way), px=1.0)
-    bands = [(-1.0, -0.75, 1, OPAL[0]), (-0.75, -0.5, 1, OPAL[1]), (-0.5, -0.25, 1, OPAL[2]),
-             (-0.25, 0.25, 1, OPAL[4]), (0.25, 0.5, 1, OPAL[3]), (0.5, 0.75, 1, OPAL[2]), (0.75, 1.0, 1, OPAL[1])]
+    tone = [OPAL[max(0, LAMP_TOP - away)] for away in (3, 2, 1, 0, 1, 2, 3)]
+    bands = [(-1.0, -0.75, 1, tone[0]), (-0.75, -0.5, 1, tone[1]), (-0.5, -0.25, 1, tone[2]),
+             (-0.25, 0.25, 1, tone[3]), (0.25, 0.5, 1, tone[4]), (0.5, 0.75, 1, tone[5]), (0.75, 1.0, 1, tone[6])]
     globe = dict(centre=(0.0, -21.0, 0.0), radius=5.0, bands=bands, sides=12, squash=1.0)
     if way == "under":
         return _ball_under(m, **globe)
@@ -753,7 +760,12 @@ SCALE = {PREFIX + name: spec["scale"] for name, spec in SPEC.items()}
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    return {PREFIX + name: spec["build"]() for name, spec in SPEC.items()}
+    """Every model once over K.settle (a6 #75961): the slanting flats of a round bar, ring or scroll
+    stand exactly between two model axes, and the light on such a face would come out of the last
+    bit of a float. Not the pieces drawn in a leaning frame of their own (those with "turns": the
+    fanlight, the lamp's five): where their faces look is what the frame is for."""
+    return {PREFIX + name: spec["build"]() if "turns" in spec else K.settle(spec["build"]())
+            for name, spec in SPEC.items()}
 
 
 def models():
