@@ -319,6 +319,16 @@ def held_clock(scenes):
     return next(iter(found), None)
 
 
+def motion_start(scene):
+    """The command that starts a placed scene's loop of moving things, or None when it has none.
+    A world runs the loop of one scene, the one whose start ran last (motion/_kit: #run), so in a
+    trip of several scenes each is started again before it is shot: left alone, only the scene
+    placed last would move (smoke, 11-16: fourteen pictures of a room in which nothing moved)."""
+    path = os.path.join(world(), "datapacks", NAMESPACE, "data", NAMESPACE, "function", f"{scene}-motion",
+                        "start.mcfunction")
+    return f"function {NAMESPACE}:{scene}-motion/start" if os.path.exists(path) else None
+
+
 def one_look(scenes):
     """The look the scenes share, or None when none of them carries one."""
     found = {}
@@ -775,6 +785,9 @@ def main():
                     if os.path.exists(os.path.join(target, shot["name"] + ".png")):
                         os.remove(os.path.join(target, shot["name"] + ".png"))
             code, said, said_too = 0, "", ""
+            restart = motion_start(scene) if len(plan) > 1 else None
+            if restart:
+                say(f"{scene} moves, and the trip has {len(plan)} scenes: {restart} -> {rcon(restart)[0].strip()[:120]}")
             if shots_file:
                 say(f"shooting {scene}: {len(shots)} shots of {shown(shots_file)}")
                 code, said = run(os.path.join(TOOLS, "shoot.py"), shots_file,
