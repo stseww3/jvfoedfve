@@ -6,7 +6,7 @@ import os
 from scenes import obs_int_clockroom_bare as twin
 from scenes.obs.main import tower
 
-from . import _levels, doorway, outside_light, room, shots, walk_light, way_light
+from . import _levels, doorway, lobby_light, outside_light, room, shots, walk_light, way_light
 
 
 def write(folder, rows):
@@ -41,6 +41,10 @@ def main():
     loose = {name: len(K.unsettled(m)) for name, m in room.models().items()
              if K.unsettled(m) and name != room.PREFIX + "dial"}       # the dial's back stands in a frame of its own
     print("faces between two axes:", " ".join(f"{name}={n}" for name, n in sorted(loose.items())) or "none")
+    lobby = lobby_light(full)
+    low = {column: v for column, v in lobby.items() if v < room.WALK_LIGHT}
+    print(f"light on the lobby's floor: {len(lobby)} places, the least {min(lobby.values())}, the most {max(lobby.values())};",
+          "under %d: %s" % (room.WALK_LIGHT, " ".join(f"{c}={v}" for c, v in sorted(low.items())) or "none"))
     way = way_light(full)
     print(f"light on the way up: {len(way)} cells, the least {min(way.values())};",
           " ".join(f"{c}={v}" for c, v in way.items()))
