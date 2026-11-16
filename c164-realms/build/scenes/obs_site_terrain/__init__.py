@@ -1,9 +1,10 @@
 """Test scene of the work package site/terrain (plan/packages/site/terrain.md).
 
-The hilltop as it stands in the master scene: the site line whole (the mountain, the terraces and
-the stand-in ring of cloud of site/terrain, the court, whatever else of the site is merged by now),
-the main building behind it, the props line's lamps and instruments, and the sky line's light and
-look last. The lines are built whole, in the master scene's order, so the picture keeps up with
+The hilltop as it stands in the master scene: the site line whole (the mountain and the terraces
+of site/terrain, the court, whatever else of the site is merged by now), the main building behind
+it, the machines that stand in the open (the armillary, the clocks, the mast), the props line's
+lamps and instruments, and the sky line last: its light, its look and the sea of clouds the mountain
+stands in. The lines are built whole, in the master scene's order, so the picture keeps up with
 them as their packages merge.
 
 The views are the three the card is judged on -- V1 (arrival: the skeleton's eye and aim), V11 (from
@@ -17,13 +18,13 @@ on: the review measures the snow by the difference between the two pictures of a
 """
 from artkit.canvas import Canvas
 
-from scenes.obs import main, materials, props, site, sky
+from scenes.obs import machines, main, materials, props, site, sky
 from scenes.obs.site import terrain
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 120
 BIOME_MARGIN_Y = 160
-LINES = (site, main, props, sky)
+LINES = (site, main, machines, props, sky)
 
 
 def build(snow=None):
@@ -41,8 +42,10 @@ def build(snow=None):
 
 
 def build_models():
+    """The models of the lines built here, and the materials line's own: other lines show those
+    (the linings behind the building's windows)."""
     out = {}
-    for line in LINES:
+    for line in (materials,) + LINES:
         out.update(line.models() or {})
     return out
 

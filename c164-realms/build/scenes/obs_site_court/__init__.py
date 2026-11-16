@@ -7,12 +7,12 @@ keeps up with them as their packages are merged.
 """
 from artkit.canvas import Canvas
 
-from scenes.obs import main, materials, props, site, sky
+from scenes.obs import machines, main, materials, props, site, sky
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 80
 BIOME_MARGIN_Y = 140
-LINES = (site, main, props, sky)
+LINES = (site, main, machines, props, sky)
 
 
 def build():
@@ -23,8 +23,10 @@ def build():
 
 
 def build_models():
+    """The models of the lines built here, and the materials line's own: other lines show those
+    (the linings behind the building's windows)."""
     out = {}
-    for line in LINES:
+    for line in (materials,) + LINES:
         out.update(line.models() or {})
     return out
 
