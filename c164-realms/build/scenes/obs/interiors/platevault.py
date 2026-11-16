@@ -26,16 +26,23 @@ x 7.5. From north to south:
 The way of a plate reads from south to north: the sink and the trays under the red lamp, the
 stacks, the register desk, the lift.
 
-Light: three shaded pendants over the nave, dimmer towards the darkroom, three dimmer ones over
-each side aisle, the desk lamp, the checking table's glass, and the safelight (the lowest step of
-the third rank). Nothing lights a window of
-the base storey: the wall stacks and the darkroom's lining are whole blocks and stand before every
-one of them, so the storey stays the dark band it is from outside.
+Light. The room is a way like the others (cr2, 11-16): wherever a person can stand the block light
+is 5 or more, on the threshold 7; the lamps of the stacks give 7 to 8, and the darkroom end stays
+the darkest place of the building, 5 to 6. The lamps: a shaded pendant under every beam of the nave
+and of the two side aisles, a caged lamp over the door, one by the lift's winch and one on the
+south end of each island stack (the cross aisle and the arch), the desk lamp, the checking table's
+glass. A lamp's source stands under the lamp in the row of a walker's head: the shade
+throws the light down, and the ceiling over it stays dark. In the darkroom the safelight's glow is
+a source of 6 in every cell before the benches; the red lamp stays the one bright thing in it.
+build/scenes/obs_int_platevault/ways.py reads the result as tools/darkfloor.py does. Nothing lights
+a window of the base storey: the wall stacks and the darkroom's lining are whole blocks and stand
+before every one of them, so the storey stays the dark band it is from outside.
 
 A stack is a core of wood blocks (it stops who walks) with a face of shelves on each long side: a
-model three blocks wide and high, two tiers of them. Both tiers take their light from the cells
-people walk in (the lower from eye height, the upper from the floor, which is two steps dimmer),
-so the shelves fade towards the ceiling as they do under a shaded lamp.
+model three blocks wide and high, two tiers of them. A face takes its light from the cell its
+anchor stands in: the lower tier's from the row over a walker's head, the upper tier's from two
+rows higher, which is two steps dimmer, so the shelves fade towards the ceiling as they do under a
+shaded lamp.
 
 Coordinates are the skeleton's. build_platevault() dresses the room where it stands in the building;
 the box test scene (build/scenes/obs_int_platevault) stands a stand-in of the shell around it.
@@ -98,13 +105,18 @@ WEST_STACK_Z = (Z0 + 3, WALL_Z - 1)     # 10..21: the one on the west wall; the 
 BENCH_Z = Z1                        # 25: the sink and the benches, on the south wall
 
 # ---- light: what the room asks of the light line ------------------------------------------------
-LAMPS = "b"                         # the shaded lamp of props/lamps: its glow stays under it
-NAVE_LAMPS = ((PIER_Z[0], 11), (PIER_Z[1], 10), (PIER_Z[2], 8))     # (the beam's row, level): dimmer towards the darkroom
-AISLE_X = (float(X0 + 2), X1 - 1.5)     # 4.0 and 11.5: where the side aisles' lamps hang, west and east
-AISLE_LAMPS = tuple((x, z, 8) for x in AISLE_X for z in PIER_Z[:-1])    # (x, the beam's row, level): one under
-#                                     every beam, so that no stretch of an aisle or of the cross aisle is unlit
+# A source in the row of a walker's head lights the floor around it three cells far at 8 and one cell
+# far at 6 (5 is the line); a source at the lamp itself, three rows higher, would have to be an 11.
+LAMPS = "b"                         # the versions of props/lamps with a shade or a guard
+LAMP_X = (float(X0 + 2), AXIS_X, X1 - 1.5)      # 4.0, 7.5, 11.5: the pendants of the west aisle, the nave, the east aisle
+LAMP_Z = PIER_Z[:-1]                # 10, 14, 18: one under every beam
+HEAD = FEET + 1                     # the row of a walker's head: where the sources stand
+DOOR_LAMP_Y = 3.0                   # the caged lamp over the door: flat on the wall, and above what one sees coming in
+CAGE_Y = 2.5                        # the other caged lamps
+ASK_WAY = 8                         # under a pendant, inside the door, before the south end of an island
+ASK_LIFT = 7                        # by the lift
 ASK_CHECK = 7                       # the checking table's glass
-ASK_DARK = 5                        # the safelight: the lowest step of the third rank (the card)
+ASK_DARK = 6                        # the darkroom: as low as a source can be that leaves 5 in the cell beside it
 PANEL_T = 3 * PX                    # a panel of the wainscot, off its wall
 
 DRIP = 50                           # ticks between two drops of the sink's tap
@@ -178,8 +190,8 @@ FACE = 16.0 * FACE_CELLS
 ROW = 8.0
 DEPTH = 3.0
 HOLES = ((-FACE / 2 + 1, -9.0), (-7.0, 7.0), (9.0, FACE / 2 - 1))
-LOW, HIGH = 40.0, -40.0     # where a face's anchor is, from its foot: the lower tier's at eye height, the upper
-#                             tier's as far below its foot, in the row of cells over the floor
+LOW, HIGH = 40.0, 24.0      # where a face's anchor is, from its foot: the lower tier's in the row over a walker's
+#                             head, the upper tier's in the middle of its height, two rows higher
 
 
 def _face(name, seed, anchor_y):
@@ -355,16 +367,31 @@ def build_platevault(canvas, origin=(0, 0, 0)):
     n += K.put(canvas, own[PREFIX + "curtain"], (AXIS_X, float(FEET), float(WALL_Z)), mount="wall", facing="north",
                origin=origin)
 
-    # ---- the lamps -----------------------------------------------------------------------------------
-    for z, level in NAVE_LAMPS:
-        n += lamps.place(canvas, "pendant", (AXIS_X, float(TOP), S.mid(z)), origin=origin, version=LAMPS, level=level)
-    for x, z, level in AISLE_LAMPS:
-        n += lamps.place(canvas, "pendant", (x, float(TOP), S.mid(z)), origin=origin, version=LAMPS, level=level)
+    # ---- the lamps: a model each, and its source under it in the row of a walker's head ---------------
+    ways = []
+    for x in LAMP_X:
+        for z in LAMP_Z:
+            n += lamps.place(canvas, "pendant", (x, float(TOP), S.mid(z)), origin=origin, version=LAMPS, light=False)
+            ways.append((int(x), z))
+    n += lamps.place(canvas, "cage", (AXIS_X, FEET + DOOR_LAMP_Y, float(Z0)), facing="south", origin=origin,
+                     version=LAMPS, light=False)                 # over the door: the threshold
+    ways.append((HALL_DOOR[0], Z0))
+    for x in ISLAND_X:                                          # the cross aisle and the arch
+        n += lamps.place(canvas, "cage", (S.mid(x), FEET + CAGE_Y, float(ISLAND_Z[1] + 1)), facing="south", origin=origin,
+                         version=LAMPS, light=False)
+        ways.append((x, ISLAND_Z[1] + 1))
+    K.offer_lights(canvas, [((ox + x, oy + HEAD, oz + z), ASK_WAY) for x, z in ways], f"{NAME}:way")
+    n += lamps.place(canvas, "cage", (float(X0), FEET + CAGE_Y, S.mid(LIFT[1] + 1)), facing="east", origin=origin,
+                     version=LAMPS, light=False)                 # on the west wall, over the lift's crank
+    K.offer_lights(canvas, [((ox + LIFT[0], oy + HEAD, oz + LIFT[1] + 1), ASK_LIFT)], f"{NAME}:lift")
 
     # ---- the darkroom's pieces and the lift: power's kit ---------------------------------------------
     south = Z1 + 1 - PANEL_T                            # the face of the south wall's panelling
     n += D.dress(canvas, origin, wall_z=south, feet=FEET)
-    K.offer_lights(canvas, [((ox + HALL_DOOR[0], oy + FEET + 2, oz + BENCH_Z - 1), ASK_DARK)], f"{NAME}:safelight")
+    # the safelight's glow: the row before the benches, a source in every cell, which leaves 5 behind it
+    # and 5 on the benches' tops (a person gets up there with a hop)
+    K.offer_lights(canvas, [((ox + x, oy + HEAD, oz + BENCH_Z - 1), ASK_DARK) for x in range(DARK_X[0], DARK_X[1] + 1)],
+                   f"{NAME}:safelight")
     tap = K.turn(K.FACING["north"], D.TAP)              # the mouth of the tap that drips, from the sink's anchor
     MK.puff(canvas, (AXIS_X + tap[0], FEET + tap[1], south + tap[2]), "dripping_water", DRIP, origin=origin)
     n += D.lift(canvas, (LIFT[0], FEET, LIFT[1]), "east", origin, top=CEIL_Y - FEET)
@@ -379,7 +406,7 @@ def build_platevault(canvas, origin=(0, 0, 0)):
     check = (X1 - 2.5, float(FEET), Z0 + 0.6)           # the checking table, east of the door
     glass = FEET + CHECK_TOP
     n += K.put(canvas, own[PREFIX + "checker"], check, origin=origin)
-    K.offer_lights(canvas, [((ox + int(check[0]), oy + FEET + 1, oz + Z0), ASK_CHECK)], f"{NAME}:checker")
+    K.offer_lights(canvas, [((ox + int(check[0]), oy + HEAD, oz + Z0), ASK_CHECK)], f"{NAME}:checker")
     n += paper.place(canvas, "photo_plate", (check[0] - 0.3, glass, check[2]), yaw=8.0, origin=origin)
     n += paper.place(canvas, "photo_plate_b", (check[0] + 0.3, glass, check[2] - 0.05), yaw=-12.0, origin=origin)
     n += furniture.place(canvas, "crate", (X1 - 0.75, float(FEET), Z0 + 0.6), yaw=4.0, origin=origin)

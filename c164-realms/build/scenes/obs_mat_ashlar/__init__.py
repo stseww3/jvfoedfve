@@ -222,8 +222,9 @@ def build():
 
 
 def build_models():
-    """The one model the board shows: the bracket lamp of props/lamps on the lit bays."""
-    return {LAMP_MODEL: lamps.models()[LAMP_MODEL]}
+    """What the board shows of props/lamps: the bracket lamp on the lit bays, and the models its
+    globe is drawn in."""
+    return lamps.models_of(LAMP_MODEL)
 
 
 def write_pack(pack_dir):
