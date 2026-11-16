@@ -1,0 +1,22 @@
+a0job 1116-031738-chart-windows-f3-3477-21420: cursor/c164-chart-windows-f3-3477 @ 008cf60b on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.06 0.05 0.01, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- for s in obs_mat_windows obs_mat_windows_b obs_mat_windows_in obs_mat_windows_in_off obs_mat_windows_in_b; do python tools/selfshots.py $s | tail -n 2 || exit 1; done ---- exit 0, 86 s, last 12 lines of 120:
+  obs_mat_windows_in_b: in_wall (tick 14000, 1 s)
+  obs_mat_windows_in_b: in_wall_b (tick 18000, 1 s)
+  obs_mat_windows_in_b: in_wall_c (tick 12900, 1 s)
+  obs_mat_windows_in_b: in_lit (tick 14000, 1 s)
+  obs_mat_windows_in_b: in_frosted (tick 14000, 1 s)
+  obs_mat_windows_in_b: in_curtain (tick 14000, 1 s)
+  obs_mat_windows_in_b: in_near (tick 14000, 1 s)
+  obs_mat_windows_in_b: in_slant (tick 14000, 1 s)
+  obs_mat_windows_in_b: out_front (tick 14000, 0 s)
+  obs_mat_windows_in_b: out_slant (tick 14000, 0 s)
+  obs_mat_windows_in_b: out_near (tick 14000, 0 s)
+renders/obs_mat_windows_in_b/: 11 pictures of 008cf60b drawn, 1.9 MB
+==== NODEJOB RESULT ====
+exit=0 secs=89 host=cursor cores=4 head=008cf60b commit=0a8fd47f pushed=yes branch=cursor/c164-chart-windows-f3-3477 files=13
+a0job: exit=0 secs=89
