@@ -22,7 +22,7 @@ package makes what stands in front of it and is a machine: it is seen to record 
               entities: the terminal (a board on the wall, the brass tube down it, its bell mouth
               at the height of the hand, under the mouth a tray with a carrier in it) and the run
               above it, which ends in a copper elbow into the wall, just under whatever stands
-              at the head of the pier (HEAD above the foot).
+              at the head of the pier (TUBE_HEAD above the foot).
 
 The world clocks of the card (mach_rec_clockwall) are not made here: the room has its own row of
 five stopped slave dials (interiors/timeroom, STATUS "recorders"), and a second set would be the
@@ -108,7 +108,7 @@ BOARD = (5.0, 3.0, 27.0)                # the board on the wall: half its width,
 MOUTH = 11.0                            # the lip of the bell mouth above pos: at the height of the hand
 TRAY = 4.0                              # the floor of the tray under it
 TERMINAL = 36.0                         # where the terminal's model ends and the run's begins
-HEAD = 79.5                             # the top of the run, the flange of its elbow on the wall: just under 5 blocks above pos
+TUBE_HEAD = 79.5                        # the top of the run, the flange of its elbow on the wall: just under 5 blocks above pos
 
 
 def _marks(n, start=0):
@@ -280,7 +280,7 @@ def _run():
     foot (TERMINAL above the terminal's)."""
     m = M.Model(PREFIX + "tube_run")
     z = TUBE_OFF
-    top = HEAD - TERMINAL                               # the top of the flange
+    top = TUBE_HEAD - TERMINAL                          # the top of the flange
     turn = top - 2.25                                   # the height of the elbow's leg into the wall
     m.tube("y", (0.0, z), 0.0, turn - 2.5, TUBE_R, BRASS)
     m.tube("y", (0.0, z), 0.0, 2.0, TUBE_R + 0.5, BRASS_D)
