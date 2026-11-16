@@ -10,8 +10,8 @@ Five tiers, each stepped back and up so that one picture holds them all; from th
               The one tier whose floor is part of the show, so it is the lowest: the camera looks
               down on it. It has floor only where something lies on it: a shelf as deep as the
               mountain and the bank, and under the emblem a tongue as long as the meridian runs
-    pieces    doors, hatches, bars, pipes, lamps, the brass pieces, signs: against fine stone, as
-              they stand on the building
+    pieces    doors, hatches, bars, pipes, lamps, the ladder, the brass pieces, signs: against fine
+              stone, as they stand on the building
     stone     the four grey-white stones, the stones used as the game draws them, and one wall that
               puts them together as a facade does (plinth, rough base, string course, fine wall
               with sunk panels and emblems)
@@ -195,11 +195,13 @@ def pieces(c, x, y, z):
     two groups, then the brass family and the signs. A vanilla iron piece stands a cell from the
     repainted one it is compared with. Each as the building uses it: the iron door one leaf (two
     side by side are a pair of lit eyes), the plate of brass in the floor as a door's threshold (a
-    run of it is a carpet)."""
-    c.box(x, y, z - 1, x + width(), y + 3, z - 1, B.ASHLAR_FINE.block)
+    run of it is a carpet), the ladder up the wall from the floor to the wall's top (the game's own,
+    of wood: the way up a shaft too narrow for a stair, indoors only)."""
+    c.box(x, y, z - 1, x + width(), y + WALL_H - 1, z - 1, B.ASHLAR_FINE.block)
     lifted = _Lifted(c, y)
     for dx, put, block in IRON:
         put(lifted, block, x + dx, z)
+    _board.ladder(lifted, B.LADDER, x + LADDER_AT, z, WALL_H)
     _board.brass(lifted, x + BRASS_AT, z, staged=False, plate="threshold")
     _board.hung(c, x + HUNG_AT, y, z)
     for lx in range(x + 1, x + width(), 4):
@@ -264,11 +266,14 @@ PLACES = {"glass": (0,) + tuple(PITCH + N * i for i in range(5)) + (5 * PITCH, 6
 # the grey-white stone: dark squares set in it are what the dark windows of the tier above are.
 GROUNDS = {name: B.TUFF_BRICK.block for name in ("slate_tile", "iron_plate", "iron_riveted", "iron_cast", "iron_grate")}
 # The row of small things: x of each. The groups stand apart by what a close shot needs to hold one
-# whole and nothing of the next: the lines and the openings, the bars and the lamps, the brass.
+# whole and nothing of the next: the lines and the openings, the bars and the lamps (and after the
+# lamps the ladder), the brass.
 IRON = ((2, _board.leaf, B.IRON_DOOR), (6, _board.hatch, B.IRON_HATCH), (10, _board.rod, B.IRON_ROD),
         (14, _board.pipe, B.IRON_PIPE), (17, _board.pipe, B.VANILLA_CHAIN),
         (23, _board.run, B.IRON_BARS), (26, _board.run, B.VANILLA_BARS), (30, _board.bulb, B.IRON_BULB),
         (34, _board.lantern, B.IRON_LANTERN))
+LADDER_AT = 37                  # the ladder: a cell clear of the lantern, and out of the brass pieces' close shot
+WALL_H = 4                      # the fine stone wall behind the row is this high
 BRASS_AT = 42                   # where the brass pieces start
 HUNG_AT = BRASS_AT + 31         # ... and the two signs on a bracket, after them
 
