@@ -175,9 +175,14 @@ def bridge():
     m.box((DRUM_X[0] + 1.25, y + DRUM_R + 0.1, z - 0.5), (-STANDARD[1], y + DRUM_R + 0.6, z + 0.5), IRON_D, grain="x")
     m.tube("x", SCREW, DRUM_X[0] - 0.5, DRUM_X[0], 2.5, IRON, sides=12)
     m.tube("x", (y + 1.5, z), DRUM_X[0] - 2.25, DRUM_X[0] - 0.5, 0.7, WOOD_L)
-    # the carriage: a saddle on the bed, and an apron down its front with the nut the screw runs in
-    m.box((-12.75, BED_Y[1], -2.25), (-7.0, LOW_TOP, 3.75), IRON, grain="x")
+    # the carriage: a saddle on the bed with the vernier that reads against the scale on the bed's
+    # top, and an apron down its front with the nut the screw runs in, a brass bush at either end
+    m.box((-12.75, BED_Y[1], -2.25), (-7.0, LOW_TOP - 0.1, 3.75), IRON, grain="x")
+    m.box((-11.5, LOW_TOP - 0.1, 1.25), (-8.25, LOW_TOP, 2.75), BRASS, grain="x", skip="d", faces={"u": RULE})
+    m.tube("y", (-11.75, 3.0), LOW_TOP - 0.1, LOW_TOP + 1.0, 0.6, BRASS_D)       # the screw that clamps the saddle
     m.box((-12.25, 0.6, -2.25), (-7.5, BED_Y[1], BED_Z[0]), IRON, grain="x", skip="u")
+    for x in (-12.75, -7.5):
+        m.tube("x", SCREW, x, x + 0.5, SCREW_R + 0.45, BRASS_D)
     # the microscope: the nose over the plate, the prism house on the apron, the focusing head on the
     # side the door sees, and the tube leaning out to the observer: brass, a clamp ring, the draw
     # tube and the eyepiece
