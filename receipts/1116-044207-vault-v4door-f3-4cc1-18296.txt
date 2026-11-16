@@ -1,0 +1,41 @@
+a0job 1116-044207-vault-v4door-f3-4cc1-18296: cursor/c164-vault-v4door-f3-4cc1 @ 826a3f3f on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.39 0.52 0.69, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- env PYTHONPATH=build python -m scenes.obs_int_starhall.doorway upper=11 foot=11,under=5,east=0,west=0,pier=0 upper=11,under=1 upper=11,under=1,east=10,west=11 upper=11,pool=10 ---- exit 1, 76 s, last 60 lines of 31:
+== foot 12 corner 10 east 9 west 10 pier 11 upper 11 pool 8  (34 s)
+V4 half 0.208 (+0.071)  over 0.200 (+0.076)  flight 0.224 (+0.090)  floor 0.175 (+0.063)  paving 0.129 (-0.082)
+V7 pier N 0.254  pier S 0.251  over clock 0.245  dial 0.455  arch N 0.229  arch S 0.225  lining L 0.083  lining R 0.082  foot 0.075  globe 0.043  board 0.083
+V4 rows 394-406 0.069  406-416 0.187  416-425 0.227  425-447 0.231  447-478 0.227  478-496 0.221  496-510 0.208  510-524 0.144  524-540 0.212  540-545 0.212
+light pier N y2..5 9 10 9 10 | pier S 9 10 9 10 | lining 5 4 5 4 | risers N 0..4 9 9 9 9 9 | risers S 9 9 9 9 9 | floor x14..7 0 7 8 7 8 7 7 | middle 8 7
+lines: the half of the doorway 0.208 (+0.071); the line is 0.22 and +0.03; pier N 0.254, not 0.255 to 0.26; pier S 0.251, not 0.255 to 0.26
+== foot 11 corner 6 east 0 west 0 pier 0 upper 0 pool 8  (10 s)
+V4 half 0.183 (+0.039)  over 0.186 (+0.063)  flight 0.206 (+0.067)  floor 0.142 (+0.014)  paving 0.123 (-0.086)
+V7 pier N 0.233  pier S 0.229  over clock 0.214  dial 0.455  arch N 0.211  arch S 0.207  lining L 0.071  lining R 0.071  foot 0.070  globe 0.041  board 0.079
+V4 rows 394-406 0.064  406-416 0.175  416-425 0.211  425-447 0.214  447-478 0.211  478-496 0.207  496-510 0.174  510-524 0.127  524-540 0.173  540-545 0.175
+light pier N y2..5 8 9 8 7 | pier S 8 9 8 7 | lining 2 1 2 1 | risers N 0..4 6 8 8 8 8 | risers S 6 8 8 8 8 | floor x14..7 0 4 5 5 5 4 6 | middle 8 6
+lines: the half of the doorway 0.183 (+0.039); the line is 0.22 and +0.03; pier N 0.233, not 0.255 to 0.26; pier S 0.229, not 0.255 to 0.26
+== foot 12 corner 11 east 9 west 10 pier 11 upper 11 pool 8  (10 s)
+V4 half 0.212 (+0.078)  over 0.200 (+0.076)  flight 0.231 (+0.094)  floor 0.190 (+0.067)  paving 0.129 (-0.082)
+V7 pier N 0.254  pier S 0.251  over clock 0.245  dial 0.455  arch N 0.232  arch S 0.228  lining L 0.083  lining R 0.082  foot 0.075  globe 0.046  board 0.083
+V4 rows 394-406 0.069  406-416 0.187  416-425 0.227  425-447 0.231  447-478 0.228  478-496 0.237  496-510 0.224  510-524 0.151  524-540 0.212  540-545 0.212
+light pier N y2..5 9 10 9 10 | pier S 9 10 9 10 | lining 5 4 5 4 | risers N 0..4 10 10 9 9 9 | risers S 10 10 9 9 9 | floor x14..7 0 7 8 7 8 7 7 | middle 8 7
+lines: the half of the doorway 0.212 (+0.078); the line is 0.22 and +0.03; pier N 0.254, not 0.255 to 0.26; pier S 0.251, not 0.255 to 0.26
+== foot 12 corner 11 east 10 west 11 pier 11 upper 11 pool 8  (10 s)
+V4 half 0.216 (+0.082)  over 0.200 (+0.076)  flight 0.231 (+0.094)  floor 0.191 (+0.078)  paving 0.136 (-0.078)
+V7 pier N 0.254  pier S 0.251  over clock 0.245  dial 0.455  arch N 0.232  arch S 0.228  lining L 0.091  lining R 0.087  foot 0.075  globe 0.046  board 0.083
+V4 rows 394-406 0.069  406-416 0.187  416-425 0.227  425-447 0.231  447-478 0.228  478-496 0.237  496-510 0.224  510-524 0.152  524-540 0.227  540-545 0.225
+light pier N y2..5 9 10 9 10 | pier S 9 10 9 10 | lining 6 5 6 5 | risers N 0..4 10 10 9 9 9 | risers S 10 10 9 9 9 | floor x14..7 0 8 9 8 9 8 8 | middle 8 8
+lines: the half of the doorway 0.216 (+0.082); the line is 0.22 and +0.03; pier N 0.254, not 0.255 to 0.26; pier S 0.251, not 0.255 to 0.26
+== foot 12 corner 10 east 9 west 10 pier 11 upper 11 pool 10  (10 s)
+V4 half 0.209 (+0.071)  over 0.200 (+0.076)  flight 0.224 (+0.090)  floor 0.175 (+0.067)  paving 0.132 (-0.078)
+V7 pier N 0.254  pier S 0.251  over clock 0.245  dial 0.455  arch N 0.229  arch S 0.225  lining L 0.085  lining R 0.083  foot 0.075  globe 0.043  board 0.083
+V4 rows 394-406 0.069  406-416 0.187  416-425 0.227  425-447 0.231  447-478 0.227  478-496 0.221  496-510 0.208  510-524 0.144  524-540 0.217  540-545 0.217
+light pier N y2..5 9 10 9 10 | pier S 9 10 9 10 | lining 5 4 5 4 | risers N 0..4 9 9 9 9 9 | risers S 9 9 9 9 9 | floor x14..7 0 7 8 7 8 7 7 | middle 10 8
+lines: the half of the doorway 0.209 (+0.071); the line is 0.22 and +0.03; pier N 0.254, not 0.255 to 0.26; pier S 0.251, not 0.255 to 0.26
+doorway: FAIL (the first variant)
+==== NODEJOB RESULT ====
+exit=1 secs=77 host=cursor cores=4 head=826a3f3f commit=none pushed=no branch=cursor/c164-vault-v4door-f3-4cc1 files=0
+a0job: exit=1 secs=78
