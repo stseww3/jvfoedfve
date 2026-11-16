@@ -1,0 +1,29 @@
+a0job 1116-004026-chart-chartroom-f3-3477-9574: cursor/c164-chart-chartroom-f3-3477 @ 993a2c53 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.15 0.87 1.56, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup   10s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/selfshots.py obs_int_chartroom ---- exit 0, 87 s, last 30 lines of 19:
+  obs_int_chartroom: 1985 blocks, 76 entities (0 s)
+  obs_int_chartroom: resource pack written to /tmp/c164pack-b03xfp9r (1 s)
+  obs_int_chartroom: water: 0 sources, 0 cells of running water (1 s)
+  obs_int_chartroom: grid 22 x 12 x 27, 1985 blocks, 2106 entity boxes (2 s)
+  obs_int_chartroom: 18 states -> 48 looks, 68 boxes, 63 pictures (2 s)
+  obs_int_chartroom: light done (2 s)
+  obs_int_chartroom: v9 (tick 14000, 8 s)
+  obs_int_chartroom: v9_deep (tick 18000, 8 s)
+  obs_int_chartroom: v9_glow (tick 12900, 8 s)
+  obs_int_chartroom: v9_board (tick 14000, 11 s)
+  obs_int_chartroom: int_table (tick 14000, 8 s)
+  obs_int_chartroom: int_viewer (tick 14000, 7 s)
+  obs_int_chartroom: int_desk (tick 14000, 6 s)
+  obs_int_chartroom: int_shelf (tick 14000, 4 s)
+  obs_int_chartroom: int_cabinets (tick 14000, 6 s)
+  obs_int_chartroom: int_west (tick 14000, 5 s)
+  obs_int_chartroom: int_back (tick 14000, 7 s)
+  obs_int_chartroom: int_door (tick 14000, 2 s)
+renders/obs_int_chartroom/: 12 pictures of 993a2c53 drawn, 2.6 MB
+==== NODEJOB RESULT ====
+exit=0 secs=100 host=cursor cores=4 head=993a2c53 commit=66d2705b pushed=yes branch=cursor/c164-chart-chartroom-f3-3477 files=13
+a0job: exit=0 secs=101
