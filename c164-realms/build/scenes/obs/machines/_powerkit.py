@@ -32,6 +32,8 @@ TEXEL = 1.0 / 16.0
 LEAN = 46.0
 LEAN_WEST = (("z", LEAN),)      # for a piece that looks west
 LEAN_EAST = (("z", -LEAN),)     # for a piece that looks east
+# A piece that looks south or north is drawn looking east and placed with a yaw (place(), yaw=90
+# and -90): the entity's facing turns the lamps' sides with it, and the front keeps its full tone.
 
 
 class Draw:
@@ -122,11 +124,15 @@ class Draw:
         self.box(lo, hi, sprite, skip="".join(f for f in "nsewud" if f != face), **kw)
 
 
-def place(canvas, drawn, pos, origin, yaw=0.0, turns=(), brightness=None):
+def place(canvas, drawn, pos, origin, yaw=0.0, turns=(), brightness=None, stretch=None):
     """One drawn model with its point `at` on pos; returns 1, the entity it takes.
-    turns: (axis, degrees) about the scene's axes, for a piece that rests turned (a pointer)."""
+    yaw      turns the piece about the vertical like an entity's facing, after everything else
+             (90: what is drawn looking east looks south)
+    turns    (axis, degrees) about the model's axes, for a piece that rests turned (a pointer)
+    stretch  (x, y, z): the piece shown so many times longer along its own axes (a plain bar)"""
     x, y, z = (pos[i] + origin[i] for i in range(3))
-    canvas.add_entity(x, y, z, M.display(drawn.m, yaw=yaw, scale=drawn.scale, turns=tuple(drawn.frame) + tuple(turns),
+    scale = drawn.scale if stretch is None else tuple(drawn.scale * float(v) for v in stretch)
+    canvas.add_entity(x, y, z, M.display(drawn.m, yaw=yaw, scale=scale, turns=tuple(drawn.frame) + tuple(turns),
                                          brightness=brightness, view=VIEW))
     return 1
 

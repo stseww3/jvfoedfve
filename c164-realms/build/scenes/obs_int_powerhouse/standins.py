@@ -166,19 +166,25 @@ def _leadin(u):
 U = {"wheel": 16 / 3.0, "engine": 16 / 3.0, "dynamo": 8.0, "boiler": 8.0, "slab": 8.0, "leadin": 16.0}
 
 
+def missing():
+    return tuple(name for name in ALL if name not in room.standing())
+
+
 @functools.lru_cache(maxsize=None)
 def _models():
-    built = [_wheel(U["wheel"]), _engine(U["engine"]), _band(), _dynamo(U["dynamo"]), _boiler(U["boiler"]), _leadin(U["leadin"])]
-    built += [_slab(f"slab_{int(z1 - z0)}", z1 - z0, U["slab"]) for z0, z1 in SLABS[:2]]
+    """The stand-ins of the machines that are missing: none once all three are in the tree."""
+    out, built = missing(), []
+    if "engine" in out:
+        built += [_wheel(U["wheel"]), _engine(U["engine"]), _band(), _dynamo(U["dynamo"])]
+    if "boiler" in out:
+        built += [_boiler(U["boiler"])]
+    if "board" in out:
+        built += [_leadin(U["leadin"])] + [_slab(f"slab_{int(z1 - z0)}", z1 - z0, U["slab"]) for z0, z1 in SLABS[:2]]
     return {m.name: m for m in built}
 
 
 def models():
     return dict(_models())
-
-
-def missing():
-    return tuple(name for name in ALL if name not in room.standing())
 
 
 def build(c, origin=(0, 0, 0)):
