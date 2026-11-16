@@ -66,7 +66,8 @@ from ..materials import _kit as K
 
 # The director's switch for what is laid over the whole site (COMMON 0.5; since 11-16 08:24 the
 # author turns it on in the commit he delivers): off, build() places nothing and takes nothing up,
-# and site/terrain's stand-in ring stays; a test scene asks with dress=True whatever it says.
+# and site/terrain's stand-in ring stays. On, the sea is laid on every canvas that has something
+# standing in it (see build()); a test scene asks with dress=True whatever the switch says.
 DRESS = True
 
 # The blocks this package paints; nobody else may (the stand-in reads this and lets them go).
@@ -540,9 +541,12 @@ def _heaps(X, Z, seed):
 def _shade(h):
     """Light 0..1 per column from the smooth height of its top, lit from the west, low. Level cloud
     takes 0.75 (the second lightest tone) whatever its height. What faces west takes more and what
-    faces east less: the steep side of a head by its own slope, the swell by the lie of the whole
-    slope it is part of. What lies lower than the cloud round it -- the foot of a head, a crease
-    between two, the sea in the lee of a head -- is darker; what stands over the cloud round it has
+    faces east less: the steep side of a head by its own slope; the low heaps of the face, whose
+    slopes are slight, by the lie of the whole slope, so that a heap is light on its west third and
+    dark on its east; the top of a head is level cloud again, so that seen from the west, with the
+    light behind the eye, a head is a light side under a darker top and no pale plate. What lies
+    lower than the cloud round it is darker: the foot of a head and a crease between two by a
+    tone, the floor of a lane walled in by heads as well. What stands over the cloud round it has
     a breath more, and the crowns of the piles catch the light."""
     h = (h - MEAN).astype(np.float32)               # the blur reads zero outside the grid: level cloud
 
@@ -550,21 +554,31 @@ def _shade(h):
         p = np.pad(a, 1, mode="edge")
         return (p[2:, 1:-1] - p[:-2, 1:-1]) * 0.5
 
-    turn = np.clip(0.30 * np.tanh(1.3 * westward(h)) + 0.16 * np.tanh(LIE * westward(_blur(h, 2))), -0.34, 0.30)
+    low = np.clip(1.6 - h, 0.0, 1.0)                # 1 on the face and its heaps, 0 on a head
+    turn = np.clip(0.30 * np.tanh(1.3 * westward(h)) + 0.16 * low * np.tanh(LIE * westward(_blur(h, 2))), -0.34, 0.30)
     crease = np.clip((_blur(h, 1) - h - 0.35) / 0.75, 0.0, 1.0)
+    walled = np.clip((_blur(h, 4) - h - 0.4) / 1.4, 0.0, 1.0)
     crest = np.clip(h - _blur(h, 3) - 0.5, 0.0, 1.0)
     crown = np.clip((h - (LOW - MEAN)) / 4.0, 0.0, 1.0)
-    return 0.75 + turn - 0.22 * crease + 0.10 * crest + 0.12 * crown
+    return 0.75 + turn - 0.22 * crease - 0.18 * walled + 0.10 * crest + 0.12 * crown
 
 
 def build(canvas, origin=(0, 0, 0), *, seed=SEED, dress=None):
     """Lay the sea of clouds into the canvas. Places blocks only, so it returns 0 display entities."""
     if not (DRESS if dress is None else dress):
         return 0
+    names = list(B.CLOUD)                           # dark..light, as the tone index runs
+    mine = [k for k, state in canvas.b.items() if state.partition("[")[0].split(":")[-1] in names]
+    # The sea is laid where something stands in it. Every category's test scene calls the sky's
+    # build() for its light sources (INTERFACE 4); one that builds on the terraces alone, nothing
+    # of it reaching down to the sea's face, is no mountain and is left as it is. A scene that
+    # wants the sea all the same says dress=True.
+    cloud = set(mine)
+    if dress is None and not any(k[1] - origin[1] <= MEAN for k in canvas.b if k not in cloud):
+        return 0
     # The sea is laid once: a sheet of cloud tones put down earlier (site/terrain's stand-in for this
     # package) is taken up.
-    names = list(B.CLOUD)                           # dark..light, as the tone index runs
-    for key in [k for k, state in canvas.b.items() if state.partition("[")[0].split(":")[-1] in names]:
+    for key in mine:
         del canvas.b[key]
 
     x0, z0, nx, nz = _grid()
