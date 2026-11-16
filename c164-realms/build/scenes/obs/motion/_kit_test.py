@@ -334,6 +334,106 @@ def test_same_spot():
     assert MK.check(c)[0] == "PASS"
 
 
+def test_own():
+    """A package's own commands and functions (run, function): the places are written out for where
+    the scene stands, other braces stay, the budget counts a command's weight, and a function that
+    is no longer registered is gone from the pack the next time."""
+    def board():
+        c = _Canvas()
+        c.add_entity(0.5, 64.0, 0.5, _display("mot_wheel"))
+        MK.spin(c, "y", 48)
+        return c
+
+    c = board()
+    plain = MK._plan(c, "t", (10, 64, -3), "c164art")
+    near = "execute as @a[x={x},y={y},z={z},distance=..1.6,tag=!c164.c1,scores={c164f=1..}] at @s run function {ns}:guide/c1"
+    MK.run(c, (2.0, 1.0, 3.5), near, 8, origin=(1, 0, 0))
+    MK.run(c, None, "execute as @a at @s run function c164art:guide/all", 8, at=(4,), weight=3)
+    MK.function(c, "guide/c1", ["# the first chart", "tag @s add c164.c1",
+                                'title @s actionbar {text:"Star chart 1 of 6"}',
+                                "particle minecraft:end_rod {slit.x} {slit.y} {slit.z} 0.0 0.0 0.0 0.0 1",
+                                "schedule function {ns}:guide/all 10t replace"],
+                pos={"slit": (0.0, 30.0, 0.0)})
+    MK.function(c, "guide/all", ["tag @s add c164.seen", "tag @s remove c164.new"])
+    assert MK.registered(c) == (1, 2)
+    status, summary, details = MK.check(c)
+    assert status == "PASS" and "function files and 2 of the packages' own;" in summary, (status, summary, details)
+    plan = MK._plan(c, "t", (10, 64, -3), "c164art")
+    # a chain of 8 ticks with two functions: guard, schedule, the loop's sign of life (which the
+    # quickest chain gives, so the wheel's chain gives it no more) and the first command; schedule
+    # and the second command, which counts three
+    assert len(plan.files) == len(plain.files) + 2
+    assert abs(plan.mean - plain.mean - ((4 + 4) / 8.0 - 1 / 48.0)) < 1e-9, (plan.mean, plain.mean)
+    tmp = tempfile.mkdtemp(prefix="c164-motion-own-")
+    try:
+        assert MK.write(c, tmp, "t", at=(10, 64, -3)) == ["function c164art:t-motion/start"]
+        root = os.path.join(tmp, "data", "c164art", "function")
+
+        def lines(rel):
+            with open(os.path.join(root, *rel.split("/")) + ".mcfunction", encoding="utf-8") as fh:
+                return fh.read().splitlines()
+
+        chain = [ln for k in range(len(plan.chains[0].files)) for ln in lines(f"t-motion/c8/{k}")]
+        assert ("execute as @a[x=13.0,y=65.0,z=0.5,distance=..1.6,tag=!c164.c1,scores={c164f=1..}] at @s "
+                "run function c164art:guide/c1") in chain, chain
+        assert "execute as @a at @s run function c164art:guide/all" in chain
+        assert lines("guide/c1") == ["# the first chart", "tag @s add c164.c1",
+                                     'title @s actionbar {text:"Star chart 1 of 6"}',
+                                     "particle minecraft:end_rod 10.0 94.0 -3.0 0.0 0.0 0.0 0.0 1",
+                                     "schedule function c164art:guide/all 10t replace"]
+        assert lines("guide/all") == ["tag @s add c164.seen", "tag @s remove c164.new"]
+        with open(os.path.join(tmp, "t.motion.json"), encoding="utf-8") as fh:
+            assert json.load(fh) == {"own": ["guide/all", "guide/c1"]}
+        # the scene written again with one of the two, and then with neither
+        c = board()
+        MK.function(c, "guide/all", ["tag @s add c164.seen"])
+        MK.write(c, tmp, "t", at=(10, 64, -3))
+        assert lines("guide/all") == ["tag @s add c164.seen"] and not os.path.exists(os.path.join(root, "guide", "c1.mcfunction"))
+        MK.write(board(), tmp, "t", at=(10, 64, -3))
+        assert not os.path.exists(os.path.join(root, "guide")) and not os.path.exists(os.path.join(tmp, "t.motion.json"))
+        assert os.path.isdir(os.path.join(root, "t-motion"))
+        # functions and nothing that loops: they are written, and there is no loop to start
+        c = _Canvas()
+        MK.function(c, "guide/first", ["title @s title {text:\"BLUE HOUR OBSERVATORY\"}"])
+        assert MK.check(c)[0] == "PASS"
+        assert MK.write(c, tmp, "t", at=(10, 64, -3)) == []
+        assert lines("guide/first") == ['title @s title {text:"BLUE HOUR OBSERVATORY"}']
+        assert not os.path.exists(os.path.join(root, "t-motion"))
+        assert not os.path.exists(os.path.join(tmp, "data", "minecraft", "tags", "function", "load.json"))
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    # what is refused, and what check() finds
+    c = board()
+    for bad in (lambda: MK.run(c, None, "/say hello", 8),
+                lambda: MK.run(c, None, "say {x}", 8),
+                lambda: MK.run(c, (0, 0, 0), "say {door.x}", 8),
+                lambda: MK.run(c, None, "say one\nsay two", 8),
+                lambda: MK.run(c, None, "say hello", 8, weight=0),
+                lambda: MK.function(c, "first", ["say hello"]),
+                lambda: MK.function(c, "obs/first", ["say hello"]),
+                lambda: MK.function(c, "t-motion/first", ["say hello"]),
+                lambda: MK.function(c, "guide/../first", ["say hello"]),
+                lambda: MK.function(c, "Guide/first", ["say hello"]),
+                lambda: MK.function(c, "guide/first", "say hello"),
+                lambda: MK.function(c, "guide/first", ["# nothing"])):
+        try:
+            bad()
+        except ValueError:
+            continue
+        raise AssertionError("a registration that should be refused was taken")
+    assert MK.registered(c) == (1, 0) and not c.motion.own
+    MK.function(c, "guide/first", ["function c164art:guide/secnod", "function c164art:t-motion/stop",
+                                   "function #c164map:first"])
+    try:
+        MK.function(c, "guide/first", ["say hello"])
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("the same function was registered twice")
+    status, _summary, details = MK.check(c)
+    assert status == "FAIL" and sum("nobody has registered" in d for d in details) == 1 and "guide/secnod" in details[0], details
+
+
 # ---- the written functions, played back ---------------------------------------------------------
 # As much of the game as the loop leans on, the way this file understands it:
 #   - a scheduled function is kept under its name, a later call replaces the earlier, and it runs
