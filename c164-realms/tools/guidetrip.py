@@ -15,6 +15,12 @@ its functions show, and the places its functions watch (a tag given to who comes
            is asked for its own picture again and again (--frames of them, --gap seconds apart):
            the title is in these or it was not shown. joined_NN.jpg, with how much of the middle of
            each differs from the last one
+  title    the mark of who has been greeted (the tag whose lack alone has the save run a function
+           for a player) is taken off the player by hand and pictures in a row are taken again:
+           the save greets it once more, this time in full view. On a node the game still shows
+           its "Loading terrain" picture for some seconds after it joined, and a title sent in
+           those seconds is used up unseen: the joining shows when the title comes, this shows
+           the title itself. title_NN.jpg
   walk     the visitor is put on its feet, in the game mode the save gave it, inside the reach of
            each watched place in turn -- the step before any chart, three charts, the step, the
            other charts, the first chart again, the step with all of them, the step once more --
@@ -58,7 +64,7 @@ import savetrip  # noqa: E402
 from nodetrip import ROOT, WORK, CLOSING, Trip, end  # noqa: E402
 from savetrip import SERVER, LEVEL, KEPT, HOUR, ask, number  # noqa: E402
 
-PARTS = ("joined", "walk", "rejoin", "second", "plaques")
+PARTS = ("joined", "title", "walk", "rejoin", "second", "plaques")
 SEAT, SECOND = "b", "C164Two"           # the second client's seat and its player
 EYE = saveguide.EYE
 FRAME = (960, 540)                      # the pictures taken in a row are kept this size
@@ -81,10 +87,10 @@ class Row(threading.Thread):
     """Pictures in a row from the moment a player joins: the game is asked for its own screenshot
     again and again from the server's line `<player> joined the game` on."""
 
-    def __init__(self, trip, player, seat, out, prefix, frames, gap, patience=420.0):
+    def __init__(self, trip, player, seat, out, prefix, frames, gap, patience=420.0, at_once=False):
         super().__init__(daemon=True)
         self.trip, self.player, self.out, self.prefix = trip, player, out, prefix
-        self.frames, self.gap, self.patience = frames, gap, patience
+        self.frames, self.gap, self.patience, self.at_once = frames, gap, patience, at_once
         self.game = os.path.join(ROOT, "client26", "game" + ("-" + seat if seat else ""))
         self.console = os.path.join(SERVER, "console.log")
         self.offset = savetrip.console_size()
@@ -102,7 +108,7 @@ class Row(threading.Thread):
     def run(self):
         import shoot
         end_at = time.monotonic() + self.patience
-        while not self.joined():
+        while not self.at_once and not self.joined():
             if time.monotonic() > end_at:
                 return
             time.sleep(0.1)
@@ -142,6 +148,20 @@ def middle_differs(folder, names):
         most = ImageChops.lighter(ImageChops.lighter(red, green), blue)
         out[name] = sum(most.histogram()[41:]) / float(most.size[0] * most.size[1])
     return out
+
+
+def middle_light(path):
+    """How light the middle of a picture is, where a plaque shot straight on has its plate: the
+    mean and the lightest tenth of the luminance (0..1) of the box a fifth of the picture wide and
+    a tenth high."""
+    from PIL import Image
+    with Image.open(path) as picture:
+        grey = picture.convert("L")
+        w, h = grey.size
+        box = sorted(grey.crop((int(w * 0.4), int(h * 0.45), int(w * 0.6), int(h * 0.55))).getdata())
+    top = box[-max(1, len(box) // 10):]
+    return (f"the middle of the near picture (a fifth wide, a tenth high) is {sum(box) / len(box) / 255:.2f} light "
+            f"on average, its lightest tenth {sum(top) / len(top) / 255:.2f}")
 
 
 def glyphs(text):
@@ -296,7 +316,10 @@ def main():
     ap = argparse.ArgumentParser(description="one trip into a save on a worker node that walks its guide")
     ap.add_argument("--branch", required=True)
     ap.add_argument("--at", metavar="COMMIT")
-    ap.add_argument("--zip", required=True, metavar="PATH")
+    ap.add_argument("--zip", metavar="PATH", help="the save's path in the commit, under c164-realms/")
+    ap.add_argument("--file", metavar="PATH",
+                    help="instead of --zip: a save on this node's own disk, made here of the commit --at "
+                         "(tools/guidetry.sh); it is walked and thrown away")
     ap.add_argument("--sha256")
     ap.add_argument("--name")
     ap.add_argument("--parts", default=",".join(PARTS))
@@ -316,6 +339,9 @@ def main():
     parts = [p for p in args.parts.split(",") if p]
     if any(p not in PARTS for p in parts):
         sys.exit(f"--parts: of {', '.join(PARTS)}")
+    if bool(args.zip) == bool(args.file):
+        sys.exit("one of --zip (a save in a commit) and --file (a save made on this node)")
+    args.zip = args.zip or args.file
     name = (args.name or os.path.splitext(os.path.basename(args.zip))[0]) + "-guide"
     if not realshots.NAME_OK.match(name):
         sys.exit(f"--name {name}: a name of letters, digits, - and _")
@@ -325,12 +351,15 @@ def main():
     shutil.rmtree(work, ignore_errors=True)
     os.makedirs(work)
     zip_path = os.path.join(work, os.path.basename(args.zip))
-    with open(zip_path, "wb") as fh:
-        got = subprocess.run(["git", "-C", PROJECT, "show", f"{commit}:c164-realms/{args.zip}"], stdout=fh,
-                             stderr=subprocess.PIPE)
-    if got.returncode != 0:
-        sys.exit(f"{commit[:8]} of {args.branch} has no c164-realms/{args.zip}: "
-                 + got.stderr.decode("utf-8", "replace").strip()[-200:])
+    if args.file:
+        shutil.copyfile(args.file, zip_path)
+    else:
+        with open(zip_path, "wb") as fh:
+            got = subprocess.run(["git", "-C", PROJECT, "show", f"{commit}:c164-realms/{args.zip}"], stdout=fh,
+                                 stderr=subprocess.PIPE)
+        if got.returncode != 0:
+            sys.exit(f"{commit[:8]} of {args.branch} has no c164-realms/{args.zip}: "
+                     + got.stderr.decode("utf-8", "replace").strip()[-200:])
     sha = savetrip.digest(zip_path, whole=True)
     if args.sha256 and sha != args.sha256.lower():
         sys.exit(f"{args.zip} of {commit[:8]} is not the file asked for: its sha256 is {sha}, not {args.sha256}")
@@ -353,7 +382,8 @@ def main():
              + (", as asked" if args.sha256 else "") + f"; parts {', '.join(parts)}; {os.cpu_count()} cores, "
              f"{args.budget:.0f} s at most")
     failed, report, console = [], [], savetrip.console_size()
-    facts = [f"# the save: {args.zip} of {commit[:8]} ({args.branch}), {os.path.getsize(zip_path)} bytes, sha256 {sha}"]
+    facts = [f"# the save: {args.zip} of {commit[:8]} ({args.branch}), {os.path.getsize(zip_path)} bytes, sha256 {sha}"
+             + (" -- A TRIAL made on the node of that commit, not a delivered save" if args.file else "")]
     out = os.path.join(work, "shots")
     os.makedirs(out)
     groups = {}                         # part -> the names of its pictures, in order
@@ -451,6 +481,24 @@ def main():
         if "joined" not in parts:
             groups.pop("joined", None)
 
+        if "title" in parts:
+            marks = [tag for tag in found.get("greeted", []) if tag in had]
+            if not marks:
+                tell("the greeting once more: no tag of the player is one whose lack has the save greet it (left out)")
+            else:
+                row = Row(trip, cam, "", out, "title", 14, 0.7, at_once=True)
+                ask(trip, *[f"tag {cam} remove {tag}" for tag in marks])
+                row.start()
+                row.join(timeout=14 * 3.7 + 20)
+                names = [n for n, _ in row.taken]
+                groups["title"] = names
+                differs = middle_differs(out, names)
+                tell(f"the greeting once more, in full view (the tag {', '.join(marks)} taken off the player by hand; "
+                     f"{len(names)} pictures in a row, title_NN): seconds after that and the share of the middle that "
+                     f"differs from the last one: " + ", ".join(f"{n[-2:]} {s:.1f}s {differs[n]:.0%}" for n, s in row.taken))
+                again = tags_of(ask(trip, f"tag {cam} list")[0])
+                tell(f"after it the player has the tags {', '.join(again) or 'none'}")
+
         if "walk" in parts and walk:
             taken, answers = shoot("walk", walk, "--walk-as", mode)
             groups["walk"] = taken
@@ -519,7 +567,8 @@ def main():
                 tell(f"{shot}: {' / '.join(plaque['words'])}; {plaque['wide']} blocks wide, {plaque['displays']} displays, "
                      f"shown at brightness {', '.join(plaque['brightness'])}"
                      + (", SEEN THROUGH WALLS" if plaque["see_through"] else "")
-                     + ("" if shot + "_near" in taken else " -- NO PICTURE"))
+                     + (f"; {middle_light(os.path.join(out, shot + '_near.png'))}" if shot + "_near" in taken
+                        else " -- NO PICTURE"))
     except SystemExit as stop:
         if stop.code not in (0, None):
             trip.say(f"stopped: {stop}")
@@ -573,7 +622,7 @@ def keep(trip, kept_in, out, groups, facts, report, commit, tick, view, name, sh
             path = os.path.join(folder, shot + ".jpg")
             with Image.open(os.path.join(out, shot + ".png")) as picture:
                 picture = picture.convert("RGB")
-                if part in ("joined", "rejoin"):
+                if part in ("joined", "rejoin", "title"):
                     picture = picture.resize(FRAME, Image.LANCZOS)
                 picture.save(path, "JPEG", quality=88)
             rows.append(f"{shot} {'?' if tick is None else tick} {commit[:8]} {savetrip.digest(path)} {when} {view}")

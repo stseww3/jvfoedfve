@@ -315,13 +315,18 @@ def place(blocks, near, name):
 def read(path):
     """{"plaques": [...], "shown": [...], "watched": {tag: {"at": the first place watched (the thing),
     "reach", "near": every place the feet must be near, "function", "stand": where a visitor's feet
-    can be put or None, "far", "on"}}, "sparks": [...], "functions": how many}"""
+    can be put or None, "far", "on"}}, "sparks": [...], "greeted": the tags whose lack has the save
+    greet a player, "functions": how many}"""
     with zipfile.ZipFile(path) as archive:
         found = functions(archive)
         blocks = Blocks(archive)
         places = {tag: place(blocks, near, name) for tag, (near, name) in sorted(watched(found).items())}
+        # the tags whose lack alone has a function run for a player: the mark of who has been greeted
+        greeted = sorted({tag for lines in found.values() for line in lines
+                          for tag in re.findall(r"@a\[tag=!([\w.\-]+)\] run function", line)})
         return {"plaques": displays(archive), "shown": [list(row) for row in shown(found)], "watched": places,
-                "sparks": [[round(v, 2) for v in point] for point in sparks(found)], "functions": len(found)}
+                "sparks": [[round(v, 2) for v in point] for point in sparks(found)], "greeted": greeted,
+                "functions": len(found)}
 
 
 def main():

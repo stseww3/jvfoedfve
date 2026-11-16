@@ -783,6 +783,9 @@ def client_said(since=0.0, out=None):
                             skipped[start.group(3)] += 1
                         record = None
                         continue
+                    if "/DEBUG]: " in line[:48]:        # the sound engine on its channels: no word on packs or shaders
+                        record = None
+                        continue
                     if re.match(r"\[\d\d:\d\d:\d\d\]", line):
                         record = [line[:600]] if SAID.search(line) else None
                         if record is not None:
