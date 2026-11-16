@@ -70,8 +70,7 @@ a leg of 5 texels is about two pixels wide in a 720p picture, the pipe block lit
 
 What this module reads from its neighbour site.mastbase, with the same numbers as a fallback while
 it is not in the tree: TOP, GUY_ANCHORS and ANTENNA_HOOK. What the clocks' test scenes read from
-this one: build, models, BASE_Y, GUY_ANCHORS, LEAD_POST, and TOWER_HOOK, which is kept for them
-alone (see there).
+this one: build, models, BASE_Y, GUY_ANCHORS and LEAD_POST.
 """
 import functools
 import math
@@ -102,10 +101,6 @@ BASE_Y = float(getattr(_base, "TOP", G + 2.0))  # 2.0: the top face of the seat
 GUY_ANCHORS = [tuple(float(v) for v in p) for p in getattr(
     _base, "GUY_ANCHORS", [(FX + sx * 4 + 0.5, G + 2.0, FZ + sz * 4 + 0.5) for sx in (-1, 1) for sz in (-1, 1)])]
 LEAD_POST = tuple(float(v) for v in getattr(_base, "ANTENNA_HOOK", (FX - 1.5, G + 4.0, FZ + 2.5)))
-# Where the wire to the clock tower hooked on to it, two blocks north of the tower's north-east
-# corner under the cornice at y 31. The mast hangs no wire any more and does not use the point; the
-# name stays until the clocks' test scene has stopped reading it.
-TOWER_HOOK = (S.CLOCK_SHAFT_X[1] + 0.5, 30.5, S.CLOCK_SHAFT_Z[0] - 2.0)         # (16.5, 30.5, -35.0)
 
 # ---- the lattice -----------------------------------------------------------------------------------
 SCALE = 4                       # the lattice pieces are shown this large; px = SCALE keeps 16 texels to the block
