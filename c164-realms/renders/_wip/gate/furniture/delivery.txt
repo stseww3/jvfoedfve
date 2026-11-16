@@ -1,0 +1,12 @@
+delivery props/furniture: bbdae2a against 29e5f1e (forked at 29e5f1e), 2 commits, 1 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[PASS] scope    1 of 1 files are the card's own
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[WARN] pictures 2 test scenes, 45 shots with a picture kept
+                obs_props_furniture: 31 pictures show 3b6ed064; the card's code has changed since (_kit.py): draw them again
+                obs_props_furniture_site: 14 pictures show 3b6ed064; the card's code has changed since (_kit.py): draw them again
+[PASS] merge    merges cleanly; 0 commits behind the base
+result: PASS (0 failed, 1 to look at)

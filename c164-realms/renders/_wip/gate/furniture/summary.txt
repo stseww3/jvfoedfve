@@ -1,0 +1,34 @@
+gate props/furniture bbdae2af: the merged tree bbdae2af, the assembly as it was 29e5f1e7
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] pictures 2 test scenes, 45 shots with a picture kept
+                    obs_props_furniture: 31 pictures show 3b6ed064; the card's code has changed since (_kit.py): draw them again
+                    obs_props_furniture_site: 14 pictures show 3b6ed064; the card's code has changed since (_kit.py): draw them again
+check.py: 78 scenes in 98 s: 78 pass (78 with warnings)
+pictures: obs_props_furniture: the kept pictures are NOT what the delivered commit bbdae2af draws (it goes back):
+    [FAIL] selfshots obs_props_furniture at bbdae2af: 19 of 31 kept pictures are what the code draws, 12 not
+    far: 282885 of 921600 pixels are not what the code draws (off by up to 104 of 255)
+    terrace: 90 of 921600 pixels are not what the code draws (off by up to 32 of 255)
+    study: 9 of 921600 pixels are not what the code draws (off by up to 6 of 255)
+    bench_end: 1048 of 921600 pixels are not what the code draws (off by up to 32 of 255)
+    coat_stand: 25 of 921600 pixels are not what the code draws (off by up to 6 of 255)
+    writing_desk: 43 of 921600 pixels are not what the code draws (off by up to 14 of 255)
+    swivel_chair: 19 of 921600 pixels are not what the code draws (off by up to 11 of 255)
+    swivel_chair_front: 3 of 921600 pixels are not what the code draws (off by up to 6 of 255)
+    drafting_side: 1 of 921600 pixels are not what the code draws (off by up to 14 of 255)
+    library_ladder: 4 of 921600 pixels are not what the code draws (off by up to 19 of 255)
+    scale_terrace: 7 of 921600 pixels are not what the code draws (off by up to 11 of 255)
+    scale_hall: 24 of 921600 pixels are not what the code draws (off by up to 36 of 255)
+pictures: obs_props_furniture_site: the kept pictures are NOT what the delivered commit bbdae2af draws (it goes back):
+    [FAIL] selfshots obs_props_furniture_site at bbdae2af: 3 of 14 kept pictures are what the code draws, 11 not
+    sunset_west: 21111 of 921600 pixels are not what the code draws (off by up to 97 of 255)
+    sunset_row: 3277 of 921600 pixels are not what the code draws (off by up to 13 of 255)
+    sunset_bench: 8997 of 921600 pixels are not what the code draws (off by up to 46 of 255)
+    sunset_seat: 7141 of 921600 pixels are not what the code draws (off by up to 16 of 255)
+    sunset_seat_outer: 8584 of 921600 pixels are not what the code draws (off by up to 17 of 255)
+    sunset_plan: 123550 of 921600 pixels are not what the code draws (off by up to 127 of 255)
+    station_v1: 63628 of 921600 pixels are not what the code draws (off by up to 42 of 255)
+    station_front: 3017 of 921600 pixels are not what the code draws (off by up to 155 of 255)
+    station_gable: 26075 of 921600 pixels are not what the code draws (off by up to 35 of 255)
+    lookout_bench: 6749 of 921600 pixels are not what the code draws (off by up to 99 of 255)
+    lookout_v11: 6716 of 921600 pixels are not what the code draws (off by up to 99 of 255)
+result: FAIL
