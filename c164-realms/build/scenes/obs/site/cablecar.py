@@ -380,8 +380,13 @@ def _track(p):
         p.set(x, TOP, AXIS - 1, IRON)
         p.set(x, TOP, AXIS + 1, IRON)
         p.set(x, TOP, AXIS, GRATE)
-    for z in (AXIS - 1, AXIS + 1):      # upright towards the car, braced behind
-        p.set(HEAD - 1, FEET, z, IRON_STAIR + "[facing=east]")
+    # A buffer stop is a post with its head out towards the car: a stair of the riveted iron upside
+    # down. Its top is a whole block up from the paving on every side. One set the right way up
+    # has a low step that is walked on to, and from its top the top of the rail that guards the
+    # winch (machines/cable, the row north of the north stop) is a level step away, with the
+    # machine behind it.
+    for z in (AXIS - 1, AXIS + 1):
+        p.set(HEAD - 1, FEET, z, IRON_STAIR + "[half=top,facing=west]")
 
 
 def _shell(p, box, y0, y1):
