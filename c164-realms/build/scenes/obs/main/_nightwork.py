@@ -49,7 +49,7 @@ BAR = ("iron", 1)           # the glazing bar, as materials/windows.py paints it
 DARK_AT = 0.3               # pixels in front of the glass: the face of the dark sheet,
 LIT_AT = 0.6                # and that of the lit sheet over it
 NUDGE = 0.01                # blocks: the entity stands this far inside the grille's cell, which lights it
-VIEW = M.MID                # seen from the upper terrace, not from the station
+VIEW = M.FAR                # what carries a light out of doors is seen as far as the wall it is on (A0, 11-16 13:10)
 SHARE = 0.25                # of a window, at most, is lit by its lamp
 # The window stands deep in its wall and over the head of whoever walks along it: the sill hides
 # the foot of the glass, the more the nearer one stands (nine pixels of it from three blocks and a
