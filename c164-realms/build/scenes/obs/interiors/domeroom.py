@@ -143,7 +143,10 @@ FURNITURE = (
     ("card_cabinet", (4.5, -9.5), "south"),         # lining, below the window
     ("instrument_cabinet", (5.5, -9.5), "south"),
     ("stool", (13.5, 1.5), "east"),                 # at the switchboard
-    ("coat_stand", (10.5, -6.5), "south"),          # inside the north door
+    # inside the north door, its claws against both faces of the corner the lining makes there: a
+    # post with a crown of hooks at the height of the eye has no body to be kept out of (walk-through,
+    # m5 #75476), so it stands where nobody's way goes
+    ("coat_stand", (9.6875, -7.6875), "south"),
     ("drafting_table", (7.5, -8.5), "south"),       # the night's chart, under the window east of the cabinets
 )
 # the boxes the plates are carried in, by the south wall: (x, z, how many boxes it stands on, yaw).
