@@ -12,8 +12,9 @@ From the top down, in every column of the deck (_rail.deck: three rows of track 
 them on either side):
 
   the rails     two rows of riveted iron half blocks, as on the incline (site/cablecar), their
-                upper face where _rail.tread() has it. The row between them is left for the rack
-                (the cable line's)
+                upper face where _rail.tread() has it. Between them the bed lies half a block
+                lower all the way, every second block of it a sleeper: there the rack stands on
+                its seats (the cable line's models)
   the parapet   in the outer rows: a course of the body's stone beside the rails and a coping of
                 dressed stone on it, a block over the rails and no higher (_rail.GAUGE)
   the bed       a course of ballast under the track, whole blocks: the rails lie on it or half a
@@ -46,6 +47,9 @@ BRICK = B.TUFF_BRICK.block                  # the body: the station's stone
 DRESSED = B.TUFF_SMOOTH.block               # rings, imposts, keystones, the coping
 DRESSED_SLAB = B.TUFF_SMOOTH.slab
 BALLAST = B.ROCK_COBBLED.block              # the bed under the track
+BALLAST_SLAB = B.ROCK_COBBLED.slab
+SLEEPER = B.DARK_WOOD.block                 # the sleepers that show between the rails
+SLEEPER_SLAB = B.DARK_WOOD.slab
 RAIL = B.IRON_RIVETED.slab                  # the incline's rails (cablecar.IRON_SLAB)
 
 # --- the numbers ------------------------------------------------------------------------------------------
@@ -101,11 +105,19 @@ def _column(x, z, cell):
     b = bed(top)
     out = {}
     track = abs(cell.right) < R.GAUGE["half"]
-    if track:
-        if abs(cell.right) >= 0.5:
-            y, half = R.slab(top)
-            out[y] = f"{RAIL}[type={half}]"
+    if track and abs(cell.right) >= 0.5:
+        y, half = R.slab(top)
+        out[y] = f"{RAIL}[type={half}]"
         out[b - 1] = BALLAST
+    elif track:
+        # between the rails the bed lies half a block under them everywhere (the rack's seats stand
+        # on it, all of one height: cable #91195), and every second block of line is a sleeper
+        tie = int(cell.s) % 2 == 1
+        if top == int(top):
+            out[b] = f"{SLEEPER_SLAB if tie else BALLAST_SLAB}[type=bottom]"
+            out[b - 1] = BALLAST
+        else:
+            out[b - 1] = SLEEPER if tie else BALLAST
     else:
         out[b + 1] = DRESSED if top == int(top) else f"{DRESSED_SLAB}[type=bottom]"
         out[b] = BRICK
