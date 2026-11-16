@@ -1,0 +1,11 @@
+delivery main/tower: 23c8c31 against af41154 (forked at af41154), 10 commits, 35 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[PASS] scope    35 of 35 files are the card's own
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[WARN] pictures 2 test scenes, 9 shots with a picture kept
+                renders/obs_main_tower_b/: pictures of a scene that is not there
+[PASS] merge    merges cleanly; 0 commits behind the base
+result: PASS (0 failed, 1 to look at)
