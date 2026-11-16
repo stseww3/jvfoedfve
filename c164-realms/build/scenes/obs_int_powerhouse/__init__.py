@@ -80,7 +80,6 @@ def build_models():
     for line in LINES:
         out.update(line.models() or {})
     out.update(room.models())
-    out.update(room.their_models())
     out.update(standins.models())
     try:
         from scenes.obs.materials import windows
