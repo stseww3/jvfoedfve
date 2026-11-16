@@ -35,7 +35,9 @@ def build_models():
 
 
 def write_pack(pack_dir):
-    return materials.pack(pack_dir)
+    """The repainted blocks, and the sky line's sun: the game's own is a white and yellow square
+    wherever a shot looks west over the open horizon."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
 
 
 def shots():
@@ -70,6 +72,9 @@ def shots():
     shot("door", (door_x + 1.5, eye, gable + 0.5), (door_x + 0.5, S.ROOF_STAND + 1.0, door_z + 0.5))
     shot("treads", (S.WALL_E - 2.0, eye + 0.6, gable + 4.0), (ridge + 2.0, S.ROOF_STAND + 1.0, gable + 1.5))
     shot("walk", (ridge, P.ROOF_RIDGE_TOP + S.EYE, gable + 2.5), (cx - 2.0, spring - 0.5, cz))
+    # the pocket between the inner gable and the great drum, closed up to the gable's top: from
+    # over the walkway's near end, down past the gable (the walk-in round's station J08, a head higher)
+    shot("pocket", (ridge + 1.5, P.ROOF_RIDGE_TOP + S.EYE + 0.6, gable + 1.6), (ridge + 0.6, P.ROOF_RIDGE_TOP - 0.2, gable - 1.2))
     shot("terrace", (S.WALL_W + 2.5, eye, end_gable + 3.5), (cx - 3.0, S.ROOF_STAND + 2.6, cz))
     shot("roofs", (cx + 6.0, spring + 22.0, cz + 26.0), (ridge, S.ROOF_STAND, 14.0))
     # the north wing: from the west, where the tower does not stand in the way (the end terrace, the
