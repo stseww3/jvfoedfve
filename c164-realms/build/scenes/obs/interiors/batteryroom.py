@@ -50,7 +50,7 @@ What stands where (plan cells; north is -z, one comes in at the south end and lo
 Light: cold ground, warm points. Three caged lamps and nothing else: two over the aisle on the
 south faces of the first and the third beam, one over the board on the bed of the time room's
 cable trough. A caged lamp throws its light down, so its light is offered under it, in the aisle
-between the jars (LAMPS). The models of the room are held at the height of the upper tier (HELD), so that a jar
+between the jars (LAMPS); half way between two lamps a fill of what both throw (FILLS). The models of the room are held at the height of the upper tier (HELD), so that a jar
 takes the light of the row its glass stands in and not that of the floor.
 
 build() is what the master scene calls: nothing while MOVED_IN is off. The box test scene,
@@ -130,6 +130,8 @@ LAMPS = (
     ((AXIS_X, LAMP_Y, BEAM_Z[1] + 1.0), "south", _pool(BEAM_Z[1] + 1), "aisle north"),      # on the third beam
     ((AXIS_X, LAMP_Y, TROUGH_Z + 1.0), "south", tuple(((x, BOARD_LIGHT[1], BOARD_LIGHT[2]), 8) for x in AISLE), "board"),
 )                                                                                           # on the trough's bed, over the board
+FILL = 6                                            # between two lamps the aisle is walked in what both throw: a fill
+FILLS = tuple((x, FEET + 3, z + 1) for z in (BEAM_Z[2], BEAM_Z[0]) for x in AISLE)      # under the second and the fourth beam
 CAGE_RANK = 3
 
 # ---- the cable from the power house and the small pieces
@@ -152,6 +154,7 @@ GLASS = dict(
     a=P.RAMPS["night_glass"][0],        # acid in the shade, beside the plates
     d=P.RAMPS["night_glass"][1],        # the thick foot of the jar
     n=P.RAMPS["iron"][5],               # a negative plate: lead grey
+    q=P.RAMPS["iron"][3],               # a plate seen flat on, at the end of a row
     m=P.RAMPS["iron"][4],               # the grid of its paste
     p=P.RAMPS["old_copper"][1],         # a positive plate: brown
 )
@@ -173,10 +176,10 @@ JAR_END = (                             # the face at the end of a row: the last
     "h.........",
     "h.........",
     "hhhhhhhhhh",
-    "annnnnnnna",
-    "anmnmnmnna",
-    "annnnnnnna",
-    "anmnmnmnna",
+    "aqqqqqqqqa",
+    "aqmqmqmqqa",
+    "aqqqqqqqqa",
+    "aqmqmqmqqa",
     "dddddddddd",
 )
 JAR_TOP = (                             # looked into from above: the acid and the heads of the plates
@@ -500,6 +503,10 @@ def build_batteryroom(c, origin=(0, 0, 0), roles=B):
             at = (ox + cell[0], oy + cell[1], oz + cell[2])
             lights.append((at, level, f"{NAME}:{why}"))
             _offer(c, at, level, f"{NAME}:{why}", CAGE_RANK)
+    for cell in FILLS:
+        at = (ox + cell[0], oy + cell[1], oz + cell[2])
+        lights.append((at, FILL, f"{NAME}:fill"))
+        _offer(c, at, FILL, f"{NAME}:fill", CAGE_RANK)
     return {"entities": n, "lights": lights}
 
 

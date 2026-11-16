@@ -13,9 +13,10 @@ the room are the building's own. What the slice lacks is put down here:
                           seen from where one comes in; behind it a dark lobby stands in for the
                           star hall's side aisle, which is indoors
   the court               a strip of paving east of the front, for the view from outside
-  the bare twin           the same slice once more, further south, with nothing in its cavity:
-                          from the court the base storey with the room stands beside the base
-                          storey without it (shot ext_base: the room is on the right)
+
+The scene obs_int_batteryroom_bare is this slice with nothing in its cavity and no doorway: its one
+shot, ext_base, stands where this scene's ext_base stands, so the base storey is seen from the
+court with the room and without it under the same light of the sky line.
 """
 from artkit.canvas import Canvas
 
@@ -28,47 +29,38 @@ from scenes.obs.main import facade, shell
 SLICE_X = (S.WALL_W - 3, S.WALL_E + 3)          # -3..18: both long walls and what stands out of them
 SLICE_Y = (R.FLOOR_Y - 1, S.STAND)              # -2..7: from under the floor to the course over the string
 SLICE_Z = (R.Z0 - 3, R.Z1 + 1)                  # -28..-6: the two cross walls and a bay beyond the north one
-COURT_X = (SLICE_X[1] + 1, SLICE_X[1] + 26)     # the paving east of the front
+COURT_X = (SLICE_X[1] + 1, SLICE_X[1] + 22)     # the paving east of the front
 LOBBY_Z = R.HALL_DOOR[1] + 1                    # -5: the row behind the doorway
-BARE_DZ = SLICE_Z[1] - SLICE_Z[0] + 4           # 26: how far south of the slice its bare twin stands
 
 
-def _slice(c, full, dz):
-    """The slice of the building, dz rows south of where it stands, with the time room's floor over it."""
+def build(c, room=True):
+    """The shell. With room=False the cavity is left as the building has it: closed, no doorway
+    (the scene obs_int_batteryroom_bare: the base storey from the court without the room)."""
+    full = Canvas()
+    facade.build(full)
+    shell.build(full)
     for (x, y, z), state in full.b.items():
         if SLICE_X[0] <= x <= SLICE_X[1] and SLICE_Y[0] <= y <= SLICE_Y[1] and SLICE_Z[0] <= z <= SLICE_Z[1]:
-            c.set(x, y, z + dz, state)
+            c.set(x, y, z, state)
 
     # the time room's floor, as that room relays it, and the bed of its cable trough
     for x in range(T.X0, T.X1 + 1):
         for z in range(T.Z0, T.Z1 + 1):
-            c.set(x, T.FLOOR_Y, z + dz, B.DARK_WOOD.block)
+            c.set(x, T.FLOOR_Y, z, B.DARK_WOOD.block)
     for x, z in T.duct_cells():
         if T.grated((x, z)):
-            c.set(x, T.FLOOR_Y, z + dz, B.IRON_GRATE)
-            c.set(x, T.FLOOR_Y - 1, z + dz, B.IRON_PLATE)
+            c.set(x, T.FLOOR_Y, z, B.IRON_GRATE)
+            c.set(x, T.FLOOR_Y - 1, z, B.IRON_PLATE)
         else:
-            c.set(x, T.FLOOR_Y, z + dz, B.IRON_RIVETED.block)
+            c.set(x, T.FLOOR_Y, z, B.IRON_RIVETED.block)
     # a lid over the slice: the storeys above are not in it, and the sky is not to stand in the time room
     for x in range(SLICE_X[0], SLICE_X[1] + 1):
         for z in range(SLICE_Z[0], SLICE_Z[1] + 1):
-            c.set(x, SLICE_Y[1] + 1, z + dz, B.ASHLAR_FINE.block)
-
-
-def build(c, room=True, twin=True):
-    """The shell. With room=False the cavity is left as the building has it: closed, no doorway.
-    twin: the same slice once more, BARE_DZ rows to the south, its cavity closed and empty, so
-    that the base storey is seen from the court with the room and without it, side by side."""
-    full = Canvas()
-    facade.build(full)
-    shell.build(full)
-    _slice(c, full, 0)
-    if twin:
-        _slice(c, full, BARE_DZ)
+            c.set(x, SLICE_Y[1] + 1, z, B.ASHLAR_FINE.block)
 
     # the court's paving, and the ground under the walls
     for x in range(SLICE_X[0] - 2, COURT_X[1] + 1):
-        for z in range(SLICE_Z[0] - 2, SLICE_Z[1] + 3 + (BARE_DZ if twin else 0)):
+        for z in range(SLICE_Z[0] - 2, SLICE_Z[1] + 3):
             c.set(x, S.PAVING_Y, z, B.ASHLAR_FINE.block, keep=True)
 
     if room:
