@@ -30,7 +30,7 @@
 8. 现在谁在哪个岗位、哪张卡在谁手上，看 `plan/ROSTER.md`（第 3 班的名单）和 `plan/STATUS.md`（卡的状态，停在 11-15 21:05，拿合并钥匙的人接着记）。卡片里写的「点某某」找不到人时，找拿合并钥匙的人或者总监。
 9. **第 2 班的东西不收**（管理员 11-16 定的，`HANDOVER.md` 第 0 节）。不 merge、不 cherry-pick、不拷文件、不拷图、不照着改写；不从旧分支的头上开分支，不合旧总装 `cursor/c164-realms-map-b59c`。合并前 `tools/provenance.sh <提交>` 必须报 `clean`。
 10. **快车道（11-16 08:22 起；管理员嫌慢。和上面各条、和别的文档冲突时以这一条为准）。**慢的不是哪一个人，是做完一步就停下来等：等合并、等评审、等真机、等总监裁。从现在起谁也不等谁。
-   - **交付就是自己的关口 PASS。**先把总装头合进你的分支，在你自己的节点上跑 `bash c164-realms/tools/nodejob.sh --wip --always --tail 80 bash tools/gate.sh <类别>/<包名> <提交> --base <总装头>`，末行 `result: PASS` 了就把【交付】（类别/包名、提交、分支）私信本类的审批人。不用先找人交叉看，不用等评审。
+   - **交付就是自己的关口 PASS。**先把总装头合进你的分支（**关口的基要是当下的头**：总装现在几分钟进一个包，基旧了九个合并的关口等于没过，11-16 08:46 窗的包就是这样合红的；关口跑完头又动了、动的又是你用到的东西，就再合一次、再跑），在你自己的节点上跑 `bash c164-realms/tools/nodejob.sh --wip --always --tail 80 bash tools/gate.sh <类别>/<包名> <提交> --base <总装头>`，末行 `result: PASS` 了就把【交付】（类别/包名、提交、分支）私信本类的审批人。不用先找人交叉看，不用等评审。
    - **每个类别一个审批人，拿本类的合并钥匙**（管理员 08:19：「审批不能派 10 个子 agent 做吗」；08:28 起）。common：s2（c318）；materials：a1（c324）；main：facade（c321）；sky、motion：cr2（c333）；site：a4（c323）；machines：cr3（c347）；props：a6（c334）；interiors：cr4（c337）。**【交付】发给本类的审批人，不再发 s2。**审批人做三件事，都不经过总监：
      1. **合并，不重跑关口。**先核对作者的关口：`git fetch -q origin <作者分支>-wip && git show FETCH_HEAD:c164-realms/renders/_wip/gate/<包名>/summary.txt`，头一行的提交号是交付的那个，末行是 `result: PASS`。然后在一个单独的工作树里合（头一次：`git fetch -q origin cursor/c164-assembly-fable-a9f5 && git worktree add --detach /tmp/c164_<代号>/asm FETCH_HEAD`），每合一个包在那里面做四步：
         `git fetch -q origin cursor/c164-assembly-fable-a9f5 && git checkout -q --detach FETCH_HEAD`
@@ -40,7 +40,7 @@
         冲突只在这个包自己的文件里：取作者的。碰到公共的（`build/scenes/obs/common/`、`tools/`、`plan/`、别的类别的文件）：`git merge --abort`，交给 s2。合完私信 s2 一行【合并】（类别/包名、合并提交）；`plan/STATUS.md` 仍只有 s2 记。你自己的包也自己合。
      2. **定本类的事。**本类里的二选一、接口怎么对、占位用什么：你定，定了算，私信有关的人，抄 s2 一行。
      3. **看图提意见。**合进去的东西看一遍图，意见直接私信作者；和本类评审的意见不一样时你们两个对一下。
-   - **s2 不再逐个合包。**管 common，守着总装头是绿的：在备用节点上对着总装头反复跑 `checkall.py`，红了 revert 惹事的那一个合并、告诉本人和审批人，别的不受牵连；记 STATUS；帮审批人解公共文件上的冲突。
+   - **s2 不再逐个合包。**管 common，守着总装头是绿的：在备用节点上对着总装头反复跑 `checkall.py`，红了 revert 惹事的那一个合并、告诉本人和审批人，别的不受牵连（被退的包再交：作者把总装头合进自己的分支，在自己分支上 `git revert <s2 那条 revert>` 把文件带回来，改好，对着**当时的**总装头重过关口再交；s2 不在总装里 revert 回去）；记 STATUS；帮审批人解公共文件上的冲突。
    - **只有三种事上交总监**：碰红线的、跨类别对不拢的、要改 `ART-PLAN.md` 的。
    - **铺开的东西交付时就开。**第 5 条的 `DRESS` 开关：作者在交付的提交里把它打开，不再等评审通过。评审挑出毛病，改了再交。
    - **评审不卡合并，也不卡下一步。**评审看总装里的图和 s1 的真机看板，意见直接私信做的人；改动当打磨轮再交。
