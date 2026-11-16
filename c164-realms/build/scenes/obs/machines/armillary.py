@@ -52,8 +52,12 @@ southern tropic has a half turn about z in front). The sky's daily motion is the
              every 30 (the twelve signs)
   colure     the one ring through both poles that carries the others (the solstitial colure), with
              a bolt head where each of them crosses it. Only one: two would cross at the pole.
-This round places a still pose, HOUR; the motion is the motion line's. Only the axis, the ecliptic
-and the colure show that they turn: the equator and the tropics are plain rings about the axis.
+The sphere turns (director, 11-16 12:12: what stands out of doors has to move): build() registers
+each of these with the motion kit, MK.spin about POLE, once in TURN ticks and in the sense of the
+sky's daily motion, east to west: all six as one piece, the way the colure's bolts hold them. The
+pose they are placed in, HOUR, is where the loop starts and comes back to, and what stands with the
+loop stopped or with no data pack: a still picture shows that pose. Only the ecliptic, the colure
+and the earth show that they turn: the equator and the tropics are plain rings about the axis.
 The pose is chosen on the pictures: at -35 the colure stands open beside the band from due east and
 from the entrance, two ovals in the ring, and along the meridian the band is close to a whole
 circle. At -15 the band opens a little more towards V2, but the colure closes onto the axis, and
@@ -77,6 +81,7 @@ from artkit.pixelart import Sprite
 from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
+from ..motion import _kit as MK
 
 PREFIX = "mach_armillary_"
 VERSION = "a"                       # the one version (director, 11-16); the models keep its letter
@@ -97,6 +102,10 @@ LATITUDE = float(S.LATITUDE)
 OBLIQUITY = 23.5                    # the ecliptic's tilt to the equator
 HOUR = -35.0                        # the still pose: how far the sphere is turned about the polar axis
 POLE = (0.0, math.sin(math.radians(LATITUDE)), -math.cos(math.radians(LATITUDE)))
+# One turn of the sphere, in ticks: a minute, the pace of a seconds hand (6 degrees a second; the rim
+# of the cage goes a quarter of a block a second). The sky's day in a minute; slow enough to be an
+# instrument and not a toy, quick enough to be seen turning from the head of the stair (V2).
+TURN = 60 * MK.SECOND
 BRIGHTNESS = None                   # None: the light of LIGHT_CELL (the props line lights it). Else (sky, block)
 
 # The models are drawn 2 px to the unit and shown at twice their size: 16 px to the block, and a ring
@@ -326,15 +335,23 @@ def _base(canvas, origin):
 
 
 def build(canvas, origin=(0, 0, 0), version=VERSION):
-    """Place the base and the brass of one version; returns the number of display entities."""
+    """Place the base and the brass of one version, and set the sphere turning; returns the number
+    of display entities."""
     _base(canvas, origin)
     built = _models()
     at = (origin[0] + S.mid(CX), origin[1] + CENTRE_Y, origin[2] + S.mid(CZ))
     opts = {} if BRIGHTNESS is None else {"brightness": BRIGHTNESS}
-    n = 0
+    n, seen = 0, set()
     for part, turns in pieces(version):
-        nbt = M.display(built[_name(version, part)], scale=PX, turns=turns, **opts)
+        name = _name(version, part)
+        nbt = M.display(built[name], scale=PX, turns=turns, **opts)
         nbt["Tags"] += ["c164_armillary", f"c164_armillary_{part}"]
         canvas.add_entity(at[0], at[1], at[2], nbt)
         n += 1
+        if part in POLAR:
+            # they all stand on one spot, where the kit tells its parts apart by their names: the
+            # southern tropic, the same model a second time, gets one of its own. The pole is given
+            # as a direction in the world, so the tropic that lies upside down turns the same way.
+            MK.spin(canvas, POLE, -TURN, name=name + ".s" if name in seen else name)
+            seen.add(name)
     return n
