@@ -6,10 +6,14 @@ the stands are STEP blocks apart, so between two of them nothing is heard, and t
 part of what is listened for (a sound stops at its reach).
 
     rows, from the north (z)     the kinds, in the order of ROWS: tick, engine, hum, fire, hiss,
-                                 telegraph, wind
+                                 telegraph, wind; then the second round's (sound.KINDS, below
+                                 the first round's): whistle, chuff, rail and bell of the train,
+                                 strike and chime of the tower clock, clank, creak, thump, spark,
+                                 drip, scratch, rumble, grind, water, bubble
     columns, from the west (x)   the choices: a, the table's (scenes/obs/motion/sound.EVENTS), on
                                  the stand one block high; b and c, the other two
-                                 (sound.OTHERS), on the stands two and three blocks high
+                                 (sound.OTHERS), on the stands two and three blocks high. A
+                                 kind without other choices has the one stand
 
 The scene's pack has the map's sounds.json and the other choices beside them (sound.pack with
 others=True); the map's own pack never has the others. Whoever has listened moves the choice he
@@ -20,6 +24,13 @@ stand; does it stop before the next stand; and for the ones that loop (hum, fire
 seam heard, do two rounds pile up. The wind's choices a and b are in stereo: the game does not
 place them in space, so they are as loud at the edge of the reach as at the stand, and a round
 that has begun is heard to its end after one has walked away.
+
+The second round's kinds sound here on the time KINDS gives them, which is only this scene's: in
+the map the thing that moves says when (the train's exhaust beats with its wheels, the tower's bell
+strikes the hour). The whistle blows long, then short, once in ten seconds; the exhaust beats four
+times a second without an end, as it does on the climb; the station's bell is struck five times.
+What carries far in the map (the whistle 64 blocks, the tower's bells the whole hilltop) is cut
+off at the stand's reach here like everything else.
 
 The shot is written from the numbers below:  python -m scenes.obs_mot_sound
 """
@@ -35,7 +46,7 @@ BIOME_MARGIN = 32
 BIOME_MARGIN_Y = 32
 
 STONE, PAVING = B.ASHLAR_FINE.block, B.TUFF_SMOOTH.block
-ROWS = tuple(sound.KINDS)       # tick, engine, hum, fire, hiss, telegraph, wind
+ROWS = tuple(sound.KINDS)       # tick, engine, hum, fire, hiss, telegraph, wind, and the second round's
 STEP = 14                       # blocks from stand to stand
 REACH = 6.0                     # how far a stand is heard: two reaches are less than a step
 EDGE = 8                        # the first stand's cell, from the floor's corner
@@ -79,9 +90,12 @@ def write_pack(pack_dir):
 
 
 def shots():
-    """One camera: the whole floor from above its north-west corner."""
-    far_x, far_z = size()
-    return [{"name": "floor", "pos": [-12.0, 30.0, -16.0], "look_at": [far_x / 2.0, 0.0, far_z * 0.45], "time": TIME}]
+    """One camera: the floor from above its north-west corner. It looks at the first round's
+    stands, as it did before the second round's rows were laid south of them: nothing here is
+    judged by a picture."""
+    far_x, _ = size()
+    first_z = 2 * EDGE + STEP * (len(sound.FIRST_ROUND) - 1)
+    return [{"name": "floor", "pos": [-12.0, 30.0, -16.0], "look_at": [far_x / 2.0, 0.0, first_z * 0.45], "time": TIME}]
 
 
-assert 2 * REACH < STEP and MK.NS == sound.NS
+assert 2 * REACH < STEP and MK.NS == sound.NS and ROWS[:len(sound.FIRST_ROUND)] == sound.FIRST_ROUND
