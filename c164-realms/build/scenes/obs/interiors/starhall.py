@@ -120,6 +120,9 @@ STAIR_FOOT_LEVEL = 8        # 7 shows nothing of the risers through the side arc
 MEZZANINE_LEVEL = 7
 MEZZANINE_LAMP_Y = 9.5
 WAY_LEVEL = 7               # the way to the west door, which had no light at all (the walk, S1): a step under the stair foot's
+WAY_SOURCE_Y = FEET + 2     # the row of its sources: over the head of who walks under the lamp. In the cell under
+#                             the crown they left 3 of the 7 at the feet, and a floor one walks on indoors is to
+#                             have 5 (lights, #72659; the light line knows a source for a lamp's up to six cells under it)
 
 SIDES = {(0, -1): "north", (0, 1): "south", (-1, 0): "west", (1, 0): "east"}
 ACROSS = {"north": "south", "south": "north", "west": "east", "east": "west"}
@@ -540,17 +543,19 @@ def _lamps(canvas, origin, version):
     return n
 
 
-def _flat_lamp(canvas, origin, version, at, towards, level, what):
+def _flat_lamp(canvas, origin, version, at, towards, level, what, source_y=None):
     """A caged lamp flat under the crown of an arch or a vault at (x, z), its conduit running
     `towards`; where there is no crown, under the deck over it. Its source goes into the cell the
-    glass hangs in; under a crown that cell holds the crown, so it is the one below."""
+    glass hangs in; under a crown that cell holds the crown, so it is the one below. source_y: the
+    source's row, straight under the lamp, where the light is wanted lower than that."""
     ox, oy, oz = origin
     x, z = (int(math.floor(v)) for v in at)
     crowned = canvas.has(ox + x, oy + shell.ARCH_Y, oz + z)
     under = shell.ARCH_Y + 0.5 if crowned else float(shell.DECK_Y)
     n = lamps.place(canvas, "cage", (at[0], under - K.NUDGE, at[1]), facing=towards, origin=origin, version=version,
                     light=False, turns=(("x", 90.0),))
-    L.suggest(canvas, (ox + x, oy + shell.ARCH_Y - (1 if crowned else 0), oz + z), level, f"{WHY}:{what}", rank=3)
+    y = shell.ARCH_Y - (1 if crowned else 0) if source_y is None else source_y
+    L.suggest(canvas, (ox + x, oy + y, oz + z), level, f"{WHY}:{what}", rank=3)
     return n
 
 
@@ -569,7 +574,8 @@ def _stair_hall(canvas, origin, version):
         n += lamps.place(canvas, "cage", (wx + 1.0, MEZZANINE_LAMP_Y, z + 0.5), facing="east", origin=origin,
                          version=version, level=MEZZANINE_LEVEL)
     for x in way_lamp_xs():
-        n += _flat_lamp(canvas, origin, version, (x + 0.5, CZ + 0.5), "east", WAY_LEVEL, "way west")
+        n += _flat_lamp(canvas, origin, version, (x + 0.5, CZ + 0.5), "east", WAY_LEVEL, "way west",
+                        source_y=WAY_SOURCE_Y)
     return n
 
 
