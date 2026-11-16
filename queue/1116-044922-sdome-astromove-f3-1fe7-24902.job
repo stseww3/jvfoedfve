@@ -1,0 +1,3 @@
+branch=cursor/c164-sdome-astromove-f3-1fe7
+head=19091040d2f777ea910c993808e8413cf054c10a
+args=--no-push --limit 600 --tail 40 python\ tools/check.py\ --scene\ obs_mach_meridian_astrograph\ \>\ /tmp/sdome_m.txt\ 2\>\&1\;\ A=\$\?\;\ grep\ -E\ \"\^\\\[\(FAIL\|WARN\)\|motion\|\^result\"\ /tmp/sdome_m.txt\ \|\ cut\ -c1-200\;\ python\ tools/check.py\ --scene\ obs_int_astroroom\ \>\ /tmp/sdome_r.txt\ 2\>\&1\;\ B=\$\?\;\ grep\ -E\ \"\^\\\[\(FAIL\|WARN\)\|motion\|\^result\"\ /tmp/sdome_r.txt\ \|\ cut\ -c1-200\;\ cd\ build\;\ python\ -m\ scenes.obs.machines.astro\ check\ \|\ tail\ -n\ 1\;\ python\ -m\ scenes.obs.machines.meridian\ check\ \|\ tail\ -n\ 1\;\ exit\ \$\(\(A+B\)\) 
