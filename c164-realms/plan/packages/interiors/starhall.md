@@ -54,6 +54,7 @@
 | 日球落在地上 | 无灯具（总监准留） | — | (11, 1, 0) | 8 |
 | 楼梯脚 | `cage` 吸顶，侧拱拱顶下 | (1.0, 5.5, −3.5 / 4.5) | (1, 4, ±4) | 8 |
 | 夹层大窗两侧 | `cage` | (−6, 9.5, −1.5 / 2.5) | (−6, 9, ±2) | 7 |
+| 西门过道（拱顶下，轴线上两盏） | `cage` 吸顶 | (−5.5 / −1.5, 5.5, 0.5) | (−6 / −2, 4, 0) | 7 |
 | 日球（orrery 报） | — | — | (11, 7, 0) | 12 |
 | 母钟前（clocks 报） | — | — | (7, 3, 0) | 11 |
 
@@ -69,7 +70,8 @@
 ## 交付物
 - 代码：`build/scenes/obs/interiors/starhall.py`（`build(canvas, origin)` 给总场景；`dress(canvas, origin, version)`；`VERSION` 是评审挑的那一版；`MOVED_IN` 给 `facade.furnished()`）。
 - 测试场景：`build/scenes/obs_int_starhall/`（甲）和 `obs_int_starhall_b/`（乙），同一组机位同名，可以盲比；照总场景的铺法：主楼整条线、两台机器（没进树时用 `standins.py`）、本包、光线最后。`shots.json` 由 `python -m scenes.obs_int_starhall` 写。
-- 机位 16 个（`arches` 是第 3 班加的）：`v7`、`v7_in`、`west`、`clock`、`orrery`、`ceiling`、`floor`、`gallery`、`rail`、`gallery_w`、`door`、`aisle_n`、`aisle_s`、`stair_n`、`mezzanine`、`arches`（前庭正轴看三个拱）。
+- 机位 17 个（`arches`、`way` 是第 3 班加的）：`v7`、`v7_in`、`west`、`clock`、`orrery`、`ceiling`、`floor`、`gallery`、`rail`、`gallery_w`、`door`、`aisle_n`、`aisle_s`、`stair_n`、`mezzanine`、`way`（拱顶下望西门）、`arches`（前庭正轴看三个拱）。
+- 场景的探针：在节点上 `cd build && python -m scenes.obs_int_starhall.probe a|b plan:<y> x:<x> z:<z> lv:<y> lz:<z> lights ents`，把方块、光照级数、光源、实体打成文字（合用机上不许建场景）。
 
 ## 验收（PIPELINE 5.1 五角度＋技术清单）
 - 轮廓构图：入口轴对称；视线被行星仪与子午线牵引；前中后景分明。
@@ -104,4 +106,6 @@ shell c325（壳）、facade c321（门洞、搬入后撤占位）、orrery c343
 10. 0734c283、7d89a3ae：测试场景把 instruments、paper 的模型并进包；`PARTS`（上面「分件」一段）。合进总装 2ff7c177：真的行星仪（orrery 4bdab7ce）、母钟钟面 (0, 14)（clocks 二次交付）、lights 的洗墙轮（星厅搬入后它自己撤门洞和厅里的占位光源，测试场景里的 `_door` 现在是空转）、家具第二轮（两只带展品的展柜）、paper 的星图和天图、instruments 的天球仪、指示灯压暗（m1）。
 11. 存档图（两版各 16 张，代码 7d89a3ae）量到的甲 V7：日球中位 0.87、最亮 0.97（真的行星仪，过 0.60 的像素占 0.2%，全在日球上），钟面白瓷 0.46（整盘 0.34），墩面 0.23，地面中条 0.19，墙 0.18～0.21，墩后楼梯 0.15～0.16；死黑 0.6%，最大一片 0.07%。次序：日球最亮最暖，钟面、墩面，地面第三。
 12. 快车道（COMMON 0.10）：默认甲进总装，乙留在同一个模块里（`VERSION` 一改就换，`obs_int_starhall_b` 是它的场景，图同样存档），总监看合出来的图再定。
-13. 欠着的（打磨轮）：窗衬（chart 445733a3，在 a1 手里等合）进树后核东墙回廊层三扇亮窗从屋里看是暗的，现在在 `door`、`gallery_w`、`ceiling`、`orrery` 里是整面亮橙，比日球亮；`rail` 机位下半张被栏杆挡住，要挪；三件分件到了合进来重画；删测试场景里的 `_door` 和 `standins.py`；乙版两侧拱比甲暗（0.09 对 0.12），乙 `west`、`v7_in` 死黑 3.1%、3.8%（铆钉铁的缝、铁盖板、回廊底面，料暗）。
+13. 第一版 6c8a8b7a 过关口（node91，基 3b8fe174），cr4 合进总装 e3ee3b4a（11-16 09:05）。
+14. 第二轮（打磨）：西门过道拱顶下两盏吸顶铁笼灯 7 级（a4 走查 S1：那一段原先一个光源也没有；总监的收尾第 3 条「人走的路都有光」），加 `way` 机位；回廊层的陈设（ashlar 的 `_starhall_gallery.py`，甲 11 个实体、乙 9 个）；两只展柜换成带展品的（a6 进了总装）；占位全撤（`standins.py`、`_stand_in`、本包的星图和天球仪模型、测试场景的 `_door`）；`aisle_doors()` 也读底片库的门（`interiors/platevault.HALL_DOOR`，约的是南墙 x 7，和蓄电池室对称；x 8 是壁柱，开不了两格）；`rail`、`gallery_w` 两个机位挪过（原先下半张是栏杆、右半张是环梯的铁板）。
+15. 欠着的：窗衬（chart 445733a3，进过总装又被 s2 退了，18 个场景红）进树后核东墙回廊层三扇亮窗从屋里看是暗的，现在在 `door`、`gallery_w`、`ceiling`、`orrery` 里是整面亮橙，比日球亮；明线（clocks）和子午线镶嵌（orrery）两件分件到了合进来重画；乙版两侧拱比甲暗（0.09 对 0.12），乙 `west`、`v7_in` 死黑 3.1%、3.8%（铆钉铁的缝、铁盖板、回廊底面，料暗）；西门过道两壁、顶、地没有打断（S1 的另一半）归 shell。
