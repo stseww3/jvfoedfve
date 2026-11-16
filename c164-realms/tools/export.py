@@ -1702,8 +1702,21 @@ def page(args):
             if os.path.exists(os.path.join(folder, name + "-plain.verify.json")):
                 with open(os.path.join(folder, name + "-plain.verify.json"), encoding="utf-8") as fh:
                     plain["verified"] = json.load(fh).get("ok")
+    bare = None             # the same head without the guide, where one was asked for
+    if os.path.exists(os.path.join(folder, name + "-noguide.json")):
+        with open(os.path.join(folder, name + "-noguide.json"), encoding="utf-8") as fh:
+            without = json.load(fh)
+        if without.get("ok"):
+            bare = {"file": without["zip"]["file"], "bytes": without["zip"]["bytes"], "sha256": without["zip"]["sha256"],
+                    "verified": None}
+            if os.path.exists(os.path.join(folder, name + "-noguide.verify.json")):
+                with open(os.path.join(folder, name + "-noguide.verify.json"), encoding="utf-8") as fh:
+                    bare["verified"] = json.load(fh).get("ok")
     row = {
         "n": f"A{n}", "assembly": made.get("assembly"), "at": at, "time": made["spec"]["time"], "look": look, "plain": plain,
+        # the guide (the title on arrival, the plaques, the star charts): in this save or not; the
+        # name the world goes by in the list of worlds, where the map has one
+        "guide": bool(made["spec"].get("guide")), "title": made["spec"].get("title"), "bare": bare,
         "zip_bytes": made["zip"]["bytes"], "sha256": made["zip"]["sha256"],
         "pack_bytes": made["resource_pack"].get("bytes"), "pack_files": made["resource_pack"]["files"],
         "standins": len(made["resource_pack"]["standins"]),
@@ -1760,6 +1773,10 @@ def page(args):
            f"sha256 `{plain['sha256']}`）：同一个总装头，资源包里不带着色器，天是原版的夜空，别的都一样。"
            + ("冷启动验证全过。" if plain.get("verified") else "**冷启动验证没过。**" if plain.get("verified") is False else "没验。")]
           if plain and row.get("shaders") else []),
+        *([f"不要导览那一层（进服的标题、牌子、星图）就换这个：`A{n}/{bare['file']}`（{mb(bare['bytes'])}，"
+           f"sha256 `{bare['sha256']}`）：同一个总装头，别的都一样。"
+           + ("冷启动验证全过。" if bare.get("verified") else "**冷启动验证没过。**" if bare.get("verified") is False else "没验。")]
+          if bare else []),
         *([f"同一个总装头、带着我们的天的：`A{n}/{look['file']}`（{mb(look['bytes'])}，sha256 `{look['sha256']}`，钟锁在 {look['time']} 刻）。"
            f"**它带 {look['registry_files']} 个注册表文件（群系、时间线），只给单人打开看样子，不传 Realms。**"] if look else []),
         "总装每半小时跟着 s2 报的绿头重导一次，编号往上加。**编号的文件夹只加不删**：表里编号带链接的都还在这里，"
@@ -1778,7 +1795,9 @@ def page(args):
         + ("" if row["cloud"] else "**这一个没开「站到云海方块上送回」。**")
         + ("存盘前等光照算完了（存一次读一次，连着三次不变才收，等了 {} 秒）。".format(row["light"]) if row.get("light")
            else "**存盘时光照还在变，这一个的光不全。**" if row.get("light") is False
-           else "这一个存盘前没等光照算完（A6 和更早的都没等）。"),
+           else "这一个存盘前没等光照算完（A6 和更早的都没等）。")
+        + ((f"带导览（进服的标题、牌子、星图）" if row.get("guide") else "这一个不带导览（进服的标题、牌子、星图）")
+           + (f"；存档在世界列表里的名字是「{row['title']}」，文件夹和压缩包仍按编号叫。" if row.get("title") else "。")),
         PAGE_CLOSE,
     ]
     readme = os.path.join(dist, "README.md")
