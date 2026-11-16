@@ -1,0 +1,20 @@
+a0job 1116-041510-m1-instruments-f3-c367-21801: cursor/c164-m1-instruments-f3-c367 @ 056a2d8a on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.40 1.42 1.54, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- rc=0; for s in obs_props_instruments obs_int_domeroom obs_int_timeroom; do python tools/check.py --scene $s > /tmp/m1_$s.log 2>&1 || rc=1; echo "== $s"; grep -E "^\[(FAIL|WARN)\]|^\[PASS\] motion|pendulum|^result:" /tmp/m1_$s.log; done
+== obs_props_instruments
+[PASS] motion    1 parts and 0 points on 1 chains, 14 function files; 4 commands in the busiest tick (limit 40), 0.5 a tick on average (limit 10)
+result: PASS (0 failed, 0 with warnings)
+== obs_int_domeroom
+[PASS] motion    1 parts and 0 points on 1 chains, 14 function files; 4 commands in the busiest tick (limit 40), 0.5 a tick on average (limit 10)
+result: PASS (0 failed, 0 with warnings)
+== obs_int_timeroom
+[WARN] flatwall  1 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+[PASS] motion    3 parts and 0 points on 2 chains, 26 function files; 5 commands in the busiest tick (limit 40), 0.7 a tick on average (limit 10)
+result: PASS (0 failed, 1 with warnings)
+==== NODEJOB RESULT ====
+exit=0 secs=13 host=cursor cores=4 head=056a2d8a commit=none pushed=no branch=cursor/c164-m1-instruments-f3-c367 files=0
+a0job: exit=0 secs=13
