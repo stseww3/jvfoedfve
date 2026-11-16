@@ -1417,10 +1417,18 @@ def verify(args):
             server.stop()
             issues = server.issues()
             report[tag + "issues"] = issues
-            # the stripped save is expected to complain; a slow tick is the machine's, told but not held against the save
-            real = [] if strip else [i for i in issues if "Can't keep up!" not in i]
+            # the stripped save is expected to complain; a slow tick is the machine's, told but not held against
+            # the save. Nor is the fake player's own "moved too quickly!": he sends no movement of his own, only
+            # the answer to being put somewhere, which names the spot. Seen once in some thirty arrivals (A8,
+            # "moved too quickly! 88.5,196.0,-32.5": the three numbers are the spot itself, so the server
+            # measured his answer from 0 0 0, before it had a place for him); every check of where he stood held
+            ours = [i for i in issues if "Can't keep up!" in i or f"{BOT} moved too quickly!" in i]
+            real = [] if strip else [i for i in issues if i not in ours]
             check(results, tag + "console", not real,
-                  f"{len(issues)} warnings and errors" + ("".join("\n        " + i for i in issues[:25]) if issues else ""))
+                  f"{len(issues)} warnings and errors"
+                  + (f", {len(ours)} of them the machine's or the fake player's own and not held against the save"
+                     if ours and not strip else "")
+                  + ("".join("\n        " + i for i in issues[:25]) if issues else ""))
     finally:
         report["ok"] = bool(results) and all(r["ok"] for r in results)
         report["seconds"] = round(time.time() - T0)
