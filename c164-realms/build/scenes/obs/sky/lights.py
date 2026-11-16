@@ -9,29 +9,54 @@ the canvas by then and places, in this order:
             at `origin`) and those a scene registered with _lightkit.glazed(). The glass that
             stands in a window decides, not the table: B.WINDOW_LIT, _FROSTED and _CURTAIN get a
             source, dark glass gets none, a window that is not glazed yet is passed over. The
-            source stands in the first cell behind the glass of the middle column; a tall lit
-            window has two, one row above the sill and one row below the head.
-  entrance  one source of level 14 in the main doorway, when it stands open; and, as long as the
-            hall behind it is an empty room with a wall close behind the doorway, a source of 12
-            against that wall, so that the doorway reads as a warm bright face and not as a hole
-            (10 behind the arches beside the doorway, where the entrance is an arcade).
-  wash      in the two bays either side of the entrance three: a small projector two cells before
-            the plinth (props' model, lamps "uplight", with the source of level 8 it brings), and
-            where its beam lands, in the row over the plinth, sources of level 8 before the wall
-            and before the pilasters. The base storey is lifted from its foot to the string course
-            (8 falling to 5) and the great windows' sills get no more than 4.
+            source stands in the cell before the glass of the middle column (the window's
+            recess), two levels under the level the window has behind its glass: outside that is
+            the same light, and the room behind the window keeps to its own lamps. Where that
+            cell is taken (the bars of a base window) the source stands behind the glass, at
+            the full level; so it does for a window registered as "inside". A tall
+            lit window has two, one row above the sill and one row below the head.
+  entrance  as long as the star hall has not moved in (main/facade.furnished()), the sources that
+            stand in for the hall's lamps; no lamp is shown for any of them. Where a wall stands
+            close behind the doorway (a vestibule, the facade's stand-in wall): one source of
+            level 14 in the main doorway, when it stands open, and one of 12 against that wall,
+            so that the doorway reads as a warm bright face and not as a hole (10 behind the
+            arches beside the doorway, where the entrance is an arcade). Where the hall stands
+            open behind the arches (OPEN_HALL, with main/shell in the tree; the director's
+            ruling D): one source of 14 before the telescope pier's east face, where the mother
+            clock will hang, and one of 11 over the foot of the flight behind either side arch;
+            none in the doorway, whose frame stays darker than the pier it frames. All of them
+            go when the star hall moves in, the one in the doorway too (the director, #58129).
+  wash      on either wing, the two pilasters next to the entrance's corner pilaster (which carries
+            a bracket lamp): at the foot of each a small projector two cells before the plinth
+            (props' model, lamps "uplight", with the source of level 8 it brings), and where its
+            beam lands, before the foot of the shaft, one source (_lightkit.WASH, 10; the
+            director, #62755: no higher). From there the light falls by one a row and is spent
+            under the string course, as a beam from below is: a wing shows three upright bands,
+            brightest at the foot, that lead to the entrance (review cr2-#3: the wash has to
+            have a shape). The wall between two pilasters gets what spreads from them, 8 next to
+            the foot of a shaft and 7 in the middle of the bay; nothing is placed before the wall.
+  stair     on the brass newel at the gallery's mouth of the ring stair (main/shell.stair_posts()):
+            the low lamp of props (lamps "post") and its source (_lightkit.STAIR, 8). The newel
+            at the mouth in the dome room carries nothing: that room has the one small red lamp
+            beside the eyepiece and no other (the director, #442).
   offers    what the other lines registered with _lightkit.suggest() and take(): a source is placed
             when its cell is free and something that glows is within two cells of it.
+  pools     at the foot of every street lamp whose source was placed, one more (_lightkit.POOL, 12):
+            the globe hangs four cells over the paving and leaves it 9, a lamp that glows over
+            ground it hardly lights. In the foot cell of the post; for a lamp that stands on a
+            pedestal, on the ground beside the pedestal and not on its cap.
 
-DRESS is the director's switch for everything that is laid over the whole building (group #20161):
-while it is off, build() lights no window of main's table and no wall, so the fronts of the master
-scene stay as they are until the review of this card has passed. The entrance is lit all the same
-(director, #21989: in the master scene the doorway is not to be a black hole), and so are the
-offers of the other lines and the windows a scene registers. A scene that shows a front under its
-lights asks for them with _lightkit.dress(canvas).
+DRESS is the director's switch for everything that is laid over the whole building (group #20161).
+It is on since the review of this card has passed (cr2-#3; the director, 11-16: on, and 12
+behind the lit windows of the wings, #58003). Off, build() lights no window of main's table and no wall,
+and the fronts of the master scene stay bare; the entrance is lit all the same (director, #21989:
+in the master scene the doorway is not to be a black hole), and so are the offers of the other
+lines and the windows a scene registers. A scene asks for the building's lights, or for the bare
+fronts, whatever the switch says, with _lightkit.dress(canvas) and dress(canvas, False).
 
 What was done is written down in canvas.light_report (see report()); summary() gives it as text.
-build() returns the number of display entities it placed (the projectors of the wash).
+build() returns the number of display entities it placed (the projectors of the wash, the lamp of
+the ring stair).
 """
 import math
 
@@ -43,7 +68,7 @@ from ..common import skeleton as S
 from . import _lightkit as L
 
 ORDER = 90                              # the last of the sky packages
-DRESS = False                           # see above; turned on when the review has passed
+DRESS = True                            # see above
 
 DOOR_BAY = 9
 ENTRANCE_BAYS = (DOOR_BAY, DOOR_BAY - 1, DOOR_BAY + 1)      # the doorway, then the arches an arcade has beside it
@@ -52,13 +77,33 @@ DOOR_Y = 1                              # the source's row: the threshold gets 1
 HALL_LEVEL, SIDE_LEVEL = 12, 10         # against the back of the vestibule: behind the doorway, behind an arch
 HALL_Y = 2                              # the row of those sources: the middle of what a doorway shows of the wall
 HALL_DEPTH = 8                          # a wall this close behind the glass plane is the back of a vestibule
-WASH_BAYS = (6, 7, 11, 12)              # two bays either side of the entrance three
+# The hall as main/shell builds it, open from the entrance to the telescope pier, is lit from here
+# until the star hall moves in. main/facade asks for this word (hall_lit()) and leaves its stand-in
+# wall out when it is set and the shell is in the tree.
+OPEN_HALL = True
+HALL_REACH = 14                         # the face the doorway looks at is looked for this far behind the glass plane
+# Before that face, the telescope pier's east one, where the mother clock will hang (y 1 to 5). The
+# row is the one that serves the court and the doorway both: from the court the middle arch shows
+# the face at 0.31 to 0.32 with the source in row 3 or 4 and at 0.28 to 0.29 with it in row 5; seen
+# from the doorway the pale floor before the pier stands at 0.34 beside a face of 0.34 with row 3,
+# at 0.31 beside 0.33 with row 4.
+PIER_LEVEL, PIER_Y = 14, 4
+# The doorway of the open hall gets no source (0): what one sees through the middle arch is the lit
+# pier, and the frame of the doorway has to stay darker than what it frames. With 14 in the doorway
+# its reveals stood at 0.42 against a pier's face that does not get past 0.36.
+OPEN_DOOR_LEVEL = 0
+FLIGHT_REACH = 18                       # the foot of a flight behind an arch beside the doorway, this far at most
+# Over that foot, under the head of the hall's west arcade. At 11 the flights are warm and a step
+# under the pier (0.21 against 0.33), which gives the hall its depth; at 9 or 8 they turn grey.
+FLIGHT_LEVEL, FLIGHT_Y = 11, 4
+WASH_PILASTERS = (5, 6, 11, 12)         # the skeleton's numbers: the two of either wing next to the entrance's corner
 WASH_OUT = 2                            # cells between the plinth and the projector's cell, counting it
-WASH_LEVEL = 8                          # the top of rank 3
-WASH_ROW = S.PLINTH[1] + 1              # where the beam lands: the first row over the plinth
-WASH_SPREAD = (-2, -1, 1, 2)            # ... beside the projector's row: the wall of the bay and its pilasters
+WASH_ROW = S.BASE[0]                    # where the beam lands: the foot of the shaft, the row over the plinth
+POOLED = ("props/lamps:street",)         # the lamps that get a pool at their foot: the tall ones
+POOL_DROP = 4                           # a pedestal's cap is at most this many rows over the ground its pool lies on
 DOOR_WHY, HALL_WHY = "sky/lights:door", "sky/lights:hall"
 WASH_WHY, WINDOW_WHY = "sky/lights:wash", "sky/lights:window"
+POOL_WHY, STAIR_WHY = "sky/lights:pool", "sky/lights:stair"
 GLOWING = tuple(B.PANELS[k] for k in ("tubes", "scope", "pilot_lamps"))     # glow without giving light
 NEAR = ((0, -1, 0), (1, 0, 0), (-1, 0, 0), (0, 0, 1), (0, 0, -1), (0, 1, 0))
 
@@ -68,22 +113,28 @@ def report(canvas):
     """canvas.light_report, made on the first call:
 
       placed     {cell: (level, why)}      every source this module placed
-      ranks      {1: n, 2: n, 3: n}        how many of them in each rank
-      levels     {level: n}
+      ranks      {1: n, 2: n, 3: n}        how many of them in each rank; a window's source before the
+                                           glass counts as the source behind the glass it stands for
+      levels     {level: n}                the levels as they are placed
       rejected   [(cell, level, why, reason)]   offers that got no source
       capped     [(cell, asked, given, why)]    offers cut down to the top of their rank
       merged     [(cell, level, why)]           offers that lost their cell to a brighter one
       moved      [(asked, cell, why)]           offers whose cell was taken, placed next to it
-      windows    {group: {"glass": [dark, dim, lit, bright], "sources": n, "unglazed": n,
-                 "undressed": n, "by_hand": n, "pairs": [(front, storey, bay, bay)],
+      windows    {group: {"glass": [dark, dim, lit, bright], "sources": n, "before": n,
+                 "unglazed": n, "undressed": n, "by_hand": n, "pairs": [(front, storey, bay, bay)],
                  "fronts": {front: [..4..]}}}
                  the windows as they are glazed on the canvas, group by group ("" is main's table);
+                 before: how many of the sources stand before the glass (the others behind it);
                  undressed: lit windows of main's table left without a source while DRESS is off
       table      {look: [dark, dim, lit, bright]}   what each look lights of main's table
       dressed    bool                       were the building's own lights asked for (DRESS, dress())
-      doors      [cell]                     the sources in open main doorways (one to an origin)
-      hall       [cell]                     the sources against the back of the vestibule behind them
+      doors      [cell]                     the sources in open main doorways (one to an origin; none
+                                            where the hall stands open behind the doorway)
+      hall       [cell]                     the sources behind them: against the back of a vestibule, or
+                                            in the open hall (before the pier, over the flights' feet)
       wash       [cell]                     the cells of the projectors of the wall wash
+      stair      [cell]                     the source of the lamp on the ring stair's newel
+      pools      [cell]                     the sources at the feet of the street lamps
       fifteen    [cell]                     sources of level 15 on the canvas (whoever placed them)
       foreign    n                          sources on the canvas that this module did not place
       isolated   [(cell, level)]            sources with nothing that glows within reach
@@ -93,8 +144,9 @@ def report(canvas):
     if not hasattr(canvas, "light_report"):
         canvas.light_report = dict(
             placed={}, ranks={1: 0, 2: 0, 3: 0}, levels={}, rejected=[], capped=[], merged=[], moved=[],
-            windows={}, table={}, dressed=False, doors=[], hall=[], wash=[], fifteen=[], foreign=0, isolated=[],
-            notes=[], problems=[], _seen=set(), _records=[])
+            windows={}, table={}, dressed=False, doors=[], hall=[], wash=[], stair=[], pools=[], fifteen=[],
+            foreign=0, isolated=[], notes=[], problems=[], _seen=set(), _records=[], _before=set(), _entered=set(),
+            _poles=[])
     return canvas.light_report
 
 
@@ -112,6 +164,7 @@ def summary(canvas):
         total = sum(g)
         out.append(f"windows {group or 'main'}: dark {g[0]}, dim {g[1]}, lit {g[2]}, bright {g[3]} "
                    f"({100.0 * g[0] / total:.0f}% dark), {w['sources']} sources"
+                   + (f" ({w['sources'] - w['before']} of them behind the glass)" if w["sources"] > w["before"] else "")
                    + (f", {w['undressed']} left without (not dressed)" if w["undressed"] else "")
                    + (f", {w['unglazed']} not glazed" if w["unglazed"] else "")
                    + (f", {w['by_hand']} lit by hand" if w["by_hand"] else "")
@@ -119,7 +172,8 @@ def summary(canvas):
     for look, n in r["table"].items():
         out.append(f"main's table under {look}: dark {n[0]}, dim {n[1]}, lit {n[2]}, bright {n[3]}")
     out.append(f"dressed: {'yes' if r['dressed'] else 'no'}; doors: {r['doors'] or 'none'}; behind them: "
-               f"{len(r['hall'])} sources; wash: {len(r['wash'])} projectors; not placed here: {r['foreign']}; level 15: {len(r['fifteen'])}; "
+               f"{len(r['hall'])} sources; wash: {len(r['wash'])} projectors; stair: {len(r['stair'])}; "
+               f"pools: {len(r['pools'])}; not placed here: {r['foreign']}; level 15: {len(r['fifteen'])}; "
                f"isolated: {len(r['isolated'])}")
     for key in ("capped", "moved", "merged", "rejected"):
         for entry in r[key]:
@@ -188,6 +242,7 @@ def _put(canvas, r, cell, level, why):
             r["placed"][cell] = (level, why)
             if old_why != why:
                 r["merged"].append((cell, old, old_why))
+                r["_before"].discard(cell)
             return "raised"
         if old_why != why:
             r["merged"].append((cell, level, why))
@@ -210,7 +265,8 @@ def _records(canvas, origin):
         if not w.get("blind"):
             out.append(dict(group="", origin=tuple(int(v) for v in origin), front=w["front"], bay=w["bay"],
                             storey=w["storey"], cells=[tuple(c) for c in w["cells"]],
-                            inward=tuple(w["inward"]), y=tuple(w["y"]), level=None, look=None, table=True))
+                            inward=tuple(w["inward"]), y=tuple(w["y"]), level=None, inside=False, look=None,
+                            table=True))
     return out
 
 
@@ -227,8 +283,11 @@ def _glass(canvas, w):
 
 
 def _behind(canvas, r, w, tier):
-    """Place the sources behind a lit window. Returns how many stand there, or None when the scene
-    has put a source of its own behind this glass."""
+    """Place the sources of a lit window: in the cell before the glass, L.THROUGH under the level
+    the window has behind it, or, where no column has that cell free, behind the glass at that
+    level; a window registered as "inside" keeps them there whatever is free (_lightkit.glazed()
+    says what for). Returns them as [(cell, level, is it before the glass)], or None when the
+    scene has put a source of its own next to this glass."""
     ox, oy, oz = w["origin"]
     y0, y1 = w["y"]
     rows = y1 - y0 + 1
@@ -239,19 +298,29 @@ def _behind(canvas, r, w, tier):
     mid = len(w["cells"]) // 2
     columns = sorted(range(len(w["cells"])), key=lambda i: (abs(i - mid), i))
     why = f"{WINDOW_WHY} {w['group'] + ' ' if w['group'] else ''}{w['front']} {w['bay']} {w['storey']}"
-    behind = [(x + ox + dx, y + oy, z + oz + dz) for x, z in w["cells"] for y in range(y0, y1 + 1)]
-    if any(canvas.name(*c) == B.LIGHT and c not in r["placed"] for c in behind):
+    beside = [(x + ox + s * dx, y + oy, z + oz + s * dz)
+              for s in (1, -1) for x, z in w["cells"] for y in range(y0, y1 + 1)]
+    if any(canvas.name(*c) == B.LIGHT and c not in r["placed"] for c in beside):
         return None
-    n = 0
+    out = []
     for y in ys:
-        for i in columns:
-            x, z = w["cells"][i]
-            if _put(canvas, r, (x + ox + dx, y + oy, z + oz + dz), level, why) != "taken":
-                n += 1
-                break
+        spots = []
+        if level > L.THROUGH and not w.get("inside"):
+            spots += [((x + ox - dx, y + oy, z + oz - dz), level - L.THROUGH, True)
+                      for x, z in (w["cells"][i] for i in columns)]
+        spots += [((x + ox + dx, y + oy, z + oz + dz), level, False)
+                  for x, z in (w["cells"][i] for i in columns)]
+        for cell, given, before in spots:
+            done = _put(canvas, r, cell, given, why)
+            if done == "taken":
+                continue
+            if before and done != "kept":
+                r["_before"].add(cell)
+            out.append((cell, given, before))
+            break
         else:
-            r["notes"].append(f"{why}: no free cell behind the glass in row {y + oy}")
-    return n
+            r["notes"].append(f"{why}: no free cell before or behind the glass in row {y + oy}")
+    return out
 
 
 def _windows(canvas, r, origin):
@@ -261,8 +330,8 @@ def _windows(canvas, r, origin):
         if key in r["_seen"]:
             continue
         r["_seen"].add(key)
-        group = r["windows"].setdefault(w["group"], dict(glass=[0, 0, 0, 0], sources=0, unglazed=0, undressed=0,
-                                                         by_hand=0, pairs=[], fronts={}))
+        group = r["windows"].setdefault(w["group"], dict(glass=[0, 0, 0, 0], sources=0, before=0,
+                                                         unglazed=0, undressed=0, by_hand=0, pairs=[], fronts={}))
         tier = _glass(canvas, w)
         if tier is None:
             group["unglazed"] += 1
@@ -273,53 +342,93 @@ def _windows(canvas, r, origin):
         if tier > L.DARK and w["table"] and not r["dressed"]:
             group["undressed"] += 1
         elif tier > L.DARK:
-            n = _behind(canvas, r, w, tier)
-            if n is None:
+            outside = len(r["_before"])
+            sources = _behind(canvas, r, w, tier)
+            if sources is None:
                 group["by_hand"] += 1
             else:
-                group["sources"] += n
+                group["sources"] += len(sources)
+                group["before"] += len(r["_before"]) - outside
 
 
 # ---- the entrance -------------------------------------------------------------------------------------
+def _furnished():
+    """Has the star hall moved into the shell (main/facade.furnished(), once the facade has it)?
+    What the arches show is the hall itself then, and the hall's own lamps light it."""
+    try:
+        from ..main import facade
+    except ImportError:
+        return False
+    return bool(getattr(facade, "furnished", lambda: False)())
+
+
 def _entrance(canvas, r, origin):
-    """The light of the entrance. One source in the open main doorway, where a doorway stands: open
-    from the glass plane to the pilaster plane, a jamb on either side, something over it, ground
-    under it. And the vestibule behind it, which nobody has furnished yet: where a wall closes the
-    view through the doorway within HALL_DEPTH cells of the glass plane, a source stands against
-    it; the same, two steps lower, behind the arches beside the doorway when the entrance is an
-    arcade. When the hall is built its walls stand further back, and its own lamps take over."""
+    """The light of the entrance, which stands in for the lamps of a hall nobody has furnished yet.
+    One source in the open main doorway, where a doorway stands: open from the glass plane to the
+    pilaster plane, a jamb on either side, something over it, ground under it. And the vestibule
+    behind it: where a wall closes the view through the doorway within HALL_DEPTH cells of the
+    glass plane, a source stands against it; the same, two steps lower, behind the arches beside
+    the doorway when the entrance is an arcade.
+    Where no wall closes the view and the hall stands open behind the arches (OPEN_HALL, with
+    main/shell in the tree), the light is in the hall and not in the doorway: a source before the
+    face the doorway looks at, the telescope pier's east face, and one over the foot of the flight
+    behind either arch beside the doorway. The doorway itself gets OPEN_DOOR_LEVEL, nothing: its
+    frame stays darker than the pier it frames (the director's ruling D: from the court the
+    brightest thing in the middle arch is the pier's east face, and the arches beside it are darker).
+    Once the star hall has moved in, nothing of this is placed: the hall's own lamps light what
+    the arches show, and the source in the doorway, which made the door's frame the brightest thing
+    seen from inside the hall, goes with the hall's moving in (the director, #58129)."""
     ox, oy, oz = origin
+    if _furnished() or tuple(origin) in r["_entered"]:
+        return
     for bay in ENTRANCE_BAYS:
         wall = S.east_wall_x(bay) + ox
         z = S.bay_center_z(bay) + oz
         glass = wall + S.DEPTH_GLASS
-        if bay == DOOR_BAY:
+        door = bay == DOOR_BAY
+        if door:
             cell = (glass, DOOR_Y + oy, z)
-            if cell in r["doors"]:
-                return
             through = all(not canvas.has(x, y + oy, z) or (x, y + oy, z) in r["placed"]
                           for x in range(glass, wall + S.DEPTH_PILASTER + 1) for y in range(0, 3))
             jambs = _stops(canvas, wall, 1 + oy, z - 2) and _stops(canvas, wall, 1 + oy, z + 2)
             head = any(_stops(canvas, wall, y + oy, z) for y in range(3, S.FRIEZE + 1))
             ground = canvas.has(wall, S.PAVING_Y + oy, z)
-            if not (through and jambs and head and ground) or _put(canvas, r, cell, DOOR_LEVEL, DOOR_WHY) == "taken":
+            if not (through and jambs and head and ground):
                 return
-            r["doors"].append(cell)
         elif _stops(canvas, wall, DOOR_Y + oy, z):
             continue                                    # a bay with a wall in it: no arch
         back = next((x for x in range(glass - 1, glass - 1 - HALL_DEPTH, -1) if _stops(canvas, x, HALL_Y + oy, z)), None)
-        if back is None or back + 1 >= glass:
-            continue
-        cell = (back + 1, HALL_Y + oy, z)
-        if _put(canvas, r, cell, HALL_LEVEL if bay == DOOR_BAY else SIDE_LEVEL, HALL_WHY) != "taken":
-            r["hall"].append(cell)
+        spot, level, in_door = None, 0, DOOR_LEVEL
+        if back is not None:                            # a vestibule: against its back wall
+            if back + 1 < glass:
+                spot, level = (back + 1, HALL_Y + oy, z), HALL_LEVEL if door else SIDE_LEVEL
+        elif not OPEN_HALL:
+            pass
+        elif door:                                      # the open hall: before the face the doorway looks at
+            deep = range(glass - 1 - HALL_DEPTH, glass - 1 - HALL_REACH, -1)
+            face = next((x for x in deep if _stops(canvas, x, PIER_Y + oy, z)), None)
+            if face is not None:
+                spot, level, in_door = (face + 1, PIER_Y + oy, z), PIER_LEVEL, OPEN_DOOR_LEVEL
+        else:                                           # ... and over the foot of what rises behind an arch
+            foot = next((x for x in range(glass - 1, glass - 1 - FLIGHT_REACH, -1) if canvas.has(x, S.GROUND + oy, z)), None)
+            if foot is not None:
+                spot, level = (foot, FLIGHT_Y + oy, z), FLIGHT_LEVEL
+        if door:
+            r["_entered"].add(tuple(origin))
+            if in_door and _put(canvas, r, cell, in_door, DOOR_WHY) != "taken":
+                r["doors"].append(cell)
+        if spot is not None and _put(canvas, r, spot, level, HALL_WHY) != "taken":
+            r["hall"].append(spot)
 
 
 # ---- the wall wash -----------------------------------------------------------------------------------
 def _wash(canvas, r, origin):
-    """A projector two cells before the plinth of each wash bay, where the front stands and the
-    ground before it is free, and the sources where its beam lands: in the row over the plinth, the
-    first free cell before the wall or the pilaster, as far along the front as WASH_SPREAD says.
+    """A projector at the foot of each wash pilaster, two cells before the plinth, where the front
+    stands and the ground before it is free; and the source where its beam lands: in the row over
+    the plinth, the first free cell before what stands in the pilaster's line there (its shaft), no
+    further out than the projector itself. One source and no more: the light falls by one a row up
+    the shaft, which is the shape of a beam from below. Nothing is placed before the wall between
+    two pilasters: the wash is a row of upright bands, not a lighter storey.
     The lamp brings a source of its own for the ground around it, settled with the other offers.
     Returns the number of display entities placed."""
     try:
@@ -329,9 +438,9 @@ def _wash(canvas, r, origin):
         return 0
     ox, oy, oz = origin
     n = 0
-    for bay in WASH_BAYS:
-        z = S.bay_center_z(bay)
-        front = S.east_wall_x(bay)
+    for k in WASH_PILASTERS:
+        z = S.pilaster_z(k)
+        front = max(S.east_wall_x(k), S.east_wall_x(k + 1))     # a pilaster stands with the bay that comes further out
         out = range(front + S.DEPTH_CORNICE + 1, front - 2, -1)
         foot = next((x for x in out if canvas.has(x + ox, oy, z + oz)), None)      # the plinth's outermost block
         if foot is None:
@@ -340,25 +449,47 @@ def _wash(canvas, r, origin):
         cell = (x + ox, oy, z + oz)
         if cell in r["wash"]:
             continue
-        landing = []
-        for dz in WASH_SPREAD:
-            wall = next((wx for wx in range(foot, front - 2, -1)
-                         if _stops(canvas, wx + ox, WASH_ROW + oy, z + dz + oz)), None)
-            if wall is not None and not canvas.has(wall + 1 + ox, WASH_ROW + oy, z + dz + oz) \
-                    and x - (wall + 1) <= L.REACH:
-                landing.append((wall + 1 + ox, WASH_ROW + oy, z + dz + oz))
+        line = [(sx + ox, WASH_ROW + oy, z + oz) for sx in range(x, front - 2, -1)]     # from over the projector inwards
+        shaft = next((i for i, spot in enumerate(line) if canvas.has(*spot) and spot not in r["placed"]), None)
         free = all(not canvas.has(cx + ox, cy + oy, z + oz) for cx, cy in ((x - 1, 0), (x, 0), (x, 1)))
         if not free or not canvas.has(x + ox, S.PAVING_Y + oy, z + oz):
-            r["notes"].append(f"no wall wash before bay {bay}: the cell {cell} is taken or has no ground")
+            r["notes"].append(f"no wall wash at pilaster {k}: the cell {cell} is taken or has no ground")
             continue
-        if not landing:
-            r["notes"].append(f"no wall wash before bay {bay}: no free cell at the foot of the wall within "
-                              f"{L.REACH} cells of the projector")
+        if not shaft:
+            r["notes"].append(f"no wall wash at pilaster {k}: no free cell before the foot of its shaft")
             continue
         n += lamps.place(canvas, "uplight", (x + 0.5, float(S.GROUND), z + 0.5), facing="west", origin=origin)
         r["wash"].append(cell)
-        for spot in landing:
-            _put(canvas, r, spot, WASH_LEVEL, WASH_WHY)
+        _put(canvas, r, line[shaft - 1], L.WASH, WASH_WHY)
+    return n
+
+
+# ---- the ring stair -----------------------------------------------------------------------------------
+def _stair(canvas, r, origin):
+    """The lamp on the newel of the ring stair, at its mouth on the gallery: the low lamp of props
+    on the brass post main/shell stands there (stair_posts(); the lower of the two), with its source
+    in the lamp's own cell. Nothing where no such post stands (a tree or a scene without it), and
+    nothing on the newel in the dome room. Returns the number of display entities placed."""
+    try:
+        from ..main import shell
+        from ..props import lamps
+    except ImportError:
+        return 0
+    posts = getattr(shell, "stair_posts", None)
+    rail = getattr(B, "BRASS_RAIL", None)
+    if posts is None or rail is None:
+        return 0
+    ox, oy, oz = origin
+    x, y, z = min(posts(), key=lambda p: p[1])
+    post, cell = (x + ox, y + oy, z + oz), (x + ox, y + 1 + oy, z + oz)
+    if canvas.name(*post) != rail or cell in r["stair"]:
+        return 0
+    if canvas.has(*cell):
+        r["notes"].append(f"no lamp on the ring stair's newel: the cell {cell} over it is taken")
+        return 0
+    n = lamps.place(canvas, "post", (x + 0.5, float(y + 1), z + 0.5), origin=origin, light=False)
+    _put(canvas, r, cell, L.STAIR, STAIR_WHY)
+    r["stair"].append(cell)
     return n
 
 
@@ -395,6 +526,67 @@ def _settle(canvas, r):
         _put(canvas, r, target, level, why)
         if target != cell:
             r["moved"].append((cell, target, why))
+        if why in POOLED and target not in r["_poles"]:
+            r["_poles"].append(target)
+
+
+# ---- the pools ------------------------------------------------------------------------------------------
+def _solid(canvas, x, y, z):
+    state = canvas.b.get((x, y, z))
+    return state is not None and AB.name_of(state) != B.LIGHT
+
+
+def _ground(canvas, r, x, y, z, drop):
+    """The row of the lowest free cell of a column from row y down, `drop` rows at most, that has
+    something under it; None where the column is taken in row y or has no ground that near."""
+    for row in range(y, y - drop - 1, -1):
+        if canvas.has(x, row, z) and (x, row, z) not in r["placed"]:
+            return None
+        if _solid(canvas, x, row - 1, z):
+            return row
+    return None
+
+
+def _pools(canvas, r):
+    """One source at the foot of every street lamp whose own source stands (r["_poles"], the cells
+    of their globes). The foot is read off the lamp's model, the display entity under the globe.
+    On level ground the source stands in the foot cell of the post. A lamp on a pedestal (of the
+    columns round its foot, those whose middle is within a cell and a half of it, not more than
+    half are level with it) gets it on the ground beside the pedestal, POOL_DROP rows down at
+    most: of the lowest cells round the foot the one nearest to the post, then the one nearer to
+    the site's axis, then the one further east, where the visitor comes from. Never further out
+    than those columns: the pool belongs to the globe above it and to nothing else."""
+    if not L.POOL:
+        return
+    feet = {}
+    for x, y, z, _ in canvas.entities:
+        feet.setdefault((int(math.floor(x)), int(math.floor(z))), []).append((x, y, z))
+    for gx, gy, gz in list(r["_poles"]):
+        under = [p for p in feet.get((gx, gz), ()) if 0.0 < gy + 0.5 - p[1] <= L.REACH_UP + 0.5]
+        if not under:
+            r["notes"].append(f"no pool under the street lamp at {(gx, gy, gz)}: its model is not found under the globe")
+            continue
+        ax, ay, az = max(under, key=lambda p: p[1])
+        fy = int(math.floor(ay + 1e-6))
+        rows = {(x, z): _ground(canvas, r, x, fy, z, POOL_DROP)
+                for x in range(int(math.ceil(ax - 2.0)), int(math.floor(ax + 1.0)) + 1)
+                for z in range(int(math.ceil(az - 2.0)), int(math.floor(az + 1.0)) + 1)}
+        level = sum(1 for row in rows.values() if row == fy)
+        if rows.get((gx, gz)) == fy and 2 * level > len(rows):
+            spots = [(gx, fy, gz)]
+        else:
+            low = min((row for row in rows.values() if row is not None), default=None)
+            spots = sorted(((x, low, z) for (x, z), row in rows.items() if row == low and low is not None),
+                           key=lambda c: (round((c[0] + 0.5 - ax) ** 2 + (c[2] + 0.5 - az) ** 2, 6),
+                                          abs(c[2] + 0.5 - S.AXIS_Z), -c[0]))
+        for spot in spots:
+            if spot in r["pools"]:
+                break
+            if _put(canvas, r, spot, L.POOL, POOL_WHY) != "taken":
+                r["pools"].append(spot)
+                break
+        else:
+            r["notes"].append(f"no pool under the street lamp at {(gx, gy, gz)}: no free cell on the ground at its foot")
 
 
 # ---- the survey ------------------------------------------------------------------------------------------
@@ -409,7 +601,7 @@ def _survey(canvas, r):
         level = F.emission(*AB.parse(state))
         ours = cell in r["placed"]
         if ours:
-            r["ranks"][L.rank(level)] += 1
+            r["ranks"][L.rank(level + L.THROUGH if cell in r["_before"] else level)] += 1
             r["levels"][level] = r["levels"].get(level, 0) + 1
         else:
             r["foreign"] += 1
@@ -459,6 +651,8 @@ def build(canvas, origin=(0, 0, 0)):
     _windows(canvas, r, origin)
     _entrance(canvas, r, origin)
     n = _wash(canvas, r, origin) if r["dressed"] else 0
+    n += _stair(canvas, r, origin)
     _settle(canvas, r)
+    _pools(canvas, r)
     _survey(canvas, r)
     return n
