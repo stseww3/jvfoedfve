@@ -24,10 +24,18 @@ the right and the engine straight ahead.
     y  the floor is S.LOWER_GROUND; the shells' axes lie AXIS_H above it
     z  the axes: AXES_Z
 
-How it is lit. Every piece of a boiler stands (its entity) in the cell before that boiler's fire
-door, where LIGHTS asks for the fire's light: the whole boiler takes the light of its own fire,
-whatever the room does. The front and the fittings are drawn in the kit's leaning frame, so that
-what looks at the firing floor is shown at its full tone.
+How it is lit. Every piece of a boiler but one stands (its entity) in the cell before that
+boiler's fire door, where LIGHTS asks for the fire's light: the whole boiler takes the light of
+its own fire, whatever the room does. The front and the fittings are drawn in the kit's leaning
+frame, so that what looks at the firing floor is shown at its full tone. The rear saddle is a
+piece of its own and stands where it is, under the shell, in the light the floor has there.
+
+What stops whoever walks into it. A model has no collision: build() puts barriers into the cells
+the shells fill (SOLID), in the two rows through which a shell is as wide as its cells. The flue
+of No. 2 hangs behind it at the height of the head and cannot be shut like that: a low railing
+keeps the walker out of the corner it crosses (GUARD), from under the back end of No. 2 east to
+the wall and across the far end of the alley between the two boilers. The alley itself and the
+one north of No. 1 stay open; they end blind.
 
 Every model is drawn in texels in a boiler's own frame: x from the front plate towards the back,
 y up from the floor, z from the axis (south is positive).
@@ -35,6 +43,7 @@ y up from the floor, z from the axis (south is positive).
 import functools
 import math
 
+from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
 from . import _powerkit as K
@@ -47,15 +56,18 @@ FRONT_X = 79.0                          # the plane of the front plates
 AXES_Z = (24.5, 28.5)                   # No. 1 (on the middle of the chimney foot's west face), No. 2
 CHIMNEY_WEST = 84.0                     # the west face of the chimney's foot (site/powerhouse.TOWER)
 CHIMNEY_SOUTH = 26.0                    # ... and its south face
+EAST_WALL = 88.0                        # the room's east wall (site/powerhouse.ROOM)
 R = 1.5                                 # the shell: three blocks across (the card)
 LEN = 4.5                               # ... and four and a half long
 AXIS_H = 2.0                            # its axis over the floor: half a block of saddle under it
 DOME_X = 2.5                            # the steam dome's axis, from the front plate
 STAND = (-0.5, 1.5, 0.0)                # where a boiler's entities stand, in its own frame: before the fire door
+REAR = (3.75, 0.5, 0.0)                 # ... and its rear saddle's: in the saddle
 
 # --- a boiler (its own frame, texels) -----------------------------------------------------------------
 _R, _LEN, _AXIS = 24, 72, 32
 _AT = tuple(v * 16.0 for v in STAND)
+_REAR = tuple(v * 16.0 for v in REAR)
 _SIDES = 16
 _STEP = 360.0 / _SIDES
 _HOOPS = ((0, 3), (19, 22), (50, 53), (69, 72))     # the two end rings and the two girth laps between them
@@ -81,12 +93,29 @@ STEAM_OUT = [(FRONT_X + DOME_X, FLOOR + 5.0, z) for z in AXES_Z]
 # safety valve (a wisp of steam).
 FIRE_DOORS = [(FRONT_X - 0.25, FLOOR + _DOOR_Y / 16.0, z) for z in AXES_Z]
 SAFETY_VALVES = [(FRONT_X + _VALVE / 16.0, FLOOR + 67.0 / 16.0, z) for z in AXES_Z]
+# The cells in which build() puts the collision of the shells (barriers): the cells a shell lies
+# in, from its front plate to its back, in the second and third row over the floor. Under them
+# nobody gets, and nobody gets on top.
+SOLID = tuple((x, int(FLOOR) + y, int(math.floor(z)) + dz) for z in AXES_Z
+              for x in range(int(FRONT_X), int(math.ceil(FRONT_X + LEN))) for y in (1, 2) for dz in (-1, 0, 1))
+# The railing: one block of the materials line's at the floor in each of these cells. Its line is
+# the middle of the cells: the plane of the back plates across the alley (its ends stand under the
+# two shells, the north one against the chimney's foot), and half a block inside the south flank
+# of No. 2 from under that shell's back end to the east wall.
+_BACK = int(math.floor(FRONT_X + LEN))  # 83: the column the back plates stand in
+_INNER = (int(math.floor(AXES_Z[0])) + 1, int(math.floor(AXES_Z[1])) - 1)   # 25, 27: the shells' cells next to the alley
+_SOUTH = int(math.floor(AXES_Z[1])) + 1                                     # 29: the southmost cells of No. 2
+GUARD = (tuple((x, int(FLOOR), _SOUTH) for x in range(_BACK, int(EAST_WALL)))
+         + tuple((_BACK, int(FLOOR), z) for z in range(_INNER[0], _INNER[1] + 1)))
+GUARD_RAIL = B.IRON_BARS
 # Boxes (x0, y0, z0, x1, y1, z1) in which something of the set stands: nothing else goes there.
 KEEP_CLEAR = tuple((FRONT_X - 0.375, FLOOR, z - R - 0.125, FRONT_X + LEN + 0.0625, FLOOR + 5.0, z + R + 0.125)
                    for z in AXES_Z) + (
     (FRONT_X + LEN, FLOOR + AXIS_H - 0.625, AXES_Z[0] - 0.625, CHIMNEY_WEST, FLOOR + AXIS_H + 0.625, AXES_Z[0] + 0.625),
     (FRONT_X + LEN, FLOOR + AXIS_H - 0.625, CHIMNEY_SOUTH, FRONT_X + _TURN[1] / 16.0 + 0.625, FLOOR + AXIS_H + 0.625,
      AXES_Z[1] + 0.625),
+    (float(_BACK), FLOOR, float(_SOUTH), EAST_WALL, FLOOR + 1.0, _SOUTH + 1.0),                # the railing
+    (float(_BACK), FLOOR, float(_INNER[0]), _BACK + 1.0, FLOOR + 1.0, _INNER[1] + 1.0),
 )
 
 # --- materials (the palette's, and nothing else) ------------------------------------------------------
@@ -319,7 +348,6 @@ def _body():
               rot=("x", _STEP * (i + 0.5), (_LEN / 2.0, _AXIS, 0.0)), faces={"u": plates[i], "d": plates[7 - i]})
     for x0, x1 in _HOOPS:
         _hoop(d, x0, x1)
-    _saddle(d, 58, 62)
     # the manhole on the crown of the last ring: seat, cover, the bar that holds it down and its nut
     top = _AXIS + _R
     d.tube("y", (61, 0), top - 1, top + 2, 5, IRON, sides=12)
@@ -327,6 +355,14 @@ def _body():
     d.box((55, top + 3, -1), (67, top + 4.5, 1), IRON_L)
     d.box((60, top + 4.5, -1), (62, top + 6, 1), BRASS)
     d.plate("e", (_LEN, _AXIS, 0), 50, 50, _back_picture().sprite(PREFIX + "back"), lift=0.25)
+    return d
+
+
+def _rear():
+    """The rear saddle. It stands where it is: the far end of a shell has a model of its own near
+    it, as the collision in it must have (tools/check.py, blocks)."""
+    d = K.Draw(PREFIX + "saddle", at=_REAR, scale=2.0, step=K.TEXEL)
+    _saddle(d, 58, 62)
     return d
 
 
@@ -433,7 +469,7 @@ def _flue(name, turn):
 
 @functools.lru_cache(maxsize=None)
 def _drawn():
-    built = [_body(), _door(1), _door(2), _dome(), _flue("flue", False), _flue("flue_turn", True)]
+    built = [_body(), _rear(), _door(1), _door(2), _dome(), _flue("flue", False), _flue("flue_turn", True)]
     return {d.m.name[len(PREFIX):]: d for d in built}
 
 
@@ -442,12 +478,16 @@ def models():
 
 
 def build(canvas, origin=(0, 0, 0)):
-    """Place the two boilers and the light of their fires; returns the number of display entities."""
+    """Place the two boilers, the light of their fires, their collision and the railing behind
+    them; returns the number of display entities."""
     drawn = _drawn()
     K.light(canvas, LIGHTS, origin, "machines/boiler:fire")
+    K.solid(canvas, SOLID, origin)
+    K.blocks(canvas, GUARD, GUARD_RAIL, origin)
     n = 0
     for i, z in enumerate(AXES_Z):
         at = (FRONT_X + STAND[0], FLOOR + STAND[1], z + STAND[2])
         for name in ("body", f"door_{i + 1}", "dome", "flue_turn" if i else "flue"):
             n += K.place(canvas, drawn[name], at, origin)
+        n += K.place(canvas, drawn["saddle"], (FRONT_X + REAR[0], FLOOR + REAR[1], z + REAR[2]), origin)
     return n

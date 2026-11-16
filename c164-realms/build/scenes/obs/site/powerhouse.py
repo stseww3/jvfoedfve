@@ -50,9 +50,13 @@ between polished courses.
   bridge    The steam main leaves the west front through the pier in row PIPE_Z, a course under
             the cornice, and runs west in that one row: over the alley on a girder that a portal
             of two iron posts carries, over the terrace's railing without touching it (the girder's
-            underside is half a block above the bars), to a shoe on the terrace, where it turns
-            down into the ground. A cable runs over it. The row is south of the court and never
-            crosses the axis.
+            underside is half a block above the bars), to the bridge head two cells inside the
+            railing, where it turns down into the ground: a riveted elbow, a length of plate, a
+            riveted foot on a stone plinth three cells square and half a block high, the terrace's
+            dressing stone. A knee on the down pipe carries the girder's end, so that one sees
+            between the pipe and the railing; two cover plates in the paving west of the plinth
+            say which way the main goes on under the court. A cable runs over it. The row is south
+            of the court and never crosses the axis.
   run       RUN lays the main on along the ground of the upper terrace to the foot of the main
             building. Off by default: the master scene shows the main going into the ground at the
             bridge head and nothing more of it up there.
@@ -136,6 +140,7 @@ HEAD_X = S.EAST_EDGE_X - 2                          # 58, where the main goes do
 POSTS_X = (X0 - 5, X0 - 2)                          # 62 and 65, the portal in the alley
 JOINT_STEP = 3                                      # a riveted collar on the main every third cell
 RUN_X = (K.FOOT_STRIP_X + 2, HEAD_X - 1)            # x 22..57, the main on the terrace's ground when RUN is on
+COVERS_X = (HEAD_X - 3, HEAD_X - 2)                 # 55 and 56: cover plates in the paving west of the head's plinth
 CROSSING = (43, 47)                                 # there the path to the south lookout crosses it (the site
 #                                                     lead's figures): the main dips under five cover plates
 # What the props line hangs on the main, as props/pipes.mount() takes it: (kind, point, keywords).
@@ -169,6 +174,7 @@ GLOW = B.WINDOW_CURTAIN.block                       # stands in for the fire win
 ROOF_GLASS = B.SKYLIGHT.block
 SLATE = B.SLATE_TILE.stairs
 VERGE_CAP = B.TUFF_SMOOTH.slab + "[type=bottom]"    # the stone on the point of a saw tooth's gable
+PLINTH = B.TUFF_SMOOTH.slab + "[type=bottom]"       # the bridge head's plinth on the upper terrace
 
 # --- the fronts -------------------------------------------------------------------------------------
 STEP = {"north": (0, -1), "south": (0, 1), "west": (-1, 0), "east": (1, 0)}
@@ -554,7 +560,9 @@ def _bridge(p, run):
     # terrace's railing by half a block), a whole block over the shoe and from post to post of the
     # portal, a haunch on either side of the portal
     for x in range(HEAD_X + 1, X0):
-        if x == HEAD_X + 1 or POSTS_X[0] <= x <= POSTS_X[1]:
+        if x == HEAD_X + 1:
+            girder = f"{IRON_STAIRS}[facing=west,half=top]"     # the knee on the down pipe
+        elif POSTS_X[0] <= x <= POSTS_X[1]:
             girder = IRON
         elif x == POSTS_X[0] - 1:
             girder = f"{IRON_STAIRS}[facing=east,half=top]"
@@ -573,13 +581,18 @@ def _bridge(p, run):
     for x in range(POSTS_X[0] + 1, POSTS_X[1]):
         for y in (PIPE_Y - 3, PIPE_Y - 2):
             p.put(x, y, z, B.IRON_BARS)
-    # the bridge head on the upper terrace: a shoe under the girder's end (a stair, so that the
-    # terrace's railing beside it does not reach out to it), and the main turning down
-    p.put(HEAD_X + 1, S.GROUND, z, f"{IRON_STAIRS}[facing=west,half=bottom]")
-    for y in range(S.GROUND, PIPE_Y):
+    # the bridge head on the upper terrace: the main turns down and goes into the ground through a
+    # riveted foot on a stone plinth; nothing stands between the down pipe and the terrace's railing
+    for x in range(HEAD_X - 1, HEAD_X + 2):
+        for row in range(z - 1, z + 2):
+            p.put(x, S.GROUND, row, PLINTH)
+    p.put(HEAD_X, S.GROUND, z, IRON)
+    for y in range(S.GROUND + 1, PIPE_Y):
         p.put(HEAD_X, y, z, PLATE)
     if not run:
         p.put(HEAD_X, S.PAVING_Y, z, IRON)                      # the sleeve where it enters the ground
+        for x in COVERS_X:
+            p.put(x, S.PAVING_Y, z, IRON)                       # the trench's cover plates, level with the paving
         return
     for x in range(RUN_X[0], RUN_X[1] + 1):
         if CROSSING[0] <= x <= CROSSING[1]:
