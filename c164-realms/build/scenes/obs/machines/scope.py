@@ -50,6 +50,7 @@ import numpy as np
 from artkit import models as M
 from artkit.pixelart import Mat
 
+from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
 
@@ -584,11 +585,12 @@ A_SLEEVE = (-38.0, -10.5, 10.0)         # the polar sleeve: from, to (texels alo
 A_CHEEK = -14.5                         # where the head's cheeks end: the declination circle passes over them
 A_COLUMN = [                            # the pier's sections: y0, y1, half size along x and along z (texels)
     (6.0, 22.0, 24.0, 27.0),
-    (24.0, 36.0, 21.0, 23.5),
+    (24.0, 36.0, 24.0, 24.0),           # no narrower than A_SOLID's cells below y 32: they stand inside it
     (38.0, 44.0, 18.0, 17.5),
 ]
+A_SOLID = (1, 2)                        # the barrier in the column: cells either side of the axis' own, and how many high
 A_WEIGHTS = (25.0, 38.0, 9.0)           # the counterweights: from, to (texels from the crossing), radius
-A_CLOCK = (21.0, 26.0, 16.25)           # the driving clock on the pier's east face, its shaft under the mitre box
+A_CLOCK = (24.0, 26.0, 16.25)           # the driving clock on the pier's east face, its shaft under the mitre box
 
 
 def _pier_a():
@@ -931,6 +933,20 @@ def placed(version=None):
     ]]
 
 
+def solid(version=None, origin=(0, 0, 0)):
+    """The cells nobody can walk into: [(x, y, z)], scene coordinates. They lie inside the two
+    lower sections of the pier of a, which are solid iron to the eye, so what stops a visitor is
+    what he sees (INTERFACE, the fifth supplement: a barrier stands inside a solid model, nowhere
+    out of its outline, two cells high at the most). The piers of b are not built in the map and
+    have none."""
+    if _version(version) != "a":
+        return []
+    reach, high = A_SOLID
+    x, y, z = (int(math.floor(v + o)) for v, o in zip((AXIS[0], CAP_Y, AXIS[1]), origin))
+    return [(x + i, y + j, z + k) for i in range(-reach, reach + 1) for j in range(high)
+            for k in range(-reach, reach + 1)]
+
+
 def build(canvas, origin=(0, 0, 0), version=None, lamp=True):
     """Stand the refractor on the pier's cap. Returns the number of display entities placed.
 
@@ -942,6 +958,8 @@ def build(canvas, origin=(0, 0, 0), version=None, lamp=True):
     n = 0
     for name, at, frame, scale in placed(version):
         n += _put(canvas, built[name], at, frame, scale, origin)
+    for x, y, z in solid(version, origin):
+        canvas.set(x, y, z, B.BARRIER)
     if lamp:
         try:
             from ..sky import _lightkit as L
@@ -982,6 +1000,16 @@ def _box(part):
     h = np.array([(part["hi"][i] - part["lo"][i]) / 2.0 for i in range(3)])
     q = part["rot"][0] if part["rot"] else M.IDENT
     return c, h, np.array([M._qrot(q, e) for e in ((1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0))])
+
+
+def _within(model, at, frame, scale, points, slack=1e-6):
+    """Which of `points` (scene coordinates) lie in a box of a placed model."""
+    q = (np.asarray(points, dtype=float) - np.array(at)) @ np.array(frame).T * (16.0 / scale) + np.array(model.anchor)
+    inside = np.zeros(len(q), dtype=bool)
+    for part in model.parts:
+        c, h, own = _box(part)
+        inside |= (np.abs((q - c) @ own.T) <= h + slack).all(axis=1)
+    return inside
 
 
 def _first(version, eye, target):
@@ -1234,6 +1262,21 @@ def report(version=None):
             lines.append(f"  {name}: x {lo[0]:.2f}..{hi[0]:.2f}, y {lo[1]:.2f}..{hi[1]:.2f}, z {lo[2]:.2f}..{hi[2]:.2f}")
             if lo[0] < x0 - 1e-6 or hi[0] > x1 + 1 + 1e-6 or lo[2] < z0 - 1e-6 or hi[2] > z1 + 1 + 1e-6:
                 problems.append(f"{name} stands over the edge of the cap (x {x0}..{x1 + 1}, z {z0}..{z1 + 1})")
+    cells = solid(version)
+    if cells:
+        name, at, frame, scale = placed(version)[0]
+        grid = np.linspace(0.0, 1.0, 9)
+        inner = np.array([(x + i, y + j, z + k) for x, y, z in cells for i in grid for j in grid for k in grid])
+        out = inner[~_within(built[name], at, frame, scale, inner)]
+        lo = [min(c[i] for c in cells) for i in range(3)]
+        hi = [max(c[i] for c in cells) for i in range(3)]
+        lines.append(f"  {len(cells)} barrier cells inside the pier's iron: x {lo[0]}..{hi[0]}, y {lo[1]}..{hi[1]}, "
+                     f"z {lo[2]}..{hi[2]}")
+        if len(out):
+            problems.append(f"a barrier reaches out of the pier's iron at {len(out)} of {len(inner)} points taken in "
+                            f"its cells, the first {tuple(round(float(v), 3) for v in out[0])}")
+        if hi[1] - lo[1] > 1:
+            problems.append(f"the barrier in the pier stands {hi[1] - lo[1] + 1} cells high, over 2")
     if version == "a":
         ps = [p for p in points[PREFIX + "axis_a"] if _dot(_sub(p, crossing("a")), DEC) < -A_WEIGHTS[0] / 16.0 + 0.01]
         lo = [min(p[i] for p in ps) for i in range(3)]
