@@ -7,12 +7,12 @@ keeps up with them as their packages are merged.
 """
 from artkit.canvas import Canvas
 
-from scenes.obs import main, materials, props, site, sky
+from scenes.obs import machines, main, materials, props, site, sky
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 80
 BIOME_MARGIN_Y = 140
-LINES = (site, main, props, sky)
+LINES = (site, main, machines, props, sky)
 
 
 def build():
@@ -23,13 +23,16 @@ def build():
 
 
 def build_models():
+    """The models of the lines built here, and the materials line's own: other lines show those
+    (the linings behind the building's windows)."""
     out = {}
-    for line in LINES:
+    for line in (materials,) + LINES:
         out.update(line.models() or {})
     return out
 
 
 def write_pack(pack_dir):
     """The court paints nothing itself; it stands on the repainted blocks as the materials line has
-    them today (ashlar, brass inlay, cast iron)."""
-    return materials.pack(pack_dir)
+    them today (ashlar, slate, the thin brass line, cast iron), under the sky line's own sky (the
+    scene takes the map's hour: without the sky's pictures the game's own sun is in it)."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
