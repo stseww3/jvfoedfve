@@ -193,10 +193,12 @@ DRAINS = [dict(at=(x + 0.5, float(Z0)), facing="north", top=EAVES + 1, bottom=FE
 # all within 32.
 VIEW = M.NEAR
 MODEL_VENT = "site_power_vent"
-VENT_REV = 40                                       # ticks a turn
+VENT_REV = 60                                       # ticks a turn: a vane passes every 7.5 ticks. Eight of them
+#                                                     at four steps a turn are half a command a tick
+VENT_R = 10.0                                       # pixels: the drum's radius, a block and a quarter across
 VENT_VANES = 8
 VENT_SLANT = 35.0                                   # degrees a vane is turned out of the drum's round
-VENT_TOP = 19.0                                     # pixels from the ridge roll to the nut on the crown
+VENT_TOP = 24.0                                     # pixels from the ridge roll to the nut on the crown: y 9.0
 VENTS = [(x + 0.5, EAVES + 4.5, z)                  # the middle of the ridge roll's top: y 7.5
          for x in range(RX0, RX0 + 4 * BAY, BAY) for z in (RZ0 + 2.5, RZ1 - 1.5)]
 
@@ -717,21 +719,21 @@ def _lamp(canvas, origin):
 @functools.lru_cache(maxsize=None)
 def _vent_model():
     """The rotary ventilator, in pixels from the middle of the ridge roll's top; its axis is y."""
-    dark, iron, light = P.mat("iron_dark"), P.mat("iron"), P.mat("iron", base=4)
+    dark, iron, zinc = P.mat("iron_dark"), P.mat("iron", base=4), P.mat("iron", base=5)
     on = (0.0, 0.0)
     m = M.Model(MODEL_VENT)
-    m.tube("y", on, 0.0, 1.0, 5.5, dark, sides=12)                      # the flashing on the ridge roll
-    m.tube("y", on, 1.0, 5.0, 3.5, dark, sides=12)                      # the spigot
-    m.tube("y", on, 5.0, 6.25, 7.5, iron, sides=12)                     # the drum's throat plate
-    m.tube("y", on, 6.25, 14.75, 1.0, dark, sides=4)                    # its spindle
-    for k in range(VENT_VANES):
+    m.tube("y", on, 0.0, 1.0, 6.0, dark, sides=12)                      # the flashing on the ridge roll
+    m.tube("y", on, 1.0, 6.0, 4.0, dark, sides=12)                      # the spigot
+    m.tube("y", on, 6.0, 7.5, VENT_R, iron, sides=12)                   # the drum's throat plate
+    m.tube("y", on, 7.5, 18.5, 1.0, dark, sides=4)                      # its spindle
+    for k in range(VENT_VANES):                                         # the vanes: sheet zinc
         with m.turned(("y", k * 360.0 / VENT_VANES)):
-            m.box((5.75, 6.25, -2.0), (6.25, 14.75, 2.0), light, grain="y", seed=7100,
-                  rot=("y", VENT_SLANT, (6.0, 10.5, 0.0)))
-    m.tube("y", on, 14.75, 16.0, 7.5, iron, sides=12)                   # the crown, stepped
-    m.tube("y", on, 16.0, 17.0, 5.0, dark, sides=12)
-    m.tube("y", on, 17.0, 17.75, 2.5, dark)
-    m.tube("y", on, 17.75, VENT_TOP, 0.75, iron, sides=4)               # the spindle's nut
+            m.box((8.0, 7.5, -2.5), (8.5, 18.5, 2.5), zinc, grain="y", seed=7100,
+                  rot=("y", VENT_SLANT, (8.25, 13.0, 0.0)))
+    m.tube("y", on, 18.5, 20.0, VENT_R, iron, sides=12)                 # the crown, stepped
+    m.tube("y", on, 20.0, 21.25, 7.0, iron, sides=12)
+    m.tube("y", on, 21.25, 22.25, 3.5, dark)
+    m.tube("y", on, 22.25, VENT_TOP, 1.0, dark, sides=4)                # the spindle's nut
     return m
 
 
