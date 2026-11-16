@@ -219,8 +219,14 @@ INDOORS = M.NEAR                 # the master clock: 32 blocks. No view of the b
 # pixels from the centre, with a brass edge round the opening painted on the plate; the drum behind
 # it is a hoop that leaves OPEN_DRUM pixels clear all round the axis, the whole of DIAL_DRUM deep,
 # for the wheels and the lit backing. The hands' bosses hang in the opening on main/tower's arbor.
+# What of the works stands still (the backing, the plates, the arbor) main/tower draws into this
+# dial's own model, so that it costs the views no entity: _face_open() hands it the model
+# (tower.works_into(model, 2.0), the 2.0 being the pixels to one of the model's units; the origin
+# is the dial's centre on its back plane, +z looks at whoever reads the dial, the hoop is z -6..0
+# and clear within 9, the plate z 0..0.5 with its opening 5.5). WORKS_IN_FACE says that it does.
 OPEN_HOLE = 11.0                 # pixels: an opening of 1.375 blocks in a dial of 2.5
 OPEN_DRUM = 18.0                 # pixels: the hoop's inner radius, 1.125 blocks
+WORKS_IN_FACE = True
 
 # --- the time ball ------------------------------------------------------------------------------
 BALL = "copper"                  # the colour tower() hangs (A0, 11-16); "red" is the other one made
@@ -608,6 +614,9 @@ def _face_open():
     m.ring("z", (0.0, 0.0, -deep / 2.0), (inner + outer) / 2.0, outer - inner, deep, IRON_DARK, sides=24)
     m.box((-10.0, -10.0, 0.0), (10.0, 10.0, 0.5), CREAM, skip="nweud", faces={"s": _tower_dial(OPEN_HOLE)})
     m.ring("z", (0.0, 0.0, 0.75), 10.5, 1.0, 1.5, BRASS_LIGHT, sides=24)
+    works = getattr(_tower_module(), "works_into", None)
+    if works is not None:
+        works(m, 2.0)
     return m
 
 
@@ -968,14 +977,19 @@ def ball(canvas, pos, colour=None, origin=(0, 0, 0)):
     return _put(canvas, name, pos, origin, tag=TAG_BALL, brightness=BALL_LIGHT, view=FAR, turns=_STANDING[name])
 
 
-def works_sides():
-    """The faces of the tower whose works main/tower shows behind the dial: its WORKS_SIDES. A tree
-    whose tower says nothing has every dial whole."""
+def _tower_module():
+    """main/tower, or None in a tree that has none."""
     try:
         from ..main import tower as T
     except ImportError:
-        return ()
-    return tuple(getattr(T, "WORKS_SIDES", ()))
+        return None
+    return T
+
+
+def works_sides():
+    """The faces of the tower whose works main/tower shows behind the dial: its WORKS_SIDES. A tree
+    whose tower says nothing has every dial whole."""
+    return tuple(getattr(_tower_module(), "WORKS_SIDES", ()))
 
 
 def tower(canvas, origin=(0, 0, 0), time=None, sides=SIDES, colour=None, works=None):
