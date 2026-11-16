@@ -1,0 +1,28 @@
+[trip 01:31:25 +0s] trip of obs: the code of 29e5f1e7 (tag 29e5f1e), view distance 12 (the server's 10), cloud range 128; 4 cores, 500 s at most
+[trip 01:31:25 +0s] clean: nodemc.py down  (up to 180 s)
+[trip 01:31:25 +0s] clean: exit 0, 0 s
+[trip 01:31:25 +0s] setup: nodemc.py setup  (up to 200 s)
+    [nodemc 01:31:25] vulkan: apiVersion 1.4.318, deviceName llvmpipe (LLVM 20.1.2, 256 bits), driverInfo Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+    [nodemc 01:31:25] java: /agent/realms-study/jdk/jdk-25.0.5+8-jre/bin/java
+    [nodemc 01:31:25] game files: whole ({"version": "26.3", "system": "linux", "mainClass": "net.minecraft.client.main.Main", "assetIndex": "34", "files": 5124, "downloaded": 5123, "assets_skipped": 9)
+    [nodemc 01:31:25] settings written: nothing, all there; render distance 12, the server's view distance 10, cloud range 128
+[trip 01:31:25 +0s] setup: exit 0, 0 s
+[trip 01:31:25 +0s] station: nodemc.py status  (up to 60 s)
+    server: no answer
+    client: not running
+    display: none
+    distances: client renderDistance 12, server view-distance 10, cloudRange 128
+    machine: 4 cores, load 0.20, 6926 MB of memory available, 239 GB of disk free under /agent/realms-study
+[trip 01:31:25 +0s] station: exit 0, 0 s
+[trip 01:31:25 +0s] shuttle: shuttle.py --tag 29e5f1e --commit 29e5f1e7 --settle 10.0 --first-settle 60.0 --still 60.0 --after-budget 300.0 --out /tmp/c164_s1/real obs  (up to 380 s)
+    [shuttle 01:31:25] the code that is shot: /tmp/dais_jobs/c319/c164-realms at 29e5f1e7; tag 29e5f1e
+    [shuttle 01:31:25] stopped: plot 78 is given to obs_int_starhall and obs_sky_safe (plots.json and what the test world noted)
+    [shuttle 01:31:26] trip done with failures: plot 78 is given to obs_int_starhall and obs_sky_safe (plots.json and what the test world noted) (0 s)
+[trip 01:31:26 +0s] shuttle: exit 1, 0 s
+[trip 01:31:26 +0s] obs: no note obs-29e5f1e-real.txt in /tmp/c164_s1/real/29e5f1e/send (not sent yet, or another tag)
+[trip 01:31:26 +0s] what the game said: nodemc.py client-said 1794792686 /tmp/dais_jobs/c319/c164-realms/renders/real/_trips/20261116-013125-29e5f1e-obs-client.txt  (up to 30 s)
+    client said: 0 records on shaders, pipelines and packs, 0 of a failure; written to /tmp/dais_jobs/c319/c164-realms/renders/real/_trips/20261116-013125-29e5f1e-obs-client.txt
+[trip 01:31:26 +0s] what the game said: exit 0, 0 s
+[trip 01:31:26 +0s] close: nodemc.py down  (up to 180 s)
+[trip 01:31:26 +1s] close: exit 0, 0 s
+[trip 01:31:26 +1s] trip done with failures: the shuttle ended with 1; obs: no pictures kept; pictures kept: none; log renders/real/_trips/20261116-013125-29e5f1e-obs.log
