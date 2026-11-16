@@ -15,9 +15,11 @@ The views (shots(); python -m scenes.obs_mach_cablecar_winch writes them to shot
   door                      the car's door end from the head of the track, between the buffer stops
   car, car_side, car_end    the car from three blocks: from the platform, from the bay between the
                             glass roof's columns, from over the trestle
-  winch                     the winch house's opening from across the platform
-  winch_near, drum_east     the drum from the kerb north of the car, and along it from the east
-  motor, sheave             the motor with its belt; the lead sheave, the rope going into the floor
+  winch                     the winch house's opening from across the platform, the winch's rail before it
+  winch_near                the drum from where one stands at the rail
+  drum_east, motor, sheave  from behind the rail, where nobody stands, to read the pieces: along the
+                            drum from the east; the motor with its belt; the lead sheave, the rope
+                            going into the floor
   brow, track               the rope leaving the platform, and going down the trestle into the cloud
   far                       the station from the lower platform
 """
@@ -52,13 +54,14 @@ VIEWS = [
     ("car", (87.4, STAND, -29.4), (CAR_X - 0.3, -2.7, CAR_Z)),
     ("car_side", (90.5, -2.3, -28.4), (CAR_X - 0.1, -2.6, CAR_Z)),
     ("car_end", (95.4, -2.0, -30.6), (CAR_X + 1.0, -2.7, CAR_Z)),
-    # the winch: the whole opening under its girder from the bay's west end; the drum from the
-    # kerb north of the car; along the drum from the opening's east corner
+    # the winch: the whole opening under its girder, its rail before it, from the bay's west end;
+    # the drum from where one stands at the rail. Then three from behind the rail, where nobody
+    # stands, to read the pieces: along the drum from the opening's east corner, the motor, the sheave
     ("winch", (87.0, STAND, -30.0), (89.0, -1.9, -37.4)),
-    ("winch_near", (89.6, STAND, -34.5), (88.8, -2.6, -37.4)),
-    ("drum_east", (90.9, -2.3, -34.4), (88.9, -2.5, -37.2)),
-    ("motor", (87.1, -2.9, -34.5), (88.0, -3.3, -36.0)),
-    ("sheave", (90.6, -3.0, -34.4), (cable.SHEAVE[0], -3.45, cable.SHEAVE[2])),
+    ("winch_near", (89.6, STAND, -34.1), (88.8, -2.6, -37.4)),
+    ("drum_east", (90.9, -2.3, -34.9), (88.9, -2.5, -37.2)),
+    ("motor", (86.9, -2.9, -34.9), (88.0, -3.3, -36.0)),
+    ("sheave", (90.7, -3.0, -34.9), (cable.SHEAVE[0], -3.45, cable.SHEAVE[2])),
     # the rope: off the platform, round the level roller and over the brow; down the trestle
     ("brow", (94.3, -2.9, -31.0), (94.0, -3.8, -33.3)),
     ("track", (92.6, -2.0, -30.4), (106.0, -10.0, -37.0)),
