@@ -42,12 +42,16 @@ degree or so under the horizon. The first sheets went down to the vanilla cloud 
 degrees under the horizon; that layer is going (cloud), and their base stood out in the void.
 
 DRESS is the switch for the whole of it: the far ridges change every view to the west, the
-arrival view among them, and whether the game draws them well is only seen in the game. Off,
-build() places nothing; a test scene asks for them with dress().
+arrival view among them, and whether the game draws them well is only seen in the game. On, the
+master scene carries them; off, nothing does. A test scene asks for them with dress(): the
+sky's build() is also what a test scene of any line calls for its light sources (INTERFACE 4),
+and no ridge is to come with those (the scene's pack would not even have the models). A canvas
+carries no word of the scene it is built for, so build() asks its callers: see _master().
 
     python -m scenes.obs.sky.ridges     prints where the sheets stand and how high they reach
 """
 import math
+import sys
 
 import numpy as np
 
@@ -207,8 +211,22 @@ def dress(canvas, on=True):
     canvas.ridge_dress = bool(on)
 
 
+def _master():
+    """Is it the master scene that builds? Told as tools/check.py tells the master scene from a
+    test scene: the module with LINES and _line, looked for among the callers."""
+    frame = sys._getframe(1)
+    while frame is not None:
+        if "LINES" in frame.f_globals and "_line" in frame.f_globals:
+            return True
+        frame = frame.f_back
+    return False
+
+
 def build(canvas, origin=(0, 0, 0)):
-    if not getattr(canvas, "ridge_dress", DRESS):
+    on = getattr(canvas, "ridge_dress", None)
+    if on is None:
+        on = DRESS and _master()
+    if not on:
         return 0
     ox, oy, oz = origin
     made = models()
