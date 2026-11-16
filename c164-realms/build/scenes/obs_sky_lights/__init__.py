@@ -102,7 +102,7 @@ def _ground(c, o, x0, x1, z0, z1, walk=False, lower=None):
 # packages of those two lines that are not on the site. (module, the function that builds it)
 INSIDE = (("machines.orrery", "build"), ("machines.clock", "build"), ("machines.scope", "build"),
           ("interiors.starhall", "build"), ("interiors.timeroom", "build"), ("interiors.chartroom", "build"),
-          ("interiors.domeroom", "build"))
+          ("interiors.domeroom", "build"), ("interiors.platevault", "build"), ("interiors.batteryroom", "build"))
 
 
 def _inside(c, o):
