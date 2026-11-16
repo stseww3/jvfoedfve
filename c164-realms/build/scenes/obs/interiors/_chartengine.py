@@ -1,9 +1,11 @@
 """The two engines on the chart room's light table (interiors/chartroom places them; these are only
-the models, one display entity each):
+the models: the viewer one display entity, the bridge three, since two of its parts move):
 
-  bridge()        "int_chart_bridge": the plate measuring engine. A bridge across the table that
-                  rides on the two long sides of its brass frame, over the plate that is being
-                  measured. From the hand to the plate: the crank on the divided drum turns the lead
+  bridge(), bridge_screw(), bridge_carriage()
+                  "int_chart_bridge" and the two names after it (BRIDGE_PARTS): the plate measuring
+                  engine, what stands still of it, what turns and what travels. A bridge across
+                  the table that rides on the two long sides of its brass frame, over the plate
+                  that is being measured. From the hand to the plate: the crank on the divided drum turns the lead
                   screw that lies along the front of the bed; the screw draws the carriage along the
                   bed; the carriage carries the microscope, whose nose looks straight down at the
                   plate and whose tube leans out to the observer on the stool. Whole turns are read
@@ -149,8 +151,18 @@ TUBE_LEN = 11.5
 TUBE_R = 1.4
 
 
+# The engine is three models, because two of its parts move (the room registers them with the motion
+# line): the screw with its drum and crank turns, the carriage with the microscope travels along the
+# bed. They are drawn in one frame; the screw's model is anchored on its axis.
+TRAVEL = 8.0                # texels the carriage goes along the bed, from where it is drawn towards the far standard
+SCREW_TURNS = TRAVEL / 4.0  # and the turns the screw makes meanwhile: the thread is drawn a turn to 4 texels (_Thread.PITCH)
+BRIDGE_PARTS = ("bridge", "bridge_screw", "bridge_carriage")
+
+
 def bridge():
-    """The plate measuring engine. Anchor: LIFT over the middle of its foot on the table's frame."""
+    """The plate measuring engine, what stands still of it: the standards, the bed with its scales,
+    the index over the drum, the clamp. Anchor: LIFT over the middle of its foot on the table's
+    frame."""
     m = M.Model(PREFIX + "bridge", anchor=(0.0, LIFT, 0.0))
     y, z = SCREW
     # the two standards: a shoe on the frame's long side and an upright
@@ -165,16 +177,35 @@ def bridge():
     for face, at in (("n", (BED_Z[0] - 0.2, BED_Z[0])), ("s", (BED_Z[1], BED_Z[1] + 0.2))):
         m.box((-12.5, 2.85, at[0]), (12.5, 4.35, at[1]), BRASS, grain="x", skip="ns".replace(face, ""), faces={face: RULE})
     m.box((-12.5, BED_Y[1], 1.25), (12.5, BED_Y[1] + 0.1, 2.75), BRASS, grain="x", skip="d", faces={"u": RULE})
-    # the lead screw along the front of the bed, from the far standard through the near one to the drum
-    _screw(m, SCREW, DRUM_X[1], STANDARD[0], SCREW_R)
-    m.tube("x", SCREW, STANDARD[1], STANDARD[1] + 0.4, 1.2, BRASS_D)                # its end in the far standard
-    # the divided drum, the index over it, the crank
-    m.tube("x", SCREW, DRUM_X[0], DRUM_X[1], DRUM_R, DRUM, sides=12)
-    m.tube("x", SCREW, DRUM_X[1], -STANDARD[1], 1.5, BRASS_D)
+    # the index over the drum
     m.box((-STANDARD[1], BED_Y[1] + 0.25, z - 0.5), (-13.5, y + DRUM_R + 0.6, z + 0.5), IRON_D, grain="x")
     m.box((DRUM_X[0] + 1.25, y + DRUM_R + 0.1, z - 0.5), (-STANDARD[1], y + DRUM_R + 0.6, z + 0.5), IRON_D, grain="x")
+    # the clamp at the far end: a lever on a boss on the standard, with a wooden grip
+    m.tube("y", (14.1, 1.0), BED_Y[1] + 0.25, 6.5, 1.0, BRASS_D)
+    m.box((13.6, 5.5, 0.5), (18.0, 6.25, 1.5), BRASS, grain="x")
+    m.tube("x", (5.9, 1.0), 18.0, 19.0, 0.9, WOOD_L)
+    return m
+
+
+def bridge_screw():
+    """What turns: the lead screw along the front of the bed, from the far standard through the near
+    one to the divided drum, and the crank on the drum. Anchor: on the screw's axis, level with the
+    middle of the table; it turns about the model's x."""
+    y, z = SCREW
+    m = M.Model(PREFIX + "bridge_screw", anchor=(0.0, y, z))
+    _screw(m, SCREW, DRUM_X[1], STANDARD[0], SCREW_R)
+    m.tube("x", SCREW, STANDARD[1], STANDARD[1] + 0.4, 1.2, BRASS_D)                # its end in the far standard
+    m.tube("x", SCREW, DRUM_X[0], DRUM_X[1], DRUM_R, DRUM, sides=12)
+    m.tube("x", SCREW, DRUM_X[1], -STANDARD[1], 1.5, BRASS_D)
     m.tube("x", SCREW, DRUM_X[0] - 0.5, DRUM_X[0], 2.5, IRON, sides=12)
     m.tube("x", (y + 1.5, z), DRUM_X[0] - 2.25, DRUM_X[0] - 0.5, 0.7, WOOD_L)
+    return m
+
+
+def bridge_carriage():
+    """What travels: the carriage and the microscope it carries, drawn at the observer's end of the
+    bed; it goes TRAVEL along the model's x and back. Anchor: the bridge's."""
+    m = M.Model(PREFIX + "bridge_carriage", anchor=(0.0, LIFT, 0.0))
     # the carriage: a saddle on the bed, and an apron down its front with the nut the screw runs in
     m.box((-12.75, BED_Y[1], -2.25), (-7.0, LOW_TOP, 3.75), IRON, grain="x")
     m.box((-12.25, 0.6, -2.25), (-7.5, BED_Y[1], BED_Z[0]), IRON, grain="x", skip="u")
@@ -192,21 +223,24 @@ def bridge():
         m.tube("y", (0.0, 0.0), 3.0, 4.0, TUBE_R + 0.3, IRON_D)
         m.tube("y", (0.0, 0.0), 7.5, 9.75, TUBE_R - 0.3, BRASS_D)
         m.tube("y", (0.0, 0.0), 9.75, TUBE_LEN, TUBE_R + 0.1, IRON_D)
-    # the clamp at the far end: a lever on a boss on the standard, with a wooden grip
-    m.tube("y", (14.1, 1.0), BED_Y[1] + 0.25, 6.5, 1.0, BRASS_D)
-    m.box((13.6, 5.5, 0.5), (18.0, 6.25, 1.5), BRASS, grain="x")
-    m.tube("x", (5.9, 1.0), 18.0, 19.0, 0.9, WOOD_L)
     return m
+
+
+def bridge_models():
+    """The three models of the engine, in the order of BRIDGE_PARTS."""
+    return [bridge(), bridge_screw(), bridge_carriage()]
 
 
 def clearance(model=None):
     """How far the bridge keeps under what V9 allows: (over the middle, at the sides), texels to
     spare; a negative number is a part that stands too high. Every box is tried at a lattice of its
-    own points, turned into place."""
-    model = model or bridge()
+    own points, turned into place. Without a model: the whole engine as it is drawn, the carriage at
+    the observer's end. (On its way the carriage brings the foot of the tube up to TRAVEL nearer the
+    axis; from the door that still passes beside the plate on the viewer, not before it.)"""
+    parts = model.parts if model is not None else [p for part in bridge_models() for p in part.parts]
     spare = [1e9, 1e9]
     steps = [i / 6.0 for i in range(7)]
-    for p in model.parts:
+    for p in parts:
         c = [(p["lo"][i] + p["hi"][i]) / 2.0 for i in range(3)]
         h = [(p["hi"][i] - p["lo"][i]) / 2.0 for i in range(3)]
         q = p["rot"][0] if p["rot"] else M.IDENT
@@ -310,4 +344,5 @@ def viewer(plate, glass=True):
 
 if __name__ == "__main__":
     over_axis, at_sides = clearance()
-    print(f"bridge: {len(bridge().parts)} boxes; under V9's line by {over_axis} over the axis, {at_sides} at the sides")
+    print(f"bridge: {sum(len(part.parts) for part in bridge_models())} boxes in {len(BRIDGE_PARTS)} models; "
+          f"under V9's line by {over_axis} over the axis, {at_sides} at the sides")

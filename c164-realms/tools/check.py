@@ -933,12 +933,19 @@ def entities(rep, got):
             if sum(counts.values()) != total:
                 warns.append(f"build() returned {sum(counts.values())} display entities in all, the canvas "
                              f"holds {total}: a package returns the wrong count")
-            if counts.get("machines", 0) > S.BUDGET["machines"]:
-                fails.append(f"machines: {counts['machines']} entities, budget {S.BUDGET['machines']}")
-            if counts.get("props", 0) > S.BUDGET["props_outdoor"]:
-                fails.append(f"props: {counts['props']} entities, budget {S.BUDGET['props_outdoor']}")
-            if counts.get("interiors", 0) > S.BUDGET["props_indoor"]:
-                fails.append(f"interiors: {counts['interiors']} entities, budget {S.BUDGET['props_indoor']}")
+        # a room's line (plan/fine.md 5): what one package of the interiors placed
+        whose = _whose(canvas, shown)
+        if whose is not None:
+            rooms = {}
+            for owner in whose:
+                if owner.startswith("interiors/"):
+                    rooms[owner] = rooms.get(owner, 0) + 1
+            for owner, n in sorted(rooms.items()):
+                if n > S.BUDGET_PER_ROOM:
+                    fails.append(f"{owner}: {n} display entities, a room may have {S.BUDGET_PER_ROOM}")
+            if rooms:
+                most = max(rooms, key=rooms.get)
+                words.append(f"the fullest room {most.split('/')[-1]} {rooms[most]} of {S.BUDGET_PER_ROOM}")
     if is_master(got["scene"]):     # the four bands of view range (artkit.models: FAR, MID, NEAR, SMALL)
         bands = {}
         for _, _, _, nbt in shown:
