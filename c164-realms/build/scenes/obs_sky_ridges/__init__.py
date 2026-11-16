@@ -29,7 +29,10 @@ The shots (the card's list):
   v11                          the skeleton's V11, from the south lookout north-north-west, the
                                afterglow at its left edge
   v1, v2                       the skeleton's arrival view and axis view, the two pictures the map is
-                               known by
+                               known by: in V1 the north range's highest peak stands in the strip of
+                               horizon at the right edge, between the terrace's end and the station;
+                               in V2 the ranges show low at the picture's edges, on either side of
+                               the main building
 """
 import functools
 import json
