@@ -103,6 +103,15 @@ FURNACE_Y = (GLASS_Y[0], GLASS_Y[0] + 2)            # -3..-1, the rows that glow
 # second rank, what the lit windows of the main building have behind them and no window may pass
 # (c331 #59302). It leaves 9 on the jambs and the sill, and 9 is where stone begins to turn warm.
 FURNACE_LEVEL = 12
+# The fire's light on the ground before a boiler bay. The sky line's source stands in the recess
+# before the glass, three rows over the paving, and what reaches the paving the night swallows:
+# the bay glowed over black ground (reviews cr2-#7, 1 and #74016, 1). So the shell offers that line
+# one more source to a fire window (pools()): before the pier plane in the window's middle column,
+# two rows under the glass, which is as low as that line lets a source stand from what glows. As
+# bright as the one in the recess: the paving under it gets 9, where stone turns warm, the cells
+# round that 8.
+POOL_LEVEL = FURNACE_LEVEL - 2
+POOL_WHY = "site/powerhouse:fire window"
 GATE_ROWS = 4                                       # the door bay: a gate this high, a lintel, glass
 FURNACE_LIGHT = 5                                   # the source before a boiler bay's glow while the sky line's kit
 #                                                     is not in the tree (its figure for a low curtain window)
@@ -297,6 +306,19 @@ def windows(version=None):
             out.append(dict(front=f"power.{front.name}", bay=0, storey="gable",
                             cells=[(x, z) for x in range(mid - LIGHT_MULLION + 1, mid + LIGHT_MULLION)],
                             inward=STEP[front.inward], y=(EAVES + 2, EAVES + 4)))
+    return out
+
+
+def pools(version=None):
+    """Where the fire's light falls on the ground before a boiler bay: [(x, y, z)], the cell of the
+    source the shell offers the sky line for each "furnace" record of windows() (POOL_LEVEL).
+    Offsets are the skeleton's."""
+    out = []
+    for w in windows(version):
+        if w["storey"] == "furnace":
+            x, z = w["cells"][len(w["cells"]) // 2]
+            dx, dz = w["inward"]
+            out.append((x - 2 * dx, w["y"][0] - 2, z - 2 * dz))
     return out
 
 
@@ -605,13 +627,18 @@ def _bridge(p, run):
 
 # --- light --------------------------------------------------------------------------------------------
 def _light(canvas, origin, version):
-    """Hand the windows to the sky line, which gives the glowing ones their light. While its kit is
+    """Hand the windows to the sky line, which gives the glowing ones their light, and offer it the
+    source that lays the fire's light on the ground before each of them (pools()). While its kit is
     not in the tree a dim source stands in for it here, as the sky line places its own: in the
     recess before the middle of the glowing rows, never over a block."""
     table = windows(version)
-    glazed = getattr(_other("sky._lightkit"), "glazed", None)
+    kit = _other("sky._lightkit")
+    glazed = getattr(kit, "glazed", None)
     if glazed is not None:
         glazed(canvas, table, origin, group="power")
+        suggest = getattr(kit, "suggest", None)
+        for x, y, z in pools(version) if suggest is not None else ():
+            suggest(canvas, (origin[0] + x, origin[1] + y, origin[2] + z), POOL_LEVEL, POOL_WHY, rank=2)
         return
     for w in table:
         if w["storey"] != "furnace":
