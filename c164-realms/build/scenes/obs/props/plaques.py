@@ -61,11 +61,13 @@ WORDS = 9                   # ... and has this many words at the most (the card)
 VIEW = 0.25
 # The light every display is drawn in, (sky, block), whatever stands round it: read at night, no
 # lamp. Text is not shaded by the way it looks as a model's face is: the door plate, a model shown
-# at (15, 12), keeps half of that on a face that looks east, and the cream of words shown at
-# (15, 12) would be near 0.85. Block light 7 and no sky is 0.40 on the game's own curve at its
-# default brightness; the cream is to stay under 0.45 on the board (review c332, 11-16). To be
-# measured in the real client, as the door plate was.
-SHOWN = (0, 7)
+# at (15, 12), keeps half of that on a face that looks east (its cream 0.42), and the cream of
+# words shown at (15, 12) is 0.87. Worked out on the pack's own lightmap (sky/_shaders.py: the
+# ambient, the lamp's tint) at the real client's brightness (tools/winmc.py, gamma 0.5): block
+# light 6 and no sky makes the name 0.43 and the sentence 0.40, the field 0.08 -- the door plate's
+# tones; 7 is 0.47, over the line of 0.45 the review keeps for the cream on the board (c332,
+# 11-16). To be measured in the real client, as the door plate was.
+SHOWN = (0, 6)
 FIELD = P.RAMPS["enamel"][1]        # the plan's enamel blue, #172c57
 RIM = P.RAMPS["cream"][3]           # the plan's cream, #f2ead6: the edge and the name
 WORDS_TONE = P.RAMPS["cream"][2]    # the sentence a step under the name
@@ -153,7 +155,14 @@ def _argb(tone):
 
 def _display(words, scale, yaw, view, tone=None, background=0):
     """NBT of one text display that looks the way `yaw` says (K.FACING): the words read from that
-    side, left to right as K.turn(yaw, (1, 0, 0)) goes. scale is (across, up)."""
+    side, left to right as K.turn(yaw, (1, 0, 0)) goes. scale is the size of a font pixel in
+    blocks, (across, up).
+
+    Read off the 26.3 jar (DisplayRenderer and its TextDisplayRenderer): a fixed display is turned
+    by -Rotation[0] about the vertical, so with yaw 0 its front looks south and its words run
+    east; the text is drawn 0.025 block to the font pixel, its lines ten pixels apart, the last
+    line's cell standing on the display's own height; the background reaches one pixel left of
+    the widest line and over the first, and is not drawn when its colour is 0."""
     text = {"text": words}
     if tone is not None:
         text["color"] = tone
