@@ -132,6 +132,7 @@ def pack(pack_dir) -> list:      # 一行行的说明文字
 
 光：生物群系只有一个，`obs.BIOME = "obs_blue"`（不带冒号的名字要是 `mood.py` 的 BIOMES 里的一个；带命名空间的原样用，比如没有注册表文件的世界里的 `minecraft:the_void`，`place.py` 和 `check.py` 都这样认）。三个光线版本是同一条时间线上的三个时刻，靠 `shots.json` 里的 `time` 选：`14000`（A，默认，不写就是 A）、`18000`（B）、`12900`（C）。光的实现在 `sky/mood.py`，归 `sky/look` 这张卡（已合并）。
 “不写就是 A”两个出图工具都照办：`build/render.py`（离线）和 `tools/shoot.py`（真机）对没有 `time` 的机位都按 14000 拍（11-14 前是正午）。要白天的图就写 `"time": "noon"`。
+11-16 起天由资源包带（Realms 不收注册表文件）：`sky/mood.py` 的 `BIOMES` 是 `artkit.mood.Carried`，场景照旧写 `BIOME = "obs_blue"`、照旧带那一行 `mood.py`，什么都不用改。驱动替每个带 `mood.py` 的场景做四件事：数据包里不写群系和时间线；场景的范围填游戏自己的 `minecraft:the_void`；场景的资源包写完后加上天色的 10 个着色器文件（`assets/minecraft/shaders/`，场景和别的包不许再写这几个文件）；钟停在 `20370`。**真机上只有这一个时刻**：`tools/shoot.py --clock 20370` 每张都拍它，不看机位的 `time`（`place.py` 把这个数记在 `<scene>.placed.json` 的 `clock` 里）。`shots.json` 和看板清单里的 `time` 不用改：离线出图照旧按它选 A、B、C，留着两个时刻的场景（比如 `obs_sky_lights` 的 blue、deep）离线图不变，真机上都是 A。B、C 要上真机，得各出一套着色器包，还没做。
 
 ## 4. 不撞车（两个包不许写同一个文件；检查脚本会查）
 
