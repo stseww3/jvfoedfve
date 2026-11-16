@@ -1,0 +1,181 @@
+{
+ "scene": "obs_mach_domegear",
+ "commit": "f1c4dda",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "WARN",
+   "summary": "4572 blocks, 120 entities, 430 models, 1968 resource-pack files, 10 data-pack files, look: 1 biomes, 1 timelines (4.0 s)",
+   "details": [
+    "registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json"
+   ]
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 1967 files, no file written twice, the folders and the prefix of machines are kept (14 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "559 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "1389 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "21 kinds of block placed, 1 barrier cells (x -1, y 18, z -9), all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "PASS",
+   "summary": "no wall face runs flat over more than 5x5",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "120 display entities, 371 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "17 shots, most display entities in view: 120 (foot_outside), limit 600; counted without what walls hide; the game draws up to 120 (v8): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "v8",
+      "in_view": 83,
+      "drawn": 120,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v8_north",
+      "in_view": 80,
+      "drawn": 120,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v8_glow",
+      "in_view": 83,
+      "drawn": 120,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "room",
+      "in_view": 79,
+      "drawn": 120,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "ring_far",
+      "in_view": 68,
+      "drawn": 120,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "slit_foot_up",
+      "in_view": 37,
+      "drawn": 120,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "weights",
+      "in_view": 60,
+      "drawn": 120,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "hand_gear",
+      "in_view": 6,
+      "drawn": 120,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "hand_gear_up",
+      "in_view": 22,
+      "drawn": 120,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "ring_near",
+      "in_view": 9,
+      "drawn": 120,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "mesh",
+      "in_view": 10,
+      "drawn": 120,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "slit_foot",
+      "in_view": 24,
+      "drawn": 120,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "weight_near",
+      "in_view": 22,
+      "drawn": 120,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "chains",
+      "in_view": 69,
+      "drawn": 120,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "curtain",
+      "in_view": 14,
+      "drawn": 120,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "slit_head",
+      "in_view": 9,
+      "drawn": 120,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "foot_outside",
+      "in_view": 120,
+      "drawn": 120,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "nothing moves",
+   "details": []
+  }
+ ]
+}
