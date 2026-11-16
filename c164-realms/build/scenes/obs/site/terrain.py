@@ -193,9 +193,10 @@ LENS_OUT = -0.02                # ... which is where the bed's own slow noise is
 SNOW_ON = True                  # False: no snow at all (the pictures taken with and without it)
 SNOW_BELOW = -7                 # none on the rock just under the terraces: it starts below the rim wall's foot
 SNOW_ABOVE = -24                # ... and none within two blocks of the cloud (CLOUD_TOP): the sea's edge is the cloud's own light line
-SNOW_DRIFT = -0.15              # it lies in drifts: where a slow noise is above this. With the rules below that leaves a
-#                                 drift at the foot of a third of the cliffs' length, on a fifth of the shelves' area (at
-#                                 0.10, the first guess, it was a twelfth of the length: eight puddles on the whole mountain)
+SNOW_DRIFT = -0.3               # it lies in drifts: where a slow noise is above this. With the rules below that leaves a
+#                                 drift at the foot of a third of the cliffs' length, on a fifth of the shelves' area: 716
+#                                 columns in 23 patches (at 0.10, the first guess, it was eight puddles on the whole
+#                                 mountain; at -0.15 the shorter straight edges of SNOW_RUN = 2 ate it down to 503)
 SNOW_FRAY = 0.25                # ... with this much of a fine noise on top, so that a drift has no smooth outline
 SNOW_REACH = 0.62               # out from the cliff's foot it covers this much of a shelf's width
 SNOW_SWING = 0.9                # ... more here and less there, by a noise of this weight
