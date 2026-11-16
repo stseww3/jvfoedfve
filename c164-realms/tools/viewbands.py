@@ -5,6 +5,9 @@ which band (artkit.models FAR, MID, NEAR, SMALL), and how many of them each boar
     python tools/viewbands.py                         the table by package
     python tools/viewbands.py interiors/chartroom     that package's models: band, how many, and the
                                                       board views that count them (what VIEW_KEEP is for)
+    python tools/viewbands.py --lost [package]        what each board view no longer counts because it stands
+                                                      beyond its own view range: out of doors, a thing gone
+                                                      from the picture
     python tools/viewbands.py --lamps                 what sky/lights left out and why (its notes)
     python tools/viewbands.py --selftest              models.band and the assembly's VIEW, on a canvas of its own
 
@@ -31,21 +34,61 @@ def band_of(nbt):
     return next((name for name, value in M.BANDS if abs(reach - value) < 1e-6), f"{reach:g}")
 
 
-def masks(shown):
-    """{view name: which of `shown` the view counts}, as tools/check.py's views counts them."""
+def masks(shown, reach=None, far=None):
+    """{view name: which of `shown` the view counts}, as tools/check.py's views counts them. With
+    `reach` every entity is taken to have that view range (in blocks) instead of its own. `far`, a
+    dict, is filled with {view name: how far each entity stands from the camera}."""
     with open(C.BOARD, encoding="utf-8") as fh:
         shots = json.load(fh)
     pts = np.array([[x, y, z] for x, y, z, _ in shown], dtype=float).reshape(-1, 3)
-    reach = np.array([float(nbt.get("view_range", 1.0)) * 64.0 for _, _, _, nbt in shown])
+    if reach is None:
+        reach = np.array([float(nbt.get("view_range", 1.0)) * 64.0 for _, _, _, nbt in shown])
     ty = math.tan(math.radians(C.FOV) / 2.0)
     out = {}
     for shot in shots:
         pos, f, r, u = C._frame(shot)
         v = pts - pos
         depth = v @ f
-        out[shot["name"]] = ((np.linalg.norm(v, axis=1) <= reach) & (depth > -2.0)
+        away = np.linalg.norm(v, axis=1)
+        out[shot["name"]] = ((away <= reach) & (depth > -2.0)
                              & (np.abs(v @ r) <= depth * ty * C.ASPECT + 2.0) & (np.abs(v @ u) <= depth * ty + 2.0))
+        if far is not None:
+            far[shot["name"]] = away
     return out
+
+
+def lost(package=None):
+    """What a board view would count with the far band and does not count now: the things in the
+    camera's cone and within 192 blocks that stand beyond their own view range. Indoors that is what
+    the near band is for; out of doors it is a thing gone from the picture (review, 11-16 12:40)."""
+    from scenes import obs
+    canvas = obs.build()
+    shown = C._displays(canvas)
+    whose = C._whose(canvas, shown)
+    away = {}
+    now = masks(shown, far=away)
+    at_far = masks(shown, reach=M.FAR * 64.0)
+    for view in now:
+        gone = at_far[view] & ~now[view]
+        if package is not None:
+            gone &= whose == package
+        if not gone.any():
+            continue
+        print(f"{short(view)}: {int(gone.sum())} in the cone and within {M.FAR * 64.0:g} blocks, beyond their own range")
+        rooms, rows = {}, {}
+        for i in np.flatnonzero(gone):
+            if package is None and whose[i].startswith("interiors/"):
+                rooms[whose[i]] = rooms.get(whose[i], 0) + 1
+                continue
+            nbt = shown[i][3]
+            key = (whose[i], M.shown_model(nbt) or nbt.get("id", "?").split(":")[-1], band_of(nbt))
+            rows.setdefault(key, []).append(float(away[view][i]))
+        if rooms:
+            print("    indoors: " + ", ".join(f"{k.split('/')[-1]} {v}" for k, v in sorted(rooms.items())))
+        for (owner, name, band), d in sorted(rows.items()):
+            print(f"    {owner:26s} {name:40s} {band:6s} x{len(d):<3d} {min(d):.0f}" + (f"-{max(d):.0f}" if len(d) > 1 else "")
+                  + " blocks away")
+    return 0
 
 
 def short(view):
@@ -142,6 +185,9 @@ def main():
         return selftest()
     if "--lamps" in args:
         return lamps()
+    if "--lost" in args:
+        rest = [a for a in args if a != "--lost"]
+        return lost(rest[0] if rest else None)
     return table(args[0] if args else None)
 
 

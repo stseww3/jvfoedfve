@@ -57,6 +57,7 @@ volume, wherever he stands.
 0 display entities, 0 blocks.
 """
 import json
+import math
 import os
 import re
 import struct
@@ -87,12 +88,14 @@ EVENTS = {
     "whistle_hi": ("block.note_block.flute", 0.90, 1.00),   # ... and the upper, a minor third over it
     "chuff": ("block.piston.extend", 1.00, 0.90),           # one beat of the engine's exhaust
     "rail": ("entity.minecart.riding", 0.60, 0.90),         # wheels on rails: the train, a coal tub
+    "joint": ("block.netherite_block.step", 0.80, 0.70),    # a wheel passes a joint of the rails
     "bell": ("block.bell.use", 0.07, 1.50),                 # the station's bell, one stroke
     "strike": ("block.bell.use", 0.083, 0.55),              # the tower clock's hour bell, one stroke
     "chime": ("block.bell.use", 0.07, 0.80),                # its quarter bell, one stroke
     "clank": ("block.heavy_core.place", 1.00, 0.80),        # iron comes down on iron: the time ball, a signal's arm
     "creak": ("block.copper_door.open", 0.60, 0.70),        # a vane, a wind pump, a shutter turns on its pin
-    "thump": ("block.barrel.close", 1.00, 0.70),            # a carrier of the pneumatic post arrives
+    "thump": ("block.barrel.close", 1.00, 0.70),            # a carrier of the pneumatic post lands in its station
+    "ting": ("block.note_block.bell", 0.45, 1.78),          # ... and rings the station's little bell
     "spark": ("entity.firework_rocket.twinkle", 0.35, 1.60),    # the spark gap
     "drip": ("block.pointed_dripstone.drip_water_into_cauldron", 1.00, 1.00),   # a tap drips into a sink
     "scratch": ("ui.cartography_table.take_result", 0.60, 1.00),    # a pen on paper: the engraving machine, a recorder
@@ -173,6 +176,7 @@ LETTERS = "abc"                 # a choice is named by its letter: a is the tabl
 # ticks, at tick VALVE["at"] of that cycle, and blows for VALVE["blow"] ticks. The hiss starts on
 # that tick; the steam of motion/smoke is to come on the same cycle and ticks (one chain, in step).
 VALVE = dict(cycle=160, at=80, blow=30)
+VALVE_AGAIN = 20                # ticks from one sounding of a hiss that is held to the next (the fizz lasts 1.25 s)
 HUM_LOOP = 160                  # the beacon's drone lasts 5.8 s and the game plays it every 80 ticks; an octave down, both double
 FIRE_LOOP = 100                 # the furnace's crackle is 5.0 to 6.1 s long
 WIND_LOOP = 240                 # the flying wind is a loop of 10.2 s: 12.0 s at the pitch 0.85, played end to end
@@ -198,6 +202,7 @@ def _morse(text, unit, start=0):
 
 BLAST = 9                       # ticks from one sounding of the whistle to the next while it is held (a note lasts 0.7 s)
 STROKE = 16                     # ticks from one stroke of the station's bell to the next
+TING_AFTER = 4                  # ticks from a carrier's thud to its station's bell
 TELEGRAPH_LOOP = 300            # the sounder taps its word once in 15 s
 TELEGRAPH_WORD = "TIME"         # what it taps: a dash, two dots, two dashes, a dot
 _DOWN, _UP, _END = _morse(TELEGRAPH_WORD, 2)
@@ -221,12 +226,14 @@ KINDS = {
                 ("whistle_hi", 200, (0, BLAST, 2 * BLAST, 60))),
     "chuff": (("chuff", 5, (0,)),),                                 # four beats a second
     "rail": (("rail", 40, (0,)),),                                  # the rumble lasts 2.1 s: end to end
+    "joint": (("joint", 30, (0, 6)),),                              # two axles over a joint
     "bell": (("bell", 200, tuple(range(0, 5 * STROKE, STROKE))),),  # five strokes
     "strike": (("strike", 400, (0, 60, 120)),),                     # three o'clock
     "chime": (("chime", 400, (0, 30, 60, 90)),),                    # the four quarters
     "clank": (("clank", 200, (0,)),),
     "creak": (("creak", 120, (0,)),),
     "thump": (("thump", 200, (0,)),),
+    "ting": (("ting", 200, (TING_AFTER,)),),
     "spark": (("spark", 100, (0, 30)),),
     "drip": (("drip", 50, (0,)),),
     "scratch": (("scratch", 60, (0, 20)),),
@@ -243,7 +250,8 @@ FIRST_ROUND = ("tick", "engine", "hum", "fire", "hiss", "telegraph", "wind")    
 CARRY = {"engine": 2.0, "hum": 2.3,
          # the second round: a whistle is heard 64 blocks off, the exhaust 24 (the piston's 8 times
          # 3), the rails 24, the station's bell 32, the tower's bells over the whole hilltop
-         "whistle": 4.0, "chuff": 3.0, "rail": 1.5, "bell": 2.0, "strike": 6.0, "chime": 5.0, "rumble": 1.5}
+         "whistle": 4.0, "chuff": 3.0, "rail": 1.5, "joint": 1.5, "bell": 2.0, "strike": 6.0, "chime": 5.0,
+         "rumble": 1.5}
 SOURCE = {"wind": "ambient"}    # the player's volume slider a kind is under; the others are "block"
 
 
@@ -307,6 +315,8 @@ def train_times(cycle, leave, arrive, depart, home, beat=5):
 
 def beats(times):
     """The ticks of a round on which the exhaust beats."""
+    if times.get("ticks") is not None:
+        return tuple(times["ticks"])
     return tuple(t for a, b, every in times["chuffs"] for t in range(a, b, every))
 
 
@@ -326,6 +336,111 @@ def strokes(times):
 TRAIN_STAND_IN = dict(cycle=3000, leave=0, arrive=900, depart=1500, home=2300)
 TRAIN = train_times(**TRAIN_STAND_IN)
 
+JOINT = 6.0                     # blocks of rail from one joint to the next
+APPROACH = 45.0                 # blocks before the platform at which the engine whistles
+ROLL = 40                       # ticks from one sounding of the rails' rumble to the next (KINDS["rail"])
+AXLES = (-1.5, 1.5)             # a car's two axles, blocks from its middle along the line
+
+
+def _runs(line):
+    """((first, last, way), ...): the train moves on the ticks first .. last - 1 of its round;
+    way is -1 while the distance along the line falls, 1 while it rises."""
+    cycle = int(line.cycle)
+    s = [float(line.at(t % cycle)) for t in range(cycle + 1)]
+    out, first = [], None
+    for t in range(cycle):
+        step = s[t + 1] - s[t]
+        way = 0 if abs(step) < 1e-6 else (1 if step > 0 else -1)
+        if first is not None and way != first[1]:
+            out.append((first[0], t, first[1]))
+            first = None
+        if first is None and way:
+            first = (t, way)
+    if first is not None:
+        out.append((first[0], cycle, first[1]))
+    return tuple(out), s
+
+
+def timetable(line, wheel, uphill=-1, axles=AXLES, joint=JOINT):
+    """When a train of the motion kit is heard: the keys of train_times(), read off the train
+    itself (line: what MK.travel returned; its timetable is its owner's, and what is here follows
+    it). motion/smoke takes its puffs from the same dict.
+
+    wheel     the driving wheels' radius: the exhaust beats twice in a turn (line.beats)
+    uphill    -1: the train climbs while its distance along the line falls (site/_rail counts
+              the line outwards from the summit station); 1: the other way
+    axles     the car's axles, blocks from the train's datum along the line: each knocks on a
+              joint of the rails, which lie `joint` blocks apart
+
+    Returns the dict of train_times() with, besides:
+    runs      ((first, last, way), ...) of _runs()
+    ticks     the ticks the exhaust beats on (beats() returns them): uphill only
+    joints    the ticks a wheel passes a joint;  rolls: the ticks the rails' rumble starts again
+    """
+    runs, s = _runs(line)
+    cycle = int(line.cycle)
+    up = [r for r in runs if r[2] == uphill]
+    down = [r for r in runs if r[2] == -uphill]
+    if not up:
+        raise ValueError("motion/sound: the train never climbs (uphill= says which way that is)")
+    leave, arrive = up[0][0], up[-1][1]
+    depart, home = (down[0][0], down[-1][1]) if down else (cycle, cycle)
+    on = lambda t, some: any(a <= t < b for a, b, _way in some)             # noqa: E731
+    ticks = tuple(sorted({int(t) % cycle for t in line.beats(wheel, per_turn=2) if on(int(t) % cycle, up)}))
+    long_, short = 3 * BLAST, BLAST
+    whistles = [(leave, long_)]
+    near = next((t for t in range(leave, arrive) if abs(s[t] - s[arrive]) <= APPROACH), None)
+    if near is not None and near - leave > 4 * long_:
+        whistles.append((near, long_))
+    if down:
+        whistles.append((max(arrive + long_, depart - 2 * short), short))
+    bell = [(max(leave, arrive - 120), min(120, arrive - leave))]
+    if down and depart - arrive >= 100:
+        bell.append((depart - 60, 60))
+    release = (min(arrive + 6, cycle - 1), max(10, min(60, depart - arrive - 12)))
+    joints = sorted({t for a, b, _way in runs for t in range(a, b) for off in axles
+                     if math.floor((s[t] + off) / joint) != math.floor((s[t + 1] + off) / joint)})
+    rolls = [t for a, b, _way in runs for t in range(a, b, ROLL)]
+    return dict(cycle=cycle, leave=leave, arrive=arrive, depart=depart, home=home, beat=None, chuffs=(),
+                ticks=ticks, whistles=tuple(whistles), release=release, bell=tuple(bell), runs=runs,
+                joints=tuple(joints), rolls=tuple(rolls))
+
+
+def train(canvas, line, *, wheel, chimney, whistle, cocks=None, car=None, bell=None, loco="loco", coach="coach",
+          uphill=-1, axles=AXLES, choice=0):
+    """Hang the train's sounds on its round (line: what MK.travel returned). Every spot is given
+    as it is when the train stands at its home, in scene coordinates; the train's run() writes
+    into each command where the spot has got to on that tick.
+
+    wheel      the driving wheels' radius
+    chimney    where the exhaust beats (on the car `loco`);  whistle: the whistle's mouth
+    cocks      the cylinders' drain cocks, where steam is let off at the platform (None: no hiss)
+    car        the middle of the passenger car at rail level, for the wheels on the rails (on
+               the car `coach`; None: no rails)
+    bell       where the station's bell hangs: a spot that stays (None: no bell)
+    choice     0, or 1 and 2 for the OTHERS of the whistle, the exhaust, the rails and the bell
+
+    Returns the timetable() it used."""
+    times = timetable(line, wheel, uphill=uphill, axles=axles)
+    pick = lambda kind: min(choice, len(choices(kind)) - 1)                 # noqa: E731
+
+    def hang(kind, ticks, pos, which):
+        ticks = sorted(set(int(t) for t in ticks))
+        if ticks and pos is not None:
+            for text in commands(kind, choice=pick(kind)):
+                line.run(text, at=ticks, pos=tuple(pos), car=which)
+
+    hang("chuff", beats(times), chimney, loco)
+    hang("whistle", blasts(times), whistle, loco)
+    hang("hiss", range(times["release"][0], sum(times["release"]), VALVE_AGAIN), cocks, loco)
+    hang("rail", times["rolls"], car, coach)
+    hang("joint", times["joints"], car, coach)
+    if bell is not None:
+        x, y, z = (float(v) for v in bell)
+        for text in commands("bell", choice=pick("bell")):
+            line.run(text.format(x=_n(x), y=_n(y), z=_n(z)), at=list(strokes(times)))
+    return times
+
 # Only players within the reach of a spot are sent its sound (blocks from the spot), which is what
 # keeps a room's sound in the room.
 REACH_STAR_HALL = 10.0          # the master clock stands at the pier; the hall's side walls are 6.5 away
@@ -335,6 +450,7 @@ REACH_BOILERS = 12.0            # the fire and the valve: the firing floor and t
 REACH_TELEGRAPH = 6.0           # the console of the time room
 REACH_WIND = 16.0               # an open edge
 REACH_TOWER = 6.0               # the lookout of the clock tower and no further down
+REACH_TUBE = 6.0                # a station of the pneumatic post: the room it stands in
 
 
 def _events_of_the_game():
@@ -446,6 +562,31 @@ def place(canvas, kind, pos, reach, origin=(0, 0, 0), phase=0, choice=0, cycle=N
                      at=own_at if at is None else at, volume=carry, pitch=pitch, reach=reach,
                      source=SOURCE.get(kind, "block"), origin=origin, phase=phase)
     return 0
+
+
+def _n(v):
+    """A number as a command takes it: four places at most, no trailing zeros."""
+    text = f"{float(v):.4f}".rstrip("0").rstrip(".")
+    return "0" if text in ("", "-0") else text
+
+
+def commands(kind, reach=None, choice=0, pitch=1.0):
+    """One sounding of a kind as the lines of a function, for what does not sound on the loop's
+    time (a lever a visitor pulls, the train on its round): ["playsound ...", ...], a line to each
+    event of the kind. The spot is left as {x} {y} {z}: the motion kit's run() and function() fill
+    it in from their pos=, and so does a train's run(). reach: None is as far as the kind carries
+    (far())."""
+    sets = choices(kind)
+    if not 0 <= choice < len(sets):
+        raise ValueError(f"motion/sound: {kind} has the choices 0 .. {len(sets) - 1}, not {choice}")
+    if not 0.5 <= pitch <= 2.0:
+        raise ValueError(f"motion/sound: pitch {pitch}: the game plays 0.5 to 2.0")
+    held, carry = sets[choice]
+    reach = far(kind, choice) if reach is None else float(reach)
+    source = SOURCE.get(kind, "block")
+    return [f"playsound {NS}:{_named(event, choice)} {source} @a[x={{x}},y={{y}},z={{z}},distance=..{_n(reach)}] "
+            f"{{x}} {{y}} {{z}} {_n(carry)} {_n(pitch)}"
+            for event, _cycle, _at in KINDS[kind] if event in held]
 
 
 # ---- the gramophone -----------------------------------------------------------------------------------
@@ -614,6 +755,21 @@ def _telegraph(canvas, origin):
     place(canvas, "telegraph", (x, y + 0.5, z), REACH_TELEGRAPH, origin)
 
 
+def _pneumatic(canvas, origin):
+    """A carrier of the pneumatic post lands in its station with a thud and rings the station's
+    little bell (props/pneumatic says when and where, a line at a time: lands())."""
+    post = _package("props", "pneumatic")
+    if post is None or not hasattr(post, "lands"):
+        return
+    for key in sorted(getattr(post, "LINES", ())):
+        landing = post.lands(key)
+        if landing is None:
+            continue
+        tick, pos = landing
+        place(canvas, "thump", pos, REACH_TUBE, origin, cycle=post.LOOP, at=(int(tick) % post.LOOP,))
+        place(canvas, "ting", pos, REACH_TUBE, origin, cycle=post.LOOP, at=((int(tick) + TING_AFTER) % post.LOOP,))
+
+
 def _wind(canvas, origin):
     """The wind is heard at three open places (plan/parts/motion.md 8): the east edge of the court
     at the head of the grand stair, the lookout of the clock tower, the south lookout."""
@@ -631,6 +787,7 @@ def build(canvas, origin=(0, 0, 0)):
     _clocks(canvas, origin)
     _power_house(canvas, origin)
     _telegraph(canvas, origin)
+    _pneumatic(canvas, origin)
     _wind(canvas, origin)
     return 0
 
