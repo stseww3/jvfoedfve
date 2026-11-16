@@ -277,7 +277,9 @@ def main():
         else:
             kind = "floor"
         best = max(light.get(cell, 0), light.get((cx, cy + 1, cz), 0))
-        from_sky = 15 if cy >= open_y.get((cx, cz), -10 ** 9) else max(sky.get(cell, 0), sky.get((cx, cy + 1, cz), 0))
+        # the sky's light, like the lamps', is the better of the feet's cell and the head's: on a
+        # stair or a slab the feet are in the block's own cell, which the sky's beam does not enter
+        from_sky = 15 if cy + 1 >= open_y.get((cx, cz), -10 ** 9) else max(sky.get(cell, 0), sky.get((cx, cy + 1, cz), 0))
         room = room_at(cx, cy, cz)
         rows[cell] = dict(how=how, kind=kind, light=best, need=args.floor if kind == "floor" else args.step,
                           sky=from_sky, room=room, under=under,
