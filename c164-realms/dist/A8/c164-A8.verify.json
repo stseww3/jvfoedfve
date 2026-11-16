@@ -56,7 +56,7 @@
   {
    "check": "tick, empty",
    "ok": true,
-   "detail": "The game is running normallyTarget tick rate: 20.0 per second. | Average time per tick: 1.2ms (Target: 50.0ms)Percentiles: P50: 0.6ms P95: 1.3ms P99: 21.4ms. Sample: 100"
+   "detail": "The game is running normallyTarget tick rate: 20.0 per second. | Average time per tick: 1.1ms (Target: 50.0ms)Percentiles: P50: 0.6ms P95: 1.4ms P99: 20.9ms. Sample: 100"
   },
   {
    "check": "difficulty",
@@ -106,7 +106,7 @@
   {
    "check": "tick, one player",
    "ok": true,
-   "detail": "The game is running normallyTarget tick rate: 20.0 per second. | Average time per tick: 1.5ms (Target: 50.0ms)Percentiles: P50: 1.5ms P95: 2.0ms P99: 4.9ms. Sample: 100"
+   "detail": "The game is running normallyTarget tick rate: 20.0 per second. | Average time per tick: 1.5ms (Target: 50.0ms)Percentiles: P50: 1.4ms P95: 2.1ms P99: 4.5ms. Sample: 100"
   },
   {
    "check": "on the cloud",
@@ -141,7 +141,7 @@
   {
    "check": "loop",
    "ok": true,
-   "detail": "34 moving parts named in the loop, 34 of the first 34 loaded near the spawn, 23 of them changed within 3 s (e.g. m.bboard_needle_east, m.bboard_needle_main, m.bboard_needle_west, m.bld_tower_cups); #run has 571309228 [c164m]"
+   "detail": "34 moving parts named in the loop, 34 of the first 34 loaded near the spawn, 24 of them changed within 3 s (e.g. m.bboard_needle_east, m.bboard_needle_main, m.bboard_needle_west, m.bld_tower_cups); #run has 571309228 [c164m]"
   },
   {
    "check": "console",
@@ -151,7 +151,7 @@
   {
    "check": "as set: starts",
    "ok": true,
-   "detail": "up in 6 s, the server's own settings: {'gamemode': 'adventure', 'difficulty': 'peaceful'}"
+   "detail": "up in 7 s, the server's own settings: {'gamemode': 'adventure', 'difficulty': 'peaceful'}"
   },
   {
    "check": "as set: data pack",
@@ -161,7 +161,7 @@
   {
    "check": "as set: join",
    "ok": true,
-   "detail": "joined in 0.5 s at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617), after the functions at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617); wanted (88.5, 196.0, -32.5) facing (67.71, -22.69)"
+   "detail": "joined in 0.4 s at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617), after the functions at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617); wanted (88.5, 196.0, -32.5) facing (67.71, -22.69)"
   },
   {
    "check": "as set: spawn",
@@ -201,7 +201,7 @@
   {
    "check": "as set: tick, one player",
    "ok": true,
-   "detail": "The game is running normallyTarget tick rate: 20.0 per second. | Average time per tick: 1.5ms (Target: 50.0ms)Percentiles: P50: 1.5ms P95: 2.1ms P99: 5.0ms. Sample: 100"
+   "detail": "The game is running normallyTarget tick rate: 20.0 per second. | Average time per tick: 2.3ms (Target: 50.0ms)Percentiles: P50: 2.2ms P95: 3.1ms P99: 5.4ms. Sample: 100"
   },
   {
    "check": "as set: on the cloud",
@@ -235,8 +235,8 @@
   },
   {
    "check": "as set: console",
-   "ok": false,
-   "detail": "1 warnings and errors\n        [Server thread/WARN]: C164Probe moved too quickly! 88.5,196.0,-32.5"
+   "ok": true,
+   "detail": "0 warnings and errors"
   }
  ],
  "level": {
@@ -324,9 +324,7 @@
   "max_block_modifications": "32768"
  },
  "issues": [],
- "as set: issues": [
-  "[Server thread/WARN]: C164Probe moved too quickly! 88.5,196.0,-32.5"
- ],
- "ok": false,
- "seconds": 68
+ "as set: issues": [],
+ "ok": true,
+ "seconds": 70
 }
