@@ -32,6 +32,7 @@ y up from the floor, z along the board from its north end.
 import functools
 import math
 
+from artkit import models as M
 from artkit.blocks import st
 
 from ..common import blocks as B
@@ -41,6 +42,9 @@ from ..motion import _kit as MK
 from . import _powerkit as K
 
 PREFIX = "mach_board_"
+VIEW = M.NEAR                           # the assembly's view band (s2 #88336): a machine indoors is drawn
+#                                         within 32 blocks. Of the board's twelve views only V6 looks
+#                                         into the power house, from 23 blocks
 
 # --- where it stands (scene coordinates, blocks) ------------------------------------------------------
 FLOOR = float(S.LOWER_GROUND)           # -6.0

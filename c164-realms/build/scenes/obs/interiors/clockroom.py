@@ -20,7 +20,9 @@ electric winding motor with its worm, bolted on later. Its back looks south: the
 pallets over it, the crutch, and the long pendulum, which hangs behind the bed and goes down
 through the floor; its bob swings under the ceiling of the tower's lobby. The floor under the bed
 and where the pendulum goes through is whole iron plate: the slot is a model on it, above and
-below, so no light gets down and nobody can fall. From the going
+below, so no light gets down and nobody can fall. A length of brass rail stands either side of
+the pendulum's swing, from a pier towards the south cabinet: nobody walks through the rod, and
+the way round the room goes past the movement's front, where there is something to do. From the going
 train an upright shaft rises to a nest of bevels on a beam at the height of the dials' centres, and
 four leading-off rods run from there to the four dials: one movement, four dials.
 
@@ -66,6 +68,7 @@ from ..props import lamps
 MOVED_IN = True
 NAME = "interiors/clockroom"
 PREFIX = "int_clockroom_"
+VIEW = M.NEAR                                       # the band of everything in here: no board view looks into the tower
 PX = 1 / 16.0
 TIME = tuple(S.CLOCK)                               # (7, 55): what the setting dial and the shadows show
 
@@ -81,6 +84,7 @@ DIAL = T.DIAL_BACKS["east"][1]                      # 27.5: the height of the di
 HATCH = tuple(T.LADDER_AT)                          # (11, -32): the corner the ladder comes up in
 SLOT = (CX, CZ + 1)                                 # (13, -29): the pendulum's slot in the floor
 PIERS = ((CX - 1, CZ), (CX + 1, CZ))                # the two piers the bed lies on
+GUARDS = ((SLOT[0] - 1, SLOT[1]), (SLOT[0] + 1, SLOT[1]))   # (12, -29), (14, -29): a length of rail either side of the pendulum's swing
 # the two cabinets over the tops of the dark slits: column, the panel it is (B.PANELS), the way it looks
 CABINETS = (((CX, WELL_Z[0]), "knife_switch", "south"), ((CX, WELL_Z[1]), "drawers", "north"))
 LOOKS = {"east": "west", "west": "east", "north": "south", "south": "north"}    # the way a dial's back looks
@@ -212,9 +216,9 @@ def floor_role(x, z, roles=B):
 
 def walk():
     """The columns one can stand in: the gallery but for the two cabinets, and the floor round the
-    movement but for the piers and the bars between them. The hatch is one of them (the ladder's
-    head)."""
-    taken = {column for column, _, _ in CABINETS} | set(PIERS) | {(CX, CZ)}
+    movement but for the piers, the bars between them, and the pendulum's cell with the rail
+    either side of it. The hatch is one of them (the ladder's head)."""
+    taken = {column for column, _, _ in CABINETS} | set(PIERS) | {(CX, CZ), SLOT} | set(GUARDS)
     return [(x, z) for x in range(WELL_X[0], WELL_X[1] + 1) for z in range(WELL_Z[0], WELL_Z[1] + 1)
             if (x, z) not in taken]
 
@@ -636,6 +640,11 @@ def build_clockroom(c, origin=(0, 0, 0), roles=B):
     # the two cabinets, in place of the plate over a dark slit's glass: whole blocks, no light gets down
     for (x, z), panel, looks in CABINETS:
         put(x, FEET, z, st(roles.PANELS[panel], facing=looks))
+    # a length of brass rail either side of the pendulum's swing, from a pier towards the south
+    # cabinet: with the bars under the bed and the cabinet they shut the pendulum's cell, and the
+    # way round the room goes past the movement's front
+    for x, z in GUARDS:
+        put(x, FEET, z, roles.BRASS_RAIL)
 
     # ---- the movement
     bed = spot((0.0, BED_TOP, 0.0))

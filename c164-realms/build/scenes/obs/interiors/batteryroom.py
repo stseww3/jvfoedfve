@@ -69,17 +69,11 @@ build() is what the master scene calls; it places nothing while MOVED_IN is off.
 build/scenes/obs_int_batteryroom, dresses a slice of the real building cut out round the cavity.
 """
 import functools
-import json
-import os
-import tempfile
 import zlib
-
-import numpy as np
-from PIL import Image
 
 from artkit import models as M
 from artkit.blocks import st
-from artkit.pixelart import Sprite
+from artkit.pixelart import Frames, Sprite
 
 from ..common import blocks as B
 from ..common import palette as P
@@ -97,6 +91,8 @@ MOVED_IN = True            # the master scene dresses the room (a card's switch 
 NAME = "interiors/batteryroom"
 PREFIX = "int_batteryroom_"
 PX = 1 / 16.0
+VIEW = M.NEAR              # the band of view distance of all the room places (the assembly lowers them after build()):
+#                            32 blocks. The room is 22 from corner to corner, and no window of it shows anything outside
 
 # ---- the room: the cavity under the time room (main/shell.ROOMS["time room"]), a storey lower
 X0, Z0, X1, Z1 = shell.ROOMS["time room"]["box"]    # 2, -25, 13, -7
@@ -237,14 +233,14 @@ assert len(JAR_SIDE) - JAR_SIDE.index("hhhhhh") == LEVEL, "the acid's surface li
 
 # ---- the gassing. On charge every cell gives off gas: bubbles climb the acid and break at its surface. The faces
 # of a jar are drawn in frames and the game plays them: a texture animation, on which no command is spent
-# (plan/round2.md, section 2). The blocks of the battery come in SORTS sorts that differ in nothing but where and
-# when their bubbles rise, so that jars side by side do not gas in step
+# (artkit.pixelart.Frames; plan/parts/materials.md, section 2 D). All that is placed of one model shows the same
+# frame, so the blocks of the battery come in SORTS sorts that differ in nothing but where and when their bubbles
+# rise: jars side by side do not gas in step
 FRAMES = 16                                         # the frames of the loop: four seconds
 FRAMETIME = 5                                       # ticks a frame stays: a bubble climbs the acid's four pixels in a second
 SORTS = 3
 CELLS = tuple(PREFIX + "cells" + tail for tail in ("", "_b", "_c"))     # the model of a block of the battery, sort by sort
 BUBBLES = {"side": 5, "end": 8, "top": 6}           # how many rise in one loop on a face of a jar, and break on its surface
-_FRAME = [0]                                        # the frame the sheet of a model is being painted for (_Alive.export)
 
 
 def _dice(*key):
@@ -293,48 +289,12 @@ def _breaking(rows, count, *key):
     return [tuple("".join(row) for row in grid) for grid in frames]
 
 
-class _Moving(Sprite):
-    """A drawing in frames. It paints the frame its model's sheet is being laid out for; anywhere
-    else (a check that reads a model's faces) the first."""
-
-    def __init__(self, name, frames, colours):
-        super().__init__(name, frames[0], colours)
-        self.frames = frames
-
-    def paint(self, w, h, grain="u", seed=0):
-        self.rows = self.frames[_FRAME[0] % len(self.frames)]
-        return super().paint(w, h, grain, seed)
+def _moving(name, frames):
+    """A face of a jar in `frames` (rows of characters each) as a picture the game plays: the model that
+    wears it gets an animated sheet (artkit.models.Model.export). Offline pictures show the first frame."""
+    return Frames(name, [Sprite(f"{name}_{k}", rows, GLASS) for k, rows in enumerate(frames)], FRAMETIME)
 
 
-class _Alive(M.Model):
-    """A model some of whose pictures move (_Moving). Its sheet is laid out once for every frame, the
-    same way each time, and the frames go one under the other into one picture, with a .mcmeta beside
-    it that tells the game how long a frame stays. The model's faces name places on one frame, as
-    the game wants it of an animated picture; the offline renderer shows the first frame."""
-
-    def export(self, pack_dir, ns="c164"):
-        sheets = []
-        with tempfile.TemporaryDirectory() as work:
-            for frame in range(FRAMES):
-                _FRAME[0] = frame
-                try:
-                    out = super().export(work, ns)
-                finally:
-                    _FRAME[0] = 0
-                sheets.append(np.array(Image.open(os.path.join(work, "assets", ns, "textures", "item", self.name + ".png"))
-                                       .convert("RGBA")))
-            for folder in (("models", "item"), ("items",)):
-                d = os.path.join(pack_dir, "assets", ns, *folder)
-                os.makedirs(d, exist_ok=True)
-                with open(os.path.join(work, "assets", ns, *folder, self.name + ".json")) as src:
-                    with open(os.path.join(d, self.name + ".json"), "w") as dst:
-                        dst.write(src.read())
-        d = os.path.join(pack_dir, "assets", ns, "textures", "item")
-        os.makedirs(d, exist_ok=True)
-        Image.fromarray(np.concatenate(sheets, axis=0), "RGBA").save(os.path.join(d, self.name + ".png"))
-        with open(os.path.join(d, self.name + ".png.mcmeta"), "w") as fh:
-            json.dump({"animation": {"frametime": FRAMETIME}}, fh, separators=(",", ":"))
-        return dict(out, frames=FRAMES)
 LEAD = K.flat("iron", 5)
 WOOD = P.mat("dark_wood", base=3)
 WOOD_D = P.mat("dark_wood", base=1)
@@ -383,11 +343,11 @@ def _jar(m, name, foot, along, *key):
     surface lies inside it. Its bubbles rise where and when `key` has it."""
     wide, high, deep = JAR
     lo, hi = (-deep / 2.0, foot, along - wide / 2.0), (deep / 2.0, foot + high, along + wide / 2.0)
-    side = _Moving(name + "_side", _gassing(JAR_SIDE, _tracks(len(JAR_SIDE[0]), BUBBLES["side"], *key, "side")), GLASS)
-    end = _Moving(name + "_end", _gassing(JAR_END, _tracks(len(JAR_END[0]), BUBBLES["end"], *key, "end")), GLASS)
+    side = _moving(name + "_side", _gassing(JAR_SIDE, _tracks(len(JAR_SIDE[0]), BUBBLES["side"], *key, "side")))
+    end = _moving(name + "_end", _gassing(JAR_END, _tracks(len(JAR_END[0]), BUBBLES["end"], *key, "end")))
     m.box(lo, hi, K.flat("night_glass", 1), skip="ud", faces={"e": side, "w": side, "n": end, "s": end})
     m.box((lo[0], foot + LEVEL - 1.0, lo[2]), (hi[0], foot + LEVEL - 0.5, hi[2]), K.flat("night_glass", 1), skip="nsewd",
-          faces={"u": _Moving(name + "_top", _breaking(JAR_TOP, BUBBLES["top"], *key, "top"), GLASS)})
+          faces={"u": _moving(name + "_top", _breaking(JAR_TOP, BUBBLES["top"], *key, "top"))})
 
 
 def _cells(sort=0):
@@ -397,7 +357,7 @@ def _cells(sort=0):
     row. Held HELD above the middle of the block's floor; the row runs along z. The sorts differ
     in their bubbles alone."""
     name = CELLS[sort]
-    m = _Alive(name, anchor=(0.0, HELD * 16.0, 0.0))
+    m = M.Model(name, anchor=(0.0, HELD * 16.0, 0.0))
     for x in (-4.0, 4.0):
         for z in (-6.0, 6.0):
             m.box((x - 1.0, 0.0, z - 1.0), (x + 1.0, 2.0, z + 1.0), CHINA)                          # the feet

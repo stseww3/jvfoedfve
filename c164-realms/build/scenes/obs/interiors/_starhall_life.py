@@ -19,17 +19,29 @@ the meridian.
                 every cycle, the flag (motion's blink: two commands a cycle). The three cycles
                 differ in length, so the flags fall in no order one could learn.
 
+  globe         the celestial globe of the south aisle turns in its stand, once in GLOBE_TURN
+                ticks, the way the sky turns over the hill: about its polar axis, which leans to
+                true north. The globe is props/instruments' and one model, stand and ball; what
+                turns is a second ball, the same sky drawn by the same code a quarter of a
+                pixel larger, on the same centre: it hides the ball in the stand and nothing
+                else, and where instruments no longer offers what draws it the stand's own
+                ball is seen as before and stands still. (A ball of its own in instruments,
+                shown apart from the stand, would save the second set of pictures: asked of
+                m1, 11-16.)
+
 The flag is a tone under the palette's lightest cream: under the aisle's lamps a full cream is a
 white dot from the door (the recorders' paper, machines/rec), and nothing new in the hall is to
 be lighter than the pier's face (cr3: under 0.20).
 """
 import functools
+import math
 
 from artkit import models as M
 
 from ..common import palette as P
 from ..main import shell
 from ..props import _kit as K
+from ..props import instruments
 
 try:
     from ..motion import _kit as MK
@@ -49,6 +61,10 @@ WINDOW = (1.5, 1.25)            # half the width and half the height of a window
 WINDOWS = tuple((x, y) for y in (2.0, -1.5, -5.0) for x in (-2.0, 2.0))
 # the windows in use and their cycles: (the window, ticks its flag is up, ticks it is down)
 CALLS = ((0, 190, 70), (3, 270, 70), (4, 350, 70))
+
+GLOBE_SHELL = 0.25      # pixels the turning ball's poles stand over those of the ball in the stand
+GLOBE_TURN = -900       # ticks to a turn; the minus: seen from over its north pole a star globe turns clockwise
+GLOBE_NEEDS = ("_ball", "_stars", "_leaned", "SKY", "GLOBE_R", "GLOBE_Y", "GLOBE_TILT", "GLOBE_YAW")
 
 WOOD = P.mat("dark_wood")
 WOOD_D = P.mat("dark_wood", base=1)
@@ -90,10 +106,31 @@ def _flag(name, mat):
     return m
 
 
+def _sky_ball():
+    """The celestial globe's ball by itself, as instruments draws it in the stand (the same facets,
+    the same sky, leaning the same way) and GLOBE_SHELL larger. Anchor: its centre. None when
+    instruments has changed what draws it.
+
+    instruments names the pictures of a ball after its own prefix, and a picture with the props'
+    prefix written by a room lies in the props' area (tools/check.py, conflicts): the ball is
+    drawn with this package's prefix in that place."""
+    I = instruments
+    if not all(hasattr(I, name) for name in GLOBE_NEEDS + ("PREFIX",)):
+        return None
+    m = M.Model(PREFIX + "sky_ball")
+    theirs, I.PREFIX = I.PREFIX, PREFIX
+    try:
+        I._ball(m, "sky", (0.0, 0.0, 0.0), I.GLOBE_R + GLOBE_SHELL, I.SKY, 16, 8,
+                I._stars(I._leaned(I.GLOBE_TILT, I.GLOBE_YAW)), swing=11.25, crown=True)
+    finally:
+        I.PREFIX = theirs
+    return m
+
+
 @functools.lru_cache(maxsize=None)
 def _models():
-    made = [_annunciator(), _flag("up", GROUND), _flag("down", FLAG)]
-    return {m.name: m for m in made}
+    made = [_annunciator(), _flag("up", GROUND), _flag("down", FLAG), _sky_ball()]
+    return {m.name: m for m in made if m is not None}
 
 
 def models():
@@ -108,8 +145,26 @@ def pilaster():
     return xs[len(xs) // 2] + 0.5, Z0 + 1.0, "south"
 
 
+def _globe(canvas, origin):
+    """The turning ball of the celestial globe, where interiors/starhall stands the globe."""
+    from . import starhall
+    ball = _models().get(PREFIX + "sky_ball")
+    if ball is None or MK is None:
+        return 0
+    I = instruments
+    (x, z), facing = starhall.globe_at()
+    yaw = K.FACING[facing]
+    n = K.put(canvas, ball, (x, FEET + I.GLOBE_Y / 16.0, z), facing=facing, origin=origin)
+    tilt = math.radians(I.GLOBE_TILT)
+    with_yaw = math.radians(I.GLOBE_YAW)
+    pole = (math.sin(tilt) * math.cos(with_yaw), math.cos(tilt), -math.sin(tilt) * math.sin(with_yaw))
+    MK.spin(canvas, K.turn(yaw, pole), GLOBE_TURN)
+    return n
+
+
 def dress(canvas, origin=(0, 0, 0), version="a"):
-    """Hang the annunciator and its three flags; returns the display entities placed."""
+    """Hang the annunciator and its three flags, set the globe turning; returns the display
+    entities placed."""
     models = _models()
     x, z, facing = pilaster()
     yaw = K.FACING[facing]
@@ -120,4 +175,4 @@ def dress(canvas, origin=(0, 0, 0), version="a"):
                    origin=origin)
         if MK is not None:
             MK.blink(canvas, PREFIX + "flag_down", up, down, name=f"{PREFIX}flag_{window}")
-    return n
+    return n + _globe(canvas, origin)

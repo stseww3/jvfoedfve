@@ -931,6 +931,52 @@ def light_state(world, before=None):
     return out
 
 
+TRAIN = ("#t.train", "c164m")   # the travelling train's state as the loop keeps it (a2 c322 #89128)
+TRAIN_STATES = {0: "at rest at the line's far end", 1: "on its way up", 2: "standing in the station", 3: "on its way down"}
+
+
+def train_state(server):
+    """The state of the scene's train (see TRAIN_STATES), None where the score is not set."""
+    found = re.search(r"has (-?\d+)", server.cmd(f"scoreboard players get {TRAIN[0]} {TRAIN[1]}", quiet=True))
+    return int(found.group(1)) if found else None
+
+
+def train_functions(pack_dir):
+    """The train's switches in the data pack, {name: function id}: park (the whole train to the
+    line's far end, at rest until it is sent off), go (it leaves, and keeps its timetable from
+    there) and restart (both). Whatever folder of the art namespace they are in (a2 c322 #92877)."""
+    root, found = os.path.join(pack_dir, "data", ART, "function"), {}
+    for name in ("park", "go", "restart"):
+        hits = sorted(glob.glob(os.path.join(root, "**", "train", name + ".mcfunction"), recursive=True))
+        if hits:
+            found[name] = ART + ":" + os.path.relpath(hits[0], root)[:-len(".mcfunction")].replace(os.sep, "/")
+    return found
+
+
+def train_set(server, spec):
+    """The train as the save is to hold it; None for a scene without one. With the opening whoever
+    comes first is set on it and sends it off himself, so it is parked: at the line's far end, at
+    rest, for as long as nobody comes (mast c346 #92349: no first visitor should have to wait for
+    it to come back). Without the opening nobody sends it off, so it is sent off now and keeps
+    its timetable from this moment: every save finds it at the same place of its round, and who
+    comes in sees it arrive. Where the pack has no such switch the train is left as it is."""
+    before, has = train_state(server), train_functions(os.path.join(server.world, "datapacks", PACK))
+    if before is None and not has:
+        return None
+    if spec.get("arrival"):
+        did = "park" if "park" in has else None
+    else:
+        did = "restart" if "restart" in has else "go" if "go" in has and before == 0 else None
+    if did:
+        server.cmd(f"function {has[did]}")
+        time.sleep(0.5)
+    return {"did": did, "function": has.get(did), "before": before, "state": train_state(server), "has": has}
+
+
+def train_told(state):
+    return "no train" if state is None else f"{TRAIN_STATES.get(state, 'in a state the list does not know')} ({TRAIN[0]} {state})"
+
+
 def settle_light(server, limit=180.0, pause=2.0, quiet=3):
     """Waits for the game's light engine to come to rest, with the chunks still loaded. The engine
     works behind the game: after the last block is set it still has light to take away and to
@@ -1071,6 +1117,15 @@ def make(args):
         if spec.get("forced"):
             facts["forced"] = server.cmd("forceload query")
         facts["tick"] = server.cmd("tick query")
+        facts["train"] = train_set(server, spec)        # the last thing before the world is saved
+        if facts["train"]:
+            say(f"train: {facts['train']['did'] or 'left as it was'}; before {train_told(facts['train']['before'])}, "
+                f"saved {train_told(facts['train']['state'])}")
+            if spec.get("arrival") and facts["train"]["state"] != 0:
+                facts["notes"].append("the opening is on and the train is not at rest at the line's far end as the world is saved "
+                                      f"({train_told(facts['train']['state'])}; the pack's switches: {facts['train']['has'] or 'none'}): "
+                                      "who comes first may have to wait for it.")
+                say("NOTE: " + facts["notes"][-1])
         server.stop()
         facts["issues"] = server.issues()
         seal(server.world, spec, out_dir, head, when, facts)
@@ -1152,8 +1207,10 @@ def seal(world, spec, out_dir, head, when, facts):
             removed.append(os.path.relpath(stop, stage))
     # the map's name, where a player meets it: the world's name in the list of worlds (the folder
     # and the archive keep the save's number) and what the two packs say of themselves
-    title = spec.get("title")
-    told = f"{title} ({name} {head})" if title else f"c164 {name} ({head})"
+    # ... with the commit of the assembly it is made of where that is told (s1 c319 #91613: the
+    # tree a round is made in is the dist branch's, and its commit says nothing to who reads it)
+    title, of = spec.get("title"), str(facts.get("assembly") or head)[:8]
+    told = f"{title} ({name} {of})" if title else f"c164 {name} ({of})"
     if title:
         import nbtlib
         level = nbtlib.load(os.path.join(stage, "level.dat"))
@@ -1228,7 +1285,8 @@ def ride_in(server, bot, spec, results, tag):
     He is looked at once a second from the moment he is in until he stands there. Wanted: on a
     seat within three seconds; on it without a break and carried along until he is off; off within
     the time the scene names (RIDE_MOST), on the spot and facing as the map begins; the title
-    shown while he rides (that it comes once and no more is the check 'title', further down);
+    shown on the way or as he gets off (the director's #92375: at the moment he gets off; looked
+    for until three seconds after. That it comes once and no more is the check 'title', further down);
     and whole all the way: a seat that takes his head through a solid block (the cloud sea is
     made of them) costs him a heart a second, and the screen is the block's face meanwhile."""
     feet, most = tuple(spec["feet"]), spec["arrival"]["most"] / 20.0
@@ -1247,6 +1305,12 @@ def ride_in(server, bot, spec, results, tag):
     bot.pump(1.0)
     on = [(t, at) for t, rides, at in track if rides]
     took = track[-1][0]
+    for _ in range(3):
+        if shown is not None:
+            break
+        bot.pump(1.0)
+        if bot.texts("title"):
+            shown = (round(time.time() - t0, 1), False, rider(server, bot.name)[1])
 
     def spot(at):
         return "?" if at is None else "({:.1f}, {:.1f}, {:.1f})".format(*at)
@@ -1271,9 +1335,10 @@ def ride_in(server, bot, spec, results, tag):
           and near(bot.position, feet) and faces(bot, spec) and took <= most + 2.0,
           f"{took} s after he came (the scene's longest is {most:.0f} s) the server has him at {spot(off[2])}, "
           f"{'still riding' if off[1] else 'on his feet'}; he was told he stands at {bot.position} facing {bot.rotation}")
-    check(results, tag + "arrival, title", shown is not None and shown[1],
-          (f"the title came within {shown[0]} s, {'while he rode' if shown[1] else 'when he did not ride'}, at {spot(shown[2])}"
-           if shown else "no title came while he rode in"))
+    check(results, tag + "arrival, title", shown is not None,
+          (f"the title came within {shown[0]} s of his coming, "
+           + ("while he rode" if shown[1] else f"within {max(0.0, shown[0] - took):.0f} s of his getting off") + f", at {spot(shown[2])}"
+           if shown else f"no title came while he rode in, nor in the three seconds after he was off ({took} s after he came)"))
     check(results, tag + "arrival, unhurt", not hurt,
           "whole (20 of 20) at every look" if not hurt else
           f"hurt at {len(hurt)} of {len(track)} looks, least {min(h for _t, h, _a in hurt)} of 20; first {hurt[0][0]} s after he came "
@@ -1715,6 +1780,13 @@ def verify(args):
             check(results, tag + "starts", True, f"up in {started:.0f} s, the server's own settings: {own}")
             packs = server.cmd("datapack list enabled", quiet=True)
             check(results, tag + "data pack", f"file/{PACK}" in packs, packs)
+            # the train as the save is opened, before anybody is there (see train_set)
+            trains = [(0.0, train_state(server))]
+            t_train = time.time()
+            if spec.get("arrival") and (trains[0][1] is not None or made.get("train")):
+                check(results, tag + "train", trains[0][1] == 0,
+                      f"as the save is opened: {train_told(trains[0][1])}; wanted at rest at the line's far end, "
+                      "where the first to come is set on it")
             if first:
                 rules = {}
                 for rule, value in RULES + [("max_block_modifications", None)]:
@@ -1755,6 +1827,12 @@ def verify(args):
                 if spec.get("arrival"):
                     time.sleep(1.0)
                     ride_broken(server, spec, results, tag)
+            # without the opening nobody sends the train off: it has to be on its round by itself
+            trains.append((round(time.time() - t_train), train_state(server)))
+            if not spec.get("arrival") and any(state is not None for _t, state in trains):
+                check(results, tag + "train", any(state for _t, state in trains),
+                      "; ".join(f"{t:.0f} s after the save was opened {train_told(state)}" for t, state in trains)
+                      + "; wanted: on its round with nobody aboard (seen away from its rest at one of the looks)")
             server.stop()
             issues = server.issues()
             report[tag + "issues"] = issues

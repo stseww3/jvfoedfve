@@ -184,6 +184,10 @@ def build():
     return c
 
 
+def build_models():
+    return cloudsea.models()
+
+
 def write_pack(pack_dir):
     out = list(materials.pack(pack_dir) or [])
     out += list(comet.pack(pack_dir) or [])                       # the sun painted out, the comet

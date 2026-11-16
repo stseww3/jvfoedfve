@@ -126,3 +126,12 @@
 - 跑过的（总监机，代码 0492f3d4，合进来的总装头 8cddfa98）：`check.py` 0 失败、1 警告（blocks：屏障离模型远，总监认了的那一条；场景里 245 格屏障，233 格离模型远，其中 232 格是这一圈）；`roof.check`、`smalldome.check` 全过；`hidden.py` 还是那 1 处（V1 碰到北门上半扇，已知）；`kept.py`：拿掉屏障 5629 处站得到，2066 处在女儿墙上或外面（走 486、掉下去回不来 1580）；照实 3367 处，女儿墙上和外面 0 处。
 - 没跑的：整套关口；图（屏障不画，没有图可看；`redraw.sh` 下回出图时顺带写 `kept.txt`）。`walkreach` 只认相邻格点之间的走、跳、落，不认隔着空当的助跑跳；上面第三条是照游戏的跳跃数算的，没有在真机里跳过。
 - 别人后来往女儿墙那些列的 y 19、20 放东西会顶掉屏障（后写的赢）。这个场景里（site、main、props、sky）没有；机器和室内两条线不在这个场景里，整图请 facade 复走时看。
+
+### 第 3 班·屏障给两盏灯让格（c328，11-16；s2 #89883 查出，facade #90287 定）
+- 毛病：屏障进总装（51002f1e）以后，lights 挂在穹顶室南、北门东侧墩上的两盏笼灯没挂上（`sky/_ways_roofs.py`、`_ways_roofsouth.py`：灯固定在 (14, 19, ∓9) 朝东，光源在墩前一格 (15, 19, ∓9)）。那一格正是女儿墙列上屏障的下排，lights 见格子被占就不挂，鼓座脚下那两个暗角在 B1 里又黑了。
+- 改法（d93e3c9c，`main/roof.py`）：`GUARD_LAMPS` 这两列的屏障改成 y 18 和 y 20（`GUARD_LAMP_Y`），y 19 留空给灯的光源；别的列不动。两列从下往上是压顶、屏障、光源、屏障，中间只有一格高，人进不去；顶面还是 21。屏障总数还是 232。lights 一行没动。
+- 自证：`roof.check()` 第 9 条加了三句（两列确实是女儿墙的列；`GUARD_LAMP_Y` 是压顶上一排和上排；留给灯的那一格本包没放东西）。`kept.py` 多报一行这两格里现在是什么。
+- 跑过的（node42，d93e3c9c，合了总装 8cc36627）：`redraw.sh` 全套：`check.py` `result: PASS (0 failed, 3 with warnings)`；`roof.check`、`smalldome.check` all good；`hidden.py` 还是那 1 处；`kept.py`：不放屏障 5629 处、女儿墙上和墙外 2066 处，照建的 0 处。`python tools/viewbands.py --lamps`：没有「the cell … before its wall is taken」那两条了，`ways: 28`；`viewbands.py` 的表里 `sky/lights` 68 件。整座 `obs` 建出来直接读：(15, ∓9) 两列 y 17 压顶、18 屏障、19 `light`、20 屏障，墩上各一盏 `prop_lamp_cage_a`。
+- 图：19 张在 node42 上合了总装 8cc36627 重画（df3609d9；上一批画在 d4dfe8ca 前后，关口说 12 张旧了）。改屏障以后又画了一遍，19 张一个字节没变（屏障不画，这个场景里灯的光源不是方块），只有 `check.txt`、`kept.txt`、`shots.txt` 变了（9ab3c663）。
+- 看图发现的、没改的：`lookout`、`lookout_west` 两张下半张被塔的檐口（y 31）挡住，机位是早先贴着塔身外皮放的；下一笔把这两个机位改成人站在瞭望层栏杆里的眼睛。
+- 没跑的：整套关口；进游戏看这两盏灯亮没亮。

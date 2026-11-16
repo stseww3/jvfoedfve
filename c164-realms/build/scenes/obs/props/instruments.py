@@ -865,6 +865,10 @@ def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), yaw=None, **opts)
 DRESS = True            # on from the merge on (the fast lane, COMMON 0.10); a test scene may still ask
                         # for the site's instruments with dress(canvas), or call site()
 SUNSET_SCOPE = 16.0     # blocks west of the middle of the terrace's half-circle, on the axis
+# How far what this package places itself is drawn (the assembly brings it down to this after
+# build()): the telescope stands out of doors and is looked at from its own terrace. The instruments
+# of the rooms are placed by the rooms and take their band.
+VIEW = M.MID
 
 
 def site_pieces():
