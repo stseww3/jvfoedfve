@@ -80,11 +80,15 @@ CASE = ((5.0, -4.0), (10.0, 4.0), 10.0) # the clockwork case: (x, z) of two corn
 RAIL = (9.5, 5.0)                       # the pen's rail: above the foot, and its z
 PEN_X = -1.0                            # where the pen stands on its rail: at the end of the trace
 DRUM_X = (SHEET[0] + SHEET[1]) / 2.0    # -2.5: the middle of the drum
-TRACE = (                               # the sheet, one face of the drum: a rule along it, the two turns the pen
-    "rrrirrirrr",                       # has written (the second one under the pen, at PEN_X), a jog in each
-    "...i..i...",                       # where a second fell
-    "....i..i..",
-    "...i..i...",
+TRACE = (                               # the sheet, two faces of the drum that follow each other: on each a rule
+    ("rrrirrirrr",                      # along it and the two turns the pen has written (the second one under the
+     "...i..i...",                      # pen, at PEN_X). A turn has the jog of a second on every other face, and
+     "....i.i...",                      # the two turns on alternate ones: with both on every face, a face seen
+     "...i..i..."),                     # from below was a check again
+    ("rrrirrirrr",
+     "...i..i...",
+     "...i...i..",
+     "...i..i..."),
 )
 SECONDS_DIAL = (                        # the clockwork's seconds dial; the hand stands at 60, as at 7:55 sharp
     ".chc.",
@@ -132,17 +136,19 @@ def _tape_face(name, n, across=3, start=0):
 def _prism(m, a0, a1, c, radius, mat, cap, sides=8, faces=None, seed=None):
     """A prism along x in one tone all round, for a part that turns: Model.tube paints a highlight
     on the side that looks at the light and the game shades a face by where it looks at rest, and a
-    wheel would carry both round with it."""
+    wheel would carry both round with it. faces: what the two long faces of each of its boxes
+    carry, or a list of those, taken in turn round the prism."""
     hw = radius * math.tan(math.pi / sides)
     lo, hi = (a0, c[0] - hw, c[1] - radius), (a1, c[0] + hw, c[1] + radius)
     side = mat.variant(0, "ends") if hasattr(mat, "variant") else mat
-    look = dict({"w": cap, "e": cap, "n": side, "s": side}, **(faces or {}))
+    looks = [dict({"w": cap, "e": cap, "n": side, "s": side}, **each)
+             for each in (faces if isinstance(faces, (list, tuple)) else [faces or {}])]
     m._n += 1
     seed = m._n if seed is None else seed
     for i in range(sides // 2):
         angle = 360.0 * i / sides
         m.box(lo, hi, mat, rot=("x", angle, ((a0 + a1) / 2.0, c[0], c[1])) if angle else None, skip="du",
-              faces=look, seed=seed, grain="x", shade=False)
+              faces=looks[i % len(looks)], seed=seed, grain="x", shade=False)
     return m
 
 
@@ -178,9 +184,12 @@ def _drum():
     name = PREFIX + "drum"
     half = (SHEET[1] - SHEET[0]) / 2.0
     width, radius = FLANGE
-    trace = Sprite(name + "_trace", list(TRACE), dict(i=INK, r=RULE), back=PAPER)
+    sheets, look = [], dict(i=INK, r=RULE)
+    for k, rows in enumerate(TRACE):                                    # the far face of a box: the same half a turn round,
+        sheets.append({"s": Sprite(f"{name}_trace{k}", list(rows), look, back=PAPER),               # so that the rules
+                       "n": Sprite(f"{name}_trace{k}_n", [row[::-1] for row in rows[::-1]], look, back=PAPER)})   # keep their step
     m = M.Model(name)
-    _prism(m, -half, half, (0.0, 0.0), DRUM_R, PAPER, PAPER_EDGE, faces={"s": trace, "n": trace.mirrored()})
+    _prism(m, -half, half, (0.0, 0.0), DRUM_R, PAPER, PAPER_EDGE, faces=sheets)
     for s in (-1.0, 1.0):
         a, b = sorted((s * half, s * (half + width)))
         _prism(m, a, b, (0.0, 0.0), radius, BRASS, K.flat("brass", 2))
