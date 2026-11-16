@@ -1,0 +1,11 @@
+a0job 1116-043347-sdome-astromove-f3-1fe7-28753: cursor/c164-sdome-astromove-f3-1fe7 @ 4d1746d3 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.15 0.37 0.83, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- (cd build && python -m scenes.obs_int_astroroom >/dev/null) && (python tools/check.py --scene obs_int_astroroom > /tmp/sdome_rcheck.txt 2>&1; R=$?; tail -n 20 /tmp/sdome_rcheck.txt | cut -c1-330; exit $R) ---- exit 1, 0 s, last 40 line
+/agent/realms-study/.venv/bin/python: No module named scenes.obs_int_astroroom.__main__; 'scenes.obs_int_astroroom' is a package and cannot be directly executed
+==== NODEJOB RESULT ====
+exit=1 secs=1 host=cursor cores=4 head=4d1746d3 commit=none pushed=no branch=cursor/c164-sdome-astromove-f3-1fe7 files=0
+a0job: exit=1 secs=2
