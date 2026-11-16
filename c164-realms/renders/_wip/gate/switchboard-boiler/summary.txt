@@ -1,0 +1,9 @@
+gate machines/switchboard-boiler 04c75414: the merged tree 04c75414, the assembly as it was 73ba97f1
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] scope    24 of 26 files are the card's own
+                    not this card's file: A build/scenes/obs/machines/batteryboard.py
+                    not this card's file: M build/scenes/obs/machines/board.py
+check.py: 76 scenes in 101 s: 76 pass (76 with warnings)
+pictures: [PASS] selfshots obs_mach_batteryboard at 04c75414: 8 of 8 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_mach_switchboard_boiler at 04c75414: 12 of 12 kept pictures are what the code draws
+result: PASS
