@@ -1,0 +1,106 @@
+{
+ "scene": "obs_mot_load",
+ "commit": "ad08220",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "672 blocks, 200 entities, 1 models, 666 resource-pack files, 38 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (0.7 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 665 files, no file written twice, the folders and the prefix of motion are kept (1 package run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "125 pictures, every colour in the palette",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "521 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "86 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "3 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of motion: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "200 display entities",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "WARN",
+   "summary": "4 shots, most display entities in view: 200 (far), limit 600; counted without what walls hide",
+   "details": [
+    "the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(materials.pack(d) or []) + list(sky.pack(d) or [])"
+   ],
+   "data": {
+    "shots": [
+     {
+      "name": "far",
+      "in_view": 200,
+      "drawn": 200,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "near",
+      "in_view": 96,
+      "drawn": 200,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "far_again",
+      "in_view": 200,
+      "drawn": 200,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "near_again",
+      "in_view": 96,
+      "drawn": 200,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "WARN",
+   "summary": "200 parts and 0 points on 1 chains, 30 function files; 36 commands in the busiest tick (limit 60), 34.4 a tick on average (limit 40)",
+   "details": [
+    "the scene sets its own limits (60 in a tick, 40 on average, not 120 and 40): a load test",
+    "chain of 24 ticks: 24 functions, 826 commands a cycle, starts 1 ticks after start"
+   ]
+  }
+ ]
+}

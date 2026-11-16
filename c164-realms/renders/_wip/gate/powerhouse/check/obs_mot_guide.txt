@@ -1,0 +1,15 @@
+check obs_mot_guide at ad08220
+[PASS] regen     238 blocks, 0 entities, 0 models, 688 resource-pack files, 51 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (0.6 s)
+[PASS] conflicts the scene writes 687 files, no file written twice, the folders and the prefix of motion are kept (1 package run alone)
+[PASS] strays    129 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      529 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    3 kinds of block placed, all in the occupancy table
+[SKIP] flatwall  a test scene of motion: its sample walls and backdrops are meant to be flat
+[PASS] entities  0 display entities
+[PASS] views     2 shots, most display entities in view: 0 (bench), limit 600; counted without what walls hide
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    0 parts and 8 points on 1 chains, 8 function files and 35 of the packages' own; 9 commands in the busiest tick (limit 120), 1.5 a tick on average (limit 40)
+                 functions of the packages' own: guide/c1 (4 commands), guide/c2 (4 commands), guide/c3 (4 commands), guide/c4 (4 commands), guide/c5 (4 commands), guide/c6 (4 commands), guide/count (8 commands), guide/lens (3 commands), guide/done (6 commands), guide/glow/01 (3 commands), guide/glow/02 (3 commands), guide/glow/03 (3 commands), guide/glow/04 (3 commands), guide/glow/05 (3 commands), guide/glow/06 (3 commands), guide/glow/07 (3 commands), guide/glow/08 (3 commands), guide/glow/09 (3 commands), guide/glow/10 (3 commands), guide/glow/11 (3 commands), guide/glow/12 (3 commands), guide/glow/13 (3 commands), guide/glow/14 (3 commands), guide/glow/15 (3 commands), guide/glow/16 (3 commands), guide/glow/17 (3 commands), guide/glow/18 (3 commands), guide/glow/19 (3 commands), guide/glow/20 (3 commands), guide/glow/21 (3 commands), guide/glow/22 (3 commands), guide/glow/23 (3 commands), guide/glow/24 (3 commands), guide/glow/25 (3 commands), guide/glow (26 commands)
+                 chain of 8 ticks: 2 functions, 12 commands a cycle, starts 1 ticks after start
+result: PASS (0 failed, 0 with warnings)
