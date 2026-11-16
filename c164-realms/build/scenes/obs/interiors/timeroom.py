@@ -227,6 +227,8 @@ BENCH_X = PANEL_W + DESK_DEEP / 2                   # 2.625
 DESK_Z = S.mid(MP.window_rows(DESK_BAY)[0], MP.window_rows(DESK_BAY)[-1])       # -11.5: under the middle of its window
 BENCH_Z = S.mid(MP.window_rows(BENCH_BAY)[0], MP.window_rows(BENCH_BAY)[-1])    # -15.5
 SEAT = 1.075                                        # from the middle of a desk to the middle of its chair
+DESK_CHAIR = ((DESK_X - SEAT, FEET, DESK_Z), K.FACING["east"] + 25.0)       # the message desk's chair, pushed back and half turned: where
+#                                                     it stands and its yaw; the operator's jacket hangs over its back
 CABINET_Z = SOUTH - 0.6                             # -6.6: where a cabinet stands with its back to the south wall
 DUCT_X = (CONSOLE_X[0], CONSOLE_X[1])               # 6 and 9: the two lines of the floor, under the two ends of the console and in line with the two piers
 DUCTS = (                                           # runs of duct in the floor, cell to cell; the two lines turn off to their desks at (6, -16) and (9, -12)
@@ -400,7 +402,7 @@ PIECES = (
     # props/furniture (c179)
     piece("furniture", "stool", (S.mid(KEY_X), FEET, CONSOLE_Z + 1.5), facing="north"),
     piece("furniture", "writing_desk", (DESK_X, FEET, DESK_Z), facing="west"),
-    piece("furniture", "swivel_chair", (DESK_X - SEAT, FEET, DESK_Z), yaw=K.FACING["east"] + 25.0),   # pushed back, half turned
+    piece("furniture", "swivel_chair", DESK_CHAIR[0], yaw=DESK_CHAIR[1]),                           # pushed back, half turned
     piece("furniture", "writing_desk", (BENCH_X, FEET, BENCH_Z), facing="east"),
     piece("furniture", "swivel_chair", (BENCH_X + SEAT, FEET, BENCH_Z), facing="west"),
     piece("furniture", "card_cabinet", (X0 + 2.5, FEET, CABINET_Z), facing="north"),
@@ -575,6 +577,30 @@ def _forms():
     return m
 
 
+def _jacket():
+    """The operator's jacket over the back of the message desk's chair: the blue of the lamps'
+    shades, hung by its collar over the crest, its back outside the spindles, its two fronts
+    inside them, a sleeve down each side. With the mug and the form begun it says the room is
+    manned: who sat here has only gone to the rack. Made for props/furniture's swivel chair (the
+    crest at 12..14 px, 4..5 px out behind the seat) and placed where that stands, turned as it is.
+    Anchor: the chair's, the floor under the middle of its seat; the back is on the -z side."""
+    cloth, fold = P.mat("enamel", kind="plain", noise=0.10, bevel=0, base=1), P.mat("enamel", kind="plain", noise=0.10, bevel=0, base=2)
+    m = M.Model(PREFIX + "jacket")
+    m.ring("y", (0.0, 14.35, 0.0), 4.5, 2.0, 0.7, fold, sides=16, arc=(48.0, 132.0))            # the yoke, lying on the crest
+    m.ring("y", (0.0, 15.0, 0.0), 4.7, 1.2, 0.8, cloth, sides=16, arc=(68.0, 112.0))            # the collar, turned up
+    m.ring("y", (0.0, 10.2, 0.0), 5.5, 0.6, 8.0, cloth, sides=16, arc=(50.0, 130.0))            # the back, outside the spindles
+    for arc, foot in (((52.0, 86.0), 8.2), ((94.0, 128.0), 7.6)):                               # the two fronts, inside them
+        m.ring("y", (0.0, (foot + 14.0) / 2.0, 0.0), 3.5, 0.5, 14.0 - foot, cloth, sides=16, arc=arc)
+    for deg, lean, foot in ((38.0, 0.5, 4.8), (142.0, 0.9, 5.6)):                               # the sleeves, hanging outside the arms
+        c, s = math.cos(math.radians(deg)), -math.sin(math.radians(deg))
+        m.beam((5.6 * c, 13.9, 5.6 * s), ((5.6 + lean) * c, foot, (5.6 + lean) * s), 2.2, 1.2, cloth)
+        m.beam((5.6 * c, 14.4, 5.6 * s), (5.6 * c, 13.4, 5.6 * s), 2.8, 1.6, fold)              # the shoulder
+    for y in (12.2, 10.4):                                                                      # two buttons on the edge of a front
+        c, s = math.cos(math.radians(88.0)), -math.sin(math.radians(88.0))
+        m.box((3.1 * c - 0.3, y - 0.3, 3.1 * s - 0.3), (3.1 * c + 0.3, y + 0.3, 3.1 * s + 0.3), K.flat("brass", 3))
+    return m
+
+
 def back_name(i):
     return f"{PREFIX}back_{i}"
 
@@ -605,14 +631,15 @@ def _models():
     out[PREFIX + "chronometer"] = _chronometer()
     out[PREFIX + "mug"] = _mug()
     out[PREFIX + "forms"] = _forms()
+    out[PREFIX + "jacket"] = _jacket()
     return out
 
 
 def models():
     """The room's own models: the five world clocks, the patch cords of the two jack fields, the
     boards at the backs of the two recesses, the chronometer of the rating bench, the mug on the
-    console and the paper of the message desk, and what the parts written beside the room (PARTS)
-    bring. Its lamps are props/lamps', its machines machines/recorders', the rest the packages'
+    console, the paper of the message desk and the jacket over its chair, and what the parts
+    written beside the room (PARTS) bring. Its lamps are props/lamps', its machines machines/recorders', the rest the packages'
     named in PIECES."""
     out = dict(_models())
     for name in PARTS:
@@ -811,6 +838,8 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
         dx, _, dz = K.turn(bench_yaw, (along * PX, 0.0, out * PX))
         n += K.put(c, own[PREFIX + "chronometer"], (BENCH_X + dx, desk_top, BENCH_Z + dz), yaw=bench_yaw + twist, origin=origin)
     n += K.put(c, own[PREFIX + "forms"], (DESK_X, desk_top, DESK_Z), facing="west", origin=origin)
+    if theirs("furniture") is not None:             # the jacket hangs on the chair, so only where the chair is
+        n += K.put(c, own[PREFIX + "jacket"], DESK_CHAIR[0], yaw=DESK_CHAIR[1], origin=origin)
 
     # ---- the world clocks on their board over a cabinet of drawers, and the lamp over the middle one
     for z, offset in zip(range(CLOCK_Z[0], CLOCK_Z[1] + 1), WORLD):
