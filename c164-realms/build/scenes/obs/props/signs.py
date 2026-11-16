@@ -780,6 +780,10 @@ def station(canvas, seat=None, origin=(0, 0, 0)):
 # blocks off, its figure read from three.
 DOOR_PLATE = "1"
 DOOR_PLATE_UP = 0.5             # its middle over the top of the plinth: in the first course of pale stone
+# The light it is shown in, (sky, block), as the great piece over it says its own: a front that
+# looks east shows at half, and in the light of its cell the plate's cream came out the tone of
+# the stone it hangs on (0.30 beside 0.28 in V4), a dark patch with no edge and no figure.
+DOOR_PLATE_SHOWN = (15, 12)
 
 
 def _door_seat():
@@ -805,7 +809,8 @@ def doorplate(canvas, seat=None, origin=(0, 0, 0), **opts):
     """Hang the entrance's plate (DOOR_PLATE) on its seat: _door_seat() when none is given, or
     dict(point, facing) as the station's board has it. Nothing is hung where the stone behind the
     seat does not stand on the canvas or the cell before it is taken by anything but a light
-    source. opts as for place(). Returns the number of display entities."""
+    source. It is shown in DOOR_PLATE_SHOWN (brightness=None leaves it to the cell it hangs in);
+    opts as for place(). Returns the number of display entities."""
     seat = _door_seat() if seat is None else seat
     if seat is None:
         return 0
@@ -814,6 +819,7 @@ def doorplate(canvas, seat=None, origin=(0, 0, 0), **opts):
                  for side in (-0.5, 0.5))
     if not canvas.has(*wall) or canvas.name(*air) not in (None, "light"):
         return 0
+    opts.setdefault("brightness", DOOR_PLATE_SHOWN)
     return plate(canvas, DOOR_PLATE, seat["point"], facing=seat["facing"], origin=origin, **opts)
 
 
