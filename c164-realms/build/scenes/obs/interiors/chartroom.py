@@ -71,6 +71,7 @@ from ..main import _plan as MP
 from ..main import shell
 from ..props import _kit as K
 from ..props import lamps
+from . import _chartshelves
 
 MOVED_IN = False        # the master scene dresses the room once it is past review
 NAME = "interiors/chartroom"
@@ -591,7 +592,7 @@ def _calculator():
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    out = {PREFIX + name: make(name, seed, plan) for name, (make, seed, plan) in SHELVES.items()}
+    out = dict(_chartshelves.models())
     for m in [_table(k) for k in range(PANES)] + [_bridge(), _viewer(), _plates(), _calculator()]:
         out[m.name] = m
     return out
@@ -688,16 +689,14 @@ def build_chartroom(c, origin=(0, 0, 0), roles=B):
         put(X1, TOP, z, st(roles.IRON_RIVETED.stairs, facing="east", half="top"))
 
     # ---- the bookcase wall, the ladder on its rail, two drop lights before it
-    for i, tiers in enumerate(SHELF_WALL):
-        x = X0 + SHELF_W / 32.0 + i * SHELF_W / 16.0
-        for name, y in zip(tiers, (FEET, FEET + 3, FEET + 6)):
-            n += K.put(c, own[PREFIX + name], (x, y, SOUTH), mount="wall", facing="north", origin=origin)
-    front = SOUTH - SHELF_D * PX
+    n += _chartshelves.place(c, origin)
+    front = _chartshelves.FRONT_Z
     if furniture is not None:
         n += furniture.rail(c, (X1 + 0.5, FEET, front), X1 - X0 + 1, facing="north", origin=origin)
     n += piece(furniture, "furniture", "library_ladder", (AXIS_X + 2.25, FEET, front), facing="north")
-    for x in (AXIS_X - 3.5, AXIS_X + 3.5):
-        n += drop(x, Z1 - 0.7, SHELF_HANG, ASK_SHELF, "drop light before the bookcase", (int(x), FEET + 2, Z1 - 1))
+    for x in (_chartshelves.PIER_X[0], _chartshelves.PIER_X[-1]):      # a bracket lamp on each outer pier
+        n += lamp("bracket", (x, _chartshelves.LAMP_Y[0] + 11 * PX, _chartshelves.PIER_FACE_Z), ASK_SHELF,
+                  "bracket lamp on a pier of the bookcase", (int(x), FEET + 3, Z1 - 1), facing="north")
 
     # ---- the light table: its four lengths, the bridge, the viewer, the plates; the sources of its glass
     held = tuple(TABLE_AT[i] + HELD[i] * PX for i in range(3))
