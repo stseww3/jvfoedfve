@@ -1,0 +1,13 @@
+check obs_sky_comet_b at 87332f8
+[PASS] regen     18587 blocks, 0 entities, 0 models, 20 resource-pack files, 11 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (0.2 s)
+[PASS] conflicts the scene writes 19 files, no file written twice, the folders and the prefix of sky are kept (2 packages run alone)
+[PASS] strays    0 pictures, every colour in the palette; 9 sky pictures not checked (drawn by adding light)
+[PASS] refs      0 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   0 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    4 kinds of block placed, all in the occupancy table
+[SKIP] flatwall  a test scene of sky: its sample walls and backdrops are meant to be flat
+[PASS] entities  0 display entities
+[PASS] views     15 shots, most display entities in view: 0 (v1_blue), limit 600; counted without what walls hide
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 0.0% hidden (base storey 0.0% by blocks and 0.0% more by models, great windows 0.0%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 0.5 s)
+[PASS] motion    nothing moves
+result: PASS (0 failed, 0 with warnings)
