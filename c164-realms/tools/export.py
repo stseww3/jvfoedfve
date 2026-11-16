@@ -642,7 +642,9 @@ def write_functions(pack_dir, spec):
     path = os.path.join(folder, "predicate", RIDING + ".json")
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump({"condition": "minecraft:entity_properties", "entity": "this", "predicate": {"vehicle": {}}}, fh, indent=1)
+        # 26.3 names a condition by "type" ("condition" was the key up to 1.21: with it the server
+        # of 26.3 does not start, "No key type in MapLike")
+        json.dump({"type": "minecraft:entity_properties", "entity": "this", "predicate": {"vehicle": {}}}, fh, indent=1)
         fh.write("\n")
     for hook, names in HOOKS.items():
         path = os.path.join(folder, "tags", "function", hook + ".json")
