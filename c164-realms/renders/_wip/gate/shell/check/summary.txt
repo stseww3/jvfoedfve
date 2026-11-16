@@ -1,0 +1,390 @@
+PASS  obs: 0 failed, 3 with warnings, skipped: views (16 s)
+      [WARN] regen: 190042 blocks, 927 entities, 510 models, 2209 resource-pack files, 434 data-pack files, look: 1 biomes, 1 timelines (6.5 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] entities: 927 display entities of 3000, by category: materials 28, site 7, main 2, machines 173, interiors 537, props 175, sky 5, 61 drawn out along one axis, 8 shown through a matrix tha
+          prop_elec_cable x1: 10.67/10.67/11.99 pixels to the block along x/y/z, not 16
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+PASS  obs_export_probe: 0 failed, 1 with warnings, skipped: sight (1 s)
+      [WARN] regen: 101 blocks, 2 entities, 2 models, 684 resource-pack files, 24 data-pack files, look: 1 biomes, 1 timelines (0.5 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_int_batteryroom: 0 failed, 1 with warnings, skipped: sight (3 s)
+      [WARN] regen: 3378 blocks, 109 entities, 38 models, 792 resource-pack files, 41 data-pack files, look: 1 biomes, 1 timelines (0.8 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_int_batteryroom_bare: 0 failed, 1 with warnings, skipped: sight (3 s)
+      [WARN] regen: 3228 blocks, 2 entities, 15 models, 723 resource-pack files, 10 data-pack files, look: 1 biomes, 1 timelines (0.7 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_int_chartroom: 0 failed, 2 with warnings, skipped: sight (4 s)
+      [WARN] regen: 1999 blocks, 77 entities, 152 models, 1134 resource-pack files, 10 data-pack files, look: 1 biomes, 1 timelines (1.2 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] flatwall: 1 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          smooth_sandstone facing west: flat over 9x9, the square's top corner at (0, 14, 14)
+PASS  obs_int_domeroom: 0 failed, 1 with warnings, skipped: sight (4 s)
+      [WARN] regen: 6249 blocks, 84 entities, 74 models, 900 resource-pack files, 10 data-pack files, look: 1 biomes, 1 timelines (1.4 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_int_platevault: 0 failed, 3 with warnings, skipped: sight (3 s)
+      [WARN] regen: 3805 blocks, 101 entities, 93 models, 957 resource-pack files, 18 data-pack files, look: 1 biomes, 1 timelines (1.0 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] flatwall: 6 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          smooth_sandstone facing east: flat over 10x10, the square's top corner at (1, 16, 17)
+      [WARN] entities: 101 display entities, 1 drawn out along one axis, 58 models never placed
+          int_vault_dark_rope x1: drawn out along z, where the picture of cream~base1 is not even: it smears
+PASS  obs_int_powerhouse: 0 failed, 2 with warnings, skipped: sight (11 s)
+      [WARN] regen: 187555 blocks, 403 entities, 376 models, 1806 resource-pack files, 379 data-pack files, look: 1 biomes, 1 timelines (5.9 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] entities: 403 display entities, 33 drawn out along one axis, 8 shown through a matrix that is no turn, no face stretched, 199 models never placed
+          prop_elec_cable x1: 10.67/10.67/11.99 pixels to the block along x/y/z, not 16
+PASS  obs_int_starhall: 0 failed, 1 with warnings, skipped: sight (6 s)
+      [WARN] regen: 20116 blocks, 132 entities, 206 models, 1296 resource-pack files, 258 data-pack files, look: 1 biomes, 1 timelines (2.5 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_int_starhall_b: 0 failed, 1 with warnings, skipped: sight (5 s)
+      [WARN] regen: 20093 blocks, 134 entities, 206 models, 1296 resource-pack files, 258 data-pack files, look: 1 biomes, 1 timelines (2.4 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_int_timeroom: 0 failed, 2 with warnings, skipped: sight (4 s)
+      [WARN] regen: 2082 blocks, 80 entities, 172 models, 1194 resource-pack files, 29 data-pack files, look: 1 biomes, 1 timelines (1.2 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] flatwall: 1 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          smooth_sandstone facing west: flat over 9x9, the square's top corner at (0, 14, -6)
+PASS  obs_mach_armillary: 0 failed, 2 with warnings (9 s)
+      [WARN] regen: 187016 blocks, 197 entities, 165 models, 1173 resource-pack files, 105 data-pack files, look: 1 biomes, 1 timelines (3.5 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+PASS  obs_mach_batteryboard: 0 failed, 1 with warnings, skipped: sight (3 s)
+      [WARN] regen: 1047 blocks, 32 entities, 12 models, 714 resource-pack files, 41 data-pack files, look: 1 biomes, 1 timelines (0.8 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_mach_cablecar_winch: 0 failed, 2 with warnings (13 s)
+      [WARN] regen: 187402 blocks, 366 entities, 373 models, 1797 resource-pack files, 379 data-pack files, look: 1 biomes, 1 timelines (5.5 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+PASS  obs_mach_clocks: 0 failed, 1 with warnings (4 s)
+      [WARN] regen: 5766 blocks, 40 entities, 21 models, 741 resource-pack files, 29 data-pack files, look: 1 biomes, 1 timelines (1.1 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_mach_clocks_b: 0 failed, 1 with warnings (5 s)
+      [WARN] regen: 5766 blocks, 40 entities, 21 models, 741 resource-pack files, 29 data-pack files, look: 1 biomes, 1 timelines (1.2 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_mach_domegear: 0 failed, 1 with warnings, skipped: sight (10 s)
+      [WARN] regen: 4572 blocks, 120 entities, 429 models, 1965 resource-pack files, 10 data-pack files, look: 1 biomes, 1 timelines (4.3 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_mach_engine_dynamo: 0 failed, 1 with warnings, skipped: sight (4 s)
+      [WARN] regen: 6887 blocks, 14 entities, 28 models, 762 resource-pack files, 37 data-pack files, look: 1 biomes, 1 timelines (0.8 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_mach_meridian_astrograph: 0 failed, 2 with warnings, skipped: sight (4 s)
+      [WARN] regen: 1660 blocks, 20 entities, 8 models, 702 resource-pack files, 14 data-pack files, look: 1 biomes, 1 timelines (0.8 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] flatwall: 2 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          smooth_sandstone facing north: flat over 6x6, the square's top corner at (67, 5, -37)
+PASS  obs_mach_orrery: 0 failed, 1 with warnings, skipped: sight (4 s)
+      [WARN] regen: 3016 blocks, 41 entities, 35 models, 783 resource-pack files, 281 data-pack files, look: 1 biomes, 1 timelines (1.0 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_mach_radiomast: 0 failed, 1 with warnings (4 s)
+      [WARN] regen: 3617 blocks, 20 entities, 11 models, 711 resource-pack files, 10 data-pack files, look: 1 biomes, 1 timelines (0.7 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_mach_radiomast_b: 0 failed, 1 with warnings (4 s)
+      [WARN] regen: 3689 blocks, 20 entities, 11 models, 711 resource-pack files, 10 data-pack files, look: 1 biomes, 1 timelines (0.7 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_mach_recorders: 0 failed, 2 with warnings, skipped: sight (5 s)
+      [WARN] regen: 2082 blocks, 80 entities, 172 models, 1194 resource-pack files, 29 data-pack files, look: 1 biomes, 1 timelines (1.3 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] flatwall: 1 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          smooth_sandstone facing west: flat over 9x9, the square's top corner at (0, 14, -6)
+PASS  obs_mach_refractor: 0 failed, 1 with warnings, skipped: sight (4 s)
+      [WARN] regen: 9536 blocks, 10 entities, 9 models, 705 resource-pack files, 12 data-pack files, look: 1 biomes, 1 timelines (0.9 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_mach_switchboard_boiler: 0 failed, 1 with warnings, skipped: sight (4 s)
+      [WARN] regen: 6917 blocks, 17 entities, 26 models, 756 resource-pack files, 41 data-pack files, look: 1 biomes, 1 timelines (0.8 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_main_dome: 0 failed, 1 with warnings (7 s)
+      [WARN] regen: 187007 blocks, 189 entities, 158 models, 1152 resource-pack files, 105 data-pack files, look: 1 biomes, 1 timelines (3.8 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_main_dome_a: 0 failed, 1 with warnings (7 s)
+      [WARN] regen: 187015 blocks, 189 entities, 158 models, 1152 resource-pack files, 105 data-pack files, look: 1 biomes, 1 timelines (3.7 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_main_dome_slit: 0 failed, 1 with warnings, skipped: sight (2 s)
+      [WARN] regen: 26096 blocks, 0 entities, 0 models, 678 resource-pack files, 13 data-pack files, look: 1 biomes, 1 timelines (0.9 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_main_facade: 0 failed, 4 with warnings (16 s)
+      [WARN] regen: 190042 blocks, 899 entities, 438 models, 1992 resource-pack files, 416 data-pack files, look: 1 biomes, 1 timelines (6.3 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] entities: 899 display entities, 61 drawn out along one axis, 8 shown through a matrix that is no turn, no face stretched, 97 models never placed
+          prop_elec_cable x1: 10.67/10.67/11.99 pixels to the block along x/y/z, not 16
+      [WARN] views: 10 shots, most display entities in view: 875 (west), limit 600; counted without what walls hide; the game draws up to 899 (v2_axis): a display entity without width and height is dr
+          v2_axis: 763 display entities in view, a view may have 600
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+PASS  obs_main_facade_a: 0 failed, 4 with warnings (15 s)
+      [WARN] regen: 190091 blocks, 889 entities, 438 models, 1992 resource-pack files, 416 data-pack files, look: 1 biomes, 1 timelines (6.2 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] entities: 889 display entities, 61 drawn out along one axis, 7 shown through a matrix that is no turn, no face stretched, 107 models never placed
+          prop_elec_cable x1: 10.67/10.67/11.99 pixels to the block along x/y/z, not 16
+      [WARN] views: 4 shots, most display entities in view: 809 (v1_far), limit 600; counted without what walls hide; the game draws up to 889 (v2_axis): a display entity without width and height is d
+          v2_axis: 753 display entities in view, a view may have 600
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+PASS  obs_main_facade_c: 0 failed, 4 with warnings (16 s)
+      [WARN] regen: 190088 blocks, 889 entities, 438 models, 1992 resource-pack files, 416 data-pack files, look: 1 biomes, 1 timelines (6.2 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] entities: 889 display entities, 61 drawn out along one axis, 7 shown through a matrix that is no turn, no face stretched, 107 models never placed
+          prop_elec_cable x1: 10.67/10.67/11.99 pixels to the block along x/y/z, not 16
+      [WARN] views: 4 shots, most display entities in view: 809 (v1_far), limit 600; counted without what walls hide; the game draws up to 889 (v2_axis): a display entity without width and height is d
+          v2_axis: 753 display entities in view, a view may have 600
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+PASS  obs_main_facade_nocrown: 0 failed, 4 with warnings (15 s)
+      [WARN] regen: 190002 blocks, 899 entities, 438 models, 1992 resource-pack files, 416 data-pack files, look: 1 biomes, 1 timelines (6.2 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] entities: 899 display entities, 61 drawn out along one axis, 8 shown through a matrix that is no turn, no face stretched, 97 models never placed
+          prop_elec_cable x1: 10.67/10.67/11.99 pixels to the block along x/y/z, not 16
+      [WARN] views: 5 shots, most display entities in view: 819 (v1_far), limit 600; counted without what walls hide; the game draws up to 899 (v2_axis): a display entity without width and height is d
+          v2_axis: 763 display entities in view, a view may have 600
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+PASS  obs_main_shell: 0 failed, 1 with warnings, skipped: sight (2 s)
+      [WARN] regen: 102844 blocks, 1 entities, 3 models, 687 resource-pack files, 46 data-pack files, look: 1 biomes, 1 timelines (0.9 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_main_smalldome: 0 failed, 1 with warnings (7 s)
+      [WARN] regen: 187007 blocks, 189 entities, 158 models, 1152 resource-pack files, 105 data-pack files, look: 1 biomes, 1 timelines (3.4 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_main_tower: 0 failed, 2 with warnings (12 s)
+      [WARN] regen: 187402 blocks, 362 entities, 301 models, 1581 resource-pack files, 379 data-pack files, look: 1 biomes, 1 timelines (5.2 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+PASS  obs_mat_ashlar: 0 failed, 2 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] regen: 4909 blocks, 1 entities, 1 models, 656 resource-pack files, 13 data-pack files, look: 1 biomes, 1 timelines (0.5 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] views: 19 shots, most display entities in view: 1 (walls_graze), limit 600; counted without what walls hide; the game draws up to 1 (stones_a): a display entity without width and height i
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_ashlar_b: 0 failed, 2 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] regen: 4909 blocks, 1 entities, 1 models, 656 resource-pack files, 13 data-pack files, look: 1 biomes, 1 timelines (0.6 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] views: 19 shots, most display entities in view: 1 (walls_graze), limit 600; counted without what walls hide; the game draws up to 1 (stones_a): a display entity without width and height i
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_ashlar_c: 0 failed, 2 with warnings, skipped: flatwall, sight (1 s)
+      [WARN] regen: 4909 blocks, 1 entities, 1 models, 542 resource-pack files, 13 data-pack files, look: 1 biomes, 1 timelines (0.5 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] views: 19 shots, most display entities in view: 1 (walls_graze), limit 600; counted without what walls hide; the game draws up to 1 (stones_a): a display entity without width and height i
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_board: 0 failed, 1 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] regen: 11827 blocks, 0 entities, 0 models, 678 resource-pack files, 15 data-pack files, look: 1 biomes, 1 timelines (0.6 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_mat_board_ashlar_a: 0 failed, 1 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] regen: 11827 blocks, 0 entities, 0 models, 678 resource-pack files, 15 data-pack files, look: 1 biomes, 1 timelines (0.6 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_mat_board_ashlar_c: 0 failed, 1 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] regen: 11827 blocks, 0 entities, 0 models, 564 resource-pack files, 15 data-pack files, look: 1 biomes, 1 timelines (0.5 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_mat_board_windows_b: 0 failed, 1 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] regen: 11827 blocks, 0 entities, 0 models, 699 resource-pack files, 15 data-pack files, look: 1 biomes, 1 timelines (0.7 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_mat_brass: 0 failed, 3 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] regen: 3949 blocks, 0 entities, 0 models, 653 resource-pack files, 15 data-pack files, look: 1 biomes, 1 timelines (0.5 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] blocks: 56 kinds of block placed, 5 not in the occupancy table (add them to the table through S2, or use a block of the table)
+          waxed_oxidized_copper_grate x6
+      [WARN] views: 25 shots, most display entities in view: 0 (brass_a), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_iron: 0 failed, 2 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] regen: 2436 blocks, 0 entities, 0 models, 678 resource-pack files, 14 data-pack files, look: 1 biomes, 1 timelines (0.6 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] blocks: 41 kinds of block placed, 12 not in the occupancy table (add them to the table through S2, or use a block of the table)
+          waxed_oxidized_copper_grate x6
+PASS  obs_mat_panels: 0 failed, 1 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] regen: 1416 blocks, 0 entities, 0 models, 678 resource-pack files, 10 data-pack files, look: 1 biomes, 1 timelines (0.6 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_mat_redirect: 0 failed, 3 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] regen: 3650 blocks, 0 entities, 0 models, 653 resource-pack files, 16 data-pack files, look: 1 biomes, 1 timelines (0.6 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] blocks: 105 kinds of block placed, 12 not in the occupancy table (add them to the table through S2, or use a block of the table)
+          waxed_oxidized_copper_grate x6
+      [WARN] views: 16 shots, most display entities in view: 0 (plates_a), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_snow: 0 failed, 2 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] regen: 2680 blocks, 0 entities, 0 models, 653 resource-pack files, 12 data-pack files, look: 1 biomes, 1 timelines (0.5 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] views: 13 shots, most display entities in view: 0 (order), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_windows: 0 failed, 2 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] regen: 8403 blocks, 0 entities, 0 models, 653 resource-pack files, 14 data-pack files, look: 1 biomes, 1 timelines (0.5 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] views: 26 shots, most display entities in view: 0 (front), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_windows_b: 0 failed, 2 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] regen: 8403 blocks, 0 entities, 0 models, 674 resource-pack files, 14 data-pack files, look: 1 biomes, 1 timelines (0.5 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] views: 26 shots, most display entities in view: 0 (front), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_windows_in: 0 failed, 2 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] regen: 3591 blocks, 6 entities, 72 models, 869 resource-pack files, 10 data-pack files, look: 1 biomes, 1 timelines (0.5 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] views: 11 shots, most display entities in view: 6 (in_wall), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_windows_in_b: 0 failed, 2 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] regen: 3591 blocks, 6 entities, 72 models, 890 resource-pack files, 10 data-pack files, look: 1 biomes, 1 timelines (0.6 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] views: 11 shots, most display entities in view: 6 (in_wall), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_windows_in_off: 0 failed, 2 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] regen: 3591 blocks, 0 entities, 72 models, 869 resource-pack files, 9 data-pack files, look: 1 biomes, 1 timelines (0.6 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] views: 11 shots, most display entities in view: 0 (in_wall), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mot_load: 0 failed, 3 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] regen: 672 blocks, 200 entities, 1 models, 656 resource-pack files, 41 data-pack files, look: 1 biomes, 1 timelines (0.7 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] views: 4 shots, most display entities in view: 200 (far), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+      [WARN] motion: 200 parts and 0 points on 1 chains, 30 function files; 36 commands in the busiest tick (limit 60), 34.4 a tick on average (limit 40)
+          the scene sets its own limits (60 in a tick, 40 on average, not 40 and 10): a load test
+PASS  obs_mot_loop: 0 failed, 3 with warnings, skipped: flatwall, sight (1 s)
+      [WARN] regen: 2663 blocks, 16 entities, 13 models, 692 resource-pack files, 115 data-pack files, look: 1 biomes, 1 timelines (0.5 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] views: 24 shots, most display entities in view: 16 (far), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+      [WARN] motion: 12 parts and 0 points on 6 chains, 102 function files; 9 commands in the busiest tick (limit 40), 2.1 a tick on average (limit 10)
+          mot_wheel: 4 steps in 48 ticks set by hand (lead 0); its model strays 0.00 pixels from its arc
+PASS  obs_mot_smoke: 0 failed, 1 with warnings, skipped: flatwall, sight (1 s)
+      [WARN] regen: 3382 blocks, 0 entities, 0 models, 678 resource-pack files, 25 data-pack files, look: 1 biomes, 1 timelines (0.6 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_mot_smoke_room: 0 failed, 1 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] regen: 6960 blocks, 30 entities, 39 models, 795 resource-pack files, 72 data-pack files, look: 1 biomes, 1 timelines (1.0 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_mot_sound: 0 failed, 1 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] regen: 4608 blocks, 0 entities, 0 models, 679 resource-pack files, 37 data-pack files, look: 1 biomes, 1 timelines (0.7 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_props_elecsign: 0 failed, 1 with warnings, skipped: flatwall, sight (3 s)
+      [WARN] regen: 7605 blocks, 35 entities, 51 models, 831 resource-pack files, 14 data-pack files, look: 1 biomes, 1 timelines (0.8 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_props_elecsign_room: 0 failed, 1 with warnings, skipped: flatwall, sight (3 s)
+      [WARN] regen: 298 blocks, 12 entities, 51 models, 831 resource-pack files, 10 data-pack files, look: 1 biomes, 1 timelines (0.8 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_props_elecsign_station: 0 failed, 1 with warnings, skipped: flatwall, sight (3 s)
+      [WARN] regen: 4567 blocks, 1 entities, 26 models, 756 resource-pack files, 11 data-pack files, look: 1 biomes, 1 timelines (0.7 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_props_furniture: 0 failed, 1 with warnings, skipped: flatwall, sight (3 s)
+      [WARN] regen: 1291 blocks, 44 entities, 44 models, 810 resource-pack files, 12 data-pack files, look: 1 biomes, 1 timelines (1.0 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_props_furniture_site: 0 failed, 4 with warnings, skipped: flatwall (16 s)
+      [WARN] regen: 190042 blocks, 927 entities, 510 models, 2209 resource-pack files, 434 data-pack files, look: 1 biomes, 1 timelines (6.7 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] entities: 927 display entities, 61 drawn out along one axis, 8 shown through a matrix that is no turn, no face stretched, 162 models never placed
+          prop_elec_cable x1: 10.67/10.67/11.99 pixels to the block along x/y/z, not 16
+      [WARN] views: 14 shots, most display entities in view: 869 (sunset_west), limit 600; counted without what walls hide; the game draws up to 927 (station_v1): a display entity without width and he
+          sunset_west: 869 display entities in view, a view may have 600
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+PASS  obs_props_instruments: 0 failed, 1 with warnings, skipped: flatwall, sight (3 s)
+      [WARN] regen: 1826 blocks, 22 entities, 44 models, 810 resource-pack files, 12 data-pack files, look: 1 biomes, 1 timelines (1.1 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_props_ironwork: 0 failed, 1 with warnings, skipped: flatwall, sight (3 s)
+      [WARN] regen: 6383 blocks, 34 entities, 24 models, 750 resource-pack files, 12 data-pack files, look: 1 biomes, 1 timelines (0.9 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_props_lamps: 0 failed, 1 with warnings, skipped: flatwall, sight (3 s)
+      [WARN] regen: 3732 blocks, 30 entities, 15 models, 723 resource-pack files, 14 data-pack files, look: 1 biomes, 1 timelines (0.7 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_props_lamps_site: 0 failed, 4 with warnings, skipped: flatwall (16 s)
+      [WARN] regen: 190042 blocks, 927 entities, 510 models, 2209 resource-pack files, 434 data-pack files, look: 1 biomes, 1 timelines (6.3 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] entities: 927 display entities, 61 drawn out along one axis, 8 shown through a matrix that is no turn, no face stretched, 162 models never placed
+          prop_elec_cable x1: 10.67/10.67/11.99 pixels to the block along x/y/z, not 16
+      [WARN] views: 16 shots, most display entities in view: 872 (v12), limit 600; counted without what walls hide; the game draws up to 927 (v1): a display entity without width and height is drawn ou
+          v1: 841 display entities in view, a view may have 600
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+PASS  obs_props_lamps_site_nearpair: 0 failed, 4 with warnings, skipped: flatwall (16 s)
+      [WARN] regen: 190046 blocks, 929 entities, 510 models, 2209 resource-pack files, 434 data-pack files, look: 1 biomes, 1 timelines (6.3 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] entities: 929 display entities, 61 drawn out along one axis, 8 shown through a matrix that is no turn, no face stretched, 162 models never placed
+          prop_elec_cable x1: 10.67/10.67/11.99 pixels to the block along x/y/z, not 16
+      [WARN] views: 6 shots, most display entities in view: 874 (v12), limit 600; counted without what walls hide; the game draws up to 929 (v1): a display entity without width and height is drawn out
+          v1: 843 display entities in view, a view may have 600
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 17.1% hidden (base storey 43.8% by blocks and 7.3% more by models, great windows 5.8%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+PASS  obs_props_paper: 0 failed, 1 with warnings, skipped: flatwall, sight (3 s)
+      [WARN] regen: 873 blocks, 27 entities, 29 models, 765 resource-pack files, 10 data-pack files, look: 1 biomes, 1 timelines (0.7 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_props_pipes: 0 failed, 1 with warnings, skipped: flatwall, sight (3 s)
+      [WARN] regen: 4181 blocks, 24 entities, 32 models, 774 resource-pack files, 10 data-pack files, look: 1 biomes, 1 timelines (0.8 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_props_seams: 0 failed, 1 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] regen: 477 blocks, 16 entities, 9 models, 705 resource-pack files, 10 data-pack files, look: 1 biomes, 1 timelines (0.6 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_site_cablecar: 0 failed, 2 with warnings (12 s)
+      [WARN] regen: 187402 blocks, 366 entities, 373 models, 1797 resource-pack files, 379 data-pack files, look: 1 biomes, 1 timelines (5.1 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+PASS  obs_site_court: 0 failed, 1 with warnings, skipped: sight (9 s)
+      [WARN] regen: 187402 blocks, 362 entities, 373 models, 1797 resource-pack files, 379 data-pack files, look: 1 biomes, 1 timelines (5.3 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_site_mastbase: 0 failed, 2 with warnings (7 s)
+      [WARN] regen: 187007 blocks, 189 entities, 158 models, 1127 resource-pack files, 105 data-pack files, look: 1 biomes, 1 timelines (3.4 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] views: 6 shots, most display entities in view: 180 (aerial), limit 600; counted without what walls hide; the game draws up to 189 (base_near): a display entity without width and height is
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_site_outbuildings: 0 failed, 2 with warnings (7 s)
+      [WARN] regen: 187007 blocks, 189 entities, 158 models, 1127 resource-pack files, 105 data-pack files, look: 1 biomes, 1 timelines (3.4 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] views: 14 shots, most display entities in view: 189 (tower_mid), limit 600; counted without what walls hide; the game draws up to 189 (v1_arrival): a display entity without width and heig
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_site_powerhouse: 0 failed, 1 with warnings (7 s)
+      [WARN] regen: 187037 blocks, 191 entities, 230 models, 1368 resource-pack files, 105 data-pack files, look: 1 biomes, 1 timelines (3.5 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_site_powerhouse_b: 0 failed, 1 with warnings (7 s)
+      [WARN] regen: 186920 blocks, 191 entities, 230 models, 1368 resource-pack files, 105 data-pack files, look: 1 biomes, 1 timelines (3.4 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_site_stair: 0 failed, 1 with warnings (7 s)
+      [WARN] regen: 187007 blocks, 189 entities, 158 models, 1152 resource-pack files, 105 data-pack files, look: 1 biomes, 1 timelines (3.4 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_site_stair_noband: 0 failed, 1 with warnings (7 s)
+      [WARN] regen: 187007 blocks, 189 entities, 158 models, 1152 resource-pack files, 105 data-pack files, look: 1 biomes, 1 timelines (3.3 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_site_stair_nolamps: 0 failed, 1 with warnings (7 s)
+      [WARN] regen: 186974 blocks, 166 entities, 158 models, 1152 resource-pack files, 105 data-pack files, look: 1 biomes, 1 timelines (3.5 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_site_terrain: 0 failed, 3 with warnings (12 s)
+      [WARN] regen: 187402 blocks, 362 entities, 373 models, 1797 resource-pack files, 379 data-pack files, look: 1 biomes, 1 timelines (5.4 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] views: 9 shots, most display entities in view: 346 (v12_aerial), limit 600; counted without what walls hide; the game draws up to 362 (v1_arrival): a display entity without width and heig
+          sunset_terrace: 5 of the 314 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+PASS  obs_site_terrain_nosnow: 0 failed, 2 with warnings, skipped: sight (9 s)
+      [WARN] regen: 186690 blocks, 362 entities, 373 models, 1797 resource-pack files, 377 data-pack files, look: 1 biomes, 1 timelines (5.4 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] views: 4 shots, most display entities in view: 346 (v12_aerial), limit 600; counted without what walls hide; the game draws up to 362 (v11_sunset): a display entity without width and heig
+          west_prow: 24 of the 341 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+PASS  obs_sky_cloudsea: 0 failed, 1 with warnings, skipped: flatwall (3 s)
+      [WARN] regen: 157169 blocks, 0 entities, 0 models, 678 resource-pack files, 82 data-pack files, look: 1 biomes, 1 timelines (1.9 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_sky_comet: 0 failed, 1 with warnings, skipped: flatwall (1 s)
+      [WARN] regen: 18587 blocks, 0 entities, 0 models, 10 resource-pack files, 14 data-pack files, look: 1 biomes, 1 timelines (0.1 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_sky_comet_b: 0 failed, 1 with warnings, skipped: flatwall (1 s)
+      [WARN] regen: 18587 blocks, 0 entities, 0 models, 10 resource-pack files, 14 data-pack files, look: 1 biomes, 1 timelines (0.1 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_sky_comet_c: 0 failed, 1 with warnings, skipped: flatwall (1 s)
+      [WARN] regen: 18587 blocks, 0 entities, 0 models, 10 resource-pack files, 14 data-pack files, look: 1 biomes, 1 timelines (0.1 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_sky_lights: 0 failed, 2 with warnings, skipped: flatwall (5 s)
+      [WARN] regen: 113945 blocks, 411 entities, 151 models, 1131 resource-pack files, 72 data-pack files, look: 1 biomes, 1 timelines (2.0 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] views: 28 shots, most display entities in view: 139 (blue_axis), limit 600; counted without what walls hide; the game draws up to 276 (deep_front): a display entity without width and heig
+          blue_front: 2 of the 133 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+PASS  obs_sky_look: 0 failed, 1 with warnings, skipped: flatwall, sight (1 s)
+      [WARN] regen: 8354 blocks, 0 entities, 0 models, 678 resource-pack files, 22 data-pack files, look: 1 biomes, 1 timelines (0.5 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+PASS  obs_sky_ridges: 0 failed, 2 with warnings, skipped: flatwall (1 s)
+      [WARN] regen: 29711 blocks, 4 entities, 4 models, 38 resource-pack files, 16 data-pack files, look: 1 biomes, 1 timelines (0.3 s)
+          registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+      [WARN] entities: 4 display entities
+          sky_ridge_north x1: 1/1/1 pixels to the block along x/y/z, not 16
+PASS  obs_sky_safe: 0 failed, 3 with warnings, skipped: flatwall (15 s)
+      [WARN] entities: 927 display entities, 61 drawn out along one axis, 8 shown through a matrix that is no turn, no face stretched, 162 models never placed
+          prop_elec_cable x1: 10.67/10.67/11.99 pixels to the block along x/y/z, not 16
+      [WARN] views: 6 shots, most display entities in view: 887 (v12_aerial), limit 600; counted without what walls hide; the game draws up to 927 (v01_arrival): a display entity without width and hei
+          v01_arrival: 841 display entities in view, a view may have 600
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+89 scenes in 129 s: 89 pass (89 with warnings)

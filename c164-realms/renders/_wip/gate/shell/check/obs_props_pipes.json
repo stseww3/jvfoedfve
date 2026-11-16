@@ -1,0 +1,199 @@
+{
+ "scene": "obs_props_pipes",
+ "commit": "84db8c5",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "WARN",
+   "summary": "4181 blocks, 24 entities, 32 models, 774 resource-pack files, 10 data-pack files, look: 1 biomes, 1 timelines (0.8 s)",
+   "details": [
+    "registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json"
+   ]
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 773 files, no file written twice, the folders and the prefix of props are kept (8 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "161 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "593 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "18 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of props: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "24 display entities, 6 drawn out along one axis, 18 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "20 shots, most display entities in view: 24 (front), limit 600; counted without what walls hide",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "front",
+      "in_view": 24,
+      "drawn": 24,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "front_foot",
+      "in_view": 24,
+      "drawn": 24,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "oblique",
+      "in_view": 24,
+      "drawn": 24,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "hopper_up",
+      "in_view": 8,
+      "drawn": 24,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "hopper_near",
+      "in_view": 3,
+      "drawn": 24,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "string_above",
+      "in_view": 21,
+      "drawn": 24,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "string_below",
+      "in_view": 16,
+      "drawn": 24,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "clip_near",
+      "in_view": 16,
+      "drawn": 24,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "foot",
+      "in_view": 17,
+      "drawn": 24,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "inlet",
+      "in_view": 20,
+      "drawn": 24,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "inlet_east",
+      "in_view": 17,
+      "drawn": 24,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "inlet_south",
+      "in_view": 9,
+      "drawn": 24,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "inlet_walk",
+      "in_view": 15,
+      "drawn": 24,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "corner_far",
+      "in_view": 24,
+      "drawn": 24,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "heating_front",
+      "in_view": 24,
+      "drawn": 24,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "heating_oblique",
+      "in_view": 13,
+      "drawn": 24,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "heating_along",
+      "in_view": 9,
+      "drawn": 24,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "heating_valve",
+      "in_view": 17,
+      "drawn": 24,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "heating_bend",
+      "in_view": 12,
+      "drawn": 24,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "heating_pier",
+      "in_view": 16,
+      "drawn": 24,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "nothing moves",
+   "details": []
+  }
+ ]
+}
