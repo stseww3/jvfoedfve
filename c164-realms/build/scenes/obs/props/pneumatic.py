@@ -21,8 +21,8 @@ the run; its +y is the way the surface looks that the run is fixed to (a wall, a
               on its back, through which a carrier that sticks is pushed on
     flange    where a tube goes head-on into a ceiling, a wall or the shoe of a beam
     plate     the line's number (c342's table: A 1 to A 5), dark on a small plate of cream enamel
-              strapped to the tube where it is read from two blocks away. No arrow: a carrier
-              goes both ways
+              strapped to the tube where it is read from two blocks away, in the station's
+              typeface (K.letters, c334). No arrow: a carrier goes both ways
     station   on a wall, at the height of the hand, on a board of dark wood: a brass box with a
               door and a window in it, into whose top the tube comes down; under the box a wire
               basket with the carriers that have come and wait to be sent back; beside the tube
@@ -84,8 +84,9 @@ SOCKET = 9.5            # the station's socket takes the tube this far above the
 BOARD = (-7.0, -10.0, 7.0, 13.0)        # the station's board: x and y of its lower left and upper right corner
 BOX = (7.0, 8.0, 5.5)   # the station's box: across, its height above the anchor, how far it stands off the wall
 CARRIER = (4.0, 0.9)    # the carrier: its length, its radius
-PLATE_UP = 18.0         # the middle of the number plate over a station's anchor: over the board, by the eye
+PLATE_UP = 16.5         # the middle of the number plate over a station's anchor: over the board, by the eye
 PLATE_OFF = BORE + 0.25  # the back of a number plate off the axis of the tube it is strapped to
+PLATE_PX = 4            # texels to the pixel on a number plate: its capitals are a little over a tenth of a block
 
 # ticks
 LOOP = 600              # a carrier goes out and comes back once in half a minute
@@ -219,57 +220,56 @@ def _flange():
     return m
 
 
-def _figures(text):
-    """The rows of `text`, five high, '1' where there is ink: the figures of the enamel plates
-    (props/signs, c334), a clear column between two of them, a space one more."""
-    from . import signs
-    rows = [""] * 5
-    for i, ch in enumerate(text):
-        glyph = ["0"] * 5 if ch == " " else signs._FONT[ch]
-        for j in range(5):
-            rows[j] += ("0" if i else "") + glyph[j]
-    return rows
-
-
 def plate_name(number, lying=False):
     return "plate_" + number.replace(" ", "").lower() + ("_h" if lying else "")
 
 
-def _plate(number, lying=False):
-    """The number of a line on its plate: a small tag of cream enamel, dark figures, the corners
-    knocked off, the lowest row a step darker; two brass studs through it and two straps behind it
-    round the tube. No line round its edge and one clear pixel round the figures: at sixteen pixels
-    to the block a plate is as large as its figures make it, and this one hangs on a tube three
-    pixels thick. Wall-mounted: the anchor is the middle of its back, PLATE_OFF in front of the
-    tube's axis; the tube stands upright behind it, or lies (lying)."""
-    ink = _figures(number)
-    w, h = len(ink[0]) + 2, len(ink) + 2
+def plate_rows(number):
+    """The face of a number plate as rows of characters, PLATE_PX texels to the pixel: e the line
+    round its edge, f the enamel, s its lowest row, i the writing, r a rivet at either end."""
+    ink = K.letters(number, ink="i", clear="f")[:7]            # capitals and figures have no tails
+    w, h = len(ink[0]) + 8, len(ink) + 6
     rows = []
     for y in range(h):
         row = ""
         for x in range(w):
-            if (x in (0, w - 1)) and (y in (0, h - 1)):
+            if x in (0, w - 1) and y in (0, h - 1):
                 row += "."
-            elif 1 <= y < h - 1 and 1 <= x < w - 1 and ink[y - 1][x - 1] == "1":
-                row += "i"
+            elif x in (0, w - 1) or y in (0, h - 1):
+                row += "e"
+            elif 3 <= y < h - 3 and 4 <= x < w - 4:
+                row += ink[y - 3][x - 4]
+            elif x in (2, w - 3) and y == h // 2:
+                row += "r"
             else:
-                row += "s" if y == h - 1 else "f"
+                row += "s" if y == h - 2 else "f"
         rows.append(row)
+    return rows
+
+
+def _plate(number, lying=False):
+    """The number of a line on its plate: a small tag of cream enamel strapped to the tube, the
+    number dark in the station's typeface (K.letters, c334), a fine line round the edge in the
+    green of the air lines, the corners knocked off, a rivet at either end. The writing is small:
+    the plate is a model of its own with PLATE_PX texels to the pixel, as the nameplates are, and
+    the check says so of it. Wall-mounted: the anchor is the middle of its back, PLATE_OFF in front
+    of the tube's axis; the tube stands upright behind it, or lies (lying)."""
+    rows = plate_rows(number)
+    w, h = len(rows[0]) / PLATE_PX, len(rows) / PLATE_PX
     cream, iron = P.RAMPS["cream"], P.RAMPS["iron"]
     name = PREFIX + plate_name(number, lying)
-    m = M.Model(name)
-    face = Sprite(name + "_face", rows, dict(f=cream[2], s=cream[1], i=iron[0]))
-    m.box((-w / 2.0, -h / 2.0, 0.0), (w / 2.0, h / 2.0, 0.5), K.flat("cream", 0), faces={"s": face}, skip="n")
+    m = M.Model(name, px=PLATE_PX)
+    face = Sprite(name + "_face", rows, dict(e=P.RAMPS["verdigris"][1], f=cream[3], s=cream[2], i=iron[0],
+                                             r=P.RAMPS["brass"][3]))
+    m.box((-w / 2.0, -h / 2.0, 0.0), (w / 2.0, h / 2.0, 0.25), K.flat("cream", 1), faces={"s": face}, skip="n")
     reach = PLATE_OFF + BORE + 0.5                  # the straps go round the back of the tube
     for s in (-1.0, 1.0):
         if lying:
-            x = s * (w / 2.0 - 1.0)
-            m.box((x - 0.5, -BORE - 0.5, -reach), (x + 0.5, BORE + 0.5, 0.0), BRASS_D)
-            m.box((x - 0.25, -0.25, 0.5), (x + 0.25, 0.25, 0.7), BRASS_L)
+            x = s * (w / 2.0 - 0.75)
+            m.box((x - 0.25, -BORE - 0.5, -reach), (x + 0.25, BORE + 0.5, 0.0), BRASS_D)
         else:
-            y = s * (h / 2.0 - 0.5)
-            m.box((-BORE - 0.5, y - 0.5, -reach), (BORE + 0.5, y + 0.5, 0.0), BRASS_D)
-            m.box((-0.25, y - 0.25, 0.5), (0.25, y + 0.25, 0.7), BRASS_L)
+            y = s * (h / 2.0 - 0.75)
+            m.box((-BORE - 0.5, y - 0.25, -reach), (BORE + 0.5, y + 0.25, 0.0), BRASS_D)
     return m
 
 
