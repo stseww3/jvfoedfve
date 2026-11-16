@@ -76,6 +76,12 @@ VERSION = "a"                   # the version build() places: the director's pic
 VERSIONS = ("a", "b")
 BRIGHTNESS = (10, 7)            # (sky, block): agreed with the light line for the dark dome room
 LAMP_LEVEL = 4                  # the red lamp's light source (A0: not over 4)
+# How far off the game draws the pieces (s2's four bands, artkit.models): they stand in a room, so
+# 32 blocks; the tube looks out of the slit and is seen in it from the terraces west of the dome,
+# so 64. The assembly lowers a module's displays to its VIEW and leaves what VIEW_KEEP names.
+VIEW = getattr(M, "NEAR", 0.5)
+VIEW_TUBE = getattr(M, "MID", 1.0)
+VIEW_KEEP = (PREFIX + "tube_*",)
 
 
 # ---- directions and points (blocks, scene coordinates) ---------------------------------------------
@@ -980,7 +986,8 @@ def _put(canvas, model, at, frame, scale, origin, stand=None):
     piece that turns about an axis its anchor is not on: the entity is put on the axis and holds
     its model out from there, so that a turn of the entity is a turn about the axis."""
     yaw, turns = _pose(frame)
-    nbt = M.display(model, yaw=yaw, turns=turns, scale=scale, brightness=BRIGHTNESS)
+    view = VIEW_TUBE if model.name.startswith(PREFIX + "tube_") else VIEW
+    nbt = M.display(model, yaw=yaw, turns=turns, scale=scale, brightness=BRIGHTNESS, view=view)
     if stand is not None:
         out = _sub(at, stand)
         a = math.radians(float(nbt["Rotation"][0]))
