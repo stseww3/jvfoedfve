@@ -1,0 +1,3 @@
+branch=cursor/c164-m5-domegear-f3-b9c1
+head=a8f0a1e25bbd54f67831d36430ba7e7575b07bec
+args=--no-push --tail 40 t=\$\(mktemp\ -d\)\;\ env\ PYTHONPATH=build\ python\ -m\ scenes.obs_mach_domegear\ \>\$t/s\ 2\>\&1\;\ echo\ \"self-test\ exit=\$\?\"\;\ sed\ -n\ 3\,8p\ \$t/s\;\ python\ tools/check.py\ --scene\ obs_mach_domegear\ \>\$t/c\ 2\>\&1\;\ code=\$\?\;\ tail\ -n\ 14\ \$t/c\ \|\ cut\ -c1-160\ \|\ grep\ -v\ \"chain\ of\"\;\ echo\ \"check\ exit=\$code\"\;\ bash\ tools/provenance.sh\ HEAD\ \|\ tail\ -n\ 1\;\ rm\ -rf\ \$t\;\ exit\ \$code 
