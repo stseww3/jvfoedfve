@@ -207,16 +207,18 @@ def until_still(take, path, patience, gap=3.0, share=0.01):
             os.remove(earlier)
 
 
-def helper_listens(root):
-    """(process id of the client, was it started through the picture helper and is that listening)"""
+def helper_listens(root, seat=""):
+    """(process id of the client, was it started through the picture helper and is that listening);
+    `seat` names a second client beside the first (nodemc.py, MC_SEAT)."""
     def number(path):
         try:
             with open(path) as fh:
                 return int(fh.read().strip())
         except (OSError, ValueError):
             return None
-    pid = number(os.path.join(root, "client26", "client.pid"))
-    return pid, pid is not None and number(os.path.join(root, "client26", "game", "c164cam", "ready")) == pid
+    seated = "-" + seat if seat else ""
+    pid = number(os.path.join(root, "client26", f"client{seated}.pid"))
+    return pid, pid is not None and number(os.path.join(root, "client26", "game" + seated, "c164cam", "ready")) == pid
 
 
 def camera(args):
@@ -232,9 +234,9 @@ def camera(args):
               works behind other windows, but not while the window is minimised or the display
               is asleep.
     """
-    game = os.path.join(args.root, "client26", "game")
+    game = os.path.join(args.root, "client26", "game" + ("-" + args.seat if args.seat else ""))
     asks = os.path.join(game, "c164cam")
-    pid, helped = helper_listens(args.root)
+    pid, helped = helper_listens(args.root, args.seat)
     if args.capture == "game" and not helped:
         raise SystemExit("the client was not started through the picture helper (see nodemc.py, winmc.py)")
 
@@ -279,6 +281,7 @@ def main():
     ap.add_argument("--display", default="164", help="X display number of the client (Linux)")
     ap.add_argument("--root", default=os.environ.get("MC_ROOT", os.getcwd()),
                     help="folder that holds client26/ (see nodemc.py, winmc.py)")
+    ap.add_argument("--seat", default="", help="the second client of that name (nodemc.py, MC_SEAT) takes the pictures")
     ap.add_argument("--capture", choices=("auto", "game", "window"), default="auto",
                     help="who makes the picture: the game itself, or the desktop from the window or the X display")
     ap.add_argument("--out", required=True)

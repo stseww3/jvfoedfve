@@ -47,6 +47,12 @@ came up, the game's log says and every trip keeps that line). For a save that is
 as it comes (savetrip.py): MC_LEVEL (the world's folder under server26/, art), MC_GAMEMODE
 (spectator), MC_FORCE_GAMEMODE (true), MC_DIFFICULTY (easy); setup writes all four every time, so
 the next trip without them has the test world again.
+
+A second visitor: MC_SEAT=<letters> names another client beside the first -- its own game folder
+(client26/game-<seat>/, the first one's resource packs), its own log and process id, its own
+player (MC_CAM, default C164Seat<SEAT>). client-up and client-down with MC_SEAT start and stop
+that one alone; `down` and client-down without it stop every client. Two software-drawn games
+share the node's cores: the second is given a short render distance (MC_VIEW) by whoever starts it.
 """
 import ctypes.util
 import glob
@@ -72,9 +78,14 @@ from rcon import Rcon  # noqa: E402
 ROOT = os.path.abspath(os.environ.get("MC_ROOT", "/agent/realms-study"))
 SERVER = os.path.join(ROOT, "server26")
 CLIENT = os.path.join(ROOT, "client26")
-GAME = os.path.join(CLIENT, "game")
+SEAT = os.environ.get("MC_SEAT", "")        # a second client beside the first: its own game folder, log and player
+if not re.fullmatch(r"[a-z0-9]{0,8}", SEAT):
+    raise SystemExit(f"MC_SEAT={SEAT}: up to eight small letters and digits")
+SEATED = "-" + SEAT if SEAT else ""
+GAME = os.path.join(CLIENT, "game" + SEATED)
+CLIENT_LOG = os.path.join(CLIENT, f"client{SEATED}.log")
 VERSION = os.environ.get("MC_VERSION", "26.3")
-CAM = os.environ.get("MC_CAM", "C164Cam")
+CAM = os.environ.get("MC_CAM", "C164Seat" + SEAT.upper() if SEAT else "C164Cam")
 SIZE = os.environ.get("MC_SIZE", "1280x720")
 DISPLAY = os.environ.get("MC_DISPLAY", "164")
 VIEW = int(os.environ.get("MC_VIEW", "12"))
@@ -95,7 +106,7 @@ ADOPTIUM = ("https://api.adoptium.net/v3/assets/latest/{major}/hotspot"
 HELPER_SOURCE = os.path.join(HERE, "win", "CamHelper.java")
 HELPER = os.path.join(CLIENT, "helper")
 ASKS = "c164cam"        # folder under GAME through which the helper is asked for pictures (shoot.py)
-PIDS = {"server": os.path.join(SERVER, "server.pid"), "client": os.path.join(CLIENT, "client.pid"),
+PIDS = {"server": os.path.join(SERVER, "server.pid"), "client": os.path.join(CLIENT, f"client{SEATED}.pid"),
         "display": os.path.join(CLIENT, "xvfb.pid")}
 
 # The settings are winmc.py's (the admin's computer, 11-14), so that a picture means the same on
@@ -706,7 +717,7 @@ def client_command():
 def client_log():
     """The closing lines of what the game said: its output, which holds its log and what the
     Java machine said when it fell over."""
-    return tail(os.path.join(CLIENT, "client.log"), 40)
+    return tail(CLIENT_LOG, 40)
 
 
 SAID = re.compile(r"shader|pipeline|compil|glsl|resource ?pack|reload|uniform|sampler|backend|vulkan|opengl|sound|"
@@ -723,8 +734,7 @@ def client_said(since=0.0, out=None):
     game and the pictures then show the vanilla ones, without a word in the pictures: so every trip
     keeps these lines beside its log. Returns (records, records that speak of a failure)."""
     records, record = [], None
-    for name in ("client.log.1", "client.log"):         # a trip may have started the game twice
-        path = os.path.join(CLIENT, name)
+    for path in (CLIENT_LOG + ".1", CLIENT_LOG):        # a trip may have started the game twice
         try:
             if os.path.getmtime(path) < since:
                 continue
@@ -758,7 +768,7 @@ def graphics():
     """What the game says it draws with, from its output: the backend it chose and why."""
     found = []
     try:
-        with open(os.path.join(CLIENT, "client.log"), encoding="utf-8", errors="replace") as fh:
+        with open(CLIENT_LOG, encoding="utf-8", errors="replace") as fh:
             for line in fh:
                 if re.search(r"graphics backend|GLX visual|Backend library|llvmpipe|lavapipe|Failed to (create|initiali[sz]e)",
                              line, re.I):
@@ -766,6 +776,26 @@ def graphics():
     except OSError:
         pass
     return found[:6]
+
+
+def seat_ready():
+    """The game folder of a second client (MC_SEAT): the settings of the first with this seat's
+    distances, and the first one's resource packs."""
+    if not SEAT:
+        return
+    os.makedirs(GAME, exist_ok=True)
+    options = os.path.join(GAME, "options.txt")
+    if not os.path.exists(options):
+        with open(options, "w", encoding="utf-8") as fh:
+            fh.write(OPTIONS.format(view=VIEW, clouds=CLOUDS))
+    else:
+        for key, value in (("renderDistance", VIEW), ("cloudRange", CLOUDS), ("resourcePacks", PACKS),
+                           ("incompatibleResourcePacks", "[]")):
+            set_line(options, key, ":", value)
+    packs = os.path.join(GAME, "resourcepacks")
+    if not os.path.islink(packs):
+        shutil.rmtree(packs, ignore_errors=True)
+        os.symlink(os.path.join(os.pardir, "game", "resourcepacks"), packs)
 
 
 def client_up():
@@ -779,9 +809,10 @@ def client_up():
         ready = os.path.join(GAME, ASKS, "ready")
         if os.path.exists(ready):
             os.remove(ready)
-        log = os.path.join(CLIENT, "client.log")
+        log = CLIENT_LOG
         if os.path.exists(log):
             os.replace(log, log + ".1")
+        seat_ready()
         pid = start(client_command(), GAME, log, env=env, kind="client")
     t0 = time.monotonic()
     while time.monotonic() - t0 < 900:
@@ -802,13 +833,16 @@ def client_up():
 def client_down():
     pid = running("client")
     stopped = stop(pid) if pid else False
-    for stray in strays(r"net\.minecraft\.client\.main\.Main|CamHelper"):
-        stopped = stop(stray) or stopped
-    for stale in (PIDS["client"], os.path.join(GAME, ASKS, "ready")):
-        if os.path.exists(stale):
-            os.remove(stale)
+    stale = [PIDS["client"], os.path.join(GAME, ASKS, "ready")]
+    if not SEAT:        # every client goes, whoever noted its process id: the other seats too
+        for stray in strays(r"net\.minecraft\.client\.main\.Main|CamHelper"):
+            stopped = stop(stray) or stopped
+        stale += glob.glob(os.path.join(CLIENT, "client-*.pid")) + glob.glob(os.path.join(CLIENT, "game-*", ASKS, "ready"))
+    for path in stale:
+        if os.path.exists(path):
+            os.remove(path)
     if stopped:
-        say("client stopped")
+        say("client stopped" + (f" (seat {SEAT})" if SEAT else ""))
 
 
 def display_down():
