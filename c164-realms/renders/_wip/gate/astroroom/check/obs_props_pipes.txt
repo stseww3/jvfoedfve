@@ -1,0 +1,15 @@
+check obs_props_pipes at bfbac26
+[PASS] regen     4181 blocks, 25 entities, 33 models, 795 resource-pack files, 25 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.1 s)
+[PASS] conflicts the scene writes 794 files, no file written twice, the folders and the prefix of props are kept (13 packages run alone)
+[PASS] strays    162 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      595 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    18 kinds of block placed, all in the occupancy table
+[SKIP] flatwall  a test scene of props: its sample walls and backdrops are meant to be flat
+[PASS] entities  25 display entities, 6 drawn out along one axis, 18 models never placed
+[PASS] views     20 shots, most display entities in view: 25 (front), limit 600; counted without what walls hide
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    1 parts and 3 points on 2 chains, 17 function files; 4 commands in the busiest tick (limit 120), 0.3 a tick on average (limit 40)
+                 chain of 60 ticks: 8 functions, 18 commands a cycle, starts 1 ticks after start
+                 chain of 160 ticks: 3 functions, 7 commands a cycle, starts 3 ticks after start
+result: PASS (0 failed, 0 with warnings)

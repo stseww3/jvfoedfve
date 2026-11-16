@@ -1,0 +1,145 @@
+{
+ "scene": "obs_mat_windows_in",
+ "commit": "bfbac26",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "3591 blocks, 6 entities, 72 models, 887 resource-pack files, 7 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (0.9 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 886 files, no file written twice, the folders and the prefix of materials are kept (7 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "196 pictures, every colour in the palette",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "663 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "86 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "16 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of materials: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "6 display entities, 67 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "WARN",
+   "summary": "11 shots, most display entities in view: 6 (in_wall), limit 600; counted without what walls hide",
+   "details": [
+    "the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(materials.pack(d) or []) + list(sky.pack(d) or [])"
+   ],
+   "data": {
+    "shots": [
+     {
+      "name": "in_wall",
+      "in_view": 6,
+      "drawn": 6,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "in_wall_b",
+      "in_view": 6,
+      "drawn": 6,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "in_wall_c",
+      "in_view": 6,
+      "drawn": 6,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "in_lit",
+      "in_view": 4,
+      "drawn": 6,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "in_frosted",
+      "in_view": 6,
+      "drawn": 6,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "in_curtain",
+      "in_view": 4,
+      "drawn": 6,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "in_near",
+      "in_view": 2,
+      "drawn": 6,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "in_slant",
+      "in_view": 6,
+      "drawn": 6,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "out_front",
+      "in_view": 6,
+      "drawn": 6,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "out_slant",
+      "in_view": 6,
+      "drawn": 6,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "out_near",
+      "in_view": 6,
+      "drawn": 6,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "nothing moves",
+   "details": []
+  }
+ ]
+}
