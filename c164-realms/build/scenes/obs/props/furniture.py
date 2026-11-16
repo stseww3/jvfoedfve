@@ -595,9 +595,11 @@ NAIL = P.RAMPS["dark_wood"][1]
 BOARD = 3.0                                     # texels a board of a packing case is high; one texel between two
 # The hoop iron a packing case is bound with: two cool lines round the brown, which take it out of
 # the floor and the cabinets it stands among (a case was the one piece of the family that was wood
-# and nothing else: cr4-#2). A darker nail where it crosses a board.
-HOOP = P.RAMPS["iron"][5]
-HOOP_NAIL = P.RAMPS["iron"][3]
+# and nothing else: cr4-#2). A darker nail where it crosses a board. The step of the ramp is the
+# lightest that still reads as iron: one lighter, and under the lamps the hoops were two blue ribbons.
+HOOP_STEP = 4
+HOOP = P.RAMPS["iron"][HOOP_STEP]
+HOOP_NAIL = P.RAMPS["iron"][HOOP_STEP - 2]
 HOOP_OUT = 0.25                                 # texels the hoop stands proud of what it lies on
 
 
@@ -618,7 +620,7 @@ def _hoop(m, x0, hz, boards, top):
     for _ in range(boards):
         rows += ["h", "n", "h", "h"]                                 # a board and the gap under it
     run = Sprite(f"furn_hoop_{boards}", rows[:-1], {"h": HOOP, "n": HOOP_NAIL})
-    flat, x1 = K.flat("iron", 5), x0 + 1.0
+    flat, x1 = K.flat("iron", HOOP_STEP), x0 + 1.0
     for s, face, other in ((1.0, "s", "n"), (-1.0, "n", "s")):
         za, zb = sorted((s * (hz - 1.0), s * (hz - 1.0 + HOOP_OUT)))
         m.box((x0, 0.0, za), (x1, top, zb), flat, faces={face: run}, skip="d" + other)
