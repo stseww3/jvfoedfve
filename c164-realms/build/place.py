@@ -7,6 +7,9 @@ The scene module (scenes/<name>/__init__.py) must provide build() -> Canvas. The
 around the previous placement first, so the command can be repeated while iterating on a design.
 
 A scene may also carry a look (scenes/<name>/mood.py with BIOMES and TIMELINES, see artkit.mood).
+A look that the resource pack carries (artkit.mood.Carried) leaves no registry file in the data
+pack: the scene's box is filled with one of the game's own biomes and the clock is held at the
+look's hour.
 Those files are written into the data pack first; when they changed the script says so, and the
 server has to be restarted before the new look exists (`--look-only` writes just these files, to be
 run while the server is down). `--biome-only --biome <name>` swaps the biome around an already
@@ -103,14 +106,18 @@ def main():
         # the fill would only say "unknown biome" for every box, after the scene is placed
         raise SystemExit(f"BIOME {own!r} of scene {args.scene} is not one of its look's biomes "
                          f"({', '.join(sorted(getattr(look, 'BIOMES', {}))) or 'the scene has no mood.py'})")
+    carried = MOOD.carried(look)
     biome = args.biome or own
     if biome and ":" not in biome:
-        biome = f"c164art:{biome}"
+        biome = carried.game_biome if carried is not None and biome in carried else f"c164art:{biome}"
     margin = getattr(scene, "BIOME_MARGIN", 4)
     margin_y = getattr(scene, "BIOME_MARGIN_Y", margin)
 
     if look is not None:
-        changed = MOOD.write(pack, "c164art", look.BIOMES, getattr(look, "TIMELINES", None))
+        if carried is not None:     # the resource pack carries it: an earlier run's registry files go
+            changed = MOOD.write(pack, "c164art", {}, None)
+        else:
+            changed = MOOD.write(pack, "c164art", look.BIOMES, getattr(look, "TIMELINES", None))
         if changed:
             print("look files changed (" + ", ".join(changed) + "): restart the server and reconnect the client")
     if args.look_only:
@@ -182,8 +189,17 @@ def main():
         fill_biome(rc, (ox, oy, oz), man["min"], man["max"], biome, margin, margin_y)
     for cmd in after:           # one command today: function <namespace>:<scene>-motion/start
         print(f"{cmd} -> {rc.command(cmd).strip()[:200]}")
+    state = {"at": [ox, oy, oz], "min": man["min"], "max": man["max"]}
+    if carried is not None:
+        # the pack's sky is painted for one hour (where the moon's slot, the stars and the light
+        # stand): the clock is stopped there; tools/shoot.py --clock takes the pictures in it
+        rc.command("gamerule advance_time false")
+        rc.command(f"time set {carried.clock}")
+        state["clock"] = carried.clock
+        print(f"the look is carried by the resource pack: the clock is held at {carried.clock} "
+              f"(shoot.py --clock {carried.clock})")
     with open(state_file, "w") as fh:
-        json.dump({"at": [ox, oy, oz], "min": man["min"], "max": man["max"]}, fh)
+        json.dump(state, fh)
     rc.close()
 
 
