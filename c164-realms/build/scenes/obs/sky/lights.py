@@ -536,6 +536,13 @@ def way_lamps():
     x, row = shell.ARCADE_X[0], shell.DECK_Y + WAY_HIGH
     out += [((x, row, -shell.CROSS_Z), "south", L.WAY - 1, "the north end of the cross gallery"),
             ((x, row, shell.CROSS_Z), "north", L.WAY - 1, "the south end of the cross gallery")]
+    # trial tree only (dome, the ways over the roofs): numbers to hand to the lights line
+    out += [((9, 19, 31), "east", L.WAY, "trial: inside the small dome's door"),
+            ((10, 20, -30), "west", L.WAY - 1, "trial: over the clock tower's door"),
+            ((12, 18, 14), "north", L.WAY, "trial: the south way's crossing of the inner gable"),
+            ((12, 18, -14), "south", L.WAY, "trial: the north way's crossing of the inner gable"),
+            ((3, 18, 26), "west", L.WAY - 1, "trial: the foot of the south way down"),
+            ((3, 18, -26), "west", L.WAY - 1, "trial: the foot of the north way down")]
     return out
 
 
