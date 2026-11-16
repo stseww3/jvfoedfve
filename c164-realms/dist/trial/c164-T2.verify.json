@@ -1,0 +1,270 @@
+{
+ "name": "c164-T2",
+ "archive_sha256": "e523e1db418762011134c432336f284eba8b80e48a022e5a5dd966d0af269c62",
+ "made_from": "28bf815a",
+ "checks": [
+  {
+   "check": "archive",
+   "ok": true,
+   "detail": "479287 bytes, sha256 e523e1db41876201, as the note beside it says"
+  },
+  {
+   "check": "level.dat",
+   "ok": true,
+   "detail": "GameType 2, difficulty {'difficulty': 'peaceful', 'hardcore': 0, 'locked': 0}, spawn {'pos': [3, 201, 0], 'pitch': -25.0, 'dimension': 'minecraft:overworld', 'yaw': 90.0}"
+  },
+  {
+   "check": "files",
+   "ok": true,
+   "detail": "has ['level.dat', 'resourcepacks/resources.zip', 'datapacks/c164art/pack.mcmeta']; left over nothing"
+  },
+  {
+   "check": "resource pack",
+   "ok": true,
+   "detail": "673 files, pack.mcmeta at its top: True; 8 stand-ins (ph_)"
+  },
+  {
+   "check": "starts",
+   "ok": true,
+   "detail": "up in 6 s, the server's own settings: {'gamemode': 'survival', 'difficulty': 'easy'}"
+  },
+  {
+   "check": "data pack",
+   "ok": true,
+   "detail": "There are 2 data pack(s) enabled: [vanilla (built-in)], [file/c164art (world)]"
+  },
+  {
+   "check": "game rules",
+   "ok": false,
+   "detail": "1 of 21 as the list says; not: {'advance_time': 'Game rule advance_time is currently set to false', 'advance_weather': 'Game rule advance_weather is currently set to false', 'fall_damage': 'Game rule fall_damage is currently set to false', 'random_tick_speed': 'Game rule random_tick_speed is currently set to 0', 'spawn_mobs': 'Game rule spawn_mobs is currently set to false', 'block_drops': 'Game rule block_drops is currently set to false', 'entity_drops': 'Game rule entity_drops is currently set to false', 'spawn_wandering_traders': 'Game rule spawn_wandering_traders is currently set to false', 'spawn_patrols': 'Game rule spawn_patrols is currently set to false', 'spawn_phantoms': 'Game rule spawn_phantoms is currently set to false', 'pvp': 'Game rule pvp is currently set to false', 'send_command_feedback': 'Game rule send_command_feedback is currently set to false', 'command_block_output': 'Game rule command_block_output is currently set to false', 'fire_damage': 'Game rule fire_damage is currently set to false', 'drowning_damage': 'Game rule drowning_damage is currently set to false', 'freeze_damage': 'Game rule freeze_damage is currently set to false', 'immediate_respawn': 'Game rule immediate_respawn is currently set to true', 'show_death_messages': 'Game rule show_death_messages is currently set to false', 'locator_bar': 'Game rule locator_bar is currently set to false', 'respawn_radius': 'Game rule respawn_radius is currently set to 0'}; max_block_modifications Game rule max_block_modifications is currently set to 32768"
+  },
+  {
+   "check": "forced chunks",
+   "ok": true,
+   "detail": "No force loaded chunks were found in minecraft:overworld"
+  },
+  {
+   "check": "tick, empty",
+   "ok": true,
+   "detail": "The game is running normallyTarget tick rate: 20.0 per second. | Average time per tick: 0.7ms (Target: 50.0ms)Percentiles: P50: 0.3ms P95: 0.7ms P99: 15.8ms. Sample: 100"
+  },
+  {
+   "check": "difficulty",
+   "ok": true,
+   "detail": "The difficulty is Easy (the server's own; a trial save does not set it)"
+  },
+  {
+   "check": "join",
+   "ok": true,
+   "detail": "joined in 0.5 s at (3.5, 201.0, 0.5) facing (90.0, -25.0), after the functions at (3.5, 201.0, 0.5) facing (90.0, -25.0); wanted (3.5, 201.0, 0.5) facing (90.0, -25.0)"
+  },
+  {
+   "check": "mode",
+   "ok": true,
+   "detail": "C164Probe has the following entity data: 2"
+  },
+  {
+   "check": "reach",
+   "ok": true,
+   "detail": "The base value of attribute Block Interaction Range for entity C164Probe is 0.0"
+  },
+  {
+   "check": "tag",
+   "ok": true,
+   "detail": "C164Probe has 1 tag(s): c164.in"
+  },
+  {
+   "check": "greeting",
+   "ok": true,
+   "detail": "[c164 试传 T2] 数据包的函数在跑：这几行字是函数说的。 | [c164 试传 T2] 这个存档不带自定义生物群系和时间线，天是游戏自己的。 | [c164 试传 T2] 进来时不是冒险模式（函数已改成冒险）；难度 1（0 是和平）。 | [c164 试传 T2] 请先别动鼠标，按 F2 截一张图；再低头看平台、回头看身后。"
+  },
+  {
+   "check": "lines of text",
+   "ok": true,
+   "detail": "{color: \"gold\", text: \"c164 试传 T2\"} | {color: \"green\", text: \"数据包的函数：在跑\"} | {color: \"gray\", text: \"这个存档不带生物群系和时间线\"} | {color: \"yellow\", text: \"进来时：不是冒险模式\"} | {color: \"yellow\", text: \"难度：简单（不是和平）\"}; wanted them to tell: adventure False, peaceful False"
+  },
+  {
+   "check": "fall",
+   "ok": true,
+   "detail": "put at y 164, a moment later at (3.5, 201.0, 0.5) facing (90.0, -25.0)"
+  },
+  {
+   "check": "over the line",
+   "ok": true,
+   "detail": "put at y 170.5, a moment later at (23.5, 170.5, 0.5)"
+  },
+  {
+   "check": "tick, one player",
+   "ok": true,
+   "detail": "The game is running normallyTarget tick rate: 20.0 per second. | Average time per tick: 1.5ms (Target: 50.0ms)Percentiles: P50: 0.8ms P95: 2.4ms P99: 25.7ms. Sample: 100"
+  },
+  {
+   "check": "rejoin",
+   "ok": true,
+   "detail": "back on the spot and greeted again: (3.5, 201.0, 0.5); [c164 试传 T2] 数据包的函数在跑：这几行字是函数说的。 | [c164 试传 T2] 这个存档不带自定义生物群系和时间线，天是游戏自己的。 | [c164 试传 T2] 进来时已经是冒险模式；难度 1（0 是和平）。 | [c164 试传 T2] 请先别动鼠标，按 F2 截一张图；再低头看平台、回头看身后。; C164Probe has the following entity data: 2; The base value of attribute Block Interaction Range for entity C164Probe is 0.0; 4 things shown before he left"
+  },
+  {
+   "check": "loop",
+   "ok": true,
+   "detail": "m.site_weather_cups: 6 different turns in 3 s; #run has 304677571 [c164m]"
+  },
+  {
+   "check": "console",
+   "ok": true,
+   "detail": "0 warnings and errors"
+  },
+  {
+   "check": "as set: starts",
+   "ok": true,
+   "detail": "up in 5 s, the server's own settings: {'gamemode': 'adventure', 'difficulty': 'peaceful'}"
+  },
+  {
+   "check": "as set: data pack",
+   "ok": true,
+   "detail": "There are 2 data pack(s) enabled: [vanilla (built-in)], [file/c164art (world)]"
+  },
+  {
+   "check": "as set: join",
+   "ok": true,
+   "detail": "joined in 0.5 s at (3.5, -63.0, 0.5) facing (90.0, -25.0), after the functions at (3.5, 201.0, 0.5) facing (90.0, -25.0); wanted (3.5, 201.0, 0.5) facing (90.0, -25.0)"
+  },
+  {
+   "check": "as set: mode",
+   "ok": true,
+   "detail": "C164Probe has the following entity data: 2"
+  },
+  {
+   "check": "as set: reach",
+   "ok": true,
+   "detail": "The base value of attribute Block Interaction Range for entity C164Probe is 0.0"
+  },
+  {
+   "check": "as set: tag",
+   "ok": true,
+   "detail": "C164Probe has 2 tag(s): c164.adv, c164.in"
+  },
+  {
+   "check": "as set: greeting",
+   "ok": true,
+   "detail": "[c164 试传 T2] 数据包的函数在跑：这几行字是函数说的。 | [c164 试传 T2] 这个存档不带自定义生物群系和时间线，天是游戏自己的。 | [c164 试传 T2] 进来时已经是冒险模式；难度 0（0 是和平）。 | [c164 试传 T2] 请先别动鼠标，按 F2 截一张图；再低头看平台、回头看身后。"
+  },
+  {
+   "check": "as set: lines of text",
+   "ok": true,
+   "detail": "{color: \"gold\", text: \"c164 试传 T2\"} | {color: \"green\", text: \"数据包的函数：在跑\"} | {color: \"gray\", text: \"这个存档不带生物群系和时间线\"} | {color: \"green\", text: \"进来时：冒险模式\"} | {color: \"green\", text: \"难度：和平\"}; wanted them to tell: adventure True, peaceful True"
+  },
+  {
+   "check": "as set: fall",
+   "ok": true,
+   "detail": "put at y 164, a moment later at (3.5, 201.0, 0.5) facing (90.0, -25.0)"
+  },
+  {
+   "check": "as set: over the line",
+   "ok": true,
+   "detail": "put at y 170.5, a moment later at (23.5, 170.5, 0.5)"
+  },
+  {
+   "check": "as set: tick, one player",
+   "ok": true,
+   "detail": "The game is running normallyTarget tick rate: 20.0 per second. | Average time per tick: 1.3ms (Target: 50.0ms)Percentiles: P50: 0.9ms P95: 2.0ms P99: 9.5ms. Sample: 100"
+  },
+  {
+   "check": "as set: rejoin",
+   "ok": true,
+   "detail": "back on the spot and greeted again: (3.5, 201.0, 0.5); [c164 试传 T2] 数据包的函数在跑：这几行字是函数说的。 | [c164 试传 T2] 这个存档不带自定义生物群系和时间线，天是游戏自己的。 | [c164 试传 T2] 进来时已经是冒险模式；难度 0（0 是和平）。 | [c164 试传 T2] 请先别动鼠标，按 F2 截一张图；再低头看平台、回头看身后。; C164Probe has the following entity data: 2; The base value of attribute Block Interaction Range for entity C164Probe is 0.0; 4 things shown before he left"
+  },
+  {
+   "check": "as set: console",
+   "ok": true,
+   "detail": "0 warnings and errors"
+  }
+ ],
+ "level": {
+  "keys": [
+   "DataPacks",
+   "DataVersion",
+   "GameType",
+   "LastPlayed",
+   "LevelName",
+   "ServerBrands",
+   "Time",
+   "Version",
+   "WasModded",
+   "allowCommands",
+   "difficulty_settings",
+   "initialized",
+   "spawn",
+   "version",
+   "version_history"
+  ],
+  "GameType": 2,
+  "difficulty_settings": {
+   "difficulty": "peaceful",
+   "hardcore": 0,
+   "locked": 0
+  },
+  "spawn": {
+   "pos": [
+    3,
+    201,
+    0
+   ],
+   "pitch": -25.0,
+   "dimension": "minecraft:overworld",
+   "yaw": 90.0
+  },
+  "LevelName": "c164-T2",
+  "DataVersion": 5023,
+  "Version": {
+   "Snapshot": 0,
+   "Series": "main",
+   "Id": 5023,
+   "Name": "26.3"
+  },
+  "DataPacks": {
+   "Enabled": [
+    "vanilla",
+    "file/c164art"
+   ],
+   "Disabled": [
+    "minecart_improvements",
+    "redstone_experiments",
+    "trade_rebalance"
+   ]
+  },
+  "allowCommands": 0,
+  "initialized": 1,
+  "WasModded": 0,
+  "ServerBrands": [
+   "vanilla"
+  ],
+  "Time": 59
+ },
+ "rules": {
+  "advance_time": "Game rule advance_time is currently set to false",
+  "advance_weather": "Game rule advance_weather is currently set to false",
+  "fall_damage": "Game rule fall_damage is currently set to false",
+  "random_tick_speed": "Game rule random_tick_speed is currently set to 0",
+  "spawn_mobs": "Game rule spawn_mobs is currently set to false",
+  "block_drops": "Game rule block_drops is currently set to false",
+  "entity_drops": "Game rule entity_drops is currently set to false",
+  "spawn_wandering_traders": "Game rule spawn_wandering_traders is currently set to false",
+  "spawn_patrols": "Game rule spawn_patrols is currently set to false",
+  "spawn_phantoms": "Game rule spawn_phantoms is currently set to false",
+  "pvp": "Game rule pvp is currently set to false",
+  "send_command_feedback": "Game rule send_command_feedback is currently set to false",
+  "command_block_output": "Game rule command_block_output is currently set to false",
+  "fire_damage": "Game rule fire_damage is currently set to false",
+  "drowning_damage": "Game rule drowning_damage is currently set to false",
+  "freeze_damage": "Game rule freeze_damage is currently set to false",
+  "immediate_respawn": "Game rule immediate_respawn is currently set to true",
+  "show_death_messages": "Game rule show_death_messages is currently set to false",
+  "locator_bar": "Game rule locator_bar is currently set to false",
+  "respawn_radius": "Game rule respawn_radius is currently set to 0",
+  "max_block_modifications": "Game rule max_block_modifications is currently set to 32768"
+ },
+ "issues": [],
+ "as set: issues": [],
+ "ok": false,
+ "seconds": 54
+}
