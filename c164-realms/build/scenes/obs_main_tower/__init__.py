@@ -28,6 +28,7 @@ def build():
     c = Canvas()
     for line in LINES:
         line.build(c, (0, 0, 0))
+    tower.way_up(c)             # trial branch only: the door open and the ladder in, as the clock room will have them
     return c
 
 
