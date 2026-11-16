@@ -1,0 +1,50 @@
+a0job 1116-052720-smoke-guide-f3-e07b-7462: cursor/c164-smoke-guide-f3-e07b @ c31f9b71 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.43 0.38 0.36, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- r=0; for s in obs_mot_guide obs_mot_guide_dome; do python tools/check.py --scene $s || r=1; echo "== $s done, r=$r"; done; exit $r ---- exit 0, 5 s, last 90 lines of 40:
+check obs_mot_guide at c31f9b7
+[PASS] regen     238 blocks, 0 entities, 0 models, 688 resource-pack files, 51 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (0.7 s)
+[PASS] conflicts the scene writes 687 files, no file written twice, the folders and the prefix of motion are kept (1 package run alone)
+[PASS] strays    129 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      529 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    3 kinds of block placed, all in the occupancy table
+[SKIP] flatwall  a test scene of motion: its sample walls and backdrops are meant to be flat
+[PASS] entities  0 display entities
+[PASS] views     2 shots, most display entities in view: 0 (bench), limit 600; counted without what walls hide
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    0 parts and 8 points on 1 chains, 8 function files and 35 of the packages' own; 9 commands in the busiest tick (limit 120), 1.5 a tick on average (limit 40)
+                 functions of the packages' own: guide/c1 (4 commands), guide/c2 (4 commands), guide/c3 (4 commands), guide/c4 (4 commands), guide/c5 (4 commands), guide/c6 (4 commands), guide/count (8 commands), guide/lens (3 commands), gu
+                 chain of 8 ticks: 2 functions, 12 commands a cycle, starts 1 ticks after start
+result: PASS (0 failed, 0 with warnings)
+== obs_mot_guide done, r=0
+check obs_mot_guide_dome at c31f9b7
+[PASS] regen     6281 blocks, 140 entities, 121 models, 1051 resource-pack files, 150 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (2.0 s)
+[PASS] conflicts the scene writes 1050 files, no file written twice, the folders and the prefix of motion are kept (1 package run alone)
+[PASS] strays    250 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      771 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    28 kinds of block placed, 19 barrier cells (x -1..5, y 18..19, z -9..1), all in the occupancy table
+[SKIP] flatwall  a test scene of motion: its sample walls and backdrops are meant to be flat
+[PASS] entities  140 display entities, 1 drawn out along one axis, 1 shown through a matrix that is no turn, no face stretched, 53 models never placed
+[PASS] views     4 shots, most display entities in view: 111 (back), limit 600; counted without what walls hide; the game draws up to 140 (back): a display entity without width and height is drawn outside the view too
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[WARN] motion    9 parts and 10 points on 8 chains, 106 function files and 35 of the packages' own; 13 commands in the busiest tick (limit 120), 2.7 a tick on average (limit 40)
+                 int_domeroom_time_dial_seconds: 60 steps in 1200 ticks set by hand (lead -17); its model strays 0.00 pixels from its arc
+                 functions of the packages' own: guide/c1 (4 commands), guide/c2 (4 commands), guide/c3 (4 commands), guide/c4 (4 commands), guide/c5 (4 commands), guide/c6 (4 commands), guide/count (8 commands), guide/lens (3 commands), gu
+                 chain of 8 ticks: 2 functions, 12 commands a cycle, starts 1 ticks after start
+                 chain of 32 ticks: 4 functions, 9 commands a cycle, starts 3 ticks after start
+                 chain of 40 ticks: 8 functions, 17 commands a cycle, starts 2 ticks after start
+                 chain of 90 ticks: 8 functions, 17 commands a cycle, starts 10 ticks after start
+                 chain of 130 ticks: 8 functions, 17 commands a cycle, starts 1 ticks after start
+                 chain of 320 ticks: 2 functions, 5 commands a cycle, starts 6 ticks after start
+                 chain of 480 ticks: 8 functions, 37 commands a cycle, starts 4 ticks after start
+                 chain of 1200 ticks: 60 functions, 121 commands a cycle, starts 8 ticks after start
+result: PASS (0 failed, 1 with warnings)
+== obs_mot_guide_dome done, r=0
+==== NODEJOB RESULT ====
+exit=0 secs=6 host=cursor cores=4 head=c31f9b71 commit=none pushed=no branch=cursor/c164-smoke-guide-f3-e07b files=0
+a0job: exit=0 secs=7
