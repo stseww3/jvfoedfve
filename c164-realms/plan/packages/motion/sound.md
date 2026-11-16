@@ -83,11 +83,14 @@
 ### 本卡以外：帮 lights 量「人走的路都有光」（cr2 11-16 派，#73089）
 - 只出清单，不改别人的文件。工具和清单都不进总装：工具在分支 `cursor/c164-sound-lightaudit-f3-cbc6` 的 `tools/darkfloor.py`（用 a4 的 `tools/walkreach.py` 算人走得到的格，lights 的 `sky/_lightkit.levels` 算块光，量法写在文件头）；清单在 `cursor/c164-sound-lightaudit-f3-cbc6-wip` 的 `c164-realms/renders/_wip/light/dark.md`、`dark.json`。
 - 线：11-16 10:39 起地面、台阶、门槛一个线，块光不低于 5（lights #77817 转 cr2 #77677；之前台阶和门槛按 7）。露天、檐下（天光从旁边照进来 13 级以上）、穹顶室另列不算；定了不补的三处（厅入口 x 12..17、子午仪小屋、水塔底下）也另列，不进暗的总数（总监看的是那个总数，aide 从 dark.md 的「暗：N 格，M 堆」那一行读它）。新开门的房间一律算路、归房间主人（cr2 #76117）；主人说本来就该黑的才报 cr2。各堆归谁写在工具的 `OWNERS` 表里（lights #74750、#75829、#76033、#77817；钟塔底厅归 clkrm，tower #79484）。
+- 栏杆、屏障、玻璃板的顶不算路（cr2 #82209，11:26 定）：脚下是铁栏杆或铜栏杆、玻璃板、栅栏、栅栏门、墙、屏障块的格另列一节（坐标、脚下是什么），不进总数；脚下是整块的照算。暗格里要跳一下才站得上的另有一节，写明脚下是什么，照算。
 - 量法上补过的一处：lights 的 `_lightkit._stops_light` 把游戏的梯子当整块挡光，梯脚那一格脚和头都量成 0；工具里改成「人的脚格、头格里放着灯具包认作挡光的块的，取旁边最亮的格减一」（游戏的算法）。工具箱是 lights 的，已告诉他，改不改他定。
-- 重跑（lights 或谁的灯进了总装就跑一趟，一趟十几秒）：在那个分支上合进最新的总装头，推上去，然后在 node106 上
-  `bash c164-realms/tools/nodejob.sh --wip --always --tail 80 --limit 2300 python tools/darkfloor.py --head <总装头> --before tools/darkfloor_before.json --out renders/_wip/light`；
-  数发 lights（c331）和 cr2（c333）；发完把新的 `dark.json` 存成 `tools/darkfloor_before.json`（下一版拿它比）。合总装头和推分支用 `/tmp/c164_sound/rerun_prep.sh`；这一趟要走桥的 `run_workspace_job`（node106），不要在合用机的终端里直接敲 nodejob.sh（10:48 误敲过一次，38 秒，已告诉 aide）。
-- 别人自己量：dark.md 里有「怎么自己量」一节（现取工具，在自己的节点、自己的分支上跑）；aide 10:45 的公告把这份清单定为补灯的人按归属领堆的依据。
+- 重跑（lights 或谁的灯进了总装就跑一趟，一趟十几秒）：在那个分支上合进最新的总装头，推上去，然后在 aide 分给我的节点上（10:56 节点池掉线以前是 node106；11:22 起是 node9，aide #81237、#81658）
+  `bash c164-realms/tools/nodejob.sh --wip --always --tail 80 --limit 1700 python tools/darkfloor.py --head <总装头> --before tools/darkfloor_before.json --out renders/_wip/light`；
+  数发 lights（c331）和 cr2（c333）；发完把新的 `dark.json` 存成 `tools/darkfloor_before.json`（下一版拿它比）。合总装头和推分支用 `/tmp/c164_sound/rerun_prep.sh`；这一趟要走桥的 `run_workspace_job`，不要在合用机的终端里直接敲 nodejob.sh（10:48 误敲过一次，38 秒，已告诉 aide）。
+- 别人自己量：dark.md 里有「怎么自己量」一节（现取工具，在自己的节点、自己的分支上跑；`--head auto` 取所在分支的头，`tools/darkrun.sh` 是现取现跑的那三行）；aide 10:45 的公告把这份清单定为补灯的人按归属领堆的依据。没有节点的人把分支名发我，我在 node9 上按他的分支量（任务的 `branch` 填他的分支，命令是 `git fetch -q origin cursor/c164-sound-lightaudit-f3-cbc6 && git show FETCH_HEAD:c164-realms/tools/darkrun.sh | bash`；带 `--wip --always` 时清单推到「他的分支-wip」，带 `--no-push` 时什么都不推，数在回执里）。
 - 到 11-16 10:17 发过四版：`cda721ae` 856 格（檐下的还算在内），`d7374d32` 338 格，`89943679` 444 格（底片库开了门），`0dfcb27a` 583 格 60 堆（蓄电池室开了门）。
 - 10:20 到 10:40 量了没发的两版（老口径）：`2c8321d0` 470 格（蓄电池室 astro 补完，139 → 0；钟塔底厅开了门，新进 25 格），`1ae6964b` 437 格（lights 的 22 盏进了总装 `ebdec90d`）。
 - 新口径的几版（原地更新，头一行写总装头）：10:52 发 `9fbb2e0c` 223 格 47 堆、不补 48（上一版 583 按新口径是 501；底片库 115 → 0）；`78698545` 211；`01c7ab6e` 210（clkrm 在钟塔梯道加了两盏，底厅 25 → 12）。总监 10:43、10:51：11:30 那一版暗格要到 0（不补的除外），只加灯的包免重画、走快道。
+- 11:25 发 `e1ebcea8` 123 格 36 堆（大楼梯厅、环梯、石墩一圈、钟塔底厅清了；梯子那一处 lights 在 `_lightkit` 里改了）；其中要跳一下才到的 41 格，有 20 格脚下是栏杆、屏障、玻璃板，由此定了上面那条「顶不算路」。11:30 发 `0cb464c3` 39 格 11 堆：授时室 22 格（m2；其中 9 格是他第四版 `ce43b7f3` 调灯以后新暗的），西门里 17 格（楼梯厅地面 11、通西门的过道 6）；不补 48 格 8 堆（厅入口 23、子午仪小屋 14、水塔底下 11），栏杆顶 0。11:39 发 `556dfe31`（lights 收尾那一轮进了以后）：同上，一格没变。
+- 按分支量过的三包（node9）：snow 的 `f1ad2592`，小穹顶里三堆全清（已合进总装）；m2 的 `39d46055`，授时室 22 格全清（5 到 9 级）；hall 的 `3b09f9d4`，西门里 17 格全清（5 到 7 级）。后两包进了总装，暗格就是 0（不补的另列）；进了以后对头再量一趟。
