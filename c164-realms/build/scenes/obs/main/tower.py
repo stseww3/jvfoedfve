@@ -170,7 +170,7 @@ LADDER_Y = (FOOT, int(ROOM_FLOOR))  # 18 .. 24: the ladder's rows. Row 23 is the
 #                                     the last one stands above the floor, to step off by
 LADDER = B.LADDER                   # the game's ladder: it is climbed by walking into it, without a click
 FLOOR = B.FLOOR_WOOD                # the boards of the clock room's floor, as in the building's rooms
-COVER = B.IRON_HATCH                # the plate that lies on the head of a slit's glass in the room's floor
+COVER = B.IRON_HATCH                # the plates that lie on the heads of the slits' fields in the room's floor
 
 
 def backs(face):
@@ -288,11 +288,12 @@ def way_up(canvas, origin=(0, 0, 0)):
     The door of the roof walk stands open. A ladder climbs the north-west corner of the well, on
     the west wall, from the deck through the hatch in the room's floor and one row past it, to
     step off by (LADDER_AT, LADDER_Y). The room's floor lies in the row under ROOM_FLOOR: boards
-    wherever the well is open in that row, but for the ladder's corner; along the walls it is
-    the heads of the slits' fields, which stand in that row already, and on the head of each
-    slit's glass lies an iron plate, where the floor would show a pane underfoot. Nothing on the
-    way is clicked: the map's reach is 0. Returns the ladder's cells, without the origin: the
-    room keeps them clear."""
+    wherever the well is open in that row, but for the ladder's corner. Along the middle of each
+    wall the heads of the slit's field stand in that row already, two of panelled stone and the
+    glass between them: a run of three iron plates lies on them, 3/16 thick, so that the floor
+    shows no pane underfoot. Under the backs of the dials 1.81 blocks are left above the plates.
+    Nothing on the way is clicked: the map's reach is 0. Returns the ladder's cells, without the
+    origin: the room keeps them clear."""
     _door(canvas, origin, True)
     x, z = LADDER_AT
     cells = [(x, y, z) for y in range(LADDER_Y[0], LADDER_Y[1] + 1)]
@@ -302,8 +303,9 @@ def way_up(canvas, origin=(0, 0, 0)):
     fields = {f.cell(i, 1) for f in FACES for i in ARCH}
     _fill(canvas, origin, INSIDE - fields - {LADDER_AT}, row, FLOOR.block)
     for f in FACES:
-        x, z = f.cell(MID, 1)
-        _set(canvas, origin, x, row + 1, z, st(COVER, facing=O.NAME[f.inward], half="bottom", open="false"))
+        for i in ARCH:
+            x, z = f.cell(i, 1)
+            _set(canvas, origin, x, row + 1, z, st(COVER, facing=O.NAME[f.inward], half="bottom", open="false"))
     return cells
 
 
