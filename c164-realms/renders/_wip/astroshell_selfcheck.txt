@@ -1,0 +1,27 @@
+ring: web 2.78125 from the axis (12.5, 30.5), y 20.4375..21.1875; the corbel's blocks come in to 2.915
+rack: 2.5..2.625 from the axis; pinion 2.400 from the axis
+crank: bolted on at (10.555, 19.1875, 32), box ((10.305145008618894, 18.9375, 31.4), (10.805145008618894, 20.5925, 32.0))
+meridian: (2.78, 21.19) (2.68, 21.62) (2.41, 22.73) (2.09, 23.84) (1.77, 24.50) (1.32, 25.00) (0.66, 25.50) (-0.00, 25.69) (-0.00, 25.69)
+arch:     (2.64, 21.19) (2.62, 21.62) (2.56, 22.73) (2.36, 23.84) (1.94, 24.50) (1.36, 25.00) (0.66, 25.50) (-0.00, 25.69) (-0.00, 25.69)
+14 display entities
+  int_astroroom_shell_arch: 47 boxes, 0.25 x 4.51 x 2.68 blocks
+  int_astroroom_shell_crank: 36 boxes, 0.38 x 1.66 x 0.56 blocks
+  int_astroroom_shell_rib_097: 38 boxes, 0.19 x 4.55 x 1.98 blocks
+  int_astroroom_shell_rib_137: 34 boxes, 0.19 x 4.15 x 1.60 blocks
+  int_astroroom_shell_ring: 152 boxes, 5.82 x 1.19 x 3.11 blocks
+  int_astroroom_shell_ties: 15 boxes, 3.66 x 1.75 x 4.06 blocks
+  ring     at (12.50, 20.00, 30.50), yaw 0
+  ring     at (12.50, 20.00, 30.50), yaw 180
+  arch     at (14.40, 23.89, 29.62), yaw -90
+  arch     at (10.60, 23.89, 29.62), yaw 90
+  arch     at (14.40, 23.89, 31.38), yaw -90
+  arch     at (10.60, 23.89, 31.38), yaw 90
+  rib_137  at (13.85, 23.06, 31.85), yaw -45
+  rib_097  at (12.50, 23.30, 32.34), yaw 0
+  rib_137  at (11.15, 23.06, 31.85), yaw 45
+  rib_137  at (11.15, 23.06, 29.15), yaw 135
+  rib_097  at (12.50, 23.30, 28.66), yaw 180
+  rib_137  at (13.85, 23.06, 29.15), yaw 225
+  ties     at (12.50, 24.00, 30.50), yaw 0
+  crank    at (10.56, 19.19, 32.00), yaw 180
+self-check: the budget, the ring inside the corbel, the frame under the plates, the crank at the rack, the astrograph clear -- all good
