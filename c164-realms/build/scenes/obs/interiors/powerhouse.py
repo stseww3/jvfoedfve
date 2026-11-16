@@ -372,7 +372,8 @@ def _lantern():
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    built = [_coal(), _toolboard(), _oilcan(), _lantern()]
+    settle = getattr(K, "settle", lambda m: m)      # the round pieces' flats lit alike in every copy (a6, g2 #75958)
+    built = [_coal(), settle(_toolboard()), settle(_oilcan()), settle(_lantern())]
     return {m.name: m for m in built}
 
 
