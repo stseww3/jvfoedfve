@@ -14,13 +14,22 @@ other, 200 blocks apart, each hidden by the one before it:
                       second one lit: frosted glass with 9, 10 and 12 behind it, the amber glass with
                       10, the curtain with 8. What is judged there is the level and nothing else.
 
+A building that tries other numbers stands here until the director has chosen (VARIANTS), beyond
+the board, 200 apart. None stands now: the one with 12 behind the lit windows of the wings has
+gone, that is the building (#58003), and so have the two that showed the wall wash at other
+levels than the building's (8, 10 and 12 side by side; the director chose 10, #62755).
+
 Nothing here places a light source: the lamps of props offer theirs, the windows of the board are
 registered with _lightkit.glazed(), and sky.build() (sky/lights.py) places all of them, the sources
-behind the lit windows of main's table, the light of the entrance and the wall wash. The scene asks
-for the building's own lights with _lightkit.dress(), whatever the switch sky/lights.DRESS says.
+of the lit windows of main's table, the light of the entrance and the wall wash. The scene asks
+for the building's own lights with _lightkit.dress(), whatever the switch sky/lights.DRESS says,
+and keeps to the entrance's lamps (the wall lamps and the pair of street lamps before the door):
+the other lamps of the site are judged on the site, in the master scene.
 
     python -m scenes.obs_sky_lights      writes shots.json; prints the light report, the lighting
                                          maps of the three looks and the levels on the stone
+    python -m scenes.obs_sky_lights.outside against <commit>
+                                         the block light of every cell, before and after
 """
 from artkit.canvas import Canvas
 
@@ -29,6 +38,7 @@ from scenes.obs import materials, sky
 from scenes.obs import props as props_line
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
+from scenes.obs.props import lamps
 from scenes.obs.sky import _lightkit as L
 from scenes.obs.sky import mood as look
 
@@ -54,6 +64,8 @@ LOWER_X = S.EAST_EDGE_X + 39                # the lower platform reaches this fa
 WALK_Z = (S.pilaster_z(8), S.pilaster_z(9))                 # the walk to the door: the middle bay and its pilasters
 
 BOARD = (-SPACING * len(STATIONS), 0, 0)
+# name: (the look it is glazed for, where it stands, the numbers of _lightkit it is lit by, the views it is shown in)
+VARIANTS = {}
 BOARD_BAYS = range(1, 12)                   # eleven bays of the wing's kind
 BOARD_GLASS = {                             # bay -> (its glass, the level behind it); the bays between are dark
     2: (B.WINDOW_FROSTED, 9), 4: (B.WINDOW_FROSTED, 10), 6: (B.WINDOW_FROSTED, 12),
@@ -78,7 +90,8 @@ def _ground(c, o, x0, x1, z0, z1, walk=False, lower=None):
 
 
 def _station(c, name, o):
-    """The building for one look. Returns the display entities placed: (the other lines', sky's own)."""
+    """The building glazed for one look. Returns the display entities placed: (the other lines',
+    sky's own)."""
     _ground(c, o, GROUND_X[0], GROUND_X[1], GROUND_Z[0], GROUND_Z[1], walk=True, lower=LOWER_X)
     with L.under(name):
         n = int(main_line.build(c, o) or 0) + int(props_line.build(c, o) or 0)
@@ -144,13 +157,23 @@ def _board(c, o):
     L.glazed(c, windows, origin=o, group="levels")      # lit by the first sky.build() that follows
 
 
-def build():
+def build(only=None):
+    """only: the buildings that are put up, by name (all of them, and the levels board, when None)."""
     c = Canvas()
     L.dress(c)                              # this scene shows the building's own lights, whatever the switch says
-    _board(c, BOARD)
+    if hasattr(lamps, "dress"):
+        lamps.dress(c, False)               # ... and of the site's lamps the entrance's only: the others stand on
+        #                                     the real site (stair, lip, armillary), not on this plain terrace
+    if only is None:
+        _board(c, BOARD)
     counts = {"props": 0, "sky": 0}
-    for name, o in STATIONS.items():
-        n_props, n_sky = _station(c, name, o)
+    stations = [(name, name, o, {}) for name, o in STATIONS.items()]
+    stations += [(name, glazed, o, dict(numbers)) for name, (glazed, o, numbers, _) in VARIANTS.items()]
+    for name, glazed, o, numbers in stations:
+        if only is not None and name not in only:
+            continue
+        with L.trying(**numbers):
+            n_props, n_sky = _station(c, glazed, o)
         counts["props"] += n_props
         counts["sky"] += n_sky
     c.entity_counts = counts
@@ -184,18 +207,25 @@ SURROUND_BAY = surround_bay()
 # skeleton). A skeleton without V2 is older than that ruling: its numbers stand in until then.
 V1 = S.V1 if hasattr(S, "V2") else dict(pos=S.V1["pos"], look_at=(8, 34, 0.5))
 V2 = getattr(S, "V2", dict(pos=(58.5, 1.7, 0.5), look_at=(17, 19, 0.5)))
+# V3 is not in the skeleton yet: until it is, what tools/boardshots.py proposes for the board (two
+# bays of the south wing and the corner of the centre block, from the court)
+V3 = getattr(S, "V3", dict(pos=(S.WALL_E + 9.5, S.GROUND + S.EYE, S.pilaster_z(11) + 2.5),
+                           look_at=(S.WALL_E + 1.5, S.STRING + 0.5, S.pilaster_z(10) + 0.5)))
 VIEWS = {   # name: (eye, looks at), from a building's origin
     "front": ((FRONT_X + 20.5, EYE, AXIS), (FRONT_X - 1.0, 8.5, AXIS)),            # 20 blocks, head on
     "axis": (V2["pos"], V2["look_at"]),                                            # the court's V2
     "v1": (V1["pos"], V1["look_at"]),                                              # the arrival view, 80 blocks
+    "v3": (V3["pos"], V3["look_at"]),                                              # the board's close look at a wing
     "slant": ((S.WALL_E + 13.5, EYE, -10.5), (S.WALL_E + 1.0, 8.5, -23.0)),        # 45 degrees, 12 blocks off
     "surround": near(S.east_wall_x(SURROUND_BAY), SURROUND_BAY),
     "door": ((FRONT_X + 9.5, EYE, AXIS + 2.0), (FRONT_X - 1.0, 4.5, AXIS)),                # before the middle arch
-    "wash": ((S.WALL_E + 9.5, EYE, -16.5), (S.WALL_E + 1.0, 2.0, -10.0)),
+    "v7": (S.V7["pos"], S.V7["look_at"]),                                          # the hall from outside the door
+    "wash": ((S.WALL_E + 9.5, EYE, -16.5), (S.WALL_E + 1.0, 2.0, -10.0)),          # the washed pilasters of the north wing
     "west": ((APSE_X - 28.5, EYE, AXIS), (APSE_X, 10.0, AXIS)),                    # from the sunset platform
+    "stair": ((8.5, S.STAND + EYE, -4.5), (5.5, 9.3, -3.5)),                       # the ring stair's newel lamp, from the north gallery
 }
 EVERY_LOOK = ("front", "axis", "v1", "slant", "surround")
-SOME_LOOKS = {"blue": ("door", "wash", "west"), "deep": ("door", "wash")}
+SOME_LOOKS = {"blue": ("v3", "door", "v7", "wash", "west", "stair"), "deep": ("door", "wash")}
 BOARD_MID = (S.pilaster_z(BOARD_BAYS[0] - 1) + S.pilaster_z(BOARD_BAYS[-1])) / 2.0 + 0.5
 
 
@@ -210,6 +240,9 @@ def shots():
     for name, o in STATIONS.items():
         for view in EVERY_LOOK + SOME_LOOKS.get(name, ()):
             add(f"{name}_{view}", VIEWS[view], o, look.tick(name))
+    for name, (glazed, o, _, views) in VARIANTS.items():
+        for view in views:
+            add(f"{name}_{view}", VIEWS[view], o, look.tick(glazed))
     board = ((WING_X + 20.5, EYE, BOARD_MID), (WING_X + 0.0, 8.0, BOARD_MID))
     add("levels_front", board, BOARD, look.tick("blue"))
     add("levels_front_deep", board, BOARD, look.tick("deep"))
