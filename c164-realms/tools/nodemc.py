@@ -11,7 +11,8 @@
     nodemc.py down            client, then server, then the display; also what an earlier job left
     nodemc.py restart         down + up (needed after biome or timeline files change)
     nodemc.py client-said [<since> [<file>]]
-                              what the game said about shaders, pipelines and resource packs
+                              what the game said about shaders, pipelines, resource packs and
+                              sounds, and what came up in its chat
     nodemc.py status
     nodemc.py server-up | server-down | client-up | client-down
 
@@ -697,7 +698,8 @@ def client_log():
     return tail(os.path.join(CLIENT, "client.log"), 40)
 
 
-SAID = re.compile(r"shader|pipeline|compil|glsl|resource ?pack|reload|uniform|sampler|backend|vulkan|opengl", re.I)
+SAID = re.compile(r"shader|pipeline|compil|glsl|resource ?pack|reload|uniform|sampler|backend|vulkan|opengl|sound|"
+                  r"\[CHAT\]", re.I)
 FAILS = re.compile(r"fail|couldn't|could not|error|exception|invalid|missing|rolled? back|removing|removed|"
                    r"no longer|incompatible|doesn't exist", re.I)
 
