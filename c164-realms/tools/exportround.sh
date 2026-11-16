@@ -10,6 +10,9 @@
 #   plain   c164-A<n>-plain.zip   the same without the shaders: the game's own night sky. The
 #                                 fallback when a client refuses the resource pack (the director's
 #                                 #73709: a shader that does not compile takes the whole pack down)
+#   noguide c164-A<n>-noguide.zip the same as main without the guide (the title on arrival, the
+#                                 plaques, the star charts: plan/packages/motion/guide.md). On
+#                                 request only: the card asks that such a save can be made
 #   look    c164-A<n>-look.zip    with our biome and timeline: single player only, not for Realms.
 #                                 Only where the tree's look is still the data pack's: once the
 #                                 resource pack carries it (artkit.mood.Carried) export.py refuses.
@@ -25,8 +28,9 @@ for v in "$@"; do
   case "$v" in
     main)  name="c164-A$n"       opts=() ;;
     plain) name="c164-A$n-plain" opts=(--shaders off) ;;
+    noguide) name="c164-A$n-noguide" opts=(--no-guide) ;;
     look)  name="c164-A$n-look"  opts=(--look on) ;;
-    *) echo "exportround: no variant $v (main, plain, look)" >&2; exit 2 ;;
+    *) echo "exportround: no variant $v (main, plain, noguide, look)" >&2; exit 2 ;;
   esac
   a=0 b=-
   python tools/export.py make --scene obs --name "$name" "${opts[@]}" --assembly "$at" --out "dist/A$n" || a=$?

@@ -14,9 +14,8 @@ LAMPS = [
     # The ledge behind the top of the south gable, under the cornice (two cells at 3): over the
     # head of the window niche, in the last course under the cornice.
     ((8, 21, 12), "south", L.WAY - 2, "the ledge behind the top of the south gable"),
-    # The passage behind the dome room's south door (its last cell at 4): in the opening over the
-    # door's leaves, on the east jamb.
-    ((13, 20, 10), "west", L.WAY, "the passage behind the dome room's south door"),
+    # The passage behind the dome room's south door (its last cell at 4) has no lamp of its own:
+    # the lamp outside the door has 9 for it (lights.ROOF_WAYS).
     # The recess under the dome room's south-west window (two cells at 0): on the west face of
     # the pier at the west end of the gable, outside the recess, so that the dome room behind
     # the glass gets no more light than it had.

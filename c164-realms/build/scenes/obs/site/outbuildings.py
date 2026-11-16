@@ -20,10 +20,11 @@ card plan/packages/site/outbuildings.md). Shells and platforms, of blocks:
     is taken from here, so nothing on it stands in that picture's middle.
   - the three ways down from the upper terrace to the shelves.
 
-One family with the main building and plainer than it: its slate plinth, its banded ashlar and its
-riveted iron, the site's rail on every edge, one lamp at a door and no more, and to each of the three
-that has a roof or a vessel one piece of the old copper of the main cornice's gutter: the hut's
-roof, the tank's cone, the rain gauge.
+One family with the main building and plainer than it: its slate plinth and its riveted iron, the
+site's rail on every edge, one lamp at a door and no more, and to each of the three that has a roof
+or a vessel one piece of the old copper of the main cornice's gutter: the hut's roof, the tank's
+cone, the rain gauge. The pale ashlar is the main building's alone: the hut's walls are of the
+power house's tuff brick, its jambs of polished tuff (see the materials below).
 
 The instruments themselves -- the meridian circle, the thermometer screen, the tripod telescope and
 the benches -- belong to the machines and props lines; this card leaves the shells, the sockets and
@@ -70,11 +71,18 @@ ORDER = 70      # after the terrain (10) and the court paving (60); the shells g
 INSTRUMENTS = True      # stand the props line's instruments on their spots (see _place)
 
 # --- materials (occupancy-table roles only) -------------------------------------------------------
-WALL = B.ASHLAR_ROUGH.block             # the darker, banded ashlar of the base storey: the hut's walls
-RAKE = B.ASHLAR_ROUGH.slab              # the raking stones of the hut's gables
-JAMB = B.ASHLAR_FINE.block              # dressed stone, only for the jambs of the meridian slot
-EMBLEM = B.ASHLAR_EMBLEM                # the emblem block at the head of each jamb
-COPE = B.ASHLAR_PANEL.slab              # a grey-white slab: the cap of a pedestal
+# The hut's stone is the power house's and not the main building's (A0 #82484, 11-16): the pale
+# ashlar is kept for the main building alone. A south wall gets eight tenths of the light and an
+# east one six, so the hut's south gable, of the base storey's ashlar, stood brighter in V5 (0.30
+# to 0.32) than the face of the clock tower behind it (0.22), whatever its lamp was set to. On
+# the materials board in that light a south wall of tuff brick or polished tuff is 0.22 where the
+# rough ashlar is 0.36 and the dressed 0.40 (c324 #82960): the gable comes to about 0.17, under
+# the tower. Slate brick (0.16) would run into the plinth and the retaining walls
+WALL = B.TUFF_BRICK.block               # tuff brick, as the power house: the hut's walls
+RAKE = B.TUFF_BRICK.slab                # the raking stones of the hut's gables
+JAMB = B.TUFF_SMOOTH.block              # the dressed stone of that family: the jambs of the meridian slot, and their heads
+JAMB_COPE = B.TUFF_SMOOTH.slab          # the coping stone on each jamb
+COPE = B.ASHLAR_PANEL.slab              # a grey-white slab: the cap of the weather station's pedestal
 PLINTH = B.SLATE_BRICK.block            # dark plinths, footings, the steps' landings
 POST = B.SLATE_BRICK.wall               # a slate post
 COPPER = B.OLD_COPPER_CUT.block         # old copper in sheets, as in the gutter of the main cornice
@@ -328,7 +336,7 @@ def _meridian_hut(c, o):
     for z in range(z0 + 1, dz + 1):
         _put(c, o, mx, on, z, BRASS)
 
-    # the walls: a slate plinth and two courses of banded ashlar; the slot stands on the plinth in
+    # the walls: a slate plinth and two courses of tuff brick; the slot stands on the plinth in
     # the north gable and comes down to the floor in the south one
     for x, z in _ring(x0, z0, x1, z1):
         if (x, z) == (dx, dz):
@@ -344,8 +352,9 @@ def _meridian_hut(c, o):
     # The roof, of old copper in sheets (slate was a black bar before the lit front in V1; the copper
     # is the main cornice's gutter come down to a small roof): a course on each long wall and a flat
     # a half block over it. The two iron shutters lie slid open on the flat either side of the slot.
-    # The gables are of stone to the roof's own line; the slot's jambs are dressed and carry the
-    # emblem under a coping stone, a little over the roof.
+    # The gables are of stone to the roof's own line; the slot's jambs are dressed, three stones
+    # under a coping stone, a little over the roof. (The head of a jamb was the emblem block; the
+    # emblem is cut in the pale stone only, and no pale stone is left on the hut.)
     # The hut stands before the base storey in V1 and check.py's sight counts how much of that is
     # out of sight (the posts of the east edge take a third, half is the limit). From the eye, a top
     # edge at height h and x hides the front up to -2.38 + (h + 2.38) * 72.5 / (88.5 - x): the eaves
@@ -359,11 +368,11 @@ def _meridian_hut(c, o):
             d = abs(x - mx)
             if d == 0:
                 continue
-            if gable and d == 1:                        # a jamb: dressed stone, the emblem, a coping
+            if gable and d == 1:                        # a jamb: three dressed stones and a coping
                 _put(c, o, x, on + 1, z, JAMB)
                 _put(c, o, x, on + 2, z, JAMB)
-                _put(c, o, x, eave, z, EMBLEM)
-                _put(c, o, x, eave + 1, z, COPE + "[type=bottom]")
+                _put(c, o, x, eave, z, JAMB)
+                _put(c, o, x, eave + 1, z, JAMB_COPE + "[type=bottom]")
             elif gable:
                 _put(c, o, x, eave, z, RAKE + "[type=bottom]" if lines[d] == "bottom" else WALL)
             else:

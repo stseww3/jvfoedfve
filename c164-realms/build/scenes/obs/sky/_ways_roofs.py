@@ -17,11 +17,11 @@ LAMPS = [
     # The ledge behind the top of the north gable (two cells at 3): over the head of the window
     # niche, in the last course under the cornice. 6 is the least that brings both to 5.
     ((8, 21, -12), "north", L.WAY - 2, "the ledge behind the top of the north gable"),
-    # The passage behind the door (one cell at 4; the lamp outside the door leaves it one short):
-    # in the opening over the door's leaves, on its east jamb. The dome room behind it gets one
-    # level more in the mouth of the passage and nothing further in (the director, #442: the room
-    # has its one red lamp and no other).
-    ((13, 20, -10), "west", L.WAY, "the passage behind the dome room's north door"),
+    # The passage behind the door (one cell at 4; the lamp outside the door left it one short) has
+    # no lamp of its own: the lamp outside the door has 9 for it (lights.ROOF_WAYS), which gives
+    # the cells behind the door what a lamp of 8 in the opening over the leaves gave them. The
+    # dome room gets one level more in the mouth of the passage and nothing further in (the
+    # director, #442: the room has its one red lamp and no other).
     # The recesses under the dome room's north windows (three cells at 0), from outside and from
     # the row under the windows, so that nothing more than now goes in through the glass: on the
     # west face of the pier that ends the gable, and knee-high on the riser of the gable's first
