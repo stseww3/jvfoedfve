@@ -53,7 +53,14 @@ A second visitor: MC_SEAT=<letters> names another client beside the first -- its
 player (MC_CAM, default C164Seat<SEAT>). client-up and client-down with MC_SEAT start and stop
 that one alone; `down` and client-down without it stop every client. Two software-drawn games
 share the node's cores: the second is given a short render distance (MC_VIEW) by whoever starts it.
+
+Sounds: a node has no sound card, the game's sound engine runs on OpenAL's null device and the
+client's master volume is 0. MC_SOUND_LOG=1 turns the volume up and has the game's sound engine
+say every sound it starts ("Playing sound <file> for event <event>", its DEBUG lines, through a
+logging configuration written beside the client): client-said then counts them by event -- the
+proof that an event of the save's pack was played to the player, which no picture gives.
 """
+import collections
 import ctypes.util
 import glob
 import hashlib
@@ -99,6 +106,24 @@ GAMEMODE = os.environ.get("MC_GAMEMODE", "spectator")
 FORCE_GAMEMODE = os.environ.get("MC_FORCE_GAMEMODE", "true")
 DIFFICULTY = os.environ.get("MC_DIFFICULTY", "easy")
 PACKS = '["vanilla","file/c164art"]'       # the client's resource packs, as its options name them
+SOUND_LOG = os.environ.get("MC_SOUND_LOG", "") == "1"
+# The game's own way of writing its output, with the sound engine's DEBUG lines let through.
+LOG_CONFIG = """\
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+  <Appenders>
+    <Console name="SysOut" target="SYSTEM_OUT">
+      <PatternLayout pattern="[%d{HH:mm:ss}] [%t/%level]: %msg{nolookups}%n"/>
+    </Console>
+  </Appenders>
+  <Loggers>
+    <Logger name="net.minecraft.client.sounds" level="debug"/>
+    <Root level="info">
+      <AppenderRef ref="SysOut"/>
+    </Root>
+  </Loggers>
+</Configuration>
+"""
 HOST, PORT, RCON_PORT = "127.0.0.1", 25599, 25598
 JAVA_MAJOR = 25
 ADOPTIUM = ("https://api.adoptium.net/v3/assets/latest/{major}/hotspot"
@@ -547,7 +572,8 @@ def setup():
         # the packs too: a pack the game could not load it strikes from its options, and every
         # later trip would be shot without one and say nothing
         changed = [key for key, value in (("renderDistance", VIEW), ("cloudRange", CLOUDS), ("resourcePacks", PACKS),
-                                          ("incompatibleResourcePacks", "[]"))
+                                          ("incompatibleResourcePacks", "[]"),
+                                          ("soundCategory_master", "1.0" if SOUND_LOG else "0.0"))
                    if set_line(options, key, ":", value)]
         if changed:
             written.append(options + " (" + ", ".join(changed) + ")")
@@ -697,6 +723,11 @@ def client_command():
     if folder:
         # The helper's main() starts that same main class; the client runs in GAME, so ASKS is under it.
         classpath, main, asks = classpath + os.pathsep + folder, "CamHelper", [f"-Dc164.cam={ASKS}"]
+    if SOUND_LOG:
+        config = os.path.join(CLIENT, "log4j2-sounds.xml")
+        with open(config, "w", encoding="utf-8") as fh:
+            fh.write(LOG_CONFIG)
+        asks = asks + [f"-Dlog4j.configurationFile={config}"]
     return [
         "nice", "-n", "5", java(), "-Xms512M", f"-Xmx{heap}",
         "-XX:StackShadowPages=32", "--enable-native-access=ALL-UNNAMED",
@@ -724,6 +755,8 @@ SAID = re.compile(r"shader|pipeline|compil|glsl|resource ?pack|reload|uniform|sa
                   r"\[CHAT\]", re.I)
 FAILS = re.compile(r"fail|couldn't|could not|error|exception|invalid|missing|rolled? back|removing|removed|"
                    r"no longer|incompatible|doesn't exist", re.I)
+# the sound engine's own account of every sound it starts (MC_SOUND_LOG=1): counted, not kept line by line
+PLAYED = re.compile(r"Playing sound (\S+) for event (\S+)|Skipped playing sound (\S+), volume was zero")
 
 
 def client_said(since=0.0, out=None):
@@ -734,6 +767,7 @@ def client_said(since=0.0, out=None):
     game and the pictures then show the vanilla ones, without a word in the pictures: so every trip
     keeps these lines beside its log. Returns (records, records that speak of a failure)."""
     records, record = [], None
+    played, skipped = collections.Counter(), collections.Counter()
     for path in (CLIENT_LOG + ".1", CLIENT_LOG):        # a trip may have started the game twice
         try:
             if os.path.getmtime(path) < since:
@@ -741,6 +775,14 @@ def client_said(since=0.0, out=None):
             with open(path, encoding="utf-8", errors="replace") as fh:
                 for line in fh:
                     line = line.rstrip("\n")
+                    start = PLAYED.search(line)
+                    if start:
+                        if start.group(2):
+                            played[start.group(2)] += 1
+                        else:
+                            skipped[start.group(3)] += 1
+                        record = None
+                        continue
                     if re.match(r"\[\d\d:\d\d:\d\d\]", line):
                         record = [line[:600]] if SAID.search(line) else None
                         if record is not None:
@@ -761,6 +803,15 @@ def client_said(since=0.0, out=None):
         print(text)
     print(f"client said: {len(records)} records on shaders, pipelines and packs, {failing} of a failure"
           + (f"; written to {out}" if out else ""))
+    if played or skipped or SOUND_LOG:
+        ours = {event: n for event, n in played.items() if not event.startswith("minecraft:")}
+        print(f"sounds started: {sum(played.values())} of {len(played)} events, {sum(ours.values())} of them of "
+              f"{len(ours)} events that are not the game's own"
+              + "".join(f"\n    {event} x{n}" for event, n in sorted(ours.items()))
+              + (f"\n    the game's own: " + ", ".join(f"{event.split(':', 1)[1]} x{n}" for event, n in played.most_common(12)
+                                                       if event.startswith("minecraft:")) if len(played) > len(ours) else "")
+              + (f"\nsounds not started, their volume was zero: {sum(skipped.values())} ("
+                 + ", ".join(f"{name} x{n}" for name, n in skipped.most_common(12)) + ")" if skipped else ""))
     return len(records), failing
 
 
