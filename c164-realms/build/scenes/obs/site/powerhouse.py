@@ -195,6 +195,8 @@ VIEW = M.NEAR
 MODEL_VENT = "site_power_vent"
 VENT_REV = 60                                       # ticks a turn: a vane passes every 7.5 ticks. Eight of them
 #                                                     at four steps a turn are half a command a tick
+VENT_BEHIND = 7                                     # ticks the south row is behind the north one, so that the
+#                                                     eight do not all ask for their step in one tick
 VENT_R = 10.0                                       # pixels: the drum's radius, a block and a quarter across
 VENT_VANES = 8
 VENT_SLANT = 35.0                                   # degrees a vane is turned out of the drum's round
@@ -748,9 +750,9 @@ def _vents(canvas, origin, version):
     if version != "a":
         return 0
     model = _vent_model()
-    for x, y, z in VENTS:
+    for i, (x, y, z) in enumerate(VENTS):
         canvas.add_entity(origin[0] + x, origin[1] + y, origin[2] + z, M.display(model, view=VIEW))
-        MK.spin(canvas, "y", VENT_REV)
+        MK.spin(canvas, "y", VENT_REV, phase=VENT_BEHIND * (i % 2))     # the south row steps on other ticks
     return len(VENTS)
 
 
