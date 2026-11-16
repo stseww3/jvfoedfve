@@ -20,6 +20,10 @@
 #                                 Only where the tree's look is still the data pack's: once the
 #                                 resource pack carries it (artkit.mood.Carried) export.py refuses.
 #
+# C164_ARRIVAL=off before the command makes every variant without the opening (the ride up on a
+# first visit, plan/round2.md): who is new stands at the spawn at once, as in A8. For a round
+# whose opening is at fault; the scene's switch ARRIVAL is left as it is in the tree.
+#
 # A variant that fails does not stop the others. The closing line names each with the exit codes
 # of make and verify; the script ends with 1 when any of them is not 0.
 set -uo pipefail
@@ -28,6 +32,12 @@ n="${1:?the name of the save (B1; a bare number is of the A series)}" at="${2:?t
 case "$n" in [0-9]*) n="A$n" ;; esac
 [[ "$n" =~ ^[A-Z][0-9]+$ ]] || { echo "exportround: $n is no name of a save (B1, or a number for the A series)" >&2; exit 2; }
 [ $# -gt 0 ] || set -- main plain
+extra=()
+case "${C164_ARRIVAL:-on}" in
+  on) ;;
+  off) extra=(--no-arrival) ;;
+  *) echo "exportround: C164_ARRIVAL is on or off, not ${C164_ARRIVAL}" >&2; exit 2 ;;
+esac
 bad=0 line=""
 for v in "$@"; do
   case "$v" in
@@ -38,7 +48,7 @@ for v in "$@"; do
     *) echo "exportround: no variant $v (main, plain, noguide, look)" >&2; exit 2 ;;
   esac
   a=0 b=-
-  python tools/export.py make --scene obs --name "$name" "${opts[@]}" --assembly "$at" --out "dist/$n" || a=$?
+  python tools/export.py make --scene obs --name "$name" "${opts[@]}" "${extra[@]}" --assembly "$at" --out "dist/$n" || a=$?
   if [ "$a" = 0 ]; then
     b=0
     python tools/export.py verify "dist/$n/$name.zip" || b=$?
@@ -46,5 +56,5 @@ for v in "$@"; do
   [ "$a" = 0 ] && [ "$b" = 0 ] || bad=1
   line="$line $v: make=$a verify=$b;"
 done
-echo "$n of $at --$line"
+echo "$n of $at --$line${extra[*]:+ (made with ${extra[*]})}"
 exit "$bad"

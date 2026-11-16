@@ -98,6 +98,7 @@ import math
 
 from artkit import blockfacts as F
 from artkit import blocks as AB
+from artkit import models as M
 
 from ..common import blocks as B
 from ..common import skeleton as S
@@ -105,6 +106,11 @@ from . import _lightkit as L
 
 ORDER = 90                              # the last of the sky packages
 DRESS = True                            # see above
+# How far off a lamp's body is drawn (artkit.models' bands). Indoors a lamp is a thing of its room
+# and is left out beyond 32 blocks, where its source goes on lighting the way. Out of doors every
+# fitting stays in the far band: what carries a light is part of the outline at night, however
+# small (the director, 11-16 13:10; plan/roles/INTERFACE.md 7).
+VIEW_IN, VIEW_OUT = M.NEAR, M.FAR
 
 DOOR_BAY = 9
 ENTRANCE_BAYS = (DOOR_BAY, DOOR_BAY - 1, DOOR_BAY + 1)      # the doorway, then the arches an arcade has beside it
@@ -501,7 +507,9 @@ def _wash(canvas, r, origin):
         if not shaft:
             r["notes"].append(f"no wall wash at pilaster {k}: no free cell before the foot of its shaft")
             continue
+        first = len(canvas.entities)
         n += lamps.place(canvas, "uplight", (x + 0.5, float(S.GROUND), z + 0.5), facing="west", origin=origin)
+        M.band(canvas, first, VIEW_OUT)
         r["wash"].append(cell)
         _put(canvas, r, line[shaft - 1], L.WASH, WASH_WHY)
     return n
@@ -530,7 +538,9 @@ def _stair(canvas, r, origin):
     if canvas.has(*cell):
         r["notes"].append(f"no lamp on the ring stair's newel: the cell {cell} over it is taken")
         return 0
+    first = len(canvas.entities)
     n = lamps.place(canvas, "post", (x + 0.5, float(y + 1), z + 0.5), origin=origin, light=False)
+    M.band(canvas, first, VIEW_IN)
     _put(canvas, r, cell, L.STAIR, STAIR_WHY)
     r["stair"].append(cell)
     return n
@@ -578,17 +588,24 @@ def way_lamps():
     return out + ROOF_WAYS + _stretches()
 
 
-def _stretches():
+def _stretches(prefix="_ways_"):
     """The rows of the same kind that are kept a stretch to a file: sky/_ways_<stretch>.py, with
     LAMPS = [(the block of the wall, the way its face looks, the level, what it lights)]. Who
-    surveys a stretch writes its file and no other. The rows, in the order of the files' names."""
+    surveys a stretch writes its file and no other. The rows, in the order of the files' names;
+    with a longer `prefix`, those of the files whose names begin with it."""
     import importlib
     import pkgutil
     here = importlib.import_module(__package__)
     out = []
-    for name in sorted(m.name for m in pkgutil.iter_modules(here.__path__) if m.name.startswith("_ways_")):
+    for name in sorted(m.name for m in pkgutil.iter_modules(here.__path__) if m.name.startswith(prefix)):
         out += list(importlib.import_module(f"{__package__}.{name}").LAMPS)
     return out
+
+
+def _open_air():
+    """The lamps of way_lamps() that hang out of doors, as {(the block, the way the face looks)}:
+    ROOF_WAYS and the stretches over the roofs (sky/_ways_roof*.py). The rest hang in a room."""
+    return {(tuple(block), facing) for block, facing, _level, _what in ROOF_WAYS + _stretches("_ways_roof")}
 
 
 # Over the roofs, as dome (c326) measured them on the walk-through's stations (#74898, #75042): the
@@ -626,14 +643,17 @@ def _ways(canvas, r, origin):
         r["notes"].append("no lamps along the ways: props/lamps is not in the tree, and a source without a lamp is not placed")
         return 0
     ox, oy, oz = origin
+    outdoors = _open_air()
     n = 0
     for (x, y, z), facing, level, what in found:
         if facing not in FACE and facing != DOWN or not L.RANKS[3][0] <= level <= L.WAY_TOP:
             r["notes"].append(f"no lamp for {what}: it looks {facing!r} at level {level}, and a lamp of the ways "
                               f"looks north, south, west, east or down at {L.RANKS[3][0]} to {L.WAY_TOP}")
             continue
+        first = len(canvas.entities)
         if facing == DOWN:
             n += _drop(canvas, r, lamps, (x, y, z), level, what, origin)
+            M.band(canvas, first, VIEW_IN)
             continue
         dx, dz = FACE[facing]
         wall, cell = (x + ox, y + oy, z + oz), (x + dx + ox, y + oy, z + dz + oz)
@@ -646,6 +666,7 @@ def _ways(canvas, r, origin):
             continue
         at = (x + 0.5 + 0.5 * dx, y + 0.5, z + 0.5 + 0.5 * dz)      # the middle of the block's face
         n += lamps.place(canvas, "cage", at, facing=facing, origin=origin, light=False)
+        M.band(canvas, first, VIEW_OUT if ((x, y, z), facing) in outdoors else VIEW_IN)
         _put(canvas, r, cell, level, WAY_WHY)
         r["ways"].append(cell)
     return n
@@ -660,7 +681,6 @@ def _drop(canvas, r, lamps, at, level, what, origin):
     its lamps) from the first block over the cell `at` down to where the lamp's glass lies in
     the middle of that cell, and the source in the cell. Returns the number of display entities
     placed."""
-    from artkit import models as M
     ox, oy, oz = origin
     x, y, z = at[0] + ox, at[1] + oy, at[2] + oz
     cell = (x, y, z)
@@ -731,7 +751,9 @@ def _gates(canvas, r, origin):
         if canvas.has(*cell):
             r["notes"].append(f"no lamp at the way to the {name}: the cell {cell} over the pier's cap is taken")
             continue
+        first = len(canvas.entities)
         n += lamps.place(canvas, "post", (x + 0.5, float(top), z + 0.5), origin=origin, light=False)
+        M.band(canvas, first, VIEW_OUT)
         _put(canvas, r, cell, L.GATE, GATE_WHY)
         r["gates"].append(cell)
     return n
