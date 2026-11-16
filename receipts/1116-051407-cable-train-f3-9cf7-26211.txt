@@ -1,0 +1,28 @@
+a0job 1116-051407-cable-train-f3-9cf7-26211: cursor/c164-cable-train-f3-9cf7 @ a3bdf49a on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.04 0.13 0.25, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- set -o pipefail; python tools/check.py --scene obs_mach_cablecar_winch --shots build/scenes/obs_mach_cablecar_winch/shots.json 2>&1 | grep -v -E '^ +chain of' | tail -4 && cd build && python -m scenes.obs_site_cablecar.clear --scene 2>
+                 the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a_equator at x 35, y 4, z 0; 4 mor
+[PASS] motion    112 parts and 14 points on 31 chains, 825 function files; 16 commands in the busiest tick (limit 120), 7.1 a tick on average (limit 40)
+                 ... and 51 more
+result: PASS (0 failed, 4 with warnings)
+the station's cells in the scene: 1144 of 1144 as its package sets them
+result: CLEAR (0 boxes in the view the station keeps clear)
+mach_cable_frame                             far    x1    V12 1
+mach_cable_hood                              mid    x1    V12 1
+mach_cable_motor                             mid    x1    V12 1
+mach_cable_roller                            far    x7    V12 1
+mach_cable_rope                              far    x7    V12 4
+mach_cable_sheave                            mid    x1    V12 1
+mach_cable_stand                             mid    x1    V12 1
+mach_cable_turn                              far    x1    V12 1
+prop_lamp_bracket_a                          mid    x1    V12 1
+prop_lamp_bracket_a_globe_side0              mid    x1    V12 1
+prop_lamp_bracket_a_globe_side1              mid    x1    V12 1
+prop_lamp_bracket_a_globe_under              mid    x1    V12 1
+==== NODEJOB RESULT ====
+exit=0 secs=25 host=cursor cores=4 head=a3bdf49a commit=none pushed=no branch=cursor/c164-cable-train-f3-9cf7 files=0
+a0job: exit=0 secs=26
