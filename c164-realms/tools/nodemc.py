@@ -808,7 +808,7 @@ def client_said(since=0.0, out=None):
         print(f"sounds started: {sum(played.values())} of {len(played)} events, {sum(ours.values())} of them of "
               f"{len(ours)} events that are not the game's own"
               + "".join(f"\n    {event} x{n}" for event, n in sorted(ours.items()))
-              + (f"\n    the game's own: " + ", ".join(f"{event.split(':', 1)[1]} x{n}" for event, n in played.most_common(12)
+              + (f"\n    the game's own: " + ", ".join(f"{event.split(':', 1)[1]} x{n}" for event, n in played.most_common(60)
                                                        if event.startswith("minecraft:")) if len(played) > len(ours) else "")
               + (f"\nsounds not started, their volume was zero: {sum(skipped.values())} ("
                  + ", ".join(f"{name} x{n}" for name, n in skipped.most_common(12)) + ")" if skipped else ""))

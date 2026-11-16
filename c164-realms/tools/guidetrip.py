@@ -530,7 +530,13 @@ def main():
     finally:
         said_path = log_path[:-len(".log")] + "-client.txt"
         try:
-            trip.stage("what the game said", station, "client-said", f"{started:.0f}", said_path, budget=30)
+            _, said = trip.stage("what the game said", station, "client-said", f"{started:.0f}", said_path, budget=30)
+            heard = said[said.index("sounds started"):].splitlines() if "sounds started" in said else []
+            if heard:       # with MC_SOUND_LOG=1: the chime of a chart and the bell of the close are among these
+                report.append("the game's sound engine, the whole trip (both joinings of the first client): "
+                              + " | ".join(" ".join(line.split()) for line in heard[:40]))
+            else:
+                report.append("the sounds were not listened for (the trip was not started with MC_SOUND_LOG=1)")
         except Exception as exc:
             trip.say(f"what the game said could not be read ({exc})")
         try:
