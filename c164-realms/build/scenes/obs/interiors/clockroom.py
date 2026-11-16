@@ -68,6 +68,7 @@ from ..props import lamps
 MOVED_IN = True
 NAME = "interiors/clockroom"
 PREFIX = "int_clockroom_"
+VIEW = M.NEAR                                       # the band of everything in here: no board view looks into the tower
 PX = 1 / 16.0
 TIME = tuple(S.CLOCK)                               # (7, 55): what the setting dial and the shadows show
 
