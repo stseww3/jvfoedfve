@@ -1,4 +1,5 @@
 """The models of the props/pipes test scene, and how gallery.py lays them out one group to a bay."""
+from artkit import models as M
 from scenes.obs.props import pipes
 
 SCALE = pipes.SCALE
@@ -14,6 +15,18 @@ BACK = {"turns": (("y", 180.0),)}       # and turned to the north
 
 def build_models():
     return pipes.models()
+
+
+def _gauge_at(pos, how):
+    """The gauge whose tapping is at pos, shown with the turns of `how`, and its needle at rest (a
+    piece of its own: pipes.gauge() places the two and has the needle tremble)."""
+    q = M.IDENT
+    for axis, deg in how["turns"]:
+        q = M._qmul(M.quat(axis, deg), q)
+    d = M._qrot(q, (pipes.GAUGE_FACE / 16.0, pipes.GAUGE_DIAL / 16.0, 0.0))
+    return [(P + "gauge", pos, how),
+            (P + "gauge_needle", tuple(pos[i] + d[i] for i in range(3)),
+             {"turns": (("x", pipes.NEEDLE_REST),) + tuple(how["turns"])})]
 
 
 def _wall(name, pieces, y=1.5, back=3.0):
@@ -106,7 +119,7 @@ def _inlet():
     end = (pipes.INLET_VALVE - pipes.ANGLE + 1.0) / 16.0        # where the run stops, inside the valve's flanges
     return ("inlet", [(P + "plate_l", (0.0, y, WALL), {}),
                       (P + "main_l", (0.0, y, WALL + end - LONG), {}),
-                      (P + "gauge", (0.0, y + pipes.BORE["l"] / 16.0, WALL + pipes.INLET_GAUGE / 16.0), BACK),
+                      *_gauge_at((0.0, y + pipes.BORE["l"] / 16.0, WALL + pipes.INLET_GAUGE / 16.0), BACK),
                       (P + "valve_angle_l", (0.0, y, WALL + pipes.INLET_VALVE / 16.0), BACK)],
             (-1.7, 1.3, WALL + 2.7), (0.0, 0.6, WALL + 0.8))
 
@@ -115,7 +128,7 @@ def _gauge():
     """The gauge on a run that crosses the bay, its dial to the camera."""
     y = 1.0
     return ("gauge", [(P + "main_l", (-LONG / 2.0, y, 0.0), EAST),
-                      (P + "gauge", (0.0, y + pipes.BORE["l"] / 16.0, 0.0), WEST)],
+                      *_gauge_at((0.0, y + pipes.BORE["l"] / 16.0, 0.0), WEST)],
             (0.5, 1.7, 1.8), (0.0, 1.5, 0.0))
 
 
