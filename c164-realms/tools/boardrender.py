@@ -7,6 +7,10 @@
                                       leave build/ alone (the roster) have been pushed on top
     boardrender.py --only v01_arrival,v07_hall
     boardrender.py --tag <name>       into renders/board/<name>/ (a checkout that is not the assembly's)
+    boardrender.py --at <commit> --compare
+                                      nothing drawn anew: only renders/real/obs/compare.jpg, when the
+                                      offline board and the game's pictures were made on two nodes at
+                                      once and neither job saw the other's
 
 On the render station's node (plan/roles/COMMON.md 2.2), after a push:
 
@@ -249,9 +253,18 @@ def main():
     ap.add_argument("--only", help="comma separated views")
     ap.add_argument("--tag", help="name of the folder under renders/board/ (default: the assembly commit)")
     ap.add_argument("--at", metavar="COMMIT", help="the assembly commit the pictures are named after (default: its head)")
+    ap.add_argument("--compare", action="store_true",
+                    help="draw nothing anew: only renders/real/obs/compare.jpg, of the board and the game's pictures that are kept")
     args = ap.parse_args()
     if args.tag and args.at:
         sys.exit("--tag names the folder of a checkout that is not the assembly's; --at names an assembly commit: one of the two")
+    if args.compare:
+        # the two sets are drawn on two nodes at once, and neither job sees the other's pictures
+        tag, commit = which_commit(args.tag, args.at)
+        said = beside_game(tag, stale_goes=True)
+        print(f"renders/real/{SCENE}/: " + (said or f"no compare.jpg: the game's pictures and renders/board/{tag}/ "
+                                             "do not show the same commit, or one of the two is not there"))
+        return 0 if said.startswith("compare.jpg") else 1
     t0 = time.time()
     views = [shot for shot, _, _ in boardshots.views()]
     names = [v["name"] for v in views]

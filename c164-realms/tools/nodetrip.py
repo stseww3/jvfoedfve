@@ -23,7 +23,7 @@ its twelve board views. The trip
      commit is not drawn yet, boardrender.py draws the sheet as it comes, and a compare.jpg of an
      earlier board is removed meanwhile;
   5. stops the game, the server and the display, whatever happened before;
-  6. leaves the trip's log in renders/real/_trips/<time>-<tag>.log. The receipt of a node job is
+  6. leaves the trip's log in renders/real/_trips/<time>-<tag>-<first scene>.log. The receipt of a node job is
      a retelling; what the trip really said comes home in this file, with the pictures.
 
 The pictures are named after the assembly commit whose build/ this checkout carries, as the
@@ -358,7 +358,12 @@ def main():
     # a branch's master scene is not the assembly's: it does not take the place of the board's pictures
     own_in = os.path.join("renders", "real-branch" + apart, tag) if project else kept_in
     looks_in = os.path.join(own_in, "looks") if project else os.path.join("renders", kept_in.split(os.sep)[-1] + "-looks", tag)
-    log_path = os.path.join(PROJECT, "renders", "real", "_trips", f"{time.strftime('%Y%m%d-%H%M', time.gmtime())}-{tag}.log")
+    # four nodes shoot at once and push to one branch: two trips of one commit that start in the
+    # same minute must not write the same file
+    log_path = os.path.join(PROJECT, "renders", "real", "_trips",
+                            f"{time.strftime('%Y%m%d-%H%M%S', time.gmtime())}-{tag}-{args.scenes[0]}"
+                            + (f"-server{args.server_view}" if args.server_view != REALM_VIEW else "")
+                            + ("-looks" if args.looks else "") + ".log")
     trip = Trip(log_path, args.budget)
 
     def cut_short(*_):
