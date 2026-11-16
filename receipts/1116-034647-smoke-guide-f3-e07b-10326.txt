@@ -1,0 +1,46 @@
+a0job 1116-034647-smoke-guide-f3-e07b-10326: cursor/c164-smoke-guide-f3-e07b @ f0af137d on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 1.40 1.27 0.59, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    0s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python -c "import sys, runpy; sys.path.insert(0, 'tools'); sys.path.insert(0, 'build'); import scenes.obs as o; o.GUIDE = True; o.GUIDE_CHARTS = True; sys.argv = ['tools/check.py', '--scene', 'obs']; runpy.run_path('tools/check.py', ru
+check obs at f0af137
+[PASS] regen     190829 blocks, 1159 entities, 568 models, 2393 resource-pack files, 500 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (6.9 s)
+[PASS] conflicts 44 packages write 2392 files, no file written twice, every file in its owner's folders
+[PASS] strays    697 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      1665 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    97 kinds of block placed, 308 barrier cells (x -1..91, y -6..19, z -38..38), all in the occupancy table
+[PASS] flatwall  no wall face runs flat over more than 5x5
+[WARN] entities  1159 display entities of 3000, by category: materials 28, site 10, main 2, machines 177, interiors 629, props 239, motion 6, sky 68, 71 drawn out along one axis, 39 shown through a matrix that is no turn, no face stretched,
+                 prop_elec_cable x1: 10.67/10.67/11.99 pixels to the block along x/y/z, not 16
+                 prop_elec_cable x2: 10.67/10.67/12 pixels to the block along x/y/z, not 16
+                 prop_elec_cable x1: 10.67/10.67/18.44 pixels to the block along x/y/z, not 16
+                 prop_elec_cable x1: 10.67/10.67/25.75 pixels to the block along x/y/z, not 16
+                 prop_elec_cable x1: 10.67/10.67/32.85 pixels to the block along x/y/z, not 16
+                 prop_paper_star_chart x3: 64/64/64 pixels to the block along x/y/z, not 16
+                 prop_paper_star_chart_b x3: 64/64/64 pixels to the block along x/y/z, not 16
+                 int_vault_dark_rope x1: drawn out along z, where the picture of cream~base1 is not even: it smears
+[SKIP] views     no shot list, so no per-view counts
+[WARN] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in th
+                 the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a_equator at x 35, y 4, z 0; 4 mor
+[PASS] motion    34 parts and 58 points on 27 chains, 373 function files and 35 of the packages' own; 15 commands in the busiest tick (limit 40), 7.5 a tick on average (limit 10)
+                 functions of the packages' own: guide/c1 (4 commands), guide/c2 (4 commands), guide/c3 (4 commands), guide/c4 (4 commands), guide/c5 (4 commands), guide/c6 (4 commands), guide/count (8 commands), guide/lens (3 commands), gu
+                 chain of 8 ticks: 2 functions, 12 commands a cycle, starts 1 ticks after start
+                 chain of 16 ticks: 4 functions, 9 commands a cycle, starts 7 ticks after start
+                 chain of 24 ticks: 8 functions, 25 commands a cycle, starts 4 ticks after start
+                 chain of 32 ticks: 4 functions, 9 commands a cycle, starts 5 ticks after start
+                 chain of 40 ticks: 13 functions, 44 commands a cycle, starts 3 ticks after start
+                 chain of 48 ticks: 12 functions, 66 commands a cycle, starts 2 ticks after start
+                 chain of 50 ticks: 1 functions, 3 commands a cycle, starts 5 ticks after start
+                 chain of 80 ticks: 8 functions, 25 commands a cycle, starts 4 ticks after start
+                 chain of 90 ticks: 8 functions, 17 commands a cycle, starts 2 ticks after start
+                 chain of 100 ticks: 1 functions, 3 commands a cycle, starts 15 ticks after start
+                 chain of 110 ticks: 8 functions, 17 commands a cycle, starts 6 ticks after start
+                 ... and 34 more
+result: PASS (0 failed, 2 with warnings)
+== obs with GUIDE and GUIDE_CHARTS on done, r=0
+==== NODEJOB RESULT ====
+exit=0 secs=17 host=cursor cores=4 head=f0af137d commit=none pushed=no branch=cursor/c164-smoke-guide-f3-e07b files=0
+a0job: exit=0 secs=18
