@@ -76,12 +76,13 @@ LENGTH = S_FOOT + SPANS * PITCH + PIER      # 198.06: the line's end, at (175.5,
 FOOT_LEVEL = FEET - STEEP * (FOOT - BROW)   # -12.5
 
 # The train: the car leads uphill and the engine pushes at the downhill end. The numbers are the
-# car's middle, s of travel(): STOP with the car where the cable car stood (x 89..91) and the
-# engine east of it on the level track, START with both under the cloud at the line's end.
-CAR = 3.0                                   # the car's length
-ENGINE = 4.0                                # the engine's, at the most: the level track east of the car is as long
-STOP = S_EDGE - CAR / 2.0                   # 2.5
-START = LENGTH - CAR / 2.0 - ENGINE - 1.0   # 191.56
+# car's middle, s of travel(): STOP with the car against the platform's east edge (x 90..92; the
+# cell west of it is the cover of the cable's slot, the step up into the car) and the engine east
+# of it on the level track, over the mouth; START with both under the cloud at the line's end.
+CAR = 2.0                                   # the car's length (cable #89520)
+ENGINE = 2.5                                # the engine's, at the most: the level track east of the car is 3 long
+STOP = S_EDGE - CAR / 2.0                   # 3.0
+START = LENGTH - 6.5                        # 191.56
 SPEED = dict(station=1.5, incline=2.5, viaduct=4.5)     # blocks a second, proposed: START to STOP in about 50 s
 
 GAUGE = dict(half=1.5, height=5.0, parapet=1.0)
