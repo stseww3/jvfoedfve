@@ -12,21 +12,25 @@ two coloured glasses, white enamel and black figures on what is read from the tr
 
 The arm. A blade a block and a half long, red with a white band towards the train, white with a
 black band towards the station; it turns on a spindle through the post, and beyond the spindle it
-carries the spectacle, a casting with two glasses, red over blue-green. At rest the blade is level
-(stop) and the red glass stands before the lamp; for a train it falls DROP degrees (the lower
-quadrant) and the green glass comes up before the lamp. The blade is on one side of the post only
-and nothing stands across it: seen against the sky the signal is a bracket, never a cross (plan
-red line 8), and it has no ladder.
+carries the spectacle, a cast ring with one red glass. At rest the blade is level (stop) and the
+red glass stands before the lamp: the light is red. For a train the blade falls DROP degrees (the
+lower quadrant), the glass swings up and away, and the lamp shows its own light: until the 1890s
+the light of "all right" was the bare white one, which here is the amber every lamp of the hill
+has -- so the signal brings no new colour of light, and red stays what it is everywhere else, a
+warning. The blade is on one side of the post only and nothing stands across it: seen against the
+sky the signal is a bracket, never a cross (plan red line 8), and it has no ladder.
 
 The lamp burns oil: a small iron case with a chimney, its lens behind the spectacle and a small
-back light towards the station, by which the signalman sees that it burns. The two glasses do not
-glow by themselves.
+back light towards the station, by which the signalman sees that it burns. The glass is lit only
+where the lamp stands behind it, so the arm has two models: MODEL_STOP with the lit glass, and
+MODEL_CLEAR with the same glass dark.
 
-Moving pieces, for motion. The arm's entity is tagged TAG_ARM. The pose it is placed in is "stop";
-arm_transformation(DROP) is the whole "transformation" of the entity at "clear" (the anchor is the
-spindle, not the middle of the model, so the translation changes with the turn). The train does
-not come round in a cycle: every trip is started by itself (motion/_train), and the two poses are
-hung on the trip. Until that is in the tree the arm stands at stop.
+Moving pieces, for motion. The arm's entity is tagged TAG_ARM. It is placed at "stop". pose(clear)
+is what one `data merge` gives it for either position: the whole "transformation" (the anchor is
+the spindle, not the middle of the model, so the translation changes with the turn) and the item
+with the model of that position. The train does not come round in a cycle: every trip is started
+by itself (motion/_train), and the two poses are hung on the trip. Until that is in the tree the
+arm stands at stop.
 
 For the other lines:
 
@@ -48,6 +52,7 @@ from .signs import _picture
 
 PREFIX = "prop_signal_"
 DRESS = True                    # build() stands the home signal in the master scene
+VIEW = M.MID                    # seen from the platform and from the train on the last of its climb
 
 IRON, IRON_D = K.IRON, K.IRON_D
 POST = K.flat("iron", 3)        # the post: one tone, so drawing it out smears nothing
@@ -55,7 +60,7 @@ EDGE = K.flat("iron", 1)        # the edge of a sheet
 SG = P.RAMPS["signal"]
 CR = P.RAMPS["cream"]
 IR = P.RAMPS["iron"]
-VG = P.RAMPS["verdigris"]
+RED_LIT = (K.flat("signal_glow", 2), K.flat("signal_glow", 3))   # the lit glass: its field, its middle
 
 # Measures in pixels (16 to the block), from the spindle: x to the right of whoever looks at the
 # signal's front, y up, z towards him.
@@ -70,19 +75,17 @@ STUB = 4.0                      # the head carries the post this far down from t
 DROP = 45.0                     # degrees the arm falls from "stop" to "clear"
 HEIGHT = 5.0                    # blocks from the foot to the spindle
 TAG_ARM = "c164_signal_arm"
+MODEL_STOP, MODEL_CLEAR = PREFIX + "arm", PREFIX + "arm_clear"
+SWING = 16                      # ticks the arm takes from one position to the other
 
-# The spectacle, as the train sees it: i iron, R the red glass, G the green one. The red glass is
-# on the lamp's axis; the green one lies DROP degrees round the spindle under it.
-_SPECTACLE = ("..iii.",
-              ".iRRRi",
-              ".iRRRi",
-              ".iRRRi",
-              ".iiii.",
-              "iGGGi.",
-              "iGGGi.",
-              "iGGGi.",
-              ".iii..")
-SPECTACLE_AT = (2.0, 3.0)       # its upper left corner, seen from the front
+# The spectacle, as the train sees it: i the cast ring, R the red glass, three pixels square, on
+# the lamp's axis while the blade is level.
+_SPECTACLE = (".iii.",
+              "iRRRi",
+              "iRRRi",
+              "iRRRi",
+              ".iii.")
+SPECTACLE_AT = (LENS[0] - 2.5, LENS[1] + 2.5)   # its upper left corner, seen from the front
 
 
 # ---- the models -----------------------------------------------------------------------------------------
@@ -108,18 +111,18 @@ def _blade_face(front):
 
 
 def _spectacle_face(front):
-    """One face of the spectacle. The glasses are dark glass with one light pixel each; they are
-    lit by nothing but the lamp behind them."""
-    tones = {"i": IR[2], "R": SG[1], "G": VG[1], ".": None}
+    """One face of the spectacle: the ring and the glass, dark, with one lighter pixel."""
+    tones = {"i": IR[2], "R": SG[0], ".": None}
     grid = [[tones[ch] for ch in row] for row in _SPECTACLE]
-    grid[1][2], grid[5][1] = SG[2], VG[2]
+    grid[1][1] = SG[1]
     return grid if front else [row[::-1] for row in grid]
 
 
-def _arm():
+def _arm(name, lit):
     """The arm: the blade, the casting at its root with the boss of the spindle, and the
-    spectacle beyond it. Anchor: the spindle, on the post's axis; the blade lies along -x."""
-    m = M.Model(PREFIX + "arm", px=1.0)
+    spectacle beyond it; `lit` with the lamp's light in the glass (the blade level), or dark.
+    Anchor: the spindle, on the post's axis; the blade lies along -x."""
+    m = M.Model(name, px=1.0)
     z0, z1 = SHEET
     m.box((-(BLADE + ROOT), -BLADE_H / 2.0, z0), (ROOT, BLADE_H / 2.0, z1), EDGE,
           faces={"s": _picture("signal_blade_front", _blade_face(True)),
@@ -129,6 +132,13 @@ def _arm():
     m.box((x, y - h, z0 + 0.05), (x + w, y, z1 + 0.05), EDGE, skip="ewud",
           faces={"s": _picture("signal_spectacle_front", _spectacle_face(True)),
                  "n": _picture("signal_spectacle_back", _spectacle_face(False))})
+    if lit:
+        lx, ly = LENS
+        field, middle = RED_LIT
+        m.box((lx - 1.5, ly - 1.5, z1 + 0.05), (lx + 1.5, ly + 1.5, z1 + 0.2), field,
+              skip="n", emit=15, shade=False)
+        m.box((lx - 0.5, ly - 0.5, z1 + 0.2), (lx + 0.5, ly + 0.5, z1 + 0.3), middle,
+              skip="n", emit=15, shade=False)
     m.tube("z", (0.0, 0.0), z0 - 0.5, z1 + 0.6, 1.5, IRON_D)                # the boss on the spindle
     return m
 
@@ -178,7 +188,8 @@ SPEC = {
     "foot": dict(build=_foot, mount="floor"),
     "post": dict(build=_post, mount="floor"),
     "head": dict(build=_head, mount="floor"),
-    "arm": dict(build=_arm, mount="floor"),
+    "arm": dict(build=lambda: _arm(MODEL_STOP, True), mount="floor"),
+    "arm_clear": dict(build=lambda: _arm(MODEL_CLEAR, False), mount="floor"),
 }
 SCALE = {PREFIX + kind: 1.0 for kind in SPEC}
 
@@ -192,13 +203,16 @@ def models():
     return dict(_models())
 
 
-def arm_transformation(degrees=0.0):
-    """The "transformation" of the arm's entity when the blade has fallen `degrees` from level:
-    0 is "stop", the pose it is placed in, DROP is "clear"."""
-    return M.display(_models()[PREFIX + "arm"], turns=(("z", float(degrees)),))["transformation"]
+def pose(clear=False):
+    """What the arm's entity is given for a position, as display NBT: dict(transformation, item).
+    "stop" (the default, the pose it is placed in): the blade level, the glass lit. "clear": the
+    blade DROP degrees down, the glass dark and away from the lamp."""
+    model = _models()[MODEL_CLEAR if clear else MODEL_STOP]
+    nbt = M.display(model, turns=(("z", DROP if clear else 0.0),))
+    return {"transformation": nbt["transformation"], "item": nbt["item"]}
 
 
-def signal(canvas, foot, facing="east", height=HEIGHT, origin=(0, 0, 0)):
+def signal(canvas, foot, facing="east", height=HEIGHT, origin=(0, 0, 0), view=VIEW):
     """Stand a semaphore signal at `foot` (the middle of its foot on the ground, scene
     coordinates), the spindle `height` blocks over it. `facing` is the way its front looks:
     towards the train it speaks to. The blade lies to the left of the post for that train and the
@@ -210,11 +224,11 @@ def signal(canvas, foot, facing="east", height=HEIGHT, origin=(0, 0, 0)):
     yaw = K.FACING[facing]
     x, y, z = (foot[i] + origin[i] for i in range(3))
     spindle = (foot[0], foot[1] + height, foot[2])
-    n = K.put(canvas, built[PREFIX + "foot"], foot, yaw=yaw, origin=origin)
+    n = K.put(canvas, built[PREFIX + "foot"], foot, yaw=yaw, origin=origin, view=view)
     lower, upper = y + 1.0, y + height - STUB / 16.0
-    canvas.add_entity(x, lower, z, M.between(built[PREFIX + "post"], (x, lower, z), (x, upper, z)))
-    n += 1 + K.put(canvas, built[PREFIX + "head"], spindle, yaw=yaw, origin=origin)
-    n += K.put(canvas, built[PREFIX + "arm"], spindle, yaw=yaw, origin=origin)
+    canvas.add_entity(x, lower, z, M.between(built[PREFIX + "post"], (x, lower, z), (x, upper, z), view=view))
+    n += 1 + K.put(canvas, built[PREFIX + "head"], spindle, yaw=yaw, origin=origin, view=view)
+    n += K.put(canvas, built[MODEL_STOP], spindle, yaw=yaw, origin=origin, view=view)
     canvas.entities[-1][3]["Tags"].append(TAG_ARM)
     return n
 
