@@ -121,8 +121,7 @@ def build():
 
 
 def build_models():
-    name = lamps.PREFIX + POST_LAMP
-    return {**(main.models() or {}), name: lamps.models()[name]}
+    return {**(main.models() or {}), **lamps.models_of(POST_LAMP)}
 
 
 def write_pack(pack_dir):
