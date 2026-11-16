@@ -361,9 +361,10 @@ def models():
     skeleton = frame()
     if skeleton is not None:
         out.update(skeleton.models)
-    board = _other("interiors", "_domeboard")
-    if board is not None:
-        out.update(board.models())
+    for name in ("_domeboard", "_domechair"):
+        other = _other("interiors", name)
+        if other is not None:
+            out.update(other.models())
     return out
 
 
@@ -592,8 +593,12 @@ def _furniture(c, origin, put):
     if furniture is not None and paper is not None:
         top = FEET + furniture.TOP[DESK[0]]
         n += paper.place(c, "logbook", (LOGBOOK[0], top, LOGBOOK[1]), facing=DESK[2], origin=origin)
-    n += K.put(c, _models()[PREFIX + "chair"], (CHAIR[0], FEET, CHAIR[1]), yaw=CHAIR_YAW, origin=origin)
-    return n
+    # the observing ladder on its rails round the pier (interiors/_domechair) once that is in the
+    # tree, else the room's first chair, parked
+    chair = _other("interiors", "_domechair")
+    if chair is not None:
+        return n + chair.place(c, origin)
+    return n + K.put(c, _models()[PREFIX + "chair"], (CHAIR[0], FEET, CHAIR[1]), yaw=CHAIR_YAW, origin=origin)
 
 
 def _standin(put, kind, cell, facing):
