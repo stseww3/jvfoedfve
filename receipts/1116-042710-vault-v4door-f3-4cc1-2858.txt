@@ -1,0 +1,62 @@
+a0job 1116-042710-vault-v4door-f3-4cc1-2858: cursor/c164-vault-v4door-f3-4cc1 @ 51002f1e on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.23 0.60 1.13, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- env PYTHONPATH=build python -m scenes.obs_int_starhall.probe a plan:0 lv:0 lv:1 ---- exit 0, 1 s, last 60 lines of 52:
+plan y=0  (x -9..18 left to right, z -7..7 top to bottom)
+     1234567890123456789012345678
+  -7 DDDDD.....D............DDDDD
+  -6 DDDDDDDDDDDDDDDC.CDDDDDDDDDD
+  -5 DDDDDDDDDD^dGGGd.DddDddDd0..
+  -4 DDDDDDDDDD^.........=....0..
+  -3 DDDDDDDDDD^.......==+==..0..
+  -2 DDDDDDDDDDD......==.=.==.DDD
+  -1 ............DDD/.=..=..=.d..
+   0 ............DDDD.=..=..=....
+   1 ............DDD/.=..=..=.d..
+   2 DDDDDDDDDDD......==.=.==.DDD
+   3 DDDDDDDDDD^.......==+==..0..
+   4 DDDDDDDDDD^.........=....0..
+   5 DDDDDDDDDD^ddddd.DddDddDd0..
+   6 DDDDDDDDDDDDDDDC.CDDDDDDDDDD
+   7 DDDDD.....D............DDDDD
+block light y=0
+      1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8
+  -7  # # # # # 0 0 0 0 0 # 0 0 0 0 1 2 1 0 0 0 0 0 # # # # #
+  -6  # # # # # # # # # # # # # # # # 3 # # # # # # # # # # #
+  -5  # # # # # # # # # # 6 5 # # # 5 4 # 5 6 # 4 5 # 6 5 4 3
+  -4  # # # # # # # # # # 7 6 5 6 7 6 5 4 4 5 # 3 4 4 5 4 3 2
+  -3  # # # # # # # # # # 6 5 4 5 6 5 5 4 # # # # # 3 4 3 2 1
+  -2  # # # # # # # # # # # 4 3 4 5 5 6 # # 4 # 4 # # 3 # # #
+  -1  4 5 6 7 6 5 5 6 5 4 3 3 # # # 6 7 # 5 5 # 5 4 # 2 1 0 0
+   0  5 6 7 8 7 6 6 7 6 5 4 3 # # # # 8 # 6 6 # 6 5 # 3 2 1 0
+   1  4 5 6 7 6 5 5 6 5 4 3 3 # # # 6 7 # 5 5 # 5 4 # 2 1 0 0
+   2  # # # # # # # # # # # 4 3 4 5 5 6 # # 4 # 4 # # 3 # # #
+   3  # # # # # # # # # # 6 5 4 5 6 5 5 4 # # # # # 3 4 3 2 1
+   4  # # # # # # # # # # 7 6 5 6 7 6 5 4 4 5 # 3 4 4 5 4 3 2
+   5  # # # # # # # # # # 6 5 4 5 6 5 4 # 5 6 # 4 5 # 6 5 4 3
+   6  # # # # # # # # # # # # # # # # 3 # # # # # # # # # # #
+   7  # # # # # 0 0 0 0 0 # 0 0 0 0 1 2 1 0 0 0 0 0 # # # # #
+block light y=1
+      1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8
+  -7  0 0 # # # 0 0 0 0 0 # 0 0 0 1 2 3 2 1 0 0 0 0 # # 0 0 0
+  -6  # # # # # # # # # # # # # # # # 4 # # # # # # # # # # #
+  -5  0 # # # # # # # # 6 7 6 # # # 6 5 # 6 7 # 5 6 # 7 6 5 4
+  -4  0 # # # # # # # # 7 8 7 6 7 8 7 6 5 5 6 5 4 5 5 6 5 4 3
+  -3  # # # # # # # # # 6 7 6 5 6 7 6 6 5 5 5 5 4 4 4 5 4 3 2
+  -2  # # # # # # # # # # # 5 4 5 6 6 7 6 5 5 6 5 4 3 4 # # #
+  -1  5 6 7 8 7 6 6 7 6 5 4 4 # # # 7 8 7 6 6 7 6 5 4 3 2 1 0
+   0  6 7 8 9 8 7 7 8 7 6 5 4 # # # 8 9 8 7 7 8 7 6 5 4 3 2 1
+   1  5 6 7 8 7 6 6 7 6 5 4 4 # # # 7 8 7 6 6 7 6 5 4 3 2 1 0
+   2  # # # # # # # # # # # 5 4 5 6 6 7 6 5 5 6 5 4 3 4 # # #
+   3  # # # # # # # # # 6 7 6 5 6 7 6 6 5 5 5 5 4 4 4 5 4 3 2
+   4  0 # # # # # # # # 7 8 7 6 7 8 7 6 5 5 6 5 4 5 5 6 5 4 3
+   5  0 # # # # # # # # 6 7 6 5 6 7 6 5 # 6 7 # 5 6 # 7 6 5 4
+   6  # # # # # # # # # # # # # # # # 4 # # # # # # # # # # #
+   7  0 0 # # # 0 0 0 0 0 # 0 0 0 1 2 3 2 1 0 0 0 0 # # 0 0 0
+other blocks: {'0': 'oxidized_copper_bars'}
+==== NODEJOB RESULT ====
+exit=0 secs=2 host=cursor cores=4 head=51002f1e commit=none pushed=no branch=cursor/c164-vault-v4door-f3-4cc1 files=0
+a0job: exit=0 secs=2
