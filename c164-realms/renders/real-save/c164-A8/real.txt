@@ -1,0 +1,25 @@
+# pictures of a save opened as it comes (tools/savetrip.py): shot, the save's hour (daytime) when it was taken, commit that holds the zip, first 16 of the picture file's sha256, when it was taken, the distances
+# the save: dist/A8/c164-A8.zip of 4948579f (cursor/c164-dist-f4b8), 3040419 bytes, sha256 fb3f908535e63fc0dcd16cb9caa105154b2a77d1df3a63dde6bd618d5c1f7b6d
+# exported from the assembly commit 8cddfa98, as the one who asked for the trip says
+# level.dat: world BLUE HOUR OBSERVATORY, game 26.3, game mode adventure, difficulty peaceful, spawn 88 196 -33, yaw 67.71, pitch -22.69, commands off, data packs vanilla file/c164art
+# the save's stored light: 338 light sources in 35 chunks, each lit in its own cell
+# the server: the node's test server on this save, game mode adventure (not forced), difficulty peaceful, as a Realm's slot is filled from the world; the camera is no operator
+# resource pack: resourcepacks/resources.zip of the save (1793524 bytes, sha256 fa425dd9b6ec808b, 2393 files, pack.mcmeta { "pack": { "description": "BLUE HOUR OBSERVATORY (c164-A8 65b3457d)", "min_format": 97, "max_format": 97 } }) is the client's pack (whether a Realm hands it to those who join is not shown here)
+# the server, before anybody joined: Timeline minecraft:day is at 20370 tick(s); Game rule advance_time is currently set to false; The difficulty is Peaceful; There are 2 data pack(s) enabled: [vanilla (built-in)], [file/c164art (world)]
+# the game's graphics backend: Vulkan, 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+# as joined: C164Cam has the following entity data: [88.5d, 196.0d, -32.5d]; C164Cam has the following entity data: [67.71f, -22.69f]; C164Cam has the following entity data: 2 (0 survival, 1 creative, 2 adventure, 3 spectator)
+# the save's clock: the day stood at 20370 when the player had joined, at 20370 after the last picture (it stands)
+# distances: client render distance 12, server view distance 10, cloud range 128; pictures: 13 saved by the game itself, 0 taken off the display
+as_joined 20370 4948579f 0cc39414610a2094 2026-11-16T04:14 view12,server10,clouds128
+v01_arrival 20370 4948579f 3f848b98085c3ead 2026-11-16T04:14 view12,server10,clouds128
+v02_axis 20370 4948579f 9f7f4b91d6efb6d8 2026-11-16T04:14 view12,server10,clouds128
+v03_facade 20370 4948579f 73dc1e55af51153a 2026-11-16T04:14 view12,server10,clouds128
+v04_entrance 20370 4948579f 49d66d66e073496b 2026-11-16T04:14 view12,server10,clouds128
+v05_tower 20370 4948579f eece615af69e620a 2026-11-16T04:14 view12,server10,clouds128
+v06_power 20370 4948579f 4ec17554db511822 2026-11-16T04:14 view12,server10,clouds128
+v07_hall 20370 4948579f b5d1f31afd089cd1 2026-11-16T04:14 view12,server10,clouds128
+v08_dome_room 20370 4948579f a6d5ee87b9feb4b2 2026-11-16T04:14 view12,server10,clouds128
+v09_chart_room 20370 4948579f 58a4b14aab46f06e 2026-11-16T04:14 view12,server10,clouds128
+v10_time_room 20370 4948579f 475bd7a29be6d611 2026-11-16T04:14 view12,server10,clouds128
+v11_lookout 20370 4948579f 3aa4dcd9e0d09ea1 2026-11-16T04:14 view12,server10,clouds128
+v12_aerial 20370 4948579f 0e41880b19a4d2ef 2026-11-16T04:14 view12,server10,clouds128
