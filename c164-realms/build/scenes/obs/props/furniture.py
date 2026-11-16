@@ -11,6 +11,10 @@ is looked at and not its frame. Glass is not drawn; its reflection is (_kit.pane
                      cable-car station, the star hall)
     writing_desk     two blocks wide: a panelled top, three drawers in the frieze, a low gallery
     display_table    two blocks wide, one high: a flat glazed case on the desk's frames (the star hall)
+    display_table_plates   the same with what it shows: three star plates raised on their cards (the
+                     hunter, the comet, a spectrum), a brass reading rule, a magnifier
+    display_table_lenses   the same with four lenses in brass cells, laid out by size, and two
+                     eyepieces on their sides
     drafting_table   two blocks wide: a board tilted on a cast A-frame and held by a brass quadrant,
                      a sheet pinned to it
     swivel_chair     a round wooden seat, a bow of arms that rises to a crest at the back, on a
@@ -26,6 +30,8 @@ is looked at and not its frame. Glass is not drawn; its reflection is (_kit.pane
     crate            a packing case of raw deal: boards with gaps between them, nailed to a cleat at
                      every corner, a line of stencilled marks
     crate_small      the same, small enough to stand on the trunk's lid
+    plate_box        a box glass plates are carried in: planed dark wood, brass corners and catch, a
+                     leather strap flat on the lid, so that one stands on another (the dome room)
     display_case     one block square: a glazed brass case on a panelled base
 
 Every piece is one display entity at scale 1 (16 texels to the block), and whatever is square to the
@@ -239,17 +245,128 @@ def _writing_desk():
     return m
 
 
-def _display_table():
+# ---- what a display table shows -----------------------------------------------------------------
+# The star hall asked for its two tables filled (interiors/starhall, c348 #61471): star plates with
+# a reading rule and a magnifier in one, lenses and eyepieces in the other. A table with what it
+# shows is one model, so a room places it as it places the empty one, by another name. Everything
+# keeps inside the three panes and under the bars; nothing is as bright as paper.
+BED = 11.25                     # texels: the top of a display table's lining (TOP["display_table"])
+PLATE_TILT = 20.0               # degrees a plate is raised at its far edge, to look at whoever stands before the case
+PLATE = K.flat("night_glass", 0)                # a developed plate: the night, darker than the bed it lies on
+PLATE_EDGE = K.flat("night_glass", 4)           # the ground edge of its glass
+MOUNT = K.flat("cream", 1)                      # the card a plate is mounted on: a pale line round it
+LENS = K.flat("night_glass", 4)                 # clear glass over the blue bed
+_STARS = {"W": P.RAMPS["cream"][3], "w": P.RAMPS["cream"][1], "f": P.RAMPS["night_glass"][4]}
+# The hunter: two shoulders, the belt of three, two feet. Seven dots that anyone knows, and four
+# faint stars of the field between them: seven dots alone on a dark card are the face of a die.
+STAR_FIELD = Sprite("furn_plate_stars", [
+    "...f...",
+    ".W...w.",
+    ".......",
+    "f...w..",
+    "...W..f",
+    "..w....",
+    "....f..",
+    ".w...W.",
+], _STARS, back=PLATE)
+# The comet of the map's own sky: a head of four texels, the brightest thing on the plate, and a
+# tail that narrows and fades from it into the blue (a tail as bright and as wide as the head was
+# a sash across the plate).
+COMET = Sprite("furn_plate_comet", [
+    "f.....",
+    ".f..w.",
+    ".ff...",
+    "..fw..",
+    "...wW.",
+    "...WW.",
+    ".f....",
+], _STARS, back=PLATE)
+# A star's spectrum: one pale band across the plate, a dark line in it, the blue end fading out.
+# The band stops short of the plate's edges (run up to them it joined the card into one pale H).
+SPECTRUM = Sprite("furn_plate_spectrum", [
+    ".......",
+    ".WW.Wf.",
+    ".WW.Wf.",
+    ".......",
+], _STARS, back=PLATE)
+RULE = Sprite("furn_reading_rule", ["tbtbtbt", "bbbbbbb"],
+              {"b": P.RAMPS["brass"][3], "t": P.RAMPS["brass"][0]})
+
+
+def _plate(m, x0, z0, picture, tilt=PLATE_TILT):
+    """A glass plate on its card, the far edge raised on a slip of wood. (x0, z0) is the far left
+    corner of the plate before it is raised; the picture's rows run from the far edge to the near."""
+    w, d = max(len(row) for row in picture.rows), len(picture.rows)
+    x1, z1 = x0 + w, z0 + d
+    with m.turned(("x", tilt), about=(0.0, BED, z1 + 0.5)):
+        m.box((x0 - 0.5, BED, z0 - 0.5), (x1 + 0.5, BED + 0.25, z1 + 0.5), MOUNT, skip="d")
+        m.box((x0, BED + 0.25, z0), (x1, BED + 0.75, z1), PLATE_EDGE, faces={"u": picture}, skip="d")
+    run = d + 1.0
+    rise, back = run * math.sin(math.radians(tilt)), z1 + 0.5 - run * math.cos(math.radians(tilt))
+    m.box((x0 + 1.0, BED, back + 0.25), (x1 - 1.0, BED + rise - 0.5, back + 1.25), WOOD_D, grain="x", skip="d")
+    return m
+
+
+def _lens(m, x, z, r):
+    """A lens in its brass cell, lying on the bed: (x, z) its middle, r its radius. The glass is
+    a step up from the rim, and the larger ones hold a point of light."""
+    m.tube("y", (x, z), BED, BED + 1.0, r, BRASS)
+    if r >= 2.0:
+        K.glass_prism(m, "y", (x, z), BED + 1.0, BED + 1.25, r - 1.0, LENS, emit=0)
+    else:
+        m.box((x - 0.5, BED + 1.0, z - 0.5), (x + 0.5, BED + 1.25, z + 0.5), LENS)
+    if r >= 2.5:
+        m.box((x - 1.5, BED + 1.25, z - 1.5), (x - 0.5, BED + 1.3, z - 0.5), K.flat("cream", 3), skip="d")
+    return m
+
+
+def _eyepiece(m, x, z):
+    """An eyepiece lying on its side along x, (x, z) the middle of it: a brass barrel, a darker
+    milled collar at the eye end, glass in both ends."""
+    y = BED + 1.5
+    m.tube("x", (y, z), x - 2.75, x + 1.25, 1.0, BRASS, cap=LENS)
+    m.tube("x", (y, z), x + 1.25, x + 2.75, 1.5, BRASS_D, cap=IRON_D)
+    return m
+
+
+def _show_plates(m):
+    _plate(m, -13.0, -5.0, STAR_FIELD)
+    m.box((-11.5, BED, 4.5), (-7.5, BED + 0.25, 5.5), MOUNT, skip="d")          # its label
+    _plate(m, -3.0, -5.0, COMET)
+    m.box((-3.5, BED, 3.75), (3.5, BED + 0.5, 5.75), BRASS, faces={"u": RULE}, skip="d")   # the reading rule
+    _plate(m, 6.0, -5.0, SPECTRUM)
+    m.tube("y", (8.5, 2.5), BED, BED + 0.75, 2.0, BRASS)                         # the magnifier: its rim,
+    K.glass_prism(m, "y", (8.5, 2.5), BED + 0.75, BED + 1.0, 1.25, LENS, emit=0)   # its glass
+    m.box((10.25, BED, 2.0), (13.25, BED + 0.75, 3.0), WOOD_L, grain="x", skip="d")   # and its handle
+    return m
+
+
+def _show_lenses(m):
+    _lens(m, -9.5, 0.0, 3.5)                    # the object glass, alone in its pane
+    _lens(m, 0.0, -2.75, 2.5)                   # then by size, towards whoever stands before the case
+    _lens(m, 0.0, 2.75, 2.0)
+    _lens(m, 9.5, -3.5, 1.5)
+    _eyepiece(m, 9.5, 0.0)
+    _eyepiece(m, 9.5, 3.5)
+    return m
+
+
+SHOWS = {"plates": _show_plates, "lenses": _show_lenses}
+
+
+def _display_table(show=None):
     """As wide as the desk and on the same frames, no higher than one block: a flat case of three
     panes, looked into from above. What lies in it lies on the lining, TOP["display_table"] up, and
-    is no higher than three texels."""
-    m = M.Model(PREFIX + "display_table")
+    is no higher than three texels. show: a key of SHOWS, for a table that comes with its exhibits."""
+    m = M.Model(PREFIX + "display_table" + (f"_{show}" if show else ""))
     for x in (-12.0, 12.0):
         y, z = _frame(m, x, -6.0, 6.0, 8.0, crown=0.55)
     m.tube("x", (y, z), -11.0, 11.0, 0.5, IRON_D, sides=4)
     _boarded(m, (-14.0, 8.0, -6.0), (14.0, 10.0, 6.0), WOOD)        # the apron
     _boarded(m, (-15.0, 10.0, -7.0), (15.0, 11.0, 7.0), WOOD_D)     # the board the case stands on
-    m.box((-14.0, 11.0, -6.0), (14.0, 11.25, 6.0), LINING)          # the lining
+    m.box((-14.0, 11.0, -6.0), (14.0, BED, 6.0), LINING)            # the lining
+    if show:
+        SHOWS[show](m)
     bars = (-15.0, -5.0, 4.0, 14.0)                                 # the same thirds as the desk's drawers
     for z0 in (-7.0, 6.0):
         for x0 in bars:
@@ -257,9 +374,11 @@ def _display_table():
         m.box((-15.0, 15.0, z0), (15.0, 16.0, z0 + 1.0), BRASS_D, grain="x")
     for x0 in bars:
         m.box((x0, 15.0, -6.0), (x0 + 1.0, 16.0, 6.0), BRASS_D, grain="z")
-    # a reflection in two of the three panes, and not the same one twice
+    # a reflection in two of the three panes, and not the same one twice. Over an exhibit there is
+    # none: the stroke is the tone of clear glass and of a faint star, and was read as part of
+    # whatever lay under it (a blue smear across the hunter, a chip off a lens).
     for (x0, x1), sheen in zip(((-14.0, -5.0), (-4.0, 4.0), (5.0, 14.0)), (True, False, 2)):
-        K.pane(m, (x0, 15.5, -6.0), (x1, 15.75, 6.0), "u", sheen=sheen)
+        K.pane(m, (x0, 15.5, -6.0), (x1, 15.75, 6.0), "u", sheen=False if show else sheen)
     return m
 
 
@@ -499,6 +618,26 @@ def _crate_small():
     return _packing_case("crate_small", 10.0, 8.0, 2, (0, ".ii.i."))
 
 
+def _plate_box():
+    """A box that glass plates are carried in from the dome to the dark room: the cabinets' wood,
+    planed and jointed where a packing case is raw boards, a lid a shade darker, dull brass on its
+    eight corners, a brass catch. Its handle is a leather strap that lies flat on the lid between
+    two brass loops, no higher than the strap, so a second box stands on the first: on the lid,
+    TOP["plate_box"] up, plus STRAP as on the trunk."""
+    m = M.Model(PREFIX + "plate_box")
+    _boarded(m, (-6.0, 0.0, -4.0), (6.0, 6.0, 4.0), WOOD)
+    _boarded(m, (-6.25, 6.0, -4.25), (6.25, 9.0, 4.25), WOOD_D)      # the lid, a quarter texel proud
+    for x0 in (-6.5, 5.0):
+        for z0 in (-4.5, 3.0):
+            for y0 in (0.0, 7.75):
+                m.box((x0, y0, z0), (x0 + 1.5, y0 + 1.5, z0 + 1.5), BRASS_D)
+    m.box((-1.0, 4.0, 4.0), (1.0, 7.0, 4.5), BRASS)                  # the catch
+    m.box((-3.0, 9.0, -0.75), (3.0, 9.5, 0.75), HIDE, grain="x")     # the strap: tan on the dark lid
+    for x0 in (-4.0, 3.0):
+        m.box((x0, 9.0, -1.0), (x0 + 1.0, 9.5, 1.0), BRASS)          # and its loops
+    return m
+
+
 def _display_case():
     m = M.Model(PREFIX + "display_case")
     _feet(m, 6.0, 6.0)
@@ -529,6 +668,8 @@ SPEC = {
     "bench": dict(build=_bench, mount="floor"),
     "writing_desk": dict(build=_writing_desk, mount="floor"),
     "display_table": dict(build=_display_table, mount="floor"),
+    "display_table_plates": dict(build=functools.partial(_display_table, "plates"), mount="floor"),
+    "display_table_lenses": dict(build=functools.partial(_display_table, "lenses"), mount="floor"),
     "drafting_table": dict(build=_drafting_table, mount="floor"),
     "swivel_chair": dict(build=_swivel_chair, mount="floor"),
     "stool": dict(build=_stool, mount="floor"),
@@ -540,15 +681,17 @@ SPEC = {
     "trunk": dict(build=_trunk, mount="floor"),
     "crate": dict(build=_crate, mount="floor"),
     "crate_small": dict(build=_crate_small, mount="floor"),
+    "plate_box": dict(build=_plate_box, mount="floor"),
     "display_case": dict(build=_display_case, mount="floor"),
 }
 SCALE = {PREFIX + name: 1.0 for name in SPEC}
-# how high above its foot a piece carries what is put on it (blocks); the trunk's is its lid, of
-# which the two straps are STRAP proud
-TOP = {"writing_desk": 12.0 / 16.0, "display_table": 11.25 / 16.0, "display_case": 11.25 / 16.0,
+# how high above its foot a piece carries what is put on it (blocks); the trunk's and the plate
+# box's is the lid, of which the straps are STRAP proud. A display table that comes with what it
+# shows carries nothing more.
+TOP = {"writing_desk": 12.0 / 16.0, "display_table": BED / 16.0, "display_case": 11.25 / 16.0,
        "card_cabinet": 30.0 / 16.0, "instrument_cabinet": 30.0 / 16.0, "trunk": 11.0 / 16.0,
-       "crate": 12.0 / 16.0, "crate_small": 8.0 / 16.0, "bench": 7.0 / 16.0, "swivel_chair": 7.0 / 16.0,
-       "stool": 12.0 / 16.0}
+       "crate": 12.0 / 16.0, "crate_small": 8.0 / 16.0, "plate_box": 9.0 / 16.0, "bench": 7.0 / 16.0,
+       "swivel_chair": 7.0 / 16.0, "stool": 12.0 / 16.0}
 STRAP = 0.5 / 16.0
 
 
