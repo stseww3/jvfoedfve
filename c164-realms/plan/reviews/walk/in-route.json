@@ -101,6 +101,10 @@
     {"at": [2.5, 18, 32.5], "node": "the south end terrace's far corner"},
     {"at": [8.5, 18, 30.5], "node": "before the small dome's door", "look": [9.5, 19, 30.5]}
   ]},
+  {"id": "R", "name": "the astrograph room (the small dome)", "points": [
+    {"at": [10.5, 18, 30.5], "node": "inside the small dome's door"},
+    {"at": [10.5, 18, 31.5], "node": "the south cell, behind the door"}
+  ]},
   {"id": "K", "name": "the north roofs: corner terrace, ridge walk, the end terrace, the clock tower's door", "points": [
     {"at": [11.5, 18, -5.5], "node": "inside the dome room's north door", "look": [12.5, 19, -9.5], "hop": true},
     {"at": [12.5, 18, -7.5]},
@@ -117,21 +121,34 @@
     {"at": [2.5, 18, -31.5], "node": "the north end terrace's far corner"},
     {"at": [9.5, 18, -29.5], "node": "the roof walk before the tower's door", "look": [10.5, 19.5, -29.5]}
   ]},
+  {"id": "Q", "name": "the clock tower: the lobby, the clock room", "points": [
+    {"at": [11.5, 18, -29.5], "node": "inside the tower's door"},
+    {"at": [13.5, 18, -29.5], "node": "the lobby's middle, under the pendulum"},
+    {"at": [11.5, 18, -30.5], "node": "before the foot of the ladder", "look": [11.5, 24, -31.5]},
+    {"at": [11.5, 24, -30.5], "node": "the clock room: off the ladder, the west walk", "hop": true},
+    {"at": [11.5, 24, -28.0], "node": "the south-west corner"},
+    {"at": [15.5, 24, -28.0], "node": "the south-east corner", "hop": true},
+    {"at": [15.5, 24, -31.0], "node": "the north-east corner"},
+    {"at": [12.5, 24, -31.5], "node": "the north walk, by the hatch", "hop": true}
+  ]},
   {"id": "L", "name": "the power house, inside", "points": [
     {"at": [74.5, -6, 17.5], "node": "the yard before the power house's wicket", "look": [74.5, -4.5, 21.5], "hop": true},
     {"at": [74.5, -6, 20.5], "node": "in the wicket's recess"},
     {"at": [74.5, -6, 22.5], "node": "inside the wicket"},
     {"at": [72.5, -6, 23.5], "node": "the engine hall's north-west corner, by the desk"},
-    {"at": [74.5, -6, 26.5], "node": "the firing aisle's north end, before the boilers"},
-    {"at": [82.5, -6, 26.5], "node": "between the two boilers, at the guard rail"},
-    {"at": [74.5, -6, 29.5], "node": "the firing aisle, between the switchboard and the boilers", "hop": true},
+    {"at": [74.5, -6, 26.5], "node": "the firing aisle's north end, before No. 1"},
+    {"at": [74.5, -6, 30.0], "node": "the firing aisle, between the switchboard and No. 2"},
     {"at": [74.5, -6, 33.5]},
     {"at": [69.5, -6, 33.5]},
     {"at": [69.5, -6, 39.5], "node": "the engine hall's south-west corner"},
     {"at": [87.5, -6, 39.5], "node": "the engine hall's south-east corner"},
     {"at": [87.5, -6, 31.5], "node": "the east end of the middle aisle"},
     {"at": [86.0, -6, 30.0], "node": "before the guard rail behind the boilers", "look": [86.0, -4.5, 26.5]},
-    {"at": [78.5, -6, 31.5], "node": "the middle of the engine hall, between the boilers and the engine"}
+    {"at": [78.5, -6, 31.5], "node": "the middle of the engine hall, between the boilers and the engine"},
+    {"at": [78.5, -6, 26.5], "node": "the mouth of the alley between the two boilers", "hop": true},
+    {"at": [82.5, -6, 26.5], "node": "that alley's blind end, at the guard rail"},
+    {"at": [79.5, -6, 22.5], "node": "the alley north of No. 1, behind the coal heap", "hop": true, "note": "the way into this alley is through the coal heap (a model without a collision box, x 76.8 .. 78.5): no station is set in it"},
+    {"at": [83.0, -6, 22.5], "node": "that alley's blind end, at the chimney's foot"}
   ]},
   {"id": "M", "name": "the meridian hut", "points": [
     {"at": [35.5, 0, -21.5], "node": "on the meridian, before the hut's door", "look": [35.5, 1.5, -25.5], "hop": true},
@@ -161,20 +178,6 @@
     {"at": [7.5, 0, -3.5], "node": "the star hall's north aisle, before the battery room's door", "hop": true},
     {"at": [7.5, 0, -7.5], "node": "inside the battery room's door"},
     {"at": [8.0, 0, -22.5], "node": "the end of the aisle, before the switchboard"}
-  ]},
-  {"id": "Q", "name": "the clock tower: the lobby, the clock room", "points": [
-    {"at": [11.5, 18, -29.5], "node": "inside the tower's door"},
-    {"at": [13.5, 18, -29.5], "node": "the lobby's middle, under the pendulum"},
-    {"at": [11.5, 18, -30.5], "node": "before the foot of the ladder", "look": [11.5, 24, -31.5]},
-    {"at": [11.5, 24, -30.5], "node": "the clock room: off the ladder, the west walk", "hop": true},
-    {"at": [11.5, 24, -28.0], "node": "the south-west corner"},
-    {"at": [15.5, 24, -28.0], "node": "the south-east corner", "hop": true},
-    {"at": [15.5, 24, -31.0], "node": "the north-east corner"},
-    {"at": [12.5, 24, -31.5], "node": "the north walk, by the hatch", "hop": true}
-  ]},
-  {"id": "R", "name": "the astrograph room (the small dome)", "points": [
-    {"at": [10.5, 18, 30.5], "node": "inside the small dome's door", "hop": true},
-    {"at": [10.5, 18, 31.5], "node": "the south cell, behind the door"}
   ]}
  ]
 }
