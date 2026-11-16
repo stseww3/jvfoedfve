@@ -1,0 +1,3 @@
+branch=cursor/c164-scope-f3-eeae
+head=553969ad0b734c2ea7d42f8e615132b3d3d2da5d
+args=--no-push --tail 90 --limit 600 mkdir\ -p\ renders/_wip\;\ \(cd\ build\ \&\&\ python\ -m\ scenes.obs.machines.scope\)\;\ echo\ \"SELF=\$\?\"\;\ python\ tools/check.py\ --scene\ obs_mach_refractor\ \>\ renders/_wip/scope-check.txt\ 2\>\&1\;\ echo\ \"CHECK=\$\?\"\;\ tail\ -n\ 48\ renders/_wip/scope-check.txt 
