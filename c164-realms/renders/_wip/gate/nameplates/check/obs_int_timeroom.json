@@ -1,0 +1,167 @@
+{
+ "scene": "obs_int_timeroom",
+ "commit": "283af20",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "2096 blocks, 94 entities, 190 models, 1266 resource-pack files, 58 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.6 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 1265 files, no file written twice, the folders and the prefix of interiors are kept (9 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "319 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "909 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "32 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "WARN",
+   "summary": "1 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)",
+   "details": [
+    "smooth_sandstone facing west: flat over 9x9, the square's top corner at (0, 14, -6)"
+   ],
+   "data": {
+    "largest": 9,
+    "faces": 1
+   }
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "94 display entities, 4 drawn out along one axis, 135 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "12 shots, most display entities in view: 94 (int_door), limit 600; counted without what walls hide; the game draws up to 94 (v10): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "v10",
+      "in_view": 79,
+      "drawn": 94,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v10_deep",
+      "in_view": 79,
+      "drawn": 94,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v10_glow",
+      "in_view": 79,
+      "drawn": 94,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "door_axis",
+      "in_view": 69,
+      "drawn": 94,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_wall",
+      "in_view": 34,
+      "drawn": 94,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_record",
+      "in_view": 23,
+      "drawn": 94,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_regulator",
+      "in_view": 13,
+      "drawn": 94,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_desk",
+      "in_view": 33,
+      "drawn": 94,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_bench",
+      "in_view": 30,
+      "drawn": 94,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_clocks",
+      "in_view": 34,
+      "drawn": 94,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_back",
+      "in_view": 63,
+      "drawn": 94,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_door",
+      "in_view": 94,
+      "drawn": 94,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "11 parts and 0 points on 5 chains, 50 function files; 7 commands in the busiest tick (limit 120), 1.2 a tick on average (limit 40)",
+   "details": [
+    "chain of 32 ticks: 4 functions, 10 commands a cycle, starts 2 ticks after start",
+    "chain of 40 ticks: 10 functions, 31 commands a cycle, starts 1 ticks after start",
+    "chain of 300 ticks: 12 functions, 25 commands a cycle, starts 13 ticks after start",
+    "chain of 1200 ticks: 6 functions, 37 commands a cycle, starts 4 ticks after start",
+    "chain of 2400 ticks: 12 functions, 25 commands a cycle, starts 5 ticks after start",
+    "mach_rec_drum: 12 steps in 2400 ticks: its middle lies 0.05 blocks off the axis",
+    "int_timeroom_clock_seconds: 6 steps in 1200 ticks: its middle lies 0.09 blocks off the axis",
+    "int_timeroom_clock_seconds: 6 steps in 1200 ticks: its middle lies 0.09 blocks off the axis",
+    "int_timeroom_clock_seconds: 6 steps in 1200 ticks: its middle lies 0.09 blocks off the axis",
+    "int_timeroom_clock_seconds: 6 steps in 1200 ticks: its middle lies 0.09 blocks off the axis",
+    "int_timeroom_clock_seconds: 6 steps in 1200 ticks: its middle lies 0.09 blocks off the axis"
+   ]
+  }
+ ]
+}
