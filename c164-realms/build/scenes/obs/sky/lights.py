@@ -66,6 +66,18 @@ the canvas by then and places, in this order:
             the lamp's own cell (_lightkit.GATE, 12): the steps fall away below it (cr2 on the
             real picture from the south lookout, #74079: a quarter of it was a flight of steps
             without a lamp).
+  base      at the feet of the walls under the upper terrace, where a board view looks at them
+            (base_lamps()): a small projector (props' lamps "uplight") before a buttress, with its
+            source in its own cell (BASE, 8). The east wall north of the grand stair, the four
+            buttresses V1 sees: the projector one cell before the lower stage, and one more
+            source where its beam lands, before the upper stage (BASE_BEAM, 10). In V1 the dark
+            slate of a buttress stands at 0.11 below and 0.125 above (0.075 and 0.08 without),
+            the wall between two at 0.10 (0.087); with the projector's 8 alone a buttress does
+            not get past 0.11. The south wall, three of the buttresses V11 sees, those with bare
+            rock before the foot: the projector on the rock under the face (BASE_SOUTH, 7), no
+            second source; in V11 the buttress stands at 0.13 (0.11 without; at 8 its foot is at
+            0.15). All of it stays far under the fronts' unwashed stone, 0.22 (cr2, #74079: the
+            buttresses at 0.12 to 0.14).
   offers    what the other lines registered with _lightkit.suggest() and take(): a source is placed
             when its cell is free and something that glows is within two cells of it.
   pools     at the foot of every street lamp whose source was placed, one more (_lightkit.POOL, 12):
@@ -86,7 +98,6 @@ build() returns the number of display entities it placed (the projectors of the 
 the ring stair, the lamps of the ways and of the gates).
 """
 import math
-import os
 
 from artkit import blockfacts as F
 from artkit import blocks as AB
@@ -177,8 +188,8 @@ def report(canvas):
     if not hasattr(canvas, "light_report"):
         canvas.light_report = dict(
             placed={}, ranks={1: 0, 2: 0, 3: 0}, levels={}, rejected=[], capped=[], merged=[], moved=[],
-            windows={}, table={}, dressed=False, doors=[], hall=[], wash=[], stair=[], ways=[], gates=[], pools=[],
-            fifteen=[],
+            windows={}, table={}, dressed=False, doors=[], hall=[], wash=[], stair=[], ways=[], gates=[], base=[],
+            pools=[], fifteen=[],
             foreign=0, isolated=[], notes=[], problems=[], _seen=set(), _records=[], _before=set(), _entered=set(),
             _poles=[])
     return canvas.light_report
@@ -207,7 +218,7 @@ def summary(canvas):
         out.append(f"main's table under {look}: dark {n[0]}, dim {n[1]}, lit {n[2]}, bright {n[3]}")
     out.append(f"dressed: {'yes' if r['dressed'] else 'no'}; doors: {r['doors'] or 'none'}; behind them: "
                f"{len(r['hall'])} sources; wash: {len(r['wash'])} projectors; stair: {len(r['stair'])}; "
-               f"ways: {len(r['ways'])}; gates: {len(r['gates'])}; pools: {len(r['pools'])}; "
+               f"ways: {len(r['ways'])}; gates: {len(r['gates'])}; base: {len(r['base'])}; pools: {len(r['pools'])}; "
                f"not placed here: {r['foreign']}; level 15: {len(r['fifteen'])}; "
                f"isolated: {len(r['isolated'])}")
     for key in ("capped", "moved", "merged", "rejected"):
@@ -565,7 +576,21 @@ def way_lamps():
     x, row = shell.ARCADE_X[0], shell.DECK_Y + WAY_HIGH
     out += [((x, row, -shell.CROSS_Z), "south", L.WAY - 1, "the north end of the cross gallery"),
             ((x, row, shell.CROSS_Z), "north", L.WAY - 1, "the south end of the cross gallery")]
-    return out + ROOF_WAYS
+    return out + ROOF_WAYS + WEST_DOOR
+
+
+# ---- trial tree only (dome): a caged lamp at the west door, from outside (#75708) -----------------------
+# C164_TRIAL_WEST names the place to try, C164_TRIAL_WLEVEL the level; nothing without the first.
+import os as _os                                                    # noqa: E402
+_WEST_TRY = {
+    "head": [(-9, 4, 0)],                   # the lintel, over the middle of the door
+    "north": [(-10, 2, -2)],                # the pilaster north of the door, the first course over the dark plinth
+    "south": [(-10, 2, 2)],
+    "pair": [(-10, 2, -2), (-10, 2, 2)],
+    "high": [(-10, 3, -2)],                 # the same pilaster, one course up
+}
+WEST_DOOR = [(wall, "west", int(_os.environ.get("C164_TRIAL_WLEVEL", "8")), "the west door, from outside")
+             for wall in _WEST_TRY.get(_os.environ.get("C164_TRIAL_WEST", ""), [])]
 
 
 # Over the roofs, as dome (c326) measured them on the walk-through's stations (#74898, #75042): the
@@ -660,57 +685,72 @@ def _gates(canvas, r, origin):
     return n
 
 
-# ---- trial tree only (dome): the wash of the walls under the terrace -----------------------------------
-# Numbers to hand to the lights line (#75708; cr2 on the real pictures, #74079): a projector of
-# props (lamps "uplight") on the ground before the foot of a buttress, looking at it, with its
-# source in its own cell. [(the projector's cell, the way it looks, the level, what it lights)]
+# ---- the walls under the terrace ------------------------------------------------------------------------
+# Measured by dome (c326) on the offline pictures of V1 and V11 for the lights line (#75708; cr2 on
+# the real pictures, #74079: the wall under the terrace was one flat dark band there, 0.078 and
+# 0.098, and its buttresses did not read).
 BASE_WHY = "sky/lights:base"
-BASE_OUT = int(os.environ.get("C164_TRIAL_OUT", "2"))       # the east wall: cells between a buttress's lower stage and its projector, counting it
-BASE_LEVEL = int(os.environ.get("C164_TRIAL_LEVEL", "8"))   # the projector's own source
-BASE_BEAM = int(os.environ.get("C164_TRIAL_BEAM", "0"))     # a second source where the beam lands, as the fronts' wash has; 0: none
-BASE_SOUTH_LEVEL = int(os.environ.get("C164_TRIAL_SLEVEL", str(BASE_LEVEL)))    # the south wall's projectors
-BASE_EAST = tuple(int(z) for z in os.environ.get("C164_TRIAL_EAST", "-14,-22,-30,-38").split(",") if z)
-BASE_SOUTH = tuple(int(x) for x in os.environ.get("C164_TRIAL_SOUTH", "39,23,19").split(",") if x)
-# the south wall: the rock one cell before a buttress's foot (the survey of the trial tree): x -> the projector's row
-SOUTH_ROW = {39: -6, 23: -6, 19: -6, 14: -6, 10: -6, 43: -3}
-BASE_WASH = (
-    # the east wall (site/stair): the beam of a projector two cells out lands on the upper stage, in the row over the
-    # lower stage's weathering
-    [((62 + BASE_OUT, -6, z), "west", BASE_LEVEL, f"the east wall's buttress in row {z}", ((62, -3, z), BASE_BEAM))
-     for z in BASE_EAST]
-    # the south wall (site/terrain): the projector stands under the face, the light falls by one a row up it
-    + [((x, SOUTH_ROW[x], 40), "north", BASE_SOUTH_LEVEL, f"the south wall's buttress in column {x}", None)
-       for x in BASE_SOUTH]
-)
+BASE = 8                # a projector's own source, in its cell: the top of the third rank
+BASE_BEAM = 10          # the east wall: one more where the beam lands on a buttress's upper stage (the wash's level)
+BASE_SOUTH = 7          # the south wall, where the projector stands right under the face
+# The buttresses of the south wall that have bare rock one cell before their foot (site/terrain's
+# snow lies before the three between 23 and 39): the pier's column -> the row the projector stands in.
+BASE_SOUTH_AT = {39: -6, 23: -6, 19: -6}
+
+
+def base_lamps():
+    """Where the projectors at the feet of the terrace's walls stand: [(the projector's cell, the
+    way it looks, the level of its source, what it lights, (the cell of a second source where the
+    beam lands, its level) or None)], in the site's coordinates. Empty without site/stair.
+    The east wall (site/stair) north of the grand stair, the four buttresses V1 sees: the projector
+    one cell before the lower stage, the second source before the upper stage, in the row over the
+    lower stage's weathering. The south wall (site/terrain), three of the buttresses V11 sees: the
+    projector on the rock under the face and no second source; there the light falls by one a row
+    up the buttress by itself."""
+    try:
+        from ..site import stair
+    except ImportError:
+        return []
+    x, y = stair.EDGE_X, stair.FEET
+    out = [((x + 3, y, z), "west", BASE, f"the east wall's buttress in row {z}", ((x + 2, y + 3, z), BASE_BEAM))
+           for z in stair.BUTTRESS_Z if z < 0]
+    z = S.UPPER_TERRACE[3] + 2
+    out += [((px, row, z), "north", BASE_SOUTH, f"the south wall's buttress in column {px}", None)
+            for px, row in sorted(BASE_SOUTH_AT.items())]
+    return out
 
 
 def _base(canvas, r, origin):
-    """The projectors of BASE_WASH, each where its cell is free and has ground under it, with its
-    source in that cell. Returns the number of display entities placed."""
-    r.setdefault("base", [])
-    if os.environ.get("C164_TRIAL_BASE", "1") == "0":
+    """The projectors of base_lamps(), each where the ground stands under its cell and the cell is
+    free, with its source in that cell, and the second source of those that have one. Returns
+    the number of display entities placed."""
+    found = base_lamps()
+    if not found:
         return 0
     try:
         from ..props import lamps
     except ImportError:
+        r["notes"].append("no projectors at the terrace's walls: props/lamps is not in the tree, "
+                          "and a source without a lamp is not placed")
         return 0
     ox, oy, oz = origin
     n = 0
-    for (x, y, z), facing, level, what, beam in BASE_WASH:
+    for (x, y, z), facing, level, what, beam in found:
         cell = (x + ox, y + oy, z + oz)
-        if cell in r["base"]:
-            continue
-        if (canvas.has(*cell) and cell not in r["placed"]) or not _solid(canvas, cell[0], cell[1] - 1, cell[2]):
-            r["notes"].append(f"no projector for {what}: the cell {cell} is taken or has no ground")
+        if cell in r["base"] or not _solid(canvas, cell[0], cell[1] - 1, cell[2]):
+            continue                                                # done, or this wall's foot does not stand here
+        if canvas.has(*cell) and cell not in r["placed"]:
+            r["notes"].append(f"no projector for {what}: the cell {cell} is taken")
             continue
         n += lamps.place(canvas, "uplight", (x + 0.5, float(y), z + 0.5), facing=facing, origin=origin, light=False)
         _put(canvas, r, cell, level, BASE_WHY)
         r["base"].append(cell)
-        if beam and beam[1]:
+        if beam is not None:
             spot = (beam[0][0] + ox, beam[0][1] + oy, beam[0][2] + oz)
             if _put(canvas, r, spot, beam[1], BASE_WHY) == "taken":
-                r["notes"].append(f"no second source for the projector of {what}: the cell {spot} is taken")
+                r["notes"].append(f"no second source for {what}: the cell {spot} is taken")
     return n
+
 
 # ---- the offers ----------------------------------------------------------------------------------------
 def _settle(canvas, r):
@@ -874,7 +914,7 @@ def build(canvas, origin=(0, 0, 0)):
     if _asked(canvas):
         n += _ways(canvas, r, origin)
         n += _gates(canvas, r, origin)
-        n += _base(canvas, r, origin)                   # trial tree only
+        n += _base(canvas, r, origin)
     _settle(canvas, r)
     _pools(canvas, r)
     _survey(canvas, r)
