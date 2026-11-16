@@ -75,6 +75,28 @@ aide 11:07 派的：甲 mast；乙 rec、ashlar（一人六块，楼的东西两
 
 （做的人写在下面。）
 
+### 甲 进场标题和署名牌（mast c346；包名 `motion/guide-title`，分支 `cursor/c164-mast-guide-f3-fc27`）
+
+- 文件：`build/scenes/obs/motion/guide_title.py`，测试场景 `build/scenes/obs_mot_guide_title/`。主场景 `scenes/obs/__init__.py` 加了两行开关 `GUIDE`、`GUIDE_CHARTS`（s2 11:22 同意随这一包带，只加不改）。
+- 名字只写在一处：`guide_title.MAP_TITLE = ("BLUE HOUR", "OBSERVATORY")`（占位）和 `MAP_CREDIT = "c164"`。`MAP_NAME` 是两段拼成的一行，outb 的存档名和两个包的说明读它，署名牌也用它。管理员定名只改这两行。
+- 标题为什么分两行（总监 11:30 定）：游戏把标题放大四倍画，不换行也不缩小，超宽的部分两头被屏幕切掉。界面自动比例下 16:9 的屏幕宽 427（720p、1440p、4K）或 480（1080p），标题槽只容 106 个字体像素，约 17 个大写字母。`BLUE HOUR OBSERVATORY` 写成一行是 121。现在第一段进标题槽（51 像素），第二段进副标题那一号字（65 像素）；`An evening above the clouds` 不要了。
+- 宽度的校验：`guide_title.misfits()` 量两段；上段超过 106、下段超过 149 像素，`functions()` 报错，带导览的场景搭不起来，`check.py` 的 regen 就是 FAIL。改名的人不会在不知情的时候得到一个被切掉的标题。
+- 数据包里三个函数，由 a2 的 `MK.function` 写，outb 的函数标签 `#c164map:first`、`#c164map:join` 点名：
+  - `c164art:guide/first`：新来的人，一次。给他打标签 `c164.new`，排 40 tick 以后发标题。
+  - `c164art:guide/join`：每次进服。只有身上还带着 `c164.new` 的人重排一次（掉线在那两秒里的人，回来补发）；别人什么都不出。
+  - `c164art:guide/title`：到点。对带标签又在线的人发 `title … times 20 80 30`、副标题、标题各一条，摘标签。
+- 延后 40 tick 是 outb 提的：`first` 跑的那一刻真客户端还在「载入地形」的画面，标题会在那张画面后面耗掉。排程用游戏的 replace：两秒之内又来一个新人，两个人的标题一起挪到后一个人进来之后两秒。
+- 预算（和 a2 对过，11:32 他记了账）：没有每刻的命令，不上循环。新来一个人前后 7 条，别人每次进服 1 条。
+- 字：两行都是铭牌的米白 `#f2ead6`，游戏默认字体，没有字体文件。
+- 署名牌：用 a6 的 `props/plaques.sign()`，一块，`BLUE HOUR OBSERVATORY` / `Built by c164`。挂在候车室正面（朝南那面墙）门东边的墙墩上，牌心 (84.5, −2.5, −36.0)，比眼睛低一点；人从车里出来往西走，它在右手，脚下是那堆行李。V1 里没有它（牌面那个高度上，正面只有 x 82.4 以西进画面，牌在 84 到 85 之间）；别的看板机位离它都在 39 格以外，牌 16 格外不画。ashlar 的 CABLE STATION 不挂这面墙（11:36 告诉了他）。
+- 依赖：`props/plaques` 11:43 进了总装（404dcc3e），这条分支并了它，署名牌在测试场景里挂上了（4 个 `text_display`）。树里没有它的时候只有标题、没有牌。带着 a2 的 81dffccf（`MK.function`）。
+- 离线图里既没有标题也没有牌：标题画在玩家的屏幕上，离线渲染器不画 `text_display`。两样都要在真机上看：outb 的 verify 数标题的包，s1 用真客户端走一遍。
+- 开关：主场景 `GUIDE = False`（导出 `--no-guide`）时不登记函数、不挂牌，数据包里没有 `guide/` 这个文件夹。
+- 跑过的（节点池断着，没有整套关口，也没有离线留图）：
+  - 本场景的 check（lights 在 node7 代投，op_28196c17bc，提交 725d12cd）：`result: PASS (0 failed, 1 with warnings)`，444 个实体；motion 一项 10 条命令的最忙一刻、平均每刻 4.1 条，都是烟和声音的，标题不在循环上。剩的一条 WARN 是 V1 里浑天仪挡大窗，不是这一包的。
+  - 进游戏的验证（outb，node4，提交 ca2e7516 加他的钩子分支，试跑分支 `cursor/c164-outb-hooktest-f4b8` 64acc11a）：47 项全过。新来的人收到标题 BLUE HOUR、副标题 OBSERVATORY 各一次；再进服标题、副标题、动作栏都没有；聊天栏空；控制台 0 警告；存档名和两个包的说明是 BLUE HOUR OBSERVATORY。那一份存档里还没有牌（当时树里没有 `props/plaques`）。
+- 还要在真机上看的：标题两行在屏幕上的样子（s1 的四台真机）；署名牌读不读得清、离行李和门的距离顺不顺眼、夜里亮不亮过墙（牌的亮度和视距是 `props/plaques` 的常量，跟着十二块牌走）。
+
 ### 丙·走近检测和收尾（smoke，c357；分支 `cursor/c164-smoke-guide-f3-e07b`）
 
 - **文件**：`build/scenes/obs/motion/guide.py`（检测、收尾、登记；cr2 #80365 定的分工），测试场景 `build/scenes/obs_mot_guide/`（台架）。图、图的位置表和微光是 cloud 的 `motion/_guide_charts.py`；`guide.build()` 调它的 `build(canvas, origin)` 一次，读它的 `CHARTS`（六行：名字、图面中心、脚底 y，顺序就是 c1 到 c6：power、time、chart、vault、battery、sunset）和 `STAND`（每张图旁能站的一点）。它不在树里，或者开关没开，`guide.build()` 什么都不登记。cloud 的第一版 5851d18f 并在这一支上（11:35），所以丙的两个文件在同一个提交里交。
