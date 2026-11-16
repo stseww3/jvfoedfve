@@ -712,6 +712,10 @@ def _models():
     out[PREFIX + "forms"] = _forms()
     out[PREFIX + "jacket"] = _jacket()
     out[PREFIX + "desk_lamp"] = _desk_lamp()
+    # the flats of an eight-sided piece stand between two axes, and the game lights such a face as the one or
+    # the other by the last bit of a float: K.settle turns each such piece a tenth of a degree, the same way in all
+    out = {name: K.settle(m) for name, m in out.items()}
+    assert not any(K.unsettled(m) for m in out.values()), "a round piece of the room's own still has flats between two axes"
     return out
 
 
