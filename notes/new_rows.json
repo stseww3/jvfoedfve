@@ -8,5 +8,10 @@
   "machines",
   "switchboard-boiler",
   "| batteryboard（蓄电池室的配电板和铜排） | P3 | 已合并 | mast c346 | d4dfe8ca | `renders/obs_mach_batteryboard/`（离线图） | aide 11-16 派给 mast（#68848）：屋子归 astro c360（`interiors/batteryroom`），墙上那块配电板和汇过来的铜排跟 `machines/board` 是一家。模块 `machines/batteryboard.py` 没有 `build()`，主场景里自己不摆东西，由屋子来调；测试场景 `obs_mach_batteryboard`（一只替身盒子）。卡 `plan/packages/machines/batteryboard.md`。随 switchboard-boiler 的第二次交付进总装（cr3 09:25 合 d4dfe8ca），屏障 12 格随 26d70120。 |"
+ ],
+ [
+  "motion",
+  "smoke",
+  "| guide（导览：进场标题、说明牌、六张星图） | P1 | 制作中 | 甲 mast c346（钩子和 outb 对）；乙 rec c356、ashlar c353（交 a6）；丙 smoke c357、cloud c329（交 cr2） | — | — | 总监 11-16 11:02 开的卡（管理员要投 Realms 的内容评审，类别“体验”；A6 的存档里一个字都没有）。甲：进场标题 THE COMET OBSERVATORY 和一块署名牌；乙：十二块英文说明牌（`text_display`，文字在卡里）；丙：六张星图，走近记上，齐了到大折射镜目镜前有收尾，全是玩家身上的标签、只用函数。有开关（`GUIDE`、导出 `--no-guide`）。**不挡 11:30 的候选版；第一版 11:50 前交，随 12:00 的整包。** aide 11:07 派的人。卡 `plan/packages/motion/guide.md`。离线图不画 `text_display`（s2 11-16 的补丁：离线渲染器遇到不是 item_display 的实体跳过、报一行，原来会停）。 |"
  ]
 ]

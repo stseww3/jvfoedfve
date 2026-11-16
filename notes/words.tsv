@@ -96,3 +96,4 @@ c6ffc329	穹顶室 39829006（cr4 合）：配电板补笔（两只表的夜光�
 6e6cf542	室外走查 c0eba1a7（s2 合）：候选版 A5、A6 两回的清单、可达性和图；`tools/walkreach.py` 学了导出的两条回城规矩（−30 线、云块）；结论 A6 室外挡人的 0 处
 2d5382c6	附属建筑 dd1125db（a4 合，cable 代改）：南观景台北缘栏杆东端 (47, 48) 一格由栏杆改成带压顶的墩，给 lights 放灯
 6c6691e2	安全的天跟进 af45fafc（cr2 合）：撤样板场景 obs_sky_safe（连它的四个文件），OpenGL 路的离线检查，笔记和卡；着色器输出没变
+48ca3e95	钟塔望台的灯 b4c2dd5d（facade 合，只加灯）：LAMP_LEVEL 7→12、rank 2，名字 cage→lookout；重画 8 张图。**整套关口没有 summary**（tower 的节点 13 分钟没回单），facade 照只加灯的规矩自己核了代码和来源
