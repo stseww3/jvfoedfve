@@ -1,0 +1,3 @@
+branch=cursor/c164-clocks-f3-00d6
+head=26d2f7cc104ef0c181bdcad14ed424db2bfb4446
+args=--no-push --tail 30 $'cd build && python ../tools/check.py --scene obs_mach_clocks | grep -E "^\\[(FAIL|WARN)|views|entities|^result" | cut -c1-300 ; python ../tools/check.py --scene obs_mach_clocks_b | grep -E "^\\[(FAIL|WARN)|^result" | cut -c1-300 ; python - <<"EOF"\nfrom collections import Counter\nfrom scenes.obs_mach_clocks import build\nfrom scenes.obs.motion import _kit as MK\nc = build()\nrows = Counter((MK._model_name(e[3]), float(e[3].get("view_range", 1.0))) for e in c.entities if str(MK._model_name(e[3]) or "").startswith("mach_clock"))\nfor (name, view), n in sorted(rows.items()):\n    print(f"{name:28s} view_range {view:g} x{n}")\nEOF' 
