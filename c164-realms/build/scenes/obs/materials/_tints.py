@@ -1,11 +1,12 @@
 """What the biome would colour in a scene (plan/parts/materials.md 9; the sky's move into the
 resource pack, A0 11-16 07:20).
 
-The finished map carries no biome of its own: a biome is a registry file, and Realms takes no world
-that has one. The map stands in the game's own minecraft:the_void, and there the game colours what
-it tints by the biome as it does anywhere: water #3f76e4 and not the look's (sky/mood.py WATER),
-grass and leaves by the game's colour maps. So a block the game tints by the biome would look one
-way in the test scenes (biome obs_blue) and another in the finished map.
+The map carries no biome of its own: a biome is a registry file, and Realms takes no world that has
+one. The map and every test scene stand in the game's own minecraft:the_void (the look is carried by
+the resource pack's shaders, artkit.mood.Carried), and there the game colours what it tints by the
+biome as it does anywhere: water #3f76e4 and not the look's (sky/mood.py WATER), grass and leaves by
+the game's colour maps. The offline renderer still draws from the look's biome. So a block the game
+tints by the biome would look one way in the offline pictures and another in the game.
 
 The occupancy table holds no such block, and this module says whether a built scene keeps to that:
 
