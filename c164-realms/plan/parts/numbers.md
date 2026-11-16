@@ -14,7 +14,12 @@ n += nameplates.plate(canvas, 31, pos, facing="east", origin=origin)
   （`turns=(("x", -90),)` 是平放、从南边读）。返回 1（一个展示实体）。
 - 牌子 52×17 个纹素，一个纹素是 1/96 格：0.54×0.18 格，字高 0.07 格。两三格处读得出，
   小档（16 格以内才画），吃所在格的光。
-- 表里没有的号 `plate()` 直接报错。**要号私信 a6**：机器名和所在的包，我回号并补进表。
+- **要号私信 a6**：机器名和所在的包，我回号。号一回你就能挂，不用等表：表里还没有的号挂的时候写上是什么机器，
+  `nameplates.plate(canvas, 58, pos, what="dome switchboard")`；我随后补进表（补了以后 `what` 留着不碍事）。
+  没给过的号、又不写 `what` 的，`plate()` 报错。01 到 99 的牌子模型都在包里。
+- 谁挂：机器的主人或者屋主在自己的代码里挂，别人的模型不动。一格以上的机器才挂牌（牌子 0.54 格宽，
+  桌上的小仪器不挂）；机器上没有放得下牌子的平面就不挂，号留在表里。
+- `nameplates.hung(canvas)` 是画布上挂了哪些号，`nameplates.unlisted(canvas)` 是其中表里还没有的。
 - 不要自己画铭牌，也不要自己另画字母：别处要写字用 `props/_kit.py` 的 `K.letters(text)`
   （见本页末）。
 
@@ -55,7 +60,8 @@ n += nameplates.plate(canvas, 31, pos, facing="east", origin=origin)
 | 54 | 天窗绞车 | machines/dome | m5 |
 | 55 | 子午环 | machines/meridian | |
 | 56 | 天体照相仪 | machines/astro | |
-| 57 | 寻彗镜 | 待定 | |
+| 57 | 寻彗镜（星图室东窗前的三脚镜） | interiors/chartroom | chart |
+| 58 | 大圆顶室的配电板 | interiors/domeroom | a3 |
 | 61 | 差分机 | machines/difference-engine | clkrm |
 | 62 | 行星仪 | machines/orrery | orrery |
 | 63 | 地震仪 | machines/rec | rec |
@@ -63,6 +69,7 @@ n += nameplates.plate(canvas, 31, pos, facing="east", origin=origin)
 | 65 | 日照计 | 气象站 | power |
 | 66 | 气送管的鼓风机 | props/pneumatic | rec |
 | 67 | 风速记录仪 | 气象站 | power |
+| 68 | 量片仪 | interiors/chartroom | chart |
 | 71 | 天线杆绞车 | machines/mast | mast |
 | 72 | 发报机 | 无线电室 | mast |
 | 73 | 进站信号机 | props/station | lamps |
