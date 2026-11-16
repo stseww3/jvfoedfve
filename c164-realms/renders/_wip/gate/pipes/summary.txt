@@ -1,0 +1,15 @@
+gate props/pipes e11a1a2a: the merged tree e11a1a2a, the assembly as it was 3b8fe174
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 73 scenes in 86 s: 73 pass (73 with warnings)
+pictures: obs_props_pipes: the kept pictures are NOT what the delivered commit e11a1a2a draws (it goes back):
+    [FAIL] selfshots obs_props_pipes at e11a1a2a: 11 of 20 kept pictures are what the code draws, 9 not
+    front: 67666 of 921600 pixels are not what the code draws (off by up to 100 of 255)
+    clip_near: 336 of 921600 pixels are not what the code draws (off by up to 9 of 255)
+    foot: 6 of 921600 pixels are not what the code draws (off by up to 1 of 255)
+    heating_front: 3343 of 921600 pixels are not what the code draws (off by up to 92 of 255)
+    heating_oblique: 48533 of 921600 pixels are not what the code draws (off by up to 96 of 255)
+    heating_along: 38455 of 921600 pixels are not what the code draws (off by up to 96 of 255)
+    heating_valve: 30786 of 921600 pixels are not what the code draws (off by up to 87 of 255)
+    heating_bend: 49026 of 921600 pixels are not what the code draws (off by up to 88 of 255)
+    heating_pier: 23019 of 921600 pixels are not what the code draws (off by up to 90 of 255)
+result: FAIL
