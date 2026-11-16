@@ -35,7 +35,9 @@ def build_models():
 
 
 def write_pack(pack_dir):
-    return materials.pack(pack_dir)
+    """The repainted blocks, and the sky line's sun: the game's own is a white and yellow square
+    wherever a shot looks west over the open horizon."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
 
 
 def shots():
