@@ -1,0 +1,8 @@
+gate machines/switchboard-boiler 1296e146: the merged tree 1296e146, the assembly as it was d30d58ae
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] scope    19 of 21 files are the card's own
+                    not this card's file: A build/scenes/obs/machines/board.py
+                    not this card's file: A build/scenes/obs/machines/boiler.py
+check.py: 60 scenes in 48 s: 60 pass (60 with warnings)
+pictures: [PASS] selfshots obs_mach_switchboard_boiler at 1296e146: 12 of 12 kept pictures are what the code draws
+result: PASS
