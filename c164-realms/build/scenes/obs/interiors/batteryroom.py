@@ -8,7 +8,7 @@ the clocks, the telegraph and the time ball upstairs, evenly, whatever the engin
 The room is the closed cavity main/shell leaves under the time room: 12 wide (x 2..13), 19 long
 (z -25..-7), six rows high (feet at 0, the last clear row 5; the block over it is the time room's
 floor). Its door is one cell in the south wall, (7, 0..1, -6), from under the star hall's north
-gallery (HALL_DOOR; main/shell cuts it when the room has passed its review, not before).
+gallery (HALL_DOOR; main/shell cuts it once the room is in the master scene).
 
 What stands where (plan cells; north is -z, one comes in at the south end and looks north):
 
@@ -48,13 +48,19 @@ What stands where (plan cells; north is -z, one comes in at the south end and lo
                     floor is seen from below, with the iron bed of its cable trough along the
                     north wall (z -24), where the two feeders go up at x 6 and x 9
 
-Light: cold ground, warm points. Three caged lamps and nothing else: two over the aisle on the
-south faces of the first and the third beam, one over the board on the bed of the time room's
-cable trough. A caged lamp throws its light down, so its light is offered under it, in the aisle
-between the jars (LAMPS); half way between two lamps a fill of what both throw (FILLS). The models of the room are held at the height of the upper tier (HELD), so that a jar
+Light: cold ground, warm points. Caged lamps and nothing else, nine of them in three rows across
+the room: on the south faces of the first and the third beam and on the bed of the time room's
+cable trough, one over the aisle and one over the way along either long wall (x 2..4, x 11..13;
+cr4, 11-16: wherever one can walk the feet or the head have 5). A caged lamp throws its light
+down, so its light is offered under it: in the aisle between the jars, in a side way at the head
+of whoever walks there (LAMPS); half way between two lamps of the aisle a fill of what both throw
+(FILLS). The models of the room are held at the height of the upper tier (HELD), so that a jar
 takes the light of the row its glass stands in and not that of the floor.
 
-build() is what the master scene calls: nothing while MOVED_IN is off. The box test scene,
+What stops whoever walks into the battery: a model has no collision, so a barrier stands in
+every cell a bank fills, two high (SOLID; plan/roles/INTERFACE.md, the fifth supplement of 11-16).
+
+build() is what the master scene calls; it places nothing while MOVED_IN is off. The box test scene,
 build/scenes/obs_int_batteryroom, dresses a slice of the real building cut out round the cavity.
 """
 import functools
@@ -73,7 +79,8 @@ from ..main import shell
 from ..props import _kit as K
 from ..props import lamps
 
-MOVED_IN = False
+MOVED_IN = True            # the master scene dresses the room (a card's switch is turned on with its delivery); the
+#                            doorway is main/shell's to cut (HALL_DOOR): until then the room stands closed
 NAME = "interiors/batteryroom"
 PREFIX = "int_batteryroom_"
 PX = 1 / 16.0
@@ -108,6 +115,9 @@ GANTRY_TOP = 37.0                                   # px above the floor: the to
 BAR_Y = (40.0, 44.0)                                # px above the floor: a bus bar, on three pixels of porcelain
 BAR_OFF = 4.0                                       # px either side of the middle of a bank: its two bars
 BAR_SOUTH = BANK_Z[1] + 1 - 1 * PX                  # the bars end over the last jar
+SOLID = tuple((x, FEET + y, z) for a, b in BANKS for x in (a, b) for z in range(BANK_Z[0], BANK_Z[1] + 1) for y in (0, 1))
+#                                                     the cells a bank fills, two high: its collision (barriers)
+SIDE_WAYS = ((X0 + 1, "west"), (X1 - 1, "east"))    # x 3 and 12: the middle of the way along either long wall
 
 # ---- the switchboard and the bars: machines/batteryboard's (c346). It stands before the north wall, x 5..11,
 # y 1..4, a wing before each bank; its pieces take the light of the one cell BB.STAND is in
@@ -119,21 +129,33 @@ TROUGH_Z = Z0 + 1                                   # -24: the time room's cable
 LAMP_Y = TOP + 5 * PX                               # a caged lamp is as high as a beam: its foot on the beam's lower edge
 
 
+FILL = 7                                            # what a caged lamp throws a little way off, and what two throw between them
+
+
 def _pool(z):
     """What a lamp over the aisle throws down: under it, between the jars, as much as a source
     beside a machine may give (8); a row either way and at the height of the bars a step less."""
-    return tuple(((x, FEET + y, z + dz), level) for x in AISLE for y, dz, level in ((1, 0, 8), (1, -1, 7), (1, 1, 7), (3, 0, 7)))
+    return tuple(((x, FEET + y, z + dz), level) for x in AISLE for y, dz, level in ((1, 0, 8), (1, -1, FILL), (1, 1, FILL), (3, 0, FILL)))
 
 
+def _side_pool(x, z):
+    """What a lamp over a side way throws down: under it, at the head of whoever walks there, as
+    much (8); two rows either way a step less, across the three cells of the way. The lamps hang
+    eight and six rows apart: so every cell of the way has 5 at the head."""
+    return (((x, FEET + 1, z), 8),) + tuple(((x + dx, FEET + 1, z + dz), FILL) for dz in (-2, 2) for dx in (-1, 0, 1))
+
+
+LAMP_ROWS = ((BEAM_Z[-1] + 1, "south"), (BEAM_Z[1] + 1, "north"), (TROUGH_Z + 1, "board"))     # z -9, -17, -23
 LAMPS = (
     # where the lamp is fixed and the way that face looks; the cells its light is offered in, each with its level
-    ((AXIS_X, LAMP_Y, BEAM_Z[-1] + 1.0), "south", _pool(BEAM_Z[-1] + 1), "aisle south"),    # on the first beam, over the way in
-    ((AXIS_X, LAMP_Y, BEAM_Z[1] + 1.0), "south", _pool(BEAM_Z[1] + 1), "aisle north"),      # on the third beam
-    ((AXIS_X, LAMP_Y, TROUGH_Z + 1.0), "south",                                             # on the trough's bed, over the board:
+    ((AXIS_X, LAMP_Y, LAMP_ROWS[0][0] + 0.0), "south",                                      # on the first beam, over the way in:
+     _pool(LAMP_ROWS[0][0]) + tuple(((x, FEET + 1, Z1), 8) for x in AISLE), "aisle south"),  # and inside the door (its sill has 7)
+    ((AXIS_X, LAMP_Y, LAMP_ROWS[1][0] + 0.0), "south", _pool(LAMP_ROWS[1][0]), "aisle north"),      # on the third beam
+    ((AXIS_X, LAMP_Y, LAMP_ROWS[2][0] + 0.0), "south",                                      # on the trough's bed, over the board:
      tuple(((x, BOARD_LIGHT[1], BOARD_LIGHT[2]), 8) for x in AISLE)                         # on the board's face
-     + tuple(((x, FEET + 1, TROUGH_Z + 1), 7) for x in AISLE), "board"),                    # and where one stands before it
-)
-FILL = 7                                            # between two lamps the aisle is walked in what both throw: a fill
+     + tuple(((x, FEET + 1, TROUGH_Z + 1), FILL) for x in AISLE), "board"),                 # and where one stands before it
+) + tuple(((S.mid(x), LAMP_Y, z + 0.0), "south", _side_pool(x, z), f"{side} way {row}")     # the same three rows, over each side way
+          for x, side in SIDE_WAYS for z, row in LAMP_ROWS)
 FILLS = tuple((x, FEET + 2, z + 1) for z in (BEAM_Z[2], BEAM_Z[0]) for x in AISLE)      # under the second and the fourth beam
 CAGE_RANK = 3
 
@@ -474,7 +496,9 @@ def build_batteryroom(c, origin=(0, 0, 0), roles=B):
         put(x, y, z, st(roles.PANELS["louvre"], facing=inward))
 
     # ---- the battery: the stand and its jars, block by block; a gantry over each bank under each beam,
-    # held in the row next to the aisle, whose light it takes
+    # held in the row next to the aisle, whose light it takes. A barrier in every cell a bank fills
+    for x, y, z in SOLID:
+        c.set(ox + x, oy + y, oz + z, roles.BARRIER, keep=True)
     for a, b in BANKS:
         for x in (a, b):
             for z in range(BANK_Z[0], BANK_Z[1] + 1):

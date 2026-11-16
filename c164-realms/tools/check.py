@@ -23,7 +23,7 @@ Each check prints PASS, WARN or FAIL; the exit code is 1 when one fails.
 
   regen      the scene, its models, resource pack, data pack and look generate from nothing; the
              data pack holds no file of a registry (Realms takes no world with experimental
-             settings; the look's two files are named until they have moved into the shaders)
+             settings; the look is carried by the resource pack, artkit.mood.Carried)
   conflicts  no resource-pack file is written by two packages; files lie in their category's
              folders and have names the game reads; model names carry their category's prefix
              (plan/roles/INTERFACE.md 4). A package's test scene is held to the same table: the
@@ -216,12 +216,13 @@ def category_of(scene, name):
 # registry (a biome under worldgen/, a dimension, a timeline, a damage type, an enchantment, a
 # variant ...) makes the game mark the world as one with experimental settings, and Realms takes
 # no such world, a map of the content library no more than an upload (plan/roles/COMMON.md 5, red
-# line 5; A0 11-16 07:53, announcement #1196). The look's two files are let through and named
-# until the sky line has moved them into the resource pack's core shaders (A0 #65808): then
-# DATA_LET is empty.
+# line 5; A0 11-16 07:53, announcement #1196). The look's biome and timeline were let through
+# until the sky line had moved the look into the resource pack's core shaders (A0 #65808). It has:
+# the look's biomes are artkit.mood.Carried, the drivers write no file of them, and DATA_LET, the
+# files let through and named, is empty.
 DATA_KINDS = ("function", "tags", "structure", "advancement", "loot_table", "predicate", "recipe",
               "item_modifier")
-DATA_LET = ("data/c164art/worldgen/biome/obs_blue.json", "data/c164art/timeline/obs_looks.json")
+DATA_LET = ()
 
 
 def registry_files(root):
@@ -257,9 +258,18 @@ def regen(rep, name, work):
         else:
             words.append("no build(): a model gallery")
         look = look_of(name)
+        carried, look_files = MOOD.carried(look), []
         if look is not None:
-            MOOD.write(data, "c164art", look.BIOMES, getattr(look, "TIMELINES", None))
             biome = getattr(scene, "BIOME", None)
+            if carried is not None:
+                # the resource pack carries the look (artkit.mood.Carried): no registry file, and
+                # the look's files are written last, as build/makepack.py writes them
+                alone = os.path.join(work, "look")
+                carried.pack(alone, biome)
+                look_files = [f for f in files_under(alone) if f != "pack.mcmeta"]
+                carried.pack(pack, biome)
+            else:
+                MOOD.write(data, "c164art", look.BIOMES, getattr(look, "TIMELINES", None))
             # a bare name is one of the look's biomes; an id with its namespace is taken as it stands, as
             # build/place.py takes it (minecraft:the_void: a world without registry files has the
             # game's own biomes and no other)
@@ -271,7 +281,9 @@ def regen(rep, name, work):
         return None
     words += [f"{len(models)} models", f"{len(files_under(pack))} resource-pack files",
               f"{len(files_under(data))} data-pack files"]
-    if look is not None:
+    if carried is not None:
+        words.append(f"look: carried by the resource pack ({len(look_files)} files), the clock at {carried.clock}")
+    elif look is not None:
         words.append(f"look: {len(look.BIOMES)} biomes, {len(getattr(look, 'TIMELINES', None) or {})} timelines")
     found = registry_files(data)
     banned = [f for f in found if f not in DATA_LET]
@@ -282,14 +294,18 @@ def regen(rep, name, work):
         words.append(f"{len(banned)} registry files in the data pack ({', '.join(kinds)})")
         details = [f"the data pack holds files of a registry: Realms takes no world with experimental settings. "
                    f"A data pack may hold {', '.join(DATA_KINDS)} and nothing else (plan/roles/COMMON.md 5)"]
+        if look is not None and carried is None:
+            details.append("a look reaches the game through the resource pack: the scene's mood.py takes the map's "
+                           "(from scenes.obs.sky.mood import BIOMES, TIMELINES) or wraps its own biomes in "
+                           "artkit.mood.Carried")
         details += clip(banned)
     elif found:
         status = "WARN"
-        details = [f"registry files in the data pack, let through until the look has moved into the resource "
-                   f"pack's shaders (A0 11-16): {', '.join(f.partition('/')[2] for f in found)}"]
+        details = [f"registry files in the data pack, let through for now (DATA_LET): "
+                   f"{', '.join(f.partition('/')[2] for f in found)}"]
     rep.add("regen", status, ", ".join(words) + f" ({time.time() - t0:.1f} s)", details)
     return {"scene": scene, "name": name, "category": category_of(scene, name), "builder": builder,
-            "canvas": canvas, "models": models, "pack": pack, "look": look}
+            "canvas": canvas, "models": models, "pack": pack, "look": look, "look_files": look_files}
 
 
 # ---- conflicts ---------------------------------------------------------------------------------
@@ -380,6 +396,10 @@ def conflicts(rep, got, name, work):
                                       and os.path.basename(path).startswith(prefix or "\0")):
                 warns.append(f"{owner}: {path} is outside the category's folders; tell S2 so the table "
                              f"of areas can name it")
+    for path in got.get("look_files", ()):
+        # the drivers write a carried look into every pack; a scene or a package that writes one of
+        # its files as well shows here as a file written twice
+        by_path.setdefault(path, []).append("the look (the drivers, from the scene's mood.py)")
     for path, who in sorted(by_path.items()):
         if len(who) > 1:
             fails.append(f"{path} is written by {' and '.join(who)}")

@@ -5,8 +5,8 @@
 #
 #   bash c164-realms/tools/exportnext.sh [<commit of the assembly>]
 #       merges the assembly (its head, or the commit named) into the export branch and that into the
-#       dist branch, pushes both and prints the job to send to the node: the save without the look
-#       (the one for Realms) and the same with the look beside it, each made and verified
+#       dist branch, pushes both and prints the job to send to the node (tools/exportround.sh): the
+#       save for Realms and the same without the shaders, each made and verified
 #   bash c164-realms/tools/exportnext.sh done ["what is new in this one"]
 #       after the job's receipt: pulls the dist branch, writes dist/history.json and the table of
 #       dist/README.md (tools/export.py page), takes the older saves out of the tree, pushes, and
@@ -56,7 +56,11 @@ print("【{n}】总装 {assembly}，钟锁 {time}。".format(**r))
 print("1. `{branch}`，`c164-realms/dist/{n}/c164-{n}.zip`，sha256 {sha}。".format(**r))
 print("2. 存档 {zip}，其中资源包 {pack}（{pack_files} 个文件，上限 250 兆）；{blocks} 方块、{entities} 个显示实体。".format(**r))
 print("3. 服务端冷启动两次，{checks} 项{ok}，日志警告和报错 {console} 条。导出 {make_s} 秒，验证 {verify_s} 秒。".format(**r))
-print("数据包：函数 {functions}、标签 {tags}、注册表文件 {registry_files}；占位贴图 {standins} 张。".format(**r))
+print("数据包：函数 {functions}、标签 {tags}、注册表文件 {registry_files}；占位贴图 {standins} 张；资源包里着色器 {shaders} 个。".format(**dict(r, shaders=r.get("shaders") or 0)))
+if r.get("plain"):
+    print("不带着色器的（资源包加载失败时换这个）：`{}`，{}，sha256 {}，{}。".format(
+        r["plain"]["file"], mb(r["plain"]["bytes"]), r["plain"]["sha256"][:8] + "…" + r["plain"]["sha256"][-4:],
+        "验证全过" if r["plain"].get("verified") else "验证没过" if r["plain"].get("verified") is False else "没验"))
 if r.get("look"):
     print("带天的（只给单人看）：`{}`，{}。".format(r["look"]["file"], mb(r["look"]["bytes"])))
 '
@@ -75,5 +79,5 @@ N=$(( $(newest) + 1 ))
 git -C "$DT" merge -q --no-edit "$EB" -m "c164-outb: merge the export branch (assembly $AT) for the whole save A$N" || { echo "$EB does not merge into $DB: by hand"; exit 1; }
 hush git -C "$DT" push -q -u origin "$DB"
 echo "assembly $AT -> $EB @ $(git -C "$ET" rev-parse --short=8 HEAD) -> $DB @ $(git -C "$DT" rev-parse --short=8 HEAD); the next save is A$N"
-echo "the job for the node, on the branch $DB (about four minutes; timeout 1900):"
-echo "bash c164-realms/tools/nodejob.sh --limit 1800 --always --keep c164-realms/dist 'python tools/export.py make --scene obs --name c164-A$N --assembly $AT --out dist/A$N; a=\$?; python tools/export.py verify dist/A$N/c164-A$N.zip; b=\$?; python tools/export.py make --scene obs --name c164-A$N-look --look on --assembly $AT --out dist/A$N; c=\$?; python tools/export.py verify dist/A$N/c164-A$N-look.zip; d=\$?; echo \"plain: make=\$a verify=\$b; look: make=\$c verify=\$d\"; exit \$((a|b|c|d))'"
+echo "the job for the node, on the branch $DB (a minute and a half for each variant; timeout 1900):"
+echo "bash c164-realms/tools/nodejob.sh --limit 1800 --always --keep c164-realms/dist 'bash tools/exportround.sh $N $AT'"
