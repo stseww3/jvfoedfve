@@ -19,7 +19,7 @@ sure that every round looks from the same places.
     walk.py shots    <stations.json> --out <shots.json> [--stations in-A01,in-B03] [--views f,l]
         the shot list of a station table, as build/render.py and tools/shoot.py read it (so a list
         of a few stations can go to the render station for pictures from the game)
-    walk.py sheets   <stations.json> --pictures <prefix> --out <folder>
+    walk.py sheets   <stations.json> --pictures <prefix> --out <folder> [--only A,B]
         contact sheets of pictures drawn as <prefix>-<shot name>.png
     walk.py round    <route.json> --round <the assembly commit, 7 digits> [--stations <stations.json>]
                      [--only A,B] [--no-pictures] [--as-kept]
@@ -879,6 +879,7 @@ def main():
     p.add_argument("table")
     p.add_argument("--pictures", required=True, help="the pictures are <this>-<shot name>.png")
     p.add_argument("--out", required=True)
+    p.add_argument("--only", help="comma separated stretch ids: the sheets of these stretches only")
     p = sub.add_parser("round")
     p.add_argument("route")
     p.add_argument("--round", required=True, help="the assembly commit this round follows, 7 digits")
@@ -951,6 +952,10 @@ def main():
 
     if args.cmd == "sheets":
         table = load_table(args.table)
+        if args.only:
+            wanted = args.only.split(",")
+            table["stretches"] = {k: v for k, v in table["stretches"].items() if k in wanted}
+            table["stations"] = [s for s in table["stations"] if s["stretch"] in wanted]
         written, light = sheets_of(table, args.pictures, args.out)
         write_light(args.out, table, light)
         print("\n".join(report(table, light)))
