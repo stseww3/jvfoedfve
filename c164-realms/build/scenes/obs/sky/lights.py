@@ -39,6 +39,21 @@ the canvas by then and places, in this order:
             the low lamp of props (lamps "post") and its source (_lightkit.STAIR, 8). The newel
             at the mouth in the dome room carries nothing: that room has the one small red lamp
             beside the eyepiece and no other (the director, #442).
+  ways      caged lamps (props' model, lamps "cage") where a way of the main building has no
+            room's lamps: what the walk-through found dark (scenes.obs_sky_lights.ways reads the
+            block light at its stations). On the telescope pier, which the ring stair winds round:
+            on its west face one over the floor, which the way from the west door ends on, and
+            one level with the stair's west run, over the cross gallery; on its south face one
+            level with the south run; on its north face one under the corbel, for the last turn.
+            None on the east face, which is the mother clock's and looks at the door. On the curb
+            over the stair's south-east landing one that looks west, hidden from the hall.
+            At either end of the cross gallery and at the head of either flight of the grand
+            stair one on the wall, as high as the hall's own along the galleries. The way to the
+            west door has the hall's lamps under its vault. The sources are of the third rank
+            (_lightkit.WAY, 8; those on the gallery walls and the one on the curb 7, the hall's
+            level up there and what the dome room over the curb bears).
+            The stair's last three steps keep what reaches them: they come up into the dome
+            room, which has its one red lamp and the sky in the slit (the director, #442).
   offers    what the other lines registered with _lightkit.suggest() and take(): a source is placed
             when its cell is free and something that glows is within two cells of it.
   pools     at the foot of every street lamp whose source was placed, one more (_lightkit.POOL, 12):
@@ -56,7 +71,7 @@ fronts, whatever the switch says, with _lightkit.dress(canvas) and dress(canvas,
 
 What was done is written down in canvas.light_report (see report()); summary() gives it as text.
 build() returns the number of display entities it placed (the projectors of the wash, the lamp of
-the ring stair).
+the ring stair, the lamps of the ways).
 """
 import math
 
@@ -103,7 +118,9 @@ POOLED = ("props/lamps:street",)         # the lamps that get a pool at their fo
 POOL_DROP = 4                           # a pedestal's cap is at most this many rows over the ground its pool lies on
 DOOR_WHY, HALL_WHY = "sky/lights:door", "sky/lights:hall"
 WASH_WHY, WINDOW_WHY = "sky/lights:wash", "sky/lights:window"
-POOL_WHY, STAIR_WHY = "sky/lights:pool", "sky/lights:stair"
+POOL_WHY, STAIR_WHY, WAY_WHY = "sky/lights:pool", "sky/lights:stair", "sky/lights:way"
+WAY_ROW = 2                             # a lamp over a floor one walks on: its cell is the third over the floor
+WAY_HIGH = 4                            # on a gallery wall: the hall's caged lamps hang in this row over the deck
 GLOWING = tuple(B.PANELS[k] for k in ("tubes", "scope", "pilot_lamps"))     # glow without giving light
 NEAR = ((0, -1, 0), (1, 0, 0), (-1, 0, 0), (0, 0, 1), (0, 0, -1), (0, 1, 0))
 
@@ -134,6 +151,7 @@ def report(canvas):
                                             in the open hall (before the pier, over the flights' feet)
       wash       [cell]                     the cells of the projectors of the wall wash
       stair      [cell]                     the source of the lamp on the ring stair's newel
+      ways       [cell]                     the sources of the lamps along the ways indoors
       pools      [cell]                     the sources at the feet of the street lamps
       fifteen    [cell]                     sources of level 15 on the canvas (whoever placed them)
       foreign    n                          sources on the canvas that this module did not place
@@ -144,7 +162,7 @@ def report(canvas):
     if not hasattr(canvas, "light_report"):
         canvas.light_report = dict(
             placed={}, ranks={1: 0, 2: 0, 3: 0}, levels={}, rejected=[], capped=[], merged=[], moved=[],
-            windows={}, table={}, dressed=False, doors=[], hall=[], wash=[], stair=[], pools=[], fifteen=[],
+            windows={}, table={}, dressed=False, doors=[], hall=[], wash=[], stair=[], ways=[], pools=[], fifteen=[],
             foreign=0, isolated=[], notes=[], problems=[], _seen=set(), _records=[], _before=set(), _entered=set(),
             _poles=[])
     return canvas.light_report
@@ -173,7 +191,7 @@ def summary(canvas):
         out.append(f"main's table under {look}: dark {n[0]}, dim {n[1]}, lit {n[2]}, bright {n[3]}")
     out.append(f"dressed: {'yes' if r['dressed'] else 'no'}; doors: {r['doors'] or 'none'}; behind them: "
                f"{len(r['hall'])} sources; wash: {len(r['wash'])} projectors; stair: {len(r['stair'])}; "
-               f"pools: {len(r['pools'])}; not placed here: {r['foreign']}; level 15: {len(r['fifteen'])}; "
+               f"ways: {len(r['ways'])}; pools: {len(r['pools'])}; not placed here: {r['foreign']}; level 15: {len(r['fifteen'])}; "
                f"isolated: {len(r['isolated'])}")
     for key in ("capped", "moved", "merged", "rejected"):
         for entry in r[key]:
@@ -493,6 +511,66 @@ def _stair(canvas, r, origin):
     return n
 
 
+
+# ---- the ways indoors ---------------------------------------------------------------------------------
+FACE = {"north": (0, -1), "south": (0, 1), "west": (-1, 0), "east": (1, 0)}
+
+
+def way_lamps():
+    """Where the lamps of the ways hang, as main/shell stands: [(the block of the wall the lamp
+    is fixed to (x, y, z), the way its face looks, the level of its source, what it lights)], in
+    the building's own coordinates. Empty without main/shell."""
+    try:
+        from ..main import shell
+    except ImportError:
+        return []
+    x0, z0, x1, z1 = S.PIER_SHAFT
+    cx, cz = S.DOME_CENTRE
+    ex0, ez0, ex1, ez1 = S.PIER_ENVELOPE
+    tread = {}
+    for x, z, y, _half, _top in shell.ring_stair():
+        tread.setdefault((x, z), y)                                 # the first pass of a column: the lower one
+    out = [((x0, S.GROUND + WAY_ROW, cz), "west", L.WAY, "the pier's foot, where the way from the west door ends"),
+           ((x0, tread[(ex0, cz)], cz), "west", L.WAY, "the ring stair's west run and the cross gallery under it"),
+           ((cx, tread[(cx, ez1)], z1), "south", L.WAY, "the ring stair's south run"),
+           ((cx, shell.ROOF_Y - 2, z0), "north", L.WAY, "the ring stair's last turn"),
+           ((ex1 + 1, shell.ROOF_Y - 1, ez1), "west", L.WAY - 1, "the ring stair's south-east landing and its east run")]
+    row = shell.DECK_Y + WAY_HIGH
+    for x, what in ((shell.ARCADE_X[0], "end of the cross gallery"), (shell.LANDING_X, "flight of the grand stair, at its head")):
+        out += [((x, row, -shell.CROSS_Z), "south", L.WAY - 1, f"the north {what}"),
+                ((x, row, shell.CROSS_Z), "north", L.WAY - 1, f"the south {what}")]
+    return out
+
+
+def _ways(canvas, r, origin):
+    """The caged lamps of way_lamps(), each where its wall stands and the cell before it is free,
+    with its source in that cell. Returns the number of display entities placed."""
+    found = way_lamps()
+    if not found:
+        return 0
+    try:
+        from ..props import lamps
+    except ImportError:
+        r["notes"].append("no lamps along the ways: props/lamps is not in the tree, and a source without a lamp is not placed")
+        return 0
+    ox, oy, oz = origin
+    n = 0
+    for (x, y, z), facing, level, what in found:
+        dx, dz = FACE[facing]
+        wall, cell = (x + ox, y + oy, z + oz), (x + dx + ox, y + oy, z + dz + oz)
+        if cell in r["ways"]:
+            continue
+        if not _solid(canvas, *wall):
+            continue                                                # this wall does not stand here
+        if canvas.has(*cell) and cell not in r["placed"]:
+            r["notes"].append(f"no lamp for {what}: the cell {cell} before its wall is taken")
+            continue
+        at = (x + 0.5 + 0.5 * dx, y + 0.5, z + 0.5 + 0.5 * dz)      # the middle of the block's face
+        n += lamps.place(canvas, "cage", at, facing=facing, origin=origin, light=False)
+        _put(canvas, r, cell, level, WAY_WHY)
+        r["ways"].append(cell)
+    return n
+
 # ---- the offers ----------------------------------------------------------------------------------------
 def _settle(canvas, r):
     index = _entity_index(canvas)
@@ -652,6 +730,7 @@ def build(canvas, origin=(0, 0, 0)):
     _entrance(canvas, r, origin)
     n = _wash(canvas, r, origin) if r["dressed"] else 0
     n += _stair(canvas, r, origin)
+    n += _ways(canvas, r, origin)
     _settle(canvas, r)
     _pools(canvas, r)
     _survey(canvas, r)
