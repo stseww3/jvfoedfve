@@ -13,6 +13,8 @@ The views (shots(); python -m scenes.obs_mach_cablecar_winch writes them to shot
   v1                        the arrival view as the skeleton fixes it: nothing of the machines is in it
   back                      the same eye turned round: the car's door
   door                      the car's door end from the head of the track, between the buffer stops
+  stand                     the driver's stand on the two buffer stops, from the platform before them:
+                            the controller and the hand brake, the gong, the maker's plate
   car, car_side, car_end    the car from three blocks: from the platform, from the bay between the
                             glass roof's columns, from over the trestle
   winch                     the winch house's opening from across the platform, the winch's rail before it
@@ -49,6 +51,8 @@ VIEWS = [
     # is the arrival view's, and looks where the skeleton says.
     ("back", (V1["pos"][0] + 0.05, V1["pos"][1], V1["pos"][2]), (CAR_X, -2.55, CAR_Z)),
     ("door", (86.5, STAND, -32.5), (CAR_X - 1.0, -2.6, CAR_Z)),
+    # the driver's stand on the two buffer stops, from the platform before them
+    ("stand", (85.4, STAND, -32.5), (87.5, -3.0, -32.5)),
     # the car from three blocks: its door end and south side, its south side square on between the
     # two columns of the glass roof, its valley end from over the trestle
     ("car", (87.4, STAND, -29.4), (CAR_X - 0.3, -2.7, CAR_Z)),

@@ -42,6 +42,8 @@ The models (all "mach_cable_"):
   turn     the level roller that turns the rope on to the trestle's line.
   roller   a track roller on its tie, that carries the rope: at the brow and down the slope.
   rope     the haul rope, drawn out between two points (M.between).
+  control  the driver's stand on the north buffer stop: the controller and the hand brake.
+  gong     the signal gong on the south buffer stop, and the maker's plate on that block's face.
 
 For the motion line (MOVING below): the drum and the sheave are models of their own, anchored on
 their axes, and their entities carry a tag. Turning them the positive way about x pays the rope
@@ -50,7 +52,7 @@ are not split.
 
 Scale (A5 1.2: px = scale keeps 16 texels to the block): drum and frame 2, the rest 1 -- the
 car is two blocks long and three wide over its eaves, as much as a model drawn texel for texel
-may span. 26 display entities, one of them the lamp family's wall lamp in the winch house
+may span. 28 display entities, one of them the lamp family's wall lamp in the winch house
 (WORK_LAMP).
 
 Blocks: the models stop nobody, so the package sets what does. Barriers inside the two solid
@@ -88,6 +90,7 @@ PX = 1.0 / 16.0                         # one texel, in blocks
 IRON, IRON_D, BRASS, BRASS_D = PK.IRON, PK.IRON_D, PK.BRASS, PK.BRASS_D
 WOOD = P.mat("dark_wood")
 WOOD_D = P.mat("dark_wood", base=1)                     # the sunk panel of the door
+RED = P.mat("signal")                                   # painted red: the brake's hand wheel
 GLOW = [PK.flat("glow", i) for i in range(len(P.RAMPS["glow"]))]
 ROPE, ROPE_TOP, ROPE_UNDER = PK.flat("iron", 4), PK.flat("iron", 5), PK.flat("iron", 2)
 BELT, BELT_EDGE = PK.flat("old_copper", 1), PK.flat("old_copper", 0)        # a leather belt
@@ -136,6 +139,10 @@ _I = P.RAMPS["iron"]
 # One chequer plate of the duct's cover: a rim, raised lozenges, a slot to lift it by.
 PLATE = Sprite(PREFIX + "plate", ["22222222", "24334332", "23343342", "23433432", "24334332", "23343342",
                                   "23300332", "22222222"], {"0": _I[0], "2": _I[2], "3": _I[3], "4": _I[4]})
+_B = P.RAMPS["brass"]
+# The maker's plate on the driver's stand: a raised rim, two lines of lettering.
+NAME = Sprite(PREFIX + "name", ["3333333333", "3010010103", "3100101013", "3333333333"],
+              {"0": _B[0], "1": _B[3], "3": _B[4]})
 
 
 # --- where it stands ------------------------------------------------------------------------------
@@ -215,6 +222,25 @@ LAMP = (AXLE[0], FEET + 3.5, float(ROOM[1]))            # a point on the north w
 LAMP_KIND = "bracket"
 LAMP_LEVEL = None                                       # None: the lamp's own (12: the drum's cell gets 9, the sheave's 6)
 WORK_LAMP = True                                        # False if the winch house is ever lit by a lamp of the site's
+
+# The driver's stand. The two buffer stops at the head of the track (the shell's: riveted iron, a
+# block high, flat on top, a whole face to the platform) carry what the winch is driven with, at
+# the hand of who stands before them and looks down the track. On the north one, beside the winch
+# house: the controller, a cast drum under a brass cap with the handle that is swung round it,
+# and the hand brake, a red wheel on a short column over its ratchet. On the south one the signal
+# gong; on its face to the platform the maker's plate.
+#
+# The arrival view's eye is in the cell between the two blocks, east of them, and looks west over
+# them and up: its lower edge passes over a block's top by three texels at the south block's far
+# corner and by six and more over its near half, and the north block lies beyond the picture's
+# right edge but for its south-west corner. So everything stands in the north half of a block's
+# top, the gong in the near corner of its block, and nothing is higher than STAND_TOP; all of it
+# is under the eye's level, below both parts of the sky that are kept clear. Nothing leaves a
+# block's footprint but the plate, half a texel proud of the face it is riveted to.
+STOP_X = SHELL.HEAD - 1                                 # 87: the buffer stops' column
+CONTROL = (STOP_X + 0.5, FEET + 1.0, AXIS - 0.5)        # (87.5, -3, -33.5): the middle of the north block's top
+GONG = (STOP_X + 0.5, FEET + 1.0, AXIS + 1.5)           # (87.5, -3, -31.5): the middle of the south block's
+STAND_TOP = FEET + 1.0 + 6 * PX                         # -2.625
 
 
 def _runs(c1, r1, c2, r2):
@@ -595,8 +621,62 @@ def _rope():
     return m
 
 
+def _control():
+    """What the winch is driven with, on the north buffer stop. Anchor: the middle of the block's
+    top; x is east (towards the car), z south. All of it stands in the north half of the top.
+
+    A cast bed plate, riveted down. On its east half the controller: a cast drum under a brass
+    cap, the spindle through it and the handle that is swung round, with a wooden knob. On its
+    west half the hand brake: a short column over a ratchet with its pawl, and on it a red wheel
+    of four spokes, level, a brass nut on its hub."""
+    m = M.Model(PREFIX + "control")
+    m.box((-7.5, 0.0, -7.5), (7.5, 0.5, 1.0), IRON_D, grain="x")                   # the bed plate
+    for x in (-6.5, 6.5):
+        for z in (-6.5, 0.0):
+            PK.rivet(m, (x, 0.5, z), "y")
+    cx, cz = 3.5, -3.0                                      # the controller
+    m.tube("y", (cx, cz), 0.5, 3.0, 3.0, IRON, sides=12)
+    m.tube("y", (cx, cz), 3.0, 3.75, 3.25, BRASS, sides=12)
+    m.tube("y", (cx, cz), 3.75, 4.5, 0.75, BRASS_D)
+    knob = (cx - 2.5, cz + 1.5)
+    m.beam((cx, 4.25, cz), (knob[0], 4.25, knob[1]), 1.0, 0.75, BRASS)             # the handle
+    m.tube("y", knob, 4.5, 5.75, 0.75, WOOD)                                       # its knob
+    bx, bz = -3.5, -3.0                                     # the hand brake
+    m.tube("y", (bx, bz), 0.5, 1.25, 2.0, IRON_D)                                  # the ratchet
+    pawl = (bx + 2.5, 1.0, bz + 1.4)
+    m.box((pawl[0] - 0.75, 0.5, pawl[2] - 0.4), (pawl[0] + 0.75, 1.5, pawl[2] + 0.4), IRON, rot=("y", 30.0, pawl))
+    m.tube("y", (bx, bz), 1.25, 4.25, 1.0, IRON)                                   # the column
+    m.ring("y", (bx, 4.75, bz), 3.0, 1.0, 1.0, RED, sides=12)                      # the wheel's rim
+    for a, b in (((bx - 2.5, bz), (bx + 2.5, bz)), ((bx, bz - 2.5), (bx, bz + 2.5))):
+        m.beam((a[0], 4.75, a[1]), (b[0], 4.75, b[1]), 0.75, 0.5, IRON_D)          # its spokes
+    m.tube("y", (bx, bz), 4.25, 5.25, 1.0, BRASS_D)                                # the hub
+    m.box((bx - 0.5, 5.25, bz - 0.5), (bx + 0.5, 5.75, bz + 0.5), BRASS)           # the nut
+    return m
+
+
+def _gong():
+    """The signal gong and the maker's plate, on the south buffer stop. Anchor: the middle of the
+    block's top; x is east, z south. The gong stands in the block's north-east corner, the one
+    nearest the eye of the arrival view and so the deepest under its lower edge: a shallow brass
+    dome on a short post, a nut on its crown, and beside it the striker on its arm. The plate is
+    riveted to the block's west face, where who comes along the platform reads it."""
+    m = M.Model(PREFIX + "gong")
+    cx, cz = 3.5, -3.5
+    m.tube("y", (cx, cz), 0.0, 1.0, 1.25, IRON_D)
+    m.ball((cx, 1.0, cz), 3.0, BRASS, sides=12, layers=3, squash=0.7, part=(0.0, 1.0))
+    m.tube("y", (cx, cz), 3.0, 3.6, 0.6, IRON_D)
+    m.box((cx - 5.0, 0.0, cz - 0.75), (cx - 4.0, 1.5, cz + 0.75), IRON_D)          # the striker's post
+    m.beam((cx - 4.5, 1.25, cz), (cx - 3.25, 1.75, cz), 0.5, 0.5, IRON_D)          # its arm
+    m.box((cx - 3.75, 1.25, cz - 0.5), (cx - 2.9, 2.25, cz + 0.5), BRASS_D)        # its head, at the dome's rim
+    m.box((-8.5, -7.0, -5.0), (-8.0, -3.0, 5.0), BRASS_D, faces={"w": NAME})       # the maker's plate
+    for z in (-4.5, 4.5):
+        PK.rivet(m, (-8.5, -5.0, z), "-x", proud=0.25)
+    return m
+
+
 BUILDERS = {"car": _car, "drum": _drum, "frame": _frame, "motor": _motor, "belt": _belt, "sheave": _sheave,
-            "stand": _stand, "duct": _duct, "hood": _hood, "turn": _turn, "roller": _roller, "rope": _rope}
+            "stand": _stand, "duct": _duct, "hood": _hood, "turn": _turn, "roller": _roller, "rope": _rope,
+            "control": _control, "gong": _gong}
 SCALE = {PREFIX + name: 2.0 if name in ("drum", "frame") else 1.0 for name in BUILDERS}
 # For the motion line: what turns, about which axis of its own model (through the anchor), the tag
 # its entities carry, and how fast against the drum (the rope runs as fast on both). Positive pays out.
@@ -640,6 +720,11 @@ def build(canvas, origin=(0, 0, 0)):
     for x, z in GUARD:                      # the winch's rail
         canvas.set(x + ox, int(FEET) + oy, z + oz, GUARD_RAIL)
     n = put("car", CAR) + put("hood", HOOD)
+    for name, at in (("control", CONTROL), ("gong", GONG)):
+        top = at[1] + built[PREFIX + name].bounds()[1][1] * PX
+        if top > STAND_TOP + 1e-9:
+            raise ValueError(f"{name}: its top, {top:.3f}, is over {STAND_TOP}: the arrival view would see it")
+        n += put(name, at)
     for row in DUCT_ROWS:
         n += put("duct", (X_ROPE, FEET, row + 0.5))
 
