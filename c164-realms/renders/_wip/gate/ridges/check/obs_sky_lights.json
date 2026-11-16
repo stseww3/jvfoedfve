@@ -1,0 +1,347 @@
+{
+ "scene": "obs_sky_lights",
+ "commit": "13871be",
+ "result": "FAIL",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "WARN",
+   "summary": "113390 blocks, 291 entities, 74 models, 889 resource-pack files, 59 data-pack files, look: 1 biomes, 1 timelines (1.6 s)",
+   "details": [
+    "registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json"
+   ]
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 888 files, no file written twice, the folders and the prefix of sky are kept (2 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "198 pictures, every colour in the palette; 9 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "672 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "43 kinds of block placed, 36 barrier cells (x -384..16, y 0..1, z -5..5), all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of sky: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "FAIL",
+   "summary": "291 display entities, 54 models never placed",
+   "details": [
+    "3 display entities show 'c164:sky_ridge_north', which the pack does not have",
+    "3 display entities show 'c164:sky_ridge_north_far', which the pack does not have",
+    "3 display entities show 'c164:sky_ridge_south', which the pack does not have",
+    "3 display entities show 'c164:sky_ridge_south_far', which the pack does not have",
+    "prop_iron_canopy_lamp_under x3: 5.79/16/44.19 pixels to the block along x/y/z, not 16"
+   ]
+  },
+  {
+   "check": "views",
+   "status": "WARN",
+   "summary": "27 shots, most display entities in view: 101 (blue_front), limit 600; counted without what walls hide; the game draws up to 198 (blue_west): a display entity without width and height is drawn outside the view too",
+   "details": [
+    "blue_front: 4 of the 101 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "blue_axis: 4 of the 101 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "blue_v1: 4 of the 101 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "blue_slant: 4 of the 37 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "blue_surround: 4 of the 75 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "blue_v3: 4 of the 73 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "blue_door: 4 of the 71 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "blue_v7: 4 of the 41 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "blue_wash: 4 of the 81 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "deep_front: 4 of the 101 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "deep_axis: 4 of the 101 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "deep_v1: 4 of the 101 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "deep_slant: 4 of the 37 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "deep_surround: 4 of the 75 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "deep_door: 4 of the 71 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "deep_wash: 4 of the 81 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "(the tracking range is read off the game's code, not yet seen on the real machine)"
+   ],
+   "data": {
+    "shots": [
+     {
+      "name": "blue_front",
+      "in_view": 101,
+      "drawn": 101,
+      "beyond_tracking": 4
+     },
+     {
+      "name": "blue_axis",
+      "in_view": 101,
+      "drawn": 101,
+      "beyond_tracking": 4
+     },
+     {
+      "name": "blue_v1",
+      "in_view": 101,
+      "drawn": 101,
+      "beyond_tracking": 4
+     },
+     {
+      "name": "blue_slant",
+      "in_view": 37,
+      "drawn": 101,
+      "beyond_tracking": 4
+     },
+     {
+      "name": "blue_surround",
+      "in_view": 75,
+      "drawn": 101,
+      "beyond_tracking": 4
+     },
+     {
+      "name": "blue_v3",
+      "in_view": 73,
+      "drawn": 101,
+      "beyond_tracking": 4
+     },
+     {
+      "name": "blue_door",
+      "in_view": 71,
+      "drawn": 101,
+      "beyond_tracking": 4
+     },
+     {
+      "name": "blue_v7",
+      "in_view": 41,
+      "drawn": 101,
+      "beyond_tracking": 4
+     },
+     {
+      "name": "blue_wash",
+      "in_view": 81,
+      "drawn": 101,
+      "beyond_tracking": 4
+     },
+     {
+      "name": "blue_west",
+      "in_view": 97,
+      "drawn": 198,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "deep_front",
+      "in_view": 101,
+      "drawn": 198,
+      "beyond_tracking": 4
+     },
+     {
+      "name": "deep_axis",
+      "in_view": 101,
+      "drawn": 198,
+      "beyond_tracking": 4
+     },
+     {
+      "name": "deep_v1",
+      "in_view": 101,
+      "drawn": 198,
+      "beyond_tracking": 4
+     },
+     {
+      "name": "deep_slant",
+      "in_view": 37,
+      "drawn": 189,
+      "beyond_tracking": 4
+     },
+     {
+      "name": "deep_surround",
+      "in_view": 75,
+      "drawn": 141,
+      "beyond_tracking": 4
+     },
+     {
+      "name": "deep_door",
+      "in_view": 71,
+      "drawn": 191,
+      "beyond_tracking": 4
+     },
+     {
+      "name": "deep_wash",
+      "in_view": 81,
+      "drawn": 155,
+      "beyond_tracking": 4
+     },
+     {
+      "name": "glow_front",
+      "in_view": 97,
+      "drawn": 194,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "glow_axis",
+      "in_view": 97,
+      "drawn": 198,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "glow_v1",
+      "in_view": 97,
+      "drawn": 198,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "glow_slant",
+      "in_view": 33,
+      "drawn": 185,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "glow_surround",
+      "in_view": 71,
+      "drawn": 137,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "levels_front",
+      "in_view": 0,
+      "drawn": 97,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "levels_front_deep",
+      "in_view": 0,
+      "drawn": 97,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "levels_9",
+      "in_view": 0,
+      "drawn": 38,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "levels_10",
+      "in_view": 0,
+      "drawn": 40,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "levels_12",
+      "in_view": 0,
+      "drawn": 42,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "PASS",
+   "summary": "V1 at (88.5, -2.38, -32.5): the front from y 4 up 0.4% hidden (base storey 0.0% by blocks and 1.3% more by models, great windows 0.0%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 0.9 s)",
+   "details": [],
+   "data": {
+    "the base storey": {
+     "lines": 1104,
+     "hidden": 14,
+     "seen_through": 0,
+     "hidden_by_blocks": 0,
+     "hidden_by_models": 14
+    },
+    "the great windows": {
+     "lines": 1656,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the cornice": {
+     "lines": 1104,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the clock tower": {
+     "lines": 672,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the time-ball mast": {
+     "lines": 22,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the great dome": {
+     "lines": 1688,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the small dome": {
+     "lines": 290,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "comet": {
+     "elevation": 41.0,
+     "across": 0.6128,
+     "down": 0.2647,
+     "lost": 0,
+     "body": {
+      "lines": 350,
+      "outside_clear": 0,
+      "covered": 0,
+      "from": -7.29,
+      "to": 1.2,
+      "low": 39.99,
+      "up": 54.24
+     }
+    },
+    "clear": {
+     "up": 61.0,
+     "blocks": [
+      {
+       "name": "between the two ends of the main building",
+       "from": -1.24,
+       "to": 44.16,
+       "low": 0.0,
+       "up": 61.0,
+       "lines": 44835,
+       "covered": 0
+      },
+      {
+       "name": "where the comet hangs, north of the main building",
+       "from": -15.0,
+       "to": -1.49,
+       "low": 35.0,
+       "up": 61.0,
+       "lines": 5880,
+       "covered": 0
+      }
+     ]
+    },
+    "left": {
+     "from": 44.66,
+     "to": 70.0,
+     "posts": []
+    }
+   }
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "nothing moves",
+   "details": []
+  }
+ ]
+}
