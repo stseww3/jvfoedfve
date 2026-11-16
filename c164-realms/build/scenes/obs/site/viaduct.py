@@ -4,7 +4,7 @@ every cell and every level here is read from it: a4 #88816 and #91496, 11-16).
 
 Eighteen piers and seventeen arches, every bay the same and a block lower than the one before: the
 line falls a block in the nine of a bay. A pier is as long as _rail.PIER along the line and as
-wide as the deck, with a pilaster a block deep on either face that carries a cap at the parapet;
+wide as the deck, and over it a pilaster a block deep goes up either face to a cap at the parapet;
 an arch spans the seven blocks between two piers, a half block of straight and a half circle over
 it (RISE). The masonry is level in every bay and steps down at the pier's cap, where the lower
 parapet runs into the pilaster; only the rails follow the grade, in half blocks. The first arches
@@ -25,10 +25,13 @@ them on either side, and at the piers a row further out):
   the body      tuff brick, the stone of the station and the power house, down to the arch
   the ring      dressed tuff a block thick round every opening, standing on an impost of the same
                 stone on the pier; over the crown a keystone goes up to the coping
-  the pilaster  brick, a block proud of the face from the pier's foot to the parapet: a dressed
-                band where the two arches spring and a dressed cap level with the higher coping,
-                which the lower one runs into. Poles and lamps that want to stand on the viaduct
-                stand on the caps: stand()
+  the band      on the pier, the two courses its two arches spring from, dressed all round
+  the pilaster  brick, a block proud of the face over each pier: it stands on a corbel at the
+                band and carries a dressed cap level with the higher coping, which the lower one
+                runs into; the shaft under the band is plain. Poles and lamps that want to stand
+                on the viaduct stand on the caps: stand()
+  the spouts    an iron spout out of each face at either end of every arch, in the crown's course:
+                the deck's drains
 
 What is whose: the incline's last column is x 111 and nothing here stands west of x 112. This
 package builds no lower than LOWEST (the level the cloud may be laid up to beside what stands in
@@ -59,6 +62,8 @@ BALLAST_SLAB = B.ROCK_COBBLED.slab
 SLEEPER = B.DARK_WOOD.block                 # the sleepers that show between the rails
 SLEEPER_SLAB = B.DARK_WOOD.slab
 RAIL = B.IRON_RIVETED.slab                  # the incline's rails (cablecar.IRON_SLAB)
+SPOUT = B.IRON_ROD                          # a drain's spout: [facing] is the way it points
+FACINGS = {"east": (1, 0), "west": (-1, 0), "south": (0, 1), "north": (0, -1)}
 
 # --- the numbers ------------------------------------------------------------------------------------------
 TRACK = R.GAUGE["half"]                     # 1.5: the track's three rows
@@ -146,14 +151,24 @@ def _column(x, z, cell):
         return out
     cope = coping(k if pier else k + 1)
     spring = arch(side)[1]
+    deep = min(LOWEST, cope - CROWN)            # under LOWEST only what carries the track
+    if off > HALF:
+        # the pilaster: a strip from a corbel at the pier's band up to its cap at the coping
+        band, corbel = cope - COLLAR[0], cope - COLLAR[1]
+        out[cope - 1] = DRESSED
+        for y in range(cope - 2, max(band, deep - 1), -1):
+            out[y] = BRICK
+        if band >= deep:
+            out[band] = DRESSED
+        if corbel >= deep:
+            out[corbel] = f"{DRESSED_SLAB}[type=top]"
+        return out
     if off < TRACK:
         upper = _track(cell, out)
     else:
         out[cope - 1] = DRESSED
         upper = cope - 2
-    # the body: a pier down to the rock or to LOWEST, an arch down to its ring; under LOWEST only
-    # what carries the track
-    deep = min(LOWEST, cope - CROWN)
+    # the body: a pier down to the rock or to LOWEST, an arch down to its ring
     rock = low = edge = None
     if pier:
         rock = terrain.top(x, z)
@@ -173,17 +188,40 @@ def _column(x, z, cell):
     for y, state in list(out.items()):
         if state != BRICK:
             continue
+        mid = y + 0.5
         plinth = rock is not None and y == foot
-        if off > HALF:
-            dressed = plinth or cope - y in COLLAR
-        else:
-            mid = y + 0.5
-            ring = mid >= centre - 1e-9 and math.hypot(u - RADIUS, mid - centre) < RADIUS + RING
-            impost = pier and y == spring - 1
-            key = off >= TRACK and not pier and abs(u - RADIUS) <= KEY and y == cope - 2
-            dressed = plinth or ring or y == edge or impost or key
-        if dressed:
+        ring = mid >= centre - 1e-9 and math.hypot(u - RADIUS, mid - centre) < RADIUS + RING
+        impost = pier and cope - y in COLLAR
+        key = off >= TRACK and not pier and abs(u - RADIUS) <= KEY and y == cope - 2
+        if plinth or ring or y == edge or impost or key:
             out[y] = DRESSED
+    return out
+
+
+def _spouts(blocks):
+    """The deck's drains, {(x, y, z): state}: an iron spout out of each face at either end of every
+    arch, beside the pilasters, in the course of the crown (the low places of the fill over the
+    haunches). A spout lies along the block grid, out of a stone that stands behind it."""
+    out = {}
+    for k in range(R.SPANS):
+        s0, _ = arch(k)
+        y = coping(k + 1) - CROWN
+        if y < LOWEST:
+            continue
+        for u in (0.5, SPAN - 0.5):
+            p = R.at(s0 + u)
+            for side in (1.0, -1.0):
+                x, _, z = p.off(side * (HALF + 0.5))
+                cx, cz = int(math.floor(x)), int(math.floor(z))
+                if (cx, y, cz) in blocks:
+                    continue
+                nx, nz = -p.hz * side, p.hx * side
+                for name, (dx, dz) in sorted(FACINGS.items(), key=lambda f: -(f[1][0] * nx + f[1][1] * nz)):
+                    if dx * nx + dz * nz < 0.5:
+                        break
+                    if blocks.get((cx - dx, y, cz - dz)) in (BRICK, DRESSED):
+                        out[(cx, y, cz)] = f"{SPOUT}[facing={name}]"
+                        break
     return out
 
 
@@ -196,15 +234,18 @@ def plan():
             continue                    # the station and the incline: the cable line's
         for y, state in _column(x, z, cell).items():
             out[(x, y, z)] = state
+    out.update(_spouts(out))
     return out
 
 
 def piers_cells():
-    """For the cloud line: [(pier number, [(x, z), ...])], the columns of each pier with its two
-    pilasters, which this package fills down to LOWEST and no lower."""
+    """For the cloud line: [(pier number, [(x, z), ...])], the columns of each pier's shaft, which
+    this package brings down to LOWEST and no lower (the pilasters stand on corbels and have no
+    shaft; a pier that stands on the rock, or whose bay lies under LOWEST, has no columns here)."""
+    blocks = plan()
     out = [(k, []) for k in range(R.SPANS + 1)]
-    for (x, z), cell in sorted(R.deck(WIDE).items()):
-        if x >= int(R.FOOT):
+    for (x, z), cell in sorted(R.deck(HALF).items()):
+        if x >= int(R.FOOT) and (x, LOWEST, z) in blocks:
             k, pier, _, _ = place(cell.s)
             if pier:
                 out[k][1].append((x, z))
@@ -223,10 +264,10 @@ def sketch(right=2.0, step=1.0):
     """The viaduct's face unrolled, as text: a column of characters for every ``step`` of line,
     read off the row ``right`` of the centre line (2 and -2 are the two faces, 3 and -3 the
     pilasters, 1 a rail, 0 the row between). # body, = dressed stone, - a dressed slab, o ballast,
-    w a sleeper, r a rail, . nothing."""
+    w a sleeper, r a rail, ! a spout, . nothing."""
     blocks = plan()
     marks = {BRICK: "#", DRESSED: "=", BALLAST: "o", SLEEPER: "w"}
-    heads = ((RAIL, "r"), (SLEEPER_SLAB, "w"), (BALLAST_SLAB, "o"), (DRESSED_SLAB, "-"))
+    heads = ((RAIL, "r"), (SLEEPER_SLAB, "w"), (BALLAST_SLAB, "o"), (DRESSED_SLAB, "-"), (SPOUT, "!"))
     cols = []
     s = R.S_FOOT + 0.5
     while s < R.LENGTH:
@@ -272,7 +313,11 @@ def check():
     deck = R.deck(WIDE)
     highest = {}
     for (x, y, z), state in blocks.items():
-        cell = deck[(x, z)]
+        if x < int(R.FOOT):
+            out.append(f"({x}, {y}, {z}): west of the incline's foot")
+        cell = deck.get((x, z))
+        if cell is None:
+            continue                    # further out than the pilasters' row: a spout's end
         face = y + (0.5 if "type=bottom" in state else 1.0)
         highest[(x, z)] = max(face, highest.get((x, z), face))
         over = face - cell.top
@@ -280,8 +325,6 @@ def check():
             out.append(f"({x}, {y}, {z}): {state} stands {over} over the rails, in the track's rows")
         elif abs(cell.right) <= HALF and over > R.GAUGE["parapet"] + 1e-9:
             out.append(f"({x}, {y}, {z}): {state} stands {over} over the rails, a parapet may stand {R.GAUGE['parapet']}")
-        if x < int(R.FOOT):
-            out.append(f"({x}, {y}, {z}): west of the incline's foot")
     for (x, z), cell in deck.items():
         if x < int(R.FOOT) or abs(cell.right) >= TRACK:
             continue
