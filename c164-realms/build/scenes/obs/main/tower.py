@@ -37,7 +37,9 @@ Not here: the dials, their hands and the time ball are machines/clock, which fin
 the mast by itself (DIAL_CENTRES and MAST_MODEL say where they are); the light of the lit slits and
 of the lookout's lamp is placed by sky/lights (windows(), and the kit's suggest()). The radio mast
 hangs no wire to the tower (the director, 11-16: the mast itself is the aerial), so the shaft
-carries no bracket or hook for one: its four faces are flush alike.
+carries no bracket or hook for one: its four faces are flush alike. The clock room behind the
+dials is interiors/clockroom; what it reads of the well is WELL_X/Z/Y, ROOM_FLOOR, backs() and
+DIAL_BACKS, and way_up() opens the door and stands the ladder for it.
 
 The mast is two display models, the only ones of the main line: bld_tower_mast, the pole with all
 that is fixed to it, and bld_tower_cups, the cup wheel, a piece of its own so that the motion line
@@ -162,6 +164,41 @@ def _mouth(face):
 # east (17.0, 27.5, -29.5), south (13.5, 27.5, -26.0), west (10.0, 27.5, -29.5), north (13.5, 27.5, -33.0)
 DIAL_CENTRES = {f.name: _mouth(f) for f in FACES}
 
+# --- the inside: the well of the shaft, and the way up to interiors/clockroom ---------------------------
+WELL_X, WELL_Z = (X0 + 1, X1 - 1), (Z0 + 1, Z1 - 1)     # 11 .. 15 and -32 .. -28: the well, 5 x 5
+WELL_Y = (FOOT, FRIEZE_Y)           # 18 .. 30: its rows, between the roof's deck (row 17, whole) and the
+#                                     lookout's floor (row 31, whole); the walls round it are one block thick
+ROOM_FLOOR = DIAL_Y[0] - 2.0        # 24.0: the top of the clock room's floor. The rows 24 and 25 are clear
+#                                     from wall to wall: the room is walked under the backs of the dials
+LADDER_AT = (X0 + 1, Z0 + 1)        # (11, -32): the well's north-west corner. Only the four corner columns
+#                                     and the middle 3 x 3 run clear all the way from the deck to the room
+LADDER_Y = (FOOT, int(ROOM_FLOOR) - 1)                  # 18 .. 23: the ladder's rows; the last one is the
+#                                                         hatch in the room's floor
+LADDER = "ladder"                   # the game's ladder: it is climbed by walking into it, without a click
+
+
+def backs(face):
+    """The cells the two sunk squares of a face ("east", ...) fill inside the well, without the
+    origin: "field", the nine behind the slit (panelled; "glass" names the two of them that are the
+    slit's glass), and "plate", the nine of iron plate behind the dial. In those six rows the well
+    is its middle 3 x 3 and its four corner columns; in the others it is 5 x 5."""
+    f = FACE[face]
+    cells = [f.cell(i, 1) for i in ARCH]
+    gx, gz = f.cell(MID, 1)
+    return dict(field=[(x, y, z) for x, z in cells for y in range(FIELD_Y[0], FIELD_Y[1] + 1)],
+                glass=[(gx, y, gz) for y in range(SLIT_Y[0], SLIT_Y[1] + 1)],
+                plate=[(x, y, z) for x, z in cells for y in range(DIAL_Y[0], DIAL_Y[1] + 1)])
+
+
+def _back(face):
+    """The middle of the side a dial's plate turns to the room: a point in the well."""
+    x, z = face.cell(MID, 1)
+    return (x + 0.5 - face.out[0] * 0.5, (DIAL_Y[0] + DIAL_Y[1] + 1) / 2.0, z + 0.5 - face.out[1] * 0.5)
+
+
+# east (15.0, 27.5, -29.5), south (13.5, 27.5, -28.0), west (12.0, 27.5, -29.5), north (13.5, 27.5, -31.0)
+DIAL_BACKS = {f.name: _back(f) for f in FACES}
+
 
 def _cut_square(reach, most):
     """The columns no further than `reach` from the middle column along x and along z, without
@@ -251,11 +288,30 @@ def _shaft(c, o, s):
                 _set(c, o, bx, y, bz, PLATE)
     _fill(c, o, BODY, SHAFT_TOP, WALL.block)
     s.mould(BODY, SHAFT_TOP, WALL.stairs, "top")
-    # the door of the roof walk, in the middle of the west face: shut, the leaf on the inner side
-    # of the wall (a shut door facing west fills the east 3/16 of its cell)
+    _door(c, o, False)
+
+
+def _door(c, o, opened):
+    """The door of the roof walk, in the middle of the west face. Shut, its leaf is on the inner
+    side of the wall (a shut door facing west fills the east 3/16 of its cell); open, it stands
+    against the south jamb, within the wall's thickness, and leaves 13/16 of the doorway."""
     x, z = FACE["west"].cell(MID)
     for y, half in ((FOOT, "lower"), (FOOT + 1, "upper")):
-        _set(c, o, x, y, z, st(DOOR, facing="west", half=half, hinge="left", open="false"))
+        _set(c, o, x, y, z, st(DOOR, facing="west", half=half, hinge="left", open="true" if opened else "false"))
+
+
+def way_up(canvas, origin=(0, 0, 0)):
+    """Let visitors into the tower: for interiors/clockroom, which calls this from its build().
+    Until it does the tower is shut and its well empty. The door of the roof walk stands open, and
+    a ladder climbs the north-west corner of the well, on the west wall, from the deck to the
+    hatch in the clock room's floor (LADDER_AT, LADDER_Y). Nothing on the way is clicked: the
+    map's reach is 0. Returns the ladder's cells, without the origin: the room keeps them clear."""
+    _door(canvas, origin, True)
+    x, z = LADDER_AT
+    cells = [(x, y, z) for y in range(LADDER_Y[0], LADDER_Y[1] + 1)]
+    for x, y, z in cells:
+        _set(canvas, origin, x, y, z, st(LADDER, facing="east"))
+    return cells
 
 
 # --- the lookout and the top: version a ---------------------------------------------------------------------
