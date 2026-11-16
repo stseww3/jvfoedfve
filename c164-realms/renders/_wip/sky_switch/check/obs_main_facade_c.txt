@@ -1,0 +1,35 @@
+check obs_main_facade_c at fb0f31a
+[WARN] regen     189945 blocks, 728 entities, 403 models, 1887 resource-pack files, 392 data-pack files, look: 1 biomes, 1 timelines (5.9 s)
+                 registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+[PASS] conflicts the scene writes 1886 files, no file written twice, the folders and the prefix of main are kept (1 package run alone)
+[PASS] strays    532 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      1335 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    93 kinds of block placed, 150 barrier cells (x 2..91, y -6..7, z -34..38), all in the occupancy table
+[PASS] flatwall  no wall face runs flat over more than 5x5
+[WARN] entities  728 display entities, 41 drawn out along one axis, 7 shown through a matrix that is no turn, no face stretched, 119 models never placed
+                 prop_elec_cable x1: 10.67/10.67/11.99 pixels to the block along x/y/z, not 16
+                 prop_elec_cable x2: 10.67/10.67/12 pixels to the block along x/y/z, not 16
+                 prop_elec_cable x1: 10.67/10.67/18.44 pixels to the block along x/y/z, not 16
+                 prop_elec_cable x1: 10.67/10.67/25.75 pixels to the block along x/y/z, not 16
+                 prop_elec_cable x1: 10.67/10.67/32.85 pixels to the block along x/y/z, not 16
+                 int_vault_dark_rope x1: drawn out along z, where the picture of cream~base1 is not even: it smears
+[WARN] views     4 shots, most display entities in view: 648 (v1_far), limit 600; counted without what walls hide; the game draws up to 728 (v2_axis): a display entity without width and height is drawn outside the view too
+                 v1_far: 648 display entities in view, a view may have 600
+[WARN] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 4.1 s)
+                 the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a_equator at x 35, y 4, z 0; 2 more kinds; a lamp post takes less than 25% of a bay
+[PASS] motion    27 parts and 1 points on 16 chains, 298 function files; 10 commands in the busiest tick (limit 40), 4.1 a tick on average (limit 10)
+                 chain of 16 ticks: 4 functions, 10 commands a cycle, starts 3 ticks after start
+                 chain of 24 ticks: 8 functions, 25 commands a cycle, starts 2 ticks after start
+                 chain of 40 ticks: 8 functions, 17 commands a cycle, starts 2 ticks after start
+                 chain of 48 ticks: 12 functions, 65 commands a cycle, starts 1 ticks after start
+                 chain of 50 ticks: 1 functions, 3 commands a cycle, starts 6 ticks after start
+                 chain of 90 ticks: 8 functions, 17 commands a cycle, starts 4 ticks after start
+                 chain of 130 ticks: 8 functions, 17 commands a cycle, starts 20 ticks after start
+                 chain of 170 ticks: 8 functions, 17 commands a cycle, starts 5 ticks after start
+                 chain of 1001 ticks: 25 functions, 52 commands a cycle, starts 13 ticks after start
+                 chain of 1617 ticks: 31 functions, 64 commands a cycle, starts 9 ticks after start
+                 chain of 2002 ticks: 11 functions, 34 commands a cycle, starts 8 ticks after start
+                 chain of 2400 ticks: 12 functions, 25 commands a cycle, starts 16 ticks after start
+                 ... and 21 more
+result: PASS (0 failed, 4 with warnings)
