@@ -53,4 +53,6 @@
 跑过的和没跑过的：
 - 本地只导入过这张表，打印了六个位置、牌面四角和牌后那一格的坐标。
 - 总监机上 `check.py --scene obs_props_plaques_site`，b52d4541，11:52：`result: PASS (0 failed, 3 with warnings)`。三条警告是主场景自己的（`prop_elec_cable` 的拉伸、v1 的实体数、V1 的遮挡），不是牌的。check 不说哪块牌没挂上，那要看 `--report`。
+- 总监机上 `python -m scenes.obs_props_plaques_site --report`，b5e945df，11:55：六块都挂上，没有 left out；列成离看板近的是 `orrery`、`master_clock`（V7，7.5 格和 10.6 格）和 `great_refractor`（V8，2.2 格，机位不朝它），和上面算的一样。
+- 一处没完：`plate_vault` 的测试机位落在横墙里，(9, 1, 6)。牌前只有 2 格深（z 7..9），场景统一退 2.6 格就进墙了；这块的机位距离等 a6 定（11:56 已问）。牌的位置不用动：人进门站在这 2 格里读。
 - 关口、出图没跑；牌的样子只有真机看得到。
