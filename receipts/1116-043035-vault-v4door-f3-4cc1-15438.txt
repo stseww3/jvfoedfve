@@ -1,0 +1,53 @@
+a0job 1116-043035-vault-v4door-f3-4cc1-15438: cursor/c164-vault-v4door-f3-4cc1 @ 51002f1e on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.16 0.42 0.95, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- env PYTHONPATH=build python -m scenes.obs_int_starhall.probe a lights ---- exit 0, 1 s, last 60 lines of 43:
+['sources placed: 85 (rank 1: 0, rank 2: 43, rank 3: 42); levels 12x2, 11x3, 10x35, 9x1, 8x12, 7x12, 6x16, 5x4', 'windows main: dark 68, dim 3, lit 14, bright 1 (79% dark), 33 sources (1 of them behind the glass)', 'windows tower: dark 2, d
+placed in and around the hall:
+   (-9, 9, 0) 10 sky/lights:window apse 0 main
+   (-9, 12, 0) 10 sky/lights:window apse 0 main
+   (-6, 2, 0) 10 interiors/starhall:way west
+   (-6, 9, -2) 7 props/lamps:cage_a
+   (-6, 9, 2) 7 props/lamps:cage_a
+   (-2, 2, 0) 9 interiors/starhall:way west
+   (1, 4, -4) 11 interiors/starhall:stair foot
+   (1, 4, 4) 11 interiors/starhall:stair foot
+   (2, 1, -4) 6 interiors/starhall:way north aisle corner
+   (2, 1, 4) 6 interiors/starhall:way south aisle corner
+   (2, 8, 4) 5 interiors/starhall:way south railing west
+   (3, 8, -5) 6 interiors/starhall:way north gallery west
+   (3, 8, 5) 6 interiors/starhall:way south gallery west
+   (4, 10, -5) 7 props/lamps:cage_a
+   (4, 10, 5) 7 props/lamps:cage_a
+   (5, 1, -4) 8 interiors/starhall:aisle lamp
+   (5, 1, 4) 8 interiors/starhall:aisle lamp
+   (5, 9, -4) 8 sky/lights:stair
+   (6, 8, 4) 7 interiors/starhall:way south gallery
+   (7, 3, 0) 11 machines/clock:master
+   (8, 8, -5) 5 interiors/starhall:way north gallery
+   (8, 10, -5) 6 props/lamps:cage_a
+   (8, 10, 5) 6 props/lamps:cage_a
+   (9, 1, -3) 5 interiors/starhall:way roundel north
+   (9, 1, 3) 5 interiors/starhall:way roundel south
+   (10, 2, -5) 8 props/lamps:bracket_b
+   (10, 2, 5) 8 props/lamps:bracket_b
+   (11, 1, 0) 8 interiors/starhall:the sun's pool
+   (11, 7, 0) 12 machines/orrery:a
+   (11, 10, -5) 6 props/lamps:cage_a
+   (11, 10, 5) 6 props/lamps:cage_a
+   (13, 2, -5) 7 props/lamps:bracket_b
+   (13, 2, 5) 7 props/lamps:bracket_b
+   (14, 8, -5) 7 interiors/starhall:way north gallery end
+   (14, 8, 5) 7 interiors/starhall:way south gallery end
+   (15, 2, -5) 8 props/lamps:bracket_b
+   (15, 2, 5) 8 props/lamps:bracket_b
+   (17, 9, 0) 10 sky/lights:window east 9 main
+   (17, 10, -4) 6 sky/lights:window east 8 main
+   (17, 10, 4) 6 sky/lights:window east 10 main
+   (17, 12, 0) 10 sky/lights:window east 9 main
+==== NODEJOB RESULT ====
+exit=0 secs=2 host=cursor cores=4 head=51002f1e commit=none pushed=no branch=cursor/c164-vault-v4door-f3-4cc1 files=0
+a0job: exit=0 secs=2
