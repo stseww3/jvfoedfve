@@ -206,9 +206,9 @@ POOL = 12
 # pier's east face, which lead in the hall.
 STAIR = 8
 # The caged lamps along the ways indoors that no room lights (the ring stair round the pier, the
-# pier's foot at the end of the way from the west door, the cross gallery, the heads of the grand
-# stair): the top of the third rank, as the hall's own lamps beside them. A caged lamp two cells
-# from where one walks leaves 6 at the head and 5 at the feet.
+# pier's foot at the end of the way from the west door, the cross gallery): the top of the third
+# rank, as the hall's own lamps beside them. A caged lamp two cells from where one walks leaves 6
+# at the head and 5 at the feet.
 WAY = 8
 
 _PRIORITY, _WAKE, _BLIND = 0, 1, 3      # salts of the hash; 2 was the curtains', handed out by look once

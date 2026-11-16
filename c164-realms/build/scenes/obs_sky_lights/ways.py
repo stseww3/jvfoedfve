@@ -7,7 +7,8 @@ reads the block light where he stands:
     a route file ({"prefix", "stretches": [{"id", "points": [{"at", "hop"}]}]})
         a place every STEP blocks along the way, feet put on the floor found near the line.
 
-Block light is all there is under a roof; under the sky the night gives its own. A place is
+Block light is all there is under a roof; under the sky the night gives its own (a place is
+under the sky when no block of any kind is over its head). A place is
 
     lit     LIT or more at the feet or at the head: one sees where one steps
     dim     under LIT, over nothing
@@ -23,7 +24,10 @@ import math
 import statistics
 import sys
 
+from artkit import blocks as AB
+
 from scenes import obs
+from scenes.obs.common import blocks as B
 from scenes.obs.sky import _lightkit as L
 from scenes.obs.sky import lights
 
@@ -79,16 +83,18 @@ def places(path, canvas, cache):
 
 def survey(canvas):
     """What the table reads, taken once: (the block light of every cell that has any, the highest
-    row that stops light in every column, the lowest row of the scene, the sources sky/lights placed)."""
-    cache, tops = {}, {}
+    block of every column, a light source not counted, the sources sky/lights placed)."""
+    source, tops = {}, {}
     lo, hi = [10 ** 9] * 3, [-10 ** 9] * 3
-    for cell in canvas.b:
+    for cell, state in canvas.b.items():
         for i in range(3):
             if cell[i] < lo[i]:
                 lo[i] = cell[i]
             if cell[i] > hi[i]:
                 hi[i] = cell[i]
-        if _stops(canvas, cache, cell) and cell[1] > tops.get((cell[0], cell[2]), -10 ** 9):
+        if state not in source:
+            source[state] = AB.name_of(state) == B.LIGHT
+        if not source[state] and cell[1] > tops.get((cell[0], cell[2]), -10 ** 9):
             tops[(cell[0], cell[2])] = cell[1]
     return L.levels(canvas, tuple(lo), tuple(hi)), tops, lights.report(canvas)["placed"]
 
@@ -100,7 +106,7 @@ def table(found, light, tops, placed):
     for name, stretch, (x, y, z) in found:
         cx, cy, cz = int(math.floor(x)), int(math.floor(y + 1e-6)), int(math.floor(z))
         feet, head = light.get((cx, cy, cz), 0), light.get((cx, cy + 1, cz), 0)
-        sky = tops.get((cx, cz), -10 ** 9) <= cy
+        sky = tops.get((cx, cz), -10 ** 9) <= cy + 1
         near = min(((abs(c[0] - cx) + abs(c[1] - cy - 1) + abs(c[2] - cz), level, why, c)
                     for c, (level, why) in placed.items()), default=None)
         rows.append((name, stretch, (x, y, z), feet, head, sky, near))

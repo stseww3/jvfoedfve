@@ -47,11 +47,9 @@ the canvas by then and places, in this order:
             level with the south run; on its north face one under the corbel, for the last turn.
             None on the east face, which is the mother clock's and looks at the door. On the curb
             over the stair's south-east landing one that looks west, hidden from the hall.
-            At either end of the cross gallery and at the head of either flight of the grand
-            stair one on the wall, as high as the hall's own along the galleries. The way to the
-            west door has the hall's lamps under its vault. The sources are of the third rank
-            (_lightkit.WAY, 8; those on the gallery walls and the one on the curb 7, the hall's
-            level up there and what the dome room over the curb bears).
+            At either end of the cross gallery one on the wall, as high as the hall's own along
+            the galleries and at their level (7). The way to the west door and the grand stair
+            have the hall's lamps. The sources are of the third rank (_lightkit.WAY, 8).
             The stair's last three steps keep what reaches them: they come up into the dome
             room, which has its one red lamp and the sky in the slit (the director, #442).
   offers    what the other lines registered with _lightkit.suggest() and take(): a source is placed
@@ -534,11 +532,10 @@ def way_lamps():
            ((x0, tread[(ex0, cz)], cz), "west", L.WAY, "the ring stair's west run and the cross gallery under it"),
            ((cx, tread[(cx, ez1)], z1), "south", L.WAY, "the ring stair's south run"),
            ((cx, shell.ROOF_Y - 2, z0), "north", L.WAY, "the ring stair's last turn"),
-           ((ex1 + 1, shell.ROOF_Y - 1, ez1), "west", L.WAY - 1, "the ring stair's south-east landing and its east run")]
-    row = shell.DECK_Y + WAY_HIGH
-    for x, what in ((shell.ARCADE_X[0], "end of the cross gallery"), (shell.LANDING_X, "flight of the grand stair, at its head")):
-        out += [((x, row, -shell.CROSS_Z), "south", L.WAY - 1, f"the north {what}"),
-                ((x, row, shell.CROSS_Z), "north", L.WAY - 1, f"the south {what}")]
+           ((ex1 + 1, shell.ROOF_Y - 1, ez1), "west", L.WAY, "the ring stair's south-east landing and its east run")]
+    x, row = shell.ARCADE_X[0], shell.DECK_Y + WAY_HIGH
+    out += [((x, row, -shell.CROSS_Z), "south", L.WAY - 1, "the north end of the cross gallery"),
+            ((x, row, shell.CROSS_Z), "north", L.WAY - 1, "the south end of the cross gallery")]
     return out
 
 
