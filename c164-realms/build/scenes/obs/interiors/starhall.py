@@ -118,10 +118,15 @@ GALLERY_MAP_Y = shell.DECK_Y + 2.75     # the middle of a great chart, two block
 SUN_POOL = 8                # where the sun's light lands: a source a cell over the roundel's middle. The sun's
 #                             own 12 is 5 by the time it is down there. A0, 11-16: it may stay as long as the
 #                             floor's middle is darker than the mother clock's dial, which with 10 it was not
-STAIR_FOOT_LEVEL = 8        # 7 shows nothing of the risers through the side arches (lights, #559)
+STAIR_FOOT_LEVEL = 11       # 7 shows nothing of the risers through the side arches (lights, #559), and at 8 the
+#                             flights were grey in the first look and from before the door (0.16; review, #78563).
+#                             A0 #78666: the stair hall's lamps may go to 11, as long as the arches behind the
+#                             pier are not lighter than its face: at 11 the flights are at 0.21, the face at 0.23
 MEZZANINE_LEVEL = 7
 MEZZANINE_LAMP_Y = 9.5
-WAY_LEVEL = 7               # the way to the west door, which had no light at all (the walk, S1): a step under the stair foot's
+WAY_LEVELS = (10, 9)        # the way to the west door, which had no light at all (the walk, S1), its west lamp and
+#                             its east: with these every cell of the way one walks on, from the door's sill to
+#                             the arcade, has 5 (m5, #79601). The pier hides the way from the first look
 WAY_SOURCE_Y = FEET + 2     # the row of its sources: over the head of who walks under the lamp. In the cell under
 #                             the crown they left 3 of the 7 at the feet, and a floor one walks on indoors is to
 #                             have 5 (lights, #72659; the light line knows a source for a lamp's up to six cells under it)
@@ -584,7 +589,7 @@ def _flat_lamp(canvas, origin, version, at, towards, level, what, source_y=None)
     n = lamps.place(canvas, "cage", (at[0], under - K.NUDGE, at[1]), facing=towards, origin=origin, version=version,
                     light=False, turns=(("x", 90.0),))
     y = shell.ARCH_Y - (1 if crowned else 0) if source_y is None else source_y
-    L.suggest(canvas, (ox + x, oy + y, oz + z), level, f"{WHY}:{what}", rank=3)
+    L.suggest(canvas, (ox + x, oy + y, oz + z), level, f"{WHY}:{what}", rank=L.rank(level))
     return n
 
 
@@ -602,8 +607,8 @@ def _stair_hall(canvas, origin, version):
     for z in (CZ - shell.CHEEK_Z, CZ + shell.CHEEK_Z):
         n += lamps.place(canvas, "cage", (wx + 1.0, MEZZANINE_LAMP_Y, z + 0.5), facing="east", origin=origin,
                          version=version, level=MEZZANINE_LEVEL)
-    for x in way_lamp_xs():
-        n += _flat_lamp(canvas, origin, version, (x + 0.5, CZ + 0.5), "east", WAY_LEVEL, "way west",
+    for x, level in zip(way_lamp_xs(), WAY_LEVELS):
+        n += _flat_lamp(canvas, origin, version, (x + 0.5, CZ + 0.5), "east", level, "way west",
                         source_y=WAY_SOURCE_Y)
     return n
 
