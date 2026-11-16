@@ -1,0 +1,26 @@
+a0job 1116-041538-clocks-f3-00d6-23145: cursor/c164-clocks-f3-00d6 @ e4fd53fe on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.27 1.22 1.46, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- cd build && python ../tools/check.py --scene obs_mach_clocks | grep -E "^\[(FAIL|WARN)|blocks|^result" ; python ../tools/check.py --scene obs_mach_clocks_b | grep -E "^\[(FAIL|WARN)|blocks|^result" ; python - <<"EOF"
+from scenes.obs.machines import clock
+for name, m in clock.models().items():
+    e = sorted({int(p["emit"]) for p in m.parts if p["emit"]})
+    if e:
+        print(name, "light_emission", e, "on", sum(1 for p in m.parts if p["emit"]), "elements")
+EOF ---- exit 0, 9 s, last 40 lines of 10:
+[PASS] regen     5766 blocks, 41 entities, 21 models, 751 resource-pack files, 26 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.4 s)
+[PASS] blocks    22 kinds of block placed, 2 barrier cells (x 6, y 1..2, z 0), all in the occupancy table
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 0.0% hidden (base storey 0.0% by blocks and 0.0% more by models, great windows 0.0%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the 
+result: PASS (0 failed, 0 with warnings)
+[PASS] regen     5766 blocks, 41 entities, 21 models, 751 resource-pack files, 26 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.2 s)
+[PASS] blocks    22 kinds of block placed, 2 barrier cells (x 6, y 1..2, z 0), all in the occupancy table
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 0.0% hidden (base storey 0.0% by blocks and 0.0% more by models, great windows 0.0%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the 
+result: PASS (0 failed, 0 with warnings)
+mach_clock_ball light_emission [14] on 56 elements
+mach_clock_ball_red light_emission [14] on 56 elements
+==== NODEJOB RESULT ====
+exit=0 secs=10 host=cursor cores=4 head=e4fd53fe commit=none pushed=no branch=cursor/c164-clocks-f3-00d6 files=0
+a0job: exit=0 secs=11
