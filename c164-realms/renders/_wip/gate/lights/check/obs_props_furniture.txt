@@ -1,0 +1,13 @@
+check obs_props_furniture at 2777ab0
+[PASS] regen     927 blocks, 30 entities, 30 models, 757 resource-pack files, 10 data-pack files, look: 1 biomes, 1 timelines (0.8 s)
+[PASS] conflicts the scene writes 756 files, no file written twice, the folders and the prefix of props are kept (5 packages run alone)
+[PASS] strays    154 pictures, every colour in the palette; 9 sky pictures not checked (drawn by adding light)
+[PASS] refs      584 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    5 kinds of block placed, all in the occupancy table
+[SKIP] flatwall  a test scene of props: its sample walls and backdrops are meant to be flat
+[PASS] entities  30 display entities, 13 models never placed
+[PASS] views     22 shots, most display entities in view: 30 (far), limit 600; counted without what walls hide
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    nothing moves
+result: PASS (0 failed, 0 with warnings)

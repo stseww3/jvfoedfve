@@ -1,0 +1,21 @@
+gate sky/lights a5068e7e: the merged tree 2777ab0b, the assembly as it was ace72bd1
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 55 scenes in 39 s: 55 pass (31 with warnings)
+pictures: obs_sky_lights: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_sky_lights at 2777ab0b: 16 of 27 kept pictures are what the code draws, 11 not
+    blue_front: 707 of 921600 pixels are not what the code draws (off by up to 6 of 255)
+    blue_axis: 5712 of 921600 pixels are not what the code draws (off by up to 36 of 255)
+    blue_v1: 6988 of 921600 pixels are not what the code draws (off by up to 37 of 255)
+    deep_front: 2455 of 921600 pixels are not what the code draws (off by up to 31 of 255)
+    deep_axis: 7563 of 921600 pixels are not what the code draws (off by up to 59 of 255)
+    deep_v1: 9282 of 921600 pixels are not what the code draws (off by up to 59 of 255)
+    deep_slant: 18 of 921600 pixels are not what the code draws (off by up to 1 of 255)
+    glow_axis: 3302 of 921600 pixels are not what the code draws (off by up to 18 of 255)
+    glow_v1: 3984 of 921600 pixels are not what the code draws (off by up to 18 of 255)
+    levels_front: 6685 of 921600 pixels are not what the code draws (off by up to 36 of 255)
+    levels_front_deep: 8263 of 921600 pixels are not what the code draws (off by up to 59 of 255)
+pictures: obs_sky_lights_nolend: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_sky_lights_nolend at 2777ab0b: 1 of 3 kept pictures are what the code draws, 2 not
+    blue_front: 707 of 921600 pixels are not what the code draws (off by up to 6 of 255)
+    blue_axis: 5712 of 921600 pixels are not what the code draws (off by up to 36 of 255)
+result: PASS

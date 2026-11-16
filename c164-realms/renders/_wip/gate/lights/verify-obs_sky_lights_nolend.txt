@@ -1,0 +1,12 @@
+  obs_sky_lights_nolend: 36232 blocks, 8 entities (0 s)
+  obs_sky_lights_nolend: resource pack written to /tmp/c164pack-9n5jarkx (1 s)
+  obs_sky_lights_nolend: water: 0 sources, 0 cells of running water (1 s)
+  obs_sky_lights_nolend: grid 162 x 51 x 123, 36232 blocks, 380 entity boxes (1 s)
+  obs_sky_lights_nolend: 116 states -> 290 looks, 635 boxes, 66 pictures (2 s)
+  obs_sky_lights_nolend: light done (2 s)
+  obs_sky_lights_nolend: blue_front (tick 14000, 2 s)
+  obs_sky_lights_nolend: blue_axis (tick 14000, 1 s)
+  obs_sky_lights_nolend: blue_door (tick 14000, 1 s)
+[FAIL] selfshots obs_sky_lights_nolend at 2777ab0b: 1 of 3 kept pictures are what the code draws, 2 not
+                blue_front: 707 of 921600 pixels are not what the code draws (off by up to 6 of 255)
+                blue_axis: 5712 of 921600 pixels are not what the code draws (off by up to 36 of 255)
