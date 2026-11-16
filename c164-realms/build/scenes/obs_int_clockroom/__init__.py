@@ -28,15 +28,14 @@ CATEGORY = "interiors"
 TIME = 14000
 EYE = room.FLOOR_TOP + S.EYE            # 25.62: the eye of somebody on the room's floor
 LOBBY = tower.FOOT + S.EYE              # 19.62: the eye of somebody who has come in by the door
-HATCH_EYE = room.FLOOR_TOP + 0.95       # the eye of somebody on the ladder whose head is just out of the hatch
 CX, CZ = room.AXIS
 DECK = 3                                # the stand-in deck reaches this far beyond the tower's foot
 
 # name, the eye, what it looks at
 VIEWS = [
-    # the first sight coming up the ladder, in the north-west corner, the head just out of the hatch:
+    # the first sight off the ladder, standing in the north-west corner where it opens to the shaft:
     # the movement, the nest of bevels over it, the east and the south dial behind
-    ("int_arrive", (11.4, HATCH_EYE, -31.5), (CX + 0.1, 26.4, CZ + 0.1)),
+    ("int_arrive", (11.9, EYE, -31.1), (CX + 0.15, 26.45, CZ + 0.15)),
     # the movement's front from the floor north-east of it: the setting dial, the crank, the three
     # barrels, the motor at the far end
     ("int_movement", (14.45, EYE, -30.9), (CX - 0.35, 25.7, CZ - 0.2)),
@@ -44,15 +43,13 @@ VIEWS = [
     ("int_dial", (12.3, EYE, -30.7), (15.0, 27.4, CZ)),
     # the board's view V5 from the court: the tower as it stands with the room in it
     ("ext_v5", S.V5["pos"], S.V5["look_at"]),
-    # the movement's back from the floor south-west of it: the escape wheel, the pallets, the crutch
-    # and the pendulum
-    ("int_back", (12.35, EYE, -28.7), (CX + 0.15, 26.3, CZ + 0.35)),
+    # the movement's back from the south-west corner: the escape wheel, the pallets, the crutch and
+    # the pendulum
+    ("int_back", (11.9, EYE, -27.9), (CX + 0.1, 26.3, CZ + 0.3)),
     # up the shaft from beside the movement: the bevels, the four rods, the sheaves and the ropes
     ("int_up", (12.4, EYE, -30.6), (CX + 0.1, 29.5, CZ + 0.1)),
     # the lobby as one comes in by the door: the ladder, the bob over the heads, the weights in the corners
     ("lobby", (11.45, LOBBY, CZ + 0.3), (CX + 0.4, 21.3, -28.9)),
-    # the plan, from under the ceiling in the north-west corner
-    ("from_above", (11.6, 30.4, -31.6), (CX + 0.4, 24.6, CZ + 0.4)),
     # the arrival view V1 from the station: the tower on the skyline
     ("ext_v1", S.V1["pos"], S.V1["look_at"]),
 ]
