@@ -57,7 +57,7 @@ NUMBERS = {
     51: "great refractor", 52: "driving clock", 53: "dome gear", 54: "shutter winch", 55: "transit circle",
     56: "astrograph", 57: "comet seeker", 58: "dome switchboard",
     61: "difference engine", 62: "orrery", 63: "seismograph", 64: "barograph", 65: "sunshine recorder",
-    66: "dispatch blower", 67: "wind recorder", 68: "plate measuring machine",
+    66: "dispatch blower", 67: "wind recorder", 68: "plate measuring machine", 69: "plate lift",
     71: "mast winch", 72: "transmitter", 73: "home signal",
     81: "battery board", 82: "battery",
 }

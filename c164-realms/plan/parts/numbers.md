@@ -54,8 +54,8 @@ n += nameplates.plate(canvas, 31, pos, facing="east", origin=origin)
 | 44 | 电报机 | 授时室 | rec |
 | 45 | 记时仪 | machines/rec | rec |
 | 46 | 站钟 | props/station | lamps |
-| 51 | 大折射镜 | machines/scope | |
-| 52 | 大折射镜的转仪钟 | machines/scope | |
+| 51 | 大折射镜（牌在铁墩东面） | machines/scope | scope |
+| 52 | 大折射镜的转仪钟 | machines/scope | scope |
 | 53 | 圆顶的转动机件 | machines/dome | m5 |
 | 54 | 天窗绞车 | machines/dome | m5 |
 | 55 | 子午环 | machines/meridian | |
@@ -70,6 +70,7 @@ n += nameplates.plate(canvas, 31, pos, facing="east", origin=origin)
 | 66 | 气送管的鼓风机 | props/pneumatic | rec |
 | 67 | 风速记录仪 | 气象站 | power |
 | 68 | 量片仪 | interiors/chartroom | chart |
+| 69 | 手摇底片升降机 | interiors/platevault | vault |
 | 71 | 天线杆绞车 | machines/mast | mast |
 | 72 | 发报机 | 无线电室 | mast |
 | 73 | 进站信号机 | props/station | lamps |
