@@ -1,0 +1,20 @@
+gate sky/lights 267134bb: the merged tree 316941ab, the assembly as it was d9062cc8
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] pictures 1 test scene, 32 shots with a picture kept
+                    obs_sky_lights: 32 pictures show 614b8141; the card's code has changed since (_lightkit.py, _shaders.py, _swell.py, _ways_pier.py ...): draw them again
+check.py: 102 scenes in 171 s: 102 pass (56 with warnings)
+pictures: obs_sky_lights: the kept pictures are NOT what the delivered commit 267134bb draws (it goes back):
+    [FAIL] selfshots obs_sky_lights at 316941ab: 5 of 32 kept pictures are what the code draws, 27 not
+    blue_front: 61213 of 921600 pixels are not what the code draws (off by up to 165 of 255)
+    blue_axis: 25254 of 921600 pixels are not what the code draws (off by up to 147 of 255)
+    blue_v1: 8091 of 921600 pixels are not what the code draws (off by up to 138 of 255)
+    blue_slant: 74703 of 921600 pixels are not what the code draws (off by up to 91 of 255)
+    blue_surround: 9670 of 921600 pixels are not what the code draws (off by up to 207 of 255)
+    blue_v3: 30553 of 921600 pixels are not what the code draws (off by up to 168 of 255)
+    blue_door: 64247 of 921600 pixels are not what the code draws (off by up to 166 of 255)
+    blue_v7: 700245 of 921600 pixels are not what the code draws (off by up to 185 of 255)
+    blue_wash: 20632 of 921600 pixels are not what the code draws (off by up to 161 of 255)
+    blue_west: 34481 of 921600 pixels are not what the code draws (off by up to 87 of 255)
+    blue_stair: 696388 of 921600 pixels are not what the code draws (off by up to 234 of 255)
+    blue_passage: 917954 of 921600 pixels are not what the code draws (off by up to 73 of 255)
+result: FAIL
