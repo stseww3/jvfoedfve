@@ -1,0 +1,28 @@
+a0job 1115-235731-comet-ridges-f3-793d-9134: cursor/c164-comet-ridges-f3-793d @ 2c6216be on the director's machine
+(the branch moved after the job was sent: it ran on 2c6216be, not on 21910fc5)
+  [cloud_setup    0s] machine: 4 cores, load 2.01 2.48 2.44, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/selfshots.py obs_sky_ridges ---- exit 0, 10 s, last 30 lines of 17:
+  obs_sky_ridges: 29711 blocks, 4 entities (0 s)
+  obs_sky_ridges: resource pack written to /tmp/c164pack-m47iurpz (0 s)
+  obs_sky_ridges: water: 0 sources, 0 cells of running water (0 s)
+  obs_sky_ridges: grid 470 x 81 x 887, 29711 blocks, 4 entity boxes (1 s)
+  obs_sky_ridges: 2 states -> 3 looks, 2 boxes, 6 pictures (1 s)
+  obs_sky_ridges: light done (1 s)
+  obs_sky_ridges: west (tick 14000, 1 s)
+  obs_sky_ridges: northwest (tick 14000, 0 s)
+  obs_sky_ridges: southwest (tick 14000, 0 s)
+  obs_sky_ridges: west_glow (tick 12900, 1 s)
+  obs_sky_ridges: west_deep (tick 18000, 1 s)
+  obs_sky_ridges: east (tick 14000, 1 s)
+  obs_sky_ridges: back_west (tick 14000, 1 s)
+  obs_sky_ridges: v11 (tick 14000, 1 s)
+  obs_sky_ridges: v1 (tick 14000, 1 s)
+  obs_sky_ridges: v2 (tick 14000, 1 s)
+renders/obs_sky_ridges/: 10 pictures of 2c6216be drawn, 1.1 MB
+==== NODEJOB RESULT ====
+exit=0 secs=12 host=cursor cores=4 head=2c6216be commit=662eef7e pushed=yes branch=cursor/c164-comet-ridges-f3-793d files=3
+a0job: exit=0 secs=13
