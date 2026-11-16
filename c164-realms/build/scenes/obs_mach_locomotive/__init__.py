@@ -20,7 +20,6 @@ from scenes.obs import materials, sky
 from scenes.obs.common import blocks as B
 from scenes.obs.machines import locomotive
 from scenes.obs.props import _kit as K
-from scenes.obs.site import _kit as SK
 
 BIOME = "obs_blue"
 CATEGORY = "machines"
@@ -69,9 +68,9 @@ def build():
     c = Canvas()
     x0, z0, x1, z1 = YARD
     c.box(x0, -1, z0, x1, -1, z1, PAVING)
-    c.box(x0, -1, -1, x1, -1, -1, SK.IRON)
-    c.box(x0, -1, 1, x1, -1, 1, SK.IRON)
-    c.box(x0, -1, 0, x1, -1, 0, SK.GRATE)
+    c.box(x0, -1, -1, x1, -1, -1, B.IRON_RIVETED.block)
+    c.box(x0, -1, 1, x1, -1, 1, B.IRON_RIVETED.block)
+    c.box(x0, -1, 0, x1, -1, 0, B.IRON_GRATE)
     n = locomotive.place(c, STILL, light=True)
     n += locomotive.place(c, STAND, stand=True)
     n += locomotive.place(c, QUARTER, run=locomotive.REV / 4.0)
