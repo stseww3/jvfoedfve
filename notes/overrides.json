@@ -167,7 +167,7 @@
  },
  "sky/safe-look": {
   "state": "已合并",
-  "note": "【第一版 104b94b6（cr2 09:34 合 16ad2817）：着色器生成器 `sky/_shaders.py`、`sky/mood.py` 的数（雾 60 到 150、按高度变薄两条律、LOCK_TICK）、样板场景 `obs_sky_safe`。成品包由 outb 导出时加着色器、不带注册表文件；开发用的 obs 和各测试场景暂时还是注册表的天，整体切换（obs 的 BIOME、render.py、看板的时刻锁 20370）a2 和 cloud 备好补丁交 s2，10:00 的候选版导完以后动，到时清空 regen 的放行表。`check.py` 已认 sky 写 `assets/minecraft/shaders/`、BIOME 带命名空间的原样用（07fe40e0）】"
+  "note": "【第一版 104b94b6（cr2 09:34 合 16ad2817）：着色器生成器 `sky/_shaders.py`、`sky/mood.py` 的数（雾 60 到 150、按高度变薄两条律、LOCK_TICK）、样板场景 `obs_sky_safe`。成品包由 outb 导出时加着色器、不带注册表文件；开发用的 obs 和各测试场景暂时还是注册表的天，整体切换（obs 的 BIOME、render.py、看板的时刻锁 20370）a2 和 cloud 备好补丁交 s2，10:00 的候选版导完以后动，到时清空 regen 的放行表。`check.py` 已认 sky 写 `assets/minecraft/shaders/`、BIOME 带命名空间的原样用（07fe40e0）。**整体切换 287c3b93（s2 10:45 合 fa0bee9a）**：`BIOMES` 是 `artkit.mood.Carried`，开发用的 obs 和各测试场景也不再写注册表文件，驱动替场景写着色器、填 `minecraft:the_void`、钟停 20370；放行表已清空】"
  },
  "sky/ridges": {
   "note": "【撤板 f5430861（cr2 10:00 合 febe846a）：板的模型、贴图、实体、旧预览全删，只剩给着色器的层（新山脊线画进天里；真机没看过，comet 请 s1 拍）。之前 f960c7c9（09:28 合 b1c0d7ae）先把 DRESS 关了】"
