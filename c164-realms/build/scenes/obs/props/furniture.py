@@ -257,25 +257,28 @@ PLATE_EDGE = K.flat("night_glass", 4)           # the ground edge of its glass
 MOUNT = K.flat("cream", 1)                      # the card a plate is mounted on: a pale line round it
 LENS = K.flat("night_glass", 4)                 # clear glass over the blue bed
 _STARS = {"W": P.RAMPS["cream"][3], "w": P.RAMPS["cream"][1], "f": P.RAMPS["night_glass"][4]}
-# The hunter: two shoulders, the belt of three, two feet. Seven dots that anyone knows.
+# The hunter: two shoulders, the belt of three, two feet. Seven dots that anyone knows, and four
+# faint stars of the field between them: seven dots alone on a dark card are the face of a die.
 STAR_FIELD = Sprite("furn_plate_stars", [
-    ".......",
+    "...f...",
     ".W...w.",
     ".......",
-    "....w..",
-    "...W...",
+    "f...w..",
+    "...W..f",
     "..w....",
-    ".......",
+    "....f..",
     ".w...W.",
 ], _STARS, back=PLATE)
-# The comet of the map's own sky: a head, and a tail that fades and widens away from it.
+# The comet of the map's own sky: a head of four texels, the brightest thing on the plate, and a
+# tail that narrows and fades from it into the blue (a tail as bright and as wide as the head was
+# a sash across the plate).
 COMET = Sprite("furn_plate_comet", [
     "f.....",
-    "ff..w.",
+    ".f..w.",
     ".ff...",
-    "..wf..",
-    "...ww.",
-    "....W.",
+    "..fw..",
+    "...wW.",
+    "...WW.",
     ".f....",
 ], _STARS, back=PLATE)
 # A star's spectrum: one pale band across the plate, a dark line in it, the blue end fading out.
