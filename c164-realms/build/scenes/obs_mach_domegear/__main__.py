@@ -15,7 +15,8 @@ if __name__ == "__main__":
     canvas = build()
     print(f"barrier cells: {len(dome.barrier_cells())} {list(dome.barrier_cells())}")
     for title, found in (("stands in a block", dome.clash(canvas)), ("hangs on nothing", dome.unheld(canvas)),
-                         ("a barrier that is not inside the gear", dome.barred(canvas))):
+                         ("a barrier that is not inside the gear", dome.barred(canvas)),
+                         ("a face that stands between two axes", dome.unsettled())):
         print(f"{title}: {len(found)}")
         for line in sorted(set(str(item) for item in found)):
             print("  " + line)

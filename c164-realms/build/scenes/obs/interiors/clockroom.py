@@ -20,7 +20,9 @@ electric winding motor with its worm, bolted on later. Its back looks south: the
 pallets over it, the crutch, and the long pendulum, which hangs behind the bed and goes down
 through the floor; its bob swings under the ceiling of the tower's lobby. The floor under the bed
 and where the pendulum goes through is whole iron plate: the slot is a model on it, above and
-below, so no light gets down and nobody can fall. From the going
+below, so no light gets down and nobody can fall. A length of brass rail stands either side of
+the pendulum's swing, from a pier towards the south cabinet: nobody walks through the rod, and
+the way round the room goes past the movement's front, where there is something to do. From the going
 train an upright shaft rises to a nest of bevels on a beam at the height of the dials' centres, and
 four leading-off rods run from there to the four dials: one movement, four dials.
 
@@ -36,10 +38,11 @@ of the master clock's pendulum (a rod four times as long); the escape wheel turn
 every swing.
 
 Light. Nothing here adds a colour. The sources are offered to the light line (sky/_lightkit):
-one in front of each dial's back (rank 2), and one at each of three caged lamps (rank 3): on the
-south wall behind the movement, over the hatch, and in the lobby beside the ladder's foot, so
-that the way up has light all the way. The movement takes no source of its own: its pieces are shown as the dials light
-them (MOVEMENT_LIGHT). No slit window may be brighter outside than without the room. The tops of
+one in front of each dial's back (rank 2), and one at each of five caged lamps (rank 3): on the
+south wall behind the movement, over the hatch, and three in the lobby (beside the ladder's foot,
+across from the door, across from the ladder), so that the lobby's floor and the way up have
+light all the way. The movement takes no source of its own: its pieces are shown as the dials
+light them (MOVEMENT_LIGHT). No slit window may be brighter outside than without the room. The tops of
 the slits' glass lie in the floor's row, under thin plates that light passes; over the two dark
 slits (north and south) a cabinet stands on the plate instead, a whole block: the switchboard of
 the winding motor, and a chest of drawers. Over the two lit slits the level stays under what
@@ -65,6 +68,7 @@ from ..props import lamps
 MOVED_IN = True
 NAME = "interiors/clockroom"
 PREFIX = "int_clockroom_"
+VIEW = M.NEAR                                       # the band of everything in here: no board view looks into the tower
 PX = 1 / 16.0
 TIME = tuple(S.CLOCK)                               # (7, 55): what the setting dial and the shadows show
 
@@ -80,6 +84,7 @@ DIAL = T.DIAL_BACKS["east"][1]                      # 27.5: the height of the di
 HATCH = tuple(T.LADDER_AT)                          # (11, -32): the corner the ladder comes up in
 SLOT = (CX, CZ + 1)                                 # (13, -29): the pendulum's slot in the floor
 PIERS = ((CX - 1, CZ), (CX + 1, CZ))                # the two piers the bed lies on
+GUARDS = ((SLOT[0] - 1, SLOT[1]), (SLOT[0] + 1, SLOT[1]))   # (12, -29), (14, -29): a length of rail either side of the pendulum's swing
 # the two cabinets over the tops of the dark slits: column, the panel it is (B.PANELS), the way it looks
 CABINETS = (((CX, WELL_Z[0]), "knife_switch", "south"), ((CX, WELL_Z[1]), "drawers", "north"))
 LOOKS = {"east": "west", "west": "east", "north": "south", "south": "north"}    # the way a dial's back looks
@@ -123,6 +128,11 @@ CAGE_LAMP = (7, 3)              # at the caged lamp behind the movement
 # north slit's glass, which keeps its 3.
 HATCH_LAMP = (8, 3)
 LADDER_LAMP = (8, 3)
+# The lobby: with the ladder's lamp, one on the east wall, which the door looks at, and one on the
+# south wall across from the ladder's. A lamp of 8 gives a standing place 5 three steps away, and
+# every one of the lobby's 25 is within three steps of one of the three. Each hangs five steps or
+# more from the cells before the glass of the two dark slits, which keep their 3.
+LOBBY_LAMP = (8, 3)
 WALK_LIGHT = 5                  # the least a place to stand has, at the feet or at the head
 # What the pieces are shown with, (sky, block): the movement as the four dials light it, whatever
 # the cell its anchor stands in; the pendulum a little less; the weights so that they are seen
@@ -133,6 +143,16 @@ WEIGHT_LIGHT = (0, 7)
 LAMP_AT = (CX + 1.6, FLOOR_TOP + 1.4, WELL_Z[1] + 1.0)     # the caged lamp, on the south wall
 HATCH_LAMP_AT = (HATCH[0] + 0.5, FLOOR_TOP + 1.55, float(WELL_Z[0]))       # over the hatch, on the north wall
 LADDER_LAMP_AT = (HATCH[0] + 1.5, T.FOOT + 1.45, float(WELL_Z[0]))         # beside the ladder's foot, on the north wall
+EAST_LAMP_AT = (WELL_X[1] + 1.0, T.FOOT + 1.45, CZ + 0.5)                  # in the lobby, on the east wall, across from the door
+SOUTH_LAMP_AT = (HATCH[0] + 1.5, T.FOOT + 1.45, WELL_Z[1] + 1.0)           # in the lobby, on the south wall, across from the ladder's
+CAGED = (                       # where a caged lamp hangs, the way it looks, what it asks for, its name in the light line
+    (LAMP_AT, "north", CAGE_LAMP, "caged lamp"),
+    (HATCH_LAMP_AT, "south", HATCH_LAMP, "hatch lamp"),
+    (LADDER_LAMP_AT, "south", LADDER_LAMP, "ladder lamp"),
+    (EAST_LAMP_AT, "west", LOBBY_LAMP, "lobby lamp east"),
+    (SOUTH_LAMP_AT, "north", LOBBY_LAMP, "lobby lamp south"),
+)
+INTO = {"north": (0.0, -0.5), "south": (0.0, 0.5), "west": (-0.5, 0.0), "east": (0.5, 0.0)}    # from a wall's face into the cell before it
 
 # ---- materials ---------------------------------------------------------------------------------------------
 TILT = 40.0                     # the tilted frame of a face that glows (props/_kit, props/ironwork)
@@ -196,9 +216,9 @@ def floor_role(x, z, roles=B):
 
 def walk():
     """The columns one can stand in: the gallery but for the two cabinets, and the floor round the
-    movement but for the piers and the bars between them. The hatch is one of them (the ladder's
-    head)."""
-    taken = {column for column, _, _ in CABINETS} | set(PIERS) | {(CX, CZ)}
+    movement but for the piers, the bars between them, and the pendulum's cell with the rail
+    either side of it. The hatch is one of them (the ladder's head)."""
+    taken = {column for column, _, _ in CABINETS} | set(PIERS) | {(CX, CZ), SLOT} | set(GUARDS)
     return [(x, z) for x in range(WELL_X[0], WELL_X[1] + 1) for z in range(WELL_Z[0], WELL_Z[1] + 1)
             if (x, z) not in taken]
 
@@ -620,6 +640,11 @@ def build_clockroom(c, origin=(0, 0, 0), roles=B):
     # the two cabinets, in place of the plate over a dark slit's glass: whole blocks, no light gets down
     for (x, z), panel, looks in CABINETS:
         put(x, FEET, z, st(roles.PANELS[panel], facing=looks))
+    # a length of brass rail either side of the pendulum's swing, from a pier towards the south
+    # cabinet: with the bars under the bed and the cabinet they shut the pendulum's cell, and the
+    # way round the room goes past the movement's front
+    for x, z in GUARDS:
+        put(x, FEET, z, roles.BRASS_RAIL)
 
     # ---- the movement
     bed = spot((0.0, BED_TOP, 0.0))
@@ -673,12 +698,11 @@ def build_clockroom(c, origin=(0, 0, 0), roles=B):
                facing="south", origin=origin)
     n += K.put(c, own[PREFIX + "oilcan"], (AXIS[0] - 0.1, FLOOR_TOP + 1.0, WELL_Z[1] + 0.5), yaw=200.0, origin=origin)
 
-    # ---- the light: the caged lamps behind the movement, over the hatch and beside the ladder's foot
-    n += lamps.place(c, "cage", LAMP_AT, facing="north", origin=origin, light=False)
-    offer((LAMP_AT[0], LAMP_AT[1], LAMP_AT[2] - 0.5), CAGE_LAMP, "caged lamp")
-    for where, ask, why in ((HATCH_LAMP_AT, HATCH_LAMP, "hatch lamp"), (LADDER_LAMP_AT, LADDER_LAMP, "ladder lamp")):
-        n += lamps.place(c, "cage", where, facing="south", origin=origin, light=False)
-        offer((where[0], where[1], where[2] + 0.5), ask, why)
+    # ---- the light: the caged lamps behind the movement, over the hatch, and the lobby's three
+    for where, looks, ask, why in CAGED:
+        n += lamps.place(c, "cage", where, facing=looks, origin=origin, light=False)
+        dx, dz = INTO[looks]
+        offer((where[0] + dx, where[1], where[2] + dz), ask, why)
     return {"entities": n, "lights": lights}
 
 

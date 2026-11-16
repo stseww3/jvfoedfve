@@ -73,9 +73,11 @@ VERSION = "a"               # the version build() dresses; the review picks one 
 VERSIONS = ("a", "b")
 PREFIX = "int_starhall_"
 WHY = "interiors/starhall"
+VIEW = M.NEAR               # every piece of the hall, its parts with it, is drawn within 32 blocks (the view
+#                             bands, A0 11-16 12:25; artkit.models): the game draws a display entity through walls
 # Pieces of the hall that stand in files of their own beside this one, each as soon as it is in the
 # tree: dress(canvas, origin, version) -> display entities placed, models() -> {name: model}.
-PARTS = ("_starhall_meridian", "_starhall_wiring", "_starhall_gallery")
+PARTS = ("_starhall_meridian", "_starhall_wiring", "_starhall_gallery", "_starhall_ways", "_starhall_life")
 NEIGHBOURS = ("batteryroom", "platevault")      # rooms behind the aisle walls that open a door into the hall
 
 ROOM = shell.ROOMS["star hall"]
@@ -118,10 +120,19 @@ GALLERY_MAP_Y = shell.DECK_Y + 2.75     # the middle of a great chart, two block
 SUN_POOL = 8                # where the sun's light lands: a source a cell over the roundel's middle. The sun's
 #                             own 12 is 5 by the time it is down there. A0, 11-16: it may stay as long as the
 #                             floor's middle is darker than the mother clock's dial, which with 10 it was not
-STAIR_FOOT_LEVEL = 8        # 7 shows nothing of the risers through the side arches (lights, #559)
+STAIR_FOOT_LEVEL = 12       # 7 shows nothing of the risers through the side arches (lights, #559), and at 8 the
+#                             flights were grey in the first look and from before the door (0.16; review, #78563).
+#                             A0 #78666: the stair hall's lamps may go to 11, as long as the arches behind the
+#                             pier are not lighter than its face: at 11 the flights are at 0.21, the face at 0.23.
+#                             12 (vault for the hall, A0 #83714, cr3 #87129): the half of the doorway the board's
+#                             picture looks into is to read 0.22, and the flight is most of it. The flights may
+#                             go to 0.235 with the pier's face at 0.255: _starhall_ways lifts the face with them
+#                             and has the numbers
 MEZZANINE_LEVEL = 7
 MEZZANINE_LAMP_Y = 9.5
-WAY_LEVEL = 7               # the way to the west door, which had no light at all (the walk, S1): a step under the stair foot's
+WAY_LEVELS = (10, 9)        # the way to the west door, which had no light at all (the walk, S1), its west lamp and
+#                             its east: with these every cell of the way one walks on, from the door's sill to
+#                             the arcade, has 5 (m5, #79601). The pier hides the way from the first look
 WAY_SOURCE_Y = FEET + 2     # the row of its sources: over the head of who walks under the lamp. In the cell under
 #                             the crown they left 3 of the 7 at the feet, and a floor one walks on indoors is to
 #                             have 5 (lights, #72659; the light line knows a source for a lamp's up to six cells under it)
@@ -509,6 +520,13 @@ def _furnish(canvas, origin, style):
     return n
 
 
+def globe_at():
+    """Where the celestial globe stands: ((x, z) of the middle of its foot, the way it faces).
+    Before the two charts of the south aisle, under the aisle's westernmost lamp; facing east its
+    north pole leans to true north."""
+    return (aisle_lamp_xs()[0], Z1 - 0.2), "east"
+
+
 def _charts(canvas, origin):
     """The south aisle's west bay: the pair of star charts on the wall either side of the aisle's
     westernmost lamp, and a celestial globe before them under it. On each gallery wall one of the
@@ -519,7 +537,8 @@ def _charts(canvas, origin):
     n = 0
     for kind, x in (("star_chart", lamp - 1.5), ("star_chart_b", lamp + 1.5)):
         n += paper.place(canvas, kind, (x, FEET + 3.0, Z1 + 1.0), facing="north", origin=origin)
-    n += instruments.place(canvas, "celestial_globe", (lamp, FEET, Z1 - 0.2), facing="east", origin=origin)
+    (gx, gz), facing = globe_at()
+    n += instruments.place(canvas, "celestial_globe", (gx, FEET, gz), facing=facing, origin=origin)
     x = gallery_lamp_xs()[-1]
     for kind, z, facing in (("sky_map", Z0, "south"), ("sky_map_b", Z1 + 1.0, "north")):
         n += paper.place(canvas, kind, (x, GALLERY_MAP_Y, float(z)), facing=facing, origin=origin)
@@ -584,7 +603,7 @@ def _flat_lamp(canvas, origin, version, at, towards, level, what, source_y=None)
     n = lamps.place(canvas, "cage", (at[0], under - K.NUDGE, at[1]), facing=towards, origin=origin, version=version,
                     light=False, turns=(("x", 90.0),))
     y = shell.ARCH_Y - (1 if crowned else 0) if source_y is None else source_y
-    L.suggest(canvas, (ox + x, oy + y, oz + z), level, f"{WHY}:{what}", rank=3)
+    L.suggest(canvas, (ox + x, oy + y, oz + z), level, f"{WHY}:{what}", rank=L.rank(level))
     return n
 
 
@@ -602,8 +621,8 @@ def _stair_hall(canvas, origin, version):
     for z in (CZ - shell.CHEEK_Z, CZ + shell.CHEEK_Z):
         n += lamps.place(canvas, "cage", (wx + 1.0, MEZZANINE_LAMP_Y, z + 0.5), facing="east", origin=origin,
                          version=version, level=MEZZANINE_LEVEL)
-    for x in way_lamp_xs():
-        n += _flat_lamp(canvas, origin, version, (x + 0.5, CZ + 0.5), "east", WAY_LEVEL, "way west",
+    for x, level in zip(way_lamp_xs(), WAY_LEVELS):
+        n += _flat_lamp(canvas, origin, version, (x + 0.5, CZ + 0.5), "east", level, "way west",
                         source_y=WAY_SOURCE_Y)
     return n
 

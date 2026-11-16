@@ -43,10 +43,11 @@ The models (all "mach_cable_"):
   roller   a track roller on its tie, that carries the rope: at the brow and down the slope.
   rope     the haul rope, drawn out between two points (M.between).
 
-For the motion line (MOVING below): the drum and the sheave are models of their own, anchored on
-their axes, and their entities carry a tag. Turning them the positive way about x pays the rope
-out (the car goes down). The small rollers are plain cylinders, a turn would not show, so they
-are not split.
+What moves (MOVING below): the drum and the sheave are models of their own, anchored on their
+axes; build() registers their turn with the motion line (motion/_kit), a turn of the drum in
+DRUM_REV ticks and the sheave as fast as the rope makes it. Turning them the positive way about x
+pays the rope out (the car goes down); as placed, the winch hauls. The small rollers are plain
+cylinders, a turn would not show, so they are not split.
 
 Scale (A5 1.2: px = scale keeps 16 texels to the block): drum and frame 2, the rest 1 -- the
 car is two blocks long and three wide over its eaves, as much as a model drawn texel for texel
@@ -57,7 +58,8 @@ Blocks: the models stop nobody, so the package sets what does. Barriers inside t
 things, the car's body (CAR_CELLS) and the drum's barrel (SOLID), two high and nowhere beyond
 what is seen. And the winch's own guard (GUARD): a low rail of iron bars before the winch house's
 opening, from its west pier to the pier of the platform's edge beside the car, so that nobody
-walks in among the wheels, the belt and the motor.
+walks in among the wheels, the belt and the motor. Over the rail barriers two high (GUARD_OVER),
+by the director's ruling: its top was a step to the car's roof.
 
 Light: the car is lit within, a source of the second rank in the car that is offered to the sky
 line, which places it. The winch house has no lamp of the site's: the winch brings its own, a
@@ -76,6 +78,7 @@ from artkit.pixelart import Mat, Sprite
 from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
+from ..motion import _kit as MK         # read only: the turn of the drum and the sheave is registered there
 from ..props import _kit as PK          # read only: flat tones, rivets, the hand-over of light sources
 from ..props import lamps               # the lamp in the winch house is one of the lamp family
 from ..site import _kit as SK           # read only: the line of the ridge under the trestle
@@ -189,6 +192,15 @@ SOLID = [(x, y, math.floor(AXLE[2])) for x in (int(AXLE[0]) - 1, int(AXLE[0])) f
 GUARD_Z = ROOM[3] + 2                                   # -35: the row before the opening, the duct's cover in it
 GUARD = [(x, GUARD_Z) for x in range(ROOM[0] - 1, ROOM[2] + 1)]         # x 86..90; (91, -35) is the edge's pier
 GUARD_RAIL = B.IRON_BARS
+# The rail's top proved a step (the outdoor walk of candidate A7, plan/reviews/walk/1a0f1af, the
+# second part, 1): one jump up on to it, then half a block at a time on to the cap of the edge's
+# pier and on to the car's roof, and from there down on to the trestle, with no way back. The
+# director had it shut with barriers and the look left as it is (11-16, 11:50): two high over
+# every cell of the rail. One row would not do: the north buffer stop's top is level with the
+# rail's and beside it, and a single row is jumped on to from there. With two the top is two
+# blocks over the stop's and three over the paving. These are the only barriers of the package
+# that do not stand inside a model.
+GUARD_OVER = [(x, int(FEET) + up, z) for x, z in GUARD for up in (1, 2)]        # (86..90, -3..-2, -35)
 
 # The winch's lamp: one of the lamp family, on the pier between the two windows of the back wall
 # (site/cablecar keeps those two columns of brick for it), its lantern out over the barrel between
@@ -578,11 +590,17 @@ def _rope():
 BUILDERS = {"car": _car, "drum": _drum, "frame": _frame, "motor": _motor, "belt": _belt, "sheave": _sheave,
             "stand": _stand, "duct": _duct, "hood": _hood, "turn": _turn, "roller": _roller, "rope": _rope}
 SCALE = {PREFIX + name: 2.0 if name in ("drum", "frame") else 1.0 for name in BUILDERS}
-# For the motion line: what turns, about which axis of its own model (through the anchor), the tag
-# its entities carry, and how fast against the drum (the rope runs as fast on both). Positive pays out.
+# What turns: about which axis of its own model (through the anchor), the tag its entities carry,
+# how fast against the drum (the rope runs as fast on both) and the ticks a turn takes. The drum
+# sets the pace: a turn in DRUM_REV ticks is two blocks of rope a second, the pace of a car on the
+# track. A positive time pays the rope out; the winch is placed hauling.
+DRUM_REV = 64
+SHEAVE_REV = DRUM_REV * 7 // 16                         # 28: by the two radii, a whole number of ticks
+if SHEAVE_REV * DRUM_ROPE_R != DRUM_REV * SHEAVE_ROPE_R:
+    raise ValueError("the sheave's turn is not a whole number of ticks")
 MOVING = {
-    PREFIX + "drum": dict(tag="c164_cable_drum", axis="x", ratio=1.0),
-    PREFIX + "sheave": dict(tag="c164_cable_sheave", axis="x", ratio=DRUM_ROPE_R / SHEAVE_ROPE_R),
+    PREFIX + "drum": dict(tag="c164_cable_drum", axis="x", ratio=1.0, ticks=-DRUM_REV),
+    PREFIX + "sheave": dict(tag="c164_cable_sheave", axis="x", ratio=DRUM_ROPE_R / SHEAVE_ROPE_R, ticks=-SHEAVE_REV),
 }
 
 
@@ -607,6 +625,8 @@ def build(canvas, origin=(0, 0, 0)):
         if name in MOVING:
             nbt["Tags"].append(MOVING[name]["tag"])
         canvas.add_entity(p[0] + ox, p[1] + oy, p[2] + oz, nbt)
+        if name in MOVING:
+            MK.spin(canvas, MOVING[name]["axis"], MOVING[name]["ticks"])
         return 1
 
     def run(name, a, b):
@@ -619,6 +639,8 @@ def build(canvas, origin=(0, 0, 0)):
         canvas.set(x + ox, y + oy, z + oz, B.BARRIER)
     for x, z in GUARD:                      # the winch's rail
         canvas.set(x + ox, int(FEET) + oy, z + oz, GUARD_RAIL)
+    for x, y, z in GUARD_OVER:              # and nobody gets up on it
+        canvas.set(x + ox, y + oy, z + oz, B.BARRIER)
     n = put("car", CAR) + put("hood", HOOD)
     for row in DUCT_ROWS:
         n += put("duct", (X_ROPE, FEET, row + 0.5))

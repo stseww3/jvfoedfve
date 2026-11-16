@@ -44,15 +44,18 @@ girders beside the slit and the room's lining are interiors'; this package place
 and one barrier, in the foot of the upright shaft's corner, where the crown wheel and its bearing
 fill the cell (barrier_cells()).
 
-Moving pieces are models of their own, for the motion category (plan 7.1):
-  seg          all twenty turn about TURN_AXIS with the dome, and so does every piece of the slit gear
-  riser        turns about the vertical through riser_at()
+Moving pieces are models of their own, and place() sets them going with motion/_kit (plan 7.1):
+  trucks       the twenty trucks and the toothed ring, in five lengths: they swing about TURN_AXIS as the
+               dome is turned to and fro to keep the comet in its slit (turning(): main/_dome's numbers);
+               the rail under them (rail) is the drum's and lies still
+  riser        turns about the vertical through riser_at(), sixteen times the ring's angle
   handwheel    turns about the line along x through its entity, HAND_GEAR turns to one of the riser
   version b:
   winch        turns about the line along z through its entity, WINCH_TURNS turns from open to shut
   roll         turns about the line along z through its entity
   bar          runs up the curtain's path (on_curve) from BAR_DEG to SHUT_DEG, HAUL blocks, the slats after it
   weight       runs down its rail, WEIGHT_RUN blocks at RUN_DEG from the level, as the curtain goes up
+  pull         sways about the line along z through its entity, its wheel's axis (PULL_SWAY; place() sets it going)
   version a:
   drive        turns about the line along x through its entity
   arm_n, arm_s slide along z towards the dome's meridian, TRAVEL blocks, as the leaves shut
@@ -72,10 +75,16 @@ from artkit import models as M
 from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
+from ..motion import _kit as MK
+from ..props import _kit as K
 
 PREFIX = "mach_dome_"
 MOVED_IN = True             # in the master scene since 11-16 (the director's fast lane): the dome stands there, and
 #                             what the gear takes from interiors/domeroom (the ring girder, the curb) follows with that package
+# How far the pieces are drawn (the four bands of 11-16, artkit.models): the gear is seen from the
+# dome room. What the curtain is made of is seen through the slit from across the site
+VIEW = M.NEAR
+VIEW_KEEP = (PREFIX + "roll", PREFIX + "bar")
 
 IRON = P.mat("iron")
 IRON_D = P.mat("iron_dark")
@@ -116,8 +125,20 @@ LEDGE_Y = float(S.DOME_SPRING)          # 24.0: the top of the drum's last cours
 RING_Y = LEDGE_Y + 1.0                  # 25.0: the underside of the dome's ring girder (interiors/domeroom)
 GORES = 20                              # main/dome: a truck under every seam between two gores
 SEG_DEG = 360.0 / GORES
-SEG_SCALE = 2
-RING_SIDES = 3 * GORES                  # the ring is a polygon of sixty sides, three to a segment
+# The ring is placed in five lengths of four gores: five display entities are the rail, five more
+# what rides on it, and one command a step moves a length (twenty would move twenty trucks). A
+# length is fourteen blocks from end to end and three deep, which a model shown at five holds
+LENGTHS = 5
+LENGTH_GORES = GORES // LENGTHS         # 4
+LENGTH_DEG = 360.0 / LENGTHS            # 72
+LENGTH_AT = 180.0                       # the first length's middle: astride the slit's meridian, so the slit's light is one length's
+LENGTH_SCALE = 5
+RING_SIDES = 3 * GORES                  # the ring is a polygon of sixty sides, three to a gore
+# The dome's slow turn to and fro, by which it keeps the comet in its slit: main/_dome names it
+# (TURN_DEG to either side, there and back in TURN_PERIOD ticks, in TURN_KEYS poses, TURN_SIGN 1
+# setting off counter-clockwise seen from above), and what rides with the dome swings by it. These
+# are its numbers of 11-16, used while that file has none (turning())
+TURN = (3.0, 600, 8, 1)
 RAIL_R = S.DOME_ROOM_DIAM / 2.0 + 0.25  # 11.25: the rail's centre line; a circle that lies on the ledge all the way round
 CHEEK_IN = 5.0                          # px from the rail's centre line to the inner faces of a truck's cheeks
 RACK_TEETH = 8 * GORES                  # 160: eight teeth to a segment
@@ -175,6 +196,7 @@ RUN_HANG = (2.0, 2.0, 1.0)              # blocks from the line's three corners u
 RUN_DEG = math.degrees(math.atan2(RUN_STEP[1], RUN_STEP[0]))        # 63.43
 RUN_ANCHOR = (FACE_X + 0.5, SILL_Y + 0.5)       # the cell a run takes its light from
 HANDCHAIN_Y = FLOOR_Y + 1.75            # the middle of the hand chain's bight: its lowest link hangs 1.3 over the floor
+PULL_SWAY = (1.2, 100)                  # degrees to either side of the plumb line, ticks there and back: two pixels at the bight
 
 # px from F0
 FACE = (FACE_X - F0[0]) * PX            # -4: the ring girder's face beside the slit
@@ -290,6 +312,27 @@ def riveted():
 
 def seam_angles():
     return [(k + 0.5) * SEG_DEG for k in range(GORES)]
+
+
+def length_angles():
+    """Degrees round the dome of the middles of the ring's lengths."""
+    return [(LENGTH_AT + k * LENGTH_DEG) % 360.0 for k in range(LENGTHS)]
+
+
+def on_rail(deg):
+    """(x, z) of the rail's centre line at `deg` round the dome, from the dome's axis."""
+    r = math.radians(deg)
+    return RAIL_R * math.cos(r), RAIL_R * math.sin(r)
+
+
+def turning():
+    """(degrees to either side, ticks there and back, poses, sign) of the dome's turn to and fro:
+    main/_dome's TURN_DEG, TURN_PERIOD, TURN_KEYS and TURN_SIGN once that file names them, else TURN."""
+    shell = neighbour("main", "_dome")
+    if getattr(shell, "TURN_DEG", None) is None or getattr(shell, "TURN_PERIOD", None) is None:
+        return TURN
+    return (float(shell.TURN_DEG), int(shell.TURN_PERIOD), int(getattr(shell, "TURN_KEYS", TURN[2])),
+            1 if getattr(shell, "TURN_SIGN", 1) >= 0 else -1)
 
 
 def riser_at():
@@ -475,42 +518,55 @@ def _chain(d, axis, c, a0, a1, seed):
 
 
 # ---- the ring -------------------------------------------------------------------------------------------
-def _segment():
-    """One gore's share of the ring: a length of rail, the truck under the seam, a length of the
-    toothed ring. The origin is on the ledge under the wheel; +x points outwards, the dome's axis
-    is RAIL_R behind it."""
-    d = _Draw("seg", SEG_SCALE)
+def _seams():
+    """Where the seams of one length of the ring lie, in degrees from its middle: -27, -9, 9, 27."""
+    return [(k - (LENGTH_GORES - 1) / 2.0) * SEG_DEG for k in range(LENGTH_GORES)]
+
+
+def _rail():
+    """One length of the rail on the ledge, LENGTH_DEG of it, with the chairs that hold it down:
+    it is fixed to the drum. The origin is on the ledge under the length's middle; +x points
+    outwards, the dome's axis is RAIL_R behind it."""
+    d = _Draw("rail", LENGTH_SCALE)
     axis = (-RAIL_R * PX, 0.0, 0.0)
-    arc = (-SEG_DEG / 2.0, SEG_DEG / 2.0)
-
-    def at(deg):
-        return ("y", -deg, axis)
-
+    arc = (-LENGTH_DEG / 2.0, LENGTH_DEG / 2.0)
     d.ring("y", (axis[0], 1.0, 0.0), RAIL_R * PX, 6.0, 2.0, IRON_D, sides=RING_SIDES, arc=arc, seed=101)   # the rail's foot
     d.ring("y", (axis[0], 3.0, 0.0), RAIL_R * PX, 2.0, 2.0, IRON_B, sides=RING_SIDES, arc=arc, seed=102)   # and its head
-    for deg in (-7.5, -4.5, 4.5, 7.5):                                  # the chairs that hold it down
-        for x in (-2.0, 2.0):
-            d.box((x - 1.0, 2.0, -1.5), (x + 1.0, 3.0, 1.5), IRON, rot=at(deg), seed=103)
+    for seam in _seams():
+        for deg in (-7.5, -4.5, 4.5, 7.5):                              # the chairs, four to a gore
+            for x in (-2.0, 2.0):
+                d.box((x - 1.0, 2.0, -1.5), (x + 1.0, 3.0, 1.5), IRON, rot=("y", -(seam + deg), axis), seed=103)
+    return d
 
+
+def _trucks():
+    """What rides round with the dome over one length of the rail: under each seam a truck with one
+    flanged wheel, and the toothed ring the trucks hold. It turns about the dome's axis, and the
+    model's anchor lies on it: +x points outwards from there, the length's middle is RAIL_R out."""
+    d = _Draw("trucks", LENGTH_SCALE, anchor=(-RAIL_R * PX, 0.0, 0.0))
+    axis = (-RAIL_R * PX, 0.0, 0.0)
+    arc = (-LENGTH_DEG / 2.0, LENGTH_DEG / 2.0)
     hub = 8.5                                                           # the axle over the ledge: the tread stands on the rail's head
-    d.tube("x", (hub, 0.0), -2.5, 1.0, 4.5, IRON_B, sides=12)           # the wheel's tread
-    d.tube("x", (hub, 0.0), 1.0, 2.0, 5.25, IRON, sides=12)             # its flange, on the wall's side of the rail
-    d.tube("x", (hub, 0.0), -5.5, 4.75, 1.0, IRON_D, sides=8)           # the axle
-    for x0 in (-5.5, 4.25):
-        d.tube("x", (hub, 0.0), x0, x0 + 0.5, 1.5, IRON, sides=8, seed=104)     # its nuts
-    d.tube("x", (hub, 0.0), -6.5, -5.5, 1.0, BRASS_D, sides=8)          # the oil cup on its end, towards the room
-    for x0 in (-CHEEK_IN, 2.25):
-        d.box((x0, 6.5, -2.0), (x0 + 2.0, 14.0, 2.0), IRON_D, seed=105)        # the truck's two cheeks
-    d.box((-CHEEK_IN, 14.0, -7.0), (4.25, 16.0, 7.0), IRON)             # its saddle, under the ring girder
+    for seam in _seams():
+        with d.turned(("y", -seam), about=axis):
+            d.tube("x", (hub, 0.0), -2.5, 1.0, 4.5, IRON_B, sides=12, seed=109)         # the wheel's tread
+            d.tube("x", (hub, 0.0), 1.0, 2.0, 5.25, IRON, sides=12, seed=110)           # its flange, on the wall's side of the rail
+            d.tube("x", (hub, 0.0), -5.5, 4.75, 1.0, IRON_D, sides=8, seed=115)         # the axle
+            for x0 in (-5.5, 4.25):
+                d.tube("x", (hub, 0.0), x0, x0 + 0.5, 1.5, IRON, sides=8, seed=104)     # its nuts
+            d.tube("x", (hub, 0.0), -6.5, -5.5, 1.0, BRASS_D, sides=8, seed=116)        # the oil cup on its end, towards the room
+            for x0 in (-CHEEK_IN, 2.25):
+                d.box((x0, 6.5, -2.0), (x0 + 2.0, 14.0, 2.0), IRON_D, seed=105)        # the truck's two cheeks
+            d.box((-CHEEK_IN, 14.0, -7.0), (4.25, 16.0, 7.0), IRON, seed=108)   # its saddle, under the ring girder
 
     pitch = RACK_R * PX
     y0, y1 = RACK_Y
     d.ring("y", (axis[0], (y0 + y1) / 2.0, 0.0), pitch + DEDENDUM + RACK_BACK / 2.0, RACK_BACK, y1 - y0 - 1.0, ROOT_IRON,
            sides=RING_SIDES, arc=arc, seed=106)                         # the toothed ring's back, bolted to the trucks' inner cheeks
     x = pitch + axis[0]
-    for j in range(RACK_TEETH // GORES):                                # its teeth, towards the dome's axis: a gap at either end
-        deg = (j + 0.5) * 360.0 / RACK_TEETH - SEG_DEG / 2.0
-        d.box((x - ADDENDUM, y0, -TOOTH / 2.0), (x + DEDENDUM + 0.25, y1, TOOTH / 2.0), TOOTH_IRON, rot=at(deg),
+    for j in range(RACK_TEETH // LENGTHS):                              # its teeth, towards the dome's axis: a gap at either end
+        deg = (j + 0.5) * 360.0 / RACK_TEETH - LENGTH_DEG / 2.0
+        d.box((x - ADDENDUM, y0, -TOOTH / 2.0), (x + DEDENDUM + 0.25, y1, TOOTH / 2.0), TOOTH_IRON, rot=("y", -deg, axis),
               grain="y", seed=107)
     return d
 
@@ -932,7 +988,7 @@ def _haul(side):
 
 
 _PIECES = {
-    "seg": _segment, "riser": _riser, "pedestal": _pedestal, "handwheel": _handwheel, "brackets": _brackets,
+    "rail": _rail, "trucks": _trucks, "riser": _riser, "pedestal": _pedestal, "handwheel": _handwheel, "brackets": _brackets,
     "foot": _foot, "drive": _drive, "handchain": _handchain, "weight": _weight,
     "arm_n": lambda: _arm(-1), "arm_s": lambda: _arm(1), "run_n": lambda: _run(-1), "run_s": lambda: _run(1),
     "roll": _roll, "rollseat": _rollseat, "bar": _bar, "winch": _winch, "winchseat": _winchseat, "pull": _pull,
@@ -946,7 +1002,19 @@ def _piece(name):
     d = _PIECES[name]()
     if d.m.name != PREFIX + name:
         raise ValueError(f"the piece {name} draws the model {d.m.name}")
+    # The shafts, wheels, sheaves and drums are tubes and rings of eight, twelve and sixteen sides,
+    # and a flat of such a piece that stands exactly between two axes is lit by the game as the one
+    # or the other by the last bit of a float: of two wheels of one kind one came out light and one
+    # dark (cr3 counted 96 such faces on the models with K.unsettled, 11-16). K.settle turns each such piece a
+    # tenth of a degree about its own middle, so every copy of the game lights it one way
+    K.settle(d.m)
     return d
+
+
+def unsettled():
+    """The drawn faces that still stand between two axes, of every piece of both versions:
+    [(piece, part's index, face letters)]."""
+    return [(name, i, letters) for name in sorted(_PIECES) for i, letters, _normal in K.unsettled(_piece(name).m)]
 
 
 def models(version=None):
@@ -961,9 +1029,10 @@ def layout(version=None):
     the dome's axis). version: main/dome's, read from that package when left out."""
     version = shell_version() if version is None else version
     out = []
-    for deg in seam_angles():
-        r = math.radians(deg)
-        out.append(("seg", (RAIL_R * math.cos(r), LEDGE_Y, RAIL_R * math.sin(r)), deg, ()))
+    for deg in length_angles():
+        x, z = on_rail(deg)
+        out.append(("rail", (x, LEDGE_Y, z), deg, ()))
+        out.append(("trucks", (0.0, LEDGE_Y, 0.0), deg, ()))        # its entity stands on the dome's axis: it turns about it
     rx, rz = riser_at()
     for name in HAND_PIECES:
         out.append((name, (rx, FLOOR_Y + HAND_H / PX, rz), 0.0, ()))
@@ -1002,11 +1071,25 @@ def place(canvas, origin=(0, 0, 0), version=None):
     for cell in barrier_cells(origin):
         canvas.set(*cell, B.BARRIER, keep=True)
     n = 0
+    deg, period, keys, sign = turning()
     for name, (x, y, z), yaw, turns in layout(version):
         d = _piece(name)
+        lx, lz = on_rail(yaw) if name == "trucks" else (x, z)       # a length's light is that of its place on the ledge
         canvas.add_entity(ox + AX + x, oy + y, oz + AZ + z,
-                          M.display(d.m, yaw=yaw, scale=d.scale, turns=turns, brightness=(night(x, z), 0)))
+                          M.display(d.m, yaw=yaw, scale=d.scale, turns=turns, brightness=(night(lx, lz), 0)))
         n += 1
+        # What moves is set going as it is placed (motion/_kit). The ring, its pinion's shaft and the
+        # hand wheel swing in one period, so they are one chain and stay in mesh: sixteen turns of
+        # the upright shaft to one of the ring, the same way round (the ring's teeth look inwards),
+        # and HAND_GEAR of the hand wheel to one of the shaft
+        if name == "trucks":
+            MK.swing(canvas, (0.0, 1.0, 0.0), deg, sign * period, keys=keys, name=f"{PREFIX}trucks.{int(round(yaw))}")
+        elif name == "riser":
+            MK.swing(canvas, (0.0, 1.0, 0.0), deg * RACK_TEETH / PINION_TEETH, sign * period, keys=keys)
+        elif name == "handwheel":
+            MK.swing(canvas, (1.0, 0.0, 0.0), deg * RACK_TEETH / PINION_TEETH * HAND_GEAR, sign * period, keys=keys)
+        elif name == "pull":                            # the hand chain hangs in the slit's draught
+            MK.swing(canvas, (0.0, 0.0, 1.0), *PULL_SWAY)
     return n
 
 
@@ -1041,19 +1124,21 @@ def clash(canvas, origin=(0, 0, 0), version=None, ignore=("light",)):
     hand: a stair or a slab that a part only lies against is listed too."""
     ox, oy, oz = origin
     own = set(barrier_cells(origin))
+    swing = turning()[0]
     out = []
     for name, (x, y, z), yaw, turns in layout(version):
         at = (ox + AX + x, oy + y, oz + AZ + z)
         seen = set()
-        for p in _spots(_piece(name), yaw, turns):
-            cell = tuple(int(math.floor(at[i] + p[i])) for i in range(3))
-            if cell in seen:
-                continue
-            seen.add(cell)
-            block = canvas.get(*cell)
-            if block is None or _kind(block) in ignore or (cell in own and _kind(block) == B.BARRIER):
-                continue
-            out.append((name, cell, block))
+        for way in (yaw - swing, yaw, yaw + swing) if name == "trucks" else (yaw,):    # what turns: at both ends of its swing too
+            for p in _spots(_piece(name), way, turns):
+                cell = tuple(int(math.floor(at[i] + p[i])) for i in range(3))
+                if cell in seen:
+                    continue
+                seen.add(cell)
+                block = canvas.get(*cell)
+                if block is None or _kind(block) in ignore or (cell in own and _kind(block) == B.BARRIER):
+                    continue
+                out.append((name, cell, block))
     return out
 
 
@@ -1092,7 +1177,7 @@ def _held(version):
     out = []
     for deg in seam_angles():
         x, z = RAIL_R * math.cos(math.radians(deg)), RAIL_R * math.sin(math.radians(deg))
-        out += [("seg: the ledge under the rail", (x, LEDGE_Y - 0.5, z)), ("seg: the ring girder on the truck", (x, RING_Y + 0.5, z))]
+        out += [("rail: the ledge under it", (x, LEDGE_Y - 0.5, z)), ("trucks: the ring girder on a truck", (x, RING_Y + 0.5, z))]
     rx, rz = riser_at()
     cx, cz = RISER_CELL[0] - AX, RISER_CELL[1] - AZ
     out += [("pedestal: the floor", (rx, FLOOR_Y - 0.5, rz)), ("brackets: the wall west of the shaft", (cx - 0.5, FLOOR_Y + 3.5, cz + 0.5))]
