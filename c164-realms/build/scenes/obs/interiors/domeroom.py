@@ -359,6 +359,9 @@ def models():
     board = _other("interiors", "_domeboard")
     if board is not None:
         out.update(board.models())
+    chair = _other("interiors", "_domechair")
+    if chair is not None:
+        out.update(chair.models())
     return out
 
 
@@ -583,6 +586,9 @@ def _furniture(c, origin, put):
     if furniture is not None and paper is not None:
         top = FEET + furniture.TOP[DESK[0]]
         n += paper.place(c, "logbook", (LOGBOOK[0], top, LOGBOOK[1]), facing=DESK[2], origin=origin)
+    chair = _other("interiors", "_domechair")
+    if chair is not None:
+        return n + chair.place(c, origin)
     n += K.put(c, _models()[PREFIX + "chair"], (CHAIR[0], FEET, CHAIR[1]), yaw=CHAIR_YAW, origin=origin)
     return n
 
