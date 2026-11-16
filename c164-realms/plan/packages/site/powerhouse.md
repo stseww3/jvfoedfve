@@ -78,3 +78,5 @@
     - V6 右转（总监案头 06:52）：先加过一张 `stair_south_right`（站位不变，看点 (74.4, 8.0, 33.2)）和锁定的 `stair_south` 并排给 s2、cr2 核图；s2 把骨架的 `S.V6` 改成这个看点（7d1508c0，总装 6030c3e6，s2 #64810）以后，`stair_south` 改成读 `S.V6`，`stair_south_right` 撤了，每个场景 13 张。机位表从手写的 `shots.json` 挪进场景模块的 `VIEWS`（`stair_south` 读 `S.V6`、`v1` 读 `S.V1`，骨架再转它们跟着转）；`python -m scenes.obs_site_powerhouse` 把两个场景的 `shots.json` 写出来。
     - 场地灯由 props 线自己放了（`lamps.DRESS`，s2 #62474），两个测试场景不再调 `lamps.site()`；`write_pack` 加了 sky 的包（不加的话朝西的图里有游戏自己的太阳）。
     - 第三次交付（方烟囱、`lining()` 公开、炉火窗 12 级、`stair_south_right`）：b8156301（关口 PASS，--base 636ad212，28 张）。交付后的补图：`yard_west`、`chimney_up` 挪站位再各转一格（上面两条），`stair_south` 读 `S.V6`。
+    - 第三次交付进了总装 1ef70a67（合并提交 22c9d4c3，s2 #65747；交叉看 chart c350）。补图 05e56aa0 进了总装 95b6e2af（快车道：关口在自己的节点 node82 上跑，--base fa1d91ce，PASS，两个场景各 13 张；交给 site 的审批人 a4，a4 #67856）。外壳代码这一轮没动。
+    - 还欠的：`FIRE` 那一轮（lights 的洗墙轮和 chart 的炉火窗进总装以后重拍，量炉火开间墩侧的亮度，cr2-#7 第 1 点）。cr2-#7 第 2 点（小门里的暖光）归 interiors/powerhouse，第一版 4392caf 已交 cr4。
