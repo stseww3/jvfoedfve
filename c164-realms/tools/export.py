@@ -36,6 +36,11 @@ does not take such worlds (plan/reviews/export/realms-rules.md). Off, the two fi
 timeline tag are not written and no biome is filled: the sky is then the game's own, or what the
 resource pack makes of it.
 
+--shaders auto|on|off (default auto): whether the resource pack carries the look as core shaders
+(build/scenes/obs/sky/_shaders.py, card sky/safe-look; verified on a real client, a2 c322 #72794).
+auto: yes when the scene has a look, the save goes without it, the save is no trial and the tree
+has that module. Never together with --look on: the two skies would lie on top of each other.
+
 --on-cloud back|ignore (default back, for a trial save ignore): whether standing on one of the
 cloud sea's blocks (the block table's CLOUD) puts a player back on the spot, as dropping under the
 line does. The sea is a skin of solid blocks: without this, who climbs over a parapet walks on it.
@@ -376,8 +381,19 @@ def scene_spec(args):
         # once that is in the assembly; plain_time() is the same number worked out from the look)
         from scenes.obs.sky import mood
         when = getattr(scene, "TIME_PLAIN", None) or getattr(mood, "LOCK_TICK", None) or plain_time()
+    asked = getattr(args, "shaders", "auto")
+    shaders = False
+    if asked == "on" and look:
+        fail("--shaders on with --look on: the look would be there twice, as the biome's and as the shaders'")
+    if (asked == "on" or (asked == "auto" and not args.trial)) and not look and getattr(scene, "BIOME", None):
+        try:
+            importlib.import_module("scenes.obs.sky._shaders")
+            shaders = True
+        except ImportError as e:
+            if asked == "on":
+                fail(f"--shaders on, and this tree has no scenes/obs/sky/_shaders.py ({e})")
     return {
-        "scene": args.scene, "name": args.name, "at": [ox, oy, oz], "look": look,
+        "scene": args.scene, "name": args.name, "at": [ox, oy, oz], "look": look, "shaders": shaders,
         "biome": f"{ART}:{scene.BIOME}" if look else None,
         "time": int(when),
         "feet": [round(ox + ex, 4), round(oy + ey - S.EYE, 4), round(oz + ez, 4)],
@@ -609,14 +625,26 @@ def place(spec, server, *more):
     return text
 
 
-def resource_pack(scene, path, description, when):
-    """The scene's resource pack as the world carries it: resources.zip, the pack's files at its top."""
+def resource_pack(scene, path, description, when, shaders=False):
+    """The scene's resource pack as the world carries it: resources.zip, the pack's files at its top.
+    With shaders, the look is written into it as core shaders (sky/_shaders.py reads the game's own
+    shader text from the client jar: MC_JAR or MC_ROOT). Returns the number of files, the stand-ins
+    and the shader files."""
     sys.path.insert(0, BUILD)
     import makepack
     tmp = os.path.join(WORK, "respack-" + os.path.basename(os.path.dirname(path)) + f"-{os.getpid()}")
     if os.path.isdir(tmp):
         shutil.rmtree(tmp)
     makepack.write(scene, tmp)
+    if shaders:
+        from scenes.obs.sky import _shaders
+        for line in _shaders.pack(tmp) or []:
+            say(str(line))
+    sky = sorted(os.path.relpath(p, tmp).replace(os.sep, "/")
+                 for p in glob.glob(os.path.join(tmp, "assets", "minecraft", "shaders", "**", "*"), recursive=True)
+                 if os.path.isfile(p))
+    if shaders and not sky:
+        fail("sky/_shaders.pack() wrote no file under assets/minecraft/shaders/")
     meta = os.path.join(tmp, "pack.mcmeta")
     with open(meta) as fh:
         data = json.load(fh)
@@ -628,7 +656,7 @@ def resource_pack(scene, path, description, when):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     count = zip_tree(tmp, path, "", when)
     shutil.rmtree(tmp)
-    return count, standins
+    return count, standins, sky
 
 
 # ------------------------------------------------------------------ archives
@@ -908,15 +936,15 @@ def seal(world, spec, out_dir, head, when, facts):
     registry = registry_files(pack_dir)
     if registry and not spec["look"]:
         fail("the look is off and the data pack still holds registry files: " + ", ".join(registry))
-    count, standins = resource_pack(spec["scene"], os.path.join(stage, "resourcepacks", "resources.zip"),
-                                    f"c164 {name} ({head})", when)
+    count, standins, sky = resource_pack(spec["scene"], os.path.join(stage, "resourcepacks", "resources.zip"),
+                                         f"c164 {name} ({head})", when, spec.get("shaders"))
     kinds = {}
     for folder, _dirs, names in os.walk(os.path.join(pack_dir, "data")):
         part = os.path.relpath(folder, os.path.join(pack_dir, "data")).split(os.sep)
         if len(part) > 1 and names:
             kinds[part[1]] = kinds.get(part[1], 0) + len(names)
     facts.update(removed=sorted(removed), registry_files=registry, data_pack=kinds,
-                 resource_pack={"files": count, "standins": standins,
+                 resource_pack={"files": count, "standins": standins, "shaders": sky,
                                 "bytes": os.path.getsize(os.path.join(stage, "resourcepacks", "resources.zip"))},
                  numbers=numbers(stage), level=level_facts(stage), files=listing(stage))
     path = os.path.join(out_dir, name + ".zip")
@@ -924,7 +952,8 @@ def seal(world, spec, out_dir, head, when, facts):
     facts["zip"] = {"file": os.path.basename(path), "bytes": os.path.getsize(path), "files": files,
                     "sha256": sha256_of(path), "top": name}
     say(f"sealed: removed {', '.join(sorted(removed)) or 'nothing'}; registry files: {', '.join(registry) or 'none'}; "
-        f"resource pack {count} files" + (f", {len(standins)} stand-ins (ph_) still in it" if standins else ""))
+        f"resource pack {count} files" + (f", {len(standins)} stand-ins (ph_) still in it" if standins else "")
+        + (f", {len(sky)} of them shaders (the look)" if sky else ", no shaders"))
 
 
 # ------------------------------------------------------------------ verify
@@ -1150,6 +1179,15 @@ def verify(args):
                 check(results, "resource pack", "pack.mcmeta" in inner and any(n.startswith("assets/") for n in inner),
                       f"{len(inner)} files, pack.mcmeta at its top: {'pack.mcmeta' in inner}; "
                       f"{sum(1 for n in inner if os.path.basename(n).startswith('ph_'))} stand-ins (ph_)")
+                # the look as core shaders: there when the save goes without the biome and was made
+                # to carry them, and never beside the biome (a2 c322 #72794: two skies, one on the other)
+                sky = sorted(n for n in inner if n.startswith("assets/minecraft/shaders/") and not n.endswith("/"))
+                noted = (made.get("resource_pack") or {}).get("shaders")
+                check(results, "shaders", bool(sky) == bool(spec.get("shaders")) and not (sky and spec["look"])
+                      and (noted is None or sky == sorted(noted)),
+                      (f"{len(sky)} shader files in the resource pack" if sky else "no shader file in the resource pack")
+                      + f"; the save was made {'to carry' if spec.get('shaders') else 'without'} the look as shaders"
+                      + f", {'with' if spec['look'] else 'without'} the biome")
             elif strip:
                 gone = registry_files(pack_dir)
                 for rel in gone:
@@ -1223,10 +1261,11 @@ def pack(args):
     pack_dir = os.path.join(out, "datapacks", PACK)
     pack_meta(pack_dir, f"c164 {args.name} ({head})", True)
     written = write_functions(pack_dir, spec)
-    count, standins = resource_pack(args.scene, os.path.join(out, "resourcepacks", "resources.zip"),
-                                    f"c164 {args.name} ({head})", when)
+    count, standins, sky = resource_pack(args.scene, os.path.join(out, "resourcepacks", "resources.zip"),
+                                         f"c164 {args.name} ({head})", when, spec.get("shaders"))
     say(f"spec: {json.dumps(spec, ensure_ascii=False)}")
-    say(f"functions {NS}: {', '.join(written)}; resource pack {count} files, {len(standins)} stand-ins; in {out}")
+    say(f"functions {NS}: {', '.join(written)}; resource pack {count} files, {len(standins)} stand-ins, "
+        f"{len(sky)} shader files; in {out}")
     for command in setting_commands(spec):
         say("  would run: " + command)
 
@@ -1290,6 +1329,7 @@ def page(args):
         "zip_bytes": made["zip"]["bytes"], "sha256": made["zip"]["sha256"],
         "pack_bytes": made["resource_pack"].get("bytes"), "pack_files": made["resource_pack"]["files"],
         "standins": len(made["resource_pack"]["standins"]),
+        "shaders": len(made["resource_pack"].get("shaders") or []),
         "blocks": (made.get("built") or {}).get("blocks"), "entities": sum(made["numbers"]["entities"].values()),
         "moving": (made.get("built") or {}).get("moving"),
         "functions": (made.get("data_pack") or {}).get("function"), "tags": (made.get("data_pack") or {}).get("tags"),
@@ -1329,7 +1369,9 @@ def page(args):
     text = [
         PAGE_OPEN,
         f"**最新，传 Realms 用这个：`A{n}/{name}.zip`**（总装 {row['assembly']}，{row['at']} 导出，{mb(row['zip_bytes'])}，"
-        f"sha256 `{row['sha256']}`）。不带注册表文件，钟锁在 {row['time']} 刻。",
+        f"sha256 `{row['sha256']}`）。不带注册表文件，钟锁在 {row['time']} 刻；"
+        + (f"我们的天由资源包里的 {row['shaders']} 个着色器文件带着（sky/safe-look）。" if row.get("shaders")
+           else "**资源包里没有着色器，天是原版的夜空。**"),
         *([f"同一个总装头、带着我们的天的：`A{n}/{look['file']}`（{mb(look['bytes'])}，sha256 `{look['sha256']}`，钟锁在 {look['time']} 刻）。"
            f"**它带 {look['registry_files']} 个注册表文件（群系、时间线），只给单人打开看样子，不传 Realms。**"] if look else []),
         "总装每半小时跟着 s1 的看板重导一次，编号往上加；这里只留最新的一个，旧的在分支历史里，表的最后一列是它所在的提交。",
@@ -1375,6 +1417,9 @@ def main():
         p.add_argument("--on-cloud", choices=("back", "ignore"),
                        help="back: who stands on a block of the cloud sea is put back on the spot too "
                             "(default: back, for a trial save ignore)")
+        p.add_argument("--shaders", choices=("auto", "on", "off"), default="auto",
+                       help="the look as core shaders in the resource pack (auto: when the save goes without "
+                            "the look and the tree has sky/_shaders.py; never with --look on)")
         p.add_argument("--trial", help="label of a trial save (see the text at the top)")
         p.add_argument("--assembly", help="the assembly's commit this is made of, for the note beside the save")
         p.add_argument("--out", help="folder of the archive (make: default dist/<name>)", required=(what == "pack"))
