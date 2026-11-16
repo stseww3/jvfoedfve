@@ -1,0 +1,273 @@
+walkin obs, what props placed: 175 entities in 166 pieces (single things: --items); of the scene: 189907 blocks, 796 entities; 151211 standing places reached from (88.5, -4.0, -32.5) (4316 only through one of 12 door blocks); 163 barrier cells in the scene (18 s)
+
+ 1. furniture: 1 entities (prop_furn_bench)
+    cells x -24..-23, y -1..1, z -4..-3   ->  WALKED INTO on foot: 0.75 m2 of standing ground, up to 17% of the body inside; no barrier
+    body: 1.4 m2 of ground under it, 1.0 high, its lowest point -0.00 from the floor at feet 0
+    beside it: walk 53
+    inside it: walk 3 at x -23..-23, feet 0, z -3.5..-2.5; the outline there is 90% model
+    brushed:   walk 7 at x -23..-22.5, feet 0, z -4..-2
+    body: up to 9% of it in the model (enclosed voxels)
+    a barrier fits in no cell: it would stand out of the model everywhere (the fullest cell is 12% model)
+
+ 2. furniture: 1 entities (prop_furn_bench)
+    cells x -24..-23, y -1..1, z 3..4   ->  WALKED INTO on foot: 0.75 m2 of standing ground, up to 17% of the body inside; no barrier
+    body: 1.4 m2 of ground under it, 1.0 high, its lowest point -0.00 from the floor at feet 0
+    beside it: walk 53
+    inside it: walk 3 at x -23..-23, feet 0, z 3.5..4.5; the outline there is 90% model
+    brushed:   walk 7 at x -23..-22.5, feet 0, z 3..5
+    body: up to 9% of it in the model (enclosed voxels)
+    a barrier fits in no cell: it would stand out of the model everywhere (the fullest cell is 12% model)
+
+ 3. furniture: 1 entities (prop_furn_bench)
+    cells x -22, y -1..1, z -8..-7   ->  WALKED INTO on foot: 0.75 m2 of standing ground, up to 17% of the body inside; no barrier
+    body: 1.4 m2 of ground under it, 1.0 high, its lowest point -0.00 from the floor at feet 0
+    beside it: walk 53
+    inside it: walk 3 at x -21.5..-21.5, feet 0, z -7.5..-6.5; the outline there is 90% model
+    brushed:   walk 7 at x -21.5..-21, feet 0, z -8..-6
+    body: up to 9% of it in the model (enclosed voxels)
+    a barrier fits in no cell: it would stand out of the model everywhere (the fullest cell is 12% model)
+
+ 4. furniture: 1 entities (prop_furn_bench)
+    cells x -22, y -1..1, z 7..8   ->  WALKED INTO on foot: 0.75 m2 of standing ground, up to 17% of the body inside; no barrier
+    body: 1.4 m2 of ground under it, 1.0 high, its lowest point -0.00 from the floor at feet 0
+    beside it: walk 53
+    inside it: walk 3 at x -21.5..-21.5, feet 0, z 7.5..8.5; the outline there is 90% model
+    brushed:   walk 7 at x -21.5..-21, feet 0, z 7..9
+    body: up to 9% of it in the model (enclosed voxels)
+    a barrier fits in no cell: it would stand out of the model everywhere (the fullest cell is 12% model)
+
+ 5. furniture: 1 entities (prop_furn_bench)
+    cells x 49, y -6..-4, z 50..51   ->  WALKED INTO on foot: 0.75 m2 of standing ground, up to 16% of the body inside; no barrier
+    body: 1.4 m2 of ground under it, 1.0 high, its lowest point -0.00 from the floor at feet -5
+    beside it: walk 42, hop 8
+    inside it: walk 3 at x 49.5..49.5, feet -5, z 50.5..51.5; the outline there is 90% model
+    brushed:   walk 7 at x 49..49.5, feet -5, z 50..52
+    body: up to 14% of it in the model (enclosed voxels)
+    a barrier fits in no cell: it would stand out of the model everywhere (the fullest cell is 16% model)
+
+ 6. furniture: 1 entities (prop_furn_bench)
+    cells x 79, y -5..-3, z -39..-38   ->  WALKED INTO on foot: 0.75 m2 of standing ground, up to 17% of the body inside; no barrier
+    body: 1.4 m2 of ground under it, 1.0 high, its lowest point -0.00 from the floor at feet -4
+    beside it: walk 22, hop 9
+    inside it: walk 3 at x 79.5..79.5, feet -4, z -38.5..-37.5; the outline there is 90% model
+    brushed:   walk 2 at x 79.5..79.5, feet -4, z -39..-37
+    body: up to 9% of it in the model (enclosed voxels)
+    a barrier fits in no cell: it would stand out of the model everywhere (the fullest cell is 16% model)
+
+ 7. furniture: 1 entities (prop_furn_bench)
+    cells x 80..82, y -5..-3, z -36   ->  WALKED INTO on foot: 0.75 m2 of standing ground, up to 17% of the body inside; no barrier
+    body: 1.4 m2 of ground under it, 1.0 high, its lowest point -0.00 from the floor at feet -4
+    beside it: walk 36, hop 1
+    inside it: walk 3 at x 81..82, feet -4, z -35.5..-35.5; the outline there is 90% model
+    brushed:   walk 2 at x 80.5..82.5, feet -4, z -35.5..-35.5
+    body: up to 9% of it in the model (enclosed voxels)
+    a barrier fits in no cell: it would stand out of the model everywhere (the fullest cell is 12% model)
+
+ 8. furniture: 1 entities (prop_furn_trunk)
+    cells x 84..85, y -4, z -36   ->  WALKED INTO on foot: 0.75 m2 of standing ground, up to 39% of the body inside; no barrier
+    body: 1.1 m2 of ground under it, 0.7 high, its lowest point +0.00 from the floor at feet -4
+    beside it: walk 24
+    inside it: walk 3 at x 84..85, feet -4, z -35.5..-35.5; the outline there is 100% model
+    brushed:   walk 3 at x 84.5..85.5, feet -4, z -35.5..-35
+    body: up to 43% of it in the model (enclosed voxels)
+    a barrier fits in no cell: it would stand out of the model everywhere (the fullest cell is 0% model)
+
+ 9. furniture: 1 entities (prop_furn_crate_small)
+    cells x 84..85, y -4..-3, z -36   ->  WALKED INTO on foot: 0.25 m2 of standing ground, up to 18% of the body inside; no barrier
+    body: 0.4 m2 of ground under it, 0.5 high, its lowest point +0.72 from the floor at feet -4
+    beside it: walk 23, hop 1
+    inside it: walk 1 at x 85..85, feet -4, z -35.5..-35.5; the outline there is 100% model
+    brushed:   walk 2 at x 84.5..85.5, feet -4, z -35.5..-35.5
+    body: up to 26% of it in the model (enclosed voxels)
+    a barrier fits in no cell: it would stand out of the model everywhere (the fullest cell is 19% model)
+
+10. instruments: 1 entities (prop_inst_tripod_scope_comet)
+    cells x -26..-24, y -1..2, z -1..1   ->  WALKED INTO on foot: 0.5 m2 of standing ground, up to 33% of the body inside; no barrier
+    body: 0.8 m2 of ground under it, 2.4 high, its lowest point -0.01 from the floor at feet 0
+    beside it: walk 58
+    inside it: walk 2 at x -24.5..-24, feet 0, z 0.5..0.5; the outline there is 87% model
+    brushed:   walk 3 at x -25..-24.5, feet 0, z 0..1
+    the eye gets in: walk 1 at x -24.5..-24.5, feet 0, z 0.5..0.5
+    body: up to 40% of it in the model (enclosed voxels)
+    a barrier fits in no cell: it would stand out of the model everywhere (the fullest cell is 20% model)
+
+89. lamps: 1 entities (prop_lamp_street)
+    cells x 26, y 0..5, z -6   ->  WALKED INTO on foot: 0.25 m2 of standing ground, up to 89% of the body inside; no barrier
+    body: 0.8 m2 of ground under it, 5.1 high, its lowest point +0.00 from the floor at feet 0
+    beside it: walk 44
+    inside it: walk 1 at x 26.5..26.5, feet 0, z -5.5..-5.5; the outline there is 37% model
+    brushed:   walk 4 at x 26..27, feet 0, z -6..-5
+    body: up to 61% of it in the model (enclosed voxels)
+    a barrier fits in no cell: it would stand out of the model everywhere (the fullest cell is 50% model)
+
+90. lamps: 1 entities (prop_lamp_street)
+    cells x 26, y 0..5, z 6   ->  WALKED INTO on foot: 0.25 m2 of standing ground, up to 89% of the body inside; no barrier
+    body: 0.8 m2 of ground under it, 5.1 high, its lowest point +0.00 from the floor at feet 0
+    beside it: walk 44
+    inside it: walk 1 at x 26.5..26.5, feet 0, z 6.5..6.5; the outline there is 37% model
+    brushed:   walk 4 at x 26..27, feet 0, z 6..7
+    body: up to 61% of it in the model (enclosed voxels)
+    a barrier fits in no cell: it would stand out of the model everywhere (the fullest cell is 50% model)
+
+96. lamps: 1 entities (prop_lamp_street)
+    cells x 44, y 0..5, z -6   ->  WALKED INTO on foot: 0.25 m2 of standing ground, up to 89% of the body inside; no barrier
+    body: 0.8 m2 of ground under it, 5.1 high, its lowest point +0.00 from the floor at feet 0
+    beside it: walk 44
+    inside it: walk 1 at x 44.5..44.5, feet 0, z -5.5..-5.5; the outline there is 37% model
+    brushed:   walk 4 at x 44..45, feet 0, z -6..-5
+    body: up to 61% of it in the model (enclosed voxels)
+    a barrier fits in no cell: it would stand out of the model everywhere (the fullest cell is 50% model)
+
+97. lamps: 1 entities (prop_lamp_street)
+    cells x 44, y 0..5, z 6   ->  WALKED INTO on foot: 0.25 m2 of standing ground, up to 89% of the body inside; no barrier
+    body: 0.8 m2 of ground under it, 5.1 high, its lowest point +0.00 from the floor at feet 0
+    beside it: walk 44
+    inside it: walk 1 at x 44.5..44.5, feet 0, z 6.5..6.5; the outline there is 37% model
+    brushed:   walk 4 at x 44..45, feet 0, z 6..7
+    body: up to 61% of it in the model (enclosed voxels)
+    a barrier fits in no cell: it would stand out of the model everywhere (the fullest cell is 50% model)
+
+104. lamps: 1 entities (prop_lamp_street)
+    cells x 72..73, y -3..2, z -10..-9   ->  WALKED INTO on foot: 0.25 m2 of standing ground, up to 89% of the body inside; no barrier
+    body: 0.8 m2 of ground under it, 5.1 high, its lowest point +0.00 from the floor at feet -3
+    beside it: hop 23
+    inside it: hop 1 at x 73..73, feet -3, z -9..-9; the outline there is 37% model
+    brushed:   hop 4 at x 72.5..73.5, feet -3, z -9.5..-8.5
+    body: up to 61% of it in the model (enclosed voxels)
+    a barrier fits in no cell: it would stand out of the model everywhere (the fullest cell is 12% model)
+
+105. lamps: 1 entities (prop_lamp_street)
+    cells x 72..73, y -3..2, z 9..10   ->  WALKED INTO on foot: 0.25 m2 of standing ground, up to 89% of the body inside; no barrier
+    body: 0.8 m2 of ground under it, 5.1 high, its lowest point +0.00 from the floor at feet -3
+    beside it: hop 23
+    inside it: hop 1 at x 73..73, feet -3, z 10..10; the outline there is 37% model
+    brushed:   hop 4 at x 72.5..73.5, feet -3, z 9.5..10.5
+    body: up to 61% of it in the model (enclosed voxels)
+    a barrier fits in no cell: it would stand out of the model everywhere (the fullest cell is 12% model)
+
+106. lamps: 1 entities (prop_lamp_street)
+    cells x 79, y -6..-1, z -10   ->  WALKED INTO on foot: 0.25 m2 of standing ground, up to 89% of the body inside; no barrier
+    body: 0.8 m2 of ground under it, 5.1 high, its lowest point +0.00 from the floor at feet -6
+    beside it: walk 44
+    inside it: walk 1 at x 79.5..79.5, feet -6, z -9.5..-9.5; the outline there is 37% model
+    brushed:   walk 4 at x 79..80, feet -6, z -10..-9
+    body: up to 61% of it in the model (enclosed voxels)
+    a barrier fits in no cell: it would stand out of the model everywhere (the fullest cell is 50% model)
+
+107. lamps: 1 entities (prop_lamp_street)
+    cells x 79, y -6..-1, z 10   ->  WALKED INTO on foot: 0.25 m2 of standing ground, up to 89% of the body inside; no barrier
+    body: 0.8 m2 of ground under it, 5.1 high, its lowest point +0.00 from the floor at feet -6
+    beside it: walk 44
+    inside it: walk 1 at x 79.5..79.5, feet -6, z 10.5..10.5; the outline there is 37% model
+    brushed:   walk 4 at x 79..80, feet -6, z 10..11
+    body: up to 61% of it in the model (enclosed voxels)
+    a barrier fits in no cell: it would stand out of the model everywhere (the fullest cell is 50% model)
+
+108. lamps: 1 entities (prop_lamp_street)
+    cells x 80, y -6..-1, z -18   ->  WALKED INTO on foot: 0.25 m2 of standing ground, up to 89% of the body inside; no barrier
+    body: 0.8 m2 of ground under it, 5.1 high, its lowest point +0.00 from the floor at feet -6
+    beside it: walk 44
+    inside it: walk 1 at x 80.5..80.5, feet -6, z -17.5..-17.5; the outline there is 37% model
+    brushed:   walk 4 at x 80..81, feet -6, z -18..-17
+    body: up to 61% of it in the model (enclosed voxels)
+    a barrier fits in no cell: it would stand out of the model everywhere (the fullest cell is 50% model)
+
+109. lamps: 1 entities (prop_lamp_street)
+    cells x 86, y -6..-1, z -18   ->  WALKED INTO on foot: 0.25 m2 of standing ground, up to 89% of the body inside; no barrier
+    body: 0.8 m2 of ground under it, 5.1 high, its lowest point +0.00 from the floor at feet -6
+    beside it: walk 44
+    inside it: walk 1 at x 86.5..86.5, feet -6, z -17.5..-17.5; the outline there is 37% model
+    brushed:   walk 4 at x 86..87, feet -6, z -18..-17
+    body: up to 61% of it in the model (enclosed voxels)
+    a barrier fits in no cell: it would stand out of the model everywhere (the fullest cell is 50% model)
+
+110. lamps: 1 entities (prop_lamp_street)
+    cells x 87, y -6..-1, z -10   ->  WALKED INTO on foot: 0.25 m2 of standing ground, up to 89% of the body inside; no barrier
+    body: 0.8 m2 of ground under it, 5.1 high, its lowest point +0.00 from the floor at feet -6
+    beside it: walk 44
+    inside it: walk 1 at x 87.5..87.5, feet -6, z -9.5..-9.5; the outline there is 37% model
+    brushed:   walk 4 at x 87..88, feet -6, z -10..-9
+    body: up to 61% of it in the model (enclosed voxels)
+    a barrier fits in no cell: it would stand out of the model everywhere (the fullest cell is 50% model)
+
+111. lamps: 1 entities (prop_lamp_street)
+    cells x 87, y -6..-1, z 10   ->  WALKED INTO on foot: 0.25 m2 of standing ground, up to 89% of the body inside; no barrier
+    body: 0.8 m2 of ground under it, 5.1 high, its lowest point +0.00 from the floor at feet -6
+    beside it: walk 44
+    inside it: walk 1 at x 87.5..87.5, feet -6, z 10.5..10.5; the outline there is 37% model
+    brushed:   walk 4 at x 87..88, feet -6, z 10..11
+    body: up to 61% of it in the model (enclosed voxels)
+    a barrier fits in no cell: it would stand out of the model everywhere (the fullest cell is 50% model)
+
+148. pipes: 1 entities (prop_pipe_valve_angle_l)
+    cells x 18..19, y -1..0, z 33   ->  WALKED INTO on foot: 0.5 m2 of standing ground, up to 27% of the body inside; no barrier
+    body: 0.8 m2 of ground under it, 0.9 high, its lowest point -0.05 from the floor at feet 0
+    beside it: walk 30
+    inside it: walk 2 at x 18.5..19, feet 0, z 33.5..33.5; the outline there is 98% model
+    brushed:   walk 3 at x 19..19.5, feet 0, z 33..34
+    body: up to 42% of it in the model (enclosed voxels)
+    a barrier fits in no cell: it would stand out of the model everywhere (the fullest cell is 22% model)
+
+room by room -- the pieces somebody stands in or gets his eye (1.62 over the feet) into:
+
+  cable station: the eye gets into 0 pieces, 4 more are walked through below the eye
+    -- walked through, the eye stays out --
+    8. prop_furn_trunk; placed by props/furniture; cells x 84..85, y -4, z -36
+         stands in it: walk 3 at x 84..85, feet -4, z -35.5..-35.5; body up to 43% in the model; a barrier fits in no cell (the fullest is 0% model)
+    9. prop_furn_crate_small; placed by props/furniture; cells x 84..85, y -4..-3, z -36
+         stands in it: walk 1 at x 85..85, feet -4, z -35.5..-35.5; body up to 26% in the model; a barrier fits in no cell (the fullest is 19% model)
+    6. prop_furn_bench; placed by props/furniture; cells x 79, y -5..-3, z -39..-38
+         stands in it: walk 3 at x 79.5..79.5, feet -4, z -38.5..-37.5; body up to 9% in the model; a barrier fits in no cell (the fullest is 16% model)
+    7. prop_furn_bench; placed by props/furniture; cells x 80..82, y -5..-3, z -36
+         stands in it: walk 3 at x 81..82, feet -4, z -35.5..-35.5; body up to 9% in the model; a barrier fits in no cell (the fullest is 12% model)
+
+  court and terraces: the eye gets into 1 pieces, 9 more are walked through below the eye
+    -- the eye gets in --
+    10. prop_inst_tripod_scope_comet; placed by props/instruments; cells x -26..-24, y -1..2, z -1..1
+         eye in: walk 1 (0.25 m2) at x -24.5..-24.5, feet 0, z 0.5..0.5; stands in it: walk 2 at x -24.5..-24, feet 0, z 0.5..0.5; body up to 40% in the model; a barrier fits in no cell (the fullest is 20% model)
+    -- walked through, the eye stays out --
+    89. prop_lamp_street; placed by props/lamps; cells x 26, y 0..5, z -6
+         stands in it: walk 1 at x 26.5..26.5, feet 0, z -5.5..-5.5; body up to 61% in the model; a barrier fits in no cell (the fullest is 50% model)
+    90. prop_lamp_street; placed by props/lamps; cells x 26, y 0..5, z 6
+         stands in it: walk 1 at x 26.5..26.5, feet 0, z 6.5..6.5; body up to 61% in the model; a barrier fits in no cell (the fullest is 50% model)
+    96. prop_lamp_street; placed by props/lamps; cells x 44, y 0..5, z -6
+         stands in it: walk 1 at x 44.5..44.5, feet 0, z -5.5..-5.5; body up to 61% in the model; a barrier fits in no cell (the fullest is 50% model)
+    97. prop_lamp_street; placed by props/lamps; cells x 44, y 0..5, z 6
+         stands in it: walk 1 at x 44.5..44.5, feet 0, z 6.5..6.5; body up to 61% in the model; a barrier fits in no cell (the fullest is 50% model)
+    148. prop_pipe_valve_angle_l; placed by props/pipes; cells x 18..19, y -1..0, z 33
+         stands in it: walk 2 at x 18.5..19, feet 0, z 33.5..33.5; body up to 42% in the model; a barrier fits in no cell (the fullest is 22% model)
+    1. prop_furn_bench; placed by props/furniture; cells x -24..-23, y -1..1, z -4..-3
+         stands in it: walk 3 at x -23..-23, feet 0, z -3.5..-2.5; body up to 9% in the model; a barrier fits in no cell (the fullest is 12% model)
+    2. prop_furn_bench; placed by props/furniture; cells x -24..-23, y -1..1, z 3..4
+         stands in it: walk 3 at x -23..-23, feet 0, z 3.5..4.5; body up to 9% in the model; a barrier fits in no cell (the fullest is 12% model)
+    3. prop_furn_bench; placed by props/furniture; cells x -22, y -1..1, z -8..-7
+         stands in it: walk 3 at x -21.5..-21.5, feet 0, z -7.5..-6.5; body up to 9% in the model; a barrier fits in no cell (the fullest is 12% model)
+    4. prop_furn_bench; placed by props/furniture; cells x -22, y -1..1, z 7..8
+         stands in it: walk 3 at x -21.5..-21.5, feet 0, z 7.5..8.5; body up to 9% in the model; a barrier fits in no cell (the fullest is 12% model)
+
+  lower platform: the eye gets into 0 pieces, 8 more are walked through below the eye
+    -- walked through, the eye stays out --
+    104. prop_lamp_street; placed by props/lamps; cells x 72..73, y -3..2, z -10..-9
+         stands in it: hop 1 at x 73..73, feet -3, z -9..-9; body up to 61% in the model; a barrier fits in no cell (the fullest is 12% model)
+    105. prop_lamp_street; placed by props/lamps; cells x 72..73, y -3..2, z 9..10
+         stands in it: hop 1 at x 73..73, feet -3, z 10..10; body up to 61% in the model; a barrier fits in no cell (the fullest is 12% model)
+    106. prop_lamp_street; placed by props/lamps; cells x 79, y -6..-1, z -10
+         stands in it: walk 1 at x 79.5..79.5, feet -6, z -9.5..-9.5; body up to 61% in the model; a barrier fits in no cell (the fullest is 50% model)
+    107. prop_lamp_street; placed by props/lamps; cells x 79, y -6..-1, z 10
+         stands in it: walk 1 at x 79.5..79.5, feet -6, z 10.5..10.5; body up to 61% in the model; a barrier fits in no cell (the fullest is 50% model)
+    108. prop_lamp_street; placed by props/lamps; cells x 80, y -6..-1, z -18
+         stands in it: walk 1 at x 80.5..80.5, feet -6, z -17.5..-17.5; body up to 61% in the model; a barrier fits in no cell (the fullest is 50% model)
+    109. prop_lamp_street; placed by props/lamps; cells x 86, y -6..-1, z -18
+         stands in it: walk 1 at x 86.5..86.5, feet -6, z -17.5..-17.5; body up to 61% in the model; a barrier fits in no cell (the fullest is 50% model)
+    110. prop_lamp_street; placed by props/lamps; cells x 87, y -6..-1, z -10
+         stands in it: walk 1 at x 87.5..87.5, feet -6, z -9.5..-9.5; body up to 61% in the model; a barrier fits in no cell (the fullest is 50% model)
+    111. prop_lamp_street; placed by props/lamps; cells x 87, y -6..-1, z 10
+         stands in it: walk 1 at x 87.5..87.5, feet -6, z 10.5..10.5; body up to 61% in the model; a barrier fits in no cell (the fullest is 50% model)
+
+  slopes and below: the eye gets into 0 pieces, 1 more are walked through below the eye
+    -- walked through, the eye stays out --
+    5. prop_furn_bench; placed by props/furniture; cells x 49, y -6..-4, z 50..51
+         stands in it: walk 3 at x 49.5..49.5, feet -5, z 50.5..51.5; body up to 14% in the model; a barrier fits in no cell (the fullest is 16% model)
+
+barriers of the scene in no model of props, interiors: 137 cells -- 1 at x -1, y 18, z -9; 6 at x 16, y 0..1, z -5..-3; 6 at x 16, y 0..1, z 3..5; 2 at x 33, y 0..1, z -30; 2 at x 37, y 0..1, z -30; 14 at x 70, y -5..-4, z 26..32; 8 at x 71..72, y -6..-5, z 37..38; 2 at x 77, y -6..-5, z 37; 30 at x 79..83, y -5..-4, z 23..25; 30 at x 79..83, y -5..-4, z 27..29; 24 at x 80..85, y -6..-5, z 34..35; 12 at x 90..91, y -4..-3, z -34..-32
+result: 23 of 166 pieces can be walked into, the eye gets into 1
