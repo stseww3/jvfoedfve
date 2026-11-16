@@ -1,0 +1,31 @@
+a0job 1116-052655-cable-probe-f3-9cf7-12031: cursor/c164-cable-probe-f3-9cf7 @ 77400e08 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.27 0.35 0.35, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- set -o pipefail; python tools/check.py --scene obs_mach_cablecar_winch --shots build/scenes/obs_mach_cablecar_winch/shots.json 2>&1 | grep -v -E '^ +chain of|more than 160 blocks' | tail -24 ---- exit 0, 16 s, last 60 lines of 21:
+check obs_mach_cablecar_winch at 77400e0
+[PASS] regen     187824 blocks, 556 entities, 456 models, 2065 resource-pack files, 1436 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (6.5 s)
+[PASS] conflicts the scene writes 2064 files, no file written twice, the folders and the prefix of machines are kept (15 packages run alone)
+[PASS] strays    585 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      1441 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[WARN] blocks    83 kinds of block placed, 422 barrier cells (x -1..94, y -6..20, z -38..47), barriers away from any model
+                 205 barrier cells have no model within 3 blocks (x 0..94, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees (A0 #457, 4)
+[PASS] flatwall  no wall face runs flat over more than 5x5
+[WARN] entities  556 display entities, 28 drawn out along one axis, 31 shown through a matrix that is no turn, no face stretched, 255 models never placed
+                 sky_cloudsea_swell_a x3: 4/4/4 pixels to the block along x/y/z, not 16
+                 sky_cloudsea_swell_b x16: 4/4/4 pixels to the block along x/y/z, not 16
+                 sky_cloudsea_swell_c x7: 4/4/4 pixels to the block along x/y/z, not 16
+                 sky_cloudsea_swell_d x11: 4/4/4 pixels to the block along x/y/z, not 16
+[WARN] views     14 shots, most display entities in view: 245 (v1), limit 600; counted without what walls hide; the game draws up to 322 (sheave): a display entity without width and height is drawn outside the view too
+                 (the tracking range is read off the game's code, not yet seen on the real machine)
+[WARN] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in th
+                 the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a_equator at x 35, y 4, z 0; 4 mor
+[PASS] motion    106 parts and 18 points, 1 that travel on 32 chains, 1323 function files; 50 commands in the busiest tick (limit 120), 8.0 a tick on average (limit 40)
+                 ... and 60 more
+result: PASS (0 failed, 4 with warnings)
+==== NODEJOB RESULT ====
+exit=0 secs=17 host=cursor cores=4 head=77400e08 commit=none pushed=no branch=cursor/c164-cable-probe-f3-9cf7 files=0
+a0job: exit=0 secs=18
