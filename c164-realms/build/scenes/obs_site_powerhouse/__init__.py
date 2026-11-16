@@ -76,12 +76,12 @@ def shots():
 def _as(version, run):
     """The site line builds its packages itself and hands them no choices: set the package's own
     defaults for the time of the build and put them back."""
-    was = powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE
-    powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE = version, run, FIRE
+    was = powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE, powerhouse.VENTS_ON
+    powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE, powerhouse.VENTS_ON = version, run, FIRE, True
     try:
         yield
     finally:
-        powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE = was
+        powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE, powerhouse.VENTS_ON = was
 
 
 def _fit(c):

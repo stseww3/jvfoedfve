@@ -192,6 +192,11 @@ DRAINS = [dict(at=(x + 0.5, float(Z0)), facing="north", top=EAVES + 1, bottom=FE
 # off and is over its count of entities; from the yard, the stair and the terrace's lip they are
 # all within 32.
 VIEW = M.NEAR
+# Where they are placed (VENTS_ON; build(vents=) overrides it): None, in the master scene only
+# (canvas.master). Several test scenes of other packages borrow this shell with build() and pack
+# their own models, not the shell's: a ventilator there would show a model their pack does not
+# have. This package's own test scenes set it True.
+VENTS_ON = None
 MODEL_VENT = "site_power_vent"
 VENT_REV = 60                                       # ticks a turn: a vane passes every 7.5 ticks. Eight of them
 #                                                     at four steps a turn are half a command a tick
@@ -744,10 +749,14 @@ def models():
     return {MODEL_VENT: _vent_model()}
 
 
-def _vents(canvas, origin, version):
+def _vents(canvas, origin, version, on=None):
     """The ventilators on the saw roof's ridges (VENTS), each a display entity that turns. Returns
-    their number: none on the vault."""
-    if version != "a":
+    their number: none on the vault, none where they are not wanted (VENTS_ON)."""
+    if on is None:
+        on = VENTS_ON
+    if on is None:
+        on = bool(getattr(canvas, "master", False))
+    if version != "a" or not on:
         return 0
     model = _vent_model()
     for i, (x, y, z) in enumerate(VENTS):
@@ -756,11 +765,13 @@ def _vents(canvas, origin, version):
     return len(VENTS)
 
 
-def build(canvas, origin=(0, 0, 0), version=None, run=None):
+def build(canvas, origin=(0, 0, 0), version=None, run=None, vents=None):
     """Build the shell at `origin`. version: the roof, "a" or "b" (VERSION when not given);
-    run: lay the main along the upper terrace (RUN when not given). Returns the number of display
-    entities placed: the lamp over the wicket and the saw roof's ventilators. (The linings of the
-    fire windows are the materials line's to place, see lining().)"""
+    run: lay the main along the upper terrace (RUN when not given); vents: place the roof's
+    ventilators (VENTS_ON when not given: in the master scene only; a scene that asks for them
+    packs models()). Returns the number of display entities placed: the lamp over the wicket and
+    the ventilators. (The linings of the fire windows are the materials line's to place, see
+    lining().)"""
     version = version or VERSION
     if version not in ROOFS:
         raise ValueError(f"no roof version {version!r}; there are {', '.join(sorted(ROOFS))}")
@@ -771,4 +782,4 @@ def build(canvas, origin=(0, 0, 0), version=None, run=None):
     _tower(p)
     _bridge(p, RUN if run is None else run)
     _light(canvas, p.o, version)
-    return _lamp(canvas, p.o) + _vents(canvas, p.o, version)
+    return _lamp(canvas, p.o) + _vents(canvas, p.o, version, vents)
