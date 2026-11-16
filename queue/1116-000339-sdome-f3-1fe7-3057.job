@@ -1,0 +1,3 @@
+branch=cursor/c164-sdome-f3-1fe7
+head=e1f09721bf0417f74d46683cf8d98113bec5f7a5
+args=--tail 14 python\ tools/selfshots.py\ obs_main_smalldome\ \&\&\ \(python\ tools/check.py\ --scene\ obs_main_smalldome\ \>\ renders/obs_main_smalldome/check.txt\ 2\>\&1\;\ \(cd\ build\ \&\&\ python\ -m\ scenes.obs_main_smalldome.hidden\)\ \>\ renders/obs_main_smalldome/hidden.txt\ 2\>\&1\;\ tail\ -4\ renders/obs_main_smalldome/check.txt\;\ tail\ -3\ renders/obs_main_smalldome/hidden.txt\) 
