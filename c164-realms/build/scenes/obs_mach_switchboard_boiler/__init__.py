@@ -4,9 +4,10 @@ as site/powerhouse builds it.
 
 Round the shell there is a slab of the lower platform and nothing else. The room is empty but for
 the set: the engine and the dynamo, the gratings, the pipes, the coal and the lamps are other
-packages'. The floor is a stand-in for the room's (interiors/powerhouse), and the light is a
-stand-in as well: a few invisible sources four blocks over the floor, so that the models can be
-judged, and the sources the set itself asks the sky line for (boiler.LIGHTS, board.LIGHTS).
+packages'. The floor is a stand-in for the room's (interiors/powerhouse). The light is the room's
+as it will be where the set stands, and nothing more: the two sources the boilers ask for before
+their fire doors (boiler.LIGHTS), and the sources of the two shaded lamps the room hangs before
+the board (BOARD_LAMPS: interiors/powerhouse's numbers, stood in for here).
 
 The house's glass is painted opaque: the skeleton's V6 sees nothing of the set.
 
@@ -30,9 +31,7 @@ PAVING_Y = S.LOWER_PAVING_Y                     # -7
 FLOOR = B.TUFF_SMOOTH.block                     # stands in for the room's floor and the yard's paving
 ROCK = B.TUFF.block
 FY = boiler.FLOOR
-LIGHT_Y = int(FY) + 4
-LIGHTS = [(x, z) for z in (26, 31) for x in (72, 75, 78)]       # over the firing floor and before the board
-LIGHT_LEVEL = 13
+BOARD_LAMPS = [((71, -4, 28), 10), ((71, -4, 31), 10)]          # the room's two lamps before the board
 TIME = 14000                                    # light version A, the default
 
 EYE = S.EYE
@@ -44,9 +43,7 @@ def build():
     c.box(SLAB[0], PAVING_Y, SLAB[1], SLAB[2], PAVING_Y, SLAB[3], FLOOR)
     shell = powerhouse.build(c, (0, 0, 0))          # its own entities: the lamp over the wicket
     n = boiler.build(c, (0, 0, 0)) + board.build(c, (0, 0, 0))
-    for x, z in LIGHTS:
-        c.set(x, LIGHT_Y, z, f"{B.LIGHT}[level={LIGHT_LEVEL}]", keep=True)
-    for (x, y, z), level in boiler.LIGHTS + board.LIGHTS:
+    for (x, y, z), level in boiler.LIGHTS + board.LIGHTS + BOARD_LAMPS:
         c.set(int(x // 1), int(y // 1), int(z // 1), f"{B.LIGHT}[level={level}]", keep=True)
     c.entity_counts = {"machines": n, "site": int(shell or 0)}
     return c
