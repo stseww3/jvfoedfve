@@ -329,3 +329,13 @@
 - 11:13 facade #80787: main/tower b4c2dd5d -> 48ca3e95 merged without a gate summary (lamp only, he read the code).
 - 11:16 A0 g2 #81151: while the pool is down: merge first, the gate is made up at the head; packages never run go through the director's machine (tools/a0job.sh) first; THE HEAD IS TAKEN AT 11:35: I report the head of that moment, checkall on the first machine that runs, outb exports at once (A7), on red I revert that merge and outb exports again.
 - 11:18 head check of 432f3ef8 submitted to node5 (op_f782d9bc76).
+
+## 11:18–11:28 (pool down; node5 for my head checks)
+- 11:20 node5: a10683fd 92 pass. 11:25 node5 (op_1272b84ba9): d6378f06 92 pass (37 warnings), board check ok.
+- mast's interface: he carries GUIDE / GUIDE_CHARTS (two lines after BIOME_MARGIN_Y in scenes/obs/__init__.py) with motion/guide-title; smoke, a6, outb told.
+- Gate-pending merges recorded in words.tsv: b9ea80b0, 941b061b, 0b1d89d4, 430502f6, d6378f06 (cr4, a6), 295f20d3 (cr2, gate passed on node7), c15e9012 (a1, windows a88dbaac), 0cb464c3 (facade, roof doors b2b39b92).
+- Renderer fix (entities that are no item display): fd961c2f -> my branch 1405b0d8; node5 op_e95ec609a8: obs_props_ironwork --verify 24 of 24; in the assembly as c289d2ea (11:28); a6 and mast told (no wake).
+- 11:28 pre-check of the head c289d2ea submitted to node5: op_78b83c8598.
+- Director 11:27: V5 the mast hut's gable 0.30-0.32 against the tower's 0.22: a4 changes the stone of the outbuildings (darker by one or two steps), for the 12:00 package, not A7.
+- aide 11:26: three packages still to come before 11:35: sdome's roof doors (in: 0cb464c3), hall 3b09f9d (west door, 17 dark cells; to cr4), m2 the time room's 27 cells (to cr4).
+- NEXT: 11:35 take the head; DM outb + s1 (wake), a4, facade; checkall on it (director's machine via a0job.sh, or node5); red -> revert that one merge, outb exports again.
