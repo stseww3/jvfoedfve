@@ -358,7 +358,8 @@ def _lantern():
     m.tube("y", (0.0, 0.0), top, top + 1.0, 3.5, K.IRON_D, sides=8)                         # the foot
     m.tube("y", (0.0, 0.0), top + 1.0, top + 3.0, 3.0, K.BRASS, sides=8)                    # the font
     m.tube("y", (0.0, 0.0), top + 3.0, top + 4.0, 2.0, K.BRASS_D, sides=8)                  # the burner
-    for y0, y1, tone in ((4.0, 5.5, 2), (5.5, 8.5, 4), (8.5, 10.0, 3)):                     # the glass: the flame low in it
+    for y0, y1, tone in ((4.0, 5.5, 1), (5.5, 8.5, 3), (8.5, 10.0, 2)):                     # the glass, filament amber as
+        #                                                                                     every lamp's: the flame low in it
         K.glass_prism(m, "y", (0.0, 0.0), top + y0, top + y1, 2.5, K.flat("glow", tone))
     for x in (-4.0, 3.0):
         m.box((x, top + 1.0, -0.5), (x + 1.0, top + 11.0, 0.5), K.IRON, grain="y")          # the side tubes
