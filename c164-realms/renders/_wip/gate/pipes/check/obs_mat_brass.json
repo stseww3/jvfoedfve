@@ -1,0 +1,237 @@
+{
+ "scene": "obs_mat_brass",
+ "commit": "76e02f9",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "WARN",
+   "summary": "3949 blocks, 0 entities, 0 models, 643 resource-pack files, 15 data-pack files, look: 1 biomes, 1 timelines (0.4 s)",
+   "details": [
+    "registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json"
+   ]
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 642 files, no file written twice, the folders and the prefix of materials are kept (7 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "119 pictures, every colour in the palette",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "514 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "86 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "WARN",
+   "summary": "56 kinds of block placed, 5 not in the occupancy table (add them to the table through S2, or use a block of the table)",
+   "details": [
+    "waxed_oxidized_copper_grate x6",
+    "exposed_cut_copper x6",
+    "exposed_copper x6",
+    "exposed_cut_copper_stairs x1",
+    "exposed_cut_copper_slab x1"
+   ]
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of materials: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "0 display entities",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "WARN",
+   "summary": "25 shots, most display entities in view: 0 (brass_a), limit 600; counted without what walls hide",
+   "details": [
+    "the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(materials.pack(d) or []) + list(sky.pack(d) or [])"
+   ],
+   "data": {
+    "shots": [
+     {
+      "name": "brass_a",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "brass_b",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "brass_door",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "brass_wall",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "brass_signs",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "brass_line",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "plates_a",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "plates_b",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "copper_twins",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "emblem",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "emblem_down",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "emblem_walk",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "emblem_close",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "court",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "court_walk",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "court_down",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "roof",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "roof_gutter",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "wall_plate",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "wall_tread",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "wall_copper",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "wall_cut",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "walls_far_brass",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "walls_far_copper",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "wall_treads",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "nothing moves",
+   "details": []
+  }
+ ]
+}
