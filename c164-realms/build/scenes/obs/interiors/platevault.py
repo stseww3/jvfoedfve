@@ -139,7 +139,8 @@ SILVER = (("cream", 1), ("cream", 0), ("ashlar", 0), ("slate", 6), ("slate", 4),
 #          the emulsion seen through the bath, then the silver from density 1 to 6: neutral, as the plates on the racks
 CREST = ("cream", 2)                # the plate under a crest of the bath
 BATH, BATH_LIT = ("old_copper", 0), ("old_copper", 1)       # the developer (the tone of the kit's bath), a crest
-GLINT = ("signal", 1)               # the safelight on the bath, at the side the lamp hangs
+GLINT, GLINT_TAIL = ("signal", 1), ("signal", 0)       # the safelight on the bath, at the side the lamp hangs,
+#                                                         and its streak towards who looks
 BATH_W, BATH_D = 10, 7              # texels: the sheet over the tray's bath (10.5 by 7.5), the plate a texel in
 BATH_TOP = 1.85                     # texels above the tray's underside: over the plate the kit's tray has (1.75)
 BATH_BEAT = 15                      # ticks a picture is shown; the game blends each into the next
@@ -308,7 +309,9 @@ def bath_pictures():
                 silver = done[y][x]
                 if silver < 0:
                     lit = (y == 0 and x in far) or (y == h - 1 and x in near) or x == crest
-                    tone = GLINT if x == w - 1 and y in (glint, glint + 1) else BATH_LIT if lit else BATH
+                    edge = x == w - 1
+                    tone = (GLINT if edge and y == glint else GLINT_TAIL if edge and y == glint + 1
+                            else BATH_LIT if lit else BATH)
                 elif x == crest:
                     tone = CREST
                 elif crest is not None and x < crest:
