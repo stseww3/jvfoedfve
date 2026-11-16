@@ -53,6 +53,7 @@ Moving pieces are models of their own, for the motion category (plan 7.1):
   roll         turns about the line along z through its entity
   bar          runs up the curtain's path (on_curve) from BAR_DEG to SHUT_DEG, HAUL blocks, the slats after it
   weight       runs down its rail, WEIGHT_RUN blocks at RUN_DEG from the level, as the curtain goes up
+  pull         sways about the line along z through its entity, its wheel's axis (PULL_SWAY; place() sets it going)
   version a:
   drive        turns about the line along x through its entity
   arm_n, arm_s slide along z towards the dome's meridian, TRAVEL blocks, as the leaves shut
@@ -78,6 +79,10 @@ from ..props import _kit as K
 PREFIX = "mach_dome_"
 MOVED_IN = True             # in the master scene since 11-16 (the director's fast lane): the dome stands there, and
 #                             what the gear takes from interiors/domeroom (the ring girder, the curb) follows with that package
+# How far the pieces are drawn (the four bands of 11-16, artkit.models): the gear is seen from the
+# dome room. What the curtain is made of is seen through the slit from across the site
+VIEW = M.NEAR
+VIEW_KEEP = (PREFIX + "roll", PREFIX + "bar")
 
 IRON = P.mat("iron")
 IRON_D = P.mat("iron_dark")
@@ -177,6 +182,7 @@ RUN_HANG = (2.0, 2.0, 1.0)              # blocks from the line's three corners u
 RUN_DEG = math.degrees(math.atan2(RUN_STEP[1], RUN_STEP[0]))        # 63.43
 RUN_ANCHOR = (FACE_X + 0.5, SILL_Y + 0.5)       # the cell a run takes its light from
 HANDCHAIN_Y = FLOOR_Y + 1.75            # the middle of the hand chain's bight: its lowest link hangs 1.3 over the floor
+PULL_SWAY = (1.2, 100)                  # degrees to either side of the plumb line, ticks there and back: two pixels at the bight
 
 # px from F0
 FACE = (FACE_X - F0[0]) * PX            # -4: the ring girder's face beside the slit
@@ -951,7 +957,7 @@ def _piece(name):
     # The shafts, wheels, sheaves and drums are tubes and rings of eight, twelve and sixteen sides,
     # and a flat of such a piece that stands exactly between two axes is lit by the game as the one
     # or the other by the last bit of a float: of two wheels of one kind one came out light and one
-    # dark (cr3 counted 96 such faces in the real client, 11-16). K.settle turns each such piece a
+    # dark (cr3 counted 96 such faces on the models with K.unsettled, 11-16). K.settle turns each such piece a
     # tenth of a degree about its own middle, so every copy of the game lights it one way
     K.settle(d.m)
     return d
@@ -1021,6 +1027,8 @@ def place(canvas, origin=(0, 0, 0), version=None):
         canvas.add_entity(ox + AX + x, oy + y, oz + AZ + z,
                           M.display(d.m, yaw=yaw, scale=d.scale, turns=turns, brightness=(night(x, z), 0)))
         n += 1
+        if name == "pull":                              # the hand chain hangs in the slit's draught
+            MK.swing(canvas, (0.0, 0.0, 1.0), *PULL_SWAY)
     return n
 
 
