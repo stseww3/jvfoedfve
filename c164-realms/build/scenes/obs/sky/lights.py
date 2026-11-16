@@ -58,6 +58,8 @@ the canvas by then and places, in this order:
             the stepped corner; inside the small dome's door and over the clock tower's; low on
             the inner gable where a roof way crosses it and at the foot of the way down from a
             ridge walk to an end terrace. The sources are of the third rank (_lightkit.WAY, 8).
+            They hang in the master scene and where a scene asks for the building's lights with
+            _lightkit.dress(): not in another card's test scene, whose pack has no lamp in it.
   gates     where a way leaves the upper terrace (site/terrain's GAPS: to the south lookout, to
             the weather station, to the water tower) the low lamp of props (lamps "post") on the
             cap of the pier either side of the gap, where a pier stands there, with its source in
@@ -530,6 +532,14 @@ def _stair(canvas, r, origin):
 FACE = {"north": (0, -1), "south": (0, 1), "west": (-1, 0), "east": (1, 0)}
 
 
+def _asked(canvas):
+    """The lamps of the ways and of the gates hang in the master scene and in a scene that asks
+    for the building's lights by name (_lightkit.dress(canvas)). Another card's test scene builds
+    a pier or a shell and calls sky.build() for its own sources: its pack has no lamp of props in
+    it, and a lamp without its model is a failure there."""
+    return bool(getattr(canvas, "master", False) or getattr(canvas, "light_dress", False))
+
+
 def way_lamps():
     """Where the lamps of the ways hang, as main/shell stands: [(the block of the wall the lamp
     is fixed to (x, y, z), the way its face looks, the level of its source, what it lights)], in
@@ -807,8 +817,9 @@ def build(canvas, origin=(0, 0, 0)):
     _entrance(canvas, r, origin)
     n = _wash(canvas, r, origin) if r["dressed"] else 0
     n += _stair(canvas, r, origin)
-    n += _ways(canvas, r, origin)
-    n += _gates(canvas, r, origin)
+    if _asked(canvas):
+        n += _ways(canvas, r, origin)
+        n += _gates(canvas, r, origin)
     _settle(canvas, r)
     _pools(canvas, r)
     _survey(canvas, r)
