@@ -1,0 +1,350 @@
+{
+ "name": "c164-Z11-plain",
+ "archive_sha256": "baaf678addd547671286f266f21c16ce1ce8fad2a348cce636447c78c2bac1df",
+ "made_from": "da93c078",
+ "checks": [
+  {
+   "check": "archive",
+   "ok": true,
+   "detail": "3549546 bytes, sha256 baaf678addd54767, as the note beside it says"
+  },
+  {
+   "check": "level.dat",
+   "ok": true,
+   "detail": "GameType 2, difficulty {'difficulty': 'peaceful', 'hardcore': 0, 'locked': 0}, spawn {'pos': [88, 196, -33], 'pitch': -22.690000534057617, 'dimension': 'minecraft:overworld', 'yaw': 67.70999908447266}"
+  },
+  {
+   "check": "files",
+   "ok": true,
+   "detail": "has ['level.dat', 'resourcepacks/resources.zip', 'datapacks/c164art/pack.mcmeta']; left over nothing"
+  },
+  {
+   "check": "resource pack",
+   "ok": true,
+   "detail": "2512 files, pack.mcmeta at its top: True; 0 stand-ins (ph_)"
+  },
+  {
+   "check": "shaders",
+   "ok": true,
+   "detail": "no shader file in the resource pack; the save was made without the look as shaders, without the biome"
+  },
+  {
+   "check": "light",
+   "ok": true,
+   "detail": "the light was at rest when the world was saved: waited 9.8 s, chunks whose light had changed at each reading [246, 0, 0, 0]"
+  },
+  {
+   "check": "starts",
+   "ok": true,
+   "detail": "up in 6 s, the server's own settings: {'gamemode': 'survival', 'difficulty': 'easy'}"
+  },
+  {
+   "check": "data pack",
+   "ok": true,
+   "detail": "There are 2 data pack(s) enabled: [vanilla (built-in)], [file/c164art (world)]"
+  },
+  {
+   "check": "game rules",
+   "ok": true,
+   "detail": "21 of 21 as the list says; max_block_modifications 32768"
+  },
+  {
+   "check": "forced chunks",
+   "ok": true,
+   "detail": "26 chunks are kept loaded (wanted: the spawn's chunk and the 25 others the railway runs through)"
+  },
+  {
+   "check": "tick, empty",
+   "ok": true,
+   "detail": "The game is running normallyTarget tick rate: 20.0 per second. | Average time per tick: 1.8ms (Target: 50.0ms)Percentiles: P50: 1.0ms P95: 2.4ms P99: 25.6ms. Sample: 100"
+  },
+  {
+   "check": "difficulty",
+   "ok": true,
+   "detail": "The difficulty is Peaceful (the server's own setting is easy)"
+  },
+  {
+   "check": "join",
+   "ok": true,
+   "detail": "joined in 0.4 s at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617), after the functions at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617); wanted (88.5, 196.0, -32.5) facing (67.71, -22.69)"
+  },
+  {
+   "check": "spawn",
+   "ok": true,
+   "detail": "the game set him at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617) (this server's game mode is survival: told, not held against the save)"
+  },
+  {
+   "check": "mode",
+   "ok": true,
+   "detail": "C164Probe has the following entity data: 2"
+  },
+  {
+   "check": "reach",
+   "ok": true,
+   "detail": "The base value of attribute Block Interaction Range for entity C164Probe is 0.0"
+  },
+  {
+   "check": "tag",
+   "ok": true,
+   "detail": "C164Probe has 1 tag(s): c164.in"
+  },
+  {
+   "check": "quiet",
+   "ok": true,
+   "detail": "nothing stood in the chat, as it should be"
+  },
+  {
+   "check": "fall",
+   "ok": true,
+   "detail": "put at y 164, a moment later at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617)"
+  },
+  {
+   "check": "spectator",
+   "ok": true,
+   "detail": "as a spectator put at y 164: a moment later at (108.5, 164.0, -32.5); set to adventure there: a moment later at (88.5, 196.0, -32.5)"
+  },
+  {
+   "check": "rides",
+   "ok": true,
+   "detail": "put on a seat at y 164, under the line (C164Probe started riding Item Display): a moment later the server has him at (108.5, 163.4, -32.5), riding: Test passed; taken off it (C164Probe stopped riding Item Display): a moment later at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617)"
+  },
+  {
+   "check": "tick, one player",
+   "ok": true,
+   "detail": "The game is running normallyTarget tick rate: 20.0 per second. | Average time per tick: 1.8ms (Target: 50.0ms)Percentiles: P50: 1.9ms P95: 2.2ms P99: 2.3ms. Sample: 100"
+  },
+  {
+   "check": "on the cloud",
+   "ok": true,
+   "detail": "stood on the cloud block at [104, 174, -17] (Test passed), a moment later at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617)"
+  },
+  {
+   "check": "over the cloud",
+   "ok": true,
+   "detail": "put three blocks over it, a moment later at (104.5, 178.0, -16.5)"
+  },
+  {
+   "check": "over the line",
+   "ok": true,
+   "detail": "put at y 170.5, a moment later at (3088.5, 170.5, -32.5)"
+  },
+  {
+   "check": "title",
+   "ok": true,
+   "detail": "titles shown to who is new: ['BLUE HOUR']; under them: ['OBSERVATORY']; lines over the hotbar: none; wanted once each: BLUE HOUR / OBSERVATORY"
+  },
+  {
+   "check": "rejoin",
+   "ok": true,
+   "detail": "where he left: (3088.5, 170.5, -32.5) (left at (3088.5, 170.5, -32.5)); C164Probe has the following entity data: 2; The base value of attribute Block Interaction Range for entity C164Probe is 0.0; 2 things shown before he left"
+  },
+  {
+   "check": "title, again",
+   "ok": true,
+   "detail": "titles shown to who comes back: none; lines over the hotbar: none; wanted neither (he is told nothing)"
+  },
+  {
+   "check": "loop",
+   "ok": true,
+   "detail": "87 moving parts named in the loop, 40 of the first 40 loaded near the spawn, 22 of them changed within 3 s (e.g. m.bboard_needle_east, m.bboard_needle_main, m.bboard_needle_west, m.bld_roof_cowl_head); #run has 571309228 [c164m]"
+  },
+  {
+   "check": "charts",
+   "ok": true,
+   "detail": "6 charts, each had by standing before it; over the hotbar in turn: ['Star chart 1 of 6', 'Star chart 2 of 6', 'Star chart 3 of 6', 'Star chart 4 of 6', 'Star chart 5 of 6', 'Star chart 6 of 6']"
+  },
+  {
+   "check": "lens",
+   "ok": true,
+   "detail": "behind the eyepiece with 3 of 6: over the hotbar ['Star charts: 3 of 6'] (3 times), titles none; with all 6: titles ['THE COMET, IN FOCUS'], over the hotbar nothing, the tag c164.done set; standing on: titles none, over the hotbar nothing; 89 packets of particles in those five seconds; in the chat: nothing"
+  },
+  {
+   "check": "console",
+   "ok": true,
+   "detail": "0 warnings and errors"
+  },
+  {
+   "check": "as set: starts",
+   "ok": true,
+   "detail": "up in 6 s, the server's own settings: {'gamemode': 'adventure', 'difficulty': 'peaceful'}"
+  },
+  {
+   "check": "as set: data pack",
+   "ok": true,
+   "detail": "There are 2 data pack(s) enabled: [vanilla (built-in)], [file/c164art (world)]"
+  },
+  {
+   "check": "as set: join",
+   "ok": true,
+   "detail": "joined in 0.4 s at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617), after the functions at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617); wanted (88.5, 196.0, -32.5) facing (67.71, -22.69)"
+  },
+  {
+   "check": "as set: spawn",
+   "ok": true,
+   "detail": "the game set him at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617)"
+  },
+  {
+   "check": "as set: mode",
+   "ok": true,
+   "detail": "C164Probe has the following entity data: 2"
+  },
+  {
+   "check": "as set: reach",
+   "ok": true,
+   "detail": "The base value of attribute Block Interaction Range for entity C164Probe is 0.0"
+  },
+  {
+   "check": "as set: tag",
+   "ok": true,
+   "detail": "C164Probe has 1 tag(s): c164.in"
+  },
+  {
+   "check": "as set: quiet",
+   "ok": true,
+   "detail": "nothing stood in the chat, as it should be"
+  },
+  {
+   "check": "as set: fall",
+   "ok": true,
+   "detail": "put at y 164, a moment later at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617)"
+  },
+  {
+   "check": "as set: spectator",
+   "ok": true,
+   "detail": "as a spectator put at y 164: a moment later at (108.5, 164.0, -32.5); set to adventure there: a moment later at (88.5, 196.0, -32.5)"
+  },
+  {
+   "check": "as set: rides",
+   "ok": true,
+   "detail": "put on a seat at y 164, under the line (C164Probe started riding Item Display): a moment later the server has him at (108.5, 163.4, -32.5), riding: Test passed; taken off it (C164Probe stopped riding Item Display): a moment later at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617)"
+  },
+  {
+   "check": "as set: tick, one player",
+   "ok": true,
+   "detail": "The game is running normallyTarget tick rate: 20.0 per second. | Average time per tick: 2.0ms (Target: 50.0ms)Percentiles: P50: 2.0ms P95: 2.4ms P99: 3.0ms. Sample: 100"
+  },
+  {
+   "check": "as set: on the cloud",
+   "ok": true,
+   "detail": "stood on the cloud block at [104, 174, -17] (Test passed), a moment later at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617)"
+  },
+  {
+   "check": "as set: over the cloud",
+   "ok": true,
+   "detail": "put three blocks over it, a moment later at (104.5, 178.0, -16.5)"
+  },
+  {
+   "check": "as set: over the line",
+   "ok": true,
+   "detail": "put at y 170.5, a moment later at (3088.5, 170.5, -32.5)"
+  },
+  {
+   "check": "as set: title",
+   "ok": true,
+   "detail": "titles shown to who is new: ['BLUE HOUR']; under them: ['OBSERVATORY']; lines over the hotbar: none; wanted once each: BLUE HOUR / OBSERVATORY"
+  },
+  {
+   "check": "as set: rejoin",
+   "ok": true,
+   "detail": "where he left: (3088.5, 170.5, -32.5) (left at (3088.5, 170.5, -32.5)); C164Probe has the following entity data: 2; The base value of attribute Block Interaction Range for entity C164Probe is 0.0; 2 things shown before he left"
+  },
+  {
+   "check": "as set: title, again",
+   "ok": true,
+   "detail": "titles shown to who comes back: none; lines over the hotbar: none; wanted neither (he is told nothing)"
+  },
+  {
+   "check": "as set: console",
+   "ok": true,
+   "detail": "0 warnings and errors"
+  }
+ ],
+ "level": {
+  "keys": [
+   "DataPacks",
+   "DataVersion",
+   "GameType",
+   "LastPlayed",
+   "LevelName",
+   "ServerBrands",
+   "Time",
+   "Version",
+   "WasModded",
+   "allowCommands",
+   "difficulty_settings",
+   "initialized",
+   "spawn",
+   "version",
+   "version_history"
+  ],
+  "GameType": 2,
+  "difficulty_settings": {
+   "difficulty": "peaceful",
+   "hardcore": 0,
+   "locked": 0
+  },
+  "spawn": {
+   "pos": [
+    88,
+    196,
+    -33
+   ],
+   "pitch": -22.690000534057617,
+   "dimension": "minecraft:overworld",
+   "yaw": 67.70999908447266
+  },
+  "LevelName": "BLUE HOUR OBSERVATORY",
+  "DataVersion": 5023,
+  "Version": {
+   "Snapshot": 0,
+   "Series": "main",
+   "Id": 5023,
+   "Name": "26.3"
+  },
+  "DataPacks": {
+   "Enabled": [
+    "vanilla",
+    "file/c164art"
+   ],
+   "Disabled": [
+    "minecart_improvements",
+    "redstone_experiments",
+    "trade_rebalance"
+   ]
+  },
+  "allowCommands": 0,
+  "initialized": 1,
+  "WasModded": 0,
+  "ServerBrands": [
+   "vanilla"
+  ],
+  "Time": 355
+ },
+ "rules": {
+  "advance_time": "false",
+  "advance_weather": "false",
+  "fall_damage": "false",
+  "random_tick_speed": "0",
+  "spawn_mobs": "false",
+  "block_drops": "false",
+  "entity_drops": "false",
+  "spawn_wandering_traders": "false",
+  "spawn_patrols": "false",
+  "spawn_phantoms": "false",
+  "pvp": "false",
+  "send_command_feedback": "false",
+  "command_block_output": "false",
+  "fire_damage": "false",
+  "drowning_damage": "false",
+  "freeze_damage": "false",
+  "immediate_respawn": "true",
+  "show_death_messages": "false",
+  "locator_bar": "false",
+  "respawn_radius": "0",
+  "max_block_modifications": "32768"
+ },
+ "issues": [],
+ "as set: issues": [],
+ "ok": true,
+ "seconds": 89
+}
