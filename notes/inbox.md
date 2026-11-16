@@ -366,3 +366,15 @@
 - 12:06 cr3: machines/cablecar-winch 9dceff4a -> 43e83876 (10 barrier cells over the winch's rail). 12:11 a6: props/plaques b8800503 -> 586109aa (test scene only). a1: f1b6759d plan/submit/README.md only (the director's errand).
 - 12:10 head check of 68f419ae submitted: 1116-041027-s2-headcheck-89df-20928.
 - 12:12 DIRECTOR (g2 #85315): ROUND 2 STARTS. Not rushing to submit; A8 is the base; versions B1.. every half hour; **13:00 take the head -> B1**. The train is the opening (a2 travel in motion/_kit; cable, m1 the train; a4, cloud, snow the trestle, site/_rail.py; mast, outb the opening; smoke, sound; lamps signals). Everything must move (everyone: the most visible thing by 13:00; texture animation: a1's way by 12:30). Detail: reviewers circle five emptiest places per picture by 12:40. No airship. Rules as before (#1611): small packages, merge first, checked at the head; budgets (a2): 40 commands a tick on average, 2600 display entities, 600 in one view. Card page plan/round2.md (revised by 12:25).
+
+## 12:13–12:26
+- 12:13 the director's machine: 68f419ae 96 pass. 12:14 STATUS 11fffb17.
+- 12:14–12:16 ctrl/aide: node7, node8 open to everyone (long jobs only: site/sky/motion/train -> node7, the rest -> node8; short scene checks -> the director's machine, three workers now).
+- 12:17 s1: A8's real pictures on cursor/c164-s1-render-f3-fd9c @ 0885a5aa, renders/real-save/c164-A8/ (A8 = dist 4948579f, assembly 8cddfa98).
+- 12:17 cr2: motion/smoke 2cb96a14 -> 105b05ed. 12:18 cr3: machines/clocks e4fd53fe -> 557138ac. 12:20 a6: props/instruments 329644d2 -> 745b9167 (pendulums swing). 12:22 facade: main/smalldome 7e2f5291 -> 51002f1e (232 barrier cells over the parapets).
+- 12:19 MY CHANGE check.py views: the master scene counted on the board's twelve views (5e90f8b8 -> d1b7bc0a; node8 test op_802ebdac72). Counts at the head (total 1224, line 600): V1 1062, V2 952, V3 792, V4 750, V5 702, V6 116, V7 466, V8 90, V9 225, V10 227, V11 983, V12 1112. Reported to the director (wake) and a2: two ways (smaller view for indoor things, or s1's frame rates as the measure); over the line is a WARN only. Waiting for the director's word.
+- 12:20 facade delivery common/walk-out 3cb2961f (A8 outdoors: 0 blockers) -> 3a3a5bb7. He wants the B1 head reported at 13:00.
+- 12:22 director: out of doors machines first (plan/round2.md part C2, df3f4072).
+- 12:23 node8 op_72ca1524f3: 3a3a5bb7 96 pass (48 warnings).
+- 12:25 STATUS 88e64304: 80 cards (12 round-2 cards in the tables: 制作中 12, 已合并 42, 已出图 1, 暂过 1, 已过审 24).
+- 12:23 aide: MY NODE IS node33 again (new disk; probe ok 12:24). 12:25 first job there: setup + checkall of the head, op pending.

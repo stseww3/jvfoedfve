@@ -36,6 +36,13 @@ WHOLE = [               # (how a line of the file starts, the line that takes it
      "- 待领：没有了。67 张卡的第一版都在总装里（11-16 10:24 钟室最后一个进）；`common/offline-sky` 不做（总监 11-16 10:32）；"
      "11:03 总监新开一张 `motion/guide`（导览，制作中，第一版 11:50 前交）。"
      "手上没卡的人找本类的审批人领打磨的活（总监 09:12），名单在 aide 的 `plan/ROSTER.md`。"),
+    ("- 待领：没有了。67 张卡的第一版都在总装里（11-16 10:24 钟室最后一个进）；`common/offline-sky` 不做（总监 11-16 10:32）；11:03",
+     "- 待领：没有了。第一轮的 68 张卡（含 11:03 加的导览 `motion/guide`）都在总装里，成品是 A8（总装 8cddfa98）；"
+     "`common/offline-sky` 不做。**第二轮（11-16 12:12 开工，卡页 `plan/round2.md`）新开 12 张卡**，在各类的表里标着「第二轮」："
+     "火车是开场（`motion/travel`、`machines/train`、`site/railway`、`motion/arrival`、`motion/train-smoke-sound`、`props/station`）、"
+     "蒸汽管线和气动信筒（`props/steam-mains`、`props/pneumatic`）、鸟和流星（`sky/birds`、`sky/meteors`）、喷泉（`site/fountain`）、"
+     "小活物（`motion/small-life`）。另外两大块不单开卡，记在原来的卡上：已有的东西全动起来（每人自己的）、细节加密（评审每版圈空处）。"
+     "名单在 aide 的 `plan/ROSTER.md`。"),
     ("状态：待领 → 制作中",
      "状态：待领 → 制作中 → 已交付 → 已合并 → 已出图 → 已过审；旁路：退回（回到制作中）、暂过（交叉看过了、评审还没评）、"
      "不做（总监砍掉的卡，行留着，不计数）。第 3 班的“已出图”是代码合并了、自查图也在总装里、关口核过，等评审。"),
