@@ -7,10 +7,18 @@
 shots.json is a list of shots:
     {"name": "wide", "pos": [x, y, z], "look_at": [x, y, z]}          camera (eye) aimed at a point
     {"name": "front", "pos": [x, y, z], "yaw": 180, "pitch": 10}      explicit angles
+    {"name": "as_joined", "stay": true}                               where the player stands
 Optional per shot: "time" (e.g. "noon", "midnight" or a tick number; without it the shot is taken
 at 14000, look A, as build/render.py does), "settle" (seconds to wait), "still" (seconds, instead
 of --still; 0: the first picture after the wait is the one). --time <tick> takes every shot at
 that time, whatever the list says: a scene built for another light version is shot at its tick.
+
+A world that is shot as it comes -- a save exported for the Realm, opened by the server just as it
+is (savetrip.py) -- is shot with --keep-clock: no time is set and the clock is not stopped, the
+pictures show the hour the world itself keeps. A shot with "stay" is taken where the player stands
+and as the player is: nothing is asked of the server for it, and while no other shot came before
+it the player is still in the game mode the world gave (hand, hotbar and all: what a visitor sees
+on joining).
 
 How long the game needs after a move depends on the machine: a graphics card has the new view in
 a second or two, a software renderer on a worker node may need many. --still <seconds> therefore
@@ -20,7 +28,8 @@ smoke only a little -- or the seconds given are over; the last one is kept, and 
 for it says how long that took and whether it stood still.
 
 The camera player must already be online (nodemc.py on a worker node, winmc.py on the admin's
-computer). It is put into spectator mode so that no hand, hotbar or body shows up.
+computer). It is put into spectator mode before its first move so that no hand, hotbar or body
+shows up.
 """
 import argparse
 import collections
@@ -269,9 +278,13 @@ def main():
                     help="after settling, take each picture again until two in a row are alike, this long at most")
     ap.add_argument("--only", help="comma separated shot names")
     ap.add_argument("--time", help="every shot is taken at this time, whatever the list says")
+    ap.add_argument("--keep-clock", action="store_true",
+                    help="the world's own clock is left alone: no time is set and the clock is not stopped")
     ap.add_argument("--origin", type=float, nargs=3, default=[0.0, 0.0, 0.0], metavar=("X", "Y", "Z"),
                     help="added to every pos/look_at, for shot lists written in scene coordinates")
     args = ap.parse_args()
+    if args.keep_clock and args.time is not None:
+        raise SystemExit("--keep-clock leaves the world's clock alone and --time sets it: one or the other")
 
     with open(args.shots) as fh:
         shots = json.load(fh)
@@ -288,27 +301,32 @@ def main():
         rc = Rcon(port=args.rcon_port, password=fh.read().strip())
     if args.player not in rc.command("list"):
         raise SystemExit(f"{args.player} is not online")
-    rc.command(f"gamemode spectator {args.player}")
-    # The clock stands still while pictures are taken. Left running it moves on some 20 ticks for
-    # every second of settling, and at dusk a few hundred ticks are a different picture.
-    answer = rc.command("gamerule advance_time false")
-    if "advance_time" not in answer:
-        print(f"could not stop the clock: {answer.strip()}", file=sys.stderr)
+    if not args.keep_clock:
+        # The clock stands still while pictures are taken. Left running it moves on some 20 ticks for
+        # every second of settling, and at dusk a few hundred ticks are a different picture.
+        answer = rc.command("gamerule advance_time false")
+        if "advance_time" not in answer:
+            print(f"could not stop the clock: {answer.strip()}", file=sys.stderr)
 
     last_time = None
+    spectator = False
     made = collections.Counter()
     try:
         for i, shot in enumerate(shots):
-            pos = [shot["pos"][k] + args.origin[k] for k in range(3)]
-            if "look_at" in shot:
-                yaw, pitch = angles(pos, [shot["look_at"][k] + args.origin[k] for k in range(3)])
-            else:
-                yaw, pitch = shot.get("yaw", 0.0), shot.get("pitch", 0.0)
             when = args.time if args.time is not None else shot.get("time", DEFAULT_TIME)
-            if when != last_time:
+            if when != last_time and not args.keep_clock:
                 rc.command(f"time set {when}")
                 last_time = when
-            rc.command(f"tp {args.player} {pos[0]:.2f} {pos[1] - EYE:.2f} {pos[2]:.2f} {yaw:.2f} {pitch:.2f}")
+            if not shot.get("stay"):
+                if not spectator:
+                    rc.command(f"gamemode spectator {args.player}")
+                    spectator = True
+                pos = [shot["pos"][k] + args.origin[k] for k in range(3)]
+                if "look_at" in shot:
+                    yaw, pitch = angles(pos, [shot["look_at"][k] + args.origin[k] for k in range(3)])
+                else:
+                    yaw, pitch = shot.get("yaw", 0.0), shot.get("pitch", 0.0)
+                rc.command(f"tp {args.player} {pos[0]:.2f} {pos[1] - EYE:.2f} {pos[2]:.2f} {yaw:.2f} {pitch:.2f}")
             time.sleep(shot.get("settle", args.first_settle if i == 0 else args.settle))
             path = os.path.join(args.out, shot["name"] + ".png")
             # A picture gets its name when it is done. A run that is cut short leaves no half

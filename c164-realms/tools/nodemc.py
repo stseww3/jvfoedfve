@@ -4,8 +4,9 @@
     nodemc.py setup           put in place what the node lacks: the X server and Mesa's software
                               Vulkan driver (apt), Java 25, the game's files (from Mojang, each
                               checked against its SHA-1), the server's and the client's settings.
-                              What is there is left alone, except the view distance and the
-                              cloud range, which are set to what is asked
+                              What is there is left alone, except what a trip asks for: the
+                              distances, the cloud range, the world and how a player is taken
+                              in, and the client's resource packs (see Environment)
     nodemc.py up              server, then client; returns when the camera player has joined
     nodemc.py down            client, then server, then the display; also what an earlier job left
     nodemc.py restart         down + up (needed after biome or timeline files change)
@@ -39,7 +40,10 @@ Environment: MC_ROOT, MC_VERSION (26.3), MC_CAM (C164Cam), MC_SIZE (1280x720), M
 MC_VIEW (the client's render distance in chunks, 12), MC_SERVER_VIEW (the server's view distance,
 10: what a Realm runs at and cannot change -- the client draws the smaller of the two; these are
 the distances the board is judged at), MC_CLOUDS (cloud range in chunks, 128), MC_SERVER_HEAP (1500M), MC_CLIENT_HEAP (3G), LP_NUM_THREADS (the cores),
-MC_HELPER, JAVA (a Java 25 binary to use instead of looking for one).
+MC_HELPER, JAVA (a Java 25 binary to use instead of looking for one). For a save that is opened
+as it comes (savetrip.py): MC_LEVEL (the world's folder under server26/, art), MC_GAMEMODE
+(spectator), MC_FORCE_GAMEMODE (true), MC_DIFFICULTY (easy); setup writes all four every time, so
+the next trip without them has the test world again.
 """
 import ctypes.util
 import glob
@@ -73,6 +77,14 @@ DISPLAY = os.environ.get("MC_DISPLAY", "164")
 VIEW = int(os.environ.get("MC_VIEW", "12"))
 SERVER_VIEW = int(os.environ.get("MC_SERVER_VIEW", "10"))
 CLOUDS = int(os.environ.get("MC_CLOUDS", "128"))
+# The world the server opens and how it takes a player in. The test world is "art", and the camera
+# joins it as a spectator. A save that is shot as it comes (savetrip.py) is another folder, opened
+# the way a Realm's slot would be filled from it; the next setup without these puts the test world back.
+LEVEL = os.environ.get("MC_LEVEL", "art")
+GAMEMODE = os.environ.get("MC_GAMEMODE", "spectator")
+FORCE_GAMEMODE = os.environ.get("MC_FORCE_GAMEMODE", "true")
+DIFFICULTY = os.environ.get("MC_DIFFICULTY", "easy")
+PACKS = '["vanilla","file/c164art"]'       # the client's resource packs, as its options name them
 HOST, PORT, RCON_PORT = "127.0.0.1", 25599, 25598
 JAVA_MAJOR = 25
 ADOPTIUM = ("https://api.adoptium.net/v3/assets/latest/{major}/hotspot"
@@ -89,15 +101,15 @@ SERVER_PROPERTIES = """\
 allow-flight=true
 broadcast-console-to-ops=true
 broadcast-rcon-to-ops=false
-difficulty=easy
+difficulty={difficulty}
 enable-rcon=true
 enable-status=true
-force-gamemode=true
+force-gamemode={force}
 function-permission-level=2
-gamemode=spectator
+gamemode={gamemode}
 generate-structures=false
 generator-settings={{"biome":"minecraft:the_void","layers":[{{"block":"minecraft:air","height":1}}]}}
-level-name=art
+level-name={level}
 level-type=minecraft:flat
 max-chained-neighbor-updates=1000000
 max-players=10
@@ -492,10 +504,17 @@ def setup():
     if not os.path.exists(props):
         with open(props, "w", encoding="utf-8") as fh:
             fh.write(SERVER_PROPERTIES.format(password=password, rcon_port=RCON_PORT, host=HOST, port=PORT,
-                                              view=SERVER_VIEW))
+                                              view=SERVER_VIEW, level=LEVEL, gamemode=GAMEMODE, force=FORCE_GAMEMODE,
+                                              difficulty=DIFFICULTY))
         written.append(props)
-    elif set_line(props, "view-distance", "=", SERVER_VIEW):
-        written.append(props + " (view-distance)")
+    else:
+        # the world and the way a player is taken in are set every time: a trip into a save leaves
+        # the next one the test world again without being asked
+        changed = [key for key, value in (("view-distance", SERVER_VIEW), ("level-name", LEVEL), ("gamemode", GAMEMODE),
+                                          ("force-gamemode", FORCE_GAMEMODE), ("difficulty", DIFFICULTY))
+                   if set_line(props, key, "=", value)]
+        if changed:
+            written.append(props + " (" + ", ".join(changed) + ")")
     eula = os.path.join(SERVER, "eula.txt")
     if not os.path.exists(eula):
         with open(eula, "w") as fh:
@@ -507,16 +526,22 @@ def setup():
             fh.write(OPTIONS.format(view=VIEW, clouds=CLOUDS))
         written.append(options)
     else:
-        changed = [key for key, value in (("renderDistance", VIEW), ("cloudRange", CLOUDS))
+        # the packs too: a pack the game could not load it strikes from its options, and every
+        # later trip would be shot without one and say nothing
+        changed = [key for key, value in (("renderDistance", VIEW), ("cloudRange", CLOUDS), ("resourcePacks", PACKS),
+                                          ("incompatibleResourcePacks", "[]"))
                    if set_line(options, key, ":", value)]
         if changed:
             written.append(options + " (" + ", ".join(changed) + ")")
     say("settings written: " + (", ".join(os.path.relpath(p, ROOT) for p in written) or "nothing, all there")
-        + f"; render distance {VIEW}, the server's view distance {SERVER_VIEW}, cloud range {CLOUDS}")
-    if any("view-distance" in w or "renderDistance" in w or "cloudRange" in w for w in written):
-        # a running game holds the old distances
+        + f"; render distance {VIEW}, the server's view distance {SERVER_VIEW}, cloud range {CLOUDS}"
+        + (f"; the world {LEVEL}, joined in {GAMEMODE} mode" + (", forced" if FORCE_GAMEMODE == "true" else "")
+           + f", difficulty {DIFFICULTY}" if (LEVEL, GAMEMODE, FORCE_GAMEMODE, DIFFICULTY) != ("art", "spectator", "true", "easy")
+           else ""))
+    if any("(" in w and w.startswith((props, options)) for w in written):
+        # a running game holds the old settings
         if running("client") or running("server"):
-            say("the distances changed: the game is stopped, the next `up` starts it with the new ones")
+            say("the settings changed: the game is stopped, the next `up` starts it with the new ones")
             client_down()
             server_down()
 
@@ -673,7 +698,8 @@ def client_log():
 
 
 SAID = re.compile(r"shader|pipeline|compil|glsl|resource ?pack|reload|uniform|sampler|backend|vulkan|opengl", re.I)
-FAILS = re.compile(r"fail|couldn't|could not|error|exception|invalid|missing|rolled? back|removing", re.I)
+FAILS = re.compile(r"fail|couldn't|could not|error|exception|invalid|missing|rolled? back|removing|removed|"
+                   r"no longer|incompatible|doesn't exist", re.I)
 
 
 def client_said(since=0.0, out=None):
