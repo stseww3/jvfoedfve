@@ -1,0 +1,3 @@
+branch=cursor/c164-scope-f3-eeae
+head=f8ca32300abb4e68d592e0118a59dc437b994856
+args=--no-push --tail 90 --limit 600 mkdir\ -p\ renders/_wip\;\ \(cd\ build\ \&\&\ python\ -m\ scenes.obs.machines.scope\)\ \>\ renders/_wip/scope-report.txt\ 2\>\&1\;\ echo\ \"SELF=\$\?\"\;\ grep\ -c\ \"BROKEN\"\ renders/_wip/scope-report.txt\;\ python\ tools/check.py\ --scene\ obs_mach_refractor\ \>\ renders/_wip/scope-check.txt\ 2\>\&1\;\ echo\ \"CHECK=\$\?\"\;\ grep\ -n\ \"FAIL\\\|WARN\\\|result\\\|motion\\\|views\"\ renders/_wip/scope-check.txt\;\ python\ tools/check.py\ --scene\ obs_int_domeroom\ \>\ renders/_wip/dome-check.txt\ 2\>\&1\;\ echo\ \"DOMEROOM=\$\?\"\;\ grep\ -n\ \"FAIL\\\|WARN\\\|result\\\|views\"\ renders/_wip/dome-check.txt 
