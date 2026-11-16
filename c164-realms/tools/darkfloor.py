@@ -42,6 +42,7 @@ with is what the lamps changed and not what the rule did. The dark thresholds ar
 Writes <folder>/dark.md (the list, in Chinese) and <folder>/dark.json (every cell), and prints the
 head of the list. Ends with 0 whatever it finds.
 """
+import re
 import argparse
 import importlib
 import json
@@ -71,6 +72,7 @@ LEVELS = 3.0            # a block up or down counts as this many along, when the
 KINDS = ("floor", "step", "threshold")
 ROOFING = ("_stairs", "_slab", "_trapdoor")     # shapes with a whole face: the sky's light is not let through them
 SKY_NEAR = 13           # the sky's light from which a cell under an overhang counts as lit by the sky
+PROBE_NEAR = 6          # --probe: sky/lights' sources and refusals this near the cell are listed with it
 # cr2, 11-16 11:26: the top of a railing, of a barrier block or of a glass pane is not a way a person
 # walks, though a hop gets him onto it. A dark cell whose feet rest on one is listed apart, not counted.
 PERCH_ENDS = ("_bars", "_pane", "_fence", "_fence_gate", "_wall")
@@ -347,6 +349,20 @@ def placed_sources(canvas):
         return {}
 
 
+def lights_told(canvas):
+    """sky/lights' own record of the canvas (lights.report), {} when it cannot be read."""
+    try:
+        from scenes.obs.sky import lights
+        return lights.report(canvas)
+    except Exception:  # noqa: BLE001
+        return {}
+
+
+def _cells_in(text):
+    """The cells written in a note as (x, y, z)."""
+    return [tuple(int(v) for v in m) for m in re.findall(r"\((-?\d+), (-?\d+), (-?\d+)\)", text)]
+
+
 def heaps(cells):
     """The cells that touch (a step along x or z, up to one row up or down), as lists."""
     left, out = set(cells), []
@@ -459,6 +475,20 @@ def main():
                                f" b{light.get((x, y, z), 0)} s{15 if y >= open_y.get((x, z), -10 ** 9) else sky.get((x, y, z), 0)}"
                                f"{' *' if (x, y, z) in rows else ''}" for y in range(py + 5, py - 3, -1))
             print(f"  x {x} z {z}, open to the sky from row {open_y.get((x, z))}: {column}")
+        near = lambda c: max(abs(c[0] - px), abs(c[1] - py), abs(c[2] - pz)) <= PROBE_NEAR     # noqa: E731
+        for c, (level, why) in sorted(placed.items()):
+            if near(c):
+                print(f"  sky/lights placed {level} at {c} ({why})")
+        told = lights_told(canvas)
+        for c, level, why, reason in told.get("rejected", ()):
+            if near(c):
+                print(f"  sky/lights placed nothing at {tuple(c)} (asked {level}, {why}): {reason}")
+        for asked, c, why in told.get("moved", ()):
+            if near(asked) or near(c):
+                print(f"  sky/lights moved {tuple(asked)} to {tuple(c)} ({why})")
+        for note in told.get("notes", ()):
+            if any(near(c) for c in _cells_in(note)):
+                print(f"  sky/lights says: {note}")
 
     def section(cell, row):
         if row["room"]:
