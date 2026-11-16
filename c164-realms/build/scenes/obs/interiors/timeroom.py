@@ -505,10 +505,12 @@ def cords_name(side):
 def _cords(side):
     """The patch cords of one jack field, for the face of its panel: in the field's lowest row a
     cord looped from one jack to the next, and a cord hanging from the third jack with its free
-    plug at its end, on the side of the console. They are the cream of the cord painted on the
-    panel. Anchor: the middle of the panel's face."""
+    plug at its end, on the side of the console. Cords braided in dull brown, plugs of brass. In
+    the cream of the cord painted on the panel they were the lightest curves beside the telegraph
+    and the drum, and from the front the handles of those two (cr3, c356, 11-16). Anchor: the
+    middle of the panel's face."""
     (xa, xb, sag), (xd, length) = CORDS[side]["loop"], CORDS[side]["drop"]
-    cord, sleeve = K.flat("cream", 1), K.flat("cream", 3)
+    cord, sleeve = K.flat("old_copper", 0), K.BRASS_D
     row, z = JACKS[0], PLUG + CORD_R
     top = row - 1.5                                 # where a cord has turned down out of its plug
     m = M.Model(cords_name(side))
