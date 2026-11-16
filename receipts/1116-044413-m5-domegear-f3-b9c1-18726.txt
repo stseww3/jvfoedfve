@@ -1,0 +1,29 @@
+a0job 1116-044413-m5-domegear-f3-b9c1-18726: cursor/c164-m5-domegear-f3-b9c1 @ 8247111b on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.96 0.86 0.81, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- t=$(mktemp -d); env PYTHONPATH=build python -m scenes.obs_mach_domegear >$t/s 2>&1; echo "self-test exit=$?"; head -n 40 $t/s; python tools/check.py --scene obs_mach_domegear >$t/c 2>&1; code=$?; tail -n 22 $t/c; echo "check exit=$code
+self-test exit=0
+17 shots -> /tmp/dais_jobs/c164a0/c164-realms/build/scenes/obs_mach_domegear/shots.json
+barrier cells: 1 [(-1, 18, -9)]
+stands in a block: 0
+hangs on nothing: 0
+a barrier that is not inside the gear: 0
+a face that stands between two axes: 0
+check obs_mach_domegear at 8247111
+[FAIL] regen     does not generate from nothing
+                             ^^^^^^^^^^^^^^^^^^^^^^
+                   File "/tmp/dais_jobs/c164a0/c164-realms/build/scenes/obs/interiors/batteryroom.py", line 321, in export
+                     out = super().export(work, ns)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^
+                   File "/tmp/dais_jobs/c164a0/c164-realms/build/artkit/models.py", line 395, in export
+                     shots = mat.frames(w, h, grain, seed) if hasattr(mat, "frames") else None
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                 TypeError: 'list' object is not callable
+result: FAIL (1 failed, 0 with warnings)
+check exit=1
+==== NODEJOB RESULT ====
+exit=1 secs=4 host=cursor cores=4 head=8247111b commit=none pushed=no branch=cursor/c164-m5-domegear-f3-b9c1 files=0
+a0job: exit=1 secs=4
