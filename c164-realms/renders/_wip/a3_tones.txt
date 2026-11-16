@@ -1,0 +1,101 @@
+v8 [A blue]  1280x720
+  luma    mean 0.07   p1 0.02  p5 0.03  median 0.06  p95 0.13  p99 0.26
+  levels  dark  97.6% (below 0.18, mean 0.06)   middle   2.4% (mean 0.27)   bright   0.0% (above 0.60, mean 0.77)
+  bright  centre x 0.54 y 0.29 (0 0 = top left)   nine tenths of it within x 0.54..0.54, y 0.29..0.30
+          1 patch, the largest 0.01% of the picture (as a square, 7 pixels a side)
+  white   above 0.97:   0.0%   in specks only, none fills a square of 4 pixels
+  dead    below 0.03:   7.3%   756 patches, the largest 0.46% of the picture (as a square, 65 pixels a side)
+  warmth  warm   5.4%   cool  37.8%   neutral  56.9%
+          dark    warm   3.8%   cool  37.0%   neutral  56.8%
+          middle  warm   1.6%   cool   0.8%   neutral   0.0%
+          bright  warm   0.0%   cool   0.0%   neutral   0.0%
+  probe   boardsL   3300 px  mean 0.04  median 0.05  brightest 1% 0.10  darkest 1% 0.02  #0c0a0a  warm 0.0%  cool 2.8%
+  probe   boardsFL  3872 px  mean 0.04  median 0.05  brightest 1% 0.11  darkest 1% 0.03  #0c0a0a  warm 0.0%  cool 5.8%
+  probe   boardsR   5100 px  mean 0.06  median 0.05  brightest 1% 0.14  darkest 1% 0.03  #0d0e14  warm 0.0%  cool 42.6%
+  probe   wallR     11200 px  mean 0.06  median 0.06  brightest 1% 0.09  darkest 1% 0.02  #110f0e  warm 0.0%  cool 0.0%
+  probe   wallL     9831 px  mean 0.06  median 0.06  brightest 1% 0.09  darkest 1% 0.03  #120f0e  warm 0.0%  cool 0.0%
+  probe   boardsFR  5000 px  mean 0.07  median 0.07  brightest 1% 0.14  darkest 1% 0.03  #0e1221  warm 0.0%  cool 95.8%
+  probe   sky       3969 px  mean 0.10  median 0.10  brightest 1% 0.21  darkest 1% 0.10  #12193a  warm 0.0%  cool 100.0%
+  order   boardsL 0.04 < boardsFL 0.04 < boardsR 0.06 < wallR 0.06 < wallL 0.06 < boardsFR 0.07 < sky 0.10   (means)
+v8_deep [B deep]  1280x720
+  luma    mean 0.05   p1 0.02  p5 0.02  median 0.04  p95 0.10  p99 0.23
+  levels  dark  96.7% (below 0.12, mean 0.05)   middle   3.3% (mean 0.21)   bright   0.0% (above 0.60, mean 0.72)
+  bright  centre x 0.53 y 0.30 (0 0 = top left)   nine tenths of it within x 0.50..0.55, y 0.14..0.46
+          1 patch, the largest 0.01% of the picture (as a square, 8 pixels a side)
+  white   above 0.97:   0.0%   in specks only, none fills a square of 4 pixels
+  dead    below 0.03:  19.7%   1952 patches, the largest 2.73% of the picture (as a square, 159 pixels a side)
+  warmth  warm   4.5%   cool  34.7%   neutral  60.8%
+          dark    warm   2.3%   cool  34.4%   neutral  60.0%
+          middle  warm   2.1%   cool   0.3%   neutral   0.8%
+          bright  warm   0.0%   cool   0.0%   neutral   0.0%
+v8_glow [C glow]  1280x720
+  luma    mean 0.08   p1 0.02  p5 0.03  median 0.07  p95 0.18  p99 0.28
+  levels  dark  98.2% (below 0.25, mean 0.08)   middle   1.8% (mean 0.31)   bright   0.0% (above 0.60, mean 0.77)
+  bright  centre x 0.54 y 0.30 (0 0 = top left)   nine tenths of it within x 0.54..0.54, y 0.29..0.30
+          1 patch, the largest 0.00% of the picture (as a square, 4 pixels a side)
+  white   above 0.97:   0.0%   none
+  dead    below 0.03:   3.2%   245 patches, the largest 0.32% of the picture (as a square, 54 pixels a side)
+  warmth  warm  28.2%   cool  38.0%   neutral  33.8%
+          dark    warm  27.2%   cool  37.3%   neutral  33.8%
+          middle  warm   1.0%   cool   0.8%   neutral   0.0%
+          bright  warm   0.0%   cool   0.0%   neutral   0.0%
+ribs_up [A blue]  1280x720
+  luma    mean 0.06   p1 0.03  p5 0.03  median 0.05  p95 0.13  p99 0.21
+  levels  dark  98.6% (below 0.18, mean 0.06)   middle   1.4% (mean 0.24)   bright   0.0% (above 0.60, mean   -  )
+  bright  none
+  white   above 0.97:   0.0%   none
+  dead    below 0.03:   6.0%   1177 patches, the largest 0.17% of the picture (as a square, 39 pixels a side)
+  warmth  warm   3.3%   cool  51.1%   neutral  45.6%
+          dark    warm   2.5%   cool  50.5%   neutral  45.6%
+          middle  warm   0.8%   cool   0.6%   neutral   0.0%
+          bright  warm   0.0%   cool   0.0%   neutral   0.0%
+far_door [A blue]  1280x720
+  luma    mean 0.07   p1 0.02  p5 0.03  median 0.06  p95 0.13  p99 0.24
+  levels  dark  98.1% (below 0.18, mean 0.07)   middle   1.9% (mean 0.25)   bright   0.0% (above 0.60, mean   -  )
+  bright  none
+  white   above 0.97:   0.0%   none
+  dead    below 0.03:   6.2%   533 patches, the largest 0.45% of the picture (as a square, 64 pixels a side)
+  warmth  warm   6.0%   cool  39.0%   neutral  55.1%
+          dark    warm   4.9%   cool  38.1%   neutral  55.1%
+          middle  warm   1.0%   cool   0.8%   neutral   0.0%
+          bright  warm   0.0%   cool   0.0%   neutral   0.0%
+stair_exit [A blue]  1280x720
+  luma    mean 0.06   p1 0.02  p5 0.03  median 0.05  p95 0.11  p99 0.13
+  levels  dark  99.6% (below 0.18, mean 0.06)   middle   0.4% (mean 0.22)   bright   0.0% (above 0.60, mean   -  )
+  bright  none
+  white   above 0.97:   0.0%   none
+  dead    below 0.03:  11.2%   360 patches, the largest 1.19% of the picture (as a square, 105 pixels a side)
+  warmth  warm   1.6%   cool  17.4%   neutral  80.9%
+          dark    warm   1.6%   cool  17.0%   neutral  80.9%
+          middle  warm   0.0%   cool   0.4%   neutral   0.0%
+          bright  warm   0.0%   cool   0.0%   neutral   0.0%
+back_east [A blue]  1280x720
+  luma    mean 0.09   p1 0.02  p5 0.03  median 0.07  p95 0.19  p99 0.19
+  levels  dark  94.1% (below 0.18, mean 0.08)   middle   5.9% (mean 0.19)   bright   0.0% (above 0.60, mean   -  )
+  bright  none
+  white   above 0.97:   0.0%   none
+  dead    below 0.03:   5.8%   407 patches, the largest 1.18% of the picture (as a square, 104 pixels a side)
+  warmth  warm  26.1%   cool  22.2%   neutral  51.8%
+          dark    warm  20.7%   cool  21.6%   neutral  51.8%
+          middle  warm   5.3%   cool   0.6%   neutral   0.0%
+          bright  warm   0.0%   cool   0.0%   neutral   0.0%
+wall_north [A blue]  1280x720
+  luma    mean 0.07   p1 0.02  p5 0.03  median 0.06  p95 0.13  p99 0.22
+  levels  dark  96.6% (below 0.18, mean 0.06)   middle   3.4% (mean 0.22)   bright   0.0% (above 0.60, mean   -  )
+  bright  none
+  white   above 0.97:   0.0%   none
+  dead    below 0.03:   9.8%   275 patches, the largest 1.71% of the picture (as a square, 125 pixels a side)
+  warmth  warm   1.8%   cool  13.7%   neutral  84.5%
+          dark    warm   1.8%   cool  10.3%   neutral  84.5%
+          middle  warm   0.0%   cool   3.4%   neutral   0.0%
+          bright  warm   0.0%   cool   0.0%   neutral   0.0%
+int_desk [A blue]  1280x720
+  luma    mean 0.08   p1 0.02  p5 0.03  median 0.07  p95 0.15  p99 0.19
+  levels  dark  98.6% (below 0.18, mean 0.08)   middle   1.4% (mean 0.23)   bright   0.0% (above 0.60, mean   -  )
+  bright  none
+  white   above 0.97:   0.0%   none
+  dead    below 0.03:   6.0%   354 patches, the largest 0.90% of the picture (as a square, 91 pixels a side)
+  warmth  warm  16.1%   cool  19.7%   neutral  64.2%
+          dark    warm  15.5%   cool  18.9%   neutral  64.2%
+          middle  warm   0.6%   cool   0.8%   neutral   0.0%
+          bright  warm   0.0%   cool   0.0%   neutral   0.0%
