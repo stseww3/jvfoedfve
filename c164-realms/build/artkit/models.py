@@ -392,7 +392,10 @@ class Model:
         moving = []    # (x, y, w, h, frames, material) of the faces whose picture changes with time
         for kk, (x, y) in pos.items():
             w, h, mat, grain, seed = rects[kk]
-            shots = mat.frames(w, h, grain, seed) if hasattr(mat, "frames") else None
+            # a material moves when it has a method frames(); a module's own class may keep a list
+            # under that name (interiors/batteryroom's _Moving), and that is not ours to call
+            frames = getattr(mat, "frames", None)
+            shots = frames(w, h, grain, seed) if callable(frames) else None
             tex = shots[0] if shots else mat.paint(w, h, grain, seed)
             padded = np.pad(tex, ((1, 1), (1, 1), (0, 0)), mode="edge")
             img[y:y + h + 2, x:x + w + 2] = padded
