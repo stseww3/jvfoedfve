@@ -20,6 +20,12 @@ What turns with the dome and carries its boards and plates, from the trucks up:
     the cross members  between the two arch girders where the slit is not: the girder across the
                        slit's head, and the purlins carried across
 
+And what the iron carries on the inside, the lining of the vault: boards laid level from seam to
+seam on the ribs' backs, a panel to a gore, and from cover plate to cover plate between the two
+arch girders where the slit is not. They stand a texel in front of the stepped blocks of the skin,
+so the vault is seen as twenty flat gores and not as a stair of blocks, and they are given the
+night's light like the iron (a block of the vault far from the slit has none at all).
+
 Nothing here is measured by hand: the frame is drawn under the ceiling it is given (the underside
 of the boards over every column, read off the canvas by interiors/domeroom), so it follows the dome
 when its courses change. A line that stays under every corner of the stepped boards is found once
@@ -59,12 +65,20 @@ WEB = TEXEL                     # the ring girder's web plate
 FLANGE = 0.25                   # how far its two angles stand out from the web, and how far they lap it
 FACET = 6.0                     # degrees to one flat of the ring girder: three to a gore
 PULL = 0.5                      # a length of the ring girder is shown from this far in front of its web
+BAND = 0.5                      # an arch girder's cover plate reaches this far to either side of its plane
+BOARD = 0.25                    # a board of the vault's lining: this wide, a texel thick
+BOARD_TILT = 42.0               # degrees the frame of a panel of boards leans outwards (see boards())
+LEAN = (("x", BOARD_TILT),)     # the turn a panel of boards is shown with, which sets it upright again
+BAND_MOST = 7.0                 # the longest panel of the boards between the arch girders, along its line
 
 # the skeleton is the lightest iron in the room: what is left of the night's light falls on it
 CHORD = P.mat("iron", base=5, bevel="along")
 BAR = P.mat("iron", base=4, bevel=0)
 PLATE = P.mat("iron", base=4)
 RIVET = P.mat("iron", kind="flat", base=6, bevel=0)
+# the boards of the vault: the lightest of the dark wood (the lining of the drum is of the same tone),
+# every board with a light edge and a dark one along it
+LINING = P.mat("dark_wood", base=4, bevel="along")
 
 
 # --- the line under the boards --------------------------------------------------------------------
@@ -278,6 +292,14 @@ class Piece:
             if math.hypot(b[0] - a[0], b[1] - a[1]) > 1e-6:
                 self.bar(a, b, section, mat, seed=seed)
 
+    def plate(self, points, width, mat, seed=None):
+        """A plate a texel thick and `width` across the piece's plane, along the points. For the
+        checks it is as thin as it is: what it is wide in is the plane of the boards above it."""
+        for a, b in zip(points, points[1:]):
+            if math.hypot(b[0] - a[0], b[1] - a[1]) > 1e-6:
+                self.m.beam(self._u(0.0, a), self._u(0.0, b), width * UNIT, TEXEL * UNIT, mat, seed=seed)
+                self.lines.append(((0.0, a[0], a[1]), (0.0, b[0], b[1]), TEXEL / 2.0))
+
     def box(self, lo, hi, x0, x1, mat, **kw):
         """A plate square to the frame: from (z, y) to (z, y), from x0 to x1 across."""
         self.m.box(self._u(min(x0, x1), (min(lo[0], hi[0]), min(lo[1], hi[1]))),
@@ -351,10 +373,12 @@ def rib(name, curve, end, purlins, rows):
 
 def arch(name, curve, deep_all, posts):
     """Half an arch girder, from the pier at its foot to the crown: two chords, a lattice of
-    crossing flat bars between them, an upright plate at the crown and wherever something comes in
-    from the side (posts: (distance from the crown, how far the plate stands over the girder's
-    back)), a gusset on the pier. Where its straight springing ends is a point of the lattice, so
-    the underside keeps to its line as far as the back does."""
+    crossing flat bars between them, a cover plate on its back as wide as the columns it runs
+    under (the curb of the slit on one side of the crown, the edge of the boards everywhere), an
+    upright plate at the crown and wherever something comes in from the side (posts: (distance
+    from the crown, how far the plate stands over the girder's back)), a gusset on the pier. Where
+    its straight springing ends is a point of the lattice, so the underside keeps to its line as
+    far as the back does."""
     across, deep = ARCH_CHORD
     back, belly = deep / 2.0, deep_all - deep / 2.0
     last = curve.length
@@ -366,6 +390,8 @@ def arch(name, curve, deep_all, posts):
     into = 0.1
     piece.chain([curve.at(s, back) for s in [curve.down(back) - into] + marks[1:]], ARCH_CHORD, CHORD, seed=21)
     piece.chain([curve.at(s, belly) for s in [curve.down(belly) - into] + marks], ARCH_CHORD, CHORD, seed=22)
+    piece.plate([curve.at(s, -TEXEL / 2.0) for s in [curve.down(-TEXEL / 2.0) - into] + marks[1:]], 2.0 * BAND, PLATE,
+                seed=26)
     for a, b in zip(marks, marks[1:]):
         piece.bar(curve.at(a, belly), curve.at(b, back), LACE, BAR, x=-0.046875, seed=24)
         piece.bar(curve.at(a, back), curve.at(b, belly), LACE, BAR, x=0.046875, seed=23)
@@ -441,6 +467,47 @@ def ring(name, radius, rows, arc, cheek=None):
     return m
 
 
+def boards(name, line, span, start=0.0, stop=None, seed=0):
+    """A panel of the vault's lining: boards BOARD wide laid edge to edge up `line` (a Curve in the
+    panel's upright plane), whole boards from the length `start` along it to `stop`, each straight
+    across that plane. span(z): how far the board whose lower edge is z from the axis reaches
+    across, as (from, to), or None where there is none. Returns (the model, its anchor (z, y) in
+    the plane, the boards as [((z, y) of the lower edge, (z, y) of the upper, (from, to) across)]),
+    or None without a board.
+
+    Only the face that looks into the room is drawn. How the game lights it (see machines/mast): a
+    face is filed under the one of its model's six axes its normal lies nearest to, and that axis,
+    turned with the display entity, is what the item renderer's two fixed lamps shine on. The
+    boards of a gore look inwards and down, 16 degrees under the level at the springing and 80
+    near the crown: drawn upright, the lower ones would be filed under a level axis and take the
+    light of whatever side of the room they are on, the upper ones under "down". So a panel is
+    drawn in a frame that leans outwards by BOARD_TILT, in which every board looks down more than
+    anywhere else, and it is shown leaning back by as much (Frame.lined). The axis the boards are
+    filed under then points inwards and well under the level, where neither lamp reaches: every
+    board of every panel takes the same light, the least there is, on all sides of the room."""
+    cells, s = [], start
+    stop = line.length if stop is None else min(stop, line.length)
+    while s + BOARD <= stop + 1e-9:
+        a, b = line.at(s), line.at(s + BOARD)
+        got = span(a[0])
+        if got is not None and got[1] - got[0] >= 2.0 * TEXEL:
+            cells.append((a, b, got))
+        s += BOARD
+    if not cells:
+        return None
+    anchor = ((cells[0][0][0] + cells[-1][1][0]) / 2.0, (cells[0][0][1] + cells[-1][1][1]) / 2.0)
+    m = M.Model(name, px=SCALE)
+    with m.turned(("x", -BOARD_TILT)):
+        for i, (a, b, (x0, x1)) in enumerate(cells):
+            mid, half = (x0 + x1) / 2.0 * UNIT, (x1 - x0) / 2.0 * UNIT
+            p = (mid, (a[1] - anchor[1]) * UNIT, (a[0] - anchor[0]) * UNIT)
+            q = (mid, (b[1] - anchor[1]) * UNIT, (b[0] - anchor[0]) * UNIT)
+            # in the frame that looks from p at q, +y is the side of the dome's skin
+            with m.aimed(p, q, "z") as length:
+                m.box((-half, 0.0, 0.0), (half, TEXEL * UNIT, length), LINING, grain="x", seed=seed + i, skip="nsewu")
+    return m, anchor, cells
+
+
 # --- the frame ------------------------------------------------------------------------------------
 class Frame:
     """The skeleton under one dome: its lines, its models, and where every piece goes.
@@ -456,7 +523,8 @@ class Frame:
     sill      where the ring girder stops for the slit's foot: (-1 or 1: the side of the axis along
               the slit, how far the piers' outer faces stand from the axis across it), or None
 
-    placed    [(model, the position of its origin, yaw)] for every piece
+    placed    [(model, the position of its origin, yaw)] for every piece of iron
+    lined     the same for every panel of the boards; a panel is shown with the turn LEAN as well
     """
 
     def __init__(self, prefix, ceiling, axis, sides, arches, faces, rows, angles, sill=None):
@@ -579,6 +647,62 @@ class Frame:
                                 at - 90.0))
         self.models.update({name: piece.m for name, piece in self.pieces.items()})
 
+        # the boards between the iron: a panel to every gore outside the two arch girders, from the
+        # ring girder up to the edge of their cover plates; the boards lie from seam to seam on the
+        # line the ribs' backs keep to. A gore and the one across the dome are one model
+        self.lined, self.panels = [], {}
+        self.edge = edge = max(abs(s) for s in self.sides) + BAND
+        for a0, a1 in zip(gores, gores[1:] + [gores[0] + 360.0]):
+            if faces[0] * max(abs(math.sin(math.radians(a))) for a in (a0, a1)) <= edge:
+                continue                                            # a gore between the two girders
+            a, half = math.radians((a0 + a1) / 2.0), math.radians((a1 - a0) / 2.0)
+            name = f"{prefix}boards_{int(round(math.degrees(a) % 180.0)):03d}"
+            if name not in self.panels:
+                # across the panel a point is x; its distance from the slit's axis is z * ks + x * kc
+                ks, kc = abs(math.sin(a)), -math.copysign(1.0, math.sin(a)) * math.cos(a)
+
+                def across(z, ks=ks, kc=kc, half=half):
+                    lo, hi = -z * math.tan(half), z * math.tan(half)
+                    if abs(kc) < 1e-9:
+                        if z * ks < edge:
+                            return None
+                    elif kc > 0.0:
+                        lo = max(lo, (edge - z * ks) / kc)
+                    else:
+                        hi = min(hi, (edge - z * ks) / kc)
+                    return math.floor(lo / TEXEL) * TEXEL, math.ceil(hi / TEXEL) * TEXEL
+
+                line = Curve([(z * math.cos(half), y) for z, y in self.meridian.p])
+                got = boards(name, line, across, seed=100 * len(self.panels))
+                if got is None:
+                    continue
+                self.models[name], self.panels[name] = got[0], got[1:]
+            z, y = self.panels[name][0]
+            self.lined.append((name, (ax + z * math.cos(a), y, az + z * math.sin(a)), math.degrees(a) - 90.0))
+        # and between the two girders where the slit is not: from their far feet over the crown to
+        # the girder across the slit's head (the last board ends on it), the boards across from
+        # cover plate to cover plate, on the line the girders' backs keep to. Drawn like that
+        # girder, z away from the slit's foot, in lengths a model can hold
+        if self.head is not None:
+            at, inner = -sill[0] * self.head[0], min(abs(s) for s in self.sides) - BAND
+            whole = list(self.arch_line.p) + [(-z, y) for z, y in reversed(self.arch_line.p) if z > 1e-9]
+            keep = [p for p in whole if p[0] > at - BOARD]
+            if len(keep) < len(whole):
+                (z0, y0), (z1, y1) = keep[-1], whole[len(keep)]
+                keep.append((at - BOARD, y0 + (y1 - y0) * (z0 - (at - BOARD)) / (z0 - z1)))
+            line = Curve(keep)
+            count = int(math.ceil(line.length / BAND_MOST))
+            each = math.ceil(line.length / BOARD / count) * BOARD
+            for i in range(count):
+                name = f"{prefix}boards_band_{i}"
+                got = boards(name, line, lambda z: (-inner, inner), start=i * each, stop=(i + 1) * each,
+                             seed=2000 + 100 * i)
+                if got is not None:
+                    self.models[name], self.panels[name] = got[0], got[1:]
+                    z, y = got[1]
+                    self.lined.append((name, (ax - sill[0] * z, y, az + sum(self.sides) / 2.0),
+                                       -90.0 if sill[0] < 0.0 else 90.0))
+
     def run(self):
         """The straight line the arch girders' underside keeps to where they spring: ((distance
         from the axis along the slit, height) at the pier, (the same where the girder leaves the
@@ -615,4 +739,17 @@ class Frame:
             for a, b, half in piece.lines:
                 out.append(tuple((x + p[0] * xx + (p[1] - fz) * zx, y + p[2] - fy, z + p[0] * xz + (p[1] - fz) * zz)
                                  for p in (a, b)) + (half,))
+        return out
+
+    def planks(self):
+        """Every board of the lining in the scene's coordinates: the four corners of the face that
+        looks into the room, the two of its lower edge first."""
+        out = []
+        for name, (x, y, z), yaw in self.lined:
+            (fz, fy), cells = self.panels[name]
+            r = math.radians(yaw)
+            (zx, zz), (xx, xz) = (-math.sin(r), math.cos(r)), (math.cos(r), math.sin(r))
+            for a, b, ends in cells:
+                out.append(tuple((x + e * xx + (p[0] - fz) * zx, y + p[1] - fy, z + e * xz + (p[0] - fz) * zz)
+                                 for p in (a, b) for e in ends))
         return out

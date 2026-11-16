@@ -65,6 +65,10 @@ KNOB = K.flat("brass", 4)                         # the bright end of a knurled 
 ROD = K.flat("brass", 3)                          # a rod one pixel thick: one clean line, no edges
 INK = P.RAMPS["iron"][1]
 LUME = P.RAMPS["phosphor"][2]
+# The light the luminous marks hold of themselves. In a lit room they take the room's light like the
+# paint beside them; in the dark they are a glimmer. At 15 they were the brightest points of a dark
+# room and of a lit one and read as small green lamps (real client, V8 and V10).
+LUME_LEVEL = 8
 
 
 # ---- painted surfaces ----------------------------------------------------------------------------
@@ -180,10 +184,12 @@ def _lume(rows):
 GLINT = P.RAMPS["porcelain"][4]         # the glint of a lens or of a glass ball: one pixel
 # Clear glass as the furniture draws it (_kit.sheen_texels): the glass is left out and its reflection
 # says it is there, a glancing stroke two pixels wide that climbs to the right and a shorter one
-# under it, in the tone the roof lights hold the sky in; a white one was the brightest thing on the
-# wall and read as paper. One column further left than the kit puts it: the clock's door is seven
-# pixels wide and its middle column is the pendulum rod's, which a stroke would cut in two.
-SHEEN = getattr(K, "SHEEN", P.RAMPS["night_glass"][4])
+# under it. Its tone is the kit's for a narrow pane with dark wood close behind it, a step under the
+# one the roof lights hold the sky in: that one was the only cold thing on the case and read as a
+# blue ribbon stuck on the door, and a white one as paper. One column further left than the kit
+# puts it: the clock's door is seven pixels wide and its middle column is the pendulum rod's, which
+# a stroke would cut in two.
+SHEEN = K.SHEEN_DIM
 STROKES = ((1, 1), (2, 1), (0, 2), (1, 2), (1, 5), (2, 5))
 
 
@@ -428,7 +434,7 @@ def _dial(m, name, rows, centre, z, hands=()):
     m.box((x - half, y - half, z - 0.25), (x + half, y + half, z), K.flat("porcelain", 3), skip="nudew",
           faces={"s": _sprite(name, rows, **DIAL_COLOURS)})
     m.box((x - half, y - half, z), (x + half, y + half, z + 0.1), K.flat("phosphor", 2), skip="nudew",
-          faces={"s": _sprite(name + "_lume", _lume(rows), g=LUME)}, emit=15, shade=False)
+          faces={"s": _sprite(name + "_lume", _lume(rows), g=LUME)}, emit=LUME_LEVEL, shade=False)
     top = z + 0.1
     for lean, length, tail in hands:
         m.box((x - 0.5, y - tail, top), (x + 0.5, y + length, top + 0.2), HAND, grain="y",
@@ -808,7 +814,9 @@ PENDULUM = dict(tag="c164_pendulum", pivot=tuple(v / 16.0 for v in PENDULUM_PIVO
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    return {PREFIX + name: spec["build"]() for name, spec in SPEC.items()}
+    # settled (_kit.settle): the slanting flats of the tubes, rings and balls stand exactly between
+    # two axes, and the game lit them one way on one piece and the other way on its twin
+    return {PREFIX + name: K.settle(spec["build"]()) for name, spec in SPEC.items()}
 
 
 def models():
