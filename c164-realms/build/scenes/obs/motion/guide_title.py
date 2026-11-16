@@ -41,13 +41,29 @@ The title
              build, tools/check.py fails, and a new name is never cut off without anybody
              having seen it.
 
+The credit plate
+    what     One enamel plaque of the props line's make (props/plaques.sign(), the plate of the
+             twelve that say what a thing is): the name in one line, "Built by" and MAP_CREDIT
+             under it. It is the one place in the map that names a builder, and it gives no
+             address.
+    where    On the waiting room's front, the wall on the right of whoever walks from the car
+             to the steps: the pier east of the door (site/cablecar: WAIT_ROOM["door"]), the
+             plate's middle PLATE_UP over the platform, a little under the eye. The arrival view
+             (S.V1) does not have it: the front comes into that picture west of x 82.2 only,
+             and the plate hangs between x 84 and 85. No other view of the board is within the
+             16 blocks a plaque is drawn from.
+    when     Where the pier stands on the canvas, and in a tree that has props/plaques. A scene
+             without the station has no plate hanging in the air; a tree without the props
+             line's plaques has the title and no plate, and gets the plate when they come.
+
 The switch is the main scene's GUIDE (scenes/obs/__init__.py), read when the scene is built:
 tools/export.py --no-guide turns it off after everything is imported. With the switch off, or in
-a tree whose main scene has none, nothing is registered and the data pack has no guide/ folder;
-the map's function tags name functions that are not there and pass them over.
+a tree whose main scene has none, nothing is registered, the data pack has no guide/ folder and
+no plate hangs; the map's function tags name functions that are not there and pass them over.
 """
 import importlib
 import json
+import math
 
 from ..common import palette as P
 from . import _kit as MK
@@ -140,9 +156,20 @@ def functions(name=None):
     }
 
 
+def _of(name):
+    """A module of the master scene by its name under scenes/obs, or None in a tree without it."""
+    full = f"{__package__.rsplit('.', 1)[0]}.{name}" if name else __package__.rsplit(".", 1)[0]
+    try:
+        return importlib.import_module(full)
+    except ModuleNotFoundError as e:
+        if e.name != full:
+            raise               # it is there and fails to import something: say so
+        return None
+
+
 def guide():
     """The main scene's switch, as it stands now."""
-    return bool(getattr(importlib.import_module(__package__.rsplit(".", 1)[0]), "GUIDE", False))
+    return bool(getattr(_of(""), "GUIDE", False))
 
 
 def title(canvas, name=None):
@@ -152,7 +179,42 @@ def title(canvas, name=None):
     return 0
 
 
+# ---- the credit plate ------------------------------------------------------------------------------
+PLATE_UP = 1.5      # blocks from the platform to the middle of the plate; the eye is at 1.62
+
+
+def plate_words(name=None, credit=None):
+    """(the name in one line and in capitals, the line under it) as the plate has them."""
+    name = MAP_NAME if name is None else " ".join(part for part in name if part)
+    return name.upper(), f"Built by {MAP_CREDIT if credit is None else credit}"
+
+
+def plate_at():
+    """(pos, facing) of the credit plate as props/plaques.sign() takes them: the middle of the plate
+    on the face of the pier east of the waiting room's door, and the way that face looks. None in
+    a tree without the cable station."""
+    station = _of("site.cablecar")
+    if station is None:
+        return None
+    door_x, front_z = station.WAIT_ROOM["door"]
+    return (door_x + 1.5, station.FEET + PLATE_UP, front_z + 1.0), "south"
+
+
+def plate(canvas, origin=(0, 0, 0)):
+    """Hang the credit plate where its pier stands on the canvas; returns the number of display
+    entities (0 without the pier, and in a tree without props/plaques)."""
+    plaques, at = _of("props.plaques"), plate_at()
+    if plaques is None or at is None:
+        return 0
+    (x, y, z), facing = at
+    behind = (math.floor(x) + origin[0], math.floor(y) + origin[1], math.floor(z - 0.5) + origin[2])
+    if not canvas.has(*behind):
+        return 0
+    name, line = plate_words()
+    return plaques.sign(canvas, name, line, (x, y, z), facing=facing, origin=origin)
+
+
 def build(canvas, origin=(0, 0, 0)):
     if not guide():
         return 0
-    return title(canvas)
+    return title(canvas) + plate(canvas, origin)
