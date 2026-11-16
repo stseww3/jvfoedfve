@@ -1,0 +1,121 @@
+{
+ "materials/iron": {
+  "state": "已过审",
+  "note": "【评审 #21 过（打磨轮 99dc8afa）；交叉看 m3 过】"
+ },
+ "materials/panels": {
+  "state": "已过审",
+  "note": "【评审 #23 过（第二轮打磨 7a661923，08:16）】"
+ },
+ "materials/windows": {
+  "state": "退回",
+  "commit": "39bcd249",
+  "note": "【11-16 08:47 退回：445733a3（a1 08:44 合 e41031f6）在总装头上让 18 个场景红（entities：`c164:mat_window_lining_frosted_1x2` 包里没有；作者关口的基 3845c2fd 之后 tower 进来了），s2 revert 2100f2b2，总装里是上一版。chart 合总装头，在自己分支上 `git revert 2100f2b2` 把文件带回来，补上缺的尺寸，关口过了再交 a1】"
+ },
+ "sky/comet": {
+  "state": "已过审",
+  "note": "【评审 cr2-#10 过（打磨轮 a5ddf7bd，4/4.5/4.5/4）；定版甲（总监 #56164），光线锁 blue（#56751）】"
+ },
+ "sky/tones": {
+  "state": "已过审",
+  "note": "【评审 cr3-#6 过（40e2746，工具卡；三处小改已私信 a2）】"
+ },
+ "sky/lights": {
+  "note": "【洗墙轮 a5068e7e：DRESS 开；两翼亮窗后 12 级（总监 #58003）；洗墙 10、上限 10（#62755）；门洞的光源换成星厅里三个占位光源，等 hall 的灯接过去；合进来的树上 `obs_sky_lights` 16/27、`_nolend` 1/3 过期】"
+ },
+ "site/stair": {
+  "state": "已过审",
+  "note": "【评审 cr3-#5 过（769e2fb，4/4/4/—/4；梯脚 2×2 灯座近看是箱子，留打磨轮）；交叉看 cable 过】"
+ },
+ "site/outbuildings": {
+  "state": "已过审",
+  "note": "【评审 cr2-#8 过（4/4/4/—/4）；交叉看 lamps 过】"
+ },
+ "site/mastbase": {
+  "state": "已过审",
+  "note": "【评审 cr2-#9 过（3/4/4/—/4）；交叉看 mast 过】"
+ },
+ "site/powerhouse": {
+  "note": "【三次交付 b8156301：交叉看 chart 过（炉火窗 12 级的源正在内衬取光那一格，锅炉房室内做好后从里面看一眼）】"
+ },
+ "machines/clocks": {
+  "note": "【二次交付 b026dd95 评审 cr3-#4 过（4/4/4/4/4），交叉看 tower 过；三次交付 e1e09bc 删反光、改大轮轮缘，还没评】"
+ },
+ "machines/orrery": {
+  "note": "【默认甲（六臂共面、齿轮外露、两圈旧铜轨道环加黄道带），乙留测试场景；朝下的面画进斜切矩阵的模型，引擎当它朝上】"
+ },
+ "machines/refractor": {
+  "note": "【定甲（德式赤道仪），乙留分支和测试场景；红灯罩背面留红宝石看火孔，V8 里一个点（720p 不超过 3×3 像素），全室的红只此一处（总监 #60791）；调速器那一圈信号红改成旧铜】"
+ },
+ "machines/armillary": {
+  "note": "【定甲（环多而细），不要地平环（总监 07:36）】"
+ },
+ "machines/recorders": {
+  "state": "制作中",
+  "who": "rec c356（11-16 08:36 新开，node101）"
+ },
+ "machines/cablecar-winch": {
+  "who": "cable c338（接 c240；11-16 08:42 开工）"
+ },
+ "props/lamps": {
+  "state": "已过审",
+  "note": "【评审 #20 过（灯链）；交叉看 a4（灯链 546c070e 和后续 066ecfab）、power（后续）过】"
+ },
+ "props/ironwork": {
+  "note": "【打磨轮 8e6bc4a5：交叉看 facade 过；DRESS 08:24 开（622f9f44）；entities 有一条 WARN：`prop_iron_canopy_lamp_under` 沿一个轴拉长】"
+ },
+ "props/instruments": {
+  "state": "已过审",
+  "note": "【评审 cr4-#1 过（94b79e2，4/4/3/4/4；三处打磨）；DRESS 08:24 开（622f9f44）】"
+ },
+ "props/furniture": {
+  "note": "【DRESS 08:24 开（622f9f44）；`props/_kit.py` 随它进：K.pane、K.SHEEN、K.sheen_texels、K.rivet(proud=)、K.COPPER_D 新加，K.GLINT 去掉】"
+ },
+ "props/pipes": {
+  "note": "【pipes.DRESS 已开，主场景多 56 个展示实体；落水管接缝的细黑线下一单补】"
+ },
+ "props/electrics-signs": {
+  "note": "【signs.DRESS 已开（入口大台徽；站牌等缆车站进树）】"
+ },
+ "main/tower": {
+  "note": "【塔顶定甲（四坡弧顶；facade 08:53 定，乙的场景和图打磨轮里撤）；`massing.py` 里塔的白模撤了；V5 用它算出的站位（骨架 S.V5）】"
+ },
+ "main/dome": {
+  "state": "已过审"
+ },
+ "interiors/batteryroom": {
+  "who": "astro c360（11-16 08:36 新开，node105；接 stair 留在 `cursor/c164-stair-batteryroom-f3-b330` 的草图；搭档 mast）"
+ },
+ "interiors/platevault": {
+  "state": "制作中",
+  "who": "vault c358（11-16 08:36 新开，node103）"
+ },
+ "interiors/clockroom": {
+  "state": "制作中",
+  "who": "clkrm c359（11-16 08:36 新开，node104；搭档 tower）"
+ },
+ "interiors/astroroom": {
+  "state": "制作中",
+  "who": "sdome c328"
+ },
+ "motion/smoke": {
+  "who": "smoke c357（11-16 08:36 新开，node102）"
+ },
+ "motion/sound": {
+  "who": "sound c361（11-16 08:36 新开，node106）"
+ },
+ "motion/loop": {
+  "state": "暂过"
+ },
+ "common/skeleton": {
+  "commit": "49e4e723",
+  "note": "【11-16：V6 往右转 4.5°（7d1508c0，注释 3b4a2d2b）；V5 新加（a06744bd，进总装 49e4e723）】"
+ },
+ "common/check": {
+  "commit": "49e4e723",
+  "note": "【11-16：sight 底层只算方块（9afe22e8）；regen 的注册表文件门闸（5eaedb7b）；entities 按整个矩阵逐面量（073b058c，进总装 49e4e723）】"
+ },
+ "materials/ashlar": {
+  "note": "【交叉看 facade 过（a494bb19：V2 上墙面平，贴近读成琢面）】"
+ }
+}

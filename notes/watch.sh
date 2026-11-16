@@ -22,10 +22,15 @@ fi
 echo "head ${seen:0:8} -> ${head:0:8}"
 for c in $(git rev-list --first-parent --reverse "$seen..$head"); do
   parents=($(git rev-list --parents -n 1 "$c")); n=$(( ${#parents[@]} - 1 ))
-  echo "---- $(git log -1 --format='%h %ad %s' --date=format:'%H:%M' "$c" | cut -c1-150)"
+  echo "---- $(git log -1 --format='%h %ad %s' --date=format:'%H:%M' "$c" | sed -E 's#https?://[^ ]+#<remote>#g' | cut -c1-150)"
   if [ "$n" -ge 2 ]; then
     second="${parents[2]}"
-    echo "     merge of ${second:0:8} ($(git log -1 --format='%s' "$second" | cut -c1-80))"
+    if [ "$peek" = 0 ]; then
+      # the ledger STATUS is written from: time (UTC), who merged, what, the delivered commit, the merge
+      git log -1 --format='%ad%x09%s' --date=format:'%m-%d %H:%M' "$c" | sed -E 's#https?://[^ ]+#<remote>#g' \
+        | awk -F'\t' -v m="${c:0:8}" -v d="${second:0:8}" '{ who=$2; sub(/:.*/, "", who); what=$2; sub(/^[^:]*: */, "", what); sub(/ Co-authored-by.*/, "", what); print $1 "\t" who "\t" what "\t" d "\t" m }' >> /tmp/c164_s2/ledger.tsv
+    fi
+    echo "     merge of ${second:0:8} ($(git log -1 --format='%s' "$second" | sed -E 's#https?://[^ ]+#<remote>#g' | cut -c1-80))"
     git diff --name-only "$c^1" "$c" | sed 's#^c164-realms/##' | python3 -c '
 import sys, collections
 areas = collections.Counter(); odd = []
