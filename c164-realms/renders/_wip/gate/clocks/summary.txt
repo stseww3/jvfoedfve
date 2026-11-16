@@ -1,0 +1,24 @@
+gate machines/clocks 9a77f931: the merged tree 9a77f931, the assembly as it was 2fcc30f2
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] scope    3 of 4 files are the card's own
+                    not this card's file: M build/scenes/obs/machines/clock.py
+check.py: 80 scenes in 95 s: 80 pass (80 with warnings)
+pictures: [PASS] selfshots obs_mach_clocks at 9a77f931: 15 of 15 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_mach_clocks_b at 9a77f931: 5 of 5 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_mach_orrery at 9a77f931: 10 of 10 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_props_paper at 9a77f931: 25 of 25 kept pictures are what the code draws
+pictures: obs_site_cablecar: the kept pictures are NOT what the delivered commit 9a77f931 draws (it goes back):
+    [FAIL] selfshots obs_site_cablecar at 9a77f931: 0 of 12 kept pictures are what the code draws, 12 not
+    v1: 63682 of 921600 pixels are not what the code draws (off by up to 42 of 255)
+    platform: 12748 of 921600 pixels are not what the code draws (off by up to 181 of 255)
+    axis: 7398 of 921600 pixels are not what the code draws (off by up to 181 of 255)
+    lower: 171767 of 921600 pixels are not what the code draws (off by up to 191 of 255)
+    stair_head: 148715 of 921600 pixels are not what the code draws (off by up to 153 of 255)
+    canopy: 14233 of 921600 pixels are not what the code draws (off by up to 181 of 255)
+    girder: 5650 of 921600 pixels are not what the code draws (off by up to 181 of 255)
+    trestle: 333680 of 921600 pixels are not what the code draws (off by up to 84 of 255)
+    trestle_side: 154015 of 921600 pixels are not what the code draws (off by up to 120 of 255)
+    east: 43468 of 921600 pixels are not what the code draws (off by up to 29 of 255)
+    aerial: 312269 of 921600 pixels are not what the code draws (off by up to 138 of 255)
+    aerial_west: 261865 of 921600 pixels are not what the code draws (off by up to 152 of 255)
+result: FAIL
