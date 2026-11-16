@@ -16,6 +16,10 @@ part is:
                            glass; the sources stand outside the glass, in the window opening, one row
                            above the sill and one row below the head (c220 #33341: level 8 there)
   materials/windows (me)   the lining on the room side of the lit windows, when that is in the tree
+
+Beyond the door the box has a piece of the hall's side gallery, shut in by a floor, a lid and three
+walls, with one lamp of the hall on the cross wall beside the door (as the time room's box has it,
+m2): the gallery is indoors, and what the room sees through its doorway is a dim hall, not the sky.
 """
 from artkit.blocks import st
 
@@ -24,11 +28,14 @@ from scenes.obs.common import skeleton as S
 from scenes.obs.interiors import chartroom as T
 from scenes.obs.main import _plan as MP
 from scenes.obs.materials import windows
+from scenes.obs.props import lamps
 
 LIT = {"east": (12, 14), "west": (13, 15)}      # the lit windows of the room under the blue look (sky/lights)
-OUTSIDE = 8                                     # the level of the sources in the opening of a lit great window
+OUTSIDE = 10                                    # the level of the sources of a lit opal window, in its opening
 DOOR_Y = (T.FEET, T.FEET + 2)
 GALLERY_Z = (T.Z0 - 3, T.Z0 - 2)                # 4..5: the deck of the hall's side gallery, the rail on its edge
+HALL_Z = T.Z0 - 5                               # 2: the wall that stands in for the hall beyond the gallery
+HALL_LAMP = (T.DOOR_X[1] + 2.5, T.FEET + 3.5, 8)    # a lamp of the hall on the cross wall east of the door: x, y, its level
 CORNICE_Y = S.CORNICE                           # 15: the course over the windows; it reaches two blocks out
 REACH = 2
 
@@ -84,7 +91,8 @@ def build(c, origin=(0, 0, 0)):
                 shell = x == gw and z <= T.PIER_Z[0]        # the shell's own stretch of the west wall
                 put(x, y, z, wall_block(y) if shell else B.ASHLAR_FINE.block)
 
-    # the windows: glass in the inner leaf, the stone leaf open in front of it
+    # the windows: glass in the inner leaf, the stone leaf open in front of it, the head of that
+    # opening shut by a stair hung in each top corner and a slab between the two (facade.CROWN)
     for front, bays, glass_x, face_x, inward in (("east", T.EAST_BAYS, ge, xe, -1), ("west", T.WEST_BAYS, gw, xw, 1)):
         for bay in bays:
             rows = MP.window_rows(bay)
@@ -93,6 +101,10 @@ def build(c, origin=(0, 0, 0)):
                 for y in range(S.WINDOW[0], S.WINDOW[1] + 1):
                     put(glass_x, y, z, glass)
                     cut(face_x, y, z)
+            put(face_x, S.WINDOW[1], rows[0], st(B.ASHLAR_FINE.stairs, facing="north", half="top"))
+            put(face_x, S.WINDOW[1], rows[-1], st(B.ASHLAR_FINE.stairs, facing="south", half="top"))
+            for z in rows[1:-1]:
+                put(face_x, S.WINDOW[1], z, st(B.ASHLAR_FINE.slab, type="top"))
             if lit(front, bay):
                 middle = rows[len(rows) // 2]
                 sources += [((face_x, y, middle), OUTSIDE) for y in (S.WINDOW[0] + 1, S.WINDOW[1] - 1)]
@@ -100,14 +112,22 @@ def build(c, origin=(0, 0, 0)):
                     cells = [(glass_x, y, z) for z in rows for y in range(S.WINDOW[0], S.WINDOW[1] + 1)]
                     line(c, cells, (inward, 0), glass, origin=origin)
 
-    # the door, and a piece of the gallery beyond it
+    # the door, and a piece of the gallery beyond it: indoors, so a floor, a lid and three walls stand
+    # in for the hall, and one of the hall's lamps hangs on the cross wall beside the door
     for x in range(T.DOOR_X[0], T.DOOR_X[1] + 1):
         for y in range(DOOR_Y[0], DOOR_Y[1] + 1):
             cut(x, y, zn)
-    for x in range(T.X0, T.X1 + 1):
-        for z in range(GALLERY_Z[0], GALLERY_Z[1] + 1):
+    for z in range(HALL_Z, GALLERY_Z[1] + 1):
+        for x in range(gw, ge + 1):
             put(x, T.FLOOR_Y, z, B.ASHLAR_FINE.block)
+            put(x, T.CEIL_Y, z, B.ASHLAR_FINE.block)
+            if z == HALL_Z or x in (gw, ge):
+                for y in range(T.FEET, T.TOP + 1):
+                    put(x, y, z, wall_block(y))
+    for x in range(gw + 1, ge):
         put(x, T.FEET, GALLERY_Z[0], B.IRON_BARS)
+    lamps.place(c, "bracket", (HALL_LAMP[0], HALL_LAMP[1], float(zn)), facing="north", origin=origin,
+                version="b", level=HALL_LAMP[2])
     return [((ox + x, oy + y, oz + z), level) for (x, y, z), level in sources]
 
 

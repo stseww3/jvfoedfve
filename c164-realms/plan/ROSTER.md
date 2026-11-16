@@ -1,6 +1,6 @@
 # 名单：第 3 班（11-16 凌晨起）
 
-总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 06:01。点名只点「聊天号」一栏；聊天号“—”是还没开出来，节点“未报”是人到了、节点号还没报来（拿到以后私信 c320 一行）。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
+总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 06:30。点名只点「聊天号」一栏；聊天号“—”是还没开出来，节点“未报”是人到了、节点号还没报来（拿到以后私信 c320 一行）。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
 
 - 总监：A0，聊天 c164。只为两件事找他：要他拍板，或者报告卡住了。
 - 总监助理：aide，聊天 c320。名单上的事找他：谁是谁、找谁对接口、新分支和节点号报给他、手上的卡都交付了领下一张。
@@ -37,22 +37,22 @@
 | dome | c326 | node40（冻住） | c222 | main/dome；然后 machines/engine-dynamo（11-16 04:50 派，没有前任，从总装开；dome 被退回时它优先） | `cursor/c164-dome-0dab` @ `ecda0e1e` | `cursor/c164-dome-f3-a244`、`cursor/c164-dome-engine-f3-a244` |
 | tower | c327 | node41（冻住） | c223 | main/tower | `cursor/c164-tower-21fb` @ `951a1877` | `cursor/c164-tower-f3-c402` |
 | sdome | c328 | node42（冻住） | c224 | main/smalldome（含屋面）；然后 machines/meridian-astrograph（11-16 03:55 派，没有前任，从总装开；smalldome 被退回时它优先）；再 interiors/astroroom（P3，05:30 他要了，留给他：照相仪交付以后开，先交一页草图给总监） | `cursor/c164-sdome-8013` @ `98d469e8` | `cursor/c164-sdome-f3-1fe7`、`cursor/c164-sdome-astro-f3-1fe7` |
-| a2 | c322 | node36 | c177 | sky/tones、motion/loop；sky 和 motion 牵头；然后 motion/smoke、再 motion/sound（11-16 04:12 派，没有前任；tones、loop 被退回或来图时它们优先） | `cursor/c164-a2-light-29fe` @ `b107652f` | `cursor/c164-a2-sky-f3-695d` |
-| lights | c331 | node45 | c220 | sky/lights（含洗墙轮） | `cursor/c164-lights-007c` @ `8972aa88`、`cursor/c164-lights-wash-0fe3` @ `632a2c09` | `cursor/c164-lights-f3-9479`、`cursor/c164-lights-wash-f3-9479` |
-| comet | c330 | node44 | c230 | sky/comet；然后 sky/ridges（P2，11-16 05:30 总监派，没有前任，从总装开；先找 cloud c329 对云海的高度；手上的打磨先收尾） | `cursor/c164-comet-986f` @ `b3950eb4` | `cursor/c164-comet-f3-793d`、`cursor/c164-comet-ridges-f3-793d` |
+| a2 | c322 | node36（冻住，04:58 起没有回执） | c177 | sky/tones、motion/loop；sky 和 motion 牵头；然后 motion/smoke、再 motion/sound（11-16 04:12 派，没有前任；tones、loop 被退回或来图时它们优先） | `cursor/c164-a2-light-29fe` @ `b107652f` | `cursor/c164-a2-sky-f3-695d`、`cursor/c164-a2-loop-f3-695d` |
+| lights | c331 | node45（冻住） | c220 | sky/lights（含洗墙轮） | `cursor/c164-lights-007c` @ `8972aa88`、`cursor/c164-lights-wash-0fe3` @ `632a2c09` | `cursor/c164-lights-f3-9479`、`cursor/c164-lights-wash-f3-9479` |
+| comet | c330 | node44（冻住） | c230 | sky/comet；然后 sky/ridges（P2，11-16 05:30 总监派，没有前任，从总装开；先找 cloud c329 对云海的高度；手上的打磨先收尾） | `cursor/c164-comet-986f` @ `b3950eb4` | `cursor/c164-comet-f3-793d`、`cursor/c164-comet-ridges-f3-793d` |
 | cloud | c329 | node43（冻住） | c227 | sky/cloudsea | `cursor/c164-cloud-wip-99a5` @ `55daddce` | `cursor/c164-cloud-cloudsea-f3-ad5e` |
 | a4 | c323 | node37（冻住） | c221 | site/terrain、site/court 打磨；site 牵头；然后 common/walk 的 walk-in（室内和屋顶走查，P1，11-16 05:30 总监派；手上的短活先收尾） | `cursor/c164-a4-site-2af2` @ `7a18bacc` | `cursor/c164-a4-site-f3-6824`、`cursor/c164-a4-walkin-f3-6824` |
-| stair | c337 | node51（冻住；先投共享池 node4） | c225 | site/stair | `cursor/c164-stair-4aad` @ `36220ac4` | `cursor/c164-stair-f3-b330` |
+| stair | c337 | node51（冻住；共享池 node4 他空着时借给排队的人） | c225 | site/stair；然后 interiors/batteryroom（P3，11-16 06:03 派，没有前任，从总装开；先交一页草图给总监；site/stair 被退回时它优先） | `cursor/c164-stair-4aad` @ `36220ac4` | `cursor/c164-stair-f3-b330`、`cursor/c164-stair-batteryroom-f3-b330` |
 | cable | c338 | node52（冻住） | c226 | site/cablecar；然后 machines/cablecar-winch（接 c240） | `cursor/c164-cable-a47d` @ `4af8406b`；`cursor/c164-car-w3k9` @ `5a6186cc` | `cursor/c164-cable-cablecar-f3-9cf7` |
 | power | c339 | node53（冻住） | c228 | site/powerhouse；然后 interiors/powerhouse（11-16 04:14 派，没有前任；外壳被退回时它优先） | `cursor/c164-power-f182` @ `5ae1738e` | `cursor/c164-power-f3-2e4a`、`cursor/c164-power-interior-f3-2e4a` |
 | outb | c340 | node54（06:00 不在线） | c229 | site/outbuildings、site/mastbase；然后 common/export（成品地图导出，现在空跑，P1，11-16 05:46 派，没有前任，从总装开；两张卡被退回时它们优先） | `cursor/c164-outb-0198` @ `6d320dd0` | `cursor/c164-outb-f3-f4b8`、`cursor/c164-outb-export-f3-f4b8` |
 | a6 | c334 | node48（冻住） | c179 | props/furniture、灯的模型；props 牵头 | `cursor/c164-a6-props-7fb0` @ `8026cccb` | `cursor/c164-a6-furniture-f3-4ad1` |
 | lamps | c341 | node55（冻住，04:58 起没有回执） | c220 | props/lamps 的位置表和场地灯链；然后 props/electrics-signs（接 c242） | `cursor/c164-lamps-007c` @ `7c270e4c`；`cursor/c164-elec-7be8` @ `5ff667a1` | `cursor/c164-lamps-chain-f3-0dde`、`cursor/c164-lamps-elecsign-f3-0dde` |
-| m3 | c342 | node56（冻住；先投共享池 node6） | c218 | props/ironwork 打磨轮（退回过）；然后 props/pipes（接 c241） | `cursor/c164-m3-ironwork-e6ba` @ `6f9eed36`；`cursor/c164-pipes-9deb` @ `c2bb7183` | `cursor/c164-m3-ironwork-f3-8e52` |
+| m3 | c342 | node56（冻住；共享池 node6 他空着时借给排队的人） | c218 | props/ironwork 打磨轮（退回过）；然后 props/pipes（接 c241） | `cursor/c164-m3-ironwork-e6ba` @ `6f9eed36`；`cursor/c164-pipes-9deb` @ `c2bb7183` | `cursor/c164-m3-ironwork-f3-8e52` |
 | orrery | c343 | node57（冻住） | c236 | machines/orrery | `cursor/c164-orrery-6491` @ `f3a7e462` | `cursor/c164-orrery-f3-46d7` |
 | scope | c344 | node58（冻住） | c237 | machines/refractor | `cursor/c164-scope-6e0f` @ `5c674377` | `cursor/c164-scope-f3-eeae` |
 | clocks | c345 | node59（冻住） | c238 | machines/clocks | `cursor/c164-clocks-e99f` @ `abfd8079` | `cursor/c164-clocks-f3-00d6` |
-| mast | c346 | node60（冻住；先投共享池 node5） | c239 | machines/radiomast | `cursor/c164-mast-5dcd` @ `ffcb474c` | `cursor/c164-mast-f3-fc27` |
+| mast | c346 | node60（冻住；共享池 node5 他空着时借给排队的人） | c239 | machines/radiomast；然后 machines/switchboard-boiler（P2，11-16 06:08 派，没有前任，从总装开；radiomast 被退回或来图时它优先） | `cursor/c164-mast-5dcd` @ `ffcb474c` | `cursor/c164-mast-f3-fc27`、`cursor/c164-mast-switchboard-f3-fc27` |
 | hall | c348 | 合用 node12 | c243 | interiors/starhall | `cursor/c164-hall-ddbd` @ `8f93cbdb` | `cursor/c164-hall-starhall-f3-2c05` |
 | a3 | c349 | 合用 node12 | c178 | interiors/domeroom | `cursor/c164-a3-mainbuilding-da56` @ `95106dce` | `cursor/c164-a3-domeroom-f3-f4f6` |
 | chart | c350 | 合用 node46（冻住） | c205 | interiors/chartroom、materials/windows 的内衬 | `cursor/c164-chart-5a4c` @ `fb9b2ecb`、`cursor/c164-m2-windows-7bb5` @ `bfb5420e` | `cursor/c164-chart-windows-f3-3477`、`cursor/c164-chart-chartroom-f3-3477` |
@@ -62,10 +62,10 @@
 
 谁手上的卡都交付了，私信总监助理领。总监 11-16 05:24 定了次序（细则在 `roles/A0-director.md` 第 4 节最后一条），照这个发：
 
-1. 第一批剩下的两张：`machines/switchboard-boiler`、`machines/recorders`，留给下一个交了卡的机器岗（总监 05:29）。`sky/ridges` 已派给 comet。
+1. 第一批剩下的一张：`machines/recorders`，留给下一个交了卡的机器岗（总监 05:29）。`machines/switchboard-boiler` 已派给 mast，`sky/ridges` 已派给 comet。
 2. 第二批的 P1（卡在 `plan/packages/common/`）都派完了：`common/export` 给 outb；`common/walk` 两张：总监定的交叉着发，找毛病的人不是改的人，`walk-out`（室外）给 facade，`walk-in`（室内和屋顶）给 a4。
 3. 上面都发完了、手上又空的人：照自己那一包的评审意见和真机看板打磨。
-4. 第二批的四间新房，P3：`interiors/batteryroom`（北翼底层蓄电池室）、`interiors/platevault`（南翼底层底片库和暗房）、`interiors/clockroom`（报时塔钟室）、`interiors/astroroom`（小穹顶室，已留给 sdome）。每间先交一页草图给总监看过再铺开，不许拖第一批。
+4. 第二批的四间新房，P3：`interiors/platevault`（南翼底层底片库和暗房）、`interiors/clockroom`（报时塔钟室）、`interiors/astroroom`（小穹顶室，已留给 sdome）。`interiors/batteryroom`（北翼底层蓄电池室）已派给 stair。每间先交一页草图给总监看过再铺开，不许拖第一批。
 
 ## 派单（只有总监开人）
 

@@ -38,7 +38,9 @@ Rows, from the main cornice (y 15) up:
 
 Nothing on the dome stands a whole block proud of the plates (A0, group #294; the first cut's
 ribs made a saw-tooth of the outline). Two versions, one idea each for how close the seams stand
-and how the slit is shut:
+and how the slit is shut. The map is built with b (VERSION; the director's choice of 11-16: the
+ribs follow the sphere up to the crown and tell the round when dome and sky are one brightness);
+a is kept:
 
     a   twenty fine seams, one between every two gores, flush with the plates and of the same
         copper: a strip of the uncut sheet between the plates' joints, to be seen from close by
@@ -96,6 +98,7 @@ POST = B.IRON_ROD
 LEAF = B.IRON_RIVETED                   # the stiles of the leaves, the curtain's rails and its bar
 
 VERSIONS = ("a", "b")
+VERSION = "b"                           # the one the map is built with (the director, 11-16); a is kept
 STATES = ("open", "half", "closed")
 MAIN_RIBS = tuple(k for k in range(GORES) if k % 5 in (1, 3))       # version b: 27, 63, 117, 153 ... degrees
 COLLAR = {"a": 6, "b": 5}               # the ring the seams run into: its radius in blocks
@@ -458,8 +461,10 @@ def shutter(canvas, origin=(0, 0, 0), version="a", state="open"):
     (_leaves if version == "a" else _curtain)(canvas, origin, state)
 
 
-def build(canvas, origin=(0, 0, 0), glass=None, version="a", slit="open"):
-    """The whole rotunda above the cornice. Returns the drum's windows."""
+def build(canvas, origin=(0, 0, 0), glass=None, version=None, slit="open"):
+    """The whole rotunda above the cornice, in the map's version when none is named. Returns the
+    drum's windows."""
+    version = version or VERSION
     if version not in VERSIONS:
         raise ValueError(f"the dome has versions {VERSIONS}, not {version!r}")
     windows = drum(canvas, origin, glass)
