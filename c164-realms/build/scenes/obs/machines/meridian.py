@@ -20,6 +20,8 @@ middle of the hut (site/outbuildings), under the slot in the roof:
                the wheels of a gun carriage: cr3 #63499.)
   the lamp     a small brass lantern on the west pier, level with the axis: it shines through the
                hollow pivot onto the wires. The one light in the hut.
+  the railing  a low iron railing round it all, two cells north and south of the piers' row and
+               back to each pier: one walks round the instrument, not through it (railing()).
 
 It is set on the pole star: due north, as high as the place's latitude (the evening's first
 reading, which says whether the axis still lies east and west). The tube is as long as the axis
@@ -35,6 +37,7 @@ What the other lines read (scene coordinates; give the origin to have it added):
     meridian.eyepiece()    the middle of the eyepiece's end face
     meridian.sweep()       (centre, radius) of the ball the tube and the circles never leave
     meridian.lamp_cell()   the cell the lamp's light is offered in (LAMP_LEVEL)
+    meridian.railing()     the cells of the railing round it (blocks; a room keeps them free)
     meridian.ALTITUDE      degrees the tube looks up, due north
     meridian.BRIGHTNESS    the light every piece is shown in, whatever cell it stands in
 
@@ -577,6 +580,57 @@ def barriers(origin=(0, 0, 0)):
     return out
 
 
+RAIL = B.IRON_BARS              # the railing: one block of bars to a cell, standing on the floor
+RAIL_OUT = 2                    # cells from the piers' row to the railing's rows, north and south
+RAIL_HALF = 1.0 / 16.0          # half the thickness of a run of bars
+SQUEEZE = 0.6                   # blocks: the width a person needs to pass
+
+
+def railing(origin=(0, 0, 0)):
+    """The cells of the low iron railing round the instrument (cr3 11-16, on the audit of what can
+    be walked into, plan/reviews/walkin). The barriers stand in the two piers only, and between
+    the piers one walked through with head and shoulders in the axis and the tube. What turns in
+    the open cannot be shut with barriers (plan/roles/INTERFACE.md, the fifth addition: what is
+    left open is closed with something one sees), so the instrument brings what the engine's
+    flywheel has, a railing one block high.
+
+    It runs east and west RAIL_OUT cells north and south of the piers' row, from one pier's column
+    to the other's, and comes back to each pier along that column: a pen of five cells by five with
+    a pier in the middle of its west and east sides. Two cells out, the bars stand just outside the
+    ball the tube and the circles turn in (sweep()): nothing that turns can meet them, and the eye
+    end comes down between the rails. A row nearer would cross the tube itself. Bars do not join
+    a barrier, so a return ends in its post, less than SQUEEZE short of the pier. Where the rows
+    cross the meridian they stand in the cell of the brass line. A pier that does not stand in
+    the middle of a cell (the bench of the test scene) gets none.
+    """
+    feet = piers(origin)
+    if any(abs(x % 1.0 - 0.5) > 1e-6 or abs(z % 1.0 - 0.5) > 1e-6 or abs(y - round(y)) > 1e-6 for x, y, z in feet):
+        return []
+    (wx, wy, wz), (ex, _, _) = [tuple(int(math.floor(v)) for v in (x, round(y), z)) for x, y, z in feet]
+    out = [(x, wy, wz + dz) for dz in (-RAIL_OUT, RAIL_OUT) for x in range(wx, ex + 1)]
+    out += [(x, wy, wz + dz) for x in (wx, ex) for dz in range(-RAIL_OUT + 1, RAIL_OUT) if dz != 0]
+    return sorted(out)
+
+
+def rail_runs(origin=(0, 0, 0)):
+    """The railing as the game joins it: [(lo, hi)] boxes, a post in every cell and an arm towards
+    each neighbour that is a cell of the railing too."""
+    cells = set(railing(origin))
+    out = []
+    for x, y, z in sorted(cells):
+        cx, cz = x + 0.5, z + 0.5
+        out.append(((cx - RAIL_HALF, y, cz - RAIL_HALF), (cx + RAIL_HALF, y + 1.0, cz + RAIL_HALF)))
+        for dx, dz in ((-1, 0), (1, 0), (0, -1), (0, 1)):
+            if (x + dx, y, z + dz) not in cells:
+                continue
+            lo = (min(cx, cx + dx * 0.5) - (RAIL_HALF if dx == 0 else 0.0), y,
+                  min(cz, cz + dz * 0.5) - (RAIL_HALF if dz == 0 else 0.0))
+            hi = (max(cx, cx + dx * 0.5) + (RAIL_HALF if dx == 0 else 0.0), y + 1.0,
+                  max(cz, cz + dz * 0.5) + (RAIL_HALF if dz == 0 else 0.0))
+            out.append((lo, hi))
+    return out
+
+
 def build(canvas, origin=(0, 0, 0), lamp=True, brightness=BRIGHTNESS):
     """Stand the transit circle in the meridian hut. Returns the number of display entities.
 
@@ -588,6 +642,8 @@ def build(canvas, origin=(0, 0, 0), lamp=True, brightness=BRIGHTNESS):
         n += put(canvas, built[name], at, frame, scale, origin, brightness)
     for cell in barriers(origin):
         canvas.set(*cell, B.BARRIER, keep=True)
+    for cell in railing(origin):
+        canvas.set(*cell, RAIL)
     if lamp:
         try:
             from ..sky import _lightkit as L
@@ -676,6 +732,34 @@ def check():
         out.append(f"barriers: {barriers()}, the piers' cells are {want}")
     if BARRIER_HIGH > 2 or BARRIER_HIGH * 16.0 > AXIS_Y + 1.5:
         out.append(f"barriers: {BARRIER_HIGH} rows, the pier and its bearing end {AXIS_Y + 1.5:g} texels up")
+    # 7. the railing: a closed pen through the two piers, inside the hut's room, outside the ball
+    #    the tube and the circles turn in, clear of every piece that stands still, and no way in
+    #    beside a pier that a person could squeeze through
+    rail = railing()
+    runs = rail_runs()
+    if not rail:
+        out.append("railing: none, the piers do not stand in the middle of their cells")
+    centre, radius = sweep()
+    near = min((math.dist(centre, [min(max(centre[i], lo[i]), hi[i]) for i in range(3)]) for lo, hi in runs),
+               default=radius)
+    if near < radius - 1e-6:
+        out.append(f"railing: it comes within {near:.3f} of the axis' middle, the tube and the circles turn "
+                   f"in a ball of {radius:.3f}")
+    bad = [c for c in rail if not _hut_clear((c[0] + 0.5, c[1] + 0.5, c[2] + 0.5))]
+    if bad:
+        out.append(f"railing: {len(bad)} cells outside the hut's room, e.g. {bad[0]}")
+    for name, at, frame, scale in placed():
+        hit = [p for _, p in corners(built[name], at, frame, scale)
+               if any(all(lo[i] + 0.01 < p[i] < hi[i] - 0.01 for i in range(3)) for lo, hi in runs)]
+        if hit:
+            p = hit[0]
+            out.append(f"railing: {name} has {len(hit)} corners in the bars, e.g. ({p[0]:.2f}, {p[1]:.2f}, {p[2]:.2f})")
+    for x, y, z in piers():
+        beside = [c for c in rail if c[0] == int(math.floor(x)) and abs(c[2] - int(math.floor(z))) == 1]
+        if len(beside) != 2:
+            out.append(f"railing: {len(beside)} of its cells stand against the pier at ({x:g}, {z:g}), two close the pen")
+    if 0.5 - RAIL_HALF >= SQUEEZE:
+        out.append(f"railing: a return ends {0.5 - RAIL_HALF:g} short of its pier, a person passes {SQUEEZE:g}")
     return out
 
 
@@ -686,6 +770,7 @@ def report():
              f"sweep: centre {sweep()[0]}, radius {sweep()[1]:.2f}",
              f"lamp: cell {lamp_cell()}, level {LAMP_LEVEL}",
              f"barriers: {barriers()}",
+             f"railing: {len(railing())} cells of {RAIL}, {railing()}",
              f"{len(placed())} display entities"]
     for name, model in _built().items():
         lo, hi = model.bounds()
@@ -699,5 +784,6 @@ if __name__ == "__main__":
     if "check" not in sys.argv[1:]:
         print("\n".join(report()))
     print("self-check: " + ("; ".join(findings) if findings else
-                            "sizes, the room, the turn over the floor, the circles, the microscopes, the slot -- all good"))
+                            "sizes, the room, the turn over the floor, the circles, the microscopes, the slot, "
+                            "the barriers and the railing -- all good"))
     sys.exit(1 if findings else 0)

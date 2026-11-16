@@ -185,6 +185,8 @@ def shots():
       hut_eye       close: the eye end, the micrometer and the two finding circles
       hut_sight     from outside, down the tube's own line through the slot into the object glass
       hut_court     from the court, due south of the door: the hut and what shows in its slot
+      hut_rail      from the south-east corner, down along the railing's south run: the bars, where
+                    they cross the brass line, the return to the east pier
 
     The dome:
       dome_door     a step inside the west door (its leaf is shut) and a step to the south, the eye just
@@ -196,6 +198,8 @@ def shots():
       slit          from outside, beside the tube's line: the object glass in the slit
       terrace       from the terrace west of the dome, as one walks up to its door
       west_high     from the west and above, as from the tower: the slit and the glass in it
+      dome_guard    inside the door, a step to the north, down along the three guard plates: the
+                    column's foot and the driving clock behind them
 
     The bench, at noon:
       bench_meridian, bench_meridian_side   the transit circle from the south-west; along its axis
@@ -230,6 +234,7 @@ def shots():
     far = tuple(o[i] + meridian.SIGHT[i] * 7.5 for i in range(3))
     shot("hut_sight", (far[0] + 0.9, far[1] + 0.3, far[2]), o)
     shot("hut_court", (door_x + 0.5, S.GROUND + eye, door_z + 11.5), (door_x + 0.5, S.GROUND + 2.2, HUT_Z + 0.5))
+    shot("hut_rail", (east - 0.5, S.GROUND + eye, hi - 0.6), (a[0] - 1.0, S.GROUND + 0.5, a[2] + 0.9))
 
     # the dome
     p = astro.pivot()
@@ -247,6 +252,7 @@ def shots():
     shot("slit", (out_there[0], out_there[1] + 0.5, out_there[2] + 1.2), g)
     shot("terrace", (DECK[0] + 2.5, DECK_Y + 1 + eye, p[2] + 1.2), (g[0], g[1] - 0.6, g[2]))
     shot("west_high", (DECK[0] - 2.5, g[1] + 4.5, p[2] + 3.0), (g[0], g[1] - 0.5, g[2]))
+    shot("dome_guard", (door[0] + 1.4, floor + eye, door[2] - 0.6), (door[0] + 2.3, floor + 0.5, door[2] + 1.4))
 
     # the bench
     om, oa = bench_origins()

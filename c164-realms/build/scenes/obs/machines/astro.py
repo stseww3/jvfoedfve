@@ -19,6 +19,9 @@ great refractor: tonight it takes the comet's plate.
               with a handwheel at the observer's hand.
   the back    the camera: a wooden box with brass corners behind the tail flange, the plate
               holder in its frame, the dark slide half drawn.
+  the guard   three plates of riveted iron, one block high, on the east edge of the three cells
+              inside the door: the room is the instrument's, one stands inside the door and looks
+              (guard()).
 
 The room decides its size (the card asks for a tube six blocks long): the drum is five blocks
 across inside and seven under the dome, so the tube is 6.2 blocks from the dew cap to the plate
@@ -37,6 +40,7 @@ What the other lines read (scene coordinates; give the origin to have it added):
     astro.plate()       the middle of the plate holder's back
     astro.foot()        the middle of the column's foot on the floor
     astro.sweep()       (centre, radius) of the ball no part of the instrument leaves as it stands
+    astro.guard()       the cells of the guard plates (blocks; the room keeps them free)
     astro.ELEVATION     degrees the tube looks up, due west: the comet's head (sky/comet)
     astro.BRIGHTNESS    the light every piece is shown in, whatever cell it stands in
 
@@ -51,6 +55,7 @@ import functools
 import math
 import sys
 
+from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
 from . import meridian as K
@@ -384,12 +389,42 @@ def placed():
     return [(PREFIX + name, at, frame, scale) for name, at, frame, scale in out]
 
 
+GUARD = B.IRON_HATCH + "[facing=west,half=bottom,open=true]"   # a leaf stood up on the east edge of its cell
+GUARD_FACE = 13.0 / 16.0        # where in its cell the plate's west face is; its east face is the cell's edge
+GUARD_REACH = 2                 # cells from the dome's axis west to the plates' cells
+
+
+def guard(origin=(0, 0, 0)):
+    """The cells of the three guard plates (cr3 11-16, on the audit of what can be walked into,
+    plan/reviews/walkin). A display model has no collision. The room is five blocks across and
+    the instrument fills it: past the three cells inside the door there is no way that does not
+    go through the column, the hour circle or the counterweights, and no cell under it is so full
+    of it that a barrier would stay inside what is seen (plan/roles/INTERFACE.md, the fifth
+    addition). A stone base a whole block high would stand in the weights and the hour circle;
+    bars stand in the middle of their cell, which here is where the weights and the foot are.
+
+    So the instrument brings what such a machine had where people came close, a guard: three
+    plates of riveted iron one block high on the east edge of the three cells inside the door,
+    three texels thick, an iron hatch's leaf stood up. One stands inside the door, under the tube,
+    and looks; the east half of the room is seen from there. An origin that is not whole cells
+    (the bench of the test scene) gets none.
+    """
+    if any(abs(v - round(v)) > 1e-6 for v in origin):
+        return []
+    x = int(math.floor(DOME_AXIS[0])) - GUARD_REACH + int(round(origin[0]))
+    y = int(FLOOR) + int(round(origin[1]))
+    z = int(math.floor(DOME_AXIS[1])) + int(round(origin[2]))
+    return [(x, y, z + dz) for dz in (-1, 0, 1)]
+
+
 def build(canvas, origin=(0, 0, 0), brightness=BRIGHTNESS):
     """Stand the astrograph in the small dome. Returns the number of display entities."""
     built = _built()
     n = 0
     for name, at, frame, scale in placed():
         n += K.put(canvas, built[name], at, frame, scale, origin, brightness)
+    for cell in guard(origin):
+        canvas.set(*cell, GUARD)
     return n
 
 
@@ -443,6 +478,33 @@ def check():
     y = plate()[1] - FLOOR
     if not 0.9 <= y <= 1.6:
         out.append(f"plate: its middle is {y:.2f} over the floor, a hand wants 0.9 to 1.6")
+    # 5. the guard: three plates in the cells inside the door, the door's own cell west of the
+    #    middle one, the cells free in the shell, and nothing of the instrument in a plate or west
+    #    of it under the plates' top
+    cells = guard()
+    if len(cells) != 3:
+        out.append(f"guard: {len(cells)} plates, three close the room")
+    else:
+        gx, gy, gz = cells[1]
+        east = gx + 1.0
+        for name, at, frame, scale in placed():
+            hit = [p for _, p in K.corners(built[name], at, frame, scale)
+                   if p[0] < east + 0.01 and p[1] < gy + 1.0 and cells[0][2] <= p[2] <= cells[2][2] + 1.0]
+            if hit:
+                p = min(hit, key=lambda q: q[0])
+                out.append(f"guard: {name} has {len(hit)} corners in the plates or west of them, e.g. "
+                           f"({p[0]:.2f}, {p[1]:.2f}, {p[2]:.2f}); the plates' east face is at {east:g}")
+        if room is not None:
+            from ..main import smalldome
+            taken = [c for c in cells if room.has(*c)]
+            if taken:
+                out.append(f"guard: the shell stands in {taken}")
+            door = smalldome.door_cells()[0]
+            if tuple(door) != (gx - 1, gy, gz):
+                out.append(f"guard: the door is at {tuple(door)}, the middle plate's cell is {(gx, gy, gz)}")
+            for dz in (-2, 2):
+                if not room.has(gx, gy, gz + dz):
+                    out.append(f"guard: the cell {(gx, gy, gz + dz)} beside the plates is open, the room's wall is not there")
     return out
 
 
@@ -453,6 +515,7 @@ def report():
              f"mount: head {tuple(round(v, 2) for v in head())}, foot {tuple(round(v, 2) for v in foot())}; "
              f"the saddle {_saddle_angle():.1f} degrees round the tube",
              f"sweep: centre {tuple(round(v, 2) for v in c)}, radius {r:.2f}",
+             f"guard: {guard()}, {GUARD}",
              f"{len(placed())} display entities"]
     for name, model in _built().items():
         lo, hi = model.bounds()
@@ -466,5 +529,5 @@ if __name__ == "__main__":
     if "check" not in sys.argv[1:]:
         print("\n".join(report()))
     print("self-check: " + ("; ".join(findings) if findings else
-                            "sizes, the frames, the room, the slit, the plate holder -- all good"))
+                            "sizes, the frames, the room, the slit, the plate holder, the guard -- all good"))
     sys.exit(1 if findings else 0)
