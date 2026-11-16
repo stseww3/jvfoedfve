@@ -1,0 +1,153 @@
+the chart room in the master scene; a level shows at the game's default setting as: 4:0.19 5:0.24 6:0.30 7:0.36 8:0.43 9:0.50 10:0.57 11:0.64 12:0.72 13:0.80 14:0.89
+
+sources in the room and in the cells round it (cell, level):
+  (4, 10, 5)  7
+  (8, 10, 5)  6
+  (11, 10, 5)  6
+  (4, 10, 8)  10
+  (11, 10, 8)  10
+  (3, 8, 12)  10
+  (7, 8, 12)  12
+  (8, 8, 12)  12
+  (12, 7, 12)  8
+  (15, 9, 12)  10
+  (15, 12, 12)  10
+  (3, 7, 16)  12
+  (7, 8, 16)  12
+  (8, 8, 16)  12
+  (0, 9, 20)  10
+  (0, 12, 20)  10
+  (12, 7, 20)  12
+  (15, 9, 20)  10
+  (15, 12, 20)  10
+  (4, 10, 24)  11
+  (11, 10, 24)  11
+
+the row of the feet (y 7): x 2..13 across, z down
+  z  7  056556655654
+  z  8  567667766765
+  z  9  566678876654
+  z 10  676789987665
+  z 11  78789aa98776
+  z 12  8989abba9887
+  z 13  89889aa98776
+  z 14  9a9889987665
+  z 15  aba99aa98776
+  z 16  bcbaabba9887
+  z 17  aba99aa98898
+  z 18  9a98899889a9
+  z 19  898778889aba
+  z 20  78766789abcb
+  z 21  676556789aba
+  z 22  5665456789a9
+  z 23  567654567898
+  z 24  678765567887
+  z 25  567654456776
+
+the row of the head (y 8): x 2..13 across, z down
+  z  7  067667766765
+  z  8  678778877876
+  z  9  677789987765
+  z 10  78789aa98765
+  z 11  8989abba9876
+  z 12  9a9abccba987
+  z 13  8989abba9876
+  z 14  89889aa98765
+  z 15  9a99abba9876
+  z 16  abaabccba987
+  z 17  9a99abba9887
+  z 18  89889aa98898
+  z 19  7877899889a9
+  z 20  776678889aba
+  z 21  6665677789a9
+  z 22  567656667898
+  z 23  678765567887
+  z 24  789876678987
+  z 25  678765567876
+
+the models, by the level of the cell each is held in (level, cell, model, its own brightness if it has one):
+   4  (2, 13, 17)  prop_lamp_wire
+   4  (8, 13, 25)  int_chart_shelf_c3
+   5  (12, 7, 7)  prop_furn_coat_stand
+   5  (2, 7, 8)  prop_furn_card_cabinet
+   5  (2, 7, 9)  prop_furn_card_cabinet
+   5  (8, 8, 25)  int_chart_shelf_c1
+   6  (2, 8, 8)  prop_inst_globe
+   6  (2, 9, 9)  prop_paper_moon_map
+   6  (2, 7, 10)  prop_furn_card_cabinet
+   6  (13, 7, 11)  prop_paper_logbook_shut
+   6  (13, 7, 13)  prop_lamp_desk_green
+   6  (3, 13, 25)  int_chart_shelf_e3
+   6  (5, 13, 25)  int_chart_shelf_d3
+   6  (7, 9, 25)  prop_furn_ladder_rail
+   6  (8, 11, 25)  int_chart_shelf_c2
+   6  (8, 9, 25)  prop_furn_ladder_rail
+   6  (10, 13, 25)  int_chart_shelf_b3
+   6  (10, 7, 25)  prop_furn_library_ladder
+   6  (12, 13, 25)  int_chart_shelf_a3
+   7  (4, 12, 7)  prop_lamp_bracket_b
+   7  (11, 12, 7)  prop_lamp_bracket_b
+   7  (2, 10, 12)  prop_lamp_bracket_b
+   7  (13, 11, 12)  mat_window_lining_frosted_deep_3x3
+   7  (13, 11, 12)  mat_window_lining_frosted_deep_3x3
+   7  (13, 7, 12)  prop_furn_writing_desk
+   7  (13, 7, 12)  prop_inst_calc_machine
+   7  (2, 10, 17)  prop_lamp_pendant_b
+   7  (2, 11, 20)  mat_window_lining_frosted_deep_3x3
+   7  (2, 11, 20)  mat_window_lining_frosted_deep_3x3
+   7  (13, 11, 20)  mat_window_lining_frosted_deep_3x3
+   7  (13, 11, 20)  mat_window_lining_frosted_deep_3x3
+   7  (13, 13, 20)  prop_lamp_wire
+   7  (2, 9, 25)  prop_furn_ladder_rail
+   7  (3, 8, 25)  int_chart_shelf_e1
+   7  (5, 8, 25)  int_chart_shelf_d1
+   7  (6, 9, 25)  prop_furn_ladder_rail
+   7  (9, 9, 25)  prop_furn_ladder_rail
+   7  (10, 8, 25)  int_chart_shelf_b1
+   7  (12, 8, 25)  int_chart_shelf_a1
+   7  (13, 9, 25)  prop_furn_ladder_rail
+   8  (12, 7, 12)  prop_furn_swivel_chair
+   8  (12, 7, 16)  prop_inst_tripod_scope_comet
+   8  (3, 7, 20)  prop_inst_celestial_globe
+   8  (13, 10, 20)  prop_lamp_pendant_b
+   8  (13, 7, 23)  prop_furn_trunk
+   8  (3, 11, 25)  int_chart_shelf_e2
+   8  (3, 9, 25)  prop_furn_ladder_rail
+   8  (4, 12, 25)  prop_lamp_bracket_b
+   8  (5, 11, 25)  int_chart_shelf_d2
+   8  (5, 9, 25)  prop_furn_ladder_rail
+   8  (10, 11, 25)  int_chart_shelf_b2
+   8  (10, 9, 25)  prop_furn_ladder_rail
+   8  (11, 12, 25)  prop_lamp_bracket_b
+   8  (12, 11, 25)  int_chart_shelf_a2
+   8  (12, 9, 25)  prop_furn_ladder_rail
+   9  (4, 10, 7)  prop_paper_sky_map
+   9  (11, 10, 7)  prop_paper_sky_map_b
+   9  (2, 8, 12)  prop_paper_blackboard
+   9  (6, 7, 13)  prop_furn_stool
+   9  (4, 9, 25)  prop_furn_ladder_rail
+   9  (11, 9, 25)  prop_furn_ladder_rail
+  10  (7, 7, 11)  prop_paper_photo_plate
+  10  (7, 7, 13)  prop_paper_photo_plate_b
+  10  (8, 8, 14)  int_chart_table_0
+  10  (8, 8, 14)  int_chart_table_1
+  10  (8, 8, 14)  int_chart_table_2
+  10  (8, 8, 14)  int_chart_table_3
+  10  (7, 7, 15)  prop_paper_photo_plate_c
+  10  (8, 7, 15)  prop_paper_photo_plate
+  11  (7, 7, 12)  prop_paper_photo_plate_c
+  11  (8, 7, 12)  prop_paper_photo_plate_b
+  11  (8, 8, 13)  int_chart_bridge
+  11  (2, 7, 16)  prop_furn_drafting_table
+  11  (13, 7, 20)  prop_furn_bench
+  12  (3, 7, 16)  prop_furn_stool
+  12  (8, 8, 16)  int_chart_viewer
+
+door to the table, x 7: 6/7 7/8 8/9 9/10
+door to the table, x 8: 6/7 7/8 8/9 9/10
+east aisle to the bookcase: 7/8 6/7 7/8 8/9 9/10 8/9 7/8 8/9 9/10 8/9 8/8 9/8 10/9 9/8 8/7 7/7 7/8
+west aisle to the bookcase: 7/8 6/7 7/8 8/9 9/10 8/9 8/8 9/9 10/10 9/9 8/8 7/7 6/6 5/5 5/6 6/7 7/8
+before the bookcase: 7/8 8/9 7/8 6/7 5/6 5/6 6/7 7/8 8/9 8/8
+east aisle to the desk: 8/9 8/8
+west aisle to the drafting table: 11/10 12/11
+ways: PASS (foot/head at each cell; 5 or more at one of them, at most 3 in a row under it, none at 0)
