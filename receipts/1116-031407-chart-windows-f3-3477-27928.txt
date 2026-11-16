@@ -1,0 +1,44 @@
+a0job 1116-031407-chart-windows-f3-3477-27928: cursor/c164-chart-windows-f3-3477 @ f5ff26d8 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.10 0.05 0.01, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- cd build && python -m scenes.obs_mat_windows.brightness ---- exit 1, 0 s, last 34 lines of 60:
+b   curtain         0.269            3  ok
+b   curtain_foot    0.268            4  ok
+b   curtain_head    0.267            3  ok
+b   curtain_whole   0.266            4  ok
+
+ver furnace    sill second  third  whole median   head  flag
+a   stack 0   0.505  0.361  0.182  0.349  0.324  0.087  ok
+a   stack 1   0.502  0.362  0.180  0.348  0.324  0.094  ok
+a   stack 2   0.504  0.361  0.182  0.349  0.324  0.087  ok
+a   stack 3   0.502  0.362  0.180  0.348  0.324  0.094  ok
+b   stack 0   0.506  0.353  0.174  0.344  0.324  0.087  ok
+b   stack 1   0.504  0.351  0.174  0.343  0.324  0.091  ok
+b   stack 2   0.510  0.353  0.174  0.346  0.324  0.087  ok
+b   stack 3   0.510  0.351  0.174  0.345  0.324  0.091  ok
+
+ver row      the glass of each picture in Rec.709, as the board is read; the share of each block over 0.5
+a   sill     0.609 0.606 0.608 0.606   0.621 0.602 0.605 0.602
+a   second   0.420 0.422   0.043 0.070
+a   third    0.197 0.194   0.000 0.000
+b   sill     0.610 0.607 0.615 0.615   0.621 0.602 0.641 0.641
+b   second   0.411 0.408   0.031 0.027
+b   third    0.186 0.187   0.000 0.000
+
+ver sill     pixels of each picture's glass that are not the paler amber
+a             37  42  41  42  OUT
+b             37  42  32  32  OUT
+
+ver dither         lights     touching  knots
+a                      32            0      1
+b                      16            0      3
+
+OUT OF LADDER:
+  furnace a: the sill pictures show [37, 42, 41, 42] pixels that are not the paler amber; no two are to show the same
+  furnace b: the sill pictures show [37, 42, 32, 32] pixels that are not the paler amber; no two are to show the same
+==== NODEJOB RESULT ====
+exit=1 secs=1 host=cursor cores=4 head=f5ff26d8 commit=none pushed=no branch=cursor/c164-chart-windows-f3-3477 files=0
+a0job: exit=1 secs=1
