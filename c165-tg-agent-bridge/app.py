@@ -1642,7 +1642,8 @@ def worker_daemon_is_alive(node_id: str) -> bool:
 def worker_runner_cmd(agent_id: str) -> str:
     return (
         f"mkdir -p ~/.cursor && curl -fsSL '{PUBLIC_BASE}/trace/dais_runtime.pyz' -o ~/.cursor/dais_runtime.pyz "
-        f"&& chmod +x ~/.cursor/dais_runtime.pyz && python3 ~/.cursor/dais_runtime.pyz worker '{agent_id}' {SHELL_WAIT + 60}"
+        f"&& chmod +x ~/.cursor/dais_runtime.pyz && (python3 ~/.cursor/dais_runtime.pyz install >/dev/null 2>&1 || true) "
+        f"&& python3 ~/.cursor/dais_runtime.pyz worker '{agent_id}' {SHELL_WAIT + 60}"
     )
 
 
@@ -1745,7 +1746,7 @@ def shell_hint(agent_id: str, rounds: int) -> str:
     return (
         f"\n\n你已经连续空等 {rounds} 轮。MCP 每次最多挂 {int(CLIENT['cap'])} 秒，为了少续棒，现在改用终端长等待："
         f"用终端工具运行下面这条命令，等待时间设成 {SHELL_WAIT + 180} 秒（block_until_ms={(SHELL_WAIT + 180) * 1000}）；"
-        "要是命令被转到后台，就用等后台任务的工具一直等它结束。\n"
+        "要是命令被转到后台，必须通过 GetDynamicTools(namespace=\"cursor\", toolName=\"AwaitShell\") 获取并调用 AwaitShell(shell_id=..., block_until_ms=7140000) 一次性阻塞等待其结束（严禁循环用 Read 读 terminals/*.txt 轮询！）。\n"
         f"{shell_command(agent_id)}\n"
         "它会一直挂着，有新消息才返回；返回后照它最后一行的提示做。curl 连不上服务器的话，就继续用 read_chat 等。"
     )
@@ -2882,12 +2883,13 @@ def welcome_worker(node_id: str, agent_id: str) -> str:
         f"接入成功：你是工作区常驻任务会话 {node_id}，身份 {agent_id}。",
         "你的职责是在当前环境启动并保持本地常驻执行进程运行（所有工作单由该本地进程自动拉取、执行并回传，无需再调用 read_chat 或其他工具）。",
         "",
-        f"现在请立即在终端工具运行以下命令（设置 block_until_ms={(SHELL_WAIT + 180) * 1000}；若被转入后台请等待其结束）：",
+        f"现在请立即在终端工具运行以下命令（设置 block_until_ms={(SHELL_WAIT + 180) * 1000}）：",
         worker_runner_cmd(agent_id),
         "",
         "运行说明：",
-        "1. 当该命令在约 1 小时 51 分钟后输出【常驻执行进程周期续接】返回时，请直接再次运行同一条终端命令继续保持常驻（不要调用 read_chat，不要总结或告别）。",
-        "2. 只有当命令输出明确提示「身份已停用」时，才结束当前回合。",
+        "1. 若该终端命令被系统转入后台（background），必须先调用 GetDynamicTools(namespace=\"cursor\", toolName=\"AwaitShell\")，再调用 CallDynamicTool(namespace=\"cursor\", toolName=\"AwaitShell\", arguments={\"shell_id\": \"对应终端编号\", \"block_until_ms\": 7140000}) 一次性长阻塞等待，严禁循环调用 Read 读取 terminals/*.txt 轮询！",
+        "2. 当命令在约 1 小时 51 分钟后输出【常驻执行进程周期续接】返回时，直接再次运行同一条终端命令继续保持常驻（不要调用 read_chat，不要总结或告别）。",
+        "3. 只有当命令输出明确提示「身份已停用」时，才结束当前回合。",
     ])
 
 

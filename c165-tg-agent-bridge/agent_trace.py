@@ -388,6 +388,8 @@ def is_wait_command(cmd: str) -> bool:
         ("/wait" in cmd and ("curl " in cmd or " wait " in cmd))
         or "agent_trace.py wait" in cmd
         or "dais_runtime.pyz wait" in cmd
+        or "agent_trace.py worker" in cmd
+        or "dais_runtime.pyz worker" in cmd
     )
 
 
@@ -448,6 +450,39 @@ def handle_hook() -> int:
         sess = st["sessions"].setdefault(cid or agent_id or "default", {})
         if agent_id:
             sess["agent_id"] = agent_id
+
+        # 拦截对 terminals/*.txt 的高频 Read 死循环轮询，强制引导改用 AwaitShell(block_until_ms=7140000) 一次性长阻塞等待！
+        if event == "preToolUse":
+            tname_r = str(payload.get("tool_name") or "")
+            rpath = str(ti.get("path") or "") if isinstance(ti, dict) else ""
+            if tname_r == "Read" and "/terminals/" in rpath and rpath.endswith(".txt"):
+                prev_p = str(sess.get("last_term_read_path") or "")
+                prev_ts = float(sess.get("last_term_read_ts") or 0.0)
+                streak = int(sess.get("term_read_streak") or 0)
+                if prev_p == rpath and (now_ts - prev_ts) < 90.0:
+                    streak += 1
+                else:
+                    streak = 1
+                sess["last_term_read_path"] = rpath
+                sess["last_term_read_ts"] = now_ts
+                sess["term_read_streak"] = streak
+                if streak >= 2:
+                    term_id = Path(rpath).stem
+                    print(
+                        json.dumps(
+                            {
+                                "permission": "deny",
+                                "user_message": (
+                                    f"禁止重复用 Read 轮询后台终端文件 {Path(rpath).name}！先调 GetDynamicTools(namespace=\"cursor\", toolName=\"AwaitShell\")，"
+                                    f"再调用 CallDynamicTool(namespace=\"cursor\", toolName=\"AwaitShell\", arguments={{\"shell_id\": \"{term_id}\", \"block_until_ms\": 7140000}}) 一次性阻塞等待命令结束。"
+                                ),
+                            },
+                            ensure_ascii=False,
+                        )
+                    )
+                    return 0
+            elif tname_r and tname_r != "Read":
+                sess["term_read_streak"] = 0
 
         # 若该子 agent 已被停用，或在准备跑耗时工具前收件箱已有未读人类消息 -> 直接前置提醒/拦截！
         pre_alert_ctx = ""
