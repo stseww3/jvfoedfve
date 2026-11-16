@@ -1,0 +1,197 @@
+walkin obs, category machines: 189266 blocks, 618 entities, 145 of them the category's in 16 pieces; 151516 standing places reached from (88.5, -4.0, -32.5) (4316 only through one of 12 door blocks); 26 barrier cells in the scene (16 s)
+
+ 1. armillary: 8 entities (mach_armillary_a_tropic, mach_armillary_a_axis, mach_armillary_a_colure ...)
+    cells x 33..37, y 2..7, z -2..2   ->  WALKED INTO on foot: 1.75 m2 of standing ground, up to 87% of the body inside; no barrier
+    beside it: walk 37; floor at feet 2
+    inside it: walk 2, hop 5 at x 35..36, feet 1..2, z -0.5..1.5; the outline there is 56% model
+    brushed:   walk 1, hop 4 at x 35..36, feet 1..2, z -0.5..1
+    no cell is filled by the outline: a barrier would stand out of the model everywhere
+      floor at feet 2; x 32..38 left to right, z -3..3 top to bottom
+      |       |
+      |   -   |
+      |  +#+  |
+      | --o - |
+      |  -+   |
+      |   -   |
+      |       |
+      # outline fills the cell  + half or more  - a fifth or more  B barrier  . a person stands in the cell's middle, beside the model  @ o he stands there inside it
+
+ 2. astro: 4 entities (mach_astro_axis, mach_astro_back, mach_astro_mount ...)
+    cells x 8..14, y 18..23, z 28..31   ->  WALKED INTO on foot: 5 m2 of standing ground, up to 100% of the body inside; no barrier
+    beside it: walk 68, hop 15 (83 only through a door of blocks); floor at feet 18
+    inside it: walk 20 (20 only through a door of blocks) at x 11.5..14, feet 18, z 29..31; the outline there is 81% model
+    brushed:   walk 9 (9 only through a door of blocks) at x 11..14.5, feet 18, z 29..31.5
+    no cell is filled by the outline: a barrier would stand out of the model everywhere
+      floor at feet 18; x 7..15 left to right, z 27..32 top to bottom
+      |....   ..|
+      |... ... .|
+      |.. .o--. |
+      |....o@@- |
+      |.. ...-. |
+      |... ... .|
+      # outline fills the cell  + half or more  - a fifth or more  B barrier  . a person stands in the cell's middle, beside the model  @ o he stands there inside it
+
+ 3. board: 6 entities (mach_board_needle, mach_board_panel_main, mach_board_panel_north ...)
+    cells x 69..71, y -6..-2, z 26..33   ->  WALKED INTO on foot: 2.75 m2 of standing ground, up to 55% of the body inside; no barrier
+    beside it: walk 107, hop 15; floor at feet -5
+    inside it: hop 11 at x 71..71, feet -5, z 26.5..32.5; the outline there is 91% model
+    brushed:   hop 19 at x 70.5..71, feet -5, z 26..33
+    no cell is filled by the outline: a barrier would stand out of the model everywhere
+      floor at feet -5; x 68..72 left to right, z 25..34 top to bottom
+      |     |
+      |  -  |
+      |  -  |
+      |  -  |
+      |  -  |
+      |  -  |
+      |  -  |
+      |  -- |
+      |     |
+      |     |
+      # outline fills the cell  + half or more  - a fifth or more  B barrier  . a person stands in the cell's middle, beside the model  @ o he stands there inside it
+
+ 4. boiler: 8 entities (mach_boiler_body, mach_boiler_dome, mach_boiler_door_1 ...)
+    cells x 78..85, y -6..-1, z 22..30   ->  WALKED INTO on foot: 37.5 m2 of standing ground, up to 93% of the body inside; no barrier
+    beside it: walk 133; floor at feet -6
+    inside it: walk 150 at x 79..85.5, feet -6, z 23..30; the outline there is 96% model
+    brushed:   walk 11 at x 78.5..83.5, feet -6, z 23..30
+    no cell is filled by the outline: a barrier would stand out of the model everywhere
+      floor at feet -6; x 77..86 left to right, z 21..31 top to bottom
+      |          |
+      |.......   |
+      |..@@@@o   |
+      |.-@@@@@   |
+      |..@@@@o   |
+      |.......oo.|
+      |..@@@@ooo.|
+      |.-@@@@@@-.|
+      |..@@@@o...|
+      |..........|
+      |..........|
+      # outline fills the cell  + half or more  - a fifth or more  B barrier  . a person stands in the cell's middle, beside the model  @ o he stands there inside it
+
+ 5. clock: 5 entities (mach_clock_master, mach_clock_master_dial, mach_clock_master_hand_h ...)
+    cells x 6, y 1..4, z -1..1   ->  WALKED INTO on foot: 0.75 m2 of standing ground, up to 95% of the body inside; no barrier
+    beside it: walk 34; floor at feet 1
+    inside it: walk 3 at x 6.5..6.5, feet 1, z 0..1; the outline there is 59% model
+    brushed:   walk 5 at x 6.5..7, feet 1, z -0.5..1.5
+    no cell is filled by the outline: a barrier would stand out of the model everywhere
+      floor at feet 1; x 5..7 left to right, z -2..2 top to bottom
+      |   |
+      | - |
+      | o |
+      | - |
+      |   |
+      # outline fills the cell  + half or more  - a fifth or more  B barrier  . a person stands in the cell's middle, beside the model  @ o he stands there inside it
+
+ 6. clock: 3 entities (mach_clock_face, mach_clock_hand_h, mach_clock_hand_m)
+    cells x 9..10, y 26..28, z -31..-29   ->  nobody gets to it
+    beside it: none
+
+ 7. clock: 3 entities (mach_clock_face, mach_clock_hand_h, mach_clock_hand_m)
+    cells x 12..14, y 26..28, z -34..-33   ->  nobody gets to it
+    beside it: none
+
+ 8. clock: 3 entities (mach_clock_face, mach_clock_hand_h, mach_clock_hand_m)
+    cells x 12..14, y 26..28, z -27..-26   ->  nobody gets to it
+    beside it: none
+
+ 9. clock: 1 entities (mach_clock_ball)
+    cells x 12..14, y 46..48, z -31..-29   ->  nobody gets to it
+    beside it: none
+
+10. clock: 3 entities (mach_clock_face, mach_clock_hand_h, mach_clock_hand_m)
+    cells x 16..17, y 26..28, z -31..-29   ->  nobody gets to it
+    beside it: none
+
+11. dome: 36 entities (mach_dome_seg, mach_dome_weight, mach_dome_bar ...)
+    cells x -9..15, y 18..37, z -11..11   ->  WALKED INTO on foot: 1 m2 of standing ground, up to 63% of the body inside; no barrier
+    beside it: walk 1089, hop 183, fall 257 (373 only through a door of blocks); floor at feet 18
+    inside it: walk 4 at x -0.5..0, feet 18, z -8.5..-8; the outline there is 51% model
+    brushed:   walk 3 at x -5.5..0.5, feet 18, z -8.5..0.5
+    no cell is filled by the outline: a barrier would stand out of the model everywhere
+      floor at feet 18; x -10..16 left to right, z -12..12 top to bottom
+      |          .          ..... |
+      |                      .... |
+      |             ...      . .  |
+      |         --........   .  . |
+      |         ...........  . .. |
+      |       ................    |
+      |       ...............     |
+      |      .................    |
+      |     .....    .    .....   |
+      |     .....    ..   .....   |
+      |     .....  .....  .....   |
+      |    ......  .....  ......  |
+      |    -.....  .....  ......  |
+      |    ......  .....  ......  |
+      |     .....  .....  .....   |
+      |     .....         .....   |
+      |     .....         .....   |
+      |      .................    |
+      |       ...............     |
+      |       ................    |
+      |         ...........  . .. |
+      |          .........   .  . |
+      |             ...      . .  |
+      |                      .... |
+      |          .          ..... |
+      # outline fills the cell  + half or more  - a fifth or more  B barrier  . a person stands in the cell's middle, beside the model  @ o he stands there inside it
+
+12. engine: 13 entities (mach_engine_armature, mach_engine_bed, mach_engine_belt ...)
+    cells x 70..86, y -8..-3, z 34..38   ->  WALKED INTO on foot: 26.5 m2 of standing ground, up to 100% of the body inside; no barrier
+    beside it: walk 385, hop 36; floor at feet -6
+    inside it: walk 91, hop 15 at x 71..86, feet -8..-6, z 34.5..38.5; the outline there is 72% model
+    brushed:   walk 28 at x 71..80, feet -6, z 35..39
+    no cell is filled by the outline: a barrier would stand out of the model everywhere
+      floor at feet -6; x 69..87 left to right, z 33..39 top to bottom
+      |......            .|
+      |...... ....oooooo..|
+      |...    -ooooooo@o..|
+      |..o++++++++-----...|
+      |.-@@-...o..........|
+      |.-oo-..............|
+      |...................|
+      # outline fills the cell  + half or more  - a fifth or more  B barrier  . a person stands in the cell's middle, beside the model  @ o he stands there inside it
+
+13. mast: 20 entities (mach_mast_guy, mach_mast_insulator, mach_mast_segment ...)
+    cells x 19..27, y 1..61, z -44..-36   ->  nobody can stand in it
+    beside it: walk 349, hop 52, fall 15 (15 only through a door of blocks); floor at feet 0
+    brushed:   hop 4 at x 19.5..27.5, feet 2, z -43.5..-35.5
+
+14. meridian: 6 entities (mach_meridian_circle, mach_meridian_pier, mach_meridian_lamp ...)
+    cells x 32..37, y 0..3, z -32..-29   ->  WALKED INTO on foot: 4.75 m2 of standing ground, up to 100% of the body inside; no barrier
+    beside it: walk 108; floor at feet 0
+    inside it: walk 19 at x 33..38, feet 0, z -30..-28.5; the outline there is 94% model
+    brushed:   walk 16 at x 33..38, feet 0, z -30..-28
+    a barrier fits in 2 cells (x 33..37, y 0, z -30), one high only
+      floor at feet 0; x 31..38 left to right, z -33..-28 top to bottom
+      | .......|
+      | .......|
+      | .......|
+      | .@-o-@.|
+      | ...o...|
+      | .......|
+      # outline fills the cell  + half or more  - a fifth or more  B barrier  . a person stands in the cell's middle, beside the model  @ o he stands there inside it
+
+15. orrery: 21 entities (mach_orrery_a_arm_earth, mach_orrery_a_arm_jupiter, mach_orrery_a_arm_mars ...)
+    cells x 9..13, y 6..13, z -2..2   ->  nobody can stand in it
+    beside it: hop 30; floor at feet 7
+
+16. scope: 5 entities (mach_scope_axis_a, mach_scope_governor, mach_scope_lamp_a ...)
+    cells x -2..10, y 17..30, z -2..2   ->  WALKED INTO on foot: 21 m2 of standing ground, up to 100% of the body inside; no barrier
+    beside it: walk 258, hop 55; floor at feet 18
+    inside it: hop 84 at x 2.5..8.5, feet 18..19, z -1.5..2.5; the outline there is 80% model
+    brushed:   walk 2, hop 14 at x 2.5..10, feet 18..19, z -2..3
+    a barrier fits in 9 cells (x 3..5, y 18, z -1..1), two high in 8 of them (x 3..5, y 18, z -1..1)
+      floor at feet 18; x -3..11 left to right, z -3..3 top to bottom
+      |...    ..   ...|
+      |...  ooooo  ...|
+      |...  o@@@o  ...|
+      |...  o@@@o  ...|
+      |...  o@@@o  ...|
+      |...  ooooo  ...|
+      |...         ...|
+      # outline fills the cell  + half or more  - a fifth or more  B barrier  . a person stands in the cell's middle, beside the model  @ o he stands there inside it
+
+result: 9 of 16 pieces can be walked into
