@@ -316,3 +316,9 @@
 - 10:45 A0 #78636: the stair hall's lamps may go to 11 (the "not over 8" is void). aide #78680: lamp helpers hall<-vault, m2<-clkrm, power<-cable; dark cells list on cursor/c164-sound-lightaudit-f3-cbc6-wip renders/_wip/light/dark.md.
 - merges 10:41..10:47: platevault 2550e6ff -> 9fbb2e0c, domeroom 39829006 -> c6ffc329, smoke 975adf12 -> 1df19c8b, cablecar-winch b4b4a11a -> 8a5e3d22, clockroom a1fe5e56 -> 78698545.
 - head checks: 10:40 1ae6964b 92 (board ok); 10:41 db3b612f 92; 10:46 9fbb2e0c 92; 10:48 fa0bee9a 92 (38 warnings). STATUS 10:49 10ad77f5 (136 merges in the table).
+- 10:52 facade #79370: DELIVERED common/walk-out c0eba1a7 (gate PASS on 78698545, 93 scenes; 180 files under plan/reviews/walk/ and tools/walkreach.py): MERGED 6e6cf542 10:54, merge line sent.
+- 10:57 GREEN HEAD 6e6cf542 (93 pass, board ok) sent to outb and s1 with wake, to a4 and facade without. STATUS 10:58 2c42ab39 (139 merges). The generator got CARD_OF (props/signs -> props/electrics-signs).
+- 10:51 A0 g2 #79247: the 11:30 version must pass everything; deliveries to the approvers before 11:20; I take the green head at 11:28.
+- 10:57 a4 #79714: site/outbuildings dd1125db -> 2d5382c6; cr2 #79731: sky/safe-look follow-up af45fafc -> 6c6691e2 (the sample scene obs_sky_safe is gone; no leftover pictures in the tree, told cr2).
+- A0's desk 10:57: A5 and A6 were written before the game had finished its light (the power house's lamps missing in A6, V6 black): outb's export now saves and reads until nothing changes; A7 is the one to upload; that change comes to me through the gate. Scores of 10:56: 8 of 12 pass. The admin means to submit to the Realms content review (Experience); the director proposed a light layer of interaction, not decided.
+- 11:00 lights g2 #79789: lamp helpers add one file build/scenes/obs/sky/_ways_<name>.py each, gate with --no-verify, to cr2.

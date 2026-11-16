@@ -38,6 +38,9 @@ WHOLE = [               # (how a line of the file starts, the line that takes it
 ]
 NAMES = {"c164-s2": "s2", "c164-a1": "a1", "c164-facade": "facade", "c164-cr2": "cr2", "c164-a4": "a4",
          "c164-cr3": "cr3", "c164-a6": "a6", "c164-stair": "cr4", "c164-cr4": "cr4"}
+CARD_OF = {             # a name an approver wrote in a merge's subject -> the card it is a part of
+    ("props", "signs"): ("props", "electrics-signs"),
+}
 
 
 def _words():
@@ -93,6 +96,7 @@ def merges():
             words = re.sub(r"^[0-9a-f]{7,10}\b:? ?", "", rest.strip())
             words = COMMON_WORDS.get(merge[:8], words)
             for cat, pkg in cards:
+                cat, pkg = CARD_OF.get((cat, pkg), (cat, pkg))
                 out.append((beijing(stamp), NAMES.get(who, who.replace("c164-", "")), cat, pkg,
                             words, delivered[:8], merge[:8]))
     return out
