@@ -36,6 +36,26 @@ CLOUD_ALPHA = 0.94
 CLOUD_FOG_END = 768.0       # the layer fades to nothing at this distance
 LAMP = "#ffb45e"            # the one lamp colour (tint of block light)
 FOG_START, FOG_END = 60.0, 192.0   # crisp nearby; from 60 blocks on things melt into the horizon colour
+# Carried by the resource pack's shaders (sky/_shaders.py; a Realms map has no registry files).
+#
+# The fog lies on the sea and the hilltop stands above it (the director, 11-16 #68701): by distance
+# alone the building was a shadow in the fog in V12. The fog is an optical depth along the line of
+# sight, fog_depth() below, and what is left of a thing is exp(-depth):
+#   the air's own haze   depth 1 after AIR blocks at any height: a little depth between near and far
+#   the mist on the sea  depth 1 after MIST blocks along the sea top, thinning with the height above
+#                        it by 1/e every MIST_HEIGHT blocks
+# From the terrace (30 above the sea) the sea hazes into the horizon band with depth 1 at 800 blocks,
+# as cloud's forecast pictures have it (c329, L = 800): 0.37 / MIST + 1 / AIR = 1 / 800. The front
+# from the cable station (V1, 94 blocks) keeps 0.93 of itself, the building in V12 0.92.
+# The offline pictures use the same function. FOG_START, FOG_END above are the registry look's.
+AIR = 1600.0
+MIST = 587.0
+MIST_HEIGHT = 12.0
+# The clock is stopped where the vanilla moon (the comet's slot) stands at MOON_ANGLE, on a day of
+# the full moon's picture (plan/parts/figs/sky_safe.py finds the hour). GAME_STAR_ANGLE is the
+# vanilla star angle at that hour: the star shader turns the field from it to STAR_ANGLE.
+LOCK_TICK = 20370
+GAME_STAR_ANGLE = 221.9939
 MOON_ANGLE = 42.0           # the comet sits in the moon's slot: sprite centre 48 degrees up in the west
 # The stars are one fixed field turned about the north-south axis. One pair of them overlaps, and a
 # star adds its light to what is behind it, so the pair shows as a single star of twice the light:
@@ -134,6 +154,26 @@ def mix_share(sky_fog_end, render_chunks=32):
     """AtmosphericFogEnvironment: how far the fog colour is drawn towards the sky colour."""
     e = min(sky_fog_end / 16.0, float(render_chunks))
     return 1.0 - (0.25 + 0.75 * min(1.0, e / 32.0)) ** 0.25
+
+
+def fog_depth(distance, height, rise):
+    """The fog's optical depth along a line of sight (the share that is left of a thing is
+    exp(-depth)). distance: blocks from the eye; height: the eye above the top of the cloud sea
+    (world y - (GROUND_Y + CLOUD_TOP)); rise: what the line gains in height per block (the y of
+    its unit direction). Numbers or numpy arrays. The mist ends at the sea top: a line that goes
+    below it is counted as far as the sea. The shaders carry the same formula (sky/_shaders.py)."""
+    import numpy as np
+    distance, rise = np.asarray(distance, dtype=float), np.asarray(rise, dtype=float)
+    height = np.maximum(np.asarray(height, dtype=float), 0.0)
+    down = rise < 0.0
+    reach = np.where(down, np.minimum(distance, height / np.maximum(-rise, 1e-5)), distance)
+    a = reach * rise / MIST_HEIGHT
+    small = np.abs(a) < 1e-3
+    start = np.exp(-height / MIST_HEIGHT)
+    end = np.exp(-np.maximum(height + reach * rise, 0.0) / MIST_HEIGHT)
+    safe = np.where(small, 1.0, rise)
+    mist = np.where(small, reach * start * (1.0 - 0.5 * a), (start - end) * MIST_HEIGHT / safe)
+    return distance / AIR + mist / MIST
 
 
 def derive(zenith, horizon, sky_fog_end):
