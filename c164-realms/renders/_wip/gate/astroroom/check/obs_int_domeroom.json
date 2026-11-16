@@ -1,0 +1,187 @@
+{
+ "scene": "obs_int_domeroom",
+ "commit": "2d94bf7",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "WARN",
+   "summary": "6249 blocks, 84 entities, 74 models, 900 resource-pack files, 10 data-pack files, look: 1 biomes, 1 timelines (1.4 s)",
+   "details": [
+    "registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json"
+   ]
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 899 files, no file written twice, the folders and the prefix of interiors are kept (8 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "203 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "677 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "27 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "PASS",
+   "summary": "no wall face runs flat over more than 5x5",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "84 display entities, 31 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "18 shots, most display entities in view: 61 (ribs_up), limit 600; counted without what walls hide; the game draws up to 84 (v8): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "v8",
+      "in_view": 58,
+      "drawn": 84,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v8_deep",
+      "in_view": 58,
+      "drawn": 84,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v8_glow",
+      "in_view": 58,
+      "drawn": 84,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v8_south",
+      "in_view": 59,
+      "drawn": 84,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_slit",
+      "in_view": 45,
+      "drawn": 84,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "slit_foot",
+      "in_view": 20,
+      "drawn": 84,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "girder",
+      "in_view": 46,
+      "drawn": 84,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_desk",
+      "in_view": 11,
+      "drawn": 84,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "ladder",
+      "in_view": 17,
+      "drawn": 84,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "far_door",
+      "in_view": 55,
+      "drawn": 84,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "stair_exit",
+      "in_view": 8,
+      "drawn": 84,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "stair_turn",
+      "in_view": 44,
+      "drawn": 84,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "ribs_up",
+      "in_view": 61,
+      "drawn": 84,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "back_east",
+      "in_view": 56,
+      "drawn": 84,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "wall_north",
+      "in_view": 8,
+      "drawn": 84,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "ring_close",
+      "in_view": 22,
+      "drawn": 84,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "floor_close",
+      "in_view": 18,
+      "drawn": 84,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "board",
+      "in_view": 3,
+      "drawn": 84,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "nothing moves",
+   "details": []
+  }
+ ]
+}
