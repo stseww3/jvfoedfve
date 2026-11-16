@@ -26,12 +26,8 @@ for the building's own lights with _lightkit.dress(), whatever the switch sky/li
 and keeps to the entrance's lamps (the wall lamps and the pair of street lamps before the door):
 the other lamps of the site are judged on the site, in the master scene.
 
-The scene obs_sky_lights_nolend is the blue building alone, without what the brightest window lends
-to the windows beside it (_lightkit.LENDS): the shots of NOLEND_SHOTS, to lay beside their twins here.
-
-    python -m scenes.obs_sky_lights      writes shots.json, here and in obs_sky_lights_nolend; prints
-                                         the light report, the lighting maps of the three looks and
-                                         the levels on the stone
+    python -m scenes.obs_sky_lights      writes shots.json; prints the light report, the lighting
+                                         maps of the three looks and the levels on the stone
     python -m scenes.obs_sky_lights.outside against <commit>
                                          the block light of every cell, before and after
 """
@@ -161,9 +157,8 @@ def _board(c, o):
     L.glazed(c, windows, origin=o, group="levels")      # lit by the first sky.build() that follows
 
 
-def build(only=None, lends=True):
-    """only: the buildings that are put up, by name (all of them, and the levels board, when None).
-    lends: False leaves out what the brightest window lends to the windows beside it."""
+def build(only=None):
+    """only: the buildings that are put up, by name (all of them, and the levels board, when None)."""
     c = Canvas()
     L.dress(c)                              # this scene shows the building's own lights, whatever the switch says
     if hasattr(lamps, "dress"):
@@ -177,8 +172,6 @@ def build(only=None, lends=True):
     for name, glazed, o, numbers in stations:
         if only is not None and name not in only:
             continue
-        if not lends:
-            numbers["LENDS"] = ()
         with L.trying(**numbers):
             n_props, n_sky = _station(c, glazed, o)
         counts["props"] += n_props
@@ -232,8 +225,6 @@ VIEWS = {   # name: (eye, looks at), from a building's origin
 }
 EVERY_LOOK = ("front", "axis", "v1", "slant", "surround")
 SOME_LOOKS = {"blue": ("v3", "door", "v7", "wash", "west"), "deep": ("door", "wash")}
-NOLEND_LOOKS = ("blue",)                                    # what obs_sky_lights_nolend puts up and shows
-NOLEND_SHOTS = ("blue_front", "blue_axis", "blue_door")
 BOARD_MID = (S.pilaster_z(BOARD_BAYS[0] - 1) + S.pilaster_z(BOARD_BAYS[-1])) / 2.0 + 0.5
 
 

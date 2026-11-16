@@ -78,7 +78,7 @@ def _nearest(cell, windows):
 
 def _kind(why):
     """What threw a source, without the window it belongs to: "sky/lights:window", "props/lamps:uplight"."""
-    return why.split(" ")[0] + (", lent" if ", lent to" in why else "")
+    return why.split(" ")[0]
 
 
 def _spread(pairs):
