@@ -1,10 +1,11 @@
 """python -m scenes.obs_int_timeroom: the block light of the room by numbers.
 
-Where one walks. The light line's rule for a way (c331, 11-16): at a station the cell of the foot
-or the cell of the head has 5 or more; no more than three stations in a row have less; none has
-0. A station here is a cell of the floor one steps on. The ways are the room's own: from the door
-up the long axis to the stool before the console, in both files of cells, and from the axis to
-each place where somebody works.
+Where one walks. The line of the finish (A0, 11-16 10:43; the light line, c331): at every cell one
+can stand on, the cell of the foot or the cell of the head has 5 or more, a threshold as well. A
+station here is a cell of the floor one steps on. The ways are the room's own: from the door up
+the long axis to the stool before the console, in both files of cells, and from the axis to each
+place where somebody works. The rest of the floor is counted over the whole building by
+tools/darkfloor.py (c164-sound's), with the lamps the light line adds in this room.
 
 The order of the lights (review cr4, 11-16): the instrument wall is the lightest thing of the
 room, the rating bench comes next, the message desk beside V10's camera last; the floor at the
@@ -18,10 +19,10 @@ from scenes.obs.sky import _lightkit
 from . import build
 
 ENOUGH = 5
-RUN = 3                 # stations in a row that may have less
 WALL_LEAST = 8          # the least a face of the instrument wall has, from the shelf up to the cornice
 DESK_MOST = 8           # the most the message desk has, and what lies on it
-FLOOR_STEP = 4          # levels the floor at the foot of the console has over the floor by the door
+FLOOR_STEP = 3          # levels the floor at the foot of the console has over the floor by the door. Not more: every
+#                         cell by the door has to have 5, and 12 is the top indoors
 
 
 def ways():
@@ -39,15 +40,7 @@ def ways():
 
 def faults(levels):
     """What a way's levels [(foot, head), ...] break of the rule: sentences."""
-    wrong, run = [], 0
-    for i, pair in enumerate(levels):
-        best = max(pair)
-        if best == 0:
-            wrong.append(f"station {i} has no light")
-        run = run + 1 if best < ENOUGH else 0
-        if run == RUN + 1:
-            wrong.append(f"stations {i - RUN}.. are more than {RUN} in a row under {ENOUGH}")
-    return wrong
+    return [f"station {i} has {max(pair)}, under {ENOUGH}" for i, pair in enumerate(levels) if max(pair) < ENOUGH]
 
 
 def mean(values):
@@ -99,8 +92,7 @@ def main():
         print(line)
     for line in wrong:
         print(f"    FAIL {line}")
-    print(f"ways: {'PASS' if not bad else 'FAIL'} (foot/head at each cell; {ENOUGH} or more at one of them, "
-          f"at most {RUN} in a row under it, none at 0)")
+    print(f"ways: {'PASS' if not bad else 'FAIL'} (foot/head at each cell; {ENOUGH} or more at one of them)")
     print(f"order: {'PASS' if not wrong else 'FAIL'} (the wall, the rating bench, the message desk; the floor at the "
           f"console {FLOOR_STEP} over the floor by the door)")
     return 1 if bad or wrong else 0
