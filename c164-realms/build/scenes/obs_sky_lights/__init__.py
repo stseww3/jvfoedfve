@@ -38,7 +38,7 @@ import importlib
 from artkit.canvas import Canvas
 
 from scenes.obs import main as main_line          # not `main`, `props`: this folder has modules of those names
-from scenes.obs import materials, sky
+from scenes.obs import sky
 from scenes.obs import props as props_line
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
@@ -52,8 +52,13 @@ BIOME_MARGIN_Y = 120
 
 
 def write_pack(pack_dir):
-    """The sky's pictures and the repainted blocks the fronts are built of."""
-    return list(sky.pack(pack_dir) or []) + list(materials.pack(pack_dir) or [])
+    """What the lines this scene builds from put into the pack, in the master scene's order: the
+    repainted blocks the fronts are built of, the pictures of the machines and the rooms inside,
+    the sky's."""
+    out = []
+    for name in ("materials", "main", "machines", "interiors", "props", "sky"):
+        out += list(importlib.import_module(f"scenes.obs.{name}").pack(pack_dir) or [])
+    return out
 
 
 STONE, ROUGH, PANEL, EMBLEM = B.ASHLAR_FINE.block, B.ASHLAR_ROUGH.block, B.ASHLAR_PANEL.block, B.ASHLAR_EMBLEM
