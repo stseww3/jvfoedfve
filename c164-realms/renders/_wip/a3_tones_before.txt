@@ -1,0 +1,20 @@
+v8 [A blue]  1280x720
+  luma    mean 0.07   p1 0.02  p5 0.03  median 0.06  p95 0.13  p99 0.28
+  levels  dark  97.5% (below 0.18, mean 0.07)   middle   2.5% (mean 0.28)   bright   0.0% (above 0.60, mean 0.77)
+  bright  centre x 0.54 y 0.29 (0 0 = top left)   nine tenths of it within x 0.54..0.54, y 0.29..0.30
+          1 patch, the largest 0.01% of the picture (as a square, 7 pixels a side)
+  white   above 0.97:   0.0%   in specks only, none fills a square of 4 pixels
+  dead    below 0.03:   4.9%   242 patches, the largest 0.46% of the picture (as a square, 65 pixels a side)
+  warmth  warm  14.2%   cool  38.5%   neutral  47.3%
+          dark    warm  12.6%   cool  37.7%   neutral  47.2%
+          middle  warm   1.7%   cool   0.8%   neutral   0.0%
+          bright  warm   0.0%   cool   0.0%   neutral   0.0%
+  probe   rail    76867 px  mean 0.06  median 0.05  brightest 1% 0.16  darkest 1% 0.02  #0d0e17  warm 1.1%  cool 72.1%
+  probe   floorL  11008 px  mean 0.07  median 0.06  brightest 1% 0.14  darkest 1% 0.02  #121113  warm 22.4%  cool 29.7%
+  probe   low     307200 px  mean 0.07  median 0.06  brightest 1% 0.33  darkest 1% 0.02  #131113  warm 22.0%  cool 29.6%
+  probe   pier    28182 px  mean 0.07  median 0.06  brightest 1% 0.33  darkest 1% 0.02  #131213  warm 9.9%  cool 2.4%
+  probe   floorR  9216 px  mean 0.07  median 0.08  brightest 1% 0.17  darkest 1% 0.02  #151213  warm 24.1%  cool 16.1%
+  probe   wallR   63504 px  mean 0.08  median 0.07  brightest 1% 0.34  darkest 1% 0.01  #161211  warm 47.8%  cool 18.0%
+  probe   wallL   74088 px  mean 0.08  median 0.08  brightest 1% 0.28  darkest 1% 0.02  #181311  warm 44.7%  cool 7.4%
+  probe   sky     34848 px  mean 0.12  median 0.11  brightest 1% 0.48  darkest 1% 0.03  #171c39  warm 1.3%  cool 89.5%
+  order   rail 0.06 < floorL 0.07 < low 0.07 < pier 0.07 < floorR 0.07 < wallR 0.08 < wallL 0.08 < sky 0.12   (means)
