@@ -28,6 +28,7 @@ from artkit.canvas import Canvas
 
 from scenes.obs import materials, sky
 from scenes.obs.common import blocks as B
+from scenes.obs.props import _kit as K
 from scenes.obs.props import instruments, lamps
 
 try:                                    # the furniture family is another card: used once it is merged
@@ -64,6 +65,10 @@ TIME = 14000                    # light version A, the default (INTERFACE: 18000
 
 
 def build():
+    # no face of an instrument may stand between two axes: the game lights such a face one way on
+    # one piece and the other way on its twin (_kit.settle sees to it where the models are built)
+    loose = sorted(name for name, model in instruments.models().items() if K.unsettled(model))
+    assert not loose, f"faces between two axes, not settled: {loose}"
     c = Canvas()
     c.box(TERRACE_X0, -1, -1, WALL_X1 + 2, -1, TERRACE_Z1, PAVING)
     c.box(WALL_X0 + 1, -1, 0, WALL_X1 - 1, -1, 6, FLOOR)
