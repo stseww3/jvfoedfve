@@ -1502,11 +1502,14 @@ def page(args):
             checked = f"{r['checks']} 项全过" if r.get("checks") else "全过"
         else:
             checked = "没过：" + "、".join(r.get("failed") or ["?"])
-        gone = "" if r["n"] == row["n"] else "已从这里拿掉。"
-        return (f"| {r['n']} | {r['assembly'] or '?'} | {r['at'] or '?'} | {mb(r['zip_bytes'])} | {mb(r['pack_bytes'])}，{r['pack_files']} 个文件 | "
+        here = os.path.isdir(os.path.join(dist, r["n"]))
+        gone = "" if here else "已从这里拿掉。"
+        return (f"| {'[' + r['n'] + '](' + r['n'] + '/)' if here else r['n']} | {r['assembly'] or '?'} | {r['at'] or '?'} | "
+                f"{mb(r['zip_bytes'])} | {mb(r['pack_bytes'])}，{r['pack_files']} 个文件 | "
                 f"{r['blocks'] if r['blocks'] is not None else '?'} / {r['entities']} / {r['moving'] if r['moving'] is not None else '?'} | "
                 f"{r.get('time') or '?'} | {checked} | {r['note'] or ''}{gone} | {r['commit'] or '?'} |")
 
+    kept = [f"A{k}" for k, _ in folders]        # no numbered folder is taken out again: its path may have been given out
     text = [
         PAGE_OPEN,
         f"**最新，传 Realms 用这个：`A{n}/{name}.zip`**（总装 {row['assembly']}，{row['at']} 导出，{mb(row['zip_bytes'])}，"
@@ -1519,7 +1522,9 @@ def page(args):
           if plain and row.get("shaders") else []),
         *([f"同一个总装头、带着我们的天的：`A{n}/{look['file']}`（{mb(look['bytes'])}，sha256 `{look['sha256']}`，钟锁在 {look['time']} 刻）。"
            f"**它带 {look['registry_files']} 个注册表文件（群系、时间线），只给单人打开看样子，不传 Realms。**"] if look else []),
-        "总装每半小时跟着 s1 的看板重导一次，编号往上加；这里只留最新的一个，旧的在分支历史里，表的最后一列是它所在的提交。",
+        "总装每半小时跟着 s2 报的绿头重导一次，编号往上加。**编号的文件夹只加不删**：表里编号带链接的都还在这里，"
+        f"路径是 `{kept[-1]}/c164-{kept[-1]}.zip` 这个样子，给出去的路径一直有效（现在有 {'、'.join(kept)}）。"
+        "更早的几个不在这里了，在分支历史里，表的最后一列是它所在的提交。",
         "",
         "| 编号 | 总装头 | 导出时间 | 存档 zip | 其中资源包 | 方块 / 显示实体 / 会动的件 | 钟 | 冷启动验证 | 说明 | 在提交 |",
         "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
