@@ -89,8 +89,8 @@ def build_models():
 
 def write_pack(pack_dir):
     """The comet in the slit is the sky line's picture, the blocks are repainted as the materials
-    line has them today."""
-    return list(sky.pack(pack_dir) or []) + list(materials.pack(pack_dir) or [])
+    line has them today; the picture the eyepiece shows is the refractor's own."""
+    return list(sky.pack(pack_dir) or []) + list(materials.pack(pack_dir) or []) + list(scope.pack(pack_dir) or [])
 
 
 def shots():
@@ -110,6 +110,9 @@ def shots():
             side each version hangs its lamp on
     top     from under the dome's crown, down on the instrument
     slit    from outside, down the tube's own line through the slit at the objective
+    ocular  the observer's own eye, up the tube's line into the eyepiece. In the game, version a:
+            the comet in the eyepiece's field (scope.eye_picture(); the game lays it over the
+            screen of a player who stands there). Drawn offline it is the eyepiece's dark glass
     """
     out = []
     eye_y = S.ROOF_STAND + S.EYE
@@ -139,4 +142,6 @@ def shots():
         shot("top", (7.5, 34.5, 3.0), (3.6, cross[1], 0.6))
         out_there = tuple(objective[i] + scope.SIGHT[i] * 11.0 for i in range(3))
         shot("slit", (out_there[0], out_there[1] + 1.2, out_there[2] + 1.6), objective)
+        stand = scope.observer(v)
+        shot("ocular", (stand[0], stand[1] + S.EYE, stand[2]), objective)
     return out
