@@ -25,7 +25,9 @@
   "J": "the south roofs: corner terrace, ridge walk, the end terrace, the small dome",
   "K": "the north roofs: corner terrace, ridge walk, the end terrace, the clock tower's foot",
   "L": "the power house, inside",
-  "M": "the meridian hut"
+  "M": "the meridian hut",
+  "N": "the plate vault and its darkroom (south wing, ground floor)",
+  "P": "the battery room (north wing, ground floor)"
  },
  "reach_from": "in-A01",
  "reach_bounds": [
@@ -38,7 +40,8 @@
   "in-A01",
   "in-J03",
   "in-J19",
-  "in-K03"
+  "in-K03",
+  "in-P02"
  ],
  "stations": [
   {"id": "in-A01", "stretch": "A", "feet": [26.5, 0.0, 0.5], "yaw": 123.7, "pitch": 0.0, "views": "flrbud", "node": "the court on the axis, before the entrance", "reach": "walk"},
@@ -224,6 +227,31 @@
   {"id": "in-M08", "stretch": "M", "feet": [38.5, 0.0, -29.5], "yaw": 0.0, "pitch": 0.0, "views": "f", "reach": "walk"},
   {"id": "in-M09", "stretch": "M", "feet": [38.5, 0.0, -26.5], "yaw": 90.0, "pitch": 0.0, "views": "flrbud", "node": "the hut's south-east corner", "reach": "walk"},
   {"id": "in-M10", "stretch": "M", "feet": [35.5, 0.0, -26.5], "yaw": 90.0, "pitch": 0.0, "views": "f", "reach": "walk"},
-  {"id": "in-M11", "stretch": "M", "feet": [32.5, 0.0, -26.5], "yaw": 90.0, "pitch": 0.0, "views": "flrbud", "node": "the hut's south-west corner", "reach": "walk"}
+  {"id": "in-M11", "stretch": "M", "feet": [32.5, 0.0, -26.5], "yaw": 90.0, "pitch": 0.0, "views": "flrbud", "node": "the hut's south-west corner", "reach": "walk"},
+  {"id": "in-N01", "stretch": "N", "feet": [7.5, 0.0, 4.5], "yaw": 0.0, "pitch": 0.0, "views": "flrbud", "node": "the star hall's south aisle, before the plate vault's door", "hop": true, "room": "star hall", "reach": "walk"},
+  {"id": "in-N02", "stretch": "N", "feet": [7.5, 0.0, 8.5], "yaw": 0.0, "pitch": 0.0, "views": "flrbud", "node": "inside the plate vault's door", "room": "plate vault", "reach": "walk"},
+  {"id": "in-N03", "stretch": "N", "feet": [7.5, 0.0, 11.75], "yaw": 0.0, "pitch": 0.0, "views": "f", "room": "plate vault", "reach": "walk"},
+  {"id": "in-N04", "stretch": "N", "feet": [7.5, 0.0, 15.0], "yaw": 0.0, "pitch": 0.0, "views": "f", "room": "plate vault", "reach": "walk"},
+  {"id": "in-N05", "stretch": "N", "feet": [7.5, 0.0, 18.25], "yaw": 0.0, "pitch": 0.0, "views": "f", "room": "plate vault", "reach": "walk"},
+  {"id": "in-N06", "stretch": "N", "feet": [7.5, 0.0, 21.5], "yaw": 0.0, "pitch": 0.0, "views": "flrbud", "node": "the cross aisle before the darkroom", "room": "plate vault", "reach": "walk"},
+  {"id": "in-N07", "stretch": "N", "feet": [7.5, 0.0, 24.5], "yaw": -180.0, "pitch": 0.0, "views": "flrbud", "node": "the darkroom", "room": "plate vault", "reach": "walk"},
+  {"id": "in-N08", "stretch": "N", "feet": [7.5, 0.0, 21.5], "yaw": 90.0, "pitch": 0.0, "views": "f", "room": "plate vault", "reach": "walk"},
+  {"id": "in-N09", "stretch": "N", "feet": [3.5, 0.0, 21.5], "yaw": -180.0, "pitch": 0.0, "views": "flrbud", "node": "the west aisle's south end", "room": "plate vault", "reach": "walk"},
+  {"id": "in-N10", "stretch": "N", "feet": [3.5, 0.0, 18.25], "yaw": -180.0, "pitch": 0.0, "views": "f", "room": "plate vault", "reach": "walk"},
+  {"id": "in-N11", "stretch": "N", "feet": [3.5, 0.0, 15.0], "yaw": -180.0, "pitch": 0.0, "views": "f", "room": "plate vault", "reach": "walk"},
+  {"id": "in-N12", "stretch": "N", "feet": [3.5, 0.0, 11.75], "yaw": -180.0, "pitch": 0.0, "views": "f", "room": "plate vault", "reach": "walk"},
+  {"id": "in-N13", "stretch": "N", "feet": [3.5, 0.0, 8.5], "yaw": -90.0, "pitch": 0.0, "views": "flrbud", "node": "the entry's west end, by the hand lift and the register desk", "room": "plate vault", "reach": "walk"},
+  {"id": "in-N14", "stretch": "N", "feet": [7.5, 0.0, 8.5], "yaw": -90.0, "pitch": 0.0, "views": "f", "room": "plate vault", "reach": "walk"},
+  {"id": "in-N15", "stretch": "N", "feet": [11.5, 0.0, 8.5], "yaw": 0.0, "pitch": 0.0, "views": "flrbud", "node": "the entry's east end, by the checking table", "room": "plate vault", "reach": "walk"},
+  {"id": "in-N16", "stretch": "N", "feet": [11.5, 0.0, 11.75], "yaw": 0.0, "pitch": 0.0, "views": "f", "room": "plate vault", "reach": "walk"},
+  {"id": "in-N17", "stretch": "N", "feet": [11.5, 0.0, 15.0], "yaw": 0.0, "pitch": 0.0, "views": "f", "room": "plate vault", "reach": "walk"},
+  {"id": "in-N18", "stretch": "N", "feet": [11.5, 0.0, 18.25], "yaw": 0.0, "pitch": 0.0, "views": "f", "room": "plate vault", "reach": "walk"},
+  {"id": "in-N19", "stretch": "N", "feet": [11.5, 0.0, 21.5], "yaw": 0.0, "pitch": 0.0, "views": "flrbud", "node": "the east aisle's south end", "room": "plate vault", "reach": "walk"},
+  {"id": "in-P01", "stretch": "P", "feet": [7.5, 0.0, -3.5], "yaw": -180.0, "pitch": 0.0, "views": "flrbud", "node": "the star hall's north aisle, before the battery room's door", "hop": true, "room": "star hall", "reach": "walk"},
+  {"id": "in-P02", "stretch": "P", "feet": [7.5, 0.0, -7.5], "yaw": -178.1, "pitch": 0.0, "views": "flrbud", "node": "inside the battery room's door", "reach": "no", "from": "in-P02", "how": "walk", "leg": "no"},
+  {"id": "in-P03", "stretch": "P", "feet": [7.62, 0.0, -11.25], "yaw": -178.1, "pitch": 0.0, "views": "f", "reach": "no", "from": "in-P02", "how": "walk"},
+  {"id": "in-P04", "stretch": "P", "feet": [7.75, 0.0, -15.0], "yaw": -178.1, "pitch": 0.0, "views": "f", "reach": "no", "from": "in-P02", "how": "walk"},
+  {"id": "in-P05", "stretch": "P", "feet": [7.88, 0.0, -18.75], "yaw": -178.1, "pitch": 0.0, "views": "f", "reach": "no", "from": "in-P02", "how": "walk"},
+  {"id": "in-P06", "stretch": "P", "feet": [8.0, 0.0, -22.5], "yaw": -178.1, "pitch": 0.0, "views": "flrbud", "node": "the end of the aisle, before the switchboard", "reach": "no", "from": "in-P02", "how": "walk"}
  ]
 }

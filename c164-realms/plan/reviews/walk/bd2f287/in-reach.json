@@ -11,7 +11,7 @@
  "starts": [
   {
    "station": "in-A01",
-   "stations": 150,
+   "stations": 170,
    "report": {
     "start": [
      26.5,
@@ -2262,6 +2262,88 @@
       "room": 1.5
      }
     ]
+   }
+  },
+  {
+   "station": "in-P02",
+   "stations": 5,
+   "report": {
+    "start": [
+     7.5,
+     0.0,
+     -7.5
+    ],
+    "nodes": {
+     "walk": 851,
+     "hop": 0,
+     "fall": 0,
+     "trap": 0
+    },
+    "ground": {
+     "walk": 212.8,
+     "hop": 0.0,
+     "fall": 0.0,
+     "trap": 0.0
+    },
+    "cut short": false,
+    "lowest block": -34,
+    "climbable blocks (not climbed here)": 0,
+    "joins worked out as the game does": "yes",
+    "shapes guessed as whole cubes": {},
+    "shapes written down": {
+     "smooth_sandstone_stairs": 876,
+     "waxed_exposed_cut_copper_slab": 606,
+     "oxidized_copper_bars": 536,
+     "dark_oak_trapdoor": 445,
+     "snow": 408,
+     "oxidized_cut_copper_slab": 393,
+     "deepslate_tile_stairs": 308,
+     "waxed_oxidized_cut_copper_slab": 287,
+     "deepslate_tile_slab": 261,
+     "deepslate_brick_stairs": 242,
+     "oxidized_copper_chain": 235,
+     "polished_tuff_stairs": 166,
+     "oxidized_cut_copper_stairs": 166,
+     "sandstone_slab": 127,
+     "dark_oak_slab": 118,
+     "sandstone_wall": 107,
+     "waxed_oxidized_cut_copper_stairs": 100,
+     "tuff_brick_stairs": 80,
+     "polished_deepslate_slab": 78,
+     "oxidized_copper_trapdoor": 69,
+     "polished_tuff_slab": 59,
+     "oxidized_lightning_rod": 48,
+     "waxed_weathered_cut_copper_slab": 46,
+     "spruce_stairs": 35,
+     "sandstone_stairs": 32,
+     "smooth_sandstone_slab": 31,
+     "cut_sandstone_slab": 20,
+     "waxed_exposed_cut_copper_stairs": 20,
+     "gray_stained_glass_pane": 19,
+     "oxidized_copper_door": 12,
+     "polished_deepslate_wall": 9,
+     "white_stained_glass_pane": 4,
+     "black_stained_glass_pane": 4,
+     "bamboo_fence": 2,
+     "deepslate_brick_slab": 1
+    },
+    "no collision": {
+     "light": 178,
+     "rail": 141,
+     "activator_rail": 4,
+     "detector_rail": 1
+    },
+    "traps": [],
+    "trap ground by height (square blocks in each two blocks of height, from the top)": {},
+    "lowest feet on walk or hop ground": 0.0,
+    "line": -25.0,
+    "stuck (no way back and no way down to the line)": [],
+    "void": [],
+    "void not listed (short)": 0,
+    "hop only": [],
+    "hop only not listed (small)": 0,
+    "low head room": [],
+    "closed by head room only": []
    }
   }
  ]
