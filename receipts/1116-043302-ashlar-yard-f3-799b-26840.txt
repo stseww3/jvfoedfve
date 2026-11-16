@@ -1,0 +1,55 @@
+a0job 1116-043302-ashlar-yard-f3-799b-26840: cursor/c164-ashlar-yard-f3-799b @ 89894af3 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.20 0.42 0.88, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- cd build && python -m scenes.obs_site_yard.plan ---- exit 0, 2 s, last 60 lines of 45:
+== x down the side (east up), z -44..45 across; ! marks z -40, -30, ... 40; feet at y -6
+        !         !         !         !         !         !         !         !         !     
+ 93 ..............aa..........................................................................
+ 92 .......aaaAAA...........aa......a..aab....a..aaaaaa.....aaa.....aa......bbbb........c.....
+ 91 ..BCAAAAAAAAAAAAAAACCCBCCCBCCCBCCCBCCCBCCCBCCCBCCCBCCCBCCCBCCCBCCCBCCCBCCCBCCCBCCCBCCCCB..
+ 90 ..CdAAAAAAAAAAAAAAAddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddC..
+ 89 ..CdAAAAAAAAAAAAAAAeeedeeeeeeedeeedddddddddddddddddddddeeedeeeeeDDDDDDDDDDDDDDDDDDDDDDDC..
+ 88 .aCdAAAAAAAAAAAAAAAeeedeeeeeeedeeedddddddddddddddddddddeeedeeeeeDDDDDDAAAAAAAAAAAAAAAADf..
+ 87 .aBdAAAAAAAAAAAAAAAeeedeeeeeeedeeedeeeeeeedddddeeeeeeedeeedeeeeeDDDDDDeeeCeeeeeeeeeeeADf..
+ 86 .aCdAAAAAAAAAAAAAAEeeedeeedeeedeeedeeeeeeedddddeeeeeeedeeedeeeeeDDDDDDeeeCeeeeCCCCeeeADfc.
+ 85 .aCdAAAAAAAAAAAAAAEeeedeeeeeeedeeedeeeeeeedddddeeeeeeedeeedeeeeeDDDDDDeeeCeeeeFFgCeeeADf..
+ 84 .aCdAAAAAAAAAAAAAAEddddddddddddddddddddddddddddeeeeeeedeeedeeeeeDDDDDDeeeCeeeeFFgCeeeADf..
+ 83 ..CdAAAAAAAAAAAAAAEddddddddddddddddddddddddddddeeeeeeedeeedeeeeeDAeeeCCCeCeeeeFFgCeeeADf..
+ 82 ..BdAAAAAAAAAAAAAAEddddddddddddddddddddddddddddeeeeeeedeeedeeeeeDAeeeeeeeeeeeeFFgCeeeADf..
+ 81 ..CdAAAAAAAAAAAAAAEeeedeeeeeeedeeedeeeeeeedddddeeeeeeedeeedeeeeeDAeeeeeeeeeeeeFFgCeeeADf..
+ 80 ..CdAAAAAAAAAAAAAAEeeedeeedeeedeeedeeeeeeedddddeeeeeeedeeedeeeeeDAeeeeeeeeeeeeFFgCeeeADf..
+ 79 ..CdAAAAAAAAAAAAAAEeeedeeeeeeedeeedeeeeeeedddddeeeeeeedeeedeeeeeDAeeeeeeeeeeeegg.CeeeADf..
+ 78 ..BdAAAAAAAAAAAAAAEeeedeeeeeeedeeedeeeeeeedddddeeeeeeedeeedeeeeeDAeeeeeeeeeeeegg.CeeeADf..
+ 77 ..CdAAAAAAAAAAAAAAEeeedeeeeeeedeeedeeeeeeedddddeeeeeeedeeedeeeeeDAeeeeeeeeeeeegg.FeeeADf..
+ 76 ..CdAAAAAAAAAAAAAAEeeedeeeeeeedeeedeeeeeeedddddeeeeeeedeeedeeeeeDAeeeeeeeeeeeegg.CeeeADf..
+ 75 ..CdEEEEEEEEEEEEEEEeeedeeeeeeedeeedeeeeeeedddddeeeeeeedddddddddddGeeeeeeeeeeeeee.CeeeADf..
+ 74 ..BdeedeeeeeeedeeeeeeedeeeeeeedeeedddddddddddddddddddddddddddddddHeeeeeeeeeeeeee.CeeeADf..
+ 73 ..CdeedeeeeeeedeeeeeeedeeeeeeedeeeIIdddddddddddddddddIIddddddddddGeeeeeeeeeeeeee.CgeeADf..
+ 72 ..CdeedeeeeeeedeeeeeeedeeeeeeedeeeIIdddddddddddddddddIIeeedeeeeeDAeeeeeeeeeeeeee.FFeeADf..
+ 71 ..CdeedeeeeeeedeeeeeeedeeeeeeedeeedIJJJJJJKKKKKJJJJJJIdeeedeeeeeDAeeeeeeeeeeeeeCgFFeeADf..
+ 70 ..BdeedeeeeeeedeeeeeeedeeeeeeedeeedIIIIIIIDDDDDIIIIIIIdeeedeeeeeDAeeeeLMNONMLeeCCggeeADf..
+ 69 ..CdeedeeeeeeedeeeeeeedeeeeeeedeeedIPPPPPPPPPPPPPPPPPIdeeedeeeeeDAeeeeeeeeeeeeeeeeeeeADf..
+ 68 ..CdeedeeeeeeedeeeeeeedeeeeeeedeeedIPPPPPPPPPPPPPPPPPIdeeedeeeeeDAAAAAAAAAAAAAAAAAAAAADf..
+ 67 ..CdeedeeeeeeedeeeeeeedeeeeeeedeeedIPPPPPPPPPPPPPPPPPIdeeedeeeeeDDDDDDDDDDDDDDDDDDDDDDDC..
+ 66 ..CdeedeeeeeeedeeeeeeedeeeeeeedeeedIPPPPPPPPPPPPPPPPPIdeeedeeeeeeedeeeeeeedeeeeeeedeeedC..
+ 65 ..BdeedeeeeeeedeeeeeeedeeeeeeedeeedIPPPPPPPPPPPPPPPPPIdeeedeeeeeeedeeeeeeedeeDeeeedeeedC..
+ 64 ..CdeedeeeeeeedeeeeeeedeeeeeeedeeedIPPPPPPPPPPPPPPPPPIdeeedeeeeeeedeeeeeeedeeeeeeedeeedC..
+ 63 ..CdeedeeeeeeedeeeeeeedeeeeeeedeeedIPPPPPPPPPPPPPPPPPIdeeedeeeeeeedeeeeeeedeeeeeeedeeedC..
+ 62 .aCdeeIeeeeeeeIeeeeeeeIeeeeeeeIeeedIPPPPPPPPPPPPPPPPPIdeeeIeeeeeeeIeeeeeeeIeeDeeeeIeeedC..
+ 61 ..BdddIdddJdddIdddJdddIdddJdddIddddIPPPPPPPPPPPPPPPPPIddddIdddJdddIdddJdddIdddJdddIddddB.c
+ 60 ..IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII..
+ 59 ..Q....................................................................................R..
+feet: A=tuff_bricks  B=sandstone_wall  C=oxidized_copper_bars  D=polished_tuff  E=polished_tuff_stairs  F=barrier  G=oxidized_cut_copper  H=oxidized_copper_door  I=polished_deepslate  J=polished_deepslate_slab  
+feet: K=polished_tuff_slab  L=cyan_glazed_terracotta  M=pink_glazed_terracotta  N=green_glazed_terracotta  O=blue_glazed_terracotta  P=deepslate_bricks  Q=tuff  R=cobbled_deepslate  
+paving: a=deepslate  b=cobbled_deepslate  c=tuff  d=polished_tuff  e=deepslate_bricks  f=sandstone  g=oxidized_cut_copper  
+entities: (60,-34) lamp_post+lamp_post_globe_side0+lamp_pos  (60,-26) lamp_post+lamp_post_globe_side0+lamp_pos  (60,-18) lamp_post+lamp_post_globe_side0+lamp_pos  (60,18) lamp_post+lamp_post_globe_side0+lamp_pos  (60,33) pipe_band  
+entities: (61,-9) lamp_post+lamp_post_globe_side0+lamp_pos  (61,9) lamp_post+lamp_post_globe_side0+lamp_pos  (63,33) pipe_band  (66,33) pipe_band  (67,19) pipe_drain+pipe_drain_clip+pipe_drain_he  
+entities: (73,-9) lamp_street+lamp_street_globe_side0+lamp  (73,10) lamp_street+lamp_street_globe_side0+lamp  (74,20) lamp_cage_a  (76,19) text_display  (79,-10) lamp_street+lamp_street_globe_side0+lamp  
+entities: (79,10) lamp_street+lamp_street_globe_side0+lamp  (80,-18) lamp_street+lamp_street_globe_side0+lamp  (80,19) pipe_drain+pipe_drain_clip+pipe_drain_he  (86,-18) lamp_street+lamp_street_globe_side0+lamp  
+entities: (87,-10) lamp_street+lamp_street_globe_side0+lamp  (87,10) lamp_street+lamp_street_globe_side0+lamp  
+==== NODEJOB RESULT ====
+exit=0 secs=4 host=cursor cores=4 head=89894af3 commit=none pushed=no branch=cursor/c164-ashlar-yard-f3-799b files=0
+a0job: exit=0 secs=4
