@@ -46,6 +46,7 @@ import math
 from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
+from ..props import _kit as PK
 from . import _powerkit as K
 
 PREFIX = "mach_boiler_"
@@ -470,6 +471,12 @@ def _flue(name, turn):
 @functools.lru_cache(maxsize=None)
 def _drawn():
     built = [_body(), _rear(), _door(1), _door(2), _dome(), _flue("flue", False), _flue("flue_turn", True)]
+    # A flat that stands exactly between two of a model's axes is lit as the one or as the other by
+    # the last bit of a float, in the game and in the offline pictures alike. The slanting leg of
+    # No. 2's flue runs at 45 degrees and had eight of them; the props line's settle() turns such a
+    # piece a tenth of a degree. The other models have none and come out of it as they went in.
+    for d in built:
+        PK.settle(d.m)
     return {d.m.name[len(PREFIX):]: d for d in built}
 
 
