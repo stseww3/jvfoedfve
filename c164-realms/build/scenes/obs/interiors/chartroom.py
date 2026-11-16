@@ -11,8 +11,10 @@ V9 stands in it and looks south. On that axis, one behind the other:
                   plates of the night lie on its first pane, a measuring bridge with its microscope
                   stands over the second, and at the far end the plate viewer stands up with the
                   newest plate, the comet, facing the door. From the door the glass is a lit lane
-                  that runs to the viewer and to the books behind it.
-  bookcase        the whole south wall, floor to ceiling, the library ladder on its rail.
+                  that runs to the viewer and to the books behind it. The bridge is at work: its
+                  screw turns and its carriage creeps along the bed and back (MEASURE).
+  bookcase        the whole south wall, floor to ceiling, the library ladder on its rail; on the
+                  board of its middle bay the room's regulator clock, its pendulum swinging.
 
 and along the long walls, each thing at a window or on the blind stretch of the west wall (the
 rotunda is behind it, z 7..13):
@@ -20,10 +22,12 @@ rotunda is behind it, z 7..13):
   east            the writing desk under the second window (bay 12), with the green lamp, the hand
                   calculator and the log; a small telescope on its tripod at the third; a bench
                   under a drop light at the fourth; the plate trunk by the bookcase
-  west            the card cabinets with the moon map over them, and the blackboard under its lamp,
-                  on the blind stretch; the drafting table under a drop light at the first window
-                  (bay 13); the celestial globe at the second
-  north           the pair of great sky maps, one on each side of the door, a lamp over each
+  west            on the blind stretch the blackboard under its lamp, at the door's end, and the
+                  card cabinets with the moon map over them; the drafting table under a drop light
+                  at the first window (bay 13); the celestial globe at the second
+  north           the door in its case, its two leaves standing open into the room (_doorcase,
+                  shell's: the pair of the time room's); the pair of great sky maps, one on each
+                  side of it, a lamp over each
 
 The room's envelope is the time room's: dark panels on every solid stretch of wall from the floor
 to the ceiling (the piers, the blind stretch, the wall round the door; under a window the one
@@ -35,13 +39,16 @@ of east bay 11, which no look lights.
 
 Light. The room is dark and is lit where somebody works, and by nothing else: what is to sink is
 made dark, what is to be seen is light and then lit. The light table is the brightest thing in it:
-its glass glows (emission), and four sources in the row over the panes give the pool round it.
+its glass glows (emission), four sources in the row over the panes give the pool round it, and
+four at its feet, where the vents of the lamp box open, lay that pool on the floor it stands on.
 Every lamp is the shaded one of props/lamps (LAMPS) and hangs low over what it is for; its source
 is not offered at its bulb but under its shade, at the height of what it lights. A window is not a
 light of the room: the ones the light line lights (east 12 and 14, west 14: sky/lights' table) are
 lined on the room side by materials/windows, with its deep lining, level with the panelling. The
-green desk lamp is the room's one green. Every source is offered to the light line
-(sky/_lightkit); nothing is placed for good here.
+green desk lamp is the room's one green; the desk and what stands on it under that lamp are shown
+in its light (DESK_LIT, DESK_POOL), since a model takes the light of one cell and the lamp's rank
+leaves that cell dim.
+Every source is offered to the light line (sky/_lightkit); nothing is placed for good here.
 
 What is whose. The room's own models (names "int_chart_..."): the light table here; its two
 engines, the measuring bridge and the plate viewer, in _chartengine.py (m5); the bookcase wall in
@@ -57,6 +64,7 @@ build() is what the master scene calls; it places nothing while MOVED_IN is off.
 """
 import functools
 import importlib
+import math
 
 from artkit import models as M
 from artkit.blocks import st
@@ -71,8 +79,16 @@ from ..props import _kit as K
 from ..props import lamps
 from . import _chartengine
 from . import _chartshelves
+from . import _doorcase
+
+try:
+    from ..motion import _kit as MK
+except ImportError:                     # the motion line is not in the tree: the room stands still
+    MK = None
 
 MOVED_IN = True         # the master scene dresses the room (A0, g2 #67123: a card's switch is turned on with its delivery)
+VIEW = M.NEAR           # every display entity of the room is drawn from 32 blocks (s2, g2 #88340): the room is 19 long,
+#                         and nothing in it is there to be seen from outside (its lit windows are lined)
 NAME = "interiors/chartroom"
 PREFIX = "int_chart_"
 PX = 1 / 16.0
@@ -121,8 +137,14 @@ BENCH_BAY = 14                                  # the bench under this one
 DRAFT_BAY = 13                                  # the drafting table under this window of the west wall
 GLOBE_BAY = 14                                  # the celestial globe at this one
 CABINET_PITCH = 15 * PX                         # the card cabinets of props/furniture are 15 wide and stand side by side
-CABINET_Z = tuple(Z0 + 1.5 + i * CABINET_PITCH for i in range(3))       # 8.5, 9.44, 10.38: on the blind stretch
-BOARD_Z = BLIND_Z[1] - 0.2                      # 12.8: the middle of the blackboard, whole inside the picture of V9
+# The blind stretch, as the board's V9 sees it (cr4 #76387): that picture's right edge crosses the west wall at z 9.3.
+# What is light and is to be read hangs whole inside it; what is dark may be cut by it.
+BOARD_Z = Z0 + 2.0                              # 9.0: the middle of the blackboard, from the cased riser to z 10: the
+#                                                 edge of V9 runs through it
+BOARD_LAMP_Z = BOARD_Z - 0.3                    # its lamp, a hand towards the door from its middle: the shade is whole
+#                                                 outside that picture, not a lit sliver on its edge
+CABINET_Z = tuple(BOARD_Z + 2.5 + i * CABINET_PITCH for i in range(3))      # 11.5, 12.44, 13.38: the card cabinets, the
+#                                                 moon map over the middle one, two blocks inside the picture
 MAP_X = (DOOR_X[0] - 2.5, DOOR_X[1] + 3.5)      # 4.5 and 11.5: the middles of the two sky maps on the north wall
 MAP_Y = FEET + 3.5                              # their middle above the floor: the head of the door is their foot line
 
@@ -135,9 +157,13 @@ CORD = lamps.PREFIX + "wire"            # the cord of a drop light: props/lamps'
 # map): at 8 a shade glowed over a desk that stayed black. A lamp somebody works under asks for the top of its
 # rank; the walls ask for less, and the green lamp is of the third rank (sky/_lightkit.KIND_RANK).
 ASK_TABLE = (12, 2)         # the four sources over the panes of the light table: the room's main light
+ASK_FEET = (12, 2)          # the four at the table's feet (cr4 #76387: the glass shone and the floor beside it did not)
 ASK_SHELF = (11, 2)         # the bracket lamps on the two outer piers of the bookcase
 ASK_DROP = (12, 2)          # a drop light over a desk or a bench
 ASK_DESK = (8, 3)           # the green desk lamp
+DESK_LIT = (0, 10)          # (sky, block): the light the writing desk is shown in, under the green lamp, and
+DESK_POOL = (0, 12)         # what stands on it: a model takes the light of the one cell it is held in, and a
+#                             source of the third rank leaves that cell at 7 (cr4 #76387: the desk was one dark heap)
 ASK_WALL = (10, 2)          # a bracket lamp over what hangs on a wall
 OVER = 20 * PX              # a bracket's arm above the top of what it hangs over: the shade ends half a block over it
 DESK_HANG = FEET + 3.25     # 10.25: where a desk's drop light ends and its lamp hangs; the shade ends at 9.2, over the eye
@@ -147,7 +173,8 @@ DRAFT_HANG = FEET + 3.75    # the same over the drafting table, whose board stan
 WOOD = P.mat("dark_wood")
 BRASS, BRASS_D, IRON, IRON_D = K.BRASS, K.BRASS_D, K.IRON, K.IRON_D
 LABEL = K.flat("cream", 3)
-LIT_GLASS = P.mat("opal")                       # lit opal glass: brighter towards its middle
+LIT_GLASS = K.flat("opal", 3)                   # lit opal glass, a step under the ramp's white: the plates of
+#                                                 props/paper are drawn a step under their pane, and on white they sank
 LIT = dict(emit=15, shade=False)
 VENT = K.flat("glow", 1)                        # the lamps seen through a vent slot
 OP, IR, CR, BR = (P.RAMPS[k] for k in ("opal", "iron", "cream", "brass"))
@@ -235,6 +262,30 @@ STAND_IN = 4                        # how many of them the room's own stand-in s
 TABLE_LIGHTS = tuple((x, SILL, z) for z in (12, 16) for x in (7, 8))     # the cells of the table's four sources: the row
 #                                     over the glass, two on each side of the middle, one in each of the two columns the
 #                                     table stands in, so that the pool is the same on both hands and towards both ends
+TABLE_FEET = tuple((x, FEET, z) for z in (12, 16) for x in (6, 9))      # and of the four at its feet: on the floor beside
+#                                     it, abreast of those, where the vents of the lamp box open
+DOOR_FACE = WAINSCOT_T / PX         # 3: how far the room's lining stands off the door's wall, in sixteenths
+DOOR_SWING = 100.0                  # how far the two leaves stand open, as the time room's
+
+# ---- what moves (motion/_kit; A0, g2 #85347: the measuring engine's carriage goes to and fro) ------
+# The engine measures by itself: the screw turns, the carriage with the microscope creeps along the
+# bed to the far end of its travel and comes back. Carriage and screw go through the same poses on
+# the same ticks, the carriage a quarter of the cycle ahead, so that the carriage moves exactly as
+# fast as the screw's turning draws it (a turn to 4 texels) and both stand for a moment where the
+# way turns round. Twelve seconds there and back: at its quickest two texels a second.
+MEASURE = 240                       # ticks, there and back
+MEASURE_KEYS = 24                   # poses in that: one every half second
+CLOCK_FOOT = _chartshelves.CLOCK_AT[1] - 1.0    # the regulator clock is two blocks tall and hangs in the middle of
+#                                     the board the bookcase keeps for it, on the room's axis
+
+
+def _measure_moves():
+    """The carriage's way as motion's slide() takes it: (tick it sets off, blocks from where it
+    was placed, ticks it takes), from pose to pose of the screw's swing."""
+    half = _chartengine.TRAVEL / 2.0 * PX
+    ticks = [k * MEASURE // MEASURE_KEYS for k in range(MEASURE_KEYS + 1)]
+    ends = [half * (1.0 - math.cos(2.0 * math.pi * k / MEASURE_KEYS)) for k in range(1, MEASURE_KEYS)] + [0.0]
+    return [(ticks[k], ends[k], ticks[k + 1] - ticks[k]) for k in range(MEASURE_KEYS)]
 
 
 def _table_cells():
@@ -358,7 +409,8 @@ def _calculator():
 @functools.lru_cache(maxsize=None)
 def _models():
     out = dict(_chartshelves.models())
-    engines = [_chartengine.bridge(), _chartengine.viewer(COMET)]
+    out.update(_doorcase.models(PREFIX, _DOOR, DOOR_FACE, DOOR_SWING))
+    engines = _chartengine.bridge_models() + [_chartengine.viewer(COMET)]
     for m in [_table(k) for k in range(PANES)] + engines + [_plates(), _calculator()]:
         out[m.name] = m
     return out
@@ -467,6 +519,17 @@ def build_chartroom(c, origin=(0, 0, 0), roles=B):
     for x in (_chartshelves.PIER_X[0], _chartshelves.PIER_X[-1]):
         n += lamp("bracket", (x, _chartshelves.LAMP_Y[0] + 11 * PX, _chartshelves.PIER_FACE_Z), ASK_SHELF,
                   "bracket lamp on a pier of the bookcase", (int(x), FEET + 3, Z1 - 1), facing="north")
+    # the room's clock on the board the bookcase keeps for it, on the axis: the regulator of
+    # props/instruments, and its pendulum swings as that module says it does (the motion line's
+    # sound ticks at every such pendulum on the canvas)
+    if has(instruments, "regulator_clock"):
+        n += instruments.place(c, "regulator_clock", (_chartshelves.CLOCK_AT[0], CLOCK_FOOT, _chartshelves.CLOCK_AT[2]),
+                               facing="north", origin=origin)
+        beat = instruments.PENDULUM
+        if MK is not None and not any(tag.startswith("m.") for tag in c.entities[-1][3].get("Tags", ())):
+            MK.swing(c, beat["axis"], beat["swing"], beat["period_ticks"])
+    else:
+        missing.append("instruments:regulator_clock")
 
     # ---- the light table: its four lengths, the bridge, the viewer, the plates; the sources of its glass
     held = tuple(TABLE_AT[i] + HELD[i] * PX for i in range(3))
@@ -482,7 +545,15 @@ def build_chartroom(c, origin=(0, 0, 0), roles=B):
         """A point over the table: texels from the middle of its foot."""
         return (TABLE_AT[0] + x * PX, TABLE_AT[1] + up * PX, TABLE_AT[2] + z * PX)
 
+    # the measuring engine: what stands still, the screw on its own axis, the carriage; the last two move
     n += K.put(c, own[PREFIX + "bridge"], on_table(0.0, BRIDGE_Z, FRAME_TOP + LIFT), origin=origin)
+    n += K.put(c, own[PREFIX + "bridge_screw"],
+               on_table(0.0, BRIDGE_Z + _chartengine.SCREW[1], FRAME_TOP + _chartengine.SCREW[0]), origin=origin)
+    if MK is not None:
+        MK.swing(c, "x", 180.0 * _chartengine.SCREW_TURNS, MEASURE, keys=MEASURE_KEYS, phase=MEASURE // 4)
+    n += K.put(c, own[PREFIX + "bridge_carriage"], on_table(0.0, BRIDGE_Z, FRAME_TOP + LIFT), origin=origin)
+    if MK is not None:
+        MK.slide(c, "x", _measure_moves(), MEASURE)
     n += K.put(c, own[PREFIX + "viewer"], on_table(0.0, VIEWER_Z, GLASS + LIFT), facing="north", origin=origin)
     if all(has(paper, kind) for kind, _, _ in PLATES):
         for kind, (x, z), turn in PLATES:
@@ -493,12 +564,14 @@ def build_chartroom(c, origin=(0, 0, 0), roles=B):
         n += K.put(c, stand_in, on_table(0.0, stand_in.anchor[2]), origin=origin)
     for i, at in enumerate(TABLE_LIGHTS):
         offer(at, ASK_TABLE, f"the light table {i + 1}")
+    for i, at in enumerate(TABLE_FEET):
+        offer(at, ASK_FEET, f"the light table's foot {i + 1}")
     n += piece(furniture, "furniture", "stool", (TABLE_AT[0] - TABLE_W / 2.0 * PX - 0.55, FEET, TABLE_AT[2] + BRIDGE_Z * PX),
                facing="east")
 
-    # ---- the west wall. On the blind stretch: three card cabinets side by side, a small globe on the
-    # first, the moon map over them; south of them the blackboard, hung where one writes on it (its
-    # middle 1.75 above the floor), a lamp over it
+    # ---- the west wall. On the blind stretch: at the door's end the blackboard, hung where one writes
+    # on it (its middle 1.75 above the floor), a lamp over it; south of it three card cabinets side by
+    # side, a small globe on the first, the moon map over the middle one
     cabinet_x = PANEL_W + 6.5 * PX
     cabinet_top = FEET + (furniture.TOP["card_cabinet"] if furniture is not None else 1.875)
     for z in CABINET_Z:
@@ -507,7 +580,7 @@ def build_chartroom(c, origin=(0, 0, 0), roles=B):
         n += piece(instruments, "instruments", "globe", (cabinet_x, cabinet_top, CABINET_Z[0]), facing="east")
     n += piece(paper, "paper", "moon_map", (PANEL_W, cabinet_top + 1.0, CABINET_Z[1]), facing="east")
     n += piece(paper, "paper", "blackboard", (PANEL_W, FEET + 1.75, BOARD_Z), facing="east")
-    n += lamp("bracket", (PANEL_W, FEET + 2.5 + OVER, BOARD_Z), ASK_WALL, "blackboard",
+    n += lamp("bracket", (PANEL_W, FEET + 2.5 + OVER, BOARD_LAMP_Z), ASK_WALL, "blackboard",
               (X0 + 1, FEET + 1, int(BOARD_Z)), facing="east")
     # at its first window the drafting table, a drop light over the drafter's left hand; at the next
     # the celestial globe
@@ -517,7 +590,9 @@ def build_chartroom(c, origin=(0, 0, 0), roles=B):
     n += drop(PANEL_W + 0.75, z + 0.5, DRAFT_HANG, ASK_DROP, "drafting table", (X0 + 1, FEET, int(z)))
     n += piece(instruments, "instruments", "celestial_globe", (WEST + 1.6, FEET, bay_z(GLOBE_BAY)), facing="east")
 
-    # ---- the north wall: the pair of great sky maps, one on each side of the door, a lamp over each
+    # ---- the north wall: the door case and its two open leaves, which stand over no cell one walks in
+    # (_doorcase.swept()); the pair of great sky maps, one on each side of the door, a lamp over each
+    n += _doorcase.place(c, PREFIX, _DOOR, DOOR_FACE, DOOR_SWING, origin)
     for x, kind in zip(MAP_X, ("sky_map", "sky_map_b")):
         n += piece(paper, "paper", kind, (x, MAP_Y, PANEL_N), facing="south")
         n += lamp("bracket", (x, MAP_Y + 1.0 + OVER, PANEL_N), ASK_WALL, f"{kind}", (int(x), FEET + 3, Z0 + 1), facing="south")
@@ -525,8 +600,13 @@ def build_chartroom(c, origin=(0, 0, 0), roles=B):
 
     # ---- the east wall. Under its second window the writing desk (props/furniture's is 30 by 14, its
     # front the side one sits at; at its back an upstand between two stationery drawers): the
-    # calculator in the middle against the upstand, the green lamp on the far corner as the door sees
-    # the desk, turned a little towards the sitter, the closed log before the sitter's left hand
+    # calculator in the middle against the upstand, before the sitter; the green lamp at his right, at
+    # the far end as the door sees the desk, before the drawer there and not in it, its long hood
+    # square to the desk so that it lights along it; the closed log at his left. The board's V9 looks
+    # along the desk from the door's end, so the low thing lies nearest to it and the tall one stands
+    # last, the hood broadside. The 30 of the desk are full: the log 6, the calculator 13 and the
+    # sweep of its crank 2.5, the hood's half 3.5 and the foot's half 3, a hand between them. The desk
+    # and what stands on it are shown in the lamp's light (DESK_LIT, DESK_POOL)
     desk = (PANEL_E - 7 * PX, float(FEET), bay_z(DESK_BAY))
     desk_yaw = K.FACING["west"]
     if furniture is None:
@@ -541,16 +621,18 @@ def build_chartroom(c, origin=(0, 0, 0), roles=B):
         dx, _, dz = K.turn(desk_yaw, (x * PX, 0.0, z * PX))
         return (desk[0] + dx, desk[1] + desk_top, desk[2] + dz)
 
-    n += piece(furniture, "furniture", "writing_desk", desk, facing="west")
+    n += piece(furniture, "furniture", "writing_desk", desk, facing="west", brightness=DESK_LIT)
     n += piece(furniture, "furniture", "swivel_chair", (desk[0] - 1.0, FEET, desk[2] - 0.1), facing="east")
-    n += lamp("desk_green", on_desk(11.5, -3.0), ASK_DESK, "the green desk lamp", (X1 - 1, FEET, int(desk[2])),
-              yaw=desk_yaw + 35.0)
+    n += lamp("desk_green", on_desk(12.0, 0.5), ASK_DESK, "the green desk lamp", (X1 - 1, FEET, int(desk[2])),
+              yaw=desk_yaw - 90.0, brightness=DESK_POOL)
     if has(instruments, "calc_machine"):
-        n += instruments.place(c, "calc_machine", on_desk(0.5, -0.75), facing="west", origin=origin)
+        n += instruments.place(c, "calc_machine", on_desk(-1.5, -0.75), facing="west", origin=origin,
+                               brightness=DESK_POOL)
     else:
         missing.append("instruments:calc_machine")
-        n += K.put(c, own[PREFIX + "calculator"], on_desk(0.5, -0.75), yaw=desk_yaw, origin=origin)
-    n += piece(paper, "paper", "logbook_shut", on_desk(-10.5, 2.5), yaw=desk_yaw - 12.0)
+        n += K.put(c, own[PREFIX + "calculator"], on_desk(-1.5, -0.75), yaw=desk_yaw, origin=origin,
+                   brightness=DESK_POOL)
+    n += piece(paper, "paper", "logbook_shut", on_desk(-12.0, 3.0), yaw=desk_yaw, brightness=DESK_POOL)
     # at the third window the small telescope; under the fourth a bench and a drop light to read by;
     # by the bookcase the trunk the plates come down from the dome in
     n += piece(instruments, "instruments", "tripod_scope_comet", (EAST - 1.7, FEET, bay_z(SCOPE_BAY)), facing="east")

@@ -231,5 +231,5 @@ def shots():
     shot("board_near", (X0 + 2.5, FEET + S.EYE, bz + 0.6), (bx, by - 0.1, bz))
     shot("board_gable", (X0 + 0.6, FEET + S.EYE, bz + 1.6), (bx, by - 0.7, bz - 0.2))
     shot("board_gable_deep", (X0 + 0.6, FEET + S.EYE, bz + 1.6), (bx, by - 0.7, bz - 0.2), TIME_DEEP)
-    shot("board_yard", (X0 - 9.5, LOW + S.EYE, bz - 0.5), (bx, by - 0.5, bz))
+    shot("board_yard", (X0 - 5.0, LOW + S.EYE, bz + 2.5), (bx, by - 0.9, bz + 0.3))
     return out
