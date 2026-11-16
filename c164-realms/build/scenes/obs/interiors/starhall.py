@@ -8,13 +8,15 @@ clock (machines). The hall dresses the room they leave, and reads it from them: 
 shell.ROOMS, the beams from shell.layout().beams, the clock's seat from shell.layout().seat, the
 doorway from facade.doors().
 
-The first look (S.V7, from outside the door through the middle arch): the orrery overhead, the
-mother clock on the pier straight ahead, the floor underfoot. The hall keeps that picture clear,
-and in the order the director set (A0, 11-16): the clock's dial and the pier's east face first,
-the orrery's sun the warmest point, the floor third. Nothing of the hall's own stands on the
-axis; no stone of the floor is pale, since a floor is drawn at full light and a wall that looks
-east at six tenths, and a pale one under the same lamp outshines the pier; and no lamp of the
-hall shows its glass to the door.
+The first look (S.V7, from inside the main doorway): the whole orrery under the star ceiling, the
+mother clock on the pier straight ahead, the galleries' lamps, the two flights of the stair, the
+floor underfoot. The hall keeps that picture clear, and in the order the director set (A0,
+11-16): the clock's dial and the pier's east face first, the orrery's sun the warmest point, the
+floor third. Nothing of the hall's own stands on the axis; no stone of the floor is pale, since
+a floor is drawn at full light and a wall that looks east at six tenths, and a pale one under
+the same lamp outshines the pier; no lamp of the hall shows its glass to the door; and the
+doorway's two reveals, which close the picture left and right, are dark panelling: one looks out
+of a dark frame into the hall.
 
   floor     The hall lays its own from wall to wall round the pier's foot (the shell's shows in
             the stair hall only). The station's emblem under the orrery, in thin brass line: an
@@ -408,6 +410,26 @@ def _dado(canvas, origin):
                     canvas.set(ox + x, oy + y, oz + z, st(B.WAINSCOT, facing=ACROSS[wall], half="bottom", open="true"))
 
 
+def _reveals(canvas, origin):
+    """The two reveals of the main doorway, in the inner leaf, lined with the dado's dark panelling
+    from the sill to the head. The first look stands in the doorway, and the two faces beside it,
+    bare stone in the pier's own tone, were a third of the picture; lined, one looks out of a dark
+    frame into the hall (cr3, #74066). In both versions: iron there is two black bars, and no
+    further out than the leaf's one cell, where the door's frame and leaves are (facade, #74675).
+    The stone is the facade's and is not touched: the panels stand in the doorway's own cells."""
+    from ..main import facade
+    ox, oy, oz = origin
+    for d in (facade.doors() if hasattr(facade, "doors") else ()):
+        if d["front"] != "east" or d["kind"] != "door" or len(d["cells"]) < 3:
+            continue
+        dx, dz = d["inward"]
+        cells = sorted((x + dx, z + dz) for x, z in d["cells"])
+        for (x, z), wall in ((cells[0], "north"), (cells[-1], "south")):
+            for y in range(d["y"][0], d["y"][1] + 1):
+                if not canvas.has(ox + x, oy + y, oz + z):
+                    canvas.set(ox + x, oy + y, oz + z, st(B.WAINSCOT, facing=ACROSS[wall], half="bottom", open="true"))
+
+
 def _door_emblem(canvas, origin):
     """The hall's second emblem: one carved block in the inner leaf over the middle of the doorway."""
     door = doorway()
@@ -712,6 +734,7 @@ def dress(canvas, origin=(0, 0, 0), version=None):
     n += _furnish(canvas, origin, style)
     if style["dado"]:
         _dado(canvas, origin)
+    _reveals(canvas, origin)
     _door_emblem(canvas, origin)
     n += _ceiling(canvas, origin, version, style)
     n += _charts(canvas, origin)
