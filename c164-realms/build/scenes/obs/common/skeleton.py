@@ -326,9 +326,26 @@ V6 = dict(pos=(66.5, LOWER_GROUND + 3 + EYE, 6.5), look_at=(74.4, 8.0, 33.2))   
 # The station between the leaves stays a shot of the hall's own test scenes, as does v7_in, one
 # block further in than this.
 V7 = dict(pos=(17.5, GROUND + EYE, AXIS_Z), look_at=(9.0, 6.0, AXIS_Z))     # the eye at y 1.62
+# V8, the dome room (S2 11-16, asked by the dome room's line): the station the great refractor
+# works out for itself, machines/scope.V8["a"], copied here so that the board stands where the dome
+# room's and the refractor's own v8 stand and where their checks measure. On the observing floor
+# east of the pier, 2.1 blocks north of the plane the tube swings in: the tube runs slantwise up to
+# the comet in the slit. From beside that plane, where the render station's proposal stood, the
+# tube pointed at the lens and hid half the slit (the real client's picture of 09:38). The
+# refractor's line keeps the two equal: when its station moves, this one is moved with it.
+V8 = dict(pos=(12.7, ROOF_STAND + EYE, -0.7), look_at=(0.0, 25.2, 0.9))     # the eye at y 19.62
 # V11, the look back from the south lookout (A4's, approved by A0 #19260.6): the main building in
 # three-quarter view fills the middle third, the afterglow is on the left.
 V11 = dict(pos=(45.5, SOUTH_LOOKOUT["feet"] + EYE, 52.5), look_at=(6, 14, 0.5))     # the eye at y -3.38
+# V12, the whole island (A0 11-16 10:31, set on the real client's pictures taken in the exported
+# save A5): from the north-east, low, slantwise across the site. One picture holds the cable
+# station, the power house and its smoke, the lamps of both terraces, the grand stair, the front,
+# both domes, the clock tower, the mast and the island's cliff; the afterglow and the far ridges
+# on either side stand along the sky's edge, the cloud sea fades into the haze and shows no rim.
+# Everything in sight is within 146 blocks of the station, and its x is under 128. The station it
+# replaces stood high over the south-east, (80, 90, 80), and saw roofs and a small building; a
+# scene that wants that one keeps it as its own shot, called high.
+V12 = dict(pos=(126.0, 44.0, -50.0), look_at=(22.0, 4.0, 0.0))
 
 
 def v1_bearing(x, z):

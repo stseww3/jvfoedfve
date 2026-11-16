@@ -11,12 +11,14 @@ How it is made, from the seat up:
 
   foot    the four legs come straight down to the four corners of the iron seat, and each stands
           on a porcelain pot of its own: the whole mast is the radiator and is insulated from the
-          ground. It is fed at one shoe (a copper lead to the lead-in post of site/mastbase), and
-          a spark gap bridges the pot of the next leg. That is why the guys are broken by eggs of
-          porcelain. Two belts and two bays of diagonals tie the legs over the shoes: the shaft
-          goes on to the seat, square. It does not run to a point over one base insulator: V1
-          sees nothing under y 3 and would see the lattice thin out to nothing on the terrace's
-          edge, and a lattice that is thin at both ends is the jib of a crane.
+          ground. It is fed at one shoe: a brass lead comes over from the lead-in post of
+          site/mastbase, where it ends on a porcelain bottle that stands on the post's iron head
+          (no live metal of this mast touches iron that is earthed), and a spark gap bridges the
+          pot of the next leg. That is why the guys are broken by eggs of porcelain. Two belts
+          and two bays of diagonals tie the legs over the shoes: the shaft goes on to the seat,
+          square. It does not run to a point over one base insulator: V1 sees nothing under y 3
+          and would see the lattice thin out to nothing on the terrace's edge, and a lattice that
+          is thin at both ends is the jib of a crane.
   shaft   square and not tapered, the leg axes 2 blocks apart, a belt every 3 blocks, 16 bays of
           crossed diagonals with a plate at every joint and where the diagonals cross: y 8.5 to
           56.5. Four pieces of 12 blocks, shown four times their size (px = 4 keeps 16 texels to
@@ -35,7 +37,8 @@ How it is made, from the seat up:
           belt 5 (y 23.5). The anchors are close to the foot: a guy to the top would run within 5
           degrees of its leg and read from far as the mast seen double, so they stop low, where
           the four of them make a tent that stands clear of the shaft. At the anchor a clamp on
-          the eye bolt, a bottle screw and an egg; at the leg a clamp on the corner of the joint;
+          the eye bolt, a bottle screw (its body is open at the sides: the ends of the two
+          screws show in the slot) and an egg; at the leg a clamp on the corner of the joint;
           one more egg a third of the way down from there; the cable between is drawn out, two
           texels thick and of dark iron, so that it holds as a line against the sky. All of it
           keeps north of z -35: nothing crosses the court or the sight lines of V1 and V2 to the
@@ -67,8 +70,7 @@ a leg of 5 texels is about two pixels wide in a 720p picture, the pipe block lit
 
 What this module reads from its neighbour site.mastbase, with the same numbers as a fallback while
 it is not in the tree: TOP, GUY_ANCHORS and ANTENNA_HOOK. What the clocks' test scenes read from
-this one: build, models, BASE_Y, GUY_ANCHORS, LEAD_POST, and TOWER_HOOK, which is kept for them
-alone (see there).
+this one: build, models, BASE_Y, GUY_ANCHORS and LEAD_POST.
 """
 import functools
 import math
@@ -99,10 +101,6 @@ BASE_Y = float(getattr(_base, "TOP", G + 2.0))  # 2.0: the top face of the seat
 GUY_ANCHORS = [tuple(float(v) for v in p) for p in getattr(
     _base, "GUY_ANCHORS", [(FX + sx * 4 + 0.5, G + 2.0, FZ + sz * 4 + 0.5) for sx in (-1, 1) for sz in (-1, 1)])]
 LEAD_POST = tuple(float(v) for v in getattr(_base, "ANTENNA_HOOK", (FX - 1.5, G + 4.0, FZ + 2.5)))
-# Where the wire to the clock tower hooked on to it, two blocks north of the tower's north-east
-# corner under the cornice at y 31. The mast hangs no wire any more and does not use the point; the
-# name stays until the clocks' test scene has stopped reading it.
-TOWER_HOOK = (S.CLOCK_SHAFT_X[1] + 0.5, 30.5, S.CLOCK_SHAFT_Z[0] - 2.0)         # (16.5, 30.5, -35.0)
 
 # ---- the lattice -----------------------------------------------------------------------------------
 SCALE = 4                       # the lattice pieces are shown this large; px = SCALE keeps 16 texels to the block
@@ -149,6 +147,9 @@ BELT_CELLS = [(FX, FZ - 1, "x"), (FX, FZ + 1, "x"), (FX - 1, FZ, "z"), (FX + 1, 
 # ---- guys ------------------------------------------------------------------------------------------
 STAY_CABLE = 13.0               # texels from the eye bolt to where the cable leaves the bottle screw's jaw
 STAY_EGG = 19.0                 # ... and to the guy's lower egg
+STAY_BARREL = (6.0, 11.0)       # the bottle screw's body, in texels from the eye bolt
+STAY_SLOT = (7.0, 10.0)         # ... and the slot through its two sides, a texel wide: a texel of each screw's end
+#                                 shows in it, and a texel of dark between them
 EGG_LEN = 7.0
 EGG_DROP = 7.0                  # blocks from the leg down the guy to its upper egg: well clear of the shaft
 GUY_CLAMP = 0.5                 # units of the guy's model, which is drawn out seven times: 3.5 texels of clamp
@@ -195,8 +196,11 @@ def _flat(name, step):
 CABLE = _flat("iron", 1)                        # the guys: the iron ramp's second step. On a face that looks
 #                                                 down or away from the game's two lamps the darkest step
 #                                                 comes out all but black
-LEAD = _flat("old_copper", 2)                   # the feed lead at the foot, seen from near only: a darker
-#                                                 step reads as a strip of wood at night
+LEAD = _flat("brass", 2)                        # the feed lead at the foot, seen from near only: a step under
+#                                                 its terminal. Old copper has too much blue in it: the face
+#                                                 that looks away from the light came out grey under the night
+SLOT = _flat("iron", 0)                         # the dark in the bottle screw's slot
+SCREW = _flat("iron", 2)                        # ... and the ends of the two screws in it
 STUD = _flat("iron", 4)                         # rivet heads
 RED = [_flat("signal_glow", i) for i in range(len(P.RAMPS["signal"]))]
 
@@ -233,6 +237,14 @@ def lead_lug():
     """The terminal on a shoe of the foot, where the lead to the lead-in post starts."""
     sx, sz = _corner(LEAD_POST)
     return AX + sx * FOOT_LUG[0] * U, BASE_Y + FOOT_LUG[1] * U, AZ + sz * FOOT_LUG[0] * U
+
+
+def lead_bottle():
+    """The porcelain bottle on the lead-in post: its middle and the middle of its upper cap. It is
+    the guys' egg stood upright on the post's iron head (LEAD_POST); the lead ends in the cap, so
+    the live lead and the earthed post have porcelain between them."""
+    x, y, z = LEAD_POST
+    return (x, y + EGG_LEN / 32.0, z), (x, y + (EGG_LEN - 0.5) / 16.0, z)
 
 
 # ---- the lattice pieces ----------------------------------------------------------------------------
@@ -471,14 +483,21 @@ def _insulator():
 def _stay():
     """What a guy ends in at its anchor. Anchor: the top of the eye bolt; +z runs up the guy. A clamp
     on the bolt's head, a link, a bottle screw between its two jaws and the guy's lower egg. The
-    cable starts in the upper jaw, at STAY_CABLE, and runs through the egg."""
+    bottle screw's body is slotted through from side to side (the two faces that look along the
+    pad's edge, not at the mast), and in the slot the ends of the two screws stand a texel apart.
+    The cable starts in the upper jaw, at STAY_CABLE, and runs through the egg."""
     m = M.Model(PREFIX + "stay")
     m.box((-2.5, -2.5, -3.0), (2.5, 2.5, 0.5), IRON_D)
     m.box((-1.0, -1.0, 0.5), (1.0, 1.0, 3.0), IRON)
     m.box((-1.5, -1.5, 3.0), (1.5, 1.5, 4.5), IRON_D)
-    m.box((-1.0, -1.0, 4.5), (1.0, 1.0, 6.0), IRON)
-    m.tube("z", (0.0, 0.0), 6.0, 11.0, 2.0, IRON)
-    m.box((-1.0, -1.0, 11.0), (1.0, 1.0, 12.5), IRON)
+    b0, b1 = STAY_BARREL
+    s0, s1 = STAY_SLOT
+    m.box((-1.0, -1.0, 4.5), (1.0, 1.0, b0), IRON)
+    m.tube("z", (0.0, 0.0), b0, b1, 2.0, IRON)
+    # the slot in the body's two sides, drawn on its two flats: a screw's end, the dark, a screw's end
+    for z0, z1, mat in ((s0, s0 + 1.0, SCREW), (s0 + 1.0, s1 - 1.0, SLOT), (s1 - 1.0, s1, SCREW)):
+        m.box((-2.05, -0.5, z0), (2.05, 0.5, z1), mat, skip="nsud")
+    m.box((-1.0, -1.0, b1), (1.0, 1.0, 12.5), IRON)
     m.box((-1.5, -1.5, 12.5), (1.5, 1.5, STAY_CABLE + 1.0), IRON_D)
     _egg(m, STAY_EGG)
     return m
@@ -579,7 +598,7 @@ def _guys(canvas, origin):
 
 
 def build(canvas, origin=(0, 0, 0), version=None):
-    """Place the radio mast; returns the number of display entities (20). version "a" or "b" picks
+    """Place the radio mast; returns the number of display entities (21). version "a" or "b" picks
     how the shaft is made (see the top of the module); left out it is DEFAULT."""
     version = version or DEFAULT
     if version not in VERSIONS:
@@ -588,5 +607,8 @@ def build(canvas, origin=(0, 0, 0), version=None):
     n += _place(canvas, "head", (AX, HEAD_Y, AZ), origin, scale=float(SCALE))
     n += _lamp(canvas, origin)
     n += _guys(canvas, origin)
-    n += _stretch(canvas, "lead", lead_lug(), LEAD_POST, origin)        # the feed lead from the shoe to the post
+    # the feed lead from the shoe to the bottle on the lead-in post
+    middle, cap = lead_bottle()
+    n += _lay(canvas, "insulator", middle, (middle[0], middle[1] + 1.0, middle[2]), origin)
+    n += _stretch(canvas, "lead", lead_lug(), cap, origin)
     return n

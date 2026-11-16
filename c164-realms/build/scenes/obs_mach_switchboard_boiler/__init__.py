@@ -82,6 +82,8 @@ def shots():
     shot("flank", (fx - 1.5, FY + EYE, zb + r + 3.2), (fx + 2.2, h + 0.3, zb))  # the south boiler's side
     shot("dome", (fx + 0.6, FY + 4.6, zb + r + 2.6), (fx + boiler.DOME_X, h + r + 0.5, zb))
     shot("flues", (fx + 6.6, FY + EYE, zb + 2.6), (fx + 4.6, h + 0.6, zb - 1.0))    # behind the boilers
+    shot("guard", (fx + 2.4, FY + EYE, zb + r + 1.9), (fx + 7.0, FY + 0.9, zb + 0.4))   # the railing to the east wall
+    shot("alley", (fx - 0.6, FY + EYE, (za + zb) / 2.0), (fx + 4.5, FY + 0.9, (za + zb) / 2.0))  # between the boilers
     shot("board", (bx + 5.0, FY + EYE, bz), (bx, FY + 2.4, bz))                 # the board, face on
     shot("board_near", (bx + 2.2, FY + EYE, bz + 1.6), (bx, FY + 2.6, bz))
     shot("board_side", (bx + 1.6, FY + EYE, board.Z[0] - 2.2), (bx, FY + 2.2, bz - 0.5))
