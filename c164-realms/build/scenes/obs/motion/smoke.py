@@ -142,9 +142,11 @@ BRUSH_R = 0.25                  # the commutator's radius, where a brush touches
 # The flashes of a BREATH at the brushes: the tick and the brush (1 the upper, -1 the lower). They
 # fall on ticks the chain runs on anyway (the leak's, the sparks', the valve's): what happens at
 # the same moment ten blocks apart is not seen to, and a tick of its own costs the loop a command.
-BRUSH_FLASHES = ((20, 1), (71, -1), (88, 1), (109, -1), (110, -1), (139, 1))
+# No tick of the BREATH sends more than three bright particles, sparks and flashes together (the
+# card: three or four at most), and a spot is not lit again before its last flash is out.
+BRUSH_FLASHES = ((20, 1), (47, -1), (80, 1), (96, -1), (110, 1), (139, -1))
 BRUSH_SCATTER = (0.03, 0.01, 0.06)          # blocks: along the commutator more than across it
-SWITCH_FLASHES = (13, 110)                  # ... and at the jaws of the open switch
+SWITCH_FLASHES = (13, 88)                   # ... and at the jaws of the open switch
 SWITCH_SCATTER = (0.01, 0.03, 0.02)
 
 
