@@ -1,0 +1,8 @@
+gate machines/meridian-astrograph 493afe42: the merged tree 493afe42, the assembly as it was fa1d91ce
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] scope    29 of 31 files are the card's own
+                    not this card's file: A build/scenes/obs/machines/astro.py
+                    not this card's file: A build/scenes/obs/machines/meridian.py
+check.py: 55 scenes in 41 s: 55 pass (34 with warnings)
+pictures: [PASS] selfshots obs_mach_meridian_astrograph at 493afe42: 21 of 21 kept pictures are what the code draws
+result: PASS
