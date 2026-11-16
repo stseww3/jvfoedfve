@@ -69,10 +69,12 @@ build() is what the master scene calls; it places nothing while MOVED_IN is off.
 build/scenes/obs_int_batteryroom, dresses a slice of the real building cut out round the cavity.
 """
 import functools
+import math
 import zlib
 
 from artkit import models as M
 from artkit.blocks import st
+from artkit.nbtw import Float
 from artkit.pixelart import Frames, Sprite
 
 from ..common import blocks as B
@@ -93,6 +95,11 @@ PREFIX = "int_batteryroom_"
 PX = 1 / 16.0
 VIEW = M.NEAR              # the band of view distance of all the room places (the assembly lowers them after build()):
 #                            32 blocks. The room is 22 from corner to corner, and no window of it shows anything outside
+SMALL_WITHIN = 15.5        # blocks. What stands this near to every eye that can look at it is drawn 16 blocks far
+#                            and no further (M.SMALL): the board views in front of the building count through the
+#                            wall whatever is drawn (s2, 11-16 13:12: V3 counted 52 of this room, V4 94)
+HALL_APPROACH = 3          # cells of the star hall before the door one looks in from, as well as from the room
+SMALL_PIECES = ("cleat", "entry", "taps")       # a few pixels each: in the small band wherever they are
 
 # ---- the room: the cavity under the time room (main/shell.ROOMS["time room"]), a storey lower
 X0, Z0, X1, Z1 = shell.ROOMS["time room"]["box"]    # 2, -25, 13, -7
@@ -551,6 +558,7 @@ def build_batteryroom(c, origin=(0, 0, 0), roles=B):
     ox, oy, oz = origin
     lights, n = [], 0
     own = _models()
+    first = len(c.entities)
 
     def put(x, y, z, state):
         c.set(ox + x, oy + y, oz + z, state)
@@ -633,7 +641,34 @@ def build_batteryroom(c, origin=(0, 0, 0), roles=B):
 
     # ---- the door's iron leaf, open, flat against the south wall (interiors/_doorcase, main/shell's kit)
     n += _doorcase.iron_place(c, PREFIX, DOOR, HINGE, origin=origin)
+    _draw_near(c, first, origin)
     return {"entities": n, "lights": lights}
+
+
+def eyes():
+    """Where an eye can be that looks at the room: over every cell of its floor a person stands on,
+    in the doorway, and over the cells of the star hall before the door (HALL_APPROACH of them)."""
+    out = [(S.mid(x), FEET + S.EYE, S.mid(z)) for x in range(X0, X1 + 1) for z in range(Z0, Z1 + 1) if not in_bank(x, z)]
+    return out + [(S.mid(HALL_DOOR[0]), FEET + S.EYE, S.mid(HALL_DOOR[1] + k)) for k in range(HALL_APPROACH + 1)]
+
+
+def _draw_near(c, first, origin):
+    """The display entities placed since `first` that no eye of eyes() is further from than
+    SMALL_WITHIN go down to the small band: the middle of the room. Nobody who can see them is too
+    far to have them drawn, and the views that stand in front of the building, 17 blocks and more
+    from the room, no longer count them. So do the SMALL_PIECES, wherever they are. What else
+    stands towards the room's ends keeps its band (the assembly's, VIEW). Returns how many it
+    lowered."""
+    look, n = eyes(), 0
+    always = {PREFIX + name for name in SMALL_PIECES}
+    for x, y, z, nbt in c.entities[first:]:
+        if nbt.get("id") not in M.DISPLAY_IDS or float(nbt.get("view_range", 1.0)) <= M.SMALL:
+            continue
+        at = (x - origin[0], y - origin[1], z - origin[2])
+        if M.shown_model(nbt) in always or max(math.dist(at, eye) for eye in look) <= SMALL_WITHIN:
+            nbt["view_range"] = Float(M.SMALL)
+            n += 1
+    return n
 
 
 def _offer(canvas, cell, level, why, rank):
