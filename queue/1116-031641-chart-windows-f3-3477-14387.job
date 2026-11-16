@@ -1,0 +1,3 @@
+branch=cursor/c164-chart-windows-f3-3477
+head=008cf60bfa7ad69377e35bad3aa9d06294d91835
+args=--limit 600 --tail 14 --wip python tools/selfshots.py obs_mat_windows --only furnace\,close_furnace\,furnace_slant\,furnace_foot --out renders/_wip 
