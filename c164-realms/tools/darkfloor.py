@@ -63,27 +63,33 @@ KINDS = ("floor", "step", "threshold")
 ROOFING = ("_stairs", "_slab", "_trapdoor")     # shapes with a whole face: the sky's light is not let through them
 SKY_NEAR = 13           # the sky's light from which a cell under an overhang counts as lit by the sky
 
-# Who lights which heap, as sky/lights (c331) dealt them out on 11-16 (#74750) and cr2 after him
-# (the plate vault: floor 5, thresholds 7 as everywhere, its darkroom end at 5 to 6). The first line
+# Who lights which heap, as sky/lights (c331) dealt them out on 11-16 (#74750, #75829) and cr2 after
+# him (the plate vault: floor 5, thresholds 7 as everywhere, its darkroom end at 5 to 6). The first line
 # that fits a cell names its owner: (who, the section's name starts with, the box
 # (x0, y0, z0, x1, y1, z1) in the building's own coordinates or None for the whole section).
 NOBODY = "未分"
+BATCH = "lights：这批 22 盏"            # his lamps of the ways that are at the gate (#75829): ring stair, cross gallery, roofs, ...
 OWNERS = (
     ("不补（总监 #58129）", "room: star hall", (12, 0, -5, 15, 0, 5)),        # inside the east doors
-    ("lights：路灯 7 盏", "room: star hall", (2, 0, -3, 3, 0, 3)),            # the pier's foot
-    ("lights：路灯 7 盏", "room: star hall", (1, 7, -4, 7, 17, 4)),           # the ring stair and the deck under its runs
-    ("lights：路灯 7 盏", "room: star hall", (2, 7, -5, 3, 8, 5)),            # where the cross gallery meets the side galleries
-    ("lights：路灯 7 盏", "in-H", None),                                      # the ring stair
-    ("lights：路灯 7 盏", "room: stair hall", (-1, 7, -5, 1, 8, 5)),          # the cross gallery
+    ("不补（总监 #58129）", "", (16, 0, -5, 17, 0, 5)),                       # the east doorways: the frame darker than what it frames
+    (BATCH, "room: star hall", (2, 0, -3, 3, 0, 3)),                          # the pier's foot
+    (BATCH, "room: star hall", (1, 7, -4, 7, 17, 4)),                         # the ring stair and the deck under its runs
+    (BATCH, "room: star hall", (2, 7, -5, 3, 8, 5)),                          # where the cross gallery meets the side galleries
+    (BATCH, "in-H", None),                                                    # the ring stair
+    (BATCH, "room: stair hall", (-1, 7, -5, 1, 8, 5)),                        # the cross gallery
     ("lights：astro 找位置", "room: stair hall", (-7, 1, -5, 1, 13, 5)),      # the mezzanine and the two flights
     ("hall：下一次交付", "room: stair hall", (-7, 0, -5, 1, 0, 5)),           # the way to the west door
     ("hall：下一次交付", "in-C", None),
     ("m2", "room: time room", None),
+    ("m2", "", (7, 7, -6, 8, 7, -6)),                                         # the time room's threshold: his lamp beside the door
+    ("chart", "", (7, 7, 6, 8, 7, 6)),                                        # the chart room's threshold
     ("vault", "room: plate vault", None),                                     # cr2, #75753: the vault is a way like the others
+    ("vault", "", (7, 0, 6, 7, 1, 6)),                                        # its threshold
     ("power", "in-L", None),
-    ("dome", "in-I", None),                                                   # the roof round the dome room (the room itself is not counted)
-    ("dome", "in-J", None),
-    ("dome", "in-K", None),
+    ("dome、lights：这批屋面 8 盏", "in-I", None),                            # the roof round the dome room (the room itself is not counted)
+    ("dome、lights：这批屋面 8 盏", "in-J", None),
+    ("dome、lights：这批屋面 8 盏", "in-K", None),
+    ("lights：下一轮", "out-E", (-21, -3, -35, -13, -1, -27)),                # under the water tower: a caged lamp on a leg
     ("不补（观测室）", "in-M", None),
 )
 # the rooms' own packages (plan/ROSTER.md), for what sky/lights did not name: shown with a star
@@ -508,7 +514,8 @@ def main():
     if lost:
         md.append(f"- 路线上站不住人的点（没有从那里起算）：{len(lost)} 个，如 {'；'.join(lost[:4])}")
     md += ["", "## 按归属", "",
-           "归属照 lights（c331）11-16 的分法（#74750）；带 * 的是他没点到、按房间主人填的；「未分」是还没人认的。", "",
+           "归属照 lights（c331）11-16 的分法（#74750、#75829）和 cr2 的（底片库算路，#75753）；"
+           "带 * 的是没点到、按房间主人填的；「未分」是还没人认的。", "",
            "| 归谁 | 格数 | 堆数 |", "| --- | --- | --- |"]
     md += [f"| {who} | {v['cells']} | {v['heaps']} |" for who, v in by_owner.items()]
     md += ["", "每堆一行：范围（x，y，z）、格数、最暗的块光、地面/台阶/门槛各几格、归谁、比上一版（上一版这一堆的格数 → 现在的；"
