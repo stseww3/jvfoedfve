@@ -65,17 +65,19 @@ BULB_FACE = Sprite("lamp_bulb_face",
 # The light and dark of a globe is what is painted: its layers from the lowest up, as steps of the
 # opal ramp, an even number of them (RL.Globe closes a lower layer from below and an upper one
 # from above; a layer across the middle would be open below). A globe that stands on its gallery
-# has the hot belt round its middle, the foot in the gallery's shadow darkest, the crown a step
-# over the foot. A globe that hangs is brightest below, where it is looked at from, and goes dim
-# into its gallery.
+# has the hot belt round its middle and goes a step dimmer layer by layer towards foot and crown,
+# both alike: it is lit from within, and a street lamp or a bracket is looked at from below, so
+# a foot darker than the crown (the first pictures) dimmed the half that is seen. A globe that
+# hangs is brightest below, where it is looked at from, and goes dim into its gallery.
 GLOBE_SIDES = 12        # RL.Globe's two corner models take upright faces a twelfth of a turn apart
 GLOBES = {              # lamp: the middle of the globe (blocks from the anchor, in the lamp's frame), radius, layers
-    "street": dict(at=(0.0, 4.375, 0.0), radius=7.0 / 16.0, tones=(0, 1, 2, 4, 4, 3, 2, 1)),
-    "post": dict(at=(0.0, 6.25 / 16.0, 0.0), radius=2.5 / 16.0, tones=(0, 2, 4, 4, 3, 1)),
-    "bracket_a": dict(at=(0.0, 7.5 / 16.0, 11.0 / 16.0), radius=4.5 / 16.0, tones=(0, 1, 2, 4, 4, 3, 2, 1)),
+    "street": dict(at=(0.0, 4.375, 0.0), radius=7.0 / 16.0, tones=(1, 2, 3, 4, 4, 3, 2, 1)),
+    "post": dict(at=(0.0, 6.25 / 16.0, 0.0), radius=2.5 / 16.0, tones=(1, 3, 4, 4, 3, 1)),
+    "bracket_a": dict(at=(0.0, 7.5 / 16.0, 11.0 / 16.0), radius=4.5 / 16.0, tones=(1, 2, 3, 4, 4, 3, 2, 1)),
     "pendant_a": dict(at=(0.0, -19.25 / 16.0, 0.0), radius=5.0 / 16.0, tones=(4, 4, 3, 3, 3, 2, 2, 1, 1, 0)),
 }
 GLOBE_PARTS = ("_globe_side0", "_globe_side1", "_globe_under")      # what RL.Globe calls the three
+GLOBE_SEED = 4001       # of the ledges in the lamp's model: a piece of their own, which nothing turns (_kit.settle)
 
 
 @functools.lru_cache(maxsize=None)
@@ -103,7 +105,7 @@ def _globe_top(m, name):
         rr, y = r * math.sqrt(1.0 - ((t0 + t1) / 2.0) ** 2), cy + r * t1
         for k in range(GLOBE_SIDES // 2):
             m.box((cx - rr * hw - lap, y - skin, cz - rr - lap), (cx + rr * hw + lap, y, cz + rr + lap), OPAL[tone],
-                  rot=("y", 360.0 * k / GLOBE_SIDES, (cx, y, cz)), skip="nsewd", seed=1, grain="x",
+                  rot=("y", 360.0 * k / GLOBE_SIDES, (cx, y, cz)), skip="nsewd", seed=GLOBE_SEED, grain="x",
                   emit=15, shade=False)
     return m
 
@@ -258,8 +260,10 @@ def _pendant_a():
     m.tube("y", (0, 0), -14.0, -12.0, 2.0, BRASS)                       # holder
     K.switch_key(m, (-2.0, -13.0, 0), side=-1.0)
     m.tube("y", (0, 0), -15.0, -14.0, 3.5, BRASS_D)                     # gallery
-    _globe_top(m, "pendant_a")                                          # the globe: -24.25 to -14.25 (GLOBES)
-    m.tube("y", (0, 0), -24.75, -24.0, 1.0, BRASS)                      # the button that closes it below
+    # the globe: -24.25 to -14.25 (GLOBES). Nothing closes it below but its own glass: a brass
+    # button there, its underside at four tenths of its tone, was the bull's eye of a target
+    # for whoever stood under the lamp
+    _globe_top(m, "pendant_a")
     return m
 
 
@@ -385,7 +389,9 @@ HANG = 3.0 / 16.0       # a festoon under a ceiling runs this far below it: the 
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    built = {PREFIX + name: spec["build"]() for name, spec in SPEC.items()}
+    # settled: the slanting flats of shafts, galleries and rings are lit the same in every lamp
+    # (_kit.settle). Not the glass: its faces lie in frames of their own
+    built = {PREFIX + name: K.settle(spec["build"]()) for name, spec in SPEC.items()}
     for name in GLOBES:
         built.update({part.m.name: part.m for part in _glass(name)})
     return built
