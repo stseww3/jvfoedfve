@@ -780,9 +780,12 @@ def station(canvas, seat=None, origin=(0, 0, 0)):
 # blocks off, its figure read from three.
 DOOR_PLATE = "1"
 DOOR_PLATE_UP = 0.5             # its middle over the top of the plinth: in the first course of pale stone
-# The light it is shown in, (sky, block), as the great piece over it says its own: a front that
-# looks east shows at half, and in the light of its cell the plate's cream came out the tone of
-# the stone it hangs on (0.30 beside 0.28 in V4), a dark patch with no edge and no figure.
+# The light it is shown in, (sky, block), the great piece's over it (GREAT_SHOWN): a front that
+# looks east shows at half, and in the light of its own cell the plate's cream came out the tone
+# of the stone it hangs on (0.30 beside 0.30 in V4): a dark patch with no edge and no figure. In
+# this light, offline: the figure 0.42, the edge line 0.39, the field 0.10, the stone 0.30 -- and
+# the fanlight over the door 0.47, which the plate is to stay under (c332). A block light of 13
+# or more brings the figure to 0.455.
 DOOR_PLATE_SHOWN = (15, 12)
 
 
