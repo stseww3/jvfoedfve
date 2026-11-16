@@ -110,7 +110,7 @@ def _plain_sky(env, dx, dy, dz):
 
 
 @njit(cache=True)
-def _trace(w, q, px, py, pz, dx, dy, dz, band, behind, sky):
+def _trace(w, q, px, py, pz, dx, dy, dz, band, behind, beyond):
     """raytrace.trace with the fog of the shaders: every hit is taken towards the band of the
     ray's direction by the fog's depth and towards what is painted behind it by the short law and
     the rim; where the ray meets nothing the painted sky itself is seen, with the stars and the
@@ -134,7 +134,7 @@ def _trace(w, q, px, py, pz, dx, dy, dz, band, behind, sky):
     elif pz < 0.0 or pz >= nz:
         t1 = -1.0
     t1 = min(t1, q[Q_FAR + 1] / max(math.sqrt(dx * dx + dz * dz), abs(dy), 1e-9))
-    sr, sg, sb = sky[0], sky[1], sky[2]
+    sr, sg, sb = beyond[0], beyond[1], beyond[2]
     if dy > 0.0:
         fr, fg, fb = R.sky_colour(w, dx, dy, dz)
         pr, pg, pb = _plain_sky(env, dx, dy, dz)
@@ -220,12 +220,12 @@ def _trace(w, q, px, py, pz, dx, dy, dz, band, behind, sky):
 
 
 @njit(cache=True, parallel=True)
-def _draw(w, q, cam, rays, band, behind, sky, out):
+def _draw(w, q, cam, rays, band, behind, beyond, out):
     height, width = out.shape[0], out.shape[1]
     for j in prange(height):
         for i in range(width):
             n = j * width + i
-            r, g, b = _trace(w, q, cam[0], cam[1], cam[2], rays[n, 0], rays[n, 1], rays[n, 2], band[n], behind[n], sky[n])
+            r, g, b = _trace(w, q, cam[0], cam[1], cam[2], rays[n, 0], rays[n, 1], rays[n, 2], band[n], behind[n], beyond[n])
             out[j, i, 0] = r
             out[j, i, 1] = g
             out[j, i, 2] = b
