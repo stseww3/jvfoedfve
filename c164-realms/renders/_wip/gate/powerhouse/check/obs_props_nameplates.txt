@@ -1,0 +1,20 @@
+check obs_props_nameplates at d90b902
+[PASS] regen     126 blocks, 7 entities, 45 models, 831 resource-pack files, 7 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.0 s)
+[PASS] conflicts the scene writes 830 files, no file written twice, the folders and the prefix of props are kept (11 packages run alone)
+[PASS] strays    174 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      619 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    3 kinds of block placed, all in the occupancy table
+[SKIP] flatwall  a test scene of props: its sample walls and backdrops are meant to be flat
+[WARN] entities  7 display entities, 38 models never placed
+                 prop_nameplate_01 x1: 96/96/96 pixels to the block along x/y/z, not 16
+                 prop_nameplate_13 x1: 96/96/96 pixels to the block along x/y/z, not 16
+                 prop_nameplate_14 x1: 96/96/96 pixels to the block along x/y/z, not 16
+                 prop_nameplate_31 x1: 96/96/96 pixels to the block along x/y/z, not 16
+                 prop_nameplate_41 x1: 96/96/96 pixels to the block along x/y/z, not 16
+                 prop_nameplate_61 x1: 96/96/96 pixels to the block along x/y/z, not 16
+                 prop_nameplate_73 x1: 96/96/96 pixels to the block along x/y/z, not 16
+[PASS] views     4 shots, most display entities in view: 7 (two), limit 600; counted without what walls hide; the game draws up to 7 (one): a display entity without width and height is drawn outside the view too
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    nothing moves
+result: PASS (0 failed, 1 with warnings)
