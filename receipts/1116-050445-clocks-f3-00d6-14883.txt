@@ -1,0 +1,45 @@
+a0job 1116-050445-clocks-f3-00d6-14883: cursor/c164-clocks-f3-00d6 @ e2a9c732 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.12 0.18 0.35, Python 3.12.3
+  [cloud_setup    1s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- cd build && python ../tools/check.py --scene obs_mach_clocks | grep -E "^\[(FAIL|WARN)|regen|entities|views|motion|^result|chain of" | cut -c1-260 ; python ../tools/check.py --scene obs_mach_clocks_b | grep -E "^\[(FAIL|WARN)|^result" 
+from scenes.obs_mach_clocks import build
+from scenes.obs.machines import clock
+from scenes.obs.motion import _kit as MK
+c = build()
+for p in c.motion.parts:
+    if p.name.startswith("mach_clock_master"):
+        print(p.name, p.kind, "cycle", p.cycle, "steps", len(p.steps), "lead", p.lead, "turn %.1f" % p.turn, "stray px %.3f" % (p.stray * 16.0), "first steps", [(t, d, round(a, 2)) for t, d, a, _s in p.steps[:3]], "last", [(t, d, round(a, 2
+print("strikes", clock.strikes())
+print("quarters", clock.quarters())
+m = clock.models()["mach_clock_master_hand_s"]
+print("seconds hand:", len(m.parts), "elements")
+try:
+    clock.drive(c, "x")
+except ValueError as e:
+    print("refused:", e)
+EOF ---- exit 0, 10 s, last 70 lines of 19:
+[PASS] regen     5766 blocks, 42 entities, 23 models, 757 resource-pack files, 496 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.4 s)
+[PASS] entities  42 display entities, 5 drawn out along one axis, 3 models never placed
+[PASS] views     15 shots, most display entities in view: 41 (balls_pair), limit 600; counted without what walls hide; the game draws up to 42 (master_close): a display entity without width and height is drawn outside the view too
+[PASS] motion    14 parts and 1 points on 6 chains, 484 function files; 7 commands in the busiest tick (limit 120), 0.8 a tick on average (limit 40)
+                 chain of 40 ticks: 8 functions, 18 commands a cycle, starts 1 ticks after start
+                 chain of 80 ticks: 2 functions, 5 commands a cycle, starts 4 ticks after start
+                 chain of 300 ticks: 12 functions, 25 commands a cycle, starts 3 ticks after start
+                 chain of 1200 ticks: 60 functions, 121 commands a cycle, starts 2 ticks after start
+                 chain of 6000 ticks: 36 functions, 193 commands a cycle, starts 8 ticks after start
+                 chain of 72000 ticks: 360 functions, 2161 commands a cycle, starts 9 ticks after start
+result: PASS (0 failed, 0 with warnings)
+result: PASS (0 failed, 0 with warnings)
+mach_clock_master_hand_h spin cycle 72000 steps 360 lead 2 turn 1.0 stray px 0.000 first steps [(0, 202, -1.01), (200, 202, -2.01), (400, 202, -3.01)] last [(71800, 202, -360.01)]
+mach_clock_master_hand_m spin cycle 6000 steps 30 lead 2 turn 12.1 stray px 0.017 first steps [(0, 202, -12.12), (200, 202, -24.12), (400, 202, -36.12)] last [(5800, 202, -360.12)]
+mach_clock_master_hand_s turn cycle 1200 steps 60 lead 2 turn 6.0 stray px 0.003 first steps [(0, 3, -6.0), (20, 3, -12.0), (40, 3, -18.0)] last [(1180, 3, -360.0)]
+strikes ((500, 8), (6500, 9), (12500, 10), (18500, 11), (24500, 12), (30500, 1), (36500, 2), (42500, 3), (48500, 4), (54500, 5), (60500, 6), (66500, 7))
+quarters ((500, 4), (2000, 1), (3500, 2), (5000, 3))
+seconds hand: 9 elements
+refused: machines/clock: a hand is "h", "m" or "s", not 'x'
+==== NODEJOB RESULT ====
+exit=0 secs=11 host=cursor cores=4 head=e2a9c732 commit=none pushed=no branch=cursor/c164-clocks-f3-00d6 files=0
+a0job: exit=0 secs=12
