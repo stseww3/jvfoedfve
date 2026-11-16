@@ -1,0 +1,249 @@
+{
+ "scene": "obs_mach_armillary",
+ "commit": "1651d1a",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "190577 blocks, 390 entities, 307 models, 1619 resource-pack files, 177 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (4.5 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 1618 files, no file written twice, the folders and the prefix of machines are kept (14 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "436 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "1143 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "WARN",
+   "summary": "80 kinds of block placed, 248 barrier cells (x 0..77, y -6..20, z -34..47), barriers away from any model",
+   "details": [
+    "195 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees (A0 #457, 4)"
+   ]
+  },
+  {
+   "check": "flatwall",
+   "status": "PASS",
+   "summary": "no wall face runs flat over more than 5x5",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "WARN",
+   "summary": "390 display entities, 19 drawn out along one axis, 23 shown through a matrix that is no turn, no face stretched, 199 models never placed",
+   "details": [
+    "prop_pneu_plate_a1 x1: 64/64/64 pixels to the block along x/y/z, not 16"
+   ]
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "11 shots, most display entities in view: 246 (v1_arrival), limit 600; counted without what walls hide; the game draws up to 341 (door): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "v2_axis",
+      "in_view": 175,
+      "drawn": 291,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v2_entrance",
+      "in_view": 175,
+      "drawn": 291,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v1_arrival",
+      "in_view": 246,
+      "drawn": 271,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "aerial",
+      "in_view": 234,
+      "drawn": 240,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "plan",
+      "in_view": 120,
+      "drawn": 311,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "oblique",
+      "in_view": 140,
+      "drawn": 319,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "meridian",
+      "in_view": 144,
+      "drawn": 320,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "south_edge",
+      "in_view": 211,
+      "drawn": 305,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "north_edge",
+      "in_view": 169,
+      "drawn": 304,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "rings",
+      "in_view": 148,
+      "drawn": 312,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "door",
+      "in_view": 137,
+      "drawn": 341,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "WARN",
+   "summary": "V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 2.3 s)",
+   "details": [
+    "the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a_equator at x 35, y 4, z 0; 4 more kinds; a lamp post takes less than 25% of a bay"
+   ],
+   "data": {
+    "the base storey": {
+     "lines": 1104,
+     "hidden": 555,
+     "seen_through": 301,
+     "hidden_by_blocks": 483,
+     "hidden_by_models": 72
+    },
+    "the great windows": {
+     "lines": 1656,
+     "hidden": 68,
+     "seen_through": 0
+    },
+    "the cornice": {
+     "lines": 1104,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the clock tower": {
+     "lines": 672,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the time-ball mast": {
+     "lines": 22,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the great dome": {
+     "lines": 1688,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the small dome": {
+     "lines": 290,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "comet": {
+     "elevation": 41.0,
+     "across": 0.6128,
+     "down": 0.2647,
+     "lost": 0,
+     "body": {
+      "lines": 350,
+      "outside_clear": 0,
+      "covered": 0,
+      "from": -7.29,
+      "to": 1.2,
+      "low": 39.99,
+      "up": 54.24
+     }
+    },
+    "clear": {
+     "up": 61.0,
+     "blocks": [
+      {
+       "name": "between the two ends of the main building",
+       "from": -1.24,
+       "to": 44.16,
+       "low": 0.0,
+       "up": 61.0,
+       "lines": 44835,
+       "covered": 0
+      },
+      {
+       "name": "where the comet hangs, north of the main building",
+       "from": -15.0,
+       "to": -1.49,
+       "low": 35.0,
+       "up": 61.0,
+       "lines": 5880,
+       "covered": 0
+      }
+     ]
+    },
+    "left": {
+     "from": 44.66,
+     "to": 70.0,
+     "posts": []
+    }
+   }
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "21 parts and 13 points on 9 chains, 87 function files; 8 commands in the busiest tick (limit 120), 1.9 a tick on average (limit 40)",
+   "details": [
+    "chain of 24 ticks: 6 functions, 20 commands a cycle, starts 1 ticks after start",
+    "chain of 60 ticks: 8 functions, 17 commands a cycle, starts 3 ticks after start",
+    "chain of 100 ticks: 8 functions, 17 commands a cycle, starts 2 ticks after start",
+    "chain of 120 ticks: 4 functions, 13 commands a cycle, starts 6 ticks after start",
+    "chain of 128 ticks: 4 functions, 13 commands a cycle, starts 2 ticks after start",
+    "chain of 160 ticks: 11 functions, 24 commands a cycle, starts 14 ticks after start",
+    "chain of 300 ticks: 12 functions, 31 commands a cycle, starts 10 ticks after start",
+    "chain of 600 ticks: 18 functions, 45 commands a cycle, starts 7 ticks after start",
+    "chain of 1200 ticks: 10 functions, 53 commands a cycle, starts 4 ticks after start",
+    "site_weather_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.08 blocks off the axis",
+    "bld_tower_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.09 blocks off the axis",
+    "mach_armillary_a_axis: 6 steps in 1200 ticks: its middle lies 0.00 blocks off the axis",
+    "mach_armillary_a_equator: 6 steps in 1200 ticks: its middle lies 0.00 blocks off the axis",
+    "mach_armillary_a_tropic: 6 steps in 1200 ticks: its middle lies 0.00 blocks off the axis",
+    "mach_armillary_a_tropic.s: 6 steps in 1200 ticks: its middle lies 0.00 blocks off the axis",
+    "mach_armillary_a_ecliptic: 6 steps in 1200 ticks: its middle lies 0.00 blocks off the axis",
+    "mach_armillary_a_colure: 6 steps in 1200 ticks: its middle lies 0.00 blocks off the axis"
+   ]
+  }
+ ]
+}
