@@ -50,7 +50,7 @@ ZINC = P.mat("iron", base=4)
 LEAD = P.mat("iron_dark")
 WATER = K.flat("night_glass", 1)
 ENAMEL_W = P.mat("porcelain")                           # enamelled ware: trays, the jug
-PLATE_GLASS = P.mat("night_glass", base=2)              # a glass plate seen edge on
+PLATES = (K.flat("slate", 2), K.flat("slate", 4), K.flat("iron", 2))    # glass plates drying: thin and dense ones
 BROWN, BROWN_D = K.flat("old_copper", 1), K.flat("old_copper", 0)       # brown bottle glass
 BLUE = K.flat("enamel", 2)                              # the one blue bottle
 CORK = K.flat("old_copper", 3)
@@ -154,7 +154,8 @@ def _rack():
             if (i + 3 * tier) % 5 == 4:
                 continue
             x = -8.6 + 2.15 * i
-            m.box((x, y + 1.0, 1.5), (x + 0.4, y + 1.0 + (8.0 if (i + tier) % 3 else 6.5), out - 1.5), PLATE_GLASS)
+            m.box((x, y + 1.0, 1.5), (x + 0.4, y + 1.0 + (8.0 if (i + tier) % 3 else 6.5), out - 1.5),
+                  PLATES[(i + 2 * tier) % 3])
     return m
 
 
@@ -334,7 +335,7 @@ def _lift_car():
 def _rope():
     """The hoisting rope: along +z from the anchor, 48 long; lift() stretches it."""
     m = M.Model(PREFIX + "rope")
-    m.box((-0.5, -0.5, 0), (0.5, 0.5, 48), ROPE, grain="z")
+    m.box((-0.375, -0.375, 0), (0.375, 0.375, 48), ROPE, grain="z")
     return m
 
 
@@ -439,7 +440,7 @@ def lift(canvas, cell, facing="east", origin=(0, 0, 0), top=6, car=CAR_AT, **opt
     n += place(canvas, "lift_car", (x, y + car, z), origin=origin, yaw=yaw, **opts)
     a = (x + origin[0], y + car + (CAR_H + 2.0) * PX + origin[1], z + origin[2])
     b = (a[0], y + top + origin[1], a[2])
-    canvas.add_entity(a[0], a[1], a[2], M.between(_models()[PREFIX + "rope"], a, b, thick=0.75, **opts))
+    canvas.add_entity(a[0], a[1], a[2], M.between(_models()[PREFIX + "rope"], a, b, **opts))
     n += 1
     dx, _, dz = K.turn(yaw, (-0.5, 0.0, 0.0))
     n += place(canvas, "crank", (x + dx, y + CRANK_AT, z + dz), origin=origin, yaw=yaw + 90.0, **opts)
