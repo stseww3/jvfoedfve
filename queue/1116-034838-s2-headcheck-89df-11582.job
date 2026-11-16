@@ -1,0 +1,3 @@
+branch=cursor/c164-s2-headcheck-89df
+head=e10d420ce409da57ff62ec622245c18307c330aa
+args=--no-push --always --tail 45 --limit 600 python\ tools/checkall.py\ \>\ /tmp/checkall.txt\ 2\>\&1\;\ echo\ checkall\ exit=\$\?\;\ grep\ -E\ \'\^\(PASS\|FAIL\)\'\ /tmp/checkall.txt\ \|\ awk\ \'\{print\ \$1\}\'\ \|\ sort\ \|\ uniq\ -c\;\ grep\ -A1\ -E\ \'\^FAIL\|\\\[FAIL\\\]\'\ /tmp/checkall.txt\ \|\ cut\ -c1-300\ \|\ head\ -50\;\ python\ tools/boardshots.py\ --check\ \|\ tail\ -n\ 1\;\ tail\ -n\ 1\ /tmp/checkall.txt 
