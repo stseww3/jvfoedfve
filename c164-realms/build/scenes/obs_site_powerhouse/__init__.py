@@ -20,12 +20,18 @@ switch: the fittings on the bridge and the gutter's pipes (powerhouse.FITTINGS, 
 appear once their package is in the tree. The lamps of the site are the props line's own by now
 (props/lamps.DRESS): the street lamps of the way in, two of which stand in the yard before the
 house, and the low lamps on the terrace's lip.
+
+The cameras are VIEWS; the two that the skeleton locks are read from it (S.V6, the power house
+from the grand stair, here stair_south; S.V1, the arrival), so they turn when it turns them.
+
+    python -m scenes.obs_site_powerhouse      (in build/) writes shots.json for both scenes
 """
 import contextlib
 
 from artkit.canvas import Canvas
 
 from scenes.obs import main, materials, props, site, sky
+from scenes.obs.common import skeleton as S
 from scenes.obs.site import powerhouse
 
 BIOME = "obs_blue"
@@ -35,6 +41,35 @@ LINES = (site, main, props, sky)
 VERSION = "a"
 RUN = True
 FIRE = True     # both scenes: the boiler bays glow through the fire window, as the card wants them judged
+
+TIME = 14000
+LOW = S.LOWER_GROUND + S.EYE        # -4.38: the eye of a person on the lower platform
+HIGH = S.GROUND + S.EYE             # 1.62: on the upper terrace
+VIEWS = [
+    ("door_axis", (74.5, LOW, 2.5), (78.5, 6.0, 31.5)),             # on the door's axis, from the yard's north edge
+    ("yard_west", (63.5, LOW, 12.5), (78.0, 4.0, 31.0)),            # the north-west corner, from south of the stair
+    ("stair_south", S.V6["pos"], S.V6["look_at"]),                  # the locked view of the house
+    ("stair_axis", (66.5, S.V6["pos"][1], 0.5), (76.5, 8.0, 32.5)), # the same tread, on the stair's axis
+    ("v1", S.V1["pos"], S.V1["look_at"]),                           # the arrival: the bridge must not touch the main building
+    ("court_back", (46.5, HIGH, 8.5), (80.0, 6.0, 30.0)),           # from the court: the roof's glazed side
+    ("lip_south", (58.5, HIGH, 12.5), (80.0, 5.0, 30.0)),           # from the terrace's lip
+    ("chimney_up", (82.5, LOW, 1.5), (89.0, 5.5, 22.5)),            # the chimney and the fire window, from the yard
+    ("bridge_near", (64.5, LOW, 21.5), (62.5, 0.0, 33.5)),          # under the pipe bridge
+    ("bridge_head", (41.5, HIGH, 35.5), (60.0, 1.5, 32.5)),         # along the main on the terrace to the bridge head
+    ("head_west", (53.5, HIGH, 34.5), (58.5, 1.3, 33.4)),           # the bridge head as one walks up to it
+    ("head_walk", (54.5, HIGH, 33.5), (59.5, HIGH, 38.5)),          # the walk-through's station G01, looking right
+    ("head_north", (56.5, HIGH, 28.5), (59.0, 1.2, 33.5)),          # the head from the north: the pipe, the knee, the railing
+    ("lookout_east", (48.5, S.SOUTH_LOOKOUT["feet"] + S.EYE, 50.5), (78.0, 3.0, 31.0)),     # the south-west corner
+    ("aerial", (58.0, 34.0, 4.0), (78.0, 0.0, 31.0)),
+    ("aerial_back", (100.0, 30.0, 56.0), (78.0, 0.0, 31.0)),
+]
+
+
+def shots():
+    """The shot list both scenes are drawn from."""
+    return [{"name": name, "pos": [round(float(v), 2) for v in pos],
+             "look_at": [round(float(v), 2) for v in look_at], "time": TIME}
+            for name, pos, look_at in VIEWS]
 
 
 @contextlib.contextmanager

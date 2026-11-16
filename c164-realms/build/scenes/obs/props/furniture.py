@@ -257,25 +257,28 @@ PLATE_EDGE = K.flat("night_glass", 4)           # the ground edge of its glass
 MOUNT = K.flat("cream", 1)                      # the card a plate is mounted on: a pale line round it
 LENS = K.flat("night_glass", 4)                 # clear glass over the blue bed
 _STARS = {"W": P.RAMPS["cream"][3], "w": P.RAMPS["cream"][1], "f": P.RAMPS["night_glass"][4]}
-# The hunter: two shoulders, the belt of three, two feet. Seven dots that anyone knows.
+# The hunter: two shoulders, the belt of three, two feet. Seven dots that anyone knows, and four
+# faint stars of the field between them: seven dots alone on a dark card are the face of a die.
 STAR_FIELD = Sprite("furn_plate_stars", [
-    ".......",
+    "...f...",
     ".W...w.",
     ".......",
-    "....w..",
-    "...W...",
+    "f...w..",
+    "...W..f",
     "..w....",
-    ".......",
+    "....f..",
     ".w...W.",
 ], _STARS, back=PLATE)
-# The comet of the map's own sky: a head, and a tail that fades and widens away from it.
+# The comet of the map's own sky: a head of four texels, the brightest thing on the plate, and a
+# tail that narrows and fades from it into the blue (a tail as bright and as wide as the head was
+# a sash across the plate).
 COMET = Sprite("furn_plate_comet", [
     "f.....",
-    "ff..w.",
+    ".f..w.",
     ".ff...",
-    "..wf..",
-    "...ww.",
-    "....W.",
+    "..fw..",
+    "...wW.",
+    "...WW.",
     ".f....",
 ], _STARS, back=PLATE)
 # A star's spectrum: one pale band across the plate, a dark line in it, the blue end fading out.
@@ -753,8 +756,8 @@ def rail(canvas, pos, blocks, facing="south", origin=(0, 0, 0)):
 #   lookout   one bench on the south lookout, its back to the east rail. Who sits there looks west,
 #             the observatory on the right. The view back (S.V11) is taken from the walk in the
 #             middle of the lookout and looks north-west: the bench is behind its right edge.
-DRESS = False           # off in the master scene until the family has passed review; a test scene asks
-                        # for the site's furniture with dress(canvas), or calls site() for its group
+DRESS = True            # on from the merge on (the fast lane, COMMON 0.10); a test scene may still ask
+                        # for the site's furniture with dress(canvas), or call site() for its group
 SUNSET_BENCHES = ((14.5, 3.5), (13.0, 7.5))     # (west of the terrace's middle, off the axis): a pair each
 LOOKOUT_BENCH = (0.6, -1.5)     # in from the face of the east rail's kerb; from the lookout's middle row:
                                 # half way between the rail's north corner and the pier at the prow's knuckle

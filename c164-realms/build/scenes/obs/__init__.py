@@ -35,6 +35,8 @@ def _line(name):
 
 def build():
     c = Canvas()
+    c.master = True     # only this canvas says so: a package that shows something in the master scene alone
+    #                     (sky/ridges, sky/cloudsea) asks getattr(canvas, "master", False); a test scene's has none
     counts = {}
     for name in LINES:
         n = _line(name).build(c, ORIGIN)

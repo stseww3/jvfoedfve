@@ -8,6 +8,7 @@ import sys
 
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
+from scenes.obs.interiors import _domechair as R
 from scenes.obs.interiors import domeroom as D
 from scenes.obs.main import _order as O
 
@@ -103,12 +104,12 @@ check("the observing floor is free to stand on", solid & cells(floor, range(D.FE
 check("the gear's shaft keeps its column of the wall, and its hand wheel the floor in front",
       solid & (cells(D.GEAR_SHAFT, range(D.FEET, D.LEDGE_Y + 1)) | cells(D.GEAR_STAND, head)))
 dome = D._other("main", "dome")
-if (getattr(dome, "VERSION", None), getattr(dome, "SLIT", None)) == ("a", "open"):
-    check("the gear of the slit's leaves keeps its cells at the slit's foot and under the girders beside it",
+if (getattr(dome, "VERSION", None), getattr(dome, "SLIT", None)) == D.GEAR_FOR:
+    check("the gear of the slit's curtain keeps its cells at the slit's foot and under the girders beside it",
           solid & D.gear_cells())
 else:
-    print("skip  the gear of the slit's leaves: its cells are laid out for main/dome's version a with the "
-          "slit open, and that is not the dome in this box")
+    print("skip  the gear of the slit's curtain: its cells are laid out for main/dome's version %s with the "
+          "slit %s, and that is not the dome in this box" % D.GEAR_FOR)
 check("nothing stands in the open slit", [k for k in solid if (k[0], k[2]) in read.gap and k[1] >= D.SKIN_FROM])
 bare_stone = []
 for col in read.wall:
@@ -135,6 +136,13 @@ for col in read.reach - read.gap:
 check("no copper shows indoors: every plate has its board or its iron on the inside", green)
 check("a light source sits in a free cell",
       [cell for cell, _level, _rank, _name in D.lights() if c.name(*cell) not in (None, B.LIGHT)])
+band = R.band()
+print("the observing ladder rolls over %.2f .. %.2f blocks from the dome's axis; it is parked in the columns %s"
+      % (band[0], band[1], sorted(R.columns())))
+check("nothing of the room's furniture stands in the band the observing ladder rolls over",
+      ["%s %.2f..%.2f" % got for got in R._in_the_way(*band)])
+check("the parked ladder leaves the stair's exit, the observing floor and the doorways alone",
+      R.columns() & ({EXIT} | O.grow({EXIT}) | floor | set(doors)))
 
 # --- the dome's skeleton ----------------------------------------------------------------------------
 skeleton = D.frame(read)
@@ -161,6 +169,26 @@ else:
           % (len(skeleton.placed), len(bars), *("(%.3f, %.3f)" % (S.DOME_AXIS[0] - z, y) for z, y in skeleton.run())))
     check("no bar of the skeleton runs through a block (the boards, the ring girder's blocks, the piers)", buried)
     check("no bar of the skeleton crosses the open slit", in_slit)
+    planks = skeleton.planks()
+    deep, astray, rise = [], [], []
+    for corners in planks:
+        mid = tuple(sum(p[k] for p in corners) / 4.0 for k in range(3))
+        for p in corners:
+            q = tuple(p[k] + (mid[k] - p[k]) * 0.05 for k in range(3))      # just inside the board's outline
+            if inside(q):
+                deep.append(tuple(round(v, 2) for v in q))
+            if (int(math.floor(q[0])), int(math.floor(q[2]))) in read.gap:
+                astray.append(tuple(round(v, 2) for v in q))
+        for p in corners[:2]:
+            if abs(abs(p[2] - S.DOME_AXIS[1]) - skeleton.edge) < 0.1:
+                line = skeleton.arch_line
+                rise.append(p[1] - line.at(line.where(abs(p[0] - S.DOME_AXIS[0])))[1])
+    print("the lines under the boards: the ribs' backs spring from (%.3f, %.3f), the arch girders' from (%.3f, %.3f) "
+          "and reach %.3f at the crown" % (*skeleton.meridian.p[0], *skeleton.arch_line.p[0], skeleton.arch_line.p[-1][1]))
+    print("the lining: %d panels, %d boards; where the boards of a gore end at a cover plate they come in %.2f to "
+          "%.2f over the line of the arch girder's back"
+          % (len(skeleton.lined), len(planks), min(rise, default=0.0), max(rise, default=0.0)))
+    check("no board of the vault's lining lies in a block or reaches into the open slit", deep + astray)
     check("the room's display entities stay within a room's share (%d)" % S.BUDGET_PER_ROOM,
           [placed] if placed > S.BUDGET_PER_ROOM else [])
     scope = D._other("machines", "scope")

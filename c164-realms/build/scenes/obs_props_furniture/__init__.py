@@ -6,10 +6,15 @@ end frame are both judged. The rest is a room floor with the pieces set as a roo
 corner (coat stand, writing desk with a desk lamp, a swivel chair at the desk seen from behind and
 one pushed back that shows its seat, two card cabinets side by side and an instrument cabinet), the
 luggage as the cable station has it (furniture.luggage: the trunk along the wall, the small packing
-case on its lid), packing cases, two plate boxes one on the other, the drafting table with its
-stool, a bookcase with the library ladder on its rail, a display case and a display table, and at
-the east end the two display tables that come with what they show, side by side and three blocks
-apart as the star hall has them. Bracket lamps on the wall light the stage as lamps light a room.
+case on its lid), packing cases, the drafting table with its stool, a bookcase with the library
+ladder on its rail, a display case and a display table, the two display tables that come with what
+they show, side by side and three blocks apart as the star hall has them, and at the east end two
+plate boxes one on the other. Bracket lamps on the wall light the stage as lamps light a room.
+
+For scale, five pieces of props/instruments stand where the rooms put them: the lookout's telescope
+west of the benches, the calculating machine on the writing desk and the table globe on a card
+cabinet (the chart room), the regulator clock on the wall beside the cabinets, hung as high as the
+dome room hangs it, and the star globe on its floor stand beside the display tables (the star hall).
 
 The furniture of the site (furniture.site: the benches of the sunset terrace, of the station and of
 the lookout) is judged where it stands, in the scene obs_props_furniture_site.
@@ -21,7 +26,7 @@ from artkit.canvas import Canvas
 from scenes.obs import materials, sky
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
-from scenes.obs.props import furniture, lamps
+from scenes.obs.props import furniture, instruments, lamps
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 32
@@ -31,7 +36,7 @@ STONE, PAVING, FLOOR, SHELF = B.ASHLAR_FINE.block, B.TUFF_SMOOTH.block, B.FLOOR_
 WALL_Z = -1
 FACE = WALL_Z + 1               # the air cell in front of the wall; a wall prop's anchor sits on the face
 WALL_H = 6
-WEST, ROOM, EAST = -3, 11, 46   # the terrace runs from WEST to ROOM, the room floor from ROOM to EAST
+WEST, ROOM, EAST = -7, 11, 54   # the terrace runs from WEST to ROOM, the room floor from ROOM to EAST
 DEPTH = 12
 TIME = 14000                    # light version A, the default (INTERFACE: 18000 is B, 12900 is C)
 
@@ -49,16 +54,28 @@ LUGGAGE = (21.6, 0.0, FACE + 0.5)   # as site/cablecar gives it: a point half a 
 CRATES = ((23.9, 0.0, 0.9), (24.9, 0.0, 2.3))
 CRATE_YAWS = (0.0, 30.0)
 CRATE_SMALL = (23.95, furniture.TOP["crate"], 0.85)     # on the first of them
-PLATE_BOX = (25.3, 0.0, 0.55)   # against the wall, a second one on its lid
-PLATE_BOX_UP = (25.32, furniture.TOP["plate_box"] + furniture.STRAP, 0.56)
 DRAFT = (27.2, 0.0, 1.8)
 STOOL = (27.2, 0.0, 3.5)
 CASE_X = (30, 33)               # the bookcase: these cells along x, three high, one deep
 LADDER_X = 31.5
 CASE = (35.5, 0.0, 2.0)
 TABLE = (38.2, 0.0, 0.5)        # against the wall, as in the star hall
-SHOWN = (("display_table_plates", (41.0, 0.0, 0.5)), ("display_table_lenses", (44.0, 0.0, 0.5)))
-LAMPS = (6.0, 13.5, 20.8, 28.6, 34.3, 38.2, 42.5)
+# two blocks clear of the empty table, so that a camera's edge finds room between them
+SHOWN = (("display_table_plates", (42.0, 0.0, 0.5)), ("display_table_lenses", (45.0, 0.0, 0.5)))
+PLATE_BOX = (51.7, 0.0, 0.6)    # against the wall, by themselves: a second one on the lid of the first
+PLATE_BOX_UP = (51.72, furniture.TOP["plate_box"] + furniture.STRAP, 0.61)
+LAMPS = (-0.6, 6.0, 13.5, 20.8, 28.6, 34.3, 38.2, 43.5, 47.8, 51.7)
+
+# what stands beside the furniture for scale, of props/instruments: (kind, pos, facing)
+SCOPE = (-1.8, 0.0, 2.2)        # trained west, its eyepiece towards the benches
+STAR_GLOBE = (47.8, 0.0, 1.4)
+BESIDE = (
+    ("tripod_scope", SCOPE, "west"),
+    ("calc_machine", (DESK[0] + 0.36, furniture.TOP["writing_desk"], DESK[2]), "south"),
+    ("regulator_clock", (16.45, 0.5, float(FACE)), "south"),
+    ("globe", (CABINETS[1][0], furniture.TOP["card_cabinet"], CABINETS[1][2]), "south"),
+    ("celestial_globe", STAR_GLOBE, "south"),
+)
 
 
 def build():
@@ -94,6 +111,8 @@ def build():
     n += place(c, "display_table", TABLE)
     for kind, pos in SHOWN:
         n += place(c, kind, pos)
+    for kind, pos, facing in BESIDE:
+        n += instruments.place(c, kind, pos, facing=facing)
     for x in LAMPS:
         n += lamps.place(c, "bracket", (x, 3.5, float(FACE)))
     sky.build(c, (0, 0, 0))             # A2's light sources go in last, when every piece is in place
@@ -145,13 +164,19 @@ def shots():
     near("library_ladder", (LADDER_X, 0.0, 1.0), 1.5, back=3.4, side=1.6, eye=1.6)
     near("display_case", CASE, 0.8, back=1.9, side=1.0)
     near("display_table", TABLE, 0.6, back=2.0, side=-1.1)
-    near("plate_box", PLATE_BOX, 0.45, back=1.9, side=0.6, eye=1.4)
+    near("plate_box", PLATE_BOX, 0.55, back=1.5, side=0.7, eye=1.3)
     # the two tables with what they show: as the hall's visitor comes up to them, then each from
     # where he stops before it, and what he sees when he looks down into it
     (_, plates), (_, lenses) = SHOWN
-    shot("shown", ((plates[0] + lenses[0]) / 2.0, S.EYE, 4.4), ((plates[0] + lenses[0]) / 2.0, 0.7, 0.5))
+    shot("shown", ((plates[0] + lenses[0]) / 2.0, S.EYE, 3.2), ((plates[0] + lenses[0]) / 2.0, 0.5, 0.5))
     near("plates", plates, 0.7, back=1.7, side=-0.7)
     near("plates_over", plates, 0.7, back=0.85, side=0.0)
     near("lenses", lenses, 0.7, back=1.7, side=0.7)
     near("lenses_over", lenses, 0.7, back=0.85, side=0.0)
+    # beside the instruments, for scale: the telescope and a bench; the clock on the wall, the
+    # cabinets and the globe on one of them, the machine on the desk; the star globe and the tables
+    shot("scale_terrace", (0.9, S.EYE, 6.0), (0.6, 0.9, 2.0))
+    shot("scale_study", (16.6, S.EYE, 3.6), (16.8, 1.4, 0.3))
+    # its left edge passes between the empty table and the first of the two that are shown
+    shot("scale_hall", (45.23, S.EYE, 4.7), (45.23, 0.8, 0.9))
     return out

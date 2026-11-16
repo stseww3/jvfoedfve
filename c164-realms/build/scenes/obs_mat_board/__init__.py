@@ -10,8 +10,8 @@ Five tiers, each stepped back and up so that one picture holds them all; from th
               The one tier whose floor is part of the show, so it is the lowest: the camera looks
               down on it. It has floor only where something lies on it: a shelf as deep as the
               mountain and the bank, and under the emblem a tongue as long as the meridian runs
-    pieces    doors, hatches, bars, pipes, lamps, the brass pieces, signs: against fine stone, as
-              they stand on the building
+    pieces    doors, hatches, bars, pipes, lamps, the ladder, the brass pieces, signs: against fine
+              stone, as they stand on the building
     stone     the four grey-white stones, the stones used as the game draws them, and one wall that
               puts them together as a facade does (plinth, rough base, string course, fine wall
               with sunk panels and emblems)
@@ -193,12 +193,16 @@ def ground(c, x, y, z):
 def pieces(c, x, y, z):
     """The shaped blocks in front of a fine stone wall, each on its own two cells: the iron pieces in
     two groups, then the brass family and the signs. A vanilla iron piece stands a cell from the
-    repainted one it is compared with."""
-    c.box(x, y, z - 1, x + width(), y + 3, z - 1, B.ASHLAR_FINE.block)
+    repainted one it is compared with. Each as the building uses it: the iron door one leaf (two
+    side by side are a pair of lit eyes), the plate of brass in the floor as a door's threshold (a
+    run of it is a carpet), the ladder up the wall from the floor to the wall's top (the game's own,
+    of wood: the way up a shaft too narrow for a stair, indoors only)."""
+    c.box(x, y, z - 1, x + width(), y + WALL_H - 1, z - 1, B.ASHLAR_FINE.block)
     lifted = _Lifted(c, y)
     for dx, put, block in IRON:
         put(lifted, block, x + dx, z)
-    _board.brass(lifted, x + BRASS_AT, z, staged=False)
+    _board.ladder(lifted, B.LADDER, x + LADDER_AT, z, WALL_H)
+    _board.brass(lifted, x + BRASS_AT, z, staged=False, plate="threshold")
     _board.hung(c, x + HUNG_AT, y, z)
     for lx in range(x + 1, x + width(), 4):
         c.set(lx, y + 1, z + 3, st(B.LIGHT, level=LAMP))     # no further forward: the snow wall's top is below
@@ -249,12 +253,27 @@ ROWS = {"ground": ground, "pieces": pieces}      # the tiers that are laid out b
 # windows), which leaves the furnace window a place of its own at the far end from the lamps of the
 # instrument wall; the skylight, the instruments and the woods stand where a PITCH puts them.
 PLACES = {"glass": (0,) + tuple(PITCH + N * i for i in range(5)) + (5 * PITCH, 6 * PITCH, 7 * PITCH)}
+# The riser behind a wall is the ground it is seen on, and the board's dark stone swallows what is as
+# dark as itself: in the picture of the whole board cast iron (0.12 to 0.14) and slate tile (0.12) were
+# one black block with the riser (0.11, the same hue), told apart only from near, by their relief
+# (review #22). These walls stand before tuff brick (0.21), as iron does in the power house; behind
+# the grate the brick shows through. A wall's ground is its bay of the riser: behind it, a cell
+# either side, the row over it. The ground stands a cell behind the wall's face, where the lamp row
+# gives it half the light the wall has (the brick read 0.16 there, the same brick as a wall 0.22):
+# a lamp in the gap either side of the wall, as bright as the lamp row is at the wall's own foot
+# (LAMP - 3) and so no more light on the wall. Not for verdigris, old copper and brass: old copper is
+# as light as the brick, and brass and verdigris on a light ground look duller than they are. Not
+# the grey-white stone: dark squares set in it are what the dark windows of the tier above are.
+GROUNDS = {name: B.TUFF_BRICK.block for name in ("slate_tile", "iron_plate", "iron_riveted", "iron_cast", "iron_grate")}
 # The row of small things: x of each. The groups stand apart by what a close shot needs to hold one
-# whole and nothing of the next: the lines and the openings, the bars and the lamps, the brass.
-IRON = ((2, _board.door, B.IRON_DOOR), (6, _board.hatch, B.IRON_HATCH), (10, _board.rod, B.IRON_ROD),
+# whole and nothing of the next: the lines and the openings, the bars and the lamps (and after the
+# lamps the ladder), the brass.
+IRON = ((2, _board.leaf, B.IRON_DOOR), (6, _board.hatch, B.IRON_HATCH), (10, _board.rod, B.IRON_ROD),
         (14, _board.pipe, B.IRON_PIPE), (17, _board.pipe, B.VANILLA_CHAIN),
         (23, _board.run, B.IRON_BARS), (26, _board.run, B.VANILLA_BARS), (30, _board.bulb, B.IRON_BULB),
         (34, _board.lantern, B.IRON_LANTERN))
+LADDER_AT = 37                  # the ladder: a cell clear of the lantern, and out of the brass pieces' close shot
+WALL_H = 4                      # the fine stone wall behind the row is this high
 BRASS_AT = 42                   # where the brass pieces start
 HUNG_AT = BRASS_AT + 31         # ... and the two signs on a bracket, after them
 
@@ -286,7 +305,11 @@ def build():
         c.box(-1, y, z - 1, w, y + RISE - 2, z - 1, FLOOR)                              # the riser behind the walls
         if name in ROWS:
             ROWS[name](c, 0, y, z)
-        for x, (_, put, lamp) in zip(places(k), walls):
+        for x, (wall, put, lamp) in zip(places(k), walls):
+            if wall in GROUNDS:
+                c.box(x - 1, y, z - 1, x + N, y + RISE - 2, z - 1, GROUNDS[wall])
+                for gx in (x - 1, x + N):       # ... lit as the wall's own foot is, or the gap is the darkest thing again
+                    c.set(gx, y + 1, z, st(B.LIGHT, level=LAMP - 3))
             put(c, x, y, z)
             if lamp:
                 for dx in (1, 5):
@@ -309,12 +332,16 @@ def pack(pack_dir, **versions):
     return list(K.pack_with(pack_dir, **versions) or []) + list(sky.pack(pack_dir) or [])
 
 
+UNSEEN = (B.BARRIER,)       # in the occupancy table and nothing to look at: the collision of a door made of models
+
+
 def lacking(c=None):
     """(repainted, vanilla): the blocks of the occupancy table that are not on the board. The card
-    wants the first list empty; the second is kept empty too, so the board is the whole table."""
+    wants the first list empty; the second is kept empty too, so the board is the whole table,
+    all but what draws nothing (UNSEEN; the invisible lamp does stand on the board, as its lamps)."""
     placed = {state.partition("[")[0] for state in (c or build()).b.values()}
     return ([b for b in B.ids(B.REPAINTED) if b not in placed],
-            [b for b in B.ids(B.VANILLA) if b not in placed])
+            [b for b in B.ids(B.VANILLA) if b not in placed and b not in UNSEEN])
 
 
 GLOWS = {B.LIGHT: None, B.IRON_LANTERN: 15, B.IRON_BULB: 15}    # what gives light: the most it gives (None: its level)

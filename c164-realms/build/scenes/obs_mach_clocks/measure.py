@@ -19,11 +19,17 @@ What is asked of the numbers:
               that hangs on the tower, clock.BALL; of the other one the number is only printed);
               seen from below, the darkest tenth of its underside is not under 0.05 (no black cap
               of iron on it)
-  sun         from V7 the orrery's sun is lighter than the master dial by 0.10 or more
+  master      from V7 the master dial reads 0.35 or more, its enamel (the median) and the whole
+              dial with its marks and hands (the mean) alike: it is what is seen first there
+              (A0, 11-16). The orrery's sun is a stand-in in this scene; its number is printed
+  plinth      from V7 the two brass lines of the plinth are lighter than the wood between them and
+              than the slate step under the clock by 0.05 or more: the plinth is drawn in front of
+              the dark foot of the pier (cr3, 11-16)
   case        the darkest hundredth of the master clock's case is not under 0.03: no black hole
-  foot        from V7, the pale floor in front of the clock's step against the same stone four
-              blocks out; a number to look at, no limit (a pool of light with no lamp to be seen
-              is what it would show)
+  foot        from the door's axis (master_door), the pale floor in front of the clock's step
+              against the same stone four blocks out; a number to look at, no limit (a pool of
+              light with no lamp to be seen is what it would show). V7 looks up since it moved
+              two blocks in (A0, 11-16) and holds no floor farther out than the clock's step
 Exit 1 when a number is out or a picture is missing.
 """
 import argparse
@@ -51,9 +57,10 @@ DIAL = (0.30, 0.40)
 DIAL_APART = 0.03
 BALL_OVER_SKY = 0.05
 BALL_UNDER = 0.05
-SUN_OVER_DIAL = 0.10
+MASTER_DIAL = 0.35
+PLINTH_LINES = 0.05
 CASE_FLOOR = 0.03
-TINT = {"dial": (255, 0, 255), "stone": (0, 255, 255), "window": (0, 255, 0), "ball": (255, 0, 255),
+TINT = {"dial": (255, 0, 255), "stone": (0, 255, 255), "plinth": (0, 255, 0), "step": (0, 255, 255), "window": (0, 255, 0), "ball": (255, 0, 255),
         "sky": (0, 255, 255), "sun": (0, 255, 0), "case": (255, 255, 0), "foot": (255, 0, 255), "floor": (0, 255, 255)}
 
 
@@ -154,8 +161,9 @@ class Reader:
                 self.bad.append(f"{shot}: no picture in {self.folder}")
         return self._open[shot]
 
-    def read(self, shot, what, points, low=None):
-        """The median luma (or the `low` quantile) of the pixels the points fall on; None without a picture."""
+    def read(self, shot, what, points, low=None, mean=False):
+        """The median luma (the `low` quantile, or the mean) of the pixels the points fall on; None
+        without a picture."""
         got = self.picture(shot)
         if got is None:
             return None
@@ -167,7 +175,7 @@ class Reader:
         cols, rows = (np.array(v) for v in zip(*px))
         luma = rgb[rows, cols] @ COEF
         marked.setdefault(what.split()[0], set()).update(px)
-        value = float(np.median(luma) if low is None else np.quantile(luma, low))
+        value = float(luma.mean() if mean else np.median(luma) if low is None else np.quantile(luma, low))
         mean = rgb[rows, cols].mean(axis=0)
         self.rows.append((shot, what, value, len(px), "#%02x%02x%02x" % tuple(int(round(v * 255)) for v in mean)))
         return value
@@ -266,10 +274,12 @@ def time_ball(r):
 
 
 def master_clock(r):
-    """The master dial against the orrery's sun (V7), the case's darkest hundredth, the floor at its foot."""
+    """The master dial and the plinth from V7, the case's darkest hundredth, the floor at its foot
+    from the door's axis."""
     x, y, z = clock.MASTER_AT
     dial_at = np.array(clock._out(clock.MASTER_AT, clock.MASTER_FACING, clock.MASTER_DIAL))
     dial = disc(dial_at + (1.0 / 16.0, 0, 0), (0, 0, -1), (0, 1, 0), 0.0, 7.5 / 16.0)
+    whole = disc(dial_at + (1.0 / 16.0, 0, 0), (0, 0, -1), (0, 1, 0), 0.0, 8.0 / 16.0)      # inside the bezel
     cx, cz = (math.floor(v) for v in S.ORRERY_CENTRE)
     sun_y = math.floor(S.ORRERY_RING_Y)
     sun = patch((cx + 0.1, sun_y, cz + 0.1), (0.8, 0, 0), (0, 0, 0.8))          # the underside of the lit block
@@ -282,18 +292,34 @@ def master_clock(r):
 
     print("the master clock")
     d = r.read("v7", "dial master", dial)
+    m = r.read("v7", "dial master, hands and all", whole, mean=True)
     s = r.read("v7", "sun of the orrery", sun)
-    if None not in (d, s):
-        r.ask(s - d >= SUN_OVER_DIAL, f"v7: the sun {s:.3f} over the master dial {d:.3f} by {s - d:.3f} "
-                                      f"({SUN_OVER_DIAL:.2f} or more)")
+    if d is not None:
+        r.ask(d >= MASTER_DIAL, f"v7: the enamel of the master dial reads {d:.3f} ({MASTER_DIAL:.2f} or more)")
+        r.ask(m >= MASTER_DIAL, f"v7: the whole master dial, marks and hands with it, reads {m:.3f} "
+                                f"({MASTER_DIAL:.2f} or more)")
+    if s is not None:
+        print(f"  note v7: the stand-in for the orrery's sun reads {s:.3f}")
+    # the plinth, in pixels from the foot of the case: its brass lines at 1..2 and 8..9, proud of
+    # the skirting and of the cap; the raised field between them; the east face of the step below
+    lines = np.concatenate([patch((x + 12.25 / 16.0, y + a / 16.0, z - 0.75), (0, 1.0 / 16.0, 0), (0, 0, 1.5))
+                            for a in (1.0, 8.0)])
+    field = patch((x + 11.5 / 16.0, y + 3.0 / 16.0, z - 0.5), (0, 4.0 / 16.0, 0), (0, 0, 1.0))
+    step = patch((x + 1.0, y - 0.85, z - 0.75), (0, 0.7, 0), (0, 0, 1.5))
+    a = r.read("v7", "plinth brass lines", lines)
+    b = r.read("v7", "plinth wood between", field)
+    c = r.read("v7", "step under the clock", step)
+    if None not in (a, b, c):
+        r.ask(a - max(b, c) >= PLINTH_LINES, f"v7: the plinth's brass lines {a:.3f} over its wood {b:.3f} and the "
+                                             f"step {c:.3f} by {a - max(b, c):.3f} ({PLINTH_LINES:.2f} or more)")
     for shot in ("master_close", "master_door"):
         r.read(shot, "dial master", dial)
     low = r.read("master_close", "case darkest hundredth", case, low=0.01)
     if low is not None:
         r.ask(low >= CASE_FLOOR, f"master_close: the darkest hundredth of the case reads {low:.3f} "
                                  f"({CASE_FLOOR:.2f} or more)")
-    a = r.read("v7", "foot of the clock", foot)
-    b = r.read("v7", "floor on the axis", floor)
+    a = r.read("master_door", "foot of the clock", foot)
+    b = r.read("master_door", "floor on the axis", floor)
     if None not in (a, b):
         print(f"  note the floor in front of the clock's step {a:.3f}, four blocks out {b:.3f}")
 

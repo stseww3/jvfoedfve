@@ -820,11 +820,14 @@ def _lamp(version):
     d.tube("y", (0.0, 0.0), 2.0, 3.0, 2.5, IRON_D, sides=8)
     d.tube("y", (0.0, 0.0), 3.0, 4.0, 1.25, HOOD, sides=8)
     d.tube("y", (0.0, 0.0), -3.5, -3.0, 2.25, IRON_D, sides=8)
-    # the shade over the glass: a roof and two cheeks, open to the west only
-    d.box((-4.0, 1.25, -2.0), (-1.5, 1.75, 2.0), HOOD)
+    # the shade round the glass: a roof, two cheeks and a sill, let into the hood as far as its
+    # north and south facets, so that the glass is seen from the west and from nowhere else
+    back = -2.0 * math.tan(math.pi / 8.0)
+    d.box((-4.0, 1.25, -2.0), (back, 1.75, 2.0), HOOD)
     for side in (-1.0, 1.0):
         a, b = sorted((side * 1.5, side * 2.0))
-        d.box((-4.0, -2.25, a), (-1.5, 1.25, b), HOOD)
+        d.box((-4.0, -2.25, a), (back, 1.25, b), HOOD)
+    d.box((-2.75, -2.25, -1.5), (back, -1.75, 1.5), HOOD)
     d.box((-2.25, -1.75, -1.25), (-1.9, 0.75, 1.25), RED_LENS, emit=15, shade=False)
     d.box((-2.3, -1.0, -0.5), (-2.25, 0.0, 0.5), RED_HOT, emit=15, shade=False)
     # the peep-hole in the back: the floor sees that the lamp burns. Only the facet is drawn
@@ -939,6 +942,14 @@ def _corners(model, at, frame, scale):
                     yield _spot(model, part, (sx, sy, sz), at, frame, scale)
 
 
+def _box(part):
+    """A box of a model, in the model's units: (its middle, its half sizes, its own three axes)."""
+    c = np.array([(part["lo"][i] + part["hi"][i]) / 2.0 for i in range(3)])
+    h = np.array([(part["hi"][i] - part["lo"][i]) / 2.0 for i in range(3)])
+    q = part["rot"][0] if part["rot"] else M.IDENT
+    return c, h, np.array([M._qrot(q, e) for e in ((1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0))])
+
+
 def _first(version, eye, target):
     """What a look from `eye` at `target` meets first of the version's pieces: (model name,
     number of the box, how far along the way to the target: 1 is the target itself)."""
@@ -951,10 +962,7 @@ def _first(version, eye, target):
         a = ((np.array(eye, dtype=float) - np.array(at)) @ f.T) / k + anchor
         b = ((np.array(target, dtype=float) - np.array(at)) @ f.T) / k + anchor
         for n, part in enumerate(model.parts):
-            c = np.array([(part["lo"][i] + part["hi"][i]) / 2.0 for i in range(3)])
-            h = np.array([(part["hi"][i] - part["lo"][i]) / 2.0 for i in range(3)])
-            q = part["rot"][0] if part["rot"] else M.IDENT
-            turn = np.array([M._qrot(q, e) for e in ((1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0))])
+            c, h, turn = _box(part)
             o, way = (a - c) @ turn.T, (b - a) @ turn.T
             t0, t1 = 0.0, best[2]
             for i in range(3):
@@ -996,15 +1004,67 @@ def peep(version=None):
     return tuple(max(p[i] for p in seen) - min(p[i] for p in seen) for i in range(2))
 
 
+LEAK_POINTS = 0.25                      # texels between the points leaks() takes on the glass
+LEAK_WAYS = (5.0, 10.0)                 # degrees between the ways it looks from: round, and up
+
+
+def leaks(version=None):
+    """The ways the lamp's glass is seen from that are not west of it: [(degrees round from the
+    east to the south, degrees up)], empty when the shade is whole. The ruby's facet is there to
+    be seen and is left out. Only the lamp's own boxes are asked, as solid ones: what else stands
+    in the way is no part of the shade."""
+    version = _version(version)
+    models_, _stands, peeps = _built()
+    model, facet = models_[f"{PREFIX}lamp_{version}"], peeps[version]
+    a, e = np.meshgrid(np.radians(np.arange(-90.0, 90.0 + 1e-6, LEAK_WAYS[0])),
+                       np.radians(np.arange(-90.0, 90.0 + 1e-6, LEAK_WAYS[1])), indexing="ij")
+    a, e = a.reshape(-1), e.reshape(-1)
+    ways = np.stack([np.cos(e) * np.cos(a), np.sin(e), np.cos(e) * np.sin(a)], axis=-1)
+    seen = np.zeros(len(ways), dtype=bool)
+    boxes = [_box(part) for part in model.parts]
+    for own, part in enumerate(model.parts):
+        if not part["emit"] or own == facet:
+            continue
+        c, h, turn = boxes[own]
+        # the nearest boxes first: they are the shade, and a look they stop is not asked about again
+        others = sorted((n for n in range(len(boxes)) if n not in (own, facet)),
+                        key=lambda n: float(np.linalg.norm(boxes[n][0] - c)))
+        ticks = [np.linspace(-h[i], h[i], max(2, int(math.ceil(2.0 * h[i] / LEAK_POINTS)) + 1)) for i in range(3)]
+        for i in range(3):
+            j, l = [k for k in range(3) if k != i]
+            u, v = np.meshgrid(ticks[j], ticks[l], indexing="ij")
+            for side in (-1.0, 1.0):
+                front = np.nonzero(ways @ (side * turn[i]) > 1e-6)[0]
+                if not len(front):
+                    continue
+                local = np.zeros(u.shape + (3,))
+                local[..., i], local[..., j], local[..., l] = side * h[i], u, v
+                points = local.reshape(-1, 3) @ turn + c
+                way = np.tile(ways[front], (len(points), 1))
+                start = np.repeat(points, len(front), axis=0) + way * 1e-4
+                which = np.tile(front, len(points))
+                for n in others:
+                    if not len(which):
+                        break
+                    bc, bh, bturn = boxes[n]
+                    o, w = (start - bc) @ bturn.T, way @ bturn.T
+                    still = np.abs(w) < 1e-12
+                    w = np.where(still, 1.0, w)
+                    t0, t1 = (-bh - o) / w, (bh - o) / w
+                    near = np.where(still, np.where(np.abs(o) <= bh, -np.inf, np.inf), np.minimum(t0, t1))
+                    far = np.where(still, np.inf, np.maximum(t0, t1))
+                    free = np.maximum(near.max(axis=1), 0.0) >= far.min(axis=1)
+                    start, way, which = start[free], way[free], which[free]
+                seen[which] = True
+    return [(round(math.degrees(float(a[n])), 1), round(math.degrees(float(e[n])), 1)) for n in np.nonzero(seen)[0]]
+
+
 def _surface(model, at, frame, scale, step=0.5):
     """For every box of a placed model: (its middle and half sizes in model units, its turn,
     points on its faces at most `step` texels apart, in scene coordinates)."""
     k = scale / 16.0
     for part in model.parts:
-        c = np.array([(part["lo"][i] + part["hi"][i]) / 2.0 for i in range(3)])
-        h = np.array([(part["hi"][i] - part["lo"][i]) / 2.0 for i in range(3)])
-        q = part["rot"][0] if part["rot"] else M.IDENT
-        turn = np.array([M._qrot(q, e) for e in ((1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0))])
+        c, h, turn = _box(part)
         ticks = [np.linspace(-h[i], h[i], max(2, int(math.ceil(2.0 * h[i] * scale / step)) + 1)) for i in range(3)]
         faces = []
         for i in range(3):
@@ -1118,6 +1178,12 @@ def report(version=None):
     name, box, _far = _first(version, v8(version)[0], middle)
     if (name, box) != (f"{PREFIX}lamp_{version}", _built()[2][version]):
         problems.append(f"the peep-hole is hidden from the camera of V8 behind box {box} of {name}")
+    seen = leaks(version)
+    if seen:
+        problems.append(f"the lamp's shade leaks: its glass is seen from {len(seen)} ways that are not west of it, "
+                        f"the first {seen[0][0]:.0f} degrees round from the east to the south and {seen[0][1]:.0f} up")
+    else:
+        lines.append("  the lamp's glass is seen from the west and from nowhere else")
     far = max(math.dist(p, centre) for p in everything)
     lines.append(f"  furthest corner {far:.2f} from the crossing")
     if far > radius + 0.05:
