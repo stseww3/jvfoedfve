@@ -552,6 +552,13 @@ def handle_hook() -> int:
             if run_st in ("aborted", "error"):
                 print("{}")
                 return 0
+            # 主执行器身份 (m_...) 永远是顶层会话 (stop)，绝不可能是子会话 (subagentStop)；若子会话误绑了 m_ 身份，直接解绑放行退出！
+            if event == "subagentStop" and agent_id and agent_id.startswith("m_"):
+                if cid:
+                    st["conv_to_agent"].pop(cid, None)
+                    st["sessions"].pop(cid, None)
+                print("{}")
+                return 0
             if agent_id and (agent_id.startswith("a_") or agent_id.startswith("m_")):
                 chk = get_json(
                     f"{bridge_url}/trace/check-active?agent={urllib.parse.quote(agent_id)}",

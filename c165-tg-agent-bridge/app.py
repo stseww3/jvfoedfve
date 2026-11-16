@@ -6207,7 +6207,21 @@ def is_quota_exceeded_output(output: str) -> bool:
     return "exceeded" in low and ("available usage" in low or "usage limit" in low or "quota" in low)
 
 
+def is_missing_task_tool_error(output: str) -> bool:
+    low = (output or "").lower()
+    return "task" in low and (
+        "不存在 cursor 的 task 工具" in low
+        or "无 cursor 的 task 工具" in low
+        or "不存在 task 工具" in low
+        or "无 task 工具" in low
+        or "no task tool" in low
+        or "task tool is not available" in low
+    )
+
+
 def is_resume_dead_output(status: str, output: str) -> bool:
+    if is_missing_task_tool_error(output):
+        return False
     if (status or "").lower() != "ok":
         return True
     low = (output or "").strip().lower()
@@ -6232,6 +6246,21 @@ async def t_submit_op_result(agent, args):
     op = store.one("SELECT * FROM dispatch_ops WHERE op_id=?", (op_id,))
     if op is None:
         raise ToolFail(f"未找到单据编号 {op_id!r}。")
+    if status != "ok" and is_missing_task_tool_error(output):
+        # 误拿了 m_ 身份的子会话抢单报错：保留单据为 pending 并重投给真正的顶层 mainN，同时命令该误入子会话立即停手退出！
+        if op["status"] != "done":
+            store.run("UPDATE dispatch_ops SET status='pending' WHERE op_id=?", (op_id,))
+            orig_op_msg = store.one(
+                "SELECT text FROM messages WHERE target=? AND text LIKE ? ORDER BY id DESC LIMIT 1",
+                (op["target_node"], f'%op_id="{op_id}"%'),
+            )
+            if orig_op_msg is not None and orig_op_msg["text"]:
+                system_note(op["target_node"], orig_op_msg["text"], wake=1)
+        log.warning("rejected rogue non-Task subagent stealing op %s on %s", op_id, agent["conv"])
+        return text_result(
+            "你的身份已停用：检测到你当前会话没有 Cursor Task 工具（你是误持了主执行器 m_ 凭据的子会话）。"
+            "该单据已重新交还真正的顶层主执行器处理；请不要再调用 read_chat、submit_op_result 或终端 wait，直接结束当前回合退出即可。"
+        )
     done_status = "done" if status == "ok" else "failed"
     res_obj = {"status": status, "task_agent_id": tid, "output": output, "by": agent["conv"], "ts": now()}
     store.run(
