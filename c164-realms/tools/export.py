@@ -103,7 +103,9 @@ BOT = "C164Probe"           # the fake player of verify
 # has been tagged, put on the spot and set up. The map's function calls a function tag of its own
 # that names them; a function that is not in the pack is passed over, so a save without the guide
 # is made of the same lines. Who comes back is told nothing (the card, as of 11:13).
-HOOKS = {"first": [f"{ART}:guide/first"]}
+# what other packages hang on a player's arrival: {our function tag: [their functions]}. `first` is run
+# for who has never been here, `join` for everyone who comes in (for who is new before `first`)
+HOOKS = {"first": [f"{ART}:guide/first"], "join": [f"{ART}:guide/join"]}
 GUIDE_SUB = "An evening above the clouds"       # under the title, which is the scene's MAP_TITLE
 CATCH = -30                 # scene y: feet under it are put back on the spot (agreed with cloud
                             # c329 #62206 and a4 c323 #64103: the cloud layer's top is -28, the
@@ -369,8 +371,12 @@ def _on_term(signum, frame):
 # ------------------------------------------------------------------ what the scene says
 
 def map_title(scene):
-    """The map's name, from the one place it is written (the guide's: scenes/<scene>/motion/guide_title.py,
-    MAP_TITLE; mast c346 #81143), or None for a scene that has none."""
+    """The map's name, from the one place it is written: the scene's MAP_TITLE (the guide's card,
+    plan/packages/motion/guide.md; mast c346 #81557), or the guide's own module where the scene
+    does not carry it, or None for a scene that has none."""
+    title = getattr(importlib.import_module("scenes." + scene), "MAP_TITLE", None)
+    if title:
+        return title
     try:
         return getattr(importlib.import_module(f"scenes.{scene}.motion.guide_title"), "MAP_TITLE", None)
     except ModuleNotFoundError as exc:
@@ -502,6 +508,7 @@ def functions(spec):
             f"scoreboard players set @s {LEFT} 0",
             "gamemode adventure @s",
             "attribute @s minecraft:block_interaction_range base set 0",
+            f"execute at @s run function #{NS}:join",
         ],
         "back": [f"tp @s {num(x)} {num(y)} {num(z)} {num(spec['yaw'])} {num(spec['pitch'])}"],
     }
@@ -1198,7 +1205,7 @@ def visit(server, spec, results, tag, came):
     server.cmd(f"tp {BOT} {num(over[0])} {num(over[1])} {num(over[2])}", quiet=True)
     bot.pump(2.5)
     check(results, tag + "over the line", near(bot.position, over), f"put at y {over[1]}, a moment later at {bot.position}")
-    # the guide greets who is new once, with a title, and who comes back with a line over the hotbar
+    # the guide greets who is new once, with a title (a moment after he is in), and tells who comes back nothing
     greets = spec.get("guide") and os.path.exists(os.path.join(
         server.world, "datapacks", PACK, "data", *HOOKS["first"][0].split(":", 1)[0:1], "function",
         HOOKS["first"][0].split(":", 1)[1] + ".mcfunction"))
