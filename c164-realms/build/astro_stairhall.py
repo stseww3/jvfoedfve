@@ -65,9 +65,19 @@ def attempt(lamps_path, stations_path, out_file=None):
     with open(lamps_path) as f:
         plan = json.load(f)
     canvas = obs.build()
-    before, tops, placed = ways.survey(canvas)
+    _first, tops, placed = ways.survey(canvas)
     text = []
+    for _, x, y, z, level in plan.get("base", []):          # what others change meanwhile: ["source", x, y, z, level]
+        was = canvas.b.get((x, y, z))
+        canvas.set(x, y, z, L.light(level))
+        text.append(f"base: the source in {(x, y, z)} is {level} (the scene has {was} there, {placed.get((x, y, z))})")
+    before, tops, _placed = ways.survey(canvas)
     for entry in plan["lamps"]:
+        if entry[0] == "source":                    # an existing source at another level
+            _, x, y, z, level = entry
+            text.append(f"source in {(x, y, z)}: {canvas.b.get((x, y, z))} -> level {level}")
+            canvas.set(x, y, z, L.light(level))
+            continue
         if entry[0] == "hang":                      # a pendant: its source cell, hung from the first block over it
             _, x, y, z, level = entry
             cell, up = (x, y, z), y + 1
