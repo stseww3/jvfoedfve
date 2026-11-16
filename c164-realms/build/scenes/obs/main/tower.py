@@ -36,10 +36,17 @@ carries no bracket or hook for one: its four faces are flush alike. The clock ro
 dials is interiors/clockroom; what it reads of the well is WELL_X/Z/Y, ROOM_FLOOR, backs() and
 DIAL_BACKS, and way_up() opens the door, stands the ladder and lays the room's floor for it.
 
-The mast is three display models, the only ones of the main line: bld_tower_mast, the pole with all
-that is fixed to it, and two pieces of their own that the motion line moves: bld_tower_cups, the
-cup wheel, which turns about its spindle, and bld_tower_vane, the wind vane, which hunts to either
-side of the wind about the rod it is sleeved on. build() returns 3.
+The mast is three display models: bld_tower_mast, the pole with all that is fixed to it, and two
+pieces of their own that the motion line moves: bld_tower_cups, the cup wheel, which turns about
+its spindle, and bld_tower_vane, the wind vane, which hunts to either side of the wind about the
+rod it is sleeved on.
+
+The south dial shows its works (WORKS_SIDES; plan/round2.md, main/tower-works): machines/clock
+leaves its enamel open in the middle, and behind the opening a lit glass, a bridge of three arms
+that holds the arbor of the hands, and three brass wheels that turn against each other, 10, 30
+and 60 times in an hour of the dial. What stands still is drawn into the dial's own model
+(works_into(), which machines/clock calls); the wheels are bld_tower_wheel_a, _b and _c, three
+more display models of the main line, which has no others. build() returns 6.
 
     python -m scenes.obs.main.tower            # as text: elevation, sections, plans, the way up
 """
@@ -47,9 +54,12 @@ import functools
 import math
 import sys
 
+import numpy as np
+
 from artkit import models as M
 from artkit.blocks import st
 from artkit.canvas import Canvas
+from artkit.pixelart import Picture
 
 from ..common import blocks as B
 from ..common import palette as P
@@ -104,7 +114,54 @@ VANE_SWING = 16.0                   # degrees the vane hunts to either side of t
 #                                     tails travel half a block each way
 VANE_PERIOD = 5 * MK.SECOND         # ticks there and back; a flag takes six seconds, so the two drift in
 #                                     and out of step
-FAR = 4.0                           # view_range, as machines/clock gives the dials and the ball
+FAR = M.FAR                         # view_range, as machines/clock gives the dials and the ball: the far
+#                                     class, 192 blocks
+
+# --- the works behind a dial (plan/round2.md, main/tower-works) ---------------------------------------
+# machines/clock leaves the enamel of these faces' dials open in the middle and makes the drum behind
+# them a hoop (its OPEN_HOLE and OPEN_DRUM); what is seen through the opening is drawn here. Everything
+# is in pixels from the dial's centre on its back plane, as the dial and its hands are: x to the right
+# as the dial is looked at, y up, z out of the wall. The dial's face is at z 1, the iron plate of the
+# recess at z -12.
+#   What stands still (the lit glass, the pillars, the bridge, the arbor) is part of the dial's own
+# model: machines/clock calls works_into() on it, so the opening is never seen without its glass and
+# the dial stays one display entity. The three wheels are pieces of their own, which the motion line
+# turns.
+WORKS_SIDES = ("south",)            # the faces whose dial shows its works: the south dial is 55 pixels across
+#                                     in V4 where the east one is 16 in V5 (the review, 11-16)
+WHEEL_MODEL = "bld_tower_wheel_"    # + a, b, c: the wheels
+WORKS_HOLE = 11.0                   # the radius of the opening in the enamel: machines/clock's OPEN_HOLE
+WORKS_CLEAR = 18.0                  # what the hoop leaves clear round the axis: its OPEN_DRUM
+WORKS_DEEP = 12.0                   # from the dial's back plane to the iron plate: its DIAL_DRUM, in pixels
+GLASS_Z = -5.0                      # the face of the lit glass. A dial is looked at from below and from the
+#                                     side (V4: 60 degrees off its axis), so what is to be seen lies close
+#                                     behind the opening: the glass is 6 pixels behind the dial's face
+GLASS_LAMP = (-5.0, 5.0)            # where the lamp stands behind the glass: up and to the left, which is
+#                                     where V4, V2 and the roof walk look in through the opening
+GLASS_EMIT = 9                      # the light the glass gives off, whatever light the dial is shown in
+BRIDGE_Z = (-0.75, 0.25)            # the bridge that holds the arbor: three arms, never four, and never
+BRIDGE_ARMS = (90.0, 210.0, 330.0)  # one bar across: a bar and a hand at right angles would be a cross
+PILLAR_OUT = 15.25                  # the pillars the bridge stands on: behind the enamel, clear of the wheels
+ARBOR = 1.25                        # the radius of the arbor the hands' bosses sit on (2 at most: the clock's)
+# The train, from the slow wheel to the quick one. at: the wheel's axis; z: its layer; radius: over
+# the tips of its teeth; turn: ticks a turn, negative clockwise as the dial is looked at. A wheel
+# drives the next one's pinion, which stands in its own layer where its teeth pass: the wheels
+# overlap as in a clock and turn against each other. In one hour of the dials (machines/clock's
+# HOUR, 6000 ticks) they turn 10, 30 and 60 times, the quick one once in a minute of the dial:
+# five seconds, where a wheel is still seen to have spokes. Two seconds on (the two frames the
+# render station compares) every wheel shows another face: 24, 72 and 144 degrees are no whole
+# number of its teeth nor of its spokes.
+WHEELS = (
+    dict(name="a", at=(0.0, 0.0), z=(-4.0, -3.25), radius=10.0, teeth=24, spokes=5, hub=2.75, turn=-600),
+    dict(name="b", at=(-5.5, 9.526), z=(-3.0, -2.25), radius=6.5, teeth=12, spokes=3, hub=1.75, turn=200),
+    dict(name="c", at=(-9.125, 3.247), z=(-2.0, -1.25), radius=4.25, teeth=8, spokes=3, hub=1.25, turn=-100),
+)
+PINION = 1.5                        # the radius of a pinion: b's stands 11 from a's axis, c's 7.25 from b's
+WHEEL_LIGHT = (0, 9)                # the wheels have the lamp's light and none of the sky's: dark brass
+#                                     against the glass
+WHEEL_VIEW = M.NEAR                 # 32 blocks: a wheel is under a block across, and V4 (59 blocks off, over
+#                                     its line of 600 display entities) may not grow. From further off the
+#                                     glass shows the wheels that are painted on it
 
 # --- light --------------------------------------------------------------------------------------------
 FRONT, STOREY = "tower", "shaft"    # the slits' keys for the light line; the bay is the face's number
@@ -414,6 +471,116 @@ def _slit_lights(c, o):
             c.set(o[0] + x, o[1] + SLIT_Y[0], o[2] + z, f"{B.LIGHT}[level={SLIT_LIGHT}]", keep=True)
 
 
+# --- the works behind a dial: what stands still, and the wheels ------------------------------------------
+def _flat(name, step):
+    """One flat tone of a ramp: a part a pixel or two across is read by its outline."""
+    return P.mat(name, kind="flat", base=step, bevel=0)
+
+
+# The wheels that are painted on the glass as the shadows they throw on it: the striking train,
+# which stands until the hour. (x, y of the axis, radius over the rim, spokes): three or five.
+GLASS_SHADOWS = ((-10.5, 7.5, 6.5, 5), (4.5, -5.5, 9.0, 5), (-2.0, 12.5, 4.5, 3))
+
+
+def _shadowed(x, y):
+    """Whether a wheel that stands behind the glass throws its shadow on the pixel at (x, y): its
+    rim, a tooth on the rim, a spoke or the hub."""
+    for cx, cy, radius, spokes in GLASS_SHADOWS:
+        dx, dy = x - cx, y - cy
+        r = math.hypot(dx, dy)
+        if r > radius + 1.0:
+            continue
+        if r <= 1.75 or radius - 1.5 < r <= radius:
+            return True
+        turn = math.degrees(math.atan2(dy, dx))
+        if r > radius:
+            teeth = int(round(2.0 * math.pi * radius / 3.0))        # a tooth and a gap are three pixels
+            if (turn * teeth / 360.0) % 1.0 < 0.5:
+                return True
+            continue
+        for k in range(spokes):
+            off = math.radians(turn - 90.0 - 360.0 * k / spokes)
+            if math.cos(off) > 0.0 and abs(r * math.sin(off)) <= 0.75:
+                return True
+    return False
+
+
+@functools.lru_cache(maxsize=None)
+def _glass():
+    """The lit glass as a picture: a disc that fills the hoop, in the amber of every lamp on the
+    hill, lightest where the lamp stands behind it, a tone darker in each ring outwards and a tone
+    darker again where a wheel behind it throws its shadow."""
+    size = int(2 * WORKS_CLEAR)
+    c = size / 2.0
+    tones = [P.colour("glow", i) for i in range(4)]             # dark to light
+    px = np.zeros((size, size, 4), dtype=np.uint8)
+    for j in range(size):
+        for i in range(size):
+            x, y = i + 0.5 - c, c - (j + 0.5)
+            if math.hypot(x, y) > WORKS_CLEAR - 0.25:
+                continue
+            far = math.hypot(x - GLASS_LAMP[0], y - GLASS_LAMP[1])
+            tone = 3 if far <= 2.5 else 2 if far <= 7.0 else 1
+            px[j, i, :3] = tones[tone - 1 if _shadowed(x, y) else tone]
+            px[j, i, 3] = 255
+    return Picture("tower_works_glass", px)
+
+
+def works_into(m, px=1.0):
+    """Draw what stands still behind an open dial into the dial's own model `m`: the lit glass,
+    three pillars, the bridge on them that holds the arbor, and the arbor, which reaches out to the
+    hands' bosses. machines/clock calls this for the dial of a face in WORKS_SIDES. `px` is how
+    many pixels a unit of that model is (2 for the tower's dials); the model's origin is the dial's
+    centre on its back plane, its z out of the wall. Nothing reaches beyond WORKS_CLEAR from the
+    axis or behind the iron plate; only the arbor stands in front of the back plane."""
+    k = 1.0 / px
+    arm, boss, steel = _flat("brass", 1), _flat("brass", 2), _flat("iron", 5)
+    on = (0.0, 0.0, 0.0)
+
+    def u(*v):
+        return tuple(a * k for a in v)
+
+    m.box(u(-WORKS_CLEAR, -WORKS_CLEAR, GLASS_Z - 0.5), u(WORKS_CLEAR, WORKS_CLEAR, GLASS_Z), _flat("glow", 1),
+          skip="nweud", faces={"s": _glass()}, emit=GLASS_EMIT)
+    z0, z1 = BRIDGE_Z
+    for a in BRIDGE_ARMS:
+        turn = ("z", a - 90.0, on)                      # the arm is drawn pointing up and turned to its place
+        rad = math.radians(a)
+        m.tube("z", u(PILLAR_OUT * math.cos(rad), PILLAR_OUT * math.sin(rad)), GLASS_Z * k, z0 * k, 0.875 * k, arm,
+               sides=6)
+        m.box(u(-1.0, 2.0, z0), u(1.0, PILLAR_OUT - 1.0, z1), arm, rot=turn)
+        m.box(u(-1.5, PILLAR_OUT - 1.25, z0), u(1.5, PILLAR_OUT + 1.25, z1), arm, rot=turn)
+        for out in (8.5, PILLAR_OUT):                   # a steel screw in the arm and one in its foot
+            m.box(u(-0.5, out - 0.5, z1), u(0.5, out + 0.5, z1 + 0.25), steel, rot=turn)
+    m.tube("z", (0.0, 0.0), (z0 - 0.25) * k, z1 * k, 2.75 * k, boss, sides=12)
+    m.tube("z", (0.0, 0.0), GLASS_Z * k, 1.5 * k, ARBOR * k, steel, sides=8)
+    return m
+
+
+def _wheel(spec):
+    """One wheel of the train, in pixels about its axis, the model's z through its anchor: teeth,
+    rim, spokes (three or five, never four) and hub in flat tones of brass, and behind it on the
+    same arbor the pinion that the wheel before it drives."""
+    rim_tone, spoke_tone, hub_tone, leaf_tone = (_flat("brass", i) for i in (3, 2, 4, 1))
+    m = M.Model(WHEEL_MODEL + spec["name"], px=1.0)
+    on = (0.0, 0.0, 0.0)
+    (z0, z1), radius, teeth = spec["z"], spec["radius"], spec["teeth"]
+    root = radius - 1.25                                # the teeth stand 1.25 pixels high
+    rim = 1.5 if radius > 8.0 else 1.25 if radius > 5.0 else 1.0
+    wide = math.pi * (radius - 0.625) / teeth           # a tooth is as wide as the gap beside it
+    for i in range(teeth):
+        m.box((-wide / 2.0, root - 0.25, z0), (wide / 2.0, radius, z1), rim_tone, rot=("z", 360.0 * i / teeth, on))
+    m.ring("z", (0.0, 0.0, (z0 + z1) / 2.0), root - rim / 2.0, rim, z1 - z0, rim_tone,
+           sides=24 if radius > 8.0 else 16 if radius > 5.0 else 12)
+    for i in range(spec["spokes"]):
+        m.box((-rim / 2.0, spec["hub"] - 0.25, z0 + 0.125), (rim / 2.0, root - rim + 0.25, z1 - 0.125), spoke_tone,
+              rot=("z", 360.0 * i / spec["spokes"], on))
+    m.tube("z", (0.0, 0.0), z0 - 0.25, z1 + 0.25, spec["hub"], hub_tone, sides=12)
+    if spec is not WHEELS[0]:
+        m.tube("z", (0.0, 0.0), z0 - 1.0, z0 - 0.25, PINION, leaf_tone, sides=8)
+    return m
+
+
 # --- the mast: display models ------------------------------------------------------------------------------
 @functools.lru_cache(maxsize=None)
 def _models():
@@ -470,11 +637,54 @@ def _models():
         ux, uz = math.cos(a), -math.sin(a)
         w.beam((ux, 0.0, uz), (5.0 * ux, 0.0, 5.0 * uz), 2.0, 2.0, iron)
         w.tube("y", (6.0 * ux, 6.0 * uz), -2.0, 2.0, 2.5, iron, sides=6)
-    return {m.name: m, w.name: w, v.name: v}
+    out = {m.name: m, w.name: w, v.name: v}
+    for spec in WHEELS:
+        wheel = _wheel(spec)
+        out[wheel.name] = wheel
+    return out
 
 
 def models():
     return dict(_models())
+
+
+def _wheel_stands(c, o=(0, 0, 0)):
+    """Where the wheels of the open dials stand: [(the wheel's entry in WHEELS, the yaw of its face,
+    the point its entity stands on: its axis on the dial's back plane, the origin added)]. The dials
+    are machines/clock's, which says where their centres are, and a piece on a wall is put as the
+    props' kit puts the dial itself. A tree without the two, or with a clock whose open dial does
+    not carry what works_into() draws, has no wheels: they would turn before a hole."""
+    try:
+        from ..machines import clock
+        from ..props import _kit as K
+    except ImportError:
+        return []
+    if not getattr(clock, "WORKS_IN_FACE", False):
+        return []
+    cut = (clock.OPEN_HOLE, clock.OPEN_DRUM, clock.DIAL_DRUM * 16.0)
+    if cut != (WORKS_HOLE, WORKS_CLEAR, WORKS_DEEP):
+        raise ValueError(f"main/tower: the works are made for a dial open to {WORKS_HOLE:g} pixels, a hoop clear "
+                         f"to {WORKS_CLEAR:g} and {WORKS_DEEP:g} deep; machines/clock has {cut}")
+    out = []
+    for side in WORKS_SIDES:
+        yaw = K.FACING[side]
+        centre = clock.dial_centre(c, side, o)
+        for spec in WHEELS:
+            d = K.turn(yaw, (spec["at"][0] / 16.0, spec["at"][1] / 16.0, K.NUDGE))
+            out.append((spec, yaw, tuple(centre[i] + d[i] + o[i] for i in range(3))))
+    return out
+
+
+def _works(c, o):
+    """Stand the wheels behind the open dials and register each with the motion line: it turns
+    about its own axis, out of the wall, in the ticks WHEELS gives it. Returns the entities placed."""
+    kit = _models()
+    stands = _wheel_stands(c, o)
+    for spec, yaw, at in stands:
+        c.add_entity(at[0], at[1], at[2], M.display(kit[WHEEL_MODEL + spec["name"]], yaw=yaw,
+                                                    brightness=WHEEL_LIGHT, view=WHEEL_VIEW))
+        MK.spin(c, "z", spec["turn"])
+    return len(stands)
 
 
 def _mast(c, o):
@@ -496,13 +706,14 @@ def _mast(c, o):
 # --- the package ----------------------------------------------------------------------------------------------
 def build(canvas, origin=(0, 0, 0)):
     """Place the clock tower on the north pavilion's deck: the shaft, the lookout under its
-    four-sided roof, the mast. Returns the display entities placed: 3."""
+    four-sided roof, the mast, the wheels behind the open dial. Returns the display entities
+    placed: the mast's 3 and 3 wheels to an open dial."""
     s = O.Laying(canvas, O.Plan(BODY), origin, None)
     _shaft(canvas, origin, s)
     head = _top(canvas, origin, s)
     _lamp(canvas, origin, head)
     _slit_lights(canvas, origin)
-    return _mast(canvas, origin)
+    return _mast(canvas, origin) + _works(canvas, origin)
 
 
 def _plan_row(c, y):
@@ -514,18 +725,26 @@ def _plan_row(c, y):
     return "\n".join(lines)
 
 
-def _mast_lines(c):
-    """The mast as text: the box each of its three models fills where it stands, in blocks, and
-    what the motion line makes of the two that move."""
+def _model_lines(c):
+    """The display models as text: the box each fills where it stands, in blocks (the mast's three,
+    then the wheels behind the open dial), and what the motion line makes of the ones that move."""
     kit = _models()
-    stands = ((MAST_MODEL, (AXIS[0], MAST_FOOT + MAST_HOLD, AXIS[1]), MAST_SCALE),
-              (CUPS_MODEL, CUPS_AT, 1.0), (VANE_MODEL, VANE_AT, MAST_SCALE))
+    stands = [(MAST_MODEL, (AXIS[0], MAST_FOOT + MAST_HOLD, AXIS[1]), MAST_SCALE, 0.0),
+              (CUPS_MODEL, CUPS_AT, 1.0, 0.0), (VANE_MODEL, VANE_AT, MAST_SCALE, 0.0)]
+    stands += [(WHEEL_MODEL + spec["name"], at, 1.0, yaw) for spec, yaw, at in _wheel_stands(c)]
     lines = []
-    for name, at, scale in stands:
+    for name, at, scale, yaw in stands:
         lo, hi = kit[name].reach()
-        box = [(at[i] + (lo[i] - kit[name].anchor[i]) * scale / 16.0,
-                at[i] + (hi[i] - kit[name].anchor[i]) * scale / 16.0) for i in range(3)]
-        lines.append("%-15s on (%g, %g, %g)  x %.3f .. %.3f  y %.3f .. %.3f  z %.3f .. %.3f"
+        r = math.radians(yaw)
+        ends = []
+        for x in (lo[0], hi[0]):
+            for y in (lo[1], hi[1]):
+                for z in (lo[2], hi[2]):
+                    v = [(p - a) * scale / 16.0 for p, a in zip((x, y, z), kit[name].anchor)]
+                    ends.append((at[0] + v[0] * math.cos(r) - v[2] * math.sin(r), at[1] + v[1],
+                                 at[2] + v[0] * math.sin(r) + v[2] * math.cos(r)))
+        box = [(min(e[i] for e in ends), max(e[i] for e in ends)) for i in range(3)]
+        lines.append("%-17s on (%g, %g, %g)  x %.3f .. %.3f  y %.3f .. %.3f  z %.3f .. %.3f"
                      % (name, at[0], at[1], at[2], box[0][0], box[0][1], box[1][0], box[1][1], box[2][0], box[2][1]))
     status, summary, details = MK.check(c)
     return "\n".join(lines + ["", f"motion: {status} -- {summary}"] + ["  " + d for d in details])
@@ -535,8 +754,8 @@ def _drawings():
     c = Canvas()
     n = build(c)
     print(f"\n=== clock tower: {len(c.b)} blocks, {n} display entities ===")
-    print("\nTHE MAST (its models at rest, and what moves):\n")
-    print(_mast_lines(c))
+    print("\nTHE DISPLAY MODELS (at rest, and what moves):\n")
+    print(_model_lines(c))
     print("\nEAST ELEVATION (seen from the court; south on the left):\n")
     print(O.elevation(c, "east", (Z0 - 2, Z1 + 2), (FOOT, APEX), X1 + 4, X0 - 1))
     print(f"\nSECTION through the middle (z = {CZ}; west on the left):\n")
