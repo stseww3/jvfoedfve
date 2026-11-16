@@ -6,9 +6,9 @@ One display model on the lining of the east axis: a slab of slate in an angle-ir
 and two high, no more than four pixels off the wall, so the floor in front of it stays free. On it,
 from the top: a voltmeter and an ammeter in brass cases, between them three pilot lamps over the
 maker's plate; under them three knife switches, the main one in the middle (two blades far apart,
-the bar of its handle across them) and a smaller one either side, for the motor that turns the dome
-and for the one that draws the slit's leaves. All three are shut: the slit stands open and the dome
-follows the telescope.
+a brass yoke across their ends and a wooden grip on it) and a smaller one either side, for the
+motor that turns the dome and for the one that draws the slit's leaves, a porcelain fuse between
+each two. All three are shut: the slit stands open and the dome follows the telescope.
 
 The room is dark (sky light 6 to 9), so the board reads by what is light on dark: brass and two
 white dials on slate. What glows is small and third in rank (plan 3.2; sky/lights): two of the three
@@ -55,8 +55,7 @@ LIT = (True, False, True)                       # mains on, the dome's motor at 
 
 LINING = B.FLOOR_WOOD.block                     # the boards of the drum's lining (domeroom.DEAL)
 SLATE = P.mat("slate", base=2, noise=0.16)
-HANDLE = P.mat("dark_wood", base=3)             # the bar one pulls a knife switch by: turned wood, which
-#                                                 shows on slate where ebonite would be a hole in it
+HANDLE = P.mat("dark_wood", base=3)             # the grip one pulls a knife switch by: turned wood
 POINTER = K.flat("iron", 0)                     # a meter's hand
 BOLT = K.flat("iron", 5)
 PLATE = K.flat("brass", 3)
@@ -129,26 +128,28 @@ def _lamp(m, x, y, lit):
           emit=15 if lit else 0, shade=not lit)
 
 
-def _knife(m, x, foot, reach, tall):
+def _knife(m, x, foot, reach, tall, grip):
     """A two-pole knife switch, shut: the hinge posts at the foot, the jaws under the top, the two
-    blades standing edge-on through them and, across their free ends, the bar one pulls them by. x is
-    its middle, `reach` the middle of a blade off it, `tall` its height."""
+    blades standing edge-on through them and, across their free ends, the brass yoke with the wooden
+    grip one pulls them by. x is its middle, `reach` the middle of a blade off it, `tall` its
+    height, `grip` the grip's width."""
     z = SLAB_Z
     for s in (-1.0, 1.0):
         c = x + s * reach
         for y in (foot, foot + tall - 5.0):
             m.box((c - 1.5, y, z), (c + 1.5, y + 2.0, z + 1.5), K.BRASS_D)               # hinge post, jaw
-        m.box((c - 0.5, foot + 1.0, z + 0.25), (c + 0.5, foot + tall - 1.0, z + 2.25), K.BRASS, grain="y",
+        m.box((c - 0.5, foot + 1.0, z + 0.25), (c + 0.5, foot + tall - 2.0, z + 2.0), K.BRASS, grain="y",
               faces={"s": K.flat("brass", 4)})                                           # the blade's edge
-    m.box((x - reach - 1.5, foot + tall - 2.0, z + 1.0), (x + reach + 1.5, foot + tall, z + 2.5), HANDLE,
-          grain="x")
+    top = foot + tall
+    m.box((x - reach - 0.5, top - 2.0, z + 0.5), (x + reach + 0.5, top, z + 2.0), K.BRASS, grain="x")
+    m.box((x - grip / 2.0, top - 2.0, z + 2.0), (x + grip / 2.0, top, z + 2.5), HANDLE, grain="x")
 
 
 def _fuse(m, x, foot):
     """A porcelain fuse between two brass clips."""
     z = SLAB_Z
-    m.box((x - 1.0, foot + 1.0, z), (x + 1.0, foot + 5.0, z + 1.5), K.flat("porcelain", 1), grain="y",
-          faces={"s": K.flat("porcelain", 2)})
+    m.box((x - 1.0, foot + 1.0, z), (x + 1.0, foot + 5.0, z + 1.5), K.flat("porcelain", 0), grain="y",
+          faces={"s": K.flat("porcelain", 1)})
     for y in (foot, foot + 5.0):
         m.box((x - 1.0, y, z), (x + 1.0, y + 1.0, z + 1.5), K.BRASS_D, faces={"s": K.flat("brass", 3)})
 
@@ -172,9 +173,9 @@ def _board():
         _lamp(m, x, LAMP_Y, lit)
     m.box((-5.0, 1.0, SLAB_Z), (5.0, 6.0, SLAB_Z + 0.5), PLATE, skip="n", faces={"s": _sprite(
         "maker", MAKER, b=P.RAMPS["brass"][3], k=P.RAMPS["brass"][0])})
-    _knife(m, 0.0, -12.0, 3.5, 12.0)
+    _knife(m, 0.0, -12.0, 3.5, 12.0, 4.0)
     for x in (-METER[0], METER[0]):
-        _knife(m, x, -12.0, 2.0, 10.0)
+        _knife(m, x, -12.0, 2.0, 10.0, 3.0)
     for x in (-8.0, 8.0):
         _fuse(m, x, -11.0)
     return m
