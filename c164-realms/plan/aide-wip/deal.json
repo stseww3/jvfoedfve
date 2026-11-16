@@ -1,0 +1,538 @@
+{
+ "seq": 84,
+ "queue": [],
+ "holders": {
+  "node12": {
+   "id": 78,
+   "code": "s1",
+   "chat": "c319",
+   "cls": 3,
+   "min": 13,
+   "what": "真机四单连投（独占）：⑨a 新总装看板 12 张服务端视距 10（4.5 分）→ ⑨b 服务端 12 补 V1、V11、V12（2 分）→ ⑪⑫ comet 的 obs_sky_ridges 服务端 10、12 各一单（各 3 分）；a2 的头号单到了插最前",
+   "added": 1794785141.6262293,
+   "lane": "node12",
+   "since": 1794786386.5699022,
+   "asked": null
+  },
+  "node4": {
+   "id": 84,
+   "code": "tower",
+   "chat": "c327",
+   "cls": 0,
+   "min": 2,
+   "what": "main/tower 整套重画加 check（70 秒上下，--limit 700；V5 机位改过）",
+   "added": 1794787067.333705,
+   "since": 1794787067.3337064,
+   "asked": null
+  },
+  "node5": {
+   "id": 72,
+   "code": "sdome",
+   "chat": "c328",
+   "cls": 4,
+   "min": 5,
+   "what": "machines/meridian-astrograph 看图草稿 3 单连投，每单 4 张、一两分钟",
+   "added": 1794784335.1068175,
+   "since": 1794786386.8006525,
+   "asked": null
+  },
+  "node6": null
+ },
+ "log": [
+  {
+   "lane": "node12",
+   "code": "s2",
+   "id": 1,
+   "what": "s2 ① 关口/合并后检查",
+   "from": 1794779652.3792121,
+   "to": 1794780219.240895,
+   "how": "done",
+   "note": "423 s, four deliveries PASS"
+  },
+  {
+   "lane": "node4",
+   "code": "a1",
+   "id": 2,
+   "what": "materials/board ① 四个板场景重画 63 张加 check",
+   "from": 1794780004.23196,
+   "to": 1794780265.4688077,
+   "how": "done",
+   "note": "110 s, 63 pictures, checks pass"
+  },
+  {
+   "lane": "node4",
+   "code": "snow",
+   "id": 3,
+   "what": "props/paper 看图草稿 25 张",
+   "from": 1794780266.3063614,
+   "to": 1794780681.3990731,
+   "how": "done",
+   "note": "snow: not needed, ran on the director's machine"
+  },
+  {
+   "lane": "node6",
+   "code": "tower",
+   "id": 7,
+   "what": "main/tower ① 两个场景重画加 check 20 张（--limit 700）",
+   "from": 1794780376.2536423,
+   "to": 1794780681.4590676,
+   "how": "done",
+   "note": "61 s"
+  },
+  {
+   "lane": "node4",
+   "code": "cable",
+   "id": 11,
+   "what": "site/cablecar ① check + 量净空 + 4 张草稿",
+   "from": 1794780681.838708,
+   "to": 1794780792.6319325,
+   "how": "done",
+   "note": "cable: not used, ① ran on the director's machine"
+  },
+  {
+   "lane": "node5",
+   "code": "ashlar",
+   "id": 4,
+   "what": "armillary 看图草稿一单",
+   "from": 1794780376.182708,
+   "to": 1794780792.7220263,
+   "how": "done",
+   "note": "two drafts, under a minute each"
+  },
+  {
+   "lane": "node5",
+   "code": "m2",
+   "id": 16,
+   "what": "① 看图草稿 4 张加 check（过了走 ②③ 交付）",
+   "from": 1794780793.3000903,
+   "to": 1794780895.864724,
+   "how": "done",
+   "note": "m2: not used, ① ran on the director's machine"
+  },
+  {
+   "lane": "node12",
+   "code": "s2",
+   "id": 5,
+   "what": "s2 ②（shell、outbuildings 卡、stair + 屏障的全量检查；过了六包进总装）",
+   "from": 1794780219.3792553,
+   "to": 1794780937.423679,
+   "how": "done",
+   "note": "s2 ②: 491 s; shell, outbuildings card, stair PASS; radiomast needs a re-check"
+  },
+  {
+   "lane": "node4",
+   "code": "clocks",
+   "id": 24,
+   "what": "wip 看图 2 单连投，各 4 张",
+   "from": 1794780814.969309,
+   "to": 1794781068.3136969,
+   "how": "done",
+   "note": "clocks: one look job, 58 s"
+  },
+  {
+   "lane": "node5",
+   "code": "lights",
+   "id": 33,
+   "what": "草图单（总监机排第 12）；洗墙轮交付前还差整套留存图 36 张加 check、关口",
+   "from": 1794780896.286627,
+   "to": 1794781130.2613895,
+   "how": "done",
+   "note": "lights: 76 s, 25 drafts"
+  },
+  {
+   "lane": "node12",
+   "code": "power",
+   "id": 34,
+   "what": "site/powerhouse 外壳第三次交付 ① 烟囱角试样 4 张（之后改码再投 ② 留底图 26 张、③ 关口；chart 的关口等它）",
+   "from": 1794780937.812397,
+   "to": 1794781170.8447962,
+   "how": "done",
+   "note": "power ①: 46 s"
+  },
+  {
+   "lane": "node6",
+   "code": "dome",
+   "id": 13,
+   "what": "main/dome ① 重画三个场景 32 张",
+   "from": 1794780681.9462903,
+   "to": 1794781258.6778939,
+   "how": "done",
+   "note": "dome: repaint 79 s, gate 61 s PASS; main/dome delivered"
+  },
+  {
+   "lane": "node5",
+   "code": "s2",
+   "id": 42,
+   "what": "关口一单：a2 的 sky/look + radiomast 换基线重核（过了八个交付进总装）",
+   "from": 1794781130.788195,
+   "to": 1794781413.2248337,
+   "how": "done",
+   "note": "s2: 70 s, sky/look PASS, radiomast re-check PASS"
+  },
+  {
+   "lane": "node4",
+   "code": "a6",
+   "id": 27,
+   "what": "props/furniture 三套自查图 36 张（之后隔十分钟再一单 gate 9 分）",
+   "from": 1794781068.8385696,
+   "to": 1794781551.8521848,
+   "how": "done",
+   "note": "a6: 242 s, 36 pictures"
+  },
+  {
+   "lane": "node6",
+   "code": "cable",
+   "id": 45,
+   "what": "site/cablecar ② 留档图 12 张 + check + 量净空，③ 关口，连投",
+   "from": 1794781259.156014,
+   "to": 1794781647.0422564,
+   "how": "done",
+   "note": "cable: ② 59 s, ③ 48 s gate PASS"
+  },
+  {
+   "lane": "node5",
+   "code": "s2",
+   "id": 48,
+   "what": "关口一单：dome 默认改乙 ad0c352（和前面八件一次进总装）",
+   "from": 1794781413.380936,
+   "to": 1794781905.7388506,
+   "how": "done",
+   "note": "s2: 154 s, dome default B gate PASS; nine deliveries go into the assembly"
+  },
+  {
+   "lane": "node4",
+   "code": "tower",
+   "id": 46,
+   "what": "main/tower 一、整套重画加 check；二、V5 机位草图 4 张；连投（三、关口等他看完图再要）",
+   "from": 1794781552.344429,
+   "to": 1794781961.1478407,
+   "how": "done",
+   "note": "tower: 67 s, 18 s"
+  },
+  {
+   "lane": "node4",
+   "code": "m3",
+   "id": 52,
+   "what": "wip 4 张（node6 上 m5 的两单还在跑，给他 node4）",
+   "from": 1794781961.3330395,
+   "to": 1794782123.1007853,
+   "how": "done",
+   "note": "m3: 48 s"
+  },
+  {
+   "lane": "node5",
+   "code": "mast",
+   "id": 50,
+   "what": "switchboard-boiler 草图两单连投，各 4 张",
+   "from": 1794781905.925806,
+   "to": 1794782256.9767375,
+   "how": "done",
+   "note": "mast: two drafts, 18 s each"
+  },
+  {
+   "lane": "node6",
+   "code": "m5",
+   "id": 36,
+   "what": "materials/iron 打磨轮：整套图 14 张 2 分 + 关口 5 分，连投",
+   "from": 1794781647.273011,
+   "to": 1794782257.268079,
+   "how": "done",
+   "note": "m5: iron set 46 s, gate 41 s PASS"
+  },
+  {
+   "lane": "node5",
+   "code": "m2",
+   "id": 54,
+   "what": "① 看图 4 张加 check 3 分 ② 预览分支 11 张 1 分，连投",
+   "from": 1794782257.9181376,
+   "to": 1794782665.964457,
+   "how": "done",
+   "note": "m2: two jobs under a minute each"
+  },
+  {
+   "lane": "node6",
+   "code": "a6",
+   "id": 53,
+   "what": "props/furniture 的 gate（过了就交付）",
+   "from": 1794782258.2269273,
+   "to": 1794782722.8187044,
+   "how": "done",
+   "note": "a6: gate 252 s PASS"
+  },
+  {
+   "lane": "node12",
+   "code": "s1",
+   "id": 9,
+   "what": "真机整段（独占，4 核占满，每单限 680 秒）：① mast 72961289 的 7 张 4 分 + 装游戏 1~3 分；② 总装看板 12 张 5 分；③ 大穹顶乙版 2 张加雪 4 张 4 分；④ a2 的 obs_mot_loop 24 张加脚本 7 分；⑤ obs_mot_load 4 张加脚本 3 分（06:32 准他接着投）；⑥ 新总装 5959264e 真机看板 12 张 4 分（06:44 准）；⑦ a2 的复查 3 分留到后面",
+   "from": 1794781171.328967,
+   "to": 1794782877.9951603,
+   "how": "done",
+   "note": "s1: ①~⑤ done (real machine; game installed on node12)"
+  },
+  {
+   "lane": "node5",
+   "code": "s2",
+   "id": 56,
+   "what": "关口 ① materials/board（a1 07bf480，63 张）",
+   "from": 1794782666.283097,
+   "to": 1794783048.7630093,
+   "how": "done",
+   "note": "s2: board gate 203 s PASS"
+  },
+  {
+   "lane": "node4",
+   "code": "a2",
+   "id": 49,
+   "what": "motion/loop 跟进：① 重画两个小场景 28 张 3~5 分 ② 关口 1 分，连投（dome 的配汽偏心杆等它）",
+   "from": 1794782123.4434474,
+   "to": 1794783268.1311243,
+   "how": "done",
+   "note": "a2: repaint 93 s, gate 102 s PASS"
+  },
+  {
+   "lane": "node6",
+   "code": "s2",
+   "id": 57,
+   "what": "关口 ② props/lamps 补交 + materials/iron 打磨轮",
+   "from": 1794782723.0826461,
+   "to": 1794783321.4334364,
+   "how": "done",
+   "note": "s2: lamps resubmission + iron polish gates 386 s PASS"
+  },
+  {
+   "lane": "node5",
+   "code": "tower",
+   "id": 60,
+   "what": "main/tower 重画加 check（clocks 进总装后整套再画），之后再要关口",
+   "from": 1794783049.1034086,
+   "to": 1794783363.1938603,
+   "how": "done",
+   "note": "tower: 69 s"
+  },
+  {
+   "lane": "node6",
+   "code": "cr2",
+   "id": 40,
+   "what": "整座 obs 出 V2、V12 两张（outbuildings 的评审单等它）",
+   "from": 1794783321.801816,
+   "to": 1794783414.9847167,
+   "how": "done",
+   "note": "cr2: withdrew, never submitted"
+  },
+  {
+   "lane": "node12",
+   "code": "s1",
+   "id": 59,
+   "what": "⑥ 新总装 5959264e 的真机看板 12 张（独占）",
+   "from": 1794782878.4295814,
+   "to": 1794783459.611646,
+   "how": "done",
+   "note": "s1: ⑥ 252 s"
+  },
+  {
+   "lane": "node5",
+   "code": "cloud",
+   "id": 17,
+   "what": "云海离线预览 4 张（两单之一）",
+   "from": 1794783363.6344292,
+   "to": 1794783526.8910582,
+   "how": "done",
+   "note": "cloud: not needed (ran on the director's machine)"
+  },
+  {
+   "lane": "node5",
+   "code": "stair",
+   "id": 61,
+   "what": "site/stair 补图：三个场景重画一单（约 10 分）",
+   "from": 1794783527.4780836,
+   "to": 1794784079.1225631,
+   "how": "done",
+   "note": "stair: repaint 68 s, gate 65 s PASS"
+  },
+  {
+   "lane": "node12",
+   "code": "s1",
+   "id": 65,
+   "what": "⑧ deep 光版看板",
+   "from": 1794783459.837212,
+   "to": 1794784150.8352628,
+   "how": "done",
+   "note": "s1: ⑧ 253 s (blue/deep 4 each)"
+  },
+  {
+   "lane": "node4",
+   "code": "power",
+   "id": 58,
+   "what": "site/powerhouse 外壳第三次交付：留底图重画 26 张 2 分 + 关口 1 分，连投（chart 的关口等它）",
+   "from": 1794783268.648842,
+   "to": 1794784205.3807907,
+   "how": "done",
+   "note": "power: repaint 80 s, gate 78 s PASS"
+  },
+  {
+   "lane": "node5",
+   "code": "dome",
+   "id": 66,
+   "what": "main/dome 补图：三个场景 32 张重画一单（约 80 秒）",
+   "from": 1794784079.70121,
+   "to": 1794784275.9465744,
+   "how": "done",
+   "note": "dome: repaint 70 s"
+  },
+  {
+   "lane": "node12",
+   "code": "s1",
+   "id": 65,
+   "what": "⑦a a2 的复查（记钟，约 4 分，07:07 投）→ ⑦b 关服后对钟（约 2 分），独占",
+   "from": 1794784090.835264,
+   "to": 1794784687.1754143,
+   "how": "done",
+   "note": "s1: ⑦a 244 s, ⑦b 146 s (a2's recheck); no real-machine job waiting"
+  },
+  {
+   "lane": "node5",
+   "code": "m1",
+   "id": 67,
+   "what": "props/instruments 差两单交付：① check + 整套 25 张 2 分 ② 关口（≤10 分），连投",
+   "from": 1794784276.0759225,
+   "to": 1794784816.8741639,
+   "how": "done",
+   "note": "m1: both jobs, gate PASS"
+  },
+  {
+   "lane": "node4",
+   "code": "ashlar",
+   "id": 68,
+   "what": "machines/armillary 差两单交付：① 出图 3 个场景 27 张 3 分 ② 关口 8 分，连投",
+   "from": 1794784205.5937126,
+   "to": 1794784970.6231132,
+   "how": "done",
+   "note": "ashlar: two jobs back; gate not run (sight red after merging b309f709, V1 ground floor 50% blocked); will ask again"
+  },
+  {
+   "lane": "node6",
+   "code": "m3",
+   "id": 64,
+   "what": "ironwork：① 整套 23 张自查图 5 分 ② 关口（含 checkall，≤15 分，--limit 1700）；他自己的节点",
+   "from": 1794783415.6097398,
+   "to": 1794785073.5815005,
+   "how": "done",
+   "note": "m3: full set and gate PASS"
+  },
+  {
+   "lane": "node5",
+   "code": "a6",
+   "id": 73,
+   "what": "props/furniture 的关口一单（上次 252 秒；总装 18c28fb9 已合，头 1b81b52f）",
+   "from": 1794784817.124393,
+   "to": 1794785277.7489734,
+   "how": "done",
+   "note": "a6: furniture gate 213 s PASS"
+  },
+  {
+   "lane": "node12",
+   "code": "s2",
+   "id": 70,
+   "what": "关口 ①：a2 的 motion/loop 跟进（1005541）、comet 打磨轮（a5ddf7b）、stair 补图（769e2fb），96 张，约 6 分（限 10 分） → 接着 ② S.V6 改看向（两张 v6 加两个场景的 check，约 3 分）",
+   "from": 1794784687.4135935,
+   "to": 1794785406.0557768,
+   "how": "done",
+   "note": "s2: gate 338 s three packages PASS; two v6 21 s"
+  },
+  {
+   "lane": "node4",
+   "code": "m2",
+   "id": 69,
+   "what": "预览分支上把授时室放进真楼看一眼：两个场景各 6 张（整座主楼，4~8 分）",
+   "from": 1794784996.7511368,
+   "to": 1794785526.3936498,
+   "how": "done",
+   "note": "m2: 106 s"
+  },
+  {
+   "lane": "node6",
+   "code": "outb",
+   "id": 77,
+   "what": "试传存档 ①：离线出 6 张参考图（两个小场景），约 10 分（头号风险，优先）",
+   "from": 1794785073.8160243,
+   "to": 1794785980.0373356,
+   "how": "done",
+   "note": "outb: trial ① reference pictures (31 s error, resubmitted 12 s ok); ②③ later, split"
+  },
+  {
+   "lane": "node4",
+   "code": "scope",
+   "id": 76,
+   "what": "machines/refractor 两单关口连投：--no-verify 和 --only-verify（合计约 20 分；存图一单已投总监机，叫他时存图没回来就先给后面的）",
+   "from": 1794785548.654374,
+   "to": 1794786183.7410936,
+   "how": "done",
+   "note": "scope: both gates PASS (07:37, 07:41)"
+  },
+  {
+   "lane": "node12",
+   "code": "s2",
+   "id": 79,
+   "what": "关口：power 的 powerhouse 三次交付、m1 的 instruments、m3 的 ironwork 打磨轮，约 7 分（限 10 分）",
+   "from": 1794785406.2028165,
+   "to": 1794786386.0723674,
+   "how": "done",
+   "note": "s2: stopped at the limit 509 s: powerhouse and instruments pass, ironwork unfinished; remaining gates go to the director's machine"
+  },
+  {
+   "lane": "node5",
+   "code": "snow",
+   "id": 74,
+   "what": "props/paper 差两单交付：一、整套自查图 25 张 2 分；二、关口约 10 分，连投",
+   "from": 1794785278.1747296,
+   "to": 1794786386.3834336,
+   "how": "done",
+   "note": "snow: three jobs back (set twice, gate once)"
+  },
+  {
+   "lane": "node6",
+   "code": "m1",
+   "id": 80,
+   "what": "materials/panels 打磨轮（指示灯压暗，星厅等着用）：① check + 整套 10 张 2 分 ② 关口 3 分，连投",
+   "from": 1794785980.27628,
+   "to": 1794786523.3865511,
+   "how": "done",
+   "note": "m1: three short jobs 100 s, gate PASS"
+  },
+  {
+   "lane": "node4",
+   "code": "lights",
+   "id": 81,
+   "what": "sky/lights 洗墙轮差两单交付：一、重画留存图 30 张加两个 check（5 分）；二、关口（12 分），连投",
+   "from": 1794786183.9778163,
+   "to": 1794786635.3485107,
+   "how": "done",
+   "note": "lights: repaint 88 s, gate 69 s PASS"
+  },
+  {
+   "lane": "node6",
+   "code": "m5",
+   "id": 82,
+   "what": "domegear 乙版缝机构第一轮看图（obs_mach_domegear，17 张 wip，一单，十分钟内）",
+   "from": 1794786523.5903199,
+   "to": 1794786830.9499445,
+   "how": "done",
+   "note": "m5: domegear drafts 77 s"
+  },
+  {
+   "lane": "node4",
+   "code": "m2",
+   "id": 83,
+   "what": "预览分支：授时室全套 11 张加盒子对真楼的逐格报告（约 2 分）",
+   "from": 1794786831.16508,
+   "to": 1794787067.0663464,
+   "how": "done",
+   "note": "m2: 71 s"
+  }
+ ],
+ "lent": [
+  "node4",
+  "node5",
+  "node6"
+ ]
+}
