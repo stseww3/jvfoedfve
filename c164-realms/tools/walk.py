@@ -12,6 +12,8 @@ sure that every round looks from the same places.
     walk.py floors   --canvas <pickle> --box=x0,z0,x1,z1 [--levels=0,7,18] [--top=y0,y1] [--out <file>]
         for writing a route: plans in characters of where feet find a floor in the built scene,
         one for each level named, and with --top the highest floor of every column between two levels
+    walk.py cells    --canvas <pickle> --box=x0,y0,z0,x1,y1,z1
+        the blocks in a box, one a line: what a door, a gate, a railing is made of
     walk.py stations <route.json> --canvas <pickle> --out <stations.json>
         the station table of a route, the feet of every station put on the floor of the built scene
     walk.py shots    <stations.json> --out <shots.json> [--stations in-A01,in-B03] [--views f,l]
@@ -20,10 +22,15 @@ sure that every round looks from the same places.
     walk.py sheets   <stations.json> --pictures <prefix> --out <folder>
         contact sheets of pictures drawn as <prefix>-<shot name>.png
     walk.py round    <route.json> --round <the assembly commit, 7 digits> [--stations <stations.json>]
+                     [--only A,B] [--no-pictures] [--as-kept]
         all of it, on a worker node: build the scene once, take the station table (the one given,
-        or a new one of the route), draw every shot, lay out the sheets. What is kept goes to
-        plan/reviews/walk/<round>/: <prefix>-stations.json and <prefix>-sheet-<stretch>-<n>.jpg.
-        The single pictures stay in the work folder (--work, default /tmp/c164_walk) and are not kept.
+        or a new one of the route), ask the blocks how each station is reached, draw every shot,
+        lay out the sheets. What is kept goes to plan/reviews/walk/<round>/: <prefix>-stations.json,
+        <prefix>-reach.json and <prefix>-sheet-<stretch>-<n>.jpg. The single pictures stay in the
+        work folder (--work, default /tmp/c164_walk) and are not kept. --only draws the stretches
+        named and no others (a round in several jobs); --no-pictures stops before the drawing;
+        --as-kept draws from the table the round has kept already and does not look for the ways
+        again (the later jobs of such a round: the first one, with --no-pictures, is pushed first).
 
         bash c164-realms/tools/nodejob.sh --keep c164-realms/plan/reviews/walk \\
             python tools/walk.py round plan/reviews/walk/in-route.json --round db1ec43
@@ -48,7 +55,8 @@ The route file (JSON) -- one for each of the two walks, in-route.json and out-ro
     views   other views than those, as letters of "flrbud".
     look    [x, y, z]: the view ahead looks at this point instead of along the way.
     hop     true: the way does not run here from the point before (a room entered elsewhere, a
-            place only the camera gets to). No stations between the two.
+            place only the camera gets to). No stations between the two. The first point of a
+            stretch is taken to follow the last one of the stretch before it, unless it says hop.
     note    anything; not read.
 
 Stations: every point is one, and between two points the leg is divided evenly into steps of four
@@ -58,7 +66,26 @@ round before (--stations), and only a changed route makes a new one. The feet of
 on the floor nearest to the level the route gives (tools/walkreach.py's feet() when that module is
 there, a plain reading of the column otherwise); a station that finds no floor within a block and a
 quarter keeps the route's level and is marked "floor": false -- the route says a floor is there,
-so that is a finding, or the room has not moved in yet.
+so that is a finding, or the room has not moved in yet. A table walked again keeps its stations
+where they are; "floor" then says what the floor has become (false: gone; a number: its new level).
+
+Ways (tools/walkreach.py, when it is in the tree): what a person can walk is worked out from the
+blocks' collision boxes, once from the route's first station, and every round anew. Each station
+gets
+
+    reach   how one gets there from the first station: "walk" (on foot), "hop" (it takes a jump),
+            "fall" (only by dropping, and there is a way back), "trap" (no way back) or "no".
+            A station without a floor has none: nobody stands there.
+    from, how   for a station nobody gets to from the first one: the station a search of its own
+            was started at (the roofs while the stair is not built, a room behind a shut door;
+            no more than a dozen searches in all), and how one gets here from that one
+    leg     the way from the station before it, where it is not a plain walk: "hop", "fall", "no"
+    round   that way's length in blocks, when it is much longer than the straight line: something
+            stands on the line
+
+and <prefix>-reach.json keeps what walkreach found on the ground looked at (twelve blocks round
+the route): pits without a way out, places reached by a jump only, low head room, gaps that only
+head room closes. A model door, a model railing have no collision box: they are air to this.
 
 Pictures: 640x360, the eye 1.62 above the feet, 77 degrees high, tick 14000, the whole scene `obs`
 as the checkout builds it (every package's DRESS as it stands there). The view ahead looks the way
@@ -71,6 +98,7 @@ feet, the yaw and how light the picture is on the average (Rec. 709 luma of the 
 1): a row of stations near 0 is a way without light.
 """
 import argparse
+import gc
 import importlib
 import json
 import math
@@ -79,6 +107,8 @@ import pickle
 import re
 import subprocess
 import sys
+import time
+from collections import deque
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PROJECT = os.path.dirname(HERE)
@@ -97,6 +127,10 @@ COLS, ROWS = 4, 3           # pictures on a sheet
 LABEL = 22                  # the strip over a picture
 HEADER = 32                 # the strip over a sheet
 DARK = 0.02                 # a view ahead darker than this on the average is listed in the round's report
+STARTS = 12                 # the searches for ways: the route's first station, and so many less one of those nobody gets to
+NEAR = 0.6                  # a station and a place reached are the same place within this much of height
+MARGIN = 12                 # ways are looked for this far round the route
+ROUND = (1.5, 2.0)          # a leg's way is "round" when longer than the straight line times this, and this more
 NAME_OK = re.compile(r"[A-Za-z0-9]+\Z")
 POINT_KEYS = {"at", "node", "views", "look", "hop", "note"}
 
@@ -290,25 +324,24 @@ def floor_plans(cells, box, levels=(), top=None):
     return out
 
 
-def feet_finder(cells):
-    """(feet, where it comes from): feet(x, z, near_y) -> level or None. tools/walkreach.py's when
-    that module is in the tree, the plain reading of the column otherwise."""
-    def plain(x, z, near_y):
-        return plain_feet(cells, x, z, near_y)
-
+def _walkreach():
+    """tools/walkreach.py as a module; None while it is not in the tree."""
     try:
         if HERE not in sys.path:
             sys.path.insert(0, HERE)
         import walkreach  # noqa: PLC0415
     except ImportError:
-        return plain, "the plain reading of the column"
-    if not hasattr(walkreach, "feet"):
-        return plain, "the plain reading of the column"
+        return None
+    return walkreach if hasattr(walkreach, "feet") and hasattr(walkreach, "reach_of") else None
 
-    def reach(x, z, near_y):
-        return walkreach.feet(cells, x, z, near_y)
 
-    return reach, "tools/walkreach.py"
+def feet_finder(cells):
+    """(feet, where it comes from): feet(x, z, near_y) -> level or None. tools/walkreach.py's when
+    that module is in the tree, the plain reading of the column otherwise."""
+    walkreach = _walkreach()
+    if walkreach is None:
+        return (lambda x, z, near_y: plain_feet(cells, x, z, near_y)), "the plain reading of the column"
+    return (lambda x, z, near_y: walkreach.feet(cells, x, z, near_y, REACH)), "tools/walkreach.py"
 
 
 def room_finder():
@@ -374,7 +407,7 @@ def stations_of(route, feet, where=None, step=STEP):
     for stretch in route["stretches"]:
         points = stretch["points"]
         count = 0
-        for run in _runs(points):
+        for nth, run in enumerate(_runs(points)):
             path = [tuple(float(v) for v in points[k]["at"]) for k in run]
             marks = [0.0]                                    # the ground distance of every point from the run's start
             for a, b in zip(path, path[1:]):
@@ -411,6 +444,8 @@ def stations_of(route, feet, where=None, step=STEP):
                                views=point.get("views") or (VIEWS if point.get("node") else "f"))
                 if point.get("node"):
                     station["node"] = point["node"]
+                if k == run[0] and (nth or point.get("hop")):
+                    station["hop"] = True                    # the way does not come here from the station before
                 if not floor:
                     station["floor"] = False
                 room = where(x, level, z)
@@ -515,12 +550,22 @@ def sheets_of(table, pictures, out, cols=COLS, rows=ROWS, quality=88):
                     light[shot] = None
                     draw.rectangle((left, top + LABEL, left + width - 1, top + LABEL + height - 1), fill=(60, 60, 66))
                     draw.text((left + 12, top + LABEL + 12), "no picture", fill=(220, 220, 220), font=big)
+                marks = []
                 if s.get("floor") is False:
-                    label += "   NO FLOOR"
+                    marks.append("NO FLOOR")
+                elif s.get("floor") is not None:
+                    marks.append(f"FLOOR NOW {s['floor']:g}")
+                elif s.get("reach", "walk") != "walk":
+                    marks.append(f"REACH {s['reach']}" + (f" ({s['how']} from {s['from'].partition('-')[2]})" if s.get("from") else ""))
+                if s.get("leg"):
+                    marks.append(f"LEG {s['leg']}")
+                if s.get("round"):
+                    marks.append(f"ROUND {s['round']:g}")
+                label += "".join("   " + m for m in marks)
                 if s.get("node") and shot.endswith("-f"):
                     label += f"   [{s['node']}]"
                 draw.text((left + 4, top + 3), label[:int(width / 7.6)], font=font,
-                          fill=(255, 214, 120) if s.get("node") else (210, 210, 210))
+                          fill=(255, 140, 120) if marks else (255, 214, 120) if s.get("node") else (210, 210, 210))
             path = os.path.join(out, f"{prefix}-sheet-{sid}-{page + 1}.jpg")
             sheet.save(path, quality=quality)
             written.append(path)
@@ -531,11 +576,11 @@ def sheets_of(table, pictures, out, cols=COLS, rows=ROWS, quality=88):
 def scene_cells(scene, canvas):
     """The built scene's cells: read from the pickle build/render.py --canvas keeps, or built and
     kept there."""
+    if BUILD not in sys.path:               # the pickle holds the scene's entities too: artkit's classes
+        sys.path.insert(0, BUILD)
     if canvas and os.path.exists(canvas):
         with open(canvas, "rb") as fh:
             return pickle.load(fh)["b"]
-    if BUILD not in sys.path:
-        sys.path.insert(0, BUILD)
     built = importlib.import_module(f"scenes.{scene}").build()
     if canvas:
         os.makedirs(os.path.dirname(os.path.abspath(canvas)), exist_ok=True)
@@ -544,9 +589,195 @@ def scene_cells(scene, canvas):
     return built.b
 
 
+PICTURE_LINE = re.compile(r"\(tick -?\d+, (\d+) s\)\s*$")       # build/render.py's line for a picture drawn
+
+
+def draw(scene, shot_file, pictures, size, fov, canvas, say=print, every=25):
+    """Draw the shots with build/render.py, in a process of its own, as <pictures>-<shot name>.png.
+    What it says of the scene is passed on as it comes, of the pictures every twenty-fifth line,
+    and at the end how long a picture took. Returns its exit code."""
+    cmd = [sys.executable, "-u", "render.py", scene, "--shots", shot_file, "--out", pictures,
+           "--size", f"{size[0]}x{size[1]}", "--fov", str(fov), "--canvas", canvas]
+    start, first, took, tail = time.time(), None, [], []
+    with subprocess.Popen(cmd, cwd=BUILD, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True) as proc:
+        for line in proc.stdout:
+            line = line.rstrip()
+            tail = (tail + [line])[-12:]
+            found = PICTURE_LINE.search(line)
+            if not found:
+                say(line, flush=True)
+                continue
+            if first is None:
+                first = time.time() - float(found.group(1))
+            took.append(float(found.group(1)))
+            if len(took) % every == 1:
+                say(f"{line}   [{len(took)} drawn, {time.time() - start:.0f} s]", flush=True)
+        code = proc.wait()
+    if took:
+        spent = time.time() - first
+        say(f"walk: {len(took)} pictures in {spent:.0f} s, {spent / len(took):.1f} s each (the slowest "
+            f"{max(took):.0f} s), after {first - start:.0f} s of setting the scene up", flush=True)
+    if code:
+        say(f"walk: build/render.py stopped with exit code {code}; its last lines:", flush=True)
+        say("\n".join("  " + line for line in tail), flush=True)
+    return code
+
+
 def make_table(route, cells, **facts):
     feet, source = feet_finder(cells)
     return table_of(route, stations_of(route, feet, room_finder()), floor_from=source, **facts)
+
+
+# ---- what the blocks say of the stations ----------------------------------------------------------------
+SURVEYED = ("floor", "reach", "from", "how", "leg", "round")
+ROWS_KEPT = 60              # of each list in walkreach's report (they are sorted, the worst first)
+
+
+def _node(reach, q, x, y, z):
+    """The node of a Reach at a station: the place reached at the lattice point nearest to it, or at
+    one beside that, whose feet are within NEAR of the station's. None: nobody gets there."""
+    world = reach.world
+    i0, j0 = world.lattice(x, z)
+    best = None
+    for i in range(i0 - 1, i0 + 2):
+        for j in range(j0 - 1, j0 + 2):
+            for top, _ in world.stand(i, j):
+                node = (i, j, int(round(top * q)))
+                if node in reach.kind and abs(top - y) <= NEAR + 1e-6:
+                    off = (max(abs(i - i0), abs(j - j0)), abs(top - y))
+                    if best is None or off < best[0]:
+                        best = (off, node)
+    return best[1] if best else None
+
+
+def _leg(reach, a, b, most, jump):
+    """The easiest way from node a to node b of a Reach within `most` lattice steps: (kind, steps).
+    "walk"; "hop" with jumps and drops of a jump's height; "fall" with any drop; ("no", None)."""
+    tries = (("walk", lambda kind, rise: kind == "walk"),
+             ("hop", lambda kind, rise: kind in ("walk", "jump") or -rise <= jump + 1e-6),
+             ("fall", lambda kind, rise: True))
+    for name, allow in tries:
+        seen, todo = {a: 0}, deque([a])
+        while todo:
+            node = todo.popleft()
+            if node == b:
+                return name, seen[node]
+            if seen[node] >= most:
+                continue
+            for nxt, kind, rise in reach.out.get(node) or ():
+                if nxt not in seen and allow(kind, rise):
+                    seen[nxt] = seen[node] + 1
+                    todo.append(nxt)
+    return "no", None
+
+
+def _short(report):
+    """walkreach's report with its long lists cut to ROWS_KEPT rows (how many there were is noted)."""
+    out = {}
+    for key, value in report.items():
+        if isinstance(value, list) and len(value) > ROWS_KEPT:
+            out[key] = value[:ROWS_KEPT]
+            out[f"{key}: rows in all"] = len(value)
+        else:
+            out[key] = value
+    return out
+
+
+def survey(table, cells, say=print):
+    """What the built scene says of every station of a table: the floor under it and, with
+    tools/walkreach.py in the tree, how it is reached (the docstring's "Ways"). Sets floor, reach,
+    from, how, leg and round of every station anew; returns what <prefix>-reach.json keeps, None
+    without walkreach."""
+    feet, source = feet_finder(cells)
+    table["floor_from"] = source
+    stations = table["stations"]
+    for s in stations:
+        for key in SURVEYED:
+            s.pop(key, None)
+        x, y, z = s["feet"]
+        level = feet(x, z, y)
+        if level is None:
+            s["floor"] = False
+        elif abs(level - y) > 0.01:
+            s["floor"] = round(level, 3)
+    walkreach = _walkreach()
+    if walkreach is None or not stations:
+        return None
+    q, grid = walkreach.Q, walkreach.GRID
+    xs, zs = [s["feet"][0] for s in stations], [s["feet"][2] for s in stations]
+    bounds = (math.floor(min(xs)) - MARGIN, math.floor(min(zs)) - MARGIN,
+              math.floor(max(xs)) + MARGIN, math.floor(max(zs)) + MARGIN)
+    starts, nodes = [], {}                  # [(station, Reach)]; {station: (which start, node)}
+    place = {}                              # {station: where its feet stand now}; none without a floor
+    for s in stations:
+        if s.get("floor") is False:
+            continue
+        x, y, z = place[s["id"]] = (s["feet"][0], s.get("floor", s["feet"][1]), s["feet"][2])
+        for n, (_, reach) in enumerate(starts):
+            node = _node(reach, q, x, y, z)
+            if node is not None:
+                nodes[s["id"]] = (n, node)
+                break
+        else:
+            if "floor" in s or len(starts) >= STARTS:
+                continue
+            try:
+                reach = walkreach.reach_of(cells, (x, y, z), bounds)
+            except ValueError:              # nobody can stand there after all
+                continue
+            node = _node(reach, q, x, y, z)
+            if node is None:
+                continue
+            starts.append((s["id"], reach))
+            nodes[s["id"]] = (len(starts) - 1, node)
+            say(f"walk: ways from {s['id']} ({x:g}, {y:g}, {z:g}): {len(reach.kind)} places reached"
+                + ("; CUT SHORT" if reach.cut else ""), flush=True)
+    table["reach_from"] = starts[0][0] if starts else None
+    table["reach_bounds"] = list(bounds)
+    table["reach_searches"] = [sid for sid, _ in starts]
+    if len(starts) >= STARTS:
+        say(f"walk: {STARTS} searches made and no more: a station marked 'no' after {starts[-1][0]} may only lack a search")
+    before = None
+    for s in stations:
+        hit = nodes.get(s["id"])
+        if s["id"] not in place:
+            pass                            # no floor: nobody stands there, and that is said already
+        elif hit is None:
+            s["reach"] = "no"
+        elif hit[0] == 0:
+            s["reach"] = starts[0][1].kind[hit[1]]
+        else:
+            s["reach"] = "no"
+            s["from"], s["how"] = starts[hit[0]][0], starts[hit[0]][1].kind[hit[1]]
+        gone = nodes.get(before["id"]) if before is not None and not s.get("hop") else None
+        if gone is not None and s["id"] in place:
+            reach = starts[gone[0]][1]      # the ways that lead on from the station before
+            here = hit[1] if hit is not None and hit[0] == gone[0] else _node(reach, q, *place[s["id"]])
+            straight = math.dist(before["feet"][::2], s["feet"][::2])
+            kind, steps = ("no", None) if here is None else \
+                _leg(reach, gone[1], here, int(6 * straight / grid) + 24, walkreach.JUMP)
+            if kind != "walk":
+                s["leg"] = kind
+            if steps is not None and steps * grid > ROUND[0] * straight + ROUND[1]:
+                s["round"] = round(steps * grid, 1)
+        before = s
+    try:
+        if BUILD not in sys.path:
+            sys.path.insert(0, BUILD)
+        line = float(importlib.import_module("scenes.obs.site.terrain").CLOUD_TOP + 1)
+    except Exception:  # noqa: BLE001  no such module, no such sheet: nobody is sent home
+        line = None
+    found = dict(round=table.get("round"), scene=table.get("scene"), bounds=list(bounds), line=line, starts=[])
+    for n, (sid, reach) in enumerate(starts):
+        mine = [k for k, hit in nodes.items() if hit[0] == n]
+        found["starts"].append(dict(station=sid, stations=len(mine), report=_short(reach.report(None, line=line))))
+    return found
+
+
+def write_found(path, found):
+    with open(path, "w", encoding="utf-8", newline="\n") as fh:
+        json.dump(found, fh, ensure_ascii=False, indent=1)
+        fh.write("\n")
 
 
 def report(table, light=None):
@@ -560,6 +791,21 @@ def report(table, light=None):
         line = f"stretch {sid} ({name}): {len(mine)} stations, {len(shots)} pictures"
         if floating:
             line += f"; no floor at {len(floating)}: {', '.join(floating[:12])}{' ...' if len(floating) > 12 else ''}"
+        moved = [f"{s['id']} ({s['floor']:g})" for s in mine if s.get("floor") not in (None, False)]
+        if moved:
+            line += f"; the floor has moved at {len(moved)}: {', '.join(moved[:12])}{' ...' if len(moved) > 12 else ''}"
+        if any("reach" in s for s in mine):
+            for kind in ("hop", "fall", "trap", "no"):
+                rows = [s["id"] + (f" ({s['how']} from {s['from']})" if s.get("from") else "")
+                        for s in mine if s.get("reach") == kind and s.get("floor") is not False]
+                if rows:
+                    line += f"; reached '{kind}' {len(rows)}: {', '.join(rows[:12])}{' ...' if len(rows) > 12 else ''}"
+            legs = [f"{s['id']} ({s['leg']})" for s in mine if s.get("leg")]
+            if legs:
+                line += f"; the leg to it is no plain walk at {len(legs)}: {', '.join(legs[:12])}{' ...' if len(legs) > 12 else ''}"
+            far = [f"{s['id']} ({s['round']:g})" for s in mine if s.get("round")]
+            if far:
+                line += f"; a long way round to {len(far)}: {', '.join(far[:12])}{' ...' if len(far) > 12 else ''}"
         if light is not None:
             missing = [n for n in shots if light.get(n) is None]
             dark = [n for n in shots if n.endswith("-f") and light.get(n) is not None and light[n] < DARK]
@@ -584,6 +830,10 @@ def main():
     p.add_argument("--levels", default="", help="comma separated levels: a plan of the floors near each")
     p.add_argument("--top", help="y0,y1: a plan of the highest floor of every column between the two")
     p.add_argument("--out", help="write the plans to this file instead of printing them")
+    p = sub.add_parser("cells")
+    p.add_argument("--scene", default="obs")
+    p.add_argument("--canvas", help="the pickle build/render.py --canvas keeps; built and kept there if it is not")
+    p.add_argument("--box", required=True, action="append", help="x0,y0,z0,x1,y1,z1 (--box=...); may be given more than once")
     p = sub.add_parser("stations")
     p.add_argument("route")
     p.add_argument("--scene", default="obs")
@@ -607,6 +857,10 @@ def main():
     p.add_argument("--work", default="/tmp/c164_walk", help="where the scene's pickle and the single pictures go")
     p.add_argument("--out", help="default plan/reviews/walk/<round>/")
     p.add_argument("--only", help="comma separated stretch ids: draw these stretches only")
+    p.add_argument("--no-pictures", action="store_true", help="the station table and the ways only: nothing is drawn")
+    p.add_argument("--as-kept", action="store_true",
+                   help="draw from the round's kept station table as it is: the ways are not looked for again "
+                        "(the later jobs of a round drawn in several)")
     args = ap.parse_args()
 
     if args.cmd == "check":
@@ -634,11 +888,27 @@ def main():
             print("\n".join(lines))
         return 0
 
+    if args.cmd == "cells":
+        cells = scene_cells(args.scene, args.canvas)
+        for text in args.box:
+            x0, y0, z0, x1, y1, z1 = (int(v) for v in text.split(","))
+            print(f"== blocks in x {x0}..{x1}, y {y0}..{y1}, z {z0}..{z1}")
+            rows = [(y, z, x, cells[(x, y, z)]) for x in range(x0, x1 + 1) for y in range(y0, y1 + 1)
+                    for z in range(z0, z1 + 1) if (x, y, z) in cells]
+            for y, z, x, state in sorted(rows)[:400]:
+                print(f"  {x:4d} {y:4d} {z:4d}  {state}")
+            if len(rows) > 400:
+                print(f"  ... and {len(rows) - 400} more")
+        return 0
+
     if args.cmd == "stations":
         route = load_route(args.route)
-        table = make_table(route, scene_cells(args.scene, args.canvas), scene=args.scene, round=args.round,
-                           route_file=os.path.basename(args.route))
+        cells = scene_cells(args.scene, args.canvas)
+        table = make_table(route, cells, scene=args.scene, round=args.round, route_file=os.path.basename(args.route))
+        found = survey(table, cells)
         write_table(args.out, table)
+        if found is not None:
+            write_found(os.path.join(os.path.dirname(os.path.abspath(args.out)), f"{route['prefix']}-reach.json"), found)
         print("\n".join(report(table)))
         return 0
 
@@ -663,14 +933,33 @@ def main():
     work = os.path.join(args.work, f"{prefix}-{args.round}")
     os.makedirs(work, exist_ok=True)
     canvas = os.path.join(args.work, f"{args.scene}-{args.round}.pkl")
-    if args.stations:
-        table = load_table(args.stations)
-        table["round"] = args.round
-    else:
-        table = make_table(route, scene_cells(args.scene, canvas), scene=args.scene, round=args.round,
-                           route_file=os.path.basename(args.route))
     kept = os.path.join(out, f"{prefix}-stations.json")
-    write_table(kept, table)
+    if args.as_kept:
+        if not os.path.exists(kept):
+            print(f"walk: --as-kept: there is no {os.path.relpath(kept, PROJECT)} yet; the round's first job makes it")
+            return 2
+        table = load_table(kept)
+    else:
+        cells = scene_cells(args.scene, canvas)
+        if args.stations:
+            table = load_table(args.stations)
+            table["round"] = args.round
+        else:
+            table = make_table(route, cells, scene=args.scene, round=args.round,
+                               route_file=os.path.basename(args.route))
+        found = survey(table, cells)
+        write_table(kept, table)
+        if found is not None:
+            write_found(os.path.join(out, f"{prefix}-reach.json"), found)
+        del cells, found                    # the drawing reads the scene again, in a process of its own
+        walkreach = _walkreach()
+        if walkreach is not None:
+            walkreach._WORLDS.clear()
+        gc.collect()
+    if args.no_pictures:
+        print("\n".join(report(table)))
+        print(f"walk: {os.path.basename(kept)} -> {os.path.relpath(out, PROJECT)}; nothing drawn")
+        return 0
     if args.only:
         wanted = args.only.split(",")
         table["stretches"] = {k: v for k, v in table["stretches"].items() if k in wanted}
@@ -679,16 +968,12 @@ def main():
     shot_file = os.path.join(work, "shots.json")
     write_shots(shot_file, shots)
     print(f"walk: {len(table['stations'])} stations, {len(shots)} shots; drawing", flush=True)
-    width, height = table.get("size", SIZE)
     pictures = os.path.join(work, "p")
-    done = subprocess.run([sys.executable, "render.py", args.scene, "--shots", shot_file, "--out", pictures,
-                           "--size", f"{width}x{height}", "--fov", str(table.get("fov", FOV)), "--canvas", canvas],
-                          cwd=BUILD, capture_output=True, text=True)
-    print("\n".join((done.stdout + done.stderr).strip().splitlines()[-6:]), flush=True)
+    code = draw(args.scene, shot_file, pictures, table.get("size", SIZE), table.get("fov", FOV), canvas)
     written, light = sheets_of(table, pictures, out)
     print("\n".join(report(table, light)))
     print(f"walk: {len(written)} sheets and {os.path.basename(kept)} -> {os.path.relpath(out, PROJECT)}")
-    return 0 if done.returncode == 0 else 1
+    return 0 if code == 0 else 1
 
 
 if __name__ == "__main__":
