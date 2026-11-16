@@ -21,6 +21,11 @@ front's brightness (the card has the numbers).
              piers are on the building's pilaster lines -- in two stages, each weathered back with
              a stair block; in the bay between two buttresses, under the pier between them, an iron
              grating drains the terrace fill onto a splash stone.
+             The lower platform is longer than the terrace, four rows in the north and five in
+             the south. There the wall runs on to the platform's corners three courses high --
+             the plinth course, one of brick, a polished coping -- over the rock that comes down
+             to the paving (a4, 11-16: the walk of that day found raw rock against the paving in
+             the north-west corner, and in the south-west a way out onto the mountain).
   stair      17 wide (rows z -8..8), x 61..72, half a block down per column (S.stair_top): polished
              slate treads -- the stone of the court floor -- on slate brick. The twelfth riser
              lands on the platform's paving.
@@ -62,6 +67,9 @@ WZ0, WZ1 = S.UPPER_TERRACE[1], S.UPPER_TERRACE[3]   # z -38..38: the wall's run
 TOP = S.PAVING_Y - 1                                # -2: the wall's top course, under the kerb course
 FOOT = S.LOWER_PAVING_Y                             # -7: its lowest course, beside the lower paving
 FEET = S.LOWER_GROUND                               # -6: the first course that is seen
+WING_TOP = FEET + 2                                 # -4: the top course of the low wall past either end of the terrace
+WING_Z = (list(range(S.LOWER_PLATFORM[1], WZ0))     # z -42..-39 and 39..43: from the terrace's ends
+          + list(range(WZ1 + 1, S.LOWER_PLATFORM[3] + 1)))      # to the lower platform's corners
 CHEEK_Z = (G["z0"] - 1, G["z1"] + 1)                # rows -9 and 9
 HEAD_X, FOOT_X = G["x0"], G["x1"]                   # 61 and 72: the pedestals' columns
 PARAPET = 1.0                                       # the cheek's top above the tread beside it
@@ -129,10 +137,14 @@ def _put(c, o, x, y, z, state):
 
 # --- the retaining wall ---------------------------------------------------------------------------
 def _wall(c, o):
-    """The whole run, the stair's mouth included: there it is the back of the stair."""
+    """The whole run, the stair's mouth included: there it is the back of the stair. And the low
+    wall past either end of it."""
     for z in range(WZ0, WZ1 + 1):
         for y in range(FOOT, TOP + 1):
             _put(c, o, EDGE_X, y, z, SMOOTH if y in (FEET, TOP) else BRICK)
+    for z in WING_Z:
+        for y in range(FOOT, WING_TOP + 1):
+            _put(c, o, EDGE_X, y, z, SMOOTH if y in (FEET, WING_TOP) else BRICK)
 
 
 def _buttress(c, o, z):
