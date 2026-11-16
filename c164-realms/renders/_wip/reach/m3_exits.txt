@@ -1,0 +1,117 @@
+obs_mach_cablecar_winch: from (88.5, -4.0, -32.5) the start node is (88.5, -4, -32.5); reached 560411 lattice points: walk 30409, hop 527123, fall 2869, trap 10
+a lattice point is the middle of a person 0.6 wide; x 91.0 is the joint of columns 90|91, x 91.5 the middle of column 91
+
+map (rows z, columns x 90.0 .. 100.0 by halves; W walk, h hop, f fall, T trap, . nobody stands; the highest feet when two)
+             90        91        92        93        94        95        96        97        98        99       100
+z    -41      W    W    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z  -40.5      W    W    W    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z    -40      .    .    .    .    .    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z  -39.5      .    .    .    .    .    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z    -39      .    .    .    .    .    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z  -38.5      W    W    .    .    .    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z    -38      W    W    .    .    .    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z  -37.5      W    W    .    .    .    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z    -37      W    W    .    .    .    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z  -36.5      W    W    .    .    .    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z    -36      W    W    .    .    .    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z  -35.5      W    W    .    .    .    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z    -35      W    W    .    .    .    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z  -34.5      W    W    W    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z    -34      h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z  -33.5      h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z    -33      h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z  -32.5      h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z    -32      h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z  -31.5      h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z    -31      h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z  -30.5      W    W    W    h    h    h    h    h    h    h    h    h    h    h    h    h    h    f    f    f    f
+z    -30      .    W    .    .    .    h    h    h    h    h    h    h    h    h    h    h    h    f    f    f    f
+z  -29.5      .    W    .    .    .    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z    -29      .    W    .    .    .    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z  -28.5      W    W    W    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z    -28      W    W    W    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z  -27.5      W    W    W    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z    -27      W    W    W    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z  -26.5      W    W    W    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z    -26      W    W    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z  -25.5      h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+z    -25      h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h    h
+
+the same, the feet's height (the highest when two)
+z    -41   -6.0 -6.0 -4.5 -4.5 -4.5 -8.0 -8.0-10.0-10.0-11.0-11.0-13.0-13.0-15.0-15.0-17.0-17.0-19.0-19.0-19.0-19.0
+z  -40.5   -6.0 -6.0 -6.0 -5.0 -6.0 -8.0 -8.0-10.0-10.0-11.0-11.0-14.0-14.0-15.0-15.0-17.0-17.0-19.0-19.0-19.0-19.0
+z    -40      .    .    .    .    . -8.0 -8.0 -9.0 -9.0-11.0-11.0-13.0-13.0-14.0-14.0-16.0-16.0-17.0-16.0-16.0-16.0
+z  -39.5      .    .    .    .    . -8.0 -8.0 -9.0 -9.0-11.0-11.0-13.0-13.0-14.0-14.0-16.0-16.0-17.0-16.0-16.0-16.0
+z    -39      .    .    .    .    . -7.0 -7.0 -9.0 -9.0-10.0-10.0-12.0-12.0-13.0-13.0-15.0-15.0-15.0-14.0-14.0-14.0
+z  -38.5   -4.0 -4.0    .    .    . -7.0 -7.0 -9.0 -9.0-10.0-10.0-12.0-12.0-13.0-13.0-15.0-15.0-15.0-14.0-14.0-14.0
+z    -38   -4.0 -4.0    .    .    . -7.0 -7.0 -8.0 -8.0-10.0-10.0-11.0-11.0-13.0-13.0-13.0-13.0-13.0-12.0-12.0-12.0
+z  -37.5   -4.0 -4.0    .    .    . -7.0 -7.0 -8.0 -8.0-10.0-10.0-11.0-11.0-13.0-13.0-13.0-13.0-13.0-12.0-12.0-12.0
+z    -37   -4.0 -4.0    .    .    . -6.0 -6.0 -8.0 -8.0 -9.0 -9.0-11.0-11.0-11.0-11.0-11.0-11.0-11.0-10.0-10.0 -6.5
+z  -36.5   -4.0 -4.0    .    .    . -6.0 -6.0 -8.0 -8.0 -9.0 -9.0-11.0-11.0-11.0-11.0-11.0-11.0-11.0-10.0-10.0 -6.5
+z    -36   -4.0 -4.0    .    .    . -6.0 -6.0 -8.0 -8.0 -9.0 -9.0 -9.0 -9.0 -9.0 -5.0 -5.0 -5.0 -5.5 -5.5 -6.0 -6.0
+z  -35.5   -4.0 -4.0    .    .    . -6.0 -6.0 -8.0 -8.0 -9.0 -9.0 -9.0 -9.0 -9.0 -5.0 -5.0 -5.0 -5.5 -5.5 -6.0 -6.0
+z    -35   -4.0 -4.0    .    .    . -6.0 -6.0 -7.0 -4.0 -4.0 -4.0 -4.0 -4.0 -4.5 -4.5 -5.0 -5.0 -5.5 -5.5 -6.0 -6.0
+z  -34.5   -4.0 -4.0 -4.0 -3.0 -4.0 -6.0 -6.0 -7.0 -4.0 -4.0 -4.0 -4.0 -4.0 -4.5 -4.5 -5.0 -5.0 -6.0 -6.0 -6.0 -6.0
+z    -34   -2.0 -2.0 -2.0 -2.0 -2.0 -4.0 -4.0 -4.0 -4.0 -4.0 -4.0 -4.0 -4.0 -4.5 -4.5 -5.0 -5.0 -5.5 -5.5 -6.0 -6.0
+z  -33.5   -2.0 -2.0 -2.0 -2.0 -2.0 -4.0 -4.0 -4.0 -4.0 -4.0 -4.0 -4.0 -4.0 -9.0 -5.0 -5.0 -5.0 -5.5 -5.5 -6.0 -6.0
+z    -33   -2.0 -2.0 -2.0 -2.0 -2.0 -4.0 -4.0 -4.0 -4.0 -4.0 -4.0 -4.0 -4.0 -4.5 -4.5 -5.0 -5.0 -5.5 -5.5 -6.0 -6.0
+z  -32.5   -2.0 -2.0 -2.0 -2.0 -2.0 -4.0 -4.0 -4.0 -4.0 -4.0 -4.0 -4.0 -4.0 -4.5 -4.5-10.0-10.0-11.0-11.0-12.0-12.0
+z    -32   -2.0 -2.0 -2.0 -2.0 -2.0 -4.0 -4.0 -4.0 -4.0 -4.0 -4.0 -4.0 -4.0 -4.5 -4.5-10.0-10.0-11.0-11.0-12.0-12.0
+z  -31.5   -2.0 -2.0 -2.0 -2.0 -2.0 -4.0 -4.0 -4.0 -4.0 -7.0 -7.0 -9.0 -9.0-10.0-10.0-12.0-12.0-13.0-13.0-14.0-14.0
+z    -31   -2.0 -2.0 -2.0 -2.0 -2.0 -4.0 -4.0 -4.0 -4.0 -7.0 -7.0 -9.0 -9.0-10.0-10.0-12.0-12.0-13.0-13.0-14.0-14.0
+z  -30.5   -4.0 -4.0 -4.0 -3.0 -4.0 -7.0 -7.0 -7.0 -7.0 -7.0 -7.0-11.0-11.0-12.0-12.0-13.0-13.0-15.0-15.0-16.0-16.0
+z    -30      . -4.0    .    .    . -7.0 -6.0 -6.0 -6.0 -7.0 -7.0-11.0-11.0-12.0-12.0-13.0-13.0-15.0-15.0-16.0-16.0
+z  -29.5      . -4.0    .    .    . -7.0 -6.0 -6.0 -6.0 -8.0 -8.0-11.0-11.0-14.0-14.0-16.0-16.0-17.0-17.0-18.0-18.0
+z    -29      . -4.0    .    .    . -7.0 -6.0 -6.0 -6.0 -8.0 -8.0-11.0-11.0-14.0-14.0-16.0-16.0-17.0-17.0-18.0-18.0
+z  -28.5   -4.0 -4.0 -4.0 -3.0 -4.0 -7.0 -6.0 -6.0 -6.0 -8.0 -8.0-11.0-11.0-14.0-14.0-17.0-17.0-19.0-19.0-19.0-19.0
+z    -28   -4.0 -4.0 -4.0 -3.0 -4.0 -7.0 -6.0 -6.0 -6.0 -8.0 -8.0-11.0-11.0-14.0-14.0-17.0-17.0-19.0-19.0-19.0-19.0
+z  -27.5   -4.0 -4.0 -4.0 -3.0 -4.0 -7.0 -7.0 -7.0 -7.0 -9.0 -9.0-11.0-11.0-14.0-14.0-17.0-17.0-19.0-19.0-19.0-19.0
+z    -27   -4.0 -4.0 -4.0 -3.0 -4.0 -7.0 -7.0 -7.0 -7.0 -9.0 -9.0-11.0-11.0-14.0-14.0-17.0-17.0-19.0-19.0-19.0-19.0
+z  -26.5   -4.0 -4.0 -4.0 -3.0 -4.0 -7.0 -7.0 -8.0 -8.0-10.0-10.0-12.0-12.0-14.0-14.0-17.0-17.0-19.0-19.0-19.0-19.0
+z    -26   -4.0 -4.0 -2.5 -2.5 -2.5 -7.0 -7.0 -8.0 -8.0-10.0-10.0-12.0-12.0-14.0-14.0-17.0-17.0-19.0-19.0-19.0-19.0
+z  -25.5   -3.0 -3.0 -2.5 -2.5 -2.5 -7.0 -7.0 -9.0 -9.0-10.0-10.0-12.0-12.0-15.0-15.0-17.0-17.0-19.0-19.0-19.0-19.0
+z    -25   -4.0 -4.0 -2.5 -2.5 -2.5 -7.0 -7.0 -9.0 -9.0-10.0-10.0-12.0-12.0-14.0-14.0-16.0-16.0-18.0-18.0-19.0-19.0
+
+steps that cross x = 91 eastward (from a point west of it to a point at or east of it), rows z -41 .. -25:
+  z  -40.5: (90.5, -6, -40.5) -> (91, -6, -40.5)  walk +0.00; the west point is reached by: walk
+  z  -34.5: (90.5, -4, -34.5) -> (91, -4, -34.5)  walk +0.00; the west point is reached by: walk
+  z    -34: (90.5, -2, -34) -> (91, -2, -34)  walk +0.00; the west point is reached by: hop
+  z  -33.5: (90.5, -2, -33.5) -> (91, -2, -33.5)  walk +0.00; the west point is reached by: hop
+  z    -33: (90.5, -2, -33) -> (91, -2, -33)  walk +0.00; the west point is reached by: hop
+  z  -32.5: (90.5, -2, -32.5) -> (91, -2, -32.5)  walk +0.00; the west point is reached by: hop
+  z    -32: (90.5, -2, -32) -> (91, -2, -32)  walk +0.00; the west point is reached by: hop
+  z  -31.5: (90.5, -2, -31.5) -> (91, -2, -31.5)  walk +0.00; the west point is reached by: hop
+  z    -31: (90.5, -2, -31) -> (91, -2, -31)  walk +0.00; the west point is reached by: hop
+  z  -30.5: (90.5, -4, -30.5) -> (91, -4, -30.5)  walk +0.00; the west point is reached by: walk
+  z  -28.5: (90.5, -4, -28.5) -> (91, -4, -28.5)  walk +0.00; the west point is reached by: walk
+  z    -28: (90.5, -4, -28) -> (91, -4, -28)  walk +0.00; the west point is reached by: walk
+  z  -27.5: (90.5, -4, -27.5) -> (91, -4, -27.5)  walk +0.00; the west point is reached by: walk
+  z    -27: (90.5, -4, -27) -> (91, -4, -27)  walk +0.00; the west point is reached by: walk
+  z  -26.5: (90.5, -4, -26.5) -> (91, -4, -26.5)  walk +0.00; the west point is reached by: walk
+  z  -25.5: (90.5, -3, -25.5) -> (91, -2.5, -25.5)  walk +0.50; the west point is reached by: hop
+
+reached ground at or east of x = 91 (rows z -41 .. -25), in connected pieces:
+piece 1: 10529 points, x 91 .. 248, z -41 .. -25, feet -29 .. -2; fall 124, hop 10397, walk 8; 38 of them have a step off the scene (void)
+   block columns whose middle is reached (x, z): [(91, -41), (91, -35), (91, -34), (91, -33), (91, -32), (91, -31), (91, -29), (91, -28), (91, -27), (91, -26), (92, -41), (92, -40), (92, -39), (92, -38), (92, -37), (92, -36), (92, -35), (92, -34), (92, -33), (92, -32), (92, -31), (92, -30), (92, -29), (92, -28), (92, -27), (92, -26), (93, -41), (93, -40), (93, -39), (93, -38), (93, -37), (93, -36), (93, -35), (93, -34), (93, -33), (93, -32), (93, -31), (93, -30), (93, -29), (93, -28), (93, -27), (93, -26), (94, -41), (94, -40), (94, -39), (94, -38), (94, -37), (94, -36), (94, -35), (94, -34), (94, -33), (94, -32), (94, -31), (94, -30), (94, -29), (94, -28), (94, -27), (94, -26), (95, -41), (95, -40)] ...
+   the gentlest way there: on foot alone, 9 lattice steps; it enters at (90.5, -4, -30.5) -> (91, -4, -30.5) (walk +0.00)
+      by way of (88.5, -4, -32.5) (89.5, -4, -31.5) (90.5, -4, -30.5) (91, -4, -30.5)
+
+the cells asked about (the middle of each column; feet nearest the platform's -4):
+  ridge (92, -37): middle reached, feet -6, hop; 5 points on its joints are
+  ridge (92, -36): middle reached, feet -6, hop; 5 points on its joints are
+  ridge (92, -35): middle reached, feet -6, hop; 7 points on its joints are
+  track mouth (91, -34): middle reached, feet -2, hop; 8 points on its joints are
+  track mouth (91, -33): middle reached, feet -2, hop; 8 points on its joints are
+  track mouth (91, -32): middle reached, feet -2, hop; 8 points on its joints are
+  railing (91, -35): middle reached, feet -3, hop; 5 points on its joints are
+  railing (91, -31): middle reached, feet -3, hop; 5 points on its joints are
+  east edge (91, -40): the middle is not reached
+  east edge (91, -39): the middle is not reached
+  east edge (91, -38): the middle is not reached
+  east edge (91, -37): the middle is not reached
+  east edge (91, -36): the middle is not reached
+  east edge (91, -30): the middle is not reached
+  east edge (91, -29): middle reached, feet -3, hop; 5 points on its joints are
+  east edge (91, -28): middle reached, feet -3, hop; 8 points on its joints are
+  east edge (91, -27): middle reached, feet -3, hop; 8 points on its joints are
+  east edge (91, -26): middle reached, feet -2.5, hop; 8 points on its joints are
