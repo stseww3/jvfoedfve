@@ -257,6 +257,74 @@ def test_slide():
     assert MK.registered(c) == (1, 0) and "m.mot_pen" not in c.entities[-1][3]["Tags"]
 
 
+def _refused(reason, c, *args, **kw):
+    """turn() with these arguments is refused for `reason`, and nothing is registered."""
+    before = MK.registered(c)
+    try:
+        MK.turn(c, *args, **kw)
+    except ValueError as e:
+        assert reason in str(e), str(e)
+    else:
+        raise AssertionError(f"turn() took what it should refuse for: {reason}")
+    assert MK.registered(c) == before and not any(t.startswith("m.") for t in c.entities[-1][3]["Tags"])
+
+
+def test_turn():
+    c = _Canvas()
+    # an escape wheel of fifteen teeth: half a tooth at every beat, once round in thirty beats
+    c.add_entity(0.5, 64.0, 0.5, _display("mot_escape"))
+    MK.turn(c, "z", [(40 * k, 12.0 * (k + 1), 6) for k in range(30)], 1200)
+    part = _last(c)
+    assert part.kind == "turn" and part.steps == [(40 * k, 6, 12.0 * (k + 1), 0.0) for k in range(30)]
+    assert part.lead == MK.LEAD and part.turn == 12.0 and part.stray == 0.0
+    # a fly that whirls eight times round in three seconds: 48 degrees a tick is steps of three
+    # ticks, which cannot be aimed ahead; the last one ends on whole turns
+    c.add_entity(2.5, 64.0, 0.5, _display("mot_fly"))
+    MK.turn(c, "z", [(100, 2880.0, 60)], 400)
+    part = _last(c)
+    assert part.steps == [(100 + 3 * k, 3, 144.0 * (k + 1), 0.0) for k in range(20)] and part.lead == 0
+    # a slow move is cut where it is longer than MAX_STEP; all but its last step aim ahead
+    c.add_entity(4.5, 64.0, 0.5, _display("mot_drum"))
+    MK.turn(c, "-z", [(0, 90.0, 500), (600, 0.0, 100)], 1000)
+    part = _last(c)
+    assert [(t, d, round(a, 9)) for t, d, a, _s in part.steps] == [
+        (0, 169, 30.42), (167, 168, 60.3), (333, 167, 90.0), (600, 100, 0.0)], part.steps
+    assert part.lead == MK.LEAD and _close(part.axis, (0.0, 0.0, 1.0))
+    # an arm that turns about its end: the steps are small enough to keep its middle on its arc,
+    # each move ends on its own pose, and what is aimed ahead is aimed along the same turn
+    c.add_entity(6.5, 64.0, 0.5, _display("mot_arm", anchor=(-1.0, 0.0, 0.0)))
+    MK.turn(c, "z", [(0, -45.0, 20), (200, 0.0, 30)], 400)
+    part = _last(c)
+    down = [s for s in part.steps if s[0] < 200]
+    up = [s for s in part.steps if s[0] >= 200]
+    assert abs(part.arm() - 1.0) < 1e-9 and 0.0 < part.stray <= MK.WOBBLE_MOST and part.turn <= MK.MAX_TURN
+    assert 2 <= len(down) <= 6 and 2 <= len(up) <= 10, (len(down), len(up))
+    for steps, t0, a0, a1, travel in ((down, 0, 0.0, -45.0, 20), (up, 200, -45.0, 0.0, 30)):
+        assert steps[0][0] == t0 and steps[-1][0] + steps[-1][1] == t0 + travel and steps[-1][2] == a1
+        for (tick, ticks, degrees, _s), (then, _t, _d, _s2) in zip(steps, steps[1:]):
+            assert ticks == then - tick + part.lead
+            assert abs(degrees - (a0 + (a1 - a0) * (tick + ticks - t0) / travel)) < 1e-9
+    # a curtain thirteen blocks from its axis (the great dome's shutter): many small steps
+    c.add_entity(8.5, 64.0, 0.5, _display("mot_curtain", anchor=(0.0, -13.0, 0.0)))
+    MK.turn(c, "x", [(0, 62.0, 200), (1000, 0.0, 200)], 2400)
+    part = _last(c)
+    assert abs(part.arm() - 13.0) < 1e-9 and part.stray <= MK.WOBBLE and 20 <= len(part.steps) <= 80, len(part.steps)
+    # what is refused, and why
+    c.add_entity(10.5, 64.0, 0.5, _display("mot_no"))
+    _refused("whole turns", c, "z", [(0, 90.0, 10)], 40)
+    _refused("goes nowhere", c, "z", [(0, 90.0, 10), (20, 90.0, 10), (30, 0.0, 10)], 40)
+    _refused("before the one before it has ended", c, "z", [(0, 90.0, 10), (5, 0.0, 10)], 40)
+    _refused("after the cycle", c, "z", [(0, 90.0, 10), (35, 0.0, 10)], 40)
+    _refused("names no move", c, "z", [], 40)
+    _refused("more ticks", c, "z", [(0, 3600.0, 30)], 40)                   # 120 degrees a tick
+    _refused("not written yet", c, "z", [(0, 360.0, 30)], 40, in_step=20)
+    c.add_entity(12.5, 64.0, 0.5, _display("mot_no", anchor=(4.0, 0.0, 0.0)))
+    _refused("off its arc", c, "z", [(0, 360.0, 30)], 40)                    # an arm of four blocks, a turn in 30 ticks
+    # two moves may touch: the second sets off on the tick the first ends
+    MK.turn(c, "z", [(0, 2.0, 10), (10, 4.0, 10), (20, 0.0, 10)], 40, model="mot_no", name="touching")
+    assert [s[:3] for s in _last(c).steps] == [(0, 10, 2.0), (10, 10, 4.0), (20, 10, 0.0)]
+
+
 def test_write():
     c = _Canvas()
     c.add_entity(0.5, 64.0, 0.5, _display("mot_wheel", yaw=90.0))
@@ -807,6 +875,69 @@ def test_play_stops_and_lamp():
                    for _tick, line in game.said if line.startswith("playsound "))
         puffs = [tick for tick, line in game.said if line.startswith("particle ")]
         assert [b - a for a, b in zip(puffs, puffs[1:])][:5] == [10] * 5
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def test_play_turn():
+    """What turns and stops (turn()): it stands until a move sets off, goes evenly and the right
+    way round, is on the move's pose when the move ends and stands there; a fly gets through its
+    whole turns; an arm that turns about its end keeps that end on its pin and is back where it
+    was placed after its second move; the next cycle is the first once more."""
+    c = _Canvas()
+    south = (0, 0, 1)
+    beats = [(40 * k, 12.0 * (k + 1), 6) for k in range(30)]
+    c.add_entity(2.5, 3.5, 0.25, _display("mot_escape"))
+    MK.turn(c, south, beats, 1200)
+    c.add_entity(6.5, 3.5, 0.25, _display("mot_fly"))
+    MK.turn(c, south, [(100, 2880.0, 60)], 400)
+    c.add_entity(12.5, 4.5, 0.25, _display("mot_arm", anchor=(-1.0, 0.0, 0.0)))
+    MK.turn(c, south, [(0, -45.0, 20), (200, 0.0, 30)], 400)
+    game, shown, parts, tmp = _played(canvas=(c, dict(zip(("escape", "fly", "arm"), c.motion.parts))))
+    try:
+        game.call("c164art:t-motion/start")
+        game.run(2 * 1200 + 100)
+        assert not game.lost and not game.missed, (game.lost[:3], game.missed[:3])
+
+        def rim(e, t):
+            return _angle(e.point(t, (1.0, 0.0, 0.0)), e.pos)
+
+        # the escape wheel, two turns: six ticks on the way, thirty-four at rest, never off its middle
+        e, t0 = shown["escape"], _first(game, 1200)
+        for k in range(60):
+            start, was = t0 + 40 * k, 12.0 * k
+            for t in _spans(start, 6):
+                assert abs(_turned(was + 2.0 * (t - start), rim(e, t))) < 1e-3, (k, t)
+                assert math.dist(e.point(t), e.pos) < 1e-6, (k, t)
+            for t in _spans(start + 6, 34):
+                assert abs(_turned(was + 12.0, rim(e, t))) < 1e-3, (k, t)
+        # the fly: still for a hundred ticks, 48 degrees a tick for sixty, still again; three cycles
+        e, t0 = shown["fly"], _first(game, 400)
+        for cycle in range(3):
+            start = t0 + 400 * cycle
+            for t in _spans(start, 100) + _spans(start + 160, 240):
+                assert abs(_turned(0.0, rim(e, t))) < 1e-3, (cycle, t)
+            for t in _spans(start + 100, 60):
+                assert abs(_turned(48.0 * (t - start - 100), rim(e, t))) < 1e-3, (cycle, t)
+        # the arm: its tip, two blocks from the pin, goes down 45 degrees and comes back; the eye
+        # stays on the pin within what the kit says its middle strays, and is on it at rest
+        e, part = shown["arm"], parts["arm"]
+        off = 0.0
+        for cycle in range(3):
+            start = t0 + 400 * cycle
+            for first, a0, a1, travel, rest in ((0, 0.0, -45.0, 20, 180), (200, -45.0, 0.0, 30, 170)):
+                for t in _spans(start + first, travel):
+                    eye, tip = e.point(t, (-1.0, 0.0, 0.0)), e.point(t, (1.0, 0.0, 0.0))
+                    off = max(off, math.dist(eye, e.pos))
+                    want = a0 + (a1 - a0) * (t - start - first) / travel
+                    assert abs(_turned(want, _angle(tip, e.pos))) < math.degrees(part.stray / 2.0) + 1e-3, (cycle, t)
+                for t in _spans(start + first + travel, rest):      # a pose is written to six places
+                    assert math.dist(e.point(t, (-1.0, 0.0, 0.0)), e.pos) < 1e-5, (cycle, t)
+                    assert abs(_turned(a1, _angle(e.point(t, (1.0, 0.0, 0.0)), e.pos))) < 1e-3, (cycle, t)
+        assert 0.0 < off <= part.stray + 1e-6 and part.stray <= MK.WOBBLE_MOST, (off, part.stray)
+        # stop puts every one of them back as it was placed
+        game.call("c164art:t-motion/stop")
+        assert all(_close(e.pose(game.tick)[k], e.rest[k]) for e in shown.values() for k in range(4))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 
