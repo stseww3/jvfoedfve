@@ -30,7 +30,7 @@ from artkit.canvas import Canvas
 from scenes.obs import machines, main, materials, props, site, sky
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
-from scenes.obs.site import terrain
+from scenes.obs.site import cablecar, terrain
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 100
@@ -126,6 +126,8 @@ def build():
         line.build(c, (0, 0, 0))
         if line is site:
             _standins(c)
+            cablecar.lining(c)      # the materials line is not built here: the room side of the winch
+            #                         house's two lights (it places them in the master scene)
         if line is props:
             _dress(c)
     return c
@@ -133,7 +135,8 @@ def build():
 
 def build_models():
     """The models of the lines that are built here, and the materials line's: the sheets on the room
-    side of the winch house's two lights are its models (materials/windows.line)."""
+    side of the winch house's two lights are its models (materials/windows.line), which this scene
+    asks for with cablecar.lining()."""
     out = {}
     for line in (materials,) + LINES:
         out.update(line.models() or {})
