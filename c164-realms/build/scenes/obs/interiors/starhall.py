@@ -51,6 +51,7 @@ its stand-in wall behind the entrance and that wall's lights go (facade.furnishe
 """
 import functools
 import importlib
+import importlib.util
 import math
 
 from artkit import models as M
@@ -70,6 +71,9 @@ VERSION = "a"               # the version build() dresses; the review picks one 
 VERSIONS = ("a", "b")
 PREFIX = "int_starhall_"
 WHY = "interiors/starhall"
+# Pieces of the hall that stand in files of their own beside this one, each as soon as it is in the
+# tree: dress(canvas, origin, version) -> display entities placed, models() -> {name: model}.
+PARTS = ("_starhall_meridian", "_starhall_wiring", "_starhall_gallery")
 
 ROOM = shell.ROOMS["star hall"]
 X0, Z0, X1, Z1 = ROOM["box"]                    # 2, -5, 15, 5: the clear inside
@@ -716,8 +720,17 @@ def _models():
     return {m.name: m for m in made}
 
 
+def _parts():
+    """The files of PARTS that are in the tree, as modules."""
+    names = [f"{__package__}.{name}" for name in PARTS]
+    return [importlib.import_module(name) for name in names if importlib.util.find_spec(name) is not None]
+
+
 def models():
-    return dict(_models())
+    out = dict(_models())
+    for part in _parts():
+        out.update(part.models() or {})
+    return out
 
 
 # ---- the package ------------------------------------------------------------------------------------------------
@@ -739,6 +752,8 @@ def dress(canvas, origin=(0, 0, 0), version=None):
     n += _charts(canvas, origin)
     n += _lamps(canvas, origin, version)
     n += _stair_hall(canvas, origin, version)
+    for part in _parts():
+        n += part.dress(canvas, origin, version)
     return n
 
 
