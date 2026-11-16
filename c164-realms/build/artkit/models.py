@@ -32,6 +32,12 @@ IDENT = (0.0, 0.0, 0.0, 1.0)
 # where the highlight painted into round shapes comes from (model space: up, a little west and north)
 LIGHT = (-0.35, 0.80, -0.48)
 
+# A model with a moving picture (pixelart.Frames) on a face: the largest sheet it may have and the
+# most frames. At every change of frame the client redraws the whole sheet, so the moving part of a
+# large model belongs in a small model of its own.
+MOVING_SHEET = 128
+MOVING_FRAMES = 32
+
 
 def _flat(mat, shift=-1):
     if isinstance(mat, Mat):
@@ -383,11 +389,40 @@ class Model:
             raise ValueError(f"{self.name}: texture does not fit 512x512")
 
         img = np.zeros((S, S, 4), dtype=np.uint8)
+        moving = []    # (x, y, w, h, frames, material) of the faces whose picture changes with time
         for kk, (x, y) in pos.items():
             w, h, mat, grain, seed = rects[kk]
-            tex = mat.paint(w, h, grain, seed)
+            shots = mat.frames(w, h, grain, seed) if hasattr(mat, "frames") else None
+            tex = shots[0] if shots else mat.paint(w, h, grain, seed)
             padded = np.pad(tex, ((1, 1), (1, 1), (0, 0)), mode="edge")
             img[y:y + h + 2, x:x + w + 2] = padded
+            if shots:
+                moving.append((x, y, w, h, shots, mat))
+
+        # A moving picture (pixelart.Frames) makes the whole sheet an animated texture: the frames
+        # of the sheet stacked downwards, each a copy of the sheet with the moving faces repainted,
+        # and a .mcmeta beside it. The model's uv stay as they are: the game maps them onto one frame.
+        meta, count = None, 1
+        if moving:
+            pace = sorted({(m.frametime, m.interpolate) for *_, m in moving})
+            if len(pace) != 1:
+                raise ValueError(f"{self.name}: its moving pictures disagree on (frametime, interpolate): {pace}; "
+                                 f"one sheet has one pace")
+            count = math.lcm(*(len(shots) for *_, shots, _ in moving))
+            if S > MOVING_SHEET or count > MOVING_FRAMES:
+                raise ValueError(f"{self.name}: a moving sheet of {S}x{S} in {count} frames (at most {MOVING_SHEET}x"
+                                 f"{MOVING_SHEET} in {MOVING_FRAMES}): the client redraws the whole sheet at every "
+                                 f"change of frame; put the moving part into a small model of its own")
+            sheets = []
+            for k in range(count):
+                frame = img.copy()
+                for x, y, w, h, shots, _ in moving:
+                    frame[y:y + h + 2, x:x + w + 2] = np.pad(shots[k % len(shots)], ((1, 1), (1, 1), (0, 0)), mode="edge")
+                sheets.append(frame)
+            img = np.concatenate(sheets, axis=0)
+            meta = {"animation": {"frametime": pace[0][0]}}
+            if pace[0][1]:
+                meta["animation"]["interpolate"] = True
 
         elements = []
         by_part = {}
@@ -425,12 +460,18 @@ class Model:
         for d in (tex_dir, mdl_dir, itm_dir):
             os.makedirs(d, exist_ok=True)
         Image.fromarray(img, "RGBA").save(os.path.join(tex_dir, self.name + ".png"))
+        note = os.path.join(tex_dir, self.name + ".png.mcmeta")
+        if meta:
+            with open(note, "w") as fh:
+                json.dump(meta, fh, separators=(",", ":"))
+        elif os.path.exists(note):
+            os.remove(note)         # a sheet that moved when this folder was last written
         tex = f"{ns}:item/{self.name}"
         with open(os.path.join(mdl_dir, self.name + ".json"), "w") as fh:
             json.dump({"textures": {"0": tex, "particle": tex}, "elements": elements}, fh, separators=(",", ":"))
         with open(os.path.join(itm_dir, self.name + ".json"), "w") as fh:
             json.dump({"model": {"type": "minecraft:model", "model": f"{ns}:item/{self.name}"}}, fh)
-        return {"name": self.name, "elements": len(elements), "texture": S, "rects": len(rects)}
+        return {"name": self.name, "elements": len(elements), "texture": S, "rects": len(rects), "frames": count}
 
 
 # ---- rotations -------------------------------------------------------------------------------
