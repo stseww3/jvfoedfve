@@ -14,9 +14,12 @@ frozen (tick freeze) while the pictures are taken, and the pair should be taken 
 apart, not a whole number of BEATs (2 seconds).
 
 The cameras
-    v6       the skeleton's locked view of the power house from the grand stair, 27 blocks off
-    v12      the board's view from above (tools/boardshots.py, the render station's proposal)
-    arrival  from where a person arrives (V1's eye), turned to the chimney: 60 blocks off
+    v6       the skeleton's locked view of the power house from the grand stair, 37 blocks off
+    v12      the board's view from above (tools/boardshots.py, the render station's proposal),
+             88 blocks off
+    arrival  a person on the station platform, two steps south of V1's eye, who has turned to
+             the chimney: 60 blocks off. (V1 itself does not show it: the chimney stands outside
+             that picture's left edge, and the smoke leans further out.)
     side     from the west, square to the wind: the lean
     mouth    close to the rim: does the smoke come out of the flue
 
@@ -27,7 +30,7 @@ import math
 
 from artkit.canvas import Canvas
 
-from scenes.obs import materials
+from scenes.obs import materials, sky
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
 from scenes.obs.motion import _kit as MK
@@ -59,10 +62,11 @@ def plume(share=0.5):
 
 def _views():
     x, y, z = H.SMOKE
+    ax, ay, az = S.V1["pos"]
     return [
         ("v6", S.V6["pos"], S.V6["look_at"]),
         ("v12", V12["pos"], V12["look_at"]),
-        ("arrival", S.V1["pos"], plume(0.4)),
+        ("arrival", (ax, ay, az + 2.0), plume(0.4)),
         ("side", (x - 30.0, y + 6.0, z + 2.0), plume(0.5)),
         ("mouth", (x - 6.0, y + 2.5, z - 5.0), (x, y + 1.5, z + 0.3)),
     ]
@@ -116,5 +120,6 @@ def build():
 
 
 def write_pack(pack_dir):
-    """The repainted brick, stone and iron the stand-in is made of."""
-    return materials.pack(pack_dir)
+    """The repainted brick, stone and iron the stand-in is made of, and the map's sky: the smoke
+    is judged against it."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
