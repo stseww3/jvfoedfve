@@ -1,0 +1,31 @@
+check obs_int_powerhouse at b4c2dd5
+[PASS] regen     188056 blocks, 477 entities, 388 models, 1852 resource-pack files, 376 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (5.4 s)
+[PASS] conflicts the scene writes 1851 files, no file written twice, the folders and the prefix of interiors are kept (9 packages run alone)
+[PASS] strays    517 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      1305 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    82 kinds of block placed, 161 barrier cells (x -1..91, y -6..19, z -38..38), all in the occupancy table
+[PASS] flatwall  no wall face runs flat over more than 5x5
+[WARN] entities  477 display entities, 33 drawn out along one axis, 31 shown through a matrix that is no turn, no face stretched, 196 models never placed
+                 prop_elec_cable x1: 10.67/10.67/11.99 pixels to the block along x/y/z, not 16
+                 prop_elec_cable x2: 10.67/10.67/12 pixels to the block along x/y/z, not 16
+                 prop_elec_cable x1: 10.67/10.67/18.44 pixels to the block along x/y/z, not 16
+                 prop_elec_cable x1: 10.67/10.67/25.75 pixels to the block along x/y/z, not 16
+                 prop_elec_cable x1: 10.67/10.67/32.85 pixels to the block along x/y/z, not 16
+[PASS] views     16 shots, most display entities in view: 402 (engine_east), limit 600; counted without what walls hide; the game draws up to 477 (int_power): a display entity without width and height is drawn outside the view too
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    26 parts and 0 points on 14 chains, 285 function files; 10 commands in the busiest tick (limit 40), 4.1 a tick on average (limit 10)
+                 chain of 16 ticks: 4 functions, 10 commands a cycle, starts 3 ticks after start
+                 chain of 24 ticks: 8 functions, 25 commands a cycle, starts 2 ticks after start
+                 chain of 40 ticks: 8 functions, 17 commands a cycle, starts 2 ticks after start
+                 chain of 48 ticks: 12 functions, 65 commands a cycle, starts 1 ticks after start
+                 chain of 90 ticks: 8 functions, 17 commands a cycle, starts 4 ticks after start
+                 chain of 130 ticks: 8 functions, 17 commands a cycle, starts 20 ticks after start
+                 chain of 170 ticks: 8 functions, 17 commands a cycle, starts 5 ticks after start
+                 chain of 1001 ticks: 25 functions, 52 commands a cycle, starts 13 ticks after start
+                 chain of 1617 ticks: 31 functions, 64 commands a cycle, starts 9 ticks after start
+                 chain of 2002 ticks: 11 functions, 34 commands a cycle, starts 8 ticks after start
+                 chain of 2457 ticks: 39 functions, 80 commands a cycle, starts 3 ticks after start
+                 chain of 3003 ticks: 21 functions, 43 commands a cycle, starts 8 ticks after start
+                 ... and 18 more
+result: PASS (0 failed, 1 with warnings)
