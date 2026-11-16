@@ -27,4 +27,5 @@ GALLERY = [
     _wall("ladder_rail", furniture.RAIL_Y), _floor("coat_stand", 2.0), _floor("trunk"), _floor("crate"),
     _floor("crate_small"), _floor("display_case", 1.4), _floor("display_table"),
     _floor("plate_box"), _floor("display_table_plates"), _floor("display_table_lenses"),
+    _floor("display_case_scope", 1.4),
 ]
