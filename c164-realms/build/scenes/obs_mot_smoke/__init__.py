@@ -15,8 +15,8 @@ apart, not a whole number of BEATs (2 seconds).
 
 The cameras
     v6       the skeleton's locked view of the power house from the grand stair, 37 blocks off
-    v12      the board's view from above (tools/boardshots.py, the render station's proposal),
-             88 blocks off
+    v12      the board's view of the whole island from the north-east, low (A0, 11-16): the
+             chimney is 85 blocks off and the smoke stands against the sky
     arrival  a person on the station platform, two steps south of V1's eye, who has turned to
              the chimney: 60 blocks off. (V1 itself does not show it: the chimney stands outside
              that picture's left edge, and the smoke leans further out.)
@@ -47,8 +47,10 @@ TIME = 14000                    # light version A, the default
 FOV, ASPECT = 77.0, 16.0 / 9.0  # the game's picture, as tools/boardshots.py has it
 LIFE = (280, 330)               # ticks a puff of campfire_signal_smoke lives
 
-V12 = dict(pos=(S.EAST_EDGE_X + 20.0, 90.0, S.Z_SOUTH + 46.0),
-           look_at=(S.MERIDIAN_X, S.GROUND, S.AXIS_Z - 5.5))      # as tools/boardshots.py proposes it
+# The board's twelfth view: the whole island from the north-east, low (A0's ruling of 11-16, g2
+# #77204; it was a view from straight above, which showed roofs and no smoke). The skeleton's own
+# S.V12 once it is written there, the ruling's numbers until then.
+V12 = getattr(S, "V12", None) or dict(pos=(126.0, 44.0, -50.0), look_at=(22.0, 4.0, 0.0))
 
 
 def plume(share=0.5):

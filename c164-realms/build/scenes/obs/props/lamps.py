@@ -17,7 +17,8 @@ For the other lines:
     n += lamps.place(canvas, "pendant", (x, y, z), origin=origin)                  # hanging point
     n += lamps.festoon(canvas, a, b, origin=origin)                                # cable, bulbs, hangers
 
-Both return the number of display entities they placed.
+Both return the number of display entities they placed. A lamp with an opal globe (street, post,
+bracket A, pendant A) is four: the lamp and the three models its glass is drawn in (GLOBES).
 """
 import functools
 import importlib
@@ -28,6 +29,7 @@ from artkit.pixelart import Sprite
 
 from ..common import palette as P
 from ..common import skeleton as S
+from ..machines import _relit as RL
 from . import _kit as K
 
 PREFIX = "prop_lamp_"
@@ -49,28 +51,85 @@ BULB_FACE = Sprite("lamp_bulb_face",
                    {"a": _g[1], "b": _g[2], "c": _g[3]})
 
 
-def _opal_globe(m, centre, radius, sides=8, squash=1.0, fine=False):
-    """An opal glass globe lit from within. The hot belt round the middle is under a third of what
-    is seen of it; towards the poles the glass goes darker step by step, the lower half a step
-    more than the upper."""
-    if fine:
-        bands = [(-1.0, -0.75, 1, OPAL[0]), (-0.75, -0.5, 1, OPAL[1]), (-0.5, -0.25, 1, OPAL[2]),
-                 (-0.25, 0.25, 1, OPAL[4]),
-                 (0.25, 0.5, 1, OPAL[3]), (0.5, 0.75, 1, OPAL[2]), (0.75, 1.0, 1, OPAL[1])]
-    else:
-        bands = [(-1.0, -0.65, 1, OPAL[0]), (-0.65, -0.25, 1, OPAL[2]),
-                 (-0.25, 0.25, 1, OPAL[4]),
-                 (0.25, 0.65, 1, OPAL[3]), (0.65, 1.0, 1, OPAL[1])]
-    return K.glass_ball(m, centre, radius, bands, sides=sides, squash=squash)
+# ---- the opal globes ---------------------------------------------------------------------------------
+# The engine lights every face of a display by the axis it looks along most nearly: a face that
+# looks down keeps four tenths of its tone, one that looks east or west half, whatever it emits.
+# Drawn into the lamp's own model, a globe came out in the game as a stack of grey plates that
+# did not look lit (s1's board of 11-16, V4 and V6). So the glass is drawn the way machines/_relit
+# draws the orrery's sun: the upright faces in two models stood on a corner, the ledges that look
+# down in a model leant over, and the engine leaves each face its whole tone. Those three are
+# display entities of their own on the middle of the globe, at yaw 0 whichever way the lamp is
+# turned (a globe is round, and yaw 0 is how the sun was seen in the real client). The ledges
+# that look up need none of this and stay in the lamp's model (_globe_top).
+#
+# The light and dark of a globe is what is painted: its layers from the lowest up, as steps of the
+# opal ramp, an even number of them (RL.Globe closes a lower layer from below and an upper one
+# from above; a layer across the middle would be open below). A globe that stands on its gallery
+# has the hot belt round its middle and goes a step dimmer layer by layer towards foot and crown,
+# both alike: it is lit from within, and a street lamp or a bracket is looked at from below, so
+# a foot darker than the crown (the first pictures) dimmed the half that is seen. A globe that
+# hangs is brightest below, where it is looked at from, and goes dim into its gallery.
+#
+# No layer is brighter than GLASS_TOP, the middle step of the opal ramp. What is painted is what
+# is seen, here and under the pack's shaders alike (sky/_shaders, item.vsh: a face that glows is
+# not shaded by the way it looks), and with the belt at the ramp's two top steps the globes were
+# the whitest things of the candidate's V1, V2 and V4, whiter than the comet's head: three street
+# lamps in a corner of the arrival view took the eye off the building (the review, #77369, which
+# asked for a median about 0.75 of white and nothing over 0.89: two steps down, the belt at
+# step 2).
+GLOBE_SIDES = 12        # RL.Globe's two corner models take upright faces a twelfth of a turn apart
+GLASS_TOP = 2           # no glass of a lamp is painted over this step of the opal ramp: a globe's belt, a shade's mouth
+GLOBES = {              # lamp: the middle of the globe (blocks from the anchor, in the lamp's frame), radius, layers
+    "street": dict(at=(0.0, 4.375, 0.0), radius=7.0 / 16.0, tones=(0, 0, 1, 2, 2, 1, 0, 0)),
+    "post": dict(at=(0.0, 6.25 / 16.0, 0.0), radius=2.5 / 16.0, tones=(0, 1, 2, 2, 1, 0)),
+    "bracket_a": dict(at=(0.0, 7.5 / 16.0, 11.0 / 16.0), radius=4.5 / 16.0, tones=(0, 0, 1, 2, 2, 1, 0, 0)),
+    "pendant_a": dict(at=(0.0, -19.25 / 16.0, 0.0), radius=5.0 / 16.0, tones=(2, 2, 1, 1, 1, 0, 0, 0, 0, 0)),
+}
+assert all(max(spec["tones"]) <= GLASS_TOP for spec in GLOBES.values())
+GLOBE_PARTS = ("_globe_side0", "_globe_side1", "_globe_under")      # what RL.Globe calls the three
+GLOBE_SEED = 4001       # of the ledges in the lamp's model: a piece of their own, which nothing turns (_kit.settle)
+
+
+@functools.lru_cache(maxsize=None)
+def _glass(name):
+    """The three models a lamp's globe is drawn in beside the lamp's own (RL.Faces: model and frame)."""
+    spec = GLOBES[name]
+    globe = RL.Globe(f"{PREFIX}{name}_globe", spec["radius"], [OPAL[i] for i in spec["tones"]],
+                     sides=GLOBE_SIDES, emit=15)
+    return tuple(globe.sides) + (globe.under,)
+
+
+def _globe_top(m, name):
+    """The ledges of a lamp's globe that look up, drawn into the lamp's model m: a plain model
+    lights them in full. For each layer of the upper half, strips that cross, as RL.Globe lays
+    its ledges (and by RL.LAP past their edges, so that no seam opens)."""
+    spec = GLOBES[name]
+    u = 16.0 / SPEC[name].get("scale", 1.0)                             # the model's units to the block
+    cx, cy, cz = (v * u for v in spec["at"])
+    r, n = spec["radius"] * u, len(spec["tones"])
+    hw, lap, skin = math.tan(math.pi / GLOBE_SIDES), RL.LAP * u, RL.SKIN * u
+    for i, tone in enumerate(spec["tones"]):
+        t0, t1 = -1.0 + 2.0 * i / n, -1.0 + 2.0 * (i + 1) / n
+        if t0 + t1 < 0.0:
+            continue
+        rr, y = r * math.sqrt(1.0 - ((t0 + t1) / 2.0) ** 2), cy + r * t1
+        for k in range(GLOBE_SIDES // 2):
+            m.box((cx - rr * hw - lap, y - skin, cz - rr - lap), (cx + rr * hw + lap, y, cz + rr + lap), OPAL[tone],
+                  rot=("y", 360.0 * k / GLOBE_SIDES, (cx, y, cz)), skip="nsewd", seed=GLOBE_SEED, grain="x",
+                  emit=15, shade=False)
+    return m
 
 
 def _cone_shade(m, c, top, bottom, r_top, r_bottom, steps):
     """An enamel cone shade about the vertical line c = (x, z): blue outside, a pale rolled rim,
-    and the white inside lit by the bulb. Returns the y of the underside."""
+    and the white inside lit by the bulb, its middle at GLASS_TOP like the belt of a globe (at the
+    step above, the mouth of the nearest shade was the whitest thing of the time room's view, three
+    times as bright as the dials the view is of: the review, #78243). Returns the y of the
+    underside."""
     m.taper("y", c, top, bottom, r_top, r_bottom, ENAMEL, steps=steps)
     m.tube("y", c, bottom - 1.0, bottom, r_bottom, RIM)
-    K.glass_prism(m, "y", c, bottom - 1.1, bottom - 1.0, r_bottom - 0.75, OPAL[1])
-    K.glass_prism(m, "y", c, bottom - 1.2, bottom - 1.1, r_bottom * 0.5, OPAL[3])
+    K.glass_prism(m, "y", c, bottom - 1.1, bottom - 1.0, r_bottom - 0.75, OPAL[GLASS_TOP - 1])
+    K.glass_prism(m, "y", c, bottom - 1.2, bottom - 1.1, r_bottom * 0.5, OPAL[GLASS_TOP])
     return bottom - 1.0
 
 
@@ -112,7 +171,7 @@ def _street():
         half = YOKE / 2.0 + 0.05                                        # two struts lie in each other
         m.box((-wide, 25.0, -half), (wide, part, half), IRON)
     m.tube("y", (0, 0), 31.0, 31.75, 3.5, BRASS)                        # gallery: the yoke ends under its rim
-    _opal_globe(m, (0, 35.0, 0), 3.5, sides=12, fine=True)
+    _globe_top(m, "street")                                             # the globe: 31.5 to 38.5 (GLOBES)
     m.tube("y", (0, 0), 38.25, 39.0, 1.5, IRON_D)
     m.box((-0.5, 39.0, -0.5), (0.5, 40.5, 0.5), BRASS)                  # finial
     return m
@@ -126,7 +185,7 @@ def _post():
     m.tube("y", (0, 0), 0.0, 1.0, 3.0, IRON_D)                          # foot plate
     m.taper("y", (0, 0), 1.0, 3.0, 2.0, 1.0, IRON, steps=2)             # neck
     m.tube("y", (0, 0), 3.0, 3.75, 2.25, BRASS)                         # gallery
-    _opal_globe(m, (0, 6.25, 0), 2.5)
+    _globe_top(m, "post")                                               # the globe: 3.75 to 8.75 (GLOBES)
     m.tube("y", (0, 0), 8.75, 9.25, 1.25, IRON_D)
     m.box((-0.5, 9.25, -0.5), (0.5, 10.0, 0.5), BRASS)                  # finial
     return m
@@ -144,7 +203,7 @@ def _bracket_a():
     m.ring("x", (0, -4.1, 4.1), 2.6, 1.0, 2.0, IRON_D, sides=12)
     m.tube("y", (0, 11), 1.0, 2.5, 1.5, BRASS)                          # cup
     m.tube("y", (0, 11), 2.5, 3.25, 3.0, BRASS_D)                       # gallery
-    _opal_globe(m, (0, 7.5, 11), 4.5, fine=True)
+    _globe_top(m, "bracket_a")                                          # the globe: 3 to 12 (GLOBES)
     return m
 
 
@@ -214,8 +273,10 @@ def _pendant_a():
     m.tube("y", (0, 0), -14.0, -12.0, 2.0, BRASS)                       # holder
     K.switch_key(m, (-2.0, -13.0, 0), side=-1.0)
     m.tube("y", (0, 0), -15.0, -14.0, 3.5, BRASS_D)                     # gallery
-    _opal_globe(m, (0, -19.25, 0), 5.5, sides=12, squash=0.82, fine=True)
-    m.tube("y", (0, 0), -24.5, -23.75, 1.0, BRASS)
+    # the globe: -24.25 to -14.25 (GLOBES). Nothing closes it below but its own glass: a brass
+    # button there, its underside at four tenths of its tone, was the bull's eye of a target
+    # for whoever stood under the lamp
+    _globe_top(m, "pendant_a")
     return m
 
 
@@ -333,6 +394,7 @@ SPEC = {
     "hanger": dict(build=_hanger, mount="floor", light=None),
 }
 SCALE = {PREFIX + name: spec.get("scale", 1.0) for name, spec in SPEC.items()}
+SCALE.update({PREFIX + name + part: 1.0 for name in GLOBES for part in GLOBE_PARTS})
 VERSIONED = ("bracket", "cage", "pendant")
 STREET_CLEARANCE = 8    # A2: a street lamp stands at least this far from a main wall face
 HANG = 3.0 / 16.0       # a festoon under a ceiling runs this far below it: the height of its hangers
@@ -340,17 +402,33 @@ HANG = 3.0 / 16.0       # a festoon under a ceiling runs this far below it: the 
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    return {PREFIX + name: spec["build"]() for name, spec in SPEC.items()}
+    # settled: the slanting flats of shafts, galleries and rings are lit the same in every lamp
+    # (_kit.settle). Not the glass: its faces lie in frames of their own
+    built = {PREFIX + name: K.settle(spec["build"]()) for name, spec in SPEC.items()}
+    for name in GLOBES:
+        built.update({part.m.name: part.m for part in _glass(name)})
+    return built
 
 
 def models():
     return dict(_models())
 
 
+def models_of(*names):
+    """The models of these lamps alone, for a scene whose pack carries one lamp and not the family:
+    the lamp's own model and, where it has an opal globe, the three of its glass. A name is a key
+    of SPEC ("bracket_a"), or the model's name (PREFIX before it)."""
+    built = _models()
+    names = [name[len(PREFIX):] if name.startswith(PREFIX) else name for name in names]
+    return {key: built[key] for name in names
+            for key in [PREFIX + name] + [PREFIX + name + part for part in GLOBE_PARTS if name in GLOBES]}
+
+
 # ---- placing -------------------------------------------------------------------------------------------
 def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), version=None, light=True, level=None,
           yaw=None, **opts):
-    """Put one lamp into the scene; returns the number of display entities (1).
+    """Put one lamp into the scene; returns the number of display entities: 1, or 4 for a lamp with
+    an opal globe (the lamp and the three models of its glass, GLOBES).
 
     kind     "street", "post", "bracket", "cage", "pendant", "desk_green", "signal", "signal_off",
              "uplight".
@@ -371,10 +449,26 @@ def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), version=None, lig
               scale=spec.get("scale", 1.0), origin=origin, **opts)
     if name.startswith("signal"):
         canvas.entities[-1][3]["Tags"].append("c164_signal")
+    if name in GLOBES:
+        n += _put_glass(canvas, name, yaw)
     if light and spec["light"] is not None:
         cell = K.light_cell(pos, yaw, spec["light"], origin)
         K.offer_lights(canvas, [(cell, spec["level"] if level is None else level)], f"props/lamps:{name}")
     return n
+
+
+def _put_glass(canvas, name, yaw):
+    """The glass of the lamp that was placed last: its three displays on the middle of the globe,
+    not turned with the lamp, seen as far and lit as the lamp is. Returns their number."""
+    x, y, z, lamp = canvas.entities[-1]
+    d = K.turn(yaw, GLOBES[name]["at"])
+    for part in _glass(name):
+        nbt = part.display(0.0)
+        nbt["view_range"] = lamp["view_range"]
+        if "brightness" in lamp:
+            nbt["brightness"] = dict(lamp["brightness"])
+        canvas.add_entity(x + d[0], y + d[1], z + d[2], nbt)
+    return len(GLOBE_PARTS)
 
 
 def festoon(canvas, a, b, spacing=1.0, origin=(0, 0, 0), light=True, level=None, hangers=True):
@@ -476,9 +570,17 @@ BRIDGE_CLEAR = 7        # a low lamp of the lip keeps more than this many rows f
 STREET_LEVEL = 13
 STATION_LEVEL = 12      # the pendant of the cable station: the top of a pendant's rank
 AIM_UP = 3.0            # a ground lamp at the armillary's feet looks at its middle, this far above the ground
-FEET_GLOW = 8           # the source under the armillary's light cell: the brass gets one less, what the
-                        # paving beside a ground lamp gets. Under every lit window, so that the rings stay
-                        # an outline before the doorway (A0 #33831 six); 5 to 8 after the pictures
+FEET_GLOW = 10          # the source under the armillary's light cell: the brass gets one less. Under every
+                        # lit window, so that the rings stay an outline before the doorway (A0 #33831
+                        # six); 5 to 8 after the pictures. At 8 the lower half of the rings was as dark
+                        # as the gates behind it for who comes up the axis (0.13 on 0.16 in the real
+                        # client's S.V2; the upper half stands before the gold windows) and the circle
+                        # did not close: 10, the level of a wall wash (review #77381; lights #77794)
+FEET_RANK = 2           # ... which is over the top of an uplight's rank: this one source is registered
+                        # in the second (lights #77794). The four ground lamps keep their own 8
+DOOR_LEVEL = {"hut_door": 5}    # a caged lamp at a door that is not the cage's own 7. The transit hut's:
+                        # at 7 its south gable was the lightest stone of S.V5 and S.V2, seen before the
+                        # clock tower (0.33 by the lamp; the tower 0.17 to 0.24; review #77381)
 
 # What the packages reported in the group (g2 #283 to #295), for a tree in which a package is not
 # merged yet. Once it is, its own table or function is read instead: _told().
@@ -544,8 +646,8 @@ def site_lamps(near_pair=None):
     middle = (S.mid(S.ARMILLARY[0]), S.GROUND + AIM_UP, S.mid(S.ARMILLARY[1]))
     for x, z in _told("machines.armillary", "LAMP_CELLS"):
         out.append(("feet", "uplight", (S.mid(x), float(S.GROUND), S.mid(z)), None, middle))
-    for p in _told("site.outbuildings", "LAMP_POINTS").values():
-        out.append(("doors", "cage", tuple(p), None, None))
+    for name, p in _told("site.outbuildings", "LAMP_POINTS").items():
+        out.append(("doors", "cage", tuple(p), DOOR_LEVEL.get(name), None))
     for p in _told("site.cablecar", "LAMP_POINTS").values():
         out.append(("station", "pendant", tuple(p), STATION_LEVEL, None))
     return out
@@ -647,8 +749,17 @@ def _feet_glow(canvas, origin=(0, 0, 0)):
     sources light the base and leave the brass to the sky. So, when the rings stand there, one
     source in the cell under that one."""
     x, y, z = (c + o for c, o in zip(_told("machines.armillary", "LIGHT_CELL"), origin))
-    if any((math.floor(ex), math.floor(ey), math.floor(ez)) == (x, y, z) for ex, ey, ez, _ in canvas.entities):
+    if not any((math.floor(ex), math.floor(ey), math.floor(ez)) == (x, y, z) for ex, ey, ez, _ in canvas.entities):
+        return
+    try:
+        from ..sky import _lightkit
+        suggest = getattr(_lightkit, "suggest", None)
+    except ImportError:
+        suggest = None
+    if suggest is None:                                 # a tree without the light line: the kit puts it down
         K.offer_lights(canvas, [((x, y - 1, z), FEET_GLOW)], "props/lamps:uplight")
+    else:
+        suggest(canvas, (x, y - 1, z), FEET_GLOW, "props/lamps:uplight", rank=FEET_RANK)
 
 
 def build(canvas, origin=(0, 0, 0), version=VERSION):
