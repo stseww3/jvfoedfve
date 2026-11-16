@@ -11,10 +11,10 @@ part is:
   main/facade (c206)       the two long walls: glass in the inner leaf (x 14, x 1), the stone leaf
                            outside it (x 15, x 0) with the cornice over it; bays 11..15 are windows
                            on the east, 13..15 on the west
-  sky/lights (c220)        which windows are lit and the two sources of each lit one: under the blue
-                           look bays 12 and 14 of the east front and 13 and 15 of the west one, opal
-                           glass; the sources stand outside the glass, in the window opening, one row
-                           above the sill and one row below the head (c220 #33341: level 8 there)
+  sky/lights (c220, c331)  which windows are lit and the two sources of each lit one: bays 12 and 14
+                           of the east front and 14 of the west one, opal glass; the sources stand
+                           outside the glass, in the window opening, one row above the sill and one
+                           row below the head (the light line's wash round: level 10 there)
   materials/windows (me)   the lining on the room side of the lit windows, when that is in the tree
 
 Beyond the door the box has a piece of the hall's side gallery, shut in by a floor, a lid and three
@@ -30,7 +30,7 @@ from scenes.obs.main import _plan as MP
 from scenes.obs.materials import windows
 from scenes.obs.props import lamps
 
-LIT = {"east": (12, 14), "west": (13, 15)}      # the lit windows of the room under the blue look (sky/lights)
+LIT = {"east": (12, 14), "west": (14,)}         # the lit windows of the room (sky/lights' table, while it is not in the tree)
 OUTSIDE = 10                                    # the level of the sources of a lit opal window, in its opening
 DOOR_Y = (T.FEET, T.FEET + 2)
 GALLERY_Z = (T.Z0 - 3, T.Z0 - 2)                # 4..5: the deck of the hall's side gallery, the rail on its edge

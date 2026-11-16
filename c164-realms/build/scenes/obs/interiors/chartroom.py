@@ -38,13 +38,14 @@ made dark, what is to be seen is light and then lit. The light table is the brig
 its glass glows (emission), and four sources in the row over the panes give the pool round it.
 Every lamp is the shaded one of props/lamps (LAMPS) and hangs low over what it is for; its source
 is not offered at its bulb but under its shade, at the height of what it lights. A window is not a
-light of the room: the ones the light line lights (east 12 and 14, west 13 and 15 under the blue
-look) are lined on the room side by materials/windows, and each has a lamp of the room within two
-cells. The green desk lamp is the room's one green. Every source is offered to the light line
+light of the room: the ones the light line lights (east 12 and 14, west 14: sky/lights' table) are
+lined on the room side by materials/windows, with its deep lining, level with the panelling. The
+green desk lamp is the room's one green. Every source is offered to the light line
 (sky/_lightkit); nothing is placed for good here.
 
-What is whose. The room's own models (names "int_chart_..."): the light table, its bridge and its
-viewer, the bookcases. Everything else comes from the props line and is placed through its place()
+What is whose. The room's own models (names "int_chart_..."): the light table here; its two
+engines, the measuring bridge and the plate viewer, in _chartengine.py (m5); the bookcase wall in
+_chartshelves.py (snow). Everything else comes from the props line and is placed through its place()
 functions: lamps (props/lamps), furniture (props/furniture, a6), paper (props/paper, snow),
 instruments (props/instruments, m1). A module that is not in the tree yet is left out, or stood in
 for (the loose plates on the light table, a calculator, a board for the desk the green lamp stands
@@ -56,9 +57,6 @@ build() is what the master scene calls; it places nothing while MOVED_IN is off.
 """
 import functools
 import importlib
-import random
-
-import numpy as np
 
 from artkit import models as M
 from artkit.blocks import st
@@ -71,6 +69,8 @@ from ..main import _plan as MP
 from ..main import shell
 from ..props import _kit as K
 from ..props import lamps
+from . import _chartengine
+from . import _chartshelves
 
 MOVED_IN = True         # the master scene dresses the room (A0, g2 #67123: a card's switch is turned on with its delivery)
 NAME = "interiors/chartroom"
@@ -132,29 +132,21 @@ LAMPS = "b"                 # every lamp of the room is the shaded one (props/la
 #                             lightest thing in a dark room
 CORD = lamps.PREFIX + "wire"            # the cord of a drop light: props/lamps' cable, stretched from the ceiling
 ASK_TABLE = (10, 2)         # the four sources over the panes of the light table: the room's main light
-ASK_SHELF = (9, 2)          # the drop lights before the bookcase
+ASK_SHELF = (9, 2)          # the bracket lamps on the two outer piers of the bookcase
 ASK_DESK = (8, 3)           # a drop light over a desk, and the green desk lamp
 ASK_WALL = (8, 3)           # a bracket lamp over what hangs on a wall
 OVER = 20 * PX              # a bracket's arm above the top of what it hangs over: the shade ends half a block over it
 DESK_HANG = FEET + 3.25     # 10.25: where a desk's drop light ends and its lamp hangs; the shade ends at 9.2, over the eye
 DRAFT_HANG = FEET + 3.75    # the same over the drafting table, whose board stands higher
-SHELF_HANG = FEET + 5.0     # and before the bookcase
 
 # ---- materials ----------------------------------------------------------------------------------
 WOOD = P.mat("dark_wood")
-WOOD_L = P.mat("dark_wood", base=3)
-WOOD_D = P.mat("dark_wood", base=1)
-SHADOW = K.flat("dark_wood", 0)                 # the inside of a bookcase
 BRASS, BRASS_D, IRON, IRON_D = K.BRASS, K.BRASS_D, K.IRON, K.IRON_D
-CARD = P.mat("cream", base=1, bevel=1)          # pasteboard boxes
 LABEL = K.flat("cream", 3)
 LIT_GLASS = P.mat("opal")                       # lit opal glass: brighter towards its middle
 LIT = dict(emit=15, shade=False)
 VENT = K.flat("glow", 1)                        # the lamps seen through a vent slot
 OP, IR, CR, BR = (P.RAMPS[k] for k in ("opal", "iron", "cream", "brass"))
-
-ROLL_END = Sprite("chart_roll_end", ["aba", "bcb", "aba"],
-                  {"a": P.RAMPS["cream"][1], "b": P.RAMPS["cream"][2], "c": P.RAMPS["dark_wood"][0]})
 
 # A glass negative with the light behind it, as props/paper draws the plates that lie on the table
 # (snow #63583): the glass a step denser than the lit pane, its edge light on the two sides towards
@@ -210,199 +202,6 @@ PLATE_STRIP = _plate_picture("chart_plate_strip", 8, 4, {(1, 1): "3", (1, 2): "3
 MAKER = Sprite("chart_maker", ["ffffffffff", "fkkfkkkfkf", "eeeeeeeeee"], {"f": BR[3], "k": BR[0], "e": BR[1]})
 
 
-class _Scale:
-    """The divided scale on the beam of the measuring bridge, seen from the side: a division on
-    every other texel, every fifth of them a long one. It stands in for a material on one face
-    (artkit.models asks a material only for its name and paint())."""
-
-    name = "chart_scale"
-
-    def paint(self, w, h, grain="u", seed=0):
-        out = np.empty((h, w, 4), dtype=np.uint8)
-        out[..., :3] = P.colour("brass", 1)
-        out[..., 3] = 255
-        out[0, :, :3] = P.colour("brass", 2)
-        for x in range(1, w - 1, 2):
-            long = x % 10 == 1
-            out[h - 1, x, :3] = P.colour("brass", 4)
-            if long:
-                out[:, x, :3] = P.colour("brass", 4)
-        return out
-
-
-SCALE = _Scale()
-
-
-class _Spines:
-    """The picture of a row of books seen from the front: spines of uneven width and height in the
-    quiet colours of the palette, the dark of the case behind them. It stands in for a material on
-    the front of one box."""
-
-    # (ramp, steps to choose from); a ramp named twice is chosen twice as often
-    TONES = (("enamel", (0, 1, 2)), ("enamel", (1, 2)), ("old_copper", (0, 1, 2)), ("old_copper", (1, 2)),
-             ("dark_wood", (3, 4)), ("cream", (0, 1)), ("iron", (3, 4)))
-
-    def __init__(self, name, full=0.92):
-        self.name = name
-        self.full = full            # the share of the row that holds a book
-
-    def paint(self, w, h, grain="u", seed=0):
-        rnd = random.Random(f"{self.name}:{w}:{h}:{seed}")
-        out = np.empty((h, w, 4), dtype=np.uint8)
-        out[..., :3] = P.colour("dark_wood", 0)
-        out[..., 3] = 255
-        x = 0
-        while x < w:
-            width = min(rnd.choice((1, 2, 2, 2, 3)), w - x)
-            if rnd.random() > self.full:
-                x += width
-                continue
-            ramp, steps = rnd.choice(self.TONES)
-            step = rnd.choice(steps)
-            top = rnd.choice((0, 0, 1, 1, 2)) if h > 5 else 0
-            out[top:, x:x + width, :3] = P.colour(ramp, step)
-            if width >= 2:
-                out[top:, x + width - 1, :3] = P.colour(ramp, max(0, step - 1))
-            if h - top >= 7 and rnd.random() < 0.45:
-                band = P.colour("iron", 2) if ramp == "cream" else P.colour("brass", 3)
-                out[top + 2, x:x + width, :3] = band
-            x += width
-        return out
-
-
-# ---- the room's own models: the bookcase ---------------------------------------------------------
-# The bookcase wall is three tiers of bays three blocks wide: a tier on the floor and one on top of
-# it, each three blocks high, and a tier of one block under the ceiling. Its lines are those of the
-# cabinets of props/furniture, so that the wall and the card cabinets are one family: the plinth
-# ends at y 4, the first tier ends in a cornice of two texels (y 46..48) over the board that carries
-# the ladder rail (the rail's middle is 44.5 above the floor, one texel off the front), the case is
-# six texels deep, the wood is dark_wood 1, 2 and 3.
-SHELF_W, SHELF_H, SHELF_D = 48.0, 48.0, 6.0     # one bay: three blocks wide and high, six texels deep
-SHELF_TOP_H = 16.0                              # the tier under the ceiling: one block
-PLINTH = 4.0                                    # the top of the plinth
-CORNICE = 2.0                                   # a cornice, one texel proud of the front
-RAIL_BOARD = 3.0                                # the board under the first tier's cornice
-
-
-def _carcass(m, height, foot, head, boards, crown=0.0):
-    """The case of a bookcase bay: a back, two cheeks, an upright in the middle, a foot (a plinth or
-    a bottom board, `foot` high), the shelves (`boards`: their undersides) and whatever closes the
-    top (`head` high; the caller draws it, and what spans the whole bay, `crown` high). Returns the
-    compartments [(x0, x1, y0, y1)], bottom row first."""
-    half = SHELF_W / 2.0
-    m.box((-half, 0, 0), (half, height - crown, 1), SHADOW, skip="n", grain="y")
-    for x in (-half, half - 1.0):
-        m.box((x, 0, 1), (x + 1.0, height - crown, SHELF_D), WOOD, grain="y")
-    m.box((-1, foot, 1), (1, height - head, SHELF_D - 0.5), WOOD, grain="y")
-    m.box((-half + 1, 0, 1), (half - 1, foot, SHELF_D), WOOD_D, grain="x")
-    for y in boards:
-        m.box((-half + 1, y, 1), (-1, y + 1, SHELF_D - 0.5), WOOD, grain="x")
-        m.box((1, y, 1), (half - 1, y + 1, SHELF_D - 0.5), WOOD, grain="x")
-    floors = (foot,) + tuple(y + 1 for y in boards)
-    ceilings = tuple(boards) + (height - head,)
-    return [(x0, x1, y0, y1) for y0, y1 in zip(floors, ceilings) for x0, x1 in ((-half + 1, -1.0), (1.0, half - 1))]
-
-
-def _stock(m, name, seed, cells, plan):
-    """Fill the compartments: `plan` says what each holds, bottom row first: b books, x plate
-    boxes, r rolled charts, . nothing."""
-    spines = _Spines(f"chart_spines_{name}")
-    rnd = random.Random(seed)
-    for i, (cell, what) in enumerate(zip(cells, plan)):
-        if what == "b":
-            _books(m, spines, cell, rnd, 1000 + i)
-        elif what == "x":
-            _boxes(m, cell, rnd)
-        elif what == "r":
-            _rolls(m, cell, rnd)
-
-
-def _books(m, spines, cell, rnd, seed):
-    """A row of books in a compartment; now and then the row stops short of the end."""
-    x0, x1, y0, y1 = cell
-    height = (y1 - y0) - rnd.choice((1, 1, 2))
-    run = (x1 - x0) if rnd.random() < 0.7 else float(rnd.choice((12, 15, 18)))
-    if rnd.random() < 0.5:
-        a, b = x0, x0 + run
-    else:
-        a, b = x1 - run, x1
-    m.box((a, y0, 1), (b, y0 + height, 4.5), SHADOW, skip="nd", faces={"s": spines}, seed=seed)
-
-
-def _boxes(m, cell, rnd):
-    """Pasteboard plate boxes standing side by side, a label on each."""
-    x0, x1, y0, y1 = cell
-    x = x0 + rnd.choice((0, 1))
-    while x + 6 <= x1:
-        height = min(y1 - y0 - 1, rnd.choice((7, 8, 8, 9)))
-        m.box((x, y0, 1), (x + 6, y0 + height, 5), CARD, skip="nd", grain="y")
-        m.box((x + 1.5, y0 + height - 4, 5), (x + 4.5, y0 + height - 2, 5.25), LABEL, skip="n")
-        x += 6 + rnd.choice((0, 1, 1))
-
-
-def _rolls(m, cell, rnd):
-    """Rolled charts lying end-on in two layers."""
-    x0, x1, y0, y1 = cell
-    for layer in range(2):
-        x = x0 + (1.5 if layer else 0.0) + rnd.choice((0, 1))
-        while x + 3 <= x1 and y0 + 3 * layer + 3 <= y1:
-            if rnd.random() < 0.85:
-                m.box((x, y0 + 3 * layer, 1), (x + 3, y0 + 3 * layer + 3, 5.5), CARD, skip="n",
-                      grain="z", faces={"s": ROLL_END})
-            x += 3
-    return m
-
-
-def _shelf(name, seed, plan):
-    """A bay of the first tier, on the floor: a plinth, four rows of compartments, the board that
-    carries the ladder rail and a cornice. Anchor: on the wall, the middle of its foot."""
-    m = M.Model(PREFIX + name)
-    half, top = SHELF_W / 2.0, SHELF_H - CORNICE
-    cells = _carcass(m, SHELF_H, PLINTH, CORNICE + RAIL_BOARD, (13.0, 23.0, 33.0), crown=CORNICE)
-    _stock(m, name, seed, cells, plan)
-    m.box((-half + 1, top - RAIL_BOARD, 1), (half - 1, top, SHELF_D), WOOD, grain="x")
-    m.box((-half, top, 0), (half, SHELF_H, SHELF_D + 1), WOOD_D, skip="n", grain="x")
-    return m
-
-
-def _shelf_up(name, seed, plan):
-    """A bay of the second tier, standing on the cornice of the first: a bottom board, four rows of
-    compartments, a top board. Anchor: on the wall, the middle of its foot."""
-    m = M.Model(PREFIX + name)
-    half = SHELF_W / 2.0
-    cells = _carcass(m, SHELF_H, 1.0, 1.0, (12.0, 24.0, 36.0))
-    _stock(m, name, seed, cells, plan)
-    m.box((-half + 1, SHELF_H - 1, 1), (half - 1, SHELF_H, SHELF_D), WOOD_D, grain="x")
-    return m
-
-
-def _shelf_top(name, seed, plan):
-    """A bay of the tier under the ceiling, one block high: one row of compartments, a frieze board
-    and the cornice that meets the ceiling. Anchor: on the wall, the middle of its foot."""
-    m = M.Model(PREFIX + name)
-    half, top = SHELF_W / 2.0, SHELF_TOP_H - CORNICE
-    cells = _carcass(m, SHELF_TOP_H, 1.0, CORNICE + 2.0, (), crown=CORNICE)
-    _stock(m, name, seed, cells, plan)
-    m.box((-half + 1, top - 2.0, 1), (half - 1, top, SHELF_D), WOOD, grain="x")
-    m.box((-half, top, 0), (half, SHELF_TOP_H, SHELF_D + 1), WOOD_D, skip="nu", grain="x")
-    return m
-
-
-# name -> (how it is built, the seed of its books, what its compartments hold: bottom row first, in
-# a row the left one first as one looks at the wall)
-SHELVES = {
-    "shelf_a": (_shelf, 11, "xbbbbbbb"),
-    "shelf_b": (_shelf, 23, "bbbbbbrb"),
-    "shelf_up_a": (_shelf_up, 37, "bbbbbbb."),
-    "shelf_up_b": (_shelf_up, 41, "bbbxbbbb"),
-    "shelf_top_a": (_shelf_top, 53, "rb"),
-    "shelf_top_b": (_shelf_top, 67, "xr"),
-}
-# the wall, bay by bay from the west: (first tier, second tier, the tier under the ceiling)
-SHELF_WALL = (("shelf_b", "shelf_up_a", "shelf_top_a"), ("shelf_a", "shelf_up_b", "shelf_top_b"),
-              ("shelf_b", "shelf_up_b", "shelf_top_a"), ("shelf_a", "shelf_up_a", "shelf_top_b"))
-
-
 # ---- the room's own models: the light table ------------------------------------------------------
 # Long along the room's axis: four square panes of opal glass in a brass frame, on a lamp box of
 # dark wood that stands on five iron trestles. It is drawn in the table's own frame, texels from the
@@ -417,15 +216,15 @@ GLASS = 14.75                       # the top of the glass: a quarter of a texel
 LIFT = 2.0                          # what stands on the table is held this far above its foot, the table itself this far
 #                                     above its frame: in the row over the glass, where the table's sources are
 HELD = (0.0, FRAME_TOP + LIFT, 0.0)     # where every length of the table is held: one cell lights the whole table
-BRIDGE_Z = -14.0                    # the measuring bridge: over the middle of the second pane
-SCOPE_X = -8.0                      # its microscope: towards the west edge, where the observer's stool stands
-VIEWER_Z = 38.0                     # the foot of the plate viewer's face, on the fourth pane
-VIEW_W, VIEW_H = 26.0, 24.0         # the plate viewer, across and high
-VIEW_TILT = -20.0                   # it leans back by this
+BRIDGE_Z = -14.0                    # the measuring bridge (_chartengine.bridge): over the middle of the second pane
+VIEWER_Z = 38.0                     # the foot of the plate viewer's face (_chartengine.viewer), on the fourth pane
+# the microscope of the bridge looks down at this point of the glass, towards the west edge, where the observer's stool
+# stands; the plate that is being measured lies under it, as far east as leaves it whole on the glass
+NOSE = (_chartengine.NOSE[0], BRIDGE_Z + _chartengine.NOSE[1])
 # the loose plates on the glass: (kind of props/paper, (x, z) of its middle, degrees it is turned)
 PLATES = (
     ("photo_plate", (-6.0, -47.0), 8.0), ("photo_plate_b", (5.0, -40.0), -14.0), ("photo_plate_c", (-5.0, -34.0), 4.0),
-    ("photo_plate_b", (SCOPE_X, BRIDGE_Z), 0.0),                        # under the microscope
+    ("photo_plate_b", (max(NOSE[0], -8.5), NOSE[1]), 0.0),              # under the microscope
     ("photo_plate", (6.0, 9.0), -6.0), ("photo_plate_c", (-6.0, 17.0), 10.0),
 )
 STAND_IN = 4                        # how many of them the room's own stand-in shows while props/paper is not in the tree
@@ -508,53 +307,6 @@ def _table(k):
     return m
 
 
-def _bridge():
-    """The measuring bridge: a brass beam across the table that rides on the two long sides of its
-    frame, the microscope on its carriage, the micrometer drum at one end. Low: from the door it
-    lies across the lit lane and leaves the viewer behind it free. Anchor: LIFT over the middle of
-    its foot on the frame; x runs across the table."""
-    m = M.Model(PREFIX + "bridge", anchor=(0.0, LIFT, 0.0))
-    hw = TABLE_W / 2.0
-    for s in (-1.0, 1.0):
-        x0, x1 = sorted((s * (hw - 2.5), s * (hw + 0.5)))
-        m.box((x0, 0, -2), (x1, 2.5, 2), BRASS_D, grain="z")                    # the trucks on the frame
-    m.box((-hw + 2.5, 1, -1), (hw - 2.5, 3, 1), BRASS_D, grain="x", faces={"n": SCALE, "s": SCALE}, skip="ew")   # the beam
-    x = SCOPE_X
-    m.box((x - 2.5, 0.5, -2.5), (x + 2.5, 3.5, 2.5), IRON_D, grain="x")         # the carriage
-    m.tube("y", (x, 0.0), 0.25, 1.0, 0.75, IRON_D)                              # the objective, just over the plate
-    m.tube("y", (x, 0.0), 3.5, 7.5, 1.0, BRASS)                                 # the tube
-    m.tube("y", (x, 0.0), 7.5, 8.75, 0.75, IRON_D)                              # the eyepiece
-    m.tube("x", (5.5, 0.0), x + 1.0, x + 2.75, 0.75, BRASS)                     # the focusing head
-    m.tube("x", (1.75, 0.0), hw + 0.5, hw + 3.0, 1.5, BRASS)                    # the micrometer drum
-    m.tube("x", (1.75, 0.0), hw + 3.0, hw + 3.75, 0.5, IRON_D, sides=4)
-    return m
-
-
-def _viewer():
-    """The plate viewer: a lamp house behind a screen of opal glass in a wooden frame, leaning back
-    on two stays, the newest plate standing on its ledge with the light behind it. Anchor: LIFT over
-    the middle of the foot of its face; the face looks along +z."""
-    m = M.Model(PREFIX + "viewer", anchor=(0.0, LIFT, 0.0))
-    hw = VIEW_W / 2.0
-    with m.turned(("x", VIEW_TILT), about=(0.0, 0.0, -2.0)):                    # it rests on the back edge of its frame
-        for x in (-hw, hw - 2.0):
-            m.box((x, 0, -2), (x + 2, VIEW_H, 0), WOOD, grain="y")              # the frame
-        m.box((-hw + 2, 0, -2), (hw - 2, 2, 0), WOOD, grain="x")
-        m.box((-hw + 2, VIEW_H - 2, -2), (hw - 2, VIEW_H, 0), WOOD, grain="x")
-        m.box((-hw + 1, 3, -5), (hw - 1, VIEW_H - 1, -2), WOOD_D, grain="x", skip="s")      # the lamp house
-        m.box((-hw + 2, 2, -1.5), (hw - 2, VIEW_H - 2, -1), LIT_GLASS, skip="nudew", **LIT)  # the screen
-        m.box((-9, 3, -1), (9, 21, -0.5), PLATE_SIDE, skip="n", faces={"s": COMET}, **LIT)   # the plate
-        m.box((-10, 2, -1), (10, 3, 0.5), BRASS_D, grain="x")                   # the ledge it stands on
-        for x in (-6.0, 6.0):
-            m.box((x - 0.5, 20.5, -1), (x + 0.5, 22, -0.25), BRASS_D)           # the two clips that hold its head
-        for x in (-6.0, 0.0, 6.0):
-            m.box((x - 1.5, 17, -5.25), (x + 1.5, 18, -5), VENT, skip="s", **LIT)   # the lamps through the vents of the back
-    for x in (-10.0, 10.0):                                                     # the stays, and their feet on the frame
-        m.rod((x, 17.5, -11.5), (x, 0.25, -17.0), 0.5, BRASS_D, sides=4)
-        m.box((x - 1, 0, -18), (x + 1, 0.5, -16), BRASS_D)
-    return m
-
-
 def _plates():
     """The loose plates on the first two panes: the stand-in for the plates of props/paper while
     that module is not in the tree. Drawn in the table's frame; anchor: on the glass, in the middle
@@ -591,8 +343,9 @@ def _calculator():
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    out = {PREFIX + name: make(name, seed, plan) for name, (make, seed, plan) in SHELVES.items()}
-    for m in [_table(k) for k in range(PANES)] + [_bridge(), _viewer(), _plates(), _calculator()]:
+    out = dict(_chartshelves.models())
+    engines = [_chartengine.bridge(), _chartengine.viewer(COMET)]
+    for m in [_table(k) for k in range(PANES)] + engines + [_plates(), _calculator()]:
         out[m.name] = m
     return out
 
@@ -676,9 +429,12 @@ def build_chartroom(c, origin=(0, 0, 0), roles=B):
 
     # ---- the floor: dark boards over the pale ones of the shell (in those the floor is the lightest
     # large thing of the room, lit or not: the time room's review, cr3-P4)
+    # The cell under the cased riser is not relaid: the plate lift of the vault below comes up through
+    # it into the casing (interiors/platevault, c358), and the floor block there is that room's to open.
     for x in range(X0, X1 + 1):
         for z in range(Z0, Z1 + 1):
-            put(x, FLOOR_Y, z, roles.DARK_WOOD.block)
+            if (x, z) != RISER:
+                put(x, FLOOR_Y, z, roles.DARK_WOOD.block)
 
     # ---- beams on the pilaster rows, each end in a shoe at the head of its pier
     for z in PIER_Z:
@@ -687,17 +443,16 @@ def build_chartroom(c, origin=(0, 0, 0), roles=B):
         put(X0, TOP, z, st(roles.IRON_RIVETED.stairs, facing="west", half="top"))
         put(X1, TOP, z, st(roles.IRON_RIVETED.stairs, facing="east", half="top"))
 
-    # ---- the bookcase wall, the ladder on its rail, two drop lights before it
-    for i, tiers in enumerate(SHELF_WALL):
-        x = X0 + SHELF_W / 32.0 + i * SHELF_W / 16.0
-        for name, y in zip(tiers, (FEET, FEET + 3, FEET + 6)):
-            n += K.put(c, own[PREFIX + name], (x, y, SOUTH), mount="wall", facing="north", origin=origin)
-    front = SOUTH - SHELF_D * PX
+    # ---- the bookcase wall (snow's, _chartshelves), the ladder on its rail, a bracket lamp on each of
+    # its outer piers, where the pier's face is bare
+    n += _chartshelves.place(c, origin)
+    front = _chartshelves.FRONT_Z
     if furniture is not None:
         n += furniture.rail(c, (X1 + 0.5, FEET, front), X1 - X0 + 1, facing="north", origin=origin)
     n += piece(furniture, "furniture", "library_ladder", (AXIS_X + 2.25, FEET, front), facing="north")
-    for x in (AXIS_X - 3.5, AXIS_X + 3.5):
-        n += drop(x, Z1 - 0.7, SHELF_HANG, ASK_SHELF, "drop light before the bookcase", (int(x), FEET + 2, Z1 - 1))
+    for x in (_chartshelves.PIER_X[0], _chartshelves.PIER_X[-1]):
+        n += lamp("bracket", (x, _chartshelves.LAMP_Y[0] + 11 * PX, _chartshelves.PIER_FACE_Z), ASK_SHELF,
+                  "bracket lamp on a pier of the bookcase", (int(x), FEET + 3, Z1 - 1), facing="north")
 
     # ---- the light table: its four lengths, the bridge, the viewer, the plates; the sources of its glass
     held = tuple(TABLE_AT[i] + HELD[i] * PX for i in range(3))
