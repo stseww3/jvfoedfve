@@ -1,0 +1,18 @@
+check obs_site_outbuildings at 47eb36b
+[WARN] regen     186993 blocks, 189 entities, 158 models, 1127 resource-pack files, 105 data-pack files, look: 1 biomes, 1 timelines (3.1 s)
+                 registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+[PASS] conflicts the scene writes 1126 files, no file written twice, the folders and the prefix of site are kept (1 package run alone)
+[PASS] strays    282 pictures, every colour in the palette
+[PASS] refs      835 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   86 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    75 kinds of block placed, 12 barrier cells (x 16, y 0..1, z -5..5), all in the occupancy table
+[PASS] flatwall  no wall face runs flat over more than 5x5
+[PASS] entities  189 display entities, 11 drawn out along one axis, 1 shown through a matrix that is no turn, no face stretched, 108 models never placed
+[WARN] views     14 shots, most display entities in view: 189 (tower_mid), limit 600; counted without what walls hide; the game draws up to 189 (v1_arrival): a display entity without width and height is drawn outside the view too
+                 the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(materials.pack(d) or []) + list(sky.pack(d) or [])
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 13.9% hidden (base storey 43.8% by blocks and 2.4% more by models, great windows 1.7%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 1.3 s)
+[PASS] motion    2 parts and 0 points on 1 chains, 12 function files; 5 commands in the busiest tick (limit 40), 0.8 a tick on average (limit 10)
+                 chain of 24 ticks: 6 functions, 20 commands a cycle, starts 1 ticks after start
+                 site_weather_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.08 blocks off the axis
+                 bld_tower_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.09 blocks off the axis
+result: PASS (0 failed, 2 with warnings)
