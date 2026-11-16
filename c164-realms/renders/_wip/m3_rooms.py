@@ -18,10 +18,17 @@ from artkit import models as M  # noqa: E402
 from scenes.obs.props import _kit as K  # noqa: E402
 
 BODY, TALL = 0.3, 1.8
-ROOMS = (("G the chart room", 7.0, (2.0, 6.5, 14.0, 26.0)), ("E the south gallery", 7.0, (-4.5, 2.5, 16.5, 7.0)),
-         ("E the north gallery", 7.0, (-4.5, -6.0, 16.5, -1.5)),
-         ("F the time room", 7.0, (2.0, -25.5, 15.0, -4.5)), ("L the engine hall", -6.0, (68.0, 16.5, 89.5, 41.0)),
-         ("B the star hall", 0.0, (1.0, -6.0, 17.0, 6.5)))
+ROOMS = (("B the star hall", 0.0, (1.0, -6.0, 17.0, 6.5)),
+         ("E the south gallery", 7.0, (-4.5, 2.5, 16.5, 7.0)), ("E the north gallery", 7.0, (-4.5, -6.0, 16.5, -1.5)),
+         ("F the time room", 7.0, (2.0, -25.5, 15.0, -4.5)), ("G the chart room", 7.0, (2.0, 6.5, 14.0, 26.0)),
+         ("I the dome room", 18.0, (-5.0, -10.5, 15.5, 11.5)), ("J the south end terrace and the small dome", 18.0, (0.0, 24.0, 16.5, 34.5)),
+         ("K the north end terrace and the tower's lobby", 18.0, (0.0, -35.0, 17.5, -23.0)),
+         ("the clock room", 24.0, (9.0, -34.0, 17.5, -26.0)),
+         ("L the engine hall", -6.0, (68.0, 16.5, 89.5, 41.0)), ("M the meridian hut", 0.0, (30.0, -35.0, 41.0, -20.0)),
+         ("N the plate vault", 0.0, (1.0, 3.5, 15.0, 27.0)), ("P the battery room", 0.0, (1.0, -25.5, 15.0, -2.5)))
+LOOK = (("the small dome's door", (9, 18, 30), (9, 19, 30)), ("the tower's west door", (10, 18, -30), (10, 19, -30)),
+        ("the hatch into the clock room", (11, 23, -32), (11, 24, -32)))
+SHAFT = (10, -33, 16, -27)                  # the tower: every height a person stands at in these columns
 out = []
 
 
@@ -100,7 +107,8 @@ def main():
     for name, level, (x0, z0, x1, z1) in ROOMS:
         say()
         say(f"== {name}: level {level:g}; a column every half block from x {x0:g} to {x1:g} (| marks whole x), rows z {z0:g} .. {z1:g}. "
-            "o a walked place on the level, x a walked place where the body stands in a display model, h by a jump only, "
+            "o a place on the level walked to from the route's first station, x the same where the body stands in a display model, "
+            "s / X the same two for a place nobody gets to from there on foot (the roofs, a shut room), h by a jump only, f by a drop, "
             "u/d a place half a block or more over/under the level, . nobody stands")
         xs = [x0 + 0.5 * k for k in range(int(round((x1 - x0) * 2)) + 1)]
         say("        " + "".join(("|" if abs(v - round(v)) < 1e-9 else " ") for v in xs))
@@ -113,13 +121,14 @@ def main():
                 mark = "."
                 for top, _ in world.stand(i, j):
                     node = (i, j, int(round(top * W.Q)))
-                    if node not in reach.kind or abs(top - level) > 1.0 + 1e-6:
+                    if abs(top - level) > 1.0 + 1e-6:
                         continue
-                    kind = reach.kind[node]
+                    kind = reach.kind.get(node, "s")
                     if abs(top - level) > 0.26:
                         mark = "u" if top > level else "d"
-                    elif kind == "walk":
-                        mark = "x" if hits(boxes, xx, top, zz) else "o"
+                    elif kind in ("walk", "s"):
+                        inside = hits(boxes, xx, top, zz)
+                        mark = ("x" if inside else "o") if kind == "walk" else ("X" if inside else "s")
                     else:
                         mark = kind[0]
                     if abs(top - level) <= 0.26:
@@ -133,6 +142,19 @@ def main():
                 rows.append((round(lo[2], 2), f"   {mname:34s} x {lo[0]:6.2f} .. {hi[0]:6.2f}   z {lo[2]:6.2f} .. {hi[2]:6.2f}   y {lo[1]:5.2f} .. {hi[1]:5.2f}"))
         for _, line in sorted(rows):
             say(line)
+    say()
+    say("== doors and the hatch (the blocks)")
+    for what, a, b in LOOK:
+        say(f"   {what}: " + "; ".join(f"{c} {cells.get(c)}" for c in (a, b)))
+    say("== the tower: where a person stands in every column (x, z): feet heights between 17 and 32")
+    x0, z0, x1, z1 = SHAFT
+    for zc in range(z0, z1 + 1):
+        row = []
+        for xc in range(x0, x1 + 1):
+            i, j = world.lattice(xc + 0.5, zc + 0.5)
+            tops = [f"{top:g}" for top, _ in world.stand(i, j) if 17.0 <= top <= 32.0]
+            row.append(f"x{xc}: " + (",".join(tops) or "-"))
+        say(f"   z {zc}: " + "  ".join(row))
     say()
     table = json.load(open(table_path))
     say("== the stations of the route whose body stands in a display model (every stretch)")
@@ -148,11 +170,10 @@ def main():
             say(f"   {s['id']} ({fx:g}, {fy:g}, {fz:g}) {s.get('reach', '')}: " + ", ".join(sorted(set(found))))
     say(f"   {n} of {len(table['stations'])} stations")
     say()
-    say("== the stations of B, E, F, G, L")
+    say("== every station: feet, how it is reached, what the tool notes")
     for s in table["stations"]:
-        if s["stretch"] in "BEFGL":
-            flags = {k: s[k] for k in ("floor", "leg", "round", "from", "how") if k in s}
-            say(f"   {s['id']} {s['feet']} {s.get('reach')} {flags or ''} {s.get('views', '')} {(s.get('node') or '')[:44]}")
+        flags = {k: s[k] for k in ("floor", "leg", "round", "from", "how", "hop") if k in s}
+        say(f"   {s['id']} {s['feet']} {s.get('reach')} {flags or ''} {s.get('views', '')} {(s.get('node') or '')[:44]}")
     os.makedirs("renders/_wip/walkfix", exist_ok=True)
     with open("renders/_wip/walkfix/rooms.txt", "w", encoding="utf-8") as fh:
         fh.write("\n".join(out) + "\n")
