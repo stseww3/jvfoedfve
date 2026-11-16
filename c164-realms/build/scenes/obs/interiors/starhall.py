@@ -600,7 +600,7 @@ def _flat_lamp(canvas, origin, version, at, towards, level, what, source_y=None)
     n = lamps.place(canvas, "cage", (at[0], under - K.NUDGE, at[1]), facing=towards, origin=origin, version=version,
                     light=False, turns=(("x", 90.0),))
     y = shell.ARCH_Y - (1 if crowned else 0) if source_y is None else source_y
-    L.suggest(canvas, (ox + x, oy + y, oz + z), level, f"{WHY}:{what}", rank=3)
+    L.suggest(canvas, (ox + x, oy + y, oz + z), level, f"{WHY}:{what}", rank=L.rank(level))
     return n
 
 
