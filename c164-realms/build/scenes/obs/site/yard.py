@@ -34,12 +34,19 @@ models on the paving, none of them higher than a tub with its load (a block and 
            the stub
   stops    a timber beam on two bent rails at the west and the east end of line A
   heap     the coal stock in a bin of two plank sides at the foot of the wall, a shovel in it
+  scale    a weighbridge in line A where the tubs stop by the heap: a plate under the rails in a
+           frame, and beside the track its pillar with the dial
+  stack    spare sleepers in a crib and two lengths of rail on bearers, by the stub
+  plate    the table's number, No. 05 (props/nameplates, plan/parts/numbers.md), flat on its seat
+The tubs carry their numbers in white paint (the station's letters, props/_kit.letters).
 
 What moves (the motion kit, scenes/obs/motion/_kit):
   * the two tubs on the rope go from the table's side to the heap and back, RUN blocks in CYCLE
     ticks, a slide with a slow start and a slow stop;
   * the return sheave turns with the rope, as far as the rope has gone round it, and stands when
     the tubs stand;
+  * the needle of the weighbridge goes up when the first tub rolls onto the plate, swings past
+    the weight and settles, and falls back when the last wheel is off;
   * the table turns a quarter turn with the tub that is on it, stands in line with line B, and
     turns back. (It is to be worked by hand, with the handle on its rim, once the kit has the
     switch for it: director, round 2 section 丙三.)
@@ -53,27 +60,33 @@ dust by the heap and along the line, the chalk on the tubs) are the materials li
 (materials/traces: a1, 11-16 13:05) and are put on with them when they are there; none is drawn here.
 
 The view bands (INTERFACE 7; s2, 11-16 13:12: what stands on a line and the cars keep the far band,
-what is a texel or two from far off goes down): the tubs, the deck and the heap are drawn across the
-site (FAR_MODELS); the rails, the seat's ring, the stops and the sheave within a terrace (M.MID). From
-above and from far off the blocks tell the line and those five stand on it.
+what is a texel or two from far off goes down): the tubs, the deck, the heap, the scale's pillar and
+the stack are drawn across the site (FAR_MODELS); the rails, the seat's ring, the stops and the sheave
+within a terrace (M.MID); the needle from near (M.NEAR). From above and from far off the blocks tell
+the line and those stand on it.
 """
 import functools
 import math
 import random
 
 from artkit import models as M
+from artkit.pixelart import Sprite
 
 from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
 from ..motion import _kit as MK
+from ..props import _kit as PK
+from ..props import nameplates
 from . import _kit as K
 from . import powerhouse
 
 PREFIX = "site_yard_"
 VIEW = M.MID
-FAR_MODELS = tuple(PREFIX + name for name in ("rake", "tub", "tub_empty", "deck", "coal"))
-VIEW_KEEP = FAR_MODELS              # the assembly brings every other entity of the package down to VIEW
+FAR_MODELS = tuple(PREFIX + name for name in ("rake", "tub", "tub_empty", "deck", "coal", "scale", "stack"))
+NEAR_MODELS = (PREFIX + "needle",)
+# the assembly brings every other entity of the package down to VIEW (the number plate is the props line's)
+VIEW_KEEP = FAR_MODELS + NEAR_MODELS + (nameplates.PREFIX + "*",)
 PX = 1.0 / 16.0
 
 FEET = S.LOWER_GROUND               # -6: the top of the paving
@@ -88,6 +101,9 @@ A_EAST = (TABLE[0] + TABLE_HALF + 1, 79)            # x 76..79: it ends west of 
 DOOR = powerhouse.DOOR_AT["cell"]                   # the power house's wicket
 B_Z = (ROW + TABLE_HALF + 1, DOOR[1] - 1)           # line B, column TABLE[0]: z -20 .. the cell before the wicket
 HEAP = (64, -19)                    # the middle cell of the coal heap (three by three)
+SCALE_X = 68.0                      # the middle of the weighbridge's plate on line A (cells 67 and 68)
+STACK = (78, ROW - 2)               # the cell the crib of sleepers stands in, north of the stub
+NUMBER = 5                          # the table's number in the station's list of machines
 
 BED = B.IRON_RIVETED.block          # the plate the rails lie on
 SEAT = B.IRON_PLATE                 # the table's seat
@@ -111,6 +127,17 @@ EASE = (0.3, MK.SECOND)             # the first and the last of a run: this far 
 HAUL = 8 * MK.SECOND                # the run between the two
 LEAVES = (2 * MK.SECOND, 17 * MK.SECOND)        # when it sets off west, and back east
 
+NUMBERS = {"tub": 2, "tub_empty": 9, "rake": (4, 7)}     # what is painted on each tub
+PAINT = P.RAMPS["cream"][1]
+
+# --- the weighbridge ----------------------------------------------------------------------------------
+PLATE_HALF = (15.0, 7.6)            # the plate's half length and half width
+PILLAR = 16.0                       # from the middle of the track to the middle of the pillar, southwards
+DIAL = (3.5, 17.5)                  # the dial's face: how far east of the pillar's middle, and how high its middle
+DIAL_R = 3.6
+ZERO = 135.0                        # the needle at rest: turned this far from upright, to the lower left of the dial
+WEIGHT = (215.0, 200.0, -12.0)      # degrees it swings to, settles at, and falls back past
+
 # --- the sheave ---------------------------------------------------------------------------------------
 SHEAVE = 4.0                        # its radius
 SHEAVE_AT = (12.0, 4.0)             # its middle in the west stop's model: along the track, and above the plate
@@ -127,6 +154,7 @@ SOCKET = 21.2                       # how far from the middle the bolt's socket 
 IRON = P.mat("iron")
 IRON_D = P.mat("iron_dark")
 IRON_L = P.mat("iron", base=4)
+WHITE = P.mat("porcelain", kind="flat", base=3, bevel=0)
 HEAD = P.mat("iron", base=5, noise=0.10, bevel=0)           # worn bright: a rail's head, a tread, a grip
 PLATE = P.mat("iron", kind="flat", base=2, bevel=0)
 WIRE = P.mat("iron", kind="rope", base=3, bevel=0)
@@ -189,7 +217,18 @@ def _lumps(m, rnd, spots):
               rot=("xyz", (rnd.uniform(-25, 25), rnd.uniform(0, 90), rnd.uniform(-25, 25)), c), seed=100 + i % 9)
 
 
-def _tub(m, at=0.0, coal=True, seed=1890):
+def _figure(m, number):
+    """A tub's number in white paint on both its sides, between the straps."""
+    rows = PK.letters(str(number), ink="k")
+    half = len(rows[0]) / 2.0
+    paint = Sprite(f"{PREFIX}no{number}", rows, {"k": PAINT})
+    for s in (-1, 1):
+        a, b = sorted((s * 7.0, s * 7.06))
+        m.box((-half, 14.3 - len(rows), a), (half, 14.3, b), IRON, skip="udew" + ("n" if s > 0 else "s"),
+              faces={"s" if s > 0 else "n": paint}, shade=False, seed=50 + number)
+
+
+def _tub(m, at=0.0, coal=True, seed=1890, number=None):
     """A tub drawn into m: the middle of its wheelbase at x = at, its wheels on y = 0 (the rail heads),
     the track along x."""
     rnd = random.Random(seed)
@@ -238,6 +277,8 @@ def _tub(m, at=0.0, coal=True, seed=1890):
             m.box((a, 10.0, -5.6), (b, 11.2, 5.6), IRON_D, grain="z", seed=27)
             a, b = sorted((e * 9.5, e * 10.0))
             m.box((a, 9.8, -0.8), (b, 11.4, 0.8), HEAD, seed=28)
+        if number is not None:
+            _figure(m, number)
         if coal:
             m.box((-8.0, 7.0, -6.0), (8.0, 14.6, 6.0), COAL_CORE, skip="d", seed=30)
             spots = []
@@ -270,11 +311,11 @@ def _grip(m, x):
 
 
 def _tub_models():
-    one = _tub(M.Model(PREFIX + "tub"), seed=1891)
-    empty = _tub(M.Model(PREFIX + "tub_empty"), coal=False, seed=1892)
+    one = _tub(M.Model(PREFIX + "tub"), seed=1891, number=NUMBERS["tub"])
+    empty = _tub(M.Model(PREFIX + "tub_empty"), coal=False, seed=1892, number=NUMBERS["tub_empty"])
     rake = M.Model(PREFIX + "rake")
-    _tub(rake, -COUPLED / 2.0, seed=1893)
-    _tub(rake, COUPLED / 2.0, seed=1894)
+    _tub(rake, -COUPLED / 2.0, seed=1893, number=NUMBERS["rake"][0])
+    _tub(rake, COUPLED / 2.0, seed=1894, number=NUMBERS["rake"][1])
     _link(rake, 0.0)
     _grip(rake, -COUPLED / 2.0 - 8.0)
     return [one, empty, rake]
@@ -461,11 +502,101 @@ def _coal():
     return m
 
 
+# --- the weighbridge ------------------------------------------------------------------------------------
+def _scale():
+    """The weighbridge: the anchor in the middle of its plate, on the bed, the track along x. The
+    plate lies under the rails (their heads stand out of it) in a frame; a cover runs from it to the
+    pillar on the south side, under which the lever goes; the pillar carries the dial on its east face."""
+    m = M.Model(PREFIX + "scale")
+    hx, hz = PLATE_HALF
+    m.box((-hx, 0.0, -hz), (hx, 0.7, hz), IRON, grain="x", seed=1)
+    for s in (-1, 1):
+        a, b = sorted((s * hz, s * (hz + 0.7)))
+        m.box((-hx - 0.7, 0.0, a), (hx + 0.7, 0.85, b), IRON_D, grain="x", seed=2)                # the frame
+        a, b = sorted((s * hx, s * (hx + 0.7)))
+        m.box((a, 0.0, -hz), (b, 0.85, hz), IRON_D, grain="z", seed=3)
+        for z in (-GAUGE, GAUGE):
+            m.box((s * hx - 0.2, 0.7, z - RAIL - 0.1), (s * hx + 0.2, RAIL_UP + 0.04, z + RAIL + 0.1), PLATE, seed=4)   # the rails' joints
+        for x in (-hx + 1.5, -5.0, 5.0, hx - 1.5):
+            _rivet(m, x, 0.7, s * (hz - 1.0), "y", proud=0.25)
+        for x in (-9.0, 9.0):
+            m.box((x - 1.4, 0.7, s * 2.5 - 0.9), (x + 1.4, 0.9, s * 2.5 + 0.9), IRON_D, seed=5)   # the lids over the knife edges
+            m.box((x - 0.5, 0.9, s * 2.5 - 0.25), (x + 0.5, 1.1, s * 2.5 + 0.25), HEAD, seed=6)
+    z = PILLAR
+    m.box((-1.6, 0.0, hz + 0.7), (1.6, 0.5, z - 6.0), IRON, grain="z", seed=7)                    # the cover over the lever
+    for at in (hz + 1.8, z - 7.0):
+        _rivet(m, 0.0, 0.5, at, "y", proud=0.25)
+    m.box((-6.0, 0.0, z - 6.0), (6.0, 3.0, z + 6.0), IRON_D, seed=8)                              # the pillar: its foot,
+    for x in (-4.8, 4.8):
+        for dz in (-4.8, 4.8):
+            _rivet(m, x, 3.0, z + dz, "y", mat=HEAD, proud=0.4)
+    m.box((-3.0, 3.0, z - 3.0), (3.0, 13.5, z + 3.0), IRON, grain="y", seed=9)                    # its shaft,
+    m.box((3.0, 5.0, z - 1.8), (3.3, 11.5, z + 1.8), IRON_D, seed=10)                             # the shaft's door and its knob
+    m.box((3.3, 8.0, z + 0.8), (3.7, 8.8, z + 1.4), BRASS, seed=11)
+    m.box((-3.6, 13.0, z - 3.6), (3.6, 13.8, z + 3.6), IRON_D, seed=12)                           # the collar
+    x, y = DIAL
+    m.tube("x", (y, z), -3.0, x, DIAL_R + 0.9, IRON, sides=12, seed=13)                           # and the drum of the dial
+    m.tube("x", (y, z), x, x + 0.2, DIAL_R, WHITE, sides=12, seed=14)
+    m.ring("x", (x + 0.3, y, z), DIAL_R + 0.45, 0.9, 0.6, BRASS, sides=12, seed=15)
+    for k in range(7):                              # the marks, from the zero round by the top
+        with m.turned(("x", ZERO - 45.0 * k), about=(x, y, z)):
+            m.box((x + 0.2, y + DIAL_R - 1.1, z - 0.2), (x + 0.28, y + DIAL_R - 0.2, z + 0.2), PLATE, seed=16)
+    m.box((-1.0, y + DIAL_R + 0.9, z - 1.0), (1.0, y + DIAL_R + 1.9, z + 1.0), IRON_D, seed=17)   # the cap
+    return m
+
+
+def _needle():
+    """The dial's needle: the anchor on its pivot; it stands at the zero."""
+    m = M.Model(PREFIX + "needle")
+    with m.turned(("x", ZERO)):
+        m.box((0.0, -0.9, -0.22), (0.12, DIAL_R - 0.9, 0.22), RED, seed=1)
+        m.box((0.0, -1.3, -0.45), (0.12, -0.7, 0.45), RED, seed=2)                                # its tail
+    m.tube("x", (0.0, 0.0), 0.0, 0.3, 0.55, BRASS, sides=6, seed=3)
+    return m
+
+
+def weighing():
+    """The ticks of the rake's cycle at which its first wheel rolls onto the plate and its last one
+    off again: the same wheel both times, the one that leads on the way west."""
+    lead = (COUPLED / 2.0 + 6.0) * PX               # from the rake's middle to that axle
+    at = (SCALE_X + PLATE_HALF[0] * PX) - (REST_X - lead)       # where the rake is (blocks east of its rest) with the axle on the plate's east end
+    out, here = [], 0.0
+    for start, to, ticks in moves():
+        if min(here, to) <= at <= max(here, to):
+            out.append(start + int(round(ticks * (at - here) / (to - here))))
+        here = to
+    on, off = out
+    return on, off
+
+
+# --- the stack ------------------------------------------------------------------------------------------
+def _stack():
+    """Spare sleepers in a crib, five courses crosswise, and north of it two lengths of rail on two
+    bearers. The anchor in the middle of the crib, on the paving."""
+    m = M.Model(PREFIX + "stack")
+    rnd = random.Random(1889)
+    for row in range(5):
+        y = 3.2 * row
+        for i, at in enumerate((-8.7, -2.9, 2.9, 8.7)):
+            a, b = -11.0 + rnd.uniform(-0.6, 0.6), 11.0 + rnd.uniform(-0.6, 0.6)
+            wood = WOOD if (row + i) % 3 else WOOD_L
+            if row % 2:
+                m.box((at - 2.1, y, a), (at + 2.1, y + 3.1, b), wood, grain="z", seed=10 + (row + i) % 4)
+            else:
+                m.box((a, y, at - 2.1), (b, y + 3.1, at + 2.1), wood, grain="x", seed=20 + (row + i) % 4)
+    for x in (-9.0, 9.0):
+        m.box((x - 1.5, 0.0, -18.5), (x + 1.5, 1.6, -13.0), WOOD, grain="z", seed=30)             # the bearers
+    for z in (-17.2, -14.6):
+        m.box((-22.0, 1.6, z - RAIL), (22.0, 1.6 + 2.0 * RAIL_UP, z + RAIL), IRON_D, faces={"u": HEAD}, grain="x", seed=31)
+    return m
+
+
 # --- the package ----------------------------------------------------------------------------------------
 @functools.lru_cache(maxsize=None)
 def _models():
     built = [_rail(PREFIX + "rail", LENGTH), _rail(PREFIX + "rail_short", 1), _rail(PREFIX + "rail_rope", LENGTH, rope=True),
-             _stop(PREFIX + "stop"), _stop(PREFIX + "stop_sheave", sheave=True), _sheave(), _deck(), _pit(), _coal()]
+             _stop(PREFIX + "stop"), _stop(PREFIX + "stop_sheave", sheave=True), _sheave(), _deck(), _pit(), _coal(),
+             _scale(), _needle(), _stack()]
     built += _tub_models()
     return {m.name: m for m in built}
 
@@ -531,7 +662,7 @@ def build(canvas, origin=(0, 0, 0)):
     first = len(canvas.entities)
 
     def put(name, x, y, z, yaw=0.0):
-        view = M.FAR if PREFIX + name in FAR_MODELS else VIEW
+        view = M.FAR if PREFIX + name in FAR_MODELS else M.NEAR if PREFIX + name in NEAR_MODELS else VIEW
         canvas.add_entity(ox + x, oy + y, oz + z, M.display(kit[PREFIX + name], yaw=yaw, view=view))
 
     bed, seat = line_cells()
@@ -578,4 +709,18 @@ def build(canvas, origin=(0, 0, 0)):
 
     put("coal", HEAP[0] + 0.5, FEET, HEAP[1] + 0.5)
     canvas.set(ox + HEAP[0], oy + FEET, oz + HEAP[1], B.BARRIER)
+
+    put("scale", SCALE_X, FEET, mid)
+    put("needle", SCALE_X + (DIAL[0] + 0.45) * PX, FEET + DIAL[1] * PX, mid + PILLAR * PX)
+    on, off = weighing()
+    swing, weight, past = WEIGHT                    # clockwise for who reads the dial, from the east
+    MK.turn(canvas, (1, 0, 0), [(on, -swing, 10), (on + 10, -weight, 8), (off, -past, 10), (off + 10, 0.0, 6)], CYCLE,
+            name=PREFIX + "needle")
+    canvas.set(ox + int(math.floor(SCALE_X)), oy + FEET, oz + ROW + 1, B.BARRIER)
+
+    put("stack", STACK[0] + 0.5, FEET, STACK[1] + 0.5)
+    canvas.set(ox + STACK[0], oy + FEET, oz + STACK[1], B.BARRIER)
+
+    # the table's number, flat on the seat's south-east corner, read from the south
+    nameplates.plate(canvas, NUMBER, (tx + 1.05, FEET + 0.01, mid + 1.25), origin=origin, turns=(("x", -90),))
     return len(canvas.entities) - first

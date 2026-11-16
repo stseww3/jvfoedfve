@@ -7,7 +7,8 @@ built whole, in the master scene's order, so the pictures keep up with them as p
 
 The cameras: the three board views the yard shows in (the arrival V1, whose foreground it is; V6
 before the power house; V12 from the air), then the yard as plan/fine.md asks to see it: from ten
-blocks, where the parts are counted, and from two, where the marks are.
+blocks, where the parts are counted, and from two, where the marks are. The pictures are kept
+(renders/obs_site_yard): yard_10 and table_2 are the card's two self-check pictures.
 
 shots.json is written from shots():  python -m scenes.obs_site_yard  (in build/).
 plan.py prints the platform's floor as a map:  python -m scenes.obs_site_yard.plan
@@ -70,7 +71,7 @@ def shots():
     shot("rake_2", (yard.REST_X - 1.4, eye, mid + 2.3), (yard.REST_X - 0.2, yard.FEET + 0.7, mid))
     shot("stop_2", (yard.A_WEST[0] + 2.7, eye, mid - 2.0), (yard.A_WEST[0] + 0.7, yard.FEET + 0.4, mid + 0.2))
     shot("heap_2", (yard.HEAP[0] + 3.4, eye, yard.HEAP[1] + 2.8), (yard.HEAP[0] + 0.5, yard.FEET + 0.6, yard.HEAP[1] + 0.3))
-    shot("stub_2", (yard.A_EAST[1] - 0.4, eye, mid + 2.4), (yard.A_EAST[1] - 0.6, yard.FEET + 0.5, mid))
-    shot("door_3", (tx + 2.0, eye, yard.B_Z[1] - 4.0), (tx, yard.FEET + 0.2, yard.B_Z[1] + 0.5))
+    shot("scale_2", (yard.SCALE_X + 2.3, eye, mid + 2.5), (yard.SCALE_X + 0.3, yard.FEET + 1.0, mid + 0.9))
+    shot("stub_2", (yard.A_EAST[0] + 2.0, eye, mid + 2.6), (yard.A_EAST[0] + 2.0, yard.FEET + 0.6, mid - 1.5))
     shot("air_yard", (tx + 10.0, 12.0, mid - 18.0), (tx - 4.0, yard.FEET, mid + 8.0))
     return out
