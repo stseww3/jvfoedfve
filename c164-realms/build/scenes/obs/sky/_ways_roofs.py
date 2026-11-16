@@ -11,9 +11,12 @@ from . import _lightkit as L
 
 LAMPS = [
     # The pocket between the pier east of the dome room's north door and the drum's stepped corner
-    # (three cells at 0) and the slab one steps up from beside it (3): on the pier's east face, a
-    # course over the pocket's floor -- one course higher it leaves the slab at 4.
-    ((14, 19, -9), "east", L.WAY, "the pocket east of the dome room's north door and the step before it"),
+    # (three cells at 0) and the slab one steps up from beside it (3): on the pier, a course over
+    # the pocket's floor -- one course higher it leaves the slab at 4. It hung on the pier's east
+    # face until the guard over the parapets (main/roof, rows 19 and 20) took the cell before that
+    # face, which may not be opened: a source is a cell one walks through (sound, #90128). Now on
+    # the pier's north face, over the step itself.
+    ((14, 19, -9), "north", L.WAY, "the pocket east of the dome room's north door and the step before it"),
     # The ledge behind the top of the north gable (two cells at 3): over the head of the window
     # niche, in the last course under the cornice. 6 is the least that brings both to 5.
     ((8, 21, -12), "north", L.WAY - 2, "the ledge behind the top of the north gable"),
