@@ -60,7 +60,8 @@ WORN = K.flat("iron", 5)        # an edge the weather and the hand have worn bri
 STEEL = K.flat("iron", 6)       # the spindle, polished where the head rides on it
 HOOP = K.IRON
 HUB = K.IRON_D
-CAP = K.COPPER_D                # the head's low cone: sheet copper, weathered brown
+CAP = P.mat("verdigris", base=1)                # the head's low cone: sheet copper gone green, as the domes it stands
+#                                                 between, a tone darker than theirs
 OILER = K.BRASS_D               # the oil cup over the head's bearing
 GRIP = K.BRASS                  # the damper lever's grip: brass the hand keeps bright
 ROD = K.flat("iron", 3)         # the stay rods
@@ -109,6 +110,7 @@ VANE_IN, VANE_THICK, VANE_OFF = 0.25, 0.8, 0.54 # a vane is a plate along a chor
 VANE_PROUD = 0.5                # how far a vane's outer edge stands out of the hoops
 BRIM_UP = 0.6                   # the cone's rolled eaves
 CAP_TOP_R = 2.0
+CAP_STEPS = 6
 OILER_R, OILER_UP = 0.9, 1.75
 
 COLUMN = S.WALL_E - 3           # 12: the column they stand in, the third of the east slope from the parapet
@@ -247,8 +249,8 @@ def _head(size):
               rot=("y", 360.0 * n / VANE_N, (0.0, 0.0, 0.0)), grain="y", faces={"e": WORN})
     # the cone: its rolled eaves, eight gores, a standing seam over each joint, the oil cup on top
     h.tube("y", on, eaves, eaves + BRIM_UP, cap_r, CAP)
-    h.taper("y", on, eaves + BRIM_UP, eaves + BRIM_UP + cap_up, cap_r, CAP_TOP_R, CAP, steps=3)
-    rise = cap_up / 3.0
+    h.taper("y", on, eaves + BRIM_UP, eaves + BRIM_UP + cap_up, cap_r, CAP_TOP_R, CAP, steps=CAP_STEPS)
+    rise = cap_up / CAP_STEPS
     for n in range(8):
         with h.turned(("y", 22.5 + 45.0 * n)):
             h.beam((cap_r * 1.05, eaves + BRIM_UP + 0.2, 0.0), (CAP_TOP_R + 0.4, eaves + BRIM_UP + cap_up + rise * 0.6, 0.0),
