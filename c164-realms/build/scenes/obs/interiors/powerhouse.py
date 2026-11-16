@@ -50,8 +50,10 @@ and the firing floor are pale stone under a lamp, and that is what V6 sees throu
 No block of the room stands in the first cell behind the glass of a fire window (clear_cells()):
 the light line puts its source there.
 
-build() is what the master scene calls; it places nothing until MOVED_IN is set. Until then the
-room lives in its test scene, build/scenes/obs_int_powerhouse.
+build() is what the master scene calls (MOVED_IN). What joins a machine waits for the machine: the
+risers, the engine's steam pipe and the cables are placed once the machine's module is in the tree.
+The test scene, build/scenes/obs_int_powerhouse, shows the room with stand-ins for the machines
+that are not.
 """
 import functools
 import importlib
@@ -67,7 +69,7 @@ from ..props import _kit as K
 from ..props import lamps
 from ..site import powerhouse as SH
 
-MOVED_IN = False
+MOVED_IN = True
 NAME = "interiors/powerhouse"
 PREFIX = "int_power_"
 PX = 1 / 16.0
@@ -94,6 +96,13 @@ def _told(module, name, default):
 ENGINE = theirs("machines", "engine")
 BOILER = theirs("machines", "boiler")
 BOARD = theirs("machines", "board")
+MACHINES = ("engine", "boiler", "board")
+
+
+def standing():
+    """The machines whose module is in the tree."""
+    return tuple(name for name, module in zip(MACHINES, (ENGINE, BOILER, BOARD)) if module is not None)
+
 
 # ---- the room (site/powerhouse) ------------------------------------------------------------------------
 X0, Z0, X1, Z1 = SH.ROOM                            # 69, 22, 87, 40
@@ -215,10 +224,11 @@ def floor_role(x, z, roles=B):
     return roles.SLATE_TILE.block
 
 
-def main_cells():
+def main_cells(risers=True):
     """The steam main in the room, in whole blocks: {(x, y, z): is it a riveted piece (a collar, a
     bend, a tee, a foot)}. From the sleeve in the west wall east over the gangway to the cell the
-    engine's pipe drops from; the header north over the boilers, and a riser to each steam dome."""
+    engine's pipe drops from; the header north over the boilers, and a riser to each steam dome
+    (left out while no boiler stands under it)."""
     out = {}
 
     def lay(cell, riveted):
@@ -234,7 +244,7 @@ def main_cells():
     north = min(RISERS)
     for z in range(north, MAIN_Z):                                  # the header
         lay((HEADER_X, MAIN_Y, z), z in RISERS or (MAIN_Z - z) % JOINT_STEP == 0)
-    for z in RISERS:                                                # the risers
+    for z in RISERS if risers else ():                              # the risers
         for y in range(RISER_FOOT, MAIN_Y):
             lay((HEADER_X, y, z), y == RISER_FOOT)
     return out
@@ -437,12 +447,17 @@ def _pipes():
 
 
 # ---- the room ----------------------------------------------------------------------------------------------
-def build_powerhouse(c, origin=(0, 0, 0), roles=B):
+def build_powerhouse(c, origin=(0, 0, 0), roles=B, machines=None):
     """Dress the room standing at `origin`. Returns dict(entities=<display entities placed>,
-    lights=[((x, y, z), level, why)]): the light sources it has offered to the light line."""
+    lights=[((x, y, z), level, why)]): the light sources it has offered to the light line.
+
+    machines  which of MACHINES stand in the room; left out, those whose module is in the tree. What
+              joins a machine is left out while the machine is: the risers to the boilers, the
+              engine's steam pipe, the cables from the dynamo to the switchboard."""
     ox, oy, oz = origin
     lights, n = [], 0
     own = _models()
+    there = set(standing() if machines is None else machines)
 
     def put(x, y, z, state):
         c.set(ox + x, oy + y, oz + z, state)
@@ -497,7 +512,7 @@ def build_powerhouse(c, origin=(0, 0, 0), roles=B):
         put(x, FEET, z, roles.IRON_BARS)
 
     # ---- the steam main, its hangers
-    for (x, y, z), riveted in main_cells().items():
+    for (x, y, z), riveted in main_cells(risers="boiler" in there).items():
         put(x, y, z, roles.IRON_RIVETED.block if riveted else roles.IRON_PLATE)
     for x, y, z in hangers():
         put(x, y, z, st(roles.IRON_PIPE, axis="y"))
@@ -508,7 +523,9 @@ def build_powerhouse(c, origin=(0, 0, 0), roles=B):
     top = (STEAM_IN[0], float(MAIN_Y), STEAM_IN[2])
     valve, gauge = (STEAM_IN[0], VALVE_Y, STEAM_IN[2]), (STEAM_IN[0], GAUGE_Y, STEAM_IN[2] - DROP_R * PX)
     pipes = _pipes()
-    if pipes is not None:
+    if "engine" not in there:
+        pass
+    elif pipes is not None:
         n += pipes.run(c, top, STEAM_IN, "main_l", origin=origin)
         n += pipes.place(c, "flange_l", (top[0], top[1] - 2 * PX, top[2]), along="down", out="north", origin=origin)
         n += pipes.place(c, "flange_l", (STEAM_IN[0], STEAM_IN[1] + PX, STEAM_IN[2]), along="down", out="north", origin=origin)
@@ -529,7 +546,7 @@ def build_powerhouse(c, origin=(0, 0, 0), roles=B):
     for z in RACK_Z:
         n += K.put(c, own[PREFIX + "rack"], (WEST, RACK_Y[0], z), mount="wall", facing="east", origin=origin)
     low, high = sorted(POWER_OUT), sorted(LEAD_IN, key=lambda p: -p[2])
-    for terminal, y, lead in zip(low, RACK_Y, high):
+    for terminal, y, lead in zip(low, RACK_Y, high) if {"engine", "board"} <= there else ():
         way = [terminal] + [(seat_x, y, z) for z in RACK_Z] + [lead]
         for a, b in zip(way, way[1:]):
             n += span(cable, a, b)
