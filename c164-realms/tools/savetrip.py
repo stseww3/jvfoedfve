@@ -21,7 +21,10 @@ The trip
      its pack; a save without one is shot with the game's own textures. Whether a Realm hands
      the pack to those who join is not shown by this trip: here the client has it either way;
   5. starts the server on the save and asks it, before anybody joins, for its hour, whether the
-     clock runs, the difficulty and the data packs; starts the game, which joins as a new player;
+     clock runs, the difficulty and the data packs; starts the game, which joins as a new player.
+     The note says which graphics backend the game came up with: Vulkan as a node has it, or
+     OpenGL when the job is started with MC_GL=egl (env MC_GL=egl python tools/savetrip.py ...
+     --name <name>-gl) -- a pack with shaders is to be seen under both;
   6. takes `as_joined`: the picture of where the save puts a newcomer, in the game mode it gives,
      with nothing asked of the server before it (no move, no game mode, no time) -- and asks the
      server where the player stands, which way it looks and in which mode;
@@ -251,6 +254,22 @@ def server_said(offset, out, secret=""):
     return warnings, errors
 
 
+def backend():
+    """What the game says it draws with -- "OpenGL, 4.5 (Core Profile) Mesa ..." or "Vulkan, ... llvmpipe ..." --
+    from its output; None when it has not said. The game tries OpenGL first and goes on with Vulkan
+    when that fails; on a node it is OpenGL only with MC_GL=egl (nodemc.py)."""
+    found = None
+    try:
+        with open(os.path.join(ROOT, "client26", "client.log"), encoding="utf-8", errors="replace") as fh:
+            for line in fh:
+                m = re.search(r"Using graphics backend (\w+), using drivers: (.+)", line)
+                if m:
+                    found = f"{m.group(1)}, {' '.join(m.group(2).split())[:90]}"
+    except OSError:
+        pass
+    return found
+
+
 def pack_loaded(said_path):
     """The game's line that names the packs it loaded last, and whether the save's is among them."""
     last = None
@@ -368,6 +387,9 @@ def main():
                     failed.append("the game did not come up or did not join")
                 else:
                     cam = nodetrip_cam()
+                    drawn_by = backend()
+                    trip.say(f"the game draws with: {drawn_by or 'it has not said'}")
+                    facts.append(f"# the game's graphics backend: {drawn_by or 'not said'}")
                     joined = ask(trip, f"data get entity {cam} Pos", f"data get entity {cam} Rotation",
                                  f"data get entity {cam} playerGameType", HOUR)
                     facts.append(f"# as joined: {joined[0]}; {joined[1]}; {joined[2]} "
@@ -394,8 +416,8 @@ def main():
                     if code != 0 or len(taken) != len(shots):
                         failed.append(f"{len(taken)} of {len(shots)} pictures")
                     if taken:
-                        keep(trip, name, taken, out, kept_in, commit, tick_before, tick_after, view, facts, at, sha,
-                             whole=not args.only)
+                        keep(trip, name, taken, out, kept_in, commit, tick_before, tick_after, view, facts,
+                             at + (f", backend {drawn_by.split(',')[0]}" if drawn_by else ""), sha, whole=not args.only)
     except SystemExit as stop:
         if stop.code not in (0, None):
             trip.say(f"stopped: {stop}")
