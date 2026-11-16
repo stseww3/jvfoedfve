@@ -1,0 +1,3 @@
+branch=cursor/c164-rec-astrodrive-f3-aae1
+head=fbc899b77e317b4605c4b3eeca666bd5491b0bec
+args=--no-push python tools/check.py --scene obs_int_astroroom --shots build/scenes/obs_int_astroroom/shots.json 
