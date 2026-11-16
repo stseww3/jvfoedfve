@@ -722,9 +722,19 @@ def make(args):
         if not placed or int(placed.group(1)) or "!!" in text:
             fail("build/place.py did not place everything (see its lines above)")
         x, y, z = spec["feet"]
-        under = server.cmd(f"execute unless block {math.floor(x)} {math.floor(y - 0.01)} {math.floor(z)} minecraft:air")
-        if "passed" not in under:
-            fail(f"there is no block under the spawn's feet {spec['feet']}")
+        # what carries who arrives: the first block under the spawn's feet
+        top = math.floor(y - 0.01)
+        ground = next((by for by in range(top, spec["catch"] - 1, -1) if "passed" in server.cmd(
+            f"execute unless block {math.floor(x)} {by} {math.floor(z)} minecraft:air", quiet=True)), None)
+        if ground is None:
+            fail(f"there is nothing under the spawn's feet {spec['feet']} down to y {spec['catch']}, where players "
+                 "are put back on the spot: who arrives would fall for ever")
+        spec["ground"] = ground + 1
+        facts["notes"] = []
+        if ground < top:
+            facts["notes"].append(f"the spawn hangs {top - ground} blocks over what carries it: feet {spec['feet']}, the first "
+                                  f"block under them at y {ground}. Who arrives drops that far (no fall damage).")
+            say("NOTE: " + facts["notes"][-1])
         facts["settings"] = []
         for command in setting_commands(spec):
             reply = server.cmd(command)
@@ -870,10 +880,16 @@ def visit(server, spec, results, tag, came):
     check(results, tag + "join", near(bot.position, feet) and turned(bot),
           f"joined in {joined:.1f} s at {first[0]} facing {first[1]}, after the functions at {bot.position} "
           f"facing {bot.rotation}; wanted {feet} facing {aim}")
-    # where the game itself sets him, before any function: the world spawn and its facing
-    check(results, tag + "spawn", near(first[0], feet) and abs(first[1][1] - aim[1]) < 0.05
-          and abs((first[1][0] - aim[0] + 180.0) % 360.0 - 180.0) < 0.05,
-          f"the game set him at {first[0]} facing {first[1]}")
+    # where the game itself sets him, before any function: on the world spawn, or on what carries it, with
+    # its facing. Held to that where the server's game mode is adventure, as the save asks for; a
+    # server in survival looks for the top of the column, and the functions are what brings him back.
+    low = spec.get("ground", feet[1])
+    put = first[0] is not None and abs(first[0][0] - feet[0]) < 0.02 and abs(first[0][2] - feet[2]) < 0.02 \
+        and low - 1.02 <= first[0][1] <= feet[1] + 0.02 and abs(first[1][1] - aim[1]) < 0.05 \
+        and abs((first[1][0] - aim[0] + 180.0) % 360.0 - 180.0) < 0.05
+    check(results, tag + "spawn", put or not came["adventure"],
+          f"the game set him at {first[0]} facing {first[1]}" + ("" if put else ", not on the spawn")
+          + ("" if came["adventure"] else " (this server's game mode is survival: told, not held against the save)"))
     mode = server.cmd(f"data get entity {BOT} playerGameType", quiet=True)
     reach = server.cmd(f"attribute {BOT} minecraft:block_interaction_range base get", quiet=True)
     tags = server.cmd(f"tag {BOT} list", quiet=True)
@@ -933,7 +949,8 @@ def visit(server, spec, results, tag, came):
 
 
 def loop_runs(server, pack_dir, spec, results, tag):
-    """Does a part move: one display entity's turn read twice. Needs the player's chunks loaded."""
+    """Does anything move: the display entities the loop names are read twice, three seconds
+    apart. Needs a player near, so that their chunks are loaded and the loop is awake."""
     names = set()
     for path in glob.glob(os.path.join(pack_dir, "data", ART, "function", f"{spec['scene']}-motion", "**", "*.mcfunction"),
                           recursive=True):
@@ -943,18 +960,24 @@ def loop_runs(server, pack_dir, spec, results, tag):
         check(results, tag + "loop", True, "the scene registers nothing that moves")
         return
     run = server.cmd("scoreboard players get #run c164m", quiet=True)
-    for name in sorted(names)[:12]:
-        ask = f"data get entity @e[type=minecraft:item_display,tag={name},limit=1] transformation.left_rotation"
-        a = server.cmd(ask, quiet=True)
-        if "entity data" not in a:
-            continue
-        seen = {a}
-        for _ in range(6):
-            time.sleep(0.5)
-            seen.add(server.cmd(ask, quiet=True))
-        check(results, tag + "loop", len(seen) > 1, f"{name}: {len(seen)} different turns in 3 s; {run}")
-        return
-    check(results, tag + "loop", False, f"none of the moving parts is loaded near the spawn ({len(names)} names); {run}")
+
+    def read(name):
+        reply = server.cmd(f"data get entity @e[tag={name},limit=1]", quiet=True)
+        if "entity data" not in reply:
+            return None
+        # what the loop changes: how the part is turned and placed, and what it shows
+        return tuple(re.findall(r"(?:left_rotation|right_rotation|translation|scale): \[[^\]]*\]|item_model\W+[a-z0-9_:./]+"
+                                r"|Rotation: \[[^\]]*\]|Pos: \[[^\]]*\]", reply))
+
+    some = sorted(names)[:40]
+    before = {name: read(name) for name in some}
+    time.sleep(3.0)
+    after = {name: read(name) for name in some}
+    there = [n for n in some if before[n] is not None]
+    moved = [n for n in there if before[n] != after[n]]
+    check(results, tag + "loop", bool(moved),
+          f"{len(names)} moving parts named in the loop, {len(there)} of the first {len(some)} loaded near the spawn, "
+          f"{len(moved)} of them changed within 3 s" + (f" (e.g. {', '.join(moved[:4])})" if moved else "") + f"; {run}")
 
 
 def verify(args):
@@ -977,11 +1000,10 @@ def verify(args):
         shutil.rmtree(work)
     # A server takes the game mode of who is new and the difficulty from its own settings at every
     # start, not from the save (on Realms: from the slot's settings). The first start is given the
-    # wrong ones on purpose: what the save's functions are to hold must hold all the same. A trial
-    # save is started once more with the right ones, to hear it tell the difference.
+    # wrong ones on purpose: what the save's functions are to hold must hold all the same. Then once
+    # more with the right ones, as a slot is set that was filled from this save.
     hostile, as_set = dict(gamemode="survival", difficulty="easy"), dict(gamemode="adventure", difficulty="peaceful")
-    runs = [("", "srv", hostile)] + ([("as set: ", "set", as_set)] if spec["trial"] else []) \
-        + ([("stripped: ", "stripped", hostile)] if args.strip else [])
+    runs = [("", "srv", hostile), ("as set: ", "set", as_set)] + ([("stripped: ", "stripped", hostile)] if args.strip else [])
     try:
         for tag, kind, own in runs:
             strip, first = kind == "stripped", kind == "srv"
