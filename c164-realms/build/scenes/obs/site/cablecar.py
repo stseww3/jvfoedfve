@@ -44,8 +44,9 @@ tall one; the glass roof is short, over the car alone, and west of it the platfo
   trestle    East of the platform the track runs level for a few cells and then falls one in two,
              a thin deck on lattice towers that stand on the ridge the mountain keeps for it
              (site/_kit.py: cable_ridge), a third of a cell north for every cell east. The ridge
-             falls faster than the track, so the towers grow; the last ones stand in the cloud and
-             the track ends below its top.
+             falls faster than the track, so the towers grow. The track is the head of the
+             railway's line (site/_rail, round 2: the train comes up it): the trestle carries the
+             incline and ends at its foot, x 111, where the stone viaduct takes the line on.
 
 What the other lines hang on (cells unless called a point): CAR, WINCH_ROOM, SLOT, SPAWN,
 track_axis(x), rail_top(x) for the car and the winch; SIGN, BENCHES, LUGGAGE for the props;
@@ -65,6 +66,7 @@ from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
 from . import _kit as K
+from . import _rail as RAIL             # read only: the railway's line, which this track is the head of
 
 ORDER = 55      # after the terrain (10), the lower platform's floor (20) and the stair (25)
 
@@ -79,25 +81,23 @@ HEAD = int(S.V1["pos"][0])              # 88: the last cell of the track, the sp
 CAR = dict(box=(HEAD + 1, AXIS - 1, X1, AXIS + 1), floor=FEET)      # x 89..91, z -34..-32
 SPAWN = (HEAD + 0.5, float(FEET), AXIS + 0.5)                       # a point: (88.5, -4, -32.5)
 SLOT = dict(cells=[(x, AXIS) for x in range(HEAD, X1 + 1)], y=TOP)  # the grating over the cable
-LEVEL = 4                               # cells of level track east of the platform
-GRADE = 0.5                             # then half a block down with every cell
+LEVEL = int(RAIL.BROW) - X1             # 4: cells of level track east of the platform
+GRADE = RAIL.STEEP                      # 0.5: then half a block down with every cell
 TOWER_FIRST, TOWER_STEP = X1 + 7, 6     # x 98, 104 ..: a tower under the last two cells of every second
 #                                         straight run, this column and the next
-SINK = K.ROCK_FLOOR + 2                 # -27: the track ends when its rails are this low, under the cloud
 CLOUD = K.ROCK_FLOOR + 5                # -24: the cloud is laid round the legs up to here (sky/cloudsea)
 
 
 def track_axis(x):
     """The row of the track's axis in column x: AXIS in the station, then the ridge's own line
-    (K.cable_ridge), carried on past the ridge's end."""
-    if x <= X1:
-        return AXIS
-    return int(round(AXIS - (x - K.CABLE_RIDGE_X[0]) / 3.0))
+    (K.cable_ridge). The railway's line (site/_rail) keeps the rule: this is its row()."""
+    return RAIL.row(x)
 
 
 def rail_top(x):
-    """y of the upper face of the rails in column x (a point coordinate, in half blocks)."""
-    return FEET - GRADE * max(0, x - X1 - LEVEL)
+    """y of the upper face of the rails in column x (a point coordinate, in half blocks): the
+    line's tread()."""
+    return RAIL.tread(x=x)
 
 
 def _slab(h):
@@ -107,9 +107,11 @@ def _slab(h):
     return int(h // 1), "bottom"
 
 
-END = next(x for x in range(X1 + 1, X1 + 200) if rail_top(x) <= SINK)      # 141: the last column
+# The iron trestle carries the incline and ends at its foot: from there on the line is the stone
+# viaduct's (site/viaduct), whose first pier stands against the last iron column.
+END = int(RAIL.FOOT) - 1                # 111: the last column
 # A tower stands where its bearers, the course under its first column's rails, are above the cloud:
-# x 98 .. 128. Past the last one the deck goes down into the cloud alone.
+# x 98, 104, 110, the last one under the trestle's last two columns.
 TOWERS = [x for x in range(TOWER_FIRST, END, TOWER_STEP) if _slab(rail_top(x))[0] - 1 > CLOUD]
 
 # --- the houses along the north edge ------------------------------------------------------------------
