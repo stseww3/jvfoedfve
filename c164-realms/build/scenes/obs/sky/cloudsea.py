@@ -609,12 +609,14 @@ def _shade(h):
 # The sky's shaders (sky/_shaders.py) paint the sea on below the horizon, and the blocks go into
 # that painting between sky/mood's FOG_START and FOG_END. A flat colour there would be a floor; the
 # painted sea carries the open face's own shapes instead: far_tone() is the tone of the column
-# (x, z) as build() would give it to the face with no head on it and no land near, from the same
-# _face(), so that in a calm lane the painting is the blocks' own picture and the blocks end in it
-# without a seam. Further out, where a pixel covers several blocks, the tones run together into
-# their mean.
+# (x, z) of the face with no head on it and no land near, read from the same _face() the blocks are
+# laid by. In a calm lane the painting is the blocks' own picture but for the borders of its
+# patches (the same tone on seven columns in eight, and the three tones in the blocks' shares:
+# preview.py --agree), so the blocks end in it without a seam. Further out, where a pixel covers
+# several blocks, the tones run together into their mean. The GLSL below does the same sums
+# (scenes/obs_sky_cloudsea/glslcheck.py holds the two against each other).
 FAR_SPAN = 2.0                  # the lie of the face is read from the two columns this far west and east of one
-FAR_LIE = 1.0                   # ... and counts for this much of the slope build() reads from the blurred face
+FAR_LIE = 0.7                   # ... and counts for this much of the slope build() reads from the blurred face
 FAR_PIXEL = 600.0               # pixels to a radian: how much sea a pixel covers at a distance
 FAR_FINE = (3.0, 7.0)           # the tones are whole while a pixel covers this many blocks, run together from the second on
 FAR_MEAN = (0.0, 0.0, 0.14, 0.72, 0.14)     # the share of each tone on the open face: what they run together into
