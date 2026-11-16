@@ -1,0 +1,16 @@
+# pictures of a save opened as it comes (tools/savetrip.py): shot, the save's hour (daytime) when it was taken, commit that holds the zip, first 16 of the picture file's sha256, when it was taken, the distances
+# the save: dist/A7/c164-A7.zip of 171133f5 (cursor/c164-dist-f4b8), 3017125 bytes, sha256 fad9215543b3e58573bfcc3b3c1389744ebb4b8c16b4dd839a6b252ae5d9afd0
+# exported from the assembly commit 1a0f1af9, as the one who asked for the trip says
+# level.dat: world c164-A7, game 26.3, game mode adventure, difficulty peaceful, spawn 88 196 -33, yaw 67.71, pitch -22.69, commands off, data packs vanilla file/c164art
+# the save's stored light: 339 light sources in 35 chunks, each lit in its own cell
+# the server: the node's test server on this save, game mode adventure (not forced), difficulty peaceful, as a Realm's slot is filled from the world; the camera is no operator
+# resource pack: resourcepacks/resources.zip of the save (1793070 bytes, sha256 c7187032b57ed7f5, 2393 files, pack.mcmeta { "pack": { "description": "c164 c164-A7 (783c81df)", "min_format": 97, "max_format": 97 } }) is the client's pack (whether a Realm hands it to those who join is not shown here)
+# the server, before anybody joined: Timeline minecraft:day is at 20370 tick(s); Game rule advance_time is currently set to false; The difficulty is Peaceful; There are 2 data pack(s) enabled: [vanilla (built-in)], [file/c164art (world)]
+# the game's graphics backend: Vulkan, 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+# as joined: C164Cam has the following entity data: [88.5d, 196.0d, -32.5d]; C164Cam has the following entity data: [67.71f, -22.69f]; C164Cam has the following entity data: 2 (0 survival, 1 creative, 2 adventure, 3 spectator)
+# the save's clock: the day stood at 20370 when the player had joined, at 20370 after the last picture (it stands)
+# distances: client render distance 12, server view distance 10, cloud range 128; pictures: 4 saved by the game itself, 0 taken off the display
+l1_hall_clock 20370 171133f5 eb33260518b12007 2026-11-16T03:54 view12,server10,clouds128
+l2_power_room 20370 171133f5 dafb6fa870b4dc04 2026-11-16T03:54 view12,server10,clouds128
+l3_power_fires 20370 171133f5 8f0550d5fffcef7b 2026-11-16T03:54 view12,server10,clouds128
+l4_time_console 20370 171133f5 7a55bd1cc210acce 2026-11-16T03:54 view12,server10,clouds128

@@ -1,0 +1,160 @@
+# what the game said about shaders, pipelines, compiling and resource packs: 151 records of its output, 117 of them speak of a failure or have lines under them
+[03:52:44] [Render thread/INFO]: Backend library: LWJGL version 3.4.3+4
+[03:52:44] [Render thread/ERROR]: Failed to create backend OpenGL
+com.mojang.renderpearl.api.device.BackendCreationException: Failed to create window for OpenGL context: Couldn't find matching GLX visual
+	at com.mojang.renderpearl.backend.opengl.GlDevice.<init>(GlDevice.java:83)
+	at com.mojang.renderpearl.backend.opengl.GlBackend.createDevice(GlBackend.java:68)
+	at net.minecraft.client.Minecraft.<init>(Minecraft.java:533)
+	at net.minecraft.client.main.Main.main(Main.java:278)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source)
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source)
+	at CamHelper.main(CamHelper.java:46)
+[03:52:44] [Render thread/INFO]: Using graphics backend Vulkan, using drivers: 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+[03:52:45] [Render thread/INFO]: Reloading ResourceManager: vanilla, vanilla, file/c164art
+[03:52:45] [Worker-Main-3/DEBUG]: Replaced sound event location minecraft:block.bamboo_wood.break
+[03:52:45] [Worker-Main-3/DEBUG]: Replaced sound event location minecraft:block.bamboo_wood.fall
+[03:52:45] [Worker-Main-3/DEBUG]: Replaced sound event location minecraft:block.bamboo_wood.hit
+[03:52:45] [Worker-Main-3/DEBUG]: Replaced sound event location minecraft:block.bamboo_wood.place
+[03:52:45] [Worker-Main-3/DEBUG]: Replaced sound event location minecraft:block.bamboo_wood.step
+[03:52:45] [Worker-Main-3/DEBUG]: Replaced sound event location minecraft:block.bamboo_wood_button.click_off
+[03:52:45] [Worker-Main-3/DEBUG]: Replaced sound event location minecraft:block.bamboo_wood_button.click_on
+[03:52:45] [Worker-Main-3/DEBUG]: Replaced sound event location minecraft:block.bamboo_wood_door.close
+[03:52:45] [Worker-Main-3/DEBUG]: Replaced sound event location minecraft:block.bamboo_wood_door.open
+[03:52:45] [Worker-Main-3/DEBUG]: Replaced sound event location minecraft:block.bamboo_wood_fence_gate.close
+[03:52:45] [Worker-Main-3/DEBUG]: Replaced sound event location minecraft:block.bamboo_wood_fence_gate.open
+[03:52:45] [Worker-Main-3/DEBUG]: Replaced sound event location minecraft:block.bamboo_wood_hanging_sign.break
+[03:52:45] [Worker-Main-3/DEBUG]: Replaced sound event location minecraft:block.bamboo_wood_hanging_sign.fall
+[03:52:45] [Worker-Main-3/DEBUG]: Replaced sound event location minecraft:block.bamboo_wood_hanging_sign.hit
+[03:52:45] [Worker-Main-3/DEBUG]: Replaced sound event location minecraft:block.bamboo_wood_hanging_sign.place
+[03:52:45] [Worker-Main-3/DEBUG]: Replaced sound event location minecraft:block.bamboo_wood_hanging_sign.step
+[03:52:45] [Worker-Main-3/DEBUG]: Replaced sound event location minecraft:block.bamboo_wood_pressure_plate.click_off
+[03:52:45] [Worker-Main-3/DEBUG]: Replaced sound event location minecraft:block.bamboo_wood_pressure_plate.click_on
+[03:52:45] [Worker-Main-3/DEBUG]: Replaced sound event location minecraft:block.bamboo_wood_trapdoor.close
+[03:52:45] [Worker-Main-3/DEBUG]: Replaced sound event location minecraft:block.bamboo_wood_trapdoor.open
+[03:52:48] [Render thread/DEBUG]: Not having sound event for: c164:engine
+[03:52:48] [Render thread/DEBUG]: Not having sound event for: c164:fire
+[03:52:48] [Render thread/DEBUG]: Not having sound event for: c164:tock
+[03:52:48] [Render thread/DEBUG]: Not having sound event for: minecraft:entity.chicken_picky.step
+[03:52:48] [Render thread/DEBUG]: Not having sound event for: c164:telegraph
+[03:52:48] [Render thread/DEBUG]: Not having sound event for: c164:hum
+[03:52:48] [Render thread/DEBUG]: Not having sound event for: c164:hiss
+[03:52:48] [Render thread/DEBUG]: Not having sound event for: c164:tick
+[03:52:48] [Render thread/DEBUG]: Not having sound event for: c164:telegraph_up
+[03:52:48] [Render thread/DEBUG]: Not having sound event for: c164:wind
+[03:52:48] [Render thread/INFO]: Sound engine started
+[03:52:52] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@33d8a130 because it's not playing anymore
+[03:52:52] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@794a0c83 because it's not playing anymore
+[03:52:53] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@3d5ffb4d because it's not playing anymore
+[03:52:54] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@5beb349e because it's not playing anymore
+[03:52:55] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@12cec015 because it's not playing anymore
+[03:52:56] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@55dd583 because it's not playing anymore
+[03:52:57] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@117858b9 because it's not playing anymore
+[03:52:58] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@20cbb098 because it's not playing anymore
+[03:52:59] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@1a731c13 because it's not playing anymore
+[03:53:00] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@4046e052 because it's not playing anymore
+[03:53:01] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@62aace23 because it's not playing anymore
+[03:53:02] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@eb62508 because it's not playing anymore
+[03:53:03] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@4f164d6 because it's not playing anymore
+[03:53:03] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@6af42e4b because it's not playing anymore
+[03:53:04] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@26083df2 because it's not playing anymore
+[03:53:05] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@16974406 because it's not playing anymore
+[03:53:06] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@5931fefc because it's not playing anymore
+[03:53:07] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@7d8435b4 because it's not playing anymore
+[03:53:08] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@6aaecf81 because it's not playing anymore
+[03:53:09] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@3ae71b25 because it's not playing anymore
+[03:53:11] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@3fd8d297 because it's not playing anymore
+[03:53:13] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@5d3fc9be because it's not playing anymore
+[03:53:14] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@4b344e16 because it's not playing anymore
+[03:53:15] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@5917fa3b because it's not playing anymore
+[03:53:15] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@3ec025c8 because it's not playing anymore
+[03:53:18] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@76106179 because it's not playing anymore
+[03:53:20] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@6e32eb01 because it's not playing anymore
+[03:53:20] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@20318fad because it's not playing anymore
+[03:53:21] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@538726c7 because it's not playing anymore
+[03:53:23] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@64ee4d7f because it's not playing anymore
+[03:53:23] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@e1ea5e4 because it's not playing anymore
+[03:53:24] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@e33fd66 because it's not playing anymore
+[03:53:25] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@3d0fbed9 because it's not playing anymore
+[03:53:27] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@6505e477 because it's not playing anymore
+[03:53:29] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@13c7e8d1 because it's not playing anymore
+[03:53:30] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@261680d0 because it's not playing anymore
+[03:53:30] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@1357d0ca because it's not playing anymore
+[03:53:31] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@1ba581b3 because it's not playing anymore
+[03:53:32] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@5b9b43d0 because it's not playing anymore
+[03:53:34] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@325d102f because it's not playing anymore
+[03:53:34] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@365e559e because it's not playing anymore
+[03:53:37] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@5f485489 because it's not playing anymore
+[03:53:37] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@6a9a50f9 because it's not playing anymore
+[03:53:39] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@6f2a8411 because it's not playing anymore
+[03:53:39] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@194879d3 because it's not playing anymore
+[03:53:39] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@7c684b03 because it's not playing anymore
+[03:53:42] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@30410e1e because it's not playing anymore
+[03:53:44] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@3a5c60ab because it's not playing anymore
+[03:53:44] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@30b5e212 because it's not playing anymore
+[03:53:44] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@22d4926a because it's not playing anymore
+[03:53:45] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@75b22d55 because it's not playing anymore
+[03:53:45] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@46b71cd7 because it's not playing anymore
+[03:53:45] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@2f7be076 because it's not playing anymore
+[03:53:45] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@66d95cb6 because it's not playing anymore
+[03:53:45] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@59947937 because it's not playing anymore
+[03:53:45] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@678d2063 because it's not playing anymore
+[03:53:45] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@615bc80a because it's not playing anymore
+[03:53:45] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@50340b3b because it's not playing anymore
+[03:53:46] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@7ac117a3 because it's not playing anymore
+[03:53:46] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@6ac03a7c because it's not playing anymore
+[03:53:46] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@71a6b104 because it's not playing anymore
+[03:53:46] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@77b68cc6 because it's not playing anymore
+[03:53:46] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@763cd275 because it's not playing anymore
+[03:53:46] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@6788a406 because it's not playing anymore
+[03:53:47] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@12015a0c because it's not playing anymore
+[03:53:47] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@7c2298f3 because it's not playing anymore
+[03:53:47] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@f0fe9ae because it's not playing anymore
+[03:53:47] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@3881a851 because it's not playing anymore
+[03:53:47] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@6f51b27a because it's not playing anymore
+[03:53:48] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@68a439b7 because it's not playing anymore
+[03:53:48] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@eb6cd6a because it's not playing anymore
+[03:53:49] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@c04d4f3 because it's not playing anymore
+[03:53:49] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@6b2ffefd because it's not playing anymore
+[03:53:50] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@25c52613 because it's not playing anymore
+[03:53:50] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@3766ad6a because it's not playing anymore
+[03:53:51] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@5278855e because it's not playing anymore
+[03:53:51] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@2012a9f6 because it's not playing anymore
+[03:53:52] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@1bfa15bb because it's not playing anymore
+[03:53:52] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@662ef1bc because it's not playing anymore
+[03:53:53] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@2c408545 because it's not playing anymore
+[03:53:53] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@5b565a40 because it's not playing anymore
+[03:53:53] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@9e5e431 because it's not playing anymore
+[03:53:54] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@70b8cf39 because it's not playing anymore
+[03:53:54] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@5f48f875 because it's not playing anymore
+[03:53:55] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@4e8c4065 because it's not playing anymore
+[03:53:55] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@490f8fb6 because it's not playing anymore
+[03:53:56] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@4f9567f6 because it's not playing anymore
+[03:53:56] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@47a408d8 because it's not playing anymore
+[03:53:57] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@746f59f0 because it's not playing anymore
+[03:53:57] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@7bb96644 because it's not playing anymore
+[03:53:58] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@6c190507 because it's not playing anymore
+[03:53:58] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@221ec2c6 because it's not playing anymore
+[03:53:59] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@5f665109 because it's not playing anymore
+[03:53:59] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@3149e87e because it's not playing anymore
+[03:54:00] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@3d4ad839 because it's not playing anymore
+[03:54:00] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@e116fcc because it's not playing anymore
+[03:54:00] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@7c88325f because it's not playing anymore
+[03:54:00] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@22c1e28d because it's not playing anymore
+[03:54:00] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@4d807f3c because it's not playing anymore
+[03:54:00] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@1b1d6fb2 because it's not playing anymore
+[03:54:00] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@184de3c9 because it's not playing anymore
+[03:54:01] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@7714d7ea because it's not playing anymore
+[03:54:01] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@722881bc because it's not playing anymore
+[03:54:01] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@6319fca because it's not playing anymore
+[03:54:01] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@226e7aca because it's not playing anymore
+[03:54:01] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@22544688 because it's not playing anymore
+[03:54:01] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@9b20f9 because it's not playing anymore
+[03:54:02] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@2c16eacf because it's not playing anymore
+[03:54:02] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@312435e7 because it's not playing anymore
+[03:54:02] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@32dfbd00 because it's not playing anymore
+[03:54:02] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@40202d50 because it's not playing anymore
+[03:54:02] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@585f349 because it's not playing anymore
+[03:54:03] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@4935fae7 because it's not playing anymore
+[03:54:03] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@42599a3d because it's not playing anymore
+[03:54:04] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@5b86a564 because it's not playing anymore
+[03:54:04] [Render thread/DEBUG]: Removed channel net.minecraft.client.sounds.ChannelAccess$ChannelHandle@5c7b8ff5 because it's not playing anymore
