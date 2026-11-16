@@ -50,8 +50,11 @@ LEAD_OUT = 16.0             # texels from the case's side to the time line's foo
 
 # One tone each, without grain: a facet of the tube is a texel wide, and grain broke it into dashes.
 # Model.tube takes a tone up on the facets that look up and one down on those that look out and down.
+# a: the brass is old lacquer, the tone of the bead on the board's end (K.BRASS_D). Two tones up, the
+# facets that look into the hall read 0.33 from inside the doorway and the pier's face 0.23; one tone
+# up they read 0.26; at this tone 0.20 (hall: nothing of the wiring lighter than the pier's face).
 PAINT = {
-    "a": dict(tube=K.flat("brass", 3), fit=K.flat("brass", 2), box=None),
+    "a": dict(tube=K.flat("brass", 1), fit=K.flat("brass", 0), box=None),
     "b": dict(tube=K.flat("iron", 4), fit=K.flat("iron", 3), box=P.mat("iron", base=4)),
 }
 CABLE = K.flat("old_copper", 1)     # the lamps' cable (props/lamps.CABLE)
@@ -148,7 +151,7 @@ def _lead_clock(version):
                    ((-0.5, 1.0, low - 1.0), (0.5, 8.0, low)),                   # down it
                    ((-0.5, 0.0, 0.0), (0.5, 1.0, low))):                        # on the grating
         m.box(lo, hi, CABLE)
-    m.tube("y", (0.0, -0.5), 0.0, 0.5, R + 1.0, paint["fit"], sides=8)
+    m.tube("y", (0.0, -0.5), 0.0, 0.5, R + 1.0, paint["tube"], sides=8)
     m.tube("y", (0.0, -0.5), 0.5, 1.5, R + 0.25, paint["fit"], sides=8)
     return m
 
@@ -161,8 +164,8 @@ def _lead_board(version):
     m = M.Model(f"{PREFIX}lead_{version}_board")
     m.box((-1.5, 0.0, 0.5), (1.5, 0.75, 2.5), paint["fit"])
     m.box((-0.5, 0.75, 0.5), (0.5, 10.0, 1.5), CABLE)
-    m.box((-1.5, 10.0, 0.5), (1.5, 14.0, 2.5), paint["box"] or paint["fit"])
-    K.rivet(m, (0.0, 12.0, 2.5), mat=paint["tube"], proud=0.25)
+    m.box((-1.5, 10.0, 0.5), (1.5, 14.0, 2.5), paint["box"] or paint["tube"])
+    K.rivet(m, (0.0, 12.0, 2.5), mat=paint["fit"] if paint["box"] is None else K.RIVET, proud=0.25)
     return m
 
 
