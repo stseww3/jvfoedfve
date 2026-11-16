@@ -333,8 +333,9 @@ DESK_LAMP = (9, 2)          # the reading lamp on the message desk: 8 at the sit
 #                             5 at the head four cells off: the floor about the desk, out to the long axis
 REGULATOR_LAMP = (9, 2)     # the bracket lamps over the two standard clocks
 CLOCK_LAMP = (10, 2)        # the bracket lamp over the world clocks: 9 on the middle dial, 7 on the end ones
-PLAN_LAMP = (11, 2)         # the bracket lamp over the blueprint and the card cabinets, by the door: the lamp one comes in
-#                             under. 6 to 7 at the head in the doorway, 7 to 8 on the cabinets; V10 does not see it
+PLAN_LAMP = (12, 2)         # the bracket lamp over the blueprint and the card cabinets, by the door: the lamp one comes in
+#                             under. 7 to 8 at the head in the doorway, 8 to 9 on the cabinets; V10 does not see it. At 11
+#                             one cell of the long axis, (8, -11), four cells from every lamp, was left at 4
 OVER = 20 * PX              # a bracket's arm above the top of what it hangs over: the shade ends half a block over it, a lamp
 #                             over a clock and not a hat on it (at 12 px the pale inside of the shade sat on the dial's rim)
 CONSOLE_HANG = FEET + 3.5   # 10.5: where the drop lights of the console end and their lamps hang; the shades end at 9.56, a block
