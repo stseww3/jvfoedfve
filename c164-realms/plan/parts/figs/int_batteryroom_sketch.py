@@ -625,7 +625,7 @@ def board():
 # ---- the plan -------------------------------------------------------------------------------------------
 def plan(scale, fonts):
     xa, xb, za, zb = S.WALL_W, S.WALL_E + 1, Z0 - 2, Z1 + 4            # what the drawing shows: cells x 0..15, z -27..-4
-    pad_l, pad_t = 96, 14
+    pad_l, pad_t = 160, 14
     w, h = (xb - xa) * scale + pad_l + 176, (zb - za) * scale + pad_t + 30
     img = Image.new("RGB", (w, h), PAPER)
     d = ImageDraw.Draw(img, "RGBA")
@@ -775,7 +775,7 @@ def sheet(out):
                  small=ImageFont.truetype(FONT, 17), tiny=ImageFont.truetype(FONT, 14))
     small = fonts["small"]
     model, table = build(), lightmap()
-    w, h = 2330, 1600
+    w, h = 2366, 1600
     page = Image.new("RGB", (w, h), PAPER)
     d = ImageDraw.Draw(page)
     d.text((28, 14), "蓄电池室 · 草图一页", font=fonts["title"], fill=INK)
@@ -805,7 +805,7 @@ def sheet(out):
         y = wrap(d, 28, y, text, small, 770, 24) + 5
 
     # two: the hero
-    x = 836
+    x = 896
     head(x, 68, "二　主角：成排的玻璃缸，顶上一对铜排")
     a = hero().image(6)
     page.paste(a, (x, 104))
@@ -828,7 +828,7 @@ def sheet(out):
                 "板顶一盏壁装铁笼灯；两根细管上楼；粗缆从左边进；右边比重计台，左边胶裙和手套。", small, 700, 23) + 16
 
     # three: the views
-    x, y = 1568, 68
+    x, y = 1616, 68
     head(x, y, "三　三个机位各看到什么（盒子加光级，不是贴图）")
     y += 36
     says = {
@@ -844,7 +844,7 @@ def sheet(out):
         y = wrap(d, x, y + 444, says[name], fonts["tiny"], 736, 20, NOTE) + 12
 
     # four: what is still open
-    x, y = 836, asks
+    x, y = 896, asks
     head(x, y, "四　没定的，要问总监")
     y += 34
     for text in (
