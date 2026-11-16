@@ -290,6 +290,7 @@ class Scene:
         self.tex = Textures(assets)
         self.tints, self._tints = [(1.0, 1.0, 1.0)], {}
         self.missing = collections.Counter()
+        self.undrawn = collections.Counter()    # entities that are no item display, by kind: left out here
         self._cubes, self._classes = {}, {}
         self._stars = None
         Shaper(cells, self.cube).run()
@@ -456,7 +457,14 @@ class Scene:
 
     # ---- display entities ------------------------------------------------------------------------
     def _entity(self, x, y, z, nbt):
-        """The boxes of one item display, in scene coordinates (DisplayRenderer, ItemTransform)."""
+        """The boxes of one item display, in scene coordinates (DisplayRenderer, ItemTransform).
+        Any other entity (a text display is a sheet of letters in the game's font, a marker has no
+        look at all) has no boxes here: the game draws it, these pictures do not, and self.undrawn
+        counts it by its kind."""
+        kind = nbt.get("id", "minecraft:item_display")
+        if kind != "minecraft:item_display" or "item" not in nbt:
+            self.undrawn[kind] += 1
+            return []
         ref = nbt["item"]["components"]["minecraft:item_model"]
         model = self.assets.item_model(ref)
         if model is None:

@@ -49,7 +49,9 @@ display entity is lit by the cell its anchor is in), and those four get the same
 is one machine. The fire doors' glow is the boilers' own; the windows stay cold. Nothing lights the
 roof: the glazed sides of the saw teeth are a dark band from the court. Inside the wicket the walk
 and the firing floor are pale stone under a lamp, and the stoker's lantern stands in the line of the
-open wicket: a lit floor and a flame are what V6 sees through it.
+open wicket: a lit floor and a flame are what V6 sees through it. Where nobody works but anybody
+can walk, a lamp keeps the floor from being black: a bracket lamp on the east wall behind the
+boilers, a caged one at the blind end of the alley north of No. 1.
 
 No block of the room stands in the first cell behind the glass of a fire window (clear_cells()):
 the light line puts its source there.
@@ -201,7 +203,21 @@ DOOR_LAMP_Y = -2.5
 LANTERN_AT = (HEARTH_X + 0.5, Z0 + 3.5)             # (76.5, 25.5)
 LANTERN_BOX = 7.0                                   # px: the box it stands on, so the glass is clear of the floor
 LANTERN = (8, 3)            # its own light: the top of the third rank, a hand lamp
-DESK_LAMP = (6, 3)          # the green lamp on the desk
+DESK_LAMP = (7, 3)          # the green lamp on the desk, offered over the logbook: five is left of it on the
+#                             floor before the telephone, two cells south
+DESK_LIGHT = (X0, FEET + 1, Z0 + 1)                 # (69, -5, 23)
+# Light where nobody works but anybody can walk (the director's closing list, 3: no dark floor
+# where one can get to; the cells are sound's, dark.md). The corner behind the boilers, which the low railing only
+# asks one to keep out of, and the passage south of it along the east wall take one bracket lamp on
+# the east wall's pier south of the fire window, over the railing's end: ten in the cell before it
+# is five on the farthest floor of both. The blind end of the alley north of No. 1 takes a caged
+# lamp on the chimney's foot.
+BACK_LAMP = (10, 2)
+BACK_AT = (EAST, -2.5, SH.Z0 + SH.CORNER + 2 * SH.BAY - 0.5)        # (88.0, -2.5, 29.5): on the wall's second pier
+BACK_LIGHT = (X1 - 1, FEET + 2, Z0 + 6)             # (86, -4, 28)
+ALLEY_LAMP = (7, 3)
+ALLEY_AT = (float(FOOT[0]), -3.5, Z0 + 0.5)         # (84.0, -3.5, 22.5): on the west face of the chimney's foot
+ALLEY_LIGHT = (FOOT[0] - 1, FEET + 2, Z0)           # (83, -4, 22)
 
 # ---- materials (the palette's, and nothing else) ------------------------------------------------------------
 WOOD = P.mat("dark_wood")
@@ -499,7 +515,7 @@ def build_powerhouse(c, origin=(0, 0, 0), roles=B, machines=None):
     n += furniture.place(c, "writing_desk", (desk_x, FEET, desk_z), facing="east", origin=origin)
     n += furniture.place(c, "swivel_chair", (desk_x + 1.075, FEET, desk_z), yaw=K.FACING["west"] + 20.0, origin=origin)
     n += paper.place(c, "logbook", (desk_x + 0.1, desk_top, desk_z + 0.25), yaw=K.FACING["east"] + 8.0, origin=origin)
-    offer((X0, FEET + 1, DESK_Z[0]), DESK_LAMP, "desk lamp")
+    offer(DESK_LIGHT, DESK_LAMP, "desk lamp")
     n += lamps.place(c, "desk_green", (X0 + 0.45, desk_top, DESK_Z[0] + 0.5), facing="east", origin=origin, light=False)
     # the telephone to the observatory and the bell over it, on the pier between the desk and the board
     n += electrics.place(c, "wall_phone", (WEST, PHONE_Y, PHONE_Z), facing="east", origin=origin)
@@ -526,6 +542,11 @@ def build_powerhouse(c, origin=(0, 0, 0), roles=B, machines=None):
     # the stoker's lantern on its box, in the line of the open wicket
     offer((int(math.floor(LANTERN_AT[0])), FEET, int(math.floor(LANTERN_AT[1]))), LANTERN, "stoker's lantern")
     n += K.put(c, own[PREFIX + "lantern"], (LANTERN_AT[0], FEET, LANTERN_AT[1]), yaw=0.0, origin=origin)
+    # behind the boilers, on the east wall; at the blind end of the alley north of No. 1, on the chimney's foot
+    offer(BACK_LIGHT, BACK_LAMP, "boiler back lamp")
+    n += lamps.place(c, "bracket", BACK_AT, facing="west", origin=origin, light=False, version=LAMPS)
+    offer(ALLEY_LIGHT, ALLEY_LAMP, "alley lamp")
+    n += lamps.place(c, "cage", ALLEY_AT, facing="west", origin=origin, light=False, version=LAMPS)
     return {"entities": n, "lights": lights}
 
 
