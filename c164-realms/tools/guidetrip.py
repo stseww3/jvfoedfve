@@ -266,6 +266,12 @@ def walk_shots(found, blocks=None):
         stop(f"w{n:02d}_chart{k + 1}", tag, f"the action bar says chart {k + 1} of {len(charts)}; the tag {tag} is given",
              1.2, add=tag)
         n += 1
+        # a card that hangs on a wall is over the eyes' height: the same stand, the eyes level
+        feet, at = places[tag]["stand"], places[tag]["at"]
+        shots.append({"name": f"w{n:02d}_chart{k + 1}_level", "walk": True, "pos": [feet[0], feet[1] + EYE, feet[2]],
+                      "look_at": [at[0], at[1] + 1.75, at[2]], "settle": 0.6, "still": 0})
+        stops.append((shots[-1]["name"], "the same stand, the eyes level: a card that hangs on a wall is in this one", list(have)))
+        n += 1
         if close and k + 1 == len(charts) // 2:
             stop(f"w{n:02d}_step_some", close, f"with {k + 1} of {len(charts)}: the action bar counts them, no close", 1.5)
             n += 1
