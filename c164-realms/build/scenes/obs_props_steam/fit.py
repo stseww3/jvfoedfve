@@ -18,6 +18,7 @@ from scenes.obs.props import pipes, steam
 DOOR_Z = (-3.0, 4.0)        # the door's bays (review c332): no pipe between these
 CORNER = 0.5                # a rainwater pipe's corner: no piece of the main nearer to the return wall than this
 HEAD = 2.0                  # what stands over the paving is at least this far over it
+FITTINGS = tuple(kind + "_" + steam.SIZE for kind in ("plate", "clip", "flange", "valve", "elbow"))    # of props/pipes
 
 
 def main():
@@ -31,7 +32,8 @@ def main():
     mine = []
     for x, y, z, nbt in canvas.entities:
         name = str(nbt.get("item", {}).get("components", {}).get("minecraft:item_model", ""))
-        if steam.PREFIX in name or (pipes.PREFIX in name and abs(y - steam.front_line()[1]) < 0.5):
+        kind = name.split(pipes.PREFIX)[-1]
+        if steam.PREFIX in name or (pipes.PREFIX in name and kind in FITTINGS and abs(y - steam.front_line()[1]) < 0.5):
             mine.append((name.split(":")[-1], x, y, z))
     if not mine:
         found.append("the heating main is not in the scene: steam.east_front() placed nothing")

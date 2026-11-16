@@ -1,6 +1,6 @@
 """The models of the props/steam-mains test scene, and how gallery.py lays them out one group to a bay.
 The fittings of the main are the pipework family's: its own gallery shows them (obs_props_pipes)."""
-from scenes.obs.props import pipes, steam
+from scenes.obs.props import lamps, pipes, steam
 
 SCALE = {**pipes.SCALE, **{name: 1.0 for name in steam.models()}}
 P = steam.PREFIX
@@ -11,7 +11,10 @@ SOUTH = {}                              # and left as it is built: its +z to the
 
 
 def build_models():
-    return {**pipes.models(), **steam.models()}
+    """The package's models, the pipework family's, and the projector of the light line's wall wash,
+    which stands at the foot of two pilasters of this stretch (sky/lights)."""
+    wash = lamps.PREFIX + "uplight"
+    return {**pipes.models(), **steam.models(), wash: lamps.models()[wash]}
 
 
 def _main():
