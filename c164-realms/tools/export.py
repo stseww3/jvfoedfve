@@ -413,6 +413,32 @@ def arrival(name, scene, off=False):
     return {"most": int(most)}
 
 
+def line_chunks(name, at):
+    """The chunks the scene's railway runs through, as [[cx, cz], ...] in world chunks, [] for a
+    scene without one (no site/_rail.py with at() and LENGTH). They are kept loaded in the save:
+    the train starts at the line's far end, ten chunks from where the map begins, and what is not
+    loaded cannot be found, moved or mounted by a command. Without them the train would stand
+    still whenever nobody is near that end, and a newcomer's first tick would find no seat (in
+    26.3 nothing but a forced chunk is loaded before somebody is there). Three blocks to either
+    side of the centre line and eight past its ends are taken in."""
+    try:
+        rail = importlib.import_module(f"scenes.{name}.site._rail")
+    except ModuleNotFoundError as exc:
+        if exc.name not in (f"scenes.{name}.site._rail", f"scenes.{name}.site"):
+            raise
+        return []
+    if not hasattr(rail, "at") or not hasattr(rail, "LENGTH"):
+        return []
+    found, s = set(), -8.0
+    while s <= rail.LENGTH + 8.0:
+        point = rail.at(s)
+        for right in (-3.0, 0.0, 3.0):
+            x, _y, z = point.off(right)
+            found.add((math.floor(x + at[0]) >> 4, math.floor(z + at[2]) >> 4))
+        s += 0.5
+    return [list(c) for c in sorted(found)]
+
+
 def scene_spec(args):
     """Where the scene stands, where its spawn is and which way it looks, in world coordinates."""
     sys.path.insert(0, BUILD)
@@ -468,6 +494,8 @@ def scene_spec(args):
         "title_lines": map_title(args.scene)[1],
         # the opening: who is new rides in. None without it; --no-arrival leaves it out of the save
         "arrival": arrival(args.scene, scene, getattr(args, "no_arrival", False)),
+        # the chunks kept loaded beside the spawn's own: those the railway runs through
+        "forced": line_chunks(args.scene, (ox, oy, oz)),
         "biome": f"{ART}:{scene.BIOME}" if look else None,
         "time": int(when),
         "feet": [round(ox + ex, 4), round(oy + ey - S.EYE, 4), round(oz + ez, 4)],
@@ -1038,6 +1066,10 @@ def make(args):
         # 26.3 nothing is loaded at that moment, and without this he starts at the world's floor
         # (seen in verify: y -63) until the first tick of the functions.
         facts["forced"] = server.cmd(f"forceload add {math.floor(x)} {math.floor(z)}")
+        for cx, cz in spec.get("forced") or []:         # and the railway's, see line_chunks()
+            server.cmd(f"forceload add {cx * 16} {cz * 16}", quiet=True)
+        if spec.get("forced"):
+            facts["forced"] = server.cmd("forceload query")
         facts["tick"] = server.cmd("tick query")
         server.stop()
         facts["issues"] = server.issues()
@@ -1693,8 +1725,14 @@ def verify(args):
                 check(results, "game rules", not wrong, f"{len(rules) - len(wrong)} of {len(rules)} as the list says"
                       + (f"; not: {wrong}" if wrong else "") + f"; max_block_modifications {rules['max_block_modifications']}")
                 forced = server.cmd("forceload query", quiet=True)
-                check(results, "forced chunks", len(re.findall(r"\[-?\d+, -?\d+\]", forced)) == 1,
-                      forced + " (wanted: the spawn's chunk and no other)")
+                kept = {(int(a), int(b)) for a, b in re.findall(r"\[(-?\d+), (-?\d+)\]", forced)}
+                home = (math.floor(spec["feet"][0]) >> 4, math.floor(spec["feet"][2]) >> 4)
+                wanted = {home} | {tuple(c) for c in spec.get("forced") or []}
+                check(results, "forced chunks", kept == wanted,
+                      (forced if len(kept) < 4 else f"{len(kept)} chunks are kept loaded")
+                      + (f" (wanted: the spawn's chunk and no other)" if len(wanted) == 1 else
+                         f" (wanted: the spawn's chunk and the {len(wanted) - 1} others the railway runs through"
+                         + ("" if kept == wanted else f"; missing {sorted(wanted - kept)}, not wanted {sorted(kept - wanted)}") + ")"))
                 time.sleep(3.0)
                 check(results, "tick, empty", True, server.cmd("tick query", quiet=True).replace("\n", " | "))
                 found = server.cmd("difficulty", quiet=True)

@@ -40,9 +40,9 @@
 >
 > Inside you will find a star hall with an orrery geared to the planets' true periods, a time room, a chart room, a plate vault, a power house with its steam engine, and under the great dome a refractor turned on the comet. Nothing is asked of you: walk, look, and take your time. Those who look closely may find six star charts along the way.
 >
-> The map is vanilla: one data pack with functions only, and a resource pack bundled in the world. All textures and models were made for this map. Adventure mode, peaceful, no chat messages. Players who fall off the mountain are put back at the station.
+> The map is vanilla: one data pack with functions only, and a resource pack bundled in the world. No third-party assets are used: the textures and custom models were made for this map, apart from six recoloured vanilla textures, the vanilla block shapes they sit on and the game's own sky shaders, which the pack modifies. Adventure mode, peaceful, no chat messages. Players who fall off the mountain are put back at the station.
 
-（「All textures and models were made for this map」这一句要 a1 确认以后才能用，见第 5 节。）
+（a1 11-16 12:10 核过，细账在第 5 节表下面。原来写的是「All textures and models were made for this map」，照原样不成立：有 6 张贴图是原版贴图改色，方块模型用的是原版的形状，着色器以原版为底。上面是照实的说法，措辞总监可以再改，事实以第 5 节为准。）
 
 ## 4. 要附的图
 
@@ -70,8 +70,26 @@
 | 真人、真实机构和地名 | 没有（没有一个真实的人名、地名、厂名） | 我 11-16 11:09 |
 | 宗教的标志 | 没有；工程里本来就有「任何地方不许出现十字」的规矩（风向标、辐条、桅杆都避开了） | 我 11-16 11:09 |
 | 真实国家及其标志、枪、坦克、血 | 没有。旗是这座台自己的：蓝底、米白的环和星 | 我 11-16 11:09 |
-| 别人的版权 | 贴图 707 张、模型 1006 个、着色器 10 个都是我们的代码生成的；声音只用原版的事件（资源包里没有声音文件）；没有字体文件。**等 a1 确认没有外来素材** | a1 |
+| 别人的版权 | **没有第三方的素材；来自游戏本身（Mojang）的有三样，列在表下面**。贴图 707 张里 701 张完全由我们的代码画出，6 张是游戏自带的贴图改色；模型 1006 个里 568 个物品模型是我们的代码拼的，438 个方块模型是游戏自带的形状改了贴图指向；着色器 10 个里 1 个全新，9 个以游戏原文为底。声音只用原版的事件（两个 `sounds.json`，资源包里没有声音文件）；没有字体文件，贴图上的字出自代码里的点阵表 | a1 11-16 12:10（A7 的包，读代码并逐张比过）；着色器 a2 |
 | 「体验」类不能有故事和计时 | 没有故事，没有计时；六张星图是彩蛋，进场不交代 | 卡 `motion/guide` |
+
+**「别人的版权」那一行的细账**（a1，11-16 12:10；对象是 A7 的 `resourcepacks/resources.zip`，2393 个文件，代码是总装 1a0f1af9）：
+
+- 怎么查的：读了全部往资源包里写东西的代码。构建目录里没有一张图片文件，代码不从网上取任何图；能把外面的像素带进包的只有一处，`materials/_kit.py` 的 `vanilla_picture()`，它从游戏客户端的 jar 里读原版贴图，调用它的只有下面 6 张。另外把包里 707 张图同 26.3 客户端自带的 3964 张逐张比过：没有一张照搬。代码和包里都没有署名、许可证、网址一类的字样。
+- **来自游戏本身的 ① 6 张贴图**（都在 `assets/c164/textures/block/`，做法是保留原图的镂空和明暗层次，颜色换成我们的色阶）：
+  - `iron_lantern.png` 和它的 `iron_lantern.png.mcmeta`：原版 `block/oxidized_copper_lantern`（`materials/iron.py` 的 `_recolour`）；
+  - `brass_shelf.png`：原版 `block/bamboo_shelf`（`materials/brass_oldcopper_small.py` 的 `_tone`）；
+  - `brass_sign.png`、`brass_hanging_sign.png`：原版 `block/bamboo_sign`、`block/bamboo_hanging_sign`；`enamel_sign.png`、`enamel_hanging_sign.png`：原版 `block/oak_sign`、`block/oak_hanging_sign`（同一文件的 `_sheet`：牌面、边和立柱是我们画的，镂空和吊牌的横杆、链子取自原图）。
+  - 要一张都不沾原图：这 6 张改成代码直接画（灯笼归 iron，其余归 brass），是小改，但要重出图、重跑检查；现在没有做。
+- **来自游戏本身的 ② 529 个 JSON**：`assets/c164/models/block/` 的 438 个方块模型和 `assets/minecraft/blockstates/` 的 91 个方块状态文件，是游戏自带的文件改了贴图和模型的指向（`artkit/respack.py` 的 `redirect`），形状是原版方块的形状。资源包给原版方块换贴图只能这样做。
+- **来自游戏本身的 ③ 9 个着色器文件**（`assets/minecraft/shaders/`，`sky/_shaders.py` 写的。我拿包里的成品同 26.3 的原文逐行比过，a2 12:08、12:09 两条回话确认并补了数）：
+  - 原文整篇留着、只动几处的四个，构建时从客户端 jar 里读原文再改，仓库里没有原文：`core/clouds.vsh`（106 行改 1 行）、`core/item.vsh`（59 行改 1 行）、`core/rendertype_beacon_beam.vsh`（19 行全留，加 2 行）、`core/lightmap.fsh`（67 行，换 4 处式子、加 4 个常数）。
+  - 整份由我们的模板写出的五个，模板里留着原文 68 行（不计空行），所以**仓库里也有这 68 行原文**：`include/fog.glsl`（原文 35 行留 33 行：`Fog` 块和五个函数，`FogColor` 改名 `GameFogColor`，`total_fog_value` 的返回改写；另加约 140 行新写的 `c164_` 函数）；`core/sky.vsh`、`core/sky.fsh`、`core/stars.vsh`、`core/stars.fsh`（原文 13、10、8、7 行，留 13、9、7、6 行：版本行、引用、输入输出的声明，`sky.vsh` 原 `main` 的三行；`main` 的其余是新写的）。
+  - `include/c164_layers.glsl`（196 行）全新，游戏里没有这个文件。山脊那一段是 `sky/ridges.py` 出的一张数表加查表。
+  - 新写的 GLSL（`c164_` 开头的）全部是 a2 这一班自己写的，照游戏自己的画法和 `sky/mood.py` 的算式；没有噪声函数，没有取过别人的着色器包或网上的代码（a2 的原话；我在十个文件里也搜过，没有署名、许可证、网址，没有常见的现成噪声函数的痕迹）。
+- 不进包、只在构建时用的一处通行写法：Python 里撒颗粒、烘数表用的整数散列是网上通行的三行写法（常数 374761393、668265263、1274126177，见 `artkit/pixelart.py`、`artkit/canvas.py`、`sky/ridges.py` 等）。它只是几个质数和移位，成品里没有这段代码，记在这里备查。
+- 完全是我们自己的：`assets/c164/textures/item/` 的 568 张（每个物品模型一张，`artkit/models.py` 按色阶画的）和 568 个物品模型、568 个物品定义；`assets/c164/textures/block/` 其余 123 张和 7 个 `.mcmeta`；`assets/minecraft/textures/environment/` 的 10 张：月亮八个相位的位置上是彗星（`sky/comet.py` 算出来的；其中 `celestial/moon/new_moon.png` 现在是一张测试卡，是我们自己的，换天色做法之前留下来看贴图朝向的，不是有意留给成品的：钟锁在 20370、月相是 `full_moon`，玩家看不到它，除非有人改时间。去掉是 `sky/comet.py` 一行，a2 写好推在自己的分支上，进不进 A8 听总监）、`celestial/sun.png` 全黑（不画太阳）、`clouds.png` 全透明（不画原版的云）。
+- 所以第 3 节正文里原来那句「All textures and models were made for this map」照原样不成立，已改成照实的说法；6 张图要是重画了，可以改回更干脆的一句。
 
 ## 6. 要照实告诉评审的
 

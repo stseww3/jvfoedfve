@@ -16,8 +16,12 @@ and its inner leaf it touches only the floor of the doorways):
     orrery, which hangs from it; no beam runs along the axis to cross it there;
   * the west arcade (x 0..1): three arches as wide as the three of the entrance, their heads
     shut over the crown where the entrance's are (facade.CROWN). The middle one leads under the
-    mezzanine to the west door, a vaulted way; a flight of the grand stair rises west through
-    each of the others (seven steps, feet 0 -> 7) to a landing against the apse wall;
+    mezzanine to the west door, a vaulted way of two bays (way_rib()): the vault is dressed stone
+    on the rusticated walls, a rib crosses it between the bays, one step under the vault, on a
+    strip of panelled stone in either wall, and a band of slate crosses the floor under the rib.
+    A lamp of the star hall hangs in the middle of each bay. A flight of the grand stair rises
+    west through each of the other arches (seven steps, feet 0 -> 7) to a landing against the
+    apse wall;
   * the main floor round the well: the mezzanine over the way to the west door, the cross gallery
     on the arcade, a gallery along each cross wall (z -5 and 5, its railing on z -4 and 4) from the
     arcade to the entrance wall, a door from each gallery into its wing room. A deck that lies on
@@ -100,6 +104,9 @@ FLOOR = B.ASHLAR_FINE.block                     # the hall's floor: the white sq
 FLOOR_DARK = B.SLATE_SMOOTH.block               # and the black one
 SILL = B.SLATE_BRICK.block                      # the plinth's stone, in the floor of a doorway
 CASE = B.ASHLAR_PANEL.block                     # the stone case of a door through a cross wall: posts and head
+VAULT = B.ASHLAR_FINE                           # the way to the west door: its vault and the rib across it, dressed stone
+STRIP = B.ASHLAR_PANEL.block                    # the strip of a wall the rib stands on: sunk panels, as a door case's post
+BAND = FLOOR_DARK                               # the band under the rib in the floor: the slate of the lines the cheeks stand on
 DECK = B.ASHLAR_FINE.block                      # galleries, mezzanine, landings
 GIRDER = B.IRON_RIVETED.block                   # the free edge of a deck, the ceiling's beams
 ROOM_FLOOR = B.FLOOR_WOOD.block                 # wing rooms and the dome room
@@ -180,6 +187,28 @@ def door_cases():
         for x, _z in d["frame"]:
             out += [(x, y, z, CASE) for y in range(foot, top + 2)]
         out += [(x, top + 1, z, CASE) for x, _z in d["cells"]]
+    return out
+
+
+def way_rib():
+    """The rib across the way to the west door and what goes with it: [(x, y, z, state)].
+
+    The way is seven cells long between the west wall and the arcade, and the star hall hangs a
+    lamp under the crown of its vault a quarter of its length in from either end: two bays of
+    three cells, and the rib in the cell between them. It stands one step under the vault: on
+    either side a springer (a stair on its head, under a whole block), a whole block for its
+    crown. Each springer stands on a strip of its wall in panelled stone, from the plinth up to
+    the springer; in the floor a band of slate crosses the pale stone under the rib, from the
+    line of slate one cheek stands on to the other's. Nothing stands in the way: its three cells
+    of width and four rows of height are what they were."""
+    x, out = layout().rib, []
+    for s in (-1, 1):
+        z = CZ + s * (CHEEK_Z - 1)
+        out.append((x, ARCH_Y - 1, z, f"{VAULT.stairs}[facing={'north' if s < 0 else 'south'},half=top]"))
+        out.append((x, ARCH_Y, z, VAULT.block))
+        out += [(x, y, CZ + s * CHEEK_Z, STRIP) for y in range(S.BASE[0], ARCH_Y - 1)]
+    out.append((x, ARCH_Y, CZ, VAULT.block))
+    out += [(x, S.PAVING_Y, z, BAND) for z in range(CZ - CHEEK_Z + 1, CZ + CHEEK_Z)]
     return out
 
 
@@ -314,6 +343,7 @@ def _layout(entrance):
     L.arcade = {(x, s * CHEEK_Z) for x in ARCADE_X for s in (-1, 1)}
     L.arches = [(-5, -3), (-1, 1), (3, 5)]                                # rows of the three openings
     L.vault = {c for c in L.hall if c[0] < ARCADE_X[0] and abs(c[1]) == CHEEK_Z - 1}     # the way to the west door: its springing
+    L.rib = sorted({x for x, _z in L.vault})[len({x for x, _z in L.vault}) // 2]       # -4: the rib between its two bays
     # the crown of the three arches and of the vault: shut where the facade shuts its heads (facade.CROWN)
     L.crown = ({(x, z) for z0, z1 in L.arches for z in range(z0 + 1, z1) for x in ARCADE_X}
                | {c for c in L.hall if c[0] < ARCADE_X[0] and c[1] == CZ})
@@ -516,11 +546,13 @@ def build(canvas, origin=(0, 0, 0)):
         for x in ARCADE_X:
             put((x, z0), ARCH_Y, f"{B.ASHLAR_ROUGH.stairs}[facing=north,half=top]")
             put((x, z1), ARCH_Y, f"{B.ASHLAR_ROUGH.stairs}[facing=south,half=top]")
-    for c in L.vault:                           # the middle arch runs on as a vault to the west door
-        put(c, ARCH_Y, f"{B.ASHLAR_ROUGH.stairs}[facing={'north' if c[1] < 0 else 'south'},half=top]")
+    for c in L.vault:                           # the middle arch runs on as a vault to the west door, of dressed stone
+        put(c, ARCH_Y, f"{VAULT.stairs}[facing={'north' if c[1] < 0 else 'south'},half=top]")
     if getattr(facade, "CROWN", False):         # the heads as the entrance has them (A0, 11-15): a slab between
         for c in L.crown:                       # the two stairs, three wide, two wide, shut
-            put(c, ARCH_Y, f"{B.ASHLAR_ROUGH.slab}[type=top]")
+            put(c, ARCH_Y, f"{(VAULT if c[0] < ARCADE_X[0] else B.ASHLAR_ROUGH).slab}[type=top]")
+    for x, y, z, state in way_rib():            # and the rib between its two bays
+        put((x, z), y, state)
 
     # the grand stair: solid under the steps and under the landings
     for cells in L.flights.values():
@@ -592,7 +624,7 @@ LEGEND = [
     (".", "floor or deck"), ("o", "open to the level below"), ("x", "closed space"),
     ("r", "railing on the edge of a deck"), ("T", "telescope pier (the cap, at the dome room)"),
     ("=", "iron grating round the pier's foot"), ("m", "the mother clock's seat: the pier's footing, level with the floor"),
-    ("<", "grand stair, rising west"),
+    ("<", "grand stair, rising west"), ("-", "the band in the floor under the rib of the way to the west door"),
     ("s", "ring stair"), ("S", "ring stair passing over a deck or its railing"),
     ("P", "ring stair resting on its plinth"), ("n", "window niche of the facade, its floor level with the galleries"),
     ("b", "the bridge onto the ring stair"), ("e", "where the ring stair lets one off"),
@@ -629,6 +661,9 @@ def drawing(level):
         for cells in L.flights.values():
             for x, _y, z in cells:
                 g[(x, z)] = "<"
+        for x, y, z, _state in way_rib():
+            if y == S.PAVING_Y:
+                g[(x, z)] = "-"
     elif level == "main":
         for cells in L.rooms.values():
             for c in cells:
@@ -798,6 +833,22 @@ def check():
     for x, y, z, block in door_cases():                     # every door stands in its case
         if c.get(x, y, z) != block:
             out.append(f"doors: the case's stone at ({x}, {y}, {z}) is not there")
+    # the way to the west door: its rib is there, stands between the two lamps the star hall hangs
+    # under the crown (a quarter of the way's length in from either end, starhall.way_lamp_xs()),
+    # leaves four rows over the floor, and its strips show to the way alone
+    for x, y, z, state in way_rib():
+        if c.get(x, y, z) != state:
+            out.append(f"the way to the west door: the rib's block at ({x}, {y}, {z}) is not there")
+    crown = sorted(x for x, z in L.crown if x < ARCADE_X[0] and z == CZ)
+    lamps = {crown[len(crown) // 4], crown[-1 - len(crown) // 4]} if len(crown) > 3 else set(crown[:1])
+    if L.rib in lamps or not min(lamps) < L.rib < max(lamps):
+        out.append(f"the way to the west door: the rib at x {L.rib} does not stand between the lamps at x {sorted(lamps)}")
+    for z in range(CZ - CHEEK_Z + 1, CZ + CHEEK_Z):
+        if any(solid(L.rib, y, z) for y in range(S.GROUND, ARCH_Y - 1)):
+            out.append(f"the way to the west door: the rib stands in the way at ({L.rib}, {z})")
+    for x, y, z, state in way_rib():
+        if state == STRIP and not solid(x, y, z + (1 if z > CZ else -1)):
+            out.append(f"the way to the west door: the strip at ({x}, {y}, {z}) shows on the flight's side")
     for d in doors():                                       # ... which leaves the opening as it was
         for x, z in d["cells"]:
             if any(solid(x, y, z) for y in range(d["y"][0], d["y"][1] + 1)) or not solid(x, d["y"][1] + 1, z):
