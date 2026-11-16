@@ -1,0 +1,36 @@
+a0job 1116-042156-tower-f3-c402-6719: cursor/c164-tower-f3-c402 @ 8dc16ae2 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.48 1.21 1.48, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    0s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/check.py --scene obs_main_tower --shots build/scenes/obs_main_tower/shots.json > /tmp/tower-check.txt 2>&1; echo "check exit=$?"; grep -n -i -E "motion|FAIL|WARN|result|entit" /tmp/tower-check.txt | cut -c1-400 | head -n 2
+check exit=0
+2:[PASS] regen     187914 blocks, 476 entities, 313 models, 1627 resource-pack files, 384 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (5.5 s)
+7:[WARN] blocks    83 kinds of block placed, 172 barrier cells (x -1..91, y -6..19, z -38..47), barriers away from any model
+10:[PASS] entities  476 display entities, 25 drawn out along one axis, 31 shown through a matrix that is no turn, no face stretched, 137 models never placed
+11:[PASS] views     9 shots, most display entities in view: 386 (north_west), limit 600; counted without what walls hide; the game draws up to 441 (v1_stamp): a display entity without width and height is drawn outside the view too
+12:[WARN] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in
+14:[PASS] motion    27 parts and 0 points on 15 chains, 293 function files; 11 commands in the busiest tick (limit 40), 4.2 a tick on average (limit 10)
+28:result: PASS (0 failed, 2 with warnings)
+                 ... and 19 more
+result: PASS (0 failed, 2 with warnings)
+
+=== clock tower: 711 blocks, 3 display entities ===
+
+THE MAST (its models at rest, and what moves):
+
+bld_tower_mast  on (13.5, 42.5, -29.5)  x 13.156 .. 13.844  y 42.000 .. 52.969  z -30.438 .. -29.156
+bld_tower_cups  on (13.5, 51.4375, -30.375)  x 12.995 .. 14.005  y 51.312 .. 51.562  z -30.906 .. -30.031
+bld_tower_vane  on (13.5, 52.625, -29.5)  x 13.375 .. 13.625  y 52.188 .. 53.000  z -29.625 .. -27.500
+
+motion: PASS -- 2 parts and 0 points on 2 chains, 20 function files; 6 commands in the busiest tick (limit 40), 0.8 a tick on average (limit 10)
+  chain of 24 ticks: 6 functions, 14 commands a cycle, starts 1 ticks after start
+  chain of 100 ticks: 8 functions, 17 commands a cycle, starts 2 ticks after start
+  bld_tower_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.09 blocks off the axis
+
+EAST ELEVATION (seen from the court; south on the left):
+
+==== NODEJOB RESULT ====
+exit=0 secs=14 host=cursor cores=4 head=8dc16ae2 commit=none pushed=no branch=cursor/c164-tower-f3-c402 files=0
+a0job: exit=0 secs=14
