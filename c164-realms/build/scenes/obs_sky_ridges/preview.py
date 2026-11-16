@@ -1,6 +1,6 @@
 """The far ridges on the sky, without the game.
 
-    python -m scenes.obs_sky_ridges.preview <folder> [--look blue] [--compile]
+    python -m scenes.obs_sky_ridges.preview <folder> [--look blue]
 
 <folder>: renders/_wip/ridges on a node (tools/nodejob.sh --wip), elsewhere a folder outside the
 repository; these pictures are not kept.
@@ -16,17 +16,13 @@ ridges on it. No stars, no comet, no blocks.
     north.png    the north range from the notch to 60 degrees, 30 pixels to the degree
     south.png    the south range likewise
 
---compile runs the shaders, the layer in place, through the game's compiler as far as that can be
-done outside the game (plan/parts/figs/sky_shaders.py, the look's own checks; the compiler is
-found or fetched by plan/parts/figs/sky_glslc.sh).
+Whether the shaders compile with the layer in place is the business of the look's own checks
+(python plan/parts/figs/sky_shaders.py, which compiles with the game's own shaderc).
 
 A tool for looking and for the card, not evidence: what the game draws is seen in the game.
 """
 import argparse
-import importlib.util
-import math
 import os
-import subprocess
 import sys
 
 import numpy as np
@@ -37,7 +33,6 @@ from scenes.obs.sky import _shaders
 from scenes.obs.sky import mood
 from scenes.obs.sky import ridges
 
-PROJECT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
 EYE_Y = mood.GROUND_Y + S.GROUND + S.EYE        # world y of an eye on the upper terrace
 VIEWS = {
     # name: (bearing at the left edge, at the right edge, degrees up at the lower edge, at the upper edge, pixels to the degree)
@@ -62,24 +57,10 @@ def paint(twin, left, right, low, high, scale):
     return (np.clip(colour, 0.0, 1.0) * 255.0 + 0.5).astype(np.uint8).reshape(height, width, 3)
 
 
-def compile_check(look):
-    """The look's own checks with the layer in place. True when they pass."""
-    found = subprocess.run(["bash", os.path.join(PROJECT, "plan", "parts", "figs", "sky_glslc.sh")],
-                           capture_output=True, text=True).stdout.strip()
-    if not found:
-        print("no compiler was found or fetched (plan/parts/figs/sky_glslc.sh): nothing compiled")
-        return False
-    spec = importlib.util.spec_from_file_location("sky_shaders", os.path.join(PROJECT, "plan", "parts", "figs", "sky_shaders.py"))
-    checks = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(checks)
-    return bool(checks.compiled(found, look, None))
-
-
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("folder")
     ap.add_argument("--look", default=mood.DEFAULT)
-    ap.add_argument("--compile", action="store_true")
     args = ap.parse_args()
     os.makedirs(args.folder, exist_ok=True)
     twin = _shaders.Twin(args.look)
@@ -90,11 +71,7 @@ def main():
     rows = ridges.baked()
     print(f"the layer: {ridges.COLUMNS} columns of {ridges.STEP:g} degrees, a ridge in {int((rows > 0).sum())} of them, "
           f"up to {rows.max() * ridges.STEP:g} degrees; {len(ridges.shader_layer(args.look)['skyline'])} characters of GLSL")
-    ok = True
-    if args.compile:
-        ok = compile_check(args.look)
-        print(f"result: {'PASS' if ok else 'FAIL'}")
-    return 0 if ok else 1
+    return 0
 
 
 if __name__ == "__main__":
