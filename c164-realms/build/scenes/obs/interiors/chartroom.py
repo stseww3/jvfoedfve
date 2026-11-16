@@ -52,7 +52,7 @@ on); what was left out or stood in for is in the returned record.
 
 Coordinates are the skeleton's: build_chartroom() dresses the room where it stands in the building,
 the box test scene (build/scenes/obs_int_chartroom) stands a stand-in of the shell around it.
-build() is what the master scene calls; it places nothing until MOVED_IN is set.
+build() is what the master scene calls; it places nothing while MOVED_IN is off.
 """
 import functools
 import importlib
@@ -72,7 +72,7 @@ from ..main import shell
 from ..props import _kit as K
 from ..props import lamps
 
-MOVED_IN = False        # the master scene dresses the room once it is past review
+MOVED_IN = True         # the master scene dresses the room (A0, g2 #67123: a card's switch is turned on with its delivery)
 NAME = "interiors/chartroom"
 PREFIX = "int_chart_"
 PX = 1 / 16.0

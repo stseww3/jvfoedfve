@@ -110,7 +110,7 @@ def build(c, origin=(0, 0, 0)):
                 sources += [((face_x, y, middle), OUTSIDE) for y in (S.WINDOW[0] + 1, S.WINDOW[1] - 1)]
                 if line is not None:
                     cells = [(glass_x, y, z) for z in rows for y in range(S.WINDOW[0], S.WINDOW[1] + 1)]
-                    line(c, cells, (inward, 0), glass, origin=origin)
+                    line(c, cells, (inward, 0), glass, origin=origin, panelled=True)
 
     # the door, and a piece of the gallery beyond it: indoors, so a floor, a lid and three walls stand
     # in for the hall, and one of the hall's lamps hangs on the cross wall beside the door
