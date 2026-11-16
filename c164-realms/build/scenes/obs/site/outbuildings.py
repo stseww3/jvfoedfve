@@ -71,8 +71,9 @@ ORDER = 70      # after the terrain (10) and the court paving (60); the shells g
 # How far this card's display entities are drawn (artkit.models; INTERFACE 7): the far band, as
 # everything out of doors that counts in a silhouette -- the wind engine over the water tower, the
 # vane and the cups on the wind mast -- so the module sets no VIEW (it would take the props line's
-# instruments down with it). Only the small parts under the tower's deck, a pixel or two from
-# afar, are given the middle band where they are placed.
+# instruments down with it). Only the small things, a pixel or two from afar, are given less
+# where they are placed: the rain gauge the middle band, the parts under the tower's deck the near
+# one.
 INSTRUMENTS = True      # stand the props line's instruments on their spots (see _place)
 
 # --- materials (occupancy-table roles only) -------------------------------------------------------
@@ -252,8 +253,8 @@ def _models():
 # and not as spokes, eighteen sails of plate between an inner and an outer hoop, the inner third
 # open; a tail that is one broad riveted plate; all of it dark iron, no lighter than the tank's
 # hoops; a guide for the pump rod every two blocks.
-MODEL_WIND_MAST = "site_windpump_mast"      # the lattice mast on the cone's point, with its stage
-MODEL_WIND_HEAD = "site_windpump_head"      # turntable, gear case and shaft
+MODEL_WIND_MAST = "site_windpump_mast"      # the lattice mast on the cone's point and the head on it: turntable,
+#                                             gear case and shaft (one piece: neither moves)
 MODEL_WIND_TAIL = "site_windpump_tail"      # the tail on its hinge, a piece of its own: it hunts in the wind
 MODEL_WIND_WHEEL = "site_windpump_wheel"    # the sail wheel, a piece of its own: it turns
 MODEL_WIND_ROD = "site_windpump_rod"        # the pump rod under the deck, a piece of its own: it rises and falls
@@ -313,20 +314,21 @@ def _wind_models():
     t.tube("y", on, 0.0, top, 0.75, dark, sides=4)
     t.tube("y", on, top - 1.0, top, head + 1.5, iron)                   # the cap plate the turntable rides on
 
-    # The head, in pixels about the point where the wheel's shaft crosses the mast's axis; +z is
-    # down the wind. A turntable, the gear case over it with its lid bolted on and an oil cup, the
-    # shaft to the wheel in its bearing.
-    h = M.Model(MODEL_WIND_HEAD)
-    h.tube("y", on, -3.0, -1.5, 3.5, dark)                              # the turntable
-    h.box((-2.0, -1.5, -4.0), (2.0, 2.5, TAIL_HINGE - 1.0), iron, grain="z")        # the gear case
-    h.box((-2.25, 2.5, -4.25), (2.25, 3.25, TAIL_HINGE - 0.75), dark, grain="z")    # ... its lid
-    for bx in (-1.75, 1.75):
-        for bz in (-3.5, TAIL_HINGE - 1.5):
-            h.box((bx - 0.4, 3.25, bz - 0.4), (bx + 0.4, 3.75, bz + 0.4), iron)    # the lid's bolts
-    h.tube("y", on, 3.25, 5.0, 0.6, brass, sides=4)                     # the oil cup's stalk
-    h.tube("y", on, 5.0, 6.25, 1.1, brass)                              # ... and the cup
-    h.tube("z", on, -6.0, -4.0, 1.6, dark)                              # the bearing
-    h.tube("z", on, -WHEEL_OUT, -6.0, 0.9, iron)                        # the shaft
+    # The head, drawn into the mast's model (nothing of it moves, and every display entity over
+    # the tank is counted in half the board's views): in pixels about the point where the wheel's
+    # shaft crosses the mast's axis, +z down the wind. A turntable, the gear case over it with its
+    # lid bolted on and an oil cup, the shaft to the wheel in its bearing.
+    with t.aimed((0.0, MAST_UP, 0.0), (_WIND[0], MAST_UP, _WIND[1]), "z"):
+        t.tube("y", on, -3.0, -1.5, 3.5, dark)                          # the turntable
+        t.box((-2.0, -1.5, -4.0), (2.0, 2.5, TAIL_HINGE - 1.0), iron, grain="z")        # the gear case
+        t.box((-2.25, 2.5, -4.25), (2.25, 3.25, TAIL_HINGE - 0.75), dark, grain="z")    # ... its lid
+        for bx in (-1.75, 1.75):
+            for bz in (-3.5, TAIL_HINGE - 1.5):
+                t.box((bx - 0.4, 3.25, bz - 0.4), (bx + 0.4, 3.75, bz + 0.4), iron)    # the lid's bolts
+        t.tube("y", on, 3.25, 5.0, 0.6, brass, sides=4)                 # the oil cup's stalk
+        t.tube("y", on, 5.0, 6.25, 1.1, brass)                          # ... and the cup
+        t.tube("z", on, -6.0, -4.0, 1.6, dark)                          # the bearing
+        t.tube("z", on, -WHEEL_OUT, -6.0, 0.9, iron)                    # the shaft
 
     # The tail, in pixels about its hinge pin behind the gear case; +z is down the wind. It is
     # hinged, as such a tail is to be folded out of a gale, and hunts a little from side to side.
@@ -399,7 +401,7 @@ def _wind_models():
     g.box((-0.5, -0.5, -ROD_OFF + 1.5), (0.5, 0.5, -2.25), dark, grain="z")         # the arm
     g.tube("y", (0.0, -ROD_OFF), -1.0, 1.0, 1.75, iron)                 # the eye
     g.tube("y", on, -3.5, -1.5, 1.9, blue)                              # the band
-    return {x.name: x for x in (t, h, v, w, rod, pump, g)}
+    return {x.name: x for x in (t, v, w, rod, pump, g)}
 
 
 def models():
@@ -638,12 +640,12 @@ def _water_tower(c, o):
     # on the valve box and the rod that works in it, once up and down to a turn of the wheel: the
     # rod stands beside the riser, in the riser's own cell, held to it by a guide every two blocks,
     # and ends in the deck. What stands over the tank is seen from across the site and keeps the
-    # far band; what is under the deck is small and has the middle one.
+    # far band: three pieces, the mast with the head, the tail, the wheel. What is under the deck
+    # is small detail, a pixel or two from beyond the shelf, and has the near one.
     kit = _wind_models()
     yaw = math.degrees(math.atan2(-_WIND[0], _WIND[1]))                 # a model's +z goes down the wind
     ax, az = _TANK_AXIS
     c.add_entity(o[0] + ax, o[1] + _TANK_POINT, o[2] + az, M.display(kit[MODEL_WIND_MAST], view=M.FAR))
-    c.add_entity(o[0] + ax, o[1] + WIND_WHEEL[1], o[2] + az, M.display(kit[MODEL_WIND_HEAD], yaw=yaw, view=M.FAR))
     c.add_entity(o[0] + ax + _WIND[0] * TAIL_HINGE / 16.0, o[1] + WIND_WHEEL[1], o[2] + az + _WIND[1] * TAIL_HINGE / 16.0,
                  M.display(kit[MODEL_WIND_TAIL], yaw=yaw, view=M.FAR))
     MK.swing(c, "y", *TAIL_HUNT)
@@ -651,18 +653,18 @@ def _water_tower(c, o):
                  M.display(kit[MODEL_WIND_WHEEL], yaw=yaw, scale=2.0, view=M.FAR))
     MK.spin(c, "z", WHEEL_REV)
     rx, rz = ax - _WIND[0] * ROD_OFF / 16.0, az - _WIND[1] * ROD_OFF / 16.0
-    c.add_entity(o[0] + rx, o[1] + foot + 1.0, o[2] + rz, M.display(kit[MODEL_WIND_PUMP], yaw=yaw, view=M.MID))
-    c.add_entity(o[0] + rx, o[1] + foot + 2.0, o[2] + rz, M.display(kit[MODEL_WIND_ROD], scale=2.0, view=M.MID))
+    c.add_entity(o[0] + rx, o[1] + foot + 1.0, o[2] + rz, M.display(kit[MODEL_WIND_PUMP], yaw=yaw, view=M.NEAR))
+    c.add_entity(o[0] + rx, o[1] + foot + 2.0, o[2] + rz, M.display(kit[MODEL_WIND_ROD], scale=2.0, view=M.NEAR))
     half = WHEEL_REV // 2
     MK.slide(c, "y", [(0, ROD_STROKE / 16.0, half), (half, 0.0, half)], WHEEL_REV)
     for up in ROD_GUIDES:
-        c.add_entity(o[0] + ax, o[1] + foot + up, o[2] + az, M.display(kit[MODEL_WIND_GUIDE], yaw=yaw, view=M.MID))
+        c.add_entity(o[0] + ax, o[1] + foot + up, o[2] + az, M.display(kit[MODEL_WIND_GUIDE], yaw=yaw, view=M.NEAR))
     # the machine's number plate on the pump's chest, on the face the wind comes to: the side one
     # walks round to from the steps (the gauges are on the east face)
     wx, wz = (cx + 0.5, cz + 0.5)
     face = (wx - _WIND[0] * 0.5, foot + 0.5, wz - _WIND[1] * 0.5)
     n = _plate(c, o, WIND_NUMBER, face, _FACING[(-round(_WIND[0]), -round(_WIND[1]))])
-    return 6 + len(ROD_GUIDES) + n
+    return 5 + len(ROD_GUIDES) + n
 
 
 # --- the weather station (S.WEATHER_STATION, north slope) -----------------------------------------
@@ -707,7 +709,7 @@ def _weather_station(c, o):
 
     # the rain gauge, a copper can on the floor (this card's model too), and a stone pedestal for
     # the sunshine recorder
-    c.add_entity(o[0] + GAUGE[0], o[1] + GAUGE[1], o[2] + GAUGE[2], M.display(kit[MODEL_GAUGE]))
+    c.add_entity(o[0] + GAUGE[0], o[1] + GAUGE[1], o[2] + GAUGE[2], M.display(kit[MODEL_GAUGE], view=M.MID))
     n += 3
     px, pz = _SPOTS["pedestal"]                         # (3, -47)
     _put(c, o, px, foot, pz, POST)
@@ -771,7 +773,7 @@ def _south_lookout(c, o):
 def build(canvas, origin=(0, 0, 0)):
     """Places the four shells and the ways down; returns the number of display entities: this
     card's three on the weather platform (mast head, cup wheel, rain gauge), the wind engine's on
-    the water tower (six, a guide of the rod every two blocks, its number plate when the props
+    the water tower (five, a guide of the rod every two blocks, its number plate when the props
     line's nameplates are in the tree), and the props line's three instruments when that package
     is in the tree."""
     _meridian_hut(canvas, origin)
