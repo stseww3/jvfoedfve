@@ -1,6 +1,6 @@
 {
  "name": "c164-T2",
- "commit": "28bf815a",
+ "commit": "9c2499f0",
  "version": "26.3",
  "spec": {
   "scene": "obs_export_probe",
@@ -27,7 +27,7 @@
  "ok": true,
  "java": "/agent/realms-study/jdk/jdk-25.0.5+8-jre/bin/java",
  "server_sha1": "33680f5f2ac32864d6d7cf5e56a705fdb3e05f4c",
- "start_seconds": 6.2,
+ "start_seconds": 6.1,
  "packs": "There are 2 data pack(s) enabled: [vanilla (built-in)], [file/c164art (world)]",
  "settings": [
   {
@@ -157,7 +157,8 @@
   }
  ],
  "loop": "#run has 304677571 [c164m]",
- "tick": "The game is running normallyTarget tick rate: 20.0 per second.\nAverage time per tick: 3.1ms (Target: 50.0ms)Percentiles: P50: 0.3ms P95: 3.3ms P99: 54.5ms. Sample: 100",
+ "forced": "Marked chunk [0, 0] in minecraft:overworld to be force loaded",
+ "tick": "The game is running normallyTarget tick rate: 20.0 per second.\nAverage time per tick: 3.4ms (Target: 50.0ms)Percentiles: P50: 0.4ms P95: 6.4ms P99: 73.0ms. Sample: 100",
  "issues": [],
  "removed": [
   "datapacks/c164art/data/c164art/function/obs_export_probe/",
@@ -186,7 +187,7 @@
   "chunks": 1089,
   "entities": {
    "minecraft:item_display": 2,
-   "minecraft:text_display": 5
+   "minecraft:text_display": 1
   },
   "regions": 4,
   "folders": [
@@ -253,7 +254,7 @@
   "ServerBrands": [
    "vanilla"
   ],
-  "Time": 59
+  "Time": 56
  },
  "files": [
   {
@@ -263,8 +264,8 @@
   },
   {
    "path": "data/minecraft/game_rules.dat",
-   "size": 813,
-   "sha256": "55ec7c447fada45d"
+   "size": 817,
+   "sha256": "e74186e746dee6bd"
   },
   {
    "path": "data/minecraft/random_sequences.dat",
@@ -273,13 +274,13 @@
   },
   {
    "path": "data/minecraft/scheduled_events.dat",
-   "size": 157,
-   "sha256": "6dbb00bc85540c80"
+   "size": 156,
+   "sha256": "1744821cceb9ea40"
   },
   {
    "path": "data/minecraft/scoreboard.dat",
-   "size": 221,
-   "sha256": "8b511fa5ff233acb"
+   "size": 234,
+   "sha256": "b8d06c2c0b807613"
   },
   {
    "path": "data/minecraft/stopwatches.dat",
@@ -294,7 +295,7 @@
   {
    "path": "data/minecraft/world_clocks.dat",
    "size": 106,
-   "sha256": "9895472bb4cfb16a"
+   "sha256": "1b7acd1f3f709b9d"
   },
   {
    "path": "data/minecraft/world_gen_settings.dat",
@@ -367,14 +368,19 @@
    "sha256": "ddbf6491ee92e57c"
   },
   {
+   "path": "datapacks/c164art/data/c164map/function/bar.mcfunction",
+   "size": 1723,
+   "sha256": "a18963ea3842b791"
+  },
+  {
    "path": "datapacks/c164art/data/c164map/function/first.mcfunction",
    "size": 63,
    "sha256": "f795806517a79bdc"
   },
   {
    "path": "datapacks/c164art/data/c164map/function/join.mcfunction",
-   "size": 293,
-   "sha256": "d4b4e59a64963d0c"
+   "size": 316,
+   "sha256": "ee721534c159cee4"
   },
   {
    "path": "datapacks/c164art/data/c164map/function/load.mcfunction",
@@ -388,18 +394,18 @@
   },
   {
    "path": "datapacks/c164art/data/c164map/function/say2.mcfunction",
-   "size": 1259,
-   "sha256": "1f56aca65167d47a"
+   "size": 99,
+   "sha256": "30b7cd2e26eb69b6"
   },
   {
    "path": "datapacks/c164art/data/c164map/function/say3.mcfunction",
-   "size": 779,
-   "sha256": "1fb6620666c15311"
+   "size": 820,
+   "sha256": "160aa0528d755871"
   },
   {
    "path": "datapacks/c164art/data/c164map/function/tick.mcfunction",
-   "size": 459,
-   "sha256": "ee0cb407b8a8ef1e"
+   "size": 563,
+   "sha256": "7c9a09d771efff05"
   },
   {
    "path": "datapacks/c164art/data/minecraft/tags/function/load.json",
@@ -414,12 +420,12 @@
   {
    "path": "datapacks/c164art/pack.mcmeta",
    "size": 271,
-   "sha256": "714d8812b66d594c"
+   "sha256": "88fc71e03ac89f39"
   },
   {
    "path": "dimensions/minecraft/overworld/data/minecraft/chunk_tickets.dat",
-   "size": 48,
-   "sha256": "49937c8cea10110c"
+   "size": 116,
+   "sha256": "957948579ef9e3b4"
   },
   {
    "path": "dimensions/minecraft/overworld/data/minecraft/raids.dat",
@@ -434,32 +440,32 @@
   {
    "path": "dimensions/minecraft/overworld/entities/r.-1.0.mca",
    "size": 16384,
-   "sha256": "6deab62aff3d53d8"
+   "sha256": "2b45f007ebcade39"
   },
   {
    "path": "dimensions/minecraft/overworld/poi/r.-1.0.mca",
    "size": 12288,
-   "sha256": "5feabc94a503a135"
+   "sha256": "87901bf9ef5191f8"
   },
   {
    "path": "dimensions/minecraft/overworld/region/r.-1.-1.mca",
    "size": 1060864,
-   "sha256": "d27ef5ea2415002a"
+   "sha256": "4bc770538e034b27"
   },
   {
    "path": "dimensions/minecraft/overworld/region/r.-1.0.mca",
    "size": 1126400,
-   "sha256": "9d5f8a529f19fed2"
+   "sha256": "de3084fb166935fd"
   },
   {
    "path": "dimensions/minecraft/overworld/region/r.0.-1.mca",
    "size": 1126400,
-   "sha256": "12e21b2391be7f04"
+   "sha256": "ed6a0e324ef3b405"
   },
   {
    "path": "dimensions/minecraft/overworld/region/r.0.0.mca",
    "size": 1196032,
-   "sha256": "f57a4886aa47a705"
+   "sha256": "e63f47f34a104bb1"
   },
   {
    "path": "dimensions/minecraft/the_end/data/minecraft/chunk_tickets.dat",
@@ -498,20 +504,20 @@
   },
   {
    "path": "level.dat",
-   "size": 422,
-   "sha256": "6fe14be85c8e05f9"
+   "size": 418,
+   "sha256": "cf59f8a627b08edb"
   },
   {
    "path": "resourcepacks/resources.zip",
    "size": 357700,
-   "sha256": "3dc38827099e344e"
+   "sha256": "56f5d588b83c6958"
   }
  ],
  "zip": {
   "file": "c164-T2.zip",
-  "bytes": 479287,
-  "files": 50,
-  "sha256": "e523e1db418762011134c432336f284eba8b80e48a022e5a5dd966d0af269c62",
+  "bytes": 477352,
+  "files": 51,
+  "sha256": "162538f951431d00b3abf0a61595df5f770142e4559286ef6117d3d919c38d21",
   "top": "c164-T2"
  },
  "seconds": 10
