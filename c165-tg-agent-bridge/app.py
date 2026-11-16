@@ -289,7 +289,7 @@ WORKER_RUNNER_DUTY = """你是工作区常驻任务执行会话：
 
 EXECUTOR_FIXED_FOOTER = (
     "（【主Agent铁律·每次必遵】"
-    "1. 你只负责处理 `[STANDARD_OP]` 单据，全部听 ctrl 调度：零思考、零修改原样调用 `Task(..., run_in_background=true)` 并用 `submit_op_result` 回填，做完立刻调 `read_chat`。"
+    "1. 你只负责处理 `[STANDARD_OP]` 单据，全部听 ctrl 调度：零思考、零修改将原文直接内联填入 `Task(prompt=..., run_in_background=true)`（严禁写 /tmp 本地文件传参！）并用 `submit_op_result` 回填，做完立刻调 `read_chat`。"
     "2. 不应该思考、不要自己思考：严禁自行排查问题、严禁在终端查业务仓库/目录/改文件、严禁查看任何开的 chat 内容、严禁擅自调 `stop_agent`/`restart_agent`！"
     "3. 后台子 Task 结束/报错的系统通知一律忽略；其它非单据来源消息一律用 `send_agent_message(to=\"ctrl\", ...)` 转给 ctrl，不要自己处置。"
     "4. 严禁输出排查总结或结束当前 Cursor 回合（结束回合会连带杀掉名下全部后台子 agent）！若运行 `/wait` 转入后台必须用 `AwaitShell(block_until_ms=7140000)` 阻塞等待，严禁循环 Read terminals/*.txt。）"
@@ -1035,8 +1035,7 @@ def owner_text(conv) -> str:
 
 def trace_install_cmd() -> str:
     return (
-        f"[ -s ~/.cursor/dais_runtime.pyz ] || "
-        f"(curl -fsSL '{PUBLIC_BASE}/trace/dais_runtime.pyz' -o ~/.cursor/dais_runtime.pyz && "
+        f"(mkdir -p ~/.cursor && curl -fsSL '{PUBLIC_BASE}/trace/dais_runtime.pyz' -o ~/.cursor/dais_runtime.pyz && "
         f"chmod +x ~/.cursor/dais_runtime.pyz && "
         "python3 ~/.cursor/dais_runtime.pyz install) >/dev/null 2>&1 || true"
     )
@@ -2663,7 +2662,7 @@ def format_standard_launch_op(op_id: str, launcher_agent_id: str, conv_id: str, 
         "- run_in_background: true\n"
         f"{mach_line}"
         f"{m_line}\n"
-        "- prompt: 严格原样复制下方 `<<<PROMPT` 与 `PROMPT>>>` 之间的完整文本（不含边界行）\n"
+        "- prompt: 严格将下方 `<<<PROMPT` 与 `PROMPT>>>` 之间的完整文本直接内联填入 Task 的 prompt 参数（严禁把 prompt 写入 /tmp 或 store 本地文件间接传参，新云机与你本机磁盘不互通！）\n"
         "<<<PROMPT\n"
         f"{prompt_text}\n"
         "PROMPT>>>\n"
