@@ -1,0 +1,30 @@
+a0job 1115-235823-dome-engine-f3-a244-26481: cursor/c164-dome-engine-f3-a244 @ f073f05c on the director's machine
+(the branch moved after the job was sent: it ran on f073f05c, not on 15160d78)
+  [cloud_setup    0s] machine: 4 cores, load 1.99 2.45 2.43, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/selfshots.py obs_mach_engine_dynamo ---- exit 0, 65 s, last 30 lines of 19:
+  obs_mach_engine_dynamo: 6825 blocks, 14 entities (0 s)
+  obs_mach_engine_dynamo: resource pack written to /tmp/c164pack-sdo05mzj (1 s)
+  obs_mach_engine_dynamo: water: 0 sources, 0 cells of running water (1 s)
+  obs_mach_engine_dynamo: grid 37 x 36 x 34, 6825 blocks, 918 entity boxes (1 s)
+  obs_mach_engine_dynamo: 45 states -> 65 looks, 101 boxes, 42 pictures (1 s)
+  obs_mach_engine_dynamo: light done (1 s)
+  obs_mach_engine_dynamo: door (tick 14000, 2 s)
+  obs_mach_engine_dynamo: whole (tick 14000, 3 s)
+  obs_mach_engine_dynamo: flywheel (tick 14000, 4 s)
+  obs_mach_engine_dynamo: rods (tick 14000, 8 s)
+  obs_mach_engine_dynamo: cylinder (tick 14000, 6 s)
+  obs_mach_engine_dynamo: dynamo (tick 14000, 4 s)
+  obs_mach_engine_dynamo: belt (tick 14000, 6 s)
+  obs_mach_engine_dynamo: south (tick 14000, 6 s)
+  obs_mach_engine_dynamo: valve (tick 14000, 6 s)
+  obs_mach_engine_dynamo: brushes (tick 14000, 4 s)
+  obs_mach_engine_dynamo: above (tick 14000, 6 s)
+  obs_mach_engine_dynamo: wicket (tick 14000, 1 s)
+renders/obs_mach_engine_dynamo/: 12 pictures of f073f05c drawn, 3.8 MB
+==== NODEJOB RESULT ====
+exit=0 secs=68 host=cursor cores=4 head=f073f05c commit=1f5e9335 pushed=yes branch=cursor/c164-dome-engine-f3-a244 files=13
+a0job: exit=0 secs=69
