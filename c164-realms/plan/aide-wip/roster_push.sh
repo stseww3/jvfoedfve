@@ -11,12 +11,14 @@ TREE=/agent/repos/c164-aide-f3-b9ab
 ASM=cursor/c164-assembly-fable-a9f5
 MINE=cursor/c164-aide-f3-b9ab
 ROSTER=c164-realms/plan/ROSTER.md
+# One more file only when the director names it (EXTRA=<path> in the environment), e.g. roles/COMMON.md on 11-16 13:16.
+EXTRA="${EXTRA:-}"
 
 [ $# -eq 1 ] && [ -n "$1" ] || { echo "roster_push: give the commit message"; exit 2; }
 cd "$TREE"
 [ "$(git rev-parse --abbrev-ref HEAD)" = "$MINE" ] || { echo "roster_push: not on $MINE"; exit 1; }
 
-other="$(git status --porcelain | grep -v " $ROSTER\$" || true)"
+other="$(git status --porcelain | grep -v " $ROSTER\$" | { [ -n "$EXTRA" ] && grep -v " $EXTRA\$" || cat; } || true)"
 [ -z "$other" ] || { echo "roster_push: files other than the roster are changed:"; echo "$other"; exit 1; }
 
 fetch_asm() { git fetch -q origin "+refs/heads/$ASM:refs/remotes/origin/$ASM" >/dev/null 2>&1; }
@@ -50,6 +52,7 @@ stamp="$(TZ=Asia/Shanghai date '+%m-%d %H:%M')"
 sed -i -E "3s/最近一次更新 [0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}/最近一次更新 $stamp/" "$ROSTER"
 
 git add "$ROSTER"
+[ -z "$EXTRA" ] || git add "$EXTRA"
 if git diff --cached --quiet; then
   echo "roster_push: nothing to commit"
 else
@@ -65,7 +68,8 @@ for attempt in 1 2 3 4; do
   fi
   differs="$(git diff --name-only "origin/$ASM" HEAD)"
   if [ -z "$differs" ]; then echo "roster_push: the assembly already has this roster"; pushed=1; break; fi
-  [ "$differs" = "$ROSTER" ] || { echo "roster_push: HEAD differs from the assembly in more than the roster:"; echo "$differs"; exit 1; }
+  left="$(echo "$differs" | grep -v -x "$ROSTER" | { [ -n "$EXTRA" ] && grep -v -x "$EXTRA" || cat; } || true)"
+  [ -z "$left" ] || { echo "roster_push: HEAD differs from the assembly in more than the roster:"; echo "$differs"; exit 1; }
   bash c164-realms/tools/provenance.sh HEAD >/dev/null || { echo "roster_push: HEAD is NOT CLEAN; nothing pushed"; exit 1; }
   if git push -q origin "HEAD:refs/heads/$ASM" >/dev/null 2>&1; then pushed=1; break; fi
   sleep $((2 ** attempt))

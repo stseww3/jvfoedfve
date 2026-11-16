@@ -93,7 +93,7 @@ def main():
     for line in out.splitlines():
         sha, ref = line.split()[:2]
         name = ref[len("refs/heads/"):]
-        if name == ASM or re.search(r"-f3(-|$)", name) or name in named:
+        if name == ASM or re.search(r"-f[34](-|$)", name) or name in named:
             heads[name] = sha
     if ASM not in heads:
         sys.exit("survey: cannot list the remote branches")

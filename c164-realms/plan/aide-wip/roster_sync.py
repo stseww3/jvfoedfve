@@ -105,7 +105,7 @@ def main():
         sha, ref = line.split()[:2]
         name = ref[len("refs/heads/"):]
         named = any(name in row["new"] for row in rows.values())
-        if (re.search(r"-f3(-|$)", name) or named) and not is_scratch(name, listed):
+        if (re.search(r"-f[34](-|$)", name) or named) and not is_scratch(name, listed):
             remote[name] = sha
     if not remote:
         sys.exit("roster_sync: cannot list the remote branches")

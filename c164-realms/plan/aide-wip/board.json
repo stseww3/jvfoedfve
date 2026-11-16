@@ -1,22 +1,55 @@
 {
-  "version": "A8 8cddfa98",
-  "note": "A8 (s1 0885a5aa, renders/real-save/c164-A8/). review 12:27: V2 4.0, V3 4.0 pass, V5 4.0 pass now (the hut's gable 0.15-0.18 under the clock tower), V4 3.8 fails (the doorway's half 0.188, warm, the floor inside the door short; vault at work, two versions waiting for cr3 on V7's vault). cr2 (V1 V6 V11 V12) and cr3 (V7-V10) have not scored A8; on A7 they were pass except V10 3.6.",
+  "version": "B1 3abd2789",
+  "note": "B1 (s1 52645584, renders/real-save/c164-B1/). cr2 13:11: V1 V6 V11 V12 each 4/4/4/4/4, pass; moving in two seconds V1 3, V6 1, V11 0, V12 4 -- no machine seen moving at a glance in the four. Near layer, six outdoor places: main entrance mid yes near no; station south wall, powerhouse north face, lamp posts half; east retaining wall and the grand stair's side walls no. review 13:16, blank share (sky and cloud sea left out, %): V1 60.6 V2 47.8 V3 66.0 V4 64.6 V5 47.1 V6 66.5 V7 75.6 V8 78.6 V9 82.5 V10 79.0 V11 58.4 V12 45.2, all 68.1 (A8 about the same; only V7 down 1.6). s1 13:06, things moving in two seconds: V1 3 V2 2 V3 2 V4 3 V5 1 V6 1 V7 7 V8 5 V9 0 V10 17 V11 0 V12 4 (the line is three). View lines at B2's head 316941ab: V3 610, V4 654 over 600. From 12:47 the reviewers judge fineness (mid layer, near layer), not tenths of a point.",
   "pass": [
-    "V2",
-    "V3",
-    "V5"
-  ],
-  "fail": {
-    "V4": "3.8"
-  },
-  "wait": [
     "V1",
     "V6",
     "V11",
-    "V12",
+    "V12"
+  ],
+  "fail": {},
+  "wait": [
+    "V2",
+    "V3",
+    "V4",
+    "V5",
     "V7",
     "V8",
     "V9",
     "V10"
-  ]
+  ],
+  "blank": {
+    "V1": 60.6,
+    "V2": 47.8,
+    "V3": 66.0,
+    "V4": 64.6,
+    "V5": 47.1,
+    "V6": 66.5,
+    "V7": 75.6,
+    "V8": 78.6,
+    "V9": 82.5,
+    "V10": 79.0,
+    "V11": 58.4,
+    "V12": 45.2,
+    "all": 68.1
+  },
+  "moving": {
+    "V1": 3,
+    "V2": 2,
+    "V3": 2,
+    "V4": 3,
+    "V5": 1,
+    "V6": 1,
+    "V7": 7,
+    "V8": 5,
+    "V9": 0,
+    "V10": 17,
+    "V11": 0,
+    "V12": 4
+  },
+  "near_outdoor": {
+    "reached": 0,
+    "half": 3,
+    "not": 3
+  }
 }
