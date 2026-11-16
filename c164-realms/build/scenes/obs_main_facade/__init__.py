@@ -98,5 +98,10 @@ def shots(only=None):
         # from above: the roofs, the gable walls, the parapets and what stands on them
         dict(name="roofs", pos=[58.0, 44.0, 34.0], look_at=[8.0, 14.0, 0.0], time=TIME),
         dict(name="west", pos=[-34.0, 6.0, -30.0], look_at=[4.0, 14.0, 0.0], time=TIME),
+        # the two windows of the base storey where somebody is at work (main/_nightwork.py), as plan/fine.md
+        # asks: from ten blocks, the two of them and the pilaster between; and close, from where one stands
+        # in the court before the desk's window and looks up at it (nearer, the sill hides the desk)
+        dict(name="work_mid", pos=[wing + 10.5, 2.6, z3], look_at=[wing, 4.0, z3], time=TIME),
+        dict(name="work_near", pos=[wing + 5.0, 1.62, z3 + 2.0], look_at=[wing, 4.2, z3 + 2.0], time=TIME),
     ]
     return [s for s in out if only is None or s["name"] in only]

@@ -96,6 +96,7 @@ EVENTS = {
     "creak": ("block.copper_door.open", 0.60, 0.70),        # a vane, a wind pump, a shutter turns on its pin
     "thump": ("block.barrel.close", 1.00, 0.70),            # a carrier of the pneumatic post lands in its station
     "ting": ("block.note_block.bell", 0.45, 1.78),          # ... and rings the station's little bell
+    "doorbell": ("block.note_block.bell", 0.35, 1.60),      # the entrance's electric bell, a stroke of its hammer (props/bells)
     "spark": ("entity.firework_rocket.twinkle", 0.35, 1.60),    # the spark gap
     "drip": ("block.pointed_dripstone.drip_water_into_cauldron", 1.00, 1.00),   # a tap drips into a sink
     "scratch": ("ui.cartography_table.take_result", 0.60, 1.00),    # a pen on paper: the engraving machine, a recorder
@@ -234,6 +235,7 @@ KINDS = {
     "creak": (("creak", 120, (0,)),),
     "thump": (("thump", 200, (0,)),),
     "ting": (("ting", 200, (TING_AFTER,)),),
+    "doorbell": (("doorbell", 300, (2, 12, 22, 52, 62, 72)),),      # three and three: props/bells' call
     "spark": (("spark", 100, (0, 30)),),
     "drip": (("drip", 50, (0,)),),
     "scratch": (("scratch", 60, (0, 20)),),
@@ -436,10 +438,22 @@ def train(canvas, line, *, wheel, chimney, whistle, cocks=None, car=None, bell=N
     hang("rail", times["rolls"], car, coach)
     hang("joint", times["joints"], car, coach)
     if bell is not None:
-        x, y, z = (float(v) for v in bell)
-        for text in commands("bell", choice=pick("bell")):
-            line.run(text.format(x=_n(x), y=_n(y), z=_n(z)), at=list(strokes(times)))
+        for tick in strokes(times):
+            spot = _fixed(line, coach, tick, bell)
+            for text in commands("bell", choice=pick("bell")):
+                line.run(text, at=[tick], pos=spot, car=coach)
     return times
+
+
+def _fixed(line, car, tick, spot):
+    """What to give the train's run() as pos= on one tick for a place that stays where it is (the
+    station's bell). run() takes a point of a car and writes where the car has carried it by that
+    tick, and a command without pos= is not moved with the scene when the scene is placed; so the
+    point given is the one the car has brought to `spot` on that tick."""
+    o = line.where(tick, (0.0, 0.0, 0.0), car=car)
+    turned = [line.where(tick, axis, car=car) for axis in ((1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0))]
+    d = [float(spot[i]) - o[i] for i in range(3)]
+    return tuple(sum((turned[k][i] - o[i]) * d[i] for i in range(3)) for k in range(3))
 
 # Only players within the reach of a spot are sent its sound (blocks from the spot), which is what
 # keeps a room's sound in the room.
@@ -675,36 +689,80 @@ _PHRASES = ("gfeb", "egfb", "efge", "gefb", "bfge")
 _QUARTERS = {1: (0,), 2: (1, 2), 3: (3, 4, 0), 4: (1, 2, 3, 4)}
 
 
-def chime_ticks(quarter):
-    """How long the chime of a quarter lasts, in ticks, its last note rung out: 100, 200, 300, 400."""
-    return len(_QUARTERS[quarter]) * (4 + CHIME_REST - 1) * CHIME_BEAT
+def chime_ticks(quarter, beat=CHIME_BEAT):
+    """How long the chime of a quarter lasts, in ticks, its last note rung out: 100, 200, 300, 400
+    at the beat of CHIME_BEAT."""
+    return len(_QUARTERS[quarter]) * (4 + CHIME_REST - 1) * int(beat)
 
 
-def chimes(canvas, pos, quarter, cycle, at=0, reach=None, origin=(0, 0, 0), phase=0, choice=0):
+def chimes(canvas, pos, quarter, cycle, at=0, reach=None, origin=(0, 0, 0), phase=0, choice=0, beat=CHIME_BEAT):
     """The tower clock chimes a quarter (1, 2, 3, or 4 for the full hour) from tick `at` of every
     `cycle` ticks, at `pos`, its bells. The hour itself is strikes(), from at + chime_ticks(4) on.
     reach: the players within so many blocks hear it; None is as far as the bells carry.
-    Returns 0."""
+    beat: ticks from note to note. Returns 0."""
     if quarter not in _QUARTERS:
         raise ValueError(f"motion/sound: a clock chimes the quarters 1 to 4, not {quarter}")
     reach = far("chime", choice) if reach is None else reach
     ticks = {}
     for n, phrase in enumerate(_QUARTERS[quarter]):
         for i, bell in enumerate(_PHRASES[phrase]):
-            ticks.setdefault(bell, []).append(int(at) + (n * (4 + CHIME_REST - 1) + i) * CHIME_BEAT)
+            ticks.setdefault(bell, []).append((int(at) + (n * (4 + CHIME_REST - 1) + i) * int(beat)) % int(cycle))
     for bell, when in sorted(ticks.items()):
         place(canvas, "chime", pos, reach, origin=origin, phase=phase, choice=choice, cycle=cycle, at=when,
               pitch=round(_BELLS[bell], 4))
     return 0
 
 
-def strikes(canvas, pos, count, cycle, at=0, reach=None, origin=(0, 0, 0), phase=0, choice=0):
-    """The hour bell strikes `count` times from tick `at` of every `cycle` ticks, at `pos`. Returns 0."""
+def strikes(canvas, pos, count, cycle, at=0, reach=None, origin=(0, 0, 0), phase=0, choice=0, beat=STRIKE_BEAT):
+    """The hour bell strikes `count` times from tick `at` of every `cycle` ticks, at `pos`, a
+    stroke every `beat` ticks. Returns 0."""
     if int(count) < 1:
         raise ValueError("motion/sound: a clock strikes once or more")
     reach = far("strike", choice) if reach is None else reach
     return place(canvas, "strike", pos, reach, origin=origin, phase=phase, choice=choice, cycle=cycle,
-                 at=[int(at) + i * STRIKE_BEAT for i in range(int(count))])
+                 at=[(int(at) + i * int(beat)) % int(cycle) for i in range(int(count))])
+
+
+# The tower clock keeps the station's time (machines/clock; plan/fine.md 4: one time and one beat
+# for every clock of the hill). An hour of the dials is five minutes, so its bells are quicker
+# than a real clock's: a phrase of a quarter in three seconds and a half, a stroke of the hour
+# every two. The first three quarters begin on the quarter. The hour's four phrases come before
+# the hour, and its first stroke falls on the hour itself: on the tick the time ball drops.
+CLOCK_BEAT = 14                 # ticks from note to note of a quarter
+CLOCK_STROKE = 40               # ticks from one stroke of the hour to the next
+CLOCK_PAUSE = 30                # ticks from the end of the hour's chime to its first stroke: the chimes are on the
+#                                 chain of an hour and the strokes on that of twelve, started up to a second apart
+
+
+def clock_chimes():
+    """The tower clock's chimes in one hour of the dials: ((tick, quarter, ticks), ...) in the
+    order of the round of machines/clock's HOUR ticks -- the tick a chime starts on, the quarter
+    (1, 2, 3; 4 is the one before the full hour) and the ticks it lasts. What is shown while the
+    bells play (main/tower's procession) reads its times here."""
+    C = _package("machines", "clock")
+    out = []
+    for tick, quarter in C.quarters():
+        ticks = chime_ticks(quarter, CLOCK_BEAT)
+        out.append(((tick - ticks - CLOCK_PAUSE) % C.HOUR if quarter == 4 else tick, quarter, ticks))
+    return tuple(sorted(out))
+
+
+def clock_strokes():
+    """Its hours: ((tick, hour, ticks), ...) once round in machines/clock's HALF_DAY -- the tick
+    of the first stroke, which is the hour itself, the hour it strikes and the ticks that takes."""
+    C = _package("machines", "clock")
+    return tuple((tick, hour, hour * CLOCK_STROKE) for tick, hour in C.strikes())
+
+
+def clock(canvas, pos, origin=(0, 0, 0), choice=0):
+    """The tower clock's bells at pos, in the time of the station's dials: the quarters of
+    clock_chimes() and the hours of clock_strokes(). Returns 0."""
+    C = _package("machines", "clock")
+    for tick, quarter, _ticks in clock_chimes():
+        chimes(canvas, pos, quarter, C.HOUR, at=tick, origin=origin, choice=choice, beat=CLOCK_BEAT)
+    for tick, hour, _ticks in clock_strokes():
+        strikes(canvas, pos, hour, C.HALF_DAY, at=tick, origin=origin, beat=CLOCK_STROKE)
+    return 0
 
 
 # ---- the spots of the master scene ---------------------------------------------------------------------
@@ -782,6 +840,51 @@ def _wind(canvas, origin):
         place(canvas, "wind", (tower.AXIS[0], tower.LOOKOUT[0] + 1.5, tower.AXIS[1]), REACH_TOWER, origin)
 
 
+def _tower(canvas, origin):
+    """The tower clock's bells ring in the tower's lookout, where main/tower hangs its bell."""
+    tower = _package("main", "tower")
+    if tower is None or _package("machines", "clock") is None:
+        return
+    at = getattr(tower, "BELL_AT", None) or (tower.AXIS[0], tower.LOOKOUT[0] + 2.25, tower.AXIS[1])
+    clock(canvas, tuple(at), origin)
+
+
+# The train on the canvas. Its sounds come from over the middle of a car, so many blocks above
+# the rails: near enough for the ear (the smoke has the chimney's own place; a sound a block off
+# is not heard to be), and no measure of the engine's is needed that its models may still change.
+TRAIN_NAME = "train"                                    # machines/train's NAME: what MK.trains() knows it by
+ENGINE_CARS, COACH_CARS = ("loco", "engine", "locomotive"), ("coach", "car")
+CHIMNEY_UP, WHISTLE_UP, COCKS_UP, FLOOR_UP, BELL_UP = 2.9, 2.75, 0.5, 0.5, 3.25
+DRIVER = 0.45                                           # the radius of the engine's driving wheels, for the exhaust's beat
+
+
+def _train(canvas, origin):
+    """The train's sounds, when a train stands on the canvas (the motion kit's travel; the
+    machines line has built it by the time this line builds). Returns the timetable, or None."""
+    trains = getattr(MK, "trains", None)
+    line = trains(canvas).get(TRAIN_NAME) if trains is not None else None
+    if line is None:
+        return None
+    cars = dict(getattr(line, "cars", {}))
+    if not cars:
+        return None
+    along = lambda name: float(getattr(cars[name], "at", 0.0))                      # noqa: E731
+    loco = next((n for n in ENGINE_CARS if n in cars), max(cars, key=along))        # the engine is at the downhill end
+    coach = next((n for n in COACH_CARS if n in cars), min(cars, key=along))
+    cycle = int(line.cycle)
+    home = float(getattr(line, "home", line.at(0)))
+    stand = min(range(cycle), key=lambda t: abs(float(line.at(t)) - home))          # a tick on which it stands at home
+
+    def over(name, up):
+        x, y, z = line.where(stand, None, car=name)
+        return (x, y + up, z)
+
+    engine = _package("machines", "locomotive")
+    return train(canvas, line, wheel=float(getattr(engine, "DRIVER", DRIVER)), chimney=over(loco, CHIMNEY_UP),
+                 whistle=over(loco, WHISTLE_UP), cocks=over(loco, COCKS_UP), car=over(coach, FLOOR_UP),
+                 bell=over(coach, BELL_UP), loco=loco, coach=coach)
+
+
 def build(canvas, origin=(0, 0, 0)):
     """Register every sound spot of the master scene. Returns 0 (no display entity is placed)."""
     _clocks(canvas, origin)
@@ -789,6 +892,8 @@ def build(canvas, origin=(0, 0, 0)):
     _telegraph(canvas, origin)
     _pneumatic(canvas, origin)
     _wind(canvas, origin)
+    _tower(canvas, origin)
+    _train(canvas, origin)
     return 0
 
 
