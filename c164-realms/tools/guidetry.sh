@@ -11,7 +11,12 @@ at="${1:?the commit of the assembly}"; shift
 assembly=cursor/c164-assembly-fable-a9f5
 here="$(cd "$(dirname "$0")/.." && pwd)"
 repo="$(git -C "$here" rev-parse --show-toplevel)"
-side="${TMPDIR:-/tmp}/c164_s1_guidetry"
+# tools/export.py starts its server only in a tree under a worker node's job folder; so does this
+case "$(realpath "$repo")" in
+  /tmp/dais_jobs/*) ;;
+  *) echo "guidetry: only inside a job on a worker node (tools/nodejob.sh), not here ($repo)" >&2; exit 2 ;;
+esac
+side="$(realpath "$repo")-guidetry"
 git -C "$repo" fetch -q origin "$assembly" || { echo "guidetry: the assembly could not be fetched" >&2; exit 3; }
 full="$(git -C "$repo" rev-parse --verify -q "$at^{commit}")" || { echo "guidetry: no commit $at" >&2; exit 2; }
 git -C "$repo" merge-base --is-ancestor "$full" FETCH_HEAD || { echo "guidetry: $at is not of the assembly" >&2; exit 2; }
