@@ -260,6 +260,56 @@ def checked(q, twin, camera_y, n=4000):
         raise SystemExit(f"preview: _hazed() and Twin.apply() differ by up to {np.abs(ours - theirs).max():g}")
 
 
+class Far(shaders.Twin):
+    """The twin with the far sea's face painted on it (cloudsea.far_colour), until sky/_shaders
+    paints it itself. ``at`` is the camera in the world."""
+    at = (0.0, 0.0, 0.0)
+
+    def sea(self, d, camera_y):
+        from scenes.obs.sky import cloudsea
+        height = max(camera_y - self.n["sea_y"], 0.5)
+        reach = height / np.maximum(-d[:, 1], 1e-5)
+        colour = np.empty((len(d), 3))
+        colour[...] = self.sea_colour
+        down = d[:, 1] < 0.0
+        colour[down] = cloudsea.far_colour(self.sea_colour, self.at[0] + d[down, 0] * reach[down],
+                                           self.at[2] + d[down, 2] * reach[down], reach[down], height)
+        return self._mix(colour, self.band(d), self.fogged(reach, camera_y, d[:, 1]))
+
+
+def agreement(cells):
+    """How the far sea's painting agrees with the blocks: over the columns of the open face (the
+    top block at the face's own levels, no cloud column higher than those within six blocks), the
+    tone build() gave against far_tone()."""
+    from scenes.obs.common import blocks as B
+    from scenes.obs.sky import cloudsea
+    names = {name: i for i, name in enumerate(B.CLOUD)}
+    top = {}
+    for (x, y, z), state in cells.items():
+        i = names.get(state.partition("[")[0].split(":")[-1])
+        if i is not None and y > top.get((x, z), (-999, 0))[0]:
+            top[(x, z)] = (y, i)
+    cols = np.array(sorted(top))
+    ys = np.array([top[tuple(c)][0] for c in cols])
+    tones = np.array([top[tuple(c)][1] for c in cols])
+    x0, z0 = cols.min(axis=0)
+    high = np.zeros(tuple(cols.max(axis=0) - (x0, z0) + 1), dtype=bool)
+    high[cols[:, 0] - x0, cols[:, 1] - z0] = ys > cloudsea.MEAN + 1
+    near = np.zeros_like(high)
+    for dx in range(-6, 7):
+        for dz in range(-6, 7):
+            near |= np.roll(np.roll(high, dx, axis=0), dz, axis=1)
+    calm = ~near[cols[:, 0] - x0, cols[:, 1] - z0]
+    theirs = cloudsea.far_tone(cols[calm, 0], cols[calm, 1])
+    table = np.zeros((5, 5), dtype=int)
+    np.add.at(table, (tones[calm], theirs), 1)
+    print(f"the far sea against the blocks, {calm.sum()} columns of the open face (rows: the block's tone, columns: the painted)")
+    for i, row in enumerate(table):
+        print(f"  {i}: " + " ".join(f"{v:7d}" for v in row))
+    print(f"  the same tone on {np.trace(table) / max(1, table.sum()):.1%}; painted shares "
+          + ", ".join(f"{v:.3f}" for v in table.sum(axis=0) / max(1, table.sum())))
+
+
 def loaded(pos, lo, shape, chunks):
     """Which columns of the grid the game has loaded round a camera (ChunkTrackingView.isWithinDistance)."""
     cx, cz = math.floor(pos[0] / 16.0), math.floor(pos[2] / 16.0)
@@ -317,6 +367,8 @@ def main():
     ap.add_argument("--size", default="1280x720")
     ap.add_argument("--fov", type=float, default=77.0)
     ap.add_argument("--plan", action="store_true", help="also write <out>-plan.png")
+    ap.add_argument("--flat", action="store_true", help="the far sea as sky/_shaders paints it now: one colour")
+    ap.add_argument("--agree", action="store_true", help="print how the far sea's painting agrees with the blocks")
     ap.add_argument("--sheet", type=int, default=0, help="one picture <out>-sheet.png, this many views to a row")
     ap.add_argument("--set", action="append", default=[], metavar="NAME=VALUE",
                     help="a constant of scenes.obs.sky.cloudsea for this run (a Python expression)")
@@ -352,6 +404,8 @@ def main():
 
     if args.plan:
         plan(cells, look_at(sky.tick("blue")), f"{args.out}-plan.png")
+    if args.agree:
+        agreement(cells)
     if not names:
         return
     views = {s["name"]: s for s in base.shots()}
@@ -387,13 +441,14 @@ def main():
                 t1 = time.time()
                 for key, value in zip(names_of, values):
                     setattr(sky, key, value)
-                twin = shaders.Twin(which if which in sky.LOOKS else sky.DEFAULT)
+                twin = (shaders.Twin if args.flat else Far)(which if which in sky.LOOKS else sky.DEFAULT)
+                twin.at = (float(shot["pos"][0]) + place[0], eye, float(shot["pos"][2]) + place[2])
                 q = numbers(look, eye - twin.n["sea_y"])
                 checked(q, twin, eye)
                 out = np.zeros((size[1], size[0], 3))
                 _draw(w, q, cam, d, np.ascontiguousarray(twin.band(d)), np.ascontiguousarray(twin.behind(d, eye)),
                       np.ascontiguousarray(twin.sky_at(d, eye)), out)
-                label = f"{name}-{which}-{law}"
+                label = f"{name}-{which}-{law}" + ("-flat" if args.flat else "")
                 picture = Image.fromarray((np.clip(out, 0.0, 1.0) * 255.0 + 0.5).astype(np.uint8))
                 if args.sheet:
                     tiles.append((label, picture.resize((size[0] // 2, size[1] // 2), Image.LANCZOS)))

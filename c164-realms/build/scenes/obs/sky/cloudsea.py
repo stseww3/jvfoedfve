@@ -351,13 +351,9 @@ def _field(seed, land, sunk=()):
     amount = N.smoothstep(THIN_OUT[1], THIN_OUT[0], out)
     # where the cloud piles up: banks, longer north-south than they are wide, about two thirds of
     # the sea that may carry any; 1 in a bank, 0 in the calm lanes that wind between them
-    bend = N.fbm2(X / 90.0, Z / 90.0, seed + 7, octaves=2) * 22.0
-    core = N.smoothstep(-0.20, 0.04, N.fbm2((X + bend) / 44.0, Z / 70.0, seed + 1, octaves=2))
+    core, base = _face(X, Z, seed)
     # how hard it boils: the heads stand high here and lie low and woolly there
     vigour = N.smoothstep(-0.25, 0.25, N.fbm2(X / 44.0, Z / 44.0, seed + 3, octaves=2))
-    # the face: low heaps lying side by side on long low waves, the banks riding higher
-    roll = N.fbm2((X + bend) / ROLL[0], Z / ROLL[1], seed + 11, octaves=2)
-    base = MEAN + SWELL * roll + PILLOW * (_heaps(X + 0.5 * bend, Z, seed + 17) - 0.45) + BANK * (core - 0.5)
 
     top = np.full((nx, nz), -np.inf)
 
@@ -519,6 +515,18 @@ def _field(seed, land, sunk=()):
     return level, height, sea
 
 
+def _face(X, Z, seed):
+    """The open sea's face at the columns (X, Z): (core, base). ``core`` is 1 in a bank, where the
+    cloud piles up, and 0 in the calm lanes that wind between the banks, which are longer
+    north-south than they are wide and take about two thirds of the sea. ``base`` is the
+    continuous y of a column's top block where no head stands: low heaps lying side by side on
+    long low waves, the banks riding higher."""
+    bend = N.fbm2(X / 90.0, Z / 90.0, seed + 7, octaves=2) * 22.0
+    core = N.smoothstep(-0.20, 0.04, N.fbm2((X + bend) / 44.0, Z / 70.0, seed + 1, octaves=2))
+    roll = N.fbm2((X + bend) / ROLL[0], Z / ROLL[1], seed + 11, octaves=2)
+    return core, MEAN + SWELL * roll + PILLOW * (_heaps(X + 0.5 * bend, Z, seed + 17) - 0.45) + BANK * (core - 0.5)
+
+
 def _heaps(X, Z, seed):
     """The low heaps the face of the sea is made of: for every column how high the highest of the
     flat domes over it stands, 0 in a crease between two and 1 on the top of a full one. One dome
@@ -561,6 +569,64 @@ def _shade(h):
     crest = np.clip(h - _blur(h, 3) - 0.5, 0.0, 1.0)
     crown = np.clip((h - (LOW - MEAN)) / 4.0, 0.0, 1.0)
     return 0.75 + turn - 0.22 * crease - 0.18 * walled + 0.10 * crest + 0.12 * crown
+
+
+# --- the far sea: what is painted where the blocks have ended ----------------------------------------
+# The sky's shaders (sky/_shaders.py) paint the sea on below the horizon, and the blocks go into
+# that painting between sky/mood's FOG_START and FOG_END. A flat colour there would be a floor; the
+# painted sea carries the open face's own shapes instead: far_tone() is the tone of the column
+# (x, z) as build() would give it to the face with no head on it and no land near, from the same
+# _face(), so that in a calm lane the painting is the blocks' own picture and the blocks end in it
+# without a seam. Further out, where a pixel covers several blocks, the tones run together into
+# their mean.
+FAR_FOLD = 2.4                  # the crease read from the four columns beside one, for build()'s blur over 5 x 5
+FAR_PIXEL = 600.0               # pixels to a radian: how much sea a pixel covers at a distance
+FAR_FINE = (3.0, 7.0)           # the tones are whole while a pixel covers this many blocks, run together from the second on
+FAR_MEAN = (0.0, 0.03, 0.22, 0.61, 0.14)    # the share of each tone on the open face: what they run together into
+
+
+def far_tone(x, z, seed=SEED):
+    """The tone (0..4, an index into B.CLOUD) of the far sea's column (x, z): whole numbers or
+    numpy arrays of them, scene coordinates."""
+    x, z = np.asarray(x, dtype=float), np.asarray(z, dtype=float)
+
+    def height(i, k):
+        return np.clip(_face(i, k, seed)[1], TROUGH, MEAN + 1.45) - MEAN
+
+    h, west, east = height(x, z), height(x - 1.0, z), height(x + 1.0, z)
+    lie = 0.5 * (east - west)                       # rising eastwards = facing west
+    fold = 0.25 * (west + east + height(x, z - 1.0) + height(x, z + 1.0)) - h
+    low = np.clip(1.6 - h, 0.0, 1.0)
+    turn = np.clip(0.30 * np.tanh(1.3 * lie) + 0.16 * low * np.tanh(LIE * lie), -0.34, 0.30)
+    crease = np.clip((FAR_FOLD * fold - 0.35) / 0.75, 0.0, 1.0)
+    last = len(B.CLOUD) - 1
+    return np.clip(np.rint(last * (0.75 + turn - 0.22 * crease)), 0, last).astype(int)
+
+
+def far_tints():
+    """What a tone's colour is of level cloud's (the second lightest tone), per channel; and the
+    last row what the far sea's tones come to where they run together."""
+    ramp = np.array([P.colour("cloud", i) for i in range(len(B.CLOUD))], dtype=float)
+    tints = ramp / ramp[len(B.CLOUD) - 2]
+    return np.vstack([tints, np.array(FAR_MEAN) @ tints])
+
+
+def far_colour(sea, x, z, reach, height, seed=SEED):
+    """The far sea's colour before the fog: ``sea`` is level cloud's (sky/mood's "cloud"), (x, z)
+    where the line of sight meets the sea's top (numpy arrays, scene coordinates), ``reach`` how
+    far along it that is and ``height`` the eye over the sea's top."""
+    x, z, reach = np.asarray(x, dtype=float), np.asarray(z, dtype=float), np.asarray(reach, dtype=float)
+    tints = far_tints()
+    spread = reach * reach / (max(float(height), 0.5) * FAR_PIXEL)     # blocks to a pixel along the line of sight
+    t = np.clip((spread - FAR_FINE[0]) / (FAR_FINE[1] - FAR_FINE[0]), 0.0, 1.0)
+    blur = t * t * (3.0 - 2.0 * t)
+    out = np.empty(x.shape + (3,))
+    out[...] = tints[-1]
+    fine = blur < 1.0
+    if fine.any():
+        tone = far_tone(np.floor(x[fine]), np.floor(z[fine]), seed)
+        out[fine] = tints[tone] * (1.0 - blur[fine, None]) + tints[-1] * blur[fine, None]
+    return out * np.asarray(sea, dtype=float)
 
 
 def build(canvas, origin=(0, 0, 0), *, seed=SEED, dress=None):
