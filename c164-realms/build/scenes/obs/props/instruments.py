@@ -65,6 +65,10 @@ KNOB = K.flat("brass", 4)                         # the bright end of a knurled 
 ROD = K.flat("brass", 3)                          # a rod one pixel thick: one clean line, no edges
 INK = P.RAMPS["iron"][1]
 LUME = P.RAMPS["phosphor"][2]
+# The light the luminous marks hold of themselves. In a lit room they take the room's light like the
+# paint beside them; in the dark they are a glimmer. At 15 they were the brightest points of a dark
+# room and of a lit one and read as small green lamps (real client, V8 and V10).
+LUME_LEVEL = 8
 
 
 # ---- painted surfaces ----------------------------------------------------------------------------
@@ -428,7 +432,7 @@ def _dial(m, name, rows, centre, z, hands=()):
     m.box((x - half, y - half, z - 0.25), (x + half, y + half, z), K.flat("porcelain", 3), skip="nudew",
           faces={"s": _sprite(name, rows, **DIAL_COLOURS)})
     m.box((x - half, y - half, z), (x + half, y + half, z + 0.1), K.flat("phosphor", 2), skip="nudew",
-          faces={"s": _sprite(name + "_lume", _lume(rows), g=LUME)}, emit=15, shade=False)
+          faces={"s": _sprite(name + "_lume", _lume(rows), g=LUME)}, emit=LUME_LEVEL, shade=False)
     top = z + 0.1
     for lean, length, tail in hands:
         m.box((x - 0.5, y - tail, top), (x + 0.5, y + length, top + 0.2), HAND, grain="y",
