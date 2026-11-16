@@ -96,6 +96,16 @@ NECKS = (
     dict(start=(3, TZ0), heading=(0, -1), fall=1.0, level=SHELVES["weather station"][1], run=7),
     dict(start=(TX0, -32), heading=(-1, 0), fall=1.0, level=SHELVES["water tower"][1], run=9),
 )
+# Rock that is held up beside level ground (the walk-out's first round, 11-16).
+# The weather station's shelf lies only four blocks off the terrace's wall. Left to the beds and to
+# the wall's footing, the rock between the two was a trough two and three deep either side of the
+# steps. It is a bank now, a block above the shelf's paving, and the wall before the shelf stands on it.
+BANK = ("weather station", 1)   # the shelf, and how far above its level the bank stands
+# Where the lower platform reaches past the terrace's two ends, the rock beside its inner edge lay
+# level with the paving on the south: eighteen cells one walked out on. The platform is cut into
+# the mountain there: the rock stands BACK_UP above the paving, BACK cells deep, as it did on the north.
+BACK = 3
+BACK_UP = 2
 
 # --- ridges and gullies -----------------------------------------------------------------------------
 # A ridge: where its crest leaves level ground, its heading, the crest's height there, and how the
@@ -448,6 +458,12 @@ def _mountain():
         h = np.where(dist == 0, float(level), h)
         kept |= dist == 0
         shelf = np.where(dist <= 1, -1.0, shelf)
+    (bx0, _, bx1, bz1), level = SHELVES[BANK[0]]        # the bank between the weather station and the wall
+    bank = (X >= bx0) & (X <= bx1) & (Z > bz1) & (Z < TZ0) & ~kept
+    h = np.where(bank, np.maximum(h, level + BANK[1]), h)
+    lx0, lz0, lx1, lz1 = S.LOWER_PLATFORM               # the rock at the lower platform's two back corners
+    back = (X < lx0) & (X >= lx0 - BACK) & (((Z > TZ1) & (Z <= lz1)) | ((Z < TZ0) & (Z >= lz0)))
+    h = np.where(back, np.maximum(h, LOWER + BACK_UP), h)
 
     rough = 0.45 * N.fbm2(X * 0.31, Z * 0.31, SEED + 41, octaves=2)
     h = np.where(kept, h, h + np.where(shelf >= 0, 0.35, 1.0) * rough)     # the shelves are smoother than the cliffs
@@ -500,6 +516,9 @@ def _rim_want(x, z, noise):
         y -= RIM_GULLY * math.exp(-(math.dist((x, z), g["start"]) / RIM_GULLY_NEAR) ** 2)
     for rg in RIDGES:
         y += RIM_RIDGE * math.exp(-(math.dist((x, z), rg["start"]) / RIM_RIDGE_NEAR) ** 2)
+    (bx0, _, bx1, _), level = SHELVES[BANK[0]]
+    if z == TZ0 and bx0 <= x <= bx1:                    # squarely before the banked shelf: the wall stands on the bank
+        y = max(y, float(level + BANK[1]))
     return y
 
 
