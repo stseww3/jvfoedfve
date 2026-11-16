@@ -1,0 +1,3 @@
+branch=cursor/c164-shell-f3-3067
+head=3944c14a4e03363ae21aabe3779b46d939c48d77
+args=--no-push --limit 600 --tail 30 env\ PYTHONPATH=build\ python\ -m\ scenes.obs.main.shell\ check\ \&\&\ python\ tools/check.py\ --scene\ obs_main_shell 
