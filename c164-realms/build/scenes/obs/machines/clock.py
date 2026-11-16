@@ -1,10 +1,11 @@
 """machines/clock.py -- the master clock, the tower clock and the time ball.
 
 Card plan/packages/machines/clocks.md; detail plan/parts/A5-machines.md 2.4 and 3.3; ART-PLAN 5.3, 7.2.
-One set of timekeeping told in three places. Every dial shows the same time, TIME (the skeleton's
-CLOCK): five minutes to eight. The blue hour of the pictures is eight in the evening, so the whole
-hill stands at the moment before the time signal: the dials say 7:55 and the ball has been hoisted
-half-way up its mast, the sign that it is about to drop (A0, 11-15).
+One set of timekeeping told in three places. Every dial is placed at the same time, TIME (the
+skeleton's CLOCK): five minutes to eight. The blue hour of the pictures is eight in the evening, so
+the whole hill is placed at the moment before the time signal: the dials say 7:55 and the ball has
+been hoisted half-way up its mast, the sign that it is about to drop (A0, 11-15). From there the
+clocks run (the second round, 11-16: everything is to move): see "Moving pieces" below.
 
 The master clock (star hall). A long-case regulator in dark wood and brass, the one source of time
 for the hill. It stands on the slate step at the east foot of the telescope pier with its back on
@@ -60,22 +61,26 @@ Models; px equals the scale each is shown at, so every texture is 16 pixels to t
   mach_clock_ball_red        the same in dark red                                              1
 18 display entities in all (master 5, tower 12, ball 1); the budget of this card is 40.
 
-Moving pieces, for motion (A8). Only the pendulum moves in this version of the map (A0, 11-15: the
-sky is locked at eight in the evening, so the hands stand at 7:55 and the ball waits at half mast; a
-clock that ran would part from the sky). The hands and the ball are entities of their own all the
-same. The pose placed here is where a loop starts: the pendulum hangs plumb.
-  the pendulum   is registered with the motion line where it is placed (master(), one line:
-        MK.swing(canvas, "z", PENDULUM_SWING, MK.PENDULUM); plan/parts/motion.md 4). It swings about
-        the model's z axis through its anchor, PENDULUM_SWING degrees each way, there and back in
-        two seconds; motion/_kit tags it (m.mach_clock_pendulum) and writes the functions.
+Moving pieces (motion/_kit registers each where it is placed and writes the functions). In the
+first round only the pendulum moved (A0, 11-15: the sky is locked at eight in the evening and a
+clock that ran would part from it). In the second everything is to move (the admin, 11-16): the
+sky stays locked and the clocks run on from the pose they are placed in, which is where the loop
+starts and what every offline picture shows: 7:55, the ball at half mast, the pendulum plumb.
+  the pendulum   MK.swing(canvas, "z", PENDULUM_SWING, MK.PENDULUM): about the model's z axis
+        through its anchor, PENDULUM_SWING degrees each way, there and back in two seconds.
         transformation("pendulum", degrees) is the same pose, for whoever wants one by hand.
-The pieces that stand still in this version keep a tag of their own, for the day they move:
-  c164_clock_hand_h, c164_clock_hand_m   all five hour hands and all five minute hands. A hand
-        turns about the model's z axis through its anchor, clockwise as the dial is looked at:
-        transformation(name, -degrees) with degrees from hand_angles(hour, minute).
-  c164_clock_ball       slides along the mast, y only: BALL_HALF_Y (the pose now), BALL_UP_Y at
-        the top of the mast, BALL_REST_Y after the drop. It keeps its turn about the mast:
-        transformation("ball") has it.
+  the hands      all five hour hands and all five minute hands (tags c164_clock_hand_h and
+        c164_clock_hand_m) turn about the model's z axis through its anchor, clockwise as the
+        dial is looked at: a minute hand once in HOUR ticks, an hour hand once in HALF_DAY. The
+        dials run twelve times as fast as a day: an hour of theirs is five minutes, so that the
+        minute hand is seen to creep. transformation(name, -degrees) with degrees from
+        hand_angles(hour, minute) is the pose of a hand at a time.
+  the ball       (tag c164_clock_ball) slides along the mast, y only, once in every hour of the
+        dials: from half mast (BALL_HALF_Y, where it waits) to the top (BALL_UP_Y) two minutes of
+        the dials before the hour, down to the foot of the mast (BALL_REST_Y) on the hour, and
+        back to half mast half a minute later: ball_moves(). It keeps its turn about the mast.
+Every other dial of the hill that is placed at TIME and turns in HOUR and HALF_DAY keeps time with
+these; ticks_to(hour, minute) is the tick of the loop at which the dials show a time.
 transformation() gives the whole "transformation" of the entity for a turn, because the anchor of a
 hand or of the pendulum is not the middle of its model and the translation changes with the turn.
 
@@ -97,8 +102,27 @@ from ..props import _kit as K
 
 PREFIX = "mach_clock_"
 
-# What every dial shows: the hour and the minute. S2 keeps the number in the skeleton (A0, 11-15).
+# What every dial shows where it is placed: the hour and the minute. S2 keeps the number in the
+# skeleton (A0, 11-15).
 TIME = tuple(S.CLOCK)
+
+# --- the clocks run (the second round; the admin, 11-16: everything is to move) ------------------
+# The sky stays locked at eight in the evening and the dials go on from TIME, twelve times as fast
+# as a day would: an hour of the dials is HOUR ticks, five minutes, so that a minute hand is seen
+# to creep and the ball drops every five minutes (A0, plan/round2.md). The loop's tick 0 is TIME.
+# A dial anywhere on the hill that is placed at TIME and whose hands turn in these two periods
+# starts with the others and stays with them (the clock room, the station clock: they read these).
+HOUR = 6000                      # ticks from one hour of the dials to the next: a minute hand once round
+HALF_DAY = 12 * HOUR             # 72000: an hour hand once round
+
+
+def ticks_to(hour, minute=0.0):
+    """Ticks from the start of the loop, when the dials show TIME, to the first time they show
+    hour:minute (0 for TIME itself, always under HALF_DAY)."""
+    now = (TIME[0] % 12) * 60.0 + TIME[1]
+    then = (hour % 12) * 60.0 + minute
+    return int(round(((then - now) % 720.0) * HOUR / 60.0))
+
 
 TAG_HOUR, TAG_MINUTE = "c164_clock_hand_h", "c164_clock_hand_m"
 TAG_BALL = "c164_clock_ball"
@@ -192,6 +216,30 @@ BALL_REST_Y = MAST_FOOT_Y + BALL_FOOT / 16.0         # 43.46875: dropped, on the
 # (sky, block): block light only, which is warm, so that copper stays copper and red stays red
 # against the blue of the sky. cr2: the ball is to stand lighter than the sky behind it.
 BALL_LIGHT = (0, 12)
+# The ball's round, once in every hour of the dials; ticks are counted from the start of the loop
+# and blocks from half mast (MK.slide). Half mast is where it waits, as the pictures have it (A0,
+# 11-15). Two minutes of the dials before the hour it is wound to the top; on the hour it drops:
+# it lets go, falls, and the air in its cylinder catches it; it lies on the foot of the mast for
+# half a minute and is wound back to half mast. The drum and the rope in the clock room go by the
+# same numbers (c359).
+BALL_UP = BALL_UP_Y - BALL_HALF_Y                # 1.75 blocks from half mast to the top
+BALL_DOWN = BALL_REST_Y - BALL_HALF_Y            # -4.03125: to the foot of the mast
+BALL_DROP_AT = ticks_to(TIME[0] + 1)             # 500: the first full hour of the loop, then every HOUR
+BALL_HOIST_AT, BALL_HOIST_TICKS = BALL_DROP_AT - 200, 100
+BALL_FALL = ((6, BALL_UP - 0.75), (14, BALL_DOWN + 1.0), (12, BALL_DOWN))      # (ticks, where it is after them)
+BALL_WIND_AT, BALL_WIND_TICKS = BALL_DROP_AT + 600, 240
+
+
+def ball_moves():
+    """The ball's round as MK.slide takes it: [(the tick a move sets off on, blocks from half mast
+    it goes to, ticks it takes)]."""
+    moves, at = [(BALL_HOIST_AT, BALL_UP, BALL_HOIST_TICKS)], BALL_DROP_AT
+    for ticks, where in BALL_FALL:
+        moves.append((at, where, ticks))
+        at += ticks
+    moves.append((BALL_WIND_AT, 0.0, BALL_WIND_TICKS))
+    return moves
+
 
 # --- materials (palette only) -------------------------------------------------------------------
 WOOD = P.mat("dark_wood")
@@ -238,7 +286,13 @@ BALL_LEDGE_SHADE = {"u": 1.0, "d": 0.4}
 # dark hoops (the pictures of 11-16). They are elements of their own that take the top of the light
 # table (BALL_UNDER_EMIT), which at the map's hour is BALL_UNDER_GAIN times what BALL_LIGHT gives,
 # and they are painted for that.
-BALL_UNDER_EMIT = 15
+# The table is at its top from 14 on (white at 14 as at 15), and 14 it has to be. The map's item
+# shader (sky/_shaders.py, core/item.vsh) takes a face at block light 15 for a thing that glows of
+# itself and does not shade it by the way it looks: at 15 the ledges were drawn at the whole of
+# that light and not at four tenths of it, hoops of 0.61 to 0.68 round a ball of 0.23, lighter
+# than the lit window under the dial (the saves A5 and A6 and the board of 11:00, in the real
+# client; the offline pictures shade every face and never showed it).
+BALL_UNDER_EMIT = 14
 BALL_UNDER_GAIN = 1.28
 # what a piece is turned by where it stands, before any turn of its own
 _STANDING = {name: (("y", BALL_TURN),) for name, _paint in BALL_TONES.values()}
@@ -700,17 +754,38 @@ def _collide(canvas, origin):
         canvas.set(x + int(origin[0]), y + k + int(origin[1]), z + int(origin[2]), B.BARRIER, keep=True)
 
 
-def _swing(canvas):
-    """Register the pendulum, the piece placed last, with the motion line (plan/parts/motion.md 4):
-    it swings about its model's z axis through its anchor, the pivot, PENDULUM_SWING degrees to
-    either side of where it hangs, there and back in the beat of every pendulum on the hill. The
-    loop's functions are motion/_kit's to write; while that is not in the tree the pendulum hangs
-    still, as it does in every offline picture."""
+def _kit():
+    """motion/_kit, which writes the loop's functions, or None in a tree that does not have it:
+    every piece then stands as it is placed, as it does in every offline picture."""
     try:
         from ..motion import _kit as MK
     except ImportError:
-        return
-    MK.swing(canvas, "z", PENDULUM_SWING, MK.PENDULUM)
+        return None
+    return MK
+
+
+def _swing(canvas):
+    """Register the pendulum, the piece placed last, with the motion line (plan/parts/motion.md 4):
+    it swings about its model's z axis through its anchor, the pivot, PENDULUM_SWING degrees to
+    either side of where it hangs, there and back in the beat of every pendulum on the hill."""
+    MK = _kit()
+    if MK is not None:
+        MK.swing(canvas, "z", PENDULUM_SWING, MK.PENDULUM)
+
+
+def _run(canvas, period):
+    """Register the hand placed last: it turns about its model's z axis through its anchor, the
+    dial's centre, clockwise as the dial is looked at, once in `period` ticks (HOUR or HALF_DAY)."""
+    MK = _kit()
+    if MK is not None:
+        MK.spin(canvas, "z", -int(period))
+
+
+def _drop(canvas):
+    """Register the ball placed last, at half mast, with its round: ball_moves(), once in HOUR."""
+    MK = _kit()
+    if MK is not None:
+        MK.slide(canvas, (0.0, 1.0, 0.0), ball_moves(), HOUR)
 
 
 def master(canvas, origin=(0, 0, 0), time=None):
@@ -726,7 +801,9 @@ def master(canvas, origin=(0, 0, 0), time=None):
     lit = dict(brightness=MASTER_DIAL_LIGHT)
     n += _put(canvas, "master_dial", centre, origin, face, **lit)
     n += _put(canvas, "master_hand_h", centre, origin, face, tag=TAG_HOUR, turns=(("z", -hour),), **lit)
+    _run(canvas, HALF_DAY)
     n += _put(canvas, "master_hand_m", centre, origin, face, tag=TAG_MINUTE, turns=(("z", -minute),), **lit)
+    _run(canvas, HOUR)
     _collide(canvas, origin)
     _lamp(canvas, origin)
     return n
@@ -809,9 +886,14 @@ def tower(canvas, origin=(0, 0, 0), time=None, sides=SIDES, colour=None):
         lit = dict(brightness=DIAL_LIGHT[facing], view=FAR)
         n += _put(canvas, "face", pos, origin, facing, **lit)
         n += _put(canvas, "hand_h", pos, origin, facing, tag=TAG_HOUR, turns=(("z", -hour),), **lit)
+        _run(canvas, HALF_DAY)
         n += _put(canvas, "hand_m", pos, origin, facing, tag=TAG_MINUTE, turns=(("z", -minute),), **lit)
-    y = BALL_HALF_Y if mast_stands(canvas, origin) else BALL_REST_Y
-    n += ball(canvas, (BALL_AXIS[0], y, BALL_AXIS[1]), colour, origin)
+        _run(canvas, HOUR)
+    # the ball makes its round on a mast alone: where none stands it lies at the foot and stays there
+    hoisted = mast_stands(canvas, origin)
+    n += ball(canvas, (BALL_AXIS[0], BALL_HALF_Y if hoisted else BALL_REST_Y, BALL_AXIS[1]), colour, origin)
+    if hoisted:
+        _drop(canvas)
     return n
 
 
