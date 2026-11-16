@@ -103,12 +103,12 @@ check("the observing floor is free to stand on", solid & cells(floor, range(D.FE
 check("the gear's shaft keeps its column of the wall, and its hand wheel the floor in front",
       solid & (cells(D.GEAR_SHAFT, range(D.FEET, D.LEDGE_Y + 1)) | cells(D.GEAR_STAND, head)))
 dome = D._other("main", "dome")
-if (getattr(dome, "VERSION", None), getattr(dome, "SLIT", None)) == ("a", "open"):
-    check("the gear of the slit's leaves keeps its cells at the slit's foot and under the girders beside it",
+if (getattr(dome, "VERSION", None), getattr(dome, "SLIT", None)) == D.GEAR_FOR:
+    check("the gear of the slit's curtain keeps its cells at the slit's foot and under the girders beside it",
           solid & D.gear_cells())
 else:
-    print("skip  the gear of the slit's leaves: its cells are laid out for main/dome's version a with the "
-          "slit open, and that is not the dome in this box")
+    print("skip  the gear of the slit's curtain: its cells are laid out for main/dome's version %s with the "
+          "slit %s, and that is not the dome in this box" % D.GEAR_FOR)
 check("nothing stands in the open slit", [k for k in solid if (k[0], k[2]) in read.gap and k[1] >= D.SKIN_FROM])
 bare_stone = []
 for col in read.wall:

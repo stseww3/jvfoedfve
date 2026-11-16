@@ -79,16 +79,23 @@ RIB_DEG = 360.0 / RIBS
 # the row of the ring beam, and the floor in front of its hand wheel
 GEAR_SHAFT = ((-1, -9),)
 GEAR_STAND = ((0, -9), (1, -9))                 # the hand wheel and the one who turns it: nothing here
-# the gear of the slit's two leaves (g2 #38152; laid out for main/dome's version a with the slit
-# open), as (x, (first row, last row), (z, ...)). In the room's columns the base ring's row is his
+# the gear of the slit's curtain (machines/domegear, c352 #66647; laid out for main/dome's version b
+# with the slit open), as (x, (first row, last row), (z, ...)). In the room's columns the base
+# ring's row is his
+GEAR_FOR = ("b", "open")
 GEAR_SLIT = (
-    (-6, (25, 25), (-3, -2, -1, 0, 1, 2, 3)),   # the chain round the slit's foot, its wheels and sprocket
-    (-7, (25, 25), (0,)),                       # their bracket, out of the east face of the base ring
-    (-6, (19, 24), (0,)),                       # the hand chain that shuts the leaves
+    (-6, (25, 26), (-3, -2, -1, 0, 1, 2, 3)),   # the winch across the slit's foot
+    (-7, (25, 25), (0,)),                       # its bracket, out of the east face of the base ring
+    (-6, (19, 24), (0,)),                       # the hand chain
+    (-8, (26, 27), (-2, -1, 0, 1, 2)),          # the roll the curtain winds on
+    (-7, (26, 27), (-2, -1, 0, 1, 2)),
+    (-8, (25, 27), (-3, 3)),                    # the ends of its shaft and their weights
+    (-7, (27, 30), (-2, 2)),                    # the two chains that draw the curtain
+    (-6, (26, 27), (-2, 2)),
     (-6, (25, 27), (-3, 3)),                    # the two counterweight rails: hung under the girders beside
     (-5, (25, 29), (-3, 3)),                    # the slit, along the line of their undersides
     (-4, (28, 31), (-3, 3)),
-    (-3, (30, 32), (-3, 3)),
+    (-3, (29, 32), (-3, 3)),
 )
 
 IRON = B.IRON_RIVETED
@@ -125,9 +132,11 @@ FURNITURE = (
     ("instrument_cabinet", (5.5, -9.5), "south"),
     ("stool", (13.5, 1.5), "east"),                 # at the switchboard
     ("coat_stand", (10.5, -6.5), "south"),          # inside the north door
-    ("crate", (7.5, 9.5), "south"),                 # plate boxes by the south wall
-    ("crate", (8.5, 9.5), "west"),
+    ("drafting_table", (7.5, -8.5), "south"),       # the night's chart, under the window east of the cabinets
 )
+# the boxes the plates are carried in, by the south wall: (x, z, how many boxes it stands on, yaw).
+# props/furniture's plate_box once it has one, else its packing case, which does not stack
+PLATE_BOXES = ((7.5, 9.5, 0, 0.0), (8.5, 9.4, 0, 96.0), (7.56, 9.47, 1, 9.0))
 DESK = FURNITURE[0]
 LOGBOOK = (3.0, 6.5)                            # (x, z) on the desk: the night's record (props/paper)
 CHAIR = (-2.5, 5.5)                             # the observing chair, parked south-west of the pier
@@ -136,8 +145,11 @@ CLOCK_LIFT = 0.5                                # the regulator clock (props/ins
 #                                                 of the south axis, its foot this far above the floor
 
 # --- light: (level, rank); sky/lights decides where the invisible blocks really go -----------------
-PILOT_LAMPS = (5, 3)
-CLOCK_DIAL = (4, 3)
+# Both are the glow of something that is seen to glow, not lamps, and both stay under the one lamp
+# of the room, the telescope's red one at level 4 (sky/lights, c331 #66813: the red lamp is the
+# brightest source in the room)
+PILOT_LAMPS = (3, 3)
+CLOCK_DIAL = (3, 3)
 # the sky's light the skeleton's iron is shown in: (far from the slit, beside it). No lamp is added:
 # the pieces are told how much of the night falls on them (_night). The floor keeps the iron out of
 # dead black in the half of the room the slit does not light; the cap keeps it under the sky
@@ -342,6 +354,9 @@ def models():
     skeleton = frame()
     if skeleton is not None:
         out.update(skeleton.models)
+    board = _other("interiors", "_domeboard")
+    if board is not None:
+        out.update(board.models())
     return out
 
 
@@ -438,8 +453,7 @@ def dress(c, origin=(0, 0, 0)):
     _vault(put, shell)
     _wall(c, origin, put, shell)
     _floor(put, shell)
-    _fittings(put)
-    n = _skeleton(c, origin, shell) + _furniture(c, origin, put)
+    n = _fittings(c, origin, put) + _skeleton(c, origin, shell) + _furniture(c, origin, put)
     _offer(c, origin, lights())
     return n
 
@@ -520,12 +534,17 @@ def _floor(put, shell):
         put(x, FLOOR_Y, z, IRON.block if corner else WOOD.block)
 
 
-def _fittings(put):
-    """What is built into the lining, flush with it and below the windows: the switchboard of the
-    dome's drive on the east axis."""
+def _fittings(c, origin, put):
+    """The switchboard of the dome's drive on the east axis, below the windows: the room's own model
+    (interiors/_domeboard) on the lining once that is in the tree, else instrument panels let into
+    the boards. Returns the number of display entities."""
+    board = _other("interiors", "_domeboard")
+    if board is not None:
+        return board.place(c, origin)
     for i, (x, z) in enumerate(niches()["east"]):
         for row, names in enumerate(BOARD):
             put(x, FEET + row, z, B.PANELS[names[i]] + "[facing=west]")
+    return 0
 
 
 def _clock(c, origin, put):
@@ -550,6 +569,15 @@ def _furniture(c, origin, put):
             n += furniture.place(c, kind, (x, FEET, z), facing=facing, origin=origin)
         else:
             _standin(put, kind, (int(math.floor(x)), int(math.floor(z))), facing)
+    boxed = furniture is not None and "plate_box" in furniture.SPEC
+    for x, z, tier, yaw in PLATE_BOXES:
+        if boxed:
+            lift = tier * (furniture.TOP["plate_box"] + getattr(furniture, "STRAP", 0.0))
+            n += furniture.place(c, "plate_box", (x, FEET + lift, z), yaw=yaw, origin=origin)
+        elif tier == 0 and furniture is not None:
+            n += furniture.place(c, "crate", (x, FEET, z), yaw=yaw, origin=origin)
+        elif tier == 0:
+            _standin(put, "crate", (int(math.floor(x)), int(math.floor(z))), "south")
     if furniture is not None and paper is not None:
         top = FEET + furniture.TOP[DESK[0]]
         n += paper.place(c, "logbook", (LOGBOOK[0], top, LOGBOOK[1]), facing=DESK[2], origin=origin)
