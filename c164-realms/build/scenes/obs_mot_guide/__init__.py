@@ -16,8 +16,12 @@ What the real machine has to show, with the scene's loop started:
     2  Stand on the step with none: nothing. With some: "Star charts: 3 of 6" for as long as one
        stands there, gone three seconds after one has stepped off.
     3  Stand on the step with all six: the title THE COMET, IN FOCUS once, one bell, and for ten
-       seconds points of light that climb, east of the step, from head height to eight blocks up.
-       Stand on it again: nothing.
+       seconds two lights east of the step. A shaft of white motes on an arc from head height to
+       eight blocks up, on its north half: it comes down from the top in the first second and
+       stays, some ninety motes at a time. And from the fourth beat a stream of warm points that
+       comes down a slanting line from eight blocks up in the east, in bunches of five, and
+       turns up at the step to end at head height (the bench has no tube: TUBE names the line).
+       Stand on it again: nothing. The dome room with the real tube is obs_mot_guide_dome.
     4  Leave the server in the middle of the row and come back: the count goes on.
 
 The map has no function that takes the charts away again (the card: no tool of the owner's is
@@ -57,6 +61,10 @@ CHARTS = tuple((f"post{k + 1}", (x + 0.5, FLOOR + 1.0, z + 0.5), float(FLOOR)) f
 STAND = tuple((x + 0.5, float(FLOOR), z + 1.5) for x, z in POSTS)      # before a post, on its south
 OBSERVER = (STEP_AT[0] + 0.5, FLOOR + 1.0, STEP_AT[1] + 0.5)
 DOME = ((OBSERVER[0] + ARC_R, FLOOR + 2.0, OBSERVER[2]), ARC_R, ARC_HALF, "west")
+# the line the stream of the close comes down, in place of the tube: where it starts, where it
+# turns, where it ends
+TUBE = ((OBSERVER[0] + 8.0, FLOOR + 9.0, OBSERVER[2] + 0.6), (OBSERVER[0] + 1.0, FLOOR + 2.1, OBSERVER[2] + 0.5),
+        (OBSERVER[0] + 0.5, FLOOR + 2.7, OBSERVER[2]))
 
 
 def shots():
@@ -73,7 +81,7 @@ def build():
     for x, z in POSTS:
         c.set(x, FLOOR, z, POST)
     c.set(STEP_AT[0], FLOOR, STEP_AT[1], STEP)
-    guide.quest(c, CHARTS, OBSERVER, DOME, (0, 0, 0), stands=STAND)
+    guide.quest(c, CHARTS, OBSERVER, DOME, (0, 0, 0), stands=STAND, tube=TUBE)
     c.entity_counts = {"motion": 0}
     return c
 
