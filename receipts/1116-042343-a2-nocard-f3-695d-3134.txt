@@ -1,0 +1,23 @@
+a0job 1116-042343-a2-nocard-f3-695d-3134: cursor/c164-a2-nocard-f3-695d @ ec93ad08 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.20 0.89 1.33, Python 3.12.3
+  [cloud_setup    1s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/check.py --scene obs_sky_comet_b ---- exit 0, 1 s, last 40 lines of 13:
+check obs_sky_comet_b at ec93ad0
+[PASS] regen     18587 blocks, 0 entities, 0 models, 20 resource-pack files, 11 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (0.2 s)
+[PASS] conflicts the scene writes 19 files, no file written twice, the folders and the prefix of sky are kept (2 packages run alone)
+[PASS] strays    0 pictures, every colour in the palette; 9 sky pictures not checked (drawn by adding light)
+[PASS] refs      0 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   0 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    4 kinds of block placed, all in the occupancy table
+[SKIP] flatwall  a test scene of sky: its sample walls and backdrops are meant to be flat
+[PASS] entities  0 display entities
+[PASS] views     15 shots, most display entities in view: 0 (v1_blue), limit 600; counted without what walls hide
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 0.0% hidden (base storey 0.0% by blocks and 0.0% more by models, great windows 0.0%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the 
+[PASS] motion    nothing moves
+result: PASS (0 failed, 0 with warnings)
+==== NODEJOB RESULT ====
+exit=0 secs=2 host=cursor cores=4 head=ec93ad08 commit=none pushed=no branch=cursor/c164-a2-nocard-f3-695d files=0
+a0job: exit=0 secs=2
