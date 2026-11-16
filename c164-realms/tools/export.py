@@ -1825,11 +1825,16 @@ def page(args):
     if os.path.exists(path):
         with open(path, encoding="utf-8") as fh:
             rows = json.load(fh)
-    folders = sorted((int(os.path.basename(f)[1:]), f) for f in glob.glob(os.path.join(dist, "A[0-9]*")) if os.path.isdir(f))
+    def order(label):       # a save's name is its series and its number in it: B2 after B1, any B after any A
+        return label[0], int(label[1:])
+
+    folders = sorted((order(os.path.basename(f)), f) for f in glob.glob(os.path.join(dist, "[A-Z][0-9]*"))
+                     if os.path.isdir(f) and re.fullmatch(r"[A-Z]\d+", os.path.basename(f)))
     if not folders:
-        fail(f"no whole save (A<n>/) under {dist}")
-    n, folder = folders[-1]
-    name = f"c164-A{n}"
+        fail(f"no whole save (A<n>/, B<n>/) under {dist}")
+    folder = folders[-1][1]
+    label = os.path.basename(folder)
+    name = f"c164-{label}"
     with open(os.path.join(folder, name + ".json"), encoding="utf-8") as fh:
         made = json.load(fh)
     checks = {"ok": None, "seconds": None, "checks": [], "issues": None}
@@ -1870,7 +1875,7 @@ def page(args):
                 with open(os.path.join(folder, name + "-noguide.verify.json"), encoding="utf-8") as fh:
                     bare["verified"] = json.load(fh).get("ok")
     row = {
-        "n": f"A{n}", "assembly": made.get("assembly"), "at": at, "time": made["spec"]["time"], "look": look, "plain": plain,
+        "n": label, "assembly": made.get("assembly"), "at": at, "time": made["spec"]["time"], "look": look, "plain": plain,
         # the guide (the title on arrival, the plaques, the star charts): in this save or not; the
         # name the world goes by in the list of worlds, where the map has one
         "guide": bool(made["spec"].get("guide")), "title": made["spec"].get("title"), "bare": bare,
@@ -1896,8 +1901,18 @@ def page(args):
     for key, value in row.items():
         if value is None and old.get(key) is not None:
             row[key] = old[key]
+    row["candidate"] = bool(old.get("candidate"))
     rows = [r for r in rows if r["n"] != row["n"]] + [row]
-    rows.sort(key=lambda r: -int(r["n"][1:]))
+    rows.sort(key=lambda r: order(r["n"]), reverse=True)
+    # the one to upload: named once (--candidate) and kept until another is named. While the newest
+    # save is not it (the second round's saves, B<n>, are work in hand), the page says so
+    if args.candidate:
+        if not any(r["n"] == args.candidate for r in rows):
+            fail(f"--candidate {args.candidate}: the history has no such save")
+        for r in rows:
+            r["candidate"] = r["n"] == args.candidate
+    chosen = next((r for r in rows if r.get("candidate")), None)
+    row["chosen"] = chosen["n"] if chosen else None
     with open(path, "w", encoding="utf-8", newline="\n") as fh:
         json.dump(rows, fh, indent=1, ensure_ascii=False)
         fh.write("\n")
@@ -1919,22 +1934,29 @@ def page(args):
                 f"{r['blocks'] if r['blocks'] is not None else '?'} / {r['entities']} / {r['moving'] if r['moving'] is not None else '?'} | "
                 f"{r.get('time') or '?'} | {checked} | {r['note'] or ''}{gone} | {r['commit'] or '?'} |")
 
-    kept = [f"A{k}" for k, _ in folders]        # no numbered folder is taken out again: its path may have been given out
+    kept = [os.path.basename(f) for _k, f in folders]       # no numbered folder is taken out again: its path may have been given out
+    newest_is_it = chosen is None or chosen["n"] == label
     text = [
         PAGE_OPEN,
-        f"**最新，传 Realms 用这个：`A{n}/{name}.zip`**（总装 {row['assembly']}，{row['at']} 导出，{mb(row['zip_bytes'])}，"
+        *([] if newest_is_it else [
+            f"**要传 Realms 的仍是候选版 `{chosen['n']}/c164-{chosen['n']}.zip`**（总装 {chosen['assembly']}，{chosen['at']} 导出，"
+            f"{mb(chosen['zip_bytes'])}，sha256 `{chosen['sha256']}`"
+            + (f"；资源包加载失败时换 `{chosen['n']}/{chosen['plain']['file']}`，sha256 `{chosen['plain']['sha256']}`"
+               if chosen.get("plain") else "") + f"）。{label[0]} 系列是后一轮在做的，每半小时一版，还不是投稿版。", ""]),
+        (f"**最新，传 Realms 用这个：`{label}/{name}.zip`**" if newest_is_it else f"**最新的一个（在做的）：`{label}/{name}.zip`**")
+        + f"（总装 {row['assembly']}，{row['at']} 导出，{mb(row['zip_bytes'])}，"
         f"sha256 `{row['sha256']}`）。不带注册表文件，钟锁在 {row['time']} 刻；"
         + (f"我们的天由资源包里的 {row['shaders']} 个着色器文件带着（sky/safe-look）。" if row.get("shaders")
            else "**资源包里没有着色器，天是原版的夜空。**"),
-        *([f"**资源包在你的机器上加载失败（楼成了原版的方块）就换这个：`A{n}/{plain['file']}`**（{mb(plain['bytes'])}，"
+        *([f"**资源包在你的机器上加载失败（楼成了原版的方块）就换这个：`{label}/{plain['file']}`**（{mb(plain['bytes'])}，"
            f"sha256 `{plain['sha256']}`）：同一个总装头，资源包里不带着色器，天是原版的夜空，别的都一样。"
            + ("冷启动验证全过。" if plain.get("verified") else "**冷启动验证没过。**" if plain.get("verified") is False else "没验。")]
           if plain and row.get("shaders") else []),
-        *([f"不要导览那一层（进服的标题、牌子、星图）就换这个：`A{n}/{bare['file']}`（{mb(bare['bytes'])}，"
+        *([f"不要导览那一层（进服的标题、牌子、星图）就换这个：`{label}/{bare['file']}`（{mb(bare['bytes'])}，"
            f"sha256 `{bare['sha256']}`）：同一个总装头，别的都一样。"
            + ("冷启动验证全过。" if bare.get("verified") else "**冷启动验证没过。**" if bare.get("verified") is False else "没验。")]
           if bare else []),
-        *([f"同一个总装头、带着我们的天的：`A{n}/{look['file']}`（{mb(look['bytes'])}，sha256 `{look['sha256']}`，钟锁在 {look['time']} 刻）。"
+        *([f"同一个总装头、带着我们的天的：`{label}/{look['file']}`（{mb(look['bytes'])}，sha256 `{look['sha256']}`，钟锁在 {look['time']} 刻）。"
            f"**它带 {look['registry_files']} 个注册表文件（群系、时间线），只给单人打开看样子，不传 Realms。**"] if look else []),
         "总装每半小时跟着 s2 报的绿头重导一次，编号往上加。**编号的文件夹只加不删**：表里编号带链接的都还在这里，"
         f"路径是 `{kept[-1]}/c164-{kept[-1]}.zip` 这个样子，给出去的路径一直有效（现在有 {'、'.join(kept)}）。"
@@ -2009,6 +2031,8 @@ def main():
     p.add_argument("dist", help="the folder of the saves (c164-realms/dist on the dist branch)")
     p.add_argument("--commit", help="the commit that holds the newest save's files")
     p.add_argument("--note", help="a line for the table: what is new in this one")
+    p.add_argument("--candidate", help="the save to upload (A8): named once, kept until another is named; "
+                                       "while the newest save is not it, the page says which one is")
     args = ap.parse_args()
     {"make": make, "pack": pack, "verify": verify, "compare": compare, "page": page}[args.what](args)
 
