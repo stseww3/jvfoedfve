@@ -21,19 +21,25 @@ The chimney
              MK.downwind(lean) * rise: it rises and leans south with the north wind, WIND_LEAN
              degrees off the upright on average. Sent "force", or nobody further than 32 blocks
              off would be sent it, and the chimney is looked at from 30 to 110 blocks.
-    how      Eight lanes (LANES), one puff each in turn. A single spot and a single velocity draw
-             a string of beads; the lanes start at eight spots spread over the flue's mouth, a
-             quarter to half a block down so that a puff is seen to come out of it, and differ a
-             little in lean, in their drift across the wind and in speed. The column is a good
-             block wide at the mouth and opens to three or four at its head, 17 to 25 blocks up.
+    how      Sixteen lanes (LANES), one puff each in turn. A single spot and a single velocity
+             draw a string of beads; the lanes start at sixteen spots spread over the flue's
+             mouth, a fifth to two thirds of a block down so that a puff is seen to come out of
+             it, and differ a little in lean, in their drift across the wind and in speed. The
+             column is a good block wide at the mouth and opens to two and a half at its head,
+             17 to 25 blocks up.
     when     the pendulums' period (MK.PENDULUM), so the puffs ride on the ticks of a chain the
              place has anyway: DENSITY puffs a second cost DENSITY commands a second and nothing
-             for the scheduling.
+             for the scheduling. No more than eight ticks of the period are used: from 8 puffs a
+             second on, two lanes leave on one tick, from spots well apart and half a puff's way
+             apart in height, which is what a tick of their own in between would give them.
 
-DENSITY was the card's parameter to be judged on the real machine (1, 2 or 4 puffs a second). The
-first cut had 2, a puff every 0.7 blocks of the column: beads a block apart at the mouth, a dotted
-line from 60 blocks off (s1's pictures of 60494273; cr2, message 71977). It is 4 now, a puff every
-0.35 blocks, which is less than a puff is wide: one wisp.
+DENSITY was the card's parameter to be judged on the real machine. The first cut had 2 puffs a
+second, a puff every 0.7 blocks of the column: beads a block apart at the mouth, a dotted line
+from 60 blocks off (s1's pictures of 60494273; cr2, message 71977). With 4, and eight lanes that
+opened to three or four blocks at the head, the column read at 30 and 60 blocks; from the 130
+blocks of the board's last view it was a string of small dark dots (the save A6; cr2, message
+79748). It is 8 now on sixteen lanes that keep closer together: a puff every 0.18 blocks of the
+column, twice the puffs in two thirds of the width, to read as one band from there.
 
 The safety valve
     where    the top of the last boiler's valve (machines/boiler.SAFETY_VALVES[-1]: No. 2, the
@@ -80,24 +86,37 @@ from . import _kit as MK
 
 SMOKE_PARTICLE = "campfire_signal_smoke"
 BEAT = MK.PENDULUM              # 40 ticks: the chain the puffs ride on
-DENSITY = 4                     # puffs a second from the chimney: 1, 2 or 4
+DENSITY = 8                     # puffs a second from the chimney: 1, 2, 4 or 8
+TICKS = 8                       # ... on no more ticks of a BEAT than this
 RISE = 0.07                     # blocks a tick: what a campfire gives its own smoke
 # The lanes of the chimney's smoke: (east, up, south) of powerhouse.SMOKE in blocks, the lean with
 # the wind and the drift across it in degrees, the rise as a share of RISE. The flue is two blocks
 # square and a puff collides as a quarter-block box (one that touches a wall loses its drift for
 # good): every start is at least a quarter of a block clear of the flue's walls, and north of the
 # middle on average, because the puff drifts south as it climbs out. Neighbours in the list start
-# on opposite sides of the mouth. The leans average WIND_LEAN, the drifts nothing, the shares one:
-# over the first four lanes (which is all that DENSITY 1 and 2 use) nearly so.
+# on opposite sides of the mouth; the starts lie on the squares of one colour of a board of four
+# by four over the mouth, and so do the ways (lean by drift), for the first eight lanes and, on
+# the other colour, for the second eight. The leans average WIND_LEAN, the drifts nothing, the
+# shares one: over all sixteen, and over the first eight (which is all that DENSITY 4 uses).
 LANES = (
-    ((-0.45, -0.45, -0.35), 9.0, -2.0, 1.00),
-    ((0.40, -0.20, 0.10), 11.0, 1.5, 0.93),
-    ((-0.10, -0.60, -0.55), 8.0, 3.0, 1.07),
-    ((0.15, -0.30, 0.30), 12.0, -1.0, 0.96),
-    ((0.55, -0.50, -0.40), 10.5, 2.5, 1.04),
-    ((-0.35, -0.25, 0.25), 9.5, -3.0, 0.91),
-    ((0.05, -0.55, -0.15), 11.5, -1.0, 1.09),
-    ((-0.60, -0.35, 0.05), 8.5, 0.0, 0.98),
+    ((-0.40, -0.45, -0.61), 11.5, -1.8, 1.00),
+    ((0.37, -0.20, 0.33), 8.6, 1.9, 0.93),
+    ((-0.05, -0.60, 0.27), 9.7, 0.7, 1.07),
+    ((0.12, -0.30, -0.47), 10.3, 1.5, 0.96),
+    ((-0.55, -0.50, 0.03), 8.6, -0.4, 1.04),
+    ((0.53, -0.25, -0.35), 9.8, -1.8, 0.91),
+    ((0.18, -0.55, 0.07), 10.2, -0.8, 1.09),
+    ((-0.20, -0.35, -0.31), 11.4, 0.7, 0.98),
+    # the second eight: each leaves on the tick of the lane eight rows up, from the far side of the
+    # mouth and a quarter of a block higher or lower, by another way
+    ((-0.20, -0.18, 0.07), 10.3, 0.8, 0.95),
+    ((-0.07, -0.48, -0.59), 10.5, -1.9, 1.06),
+    ((0.35, -0.33, -0.53), 11.2, 1.5, 0.92),
+    ((0.18, -0.63, 0.21), 9.7, -0.4, 1.03),
+    ((0.25, -0.23, -0.29), 11.4, -0.8, 0.99),
+    ((-0.53, -0.53, 0.37), 9.4, 1.8, 1.08),
+    ((-0.48, -0.28, -0.33), 8.8, -1.4, 0.94),
+    ((0.50, -0.58, 0.05), 8.6, 0.4, 1.02),
 )
 ABOVE = 0.1                     # where a puff starts over a mouth that is not open: this far above it
 
@@ -178,11 +197,16 @@ def _stands(canvas, prefix, spot, origin=(0, 0, 0)):
 
 
 def _beats(density):
-    """The ticks of a BEAT on which the chimney puffs, `density` to the second."""
+    """The ticks of a BEAT on which the chimney puffs, `density` to the second: one entry a puff,
+    in the order of the lanes. Up to TICKS puffs have a tick each; more go round the same ticks
+    again, so that lane k and lane k + TICKS leave together."""
     n = density * BEAT // MK.SECOND
-    if n < 1 or density * BEAT % MK.SECOND or BEAT % n:
+    ticks = min(n, TICKS)
+    if n < 1 or density * BEAT % MK.SECOND or BEAT % ticks or n % ticks:
         raise ValueError(f"{density} puffs a second do not fall on whole ticks of a cycle of {BEAT}")
-    return [k * (BEAT // n) for k in range(n)]
+    if n > len(LANES):
+        raise ValueError(f"{density} puffs a second want {n} lanes, there are {len(LANES)}")
+    return [(k % ticks) * (BEAT // ticks) for k in range(n)]
 
 
 def way(lean=MK.WIND_LEAN, drift=0.0):
