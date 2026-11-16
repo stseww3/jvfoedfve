@@ -8,8 +8,8 @@ checks the render station's tools out beside the job's tree and runs this from t
                 [--from X Y Z --to X Y Z | --only <shot>[,<shot>...]] [--shots 6] [--every 2] [--time <tick>]
 
 <scene> is a test scene of the branch's build/scenes/, or obs for the whole observatory (which
-takes some minutes to place). The view is --from (where the eye is) --to (the point looked at), in
-the scene's own coordinates, as in its shots.json; or the shots of the scene's own list named
+takes two minutes to place). The view is --from (where the eye is) --to (the point looked at), in
+the scene's own coordinates, as in its shots.json (for obs too: the board's views are in them); or the shots of the scene's own list named
 with --only (the board's views for obs: v01_arrival ...); or, without either, every shot of
 the scene's list. Each view is taken --shots times, --every seconds apart, from the same place.
 
