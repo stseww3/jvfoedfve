@@ -15,8 +15,12 @@ a floor to walk on:
            pedestals of the stair (the forecourt, the main axis) nothing ever stands on it.
 
 What is set into the floor is blocks: one row of riveted iron plate in the paving course, and the
-table's seat, three by three, of plain plate. They are what the yard is from far off and from above:
-a dark line from the station's corner to the power house, and a square on it. Everything else is
+table's seat, three by three, of plain plate; and where they lie in the field of dark setts, a kerb
+of the paving's light band stone either side of them (KERB), as a tramway in a paved street has.
+They are what the yard is from far off and from above: a dark line in a light strip from the
+station's corner to the power house, and a square on it. Where the line lies in a band, the apron or
+the walk to the door, the stone beside it is that already; the kerb changes field stone only, and
+nothing that something stands on. Everything else is
 models on the paving, none of them higher than a tub with its load (a block and a quarter):
 
   rails    two rails a texel proud of the plate, worn bright on top, in chairs and with a tie bar
@@ -61,6 +65,7 @@ from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
 from ..motion import _kit as MK
+from . import _kit as K
 from . import powerhouse
 
 VIEW = M.MID
@@ -82,6 +87,8 @@ HEAP = (64, -19)                    # the middle cell of the coal heap (three by
 
 BED = B.IRON_RIVETED.block          # the plate the rails lie on
 SEAT = B.IRON_PLATE                 # the table's seat
+KERB = True                         # the switch: a kerb of the band's stone either side of the plate, in the field
+FIELD, CURB = K.EDGE, K.STRIP       # the lower platform's setts, and the stone of its bands (site/lowerplatform)
 
 # --- the track, in texels ----------------------------------------------------------------------------
 GAUGE = 5.0                         # from the middle of the track to the middle of a rail
@@ -472,6 +479,19 @@ def line_cells():
     return bed, seat
 
 
+def kerb_cells():
+    """The cells (x, z) beside the two lines and round the seat: where the kerb lies if the field's
+    setts lie there."""
+    bed, seat = line_cells()
+    tx, tz = TABLE
+    out = set()
+    for x, z in bed:
+        out.update([(x, z - 1), (x, z + 1)] if z == ROW and x != tx else [(x - 1, z), (x + 1, z)])
+    reach = TABLE_HALF + 1
+    out.update((x, z) for x in range(tx - reach, tx + reach + 1) for z in range(tz - reach, tz + reach + 1))
+    return sorted(out - set(bed) - set(seat))
+
+
 def _lengths(lo, hi):
     """The middles of the lengths of rail that cover the cells lo..hi of a line, and which model each
     is: whole lengths from the low end, single blocks for what is left."""
@@ -514,6 +534,10 @@ def build(canvas, origin=(0, 0, 0)):
         canvas.set(ox + x, oy + PY, oz + z, BED)
     for x, z in seat:
         canvas.set(ox + x, oy + PY, oz + z, SEAT)
+    if KERB:
+        for x, z in kerb_cells():
+            if canvas.name(ox + x, oy + PY, oz + z) == FIELD and canvas.get(ox + x, oy + FEET, oz + z) is None:
+                canvas.set(ox + x, oy + PY, oz + z, CURB)
 
     mid = ROW + 0.5                                 # the middle of line A, and of the table
     tx = TABLE[0] + 0.5

@@ -40,8 +40,10 @@ def build_models():
 
 
 def write_pack(pack_dir):
-    """The yard paints nothing itself: its plate is the materials line's iron."""
-    return materials.pack(pack_dir)
+    """The yard paints nothing itself: its plate is the materials line's iron. With the sky's pack:
+    the scene stands in the map's hour, and without it the game's own sun is a white and yellow
+    square on the western horizon."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
 
 
 def shots():
