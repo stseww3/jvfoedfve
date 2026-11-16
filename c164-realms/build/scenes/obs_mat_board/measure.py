@@ -155,10 +155,10 @@ def main():
     if not columns:
         sys.exit(f"measure: no picture of the whole board in {folder}")
     print(f"{args.scene}: Rec.601 luma, 0..1")
-    print(f"{'':34s}" + "".join(f"{name + ' ' + str(shots[name]['time']):>14s}" for name in columns))
+    print(f"{'':36s}" + "".join(f"{name + ' ' + str(shots[name]['time']):>14s}" for name in columns))
     for key in next(iter(columns.values())):
         values = [columns[name][key] for name in columns]
-        print(f"{key[0]:8s}{key[1]:26s}" + "".join(f"{'-' if v is None else format(v, '.3f'):>14s}" for v in values))
+        print(f"{key[0]:8s}{key[1]:28s}" + "".join(f"{'-' if v is None else format(v, '.3f'):>14s}" for v in values))
     if missing:
         sys.exit(f"measure: no picture of {', '.join(missing)} in {folder}")
 
