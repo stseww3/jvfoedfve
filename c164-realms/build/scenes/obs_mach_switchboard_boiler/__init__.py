@@ -4,12 +4,11 @@ as site/powerhouse builds it.
 
 Round the shell there is a slab of the lower platform and nothing else. The room is empty but for
 the set: the engine and the dynamo, the gratings, the pipes, the coal and the lamps are other
-packages'. The floor is a stand-in for the room's (interiors/powerhouse). The light is the room's
-as it will be where the set stands, and nothing more: the two sources the boilers ask for before
-their fire doors (boiler.LIGHTS), and the sources of the two shaded lamps the room hangs before
-the board (BOARD_LAMPS: interiors/powerhouse's numbers, stood in for here).
+packages'. The floor is a stand-in for the room's (interiors/powerhouse). The light is the set's
+own and nothing more: the two sources before the fire doors (boiler.LIGHTS) and the two before
+the board (board.LIGHTS), which the modules place themselves.
 
-The house's glass is painted opaque: the skeleton's V6 sees nothing of the set.
+The last shot stands at the skeleton's V6, the view the house itself is judged by.
 
     python -m scenes.obs_mach_switchboard_boiler        # writes shots.json from the numbers below
 """
@@ -31,7 +30,6 @@ PAVING_Y = S.LOWER_PAVING_Y                     # -7
 FLOOR = B.TUFF_SMOOTH.block                     # stands in for the room's floor and the yard's paving
 ROCK = B.TUFF.block
 FY = boiler.FLOOR
-BOARD_LAMPS = [((71, -4, 28), 10), ((71, -4, 31), 10)]          # the room's two lamps before the board
 TIME = 14000                                    # light version A, the default
 
 EYE = S.EYE
@@ -43,8 +41,6 @@ def build():
     c.box(SLAB[0], PAVING_Y, SLAB[1], SLAB[2], PAVING_Y, SLAB[3], FLOOR)
     shell = powerhouse.build(c, (0, 0, 0))          # its own entities: the lamp over the wicket
     n = boiler.build(c, (0, 0, 0)) + board.build(c, (0, 0, 0))
-    for (x, y, z), level in boiler.LIGHTS + board.LIGHTS + BOARD_LAMPS:
-        c.set(int(x // 1), int(y // 1), int(z // 1), f"{B.LIGHT}[level={level}]", keep=True)
     c.entity_counts = {"machines": n, "site": int(shell or 0)}
     return c
 
@@ -89,4 +85,5 @@ def shots():
     shot("board_near", (bx + 2.2, FY + EYE, bz + 1.6), (bx, FY + 2.6, bz))
     shot("board_side", (bx + 1.6, FY + EYE, board.Z[0] - 2.2), (bx, FY + 2.2, bz - 0.5))
     shot("above", (76.5, FY + 8.0, 31.5), (77.5, FY, 27.5))
+    shot("v6", S.V6["pos"], S.V6["look_at"])                                    # the board's view of the house
     return out

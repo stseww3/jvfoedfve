@@ -122,12 +122,21 @@ class Draw:
         self.box(lo, hi, sprite, skip="".join(f for f in "nsewud" if f != face), **kw)
 
 
-def place(canvas, drawn, pos, origin, yaw=0.0, brightness=None):
-    """One drawn model with its point `at` on pos; returns 1, the entity it takes."""
+def place(canvas, drawn, pos, origin, yaw=0.0, turns=(), brightness=None):
+    """One drawn model with its point `at` on pos; returns 1, the entity it takes.
+    turns: (axis, degrees) about the scene's axes, for a piece that rests turned (a pointer)."""
     x, y, z = (pos[i] + origin[i] for i in range(3))
-    canvas.add_entity(x, y, z, M.display(drawn.m, yaw=yaw, scale=drawn.scale, turns=drawn.frame, brightness=brightness,
-                                         view=VIEW))
+    canvas.add_entity(x, y, z, M.display(drawn.m, yaw=yaw, scale=drawn.scale, turns=tuple(drawn.frame) + tuple(turns),
+                                         brightness=brightness, view=VIEW))
     return 1
+
+
+def light(canvas, lights, origin):
+    """The invisible sources a piece of the set stands in: [((x, y, z), level)], never over a block."""
+    from ..common import blocks as B
+    for (x, y, z), level in lights:
+        canvas.set(int(origin[0] + x // 1), int(origin[1] + y // 1), int(origin[2] + z // 1),
+                   f"{B.LIGHT}[level={int(level)}]", keep=True)
 
 
 # ---- painting a face pixel by pixel ----------------------------------------------------------------------
