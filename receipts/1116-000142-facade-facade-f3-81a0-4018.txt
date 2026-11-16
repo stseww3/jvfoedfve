@@ -1,0 +1,60 @@
+a0job 1116-000142-facade-facade-f3-81a0-4018: cursor/c164-facade-facade-f3-81a0 @ 06e0fa8c on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 1.81 2.20 2.34, Python 3.12.3
+  [cloud_setup    1s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- for s in obs_main_facade_a obs_main_facade_c obs_main_facade_nocrown; do echo "== check $s"; python tools/check.py --scene $s 2>&1 | grep -E "^\[|^result" | cut -c1-200; done; echo "== delivery"; python tools/delivery.py main/facade HE
+== check obs_main_facade_a
+[PASS] regen     109291 blocks, 68 entities, 49 models, 814 resource-pack files, 65 data-pack files, look: 1 biomes, 1 timelines (1.7 s)
+[PASS] conflicts the scene writes 813 files, no file written twice, the packages of main write nothing into the pack
+[PASS] strays    173 pictures, every colour in the palette; 9 sky pictures not checked (drawn by adding light)
+[PASS] refs      622 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    71 kinds of block placed, all in the occupancy table
+[WARN] flatwall  8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+[PASS] entities  68 display entities, 5 drawn out along one axis, 24 models never placed
+[PASS] views     4 shots, most display entities in view: 64 (v1_far), limit 600; counted without what walls hide; the game draws up to 68 (v2_axis): a display entity without width and height is drawn 
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 13.9% hidden (base storey 46%, great windows 1.7%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies i
+[PASS] motion    2 parts and 0 points on 2 chains, 20 function files; 6 commands in the busiest tick (limit 40), 1.0 a tick on average (limit 10)
+result: PASS (0 failed, 1 with warnings)
+== check obs_main_facade_c
+[PASS] regen     109288 blocks, 68 entities, 49 models, 814 resource-pack files, 65 data-pack files, look: 1 biomes, 1 timelines (1.6 s)
+[PASS] conflicts the scene writes 813 files, no file written twice, the packages of main write nothing into the pack
+[PASS] strays    173 pictures, every colour in the palette; 9 sky pictures not checked (drawn by adding light)
+[PASS] refs      622 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    71 kinds of block placed, all in the occupancy table
+[WARN] flatwall  8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+[PASS] entities  68 display entities, 5 drawn out along one axis, 24 models never placed
+[PASS] views     4 shots, most display entities in view: 64 (v1_far), limit 600; counted without what walls hide; the game draws up to 68 (v2_axis): a display entity without width and height is drawn 
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 13.9% hidden (base storey 46%, great windows 1.7%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies i
+[PASS] motion    2 parts and 0 points on 2 chains, 20 function files; 6 commands in the busiest tick (limit 40), 1.0 a tick on average (limit 10)
+result: PASS (0 failed, 1 with warnings)
+== check obs_main_facade_nocrown
+[PASS] regen     109196 blocks, 68 entities, 49 models, 814 resource-pack files, 65 data-pack files, look: 1 biomes, 1 timelines (1.6 s)
+[PASS] conflicts the scene writes 813 files, no file written twice, the packages of main write nothing into the pack
+[PASS] strays    173 pictures, every colour in the palette; 9 sky pictures not checked (drawn by adding light)
+[PASS] refs      622 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    71 kinds of block placed, all in the occupancy table
+[WARN] flatwall  8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+[PASS] entities  68 display entities, 5 drawn out along one axis, 24 models never placed
+[PASS] views     5 shots, most display entities in view: 64 (v1_far), limit 600; counted without what walls hide; the game draws up to 68 (v2_axis): a display entity without width and height is drawn 
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 13.9% hidden (base storey 46%, great windows 1.7%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies i
+[PASS] motion    2 parts and 0 points on 2 chains, 20 function files; 6 commands in the busiest tick (limit 40), 1.0 a tick on average (limit 10)
+result: PASS (0 failed, 1 with warnings)
+== delivery
+delivery main/facade: 06e0fa8 against c11846b (forked at c11846b), 10 commits, 30 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[PASS] scope    30 of 30 files are the card's own
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[PASS] pictures 4 test scenes, 23 shots with a picture kept; every shot has one, each the file its note describes
+[PASS] merge    merges cleanly; 0 commits behind the base
+result: PASS (0 failed, 0 to look at)
+==== NODEJOB RESULT ====
+exit=0 secs=14 host=cursor cores=4 head=06e0fa8c commit=none pushed=no branch=cursor/c164-facade-facade-f3-81a0 files=0
+a0job: exit=0 secs=14
