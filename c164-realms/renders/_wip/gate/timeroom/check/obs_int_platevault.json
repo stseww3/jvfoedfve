@@ -1,0 +1,123 @@
+{
+ "scene": "obs_int_platevault",
+ "commit": "8e39d23",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "WARN",
+   "summary": "3801 blocks, 92 entities, 86 models, 936 resource-pack files, 20 data-pack files, look: 1 biomes, 1 timelines (0.9 s)",
+   "details": [
+    "registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json"
+   ]
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 935 files, no file written twice, the folders and the prefix of interiors are kept (6 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "215 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "701 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "23 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "WARN",
+   "summary": "6 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)",
+   "details": [
+    "smooth_sandstone facing east: flat over 10x10, the square's top corner at (1, 16, 17)",
+    "smooth_sandstone facing north: flat over 8x8, the square's top corner at (8, 14, 6)",
+    "smooth_sandstone facing south: flat over 8x8, the square's top corner at (8, 14, 26)",
+    "smooth_sandstone facing west: flat over 8x8, the square's top corner at (0, 14, 14)",
+    "smooth_sandstone facing north: flat over 7x7, the square's top corner at (8, 13, 26)",
+    "smooth_sandstone facing south: flat over 7x7, the square's top corner at (8, 13, 6)"
+   ],
+   "data": {
+    "largest": 10,
+    "faces": 6
+   }
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "92 display entities, 58 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "5 shots, most display entities in view: 92 (ext_base), limit 600; counted without what walls hide; the game draws up to 92 (int_door): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "int_door",
+      "in_view": 84,
+      "drawn": 92,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_stacks",
+      "in_view": 73,
+      "drawn": 92,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_dark",
+      "in_view": 17,
+      "drawn": 92,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_lift",
+      "in_view": 21,
+      "drawn": 92,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "ext_base",
+      "in_view": 92,
+      "drawn": 92,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "1 parts and 1 points on 2 chains, 9 function files; 4 commands in the busiest tick (limit 40), 0.1 a tick on average (limit 10)",
+   "details": [
+    "chain of 50 ticks: 1 functions, 4 commands a cycle, starts 1 ticks after start",
+    "chain of 600 ticks: 2 functions, 5 commands a cycle, starts 2 ticks after start"
+   ]
+  }
+ ]
+}
