@@ -2916,19 +2916,27 @@ def worker_spawn_task_text(code: str) -> str:
 
 def precreate_auto_worker_slot() -> tuple[str, str]:
     ensure_main_conv()
-    num = next_runner_num()
-    node_id = f"node{num}"
+    reuse = store.one("SELECT id, num FROM exec_nodes WHERE kind='runner' AND status='offline' ORDER BY num ASC LIMIT 1")
+    if reuse is not None:
+        node_id = reuse["id"]
+        num = int(reuse["num"] or int(node_id[4:]))
+    else:
+        num = next_runner_num()
+        node_id = f"node{num}"
     disp_name = f"工作会话-{num}"
     w_code = "w-" + secrets.token_hex(8)
+    old_c = conv_row(node_id)
+    if old_c is not None and old_c["agent"]:
+        stop_identity(old_c["agent"], f"复用离线工作槽位 {node_id}")
     cur_max = int((store.one("SELECT IFNULL(MAX(id),0) AS n FROM messages") or {"n": 0})["n"] or 0)
     store.run(
         "INSERT INTO convs(id,num,name,status,read_cursor,created,local_enabled,task_code,task_ts,in_tg) VALUES(?,0,?,'open',?,?,0,?,?,0) "
-        "ON CONFLICT(id) DO UPDATE SET status='open', name=excluded.name, local_enabled=0, task_code=excluded.task_code, task_ts=excluded.task_ts, in_tg=0",
+        "ON CONFLICT(id) DO UPDATE SET status='open', name=excluded.name, local_enabled=0, agent='', task_agent_id='', task_code=excluded.task_code, task_ts=excluded.task_ts, in_tg=0",
         (node_id, disp_name, cur_max, now(), w_code, now()),
     )
     store.run(
         "INSERT INTO exec_nodes(id,kind,num,cloud_num,name,agent,status,last_seen,created) VALUES(?,?,?,?,?,?,?,?,?) "
-        "ON CONFLICT(id) DO UPDATE SET name=excluded.name, status='starting', created=excluded.created",
+        "ON CONFLICT(id) DO UPDATE SET name=excluded.name, agent='', status='starting', created=excluded.created",
         (node_id, "runner", num, 0, disp_name, "", "starting", now(), now()),
     )
     return node_id, w_code
