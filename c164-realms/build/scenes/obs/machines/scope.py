@@ -1063,8 +1063,8 @@ EYE_DOWN = (15.0, 30.0)         # degrees a face may look down (the tube looks 4
 EYE_BEAT = 8                    # ticks from one look for players to the next: motion/guide's beat, whose lens looks
 #                                 on tick 4 of it for the players this one tagged on tick 0
 EYE_SWEEP = 40                  # ticks from one sweep to the next for a picture that has strayed from its wearer
-EYE_PICTURE = "misc/scope_eye"  # the picture: assets/<NS>/textures/<this>.png
-EYE_ITEM = "scope_eye"          # the item model of what carries it: assets/<NS>/items/<this>.json, nothing to see
+EYE_PICTURE = "misc/" + PREFIX + "eye"      # the picture: assets/<NS>/textures/<this>.png
+EYE_ITEM = PREFIX + "eye"       # the item model of what carries it: assets/<NS>/items/<this>.json, nothing to see
 EYE_MARK = "c164eye"            # the custom data that tells the carrier from a spyglass of the map's
 EYE_SIZE = (640, 360)           # the picture, pixels: the game stretches it over the whole screen; drawn for 16 to 9
 EYE_FIELD = 160.0               # pixels from the middle to the edge of the round field
