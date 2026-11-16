@@ -74,3 +74,21 @@ aide 11:07 派的：甲 mast；乙 rec、ashlar（一人六块，楼的东西两
 ## 记录
 
 （做的人写在下面。）
+
+### 甲 进场标题和署名牌（mast c346；包名 `motion/guide-title`，分支 `cursor/c164-mast-guide-f3-fc27`）
+
+- 文件：`build/scenes/obs/motion/guide_title.py`，测试场景 `build/scenes/obs_mot_guide_title/`。主场景 `scenes/obs/__init__.py` 加了两行开关 `GUIDE`、`GUIDE_CHARTS`（s2 11:22 同意随这一包带，只加不改）。
+- 名字只写在一处：`guide_title.MAP_TITLE = ("BLUE HOUR", "OBSERVATORY")`（占位）和 `MAP_CREDIT = "c164"`。`MAP_NAME` 是两段拼成的一行，outb 的存档名和两个包的说明读它，署名牌也用它。管理员定名只改这两行。
+- 标题为什么分两行（总监 11:30 定）：游戏把标题放大四倍画，不换行也不缩小，超宽的部分两头被屏幕切掉。界面自动比例下 16:9 的屏幕宽 427（720p、1440p、4K）或 480（1080p），标题槽只容 106 个字体像素，约 17 个大写字母。`BLUE HOUR OBSERVATORY` 写成一行是 121。现在第一段进标题槽（51 像素），第二段进副标题那一号字（65 像素）；`An evening above the clouds` 不要了。
+- 宽度的校验：`guide_title.misfits()` 量两段；上段超过 106、下段超过 149 像素，`functions()` 报错，带导览的场景搭不起来，`check.py` 的 regen 就是 FAIL。改名的人不会在不知情的时候得到一个被切掉的标题。
+- 数据包里三个函数，由 a2 的 `MK.function` 写，outb 的函数标签 `#c164map:first`、`#c164map:join` 点名：
+  - `c164art:guide/first`：新来的人，一次。给他打标签 `c164.new`，排 40 tick 以后发标题。
+  - `c164art:guide/join`：每次进服。只有身上还带着 `c164.new` 的人重排一次（掉线在那两秒里的人，回来补发）；别人什么都不出。
+  - `c164art:guide/title`：到点。对带标签又在线的人发 `title … times 20 80 30`、副标题、标题各一条，摘标签。
+- 延后 40 tick 是 outb 提的：`first` 跑的那一刻真客户端还在「载入地形」的画面，标题会在那张画面后面耗掉。排程用游戏的 replace：两秒之内又来一个新人，两个人的标题一起挪到后一个人进来之后两秒。
+- 预算（和 a2 对过，11:32 他记了账）：没有每刻的命令，不上循环。新来一个人前后 7 条，别人每次进服 1 条。
+- 字：两行都是铭牌的米白 `#f2ead6`，游戏默认字体，没有字体文件。
+- 署名牌：用 a6 的 `props/plaques.sign()`，一块，`BLUE HOUR OBSERVATORY` / `Built by c164`。挂在候车室正面（朝南那面墙）门东边的墙墩上，牌心 (84.5, −2.5, −36.0)，比眼睛低一点；人从车里出来往西走，它在右手，脚下是那堆行李。V1 里没有它（牌面那个高度上，正面只有 x 82.4 以西进画面，牌在 84 到 85 之间）；别的看板机位离它都在 39 格以外，牌 16 格外不画。ashlar 的 CABLE STATION 不挂这面墙（11:36 告诉了他）。
+- 依赖：树里没有 `props/plaques` 的时候只有标题、没有牌，等它进了总装牌自己出现；这条分支不带 a6 的文件。带着 a2 的 81dffccf（`MK.function`）。
+- 离线图里既没有标题也没有牌：标题画在玩家的屏幕上，离线渲染器不画 `text_display`。两样都要在真机上看：outb 的 verify 数标题的包，s1 用真客户端走一遍。
+- 开关：主场景 `GUIDE = False`（导出 `--no-guide`）时不登记函数、不挂牌，数据包里没有 `guide/` 这个文件夹。

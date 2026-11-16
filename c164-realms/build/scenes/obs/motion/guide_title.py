@@ -49,9 +49,9 @@ The credit plate
     where    On the waiting room's front, the wall on the right of whoever walks from the car
              to the steps: the pier east of the door (site/cablecar: WAIT_ROOM["door"]), the
              plate's middle PLATE_UP over the platform, a little under the eye. The arrival view
-             (S.V1) does not have it: the front comes into that picture west of x 82.2 only,
-             and the plate hangs between x 84 and 85. No other view of the board is within the
-             16 blocks a plaque is drawn from.
+             (S.V1) does not have it: at the plate's height the front comes into that picture
+             west of x 82.4 only, and the plate hangs between x 84 and 85. No other view of the
+             board is within the 16 blocks a plaque is drawn from.
     when     Where the pier stands on the canvas, and in a tree that has props/plaques. A scene
              without the station has no plate hanging in the air; a tree without the props
              line's plaques has the title and no plate, and gets the plate when they come.
