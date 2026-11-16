@@ -1,6 +1,6 @@
 """The light on the plate vault's ways, read as tools/darkfloor.py reads the master scene's:
 
-    env PYTHONPATH=build python -m scenes.obs_int_platevault.ways      (from c164-realms/, on a worker node)
+    env PYTHONPATH=build python -m scenes.obs_int_platevault.ways [<folder>]     (from c164-realms/, on a worker node)
 
 Builds the box scene, lets tools/walkreach.py find every place a person stands in the room coming
 in by the door (on foot or with a hop: the tops of the darkroom's benches are such places), and
@@ -9,7 +9,8 @@ cell of the head. The line (cr2, 11-16): a floor cell has 5 or more, the thresho
 end is the darkest place of the building and has no more than 6.
 
 Prints the room as a plan, a cell a number, then what sky/lights made of the sources the room
-asked for, and PASS or FAIL in the last line. Ends with 0 either way.
+asked for, and PASS or FAIL in the last line; with a folder it writes the same there as
+obs_int_platevault-ways.txt. Ends with 0 either way.
 """
 import math
 import os
@@ -67,39 +68,45 @@ def plan(rows, y):
 
 
 def main():
+    out = []
     canvas, rows = measure()
     for y in sorted({c[1] for c in rows}):
-        print("\n".join(plan(rows, y)))
+        out += plan(rows, y)
     low = sorted(c for c, (_, v) in rows.items() if v < need(c))
     dark_end = {c: v for c, (_, v) in rows.items() if c[2] >= T.WALL_Z}
     stacks = {c: v for c, (_, v) in rows.items() if c[2] < T.WALL_Z and c != THRESHOLD}
     over = sorted(c for c, v in dark_end.items() if v > DARK_TOP)
     hops = sum(1 for how, _ in rows.values() if how == "hop")
-    print(f"standing places: {len(rows)} ({hops} of them reached with a hop)")
-    print(f"the threshold {THRESHOLD}: {rows[THRESHOLD][1] if THRESHOLD in rows else 'nobody stands there'} (line {STEP})")
+    out.append(f"standing places: {len(rows)} ({hops} of them reached with a hop)")
+    out.append(f"the threshold {THRESHOLD}: {rows[THRESHOLD][1] if THRESHOLD in rows else 'nobody stands there'} (line {STEP})")
     if stacks:
-        print(f"the stacks: {min(stacks.values())} to {max(stacks.values())} (line {FLOOR})")
+        out.append(f"the stacks: {min(stacks.values())} to {max(stacks.values())} (line {FLOOR})")
     if dark_end:
-        print(f"the darkroom end: {min(dark_end.values())} to {max(dark_end.values())} (line {FLOOR}, no more than {DARK_TOP})")
-    print(f"under the line: {len(low)}" + (f": {low[:24]}{' ...' if len(low) > 24 else ''}" if low else ""))
-    print(f"over {DARK_TOP} in the darkroom end: {len(over)}" + (f": {over[:24]}" if over else ""))
+        out.append(f"the darkroom end: {min(dark_end.values())} to {max(dark_end.values())} (line {FLOOR}, no more than {DARK_TOP})")
+    out.append(f"under the line: {len(low)}" + (f": {low[:24]}{' ...' if len(low) > 24 else ''}" if low else ""))
+    out.append(f"over {DARK_TOP} in the darkroom end: {len(over)}" + (f": {over[:24]}" if over else ""))
 
     r = lights.report(canvas)
     mine = {c: v for c, v in r["placed"].items() if in_room(c)}
     by_why = {}
     for c, (level, why) in sorted(mine.items()):
         by_why.setdefault((why, level), []).append(c)
-    print(f"sources in the room: {len(mine)}")
+    out.append(f"sources in the room: {len(mine)}")
     for (why, level), where in sorted(by_why.items()):
-        print(f"  {why} {level}: " + " ".join(f"({x},{y},{z})" for x, y, z in where))
+        out.append(f"  {why} {level}: " + " ".join(f"({x},{y},{z})" for x, y, z in where))
     odd = 0
     for key, at in (("rejected", 0), ("capped", 0), ("merged", 0), ("moved", 0)):
         for entry in r[key]:
             if in_room(entry[at]):
                 odd += 1
-                print(f"  {key}: {entry}")
+                out.append(f"  {key}: {entry}")
     ok = not low and not over and THRESHOLD in rows and not odd
-    print("ways: " + ("PASS" if ok else "FAIL"))
+    out.append("ways: " + ("PASS" if ok else "FAIL"))
+    print("\n".join(out))
+    if len(sys.argv) > 1:
+        os.makedirs(sys.argv[1], exist_ok=True)
+        with open(os.path.join(sys.argv[1], "obs_int_platevault-ways.txt"), "w", encoding="utf-8", newline="\n") as f:
+            f.write("\n".join(out) + "\n")
 
 
 if __name__ == "__main__":
