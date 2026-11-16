@@ -78,3 +78,5 @@
   - 拿 mast 的真函数再跑（op_e0c4ed4dec，11:42，node4；试跑分支 `cursor/c164-outb-hooktest-f4b8` @ 64acc11a = 钩子 + 总装 1a0f1af9 + 他的 ca2e7516）：47 项全过，新来的人标题 `BLUE HOUR`、副标题 `OBSERVATORY` 各一次，再进服什么都没有，聊天栏空，控制台 0 警告，`LevelName` 是 `BLUE HOUR OBSERVATORY`，`stop.mcfunction` 已不在包里而循环照转。输出在 `cursor/c164-outb-hooktest-f4b8-wip` 的 `renders/_wip/hook/run3.txt`、`H3.json`、`H3.verify.json`。那份存档里 `text_display` 是 0 个：署名牌要等 a6 的 `props/plaques` 进总装。
   - 封包时去掉循环的 `obs-motion/stop.mcfunction`（a2 #82424：搭建时停机器用的，包里没有任何东西调它；规矩「不留测试工具」）。删之前扫一遍包里有没有函数或标签提到它，有就留下并写进 `notes`。
 - **A7（总装 1a0f1af9，11:35 的头，node4，11:40 回）是头一个存盘前等光照算完的存档**：主包 9.7 秒、plain 10.0 秒静下来，43 项全过。s1 用他自己的 `tools/savelit.py`（数每个发光方块自己那一格存盘的亮度）独立核过（#83517）：339 个光源、35 个区块，0 个暗的；发电房四个区块 20 个光源全亮，A6 是 17 个暗。
+  - A7 的验收图（s1，真的客户端进存档拍的 13 张）：他分支 `cursor/c164-s1-render-f3-fd9c` 提交 954d8eaf，`renders/real-save/c164-A7/`（`sheet.jpg`、`beside.jpg`）。V6 里发电房亮了。
+- **第三版进总装**：026024ff，s2 逐行读过合成 306a855e（11:50，「关口待跑」：池子掉线期间的走法，总监 #81173 第 1 条）。导览甲（mast 的进场标题，主场景的 `GUIDE`、`GUIDE_CHARTS` 两行）在 0e6b941a、丙（六张星图）在 e57f5547 进的总装，所以 12:00 的 A8 起导出来的存档带导览。
