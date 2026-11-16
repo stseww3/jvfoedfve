@@ -85,7 +85,7 @@ BOXES = (CX - 1.58, CZ - 0.6)                           # (10.42, 29.4): the shu
 LAMP_CELL = (NICHE_X[1], FEET, CZ + 1)                  # (13, 18, 31): where the desk lamp's source is offered
 ASK_LAMP = 5                                            # the lowest step of the third rank
 BOX_ON_DESK = (-8.5, 1.5)                               # the open plate box, in the desk's frame (on_desk)
-RED = (NICHE_EAST, FEET + 1.62, SOUTH - 0.5 - 1.5 / 16.0)       # the red lamp: on the niche's end wall, over the box
+RED = (NICHE_EAST, FEET + 1.62, SOUTH - 0.5 - 3.0 / 16.0)       # the red lamp: on the niche's end wall, over the box
 
 # ---- materials: props/furniture's wood and brass, so the pieces are of one make -------------------
 WOOD = P.mat("dark_wood")
