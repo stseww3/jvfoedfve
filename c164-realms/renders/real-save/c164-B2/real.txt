@@ -1,0 +1,41 @@
+# pictures of a save opened as it comes (tools/savetrip.py): shot, the save's hour (daytime) when it was taken, commit that holds the zip, first 16 of the picture file's sha256, when it was taken, the distances
+# the save: dist/B2/c164-B2.zip of daefc191 (cursor/c164-dist-f4b8), 3563943 bytes, sha256 b57f68804e0ee64d84e5552daac2f258e8719bed87dbea4e6d738f0c5b96de5a
+# exported from the assembly commit 316941ab, as the one who asked for the trip says
+# level.dat: world BLUE HOUR OBSERVATORY, game 26.3, game mode adventure, difficulty peaceful, spawn 88 196 -33, yaw 67.71, pitch -22.69, commands off, data packs vanilla file/c164art
+# the save's stored light: 350 light sources in 35 chunks, each lit in its own cell
+# the server: the node's test server on this save, game mode adventure (not forced), difficulty peaceful, as a Realm's slot is filled from the world; the camera is no operator
+# resource pack: resourcepacks/resources.zip of the save (1892803 bytes, sha256 cfcba9f92bf8362c, 2522 files, pack.mcmeta { "pack": { "description": "BLUE HOUR OBSERVATORY (c164-B2 316941ab)", "min_format": 97, "max_format": 97 } }) is the client's pack (whether a Realm hands it to those who join is not shown here)
+# the server, before anybody joined: Timeline minecraft:day is at 20370 tick(s); Game rule advance_time is currently set to false; The difficulty is Peaceful; There are 2 data pack(s) enabled: [vanilla (built-in)], [file/c164art (world)]
+# the game's graphics backend: Vulkan, 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+# as joined: C164Cam has the following entity data: [88.5d, 196.0d, -32.5d]; C164Cam has the following entity data: [67.71f, -22.69f]; C164Cam has the following entity data: 2 (0 survival, 1 creative, 2 adventure, 3 spectator)
+# the save's clock: the day stood at 20370 when the player had joined, at 20370 after the last picture (it stands)
+# distances: client render distance 12, server view distance 10, cloud range 128; pictures: 25 saved by the game itself, 0 taken off the display
+# frames a second at v01_arrival: 10.2 on average (9 to 11; the game's own count, a second each: 9 11 10 10 10 10 11 10 10 11)
+# frames a second at v11_lookout: 9.7 on average (9 to 10; the game's own count, a second each: 9 10 10 10 10 9 10 10 9 10)
+# frames a second at v12_aerial: 10.5 on average (10 to 11; the game's own count, a second each: 11 10 10 10 11 11 11 10 11 10)
+# frames a second at v07_hall: 7.1 on average (7 to 8; the game's own count, a second each: 7 7 8 7 7 7 7 7 7 7)
+as_joined 20370 daefc191 bd27df7b6a8dea75 2026-11-16T05:24 view12,server10,clouds128
+v01_arrival 20370 daefc191 99a60dbb6b260094 2026-11-16T05:24 view12,server10,clouds128
+v01_arrival_b 20370 daefc191 c925d2dcf1ba90ab 2026-11-16T05:24 view12,server10,clouds128
+v02_axis 20370 daefc191 351e8145f2efccec 2026-11-16T05:24 view12,server10,clouds128
+v02_axis_b 20370 daefc191 8775e19fafce7a4e 2026-11-16T05:24 view12,server10,clouds128
+v03_facade 20370 daefc191 eec6d82ef456c5f8 2026-11-16T05:24 view12,server10,clouds128
+v03_facade_b 20370 daefc191 22a1b4bae616b1df 2026-11-16T05:24 view12,server10,clouds128
+v04_entrance 20370 daefc191 6e2651f60f6a6bc3 2026-11-16T05:24 view12,server10,clouds128
+v04_entrance_b 20370 daefc191 8254b1acbc17b7e1 2026-11-16T05:24 view12,server10,clouds128
+v05_tower 20370 daefc191 2d093db94456e19b 2026-11-16T05:24 view12,server10,clouds128
+v05_tower_b 20370 daefc191 5fb2ec6ccce73269 2026-11-16T05:24 view12,server10,clouds128
+v06_power 20370 daefc191 b37c2e921f195c32 2026-11-16T05:24 view12,server10,clouds128
+v06_power_b 20370 daefc191 5707607b47239980 2026-11-16T05:24 view12,server10,clouds128
+v07_hall 20370 daefc191 5f31d7dfda70bd4d 2026-11-16T05:24 view12,server10,clouds128
+v07_hall_b 20370 daefc191 5c55caef0a89648f 2026-11-16T05:24 view12,server10,clouds128
+v08_dome_room 20370 daefc191 f675ce68b55572b5 2026-11-16T05:24 view12,server10,clouds128
+v08_dome_room_b 20370 daefc191 7434c03c38ee5f1a 2026-11-16T05:24 view12,server10,clouds128
+v09_chart_room 20370 daefc191 df222d9ea20458f9 2026-11-16T05:24 view12,server10,clouds128
+v09_chart_room_b 20370 daefc191 5c31f5747e097456 2026-11-16T05:24 view12,server10,clouds128
+v10_time_room 20370 daefc191 9035413dcd2d8757 2026-11-16T05:24 view12,server10,clouds128
+v10_time_room_b 20370 daefc191 730322c4591b08b7 2026-11-16T05:24 view12,server10,clouds128
+v11_lookout 20370 daefc191 fc5b28eb23645c1a 2026-11-16T05:24 view12,server10,clouds128
+v11_lookout_b 20370 daefc191 e9716e800ae2677c 2026-11-16T05:24 view12,server10,clouds128
+v12_aerial 20370 daefc191 a3ce0ff385f1437b 2026-11-16T05:24 view12,server10,clouds128
+v12_aerial_b 20370 daefc191 7dba63d99211682c 2026-11-16T05:24 view12,server10,clouds128

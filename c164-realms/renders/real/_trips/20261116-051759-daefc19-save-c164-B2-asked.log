@@ -1,0 +1,91 @@
+[trip 05:17:59 +0s] trip into the save dist/B2/c164-B2.zip of daefc191 (cursor/c164-dist-f4b8): 3563943 bytes, sha256 b57f68804e0ee64d84e5552daac2f258e8719bed87dbea4e6d738f0c5b96de5a, as asked; view distance 12 (the server's 10), cloud range 128; 4 cores, 820 s at most
+[trip 05:17:59 +0s] clean: nodemc.py down  (up to 180 s)
+[trip 05:17:59 +0s] clean: exit 0, 0 s
+[trip 05:17:59 +0s] the save: the world folder c164-B2 (1093 entries) is unpacked as server26/save/; level.dat: name BLUE HOUR OBSERVATORY, mode adventure, difficulty peaceful, spawn 88 196 -33, yaw 67.71, pitch -22.69, version 26.3, commands False, packs ['vanilla', 'file/c164art']
+[trip 05:17:59 +1s] the save's stored light: 350 light sources in 35 chunks, each lit in its own cell
+[trip 05:17:59 +1s] setup: nodemc.py setup  (up to 519 s)
+    [nodemc 05:18:00] vulkan: apiVersion 1.4.318, deviceName llvmpipe (LLVM 20.1.2, 256 bits), driverInfo Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+    [nodemc 05:18:00] java: /agent/realms-study/jdk/jdk-25.0.5+8-jre/bin/java
+    [nodemc 05:18:00] game files: whole ({"version": "26.3", "system": "linux", "mainClass": "net.minecraft.client.main.Main", "assetIndex": "34", "files": 5124, "downloaded": 5123, "assets_skipped": 9)
+    [nodemc 05:18:00] settings written: server26/server.properties (level-name, gamemode, force-gamemode, difficulty); render distance 12, the server's view distance 10, cloud range 128; the world save, joined in adventure mode, difficulty peaceful
+[trip 05:18:00 +1s] setup: exit 0, 0 s
+[trip 05:18:00 +1s] resource pack: resourcepacks/resources.zip of the save (1892803 bytes, sha256 cfcba9f92bf8362c, 2522 files, pack.mcmeta { "pack": { "description": "BLUE HOUR OBSERVATORY (c164-B2 316941ab)", "min_format": 97, "max_format": 97 } }) is the client's pack
+[trip 05:18:00 +1s] server: nodemc.py server-up  (up to 400 s)
+    [nodemc 05:18:06] server is up (6 s)
+[trip 05:18:06 +7s] server: exit 0, 6 s
+[trip 05:18:06 +7s] server, asked `time query minecraft:day`: Timeline minecraft:day is at 20370 tick(s)
+[trip 05:18:06 +7s] server, asked `time query gametime`: The game time is 378 tick(s)
+[trip 05:18:06 +7s] server, asked `gamerule advance_time`: Game rule advance_time is currently set to false
+[trip 05:18:06 +7s] server, asked `difficulty`: The difficulty is Peaceful
+[trip 05:18:06 +7s] server, asked `datapack list enabled`: There are 2 data pack(s) enabled: [vanilla (built-in)], [file/c164art (world)]
+[trip 05:18:06 +7s] game: nodemc.py client-up  (up to 693 s)
+    [nodemc 05:18:16] C164Cam is online (10 s)
+    [nodemc 05:18:16] game: [05:18:10] [Render thread/INFO]: Backend library: LWJGL version 3.4.3+4
+    [nodemc 05:18:16] game: [05:18:11] [Render thread/ERROR]: Failed to create backend OpenGL
+    [nodemc 05:18:16] game: com.mojang.renderpearl.api.device.BackendCreationException: Failed to create window for OpenGL context: Couldn't find matching GLX visual
+    [nodemc 05:18:16] game: [05:18:11] [Render thread/INFO]: Using graphics backend Vulkan, using drivers: 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+    [nodemc 05:18:16] game: [05:18:11] [Render thread/INFO]: Using graphics device: llvmpipe (LLVM 20.1.2, 256 bits) (0x10005)
+    [nodemc 05:18:16] pictures: saved by the game itself (helper)
+[trip 05:18:16 +17s] game: exit 0, 10 s
+[trip 05:18:16 +17s] the game draws with: Vulkan, 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+[trip 05:18:16 +17s] server, asked `data get entity C164Cam Pos`: C164Cam has the following entity data: [88.5d, 196.0d, -32.5d]
+[trip 05:18:16 +17s] server, asked `data get entity C164Cam Rotation`: C164Cam has the following entity data: [67.71f, -22.69f]
+[trip 05:18:16 +17s] server, asked `data get entity C164Cam playerGameType`: C164Cam has the following entity data: 2
+[trip 05:18:16 +17s] server, asked `time query minecraft:day`: Timeline minecraft:day is at 20370 tick(s)
+[trip 05:18:16 +17s] pictures: shoot.py /tmp/c164_s1/real/save/c164-B2-asked/shots.json --pw-file /agent/realms-study/server26/.rcon_pw --out /tmp/c164_s1/real/save/c164-B2-asked/shots --origin 0 200 0 --keep-clock --settle 10.0 --first-settle 60.0 --still 60.0  (up to 683 s)
+    /tmp/c164_s1/real/save/c164-B2-asked/shots/v06_power.png (still after 3 s more, 0.13% of it moved between the last two)
+    /tmp/c164_s1/real/save/c164-B2-asked/shots/v06_power_2.png
+    /tmp/c164_s1/real/save/c164-B2-asked/shots/v06_power_3.png
+    /tmp/c164_s1/real/save/c164-B2-asked/shots/v06_power_4.png
+    /tmp/c164_s1/real/save/c164-B2-asked/shots/v09_chart_room.png (still after 3 s more, 0.19% of it moved between the last two)
+    /tmp/c164_s1/real/save/c164-B2-asked/shots/v09_chart_room_2.png
+    /tmp/c164_s1/real/save/c164-B2-asked/shots/v09_chart_room_3.png
+    /tmp/c164_s1/real/save/c164-B2-asked/shots/v09_chart_room_4.png
+    /tmp/c164_s1/real/save/c164-B2-asked/shots/v10_time_room.png (still after 3 s more, 0.10% of it moved between the last two)
+    /tmp/c164_s1/real/save/c164-B2-asked/shots/v10_time_room_2.png
+    /tmp/c164_s1/real/save/c164-B2-asked/shots/v10_time_room_3.png
+    /tmp/c164_s1/real/save/c164-B2-asked/shots/v10_time_room_4.png
+    /tmp/c164_s1/real/save/c164-B2-asked/shots/cloud_terrace_west.png (still after 3 s more, 0.17% of it moved between the last two)
+    /tmp/c164_s1/real/save/c164-B2-asked/shots/cloud_station_east.png (still after 3 s more, 0.06% of it moved between the last two)
+    /tmp/c164_s1/real/save/c164-B2-asked/shots/cable_back.png (still after 3 s more, 0.00% of it moved between the last two)
+    /tmp/c164_s1/real/save/c164-B2-asked/shots/lamp_bracket_door.png (still after 3 s more, 0.00% of it moved between the last two)
+    /tmp/c164_s1/real/save/c164-B2-asked/shots/lamp_street_globe.png (still after 3 s more, 0.19% of it moved between the last two)
+    /tmp/c164_s1/real/save/c164-B2-asked/shots/lamp_street_under.png (still after 3 s more, 0.05% of it moved between the last two)
+    /tmp/c164_s1/real/save/c164-B2-asked/shots/lamp_street_foot.png (still after 3 s more, 0.03% of it moved between the last two)
+    /tmp/c164_s1/real/save/c164-B2-asked/shots/l1_hall_clock.png (still after 3 s more, 0.28% of it moved between the last two)
+    /tmp/c164_s1/real/save/c164-B2-asked/shots/l2_power_room.png (still after 3 s more, 0.34% of it moved between the last two)
+    /tmp/c164_s1/real/save/c164-B2-asked/shots/l3_power_fires.png (still after 3 s more, 0.02% of it moved between the last two)
+    /tmp/c164_s1/real/save/c164-B2-asked/shots/l4_time_console.png (still after 7 s more, 0.98% of it moved between the last two)
+    pictures: 23 saved by the game itself, 0 taken off the display
+[trip 05:22:48 +289s] pictures: exit 0, 272 s
+[trip 05:22:48 +289s] server, asked `time query minecraft:day`: Timeline minecraft:day is at 20370 tick(s)
+[trip 05:22:48 +289s] server, asked `data get entity C164Cam playerGameType`: C164Cam has the following entity data: 3
+[trip 05:22:49 +290s] 23 pictures kept in renders/real-save/c164-B2-asked/: v06_power, v06_power_2, v06_power_3, v06_power_4, v09_chart_room, v09_chart_room_2, v09_chart_room_3, v09_chart_room_4, v10_time_room, v10_time_room_2, v10_time_room_3, v10_time_room_4, cloud_terrace_west, cloud_station_east, cable_back, lamp_bracket_door, lamp_street_globe, lamp_street_under, lamp_street_foot, l1_hall_clock, l2_power_room, l3_power_fires, l4_time_console; sheet.jpg, beside.jpg (beside the board of 316941ab)
+[trip 05:22:49 +290s] what the game said: nodemc.py client-said 1794806279 /tmp/dais_jobs/c319/c164-realms/renders/real/_trips/20261116-051759-daefc19-save-c164-B2-asked-client.txt  (up to 30 s)
+    client said: 5 records on shaders, pipelines and packs, 1 of a failure; written to /tmp/dais_jobs/c319/c164-realms/renders/real/_trips/20261116-051759-daefc19-save-c164-B2-asked-client.txt
+    sounds started: 147 of 14 events, 131 of them of 9 events that are not the game's own
+        c164:engine x14
+        c164:fire x7
+        c164:hiss x5
+        c164:hum x4
+        c164:telegraph x12
+        c164:telegraph_up x12
+        c164:tick x35
+        c164:tock x35
+        c164:wind x7
+        the game's own: block.note_block.bell x12, ui.toast.in x1, music.game x1, ui.toast.out x1, block.note_block.chime x1
+[trip 05:22:49 +290s] what the game said: exit 0, 0 s
+[trip 05:22:49 +290s] the game on sounds: 0 lines of an unknown or empty sound event or a bad sounds.json
+[trip 05:22:49 +290s] the packs the game loaded: [05:18:11] [Render thread/INFO]: Reloading ResourceManager: vanilla, vanilla, file/c164art
+[trip 05:22:49 +290s] the server on the save: 0 warnings, 0 errors in its log (20261116-051759-daefc19-save-c164-B2-asked-server.txt)
+[trip 05:22:49 +290s] close: nodemc.py down  (up to 180 s)
+    [nodemc 05:22:50] client stopped
+    [nodemc 05:22:51] server stopped
+[trip 05:22:51 +292s] close: exit 0, 2 s
+[trip 05:22:51 +292s] back to the test world: nodemc.py setup  (up to 120 s)
+    [nodemc 05:22:51] vulkan: apiVersion 1.4.318, deviceName llvmpipe (LLVM 20.1.2, 256 bits), driverInfo Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+    [nodemc 05:22:51] java: /agent/realms-study/jdk/jdk-25.0.5+8-jre/bin/java
+    [nodemc 05:22:51] game files: whole ({"version": "26.3", "system": "linux", "mainClass": "net.minecraft.client.main.Main", "assetIndex": "34", "files": 5124, "downloaded": 5123, "assets_skipped": 9)
+    [nodemc 05:22:51] settings written: server26/server.properties (level-name, gamemode, force-gamemode, difficulty); render distance 12, the server's view distance 10, cloud range 128
+[trip 05:22:51 +292s] back to the test world: exit 0, 0 s
+[trip 05:22:51 +292s] trip done; pictures kept: renders/real-save/c164-B2-asked/; log renders/real/_trips/20261116-051759-daefc19-save-c164-B2-asked.log

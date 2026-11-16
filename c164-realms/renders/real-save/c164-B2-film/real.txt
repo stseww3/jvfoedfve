@@ -1,0 +1,15 @@
+# pictures of a save opened as it comes (tools/savetrip.py): shot, the save's hour (daytime) when it was taken, commit that holds the zip, first 16 of the picture file's sha256, when it was taken, the distances
+# the save: dist/B2/c164-B2.zip of daefc191 (cursor/c164-dist-f4b8), 3563943 bytes, sha256 b57f68804e0ee64d84e5552daac2f258e8719bed87dbea4e6d738f0c5b96de5a
+# exported from the assembly commit 316941ab, as the one who asked for the trip says
+# level.dat: world BLUE HOUR OBSERVATORY, game 26.3, game mode adventure, difficulty peaceful, spawn 88 196 -33, yaw 67.71, pitch -22.69, commands off, data packs vanilla file/c164art
+# the save's stored light: 350 light sources in 35 chunks, each lit in its own cell
+# the server: the node's test server on this save, game mode adventure (not forced), difficulty peaceful, as a Realm's slot is filled from the world; the camera is no operator
+# resource pack: resourcepacks/resources.zip of the save (1892803 bytes, sha256 cfcba9f92bf8362c, 2522 files, pack.mcmeta { "pack": { "description": "BLUE HOUR OBSERVATORY (c164-B2 316941ab)", "min_format": 97, "max_format": 97 } }) is the client's pack (whether a Realm hands it to those who join is not shown here)
+# the server, before anybody joined: Timeline minecraft:day is at 20370 tick(s); Game rule advance_time is currently set to false; The difficulty is Peaceful; There are 2 data pack(s) enabled: [vanilla (built-in)], [file/c164art (world)]
+# the game's graphics backend: Vulkan, 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+# as joined: C164Cam has the following entity data: [88.5d, 196.0d, -32.5d]; C164Cam has the following entity data: [67.71f, -22.69f]; C164Cam has the following entity data: 2 (0 survival, 1 creative, 2 adventure, 3 spectator)
+# the save's clock: the day stood at 20370 when the player had joined, at 20370 after the last picture (it stands)
+# distances: client render distance 12, server view distance 10, cloud range 128; pictures: 3 saved by the game itself, 0 taken off the display
+v05_tower 20370 daefc191 9142dab131a820d6 2026-11-16T05:19 view12,server10,clouds128
+v07_hall 20370 daefc191 eeb0989d40a69d33 2026-11-16T05:19 view12,server10,clouds128
+f1_tower_clock 20370 daefc191 c92472ed18a79f15 2026-11-16T05:19 view12,server10,clouds128
