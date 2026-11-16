@@ -28,7 +28,8 @@ The cameras
 
 The sparks live half a second to two and there are seven in eight seconds; a flash at a brush or
 at the switch lives a tenth of a second and there are eight in eight seconds: a single picture
-seldom has one. Whoever takes the pictures on the real machine takes a handful of each.
+seldom has one. This scene shows how many there are; where one sits and how bright it is, the
+bench shows (obs_mot_smoke_bench: the same room, the same particles, every few ticks).
 
     python -m scenes.obs_mot_smoke_room      (in build/) writes shots.json
 """
@@ -84,14 +85,21 @@ def shots():
     return out
 
 
-def build():
+def stage():
+    """The house on its slab and the machines in it: the canvas before motion/smoke and the sky
+    line come to it (obs_mot_smoke_bench stands on the same)."""
     c = Canvas()
     c.box(SLAB[0], PAVING_Y - 3, SLAB[1], SLAB[2], PAVING_Y - 1, SLAB[3], ROCK)
     c.box(SLAB[0], PAVING_Y, SLAB[1], SLAB[2], PAVING_Y, SLAB[3], FLOOR)
     shell = powerhouse.build(c, (0, 0, 0))          # its own entities: the lamp over the wicket
     n = boiler.build(c, (0, 0, 0)) + board.build(c, (0, 0, 0)) + engine.build(c, (0, 0, 0))
-    smoke.build(c, (0, 0, 0))
     c.entity_counts = {"machines": n, "site": int(shell or 0), "motion": 0}
+    return c
+
+
+def build():
+    c = stage()
+    smoke.build(c, (0, 0, 0))
     sky.build(c, (0, 0, 0))                         # the sky line's light sources go in last
     return c
 
