@@ -80,6 +80,12 @@ JOINED = "as_joined"
 MODES = {0: "survival", 1: "creative", 2: "adventure", 3: "spectator"}
 DIFFICULTIES = {0: "peaceful", 1: "easy", 2: "normal", 3: "hard"}
 JPEG_QUALITY = 90
+# The hour of the day the world keeps. 26.3 has clocks and timelines: `time query daytime` is no
+# more, the day is the timeline minecraft:day ("Timeline minecraft:day is at 20370 tick(s)").
+HOUR = "time query minecraft:day"
+# What the node's server says of itself at every start, whatever world it opens: not the save's.
+OWN_WORDS = re.compile(r"OFFLINE/INSECURE MODE|make no attempt to authenticate|possible to play without internet|"
+                       r'set "online-mode" to "true"')
 KEPT = os.path.join("renders", "real-save")
 HEAD = ("# pictures of a save opened as it comes (tools/savetrip.py): shot, the save's hour (daytime) when it was "
         "taken, commit that holds the zip, first 16 of the picture file's sha256, when it was taken, the distances")
@@ -201,9 +207,10 @@ def ask(trip, *commands):
 
 
 def number(text):
-    """The last whole number in an answer of the server, or None."""
+    """The last whole number in an answer of the server, or None; None too when the server did not
+    take the command (its answer then points at the place: <--[HERE])."""
     found = re.findall(r"-?\d+", text or "")
-    return int(found[-1]) if found else None
+    return int(found[-1]) if found and "<--[HERE]" not in text else None
 
 
 def console_size():
@@ -229,7 +236,7 @@ def server_said(offset, out, secret=""):
             line = line.replace(secret, "***")
         m = re.match(r"\[\d\d:\d\d:\d\d\] \[[^\]]*/(WARN|ERROR|FATAL)\]", line)
         if re.match(r"\[\d\d:\d\d:\d\d\]", line):
-            record = [m.group(1), line[:600]] if m else None
+            record = [m.group(1), line[:600]] if m and not OWN_WORDS.search(line) else None
             if record:
                 records.append(record)
         elif record is not None and len(record) < 42 and line.strip():
@@ -238,7 +245,8 @@ def server_said(offset, out, secret=""):
     errors = len(records) - warnings
     os.makedirs(os.path.dirname(out), exist_ok=True)
     with open(out, "w", encoding="utf-8", newline="\n") as fh:
-        fh.write(f"# the server's warnings and errors while it ran on the save: {warnings} warnings, {errors} errors\n")
+        fh.write(f"# the server's warnings and errors while it ran on the save: {warnings} warnings, {errors} errors "
+                 f"(its four lines on running offline, which it says on any world, are left out)\n")
         fh.write("".join(line + "\n" for record in records[:400] for line in record[1:]))
     return warnings, errors
 
@@ -352,7 +360,7 @@ def main():
             if code != 0:
                 failed.append("the server did not come up on the save")
             else:
-                before = ask(trip, "time query daytime", "time query gametime", "gamerule advance_time", "difficulty",
+                before = ask(trip, HOUR, "time query gametime", "gamerule advance_time", "difficulty",
                              "datapack list enabled")
                 facts.append(f"# the server, before anybody joined: {before[0]}; {before[2]}; {before[3]}; {before[4]}")
                 code, _ = trip.stage("game", station, "client-up", budget=trip.left() - CLOSING, env=as_slot)
@@ -361,7 +369,7 @@ def main():
                 else:
                     cam = nodetrip_cam()
                     joined = ask(trip, f"data get entity {cam} Pos", f"data get entity {cam} Rotation",
-                                 f"data get entity {cam} playerGameType", "time query daytime")
+                                 f"data get entity {cam} playerGameType", HOUR)
                     facts.append(f"# as joined: {joined[0]}; {joined[1]}; {joined[2]} "
                                  f"(0 survival, 1 creative, 2 adventure, 3 spectator)")
                     out = os.path.join(work, "shots")
@@ -373,10 +381,12 @@ def main():
                                             "--origin", *ORIGIN, "--keep-clock", "--settle", args.settle,
                                             "--first-settle", args.first_settle, "--still", args.still,
                                             budget=trip.left() - CLOSING, env=as_slot)
-                    after = ask(trip, "time query daytime", f"data get entity {cam} playerGameType")
+                    after = ask(trip, HOUR, f"data get entity {cam} playerGameType")
                     tick_before, tick_after = number(joined[3]), number(after[0])
-                    facts.append(f"# the save's clock: daytime {tick_before} when the player had joined, {tick_after} after "
-                                 f"the last picture ({'it stands' if tick_before == tick_after else 'it runs'})")
+                    facts.append(f"# the save's clock: the day stood at {tick_before} when the player had joined, at "
+                                 f"{tick_after} after the last picture ("
+                                 + ("the server did not say" if tick_before is None or tick_after is None
+                                    else "it stands" if tick_before == tick_after else "it runs") + ")")
                     made = [line for line in text.splitlines() if line.strip().startswith("pictures:")]
                     facts.append(f"# distances: client render distance {args.view}, server view distance {args.server_view}, "
                                  f"cloud range {args.clouds}; {made[-1].strip() if made else 'pictures: ?'}")
@@ -434,7 +444,7 @@ def keep(trip, name, taken, out, kept_in, commit, tick_before, tick_after, view,
     note = os.path.join(folder, realshots.NOTE)
     kept = {} if whole else realshots.read_kept(note)
     when = time.strftime("%Y-%m-%dT%H:%M", time.gmtime())
-    tick = tick_before if tick_before == tick_after else f"{tick_before}-{tick_after}"
+    tick = "?" if tick_before is None else tick_before if tick_before == tick_after else f"{tick_before}-{tick_after}"
     for shot in taken:
         path = os.path.join(folder, shot + ".jpg")
         with Image.open(os.path.join(out, shot + ".png")) as picture:
@@ -444,7 +454,8 @@ def keep(trip, name, taken, out, kept_in, commit, tick_before, tick_after, view,
         fh.write(HEAD + "\n" + "".join(line + "\n" for line in facts)
                  + "".join(f"{shot} {' '.join(row)}\n" for shot, row in kept.items()))
     names = [shot for shot in kept if os.path.exists(os.path.join(folder, shot + ".jpg"))]
-    title = f"c164 the save {name} (sha256 {sha[:12]}) opened as it comes: the game 26.3 on a node, {at}, the save's own hour {tick}"
+    hour = f"the save's own hour {tick}" if tick_before is not None else "the save's own hour"
+    title = f"c164 the save {name} (sha256 {sha[:12]}) opened as it comes: the game 26.3 on a node, {at}, {hour}"
     boardrender.sheet(folder, names, title, ext=".jpg")
     made = ["sheet.jpg"]
     board = os.path.join(PROJECT, "renders", "real", "obs")
@@ -454,7 +465,7 @@ def keep(trip, name, taken, out, kept_in, commit, tick_before, tick_after, view,
         of = ", ".join(sorted({rows[shot][1] for shot in views}))
         boardrender.in_columns([(f"test world, the board of {of}", board), (f"the save {name}", folder)], views,
                                f"c164 the board's views: the scene placed in the test world ({of}) | the save {name} as it "
-                               f"comes, hour {tick}", os.path.join(folder, "beside.jpg"))
+                               f"comes, {hour}", os.path.join(folder, "beside.jpg"))
         made.append(f"beside.jpg (beside the board of {of})")
     trip.say(f"{len(taken)} pictures kept in {kept_in}/: {', '.join(taken)}; {', '.join(made)}")
 
