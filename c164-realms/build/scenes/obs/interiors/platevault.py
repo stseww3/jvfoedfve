@@ -26,8 +26,9 @@ x 7.5. From north to south:
 The way of a plate reads from south to north: the sink and the trays under the red lamp, the
 stacks, the register desk, the lift.
 
-Light: three shaded pendants over the nave, dimmer towards the darkroom, one over each side aisle,
-the desk lamp, and the safelight (the lowest step of the third rank). Nothing lights a window of
+Light: three shaded pendants over the nave, dimmer towards the darkroom, three dimmer ones over
+each side aisle, the desk lamp, the checking table's glass, and the safelight (the lowest step of
+the third rank). Nothing lights a window of
 the base storey: the wall stacks and the darkroom's lining are whole blocks and stand before every
 one of them, so the storey stays the dark band it is from outside.
 
@@ -99,7 +100,9 @@ BENCH_Z = Z1                        # 25: the sink and the benches, on the south
 # ---- light: what the room asks of the light line ------------------------------------------------
 LAMPS = "b"                         # the shaded lamp of props/lamps: its glow stays under it
 NAVE_LAMPS = ((PIER_Z[0], 11), (PIER_Z[1], 10), (PIER_Z[2], 8))     # (the beam's row, level): dimmer towards the darkroom
-AISLE_LAMPS = ((float(X0 + 2), PIER_Z[1], 9), (X1 - 1.5, PIER_Z[1], 9))     # (x, the beam's row, level)
+AISLE_X = (float(X0 + 2), X1 - 1.5)     # 4.0 and 11.5: where the side aisles' lamps hang, west and east
+AISLE_LAMPS = tuple((x, z, 8) for x in AISLE_X for z in PIER_Z[:-1])    # (x, the beam's row, level): one under
+#                                     every beam, so that no stretch of an aisle or of the cross aisle is unlit
 ASK_CHECK = 7                       # the checking table's glass
 ASK_DARK = 5                        # the safelight: the lowest step of the third rank (the card)
 PANEL_T = 3 * PX                    # a panel of the wainscot, off its wall
