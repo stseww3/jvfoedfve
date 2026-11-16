@@ -1,0 +1,139 @@
+{
+ "scene": "obs_mot_smoke",
+ "commit": "66fd485",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "3382 blocks, 0 entities, 0 models, 688 resource-pack files, 22 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (0.6 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 687 files, no file written twice, the folders and the prefix of motion are kept (1 package run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "129 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "529 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "3 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of motion: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "0 display entities",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "10 shots, most display entities in view: 0 (v6), limit 600; counted without what walls hide",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "v6",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v12",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "arrival",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "side",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "mouth",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v6_again",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v12_again",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "arrival_again",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "side_again",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "mouth_again",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "0 parts and 16 points on 1 chains, 14 function files; 5 commands in the busiest tick (limit 120), 0.7 a tick on average (limit 40)",
+   "details": [
+    "chain of 40 ticks: 8 functions, 26 commands a cycle, starts 1 ticks after start"
+   ]
+  }
+ ]
+}
