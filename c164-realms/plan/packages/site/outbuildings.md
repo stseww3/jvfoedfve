@@ -54,3 +54,4 @@
   - 测试场景 14 个机位（加了 `hut_inside`：进门一步往北看缝；`weather_head`：杆头近景）。合了山体第三稿以后上平台北缘和西缘有了栏杆和墩，`weather_near` 改成站在踏步口上往下看，`tower_near` 挪了两格让水塔落在两根墩之间，`lookout_near` 改成站在踏步半腰。
   - 图：`renders/obs_site_outbuildings/` 14 张，节点 node54 出的，哪个提交看旁边的 `shots.txt`。
   - 留给后面的：子午环（machines/meridian-astrograph）；风杯轮转得像不像等真机看（周期是 motion 的 `ANEMOMETER_REV`，要调在那边调一处）；灯由 props/lamps 按 `LAMP_POINTS` 挂，长椅由 props/furniture 摆，三件仪器等 props/instruments 进总装后自动出现，那时这个场景的图要重出。
+  - 南观景台北缘栏杆东端 (47, 48) 改成墩（a4 #77122，11-16 10:30，六条里第 3 条，lights 要在上面放灯；outb 在忙导出，这一格由 cable c338 改，分支 `cursor/c164-cable-outb-f3-9cf7`）：`_south_lookout` 的 `piers` 加 `(wx1 + 1, z0)` 一格，`K.rail` 的墩加压顶，和台地缺口那两根一个做法。西端 (43, 48) 不动（V11 朝西北看，那里立墩正在画面中间）。别的没动。
