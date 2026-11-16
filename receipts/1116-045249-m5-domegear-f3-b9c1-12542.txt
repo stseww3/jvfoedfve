@@ -1,0 +1,40 @@
+a0job 1116-045249-m5-domegear-f3-b9c1-12542: cursor/c164-m5-domegear-f3-b9c1 @ 22c5d971 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.15 0.42 0.62, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- t=$(mktemp -d); env PYTHONPATH=build python -m scenes.obs_mach_domegear >$t/s 2>&1; echo "self-test exit=$?"; head -n 40 $t/s; python tools/check.py --scene obs_mach_domegear >$t/c 2>&1; code=$?; tail -n 22 $t/c; echo "check exit=$code
+self-test exit=0
+17 shots -> /tmp/dais_jobs/c164a0b/c164-realms/build/scenes/obs_mach_domegear/shots.json
+barrier cells: 1 [(-1, 18, -9)]
+stands in a block: 0
+hangs on nothing: 0
+a barrier that is not inside the gear: 0
+a face that stands between two axes: 0
+check obs_mach_domegear at 22c5d97
+[PASS] regen     4589 blocks, 113 entities, 510 models, 2221 resource-pack files, 126 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (4.9 s)
+[PASS] conflicts the scene writes 2220 files, no file written twice, the folders and the prefix of machines are kept (14 packages run alone)
+[PASS] strays    639 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      1549 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    21 kinds of block placed, 19 barrier cells (x -1..5, y 18..19, z -9..1), all in the occupancy table
+[PASS] flatwall  no wall face runs flat over more than 5x5
+[PASS] entities  113 display entities, 447 models never placed
+[PASS] views     17 shots, most display entities in view: 113 (foot_outside), limit 600; counted without what walls hide; the game draws up to 113 (v8): a display entity without width and height is drawn outside the view too
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[WARN] motion    17 parts and 0 points on 8 chains, 118 function files; 12 commands in the busiest tick (limit 120), 1.5 a tick on average (limit 40)
+                 int_domeroom_time_dial_seconds: 60 steps in 1200 ticks set by hand (lead -17); its model strays 0.00 pixels from its arc
+                 chain of 32 ticks: 4 functions, 10 commands a cycle, starts 2 ticks after start
+                 chain of 40 ticks: 8 functions, 17 commands a cycle, starts 1 ticks after start
+                 chain of 90 ticks: 8 functions, 17 commands a cycle, starts 9 ticks after start
+                 chain of 100 ticks: 8 functions, 17 commands a cycle, starts 4 ticks after start
+                 chain of 130 ticks: 8 functions, 17 commands a cycle, starts 1 ticks after start
+                 chain of 480 ticks: 8 functions, 37 commands a cycle, starts 8 ticks after start
+                 chain of 600 ticks: 8 functions, 65 commands a cycle, starts 3 ticks after start
+                 chain of 1200 ticks: 60 functions, 121 commands a cycle, starts 5 ticks after start
+result: PASS (0 failed, 1 with warnings)
+check exit=0
+==== NODEJOB RESULT ====
+exit=0 secs=12 host=cursor cores=4 head=22c5d971 commit=none pushed=no branch=cursor/c164-m5-domegear-f3-b9c1 files=0
+a0job: exit=0 secs=12
