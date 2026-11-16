@@ -1,0 +1,15 @@
+check obs_mot_smoke at 2550e6f
+[WARN] regen     3382 blocks, 0 entities, 0 models, 678 resource-pack files, 25 data-pack files, look: 1 biomes, 1 timelines (0.6 s)
+                 registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+[PASS] conflicts the scene writes 677 files, no file written twice, the folders and the prefix of motion are kept (1 package run alone)
+[PASS] strays    129 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      529 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    3 kinds of block placed, all in the occupancy table
+[SKIP] flatwall  a test scene of motion: its sample walls and backdrops are meant to be flat
+[PASS] entities  0 display entities
+[PASS] views     10 shots, most display entities in view: 0 (v6), limit 600; counted without what walls hide
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    0 parts and 8 points on 1 chains, 14 function files; 4 commands in the busiest tick (limit 40), 0.5 a tick on average (limit 10)
+                 chain of 40 ticks: 8 functions, 18 commands a cycle, starts 1 ticks after start
+result: PASS (0 failed, 1 with warnings)
