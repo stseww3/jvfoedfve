@@ -1,0 +1,3 @@
+branch=cursor/c164-vault-platevault3-f3-4cc1
+head=c55033b4232f90fee802af802ee5cab3b44d4e7a
+args=--no-push --tail 60 python\ tools/viewbands.py\ interiors/platevault\ 2\>\&1\ \|\ tail\ -48\ \|\ cut\ -c1-150\;\ python\ tools/viewbands.py\ 2\>\&1\ \|\ grep\ -E\ \'\^all\|\^interiors/platevault\|\^package\'\ \|\ cut\ -c1-260\;\ python\ tools/check.py\ --scene\ obs_int_platevault\ 2\>\&1\ \|\ grep\ -E\ \'\^result\|FAIL\|views\'\ \|\ cut\ -c1-260 
