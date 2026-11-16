@@ -71,6 +71,8 @@ MOVED_IN = True         # the master scene dresses the room (fast lane: a card's
 NAME = "interiors/platevault"
 PREFIX = "int_vault_"
 PX = 1 / 16.0
+VIEW = M.NEAR           # everything in the room is drawn within 32 blocks (s2, 11-16; the assembly lowers it after
+#                         build()): no board view looks into the base storey, whose windows the stacks stand before
 
 # ---- the room (cells) ---------------------------------------------------------------------------
 _ABOVE = shell.ROOMS["chart room"]

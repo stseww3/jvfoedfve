@@ -37,8 +37,9 @@ What the room adds, from the floor up:
 and what stands in the room: the switchboard of the dome's drive on the east axis, the sidereal
 clock on the south axis and the record desk under it, three cabinets on the north axis and a chart
 table beside them, plate boxes by the south wall; round the pier the track of the observing ladder,
-and the ladder parked on it south-west of the pier (interiors/_domechair). The ladder rolls all the
-way round, so nothing else stands in the band it passes over.
+and the ladder parked on it north-west of the pier (interiors/_domechair), where it rolls a little
+way to and fro in the telescope's beat. The ladder rolls all the way round, so nothing else stands
+in the band it passes over.
 
 Light (plan 3.2): the sky in the slit is the cold base and the brightest thing. The room has one
 lamp, the telescope's red one by the eyepiece (director, g2 #33812); the desk has none. What else
@@ -73,6 +74,11 @@ from . import _domeframe as F
 ORDER = 80                  # after the shell and the dome (60)
 MOVED_IN = True             # the room is in the master scene (COMMON 0.10: switched on with the delivery)
 PREFIX = "int_domeroom_"
+# How far off the room's display entities are drawn (common, s2 #88339: the assembly brings them down
+# to this after build()): the near band, 32 blocks. All of it is seen from inside the room, which is
+# 28 across and 16 high, and V8 stands in it. Nothing is kept for the views out of doors: none of
+# them looks into the slit from so near that a rib, the ladder or the dial behind it would be made out
+VIEW = getattr(M, "NEAR", 0.5)
 
 CX, CZ = S.DOME_CENTRE
 FLOOR_Y = S.ROOF_FLOOR                          # 17: the row of the floor's boards
