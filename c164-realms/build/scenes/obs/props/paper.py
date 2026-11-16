@@ -47,9 +47,10 @@ PENCIL = K.flat("brass", 3)
 RIBBON = K.flat("enamel", 2)                                    # a book's marker
 
 # the colours of a star chart: ground, the Milky Way and its core, graduation, figure lines, ecliptic,
-# stars, faint stars, the pole star. The figure lines are the one blue lighter than the enamel's own:
-# under a lamp the top of the enamel ramp stands 15 levels off the ground and the figures were lost
-SKY = {"e": EN[1], "m": EN[2], "k": EN[3], "g": EN[3], "l": NG[4], "c": BR[3], "s": CR[3], "f": CR[0],
+# stars, the stars of the field, faint stars, the pole star. The figure lines are the one blue
+# lighter than the enamel's own: under a lamp the top of the enamel ramp stands 15 levels off the
+# ground and the figures were lost
+SKY = {"e": EN[1], "m": EN[2], "k": EN[3], "g": EN[3], "l": NG[4], "c": BR[3], "s": CR[3], "d": CR[2], "f": CR[0],
        "p": BR[4]}
 
 
@@ -154,12 +155,14 @@ def _blocks(corners):
 
 
 # ---- the faces ----------------------------------------------------------------------------------------
-def _sky_face(name, band, figures, bright, stars, faint, arch=None, leads=(), pole=None, size=(46, 30)):
+def _sky_face(name, band, figures, bright, stars, faint, arch=None, leads=(), pole=None, size=(46, 30), field=()):
     """A piece of the sky on an enamelled plate, a great chart 46 x 30 or a small one 30 x 14: a
     graduated edge as on a map; the Milky Way as a lighter stream with a ragged core one step
     lighter still (band: its first and last texel in each row from row 1 down); the figures drawn
     star to star; stars of three magnitudes, a bright one a block of four texels and a faint one
-    a grey dot. A great chart has the ecliptic
+    a grey dot. On a small chart the stars that belong to no figure (field) are a step under the
+    stars of the figures, and few: from four blocks off the joined stars are to be seen first
+    (review 25). A great chart has the ecliptic
     as well, a dashed line of brass (arch: its row for a column) that stops short of every star
     and figure it meets, as on an engraved chart. leads are dotted from one star towards another,
     and pole is the one star marked in brass. No star is drawn as a cross, nothing on the plate
@@ -177,10 +180,11 @@ def _sky_face(name, band, figures, bright, stars, faint, arch=None, leads=(), po
         g.dots(_dashed(_line(a, b), (1, 1)), "l")
     g.dots(lines, "l")
     g.dots(faint, "f")
+    g.dots(field, "d")
     g.dots(marks, "s")
     if pole is not None:
         g.put(pole[0], pole[1], "p")
-    for x, y in lines + marks + list(faint):
+    for x, y in lines + marks + list(faint) + list(field):
         for i in (x - 1, x, x + 1):
             for j in (y - 1, y, y + 1):
                 if 0 <= i < g.w and 0 <= j < g.h and g.rows[j][i] == "c":
@@ -209,9 +213,9 @@ NORTH = dict(
     leads=[((14, 8), (11, 2))],
     pole=(11, 2),
     bright=[(24, 6)],
-    stars=[(3, 10), (6, 9), (8, 9), (10, 9), (14, 8), (15, 10), (12, 11), (5, 6), (7, 7),
-           (18, 9), (21, 3), (23, 10), (26, 3), (18, 5), (3, 3)],
-    faint=[(9, 3), (8, 5), (6, 4), (5, 2), (16, 3), (2, 7), (17, 11), (26, 9), (21, 11), (22, 5), (7, 11)],
+    stars=[(3, 10), (6, 9), (8, 9), (10, 9), (14, 8), (15, 10), (12, 11), (5, 6), (7, 7)],
+    field=[(21, 3), (23, 10), (26, 3), (18, 5), (3, 3)],
+    faint=[(9, 3), (8, 5), (6, 4), (2, 7), (26, 9), (21, 11), (22, 5)],
 )
 
 # The Hunter's part of the winter sky, on the companion plate: his shoulders, his belt of three
@@ -227,10 +231,10 @@ HUNTER = dict(
     bright=[(10, 3), (17, 10), (5, 10)],
     stars=[(17, 3), (12, 8), (14, 7), (16, 6), (11, 11),
            (21, 6), (24, 7), (23, 4),
-           (25, 2), (26, 3), (27, 2), (27, 4),                                          # the Seven Sisters
-           (2, 3), (9, 6), (21, 10), (25, 10), (20, 2)],
-    faint=[(14, 2), (14, 9), (14, 10), (8, 9), (23, 9), (27, 8), (19, 8), (27, 10), (6, 3), (9, 2),
-           (22, 11), (3, 6)],
+           (25, 2), (26, 3), (27, 2), (27, 4)],                                         # the Seven Sisters
+    field=[(2, 3), (21, 10), (25, 10)],
+    faint=[(14, 2), (14, 9), (14, 10),                                                  # his head, his sword
+           (8, 9), (27, 8), (27, 10), (6, 3), (22, 11), (3, 6)],
 )
 
 # The winter half of the sky, east on the left as on any chart: the Hunter in the middle with his
@@ -437,16 +441,18 @@ def _cover_face():
 
 def _plate_face(name, w, d, draw):
     """A glass negative on the light table, seen from above. The light comes up through it, so it
-    is drawn on the ramp of the lit opal pane, a step denser than the pane where the sky was dark
-    and black where a star was; its edge is the edge of a sheet of glass, light on the two sides
-    towards the light of the picture and dark on the other two, as every bevel here is."""
+    is drawn on the ramp of the lit opal pane, only a step under the pane where the sky was dark
+    and black where a star was; what says that it is a sheet of glass is its edge, light on the
+    two sides towards the light of the picture and dark on the other two, as every bevel here is
+    (a face two steps under the pane read as a tile of biscuit china: review 25). One mark on a
+    plate may be four texels, the others are one."""
     g = _Grid(w, d, "c")
     g.line((0, d - 1), (w - 1, d - 1), "d")
     g.line((w - 1, 0), (w - 1, d - 1), "d")
     g.line((0, 0), (w - 2, 0), "t")
     g.line((0, 0), (0, d - 2), "t")
     draw(g)
-    return g.sprite(name, {"c": OP[1], "t": OP[2], "d": OP[0], "1": IR[1], "2": IR[3], "3": IR[5], "4": CR[0]})
+    return g.sprite(name, {"c": OP[2], "t": OP[3], "d": OP[1], "1": IR[1], "2": IR[3], "3": IR[5], "4": CR[0]})
 
 
 def _comet_plate(g):
