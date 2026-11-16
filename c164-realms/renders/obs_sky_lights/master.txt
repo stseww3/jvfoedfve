@@ -1,4 +1,4 @@
-sources placed: 185 (rank 1: 13, rank 2: 100, rank 3: 72); levels 13x13, 12x29, 11x7, 10x57, 9x4, 8x35, 7x19, 6x15, 5x2, 4x2, 3x2
+sources placed: 200 (rank 1: 13, rank 2: 106, rank 3: 81); levels 13x13, 12x35, 11x7, 10x57, 9x4, 8x41, 7x22, 6x15, 5x2, 4x2, 3x2
 windows main: dark 68, dim 3, lit 14, bright 1 (79% dark), 33 sources
 windows power: dark 18, dim 2, lit 0, bright 0 (90% dark), 2 sources
 windows station: dark 8, dim 0, lit 3, bright 0 (73% dark), 5 sources
@@ -6,14 +6,14 @@ windows tower: dark 2, dim 0, lit 2, bright 0 (50% dark), 2 sources
 main's table under blue: dark 68, dim 3, lit 14, bright 1
 main's table under glow: dark 74, dim 3, lit 8, bright 1
 main's table under deep: dark 77, dim 3, lit 5, bright 1
-dressed: yes; doors: none; behind them: 0 sources; wash: 4 projectors; stair: 1; ways: 7; pools: 12; not placed here: 0; level 15: 0; isolated: 0
+dressed: yes; doors: none; behind them: 0 sources; wash: 4 projectors; stair: 1; ways: 16; gates: 6; pools: 12; not placed here: 0; level 15: 0; isolated: 0
 moved: ((72, -5, 37), (73, -5, 37), 'interiors/powerhouse:engine lamp x 72')
 moved: ((82, -5, 35), (82, -5, 36), 'interiors/powerhouse:engine lamp x 80')
 moved: ((84, -5, 35), (84, -5, 36), 'interiors/powerhouse:engine lamp x 84')
 merged: ((71, -4, 28), 10, 'interiors/powerhouse:switchboard lamp z 28')
 merged: ((71, -4, 31), 10, 'interiors/powerhouse:switchboard lamp z 31')
 
-sources by what throws them (64 kinds):
+sources by what throws them (65 kinds):
   interiors/chartroom:bench              1: 12x1   at (12, 7, 20)
   interiors/chartroom:blackboard         1: 10x1   at (3, 8, 12)
   interiors/chartroom:bracket lamp on a pier of the bookcase   2: 11x2   at (11, 10, 24) (4, 10, 24)
@@ -73,10 +73,11 @@ sources by what throws them (64 kinds):
   props/lamps:street                    12: 13x12   at (87, -2, 10) (87, -2, -10) (86, -2, -18) (80, -2, -18) (79, -2, 10) (79, -2, -10) (73, 1, 10) (73, 1, -9) ...
   props/lamps:uplight                    9: 8x9   at (37, 0, 2) (37, 0, -2) (35, 3, 0) (33, 0, 2) (33, 0, -2) (18, 0, 14) (18, 0, 10) (18, 0, -10) ...
   props/signs:emblem                     1: 8x1   at (19, 14, 0)
+  sky/lights:gate                        6: 12x6   at (47, 2, 38) (43, 2, 38) (5, 2, -38) (1, 2, -38) (-10, 2, -30) (-10, 2, -34)
   sky/lights:pool                       12: 12x12   at (87, -6, 10) (87, -6, -10) (86, -6, -18) (80, -6, -18) (79, -6, 10) (79, -6, -10) (73, -6, 8) (73, -6, -8) ...
   sky/lights:stair                       1: 8x1   at (5, 9, -4)
   sky/lights:wash                        4: 10x4   at (17, 2, 14) (17, 2, 10) (17, 2, -10) (17, 2, -14)
-  sky/lights:way                         7: 8x5, 7x2   at (7, 16, 3) (4, 15, -2) (4, 12, 2) (2, 9, 0) (2, 2, 0) (0, 10, 5) (0, 10, -5)
+  sky/lights:way                        16: 8x11, 7x5   at (12, 20, 11) (12, 20, -11) (12, 18, 13) (12, 18, -13) (10, 19, 31) (7, 17, 0) (7, 16, 3) (4, 15, -2) ...
   sky/lights:window                     42: 10x36, 7x3, 6x2, 5x1   at (92, -1, -37) (92, -1, -39) (92, -2, -37) (92, -2, -39) (89, -2, 27) (82, -2, 20) (17, 12, 0) (17, 9, 0) ...
 
 wall wash: 4 projectors at [(18, 0, -14), (18, 0, -10), (18, 0, 10), (18, 0, 14)]
