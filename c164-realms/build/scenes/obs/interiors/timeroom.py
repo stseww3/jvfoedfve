@@ -230,6 +230,7 @@ SEAT = 1.075                                        # from the middle of a desk 
 DESK_CHAIR = ((DESK_X - SEAT, FEET, DESK_Z), K.FACING["east"] + 25.0)       # the message desk's chair, pushed back and half turned: where
 #                                                     it stands and its yaw; the operator's jacket hangs over its back
 CABINET_Z = SOUTH - 0.6                             # -6.6: where a cabinet stands with its back to the south wall
+PLAN = (X0 + 3.0, FEET + 2.625)                     # (5.0, 9.625): the middle of the blueprint pinned over the two card cabinets, along the wall and up it
 DUCT_X = (CONSOLE_X[0], CONSOLE_X[1])               # 6 and 9: the two lines of the floor, under the two ends of the console and in line with the two piers
 DUCTS = (                                           # runs of duct in the floor, cell to cell; the two lines turn off to their desks at (6, -16) and (9, -12)
     ((X0, CONSOLE_Z), (X1, CONSOLE_Z)),                                         # along the foot of the rack, wall to wall
@@ -259,7 +260,9 @@ DIAL = (                                            # nine pixels across: twelve
     ".dcccccd.",
     "..kdkdk..",
 )
-DIAL_COLOURS = dict(c=P.RAMPS["porcelain"][3], d=P.RAMPS["porcelain"][2], k=MARK, h=P.RAMPS["iron"][0], b=P.RAMPS["brass"][3])
+DIAL_COLOURS = dict(c=P.RAMPS["porcelain"][3], d=P.RAMPS["porcelain"][2], k=MARK, b=P.RAMPS["brass"][3])
+DIAL_FACE = Sprite(PREFIX + "clock_dial", DIAL, DIAL_COLOURS)       # one face for the five: the hands are not painted on it
+HAND = K.flat("iron", 0)                            # a hand: as dark as ink, as on props/instruments' dials
 
 # ---- the patch cords: at the jack fields of the rack, which are the panels beside the two ends of the console
 JACK_FIELDS = tuple((RACK_X[0] + i, CORNICE_Y - 1 - j)                              # (5, 8) and (10, 8): the cells, x and y
@@ -299,10 +302,17 @@ LAMPS = "b"                 # every lamp of the room is the shaded one (props/la
 #                             map's default: a shade keeps a lamp's glow to what is under it, and the opal globe of version A
 #                             is itself the lightest thing in a dark room, six times over
 CONSOLE_LAMP = (12, 2)      # the two drop lights over the ends of the console: the main light, on the instrument wall
-DESK_LAMP = (8, 3)          # the drop lights over the message desk and the rating bench: 8 at the sitter's chair, 7 on the desk and
-#                             what lies on it, and on the room's long axis 3 to 4 (at 10 the whole floor was lit, as light as the rack)
+# Where one walks there is light (the finish, A0 11-16; the light line's rule, c331: 5 or more at the foot or at
+# the head, never more than three stations in a row under it, none at 0), and in this room it comes from the lamps
+# that are there for the work. With the desks' lamps at 8 and the clocks' at 9 the long axis lay at 2 to 4 and the
+# doorway at 0 to 2: in the game a floor one does not see. Now the axis is 4 to 6 at the foot from the door to the
+# bench, 9 before the console; the rack, at 12, is still two steps over everything else
+DESK_LAMP = (10, 2)         # the drop lights over the message desk and the rating bench: 10 at the sitter's chair, 9 on the desk
+#                             and what lies on it
 REGULATOR_LAMP = (9, 2)     # the bracket lamps over the two standard clocks
-CLOCK_LAMP = (9, 2)         # the bracket lamp over the world clocks: 8 on the middle dial, 6 on the end ones
+CLOCK_LAMP = (10, 2)        # the bracket lamp over the world clocks: 9 on the middle dial, 7 on the end ones
+PLAN_LAMP = (11, 2)         # the bracket lamp over the blueprint and the card cabinets, by the door: the lamp one comes in
+#                             under. 5 to 6 on the floor of the doorway, 7 on the cabinets' fronts
 OVER = 20 * PX              # a bracket's arm above the top of what it hangs over: the shade ends half a block over it, a lamp
 #                             over a clock and not a hat on it (at 12 px the pale inside of the shade sat on the dial's rim)
 CONSOLE_HANG = FEET + 3.5   # 10.5: where the drop lights of the console end and their lamps hang; the shades end at 9.56, a block
@@ -321,6 +331,9 @@ BENCH_LIGHT = (int(math.floor(BENCH_X + SEAT)), FEET, int(math.floor(BENCH_Z))) 
 #                                                                                     line moved it here); the cell over it is the one behind
 #                                                                                     the glass, which is the window's
 CLOCK_LIGHT = (X0 + 1, int(math.floor(DIAL_Y)), int(math.floor(S.mid(*CLOCK_Z))))   # (3, 9, -10): before the middle dial (a panel stands in the dial's own cell)
+BRACKET_Y = DIAL_Y + BOARD[1] * PX + OVER                                           # 11.34: the arm of the world clocks' lamp, and of the lamp by the door:
+#                                                                                     the two hang at one height round the room's south-west corner
+PLAN_LIGHT = (int(math.floor(PLAN[0])), int(math.floor(PLAN[1])), Z1 - 1)           # (5, 9, -8): before the blueprint (the south wall's panels stand in its own row)
 # What a lit desk and a lit clock board throw back at the ceiling: a weak source in the row under the ceiling, two
 # cells out from the wall the lamp is at. With every source low the boards and the beams over the middle of the
 # room were dead black (under 0.03 on four tenths of the ceiling of V10; review cr3-P4); these leave the ceiling
@@ -418,7 +431,7 @@ PIECES = (
     # props/paper (c197)
     piece("paper", "logbook", (BENCH_X + 0.125, FEET, BENCH_Z - 0.2), on=ON_DESK, yaw=K.FACING["east"] + 8.0),
     piece("paper", "logbook_shut", (DESK_X - 0.09375, FEET, DESK_Z - 0.2), on=ON_DESK, yaw=K.FACING["west"] - 15.0),
-    piece("paper", "blueprint", (X0 + 3.0, FEET + 2.625, PANEL_S), facing="north"),               # pinned over the card cabinets
+    piece("paper", "blueprint", (PLAN[0], PLAN[1], PANEL_S), facing="north"),                     # pinned over the card cabinets
 )
 
 # ---- the parts of the room others write, each a module beside this one (interiors/_timeroom_<part>.py),
@@ -445,21 +458,13 @@ SLOTS = {
 
 
 # ---- the room's own models: the world clocks ----------------------------------------------------------
-def hands(rows, hour, minute):
-    """A dial with its hands drawn in from the middle, the way props/instruments draws its clock's:
-    the hour hand two pixels long, the minute hand three, a pixel to each step along the way the
-    hand leans most."""
-    grid = [list(row) for row in rows]
-    mid = len(rows) // 2
-    for turn, length in (((hour % 12 + minute / 60.0) / 12.0, 2), (minute / 60.0, 3)):
-        dx, dy = math.sin(2.0 * math.pi * turn), -math.cos(2.0 * math.pi * turn)
-        for i in range(1, length + 1):
-            if abs(dx) > abs(dy):
-                x, y = mid + (i if dx > 0 else -i), int(round(mid + i * dy / abs(dx)))
-            else:
-                x, y = int(round(mid + i * dx / abs(dy))), mid + (i if dy > 0 else -i)
-            grid[y][x] = "h"
-    return ["".join(row) for row in grid]
+def hands(hour, minute):
+    """The two hands of a dial, the hour hand first (it lies under the other): (degrees right of
+    upright, length in pixels). They are made as props/instruments makes its regulator's (c335,
+    11-16): strips one pixel wide, each turned to its true angle about the middle of the dial.
+    Painted into nine pixels a hand was a stair of blocks, and a clock an hour on showed the same
+    stair one step round."""
+    return (((hour % 12 + minute / 60.0) * 30.0, 2.5), (minute * 6.0, 3.75))
 
 
 def clock_name(offset):
@@ -482,8 +487,12 @@ def _world_clock(offset):
     m.tube("z", (0, 0), 0.0, 3.0, CASE_R, P.mat("dark_wood"), sides=16, cap=K.flat("dark_wood", 3))            # the case
     m.ring("z", (0, 0, 3.5), 5.0, 1.5, 1.0, K.BRASS, sides=16)                                                # the bezel
     half = len(DIAL) / 2.0
-    face = Sprite(name + "_dial", hands(DIAL, CLOCK[0] + offset, CLOCK[1]), DIAL_COLOURS)
-    m.box((-half, -half, 3.25), (half, half, 3.5), K.flat("porcelain", 3), skip="nudew", faces={"s": face})
+    m.box((-half, -half, 3.25), (half, half, 3.5), K.flat("porcelain", 3), skip="nudew", faces={"s": DIAL_FACE})
+    top = 3.6
+    for lean, length in hands(CLOCK[0] + offset, CLOCK[1]):
+        m.box((-0.5, 0.0, top), (0.5, length, top + 0.2), HAND, grain="y", rot=("z", -lean, (0.0, 0.0, top + 0.1)))
+        top += 0.2
+    m.box((-0.5, -0.5, top), (0.5, 0.5, top + 0.15), K.flat("brass", 4))                                      # the boss on the pivot
     m.box((-2.5, -CASE_R - 3.5, 1.0), (2.5, -CASE_R - 1.5, 1.5), K.BRASS_D, grain="x")                        # the label
     return m
 
@@ -845,8 +854,11 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
     for z, offset in zip(range(CLOCK_Z[0], CLOCK_Z[1] + 1), WORLD):
         put(X0, FEET, z, st(roles.PANELS["drawers"], facing="east"))
         n += K.put(c, own[clock_name(offset)], (PANEL_W, DIAL_Y, S.mid(z)), mount="wall", facing="east", origin=origin)
-    n += lamp("bracket", (PANEL_W, DIAL_Y + BOARD[1] * PX + OVER, S.mid(*CLOCK_Z)), CLOCK_LAMP, "world clocks", CLOCK_LIGHT, facing="east")
+    n += lamp("bracket", (PANEL_W, BRACKET_Y, S.mid(*CLOCK_Z)), CLOCK_LAMP, "world clocks", CLOCK_LIGHT, facing="east")
     bounce(CLOCKS_BOUNCE, CLOCK_BOUNCE, "ceiling over the world clocks")
+
+    # ---- the lamp by the door, over the blueprint and the card cabinets: the one one comes in under
+    n += lamp("bracket", (PLAN[0], BRACKET_Y, PANEL_S), PLAN_LAMP, "card cabinets", PLAN_LIGHT, facing="north")
 
     # ---- the panelling: every solid stretch of wall where no block of the room stands, from the floor
     # to the ceiling; before a window only the course under its sill
