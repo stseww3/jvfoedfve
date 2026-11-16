@@ -18,6 +18,9 @@ darker than the pier's face (lights, #75636).
   C164_HALL_POOL=<level>   starhall.SUN_POOL at another level, to compare; 0: none
   C164_HALL_SPOT=<level>   starhall.SPOT_LEVEL likewise; 0: the globe and the board's ends take
                            the light of their cells
+  C164_HALL_FOOT=<level>   starhall.STAIR_FOOT_LEVEL likewise
+  C164_HALL_AISLE=a,b,c,d  starhall.AISLE_LEVELS likewise, from the pier to the door
+  C164_HALL_CLOCK=<level>  the level of the mother clock's lamp before the pier (machines/clock.MASTER_LAMP)
 """
 import os
 
@@ -37,12 +40,21 @@ BIOME_MARGIN = 60
 VERSION = "a"
 GROUND = (S.WALL_W - 14, S.Z_NORTH - 6, S.WALL_E + 15, S.Z_SOUTH + 6)  # paving under and before the building
 ORIGIN = (0, 0, 0)
-TRY = {"C164_HALL_POOL": "SUN_POOL", "C164_HALL_SPOT": "SPOT_LEVEL"}     # what the environment may set, to compare
+# what the environment may set, to compare
+TRY = {"C164_HALL_POOL": "SUN_POOL", "C164_HALL_SPOT": "SPOT_LEVEL", "C164_HALL_FOOT": "STAIR_FOOT_LEVEL",
+       "C164_HALL_AISLE": "AISLE_LEVELS"}
+CLOCK_ENV = "C164_HALL_CLOCK"
 
 
 def _machines(c):
     """The two machines the hall is the room of."""
-    return orrery.build(c, ORIGIN) + clock.master(c, ORIGIN)
+    lamp = clock.MASTER_LAMP
+    if os.environ.get(CLOCK_ENV) is not None:
+        clock.MASTER_LAMP = (lamp[0], int(os.environ[CLOCK_ENV]))
+    try:
+        return orrery.build(c, ORIGIN) + clock.master(c, ORIGIN)
+    finally:
+        clock.MASTER_LAMP = lamp
 
 
 def build(version=VERSION):
@@ -55,7 +67,8 @@ def build(version=VERSION):
     kept = {name: getattr(starhall, name) for name in TRY.values()}
     for env, name in TRY.items():
         if os.environ.get(env) is not None:
-            setattr(starhall, name, int(os.environ[env]) or None)
+            levels = [int(v) for v in os.environ[env].split(",")]
+            setattr(starhall, name, tuple(levels) if len(levels) > 1 else levels[0] or None)
     try:
         counts["interiors"] = starhall.dress(c, ORIGIN, version)
     finally:
@@ -84,7 +97,8 @@ def shots():
     """The cameras, the same for both versions. v7 is the skeleton's locked view and goes where the
     skeleton puts it; v7_in is its second from inside the doorway (A0 #365). door is where V7 stood
     first, between the leaves of the open door: A0 moves V7 two cells in (#71961) and keeps this
-    one as the hall's own."""
+    one as the hall's own. v4 stands where the board's V4 does, in the forecourt: what of the hall
+    that picture shows through the open door is judged there (review, #77306)."""
     eye = S.EYE
     gallery = shell.DECK_Y + 1 + eye
     cx, cz = S.ORRERY_CENTRE
@@ -115,4 +129,6 @@ def shots():
     shot("mezzanine", (0.5, gallery, cz + 2.2), (-7.0, 9.4, cz))        # the two lamps beside the great west window
     shot("way", (1.0, eye, cz), (-9.0, 2.2, cz))                        # under the vault to the west door, its two lamps
     shot("arches", (28.5, eye, cz), (16.0, 3.4, cz))                    # the three arches from the forecourt's axis
+    door = S.east_wall_x(9)                                             # the board's V4 (tools/boardshots.py), ten out
+    shot("v4", (door + 10.5, eye, cz + 3.0), (door + 0.5, 4.5, cz))     # and three off the axis: the hall through the door
     return out
