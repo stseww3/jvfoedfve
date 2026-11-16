@@ -108,8 +108,10 @@ FURNACE_LEVEL = 12
 # the bay glowed over black ground (reviews cr2-#7, 1 and #74016, 1). So the shell offers that line
 # one more source to a fire window (pools()): before the pier plane in the window's middle column,
 # two rows under the glass, which is as low as that line lets a source stand from what glows. As
-# bright as the one in the recess: the paving under it gets 9, where stone turns warm, the cells
-# round that 8.
+# bright as what the window has behind it and no brighter: the paving under it gets 11, the cells
+# round that 10 and 9, three cells out from the wall (in the picture 0.22 where 0.16 was; the
+# ground before the door has 0.23). With 10, what the recess has, the pool was there by numbers
+# and not in the picture: the yard at dusk is as bright as 9 by itself.
 POOL_LEVEL = FURNACE_LEVEL
 POOL_WHY = "site/powerhouse:fire window"
 GATE_ROWS = 4                                       # the door bay: a gate this high, a lintel, glass
