@@ -6,8 +6,7 @@
 #   bash c164-realms/tools/exportnext.sh [<commit of the assembly>]
 #       merges the assembly (its head, or the commit named) into the export branch and that into the
 #       dist branch, pushes both and prints the job to send to the node (tools/exportround.sh): the
-#       save for Realms, the same without the shaders and the same with the look, each made and
-#       verified
+#       save for Realms and the same without the shaders, each made and verified
 #   bash c164-realms/tools/exportnext.sh done ["what is new in this one"]
 #       after the job's receipt: pulls the dist branch, writes dist/history.json and the table of
 #       dist/README.md (tools/export.py page), takes the older saves out of the tree, pushes, and
@@ -80,8 +79,5 @@ N=$(( $(newest) + 1 ))
 git -C "$DT" merge -q --no-edit "$EB" -m "c164-outb: merge the export branch (assembly $AT) for the whole save A$N" || { echo "$EB does not merge into $DB: by hand"; exit 1; }
 hush git -C "$DT" push -q -u origin "$DB"
 echo "assembly $AT -> $EB @ $(git -C "$ET" rev-parse --short=8 HEAD) -> $DB @ $(git -C "$DT" rev-parse --short=8 HEAD); the next save is A$N"
-echo "the job for the node, on the branch $DB (a minute and a half for each variant; timeout 1900). All three:"
+echo "the job for the node, on the branch $DB (a minute and a half for each variant; timeout 1900):"
 echo "bash c164-realms/tools/nodejob.sh --limit 1800 --always --keep c164-realms/dist 'bash tools/exportround.sh $N $AT'"
-echo "or the two for Realms first and the one with the look in a job of its own afterwards (then 'done' after each):"
-echo "bash c164-realms/tools/nodejob.sh --limit 1800 --always --keep c164-realms/dist 'bash tools/exportround.sh $N $AT main plain'"
-echo "bash c164-realms/tools/nodejob.sh --limit 1800 --always --keep c164-realms/dist 'bash tools/exportround.sh $N $AT look'"

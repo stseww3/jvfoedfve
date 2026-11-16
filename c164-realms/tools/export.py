@@ -11,8 +11,10 @@
     export.py pack --scene obs --name x --out /tmp/x
         anywhere, no server: only what the tool itself adds, for reading: the data pack's own
         functions and the resource pack
-    export.py compare a.zip b.zip
-        do two exports hold the same files
+    export.py compare a.zip b.zip [--deep]
+        do two exports hold the same files; --deep: do their chunks hold the same blocks and
+        entities (the files themselves never are the same bytes: every chunk carries the hour it
+        was written, every entity an id drawn by chance)
     export.py page dist [--commit <c>] [--note <text>]
         anywhere: the newest whole save (dist/A<n>/) is written into dist/history.json and the
         table of dist/README.md; tools/exportnext.sh runs it after every round
@@ -370,6 +372,16 @@ def scene_spec(args):
     ex, ey, ez = spot["pos"]
     dx, dy, dz = (b - a for a, b in zip(spot["pos"], spot["look_at"]))
     look = bool(args.look == "on" and getattr(scene, "BIOME", None))
+    if look:
+        from artkit import mood as MOOD
+        try:
+            module = importlib.import_module(f"scenes.{args.scene}.mood")
+        except ModuleNotFoundError:
+            module = None
+        if getattr(MOOD, "carried", None) is not None and MOOD.carried(module) is not None:
+            fail("--look on: this scene's look is carried by the resource pack (artkit.mood.Carried), and the "
+                 "drivers write no biome and no timeline for it any more. The save with the biome is gone; "
+                 "the look is in the save made without --look (its resource pack's shaders)")
     on_cloud = args.on_cloud or ("ignore" if args.trial else "back")
     when = args.time
     if when is None and (look or not getattr(scene, "BIOME", None)):
@@ -1270,6 +1282,42 @@ def pack(args):
         say("  would run: " + command)
 
 
+# What two saves of one world never share, left out when their chunks are compared: the game's clock
+# at the moment a chunk was written and how long players have been near it, and the ids the game
+# draws by chance for every entity.
+VOLATILE = ("LastUpdate", "InhabitedTime", "UUID")
+UNORDERED = ("Entities", "block_entities", "Records")       # lists the game writes in no fixed order
+
+
+def steady(value, key=None):
+    """An NBT value as plain data that can be compared and sorted, without the VOLATILE keys."""
+    if isinstance(value, dict):
+        return tuple(sorted((str(k), steady(v, str(k))) for k, v in value.items() if k not in VOLATILE))
+    if hasattr(value, "tobytes"):       # the arrays
+        return value.tobytes()
+    if isinstance(value, (list, tuple)):
+        items = [steady(v) for v in value]
+        return tuple(sorted(items, key=repr)) if key in UNORDERED else tuple(items)
+    if isinstance(value, float):
+        return float(value)
+    if isinstance(value, int):
+        return int(value)
+    return str(value)
+
+
+def chunks_of(world):
+    """{(kind, region file, cx, cz): the chunk's steady value} of every .mca under a world."""
+    sys.path.insert(0, HERE)
+    import census
+    out = {}
+    for base, dirs, files in os.walk(world):
+        dirs.sort()
+        for name in sorted(f for f in files if f.endswith(".mca")):
+            for cx, cz, raw in census.read_chunks(os.path.join(base, name)):
+                out[(os.path.basename(base), name, cx, cz)] = steady(census.parse_nbt(raw))
+    return out
+
+
 def compare(args):
     def read(path):
         with zipfile.ZipFile(path) as zf:
@@ -1285,7 +1333,58 @@ def compare(args):
         print("  only in the second: " + n)
     for n in differ:
         print(f"  differs: {n} ({a[n][0]} and {b[n][0]} bytes)")
-    raise SystemExit(1 if only_a or only_b or differ else 0)
+    if not args.deep:
+        raise SystemExit(1 if only_a or only_b or differ else 0)
+
+    # The region files of two saves never are the same bytes (every chunk carries the hour it was
+    # written, every entity an id drawn by chance). What has to be the same is what is in the
+    # chunks: so they are opened and compared without those.
+    work = os.path.join(WORK, f"compare-{os.getpid()}")
+    worlds = []
+    try:
+        for i, path in enumerate((args.a, args.b)):
+            folder = os.path.join(work, str(i))
+            with zipfile.ZipFile(path) as zf:
+                zf.extractall(folder)
+            worlds.append(chunks_of(folder))
+    finally:
+        shutil.rmtree(work, ignore_errors=True)
+    first, second = worlds
+    bad = False
+    for kind in sorted({k[0] for k in list(first) + list(second)}):
+        mine = {k: v for k, v in first.items() if k[0] == kind}
+        theirs = {k: v for k, v in second.items() if k[0] == kind}
+        lone = sorted(set(mine) ^ set(theirs))
+        changed = sorted(k for k in set(mine) & set(theirs) if mine[k] != theirs[k])
+        print(f"{kind}: {len(mine)} and {len(theirs)} chunks; {len(set(mine) & set(theirs)) - len(changed)} hold the same, "
+              f"{len(changed)} differ, {len(lone)} are in one save only")
+        bad = bad or bool(lone) or bool(changed)
+        for k in lone[:10]:
+            print(f"  in one save only: {k[1]} chunk {k[2]} {k[3]}")
+        told = 0
+        for k in changed:
+            x, y = dict(mine[k]), dict(theirs[k])
+            keys = sorted(n for n in set(x) | set(y) if x.get(n) != y.get(n))
+            if told < 12:
+                told += 1
+                print(f"  differs: {k[1]} chunk {k[2]} {k[3]}: {', '.join(keys)}")
+                for n in keys:
+                    if n in UNORDERED and isinstance(x.get(n), tuple) and isinstance(y.get(n), tuple):
+                        gone = [e for e in x[n] if e not in y[n]]
+                        come = [e for e in y[n] if e not in x[n]]
+                        print(f"      {n}: {len(x[n])} and {len(y[n])}; {len(gone)} of the first are not in the second, "
+                              f"{len(come)} of the second not in the first")
+                        for e in gone[:3]:
+                            d = dict(e) if e and isinstance(e[0], tuple) else {}
+                            e2 = next((dict(c) for c in come if dict(c).get("id") == d.get("id")
+                                       and dict(c).get("Tags") == d.get("Tags")), {})
+                            print(f"        {d.get('id', '?')} {d.get('Tags', '')}: "
+                                  + (", ".join(sorted(f for f in set(d) | set(e2) if d.get(f) != e2.get(f))) if e2
+                                     else "no entity of that id and those tags in the second"))
+        if len(changed) > told:
+            print(f"  ... and {len(changed) - told} more")
+    print("the chunks hold the same in both saves" if not bad else "the chunks do NOT hold the same")
+    raise SystemExit(1 if bad or only_a or only_b else 0)
 
 
 PAGE_OPEN = "<!-- 下面到「到这里」为止由 tools/export.py page 写，手改会被下一轮盖掉 -->"
@@ -1444,6 +1543,9 @@ def main():
     p = sub.add_parser("compare")
     p.add_argument("a")
     p.add_argument("b")
+    p.add_argument("--deep", action="store_true",
+                   help="open the region files and compare what the chunks hold, without the hour they were "
+                        "written and the entities' ids (on a node: it reads every chunk)")
     p = sub.add_parser("page")
     p.add_argument("dist", help="the folder of the saves (c164-realms/dist on the dist branch)")
     p.add_argument("--commit", help="the commit that holds the newest save's files")
