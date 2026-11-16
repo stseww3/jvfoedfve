@@ -69,6 +69,7 @@ from ..common import skeleton as S
 from ..main import _order as O
 from ..props import _kit as K
 from . import _domechair
+from . import _domefittings
 from . import _domeframe as F
 
 ORDER = 80                  # after the shell and the dome (60)
@@ -116,6 +117,7 @@ GEAR_SLIT = (
 
 IRON = B.IRON_RIVETED
 SHUTTER = B.WAINSCOT                            # a framed panel of dark wood, three texels thick
+DADO = 1                                        # rows of the same panelling at the lining's foot
 WOOD = B.DARK_WOOD                              # the floor's border, what stands in for furniture
 DEAL = B.FLOOR_WOOD                             # the boards of the vault and of the drum's lining: dark oak
 #                                                 is dead black where no lamp is (0.02 from below, the sky's
@@ -422,6 +424,7 @@ def models():
     if skeleton is not None:
         out.update(skeleton.models)
     out.update(_domechair.models())
+    out.update(_domefittings.models())
     board = _other("interiors", "_domeboard")
     if board is not None:
         out.update(board.models())
@@ -572,7 +575,12 @@ def _wall(c, origin, put, shell):
     column of the lining has stone on two sides the moulding's hollow would open onto the second,
     so that column is a whole block. A window the room sees keeps its reveal, the depth of the
     lining, and in it a shutter of dark panelling stands shut, flush with the boards: the drum's
-    windows are dark at night from both sides."""
+    windows are dark at night from both sides.
+
+    The foot of the lining is a dado of the same dark panelling, a panel to a column, flush with
+    the boards above it. A column that shows the room two faces (where the lining steps round the
+    circle, a door's jamb, the cheek of a bay) stays whole boards from the floor up: it is the
+    post the panels are framed between, and what hangs on the wall hangs on a post."""
     lay = O.Laying(c, None, origin, None)
     cols = shell.wall - set(GEAR_SHAFT)
     lay.mould(shell.ledge, WALL_TOP, DEAL.stairs, "top", only=cols)
@@ -581,11 +589,15 @@ def _wall(c, origin, put, shell):
             put(col[0], WALL_TOP, col[1], DEAL.block)
     doors = set(doorways())
     y0, y1 = S.DOME_ROOM_DOORS["y"]
+    seen_from = (shell.inside - shell.wall) | doors
     for col in cols:
+        faces = [d for d in O.SIDES if O.step(col, d) in seen_from]
         for y in range(FEET, WALL_TOP):
             if col in doors and y0 <= y <= y1:
                 continue
             out = shell.window(col, y)
+            if out is None and y < FEET + DADO and len(faces) == 1 and col not in doors:
+                out = (-faces[0][0], -faces[0][1])
             if out is None:
                 put(col[0], y, col[1], DEAL.block)
             else:
@@ -653,6 +665,10 @@ def _furniture(c, origin, put):
     if furniture is not None and paper is not None:
         top = FEET + furniture.TOP[DESK[0]]
         n += paper.place(c, "logbook", (LOGBOOK[0], top, LOGBOOK[1]), facing=DESK[2], origin=origin)
+    # the small things of the night's work: on the walls, on the coat stand, on the desk
+    stand = next((at for kind, at, _ in FURNITURE if kind == "coat_stand"), None)
+    n += _domefittings.place(c, origin, stand=stand if furniture is not None else None,
+                             desk_top=furniture.TOP[DESK[0]] if furniture is not None else None)
     at, looks = _time_dial_at(), TIME_DIAL[2]
     n += K.put(c, _models()[PREFIX + "time_dial"], at, facing=looks, origin=origin)
     dx, dy, dz = K.turn(K.FACING[looks], tuple(v / 16.0 for v in SECONDS_PIVOT))
