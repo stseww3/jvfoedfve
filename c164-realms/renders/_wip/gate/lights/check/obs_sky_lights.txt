@@ -1,0 +1,54 @@
+check obs_sky_lights at ff2470a
+[WARN] regen     121469 blocks, 2085 entities, 431 models, 1971 resource-pack files, 340 data-pack files, look: 1 biomes, 1 timelines (4.5 s)
+                 registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+[PASS] conflicts the scene writes 1970 files, no file written twice, the folders and the prefix of sky are kept (2 packages run alone)
+[PASS] strays    560 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      1391 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    67 kinds of block placed, 156 barrier cells (x -398..16, y 0..7, z -25..25), all in the occupancy table
+[SKIP] flatwall  a test scene of sky: its sample walls and backdrops are meant to be flat
+[WARN] entities  2085 display entities, 111 drawn out along one axis, 24 shown through a matrix that is no turn, no face stretched, 185 models never placed
+                 int_vault_dark_rope x3: drawn out along z, where the picture of cream~base1 is not even: it smears
+[WARN] views     32 shots, most display entities in view: 710 (blue_axis), limit 600; counted without what walls hide; the game draws up to 1381 (deep_front): a display entity without width and height is drawn outside the view too
+                 blue_front: 703 display entities in view, a view may have 600
+                 blue_axis: 710 display entities in view, a view may have 600
+                 blue_v1: 695 display entities in view, a view may have 600
+                 blue_surround: 654 display entities in view, a view may have 600
+                 blue_v3: 611 display entities in view, a view may have 600
+                 blue_door: 607 display entities in view, a view may have 600
+                 blue_west: 695 display entities in view, a view may have 600
+                 deep_front: 703 display entities in view, a view may have 600
+                 deep_axis: 710 display entities in view, a view may have 600
+                 deep_v1: 695 display entities in view, a view may have 600
+                 deep_surround: 654 display entities in view, a view may have 600
+                 deep_door: 607 display entities in view, a view may have 600
+                 ... and 4 more
+                 blue_front: 15 of the 703 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 blue_axis: 15 of the 710 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 blue_slant: 15 of the 282 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 blue_surround: 15 of the 654 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 blue_v3: 15 of the 611 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 blue_door: 15 of the 607 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 blue_v7: 17 of the 380 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 blue_wash: 15 of the 585 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 blue_stair: 39 of the 131 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 blue_ring: 40 of the 185 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 deep_front: 15 of the 703 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 deep_axis: 15 of the 710 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 ... and 5 more
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 0.4% hidden (base storey 0.0% by blocks and 1.3% more by models, great windows 0.0%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 3.2 s)
+[PASS] motion    57 parts and 3 points on 14 chains, 280 function files; 12 commands in the busiest tick (limit 40), 3.1 a tick on average (limit 10)
+                 chain of 24 ticks: 6 functions, 26 commands a cycle, starts 1 ticks after start
+                 chain of 40 ticks: 8 functions, 33 commands a cycle, starts 2 ticks after start
+                 chain of 50 ticks: 1 functions, 5 commands a cycle, starts 4 ticks after start
+                 chain of 110 ticks: 8 functions, 33 commands a cycle, starts 10 ticks after start
+                 chain of 150 ticks: 8 functions, 33 commands a cycle, starts 5 ticks after start
+                 chain of 260 ticks: 8 functions, 33 commands a cycle, starts 11 ticks after start
+                 chain of 1001 ticks: 25 functions, 104 commands a cycle, starts 7 ticks after start
+                 chain of 1617 ticks: 31 functions, 128 commands a cycle, starts 3 ticks after start
+                 chain of 2002 ticks: 11 functions, 78 commands a cycle, starts 14 ticks after start
+                 chain of 2400 ticks: 12 functions, 49 commands a cycle, starts 15 ticks after start
+                 chain of 2457 ticks: 39 functions, 160 commands a cycle, starts 8 ticks after start
+                 chain of 3003 ticks: 21 functions, 85 commands a cycle, starts 1 ticks after start
+                 ... and 47 more
+result: PASS (0 failed, 3 with warnings)
