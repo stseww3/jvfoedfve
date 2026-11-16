@@ -835,8 +835,8 @@ def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), yaw=None, **opts)
 # trained on the head of the comet, due west and 41 degrees up: who comes out of the west door walks
 # straight up to its eyepiece and finds the comet in it. The two blocks between it and the rail
 # stay free to walk in. The switch, dress() and site() work like those of props/furniture.
-DRESS = False           # off in the master scene until the family has passed review; a test scene asks
-                        # for the site's instruments with dress(canvas), or calls site()
+DRESS = True            # on from the merge on (the fast lane, COMMON 0.10); a test scene may still ask
+                        # for the site's instruments with dress(canvas), or call site()
 SUNSET_SCOPE = 16.0     # blocks west of the middle of the terrace's half-circle, on the axis
 
 
