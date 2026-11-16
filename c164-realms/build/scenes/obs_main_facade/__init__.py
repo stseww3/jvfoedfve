@@ -1,7 +1,8 @@
 """Test scene of the work package main/facade (plan/packages/main/facade.md).
 
 The main building where it stands in the master scene: the site under it, the whole main line,
-the props line's lamps on it and the sky line's light sources last. The lines are built whole, in
+the machines that stand on it and beside it (the clocks, the radio mast), the rooms as they move
+in, the props line's lamps and the sky line's light sources last. The lines are built whole, in
 the master scene's order, so the pictures keep up with them as their packages are merged.
 
 The entrance is the version the package builds by default (facade.ENTRANCE). obs_main_facade_a
@@ -15,7 +16,7 @@ import contextlib
 
 from artkit.canvas import Canvas
 
-from scenes.obs import main, materials, props, site, sky
+from scenes.obs import interiors, machines, main, materials, props, site, sky
 from scenes.obs.common import skeleton as S
 from scenes.obs.main import _plan as P
 from scenes.obs.main import facade
@@ -23,7 +24,7 @@ from scenes.obs.main import facade
 BIOME = "obs_blue"
 BIOME_MARGIN = 80
 BIOME_MARGIN_Y = 140
-LINES = (site, main, props, sky)
+LINES = (site, main, machines, interiors, props, sky)
 ENTRANCE = None                 # None: the package's default
 TIME = 14000                    # light version A, the default (INTERFACE: 18000 is B, 12900 is C; noon draws as A)
 # The two main views are the skeleton's (the director raised both on 11-14: they look up about 22
@@ -67,8 +68,8 @@ def build_models():
 
 def write_pack(pack_dir):
     """The shell paints nothing itself: it stands in the repainted blocks as the materials line
-    has them today (ashlar, the window family, slate, iron)."""
-    return materials.pack(pack_dir)
+    has them today (ashlar, the window family, slate, iron), under the sky line's sky."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
 
 
 def shots(only=None):

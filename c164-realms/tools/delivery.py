@@ -8,9 +8,10 @@ should not be in the repository. The merge-key holder runs it; it only reads (gi
             tools/provenance.sh's (plan/roles/HANDOVER.md, section 0), asked here so that no
             delivery is looked at without it: a delivery that fails it is not merged
   scope     the files changed, sorted into: the card's own (its module, the category's _helpers,
-            its test scenes and their kept pictures, its card, the parts files), common files (only
-            the merge-key holder changes those: agreed beforehand or not?), other cards' files,
-            the director's files
+            its test scenes and their kept pictures, its card, the parts files; for a card of the
+            common line also plan/reviews/<its name up to the first hyphen>/, where the walks and
+            the export keep what they found), common files (only the merge-key holder changes
+            those: agreed beforehand or not?), other cards' files, the director's files
   files     no archives, programs, fonts, sounds or world files; nothing binary but pictures and
             the built helper classes (tools/win/helper/*.class: rebuilt here from the source beside
             them and compared byte for byte); pictures in the code tree named; nothing large
@@ -173,6 +174,11 @@ def main():
     module = pkg.replace("-", "_")
     own = (f"build/scenes/obs/{cat}/{module}.py", f"build/scenes/obs/{cat}/_",
            f"build/scenes/obs_{ABBR[cat]}_", f"renders/obs_{ABBR[cat]}_", f"plan/packages/{cat}/", "plan/parts/")
+    if cat == "common":
+        # A card of the common line keeps what it found where its card says: plan/reviews/<name>/, the
+        # name being the card's up to its first hyphen (walk-out and walk-in share plan/reviews/walk/;
+        # export has plan/reviews/export/). The rest of plan/reviews/ stays the director's.
+        own += (f"plan/reviews/{pkg.split('-')[0]}/",)
 
     # What the merge would change in the base: the base against the merged tree. (The branch against
     # the fork point would also show what the branch took over from the assembly branch on the way.)

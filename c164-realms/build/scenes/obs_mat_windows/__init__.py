@@ -21,6 +21,13 @@ building does, and is looked at from the east. Along z, from the north:
     compass   a square lantern with the same four rows on every side (lit, frosted, curtain, dark):
               the place to measure that a lit window shows the colours of its picture whichever way
               it faces, and what the four ways do to a dark one.
+    furnace   three bays of the power house as site/powerhouse.py builds them: brick piers, the
+              glass one block behind them, six rows over a polished sill. A boiler bay, whose lower
+              three rows are the furnace window under three rows of dark glass; a bay that is dark
+              throughout; and a boiler bay with the drawn curtain that stood in for the furnace
+              window before it was painted. Looked at from the front, from near, from the side at
+              the distance the power house is seen from the great stair, and from the foot of the
+              wall, looking up along the glass (c235, g2 #571: where a dither shows its grain).
 
     python -m scenes.obs_mat_windows        writes shots.json from the layout below
 
@@ -209,10 +216,55 @@ def compass(c, z):
     return z + 5
 
 
+# ---- the furnace window in a boiler bay of the power house -----------------------------------------------------
+FURNACE_BAYS = "FDC"            # the furnace window; dark glass throughout; the curtain that stood in for it
+POWER = dict(plinth=0, table=1, sill=2, glass=(3, 8), eaves=9)     # the courses of site/powerhouse.py, from its feet
+FURNACE_ROWS = len(B.WINDOW_FURNACE)                               # the rows of a boiler bay that glow
+FURNACE_LAMP = 5                # the source before the glow of a boiler bay (site/powerhouse.py, c220's figure)
+
+
+def _boiler_glass(kind, row):
+    """The glass of a bay `row` rows above its sill: the lower rows of a boiler bay glow."""
+    if row >= FURNACE_ROWS or kind == "D":
+        return B.WINDOW_DARK.block
+    return B.WINDOW_FURNACE[row].block if kind == "F" else B.WINDOW_CURTAIN.block
+
+
+def furnace(c, z):
+    brick, course = B.TUFF_BRICK, B.TUFF_SMOOTH
+    y0, y1 = POWER["glass"]
+    end = z + S.BAY * len(FURNACE_BAYS)                 # the last pier
+    c.box(BACK, POWER["plinth"], z, WALL, POWER["eaves"], end, brick.block)
+    c.box(WALL, POWER["plinth"], z, WALL, POWER["plinth"], end, course.block)
+    c.box(WALL, POWER["eaves"], z, WALL, POWER["eaves"], end, course.block)
+    c.box(WALL, POWER["eaves"] + 1, z, WALL, POWER["eaves"] + 1, end, st(B.IRON_RIVETED.slab, type="bottom"))
+    for k, kind in enumerate(FURNACE_BAYS):
+        w = z + S.BAY * k + 1                           # the bay's glass is at w .. w + 2
+        c.box(WALL, POWER["table"], w, WALL, POWER["table"], w + 2, st(course.stairs, facing="west", half="bottom"))
+        c.carve(WALL, POWER["sill"], w, WALL, y1, w + 2)
+        c.set(WALL, y1, w, st(brick.stairs, facing="north", half="top"))        # the arch from pier to pier
+        c.set(WALL, y1, w + 1, st(brick.slab, type="top"))
+        c.set(WALL, y1, w + 2, st(brick.stairs, facing="south", half="top"))
+        c.box(GLASS, POWER["sill"], w, GLASS, POWER["sill"], w + 2, course.block)
+        for y in range(y0, y1 + 1):
+            c.box(GLASS, y, w, GLASS, y, w + 2, _boiler_glass(kind, y - y0))
+        if kind != "D":
+            c.set(WALL, y0 + FURNACE_ROWS // 2, w + 1, st(B.LIGHT, level=FURNACE_LAMP))
+    c.box(BACK, -1, z - 14, 14, -1, end + 6, FLOOR, keep=True)
+    return end + 1
+
+
+def boiler_mid(z, kind):
+    """The middle, as a point, of the bay of FURNACE_BAYS that shows `kind`."""
+    w = z + S.BAY * FURNACE_BAYS.index(kind) + 1
+    return S.mid(w, w + 2)
+
+
 # name, how to build it, the free z before it. The facade is looked at from 46 blocks: at that
-# distance a picture is 130 blocks wide, and nothing else is to stand in it.
+# distance a picture is 130 blocks wide, and nothing else is to stand in it. The furnace bays stand
+# clear of the lantern, which would shine into the picture taken along them.
 STATIONS = [("facade", facade, 0), ("walls", walls, 46), ("panes", panes, 6), ("roof", roof, 6),
-            ("compass", compass, 10)]
+            ("compass", compass, 10), ("furnace", furnace, 24)]
 
 
 def layout(c=None):
@@ -244,7 +296,8 @@ def write_pack(pack_dir):
 def shots():
     """The facade from the front in the three light versions, from the forecourt's distance, along
     its face and from near; the walls three at a time and one by one; the panes; the roof light from
-    above; the lantern from its four sides at one distance."""
+    above; the lantern from its four sides at one distance; the boiler bays from the front, from
+    near, along the wall and from its foot."""
     spans, out = layout(), []
 
     def shot(name, pos, look_at, time=TIME):
@@ -278,4 +331,13 @@ def shots():
     cx, cz, y, d = COMPASS_X + 2.5, z + 2.5, 1 + len(ROWS) / 2.0, 8.5
     for name, dx, dz in (("face_east", d, 0), ("face_west", -d, 0), ("face_south", 0, d), ("face_north", 0, -d)):
         shot(name, (cx + dx, y, cz + dz), (cx, y, cz))
+
+    z = spans["furnace"][0]
+    mid, glow, y = S.mid(z, z + S.BAY * len(FURNACE_BAYS)), boiler_mid(z, "F"), S.mid(*POWER["glass"])
+    shot("furnace", (11.0, 5.0, mid), (0, 5.0, mid))                    # the three bays
+    shot("close_furnace", (5.2, y, glow), (0, y, glow))                 # the six rows of the boiler bay
+    # on foot, 47 degrees off the wall's normal and 20 blocks away: as the great stair sees the power house
+    shot("furnace_slant", (14.0, 1.62, glow - 15.0), (0, 5.0, glow))
+    # on foot, three blocks from the glass, looking up at the three rows that glow
+    shot("furnace_foot", (3.0, 1.62, glow), (0, POWER["glass"][0] + FURNACE_ROWS / 2.0, glow))
     return out
