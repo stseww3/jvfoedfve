@@ -98,6 +98,13 @@ IN_TAG = "c164.in"          # on a player who has been here before
 LEFT = "c164j"              # objective: times the player has left since he was last greeted
 FACTS = "c164v"             # objective of a trial save: what the functions found
 BOT = "C164Probe"           # the fake player of verify
+# What other packages hang on a visitor's arrival (plan/packages/motion/guide.md, part one): functions
+# of theirs in the scene's data pack, run as the player and where he stands, the moment a newcomer
+# has been tagged, put on the spot and set up. The map's function calls a function tag of its own
+# that names them; a function that is not in the pack is passed over, so a save without the guide
+# is made of the same lines. Who comes back is told nothing (the card, as of 11:13).
+HOOKS = {"first": [f"{ART}:guide/first"]}
+GUIDE_SUB = "An evening above the clouds"       # under the title, which is the scene's MAP_TITLE
 CATCH = -30                 # scene y: feet under it are put back on the spot (agreed with cloud
                             # c329 #62206 and a4 c323 #64103: the cloud layer's top is -28, the
                             # lowest rock a foot finds is -27, the eye is in the cloud by then)
@@ -406,6 +413,10 @@ def scene_spec(args):
                 fail(f"--shaders on, and this tree has no scenes/obs/sky/_shaders.py ({e})")
     return {
         "scene": args.scene, "name": args.name, "at": [ox, oy, oz], "look": look, "shaders": shaders,
+        # the guide (titles, plaques, star charts: plan/packages/motion/guide.md) is the scene's, and in the
+        # save when the scene says GUIDE = True and --no-guide was not asked for
+        "guide": bool(getattr(scene, "GUIDE", False)) and not getattr(args, "no_guide", False),
+        "title": getattr(scene, "MAP_TITLE", None),      # the map's name, the one place it is written
         "biome": f"{ART}:{scene.BIOME}" if look else None,
         "time": int(when),
         "feet": [round(ox + ex, 4), round(oy + ey - S.EYE, 4), round(oz + ez, 4)],
@@ -473,7 +484,9 @@ def functions(spec):
             # feet under the line: the volume from y to y + dy + 1 is tested against the player's box
             f"execute as {held} at @s if entity @s[y={low},dy={spec['catch'] - low - 1}] run function {NS}:back",
         ],
-        "first": [f"tag @s add {IN_TAG}", f"function {NS}:back", f"function {NS}:join"],
+        # who is new is set up and then handed to what other packages hang on his arrival (HOOKS), as
+        # himself and where he stands; who comes back is set up again and told nothing
+        "first": [f"tag @s add {IN_TAG}", f"function {NS}:back", f"function {NS}:join", f"execute at @s run function #{NS}:first"],
         "join": [
             f"scoreboard players set @s {LEFT} 0",
             "gamemode adventure @s",
@@ -592,6 +605,12 @@ def write_functions(pack_dir, spec):
         with open(path, "w", encoding="utf-8", newline="\n") as fh:
             json.dump({"values": spec["cloud"]}, fh, indent=1)
             fh.write("\n")
+    for hook, names in HOOKS.items():
+        path = os.path.join(folder, "tags", "function", hook + ".json")
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8", newline="\n") as fh:
+            json.dump({"values": [{"id": n, "required": False} for n in names] if spec.get("guide") else []}, fh, indent=1)
+            fh.write("\n")
     tags = os.path.join(pack_dir, "data", "minecraft", "tags", "function")
     _tag(os.path.join(tags, "load.json"), f"{NS}:load")
     _tag(os.path.join(tags, "tick.json"), f"{NS}:tick")
@@ -614,9 +633,12 @@ import importlib, sys
 sys.argv = {argv!r}
 sys.path.insert(0, {build!r})
 import place
+scene = importlib.import_module("scenes." + sys.argv[1])
 if not {look!r}:      # no biome, no timeline: nothing of a dynamic registry goes into the pack
-    importlib.import_module("scenes." + sys.argv[1]).BIOME = None
+    scene.BIOME = None
     place.MOOD.write = lambda *a, **k: []
+if not {guide!r} and hasattr(scene, "GUIDE"):       # --no-guide: the scene is built without that layer
+    scene.GUIDE = False
 place.main()
 """
 
@@ -626,7 +648,7 @@ def place(spec, server, *more):
     out. Returns its output."""
     argv = ["place.py", spec["scene"], "--world", server.world, "--pw-file", server.pw_file,
             "--rcon-port", str(RCON_PORT), "--at", *(str(v) for v in spec["at"]), *more]
-    code = PLACE.format(argv=argv, build=BUILD, look=spec["look"])
+    code = PLACE.format(argv=argv, build=BUILD, look=spec["look"], guide=bool(spec.get("guide")))
     run = subprocess.run([sys.executable, "-c", code], cwd=PROJECT, capture_output=True, text=True,
                          env=dict(os.environ, PYTHONUNBUFFERED="1"))
     text = run.stdout + run.stderr
@@ -1106,7 +1128,12 @@ def visit(server, spec, results, tag, came):
               + f"; wanted it to tell: adventure {came['adventure']}, peaceful {came['peaceful']}"
               + (f", biome {came['biome']}" if came["biome"] is not None else ""))
     else:
-        check(results, tag + "quiet", not said, " | ".join(said) or "nothing was said, as it should be")
+        # the chat is what has to stay empty; titles and the line over the hotbar are the guide's
+        # to use (plan/packages/motion/guide.md) and are looked at below
+        spoken = sum(bot.packet_counts.get(n, 0) for n in ("player_chat", "disguised_chat"))
+        check(results, tag + "quiet", not said and not spoken,
+              (" | ".join(said) or "nothing stood in the chat, as it should be")
+              + (f"; {spoken} messages came as a player's chat" if spoken else ""))
     # under the line: put there by hand, the tick function has him back before the next look
     under = (feet[0] + 20, spec["catch"] - 6, feet[2])
     go = f"tp {BOT} {num(under[0])} {num(under[1])} {num(under[2])}"
@@ -1148,6 +1175,17 @@ def visit(server, spec, results, tag, came):
     server.cmd(f"tp {BOT} {num(over[0])} {num(over[1])} {num(over[2])}", quiet=True)
     bot.pump(2.5)
     check(results, tag + "over the line", near(bot.position, over), f"put at y {over[1]}, a moment later at {bot.position}")
+    # the guide greets who is new once, with a title, and who comes back with a line over the hotbar
+    greets = spec.get("guide") and os.path.exists(os.path.join(
+        server.world, "datapacks", PACK, "data", *HOOKS["first"][0].split(":", 1)[0:1], "function",
+        HOOKS["first"][0].split(":", 1)[1] + ".mcfunction"))
+    if spec.get("guide") and not greets:
+        say(f"  {tag}the save has the guide, but no function {HOOKS['first'][0]}: nothing greets who arrives")
+    if greets:
+        titles, subs, bars = bot.texts("title"), bot.texts("subtitle"), bot.texts("actionbar")
+        check(results, tag + "title", titles == [spec.get("title")] and subs == [GUIDE_SUB],
+              f"titles shown to who is new: {titles or 'none'}; under them: {subs or 'none'}; "
+              f"lines over the hotbar: {sorted(set(bars)) or 'none'}; wanted once each: {spec.get('title')} / {GUIDE_SUB}")
     before = len(bot.events)
     bot.close()
     time.sleep(2.0)
@@ -1168,6 +1206,11 @@ def visit(server, spec, results, tag, came):
         where = f"where he left: {bot.position} (left at {over})"
     check(results, tag + "rejoin", ok and mode.rstrip().endswith(": 2") and re.search(r"is 0(\.0+)?\s*$", reach) is not None,
           f"{where}; {mode}; {reach}; {before} things shown before he left")
+    if greets:
+        titles, bars = bot.texts("title") + bot.texts("subtitle"), bot.texts("actionbar")
+        check(results, tag + "title, again", not titles and not bars,
+              f"titles shown to who comes back: {titles or 'none'}; lines over the hotbar: {sorted(set(bars)) or 'none'}; "
+              "wanted neither (he is told nothing)")
     bot.close()
     time.sleep(1.0)
 
@@ -1712,6 +1755,9 @@ def main():
         p.add_argument("--shaders", choices=("auto", "on", "off"), default="auto",
                        help="the look as core shaders in the resource pack (auto: when the save goes without "
                             "the look and the tree has sky/_shaders.py; never with --look on)")
+        p.add_argument("--no-guide", action="store_true",
+                       help="leave the guide out (titles, plaques, star charts: the scene's GUIDE is set to False "
+                            "for the building, and nothing hangs on a visitor's arrival)")
         p.add_argument("--trial", help="label of a trial save (see the text at the top)")
         p.add_argument("--assembly", help="the assembly's commit this is made of, for the note beside the save")
         p.add_argument("--out", help="folder of the archive (make: default dist/<name>)", required=(what == "pack"))
