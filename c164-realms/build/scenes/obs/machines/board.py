@@ -23,6 +23,9 @@ two shaded lamps before the board, whose sources build() hands to the sky line (
 cells and level as interiors/powerhouse hangs its lamps at). The meters' ticks and the pilot lamps
 glow by themselves. The three pointers are pieces of their own and tremble.
 
+What stops whoever walks into it. The base course is blocks. A model has no collision: build()
+puts barriers into the two rows of cells over the base course (SOLID).
+
 Every model is drawn in texels in the board's own frame: x from the slabs' face into the room,
 y up from the floor, z along the board from its north end.
 """
@@ -76,6 +79,9 @@ LIGHTS = [((X + 1.5, FLOOR + 2.5, 28.5), 10), ((X + 1.5, FLOOR + 2.5, 31.5), 10)
 LEAD_IN = tuple((FACE_X + x / 16.0, FLOOR + _BELL_TOP / 16.0, Z[0] + z / 16.0) for x, z in _BELLS)
 # For the motion line: the jaws of the switch that stands open (a spark now and then).
 OPEN_SWITCH = (FACE_X + 3.0 / 16.0, FLOOR + (_SWITCH_Y[1] - 1.5) / 16.0, Z[0] + 103.0 / 16.0)
+# The cells in which build() puts the collision of the slabs (barriers): the two rows over the base
+# course. Whoever steps on the base course would walk through the slate.
+SOLID = tuple((X, int(FLOOR) + y, z) for z in range(Z[0], Z[1] + 1) for y in (1, 2))
 KEEP_CLEAR = ((X + 0.0, FLOOR, float(Z[0]), X + 1.5, FLOOR + _BELL_TOP / 16.0, Z[1] + 1.0),
               (WALL_X, FLOOR + 62.0 / 16.0, float(Z[0]), X + 0.5, FLOOR + 64.0 / 16.0, Z[1] + 1.0))     # the stays
 
@@ -304,9 +310,11 @@ def models():
 
 
 def build(canvas, origin=(0, 0, 0)):
-    """Lay the base course, place the board and its light; returns the number of display entities."""
+    """Lay the base course, place the board, its light and its collision; returns the number of
+    display entities."""
     drawn = _drawn()
     K.light(canvas, LIGHTS, origin, "machines/board:lamp")
+    K.solid(canvas, SOLID, origin)
     ox, oy, oz = (int(v) for v in origin)
     for i, name in enumerate(BASE):
         canvas.set(ox + X, oy + int(FLOOR), oz + Z[0] + i, st(B.PANELS[name], facing=FACING))

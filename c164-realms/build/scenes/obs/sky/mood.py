@@ -35,7 +35,39 @@ CLOUD_THICKNESS = 4         # sky/cloudsea lie on it with their sheet top at -26
 CLOUD_ALPHA = 0.94
 CLOUD_FOG_END = 768.0       # the layer fades to nothing at this distance
 LAMP = "#ffb45e"            # the one lamp colour (tint of block light)
-FOG_START, FOG_END = 60.0, 192.0   # crisp nearby; from 60 blocks on things melt into the horizon colour
+# Fog. The look is carried by the resource pack's shaders (sky/_shaders.py): a Realms map has no
+# registry files, and it shows 160 blocks (the server's view distance is 10).
+#
+# The fog lies on the sea and the hilltop stands above it (the director, 11-16 #68701): by distance
+# alone the building was a shadow in the fog in V12. Two laws, the same in the shaders and in the
+# offline pictures:
+#
+# fog_depth(): the haze, an optical depth along the line of sight; what is left of a thing is
+# exp(-depth) and the rest is the horizon band of its direction.
+#   the air's own haze   depth 1 after AIR blocks at any height: a little depth between near and far
+#   the mist on the sea  depth 1 after MIST blocks along the sea top, thinning with the height above
+#                        it by 1/e every MIST_HEIGHT blocks
+# From the terrace (30 above the sea) the sea hazes into the horizon band with depth 1 at 800 blocks,
+# as cloud's forecast pictures have it (c329, L = 800): 0.37 / MIST + 1 / AIR = 1 / 800. The front
+# from the cable station (V1) keeps 0.94 of itself, the building in V12 0.92.
+#
+# levelled(): what lies on the sea is taken into the far sea painted behind it, from FOG_START to
+# FOG_END blocks away on the map, so that nothing of the block sea is left where the blocks end
+# (160 on the map; from high above, V12, the sea underneath keeps its shapes). It holds
+# in full up to LEVEL_FULL blocks above the sea top (the tops of the cloud towers, c329) and not at
+# all from LEVEL_NONE on: terrace and platforms stand 22 and more above the sea and take none of
+# it, the foot of the hill goes into the sea with the clouds.
+FOG_START, FOG_END = 60.0, 150.0
+LEVEL_FULL, LEVEL_NONE = 8.0, 12.0
+AIR = 1600.0
+MIST = 587.0
+MIST_HEIGHT = 12.0
+REGISTRY_FOG_END = 192.0    # the registry look's own fog end; it leaves with the registry files
+# The clock is stopped where the vanilla moon (the comet's slot) stands at MOON_ANGLE, on a day of
+# the full moon's picture (plan/parts/figs/sky_safe.py finds the hour). GAME_STAR_ANGLE is the
+# vanilla star angle at that hour: the star shader turns the field from it to STAR_ANGLE.
+LOCK_TICK = 20370
+GAME_STAR_ANGLE = 221.9939
 MOON_ANGLE = 42.0           # the comet sits in the moon's slot: sprite centre 48 degrees up in the west
 # The stars are one fixed field turned about the north-south axis. One pair of them overlaps, and a
 # star adds its light to what is behind it, so the pair shows as a single star of twice the light:
@@ -136,6 +168,36 @@ def mix_share(sky_fog_end, render_chunks=32):
     return 1.0 - (0.25 + 0.75 * min(1.0, e / 32.0)) ** 0.25
 
 
+def fog_depth(distance, height, rise):
+    """The fog's optical depth along a line of sight (the share that is left of a thing is
+    exp(-depth)). distance: blocks from the eye; height: the eye above the top of the cloud sea
+    (world y - (GROUND_Y + CLOUD_TOP)); rise: what the line gains in height per block (the y of
+    its unit direction). Numbers or numpy arrays. The mist ends at the sea top: a line that goes
+    below it is counted as far as the sea. The shaders carry the same formula (sky/_shaders.py)."""
+    import numpy as np
+    distance, rise = np.asarray(distance, dtype=float), np.asarray(rise, dtype=float)
+    height = np.maximum(np.asarray(height, dtype=float), 0.0)
+    down = rise < 0.0
+    reach = np.where(down, np.minimum(distance, height / np.maximum(-rise, 1e-5)), distance)
+    a = reach * rise / MIST_HEIGHT
+    small = np.abs(a) < 1e-3
+    start = np.exp(-height / MIST_HEIGHT)
+    end = np.exp(-np.maximum(height + reach * rise, 0.0) / MIST_HEIGHT)
+    safe = np.where(small, 1.0, rise)
+    mist = np.where(small, reach * start * (1.0 - 0.5 * a), (start - end) * MIST_HEIGHT / safe)
+    return distance / AIR + mist / MIST
+
+
+def levelled(distance, height):
+    """The share to which a thing is taken into the far sea painted behind it. distance: blocks
+    from the eye on the map (the horizontal distance); height: the thing above the top of the
+    cloud sea. Numbers or numpy arrays."""
+    import numpy as np
+    far = np.clip((np.asarray(distance, dtype=float) - FOG_START) / (FOG_END - FOG_START), 0.0, 1.0)
+    low = np.clip((LEVEL_NONE - np.asarray(height, dtype=float)) / (LEVEL_NONE - LEVEL_FULL), 0.0, 1.0)
+    return far * low
+
+
 def derive(zenith, horizon, sky_fog_end):
     """(sky_color, fog_color) to write so that the zenith and the horizon show the wanted colours.
 
@@ -176,7 +238,7 @@ def values(name=DEFAULT):
         "sky_light_color": v["sky_light"], "sky_light_factor": v["sky_factor"],
         "ambient_light_color": v["ambient"], "cloud_color": _argb(v["cloud"], CLOUD_ALPHA),
         "block_light_tint": LAMP,
-        "fog_start_distance": v.get("fog_start", FOG_START), "fog_end_distance": v.get("fog_end", FOG_END),
+        "fog_start_distance": v.get("fog_start", FOG_START), "fog_end_distance": v.get("fog_end", REGISTRY_FOG_END),
         "cloud_height": float(GROUND_Y + CLOUD_TOP - CLOUD_THICKNESS),
         "cloud_fog_end_distance": CLOUD_FOG_END,
     }
