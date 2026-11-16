@@ -65,6 +65,9 @@ INK = P.RAMPS["iron"][1]
 FACE, FACE_D = P.RAMPS["porcelain"][3], P.RAMPS["porcelain"][2]
 MARK = P.RAMPS["iron"][5]
 LUME = P.RAMPS["phosphor"][2]
+# the light the luminous marks hold of themselves, as on the dials of props/instruments: at 15 they
+# were as bright as the pilot lamps beside them and read as small green lamps in the real client
+LUME_LEVEL = 8
 AMBER, AMBER_D = P.RAMPS["glow"][1], P.RAMPS["glow"][0]
 OUT, OUT_D = P.RAMPS["brass"][1], P.RAMPS["brass"][0]
 DIAL_COLOURS = dict(c=FACE, d=FACE_D, k=INK, m=MARK, h=P.RAMPS["iron"][0], b=P.RAMPS["brass"][3], g=LUME)
@@ -111,7 +114,7 @@ def _meter(m, x, y, hand):
           faces={"s": _sprite("dial", DIAL, **DIAL_COLOURS)})
     m.box((x - 4.5, y - 4.5, z + 1.75), (x + 4.5, y + 4.5, z + 1.85), K.flat("phosphor", 2), skip="nudew",
           faces={"s": _sprite("dial_lume", ["".join(ch if ch == "g" else "." for ch in row) for row in DIAL],
-                              g=LUME)}, emit=15, shade=False)
+                              g=LUME)}, emit=LUME_LEVEL, shade=False)
     lean, length = math.radians(hand[0]), hand[1]
     foot = (x, y + PIVOT, z + 2.0)
     m.beam(foot, (x + length * math.sin(lean), y + PIVOT + length * math.cos(lean), z + 2.0), 0.25, 1.0, POINTER)
@@ -185,7 +188,9 @@ def _board():
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    return {m.name: m for m in (_board(),)}
+    # settled (_kit.settle): the slanting flats of the meters' cases and of the lamps' collars stand
+    # exactly between two axes, and the game may light them one way on one meter and another on its twin
+    return {m.name: K.settle(m) for m in (_board(),)}
 
 
 def models():

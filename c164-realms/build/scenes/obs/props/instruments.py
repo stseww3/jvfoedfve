@@ -13,7 +13,8 @@ wood, cast iron or stone. Phosphor green is on dials only and nothing else glows
     barometer          a banjo barometer for the wall, two blocks tall, the dial at the foot
     louvre_box         a white louvred thermometer screen on four legs and a stone slab
     regulator_clock    a precision pendulum clock in a long glazed case, two blocks tall; its
-                       pendulum is the separate model regulator_pendulum (see PENDULUM)
+                       pendulum is the separate model regulator_pendulum, which the loop of
+                       motion/_kit swings (see PENDULUM)
     calc_machine       a hand-cranked calculating machine on a board, for a table
     sunshine_recorder  a glass ball before a brass bowl, for the stone pedestal of the weather station
                        (not on the card: site/outbuildings keeps a pedestal for it)
@@ -47,6 +48,7 @@ from artkit.pixelart import Sprite
 from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
+from ..motion import _kit as MK
 from . import _kit as K
 
 PREFIX = "prop_inst_"
@@ -184,10 +186,12 @@ def _lume(rows):
 GLINT = P.RAMPS["porcelain"][4]         # the glint of a lens or of a glass ball: one pixel
 # Clear glass as the furniture draws it (_kit.sheen_texels): the glass is left out and its reflection
 # says it is there, a glancing stroke two pixels wide that climbs to the right and a shorter one
-# under it, in the tone the roof lights hold the sky in; a white one was the brightest thing on the
-# wall and read as paper. One column further left than the kit puts it: the clock's door is seven
-# pixels wide and its middle column is the pendulum rod's, which a stroke would cut in two.
-SHEEN = getattr(K, "SHEEN", P.RAMPS["night_glass"][4])
+# under it. Its tone is the kit's for a narrow pane with dark wood close behind it, a step under the
+# one the roof lights hold the sky in: that one was the only cold thing on the case and read as a
+# blue ribbon stuck on the door, and a white one as paper. One column further left than the kit
+# puts it: the clock's door is seven pixels wide and its middle column is the pendulum rod's, which
+# a stroke would cut in two.
+SHEEN = K.SHEEN_DIM
 STROKES = ((1, 1), (2, 1), (0, 2), (1, 2), (1, 5), (2, 5))
 
 
@@ -804,15 +808,20 @@ SPEC = {
     "sunshine_recorder": dict(build=_sunshine_recorder, mount="floor"),
 }
 SCALE = {PREFIX + name: 1.0 for name in SPEC}
-# what motion needs to swing the pendulum: the entity carries the tag, stands on the pivot and turns
-# about the axis the clock faces along (the model's z); a seconds pendulum, a block long
+# How the pendulum swings: its entity stands on the pivot and turns about the axis the clock faces
+# along (the model's z), `swing` degrees to either side (at 3 the bob keeps within the door's glass,
+# at 5 it would pass behind the stiles), there and back in the beat every pendulum of the house
+# keeps (motion/_kit). place() registers it with the loop. The tag is what motion/sound finds the
+# clocks by, to tick where each pendulum hangs.
 PENDULUM = dict(tag="c164_pendulum", pivot=tuple(v / 16.0 for v in PENDULUM_PIVOT), axis="z",
-                swing=3.0, period_ticks=40)
+                swing=3.0, period_ticks=MK.PENDULUM)
 
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    return {PREFIX + name: spec["build"]() for name, spec in SPEC.items()}
+    # settled (_kit.settle): the slanting flats of the tubes, rings and balls stand exactly between
+    # two axes, and the game lit them one way on one piece and the other way on its twin
+    return {PREFIX + name: K.settle(spec["build"]()) for name, spec in SPEC.items()}
 
 
 def models():
@@ -823,7 +832,8 @@ def models():
 def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), yaw=None, **opts):
     """Put one instrument into the scene; returns the number of display entities (1; the clock 2).
 
-    kind     a key of SPEC ("regulator_pendulum" comes with the clock).
+    kind     a key of SPEC ("regulator_pendulum" comes with the clock, hanging plumb, and the loop
+             of motion/_kit swings it from there; placed by itself it hangs still).
     pos      scene coordinates. A standing piece: the middle of its foot on the floor or on the
              table top. "barometer" and "regulator_clock": the point on the wall face behind the
              middle of the piece's foot (both are 2 blocks tall from there).
@@ -840,6 +850,7 @@ def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), yaw=None, **opts)
         n += K.put(canvas, _models()[PREFIX + "regulator_pendulum"], (pos[0] + dx, pos[1] + dy, pos[2] + dz),
                    mount="wall", yaw=yaw, origin=origin, **opts)
         canvas.entities[-1][3]["Tags"].append(PENDULUM["tag"])
+        MK.swing(canvas, PENDULUM["axis"], PENDULUM["swing"], MK.PENDULUM)
     return n
 
 

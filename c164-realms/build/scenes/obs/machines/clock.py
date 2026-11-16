@@ -238,7 +238,13 @@ BALL_LEDGE_SHADE = {"u": 1.0, "d": 0.4}
 # dark hoops (the pictures of 11-16). They are elements of their own that take the top of the light
 # table (BALL_UNDER_EMIT), which at the map's hour is BALL_UNDER_GAIN times what BALL_LIGHT gives,
 # and they are painted for that.
-BALL_UNDER_EMIT = 15
+# The table is at its top from 14 on (white at 14 as at 15), and 14 it has to be. The map's item
+# shader (sky/_shaders.py, core/item.vsh) takes a face at block light 15 for a thing that glows of
+# itself and does not shade it by the way it looks: at 15 the ledges were drawn at the whole of
+# that light and not at four tenths of it, hoops of 0.61 to 0.68 round a ball of 0.23, lighter
+# than the lit window under the dial (the saves A5 and A6 and the board of 11:00, in the real
+# client; the offline pictures shade every face and never showed it).
+BALL_UNDER_EMIT = 14
 BALL_UNDER_GAIN = 1.28
 # what a piece is turned by where it stands, before any turn of its own
 _STANDING = {name: (("y", BALL_TURN),) for name, _paint in BALL_TONES.values()}
@@ -628,8 +634,13 @@ def _models():
     made = [(_master(), 2.0), (_master_dial_model(), 1.0), (_master_hand("h"), 1.0), (_master_hand("m"), 1.0),
             (_pendulum(), 1.0), (_face(), 2.0), (_hand("h"), 1.0), (_hand("m"), 1.0)]
     made += [(_ball(name, paint), 1.0) for name, paint in BALL_TONES.values()]
+    # The tubes and rings of eight, sixteen and twenty-four sides (weights, arbors, bezels, the drum
+    # behind a dial, the plate under the ball) have flats exactly between two axes, and the game lights
+    # such a flat as the one or the other by the last bit of a float: K.settle turns each such piece a
+    # tenth of a degree, so that every copy of the game and the offline pictures light it one way. The
+    # ball's own facets stand 11.25 degrees off the fence and are not touched.
     for model, scale in made:
-        out[model.name] = model
+        out[model.name] = K.settle(model)
         SCALE[model.name] = scale
     return out
 

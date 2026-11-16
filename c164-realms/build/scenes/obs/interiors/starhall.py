@@ -8,13 +8,15 @@ clock (machines). The hall dresses the room they leave, and reads it from them: 
 shell.ROOMS, the beams from shell.layout().beams, the clock's seat from shell.layout().seat, the
 doorway from facade.doors().
 
-The first look (S.V7, from outside the door through the middle arch): the orrery overhead, the
-mother clock on the pier straight ahead, the floor underfoot. The hall keeps that picture clear,
-and in the order the director set (A0, 11-16): the clock's dial and the pier's east face first,
-the orrery's sun the warmest point, the floor third. Nothing of the hall's own stands on the
-axis; no stone of the floor is pale, since a floor is drawn at full light and a wall that looks
-east at six tenths, and a pale one under the same lamp outshines the pier; and no lamp of the
-hall shows its glass to the door.
+The first look (S.V7, from inside the main doorway): the whole orrery under the star ceiling, the
+mother clock on the pier straight ahead, the galleries' lamps, the two flights of the stair, the
+floor underfoot. The hall keeps that picture clear, and in the order the director set (A0,
+11-16): the clock's dial and the pier's east face first, the orrery's sun the warmest point, the
+floor third. Nothing of the hall's own stands on the axis; no stone of the floor is pale, since
+a floor is drawn at full light and a wall that looks east at six tenths, and a pale one under
+the same lamp outshines the pier; no lamp of the hall shows its glass to the door; and the
+doorway's two reveals, which close the picture left and right, are dark panelling: one looks out
+of a dark frame into the hall.
 
   floor     The hall lays its own from wall to wall round the pier's foot (the shell's shows in
             the stair hall only). The station's emblem under the orrery, in thin brass line: an
@@ -73,7 +75,7 @@ PREFIX = "int_starhall_"
 WHY = "interiors/starhall"
 # Pieces of the hall that stand in files of their own beside this one, each as soon as it is in the
 # tree: dress(canvas, origin, version) -> display entities placed, models() -> {name: model}.
-PARTS = ("_starhall_meridian", "_starhall_wiring", "_starhall_gallery")
+PARTS = ("_starhall_meridian", "_starhall_wiring", "_starhall_gallery", "_starhall_ways")
 NEIGHBOURS = ("batteryroom", "platevault")      # rooms behind the aisle walls that open a door into the hall
 
 ROOM = shell.ROOMS["star hall"]
@@ -116,10 +118,15 @@ GALLERY_MAP_Y = shell.DECK_Y + 2.75     # the middle of a great chart, two block
 SUN_POOL = 8                # where the sun's light lands: a source a cell over the roundel's middle. The sun's
 #                             own 12 is 5 by the time it is down there. A0, 11-16: it may stay as long as the
 #                             floor's middle is darker than the mother clock's dial, which with 10 it was not
-STAIR_FOOT_LEVEL = 8        # 7 shows nothing of the risers through the side arches (lights, #559)
+STAIR_FOOT_LEVEL = 11       # 7 shows nothing of the risers through the side arches (lights, #559), and at 8 the
+#                             flights were grey in the first look and from before the door (0.16; review, #78563).
+#                             A0 #78666: the stair hall's lamps may go to 11, as long as the arches behind the
+#                             pier are not lighter than its face: at 11 the flights are at 0.21, the face at 0.23
 MEZZANINE_LEVEL = 7
 MEZZANINE_LAMP_Y = 9.5
-WAY_LEVEL = 7               # the way to the west door, which had no light at all (the walk, S1): a step under the stair foot's
+WAY_LEVELS = (10, 9)        # the way to the west door, which had no light at all (the walk, S1), its west lamp and
+#                             its east: with these every cell of the way one walks on, from the door's sill to
+#                             the arcade, has 5 (m5, #79601). The pier hides the way from the first look
 WAY_SOURCE_Y = FEET + 2     # the row of its sources: over the head of who walks under the lamp. In the cell under
 #                             the crown they left 3 of the 7 at the feet, and a floor one walks on indoors is to
 #                             have 5 (lights, #72659; the light line knows a source for a lamp's up to six cells under it)
@@ -379,13 +386,20 @@ def aisle_doors():
     """Doors other rooms open in the aisle walls on the ground floor: {(x, z of the aisle's row
     before it)}. Each is its room's to set (HALL_DOOR in the room's module, the wall's cell): the
     battery room's in the north wall beside the switchboard, the plate vault's in the south wall
-    across from it. The hall keeps the cell before a door free."""
+    across from it. The shell cuts them and tells them in doors(), with the doors of the main
+    floor: of those the ones whose foot is the ground (shell, #74028). The hall keeps the cell
+    before a door free."""
     out = set()
     for name in NEIGHBOURS:
         door = getattr(_optional("interiors." + name), "HALL_DOOR", None)
         if door is not None:
             x, z = door
             out.add((x, Z0 if z < Z0 else Z1))
+    for door in shell.doors():
+        if door["y"][0] == FEET:
+            dx, dz = door["inward"]
+            out |= {(x - dx, z - dz) for x, z in door["cells"]
+                    if X0 <= x - dx <= X1 and z - dz in (Z0, Z1)}
     return out
 
 
@@ -398,6 +412,26 @@ def _dado(canvas, origin):
         for x in range(X0, X1 + 1):
             for y in (FEET, FEET + 1):
                 if (x, z) not in doors and not canvas.has(ox + x, oy + y, oz + z):
+                    canvas.set(ox + x, oy + y, oz + z, st(B.WAINSCOT, facing=ACROSS[wall], half="bottom", open="true"))
+
+
+def _reveals(canvas, origin):
+    """The two reveals of the main doorway, in the inner leaf, lined with the dado's dark panelling
+    from the sill to the head. The first look stands in the doorway, and the two faces beside it,
+    bare stone in the pier's own tone, were a third of the picture; lined, one looks out of a dark
+    frame into the hall (cr3, #74066). In both versions: iron there is two black bars, and no
+    further out than the leaf's one cell, where the door's frame and leaves are (facade, #74675).
+    The stone is the facade's and is not touched: the panels stand in the doorway's own cells."""
+    from ..main import facade
+    ox, oy, oz = origin
+    for d in (facade.doors() if hasattr(facade, "doors") else ()):
+        if d["front"] != "east" or d["kind"] != "door" or len(d["cells"]) < 3:
+            continue
+        dx, dz = d["inward"]
+        cells = sorted((x + dx, z + dz) for x, z in d["cells"])
+        for (x, z), wall in ((cells[0], "north"), (cells[-1], "south")):
+            for y in range(d["y"][0], d["y"][1] + 1):
+                if not canvas.has(ox + x, oy + y, oz + z):
                     canvas.set(ox + x, oy + y, oz + z, st(B.WAINSCOT, facing=ACROSS[wall], half="bottom", open="true"))
 
 
@@ -555,7 +589,7 @@ def _flat_lamp(canvas, origin, version, at, towards, level, what, source_y=None)
     n = lamps.place(canvas, "cage", (at[0], under - K.NUDGE, at[1]), facing=towards, origin=origin, version=version,
                     light=False, turns=(("x", 90.0),))
     y = shell.ARCH_Y - (1 if crowned else 0) if source_y is None else source_y
-    L.suggest(canvas, (ox + x, oy + y, oz + z), level, f"{WHY}:{what}", rank=3)
+    L.suggest(canvas, (ox + x, oy + y, oz + z), level, f"{WHY}:{what}", rank=L.rank(level))
     return n
 
 
@@ -573,8 +607,8 @@ def _stair_hall(canvas, origin, version):
     for z in (CZ - shell.CHEEK_Z, CZ + shell.CHEEK_Z):
         n += lamps.place(canvas, "cage", (wx + 1.0, MEZZANINE_LAMP_Y, z + 0.5), facing="east", origin=origin,
                          version=version, level=MEZZANINE_LEVEL)
-    for x in way_lamp_xs():
-        n += _flat_lamp(canvas, origin, version, (x + 0.5, CZ + 0.5), "east", WAY_LEVEL, "way west",
+    for x, level in zip(way_lamp_xs(), WAY_LEVELS):
+        n += _flat_lamp(canvas, origin, version, (x + 0.5, CZ + 0.5), "east", level, "way west",
                         source_y=WAY_SOURCE_Y)
     return n
 
@@ -705,6 +739,7 @@ def dress(canvas, origin=(0, 0, 0), version=None):
     n += _furnish(canvas, origin, style)
     if style["dado"]:
         _dado(canvas, origin)
+    _reveals(canvas, origin)
     _door_emblem(canvas, origin)
     n += _ceiling(canvas, origin, version, style)
     n += _charts(canvas, origin)
