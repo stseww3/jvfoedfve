@@ -95,6 +95,15 @@ DOOR_Z = smalldome.CZ                                   # |z| 30: the row of bot
 LIGHT_X = (DOWN_X + 2, DOWN_X + 4)                      # 4..6: the glass
 LIGHT_DEEP = 2                                          # |z| 27..28: two rows of glass; the kerb's row is 29
 
+# the pocket behind the ridge, between a wing's inner gable and the great drum: three columns the
+# drum's wall cuts off from the corner terrace, two blocks under the gable's top and walled in on
+# every side, so that whoever stepped off the gable towards the drum could not leave (a4's walk-in
+# round, R1 and R2). The gable's stone is carried on to the drum, level with the gable's top beside
+# the ridge. The row of the drum's window over the innermost column stays open.
+POCKET = ((RIDGE[1], GABLE_IN - 2), (RIDGE[1], GABLE_IN - 1), (RIDGE[1] + 1, GABLE_IN - 1))    # (x, |z|): (8, 12), (8, 13), (9, 13)
+POCKET_TOP = RIDGE_TOP                                  # 20: where feet stand on it, as on the gable at x 9
+FILL = B.ASHLAR_FINE.block
+
 GUTTER = f"{B.OLD_COPPER_CUT.slab}[type=bottom]"        # the channel along a parapet, half a block down
 PLATE = B.IRON_RIVETED.block                            # the plate in the flags before a door
 GRATING = B.IRON_GRATE
@@ -245,6 +254,9 @@ def build(canvas, origin=(0, 0, 0)):
         for x, z in kerb:
             put(x, STAND, z, KERB)
     for s in WINGS.values():
+        for x, az in POCKET:
+            for y in range(STAND, POCKET_TOP):
+                put(x, y, s * az, FILL)
         for (x, y, z), state in walkway(s).items():
             put(x, y, z, state)
         for x, y, z in lamps(s):
@@ -364,6 +376,12 @@ def check(c=None):
             out.append(f"outline: ({x}, {y}, {z}) lies outside the parapets")
         if y >= RIDGE_TOP:
             out.append(f"outline: ({x}, {y}, {z}) stands above the ridge")
+    # 8. the pocket between a wing's inner gable and the great drum is closed up to the gable's
+    #    top: nobody steps down into it
+    for where, s in WINGS.items():
+        for x, az in POCKET:
+            if any(c.get(x, y, s * az) != FILL for y in range(STAND, POCKET_TOP)):
+                out.append(f"{where} pocket: ({x}, {s * az}) is not closed up to {POCKET_TOP}")
     return out
 
 
@@ -421,5 +439,6 @@ if __name__ == "__main__":
     found = check(scene)
     print("\n".join(found) if found else
           "self-check: terraces closed, channels joined, roof lights, both ways walkable and alike, "
-          "nothing above the ridge, door leaves and plates, nothing on the parapets -- all good")
+          "nothing above the ridge, door leaves and plates, nothing on the parapets, the pockets "
+          "by the drum closed -- all good")
     sys.exit(1 if found else 0)

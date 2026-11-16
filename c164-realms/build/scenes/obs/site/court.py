@@ -52,6 +52,7 @@ FLOOR = S.PAVING_Y              # the paving block
 ON = S.GROUND                   # what lies or stands on the paving
 
 WALK_HALF = 2                   # the walk is the door bay with its two pilasters: 5 across
+WALK_EAST = 2                   # ... and so it is between the seat and the stair head (1: the door bay alone, 3 across)
 RING_R = 7                      # the smallest ring that leaves a clear cell between ring, line and star
 STAR = (3, -3)                  # from the emblem's middle; the upper right when north is up
 SEAT_HALF = RING_R + 2          # the seat is 19 x 19: its border, a clear cell, the ring
@@ -93,6 +94,12 @@ def _in_court(x, z):
     return X0 <= x <= X1 and Z0 <= z <= Z1
 
 
+def _walk_half(x):
+    """Half the width of the walk in column x: WALK_HALF from the door to the emblem, WALK_EAST from
+    there to the stair head."""
+    return WALK_HALF if x < AX else WALK_EAST
+
+
 def _paving(c, o):
     """The field, then the brick courses, then the strips over them: where two lines cross, the
     strip is whole and its edging gives way."""
@@ -106,7 +113,7 @@ def _paving(c, o):
             for dz in (-1, 1):
                 if _in_court(x, z + dz):
                     _put(c, o, x, FLOOR, z + dz, EDGE)
-        for d in range(WALK_HALF + 1, near):    # the walk's two shoulders, out to the centre pavilion's strips
+        for d in range(_walk_half(x) + 1, near):    # the walk's two shoulders, out to the centre pavilion's strips
             for z in (AZ - d, AZ + d):
                 _put(c, o, x, FLOOR, z, EDGE)
     for z in range(Z0, Z1 + 1):
@@ -120,7 +127,7 @@ def _paving(c, o):
     for z in range(Z0, Z1 + 1):
         _put(c, o, FOOT_X, FLOOR, z, STRIP)
     for x in range(X0, X1 + 1):                 # the walk on the axis, from the door to the stair head
-        for z in range(AZ - WALK_HALF, AZ + WALK_HALF + 1):
+        for z in range(AZ - _walk_half(x), AZ + _walk_half(x) + 1):
             _put(c, o, x, FLOOR, z, STRIP)
     for x in range(X0, FOOT_X):                 # the landing before the three arches of the porch
         for z in range(AZ - near + 1, AZ + near):
