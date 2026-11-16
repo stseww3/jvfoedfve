@@ -7,9 +7,11 @@ corner (coat stand, writing desk with a desk lamp, a swivel chair at the desk se
 one pushed back that shows its seat, two card cabinets side by side and an instrument cabinet), the
 luggage as the cable station has it (furniture.luggage: the trunk along the wall, the small packing
 case on its lid), packing cases, the drafting table with its stool, a bookcase with the library
-ladder on its rail, a display case and a display table, the two display tables that come with what
-they show, side by side and three blocks apart as the star hall has them, and at the east end two
-plate boxes one on the other. Bracket lamps on the wall light the stage as lamps light a room.
+ladder on its rail, the standing display case with the old telescope it shows and an empty display
+table, the two display tables that come with what they show, side by side and three blocks apart as
+the star hall has them, and at the east end two plate boxes one on the other. Bracket lamps on the
+wall light the stage as lamps light a room. (The empty standing case is the same model without its
+exhibit; the model sheet has it.)
 
 For scale, five pieces of props/instruments stand where the rooms put them: the lookout's telescope
 west of the benches, the calculating machine on the writing desk and the table globe on a card
@@ -36,7 +38,7 @@ STONE, PAVING, FLOOR, SHELF = B.ASHLAR_FINE.block, B.TUFF_SMOOTH.block, B.FLOOR_
 WALL_Z = -1
 FACE = WALL_Z + 1               # the air cell in front of the wall; a wall prop's anchor sits on the face
 WALL_H = 6
-WEST, ROOM, EAST = -7, 11, 54   # the terrace runs from WEST to ROOM, the room floor from ROOM to EAST
+WEST, ROOM, EAST = -7, 11, 56   # the terrace runs from WEST to ROOM, the room floor from ROOM to EAST
 DEPTH = 12
 TIME = 14000                    # light version A, the default (INTERFACE: 18000 is B, 12900 is C)
 
@@ -60,15 +62,17 @@ CASE_X = (30, 33)               # the bookcase: these cells along x, three high,
 LADDER_X = 31.5
 CASE = (35.5, 0.0, 2.0)
 TABLE = (38.2, 0.0, 0.5)        # against the wall, as in the star hall
-# two blocks clear of the empty table, so that a camera's edge finds room between them
-SHOWN = (("display_table_plates", (42.0, 0.0, 0.5)), ("display_table_lenses", (45.0, 0.0, 0.5)))
-PLATE_BOX = (51.7, 0.0, 0.6)    # against the wall, by themselves: a second one on the lid of the first
-PLATE_BOX_UP = (51.72, furniture.TOP["plate_box"] + furniture.STRAP, 0.61)
-LAMPS = (-0.6, 6.0, 13.5, 20.8, 28.6, 34.3, 38.2, 43.5, 47.8, 51.7)
+# three blocks clear of the empty table and two and a half of the star globe: the camera that takes
+# the two of them sees far to either side along the wall, and the back corner of a neighbour stood
+# in each edge of its picture
+SHOWN = (("display_table_plates", (43.0, 0.0, 0.5)), ("display_table_lenses", (46.0, 0.0, 0.5)))
+PLATE_BOX = (53.6, 0.0, 0.6)    # against the wall, by themselves: a second one on the lid of the first
+PLATE_BOX_UP = (PLATE_BOX[0] + 0.02, furniture.TOP["plate_box"] + furniture.STRAP, 0.61)
+LAMPS = (-0.6, 6.0, 13.5, 20.8, 28.6, 34.3, 38.2, 44.5, 49.3, 53.6)
 
 # what stands beside the furniture for scale, of props/instruments: (kind, pos, facing)
 SCOPE = (-1.8, 0.0, 2.2)        # trained west, its eyepiece towards the benches
-STAR_GLOBE = (47.8, 0.0, 1.4)
+STAR_GLOBE = (49.3, 0.0, 1.4)
 BESIDE = (
     ("tripod_scope", SCOPE, "west"),
     ("calc_machine", (DESK[0] + 0.36, furniture.TOP["writing_desk"], DESK[2]), "south"),
@@ -107,7 +111,7 @@ def build():
     shelf_front = FACE + 1.0
     n += place(c, "library_ladder", (LADDER_X, 0.0, shelf_front))
     n += furniture.rail(c, (CASE_X[0] + 0.5, 0.0, shelf_front), CASE_X[1] - CASE_X[0] + 1)
-    n += place(c, "display_case", CASE)
+    n += place(c, "display_case_scope", CASE)
     n += place(c, "display_table", TABLE)
     for kind, pos in SHOWN:
         n += place(c, kind, pos)
@@ -162,7 +166,11 @@ def shots():
     near("drafting_side", DRAFT, 0.9, back=0.8, side=2.6, eye=1.3)
     near("stool", STOOL, 0.4, back=1.4, side=-1.0, eye=1.4)
     near("library_ladder", (LADDER_X, 0.0, 1.0), 1.5, back=3.4, side=1.6, eye=1.6)
-    near("display_case", CASE, 0.8, back=1.9, side=1.0)
+    near("display_case", CASE, 0.9, back=1.9, side=1.0)
+    # the old telescope in it: from before the case, as near as one stands to read its ticket, and
+    # from the east side, which sees the tube nearly end-on
+    near("case_scope", CASE, 0.95, back=1.25, side=-0.25, eye=1.5)
+    near("case_scope_side", CASE, 0.95, back=0.35, side=1.45, eye=1.45)
     near("display_table", TABLE, 0.6, back=2.0, side=-1.1)
     near("plate_box", PLATE_BOX, 0.55, back=1.5, side=0.7, eye=1.3)
     # the two tables with what they show: as the hall's visitor comes up to them, then each from
@@ -177,6 +185,7 @@ def shots():
     # cabinets and the globe on one of them, the machine on the desk; the star globe and the tables
     shot("scale_terrace", (0.9, S.EYE, 6.0), (0.6, 0.9, 2.0))
     shot("scale_study", (16.6, S.EYE, 3.6), (16.8, 1.4, 0.3))
-    # its left edge passes between the empty table and the first of the two that are shown
-    shot("scale_hall", (45.23, S.EYE, 4.7), (45.23, 0.8, 0.9))
+    # its edges pass between the empty table and the first of the two that are shown, and between
+    # the star globe and the plate boxes
+    shot("scale_hall", (46.6, S.EYE, 4.7), (46.6, 0.8, 0.9))
     return out
