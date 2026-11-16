@@ -231,6 +231,7 @@ def shots():
     shot("west_door", (face + 4.6, 2.0, WEST_DOOR + 4.1), (face - 0.6, 1.9, WEST_DOOR + 0.1))
     shot("ladder", (face + 8.0, 4.6, LADDER_Z + 0.5), (face, 4.6, LADDER_Z + 0.5))
     shot("ladder_up", (face + 2.4, 1.7, LADDER_Z + 2.6), (face + 0.4, 6.2, LADDER_Z + 0.5))
+    shot("ladder_head", (face + 2.2, YARD_TOP + 2.1, LADDER_Z + 3.0), (face - 0.1, YARD_TOP + 1.0, LADDER_Z + 0.5))
     shot("railing", (RAIL_X[1], 1.6, RAIL_Z + 4.5), (RAIL_X[1], 0.8, RAIL_Z + 0.5))
     shot("vent", (FLOOR_X + 3.0, 1.5, COWL_Z + 2.4), (FLOOR_X + 0.5, 0.9, COWL_Z + 0.5))
     shot("grate", (FLOOR_X + 2.2, 1.9, GRATE_Z + 2.2), (FLOOR_X + 0.5, 0.1, GRATE_Z + 0.5))
