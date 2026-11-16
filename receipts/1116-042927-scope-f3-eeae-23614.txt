@@ -1,0 +1,54 @@
+a0job 1116-042927-scope-f3-eeae-23614: cursor/c164-scope-f3-eeae @ 553969ad on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.23 0.48 1.01, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    0s] ready. Python: /agent/realms-study/.venv/bin/python
+---- mkdir -p renders/_wip; (cd build && python -m scenes.obs.machines.scope); echo "SELF=$?"; python tools/check.py --scene obs_mach_refractor > renders/_wip/scope-check.txt 2>&1; echo "CHECK=$?"; tail -n 48 renders/_wip/scope-check.txt --
+version a: the axes cross at (4.5, 23.0, 0.5), the tube 1.495 off the polar axis, looking 41.05 degrees up due west
+  eyepiece (10.103, 19.703, 1.4)  objective (-1.209, 29.554, 1.4)  observer (10.198, 18.0, 1.4)
+  sweep: centre (4.5, 23.0, 0.5), radius 9.0; V8 from (12.7, 19.62, -0.7) at (0.0, 25.2, 0.9)
+  lamp at (9.853, 20.023, 0.78), light source of level 4, its peep-hole 2.8 by 2.5 screen pixels in V8 (720 high)
+  5 display entities, 808 boxes
+  no face stands between two axes of its model: the game lights each the same way every time
+  the lamp's glass is seen from the west and from nowhere else
+  furthest corner 8.95 from the crossing
+  pier_a: x 2.25..6.75, y 18.00..23.03, z -1.91..2.99
+  18 barrier cells inside the pier's iron: x 3..5, y 18..19, z -1..1
+  counterweight: x 2.78..4.16, y from 21.12 (from 21.10 at the low end of the swing), z -1.38..0.01
+  turning about the polar axis the mount clears all that stands still
+  lowest corner east of the railing: y 19.58, 19.54 at the low end of the swing (a standing eye is at 19.62)
+  the mount swings 1.2 degrees to either side in 400 ticks: the eyepiece goes 0.090 blocks across the floor (east +0.034, south +0.083) and +0.083 up the way the sky goes, and as far the other way; the tube stays 0.57 inside the slit's edge
+version b: the axes cross at (4.5, 23.4, 0.5), the tube 0.000 off the polar axis, looking 41.05 degrees up due west
+  eyepiece (8.648, 19.788, 0.5)  objective (-2.664, 29.639, 0.5)  observer (8.841, 18.0, 0.5)
+  sweep: centre (4.5, 23.4, 0.5), radius 9.6; V8 from (12.7, 19.62, 2.6) at (0.0, 25.2, 0.9)
+  lamp at (8.398, 20.108, 1.12), light source of level 4, its peep-hole 1.7 by 1.7 screen pixels in V8 (720 high)
+  5 display entities, 759 boxes
+  no face stands between two axes of its model: the game lights each the same way every time
+  the lamp's glass is seen from the west and from nowhere else
+  furthest corner 9.55 from the crossing
+  piers_b: x 2.00..7.00, y 18.00..25.75, z -2.00..3.00
+  turning about the polar axis the mount clears all that stands still
+  lowest corner east of the railing: y 19.70, 19.67 at the low end of the swing (a standing eye is at 19.62)
+  the mount swings 1.2 degrees to either side in 400 ticks: the eyepiece goes 0.081 blocks across the floor (east +0.053, south +0.062) and +0.062 up the way the sky goes, and as far the other way; the tube stays 1.30 inside the slit's edge
+the version placed: a; brightness (sky, block) (10, 7)
+SELF=0
+CHECK=0
+check obs_mach_refractor at 553969a
+[PASS] regen     9552 blocks, 10 entities, 9 models, 715 resource-pack files, 28 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.0 s)
+[PASS] conflicts the scene writes 714 files, no file written twice, the folders and the prefix of machines are kept (14 packages run alone)
+[PASS] strays    138 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      547 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    21 kinds of block placed, 18 barrier cells (x 3..5, y 18..19, z -1..1), all in the occupancy table
+[PASS] flatwall  no wall face runs flat over more than 5x5
+[PASS] entities  10 display entities
+[PASS] views     26 shots, most display entities in view: 10 (north_a), limit 600; counted without what walls hide; the game draws up to 10 (v8_a): a display entity without width and height is drawn outside the view too
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    8 parts and 0 points on 2 chains, 18 function files; 8 commands in the busiest tick (limit 40), 0.6 a tick on average (limit 10)
+                 chain of 32 ticks: 4 functions, 14 commands a cycle, starts 1 ticks after start
+                 chain of 400 ticks: 8 functions, 57 commands a cycle, starts 2 ticks after start
+result: PASS (0 failed, 0 with warnings)
+==== NODEJOB RESULT ====
+exit=0 secs=5 host=cursor cores=4 head=553969ad commit=none pushed=no branch=cursor/c164-scope-f3-eeae files=0
+a0job: exit=0 secs=6
