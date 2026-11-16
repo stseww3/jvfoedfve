@@ -9,6 +9,7 @@ is to be brighter there.
 from artkit.canvas import Canvas
 
 from scenes.obs import materials, sky
+from scenes.obs.props import lamps
 from scenes.obs_int_batteryroom import box
 
 BIOME = "obs_blue"
@@ -24,7 +25,8 @@ def build():
 
 
 def build_models():
-    return {}
+    # what the sky line stands at the foot of the front (its uplights) is drawn here as it is there
+    return dict(lamps.models())
 
 
 def write_pack(pack_dir):
