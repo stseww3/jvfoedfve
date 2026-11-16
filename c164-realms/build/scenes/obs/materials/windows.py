@@ -14,9 +14,9 @@ Six windows, each a full glass block and a glass pane:
 
   the furnace window (A0's ruling, group g2 #37112; the two boiler bays of the power house only):
     WINDOW_FURNACE   the glow of the fires behind dirty glass: no curtain, no flame. Three blocks,
-                     one to a row from the sill up, painted as one sheet: about 0.38 along the
-                     sill, 0.29 in the second row, 0.18 in the third, whose head is near a dark
-                     window (whole window ~0.28; the median pixel is a brown of 0.27 to 0.32)
+                     one to a row from the sill up, painted as one sheet: about 0.50 along the
+                     sill, 0.36 in the second row, 0.18 in the third, whose head is near a dark
+                     window (whole window ~0.35; the median pixel is a brown of 0.32)
 
 The numbers are the grey of the whole picture, glazing bars included, on a scale of 0 to 1: what a
 lit window shows on the screen, since it is drawn at full emission (agreed with c177, group g2 #82,
