@@ -76,6 +76,7 @@ PROJECT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 
 import nodetrip  # noqa: E402
+import savelit  # noqa: E402
 from nodetrip import ROOT, WORK, CLOSING, Trip, end, git  # noqa: E402
 
 SERVER = os.path.join(ROOT, "server26")
@@ -385,6 +386,14 @@ def main():
         facts.append(f"# level.dat: world {level['name']}, game {level['version']}, game mode {level['mode']}, difficulty "
                      f"{level['difficulty']}, spawn {level['spawn']}, commands {'on' if level['commands'] else 'off'}, "
                      f"data packs {' '.join(level['packs'])}")
+        # the light the save brings with it: a source that was placed after the light was worked out
+        # is stored dark, and a chunk that says isLightOn is not lit again (tools/savelit.py)
+        try:
+            lit = savelit.line(savelit.survey(zip_path))
+        except Exception as exc:        # a chunk layout this game writes and the script does not read
+            lit = f"the save's stored light: not read ({type(exc).__name__}: {exc})"
+        trip.say(lit)
+        facts.append("# " + lit)
         mode, hard = level["mode"] or "adventure", level["difficulty"] or "peaceful"
         if not level["mode"] or not level["difficulty"]:
             trip.say(f"level.dat does not say the game mode or the difficulty in a way known here: opened as {mode}, {hard}")
