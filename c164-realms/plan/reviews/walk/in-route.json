@@ -35,9 +35,9 @@
   {"id": "E", "name": "the galleries of the main floor", "points": [
     {"at": [-3.5, 7, 0.5], "hop": true},
     {"at": [0.5, 7, 0.5], "node": "the cross gallery on the axis, before the pier"},
-    {"at": [0.5, 7, 5.5], "node": "the galleries' south-west corner"},
-    {"at": [8.0, 7, 5.5], "node": "before the chart room's door"},
-    {"at": [14.5, 7, 5.5], "node": "the south gallery's east end"},
+    {"at": [0.5, 7, 5.0], "node": "the galleries' south-west corner"},
+    {"at": [8.0, 7, 5.0], "node": "before the chart room's door"},
+    {"at": [14.5, 7, 5.0], "node": "the south gallery's east end"},
     {"at": [0.5, 7, -4.5], "node": "the galleries' north-west corner", "hop": true},
     {"at": [4.5, 7, -4.5], "node": "the north gallery at the bridge onto the ring stair"},
     {"at": [8.0, 7, -4.5], "node": "before the time room's door"},
@@ -58,12 +58,12 @@
   {"id": "G", "name": "the chart room (south wing)", "points": [
     {"at": [8.0, 7, 6.5], "node": "in the chart room's door", "hop": true},
     {"at": [8.0, 7, 9.5], "node": "inside the chart room's door"},
-    {"at": [3.5, 7, 9.5], "node": "the chart room's north-west corner"},
-    {"at": [3.5, 7, 24.5], "node": "the chart room's south-west corner"},
-    {"at": [12.5, 7, 24.5], "node": "the chart room's south-east corner"},
-    {"at": [12.5, 7, 9.5], "node": "the chart room's north-east corner"},
-    {"at": [8.0, 7, 13.5], "hop": true},
-    {"at": [8.0, 7, 21.5]}
+    {"at": [5.5, 7, 9.5], "node": "the chart room's north-west corner"},
+    {"at": [5.5, 7, 23.5], "node": "the chart room's south-west corner"},
+    {"at": [10.5, 7, 23.5], "node": "the chart room's south-east corner"},
+    {"at": [10.5, 7, 9.5], "node": "the chart room's north-east corner"},
+    {"at": [8.0, 7, 19.0], "views": "fb", "hop": true},
+    {"at": [8.0, 7, 22.0]}
   ]},
   {"id": "H", "name": "the ring stair", "points": [
     {"at": [4.5, 7, -3.5], "node": "the bridge onto the ring stair", "hop": true},
