@@ -175,8 +175,11 @@ VANILLA_CHAIN = "iron_chain"
 # wall behind it. Indoors only; an iron one would be a repaint for the materials line to ask for
 LADDER = "ladder"
 LIGHT = "light"                                                 # the invisible light source: light[level=N]
-# the collision of a closed door or gate that is made of models, and of nothing else (A0, 11-16 05:07,
-# under #457's fourth): in the plane of the leaf, two high, no wider than the leaf. Anywhere else a
+# the collision of a solid model that is seen, and of nothing else (A0, 11-16, under #457's fourth). A
+# closed door or gate made of models (05:07): in the plane of the leaf, two high, no wider than the
+# leaf. A large solid model a visitor would otherwise walk through (09:11; the first is the cable car
+# at the spawn platform): the cells the model fills, not one outside its outline, two high at most; a
+# gap a person could still squeeze through is closed with something that is seen. Anywhere else a
 # barrier is the wall nobody sees, which the map does not have; tools/check.py, blocks, holds it to this
 BARRIER = "barrier"
 
