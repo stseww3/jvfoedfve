@@ -260,8 +260,10 @@ def _pendant_a():
     m.tube("y", (0, 0), -14.0, -12.0, 2.0, BRASS)                       # holder
     K.switch_key(m, (-2.0, -13.0, 0), side=-1.0)
     m.tube("y", (0, 0), -15.0, -14.0, 3.5, BRASS_D)                     # gallery
-    _globe_top(m, "pendant_a")                                          # the globe: -24.25 to -14.25 (GLOBES)
-    m.tube("y", (0, 0), -24.75, -24.0, 1.0, BRASS)                      # the button that closes it below
+    # the globe: -24.25 to -14.25 (GLOBES). Nothing closes it below but its own glass: a brass
+    # button there, its underside at four tenths of its tone, was the bull's eye of a target
+    # for whoever stood under the lamp
+    _globe_top(m, "pendant_a")
     return m
 
 
