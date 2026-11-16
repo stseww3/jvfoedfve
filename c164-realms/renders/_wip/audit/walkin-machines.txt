@@ -1,0 +1,301 @@
+walkin obs, category machines: 189898 blocks, 771 entities, 179 of them the category's in 20 pieces; 150691 standing places reached from (88.5, -4.0, -32.5) (4316 only through one of 12 door blocks); 163 barrier cells in the scene (20 s)
+
+ 1. armillary: 8 entities (mach_armillary_a_tropic, mach_armillary_a_axis, mach_armillary_a_colure ...)
+    cells x 33..37, y 2..7, z -2..2   ->  WALKED INTO on foot: 1.75 m2 of standing ground, up to 87% of the body inside; no barrier
+    body: 12.0 m2 of ground under it, 5.2 high, its lowest point +0.00 from the floor at feet 2
+    beside it: walk 37
+    inside it: walk 2, hop 5 at x 35..36, feet 1..2, z -0.5..1.5; the outline there is 56% model; by floor: feet 2: 5, feet 1: 2
+    brushed:   walk 1, hop 4 at x 35..36, feet 1..2, z -0.5..1
+    a barrier fits in no cell: it would stand out of the model everywhere
+      floor at feet 2; x 32..38 left to right, z -3..3 top to bottom
+      |       |
+      |   -   |
+      |  +++  |
+      | --o - |
+      |  -+   |
+      |   -   |
+      |       |
+      floor at feet 1; x 32..38 left to right, z -3..3 top to bottom
+      |       |
+      |       |
+      |  .o.  |
+      |  .+.  |
+      |  .-.  |
+      |       |
+      |       |
+
+ 2. astro: 4 entities (mach_astro_axis, mach_astro_back, mach_astro_mount ...)
+    cells x 8..14, y 18..23, z 28..31   ->  WALKED INTO on foot: 5 m2 of standing ground, up to 100% of the body inside; no barrier
+    body: 8.3 m2 of ground under it, 5.7 high, its lowest point +0.00 from the floor at feet 18
+    beside it: walk 68, hop 15 (83 only through a door of blocks)
+    inside it: walk 20 (20 only through a door of blocks) at x 11.5..14, feet 18, z 29..31; the outline there is 81% model
+    brushed:   walk 9 (9 only through a door of blocks) at x 11..14.5, feet 18, z 29..31.5
+    a barrier fits in no cell: it would stand out of the model everywhere
+      floor at feet 18; x 7..15 left to right, z 27..32 top to bottom
+      |....   ..|
+      |... ... .|
+      |.. .o--. |
+      |....ooo- |
+      |.. ...-. |
+      |... ... .|
+
+ 3. board: 6 entities (mach_board_needle, mach_board_panel_main, mach_board_panel_north ...)
+    cells x 69..71, y -6..-2, z 26..33   ->  nobody can stand in it (barriers in it)
+    body: 6.7 m2 of ground under it, 3.8 high, its lowest point +1.00 from the floor at feet -6
+    beside it: walk 107
+    barriers:  14 cells (x 70, y -5..-4, z 26..32), 7 columns, up to 2 high; the model fills 30%..42% of a cell's volume; 14 of them stand out of the model sideways (the share of the cell's ground the model is over): 33%: (70,-5..-4,28) (70,-5..-4,30); 38%: (70,-5,27) (70,-5..-4,29) (70,-5,31); 39%: (70,-4,27) (70,-4,31); 42%: (70,-5,26) (70,-5,32); 44%: (70,-4,26) (70,-4,32)
+      floor at feet -6; x 68..72 left to right, z 25..34 top to bottom
+      | ....|
+      | .B..|
+      | .B..|
+      | .B..|
+      | .B..|
+      | .B..|
+      | .B..|
+      | .B..|
+      | ....|
+      | ....|
+
+ 4. boiler: 10 entities (mach_boiler_body, mach_boiler_dome, mach_boiler_saddle ...)
+    cells x 78..85, y -6..-1, z 22..30   ->  WALKED INTO on foot: 3.75 m2 of standing ground, up to 18% of the body inside; 60 barrier cells are in it and do not close it
+    body: 34.0 m2 of ground under it, 5.1 high, its lowest point -0.00 from the floor at feet -6
+    beside it: walk 129
+    inside it: walk 15 at x 84.5..85.5, feet -6, z 26.5..29; the outline there is 100% model
+    brushed:   walk 3 at x 78.5..78.5, feet -6, z 24.5..28.5
+    barriers:  60 cells (x 79..83, y -5..-4, z 23..29), 30 columns, up to 2 high; the model fills 60%..100% of a cell's volume; 8 of them stand out of the model sideways (the share of the cell's ground the model is over): 64%: (83,-5..-4,27) (83,-5..-4,29); 66%: (83,-5..-4,23) (83,-5..-4,25)
+    a barrier fits in no cell: it would stand out of the model everywhere (the cells it fills hold blocks already)
+      floor at feet -6; x 77..86 left to right, z 21..31 top to bottom
+      |          |
+      |.......   |
+      |..BBBBB   |
+      |.-BBBBB   |
+      |..BBBBB   |
+      |.......oo.|
+      |..BBBBBoo.|
+      |.-BBBBBo-.|
+      |..BBBBB...|
+      |..........|
+      |..........|
+
+ 5. cable: 25 entities (mach_cable_roller, mach_cable_rope, mach_cable_belt ...)
+    cells x 87..142, y -27..-1, z -50..-32   ->  WALKED INTO on foot: 12 m2 of standing ground, up to 94% of the body inside; 12 barrier cells are in it and do not close it
+    body: 31.0 m2 of ground under it, 26.0 high, its lowest point -22.79 from the floor at feet -4
+    beside it: walk 100, hop 3293, fall 124
+    inside it: walk 48 at x 87.5..90.5, feet -4, z -38.5..-32.5; the outline there is 85% model
+    brushed:   walk 9 at x 87.5..90.5, feet -4, z -36..-32
+    barriers:  12 cells (x 90..91, y -4..-3, z -34..-32), 6 columns, up to 2 high; the model fills 59%..100% of a cell's volume; 8 of them stand out of the model sideways (the share of the cell's ground the model is over): 92%: (90,-4..-3,-34) (90,-4..-3,-32) (91,-4..-3,-34) (91,-4..-3,-32)
+    a barrier fits in 4 cells, 2 columns, 2 of them two high (x 88..89, y -4..-3, z -38): (88,-4..-3,-38) (89,-4..-3,-38)
+    with those in: walk 33 still inside it at x 87.5..90.5, feet -4, z -38.5..-32.5 -- the slits beside
+      floor at feet -4; x 86..143 left to right, z -51..-31 top to bottom
+      |                                                          |
+      |                                                          |
+      |                                                          |
+      |                                                          |
+      |                                                          |
+      |                                                          |
+      |                                                          |
+      |                                                          |
+      |                                                          |
+      | .   .                                                    |
+      |                                                          |
+      |                                                          |
+      | oo-o                                                     |
+      | o@@o                                                     |
+      | oooo                                                     |
+      | -oo.                                                     |
+      |...o.                                                     |
+      |. ..BB   -                                                |
+      |...oBB+                                                   |
+      |. ..BB                                                    |
+      |.....                                                     |
+
+ 6. clock: 5 entities (mach_clock_master, mach_clock_master_dial, mach_clock_master_hand_h ...)
+    cells x 6, y 1..4, z -1..1   ->  WALKED INTO on foot: 0.75 m2 of standing ground, up to 95% of the body inside; no barrier
+    body: 1.5 m2 of ground under it, 4.0 high, its lowest point +0.00 from the floor at feet 1
+    beside it: walk 34
+    inside it: walk 3 at x 6.5..6.5, feet 1, z 0..1; the outline there is 59% model
+    brushed:   walk 5 at x 6.5..7, feet 1, z -0.5..1.5
+    a barrier fits in no cell: it would stand out of the model everywhere
+      floor at feet 1; x 5..7 left to right, z -2..2 top to bottom
+      |   |
+      | - |
+      | o |
+      | - |
+      |   |
+
+ 7. clock: 3 entities (mach_clock_face, mach_clock_hand_h, mach_clock_hand_m)
+    cells x 9..10, y 26..28, z -31..-29   ->  nobody gets to it
+    body: 2.8 m2 of ground under it, 2.8 high
+    beside it: none
+
+ 8. clock: 3 entities (mach_clock_face, mach_clock_hand_h, mach_clock_hand_m)
+    cells x 12..14, y 26..28, z -34..-33   ->  nobody gets to it
+    body: 2.8 m2 of ground under it, 2.8 high
+    beside it: none
+
+ 9. clock: 3 entities (mach_clock_face, mach_clock_hand_h, mach_clock_hand_m)
+    cells x 12..14, y 26..28, z -27..-26   ->  nobody gets to it
+    body: 2.8 m2 of ground under it, 2.8 high
+    beside it: none
+
+10. clock: 1 entities (mach_clock_ball)
+    cells x 12..14, y 46..48, z -31..-29   ->  nobody gets to it
+    body: 5.1 m2 of ground under it, 2.9 high
+    beside it: none
+
+11. clock: 3 entities (mach_clock_face, mach_clock_hand_h, mach_clock_hand_m)
+    cells x 16..17, y 26..28, z -31..-29   ->  nobody gets to it
+    body: 2.8 m2 of ground under it, 2.7 high
+    beside it: none
+
+12. dome: 36 entities (mach_dome_seg, mach_dome_weight, mach_dome_bar ...)
+    cells x -9..15, y 18..37, z -11..11   ->  WALKED INTO on foot: 1 m2 of standing ground, up to 65% of the body inside; 1 barrier cells are in it and do not close it
+    body: 79.0 m2 of ground under it, 19.5 high, its lowest point -1.00 from the floor at feet 19
+    beside it: walk 1089, hop 183, fall 257 (373 only through a door of blocks)
+    inside it: hop 4 at x -0.5..0, feet 19, z -8.5..-8; the outline there is 24% model
+    brushed:   walk 3 at x -5.5..0.5, feet 18, z -8.5..0.5
+    barriers:  1 cells (x -1, y 18, z -9), 1 columns, up to 1 high; the model fills 39%..39% of a cell's volume; 1 of them stand out of the model sideways (the share of the cell's ground the model is over): 42%: (-1,18,-9)
+    a barrier fits in no cell: it would stand out of the model everywhere
+      floor at feet 19; x -10..16 left to right, z -12..12 top to bottom
+      |                           |
+      |                           |
+      |                           |
+      |         --                |
+      |                           |
+      |                           |
+      |                           |
+      |                           |
+      |          ...  ....        |
+      |          .       .        |
+      |          .       .        |
+      |          .       .        |
+      |    -     .       .        |
+      |          .       .        |
+      |          .       .        |
+      |          .       .        |
+      |          .........        |
+      |                           |
+      |                           |
+      |                           |
+      |                           |
+      |                           |
+      |                           |
+      |                           |
+      |                           |
+
+13. engine: 13 entities (mach_engine_armature, mach_engine_bed, mach_engine_belt ...)
+    cells x 70..86, y -8..-3, z 34..38   ->  WALKED INTO on foot: 10 m2 of standing ground, up to 96% of the body inside; 34 barrier cells are in it and do not close it
+    body: 26.8 m2 of ground under it, 5.1 high, its lowest point -1.20 from the floor at feet -6
+    beside it: walk 279, hop 200
+    inside it: hop 40 at x 71.5..85, feet -8..-4, z 35..38; the outline there is 58% model; by floor: feet -6: 16, feet -7: 10, feet -4: 9, feet -8: 5
+    brushed:   hop 33 at x 71..85.5, feet -6..-4, z 35..38
+    barriers:  34 cells (x 71..85, y -6..-5, z 34..38), 17 columns, up to 2 high; the model fills 21%..93% of a cell's volume; 31 of them stand out of the model sideways (the share of the cell's ground the model is over): 34%: (80,-5,34) (80,-5,35); 36%: (72,-5,38); 38%: (71,-5,38) (81,-5,34) (81,-5,35); 48%: (82,-5,34); 50%: (77,-5,37); 55%: (82,-5,35); 56%: (80,-6,34); 62%: (83,-5,34); 66%: (84,-5,34); 70%: (71,-5,37) (72,-5,37) (85,-5,34); 75%: (77,-6,37) (80,-6,35) (81,-6,34) (81,-6,35) (82,-6,34) (83,-6,34) (84,-6,34) (85,-6,35); 77%: (85,-6,34); 78%: (82,-6,35) (83,-6,35); 84%: (83,-5,35) (85,-5,35); 88%: (71,-6,38) (72,-6,38); 91%: (84,-6,35)
+    a barrier fits in no cell: it would stand out of the model everywhere
+      floor at feet -6; x 69..87 left to right, z 33..39 top to bottom
+      |......            .|
+      |...... ....BBBBBB .|
+      |.      -oooBBBBBB .|
+      |. o++++++++-----. .|
+      |.-BB-   B         .|
+      |.-BB-..............|
+      |...................|
+      floor at feet -7; x 69..87 left to right, z 33..39 top to bottom
+      |                   |
+      |           BBBBBB  |
+      |        +++BBBBBB  |
+      |  +oooo+++o        |
+      | -BB-   B          |
+      | -BB-              |
+      |                   |
+
+14. mast: 20 entities (mach_mast_guy, mach_mast_insulator, mach_mast_segment ...)
+    cells x 19..27, y 1..61, z -44..-36   ->  nobody can stand in it
+    body: 10.1 m2 of ground under it, 60.2 high, its lowest point +1.79 from the floor at feet 0
+    beside it: walk 349, hop 52, fall 15 (15 only through a door of blocks)
+    brushed:   hop 4 at x 19.5..27.5, feet 2, z -43.5..-35.5
+
+15. meridian: 6 entities (mach_meridian_circle, mach_meridian_pier, mach_meridian_lamp ...)
+    cells x 32..37, y 0..3, z -32..-29   ->  WALKED INTO on foot: 2.25 m2 of standing ground, up to 39% of the body inside; 4 barrier cells are in it and do not close it
+    body: 7.3 m2 of ground under it, 3.5 high, its lowest point +0.00 from the floor at feet 0
+    beside it: walk 108
+    inside it: walk 9 at x 34.5..36.5, feet 0, z -29.5..-28.5; the outline there is 91% model
+    brushed:   walk 8 at x 34.5..36, feet 0, z -30..-28
+    barriers:  4 cells (x 33..37, y 0..1, z -30), 2 columns, up to 2 high; the model fills 92%..100% of a cell's volume; none stands out of the model sideways
+    a barrier fits in no cell: it would stand out of the model everywhere (the cells it fills hold blocks already)
+      floor at feet 0; x 31..38 left to right, z -33..-28 top to bottom
+      | .......|
+      | .......|
+      | .......|
+      | .B-o-B.|
+      | ...o...|
+      | .......|
+
+16. orrery: 21 entities (mach_orrery_a_arm_earth, mach_orrery_a_arm_jupiter, mach_orrery_a_arm_mars ...)
+    cells x 9..13, y 6..13, z -2..2   ->  nobody can stand in it
+    body: 12.4 m2 of ground under it, 7.2 high, its lowest point -0.18 from the floor at feet 7
+    beside it: hop 30
+
+17. rec: 2 entities (mach_rec_tape, mach_rec_telegraph)
+    cells x 6, y 7..8, z -24..-23   ->  WALKED INTO on foot: 1 m2 of standing ground, up to 33% of the body inside; no barrier
+    body: 0.9 m2 of ground under it, 1.8 high, its lowest point -0.78 from the floor at feet 8
+    beside it: walk 25, hop 5
+    inside it: hop 4 at x 6..7, feet 8, z -23.5..-23; the outline there is 76% model
+    brushed:   hop 1 at x 6..6, feet 8, z -23..-23
+    a barrier fits in no cell: it would stand out of the model everywhere
+      floor at feet 8; x 5..7 left to right, z -25..-22 top to bottom
+      |   |
+      | o.|
+      |   |
+      |   |
+
+18. rec: 3 entities (mach_rec_drum, mach_rec_drum_frame, mach_rec_pen)
+    cells x 8..9, y 8, z -24   ->  WALKED INTO on foot: 1 m2 of standing ground, up to 43% of the body inside; no barrier
+    body: 1.1 m2 of ground under it, 0.9 high, its lowest point -0.00 from the floor at feet 8
+    beside it: walk 20, hop 6
+    inside it: hop 4 at x 8.5..10, feet 8, z -23.5..-23.5; the outline there is 83% model
+    brushed:   hop 2 at x 9..9.5, feet 8, z -23..-23
+    a barrier fits in no cell: it would stand out of the model everywhere
+      floor at feet 8; x 7..10 left to right, z -25..-23 top to bottom
+      |    |
+      |.-o |
+      |    |
+
+19. rec: 2 entities (mach_rec_tube, mach_rec_tube_run)
+    cells x 13, y 8..12, z -10   ->  WALKED INTO on foot: 0.25 m2 of standing ground, up to 14% of the body inside; no barrier
+    body: 0.3 m2 of ground under it, 4.8 high, its lowest point +1.19 from the floor at feet 7
+    beside it: walk 20
+    inside it: walk 1 at x 13.5..13.5, feet 7, z -9.5..-9.5; the outline there is 100% model
+    a barrier fits in no cell: it would stand out of the model everywhere
+      floor at feet 7; x 12..14 left to right, z -11..-9 top to bottom
+      |.. |
+      |.- |
+      |.. |
+
+20. scope: 5 entities (mach_scope_axis_a, mach_scope_governor, mach_scope_lamp_a ...)
+    cells x -2..10, y 17..30, z -2..2   ->  WALKED INTO on foot: 21 m2 of standing ground, up to 100% of the body inside; no barrier
+    body: 33.5 m2 of ground under it, 12.3 high, its lowest point -0.00 from the floor at feet 18
+    beside it: walk 258, hop 55
+    inside it: hop 84 at x 2.5..8.5, feet 18..19, z -1.5..2.5; the outline there is 80% model; by floor: feet 18: 81, feet 19: 3
+    brushed:   walk 2, hop 14 at x 2.5..10, feet 18..19, z -2..3
+    a barrier fits in 16 cells, 9 columns, 7 of them two high (x 3..5, y 18..19, z -1..1): (3,18..19,-1) (3,18,0) (3,18..19,1) (4,18..19,-1) (4,18..19,0) (4,18..19,1) (5,18,-1) (5,18..19,0) (5,18..19,1)
+    with those in: hop 35 still inside it at x 2.5..8.5, feet 18..19, z -1.5..2.5 -- the slits beside
+      floor at feet 18; x -3..11 left to right, z -3..3 top to bottom
+      |...    ..   ...|
+      |...  ooooo  ...|
+      |...  o@@@o  ...|
+      |...  o@@@o  ...|
+      |...  o@@@o  ...|
+      |...  ooooo  ...|
+      |...         ...|
+      floor at feet 19; x -3..11 left to right, z -3..3 top to bottom
+      |   .       .   |
+      |   .  ---  .   |
+      |   .  21+  .   |
+      |   . -+21- --  |
+      |   . +222++o+  |
+      |   .  -+-  .   |
+      |   .       .   |
+
+barriers of the scene in no model of this category: 38 cells -- 2 at x 2, y 0..1, z 7; 10 at x 3..12, y 0, z 25; 14 at x 7..8, y 7, z 11..17; 6 at x 16, y 0..1, z -5..-3; 6 at x 16, y 0..1, z 3..5
+2 1 a barrier fits, two high or one  + the model takes half the cell or more  - a fifth or more  B a barrier stands there  . a person stands in the cell's middle beside the model  @ o he stands there inside it (@: where a barrier fits)
+result: 12 of 20 pieces can be walked into
