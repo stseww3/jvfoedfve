@@ -66,6 +66,12 @@ The brushes and the open switch   electric_spark, which lives two or three ticks
              where the dynamo's two brushes touch the commutator, two at the jaws of the switch
              that stands open (machines/board.OPEN_SWITCH). Bright particles: never more than
              two of them in a tick at one place.
+
+A flash lives a tenth of a second: a still of the real machine all but never has one. sparks(),
+flashes() and leak() therefore take a table and a cycle of the caller's, and the bench scene
+obs_mot_smoke_bench has them come every few ticks, from the same spots and the same way, for a
+picture that shows where one is and how bright. build() gives them none: the room has the tables
+here.
 """
 import importlib
 import math
@@ -270,16 +276,18 @@ def steam_flange(canvas, origin=(0, 0, 0)):
     return tuple(float(v) for v in spot)
 
 
-def leak(canvas, origin=(0, 0, 0)):
-    """Register the leak of the engine's steam flange. Returns the number of wisps in a BREATH."""
+def leak(canvas, origin=(0, 0, 0), wisps=None, cycle=None):
+    """Register the leak of the engine's steam flange. Returns the number of wisps in a cycle:
+    LEAK in a BREATH, unless a bench gives `wisps` (as LEAK) and a `cycle` of its own."""
     flange = steam_flange(canvas, origin)
     if flange is None:
         return 0
+    wisps = LEAK if wisps is None else tuple(wisps)
     start = tuple(flange[i] + LEAK_AT[i] for i in range(3))
-    for tick, speed, lean, drift in LEAK:
-        MK.puff(canvas, start, STEAM_PARTICLE, BREATH, at=(tick,), count=0, spread=way(lean, drift), speed=speed,
-                origin=origin)
-    return len(LEAK)
+    for tick, speed, lean, drift in wisps:
+        MK.puff(canvas, start, STEAM_PARTICLE, BREATH if cycle is None else cycle, at=(tick,), count=0,
+                spread=way(lean, drift), speed=speed, origin=origin)
+    return len(wisps)
 
 
 def open_fire_door(canvas, origin=(0, 0, 0)):
@@ -292,15 +300,18 @@ def open_fire_door(canvas, origin=(0, 0, 0)):
     return tuple(float(v) for v in doors[-1])
 
 
-def sparks(canvas, origin=(0, 0, 0)):
-    """Register the sparks of the fire door that stands ajar. Returns their number in a BREATH."""
+def sparks(canvas, origin=(0, 0, 0), table=None, cycle=None):
+    """Register the sparks of the fire door that stands ajar. Returns their number in a cycle:
+    SPARKS in a BREATH, unless a bench gives a `table` (as SPARKS) and a `cycle` of its own."""
     door = open_fire_door(canvas, origin)
     if door is None:
         return 0
+    table = SPARKS if table is None else tuple(table)
     start = tuple(door[i] + FIRE_GAP[i] for i in range(3))
-    for tick, out, speed in SPARKS:
-        MK.puff(canvas, start, SPARK_PARTICLE, BREATH, at=(tick,), count=0, spread=out, speed=speed, origin=origin)
-    return len(SPARKS)
+    for tick, out, speed in table:
+        MK.puff(canvas, start, SPARK_PARTICLE, BREATH if cycle is None else cycle, at=(tick,), count=0, spread=out,
+                speed=speed, origin=origin)
+    return len(table)
 
 
 def brush_tips(canvas, origin=(0, 0, 0)):
@@ -328,21 +339,25 @@ def open_switch(canvas, origin=(0, 0, 0)):
     return tuple(float(v) for v in spot)
 
 
-def flashes(canvas, origin=(0, 0, 0)):
+def flashes(canvas, origin=(0, 0, 0), brush=None, switch=None, cycle=None):
     """Register the flashes at the dynamo's brushes and at the open switch. Returns their number in
-    a BREATH."""
+    a cycle: BRUSH_FLASHES and SWITCH_FLASHES in a BREATH, unless a bench gives `brush` and `switch`
+    (as those two) and a `cycle` of its own."""
+    brush = BRUSH_FLASHES if brush is None else tuple(brush)
+    switch = SWITCH_FLASHES if switch is None else tuple(switch)
+    cycle = BREATH if cycle is None else cycle
     n = 0
     tips = brush_tips(canvas, origin)
     if tips is not None:
-        for tick, brush in BRUSH_FLASHES:
-            MK.puff(canvas, tips[0 if brush > 0 else 1], FLASH_PARTICLE, BREATH, at=(tick,), count=FLASH,
+        for tick, which in brush:
+            MK.puff(canvas, tips[0 if which > 0 else 1], FLASH_PARTICLE, cycle, at=(tick,), count=FLASH,
                     spread=BRUSH_SCATTER, speed=FLASH_SPEED, origin=origin)
-        n += len(BRUSH_FLASHES)
+        n += len(brush)
     jaws = open_switch(canvas, origin)
-    if jaws is not None:
-        MK.puff(canvas, jaws, FLASH_PARTICLE, BREATH, at=SWITCH_FLASHES, count=FLASH, spread=SWITCH_SCATTER,
+    if jaws is not None and switch:
+        MK.puff(canvas, jaws, FLASH_PARTICLE, cycle, at=switch, count=FLASH, spread=SWITCH_SCATTER,
                 speed=FLASH_SPEED, origin=origin)
-        n += len(SWITCH_FLASHES)
+        n += len(switch)
     return n
 
 
