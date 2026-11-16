@@ -15,8 +15,11 @@ white dials on slate. What glows is small and third in rank (plan 3.2; sky/light
 pilot lamps, amber, their brightest pixel under the telescope's red lamp; and the luminous marks of
 the two dials, the only green in the room. Nothing on it is red.
 
+The hands of the two meters are pieces of their own (NEEDLES) and tremble on their pivots: the
+board is live.
+
     models()                -> {name: Model}
-    place(canvas, origin)   -> the number of display entities (one)
+    place(canvas, origin)   -> the number of display entities (three: the board and the two hands)
     GLOW                    -> the middle of each lit pilot lamp, scene coordinates in blocks (no origin)
 """
 import functools
@@ -65,6 +68,9 @@ INK = P.RAMPS["iron"][1]
 FACE, FACE_D = P.RAMPS["porcelain"][3], P.RAMPS["porcelain"][2]
 MARK = P.RAMPS["iron"][5]
 LUME = P.RAMPS["phosphor"][2]
+# the light the luminous marks hold of themselves, as on the dials of props/instruments: at 15 they
+# were as bright as the pilot lamps beside them and read as small green lamps in the real client
+LUME_LEVEL = 8
 AMBER, AMBER_D = P.RAMPS["glow"][1], P.RAMPS["glow"][0]
 OUT, OUT_D = P.RAMPS["brass"][1], P.RAMPS["brass"][0]
 DIAL_COLOURS = dict(c=FACE, d=FACE_D, k=INK, m=MARK, h=P.RAMPS["iron"][0], b=P.RAMPS["brass"][3], g=LUME)
@@ -87,6 +93,12 @@ PIVOT = -2.0                                    # the hand's pivot, under the di
 # degrees from upright (to the right) and the length of each hand: the voltmeter's stands two thirds
 # up its scale, the ammeter's lies near the foot of its own -- the motors are at rest
 VOLTS, AMPS = (28.0, 5.6), (-52.0, 5.0)
+# The two hands are pieces of their own and tremble (round 2: whatever can move does), in the beats of
+# the hands on the power house's board (machines/board), whose mains these hang on: the voltmeter's
+# slowly and little, the ammeter's quicker and wider -- the dome's motor is at rest, but its regulator
+# hunts. name: (the meter's middle x, its hand, degrees to either side, ticks there and back)
+NEEDLES = {"volts": (-METER[0], VOLTS, 1.5, 130), "amps": (METER[0], AMPS, 3.0, 90)}
+HAND_Z = SLAB_Z + 2.0                           # the plane the hands turn in
 # the maker's plate: two lines of engraving
 MAKER = [
     "bbbbbbbbbb",
@@ -101,9 +113,10 @@ def _sprite(name, rows, **colours):
     return Sprite(PREFIX + "board_" + name, rows, colours)
 
 
-def _meter(m, x, y, hand):
+def _meter(m, x, y):
     """A round meter: a brass case on the slab, a bezel, the painted dial, in front of it a plate
-    with only its luminous marks, which glows, and the hand."""
+    with only its luminous marks, which glows, and the cap on the pivot of its hand. The hand is
+    _needle()'s."""
     z = SLAB_Z
     m.tube("z", (x, y), z, z + 1.25, 6.0, K.BRASS_D, sides=16, cap=K.flat("brass", 1))
     m.ring("z", (x, y, z + 1.75), 5.0, 1.5, 1.0, K.BRASS, sides=16)
@@ -111,11 +124,18 @@ def _meter(m, x, y, hand):
           faces={"s": _sprite("dial", DIAL, **DIAL_COLOURS)})
     m.box((x - 4.5, y - 4.5, z + 1.75), (x + 4.5, y + 4.5, z + 1.85), K.flat("phosphor", 2), skip="nudew",
           faces={"s": _sprite("dial_lume", ["".join(ch if ch == "g" else "." for ch in row) for row in DIAL],
-                              g=LUME)}, emit=15, shade=False)
-    lean, length = math.radians(hand[0]), hand[1]
-    foot = (x, y + PIVOT, z + 2.0)
-    m.beam(foot, (x + length * math.sin(lean), y + PIVOT + length * math.cos(lean), z + 2.0), 0.25, 1.0, POINTER)
+                              g=LUME)}, emit=LUME_LEVEL, shade=False)
     m.box((x - 0.5, y + PIVOT - 0.5, z + 1.85), (x + 0.5, y + PIVOT + 0.5, z + 2.25), K.flat("brass", 4))
+
+
+def _needle(name):
+    """A meter's hand: a strip one pixel wide, leaning as it does at rest. Anchor: its pivot, in
+    the plane it turns in; it turns about the model's z, which looks out of the board."""
+    _, (lean, length), _, _ = NEEDLES[name]
+    m = M.Model(NAME + "_needle_" + name)
+    a = math.radians(lean)
+    m.beam((0.0, 0.0, 0.0), (length * math.sin(a), length * math.cos(a), 0.0), 0.25, 1.0, POINTER)
+    return m
 
 
 def _lamp(m, x, y, lit):
@@ -169,8 +189,8 @@ def _board():
     for x in (-w + BAR + 1.5, w - BAR - 1.5):                                            # the slab's bolts
         for y in (-h + BAR + 1.5, h - BAR - 1.5):
             m.box((x - 0.5, y - 0.5, SLAB_Z), (x + 0.5, y + 0.5, SLAB_Z + 0.5), BOLT)
-    _meter(m, -METER[0], METER[1], VOLTS)
-    _meter(m, METER[0], METER[1], AMPS)
+    for x, _hand, _tremble, _period in NEEDLES.values():
+        _meter(m, x, METER[1])
     for x, lit in zip(LAMPS, LIT):
         _lamp(m, x, LAMP_Y, lit)
     m.box((-5.0, 1.0, SLAB_Z), (5.0, 6.0, SLAB_Z + 0.5), PLATE, skip="n", faces={"s": _sprite(
@@ -185,7 +205,9 @@ def _board():
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    return {m.name: m for m in (_board(),)}
+    # settled (_kit.settle): the slanting flats of the meters' cases and of the lamps' collars stand
+    # exactly between two axes, and the game may light them one way on one meter and another on its twin
+    return {m.name: K.settle(m) for m in [_board()] + [_needle(name) for name in NEEDLES]}
 
 
 def models():
@@ -212,9 +234,19 @@ def cells():
 
 
 def place(canvas, origin=(0, 0, 0), brightness=BRIGHTNESS):
-    """Board up the lining behind the board and hang it there. Returns the number of display
-    entities."""
+    """Board up the lining behind the board, hang it there and set the two hands on their pivots,
+    each registered with the motion line as it is placed (while motion is not in the tree they
+    stand still, as they do in every offline picture). Returns the number of display entities."""
     for x, y, z in cells():
         canvas.set(origin[0] + x, origin[1] + y, origin[2] + z, LINING)
-    return K.put(canvas, _models()[NAME], MIDDLE, mount="wall", facing=FACING, origin=origin,
-                 brightness=brightness)
+    n = K.put(canvas, _models()[NAME], MIDDLE, mount="wall", facing=FACING, origin=origin, brightness=brightness)
+    try:
+        from ..motion import _kit as MK
+    except ImportError:
+        MK = None
+    for name, (x, _hand, tremble, period) in NEEDLES.items():
+        n += K.put(canvas, _models()[NAME + "_needle_" + name], _scene(x, METER[1] + PIVOT, HAND_Z), mount="wall",
+                   facing=FACING, origin=origin, brightness=brightness)
+        if MK is not None:
+            MK.swing(canvas, "z", tremble, period)
+    return n

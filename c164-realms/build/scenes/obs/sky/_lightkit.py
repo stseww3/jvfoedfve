@@ -210,6 +210,11 @@ STAIR = 8
 # rank, as the hall's own lamps beside them. A caged lamp two cells from where one walks leaves 6
 # at the head and 5 at the feet.
 WAY = 8
+# What a lamp of the ways may be raised to where 8 leaves the floor under the walk's line (5 at
+# the feet or at the head): under the top of the second rank, which is the pendants' and the
+# orrery's sun's (the director, #78649: the stair hall's lamps up to 11, as far as the line asks
+# and no further).
+WAY_TOP = 11
 # The low lamps on the piers where a way leaves the upper terrace: the top of the second rank, as
 # the pool under a street lamp. The lamp stands a cell and a half over the paving and the steps
 # fall away below it; at 10, the level of the lip's low lamps, the third row of steps is at 3.
@@ -579,7 +584,7 @@ def dress(canvas, on=True):
 
 # ---- a look at the result without drawing it -------------------------------------------------------
 _OPEN_SHAPES = ("_stairs", "_slab", "_wall", "_pane", "_bars", "_door", "_trapdoor", "_rod", "_chain",
-                "_lantern", "_fence", "_fence_gate", "_button", "_sign", "_carpet", "_torch")
+                "_lantern", "_fence", "_fence_gate", "_button", "_sign", "_carpet", "_torch", "ladder")
 
 
 def _stops_light(state):

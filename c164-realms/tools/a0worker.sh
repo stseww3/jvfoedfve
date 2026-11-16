@@ -1,29 +1,39 @@
 #!/usr/bin/env bash
 # The other end of tools/a0job.sh: the director's machine takes the jobs waiting on the branch
-# cursor/c164-jobs-a9f5, one at a time, oldest first, runs each through the tools/nodejob.sh of
-# the branch it names, and puts the receipt on the same branch. A gate (gate.sh, gatestack.sh,
-# checkall.py) takes ten minutes where a look takes one: the short jobs waiting behind a gate go
-# first, until the gate has waited ten minutes itself. Only the director starts this, on his own
+# cursor/c164-jobs-a9f5, oldest first, runs each through the tools/nodejob.sh of the branch it
+# names, and puts the receipt on the same branch. Only the director starts this, on his own
 # machine, in a tmux session:
 #
 #   bash tools/a0worker.sh            run until the file <state>/stop appears
 #
 # The job folder is /tmp/dais_jobs/c164a0, so nodejob.sh treats it as a node's: it takes the
 # branch as GitHub has it and throws local state away. State and the log are in /tmp/c164_a0/worker.
+#
+# Several of these may run side by side on the machine (11-16 12:15: the whole team's short checks
+# come here), each with a job folder and a state folder of its own:
+#
+#   C164_WORKER_JOB=/tmp/dais_jobs/c164a0b C164_WORKER_STATE=/tmp/c164_a0/worker-b \
+#     C164_WORKER_LOG=/tmp/c164_a0/worker/log C164_WORKER_TAG=b bash tools/a0worker.sh
+#
+# A job belongs to the worker whose mkdir made its claim in /tmp/c164_a0/claims; a long job (a gate,
+# every scene) takes every core, so only one of those runs at a time and the short ones go to the
+# other workers meanwhile.
 set -uo pipefail
 
 Q="cursor/c164-jobs-a9f5"
 SRC="${C164_SRC:-/agent/repos/c164-fable}"       # a working tree of the repository: the remote's address is read here
-JOB="/tmp/dais_jobs/c164a0"
+JOB="${C164_WORKER_JOB:-/tmp/dais_jobs/c164a0}"
 STATE="${C164_WORKER_STATE:-/tmp/c164_a0/worker}"
 ROOT="${MC_ROOT:-/agent/realms-study}"
+CLAIMS="${C164_WORKER_CLAIMS:-/tmp/c164_a0/claims}"
+TAG="${C164_WORKER_TAG:-a}"
 LIMIT=900       # a job's time here, unless it says --limit
 HARD=1800       # nothing runs longer than this here
-LONG_WAIT=600   # a long job lets the short ones pass until it has waited this long
 export GIT_TERMINAL_PROMPT=0
 
-mkdir -p "$STATE/done" /tmp/dais_jobs
-log() { echo "$(TZ=Asia/Shanghai date '+%m-%d %H:%M:%S') $*" >>"$STATE/log"; }
+mkdir -p "$STATE/done" "$CLAIMS" /tmp/dais_jobs
+LOGFILE="${C164_WORKER_LOG:-$STATE/log}"
+log() { echo "$(TZ=Asia/Shanghai date '+%m-%d %H:%M:%S') [$TAG] $*" >>"$LOGFILE"; }
 g() { git -C "$JOB" "$@"; }
 
 # The remote's address is kept without an access token. Git's own configuration on this machine
@@ -135,14 +145,28 @@ while :; do
     if [ "$f" = "$id" ] || ! [[ "$id" =~ ^[A-Za-z0-9._-]+$ ]]; then continue; fi
     if [ -e "$STATE/done/$id" ]; then continue; fi
     if grep -qxF "$id.txt" <<<"$have"; then : >"$STATE/done/$id"; continue; fi
+    if [ -d "$CLAIMS/$id" ]; then continue; fi
     todo+=("$id")
   done
   if [ ${#todo[@]} -eq 0 ]; then sleep 8; continue; fi
-  next="${todo[0]}"
-  if is_long "$next" "$tip" && [ "$(age "$next")" -lt "$LONG_WAIT" ]; then
-    for id in "${todo[@]:1}"; do
-      if ! is_long "$id" "$tip"; then next="$id"; break; fi
-    done
+  long_free=1
+  if [ -d "$CLAIMS/_long" ]; then
+    holder="$(cat "$CLAIMS/_long/pid" 2>/dev/null)"
+    if [ -n "$holder" ] && kill -0 "$holder" 2>/dev/null; then long_free=0; else rm -rf "$CLAIMS/_long"; fi
   fi
+  next=""; next_long=0
+  for id in "${todo[@]}"; do
+    if is_long "$id" "$tip"; then
+      if [ "$long_free" != 1 ]; then continue; fi
+      if ! mkdir "$CLAIMS/_long" 2>/dev/null; then long_free=0; continue; fi
+      echo $$ >"$CLAIMS/_long/pid"
+      if mkdir "$CLAIMS/$id" 2>/dev/null; then next="$id"; next_long=1; break; fi
+      rm -rf "$CLAIMS/_long"
+    elif mkdir "$CLAIMS/$id" 2>/dev/null; then
+      next="$id"; break
+    fi
+  done
+  if [ -z "$next" ]; then sleep 5; continue; fi
   run_job "$next" "$tip"
+  if [ "$next_long" = 1 ]; then rm -rf "$CLAIMS/_long"; fi
 done
