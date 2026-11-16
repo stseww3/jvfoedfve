@@ -7,7 +7,9 @@ the vanilla moon stands in the comet's place, and the look carried by the resour
 shaders sky/_shaders.py writes from mood.LOOKS.
 
 The pictures are four of the board's views, to be laid beside the board's own from `obs` under the
-registry look: V1 (the arrival), V2 (the axis), V4 (the entrance) and V12 (from above).
+registry look: V1 (the arrival), V2 (the axis), V4 (the entrance) and V12 (from above). Two more
+look out over the cloud sea from where people stand, west into the afterglow and east away from
+it: where the blocks end (160 away) nothing may be seen to end.
 """
 import os
 import sys
@@ -42,4 +44,15 @@ def shots():
         sys.path.insert(0, tools)
     import boardshots
     keys = {name: key for name, _, key, _ in boardshots.VIEWS}
-    return [dict(shot, time=look.LOCK_TICK) for shot, _, _ in boardshots.views() if keys[shot["name"]] in VIEWS]
+    out = [dict(shot, time=look.LOCK_TICK) for shot, _, _ in boardshots.views() if keys[shot["name"]] in VIEWS]
+    west = obs_skeleton().SUNSET_PLATFORM["centre"]
+    out.append(dict(name="sea_west", pos=[west[0] - 18.5, 1.62, west[1] + 0.5], look_at=[west[0] - 180.0, -16.0, west[1] + 12.0],
+                    time=look.LOCK_TICK))
+    out.append(dict(name="sea_east", pos=[obs_skeleton().LOWER_PLATFORM[2] - 1.5, obs_skeleton().LOWER_GROUND + 1.62, 0.5], look_at=[obs_skeleton().LOWER_PLATFORM[2] + 170.0, -24.0, 24.0],
+                    time=look.LOCK_TICK))
+    return out
+
+
+def obs_skeleton():
+    from scenes.obs.common import skeleton
+    return skeleton

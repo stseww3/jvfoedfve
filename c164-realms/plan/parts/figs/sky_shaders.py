@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 """Checks of the shaders that carry the look (build/scenes/obs/sky/_shaders.py; card sky/safe-look).
 
-    python plan/parts/figs/sky_shaders.py [--glslc <glslc or a wrapper>] [--keep <dir>]
-        [--panorama <png>] [--camera-y 232] [--look blue]
+    python plan/parts/figs/sky_shaders.py [--glslc <glslc or glslang command>] [--keep <dir>]
+        [--panorama <png>] [--camera-y 201.62] [--look blue]
 
 1. Writing the files proves that every patch still finds its place in this game's own text.
 2. The arithmetic, on the numpy twin: the closed form of the afterglow fan against the fan's mesh
    as SkyRenderer builds it; the zenith and the horizon are the look's; sky, far sea and what
    things fade to meet at the horizon; a block of the cloud sea shows the colour of the painted
    sea behind it; how much fog lies on the front in V1 and on the building in V12.
-3. With a glslc or a glslang (shaderc is the game's own compiler and glslang its front end;
-   --glslc or C164_GLSLC, else skipped with a note; plan/parts/figs/sky_glslc.sh finds or fetches
-   one): every pipeline's pair of shaders under its defines with our files in place. Ours has to
+3. Compiled as the game compiles: with the game's own build of shaderc, fetched from Mojang like
+   the client jar (sky_shaderc.py), or with a glslc or glslang command (--glslc, C164_GLSLC);
+   skipped with a note when neither is to be had. Every pipeline's pair of shaders under its
+   defines with our files in place, with and without the macros the device adds. Ours has to
    compile wherever the game's own text compiles, and every fragment input needs a vertex output
    of the same type at its location (the game refuses the pipeline otherwise). The pipelines are
    the table read off RenderPipelines of 26.3 (PAIRS); the three passes of the game's transparency
@@ -36,6 +37,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PROJECT = os.path.normpath(os.path.join(HERE, "..", "..", ".."))
 sys.path.insert(0, os.path.join(PROJECT, "build"))
 sys.path.insert(0, os.path.join(PROJECT, "tools"))
+sys.path.insert(0, HERE)
 
 from scenes.obs.sky import _shaders as S  # noqa: E402
 from scenes.obs.sky import mood  # noqa: E402
@@ -205,6 +207,20 @@ def arithmetic(twin, camera_y):
     good = worst < 0.5 / 255.0
     ok &= good
     print(f"[{'ok' if good else 'FAIL'}] a sea block where the painted sea begins: largest difference {worst * 255.0:.2f} of 255")
+    # 4b. what lies on the sea is gone into the painted sea before the blocks end, whatever its own colour,
+    #     and what stands on the hilltop takes none of it
+    worst, rim = 0.0, mood.FOG_END
+    for height in (0.0, 4.0, mood.LEVEL_FULL):
+        for az in (0, 60, 180):
+            drop = eye - height
+            away = math.hypot(rim, drop)
+            d = np.array([[-math.cos(math.radians(az)) * rim / away, -drop / away, -math.sin(math.radians(az)) * rim / away]])
+            for colour in ((1.0, 1.0, 1.0), (0.0, 0.0, 0.0)):
+                worst = max(worst, float(np.max(np.abs(twin.apply(colour, away, d, camera_y) - twin.sky_at(d, camera_y)))))
+    good = worst < 0.5 / 255.0
+    ok &= good
+    print(f"[{'ok' if good else 'FAIL'}] white and black things on the sea (0, 4, {mood.LEVEL_FULL:.0f} above its top) {rim:.0f} blocks away on the map: "
+          f"largest difference to the painted sea {worst * 255.0:.2f} of 255 (the blocks end at 160)")
     # 5. how much fog lies on what (the director's marks, #68701: the front in V1 0.10 at most, the
     #    building in V12 0.25 at most)
     import boardshots
@@ -219,7 +235,9 @@ def arithmetic(twin, camera_y):
         ray = np.array(point, dtype=float) - pos
         dist = float(np.linalg.norm(ray))
         share = float(twin.fogged(dist, pos[1] + mood.GROUND_Y, ray[1] / dist))
-        before = min(1.0, max(0.0, (dist - mood.FOG_START) / (mood.FOG_END - mood.FOG_START)))
+        before = min(1.0, max(0.0, (dist - mood.FOG_START) / (mood.REGISTRY_FOG_END - mood.FOG_START)))
+        if float(np.max(mood.levelled(math.hypot(ray[0], ray[2]), pos[1] + mood.GROUND_Y + ray[1] - n["sea_y"]))) > 0.0:
+            good = False
         good = share <= most
         ok &= good
         print(f"[{'ok' if good else 'FAIL'}] {key}, {what}: {dist:5.1f} blocks from an eye {pos[1] + mood.GROUND_Y - n['sea_y']:5.1f} above the sea: "
@@ -245,11 +263,21 @@ def panorama(twin, path, camera_y, width=1440, height=480):
     print(f"panorama ({width} x {height}, west in the middle, from y {camera_y:.0f}) -> {path}")
 
 
-# ---- the compiler --------------------------------------------------------------------------------
-class Compiler:
-    def __init__(self, glslc, work):
-        self.glslc, self.work = glslc, work
+# ---- the compilers -------------------------------------------------------------------------------
+def _macros(macros, defines):
+    return {d: VALUES.get(d, "") for d in list(macros) + list(defines)}
+
+
+class Glslc:
+    """glslc (shaderc's command) or glslang (its front end) as a command."""
+
+    def __init__(self, command, work):
+        self.command, self.work = command, work
         self.cache = {}
+
+    def describe(self):
+        version = subprocess.run([self.command, "--version"], capture_output=True, text=True).stdout.strip().splitlines()
+        return version[0] if version else self.command
 
     def tree(self, name, texts):
         """A folder holding the shaders: core/<file> and include files under the names the game's
@@ -264,75 +292,103 @@ class Compiler:
                 fh.write(text)
         return root
 
-    def run(self, root, shader, defines, preprocess=False):
+    def run(self, root, shader, defines, preprocess=False, macros=MACROS):
         """(ok, output). shader is core/<name>.vsh or .fsh."""
-        key = (root, shader, tuple(defines), preprocess)
+        key = (root, shader, tuple(defines), preprocess, tuple(macros))
         if key not in self.cache:
             vertex = shader.endswith(".vsh")
-            macros = [f"-D{d}={VALUES[d]}" if d in VALUES else f"-D{d}" for d in list(MACROS) + list(defines)]
-            if os.path.basename(self.glslc).startswith("glslang"):
+            flags = [f"-D{k}={v}" if v else f"-D{k}" for k, v in _macros(macros, defines).items()]
+            if os.path.basename(self.command).startswith("glslang"):
                 # glslang's own command: the same front end without shaderc around it. It takes
                 # #include only when the extension is asked for, which shaderc does by itself.
-                cmd = [self.glslc, "--target-env", "vulkan1.2", "--auto-map-bindings", "-S", "vert" if vertex else "frag",
-                       "-P#extension GL_GOOGLE_include_directive : enable", f"-I{os.path.join(root, 'inc')}", *macros]
+                cmd = [self.command, "--target-env", "vulkan1.2", "--auto-map-bindings", "-S", "vert" if vertex else "frag",
+                       "-P#extension GL_GOOGLE_include_directive : enable", f"-I{os.path.join(root, 'inc')}", *flags]
                 cmd += ["-E"] if preprocess else ["-V", "-o", os.path.join(self.work, "out.spv")]
             else:
-                cmd = [self.glslc, *OPTIONS, f"-fshader-stage={'vertex' if vertex else 'fragment'}",
-                       "-I", os.path.join(root, "inc"), *macros]
+                cmd = [self.command, *OPTIONS, f"-fshader-stage={'vertex' if vertex else 'fragment'}",
+                       "-I", os.path.join(root, "inc"), *flags]
                 cmd += ["-E"] if preprocess else ["-o", os.path.join(self.work, "out.spv")]
             done = subprocess.run(cmd + [os.path.join(root, shader)], capture_output=True, text=True)
             good = done.returncode == 0
             self.cache[key] = (good, done.stdout if preprocess and good else done.stdout + done.stderr)
         return self.cache[key]
 
-    def interface(self, root, shader, defines):
-        """{location: (direction, type, flat)} of a shader's inputs and outputs."""
-        good, text = self.run(root, shader, defines, preprocess=True)
-        if not good:
-            return None
-        return {(io, int(loc)): (kind, bool(q and q.strip() == "flat")) for loc, q, io, kind, _ in INTERFACE.findall(text)}
+
+class Game:
+    """The game's own build of shaderc, called as the game calls it (sky_shaderc.py)."""
+
+    def __init__(self, library):
+        import sky_shaderc
+        self.shaderc = sky_shaderc.Shaderc(library)
+        self.cache = {}
+
+    def describe(self):
+        return f"the game's own shaderc ({self.shaderc.version()}), with the game's options"
+
+    def tree(self, name, texts):
+        return name, dict(texts)
+
+    def run(self, root, shader, defines, preprocess=False, macros=MACROS):
+        name, texts = root
+        key = (name, shader, tuple(defines), preprocess, tuple(macros))
+        if key not in self.cache:
+            def include(wanted):
+                space, _, rest = wanted.partition(":")
+                return texts.get("include/" + rest) if space == "minecraft" else None
+            good, out = self.shaderc.compile(texts[shader], shader.endswith(".fsh"), shader, _macros(macros, defines),
+                                             include, preprocess)
+            self.cache[key] = (good, out if isinstance(out, str) else "")
+        return self.cache[key]
 
 
-def compiled(glslc, look, keep):
-    ours = S.files(look)
-    names = sorted({f"core/{v}.vsh" for v, _, _ in pairs()} | {f"core/{f}.fsh" for _, f, _ in pairs()})
-    game = {name: S.vanilla(name) for name in names}
-    includes = {}
-    pending = list(game.values()) + list(ours.values())
+def interface(c, root, shader, defines, macros=MACROS):
+    """{(in or out, location): (type, flat)} of a shader's inputs and outputs."""
+    good, text = c.run(root, shader, defines, preprocess=True, macros=macros)
+    if not good:
+        return None
+    return {(io, int(loc)): (kind, bool(q and q.strip() == "flat")) for loc, q, io, kind, _ in INTERFACE.findall(text)}
+
+
+def with_includes(texts):
+    """texts and every file they include that is not among them, from the game."""
+    out = dict(texts)
+    pending = list(out.values())
     while pending:
         for inc in re.findall(r"#include\s*<minecraft:([\w.]+)>", pending.pop()):
-            if "include/" + inc not in includes:
-                includes["include/" + inc] = S.vanilla("include/" + inc)
-                pending.append(includes["include/" + inc])
-    game.update(includes)
+            if "include/" + inc not in out:
+                out["include/" + inc] = S.vanilla("include/" + inc)
+                pending.append(out["include/" + inc])
+    return out
+
+
+def compiled(c, look):
+    ours = S.files(look)
+    names = sorted({f"core/{v}.vsh" for v, _, _ in pairs()} | {f"core/{f}.fsh" for _, f, _ in pairs()})
+    game = with_includes({name: S.vanilla(name) for name in names})
+    mine = with_includes(dict(game, **ours))
     touched = set(ours) | {name for name, text in game.items() if "<minecraft:fog.glsl>" in text}
-    work = keep or tempfile.mkdtemp(prefix="c164_shaders_")
-    if keep:
-        shutil.rmtree(keep, ignore_errors=True)
-        os.makedirs(keep)
-    try:
-        c = Compiler(glslc, work)
-        before, after = c.tree("game", game), c.tree("ours", dict(game, **ours))
-        ok, done, skipped, failures = True, 0, [], []
-        for vsh, fsh, defines in pairs():
-            v, f = f"core/{vsh}.vsh", f"core/{fsh}.fsh"
-            if v not in touched and f not in touched:
-                continue
-            sets = [defines]
-            if "oit.glsl" in game[f] and "OIT" not in defines:
-                sets += [defines + OIT + extra for extra in OIT_PASSES]
-            for ds in sets:
-                label = f"{vsh} + {fsh} [{','.join(ds)}]"
-                if not (c.run(before, v, ds)[0] and c.run(before, f, ds)[0]):
+    before, after = c.tree("game", game), c.tree("ours", mine)
+    ok, done, skipped, failures = True, 0, [], []
+    for vsh, fsh, defines in pairs():
+        v, f = f"core/{vsh}.vsh", f"core/{fsh}.fsh"
+        if v not in touched and f not in touched:
+            continue
+        sets = [defines]
+        if "oit.glsl" in game[f] and "OIT" not in defines:
+            sets += [defines + OIT + extra for extra in OIT_PASSES]
+        for ds in sets:
+            for macros in (MACROS, ()):
+                label = f"{vsh} + {fsh} [{','.join(ds)}]{'' if macros else ' without the device macros'}"
+                if not (c.run(before, v, ds, macros=macros)[0] and c.run(before, f, ds, macros=macros)[0]):
                     skipped.append(label)           # not a combination the game's own text compiles under
                     continue
                 done += 1
                 for shader in (v, f):
-                    good, text = c.run(after, shader, ds)
+                    good, text = c.run(after, shader, ds, macros=macros)
                     if not good:
                         ok = False
                         failures.append(f"{label}: {shader} does not compile\n" + "\n".join("         " + line for line in text.strip().splitlines()[:12]))
-                out, into = c.interface(after, v, ds), c.interface(after, f, ds)
+                out, into = interface(c, after, v, ds, macros), interface(c, after, f, ds, macros)
                 if out is None or into is None:
                     continue
                 for (io, loc), (kind, flat) in sorted(into.items()):
@@ -345,27 +401,45 @@ def compiled(glslc, look, keep):
                     elif match != (kind, flat):
                         ok = False
                         failures.append(f"{label}: location {loc} is {match} in the vertex shader and {(kind, flat)} in the fragment shader")
-        version = subprocess.run([glslc, "--version"], capture_output=True, text=True).stdout.strip().splitlines()
-        print(f"[{'ok' if ok else 'FAIL'}] compiled with {version[0] if version else glslc}: {done} pipelines' pairs with our "
-              f"{len(ours)} files in place ({len(touched)} of the game's shaders are touched: they include fog.glsl or are replaced)")
-        for line in failures:
+    print(f"[{'ok' if ok else 'FAIL'}] compiled with {c.describe()}: {done} pipelines' pairs with our "
+          f"{len(ours)} files in place ({len(touched)} of the game's shaders are touched: they include fog.glsl or are replaced)")
+    seen = set()
+    for line in failures:
+        if line not in seen:
             print("  FAIL " + line)
-        if skipped:
-            print(f"       {len(skipped)} combinations the game's own text does not compile under here were left out "
-                  f"(the transparency passes' defines are guessed): {'; '.join(skipped[:6])}{' ...' if len(skipped) > 6 else ''}")
-        return ok
-    finally:
-        if not keep:
-            shutil.rmtree(work, ignore_errors=True)
+        seen.add(line)
+    if skipped:
+        print(f"       {len(skipped)} combinations the game's own text does not compile under here were left out "
+              f"(the transparency passes' defines are guessed): {'; '.join(skipped[:6])}{' ...' if len(skipped) > 6 else ''}")
+    return ok
+
+
+def compiler(args):
+    """(compiler, note): glslc when one is named, else the game's own shaderc, else nothing."""
+    if args.glslc:
+        work = args.keep or tempfile.mkdtemp(prefix="c164_shaders_")
+        if args.keep:
+            shutil.rmtree(args.keep, ignore_errors=True)
+            os.makedirs(args.keep)
+        return Glslc(args.glslc, work), None
+    try:
+        import json
+        import zipfile
+        import sky_shaderc
+        with zipfile.ZipFile(S.jar()) as z:
+            version = json.loads(z.read("version.json"))["id"]
+        return Game(sky_shaderc.library(version)), None
+    except Exception as exc:  # no compiler is a note, not a failure
+        return None, f"{type(exc).__name__}: {exc}"
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--look", default=mood.DEFAULT)
-    ap.add_argument("--glslc", default=os.environ.get("C164_GLSLC") or shutil.which("glslc"))
-    ap.add_argument("--keep", help="leave the two shader trees and the compiler's work here")
+    ap.add_argument("--glslc", default=os.environ.get("C164_GLSLC"), help="a glslc or glslang command instead of the game's own shaderc")
+    ap.add_argument("--keep", help="with --glslc: leave the two shader trees and the compiler's work here")
     ap.add_argument("--panorama")
-    ap.add_argument("--camera-y", type=float, default=float(mood.GROUND_Y) + 32.0)
+    ap.add_argument("--camera-y", type=float, default=float(mood.GROUND_Y) + 1.62, help="world y of the eye (default: on the terrace)")
     args = ap.parse_args()
 
     written = S.files(args.look)
@@ -373,11 +447,12 @@ def main():
           f"({', '.join(sorted(written))})")
     twin = S.Twin(args.look)
     ok = arithmetic(twin, args.camera_y)
-    if args.glslc:
-        ok &= compiled(args.glslc, args.look, args.keep)
+    c, note = compiler(args)
+    if c is not None:
+        ok &= compiled(c, args.look)
     else:
-        print("[--] no glslc here (C164_GLSLC, --glslc): nothing was compiled. The stage macros, the includes and "
-              "the interface between the stages are then only proved by the game")
+        print(f"[--] nothing was compiled: no --glslc, and the game's own shaderc is not to be had here ({note}). "
+              f"The stage macros, the includes and the interface between the stages are then only proved by the game")
     if args.panorama:
         panorama(twin, args.panorama, args.camera_y)
     print(f"result: {'PASS' if ok else 'FAIL'}")
