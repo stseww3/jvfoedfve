@@ -275,8 +275,9 @@ def reach_keys(cells, start, bounds):
     return {key_of(*W.point(node)) for node in W.World(cells, bounds).reach(start).kind}
 
 
-def look(piece, pts, kinds, door, barriers, cells):
-    """Everything the table says of one piece."""
+def look(piece, pts, kinds, door, mine, cells):
+    """Everything the table says of one piece; `mine` {cell: share of it inside the outline} are the
+    barriers of the scene that stand in this piece."""
     lo, hi = piece.lo, piece.hi
     near = ((pts[:, 0] >= lo[0] - BESIDE - W.HALF) & (pts[:, 0] <= hi[0] + BESIDE + W.HALF)
             & (pts[:, 2] >= lo[2] - BESIDE - W.HALF) & (pts[:, 2] <= hi[2] + BESIDE + W.HALF)
@@ -294,11 +295,8 @@ def look(piece, pts, kinds, door, barriers, cells):
     feet = [r[1] for r in (inside or rows)]
     out["floor"] = max(set(feet), key=feet.count) if feet else None
     clo, chi = piece.cells()
-    mine = sorted(c for c in barriers if all(clo[k] - 1 <= c[k] <= chi[k] + 1 for k in range(3)))
-    out["barriers"] = mine
-    out["barriers_out"] = [(c, share) for c, share in
-                           ((c, piece.within(c[0], c[0] + 1, c[2], c[2] + 1, c[1], c[1] + 1)[1]) for c in mine)
-                           if share < FULL]
+    out["barriers"] = sorted(mine)
+    out["barriers_out"] = sorted(((c, share) for c, share in mine.items() if share < FULL), key=lambda cs: (cs[1], cs[0]))
     # the floors people stand on inside it (else the one beside it), and where a barrier fits on each
     levels = {}
     for r in inside:
@@ -314,14 +312,18 @@ def look(piece, pts, kinds, door, barriers, cells):
                 if high:
                     full[(cx, base, cz)] = high
     out["full"] = full
-    # the cells a barrier would be put in: those of `full` that hold no block yet
-    put = set()
-    for (cx, base, cz), high in full.items():
-        for h in range(high):
-            c = (cx, base + h, cz)
-            if name_of(cells.get(c, "air")) in W.NOTHING:
-                put.add(c)
-    out["put"] = sorted(put) if inside else []
+    # the cells a barrier would be put in: those of `full` that hold no block yet, one run to the
+    # column, from the lowest floor people stand on (never more than two high)
+    put = {}
+    for (cx, base, cz), high in sorted(full.items(), key=lambda kv: kv[0][1]):
+        if (cx, cz) in put:
+            continue
+        run = [(cx, base + h, cz) for h in range(high)]
+        if any(name_of(cells.get(c, "air")) == "barrier" for c in run):
+            put[(cx, cz)] = []                      # the column has its barrier
+            continue
+        put[(cx, cz)] = [c for c in run if name_of(cells.get(c, "air")) in W.NOTHING]
+    out["put"] = sorted(c for run in put.values() for c in run) if inside else []
     out["sits"] = float(piece.lo[1] - out["floor"]) if out["floor"] is not None else None
     return out
 
@@ -343,6 +345,42 @@ def place_of(rows):
     xs, ys, zs = [r[0] for r in rows], [r[1] for r in rows], [r[2] for r in rows]
     return (f"x {min(xs):g}..{max(xs):g}, feet {min(ys):g}" + (f"..{max(ys):g}" if max(ys) > min(ys) else "")
             + f", z {min(zs):g}..{max(zs):g}")
+
+
+def runs_of(cells):
+    """How high the barriers of a piece stand: 'up to 2 high'."""
+    columns = {}
+    for x, y, z in cells:
+        columns.setdefault((x, z), []).append(y)
+    high = 0
+    for ys in columns.values():
+        ys = sorted(ys)
+        run = best = 1
+        for a, b in zip(ys, ys[1:]):
+            run = run + 1 if b == a + 1 else 1
+            best = max(best, run)
+        high = max(high, best)
+    return f"{len(columns)} columns, up to {high} high"
+
+
+def clusters_of(cells):
+    """Cells that touch (corners count), as lists."""
+    left, out = set(cells), []
+    while left:
+        todo = [left.pop()]
+        group = []
+        while todo:
+            c = todo.pop()
+            group.append(c)
+            for dx in (-1, 0, 1):
+                for dy in (-1, 0, 1):
+                    for dz in (-1, 0, 1):
+                        n = (c[0] + dx, c[1] + dy, c[2] + dz)
+                        if n in left:
+                            left.remove(n)
+                            todo.append(n)
+        out.append(sorted(group))
+    return sorted(out)
 
 
 def verdict(got):
@@ -447,7 +485,16 @@ def main():
     bounds = (m[0] - 40, m[2] - 40, m[3] + 40, m[5] + 40)
     pts, kinds, door, doors, opened = reach_table(canvas.b, start, bounds)
     barriers = {p for p, s in canvas.b.items() if name_of(s) == B.BARRIER}
-    looks = [look(piece, pts, kinds, door, barriers, canvas.b) for piece in pieces]
+    owned = [{} for _ in pieces]                    # a barrier is the piece's that most of it stands in
+    stray = []
+    for c in sorted(barriers):
+        shares = [piece.within(c[0], c[0] + 1, c[2], c[2] + 1, c[1], c[1] + 1)[1] for piece in pieces]
+        best = int(np.argmax(shares)) if shares else -1
+        if best >= 0 and shares[best] > 0.0:
+            owned[best][c] = shares[best]
+        else:
+            stray.append(c)
+    looks = [look(piece, pts, kinds, door, owned[i], canvas.b) for i, piece in enumerate(pieces)]
     closed = dict(opened)
     for got in looks:
         for c in got["put"]:
@@ -485,9 +532,11 @@ def main():
         if got["brush"]:
             say(f"    brushed:   {kinds_of(got['brush'])} at {place_of(got['brush'])}")
         if got["barriers"]:
-            say(f"    barriers:  {len(got['barriers'])} cells ({cells_span(got['barriers'])})"
-                + (f"; {len(got['barriers_out'])} of them stand out of the outline: "
-                   + ", ".join(f"{c} {share:.0%} inside" for c, share in got["barriers_out"][:6])
+            say(f"    barriers:  {len(got['barriers'])} cells ({cells_span(got['barriers'])}), "
+                f"{runs_of(got['barriers'])}"
+                + (f"; {len(got['barriers_out'])} of them stand out of the outline (the share of the cell inside it): "
+                   + " ".join(f"({c[0]},{c[1]},{c[2]}) {share:.0%}" for c, share in got["barriers_out"][:48])
+                   + (" ..." if len(got["barriers_out"]) > 48 else "")
                    if got["barriers_out"] else "; all within the outline"))
         if got["inside"] and got["put"]:
             put = got["put"]
@@ -510,6 +559,9 @@ def main():
                 for line in plan_of(piece, got, pts, kinds, floor):
                     say(line)
     say()
+    if stray:
+        say(f"barriers of the scene in no model of this category: {len(stray)} cells -- "
+            + "; ".join(f"{len(g)} at {cells_span(g)}" for g in clusters_of(stray)))
     if args.plans:
         say(LEGEND.strip())
     say(f"result: {walked} of {len(pieces)} pieces can be walked into")
