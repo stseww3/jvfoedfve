@@ -1,0 +1,190 @@
+{
+ "scene": "obs_mat_redirect",
+ "commit": "56a8377",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "WARN",
+   "summary": "3650 blocks, 0 entities, 0 models, 653 resource-pack files, 16 data-pack files, look: 1 biomes, 1 timelines (0.5 s)",
+   "details": [
+    "registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json"
+   ]
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 652 files, no file written twice, the folders and the prefix of materials are kept (7 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "124 pictures, every colour in the palette",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "519 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "86 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "WARN",
+   "summary": "105 kinds of block placed, 12 not in the occupancy table (add them to the table through S2, or use a block of the table)",
+   "details": [
+    "waxed_oxidized_copper_grate x6",
+    "waxed_oxidized_copper_bars x6",
+    "exposed_cut_copper x6",
+    "exposed_copper x6",
+    "waxed_oxidized_copper_chain x5",
+    "waxed_oxidized_lightning_rod x4",
+    "waxed_oxidized_copper_door x4",
+    "waxed_oxidized_copper_bulb x4",
+    "waxed_oxidized_copper_trapdoor x2",
+    "waxed_oxidized_copper_lantern x2",
+    "exposed_cut_copper_stairs x1",
+    "exposed_cut_copper_slab x1"
+   ]
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of materials: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "0 display entities",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "WARN",
+   "summary": "16 shots, most display entities in view: 0 (plates_a), limit 600; counted without what walls hide",
+   "details": [
+    "the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(materials.pack(d) or []) + list(sky.pack(d) or [])"
+   ],
+   "data": {
+    "shots": [
+     {
+      "name": "plates_a",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "plates_b",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "shapes_a",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "shapes_b",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "stone",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "windows_a",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "windows_b",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "panels",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "brass_a",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "brass_b",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "clouds",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "plates_treads",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "stone_treads",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "panels_side",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "windows_side",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "clouds_bank",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "nothing moves",
+   "details": []
+  }
+ ]
+}
