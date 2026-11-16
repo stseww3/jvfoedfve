@@ -47,7 +47,10 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, HERE)
+# The file is not in the assembly. Whoever measures his own branch takes it from the branch it lives
+# on and runs it from c164-realms/ (see the head of the list it writes): tools/ of the place it is
+# run from is then where walkreach.py is found.
+sys.path[:0] = [HERE, os.path.join(os.getcwd(), "tools")]
 import walkreach as W  # noqa: E402  (puts build/ on the path)
 
 from artkit import blocks as AB  # noqa: E402
@@ -56,6 +59,7 @@ from scenes.obs.common import blocks as B  # noqa: E402
 from scenes.obs.common import skeleton as S  # noqa: E402
 from scenes.obs.sky import _lightkit as L  # noqa: E402
 
+BRANCH = "cursor/c164-sound-lightaudit-f3-cbc6"     # where this file lives (the list says how to take it from there)
 ROUTES = ("plan/reviews/walk/in-route.json", "plan/reviews/walk/out-route.json")
 NEAR = 24.0             # a cell further than this from every route point is "off the routes"
 LEVELS = 3.0            # a block up or down counts as this many along, when the nearest point is looked for
@@ -305,6 +309,8 @@ def main():
     ap.add_argument("--start", action="append", default=[], help="x,y,z of one more place to start from (repeatable)")
     args = ap.parse_args()
     root = os.path.normpath(os.path.join(HERE, ".."))
+    if not os.path.isdir(os.path.join(root, "plan")):
+        root = os.getcwd()                          # run from c164-realms/ with the file somewhere else
     t0 = time.time()
     master = args.scene == "obs"
     canvas = obs.build() if master else importlib.import_module(f"scenes.{args.scene}").build()
@@ -517,6 +523,18 @@ def main():
                   f"整堆清掉的 {len(cleared)} 堆（见后面）。")
     if lost:
         md.append(f"- 路线上站不住人的点（没有从那里起算）：{len(lost)} 个，如 {'；'.join(lost[:4])}")
+    md += ["", "## 怎么自己量", "",
+           f"工具不在总装里，在分支 `{BRANCH}` 的 `c164-realms/tools/darkfloor.py`；不用提交进自己的分支，发任务时现取。"
+           "在自己的节点、自己的分支上（先把改动推上去）：", "",
+           "```",
+           f'bash c164-realms/tools/nodejob.sh --wip --always --tail 80 "git fetch -q origin {BRANCH} '
+           "&& git show FETCH_HEAD:c164-realms/tools/darkfloor.py > /tmp/darkfloor.py "
+           "&& git show FETCH_HEAD:c164-realms/tools/darkfloor_before.json > /tmp/darkfloor_before.json "
+           '&& python /tmp/darkfloor.py --head <自己的提交号> --before /tmp/darkfloor_before.json --out renders/_wip/light"',
+           "```", "",
+           "十几秒一趟。回执里有总数、各归属的格数和每段最大的一堆；整份清单（就是这个文件的样子）推到自己的 `<分支>-wip` 的 "
+           "`c164-realms/renders/_wip/light/`。「比上一版」比的是 sound 发出去的最近一版，所以自己那几堆少了多少一眼看得到。"
+           "只量不改：它不动场景里任何东西。"]
     md += ["", "## 按归属", "",
            "归属照 lights（c331）11-16 的分法（#74750、#75829、#76033）；房间里没点到的堆归房间主人，"
            "新开门的房间一律算路、归主人（cr2 #75753、#76117）；「未分」是还没人认的。", "",
