@@ -237,8 +237,8 @@ def _radiomast(c):
     """The radio mast north of the tower, as soon as machines/mast is in the tree: from V1 its red
     lamp stands close to the time ball and the comet, and the colour of the ball is chosen with the
     lamp in the picture (A0, cr2). Its stone foot is site/mastbase when that is in the tree; until
-    then a plain seat, four anchor blocks and a post, and at the tower the bracket the aerial hooks
-    on to. Returns the entity count."""
+    then a plain seat, four anchor blocks and a post. Nothing joins it to the tower: the mast hangs
+    no aerial (A0, 11-16). Returns the entity count."""
     if radiomast is None:
         return 0
     x0, z0, x1, _z1 = S.MAST_PAD["box"]
@@ -254,16 +254,6 @@ def _radiomast(c):
         px, py, pz = radiomast.LEAD_POST
         x, z = int(math.floor(px)), int(math.floor(pz))
         c.box(x, 0, z, x, int(math.ceil(py)) - 1, z, ROD)
-    hx, hy, hz = radiomast.TOWER_HOOK
-    x, y, z = int(math.floor(hx)), int(math.ceil(hy)) - 1, int(math.floor(hz))
-    if TX[0] <= x <= TX[1] and not TZ[0] <= z <= TZ[1]:
-        # off the north or the south face: a rod out of the wall, the hook at its end (main/tower)
-        for k in (range(z, TZ[0]) if z < TZ[0] else range(TZ[1] + 1, z + 1)):
-            c.set(x, y, k, st(B.IRON_ROD, facing="north"), keep=True)
-    else:
-        # off a corner or the east or west face: a row of bars under the hook
-        for k in (range(TX[1], x + 1) if x > TX[1] else range(x, TX[0] + 1)):
-            c.set(k, y, z, B.IRON_BARS, keep=True)
     return radiomast.build(c, (0, 0, 0))
 
 
