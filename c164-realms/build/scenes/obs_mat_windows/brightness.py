@@ -316,7 +316,7 @@ def read709():
 # with the fire up: never darker than the still picture, so the board's lines hold in every frame;
 # a flicker, not a flash, and no frame like the one before it.
 FLICKER_SWING = 0.08            # how far the glass of a frame may stand over the still picture's, in Rec.709
-FLICKER_LEAST = 4               # pixels of a block's glass that change from one frame to the next, at least,
+FLICKER_LEAST = 1               # pixels of a block's glass that change from one frame to the next, at least,
 #                                 in the two rows where the fire is (the third is soot: it may stand still)
 
 
