@@ -159,8 +159,12 @@ CLOCK_DIAL = (3, 3)
 IRON_LIGHT = (10, 13)
 # and the same for the boards of the vault's lining. Every board is shown in the least light a model
 # can have (interiors/_domeframe.boards), so with these the lining stays a step under the iron in
-# front of it everywhere, and both under the sky in the slit
+# front of it everywhere, and both under the sky in the slit. BOARD_WARMTH is the lamp light the
+# boards are shown in besides: no lamp is there, it stands for what the room throws back up at its
+# ceiling. It keeps the wood brown and out of dead black in the deepest hour of the night, when the
+# sky's share is next to nothing; the iron has none of it and stays the colour of the night
 BOARD_LIGHT = (11, 14)
+BOARD_WARMTH = 3
 
 OPPOSITE = {"north": "south", "south": "north", "east": "west", "west": "east"}
 
@@ -501,7 +505,7 @@ def _skeleton(c, origin, shell):
                   brightness=(_night(shell, pos), 0))
             for name, pos, yaw in skeleton.placed)
     return n + sum(K.put(c, skeleton.models[name], pos, yaw=yaw, scale=F.SCALE, origin=origin, turns=F.LEAN,
-                         brightness=(_night(shell, pos, BOARD_LIGHT), 0))
+                         brightness=(_night(shell, pos, BOARD_LIGHT), BOARD_WARMTH))
                    for name, pos, yaw in skeleton.lined)
 
 
