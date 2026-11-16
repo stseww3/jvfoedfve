@@ -1,0 +1,309 @@
+[trip 05:26:13 +0s] trip of obs_mat_traces: the code of cc8fec0f (tag cc8fec0) of cursor/c164-a1-board-f3-09d2, checked out at /tmp/c164_s1/shot/cc8fec0f, view distance 12 (the server's 10), cloud range 128; 4 cores, 1150 s at most
+[trip 05:26:13 +0s] clean: nodemc.py down  (up to 180 s)
+[trip 05:26:13 +0s] clean: exit 0, 0 s
+[trip 05:26:13 +0s] setup: nodemc.py setup  (up to 850 s)
+    [nodemc 05:26:13] installing mesa-vulkan-drivers vulkan-tools libegl1
+    [nodemc 05:26:17] installed
+    [nodemc 05:26:17] vulkan: apiVersion 1.4.318, deviceName llvmpipe (LLVM 20.1.2, 256 bits), driverInfo Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+    [nodemc 05:26:18] java: fetching OpenJDK25U-jre_x64_linux_hotspot_25.0.5_8.tar.gz (58 MB) from Adoptium
+    [nodemc 05:26:19] java: /agent/realms-study/jdk/jdk-25.0.5+8-jre/bin/java
+    [nodemc 05:26:28] game files: fetched from Mojang in 9 s ({"version": "26.3", "system": "linux", "mainClass": "net.minecraft.client.main.Main", "assetIndex": "34", "files": 5124, "downloaded": 5123, "assets_skipped": 92, "classpath_entries": 67, "server_down)
+    [nodemc 05:26:28] settings written: server26/server.properties, server26/eula.txt, client26/game/options.txt; render distance 12, the server's view distance 10, cloud range 128
+[trip 05:26:28 +15s] setup: exit 0, 15 s
+[trip 05:26:28 +15s] station: nodemc.py status  (up to 60 s)
+    server: no answer
+    client: not running
+    display: none
+    distances: client renderDistance 12, server view-distance 10, cloudRange 128
+    machine: 4 cores, load 1.85, 4867 MB of memory available, 239 GB of disk free under /agent/realms-study
+[trip 05:26:28 +16s] station: exit 0, 0 s
+[trip 05:26:28 +16s] shuttle: shuttle.py --tag cc8fec0 --commit cc8fec0f --settle 3.0 --first-settle 20.0 --still 0.0 --after-budget 300.0 --project /tmp/c164_s1/shot/cc8fec0f/c164-realms --out /tmp/c164_s1/real --shots obs_mat_traces=/tmp/c164_look_403058.json obs_mat_traces  (up to 1014 s)
+    [shuttle 05:26:28] the code that is shot: /tmp/c164_s1/shot/cc8fec0f/c164-realms at cc8fec0f; tag cc8fec0
+    [shuttle 05:26:28] new plots, this test world's own (a scene of the assembly gets its plot in tools/win/plots.json): "obs_mat_traces": 200
+        built 696 blocks, 168 entities in 0.1s
+        exported 1 tiles (696 + 0 blocks) in 0.0s
+        server: no answer
+        client: not running
+        display: none
+        distances: client renderDistance 12, server view-distance 10, cloudRange 128
+        machine: 4 cores, load 1.85, 4842 MB of memory available, 239 GB of disk free under /agent/realms-study
+        [nodemc 05:26:37] server is up (8 s)
+    [shuttle 05:26:37] placing obs_mat_traces at 200000 200 0
+        built 696 blocks, 168 entities in 0.1s
+        exported 1 tiles (696 + 0 blocks) in 0.0s
+        Reloading!
+        placed in 0.1s, 0 failed
+        biome minecraft:the_void: 0 cells set in 1 boxes, x 199994..200046 y 195..210 z -7..11
+        the look is carried by the resource pack: the clock is held at 20370 (shoot.py --clock 20370)
+    [shuttle 05:26:40] the look is carried by the resource pack and the clock is held at 20370: every picture of this trip is taken at that tick
+        mat_trace_water_0    1 elements,   1 texture patches, sheet 32px
+        mat_trace_water_1    1 elements,   1 texture patches, sheet 32px
+        mat_trace_water_2    1 elements,   1 texture patches, sheet 32px
+        mat_trace_water_3    1 elements,   1 texture patches, sheet 32px
+        mat_trace_rust_0     1 elements,   1 texture patches, sheet 32px
+        mat_trace_rust_1     1 elements,   1 texture patches, sheet 32px
+        mat_trace_rust_2     1 elements,   1 texture patches, sheet 32px
+        mat_trace_rust_3     1 elements,   1 texture patches, sheet 32px
+        mat_trace_soot_0     1 elements,   1 texture patches, sheet 32px
+        mat_trace_soot_1     1 elements,   1 texture patches, sheet 32px
+        mat_trace_soot_2     1 elements,   1 texture patches, sheet 32px
+        mat_trace_soot_3     1 elements,   1 texture patches, sheet 32px
+        mat_trace_damp_0     1 elements,   1 texture patches, sheet 32px
+        mat_trace_damp_1     1 elements,   1 texture patches, sheet 32px
+        mat_trace_damp_2     1 elements,   1 texture patches, sheet 32px
+        mat_trace_damp_3     1 elements,   1 texture patches, sheet 32px
+        mat_trace_oil_0      1 elements,   1 texture patches, sheet 16px
+        mat_trace_oil_1      1 elements,   1 texture patches, sheet 16px
+        mat_trace_oil_2      1 elements,   1 texture patches, sheet 16px
+        mat_trace_oil_3      1 elements,   1 texture patches, sheet 16px
+        mat_trace_coal_0     1 elements,   1 texture patches, sheet 32px
+        mat_trace_coal_1     1 elements,   1 texture patches, sheet 32px
+        mat_trace_coal_2     1 elements,   1 texture patches, sheet 32px
+        mat_trace_coal_3     1 elements,   1 texture patches, sheet 32px
+        mat_trace_crack_0    1 elements,   1 texture patches, sheet 16px
+        mat_trace_crack_1    1 elements,   1 texture patches, sheet 16px
+        mat_trace_crack_2    1 elements,   1 texture patches, sheet 16px
+        mat_trace_crack_3    1 elements,   1 texture patches, sheet 16px
+        mat_trace_chalk_0    1 elements,   1 texture patches, sheet 16px
+        mat_trace_chalk_1    1 elements,   1 texture patches, sheet 16px
+        mat_trace_chalk_2    1 elements,   1 texture patches, sheet 16px
+        mat_trace_chalk_3    1 elements,   1 texture patches, sheet 16px
+        mat_trace_worn_0     1 elements,   1 texture patches, sheet 32px
+        mat_trace_worn_1     1 elements,   1 texture patches, sheet 32px
+        mat_trace_worn_2     1 elements,   1 texture patches, sheet 32px
+        mat_trace_worn_3     1 elements,   1 texture patches, sheet 32px
+        mat_trace_swatch_iron_plain   1 elements,   3 texture patches, sheet 32px
+        mat_trace_swatch_iron_water   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_iron_rust   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_iron_soot   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_iron_damp   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_iron_oil   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_iron_coal   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_iron_crack   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_iron_chalk   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_iron_worn   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_iron_edges   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_brass_plain   1 elements,   3 texture patches, sheet 32px
+        mat_trace_swatch_brass_water   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_brass_rust   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_brass_soot   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_brass_damp   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_brass_oil   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_brass_coal   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_brass_crack   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_brass_chalk   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_brass_worn   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_brass_edges   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_wood_plain   1 elements,   3 texture patches, sheet 32px
+        mat_trace_swatch_wood_water   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_wood_rust   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_wood_soot   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_wood_damp   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_wood_oil   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_wood_coal   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_wood_crack   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_wood_chalk   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_wood_worn   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_wood_edges   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_stone_plain   1 elements,   3 texture patches, sheet 32px
+        mat_trace_swatch_stone_water   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_stone_rust   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_stone_soot   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_stone_damp   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_stone_oil   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_stone_coal   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_stone_crack   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_stone_chalk   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_stone_worn   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_stone_edges   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_verdigris_plain   1 elements,   3 texture patches, sheet 32px
+        mat_trace_swatch_verdigris_water   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_verdigris_rust   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_verdigris_soot   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_verdigris_damp   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_verdigris_oil   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_verdigris_coal   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_verdigris_crack   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_verdigris_chalk   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_verdigris_worn   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_verdigris_edges   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_porcelain_plain   1 elements,   3 texture patches, sheet 32px
+        mat_trace_swatch_porcelain_water   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_porcelain_rust   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_porcelain_soot   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_porcelain_damp   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_porcelain_oil   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_porcelain_coal   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_porcelain_crack   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_porcelain_chalk   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_porcelain_worn   1 elements,   4 texture patches, sheet 32px
+        mat_trace_swatch_porcelain_edges   1 elements,   4 texture patches, sheet 32px
+        sandstone: 1 models x 3 -> ashlar_rough0, ashlar_rough1, ashlar_rough2, ashlar_rough_top0, ashlar_rough_top1, ashlar_rough_top2
+        sandstone_stairs: 3 models x 3 -> ashlar_rough0, ashlar_rough1, ashlar_rough2, ashlar_rough_top0, ashlar_rough_top1, ashlar_rough_top2
+        sandstone_slab: 3 models x 3 -> ashlar_rough0, ashlar_rough1, ashlar_rough2, ashlar_rough_top0, ashlar_rough_top1, ashlar_rough_top2
+        sandstone_wall: 3 models x 3 -> ashlar_rough0, ashlar_rough1, ashlar_rough2, ashlar_rough_top0, ashlar_rough_top1, ashlar_rough_top2
+        smooth_sandstone: 1 models x 6 -> ashlar_fine0, ashlar_fine1, ashlar_fine2, ashlar_fine3, ashlar_fine4, ashlar_fine5, ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2
+        smooth_sandstone_stairs: 3 models x 6 -> ashlar_fine0, ashlar_fine1, ashlar_fine2, ashlar_fine3, ashlar_fine4, ashlar_fine5, ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2
+        smooth_sandstone_slab: 3 models x 6 -> ashlar_fine0, ashlar_fine1, ashlar_fine2, ashlar_fine3, ashlar_fine4, ashlar_fine5, ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2
+        cut_sandstone: 1 models x 3 -> ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2, ashlar_panel
+        cut_sandstone_slab: 3 models x 3 -> ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2, ashlar_panel
+        chiseled_sandstone: 1 models x 3 -> ashlar_emblem, ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2
+        bamboo_planks: 1 models x 3 -> brass_plate0, brass_plate1, brass_plate2
+        bamboo_stairs: 3 models x 3 -> brass_plate0, brass_plate1, brass_plate2
+        bamboo_slab: 3 models x 3 -> brass_plate0, brass_plate1, brass_plate2
+        bamboo_mosaic: 1 models x 1 -> brass_tread
+        bamboo_mosaic_stairs: 3 models x 1 -> brass_tread
+        bamboo_mosaic_slab: 3 models x 1 -> brass_tread
+        bamboo_block: 3 models x 1 -> brass_pipe, brass_pipe_end
+        bamboo_fence: 5 models x 1 -> brass_plate0, brass_rail
+        bamboo_fence_gate: 4 models x 1 -> brass_gate, brass_plate0
+        bamboo_door: 8 models x 1 -> brass_door_bottom, brass_door_top
+        bamboo_trapdoor: 3 models x 1 -> brass_hatch
+        bamboo_button: 2 models x 3 -> brass_plate0, brass_plate1, brass_plate2
+        bamboo_sign: 4 models x 1 -> brass_plate0, brass_sign
+        bamboo_wall_sign: 1 models x 1 -> brass_plate0, brass_sign
+        bamboo_hanging_sign: 8 models x 1 -> brass_hanging_sign, brass_plate0
+        bamboo_wall_hanging_sign: 1 models x 1 -> brass_hanging_sign, brass_plate0
+        bamboo_shelf: 6 models x 1 -> brass_plate0, brass_shelf
+        waxed_exposed_copper: 1 models x 3 -> old_copper0, old_copper1, old_copper2
+        waxed_exposed_cut_copper: 1 models x 3 -> old_copper_cut0, old_copper_cut1, old_copper_cut2
+        waxed_exposed_cut_copper_stairs: 3 models x 3 -> old_copper_cut0, old_copper_cut1, old_copper_cut2
+        waxed_exposed_cut_copper_slab: 3 models x 3 -> old_copper_cut0, old_copper_cut1, old_copper_cut2
+        dark_oak_trapdoor: 3 models x 1 -> wainscot
+        yellow_carpet: 1 models x 3 -> brass_inlay0, brass_inlay1, brass_inlay2
+        rail: 4 models x 3 -> brass_line0, brass_line1, brass_line2, brass_line_corner0, brass_line_corner1, brass_line_corner2
+        activator_rail: 6 models x 1 -> brass_line_cross
+        detector_rail: 6 models x 1 -> brass_line_star
+        oak_sign: 4 models x 1 -> enamel_plate, enamel_sign
+        oak_wall_sign: 1 models x 1 -> enamel_plate, enamel_sign
+        oak_hanging_sign: 8 models x 1 -> enamel_hanging_sign, enamel_plate
+        oak_wall_hanging_sign: 1 models x 1 -> enamel_hanging_sign, enamel_plate
+        sounds.json: 20 events redirected
+        oxidized_copper: 1 models x 6 -> iron_plate0, iron_plate1, iron_plate2, iron_plate3, iron_plate4, iron_plate5
+        oxidized_cut_copper: 1 models x 6 -> iron_riveted0, iron_riveted1, iron_riveted2, iron_riveted3, iron_riveted4, iron_riveted5
+        oxidized_cut_copper_stairs: 3 models x 6 -> iron_riveted0, iron_riveted1, iron_riveted2, iron_riveted3, iron_riveted4, iron_riveted5
+        oxidized_cut_copper_slab: 3 models x 6 -> iron_riveted0, iron_riveted1, iron_riveted2, iron_riveted3, iron_riveted4, iron_riveted5
+        oxidized_chiseled_copper: 1 models x 1 -> iron_cast
+        oxidized_copper_grate: 1 models x 2 -> iron_grate0, iron_grate1
+        oxidized_copper_bars: 6 models x 1 -> iron_bars
+        oxidized_copper_chain: 1 models x 1 -> iron_chain
+        oxidized_lightning_rod: 2 models x 1 -> iron_rod
+        oxidized_copper_trapdoor: 3 models x 1 -> iron_hatch
+        oxidized_copper_door: 8 models x 1 -> iron_door_bottom, iron_door_top
+        oxidized_copper_bulb: 4 models x 1 -> iron_bulb, iron_bulb_lit
+        oxidized_copper_lantern: 2 models x 1 -> iron_lantern
+        white_glazed_terracotta: 1 models x 2 -> panel_case, panel_dial0, panel_dial1
+        orange_glazed_terracotta: 1 models x 1 -> panel_case, panel_knife_switch
+        magenta_glazed_terracotta: 1 models x 1 -> panel_case, panel_tubes, panel_tubes_glow
+        light_blue_glazed_terracotta: 1 models x 1 -> panel_case, panel_scope, panel_scope_glow
+        yellow_glazed_terracotta: 1 models x 1 -> panel_case, panel_counter
+        lime_glazed_terracotta: 1 models x 1 -> panel_case, panel_patch_panel
+        pink_glazed_terracotta: 1 models x 1 -> panel_case, panel_fuses
+        gray_glazed_terracotta: 1 models x 1 -> panel_bell, panel_case
+        light_gray_glazed_terracotta: 1 models x 1 -> panel_case, panel_pilot_lamps, panel_pilot_lamps_glow
+        cyan_glazed_terracotta: 1 models x 1 -> panel_case, panel_louvre
+        purple_glazed_terracotta: 1 models x 1 -> panel_case, panel_drawers
+        blue_glazed_terracotta: 1 models x 1 -> panel_case, panel_nameplate
+        brown_glazed_terracotta: 1 models x 1 -> panel_case, panel_relays
+        green_glazed_terracotta: 1 models x 1 -> panel_bus_switch, panel_case
+        red_glazed_terracotta: 1 models x 1 -> panel_case, panel_gauges
+        black_glazed_terracotta: 1 models x 1 -> panel_case, panel_recorder
+        snow_block: 1 models x 3 -> snow0, snow1, snow2
+        snow: 8 models x 3 -> snow0, snow1, snow2, snow_side0, snow_side1, snow_side2
+        windows: version a
+        yellow_stained_glass: 1 models x 1 -> window_lit
+        yellow_stained_glass_pane: 5 models x 1 -> window_came, window_lit
+        white_stained_glass: 1 models x 1 -> window_frosted
+        white_stained_glass_pane: 5 models x 1 -> window_came, window_frosted
+        orange_stained_glass: 1 models x 1 -> window_curtain
+        orange_stained_glass_pane: 5 models x 1 -> window_came, window_curtain
+        gray_stained_glass: 1 models x 4 -> window_dark0, window_dark1, window_dark2, window_dark3
+        gray_stained_glass_pane: 5 models x 4 -> window_came, window_dark0, window_dark1, window_dark2, window_dark3
+        black_stained_glass: 1 models x 1 -> window_blind
+        black_stained_glass_pane: 5 models x 1 -> window_blind, window_came
+        light_gray_stained_glass: 1 models x 4 -> window_skylight0, window_skylight1, window_skylight2, window_skylight3
+        light_gray_stained_glass_pane: 5 models x 4 -> window_came, window_skylight0, window_skylight1, window_skylight2, window_skylight3
+        red_stained_glass: 1 models x 4 -> window_furnace_low0, window_furnace_low1, window_furnace_low2, window_furnace_low3
+        brown_stained_glass: 1 models x 2 -> window_furnace_mid0, window_furnace_mid1
+        purple_stained_glass: 1 models x 2 -> window_furnace_high0, window_furnace_high1
+        materials audit: 86 block states, 433 models, 124 pictures, nothing wrong
+        dead_horn_coral_block: 1 models x 1 -> sky_cloud_0
+        dead_fire_coral_block: 1 models x 1 -> sky_cloud_1
+        dead_bubble_coral_block: 1 models x 1 -> sky_cloud_2
+        dead_brain_coral_block: 1 models x 1 -> sky_cloud_3
+        dead_tube_coral_block: 1 models x 1 -> sky_cloud_4
+        clouds.png: blanked (the game draws no cloud layer; the sea is blocks)
+        comet (a) -> 8 moon phase pictures
+        sun picture blanked
+        sky: the look "blue" as core shaders, 10 files (core/clouds.vsh, core/item.vsh, core/lightmap.fsh, core/rendertype_beacon_beam.vsh, core/sky.fsh, core/sky.vsh, core/stars.fsh, core/stars.vsh, include/c164_layers.glsl, include/fog.glsl)
+    [shuttle 05:26:41] resource pack: 1002 files written to client26/game/resourcepacks/c164art
+        [nodemc 05:26:55] C164Cam is online (14 s)
+        [nodemc 05:26:55] game: [05:26:47] [Render thread/INFO]: Backend library: LWJGL version 3.4.3+4
+        [nodemc 05:26:55] game: [05:26:47] [Render thread/ERROR]: Failed to create backend OpenGL
+        [nodemc 05:26:55] game: com.mojang.renderpearl.api.device.BackendCreationException: Failed to create window for OpenGL context: Couldn't find matching GLX visual
+        [nodemc 05:26:55] game: [05:26:47] [Render thread/INFO]: Using graphics backend Vulkan, using drivers: 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+        [nodemc 05:26:55] game: [05:26:47] [Render thread/INFO]: Using graphics device: llvmpipe (LLVM 20.1.2, 256 bits) (0x10005)
+        [nodemc 05:26:55] pictures: saved by the game itself (helper)
+    [shuttle 05:26:55] shooting obs_mat_traces: 48 shots of c164_look_403058.json
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/bays_west_0.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/bays_west_1.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/bays_west_2.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/bays_west_3.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/bays_west_4.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/bays_west_5.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/bay_fine_0.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/bay_fine_1.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/bay_fine_2.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/bay_fine_3.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/bay_fine_4.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/bay_fine_5.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/bay_iron_0.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/bay_iron_1.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/bay_iron_2.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/bay_iron_3.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/bay_iron_4.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/bay_iron_5.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/near_fine_0.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/near_fine_1.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/near_fine_2.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/near_fine_3.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/near_fine_4.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/near_fine_5.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/foot_fine_0.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/foot_fine_1.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/foot_fine_2.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/foot_fine_3.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/foot_fine_4.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/foot_fine_5.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/near_iron_0.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/near_iron_1.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/near_iron_2.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/near_iron_3.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/near_iron_4.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/near_iron_5.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/floor_tuff_0.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/floor_tuff_1.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/floor_tuff_2.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/floor_tuff_3.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/floor_tuff_4.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/floor_tuff_5.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/swatches_near_0.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/swatches_near_1.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/swatches_near_2.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/swatches_near_3.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/swatches_near_4.png
+        /tmp/c164_s1/real/cc8fec0/obs_mat_traces/swatches_near_5.png
+        pictures: 48 saved by the game itself, 0 taken off the display
+        [nodemc 05:29:10] client stopped
+    [shuttle 05:29:10] obs_mat_traces: 48 of 48 pictures in /tmp/c164_s1/real/cc8fec0/obs_mat_traces
+    [shuttle 05:29:10] trip done (162 s, the game was opened once and is closed again)
+[trip 05:29:10 +177s] shuttle: exit 0, 162 s
+[trip 05:29:10 +178s] obs_mat_traces: 48 pictures of cc8fec0f in renders/real-look/obs_mat_traces/
+[trip 05:29:11 +178s] obs_mat_traces: sheet.jpg in renders/real-look/obs_mat_traces/
+[trip 05:29:11 +178s] what the game said: nodemc.py client-said 1794806773 /tmp/dais_jobs/c324-look/c164-realms/renders/real/_trips/20261116-052613-cc8fec0-obs_mat_traces-client.txt  (up to 30 s)
+    client said: 5 records on shaders, pipelines and packs, 1 of a failure; written to /tmp/dais_jobs/c324-look/c164-realms/renders/real/_trips/20261116-052613-cc8fec0-obs_mat_traces-client.txt
+[trip 05:29:11 +178s] what the game said: exit 0, 0 s
+[trip 05:29:11 +178s] close: nodemc.py down  (up to 180 s)
+    [nodemc 05:29:12] server stopped
+[trip 05:29:13 +180s] close: exit 0, 2 s
+[trip 05:29:13 +180s] trip done; pictures kept: renders/real-look/obs_mat_traces/; log renders/real/_trips/20261116-052613-cc8fec0-obs_mat_traces.log
