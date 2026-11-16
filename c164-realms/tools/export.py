@@ -368,6 +368,17 @@ def _on_term(signum, frame):
 
 # ------------------------------------------------------------------ what the scene says
 
+def map_title(scene):
+    """The map's name, from the one place it is written (the guide's: scenes/<scene>/motion/guide_title.py,
+    MAP_TITLE; mast c346 #81143), or None for a scene that has none."""
+    try:
+        return getattr(importlib.import_module(f"scenes.{scene}.motion.guide_title"), "MAP_TITLE", None)
+    except ModuleNotFoundError as exc:
+        if exc.name not in (f"scenes.{scene}.motion.guide_title", f"scenes.{scene}.motion"):
+            raise
+        return None
+
+
 def scene_spec(args):
     """Where the scene stands, where its spawn is and which way it looks, in world coordinates."""
     sys.path.insert(0, BUILD)
@@ -416,7 +427,7 @@ def scene_spec(args):
         # the guide (titles, plaques, star charts: plan/packages/motion/guide.md) is the scene's, and in the
         # save when the scene says GUIDE = True and --no-guide was not asked for
         "guide": bool(getattr(scene, "GUIDE", False)) and not getattr(args, "no_guide", False),
-        "title": getattr(scene, "MAP_TITLE", None),      # the map's name, the one place it is written
+        "title": map_title(args.scene),
         "biome": f"{ART}:{scene.BIOME}" if look else None,
         "time": int(when),
         "feet": [round(ox + ex, 4), round(oy + ey - S.EYE, 4), round(oz + ez, 4)],
@@ -1031,12 +1042,24 @@ def seal(world, spec, out_dir, head, when, facts):
     for path in glob.glob(os.path.join(pack_dir, "*.json")):
         os.remove(path)
         removed.append(os.path.relpath(path, stage))
-    pack_meta(pack_dir, f"c164 {name} ({head})", True)
+    # the map's name, where a player meets it: the world's name in the list of worlds (the folder
+    # and the archive keep the save's number) and what the two packs say of themselves
+    title = spec.get("title")
+    told = f"{title} ({name} {head})" if title else f"c164 {name} ({head})"
+    if title:
+        import nbtlib
+        level = nbtlib.load(os.path.join(stage, "level.dat"))
+        data = level.get("Data", level.get("", {}).get("Data"))
+        if data is None or "LevelName" not in data:
+            fail("level.dat has no LevelName to write the map's title into")
+        data["LevelName"] = nbtlib.String(title)
+        level.save()
+    pack_meta(pack_dir, told, True)
     registry = registry_files(pack_dir)
     if registry and not spec["look"]:
         fail("the look is off and the data pack still holds registry files: " + ", ".join(registry))
     count, standins, sky = resource_pack(spec["scene"], os.path.join(stage, "resourcepacks", "resources.zip"),
-                                         f"c164 {name} ({head})", when, spec.get("shaders"))
+                                         told, when, spec.get("shaders"))
     kinds = {}
     for folder, _dirs, names in os.walk(os.path.join(pack_dir, "data")):
         part = os.path.relpath(folder, os.path.join(pack_dir, "data")).split(os.sep)
