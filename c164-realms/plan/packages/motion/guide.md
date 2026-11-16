@@ -39,7 +39,7 @@
 | CHART ROOM | 星图室，进门 | Each clear night is drawn here by hand. |
 | PLATE VAULT | 底片库，进门 | A glass plate for every clear night. |
 | THE GREAT REFRACTOR | 穹顶室，台阶口 | Tonight it is turned on the comet. |
-| TIME BALL | 钟塔脚 | It drops once a day, on the second. |
+| TIME BALL | 钟塔脚 | It drops on the hour, to the second. |
 | POWER HOUSE | 发电房门口 | Steam turns the dynamo that lights the lamps. |
 | SUNSET TERRACE | 落日平台入口 | The comet sets an hour behind the sun. |
 
