@@ -85,6 +85,8 @@ except ImportError:                     # the motion line is not in the tree: th
     MK = None
 
 MOVED_IN = True         # the master scene dresses the room (A0, g2 #67123: a card's switch is turned on with its delivery)
+VIEW = M.NEAR           # every display entity of the room is drawn from 32 blocks (s2, g2 #88340): the room is 19 long,
+#                         and nothing in it is seen from outside, its lit windows are lined
 NAME = "interiors/chartroom"
 PREFIX = "int_chart_"
 PX = 1 / 16.0
