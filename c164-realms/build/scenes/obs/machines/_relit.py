@@ -310,15 +310,22 @@ class Globe:
 
 
 def _report():
-    """python -m scenes.obs.machines._relit: a globe and a face of each kind, checked."""
+    """python -m scenes.obs.machines._relit: a globe and a face of each kind, checked; and a globe
+    twice the size shown at scale 2, as a lamp that is placed at any yaw (spins: the least of a
+    whole turn)."""
     from ..props import _kit as K
-    globe = Globe("mach_relit_try", 0.25, [K.flat("glow", i) for i in (2, 3, 4, 4, 3, 2, 1, 0)], emit=15)
+    tones = [K.flat("glow", i) for i in (2, 3, 4, 4, 3, 2, 1, 0)]
+    globe = Globe("mach_relit_try", 0.25, tones, emit=15)
     one = Faces("mach_relit_try_down", frame=frame((0, -1, 0)), spins=True)
     one.face((0.3, -0.2, 0.1), (0, -1, 0), (1, 0, 0), 0.25, 0.125, K.flat("glow", 3))
     side = Faces("mach_relit_try_side", frame=frame((1, 0, 1)))
     side.face((0.3, 0.0, 0.3), (1, 0, 1), (0, 1, 0), 0.25, 0.125, K.flat("glow", 3))
     ok, line = checked(globe.parts() + [one, side])
     print(line)
+    big = Globe("mach_relit_try_big", 0.5, tones, scale=2.0, spins=True, emit=15)
+    fits, line = checked(big.parts(), yaws=(0.0, 33.0, 90.0, 211.0))
+    print("at scale 2, turned any way:", line)
+    ok = ok and fits
     try:
         frame((1, -1, 0))
     except ValueError as e:
