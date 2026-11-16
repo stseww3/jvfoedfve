@@ -23,16 +23,24 @@ def _floor(name):
     return (name, [(P + name, None, {})], (1.4, 1.4, 2.0), (0.0, 0.6, 0.0))
 
 
+def _lamp(y):
+    """The lamp under the canopy, hung y blocks up in the open: its pieces, each turned back out of
+    the frame it is drawn in. What looks down is left out -- it takes a display that
+    artkit.models.display does not give (ironwork.SLIDE), and the camera stands above the globe."""
+    parts = [(P + kind, (0.0, y, -6.0), {"turns": ironwork.SPEC[kind]["turns"]})
+             for kind in ironwork.LAMP_PIECES if not ironwork.SPEC[kind].get("slide")]
+    return ("canopy_lamp", parts, (1.6, y - 0.6, -3.2), (0.0, y - 1.2, -6.0))
+
+
 # name, [(model, offset from the bay's floor centre or None to stand on it, display options)],
 # camera, look-at; the backdrop wall is 7.5 blocks north of the bay's centre
 GALLERY = [
-    _tall("window_arch_a"), _tall("window_arch_b"),
-    _wall("window_grille", 2.0),
-    _wall("fanlight", 1.5),
-    _wall("door_leaf", 0.5),
-    _wall("canopy", 4.0),
+    _tall("window_arch"), _tall("window_arch_2"),
+    _wall("window_grille", 2.0), _wall("window_grille_2", 2.0),
+    _tall("door_frame"), _wall("door_leaf", 0.5), _tall("gate"), _wall("glazed_leaf", 0.5),
+    _wall("canopy", 4.0), _lamp(3.5),
     _floor("railing_panel"),
-    _wall("ladder", 0.5),
+    _wall("ladder", 0.5), _wall("ladder_cage", 0.5),
     _floor("vent_cowl"),
     _floor("grate_hatch"),
 ]
