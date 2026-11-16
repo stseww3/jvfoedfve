@@ -56,6 +56,11 @@ print("2. 存档 {zip}，其中资源包 {pack}（{pack_files} 个文件，上�
 print("3. 服务端冷启动两次，{checks} 项{ok}，日志警告和报错 {console} 条。导出 {make_s} 秒，验证 {verify_s} 秒。".format(**r))
 print("数据包：函数 {functions}、标签 {tags}、注册表文件 {registry_files}；占位贴图 {standins} 张；资源包里着色器 {shaders} 个。".format(**dict(r, shaders=r.get("shaders") or 0)))
 print("光照：存盘前等到不再变（{} 秒）。".format(r["light"]) if r.get("light") else "光照：存盘时还在变，这一版的光不全！" if r.get("light") is False else "光照：没等。")
+print("导览：带（进服的标题、牌子、星图）" + ("；存档在世界列表里叫「{}」。".format(r["title"]) if r.get("title") else "。") if r.get("guide") else "导览：不带。")
+if r.get("bare"):
+    print("不带导览的：`{}`，{}，sha256 {}，{}。".format(
+        r["bare"]["file"], mb(r["bare"]["bytes"]), r["bare"]["sha256"][:8] + "…" + r["bare"]["sha256"][-4:],
+        "验证全过" if r["bare"].get("verified") else "验证没过" if r["bare"].get("verified") is False else "没验"))
 if r.get("plain"):
     print("不带着色器的（资源包加载失败时换这个）：`{}`，{}，sha256 {}，{}。".format(
         r["plain"]["file"], mb(r["plain"]["bytes"]), r["plain"]["sha256"][:8] + "…" + r["plain"]["sha256"][-4:],
