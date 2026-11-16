@@ -1,0 +1,35 @@
+check obs_props_lamps_site_nearpair at eb33da2
+[WARN] regen     110193 blocks, 207 entities, 151 models, 1120 resource-pack files, 307 data-pack files, look: 1 biomes, 1 timelines (3.1 s)
+                 registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+[PASS] conflicts the scene writes 1119 files, no file written twice, the folders and the prefix of props are kept (5 packages run alone)
+[PASS] strays    275 pictures, every colour in the palette; 9 sky pictures not checked (drawn by adding light)
+[PASS] refs      826 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    73 kinds of block placed, 12 barrier cells (x 16, y 0..1, z -5..5), all in the occupancy table
+[SKIP] flatwall  a test scene of props: its sample walls and backdrops are meant to be flat
+[WARN] entities  207 display entities, 5 drawn out along one axis, 64 models never placed
+                 mach_orrery_a_under_earth x1: 5.99/16/36.97 pixels to the block along x/y/z, not 16
+                 mach_orrery_a_under_jupiter x1: 5.99/16/36.97 pixels to the block along x/y/z, not 16
+                 mach_orrery_a_under_mars x1: 5.99/16/36.97 pixels to the block along x/y/z, not 16
+                 mach_orrery_a_under_mercury x1: 5.99/16/36.97 pixels to the block along x/y/z, not 16
+                 mach_orrery_a_under_saturn x1: 5.99/16/36.97 pixels to the block along x/y/z, not 16
+                 mach_orrery_a_under_venus x1: 5.99/16/36.97 pixels to the block along x/y/z, not 16
+                 mach_orrery_sun_under x1: 5.99/16/36.97 pixels to the block along x/y/z, not 16
+                 prop_iron_canopy_lamp_under x1: 5.79/16/44.19 pixels to the block along x/y/z, not 16
+[PASS] views     6 shots, most display entities in view: 194 (v12), limit 600; counted without what walls hide; the game draws up to 207 (v1): a display entity without width and height is drawn outside the view too
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 14.9% hidden (base storey 43.8% by blocks and 3.2% more by models, great windows 3.4%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 1.9 s)
+[PASS] motion    22 parts and 0 points on 11 chains, 261 function files; 10 commands in the busiest tick (limit 40), 3.4 a tick on average (limit 10)
+                 chain of 16 ticks: 4 functions, 10 commands a cycle, starts 3 ticks after start
+                 chain of 24 ticks: 8 functions, 19 commands a cycle, starts 2 ticks after start
+                 chain of 40 ticks: 8 functions, 17 commands a cycle, starts 2 ticks after start
+                 chain of 48 ticks: 12 functions, 65 commands a cycle, starts 1 ticks after start
+                 chain of 1001 ticks: 25 functions, 52 commands a cycle, starts 5 ticks after start
+                 chain of 1617 ticks: 31 functions, 64 commands a cycle, starts 8 ticks after start
+                 chain of 2002 ticks: 11 functions, 34 commands a cycle, starts 6 ticks after start
+                 chain of 2457 ticks: 39 functions, 80 commands a cycle, starts 3 ticks after start
+                 chain of 3003 ticks: 21 functions, 43 commands a cycle, starts 6 ticks after start
+                 chain of 5577 ticks: 33 functions, 100 commands a cycle, starts 4 ticks after start
+                 chain of 9009 ticks: 63 functions, 190 commands a cycle, starts 4 ticks after start
+                 site_weather_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.08 blocks off the axis
+                 ... and 14 more
+result: PASS (0 failed, 2 with warnings)
