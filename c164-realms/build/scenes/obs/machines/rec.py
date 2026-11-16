@@ -9,9 +9,11 @@ package makes what stands in front of it and is a machine: it is seen to record 
               dial and a fly-ball governor; in front of the drum a rail with the pen carriage.
               Three display entities: the frame, the drum (it turns about its axle, once in
               MK.DRUM_REV), the pen on its rail (a part of its own, so that the motion line can
-              move it). The trace on the sheet is drawn as it lies on a real one: a line round
-              the drum for every turn, a jog in it for every second, from the west end up to
-              where the pen stands.
+              move it). The sheet is ruled paper, a faint line along the drum every four
+              pixels round it, and the trace lies on it as on a real one: a line round the drum
+              for a turn, a jog in it where a second fell. Two turns are written, the second
+              under the pen: three of them, a pixel apart, were a blue and white check from the
+              door (cr3, on the real client's V10).
   telegraph   the register on the console west of the key. A wooden base, the pair of coils and
               the armature lever over them, a reel of paper tape on two brackets, the tape down
               through the printing head and out to the front. Two entities: the machine, and the
@@ -20,7 +22,9 @@ package makes what stands in front of it and is a machine: it is seen to record 
               tape would be a line from the door: the eye is little higher than the shelf.
   tube        the pneumatic tube on a wall, no more than five and a half pixels off it. Two
               entities: the terminal (a board on the wall, the brass tube down it, its bell mouth
-              at the height of the hand, under the mouth a tray with a carrier in it) and the run
+              at the height of the hand, under the mouth a tray with a brass rim and a carrier in
+              it, cream between two brass heads, that stands two pixels over the rim: the tray
+              was iron and the carrier copper, and both were lost on the dark pier) and the run
               above it, which ends in a copper elbow into the wall, just under whatever stands
               at the head of the pier (TUBE_HEAD above the foot).
 
@@ -62,8 +66,8 @@ IRON, IRON_D = K.IRON, K.IRON_D
 COPPER = K.COPPER
 PAPER = K.flat("cream", 2)              # paper under a lamp: a tone under the lightest, or it is a white dot from the door
 PAPER_EDGE = K.flat("cream", 1)
-INK = P.RAMPS["enamel"][2]              # what the printing wheel leaves on the tape: the blue of the paper line's headings
-TRACE_INK = P.RAMPS["enamel"][3]        # the pen's line on the sheet: thinner than a pixel, so a tone lighter
+INK = P.RAMPS["enamel"][2]              # what the printing wheel leaves on the tape and the pen on the sheet: the blue of the paper line's headings
+RULE = P.RAMPS["cream"][1]              # the ruling printed on the sheet: a tone under the paper
 
 # ---- the drum chronograph (pixels; x runs along the drum, the front is +z, 0 the middle of the foot)
 BASE = (22.0, 12.0, 2.0)                # the wooden base: wide, deep, high
@@ -76,11 +80,11 @@ CASE = ((5.0, -4.0), (10.0, 4.0), 10.0) # the clockwork case: (x, z) of two corn
 RAIL = (9.5, 5.0)                       # the pen's rail: above the foot, and its z
 PEN_X = -1.0                            # where the pen stands on its rail: at the end of the trace
 DRUM_X = (SHEET[0] + SHEET[1]) / 2.0    # -2.5: the middle of the drum
-TRACE = (                               # the sheet, one face of the drum: a line round the drum for each turn,
-    ".i.i.i....",                       # a jog in every line where a second fell
-    ".i.i.i....",
-    "..i.i.i...",
-    ".i.i.i....",
+TRACE = (                               # the sheet, one face of the drum: a rule along it, the two turns the pen
+    "rrrirrirrr",                       # has written (the second one under the pen, at PEN_X), a jog in each
+    "...i..i...",                       # where a second fell
+    "....i..i..",
+    "...i..i...",
 )
 SECONDS_DIAL = (                        # the clockwork's seconds dial; the hand stands at 60, as at 7:55 sharp
     ".chc.",
@@ -108,6 +112,8 @@ TUBE_OFF = 2.75                         # its axis off the wall
 BOARD = (5.0, 3.0, 27.0)                # the board on the wall: half its width, its foot and its top above pos
 MOUTH = 11.0                            # the lip of the bell mouth above pos: at the height of the hand
 TRAY = 4.0                              # the floor of the tray under it
+RIM = 1.0                               # the tray's brass rim over its floor
+CARRIER = (1.0, 1.5)                    # the carrier in the tray: the radius of its body and of its two heads
 TERMINAL = 36.0                         # where the terminal's model ends and the run's begins
 TUBE_HEAD = 79.5                        # the top of the run, the flange of its elbow on the wall: just under 5 blocks above pos
 
@@ -172,7 +178,7 @@ def _drum():
     name = PREFIX + "drum"
     half = (SHEET[1] - SHEET[0]) / 2.0
     width, radius = FLANGE
-    trace = Sprite(name + "_trace", list(TRACE), dict(i=TRACE_INK), back=PAPER)
+    trace = Sprite(name + "_trace", list(TRACE), dict(i=INK, r=RULE), back=PAPER)
     m = M.Model(name)
     _prism(m, -half, half, (0.0, 0.0), DRUM_R, PAPER, PAPER_EDGE, faces={"s": trace, "n": trace.mirrored()})
     for s in (-1.0, 1.0):
@@ -265,13 +271,16 @@ def _terminal():
     m.taper("y", (0.0, z), MOUTH, MOUTH + 3.0, TUBE_R + 1.0, TUBE_R + 0.25, BRASS_D, steps=2)   # the bell mouth
     m.box((-2.5, top - 4.0, 1.0), (2.5, top - 3.0, z + TUBE_R + 0.5), IRON_D)                   # the clip that holds it to the board
     lip = z + TUBE_R + 1.25                                                                     # 5.5: the tray's front
-    m.box((-4.5, TRAY, 1.0), (4.5, TRAY + 0.75, lip), IRON_D)                                   # the tray under the mouth
-    m.box((-4.5, TRAY + 0.75, lip - 0.75), (4.5, TRAY + 2.5, lip), IRON, grain="x")
+    floor = TRAY + 0.75
+    m.box((-4.5, TRAY, 1.0), (4.5, floor, lip), IRON_D)                                         # the tray under the mouth
+    m.box((-4.5, floor, lip - 0.75), (4.5, floor + RIM, lip), BRASS, grain="x")                 # its rim: the front, the two ends
     for x in (-4.5, 3.75):
-        m.box((x, TRAY + 0.75, 1.0), (x + 0.75, TRAY + 3.5, lip - 0.75), IRON, grain="z")
-    m.tube("x", (TRAY + 2.0, z + 0.25), -3.0, 3.0, 1.25, COPPER)                                # a carrier in the tray
-    for x in (-3.5, 3.0):
-        m.tube("x", (TRAY + 2.0, z + 0.25), x, x + 0.5, 1.0, K.flat("cream", 1), sides=8)       # its two felts
+        m.box((x, floor, 1.0), (x + 0.75, floor + RIM + 0.5, lip - 0.75), BRASS, grain="z")
+    body, head = CARRIER                                                                        # a carrier in the tray, on its two heads
+    at = (floor + head, z + 0.25)
+    m.tube("x", at, -2.75, 2.75, body, P.mat("cream", base=2), sides=8)
+    for x in (-3.5, 2.75):
+        m.tube("x", at, x, x + 0.75, head, BRASS_D, sides=8)
     return m
 
 
@@ -294,7 +303,7 @@ def _run():
 @functools.lru_cache(maxsize=None)
 def _models():
     made = (_drum_frame(), _drum(), _pen(), _telegraph(), _tape(), _terminal(), _run())
-    return {m.name: m for m in made}
+    return {m.name: K.settle(m) for m in made}          # round pieces off the fence between two axes (props/_kit)
 
 
 def models():
