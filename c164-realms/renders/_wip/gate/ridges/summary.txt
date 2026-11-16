@@ -1,0 +1,8 @@
+gate sky/ridges f5430861: the merged tree f5430861, the assembly as it was be109b75
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] pictures 1 test scene, 0 shots with a picture kept
+                    obs_sky_ridges: no pictures kept (drawn on the admin's computer, INTERFACE 5: tools/selfshots.py obs_sky_ridges --out, then --take here and commit renders/obs_sky_ridges/)
+check.py: 89 scenes in 120 s: 89 pass (88 with warnings)
+pictures: obs_sky_ridges keeps none
+pictures: nothing to verify (no test scene of the delivery keeps pictures)
+result: PASS
