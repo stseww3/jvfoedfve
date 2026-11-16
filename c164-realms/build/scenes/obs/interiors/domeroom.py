@@ -31,7 +31,8 @@ What the room adds, from the floor up:
     27..     the vault: boards on the inside of every plate, an iron curb round the slit; under the
              boards the dome's skeleton as display models (interiors/_domeframe): the ring girder
              in front of its blocks, the two lattice arch girders beside the slit, a lattice rib
-             on every seam, three rings of purlins
+             on every seam, three rings of purlins; and on the skeleton's back the lining that is
+             seen, as display models too: boards from seam to seam, a flat panel to every gore
 
 and what stands in the room: the switchboard of the dome's drive on the east axis, the sidereal
 clock on the south axis, three cabinets on the north axis and a chart table beside them, the record
@@ -156,6 +157,10 @@ CLOCK_DIAL = (3, 3)
 # the pieces are told how much of the night falls on them (_night). The floor keeps the iron out of
 # dead black in the half of the room the slit does not light; the cap keeps it under the sky
 IRON_LIGHT = (10, 13)
+# and the same for the boards of the vault's lining. Every board is shown in the least light a model
+# can have (interiors/_domeframe.boards), so with these the lining stays a step under the iron in
+# front of it everywhere, and both under the sky in the slit
+BOARD_LIGHT = (11, 14)
 
 OPPOSITE = {"north": "south", "south": "north", "east": "west", "west": "east"}
 
@@ -475,24 +480,28 @@ def _vault(put, shell):
             put(col[0], y, col[1], IRON.block if col in iron else DEAL.block)
 
 
-def _night(shell, pos):
+def _night(shell, pos, within=IRON_LIGHT):
     """The sky's light a piece of the skeleton is shown in. A display entity takes the light of the
     one cell its origin is in, and a rib is ten blocks long: its origin may sit in the full light
     under the slit or in the dark behind a girder. So every piece is given its light: what comes
-    down through the slit, one level less for every column away from it, within IRON_LIGHT."""
+    down through the slit, one level less for every column away from it, `within` (least, most)."""
     x, z = int(math.floor(pos[0])), int(math.floor(pos[2]))
     away = min((abs(x - gx) + abs(z - gz) for gx, gz in shell.gap), default=15)
-    return max(IRON_LIGHT[0], min(IRON_LIGHT[1], 15 - away))
+    return max(within[0], min(within[1], 15 - away))
 
 
 def _skeleton(c, origin, shell):
-    """The iron skeleton under the boards; returns the number of display entities."""
+    """The iron skeleton under the vault and the boards on its back; returns the number of display
+    entities."""
     skeleton = frame(shell)
     if skeleton is None:
         return 0
-    return sum(K.put(c, skeleton.models[name], pos, yaw=yaw, scale=F.SCALE, origin=origin,
-                     brightness=(_night(shell, pos), 0))
-               for name, pos, yaw in skeleton.placed)
+    n = sum(K.put(c, skeleton.models[name], pos, yaw=yaw, scale=F.SCALE, origin=origin,
+                  brightness=(_night(shell, pos), 0))
+            for name, pos, yaw in skeleton.placed)
+    return n + sum(K.put(c, skeleton.models[name], pos, yaw=yaw, scale=F.SCALE, origin=origin, turns=F.LEAN,
+                         brightness=(_night(shell, pos, BOARD_LIGHT), 0))
+                   for name, pos, yaw in skeleton.lined)
 
 
 def _wall(c, origin, put, shell):

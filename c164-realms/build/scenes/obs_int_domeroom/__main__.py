@@ -161,6 +161,23 @@ else:
           % (len(skeleton.placed), len(bars), *("(%.3f, %.3f)" % (S.DOME_AXIS[0] - z, y) for z, y in skeleton.run())))
     check("no bar of the skeleton runs through a block (the boards, the ring girder's blocks, the piers)", buried)
     check("no bar of the skeleton crosses the open slit", in_slit)
+    planks = skeleton.planks()
+    deep, astray, rise = [], [], []
+    for corners in planks:
+        mid = tuple(sum(p[k] for p in corners) / 4.0 for k in range(3))
+        for p in corners:
+            q = tuple(p[k] + (mid[k] - p[k]) * 0.05 for k in range(3))      # just inside the board's outline
+            if inside(q):
+                deep.append(tuple(round(v, 2) for v in q))
+            if (int(math.floor(q[0])), int(math.floor(q[2]))) in read.gap:
+                astray.append(tuple(round(v, 2) for v in q))
+        for p in corners[:2]:
+            if abs(abs(p[2] - S.DOME_AXIS[1]) - skeleton.edge) < 0.1:
+                line = skeleton.arch_line
+                rise.append(p[1] - line.at(line.where(abs(p[0] - S.DOME_AXIS[0])))[1])
+    print("the lining: %d panels, %d boards; where the boards of a gore end at a cover plate they come in %.2f to "
+          "%.2f over the line of the arch girder's back" % (len(skeleton.lined), len(planks), min(rise), max(rise)))
+    check("no board of the vault's lining lies in a block or reaches into the open slit", deep + astray)
     check("the room's display entities stay within a room's share (%d)" % S.BUDGET_PER_ROOM,
           [placed] if placed > S.BUDGET_PER_ROOM else [])
     scope = D._other("machines", "scope")
