@@ -34,7 +34,7 @@ of the lookout's lamp is placed by sky/lights (windows(), and the kit's suggest(
 hangs no wire to the tower (the director, 11-16: the mast itself is the aerial), so the shaft
 carries no bracket or hook for one: its four faces are flush alike. The clock room behind the
 dials is interiors/clockroom; what it reads of the well is WELL_X/Z/Y, ROOM_FLOOR, backs() and
-DIAL_BACKS, and way_up() opens the door and stands the ladder for it.
+DIAL_BACKS, and way_up() opens the door, stands the ladder and lays the room's floor for it.
 
 The mast is two display models, the only ones of the main line: bld_tower_mast, the pole with all
 that is fixed to it, and bld_tower_cups, the cup wheel, a piece of its own so that the motion line
@@ -166,9 +166,11 @@ ROOM_FLOOR = DIAL_Y[0] - 2.0        # 24.0: the top of the clock room's floor. T
 #                                     from wall to wall: the room is walked under the backs of the dials
 LADDER_AT = (X0 + 1, Z0 + 1)        # (11, -32): the well's north-west corner. Only the four corner columns
 #                                     and the middle 3 x 3 run clear all the way from the deck to the room
-LADDER_Y = (FOOT, int(ROOM_FLOOR) - 1)                  # 18 .. 23: the ladder's rows; the last one is the
-#                                                         hatch in the room's floor
+LADDER_Y = (FOOT, int(ROOM_FLOOR))  # 18 .. 24: the ladder's rows. Row 23 is the hatch in the room's floor;
+#                                     the last one stands above the floor, to step off by
 LADDER = B.LADDER                   # the game's ladder: it is climbed by walking into it, without a click
+FLOOR = B.FLOOR_WOOD                # the boards of the clock room's floor, as in the building's rooms
+COVER = B.IRON_HATCH                # the plate that lies on the head of a slit's glass in the room's floor
 
 
 def backs(face):
@@ -280,16 +282,28 @@ def _door(c, o, opened):
 
 
 def way_up(canvas, origin=(0, 0, 0)):
-    """Let visitors into the tower: for interiors/clockroom, which calls this from its build().
-    Until it does the tower is shut and its well empty. The door of the roof walk stands open, and
-    a ladder climbs the north-west corner of the well, on the west wall, from the deck to the
-    hatch in the clock room's floor (LADDER_AT, LADDER_Y). Nothing on the way is clicked: the
-    map's reach is 0. Returns the ladder's cells, without the origin: the room keeps them clear."""
+    """Let visitors into the tower and up to the clock room: for interiors/clockroom, which calls
+    this from its build(). Until it does the tower is shut and its well empty.
+
+    The door of the roof walk stands open. A ladder climbs the north-west corner of the well, on
+    the west wall, from the deck through the hatch in the room's floor and one row past it, to
+    step off by (LADDER_AT, LADDER_Y). The room's floor lies in the row under ROOM_FLOOR: boards
+    wherever the well is open in that row, but for the ladder's corner; along the walls it is
+    the heads of the slits' fields, which stand in that row already, and on the head of each
+    slit's glass lies an iron plate, where the floor would show a pane underfoot. Nothing on the
+    way is clicked: the map's reach is 0. Returns the ladder's cells, without the origin: the
+    room keeps them clear."""
     _door(canvas, origin, True)
     x, z = LADDER_AT
     cells = [(x, y, z) for y in range(LADDER_Y[0], LADDER_Y[1] + 1)]
     for x, y, z in cells:
         _set(canvas, origin, x, y, z, st(LADDER, facing="east"))
+    row = int(ROOM_FLOOR) - 1
+    fields = {f.cell(i, 1) for f in FACES for i in ARCH}
+    _fill(canvas, origin, INSIDE - fields - {LADDER_AT}, row, FLOOR.block)
+    for f in FACES:
+        x, z = f.cell(MID, 1)
+        _set(canvas, origin, x, row + 1, z, st(COVER, facing=O.NAME[f.inward], half="bottom", open="false"))
     return cells
 
 
@@ -491,7 +505,7 @@ def _drawings():
     way_up(c)
     print(f"\nSECTION through the ladder with the way up open (z = {LADDER_AT[1]}; west on the left):\n")
     print(O.section(c, "z", LADDER_AT[1], (X0 - 2, X1 + 2), (FOOT, SHAFT_TOP)))
-    for y in (FOOT, SLIT_Y[0], int(ROOM_FLOOR), DIAL_Y[0]):
+    for y in (FOOT, SLIT_Y[0], int(ROOM_FLOOR) - 1, int(ROOM_FLOOR), DIAL_Y[0]):
         print(f"\nPLAN of row y = {y} with the way up open (north up):\n")
         print(_plan_row(c, y))
 
