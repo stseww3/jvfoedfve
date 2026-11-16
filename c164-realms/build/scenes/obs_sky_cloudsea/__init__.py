@@ -26,7 +26,8 @@ from artkit.canvas import Canvas, Mix
 from scenes.obs import materials
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
-from scenes.obs.sky import cloudsea, comet
+from scenes.obs.site import _rail as R
+from scenes.obs.sky import _line, cloudsea, comet
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 240          # the look and the sea reach far past the hilltop
@@ -158,8 +159,8 @@ def _trestle(c):
         y, half = (int(top) - 1, "top") if top == int(top) else (int(top // 1), "bottom")
         for dz in (-1, 1):
             c.set(x, y, z + dz, IRON.slab + f"[type={half}]")
-        if top <= TRACK_END:
-            break                                                     # the track's last column
+        if top <= TRACK_END or x >= R.FOOT - 1:
+            break                                                     # the track's last column: x 111 (site/_rail)
         cap = y if half == "top" else y - 1
         if (x - x1 - 7) % 6 or cap - 1 <= cloudsea.LOW:
             continue
@@ -174,12 +175,31 @@ def _trestle(c):
                     c.set(x, yy, z + dz, B.IRON_PIPE + "[axis=y]")
 
 
+def _viaduct(c):
+    """A stand-in for the stone viaduct (site/viaduct) on site/_rail's line, from the incline's foot
+    to the line's end under the sea: a bed of stone under the track's three rows, the rails on it,
+    and under the bed at every pier a shaft as far down as y -24. Lower, a pier is the cloud's
+    (sky/_line), and so is the sea over the line's end."""
+    piers = R.piers()
+    for (x, z), cell in R.deck(1.5).items():
+        if cell.s < R.S_FOOT:
+            continue
+        y, half = R.slab(cell.top)
+        if abs(cell.right) >= 0.5:
+            c.set(x, y, z, IRON.slab + f"[type={half}]")
+        c.set(x, y - 1, z, STONE)
+        if any(abs(cell.s - p.s) <= R.PIER / 2.0 for p in piers):
+            for yy in range(y - 2, R.CLOUD - 1, -1):
+                c.set(x, yy, z, STONE)
+
+
 def build():
     c = Canvas()
     _mountain(c)
     _paving(c)
     _massing(c)
     _trestle(c)
+    _viaduct(c)
     cloudsea.build(c, (0, 0, 0), dress=True)
     return c
 
@@ -221,6 +241,12 @@ VIEWS = {
     # from the station's south-east corner along the track to where it runs into the cloud
     "track_end": ((S.CABLE_STATION[2] - 0.5, S.STATION_GROUND + S.EYE, S.CABLE_STATION[3] - 0.5),
                   (141, -27, -49), 14000),
+    # the railway's end (site/_rail, sky/_line): the bank over it from the mountain's side, the mouth
+    # from up the line, and what a rider sees in the cleft where the train waits and on the way out
+    "bank": ((132, -8, 52), (R.FAR + 0.5, -25, 82), 14000),
+    "mouth": (R.at(_line.MOUTH - 22).off(up=3.0), R.at(_line.MOUTH + 6).off(up=2.0), 14000),
+    "cleft": (R.at(R.START).off(up=2.3), R.at(_line.MOUTH - 12).off(up=4.0), 14000),
+    "cleft_out": (R.at(_line.MOUTH + 4).off(up=2.3), R.at(_line.MOUTH - 30).off(up=5.0), 14000),
 }
 
 # What preview.py draws when it is not told which: the whole site from above, the sunset rail
