@@ -931,8 +931,8 @@ def test_play_turn():
                     off = max(off, math.dist(eye, e.pos))
                     want = a0 + (a1 - a0) * (t - start - first) / travel
                     assert abs(_turned(want, _angle(tip, e.pos))) < math.degrees(part.stray / 2.0) + 1e-3, (cycle, t)
-                for t in _spans(start + first + travel, rest):
-                    assert math.dist(e.point(t, (-1.0, 0.0, 0.0)), e.pos) < 1e-6, (cycle, t)
+                for t in _spans(start + first + travel, rest):      # a pose is written to six places
+                    assert math.dist(e.point(t, (-1.0, 0.0, 0.0)), e.pos) < 1e-5, (cycle, t)
                     assert abs(_turned(a1, _angle(e.point(t, (1.0, 0.0, 0.0)), e.pos))) < 1e-3, (cycle, t)
         assert 0.0 < off <= part.stray + 1e-6 and part.stray <= MK.WOBBLE_MOST, (off, part.stray)
         # stop puts every one of them back as it was placed
