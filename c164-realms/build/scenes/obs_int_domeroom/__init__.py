@@ -2,8 +2,9 @@
 
 The dome room in a box: the drum and the dome with its two doorways (main/dome), what main/shell
 lays in the room and right under it (the floor, the opening round the pier with its curb and
-railing, the pier's cap, the head of the ring stair), and the telescope (machines/scope: the real
-one as soon as its module is in the tree, with its red lamp). Of main/shell only the rows from the
+railing, the pier's cap, the head of the ring stair), the telescope (machines/scope: the real
+one as soon as its module is in the tree, with its red lamp) and the dome's gear (machines/dome),
+so that V8 is drawn here with everything the map has in it. Of main/shell only the rows from the
 hall's ceiling up are taken: the hall itself is not in the box, which is closed off in dark stone
 under that ceiling. While a package is not in the tree a stand-in built from the skeleton's
 numbers takes its place.
@@ -121,8 +122,17 @@ def shell():
     c = Canvas()
     _shell(c)
     _rotunda(c)
-    c.machines = _scope(c)
+    c.machines = _scope(c) + _gear(c)
     return c
+
+
+def _gear(c):
+    """What turns the dome and opens its slit (machines/dome), once it stands in the master scene:
+    the rail and the trucks on the ledge, the toothed ring, the hand wheel in the north-west corner,
+    the winch at the slit's foot and the weights under the arch girders. V8 has all of it in the
+    picture. Returns the display entities placed."""
+    gear = domeroom._other("machines", "dome")
+    return gear.build(c) if gear is not None else 0
 
 
 def dressed():
@@ -152,9 +162,10 @@ def build_models():
         module = domeroom._other("props", name)
         if module is not None:
             out.update(module.models())
-    scope = domeroom._other("machines", "scope")
-    if scope is not None:
-        out.update(scope.models())
+    for name in ("scope", "dome"):
+        module = domeroom._other("machines", name)
+        if module is not None:
+            out.update(module.models())
     return out
 
 
