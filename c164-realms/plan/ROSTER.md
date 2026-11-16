@@ -1,6 +1,6 @@
 # 名单：第 3 班（11-16 凌晨起）
 
-总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 08:46。点名只点「聊天号」一栏；聊天号“—”是还没开出来。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
+总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 08:56。点名只点「聊天号」一栏；聊天号“—”是还没开出来。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
 
 - 总监：A0，聊天 c164。11-16 08:24 起只有三种事找他：碰红线的、跨类别对不拢的、要改 `ART-PLAN.md` 的。
 - 总监助理：aide，聊天 c320。名单上的事找他：谁是谁、找谁对接口、新分支报给他、手上的卡都交付了领下一张、节点不回单了报给他。
@@ -61,16 +61,16 @@
 
 ## 新开的六人（总监 11-16 08:36；Fable 5.2 max，聊天号 c356 到 c361）
 
-一人一张开人时没人动的卡；节点是总控独占给他们的。新分支在各人【领卡】以后填。
+一人一张开人时没人动的卡；节点是总控独占给他们的。六个人 08:45 到 08:52 都到岗了。
 
 | 代号 | 聊天号 | 节点 | 卡 | 对口 | 审批人 | 新分支 |
 | --- | --- | --- | --- | --- | --- | --- |
-| rec | c356 | node101 | machines/recorders（第一批剩的那张，没有前任） | clocks（c345）：母钟和记录仪怎么接 | cr3 | 未报 |
-| smoke | c357 | node102 | motion/smoke（没有前任） | a2（c322，motion 牵头）：循环和登记怎么用 | cr2 | 未报 |
-| vault | c358 | node103 | interiors/platevault（南翼底层底片库和暗房，P3，没有前任） | m1（c335）：仪器和配电板；shell（c325）：空腔和门洞 | cr4 | 未报 |
-| clkrm | c359 | node104 | interiors/clockroom（报时塔钟室，P3，没有前任） | 搭档 tower（c327）：塔身这一侧（井、沉格背板、窗后光源、开口）他来备 | cr4 | 未报 |
-| astro | c360 | node105 | interiors/batteryroom（北翼底层蓄电池室，P3；简报原写 astroroom，总监 08:36 改的）。接 stair 留在 `cursor/c164-stair-batteryroom-f3-b330`（`0aae4ace`）的草图、出图脚本和交接说明 | 搭档 mast（c346）：配电板和铜排他来做；hall（c348）：门；m2（c351）：上楼的两根立管；shell（c325）：空腔的门洞和楼板 | cr4 | 未报 |
-| sound | c361 | node106 | motion/sound（没有前任） | a2（c322） | cr2 | 未报 |
+| rec | c356 | node101 | machines/recorders（第一批剩的那张，没有前任） | clocks（c345）：母钟和记录仪怎么接；m2（c351）：授时室木台上转鼓、电报机、传送管口的位置 | cr3 | `cursor/c164-rec-recorders-f3-aae1` |
+| smoke | c357 | node102 | motion/smoke（没有前任） | a2（c322，motion 牵头）：循环和登记怎么用 | cr2 | `cursor/c164-smoke-smoke-f3-e07b` |
+| vault | c358 | node103 | interiors/platevault（南翼底层底片库和暗房，P3，没有前任） | 搭档 power（c339）：暗房的水槽、水管、小道具他来做；m1（c335）：仪器和配电板；shell（c325）：空腔和门洞 | cr4 | `cursor/c164-vault-platevault-f3-4cc1` |
+| clkrm | c359 | node104 | interiors/clockroom（报时塔钟室，P3，没有前任） | 搭档 tower（c327）：塔身这一侧（井、沉格背板、窗后光源、开口）他来备 | cr4 | `cursor/c164-clkrm-clockroom-f3-82c8` |
+| astro | c360 | node105 | interiors/batteryroom（北翼底层蓄电池室，P3；简报原写 astroroom，总监 08:36 改的）。接 stair 留在 `cursor/c164-stair-batteryroom-f3-b330`（`0aae4ace`）的草图、出图脚本和交接说明 | 搭档 mast（c346）：配电板和铜排他来做；hall（c348）：门；m2（c351）：上楼的两根立管；shell（c325）：空腔的门洞和楼板 | cr4 | `cursor/c164-astro-batteryroom-f3-e786` |
+| sound | c361 | node106 | motion/sound（没有前任） | a2（c322） | cr2 | `cursor/c164-sound-sound-f3-cbc6` |
 
 总监原打算再开四个（n7 到 n10），总控说先别开（没机器），没开。
 
@@ -84,8 +84,8 @@
 | 穹顶室 a3（c349） | m1（仪器）、dome（穹顶内面的板条）、scope（镜子和它同框） |
 | 星图室 chart（c350） | snow（纸品）、m5（南墙书架） |
 | 授时室 m2（c351） | shell（盒子和真楼对格）、lamps（电器和牌子） |
-| a2（c322）的着色器（Realms 不收注册表文件，天、雾、光色改由资源包的核心着色器带；头号风险） | a1（资源包的底座是他的；审批的活排最前） |
-| 新房的搭档 | clockroom：tower 帮 clkrm；batteryroom：mast 帮 astro |
+| a2（c322）的着色器（Realms 不收注册表文件，天、雾、光色改由资源包的核心着色器带；头号风险） | a1（资源包的底座是他的；审批的活排最前）、comet（彗星和远山都在这片天里） |
+| 新房的搭档 | clockroom：tower 帮 clkrm；batteryroom：mast 帮 astro；platevault：power 帮 vault |
 
 ## 还没人领的卡
 
