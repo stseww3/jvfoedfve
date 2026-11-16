@@ -1,12 +1,14 @@
 """The look carried by the resource pack: core shaders written from mood.LOOKS (card sky/safe-look).
 
-Realms takes no map whose data pack holds registry files, so the finished map has no biome and no
+Realms takes no map whose data pack holds registry files, so no world of ours has a biome or a
 timeline of its own: a vanilla biome, the clock and the weather stopped. What sky/mood.py states is
 then drawn by the game's own shaders, replaced in the resource pack. mood.LOOKS stays the only
 place a number is written; this module turns one look into shader text.
 
     files(look)      -> {path under assets/minecraft/shaders/: text}
-    pack(pack_dir)   -> [str]      write them (the scene's write_pack() calls it)
+    pack(pack_dir)   -> [str]      write them. No scene calls it: the drivers do, for every scene
+                     whose mood.py hands on sky/mood.py's BIOMES (artkit.mood.Carried.pack), and
+                     tools/export.py does for the finished map
     Twin(look)       the same arithmetic in numpy, for the checks and for a picture without the game
 
 What is replaced, and what each file does (the game's text is read from the client jar and changed
