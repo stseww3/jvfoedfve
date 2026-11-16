@@ -412,37 +412,31 @@ def functions(spec):
     return out
 
 
-def label_lines(spec):
-    """The lines of text that hang in a trial save's first view, as the save is made: (text, colour).
-    The functions rewrite the second to the last when somebody joins, so one screenshot tells what
-    they found, and tells that they did not run when the lines still read as here."""
-    biome = (f"生物群系 {spec['biome'].split(':')[1]}：还没查", "gray") if spec["look"] else \
-        ("这个存档不带生物群系和时间线", "gray")
-    return [(f"c164 试传 {spec['trial']}", "gold"), ("数据包的函数：没有跑", "red"), biome,
-            ("进来时的游戏模式：还没查", "gray"), ("难度：还没查", "gray")]
-
-
 def trial_functions(spec, out):
     """What a trial save's functions do beyond the map's: on every joining the player is put on the
-    spot, and they say what they found, in the chat and on the lines of text in the first view.
+    spot and told what they found: once in the chat, and for as long as he stays in the line over
+    the hotbar, which is sent anew every second. What stands there is what the functions find now,
+    on this server; no line there means that no function runs. (Nothing is written into the world
+    for this: a line of text kept in the save would still tell of the last time it was opened.)
 
     Three steps, each its own function, a later step on a later tick: say1 at once; say2 two
-    seconds on, when the chunk and the lines of text are loaded for certain; say3 the tick after.
-    say2's last line calls a function that is not there when the biome is not (a command naming an
-    unknown biome does not parse, and the file with it is dropped), so nothing may follow it."""
-    head = snbt(f"[c164 试传 {spec['trial']}] ", "gold")
-
-    def show(line, text, colour):
-        return f"data merge entity @e[type=minecraft:text_display,tag=c164.l{line},limit=1] {{text:{snbt(text, colour)}}}"
-
+    seconds on, when the chunk is loaded for certain; say3 the tick after. say2's last line calls a
+    function that is not there when the biome is not (a command naming an unknown biome does not
+    parse, and the file with it is dropped), so nothing may follow it."""
+    name = f"c164 试传 {spec['trial']}"
+    head = snbt(f"[{name}] ", "gold")
+    score = "{score:{name:\"#diff\",objective:\"" + FACTS + "\"}"
     out["load"].append(f"scoreboard objectives add {FACTS} dummy")
     out["join"][1:1] = ["tag @s remove c164.adv", "execute if entity @s[gamemode=adventure] run tag @s add c164.adv"]
-    out["join"] += [f"function {NS}:back", "tag @s remove c164.say2", "tag @s remove c164.say3", "tag @s add c164.say1"]
+    out["join"] += [f"function {NS}:back", "tag @s remove c164.say2", "tag @s remove c164.say3", "tag @s remove c164.bar",
+                    "tag @s add c164.say1"]
     out["tick"] += [
         f"execute as @a[tag=c164.say3] at @s run function {NS}:say3",
         f"execute as @a[tag=c164.say2] run scoreboard players add @s {FACTS} 1",
         f"execute as @a[tag=c164.say2,scores={{{FACTS}=40..}}] at @s run function {NS}:say2",
         f"execute as @a[tag=c164.say1] at @s run function {NS}:say1",
+        f"scoreboard players add #beat {FACTS} 1",
+        f"execute if score #beat {FACTS} matches 20.. run function {NS}:bar",
     ]
     out["say1"] = [
         "tag @s remove c164.say1",
@@ -450,24 +444,11 @@ def trial_functions(spec, out):
         f"scoreboard players set @s {FACTS} 0",
         f"tellraw @s [{head},{snbt('数据包的函数在跑：这几行字是函数说的。')}]",
     ]
-    out["say2"] = [
-        "tag @s remove c164.say2",
-        "tag @s add c164.say3",
-        f"execute store result score #diff {FACTS} run difficulty",
-        show(2, "数据包的函数：在跑", "green"),
-        "execute if entity @s[tag=c164.adv] run " + show(4, "进来时：冒险模式", "green"),
-        "execute unless entity @s[tag=c164.adv] run " + show(4, "进来时：不是冒险模式", "yellow"),
-        f"execute if score #diff {FACTS} matches 0 run " + show(5, "难度：和平", "green"),
-    ]
-    out["say2"] += [f"execute if score #diff {FACTS} matches {n} run " + show(5, f"难度：{word}（不是和平）", "yellow")
-                    for n, word in ((1, "简单"), (2, "普通"), (3, "困难"))]
-    out["say3"] = ["tag @s remove c164.say3"]
+    out["say2"] = ["tag @s remove c164.say2", "tag @s add c164.say3", f"execute store result score #diff {FACTS} run difficulty"]
+    out["say3"] = ["tag @s remove c164.say3", "tag @s add c164.bar"]
     if spec["look"]:
-        short = spec["biome"].split(":")[1]
-        out["say2"] += [f"scoreboard players set #biome {FACTS} 0", show(3, f"生物群系 {short}：不在", "red"),
-                        f"function {NS}:biome"]
-        out["biome"] = [f"execute if biome ~ ~ ~ {spec['biome']} run scoreboard players set #biome {FACTS} 1",
-                        f"execute if score #biome {FACTS} matches 1 run " + show(3, f"生物群系 {short}：在", "green")]
+        out["say2"] += [f"scoreboard players set #biome {FACTS} 0", f"function {NS}:biome"]
+        out["biome"] = [f"execute if biome ~ ~ ~ {spec['biome']} run scoreboard players set #biome {FACTS} 1"]
         out["say3"] += [
             f"execute if score #biome {FACTS} matches 1 run tellraw @s "
             f"[{head},{snbt('生物群系 ' + spec['biome'] + '：在。', 'green')}]",
@@ -476,12 +457,28 @@ def trial_functions(spec, out):
         ]
     else:
         out["say3"].append(f"tellraw @s [{head},{snbt('这个存档不带自定义生物群系和时间线，天是游戏自己的。')}]")
-    score = "{score:{name:\"#diff\",objective:\"" + FACTS + "\"}}"
     out["say3"] += [
-        f"execute if entity @s[tag=c164.adv] run tellraw @s [{head},{snbt('进来时已经是冒险模式；难度 ')},{score},{snbt('（0 是和平）。')}]",
-        f"execute unless entity @s[tag=c164.adv] run tellraw @s [{head},{snbt('进来时不是冒险模式（函数已改成冒险）；难度 ')},{score},{snbt('（0 是和平）。')}]",
+        f"execute if entity @s[tag=c164.adv] run tellraw @s [{head},{snbt('进来时已经是冒险模式；难度 ')},{score}}},{snbt('（0 是和平）。')}]",
+        f"execute unless entity @s[tag=c164.adv] run tellraw @s [{head},{snbt('进来时不是冒险模式（函数已改成冒险）；难度 ')},{score}}},{snbt('（0 是和平）。')}]",
         f"tellraw @s [{head},{snbt('请先别动鼠标，按 F2 截一张图；再低头看平台、回头看身后。', 'yellow')}]",
+        f"function {NS}:bar",
     ]
+    # the line over the hotbar: one command for each way things can stand
+    dot = snbt(" · ", "gray")
+    out["bar"] = [f"scoreboard players set #beat {FACTS} 0"]
+    for adventure in (True, False):
+        for biome in ((True, False) if spec["look"] else (None,)):
+            for peaceful in (True, False):
+                who = f"@a[tag=c164.bar,tag={'' if adventure else '!'}c164.adv]"
+                when = "" if biome is None else f"{'if' if biome else 'unless'} score #biome {FACTS} matches 1 "
+                when += f"{'if' if peaceful else 'unless'} score #diff {FACTS} matches 0 "
+                parts = [snbt(name + " ", "gold"), snbt("函数在跑", "green"), dot,
+                         snbt("不带生物群系", "gray") if biome is None else
+                         snbt("生物群系在", "green") if biome else snbt("生物群系不在", "red"), dot,
+                         snbt("进来时冒险", "green") if adventure else snbt("进来时不是冒险", "yellow"), dot]
+                parts += [snbt("难度和平", "green")] if peaceful else \
+                    [snbt("难度 ", "yellow"), score + ',color:"yellow"}', snbt("（不是和平）", "yellow")]
+                out["bar"].append(f"execute as {who} {when}run title @s actionbar [{','.join(parts)}]")
 
 
 def _tag(path, entry):
@@ -737,21 +734,24 @@ def make(args):
         if refused:
             fail("the server refused: " + "; ".join(refused))
         if spec["trial"]:
-            # the lines of text: seven blocks ahead of who arrives, between what stands there and the sky
+            # the save's name, hung seven blocks ahead of who arrives, between what stands there and the sky
             turn = math.radians(spec["yaw"])
-            lx, lz = x - 7.0 * math.sin(turn), z + 7.0 * math.cos(turn)
-            for n, (text, colour) in enumerate(label_lines(spec), 1):
-                reply = server.cmd(
-                    f"summon minecraft:text_display {num(lx)} {num(y + 5.7 - 0.38 * (n - 1))} {num(lz)} "
-                    f"{{text:{snbt(text, colour)},billboard:\"center\",line_width:400,shadow:1b,"
-                    f"brightness:{{sky:15,block:15}},Tags:[\"c164.label\",\"c164.l{n}\"],"
-                    "transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],"
-                    "translation:[0f,0f,0f],scale:[1.2f,1.2f,1.2f]}}")
-                if "Summoned" not in reply:
-                    fail(f"the line of text {n} was not put up: {reply}")
+            reply = server.cmd(
+                f"summon minecraft:text_display {num(x - 7.0 * math.sin(turn))} {num(y + 5.4)} {num(z + 7.0 * math.cos(turn))} "
+                f"{{text:{snbt('c164 试传 ' + spec['trial'], 'gold')},billboard:\"center\",shadow:1b,"
+                "brightness:{sky:15,block:15},Tags:[\"c164.label\"],"
+                "transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],"
+                "translation:[0f,0f,0f],scale:[1.5f,1.5f,1.5f]}}")
+            if "Summoned" not in reply:
+                fail(f"the save's name was not hung up: {reply}")
         server.cmd(f"gamerule max_block_modifications {default.group(1)}")
         facts["loop"] = server.cmd("scoreboard players get #run c164m")
         server.cmd("forceload remove all")
+        # the spawn's own chunk stays loaded. Where the default game mode is adventure the game sets
+        # who is new on the world spawn and lets him sink to the first thing that carries him; in
+        # 26.3 nothing is loaded at that moment, and without this he starts at the world's floor
+        # (seen in verify: y -63) until the first tick of the functions.
+        facts["forced"] = server.cmd(f"forceload add {math.floor(x)} {math.floor(z)}")
         facts["tick"] = server.cmd("tick query")
         server.stop()
         facts["issues"] = server.issues()
@@ -870,6 +870,10 @@ def visit(server, spec, results, tag, came):
     check(results, tag + "join", near(bot.position, feet) and turned(bot),
           f"joined in {joined:.1f} s at {first[0]} facing {first[1]}, after the functions at {bot.position} "
           f"facing {bot.rotation}; wanted {feet} facing {aim}")
+    # where the game itself sets him, before any function: the world spawn and its facing
+    check(results, tag + "spawn", near(first[0], feet) and abs(first[1][1] - aim[1]) < 0.05
+          and abs((first[1][0] - aim[0] + 180.0) % 360.0 - 180.0) < 0.05,
+          f"the game set him at {first[0]} facing {first[1]}")
     mode = server.cmd(f"data get entity {BOT} playerGameType", quiet=True)
     reach = server.cmd(f"attribute {BOT} minecraft:block_interaction_range base get", quiet=True)
     tags = server.cmd(f"tag {BOT} list", quiet=True)
@@ -880,16 +884,15 @@ def visit(server, spec, results, tag, came):
     if spec["trial"]:
         check(results, tag + "greeting", any("函数在跑" in s for s in said) and any("F2" in s for s in said),
               " | ".join(said) or "nothing was said")
-        lines = [server.cmd(f"data get entity @e[type=minecraft:text_display,tag=c164.l{n},limit=1] text", quiet=True)
-                 .split("entity data: ", 1)[-1].strip() for n in range(1, len(label_lines(spec)) + 1)]
-        right = ["在跑" in lines[1],
-                 ("不是冒险" in lines[3]) != came["adventure"] and "冒险模式" in lines[3],
-                 ("不是和平" in lines[4]) != came["peaceful"] and "难度：" in lines[4] and "还没查" not in lines[4]]
+        bars = bot.texts("actionbar")
+        bar = bars[-1] if bars else ""
+        right = ["函数在跑" in bar, ("不是冒险" in bar) != came["adventure"], ("不是和平" in bar) != came["peaceful"]]
         if came["biome"] is not None:
-            right += [("不在" in lines[2]) != came["biome"] and "还没查" not in lines[2],
+            right += [("生物群系不在" in bar) != came["biome"], "生物群系" in bar,
                       any("：在。" in s for s in said) == came["biome"], any("不在" in s for s in said) != came["biome"]]
-        check(results, tag + "lines of text", all(right),
-              " | ".join(lines) + f"; wanted them to tell: adventure {came['adventure']}, peaceful {came['peaceful']}"
+        check(results, tag + "line over the hotbar", all(right),
+              (f"{bar} (sent {len(bars)} times)" if bars else "no such line was sent")
+              + f"; wanted it to tell: adventure {came['adventure']}, peaceful {came['peaceful']}"
               + (f", biome {came['biome']}" if came["biome"] is not None else ""))
     else:
         check(results, tag + "quiet", not said, " | ".join(said) or "nothing was said, as it should be")
@@ -1024,12 +1027,14 @@ def verify(args):
                 rules = {}
                 for rule, value in RULES + [("max_block_modifications", None)]:
                     reply = server.cmd(f"gamerule {rule}", quiet=True)
-                    rules[rule] = reply.rsplit(": ", 1)[-1].strip()
+                    rules[rule] = (re.search(r"set to (\S+)\s*$", reply) or re.search(r"()$", reply)).group(1) or reply
                 wrong = {r: v for r, v in rules.items() if dict(RULES).get(r) not in (None, v)}
                 report["rules"] = rules
                 check(results, "game rules", not wrong, f"{len(rules) - len(wrong)} of {len(rules)} as the list says"
                       + (f"; not: {wrong}" if wrong else "") + f"; max_block_modifications {rules['max_block_modifications']}")
-                check(results, "forced chunks", True, server.cmd("forceload query", quiet=True))
+                forced = server.cmd("forceload query", quiet=True)
+                check(results, "forced chunks", len(re.findall(r"\[-?\d+, -?\d+\]", forced)) == 1,
+                      forced + " (wanted: the spawn's chunk and no other)")
                 time.sleep(3.0)
                 check(results, "tick, empty", True, server.cmd("tick query", quiet=True).replace("\n", " | "))
                 found = server.cmd("difficulty", quiet=True)
