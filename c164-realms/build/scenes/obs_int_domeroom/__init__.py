@@ -134,6 +134,12 @@ def dressed():
 
 def build():
     c, n = dressed()
+    # the lamps the light line hangs along the building's ways are asked for by name: the one in the
+    # mouth of the well, under the border of this room's floor, is what stands the telescope on a
+    # lit foot in V8 (lights, #75630)
+    ways = getattr(domeroom._other("sky", "_lightkit"), "dress", None)
+    if ways is not None:
+        ways(c)
     sky.build(c, (0, 0, 0))         # the light line's sources go in last, when every piece is in place
     c.entity_counts = {"interiors": n, "machines": c.machines}
     return c
@@ -142,7 +148,7 @@ def build():
 def build_models():
     """The room's own models, and those of the shared pieces it places when they are in the tree."""
     out = dict(domeroom.models())
-    for name in ("furniture", "paper", "instruments"):
+    for name in ("furniture", "paper", "instruments", "lamps"):
         module = domeroom._other("props", name)
         if module is not None:
             out.update(module.models())
