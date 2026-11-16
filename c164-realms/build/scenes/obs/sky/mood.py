@@ -24,8 +24,13 @@ A look states what is seen: the colour overhead and the colour of the horizon ba
 sky colour and fog colour into each other on the way to the screen, so sky_color and fog_color are
 solved from the two seen colours (derive(); the formulas are in plan/parts/sky-notes.md 3).
 
-Biomes and timelines are registry files: after a change here the server restarts and the client
-reconnects (place.py says so). Other sky packages and the checks read LOOKS and values().
+The game is shown the look by the resource pack, not by these two as files: a Realms world takes
+no registry file, so BIOMES is artkit.mood.Carried and the drivers write the look as core shaders
+(sky/_shaders.py, from the same LOOKS), leave the world one of the game's own biomes and stop the
+clock at LOCK_TICK. A pack carries one look, DEFAULT. The biome and the timeline are what the
+offline renderer draws from, as before: there a shot still picks its version with "time", while
+the game shows the pack's look whatever a shot's time says. Other sky packages and the checks read
+LOOKS and values().
 """
 from artkit import mood as M
 
@@ -62,7 +67,7 @@ LEVEL_FULL, LEVEL_NONE = 8.0, 12.0
 AIR = 1600.0
 MIST = 587.0
 MIST_HEIGHT = 12.0
-REGISTRY_FOG_END = 192.0    # the registry look's own fog end; it leaves with the registry files
+REGISTRY_FOG_END = 192.0    # the fog end of the look as a biome: what the offline pictures are drawn with
 # The clock is stopped where the vanilla moon (the comet's slot) stands at MOON_ANGLE, on a day of
 # the full moon's picture (plan/parts/figs/sky_safe.py finds the hour). GAME_STAR_ANGLE is the
 # vanilla star angle at that hour: the star shader turns the field from it to STAR_ANGLE.
@@ -299,5 +304,11 @@ def _timeline():
     return M.timeline(tracks)
 
 
-BIOMES = {"obs_blue": _biome()}
+def _pack(pack_dir, biome=None):
+    """The look as the resource pack carries it (artkit.mood.Carried.pack): the core shaders."""
+    from . import _shaders
+    return _shaders.pack(pack_dir)
+
+
+BIOMES = M.Carried({"obs_blue": _biome()}, game_biome="minecraft:the_void", clock=LOCK_TICK, pack=_pack)
 TIMELINES = {"obs_looks": _timeline()}
