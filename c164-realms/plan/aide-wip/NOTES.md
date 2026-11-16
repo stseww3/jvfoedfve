@@ -118,3 +118,24 @@
   vault、mast→帮 power 过 V6（炉火窗、门里的光；mast 管锅炉一侧）；clkrm→帮 tower 过 V5；ashlar→a4（walkin 表）；
   m3→雨棚吊灯封顶（review 直接发的）。cable 不空（cr3、a4 派了三件）。comet 手空，留着等 lights 或审批人要人。
 - 10:12 的来历检查：207 条 -f3 分支全干净，没有一小时不推的；下一次 11:15 前后。
+
+## 11-16 10:52 的状态（补灯快道）
+
+- 总监 10:43（g2 #78341）：唯一卡候选版的是路上的灯。只加灯的包免重画留图，check 过了就交审批人，交付写「只加灯」；关口用 `bash tools/gate.sh <类>/<包> <提交> --base <总装头> --no-verify`（s2 10:46）。目标 11:30 版暗格到 0（定了不补的除外）。lights 整点、半点前给我报还剩几格。
+- 总监 10:45（g2 #78638）：#541 的封顶放开，楼梯厅光源可以到 11，补到那 39 格为 0；灯要暖；V7 墩后三连拱不亮过墩面；V4 门洞要读成暖的亮口（中位数 ≥ 0.20）。只加灯的包直接交 cr4。
+- 看的开关进了总装 fa0bee9a（a2 287c3b93）：数据包里没有注册表文件了；别的包不许写 `assets/minecraft/shaders/` 下那十个文件。
+- 暗格：sound 的 dark.md（`cursor/c164-sound-lightaudit-f3-cbc6-wip`），10:46 起台阶门槛和地面都按 5 级，定了不补的另列不进总数。583（0dfcb27a）→ 437 → 223 格 47 堆（9fbb2e0c，不补 48）。
+- 帮手（名单「帮手」一节为准，14e78e92）：星厅 hall←vault、clkrm；授时室 m2←a3（cr4 派）；发电房 power 自己；lights←dome、astro、m1、m5、comet、clocks；cable 接 dome 两堆里的一堆。空着：mast、cloud、snow，smoke 第五版以后。
+- 走查：A6（cfa03ef）室外 0（facade 10:47）；室内 a4 的 A6 还没写，A5 是 0。
+- 看板（10:30 版 A6）：过 V1 V2 V3 V7 V8 V9 V11（cr2 的 V1、V11 还是 10:00 版的分），没过 V4 3.8、V5 3.8、V6 3.6、V10 3.6，V12 等新机位。`/tmp/c164_aide/board.json` 手工维护。
+- five.py 第 1 行：walk_count 读 a4、facade 分支上最新的 in/out-findings；dark_count 读 sound 的 dark.md（「定了不补的 N 格」）。
+
+## 11-16 11:23 的状态（节点池断了）
+
+- 10:56:30 三台母机 whost4/5/6 挂了，node61～106 整段下线（总控 11:22 定的根因）。我是从 git 看出来的：10:56:28 以后没有一笔 `c164-node:` 提交。总控说第一批 11:48 起回来，11:58 回齐（他的钟比桥上的快几分钟），回来他报我，我在群里说。
+- 断着的时候通的机器（各一次一单）：node4 outb（锁 c340，导出）；node5、node6（开给 c318～c353，11:40 前跑我点名的短单，之后归 s1）；node7 lights（锁 c331，sky/lights 各段并在他的包里）；node8 tower（锁 c327，代投 interiors 只加灯的包，顺序 cr4 排：vault d208ca7a → power a9151633）；node9 sound（锁 c361，量暗格，替新六位代投）；node17 facade（锁 c321，11:35 头上的室外走查，替 a4 代投两单）；node12 s1。node63/65/67 是总控按旧探针误拨的，都不通；65、67 已还 a2、a1。
+- 总监 11:16（g2 #81153）池子不通时的走法：只加灯或小到审批人逐行读过、本场景 check 跑过的包先合，写「关口待跑」；一行没跑过的先在总监机（tools/a0job.sh，一次一单）跑一次本场景 check，顺序我点名；总监机只收这种单和 s2 的 checkall；11:35 取头（原 11:28），outb 不等 checkall 直接导，这一版叫 A7。
+- 我点的顺序：总监机 sdome 两处门 → m2 的 V10（5a5fa8a0）→ snow 小穹顶（06611a13），11:35 s2 插队；node5 a6 的 props/lamps 63d3e7fc → chart 的 materials/windows 0a8fd47f → m5 的 domegear；node6 hall 的 3b09f9d 的 check 加 v4、v7 两张图。
+- 导览 motion/guide（总监 11:03 的新卡，11:13 改过）：甲 mast；乙 rec、ashlar（a6 写公共的 props/plaques）；丙 smoke、cloud。11:50 前交第一版，不挡候选版。
+- 群里我发的：#1589 #1591（导览）、#1608（断池公告）、#1612（活机器）、#1617（总监机顺序）、#1620 #1621（点名投单）。名单 baa46d97。
+- 11:00 的三个数：室内挡人 2（a4 11:02：穹顶室通屋面的两扇铁门、小穹顶的门，sdome 的文件）、室外 0（A6）；暗 210 格（01c7ab6e，10:52 量，不补 48）；图过 8 张（A6：V1 V2 V3 V7 V8 V9 V11 V12），没过 V4 3.8、V5 3.8、V6 3.6、V10 3.6。

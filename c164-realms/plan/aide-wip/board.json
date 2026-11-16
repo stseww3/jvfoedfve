@@ -1,7 +1,21 @@
 {
-  "version": "10:30 版 cfa03ef7（A6）",
-  "note": "the director's rule of 11-16 10:29: the mean of the five items is 4.0 or more and no item is below 3; kept by hand from the reviewers' lines (review V2-V5, cr2 V1 V6 V11 V12, cr3 V7, cr4 V8-V10). 10:30: review V2 V3 pass, V4 V5 3.8; cr3 V7 4.0 pass; cr4 V8 V9 pass, V10 3.6; cr2's four are the 10:00 ones until his A6 line comes (V1 V11 pass, V6 3.6, V12 on the new camera)",
-  "pass": ["V1", "V2", "V3", "V7", "V8", "V9", "V11"],
-  "fail": {"V4": "3.8", "V5": "3.8", "V6": "3.6", "V10": "3.6"},
-  "wait": ["V12"]
+  "version": "A6 cfa03ef7",
+  "note": "the director's rule of 11-16 10:29: the mean of the five items is 4.0 or more and no item is below 3; kept by hand from the reviewers' lines (review V2-V5, cr2 V1 V6 V11 V12, cr3 V7, cr4 V8-V10). A6: review V2 V3 pass, V4 V5 3.8; cr3 V7 4.0 pass; cr4 V8 V9 pass, V10 3.6; cr2 10:56 on s1 d4b75c5b: V1 V11 V12 (new camera) pass 4/4/4/4/4, V6 3/4/3/4/4",
+  "pass": [
+    "V1",
+    "V2",
+    "V3",
+    "V7",
+    "V8",
+    "V9",
+    "V11",
+    "V12"
+  ],
+  "fail": {
+    "V4": "3.8",
+    "V5": "3.8",
+    "V6": "3.6",
+    "V10": "3.6"
+  },
+  "wait": []
 }
