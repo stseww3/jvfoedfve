@@ -1,0 +1,14 @@
+check obs_mach_radiomast_b at 3f97d18
+[WARN] regen     3689 blocks, 21 entities, 11 models, 711 resource-pack files, 10 data-pack files, look: 1 biomes, 1 timelines (0.6 s)
+                 registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+[PASS] conflicts the scene writes 710 files, no file written twice, the folders and the prefix of machines are kept (14 packages run alone)
+[PASS] strays    140 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      551 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    11 kinds of block placed, all in the occupancy table
+[PASS] flatwall  no wall face runs flat over more than 5x5
+[PASS] entities  21 display entities, 5 drawn out along one axis, 3 models never placed
+[PASS] views     14 shots, most display entities in view: 21 (v1), limit 600; counted without what walls hide
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 3.2% hidden (base storey 11.3% by blocks and 0.0% more by models, great windows 0.0%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 0.6 s)
+[PASS] motion    nothing moves
+result: PASS (0 failed, 1 with warnings)
