@@ -8,6 +8,7 @@ import sys
 
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
+from scenes.obs.interiors import _domechair as R
 from scenes.obs.interiors import domeroom as D
 from scenes.obs.main import _order as O
 
@@ -135,6 +136,13 @@ for col in read.reach - read.gap:
 check("no copper shows indoors: every plate has its board or its iron on the inside", green)
 check("a light source sits in a free cell",
       [cell for cell, _level, _rank, _name in D.lights() if c.name(*cell) not in (None, B.LIGHT)])
+band = R.band()
+print("the observing ladder rolls over %.2f .. %.2f blocks from the dome's axis; it is parked in the columns %s"
+      % (band[0], band[1], sorted(R.columns())))
+check("nothing of the room's furniture stands in the band the observing ladder rolls over",
+      ["%s %.2f..%.2f" % got for got in R._in_the_way(*band)])
+check("the parked ladder leaves the stair's exit, the observing floor and the doorways alone",
+      R.columns() & ({EXIT} | O.grow({EXIT}) | floor | set(doors)))
 
 # --- the dome's skeleton ----------------------------------------------------------------------------
 skeleton = D.frame(read)
