@@ -56,8 +56,8 @@ the canvas by then and places, in this order:
             cross gallery one on the wall, as high as the hall's own along the galleries and at
             their level (7). The way to the west door and the grand stair have the hall's lamps.
             Over the roofs (dome measured them, #74898, #75042): beside either door of the dome
-            room, on the side of the stepped corner; inside the small dome's door and over the
-            clock tower's; low on the inner gable where a roof way crosses it and at the foot of
+            room, on the side of the stepped corner (9: the passage behind the door has it too);
+            over the clock tower's door; low on the inner gable where a roof way crosses it and at the foot of
             the way down from a ridge walk to an end terrace; over the head of the west door,
             outside (dome, #79095). The sources are of the third rank (_lightkit.WAY, 8); where
             8 does not bring the floor to the walk's line a row may ask for more, 11 at the most
@@ -563,7 +563,8 @@ def way_lamps():
     tread = {}
     for x, z, y, _half, _top in shell.ring_stair():
         tread.setdefault((x, z), y)                                 # the first pass of a column: the lower one
-    out = [((x0, S.GROUND + WAY_ROW, cz), "west", L.WAY, "the pier's foot, where the way from the west door ends"),
+    out = [((x0, S.GROUND + WAY_ROW, cz), "west", L.WAY + 1,                 # m1, #79741: at 9 the floor at the pier's
+            "the pier's foot, where the way from the west door ends"),         # corners, (2, 0, 3) and (3, 0, 2), has 5
            ((x0, tread[(ex0, cz)], cz), "west", L.WAY, "the ring stair's west run and the cross gallery under it"),
            ((cx, tread[(cx, ez1)], z1), "south", L.WAY + 1,
             "the ring stair's south run and its south-west corner over the cross gallery"),     # astro, #79627: 9
@@ -593,13 +594,16 @@ def _stretches():
 # Over the roofs, as dome (c326) measured them on the walk-through's stations (#74898, #75042): the
 # block a lamp is fixed to, the way its face looks, its level, what it lights. The four on the
 # gables hang on walls one block high, level with the knee: there is no higher wall beside those ways.
-# The one inside the small dome's door hangs low too, in the row of the feet: the room is an
-# observing room and keeps dark but for its desk (7 is the least that brings its three cells of
-# floor to 5), and from y 18.9 up the wall beside the door carries the dome's hand crank (snow, #76680).
+# The two beside the dome room's doors have 9: the passage behind either door ends a cell further
+# in than a lamp of 8 brings to the walk's line, and a second lamp in the opening over the leaves
+# would hang a cell from the first (dome and cable tried it, sky/_ways_roofs.py; the levels behind
+# the door are the same either way). None inside the small dome's door: the room is
+# interiors/astroroom's and its own sources bring its floor to the walk's line; the wall beside
+# the door carries the dome's hand crank from y 18.9 up, and the astrograph's guard plates stand
+# before it in the row of the feet (snow, #76680, #81400).
 ROOF_WAYS = [
-    ((11, 20, 11), "east", L.WAY, "the dome room's south door, from outside"),
-    ((11, 20, -11), "east", L.WAY, "the dome room's north door, from outside"),
-    ((9, 18, 31), "east", L.WAY - 1, "the small dome, inside its door"),
+    ((11, 20, 11), "east", L.WAY + 1, "the dome room's south door, from outside, and the passage behind it"),
+    ((11, 20, -11), "east", L.WAY + 1, "the dome room's north door, from outside, and the passage behind it"),
     ((10, 20, -30), "west", L.WAY - 1, "the clock tower's door on the roof"),
     ((12, 18, 14), "north", L.WAY, "the south roof way where it crosses the inner gable"),
     ((12, 18, -14), "south", L.WAY, "the north roof way where it crosses the inner gable"),
