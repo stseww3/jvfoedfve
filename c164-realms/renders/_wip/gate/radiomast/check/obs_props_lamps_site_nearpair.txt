@@ -1,0 +1,40 @@
+check obs_props_lamps_site_nearpair at 7f911ce
+[WARN] regen     189903 blocks, 769 entities, 475 models, 2104 resource-pack files, 410 data-pack files, look: 1 biomes, 1 timelines (6.2 s)
+                 registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+[PASS] conflicts the scene writes 2103 files, no file written twice, the folders and the prefix of props are kept (8 packages run alone)
+[PASS] strays    604 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      1479 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    93 kinds of block placed, 162 barrier cells (x 2..91, y -6..7, z -34..38), all in the occupancy table
+[SKIP] flatwall  a test scene of props: its sample walls and backdrops are meant to be flat
+[WARN] entities  769 display entities, 41 drawn out along one axis, 8 shown through a matrix that is no turn, no face stretched, 174 models never placed
+                 prop_elec_cable x1: 10.67/10.67/11.99 pixels to the block along x/y/z, not 16
+                 prop_elec_cable x2: 10.67/10.67/12 pixels to the block along x/y/z, not 16
+                 prop_elec_cable x1: 10.67/10.67/18.44 pixels to the block along x/y/z, not 16
+                 prop_elec_cable x1: 10.67/10.67/25.75 pixels to the block along x/y/z, not 16
+                 prop_elec_cable x1: 10.67/10.67/32.85 pixels to the block along x/y/z, not 16
+                 int_vault_dark_rope x1: drawn out along z, where the picture of cream~base1 is not even: it smears
+[WARN] views     6 shots, most display entities in view: 738 (v12), limit 600; counted without what walls hide; the game draws up to 769 (v1): a display entity without width and height is drawn outside the view too
+                 v1: 683 display entities in view, a view may have 600
+                 v2: 627 display entities in view, a view may have 600
+                 v12: 738 display entities in view, a view may have 600
+                 v1_deep: 683 display entities in view, a view may have 600
+                 v2_deep: 627 display entities in view, a view may have 600
+                 v12_deep: 738 display entities in view, a view may have 600
+[WARN] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 17.1% hidden (base storey 43.8% by blocks and 7.3% more by models, great windows 5.8%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 4.0 s)
+                 the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a_equator at x 35, y 4, z 0; 2 more kinds; a lamp post takes less than 25% of a bay
+[PASS] motion    27 parts and 29 points on 20 chains, 316 function files; 11 commands in the busiest tick (limit 40), 4.7 a tick on average (limit 10)
+                 chain of 16 ticks: 4 functions, 10 commands a cycle, starts 4 ticks after start
+                 chain of 24 ticks: 8 functions, 25 commands a cycle, starts 2 ticks after start
+                 chain of 40 ticks: 8 functions, 33 commands a cycle, starts 3 ticks after start
+                 chain of 48 ticks: 12 functions, 66 commands a cycle, starts 1 ticks after start
+                 chain of 50 ticks: 1 functions, 3 commands a cycle, starts 10 ticks after start
+                 chain of 90 ticks: 8 functions, 17 commands a cycle, starts 6 ticks after start
+                 chain of 100 ticks: 1 functions, 3 commands a cycle, starts 15 ticks after start
+                 chain of 130 ticks: 8 functions, 17 commands a cycle, starts 6 ticks after start
+                 chain of 160 ticks: 4 functions, 10 commands a cycle, starts 11 ticks after start
+                 chain of 170 ticks: 8 functions, 17 commands a cycle, starts 16 ticks after start
+                 chain of 240 ticks: 1 functions, 5 commands a cycle, starts 7 ticks after start
+                 chain of 300 ticks: 12 functions, 25 commands a cycle, starts 4 ticks after start
+                 ... and 25 more
+result: PASS (0 failed, 4 with warnings)
