@@ -6,10 +6,13 @@ told to look for them). The charts, their models and the glint beside each are
 motion/_guide_charts.py's (cloud, c329); this module reads that module's table and registers what
 happens to a player:
 
-  a chart     A player whose feet come within REACH blocks of the floor before a chart he does not
+  a chart     A player whose feet come within REACH blocks of the floor under a chart he does not
               have yet gets the tag c164.c<n> (n is the chart's row in the table, 1 to 6), hears one
               soft chime that nobody else hears, and reads "Star chart 3 of 6" over his hotbar: 3 is
-              how many he has now. The chart stays where it is, for the next visitor.
+              how many he has now. The chart stays where it is, for the next visitor. Where the
+              table names the spot one stands on to read a chart (STAND), the feet have to be
+              within REACH of that spot as well: a chart on a wall, or on a desk against one, is
+              not taken through the wall by somebody who walks along its far side.
   the lens    A player who stands where the observer stands, behind the eyepiece of the great
               refractor (machines/scope.OBSERVER), and has
                 all six    reads the title THE COMET, IN FOCUS once, hears one bell, and for ten
@@ -33,8 +36,15 @@ lights of those who are still to see some. The commands that do something are da
 (<namespace>:guide/...), which run only when a selector has found somebody: with nobody near, a
 beat costs the server eight selectors, the chain's guard and two lines of scheduling.
 
+What an event costs, for the one player it happens to and counted with the chain's command that
+found him: a chart taken 13 commands, once; a beat at the lens short of six charts 12; the lights
+30 a beat for ten seconds (guide/glow finds the beat's own small function, guide/glow/01 .. 25,
+three points each; as one list of 75 tested lines it was 77 a beat, and the loop's keeper asked
+for the split). These are outside the loop's average and its limit for one tick, with the
+keeper's consent (a2, 11-16 11:32).
+
 The card asked for a test every 4 ticks. It is every 8 (a2's budget for the whole loop, agreed
-11-16 11:13): a sprinting player covers 5.6 blocks a second and needs 11 ticks to cross the 3.2
+11-16 11:13): a sprinting player covers 5.6 blocks a second and needs 11 ticks to cross the 3
 blocks of a chart's reach along its middle, so a test every 8 ticks does not miss a visitor who
 walks or runs past a chart on its floor, and one who stops at it has it within 0.4 s.
 
@@ -181,20 +191,27 @@ def functions(charts, radius, half, facing="west"):
                    "title @s times " + " ".join(str(int(t)) for t in TITLE_TIMES),
                    f"title @s title {_text(TITLE)}", _sound(BELL)]
     # run as a player who is still to see lights, at the middle of the dome at its springing: the
-    # score counts down from LIGHT_BEATS, and the beat's points are the ones for what it stands at
-    glow = []
+    # score counts down from LIGHT_BEATS, and glow sends him to the small function of the beat it
+    # stands at (guide/glow/01 is the first beat's)
+    glow, beats = [], {}
     for beat, (dx, dy, dz), (vx, vy, vz) in lights(radius, half, facing):
-        glow.append(f"execute if score @s {GLOW} matches {LIGHT_BEATS - beat} run particle {LIGHT} "
-                    f"~{_num(dx)} ~{_num(dy)} ~{_num(dz)} {_num(vx)} {_num(vy)} {_num(vz)} 1 0 force @s")
+        beats.setdefault(beat, []).append(f"particle {LIGHT} ~{_num(dx)} ~{_num(dy)} ~{_num(dz)} "
+                                          f"{_num(vx)} {_num(vy)} {_num(vz)} 1 0 force @s")
+    for beat in sorted(beats):
+        out[f"glow/{beat + 1:02d}"] = beats[beat]
+        glow.append(f"execute if score @s {GLOW} matches {LIGHT_BEATS - beat} run function "
+                    f"{{ns}}:guide/glow/{beat + 1:02d}")
     out["glow"] = glow + [f"scoreboard players remove @s {GLOW} 1"]
     return out
 
 
-def quest(canvas, charts, observer, dome, origin=(0, 0, 0)):
+def quest(canvas, charts, observer, dome, origin=(0, 0, 0), stands=None):
     """Register the charts' tests and the lens's on the canvas.
 
     charts     [(name, the middle of the chart's face (x, y, z), the y of the floor one stands on
                beside it)], chart 1 first: _guide_charts.CHARTS
+    stands     for every chart the spot of that floor one stands on to read it, or None:
+               _guide_charts.STAND
     observer   where the observer's feet stand behind the eyepiece
     dome       (the middle of the dome at its springing, the radius of its skin, the clear half of
                its slit's width, the way the slit looks): slit()
@@ -203,10 +220,17 @@ def quest(canvas, charts, observer, dome, origin=(0, 0, 0)):
     middle, radius, half, facing = dome
     for name, lines in functions(charts, radius, half, facing).items():
         MK.function(canvas, f"guide/{name}", lines)
+    near = ",distance=.." + _num(REACH) + "]"
     for n, (_name, face, floor) in enumerate(charts, 1):
-        MK.run(canvas, (face[0], floor, face[2]),
-               "execute positioned {x} {y} {z} as @a[distance=.." + _num(REACH) + ",tag=!" + TAG.format(n=n)
-               + "] run function {ns}:guide/c" + str(n), BEAT, at=(0,), origin=origin)
+        under = (face[0], floor, face[2])
+        who = "execute positioned {x} {y} {z} as @a[tag=!" + TAG.format(n=n) + near
+        call = " run function {ns}:guide/c" + str(n)
+        if stands is None:
+            MK.run(canvas, under, who + call, BEAT, at=(0,), origin=origin)
+        else:
+            MK.run(canvas, {"": under, "stand": stands[n - 1]},
+                   who + " positioned {stand.x} {stand.y} {stand.z} if entity @s[" + near[1:] + call,
+                   BEAT, at=(0,), origin=origin)
     MK.run(canvas, observer, "execute positioned {x} {y} {z} as @a[distance=.." + _num(LENS_REACH) + ",tag=!" + DONE
            + "] run function {ns}:guide/lens", BEAT, at=(LENS_AT,), origin=origin)
     MK.run(canvas, middle, "execute positioned {x} {y} {z} as @a[scores={" + GLOW + "=1..}] run function {ns}:guide/glow",
@@ -222,5 +246,5 @@ def build(canvas, origin=(0, 0, 0)):
     if charts is None or scope is None:
         return 0
     n = charts.build(canvas, origin) or 0
-    quest(canvas, charts.CHARTS, scope.OBSERVER[scope.VERSION], slit(), origin)
+    quest(canvas, charts.CHARTS, scope.OBSERVER[scope.VERSION], slit(), origin, stands=getattr(charts, "STAND", None))
     return n

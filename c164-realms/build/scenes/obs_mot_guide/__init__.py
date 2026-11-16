@@ -8,9 +8,11 @@ go up an arc of ARC_R blocks here, not the dome's 13).
 
 What the real machine has to show, with the scene's loop started:
 
-    1  Walk along the row. At each post, once: a soft chime and, over the hotbar, "Star chart 1 of
-       6", then 2, 3 ... in the order they are walked up to. A post that has been counted is
-       silent the second time. A second player hears and reads nothing of the first one's.
+    1  Walk along the row on its south side. At each post, once: a soft chime and, over the
+       hotbar, "Star chart 1 of 6", then 2, 3 ... in the order they are walked up to. A post that
+       has been counted is silent the second time. A second player hears and reads nothing of
+       the first one's. Walking along the north side, behind the posts, takes none: a post is
+       taken from the spot before it (STAND), as a chart is not taken through a wall.
     2  Stand on the step with none: nothing. With some: "Star charts: 3 of 6" for as long as one
        stands there, gone three seconds after one has stepped off.
     3  Stand on the step with all six: the title THE COMET, IN FOCUS once, one bell, and for ten
@@ -47,6 +49,7 @@ ARC_R = 6.0                     # the radius of the arc the lights climb
 ARC_HALF = 1.75                 # ... and half its width, the dome's slit's
 
 CHARTS = tuple((f"post{k + 1}", (x + 0.5, FLOOR + 1.0, z + 0.5), float(FLOOR)) for k, (x, z) in enumerate(POSTS))
+STAND = tuple((x + 0.5, float(FLOOR), z + 1.5) for x, z in POSTS)      # before a post, on its south
 OBSERVER = (STEP_AT[0] + 0.5, FLOOR + 1.0, STEP_AT[1] + 0.5)
 DOME = ((OBSERVER[0] + ARC_R, FLOOR + 2.0, OBSERVER[2]), ARC_R, ARC_HALF, "west")
 
@@ -65,7 +68,7 @@ def build():
     for x, z in POSTS:
         c.set(x, FLOOR, z, POST)
     c.set(STEP_AT[0], FLOOR, STEP_AT[1], STEP)
-    guide.quest(c, CHARTS, OBSERVER, DOME, (0, 0, 0))
+    guide.quest(c, CHARTS, OBSERVER, DOME, (0, 0, 0), stands=STAND)
     c.entity_counts = {"motion": 0}
     return c
 
