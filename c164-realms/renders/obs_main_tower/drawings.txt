@@ -1,0 +1,258 @@
+
+=== clock tower: 711 blocks, 2 display entities ===
+
+EAST ELEVATION (seen from the court; south on the left):
+
+y  41       ?
+y  40      vvv
+y  39     vvvvv
+y  38    vvvvvvv
+y  37    VVVVVVV
+y  36   vvvvvvvvv
+y  35   vvvvvvvvv
+y  34    RF   FR
+y  33    RR   RR
+y  32    RF###FR
+y  31   fffffffff
+y  30    RPPPPPR
+y  29    RRFFFRR
+y  28    RFHHHFR
+y  27    RRHHHRR
+y  26    RFHHHFR
+y  25    RRFFFRR
+y  24    RFFFFFR
+y  23    RRPOPRR
+y  22    RFPOPFR
+y  21    RRPPPRR
+y  20    RRRRRRR
+y  19    RRRRRRR
+y  18    RRRRRRR
+        |   |   |    (z -25 .. -35; | every fourth, 0 at zero)
+
+SECTION through the middle (z = -30; west on the left):
+
+y  41       ?
+y  40      vVv
+y  39     vVVVv
+y  38    vVVVVVv
+y  37    VVVVVVV
+y  36   vVPP?PPVv
+y  35   vf     fv
+y  34  
+y  33  
+y  32    #     #
+y  31   fFFFFFFFf
+y  30    P     P
+y  29    F     F
+y  28     H   H
+y  27     H   H
+y  26     H   H
+y  25    F     F
+y  24    F     F
+y  23     O   O
+y  22     O   O
+y  21     P   P
+y  20    R     R
+y  19    ?     R
+y  18    ?     R
+       89012345678   (x 8 .. 18)
+
+PLAN of row y = 32 (north up):
+
+z  -35  
+z  -34  
+z  -33    RF###FR
+z  -32    F     F
+z  -31    #     #
+z  -30    #     #
+z  -29    #     #
+z  -28    F     F
+z  -27    RF###FR
+z  -26  
+z  -25  
+
+PLAN of row y = 33 (north up):
+
+z  -35  
+z  -34  
+z  -33    RR   RR
+z  -32    R     R
+z  -31  
+z  -30  
+z  -29  
+z  -28    R     R
+z  -27    RR   RR
+z  -26  
+z  -25  
+
+PLAN of row y = 35 (north up):
+
+z  -35  
+z  -34   vvvvvvvvv
+z  -33   vRRfffRRv
+z  -32   vR     Rv
+z  -31   vf     fv
+z  -30   vf     fv
+z  -29   vf     fv
+z  -28   vR     Rv
+z  -27   vRRfffRRv
+z  -26   vvvvvvvvv
+z  -25  
+
+PLAN of row y = 36 (north up):
+
+z  -35  
+z  -34   vvvvvvvvv
+z  -33   vVVVVVVVv
+z  -32   vVPPPPPVv
+z  -31   vVPPPPPVv
+z  -30   vVPP?PPVv
+z  -29   vVPPPPPVv
+z  -28   vVPPPPPVv
+z  -27   vVVVVVVVv
+z  -26   vvvvvvvvv
+z  -25  
+
+PLAN of row y = 37 (north up):
+
+z  -35  
+z  -34  
+z  -33    VVVVVVV
+z  -32    VVVVVVV
+z  -31    VVVVVVV
+z  -30    VVVVVVV
+z  -29    VVVVVVV
+z  -28    VVVVVVV
+z  -27    VVVVVVV
+z  -26  
+z  -25  
+
+PLAN of row y = 38 (north up):
+
+z  -35  
+z  -34  
+z  -33    vvvvvvv
+z  -32    vVVVVVv
+z  -31    vVVVVVv
+z  -30    vVVVVVv
+z  -29    vVVVVVv
+z  -28    vVVVVVv
+z  -27    vvvvvvv
+z  -26  
+z  -25  
+
+PLAN of row y = 39 (north up):
+
+z  -35  
+z  -34  
+z  -33  
+z  -32     vvvvv
+z  -31     vVVVv
+z  -30     vVVVv
+z  -29     vVVVv
+z  -28     vvvvv
+z  -27  
+z  -26  
+z  -25  
+
+PLAN of row y = 40 (north up):
+
+z  -35  
+z  -34  
+z  -33  
+z  -32  
+z  -31      vvv
+z  -30      vVv
+z  -29      vvv
+z  -28  
+z  -27  
+z  -26  
+z  -25  
+
+SECTION through the ladder with the way up open (z = -32; west on the left):
+
+y  31   fFFFFFFFf
+y  30    P     P
+y  29    R     R
+y  28    F HHH F
+y  27    R HHH R
+y  26    F HHH F
+y  25    R     R
+y  24    F???? F
+y  23    R?PDP?R
+y  22    F?PDP F
+y  21    R?PPP R
+y  20    R?    R
+y  19    R?    R
+y  18    R?    R
+       89012345678   (x 8 .. 18)
+
+PLAN of row y = 18 with the way up open (north up):
+
+z  -35  
+z  -34  
+z  -33    RRRRRRR
+z  -32    R?    R
+z  -31    R     R
+z  -30    ?     R
+z  -29    R     R
+z  -28    R     R
+z  -27    RRRRRRR
+z  -26  
+z  -25  
+
+PLAN of row y = 22 with the way up open (north up):
+
+z  -35  
+z  -34  
+z  -33    RF   FR
+z  -32    F?PDP F
+z  -31     P   P
+z  -30     O   O
+z  -29     P   P
+z  -28    F PDP F
+z  -27    RF   FR
+z  -26  
+z  -25  
+
+PLAN of row y = 23 with the way up open (north up):
+
+z  -35  
+z  -34  
+z  -33    RR   RR
+z  -32    R?PDP?R
+z  -31     P???P
+z  -30     O???O
+z  -29     P???P
+z  -28    R?PDP?R
+z  -27    RR   RR
+z  -26  
+z  -25  
+
+PLAN of row y = 24 with the way up open (north up):
+
+z  -35  
+z  -34  
+z  -33    RFFFFFR
+z  -32    F???? F
+z  -31    F?   ?F
+z  -30    F?   ?F
+z  -29    F?   ?F
+z  -28    F ??? F
+z  -27    RFFFFFR
+z  -26  
+z  -25  
+
+PLAN of row y = 26 with the way up open (north up):
+
+z  -35  
+z  -34  
+z  -33    RF   FR
+z  -32    F HHH F
+z  -31     H   H
+z  -30     H   H
+z  -29     H   H
+z  -28    F HHH F
+z  -27    RF   FR
+z  -26  
+z  -25  

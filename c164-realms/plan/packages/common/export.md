@@ -45,7 +45,7 @@
 - 跟别人的接口：
   - 循环：`make` 摆完整场就不再碰它，`build/place.py` 自己起（`obs-motion/start`）；`verify` 冷启动后读 40 件以内点到名的件，隔 3 秒再读，有变的就算转着。a2 的 motion 换了起法要告诉 outb。
   - 导出时拿掉 `data/c164art/structure/`、`function/<场景>/`（摆放、清场、强制加载）和驱动留下的两个 json。s2 的 `place.py` 以后往数据包里多写别的只在摆的时候用的东西，要告诉 outb 一起拿掉。
-  - a2 的着色器：真机验过以后，资源包写完加一句 `sky._shaders.pack(pack_dir)`（a2 #71364），群系留 `minecraft:the_void`（导出的世界本来就是）。**还没接。**
-- 测试场景：`obs_export_probe`（试传包 T1 的小平台）和 `obs_export_probe_plain`（同一批方块在原版天空下，T2 的图）。图各 3 张，在 `renders/obs_export_probe/`、`renders/obs_export_probe_plain/`。
+  - a2 的着色器（sky/safe-look，真机验过，a2 #72794；进总装 16ad2817）：不带天的包（`--look off`）在资源包写完以后调 `sky._shaders.pack()`，把我们的天写成 `assets/minecraft/shaders/` 下的核心着色器；`--look on` 不调（两套天会叠在一起）。开关 `--shaders auto|on|off`，默认 auto：场景有天、包不带天、不是试传包、树里有那个模块就带。`verify` 多核一条「shaders」：包里有没有、和做包时记的是不是同一批文件、有没有和群系同在。
+- 测试场景：`obs_export_probe`（试传包 T1 的小平台），图 3 张，在 `renders/obs_export_probe/`。原来还有一个 `obs_export_probe_plain`（同一批方块在原版天空下，给 T2 出参考图用）：它为了让离线渲染器画出原版的天，自带一个群系和一条时间线，`check.py` 现在不许任何场景的数据包里有注册表文件（COMMON 5.5），所以第一版交付时拿掉了；T2 的参考图已经在 dist 分支的 `c164-realms/dist/trial/` 里，不再重画。
 - 整包每半小时一版（总监 #71198）：A1（ea74b2c2）、A2（e41031f6，带着后来被退的窗，作废）、A3（451f4581）。历史在 dist 分支的 `c164-realms/dist/history.json`。从 A4 起取 s2 在 :27、:57 报的 checkall 全过的头（s2 #71551）。10:00 的 A5 是第一个候选版。
 - 自评最弱的三处：一、真的客户端没开过，资源包和模型在游戏里的样子只有 s1 的图能说；二、`verify` 的假玩家没有重力，「落到脚下」是从游戏放人的位置读出来的，不是走出来的；三、两次导出逐文件比还没做。
