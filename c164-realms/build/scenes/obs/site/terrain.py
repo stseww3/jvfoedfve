@@ -235,7 +235,8 @@ RIM_RISE = 1.5                  # going out from the wall's foot the rock rises 
 RIM_REACH = 5                   # ... which matters no further out than this
 BUTTRESS = B.SLATE_BRICK        # one under every pier, a block proud of the wall, weathered at the top
 WALK_HALF = 2                   # the walk from the west door is the door bay with its two pilasters: 5 across
-ARC_STEP = 15                   # degrees between the piers on the sunset terrace's arc: about five blocks
+ARC_BAYS = 11                   # the bays of the railing round the sunset terrace's arc, an odd count: the axis runs
+#                                 out through an open bay as wide as the walk from the west door, a pier either side
 
 # --- the first draft's ring of cloud is gone (sky/cloudsea lays the sea) ------------------------------
 # Its two levels stay for the one reader they have left, site/cablecar's test scene, which lays a
@@ -812,7 +813,8 @@ def upper_cells():
 def rail_piers(ring):
     """The cells of the outline that carry a pier. On the straight edges: the corners, either side
     of every gap, and between those as many as fit BEAT apart (the west edge keeps the pilaster
-    lines of the west front). On the arc of the sunset terrace: every ARC_STEP degrees."""
+    lines of the west front). On the arc of the sunset terrace: ARC_BAYS even bays, none of the
+    piers on the axis."""
     ring = set(ring)
     px0, pz0, px1, pz1 = PAD
     gate = {name: (cells[0], cells[-1]) for name, cells in GAPS.items()}
@@ -829,10 +831,12 @@ def rail_piers(ring):
     arc_z = max(z for x, z in ring if x == TX0 - 1) + 1         # the last row of the straight edge
     lines = [z for z in K.beat(TZ0, TZ1) if abs(z) >= arc_z + K.BEAT]
     piers |= {(TX0, z) for z in lines} | {(TX0, -arc_z), (TX0, arc_z)}
-    # the arc: one on the axis, the rest in pairs either side of it
+    # the arc: ARC_BAYS even bays from one end of the straight edge round to the other, the middle
+    # one astride the axis (who walks out along it looks at the sea, not at a pier); the piers
+    # stand in pairs either side of it
     arc = sorted(p for p in ring if p[0] < TX0 and p[1] <= SUN_CZ)
-    for deg in range(180, 90, -ARC_STEP):
-        a = math.radians(deg)
+    for k in range(ARC_BAYS // 2):
+        a = math.radians(180 - (k + 0.5) * 180 / ARC_BAYS)
         ax, az = SUN_CX + SUN_R * math.cos(a), SUN_CZ - SUN_R * math.sin(a)
         x, z = min(arc, key=lambda p: (p[0] - ax) ** 2 + (p[1] - az) ** 2)
         piers |= {(x, z), (x, 2 * SUN_CZ - z)}
