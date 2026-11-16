@@ -5,8 +5,8 @@ weight or the governor of the driving clock"; the room is c336's, this file c356
 The astrograph follows the comet all night, and what turns it is a clock driven by a weight. Its
 works hang on the wall west of the plate desk, where the door looks at them:
 
-  the works      a brass case on two iron brackets, a glazed opening in its front with the wheels
-                 behind it, the winding drum on its west side
+  the works      a brass case on two iron brackets, an opening in its front with a wheel and its
+                 pinion in it, the winding drum on its west side
   the governor   on the case's top: a spindle with two brass balls, turning for ever. It is a model
                  of its own and is registered with the motion line (MK.spin, once in
                  MK.SCOPE_GOVERNOR_REV, as the great refractor's)
@@ -49,6 +49,7 @@ AT = (11.5, 18.0, 33.0)                 # the point of the wall face on the floo
 FACING = "north"                        # the way that face looks
 
 BRASS, BRASS_D = K.BRASS, K.BRASS_D
+BRASS_L = P.mat("brass", base=4)
 IRON, IRON_D = K.IRON, K.IRON_D
 STEEL = P.mat("iron", base=5)
 COPPER = K.COPPER
@@ -65,14 +66,8 @@ DRUM = (18.0, 2.9, 1.5)                         # the winding drum on the case's
 PULLEY = (4.15, 30.0, 1.75)                     # the pulley under the head of the wall: x, y, radius
 LINE_Z = 2.0                                    # the plane the wire runs in
 WEIGHT = (7.0, 2.5, 1.5)                        # the weight: its foot, the height of one disc, its radius
-WINDOW = (                                      # the glazed opening in the case's front: a wheel of the train behind the glass
-    "kgggk",
-    "gkgkg",
-    "ggsgg",
-    "gkgkg",
-    "kgggk",
-)
-WINDOW_COLOURS = dict(k=P.RAMPS["iron"][0], g=P.RAMPS["brass"][2], s=P.RAMPS["iron"][5])
+OPENING = 5                                     # the opening in the case's front, square and dark inside
+WHEELS = ((-2.75, 18.25, 1.75), (-0.4, 16.6, 1.0))     # the two wheels of the train that stand in it: x, y, radius
 
 
 def _works():
@@ -84,7 +79,11 @@ def _works():
     m.box((x0 - 0.5, y0 - 2.0, 0.0), (x1 + 0.5, y1 + 1.0, z0), IRON_D, skip="n")                # the plate on the wall
     for x in (x0 + 0.5, x1 - 1.5):
         m.box((x, y0 - 2.0, z0), (x + 1.0, y0, z1 - 0.5), IRON, grain="z")                      # the two brackets
-    m.box((x0, y0, z0), (x1, y1, z1), BRASS, faces={"s": Sprite(name + "_window", list(WINDOW), WINDOW_COLOURS, back=BRASS)})
+    dark = Sprite(name + "_opening", ["k" * OPENING] * OPENING, dict(k=P.RAMPS["iron"][0]), back=BRASS)
+    m.box((x0, y0, z0), (x1, y1, z1), BRASS, faces={"s": dark})
+    for wx, wy, wr in WHEELS:                                                                   # a wheel and its pinion
+        m.tube("z", (wx, wy), z1, z1 + 0.5, wr, BRASS_L, sides=8)
+        m.tube("z", (wx, wy), z1 + 0.5, z1 + 0.75, 0.4, STEEL, sides=4)
     m.box((x0 - 0.25, y1, z0 - 0.25), (x1 + 0.25, y1 + LID, z1 + 0.25), BRASS_D)
     dy, dz, dr = DRUM
     m.tube("x", (dy, dz), x1, x1 + 1.75, dr, BRASS_D, sides=8)                                  # the winding drum
@@ -123,8 +122,9 @@ def _governor():
 
 @functools.lru_cache(maxsize=None)
 def _models():
+    settle = getattr(K, "settle", None) or (lambda m: m)    # the kit has it from the assembly's a9f92259 on
     made = (_works(), _governor())
-    return {m.name: m for m in made}
+    return {m.name: settle(m) for m in made}
 
 
 def models():
