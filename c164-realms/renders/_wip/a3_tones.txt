@@ -1,0 +1,31 @@
+obs_int_domeroom-v8 [A blue]  1280x720
+  luma    mean 0.07   p1 0.02  p5 0.03  median 0.06  p95 0.13  p99 0.26
+  levels  dark  97.6% (below 0.18, mean 0.07)   middle   2.4% (mean 0.27)   bright   0.0% (above 0.60, mean 0.77)
+  bright  centre x 0.54 y 0.29 (0 0 = top left)   nine tenths of it within x 0.54..0.54, y 0.29..0.30
+          1 patch, the largest 0.01% of the picture (as a square, 7 pixels a side)
+  white   above 0.97:   0.0%   in specks only, none fills a square of 4 pixels
+  dead    below 0.03:   5.0%   243 patches, the largest 0.46% of the picture (as a square, 65 pixels a side)
+  warmth  warm  12.8%   cool  38.5%   neutral  48.7%
+          dark    warm  11.2%   cool  37.7%   neutral  48.7%
+          middle  warm   1.6%   cool   0.8%   neutral   0.0%
+          bright  warm   0.0%   cool   0.0%   neutral   0.0%
+  probe   dialN    5544 px  mean 0.05  median 0.05  brightest 1% 0.18  darkest 1% 0.02  #100d0c  warm 24.0%  cool 6.0%
+  probe   floor    49920 px  mean 0.06  median 0.04  brightest 1% 0.17  darkest 1% 0.02  #0c0e16  warm 0.4%  cool 72.1%
+  probe   boardsL  13398 px  mean 0.06  median 0.06  brightest 1% 0.14  darkest 1% 0.03  #100e10  warm 0.0%  cool 23.2%
+  probe   clockS   11610 px  mean 0.10  median 0.09  brightest 1% 0.29  darkest 1% 0.03  #1f1713  warm 79.5%  cool 7.0%
+  probe   sky      11088 px  mean 0.13  median 0.11  brightest 1% 0.61  darkest 1% 0.05  #192041  warm 0.2%  cool 99.6%
+  order   dialN 0.05 < floor 0.06 < boardsL 0.06 < clockS 0.10 < sky 0.13   (means)
+obs_int_domeroom-stair_exit [A blue]  1280x720
+  luma    mean 0.06   p1 0.02  p5 0.03  median 0.06  p95 0.12  p99 0.16
+  levels  dark  99.4% (below 0.18, mean 0.06)   middle   0.6% (mean 0.24)   bright   0.0% (above 0.60, mean   -  )
+  bright  none
+  white   above 0.97:   0.0%   none
+  dead    below 0.03:  10.0%   307 patches, the largest 1.19% of the picture (as a square, 105 pixels a side)
+  warmth  warm  11.5%   cool  20.4%   neutral  68.2%
+          dark    warm  11.3%   cool  19.9%   neutral  68.2%
+          middle  warm   0.1%   cool   0.5%   neutral   0.0%
+          bright  warm   0.0%   cool   0.0%   neutral   0.0%
+  probe   niche  40704 px  mean 0.06  median 0.05  brightest 1% 0.22  darkest 1% 0.02  #140f0d  warm 44.6%  cool 5.9%
+  probe   floor  77568 px  mean 0.10  median 0.10  brightest 1% 0.18  darkest 1% 0.04  #1b1819  warm 6.5%  cool 13.0%
+  probe   dial   17710 px  mean 0.11  median 0.11  brightest 1% 0.35  darkest 1% 0.03  #241b14  warm 96.4%  cool 0.0%
+  order   niche 0.06 < floor 0.10 < dial 0.11   (means)
