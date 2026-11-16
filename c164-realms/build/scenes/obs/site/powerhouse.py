@@ -110,7 +110,7 @@ FURNACE_LEVEL = 12
 # two rows under the glass, which is as low as that line lets a source stand from what glows. As
 # bright as the one in the recess: the paving under it gets 9, where stone turns warm, the cells
 # round that 8.
-POOL_LEVEL = FURNACE_LEVEL - 2
+POOL_LEVEL = FURNACE_LEVEL
 POOL_WHY = "site/powerhouse:fire window"
 GATE_ROWS = 4                                       # the door bay: a gate this high, a lintel, glass
 FURNACE_LIGHT = 5                                   # the source before a boiler bay's glow while the sky line's kit
