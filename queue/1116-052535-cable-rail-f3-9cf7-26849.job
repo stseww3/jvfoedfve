@@ -1,0 +1,3 @@
+branch=cursor/c164-cable-rail-f3-9cf7
+head=1a3462bf837699457d25ee7dff7fe35c7bf123ba
+args=--no-push --limit 780 --tail 60 set\ -o\ pipefail\;\ python\ tools/check.py\ --scene\ obs_mach_cablecar_winch\ --shots\ build/scenes/obs_mach_cablecar_winch/shots.json\ 2\>\&1\ \|\ grep\ -v\ -E\ \'\^\ +chain\ of\'\ \|\ tail\ -14\ \&\&\ cd\ build\ \&\&\ python\ -m\ scenes.obs_site_cablecar.clear\ --scene\ 2\>\&1\ \|\ tail\ -2 
