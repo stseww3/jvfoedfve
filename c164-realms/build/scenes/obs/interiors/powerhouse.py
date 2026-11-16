@@ -359,7 +359,7 @@ def _lantern():
     m.tube("y", (0.0, 0.0), top + 1.0, top + 3.0, 3.0, K.BRASS, sides=8)                    # the font
     m.tube("y", (0.0, 0.0), top + 3.0, top + 4.0, 2.0, K.BRASS_D, sides=8)                  # the burner
     # the glass: amber at the burner, the flame's white over it, as in the street lamps' globes (a
-    # step darker throughout, 24 pixels of it pass 0.5 in V6; so, 62)
+    # step darker throughout, too little of it passes 0.5 in V6)
     for y0, y1, tone in ((4.0, 5.5, 2), (5.5, 8.5, 4), (8.5, 10.0, 3)):
         K.glass_prism(m, "y", (0.0, 0.0), top + y0, top + y1, 2.5, K.flat("glow", tone))
     for x in (-4.0, 3.0):
