@@ -16,6 +16,7 @@ n += BB.run(canvas, "west", south, stops, origin)               # 西翼那一�
 n += BB.run(canvas, "east", south, stops, origin)               # 东翼那一对
 ```
 
+- `BB.place()` 还在板占的格子里放屏障（`BB.SOLID`：x 5..10、y 1..2、z −25，共 12 格，INTERFACE 第五次补充）：模型没有碰撞，人会穿过石板。这 12 格你别放东西（本来就在 `KEEP_CLEAR` 里）；板底下那一格高的空当人进不去。
 - `stops`：一串 z，托着排的东西在哪里（你的四道门架：−21.5、−17.5、−13.5、−9.5，格子中心）。铜排在这些 z 上分段，每段站在自己那一段的中点、取那一格的光；接缝正好压在你的瓷瓶底下。最后一个托点以南不到一格的一小截并进前一段。
 - 门架和瓷瓶归你。你要是不做门架、想从梁上吊：`BB.run(..., hang=True)`，每个 `stops` 上加一只我的吊架（铁杆从梁底吊下来，白瓷瓶，铜夹抱住两根排；梁底读 `BB.BEAM`）。我的替身场景用的是吊架。
 - 单根排：`BB.bus(canvas, a, b, origin)`（a、b 是排的中线两端，只能南北走）；吊架单摆：`BB.hanger(canvas, pos, origin)`。
