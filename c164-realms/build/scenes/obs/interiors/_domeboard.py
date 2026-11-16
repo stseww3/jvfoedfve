@@ -38,9 +38,11 @@ FACE_X = 15.0                                   # the plane of the lining's west
 SPAN_Z = (S.DOME_CENTRE[1] - 1.0, S.DOME_CENTRE[1] + 2.0)
 SPAN_Y = (float(S.ROOF_STAND), S.ROOF_STAND + 2.0)
 FACING = "west"
-# the light the model is drawn in, (sky, block): the room's own level at its brightest, so that the
-# board is seen as far as the lining round it is and no further
-BRIGHTNESS = (9, 0)
+# the light the model is drawn in, (sky, block): the room's own dusk and a little of its lamps' amber.
+# Tried on the picture `board` against (9, 0), (8, 2) and (7, 3): in sky light alone the slate goes
+# blue and lighter than the boards it hangs on, the dials blue; with this the slab has the lining's
+# own tone, the brass stays brass and the dials are the lightest thing on the wall after the lamps
+BRIGHTNESS = (6, 4)
 LEVEL = 3                                       # the light the pilot lamps may give (sky/lights)
 
 # the model's frame: x to the right of the one who looks at it, y up from the middle of the board,
