@@ -106,6 +106,7 @@ BOT = "C164Probe"           # the fake player of verify
 # what other packages hang on a player's arrival: {our function tag: [their functions]}. `first` is run
 # for who has never been here, `join` for everyone who comes in (for who is new before `first`)
 HOOKS = {"first": [f"{ART}:guide/first"], "join": [f"{ART}:guide/join"]}
+RIDING = "riding"           # our predicate: the player is on a vehicle (a seat of the train)
 CATCH = -30                 # scene y: feet under it are put back on the spot (agreed with cloud
                             # c329 #62206 and a4 c323 #64103: the cloud layer's top is -28, the
                             # lowest rock a foot finds is -27, the eye is in the cloud by then)
@@ -439,6 +440,9 @@ def scene_spec(args):
         # the guide (titles, plaques, star charts: plan/packages/motion/guide.md) is the scene's, and in the
         # save when the scene says GUIDE = True and --no-guide was not asked for
         "guide": bool(getattr(scene, "GUIDE", False)) and not getattr(args, "no_guide", False),
+        # its star charts: verify walks them in the save, and misses them where they are switched on
+        "guide_charts": bool(getattr(scene, "GUIDE", False)) and not getattr(args, "no_guide", False)
+        and bool(getattr(scene, "GUIDE_CHARTS", False)),
         "title": map_title(args.scene)[0],
         "title_lines": map_title(args.scene)[1],
         "biome": f"{ART}:{scene.BIOME}" if look else None,
@@ -500,13 +504,18 @@ def functions(spec):
     # who is held to the walks: every visitor (the functions set adventure at every joining). An
     # operator who has put himself in spectator or creative mode is left to fly where he likes.
     held = "@a[gamemode=!spectator,gamemode=!creative]"
+    # and not who rides: the train of the opening comes up out of the cloud sea with him in it
+    # (plan/round2.md), under the line and through the cloud's skin. It is the riding that is asked
+    # for (the predicate RIDING), not a mark on him: who gets off on the way falls, and is put back
+    # on the spot like anybody
+    walks = f"unless predicate {NS}:{RIDING} "
     out = {
         "load": [f"scoreboard objectives add {LEFT} minecraft.custom:minecraft.leave_game"],
         "tick": [
             f"execute as @a[tag=!{IN_TAG}] run function {NS}:first",
             f"execute as @a[scores={{{LEFT}=1..}}] run function {NS}:join",
             # feet under the line: the volume from y to y + dy + 1 is tested against the player's box
-            f"execute as {held} at @s if entity @s[y={low},dy={spec['catch'] - low - 1}] run function {NS}:back",
+            f"execute as {held} at @s {walks}if entity @s[y={low},dy={spec['catch'] - low - 1}] run function {NS}:back",
         ],
         # who is new is set up and then handed to what other packages hang on his arrival (HOOKS), as
         # himself and where he stands; who comes back is set up again and told nothing
@@ -521,7 +530,7 @@ def functions(spec):
     }
     if spec["cloud"]:
         # the block the feet rest on (the cloud sea is a skin of full blocks)
-        out["tick"].append(f"execute as {held} at @s if block ~ ~-0.2 ~ #{NS}:cloud run function {NS}:back")
+        out["tick"].append(f"execute as {held} at @s {walks}if block ~ ~-0.2 ~ #{NS}:cloud run function {NS}:back")
     if spec["trial"]:
         trial_functions(spec, out)
     else:
@@ -630,6 +639,13 @@ def write_functions(pack_dir, spec):
         with open(path, "w", encoding="utf-8", newline="\n") as fh:
             json.dump({"values": spec["cloud"]}, fh, indent=1)
             fh.write("\n")
+    path = os.path.join(folder, "predicate", RIDING + ".json")
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8", newline="\n") as fh:
+        # 26.3 names a condition by "type" ("condition" was the key up to 1.21: with it the server
+        # of 26.3 does not start, "No key type in MapLike")
+        json.dump({"type": "minecraft:entity_properties", "entity": "this", "predicate": {"vehicle": {}}}, fh, indent=1)
+        fh.write("\n")
     for hook, names in HOOKS.items():
         path = os.path.join(folder, "tags", "function", hook + ".json")
         os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -1207,6 +1223,24 @@ def visit(server, spec, results, tag, came):
     bot.pump(1.0)
     check(results, tag + "spectator", near(stayed, under) and near(bot.position, feet),
           f"as a spectator put at y {under[1]}: a moment later at {stayed}; set to adventure there: a moment later at {bot.position}")
+    # who rides is left alone under the line (the opening's train comes up from under it), and who
+    # gets off there is put back: a seat is set under the line, he is put on it and taken off again.
+    # Where he is while he rides is the server's to say: the game does not tell a rider his place
+    if os.path.exists(os.path.join(server.world, "datapacks", PACK, "data", NS, "predicate", RIDING + ".json")):
+        seat = "c164.probe.seat"
+        server.cmd(f"summon minecraft:item_display {num(under[0])} {num(under[1])} {num(under[2])} {{Tags:[\"{seat}\"]}}", quiet=True)
+        on = server.cmd(f"ride {BOT} mount @e[tag={seat},limit=1]", quiet=True)
+        bot.pump(1.5)
+        rides = server.cmd(f"execute as {BOT} if predicate {NS}:{RIDING}", quiet=True)
+        where = re.search(r"\[(-?[\d.]+)d, (-?[\d.]+)d, (-?[\d.]+)d\]", server.cmd(f"data get entity {BOT} Pos", quiet=True))
+        seated = tuple(float(v) for v in where.groups()) if where else None
+        off = server.cmd(f"ride {BOT} dismount", quiet=True)
+        bot.pump(1.5)
+        server.cmd(f"kill @e[tag={seat}]", quiet=True)
+        check(results, tag + "rides", "passed" in rides and seated is not None and seated[1] < spec["catch"]
+              and abs(seated[0] - under[0]) < 1 and abs(seated[2] - under[2]) < 1 and near(bot.position, feet) and turned(bot),
+              f"put on a seat at y {under[1]}, under the line ({on}): a moment later the server has him at {seated}, riding: "
+              f"{rides}; taken off it ({off}): a moment later at {bot.position} facing {bot.rotation}")
     # the tick with him where the map begins, over the last hundred ticks
     bot.pump(4.0)
     one = server.cmd("tick query", quiet=True)
@@ -1303,6 +1337,122 @@ def loop_runs(server, pack_dir, spec, results, tag):
     check(results, tag + "loop", bool(moved),
           f"{len(names)} moving parts named in the loop, {len(there)} of the first {len(some)} loaded near the spawn, "
           f"{len(moved)} of them changed within 3 s" + (f" (e.g. {', '.join(moved[:4])})" if moved else "") + f"; {run}")
+
+
+def guide_spots(pack_dir):
+    """Where the save's own functions look for a player, read off the commands that run the guide's
+    functions (plan/packages/motion/guide.md, part C): ({n: [(spot, reach), ...]} of the star charts,
+    [(spot, reach)] of the lens or None). A command finds the player whose feet are within every reach
+    it names: `execute positioned <x y z> as @a[..distance=..r] [positioned <x y z> if entity
+    @s[distance=..r]] run function <ART>:guide/c<n>` (or .../lens)."""
+    number = r"-?\d+(?:\.\d+)?"
+    charts, lens = {}, None
+    for path in sorted(glob.glob(os.path.join(pack_dir, "data", "*", "function", "**", "*.mcfunction"), recursive=True)):
+        with open(path, encoding="utf-8") as fh:
+            for line in fh:
+                m = re.search(rf"\brun function {ART}:guide/(?:c(\d+)|lens)\s*$", line)
+                if not m or line.lstrip().startswith("#"):
+                    continue
+                spots = [((float(x), float(y), float(z)), float(r)) for x, y, z, r in re.findall(
+                    rf"positioned ({number}) ({number}) ({number}) (?:as|if entity) @[as]\[[^\]]*?distance=\.\.({number})", line)]
+                if not spots:
+                    continue
+                if m.group(1):
+                    charts[int(m.group(1))] = spots
+                else:
+                    lens = spots
+    return charts, lens
+
+
+def stand_within(spots, margin=0.1):
+    """A place for the feet within every reach of a command, or None: the last spot it names (for a
+    chart: where one stands to read it) where that does, else the nearest to it on the way to the first."""
+    first, last = spots[0][0], spots[-1][0]
+    for step in range(11):
+        place = tuple(b + (a - b) * step / 10.0 for a, b in zip(first, last))
+        if all(math.dist(place, spot) <= reach - margin for spot, reach in spots):
+            return place
+    return None
+
+
+def guide_walk(server, bot, pack_dir, spec, results, tag):
+    """The star charts and the lens, as a visitor meets them in this save: the fake player is put
+    before every chart in turn (half of them, then behind the eyepiece, then the rest) and behind the
+    eyepiece again. What is held: a chart is had once, by coming near, and the line over the hotbar
+    counts right; short of all the charts the lens only tells how many he has; with all of them it
+    shows its title once and never again; and nothing of it stands in the chat. The words are told,
+    not held: they are the card's to change."""
+    charts, lens = guide_spots(pack_dir)
+    if not charts:
+        if spec.get("guide_charts"):
+            check(results, tag + "charts", False,
+                  f"the scene has its star charts switched on, and no command of the pack runs {ART}:guide/c<n>")
+        return
+    total, order = len(charts), sorted(charts)
+
+    def put(place, wait):
+        mark = len(bot.events)
+        server.cmd(f"tp {BOT} {num(place[0])} {num(place[1])} {num(place[2])}", quiet=True)
+        bot.pump(wait)
+        new = bot.events[mark:]
+        return [t for k, t in new if k == "actionbar"], [t for k, t in new if k in ("title", "subtitle")]
+
+    def counts(text, has):
+        return re.findall(r"\d+", text) == [str(has), str(total)]
+
+    def tags():
+        return set(re.findall(r"c164\.[a-z0-9]+", server.cmd(f"tag {BOT} list", quiet=True)))
+
+    had = sorted(t for t in tags() if re.fullmatch(r"c164\.(c\d+|done)", t))
+    places = {n: stand_within(charts[n]) for n in order}
+    nowhere = [n for n in order if places[n] is None]
+    at_lens = stand_within(lens) if lens else None
+    half = total // 2
+    lines, wrong, some = [], [], None
+
+    def take(n, has):
+        bars, titles = put(places[n], 1.2)
+        lines.append(bars[0] if len(bars) == 1 else f"{len(bars)} lines {bars}")
+        if len(bars) != 1 or not counts(bars[0], has) or titles or f"c164.c{n}" not in tags():
+            wrong.append(f"chart {n}: {len(bars)} lines over the hotbar {bars}, titles {titles}, wanted one line "
+                         f"counting {has} of {total} and the tag c164.c{n}")
+
+    if not had and not nowhere:
+        for has, n in enumerate(order[:half], 1):
+            take(n, has)
+        if at_lens and half:
+            some = put(at_lens, 1.2)
+        for has, n in enumerate(order[half:], half + 1):
+            take(n, has)
+        again = put(places[order[0]], 1.0)
+        if again[0] or again[1]:
+            wrong.append(f"before chart {order[0]} once more: {again[0] or 'no line'}, titles {again[1] or 'none'}; wanted nothing")
+    check(results, tag + "charts", not had and not nowhere and not wrong,
+          (f"the fake player had {had} before he came near a chart" if had else
+           f"no place to stand within every reach of chart {nowhere}" if nowhere else
+           f"{total} charts, each had by standing before it; over the hotbar in turn: {lines}"
+           + ("; " + "; ".join(wrong) if wrong else "")))
+    if had or nowhere or not lens:
+        return
+    if at_lens is None:
+        check(results, tag + "lens", False, f"no place to stand within the reach of the lens: {lens}")
+        return
+    sparks = bot.packet_counts.get("level_particles", 0)
+    bars, titles = put(at_lens, 2.5)
+    done = "c164.done" in tags()
+    later = put(at_lens, 2.5)
+    sparks = bot.packet_counts.get("level_particles", 0) - sparks
+    said = told(bot)
+    spoken = sum(bot.packet_counts.get(n, 0) for n in ("player_chat", "disguised_chat"))
+    short = some is None or (bool(some[0]) and all(counts(t, half) for t in some[0]) and not some[1])
+    check(results, tag + "lens", short and len(titles) == 1 and not bars and done and not later[0] and not later[1]
+          and not said and not spoken,
+          ("" if some is None else f"behind the eyepiece with {half} of {total}: over the hotbar {sorted(set(some[0])) or 'nothing'}"
+           f" ({len(some[0])} times), titles {some[1] or 'none'}; ")
+          + f"with all {total}: titles {titles or 'none'}, over the hotbar {bars or 'nothing'}, the tag c164.done "
+          f"{'set' if done else 'NOT set'}; standing on: titles {later[1] or 'none'}, over the hotbar {later[0] or 'nothing'}; "
+          f"{sparks} packets of particles in those five seconds; in the chat: {' | '.join(said) or 'nothing'}"
+          + (f", {spoken} messages as a player's" if spoken else ""))
 
 
 def verify(args):
@@ -1413,14 +1563,23 @@ def verify(args):
                 server.cmd("tp {} {} {} {}".format(BOT, *(num(v) for v in spec["feet"])), quiet=True)
                 bot.pump(3.0)
                 loop_runs(server, pack_dir, spec, results, tag)
+                guide_walk(server, bot, pack_dir, spec, results, tag)
                 bot.close()
             server.stop()
             issues = server.issues()
             report[tag + "issues"] = issues
-            # the stripped save is expected to complain; a slow tick is the machine's, told but not held against the save
-            real = [] if strip else [i for i in issues if "Can't keep up!" not in i]
+            # the stripped save is expected to complain; a slow tick is the machine's, told but not held against
+            # the save. Nor is the fake player's own "moved too quickly!": he sends no movement of his own, only
+            # the answer to being put somewhere, which names the spot. Seen once in some thirty arrivals (A8,
+            # "moved too quickly! 88.5,196.0,-32.5": the three numbers are the spot itself, so the server
+            # measured his answer from 0 0 0, before it had a place for him); every check of where he stood held
+            ours = [i for i in issues if "Can't keep up!" in i or f"{BOT} moved too quickly!" in i]
+            real = [] if strip else [i for i in issues if i not in ours]
             check(results, tag + "console", not real,
-                  f"{len(issues)} warnings and errors" + ("".join("\n        " + i for i in issues[:25]) if issues else ""))
+                  f"{len(issues)} warnings and errors"
+                  + (f", {len(ours)} of them the machine's or the fake player's own and not held against the save"
+                     if ours and not strip else "")
+                  + ("".join("\n        " + i for i in issues[:25]) if issues else ""))
     finally:
         report["ok"] = bool(results) and all(r["ok"] for r in results)
         report["seconds"] = round(time.time() - T0)
@@ -1668,11 +1827,16 @@ def page(args):
     if os.path.exists(path):
         with open(path, encoding="utf-8") as fh:
             rows = json.load(fh)
-    folders = sorted((int(os.path.basename(f)[1:]), f) for f in glob.glob(os.path.join(dist, "A[0-9]*")) if os.path.isdir(f))
+    def order(label):       # a save's name is its series and its number in it: B2 after B1, any B after any A
+        return label[0], int(label[1:])
+
+    folders = sorted((order(os.path.basename(f)), f) for f in glob.glob(os.path.join(dist, "[A-Z][0-9]*"))
+                     if os.path.isdir(f) and re.fullmatch(r"[A-Z]\d+", os.path.basename(f)))
     if not folders:
-        fail(f"no whole save (A<n>/) under {dist}")
-    n, folder = folders[-1]
-    name = f"c164-A{n}"
+        fail(f"no whole save (A<n>/, B<n>/) under {dist}")
+    folder = folders[-1][1]
+    label = os.path.basename(folder)
+    name = f"c164-{label}"
     with open(os.path.join(folder, name + ".json"), encoding="utf-8") as fh:
         made = json.load(fh)
     checks = {"ok": None, "seconds": None, "checks": [], "issues": None}
@@ -1685,6 +1849,11 @@ def page(args):
     if made.get("made_at"):         # the project's clock is UTC+8
         at = time.strftime("%m-%d %H:%M", time.gmtime(calendar.timegm(time.strptime(made["made_at"], "%Y-%m-%dT%H:%M:%SZ")) + 8 * 3600))
     failed = [c["check"] for c in checks["checks"] if not c["ok"]]
+    # the average time of a tick with one player on the spot, the larger of the two cold starts
+    # (plan/round2.md: told with every save, over 10 ms it is reported)
+    ticks = [float(m.group(1)) for c in checks["checks"] if c["check"].endswith("tick, one player")
+             for m in [re.search(r"Average time per tick: ([\d.]+)ms", c["detail"])] if m]
+    kinds = made["numbers"]["entities"]
     look = None
     if os.path.exists(os.path.join(folder, name + "-look.json")):
         with open(os.path.join(folder, name + "-look.json"), encoding="utf-8") as fh:
@@ -1713,7 +1882,7 @@ def page(args):
                 with open(os.path.join(folder, name + "-noguide.verify.json"), encoding="utf-8") as fh:
                     bare["verified"] = json.load(fh).get("ok")
     row = {
-        "n": f"A{n}", "assembly": made.get("assembly"), "at": at, "time": made["spec"]["time"], "look": look, "plain": plain,
+        "n": label, "assembly": made.get("assembly"), "at": at, "time": made["spec"]["time"], "look": look, "plain": plain,
         # the guide (the title on arrival, the plaques, the star charts): in this save or not; the
         # name the world goes by in the list of worlds, where the map has one
         "guide": bool(made["spec"].get("guide")), "title": made["spec"].get("title"), "bare": bare,
@@ -1721,7 +1890,10 @@ def page(args):
         "pack_bytes": made["resource_pack"].get("bytes"), "pack_files": made["resource_pack"]["files"],
         "standins": len(made["resource_pack"]["standins"]),
         "shaders": len(made["resource_pack"].get("shaders") or []),
-        "blocks": (made.get("built") or {}).get("blocks"), "entities": sum(made["numbers"]["entities"].values()),
+        "blocks": (made.get("built") or {}).get("blocks"), "entities": sum(kinds.values()),
+        # what is in the save beside display entities (a cat on a chair), by kind
+        "others": {k.split(":", 1)[-1]: v for k, v in sorted(kinds.items()) if not k.endswith("_display")},
+        "tick_ms": max(ticks) if ticks else None,
         "moving": (made.get("built") or {}).get("moving"),
         "functions": (made.get("data_pack") or {}).get("function"), "tags": (made.get("data_pack") or {}).get("tags"),
         "registry_files": len(made["registry_files"]), "cloud": bool(made["spec"].get("cloud")),
@@ -1739,8 +1911,18 @@ def page(args):
     for key, value in row.items():
         if value is None and old.get(key) is not None:
             row[key] = old[key]
+    row["candidate"] = bool(old.get("candidate"))
     rows = [r for r in rows if r["n"] != row["n"]] + [row]
-    rows.sort(key=lambda r: -int(r["n"][1:]))
+    rows.sort(key=lambda r: order(r["n"]), reverse=True)
+    # the one to upload: named once (--candidate) and kept until another is named. While the newest
+    # save is not it (the second round's saves, B<n>, are work in hand), the page says so
+    if args.candidate:
+        if not any(r["n"] == args.candidate for r in rows):
+            fail(f"--candidate {args.candidate}: the history has no such save")
+        for r in rows:
+            r["candidate"] = r["n"] == args.candidate
+    chosen = next((r for r in rows if r.get("candidate")), None)
+    row["chosen"] = chosen["n"] if chosen else None
     with open(path, "w", encoding="utf-8", newline="\n") as fh:
         json.dump(rows, fh, indent=1, ensure_ascii=False)
         fh.write("\n")
@@ -1762,22 +1944,29 @@ def page(args):
                 f"{r['blocks'] if r['blocks'] is not None else '?'} / {r['entities']} / {r['moving'] if r['moving'] is not None else '?'} | "
                 f"{r.get('time') or '?'} | {checked} | {r['note'] or ''}{gone} | {r['commit'] or '?'} |")
 
-    kept = [f"A{k}" for k, _ in folders]        # no numbered folder is taken out again: its path may have been given out
+    kept = [os.path.basename(f) for _k, f in folders]       # no numbered folder is taken out again: its path may have been given out
+    newest_is_it = chosen is None or chosen["n"] == label
     text = [
         PAGE_OPEN,
-        f"**最新，传 Realms 用这个：`A{n}/{name}.zip`**（总装 {row['assembly']}，{row['at']} 导出，{mb(row['zip_bytes'])}，"
+        *([] if newest_is_it else [
+            f"**要传 Realms 的仍是候选版 `{chosen['n']}/c164-{chosen['n']}.zip`**（总装 {chosen['assembly']}，{chosen['at']} 导出，"
+            f"{mb(chosen['zip_bytes'])}，sha256 `{chosen['sha256']}`"
+            + (f"；资源包加载失败时换 `{chosen['n']}/{chosen['plain']['file']}`，sha256 `{chosen['plain']['sha256']}`"
+               if chosen.get("plain") else "") + f"）。{label[0]} 系列是后一轮在做的，每半小时一版，还不是投稿版。", ""]),
+        (f"**最新，传 Realms 用这个：`{label}/{name}.zip`**" if newest_is_it else f"**最新的一个（在做的）：`{label}/{name}.zip`**")
+        + f"（总装 {row['assembly']}，{row['at']} 导出，{mb(row['zip_bytes'])}，"
         f"sha256 `{row['sha256']}`）。不带注册表文件，钟锁在 {row['time']} 刻；"
         + (f"我们的天由资源包里的 {row['shaders']} 个着色器文件带着（sky/safe-look）。" if row.get("shaders")
            else "**资源包里没有着色器，天是原版的夜空。**"),
-        *([f"**资源包在你的机器上加载失败（楼成了原版的方块）就换这个：`A{n}/{plain['file']}`**（{mb(plain['bytes'])}，"
+        *([f"**资源包在你的机器上加载失败（楼成了原版的方块）就换这个：`{label}/{plain['file']}`**（{mb(plain['bytes'])}，"
            f"sha256 `{plain['sha256']}`）：同一个总装头，资源包里不带着色器，天是原版的夜空，别的都一样。"
            + ("冷启动验证全过。" if plain.get("verified") else "**冷启动验证没过。**" if plain.get("verified") is False else "没验。")]
           if plain and row.get("shaders") else []),
-        *([f"不要导览那一层（进服的标题、牌子、星图）就换这个：`A{n}/{bare['file']}`（{mb(bare['bytes'])}，"
+        *([f"不要导览那一层（进服的标题、牌子、星图）就换这个：`{label}/{bare['file']}`（{mb(bare['bytes'])}，"
            f"sha256 `{bare['sha256']}`）：同一个总装头，别的都一样。"
            + ("冷启动验证全过。" if bare.get("verified") else "**冷启动验证没过。**" if bare.get("verified") is False else "没验。")]
           if bare else []),
-        *([f"同一个总装头、带着我们的天的：`A{n}/{look['file']}`（{mb(look['bytes'])}，sha256 `{look['sha256']}`，钟锁在 {look['time']} 刻）。"
+        *([f"同一个总装头、带着我们的天的：`{label}/{look['file']}`（{mb(look['bytes'])}，sha256 `{look['sha256']}`，钟锁在 {look['time']} 刻）。"
            f"**它带 {look['registry_files']} 个注册表文件（群系、时间线），只给单人打开看样子，不传 Realms。**"] if look else []),
         "总装每半小时跟着 s2 报的绿头重导一次，编号往上加。**编号的文件夹只加不删**：表里编号带链接的都还在这里，"
         f"路径是 `{kept[-1]}/c164-{kept[-1]}.zip` 这个样子，给出去的路径一直有效（现在有 {'、'.join(kept)}）。"
@@ -1790,6 +1979,8 @@ def page(args):
         f"最新这一个：建世界到封包 {row['make_s']} 秒" + (f"，验证 {row['verify_s']} 秒" if row["verify_s"] is not None else "，没验")
         + f"；服务端日志里的警告和报错一共 {row['console']} 条（做的那次，加上验的两次冷启动：一次按最不利的服务端设置生存、简单，"
         "一次按 Realms 槽位会填的冒险、和平）。"
+        + (f"一个人站在出生点时服务器每拍平均 {row['tick_ms']} 毫秒（一拍有 50 毫秒，我们的线是 10）。" if row.get("tick_ms") is not None else "")
+        + (f"展示实体以外的实体：{'、'.join(f'{k} {v} 个' for k, v in row['others'].items())}。" if row.get("others") else "")
         + f"数据包里函数 {row['functions']} 个、标签 {row['tags']} 个，注册表文件 {row['registry_files']} 个；"
         + (f"资源包里还有 {row['standins']} 张占位贴图（`ph_` 开头，等正式的换下来）。" if row["standins"] else "资源包里没有占位贴图。")
         + ("" if row["cloud"] else "**这一个没开「站到云海方块上送回」。**")
@@ -1852,6 +2043,8 @@ def main():
     p.add_argument("dist", help="the folder of the saves (c164-realms/dist on the dist branch)")
     p.add_argument("--commit", help="the commit that holds the newest save's files")
     p.add_argument("--note", help="a line for the table: what is new in this one")
+    p.add_argument("--candidate", help="the save to upload (A8): named once, kept until another is named; "
+                                       "while the newest save is not it, the page says which one is")
     args = ap.parse_args()
     {"make": make, "pack": pack, "verify": verify, "compare": compare, "page": page}[args.what](args)
 

@@ -1,0 +1,24 @@
+{"prefix": "nw",
+ "note": "The rooms that opened with the candidate A6 (assembly cfa03ef), walked once before they are in in-route.json: the clock tower with its clock room, and the astrograph room in the small dome. A provisional table of this round only; the stretches of in-route.json take its place.",
+ "stretches": [
+  {"id": "Q", "name": "the clock tower: the door of the roof walk, the lobby, the clock room", "points": [
+    {"at": [9.5, 18, -29.5], "node": "the roof walk before the tower's door", "look": [10.5, 19.5, -29.5], "hop": true},
+    {"at": [11.5, 18, -29.5], "node": "inside the tower's door"},
+    {"at": [13.5, 18, -29.5], "node": "the lobby's middle, under the pendulum"},
+    {"at": [11.5, 18, -30.5], "node": "before the foot of the ladder", "look": [11.5, 24, -31.5]},
+    {"at": [11.5, 24, -30.5], "node": "the clock room: off the ladder, the west walk", "hop": true},
+    {"at": [11.5, 24, -27.5], "node": "the south-west corner"},
+    {"at": [15.5, 24, -27.5], "node": "the south-east corner"},
+    {"at": [15.5, 24, -31.5], "node": "the north-east corner"},
+    {"at": [12.5, 24, -31.5], "node": "the north walk, by the hatch"}
+  ]},
+  {"id": "R", "name": "the astrograph room (the small dome)", "points": [
+    {"at": [8.5, 18, 30.5], "node": "before the small dome's door", "look": [9.5, 19, 30.5], "hop": true},
+    {"at": [10.5, 18, 30.5], "node": "inside the small dome's door"},
+    {"at": [10.5, 18, 29.5]},
+    {"at": [11.5, 18, 28.5], "node": "the north niche, at the plate cabinet"},
+    {"at": [13.5, 18, 28.5], "node": "the north niche's east end, by the red lamp"},
+    {"at": [10.5, 18, 31.5], "node": "behind the door, the south cell", "hop": true},
+    {"at": [11.5, 18, 32.5], "node": "the south niche, by the governor and the desk"}
+  ]}
+ ]}

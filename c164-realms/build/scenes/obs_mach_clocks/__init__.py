@@ -50,6 +50,8 @@ BIOME_MARGIN = 80               # the look has to reach the far cameras, 42 bloc
 BIOME_MARGIN_Y = 160
 TIME = 14000                    # the blue hour, the default look
 BALL = clock.BALL               # the colour of the ball on the tower in this scene
+WORKS = ("south",)              # the face whose dial is open in the middle. The works behind it are
+#                                 main/tower's and not in this scene: the opening shows the recess's back
 
 LIGHT_STONE = B.ASHLAR_FINE.block
 DARK_STONE = B.SLATE_SMOOTH.block
@@ -276,10 +278,8 @@ def build(ball=None):
     _hall(c)
     _orrery(c)
     _tower(c)
-    if ball in (None, clock.BALL):
-        n = clock.build(c, (0, 0, 0))               # the package as the master scene calls it
-    else:
-        n = clock.master(c) + clock.tower(c, colour=ball)
+    # clock.build() is these two; the scene names the open dial itself, whatever main/tower says
+    n = clock.master(c) + clock.tower(c, colour=ball, works=WORKS)
     n += _pair(c)
     n += _radiomast(c)
     sky.build(c, (0, 0, 0))                         # the sky line's light sources go in last
