@@ -1,0 +1,68 @@
+[trip 00:51:59 +0s] trip of obs_sky_ridges: the code of 7687f12c (tag 7687f12) of cursor/c164-comet-ridges-f3-793d, checked out at /tmp/c164_s1/shot/7687f12c, view distance 12 (the server's 10), cloud range 128; 4 cores, 600 s at most
+[trip 00:51:59 +0s] clean: nodemc.py down  (up to 180 s)
+[trip 00:51:59 +0s] clean: exit 0, 0 s
+[trip 00:51:59 +0s] setup: nodemc.py setup  (up to 300 s)
+    [nodemc 00:51:59] vulkan: apiVersion 1.4.318, deviceName llvmpipe (LLVM 20.1.2, 256 bits), driverInfo Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+    [nodemc 00:51:59] java: /agent/realms-study/jdk/jdk-25.0.5+8-jre/bin/java
+    [nodemc 00:51:59] game files: whole ({"version": "26.3", "system": "linux", "mainClass": "net.minecraft.client.main.Main", "assetIndex": "34", "files": 5124, "downloaded": 5123, "assets_skipped": 9)
+    [nodemc 00:51:59] settings written: nothing, all there; render distance 12, the server's view distance 10, cloud range 128
+[trip 00:51:59 +0s] setup: exit 0, 0 s
+[trip 00:51:59 +0s] station: nodemc.py status  (up to 60 s)
+    server: no answer
+    client: not running
+    display: none
+    distances: client renderDistance 12, server view-distance 10, cloudRange 128
+    machine: 4 cores, load 0.48, 8892 MB of memory available, 241 GB of disk free under /agent/realms-study
+[trip 00:51:59 +0s] station: exit 0, 0 s
+[trip 00:51:59 +0s] shuttle: shuttle.py --tag 7687f12 --commit 7687f12c --settle 10.0 --first-settle 60.0 --still 60.0 --after-budget 300.0 --project /tmp/c164_s1/shot/7687f12c/c164-realms --out /tmp/c164_s1/real --again obs_sky_ridges=west:2.5 --step obs_sky_ridges=west obs_sky_ridges  (up to 480 s)
+    [shuttle 00:51:59] the code that is shot: /tmp/c164_s1/shot/7687f12c/c164-realms at 7687f12c; tag 7687f12
+        server: no answer
+        client: not running
+        display: none
+        distances: client renderDistance 12, server view-distance 10, cloudRange 128
+        machine: 4 cores, load 0.48, 8895 MB of memory available, 241 GB of disk free under /agent/realms-study
+        [nodemc 00:52:08] server is up (8 s)
+    [shuttle 00:52:08] placing obs_sky_ridges at 53000 200 0
+        built 29711 blocks, 4 entities in 0.0s
+        exported 7 tiles (29711 + 0 blocks) in 0.1s
+        Reloading!
+        placed in 0.5s, 0 failed
+        biome c164art:obs_blue: 594776 cells set in 4 boxes, x 52851..53211 y 16..319 z -162..176
+        sky_ridge_north      1 elements,   1 texture patches, sheet 512px
+        sky_ridge_north_far   1 elements,   1 texture patches, sheet 512px
+        sky_ridge_south      1 elements,   1 texture patches, sheet 512px
+        sky_ridge_south_far   1 elements,   1 texture patches, sheet 512px
+        comet (a) -> 8 moon phase pictures, test card in new_moon
+        sun picture blanked
+    [shuttle 00:52:12] resource pack: 22 files written to client26/game/resourcepacks/c164art
+        [nodemc 00:52:24] C164Cam is online (12 s)
+        [nodemc 00:52:24] game: [00:52:18] [Render thread/INFO]: Backend library: LWJGL version 3.4.3+4
+        [nodemc 00:52:24] game: [00:52:18] [Render thread/ERROR]: Failed to create backend OpenGL
+        [nodemc 00:52:24] game: com.mojang.renderpearl.api.device.BackendCreationException: Failed to create window for OpenGL context: Couldn't find matching GLX visual
+        [nodemc 00:52:24] game: [00:52:18] [Render thread/INFO]: Using graphics backend Vulkan, using drivers: 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+        [nodemc 00:52:24] game: [00:52:18] [Render thread/INFO]: Using graphics device: llvmpipe (LLVM 20.1.2, 256 bits) (0x10005)
+        [nodemc 00:52:24] pictures: saved by the game itself (helper)
+    [shuttle 00:52:24] shooting obs_sky_ridges: 12 shots of shots-obs_sky_ridges.json
+        /tmp/c164_s1/real/7687f12/obs_sky_ridges/west.png (still after 3 s more, 0.91% of it moved between the last two)
+        /tmp/c164_s1/real/7687f12/obs_sky_ridges/west_again.png
+        /tmp/c164_s1/real/7687f12/obs_sky_ridges/west_step.png (still after 3 s more, 0.58% of it moved between the last two)
+        /tmp/c164_s1/real/7687f12/obs_sky_ridges/northwest.png (still after 3 s more, 0.60% of it moved between the last two)
+        /tmp/c164_s1/real/7687f12/obs_sky_ridges/southwest.png (still after 3 s more, 0.21% of it moved between the last two)
+        /tmp/c164_s1/real/7687f12/obs_sky_ridges/west_glow.png (still after 3 s more, 0.43% of it moved between the last two)
+        /tmp/c164_s1/real/7687f12/obs_sky_ridges/west_deep.png (still after 3 s more, 0.17% of it moved between the last two)
+        /tmp/c164_s1/real/7687f12/obs_sky_ridges/east.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/7687f12/obs_sky_ridges/back_west.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/7687f12/obs_sky_ridges/v11.png (still after 3 s more, 0.02% of it moved between the last two)
+        /tmp/c164_s1/real/7687f12/obs_sky_ridges/v1.png (still after 3 s more, 0.04% of it moved between the last two)
+        /tmp/c164_s1/real/7687f12/obs_sky_ridges/v2.png (still after 3 s more, 0.00% of it moved between the last two)
+        pictures: 12 saved by the game itself, 0 taken off the display
+        [nodemc 00:55:46] client stopped
+    [shuttle 00:55:46] obs_sky_ridges: 12 of 12 pictures in /tmp/c164_s1/real/7687f12/obs_sky_ridges
+    [shuttle 00:55:46] trip done (227 s, the game was opened once and is closed again)
+[trip 00:55:46 +227s] shuttle: exit 0, 227 s
+[trip 00:55:46 +227s] obs_sky_ridges: 12 pictures of 7687f12c in renders/real/obs_sky_ridges/
+[trip 00:55:47 +228s] obs_sky_ridges: sheet.jpg in renders/real/obs_sky_ridges/
+[trip 00:55:47 +228s] close: nodemc.py down  (up to 180 s)
+    [nodemc 00:55:48] server stopped
+[trip 00:55:48 +229s] close: exit 0, 2 s
+[trip 00:55:48 +229s] trip done; pictures kept: renders/real/obs_sky_ridges/; log renders/real/_trips/20261116-005159-7687f12-obs_sky_ridges.log
