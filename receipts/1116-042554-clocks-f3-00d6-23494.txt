@@ -1,0 +1,62 @@
+a0job 1116-042554-clocks-f3-00d6-23494: cursor/c164-clocks-f3-00d6 @ 94039838 on the director's machine
+        placed = [e for e in c2.entities if MK._model_name(e[3]) == name][0][3]["transformation"]
+        q, t = part.pose(-90.0, 0.0)
+        good = same(q, [float(v) for v in placed["left_rotation"]]) and all(abs(a - float(b)) < 1e-4 for a, b in zip(t, placed["translation"]))
+        wrong = part.pose(90.0, 0.0)
+        bad = same(wrong[0], [float(v) for v in placed["left_rotation"]])
+        ok = ok and good and not bad
+        print(name, "a quarter on is the hand placed at", time, ":", good, "| the other way round matches:", bad)
+    for p in book.parts:
+        if p.name == "mach_clock_hand_" + letter:
+            first = p.steps[1]
+            print("  tower", p.name, "second step: tick", first[0], "turned", round(first[2], 3), "degrees (negative is clockwise)")
+print("hands turn clockwise:", ok)
+print("ticks_to(8) =", clock.ticks_to(8), " ticks_to(8, 15) =", clock.ticks_to(8, 15), " ticks_to(7, 55) =", clock.ticks_to(7, 55), " ball_moves =", clock.ball_moves())
+EOF ---- exit 0, 10 s, last 70 lines of 44:
+[PASS] regen     5766 blocks, 41 entities, 21 models, 751 resource-pack files, 422 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.4 s)
+[PASS] blocks    22 kinds of block placed, 2 barrier cells (x 6, y 1..2, z 0), all in the occupancy table
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 0.0% hidden (base storey 0.0% by blocks and 0.0% more by models, great windows 0.0%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the 
+[PASS] motion    12 parts and 0 points on 3 chains, 410 function files; 7 commands in the busiest tick (limit 40), 0.5 a tick on average (limit 10)
+                 chain of 40 ticks: 8 functions, 18 commands a cycle, starts 1 ticks after start
+                 chain of 6000 ticks: 36 functions, 193 commands a cycle, starts 2 ticks after start
+                 chain of 72000 ticks: 360 functions, 2161 commands a cycle, starts 3 ticks after start
+                 mach_clock_master_hand_h: 360 steps in 72000 ticks: its middle lies 0.14 blocks off the axis
+                 mach_clock_master_hand_m: 30 steps in 6000 ticks: its middle lies 0.19 blocks off the axis
+                 mach_clock_hand_h: 360 steps in 72000 ticks: its middle lies 0.30 blocks off the axis
+                 mach_clock_hand_m: 30 steps in 6000 ticks: its middle lies 0.50 blocks off the axis
+                 mach_clock_hand_h: 360 steps in 72000 ticks: its middle lies 0.30 blocks off the axis
+                 mach_clock_hand_m: 30 steps in 6000 ticks: its middle lies 0.50 blocks off the axis
+                 mach_clock_hand_h: 360 steps in 72000 ticks: its middle lies 0.30 blocks off the axis
+                 mach_clock_hand_m: 30 steps in 6000 ticks: its middle lies 0.50 blocks off the axis
+                 mach_clock_hand_h: 360 steps in 72000 ticks: its middle lies 0.30 blocks off the axis
+result: PASS (0 failed, 0 with warnings)
+[PASS] motion    12 parts and 0 points on 3 chains, 410 function files; 7 commands in the busiest tick (limit 40), 0.5 a tick on average (limit 10)
+result: PASS (0 failed, 0 with warnings)
+mach_clock_pendulum swing cycle 40 steps 8 lead 2 turn 4.9 stray px 0.022 at (6.401, 3.312, 0.5)
+mach_clock_master_hand_h spin cycle 72000 steps 360 lead 2 turn 1.0 stray px 0.000 at (6.666, 4.188, 0.5)
+mach_clock_master_hand_m spin cycle 6000 steps 30 lead 2 turn 12.1 stray px 0.017 at (6.666, 4.188, 0.5)
+mach_clock_hand_h spin cycle 72000 steps 360 lead 2 turn 1.0 stray px 0.000 at (16.76, 27.5, -29.5)
+mach_clock_hand_m spin cycle 6000 steps 30 lead 2 turn 12.1 stray px 0.046 at (16.76, 27.5, -29.5)
+mach_clock_hand_h spin cycle 72000 steps 360 lead 2 turn 1.0 stray px 0.000 at (13.5, 27.5, -26.24)
+mach_clock_hand_m spin cycle 6000 steps 30 lead 2 turn 12.1 stray px 0.046 at (13.5, 27.5, -26.24)
+mach_clock_hand_h spin cycle 72000 steps 360 lead 2 turn 1.0 stray px 0.000 at (10.24, 27.5, -29.5)
+mach_clock_hand_m spin cycle 6000 steps 30 lead 2 turn 12.1 stray px 0.046 at (10.24, 27.5, -29.5)
+mach_clock_hand_h spin cycle 72000 steps 360 lead 2 turn 1.0 stray px 0.000 at (13.5, 27.5, -32.76)
+mach_clock_hand_m spin cycle 6000 steps 30 lead 2 turn 12.1 stray px 0.046 at (13.5, 27.5, -32.76)
+mach_clock_ball slide cycle 6000 steps 6 lead 2 turn 0.0 stray px 0.000 at (13.5, 47.5, -29.5)
+ball steps (tick, ticks, turn, blocks): [(300, 100, 1.75), (500, 6, 1.0), (506, 14, -3.031), (520, 12, -4.031), (1100, 122, -1.982), (1220, 120, 0.0)]
+mach_clock_master_hand_m a quarter on is the hand placed at (8, 10) : True | the other way round matches: False
+  tower mach_clock_hand_m second step: tick 200 turned -24.12 degrees (negative is clockwise)
+  tower mach_clock_hand_m second step: tick 200 turned -24.12 degrees (negative is clockwise)
+  tower mach_clock_hand_m second step: tick 200 turned -24.12 degrees (negative is clockwise)
+  tower mach_clock_hand_m second step: tick 200 turned -24.12 degrees (negative is clockwise)
+mach_clock_master_hand_h a quarter on is the hand placed at (10, 55) : True | the other way round matches: False
+  tower mach_clock_hand_h second step: tick 200 turned -2.01 degrees (negative is clockwise)
+  tower mach_clock_hand_h second step: tick 200 turned -2.01 degrees (negative is clockwise)
+  tower mach_clock_hand_h second step: tick 200 turned -2.01 degrees (negative is clockwise)
+  tower mach_clock_hand_h second step: tick 200 turned -2.01 degrees (negative is clockwise)
+hands turn clockwise: True
+ticks_to(8) = 500  ticks_to(8, 15) = 2000  ticks_to(7, 55) = 0  ball_moves = [(300, 1.75, 100), (500, 1.0, 6), (506, -3.03125, 14), (520, -4.03125, 12), (1100, 0.0, 240)]
+==== NODEJOB RESULT ====
+exit=0 secs=10 host=cursor cores=4 head=94039838 commit=none pushed=no branch=cursor/c164-clocks-f3-00d6 files=0
+a0job: exit=0 secs=11
