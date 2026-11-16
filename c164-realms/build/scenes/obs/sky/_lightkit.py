@@ -13,20 +13,24 @@ lines. Those call this module and nothing else of the light:
     L.glazed(canvas, windows, origin)       # the windows of a front that main's table does not list
     L.dress(canvas)                         # a test scene: light the building although the switch is off
     with L.under("deep"): ...               # a test scene: what is built inside is glazed for that look
+    with L.trying(LENDS=()): ...            # a test scene: a variant of the sources beside the building as it is
 
 Ranks: the levels of the invisible sources. 15 is never used: light of 15 is nine parts white and 13
 is half white already.
 
     1   13-14   the open main door 14, canopy bulbs 13, street and stair lamps 14, the platform 13
-    2    9-12   behind a lit window 9-10 (12 behind the one over the main door), the bracket lamps
-                beside a door 12
-    3    5-8    wall wash 8, walkways 5-7, beside machines 6-8, fill for a caged lamp 6-7
+    2    9-12   behind a lit great window 12 (the wings' as the one over the main door; the director,
+                #58003), behind a lit small one 9, the bracket lamps beside a door 12, the wall wash 10
+                (the director, #62755: no higher)
+    3    5-8    walkways 5-7, beside machines 6-8, fill for a caged lamp 6-7
 
 Light falls by one a cell, and a face is lit by the cell in front of it. A source of level n in the
 first cell behind the glass leaves n-3 on the jambs, n-2 to n-3 on the sill, n-4 on the sides of the
 pilasters and n-6 on their fronts. Under the blue look stone is lifted out of the blue to a neutral
 grey at 7 and turns warm from 9 on: 10 behind the glass makes a window's surround lighter, 12 makes
-it warm.
+it warm. The levels of the windows are given as that source behind the glass (BEHIND); what is
+placed is a source of n-2 in the cell before the glass, which is the same light outside and leaves
+the room behind the window to its own lamps (THROUGH).
 
 Windows (the director's rules, group #15317, #19277 and #21989): at least a fifth of the windows
 of a front are dark; two neighbouring bays of one storey are never both lit; lit windows come in
@@ -36,6 +40,9 @@ tiers and the brightest is kept for the entrance; a front must not turn warm all
     tier 1  dim      B.WINDOW_CURTAIN, a lamp behind a drawn curtain      fixed windows only
     tier 2  lit      B.WINDOW_FROSTED                                     the lit window of a wing
     tier 3  bright   B.WINDOW_LIT, the entrance only
+
+The furnace window of the power house (B.WINDOW_FURNACE) is none of these and stands on no front
+of the main building; for its light it counts as tier 1.
 
 The colours say where the entrance is. The curtain is the most saturated colour of the building, so
 it is kept for the entrance: the two great windows beside the brightest one (orange, gold, orange)
@@ -117,6 +124,11 @@ BLIND_SHARE = 0.3           # of the dark windows, how many show a lowered blind
 DARK_SHARE = 0.2            # the director's floor: this share of a front's windows is dark
 DARK_FROM = 5               # a front with fewer windows is only counted in the building's total
 SEED = 3667                 # picked on main's table (the card says by what): the wings differ and none is left dark
+# The west front draws its lit windows with a seed of its own. With the building's its two wings came
+# out as mirror images of each other (bays 3 and 5 against 13 and 15 under the fullest look), which
+# a row of lit windows never is; this one lights 3 and 5 against 14 and 16, and 3 against 14 under
+# the afterglow (review cr2-#3). Which dark window shows a blind is left as it was.
+FRONT_SEED = {"west": 5051}
 # Per look: of the windows that may be lit, the share that is. The low storeys have shares of their
 # own: the base storey is a dark band that carries the row of great windows; the director allows it
 # one lit window to a wing under the fullest look at the most, and it never shows more lit windows
@@ -148,12 +160,52 @@ FIXED = {
 }
 # The level of the sources behind the glass, by tier: (a tall window, a window up to three rows
 # high). A tall lit window has two of them, one row above the sill and one row below the head.
-BEHIND = {BRIGHT: (12, 12), LIT: (10, 9), DIM: (8, 7)}
+# The lit great windows of the wings have 12, as the entrance's has. With 10 the stone round such a
+# window was lifted to a neutral grey and the window read as a bright sheet laid on a dark wall;
+# with 12 its jambs, head and sill take a warm light and it is a lit room set in the wall (the
+# director on real pictures of both, #58003: 12 and no higher; the three bays in the middle stay
+# the warmest and the brightest of the front).
+BEHIND = {BRIGHT: (12, 12), LIT: (12, 9), DIM: (8, 7)}
 TALL = 4                    # a window of this many rows or more is a tall one
+# Where the cell before the glass is free (the recess of the window) the source stands there, this
+# much lower. Light loses one in the glass and one more in that cell, so the stone round the window
+# gets what the source behind the glass gave it, level for level, and the room behind the window
+# four levels less: a lit window is no lamp of the room it belongs to (cr2, group #32778; A0 #32721).
+# Outside nothing gets more than before. Less gets only what the old source reached by a shorter
+# way through the room: the recess of another window of the same room and the cells before it,
+# where that window is dark glass (a lit one has a source of its own, and its recess is as it was).
+THROUGH = 2
+# That way through the room is kept for the brightest window. Behind the glass its sources lit the
+# recesses of the two windows beside it as if no pier stood between: the stone round the curtained
+# windows of the entrance stands in the gold one's light (6 to 7 on their inner jambs; 4 to 5 from
+# their own source), and that is the entrance as the director has seen it. So each source of such a
+# window lends one to the window on either side, where that one is lit itself: in the column
+# nearest to it, in its own row, as many levels lower as the two columns are cells apart. The other
+# tiers lend nothing, and a dark window is lent nothing. Beside a lit window of a wing stands a
+# dark one; it had up to 5 in its recess from the room behind it (as much as 8 where the lit window
+# stands round the corner of the same room), which a dark room does not give, and keeps what the
+# front gives it.
+LENDS = (BRIGHT,)
+# The wall wash: the level of the source where a projector's beam lands, before the foot of a
+# pilaster's shaft. In a picture the foot of a washed pilaster stands at 0.28 with 8 there, 0.31
+# with 10 and 0.34 with 12, an unlit one at 0.22 and the corner pilaster that carries a bracket
+# lamp at 0.38. At 8 the wash is hardly read from the court and the stone stays cold. At 10 the
+# foot turns warm and stands a step under the corner pilaster. At 12 the wall between the
+# pilasters turns warm as well and the feet come within 0.04 of the corner pilaster. The director
+# on the reviewer's measurements of the three (#62755): 10 and no higher; the three steps of the
+# front are 14, 12 and 10. Up the shaft the light falls by a level a row, 0.02 to 0.03 from the
+# foot to the string course: a steeper fall is not to be had from a block light.
+WASH = 10
 
 _PRIORITY, _WAKE, _BLIND = 0, 1, 3      # salts of the hash; 2 was the curtains', handed out by look once
 _TIER_OF = {block: tier for tier, role in ROLE.items() for block in role.all()}
 _TIER_OF.update({block: DARK for role in (B.WINDOW_DARK, B.WINDOW_BLIND, B.SKYLIGHT) for block in role.all()})
+# The furnace window of the power house (A0, group #37116; in the occupancy table as three whole
+# blocks, one to a row of the window, the sill's first) is none of the three tiers and no look hands
+# it out. It glows, so it counts as the dimmest lit tier: it gets the source of a curtained window.
+_FURNACE = getattr(B, "WINDOW_FURNACE", ())
+_TIER_OF.update({block: DIM for family in (_FURNACE if isinstance(_FURNACE, (tuple, list)) else (_FURNACE,))
+                 for block in family.all() if block not in _TIER_OF})
 
 
 def tier_of(name):
@@ -165,8 +217,9 @@ def tier_of(name):
 def _h(key, salt):
     """A fixed number in [0, 1) for a window."""
     front, bay, storey = key
+    seed = SEED if salt == _BLIND else FRONT_SEED.get(str(front), SEED)
     return hash3(int(bay), zlib.crc32(str(storey).encode()) & 0xFFFF, zlib.crc32(str(front).encode()) & 0xFFFF,
-                 SEED + salt)
+                 seed + salt)
 
 
 _UNDER = []                 # the looks of the under() blocks that are open, the innermost last
@@ -182,6 +235,26 @@ def under(look):
         yield
     finally:
         _UNDER.pop()
+
+
+_TRIED = ("BEHIND", "THROUGH", "LENDS", "WASH")     # the numbers of the sources; which windows are lit is not tried here
+
+
+@contextlib.contextmanager
+def trying(**numbers):
+    """Place the sources of what sky/lights.build() lights inside the block by other numbers than
+    this module has: trying(LENDS=()), trying(BEHIND={...}), trying(WASH=12). They are put back
+    when the block closes.
+    For a test scene that shows a variant beside the building as it is; the master scene never does."""
+    unknown = sorted(set(numbers) - set(_TRIED))
+    if unknown:
+        raise ValueError(f"trying() changes {', '.join(_TRIED)}, not {', '.join(unknown)}")
+    kept = {name: globals()[name] for name in numbers}
+    globals().update(numbers)
+    try:
+        yield
+    finally:
+        globals().update(kept)
 
 
 def _look(look):
@@ -458,6 +531,12 @@ def glazed(canvas, windows, origin=(0, 0, 0), group="", look=None):
     windows   records as in main's table: front, bay, storey, cells (the glass columns (x, z)),
               inward (the step from the glass into the building), y (the glass's bottom and top
               row). A record marked blind is left out; "level" asks for another level behind it.
+              "inside" keeps the sources behind the glass, at the full level. That is for a
+              window of panes: a pane shows the light of its own cell, not that of the cell
+              before it as a block of glass does on its face, and with the source before it, it
+              is no brighter than the wall beside it. The room behind it gets the full level
+              then: only where nobody looks into it, and where its light gets out by no other
+              window or door onto a face that has to stay dark.
     origin    what is added to the cells and rows
     group     a name for the building, to keep its fronts apart from another's in the report
     look      the look the front was glazed for, when it is not the one build() is called with
@@ -470,13 +549,13 @@ def glazed(canvas, windows, origin=(0, 0, 0), group="", look=None):
         canvas.light_windows.append(dict(
             group=str(group), origin=tuple(int(v) for v in origin), front=w["front"], bay=w["bay"],
             storey=w["storey"], cells=[tuple(c) for c in w["cells"]], inward=tuple(w["inward"]),
-            y=tuple(w["y"]), level=w.get("level"), look=look))
+            y=tuple(w["y"]), level=w.get("level"), inside=bool(w.get("inside")), look=look))
 
 
 def dress(canvas, on=True):
-    """Ask for the building's own lights on this canvas while the switch sky/lights.DRESS is off: the
-    sources behind the windows of main's table, in the main doorway, and the wall wash. For a test
-    scene that shows a front under its lights; the master scene follows the switch."""
+    """Ask for the building's own lights on this canvas whatever the switch sky/lights.DRESS says:
+    the sources of the windows of main's table and the wall wash; on=False asks for the fronts
+    without them. For a test scene; the master scene follows the switch."""
     canvas.light_dress = bool(on)
 
 
