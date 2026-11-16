@@ -86,6 +86,7 @@ build() returns the number of display entities it placed (the projectors of the 
 the ring stair, the lamps of the ways and of the gates).
 """
 import math
+import os
 
 from artkit import blockfacts as F
 from artkit import blocks as AB
@@ -658,6 +659,43 @@ def _gates(canvas, r, origin):
         r["gates"].append(cell)
     return n
 
+
+# ---- trial tree only (dome): the wash of the walls under the terrace -----------------------------------
+# Numbers to hand to the lights line (#75708; cr2 on the real pictures, #74079): a projector of
+# props (lamps "uplight") on the ground before the foot of a buttress, looking at it, with its
+# source in its own cell. [(the projector's cell, the way it looks, the level, what it lights)]
+BASE_WHY = "sky/lights:base"
+BASE_OUT = int(os.environ.get("C164_TRIAL_OUT", "2"))       # cells between a buttress and its projector, counting it
+BASE_LEVEL = int(os.environ.get("C164_TRIAL_LEVEL", "8"))
+BASE_WASH = (
+    [((62 + BASE_OUT, -6, z), "west", BASE_LEVEL, f"the east wall's buttress in row {z}") for z in (-14, -22, -30)]
+)
+
+
+def _base(canvas, r, origin):
+    """The projectors of BASE_WASH, each where its cell is free and has ground under it, with its
+    source in that cell. Returns the number of display entities placed."""
+    r.setdefault("base", [])
+    if os.environ.get("C164_TRIAL_BASE", "1") == "0":
+        return 0
+    try:
+        from ..props import lamps
+    except ImportError:
+        return 0
+    ox, oy, oz = origin
+    n = 0
+    for (x, y, z), facing, level, what in BASE_WASH:
+        cell = (x + ox, y + oy, z + oz)
+        if cell in r["base"]:
+            continue
+        if (canvas.has(*cell) and cell not in r["placed"]) or not _solid(canvas, cell[0], cell[1] - 1, cell[2]):
+            r["notes"].append(f"no projector for {what}: the cell {cell} is taken or has no ground")
+            continue
+        n += lamps.place(canvas, "uplight", (x + 0.5, float(y), z + 0.5), facing=facing, origin=origin, light=False)
+        _put(canvas, r, cell, level, BASE_WHY)
+        r["base"].append(cell)
+    return n
+
 # ---- the offers ----------------------------------------------------------------------------------------
 def _settle(canvas, r):
     index = _entity_index(canvas)
@@ -820,6 +858,7 @@ def build(canvas, origin=(0, 0, 0)):
     if _asked(canvas):
         n += _ways(canvas, r, origin)
         n += _gates(canvas, r, origin)
+        n += _base(canvas, r, origin)                   # trial tree only
     _settle(canvas, r)
     _pools(canvas, r)
     _survey(canvas, r)
