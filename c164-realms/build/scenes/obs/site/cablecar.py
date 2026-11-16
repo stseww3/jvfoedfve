@@ -50,14 +50,19 @@ tall one; the glass roof is short, over the car alone, and west of it the platfo
 What the other lines hang on (cells unless called a point): CAR, WINCH_ROOM, SLOT, SPAWN,
 track_axis(x), rail_top(x) for the car and the winch; SIGN, BENCHES, LUGGAGE for the props;
 LAMP_POINTS for the lamps; windows() for the light; SMOKE for the motion line; STEPS for the paths
-that meet the platform. The package sets blocks and has no models and no light sources of its
-own, and build() places no display entity. The sheets on the room side of the winch house's two
-lights are the materials line's: it places them in the master scene from windows(), and a scene
-that shows the station by itself asks for them with lining().
+that meet the platform. The package sets blocks and has no light sources of its own. Its one
+piece of ironwork that blocks cannot draw is a display model: the awning along the waiting
+room's front (AWNING), three lengths of it, which build() places. The sheets on the room side of
+the winch house's two lights are the materials line's: it places them in the master scene from
+windows(), and a scene that shows the station by itself asks for them with lining().
 """
+import functools
 import importlib
 
+from artkit import models as M
+
 from ..common import blocks as B
+from ..common import palette as P
 from ..common import skeleton as S
 from . import _kit as K
 
@@ -156,6 +161,23 @@ LAMP_POINTS = {
 # the two flights down to the lower platform: the cells of their treads (both rows of each)
 STEPS = dict(west=dict(x=(X0, X0 + 1), z=(Z0, Z1)), south=dict(x=(X0 + 1, BAY - 1), z=(Z1 - 1, Z1)))
 
+# --- the awning along the waiting room's front (a display model) ------------------------------------
+# Half a block of iron awning under the eaves, from the gable to the winch house: a sheet, a fascia
+# with a valance of pointed boards under it, a cast bracket on every pier of the front. Of the two
+# houses the arrival view sees this one wall, the picture's right edge, and nothing on it said
+# what the house is (cr2, 11-16 09:48); an awning with a valance is a station's. Iron only, no
+# lamp and no light. Its end at the gable is the nearest it comes to the comet's part of the sky:
+# 19 degrees north of west and 15 up, where that part ends at 15 north and begins at 35 up
+# (clear.py measures it with everything else).
+AWNING_BAY = 2                          # cells to a length: a bracket on every second cell, the piers
+AWNING = [(float(x), float(WAIT_TOP + 1), float(WAIT[3] + 1)) for x in range(WAIT[0], WAIT[2] + 1, AWNING_BAY)]
+#                                         points: the west end of each length, at the wall's head on
+#                                         its face: (80, 0, -36), (82, 0, -36), (84, 0, -36)
+AWNING_OUT = 8.0                        # texels from the wall's face to the fascia's: half a block
+AWNING_BOARD = 8.0                      # a board of the valance with the notch beside it
+MODEL_AWNING = "site_cablecar_awning"           # a length of the awning
+MODEL_AWNING_END = "site_cablecar_awning_end"   # the length at the gable: the valance goes round its end
+
 # --- the occupancy table's roles ----------------------------------------------------------------------
 BODY = B.TUFF_BRICK.block
 PAVE = B.TUFF_BRICK.block
@@ -235,6 +257,57 @@ def windows():
         window("north", hx1 - 1, [(hx1 - 1, hz0)], (0, 1), high, DARK),
         window("west", mid, [(hx0, mid)], (1, 0), apex, DARK, storey="gable"),
     ]
+
+
+def _awning(name, end):
+    """A length of the awning, texel for texel: x east along the wall from the length's west end,
+    y up from the wall's head, z south from the wall's face. The sheet lies under the eaves; the
+    fascia stands a texel over it and four under; the valance's boards hang five more, pointed.
+    The bracket is on the middle of the length's first cell, a pier of the front: a leg down the
+    wall, a leg under the sheet, a strut from foot to edge and a ring in the corner.
+
+    No two faces lie in one plane and look the same way: the sheet stops at the fascia's back,
+    and at the gable's end, where the fascia goes round, a texel short of it."""
+    dark, iron = P.mat("iron_dark"), P.mat("iron")
+    m = M.Model(name)
+    n = AWNING_BAY * 16.0
+    front = (AWNING_OUT - 1.0, AWNING_OUT)
+    m.box((1.0 if end else 0.0, -1.0, 0.0), (n, 0.0, front[0]), iron, grain="x")
+    m.box((0.0, -4.0, front[0]), (n, 0.5, front[1]), dark, grain="x")
+    points = ((0.0, -7.0, -4.0), (1.0, -8.0, -7.0), (2.0, -9.0, -8.0))     # a board's end: inset, from, to
+    for k in range(int(n / AWNING_BOARD)):
+        x = k * AWNING_BOARD + 1.0
+        for inset, low, top in points:
+            m.box((x + inset, low, front[0]), (x + 6.0 - inset, top, front[1]), dark, grain="y")
+        m.box((x + 2.5, -2.5, front[1]), (x + 3.5, -1.5, front[1] + 0.5), iron)             # a rivet to a board
+    if end:
+        m.box((0.0, -4.0, 0.0), (1.0, 0.5, front[0]), dark, grain="z")
+        for inset, low, top in points:
+            m.box((0.0, low, 0.5 + inset), (1.0, top, 6.5 - inset), dark, grain="y")
+    x0, x1 = 7.25, 8.75
+    m.box((x0, -12.0, 0.0), (x1, -1.0, 1.0), dark, grain="y")
+    m.box((x0 - 0.25, -13.0, 0.0), (x1 + 0.25, -12.0, 1.5), iron)
+    m.box((x0, -2.0, 1.0), (x1, -1.0, front[0]), dark, grain="z")
+    m.beam((8.0, -11.5, 0.75), (8.0, -2.25, front[0] - 0.25), x1 - x0, 1.0, dark)
+    m.ring("x", (8.0, -4.25, 3.25), 1.75, 1.0, 1.0, dark, sides=12)
+    return m
+
+
+@functools.lru_cache(maxsize=None)
+def _models():
+    return {MODEL_AWNING: _awning(MODEL_AWNING, False), MODEL_AWNING_END: _awning(MODEL_AWNING_END, True)}
+
+
+def models():
+    return dict(_models())
+
+
+def _awnings(p):
+    """Hang the awning's lengths; the one at the gable is the end piece. Returns how many."""
+    kit = _models()
+    for i, (x, y, z) in enumerate(AWNING):
+        p.c.add_entity(p.o[0] + x, p.o[1] + y, p.o[2] + z, M.display(kit[MODEL_AWNING if i else MODEL_AWNING_END]))
+    return len(AWNING)
 
 
 def _other(path):
@@ -508,9 +581,9 @@ def lining(canvas, origin=(0, 0, 0)):
 
 
 def build(canvas, origin=(0, 0, 0)):
-    """Returns the number of display entities placed: none, the package sets blocks only. (The
-    sheets on the room side of the winch house's two lights are the materials line's to place,
-    see lining().)"""
+    """Returns the number of display entities placed: the lengths of the waiting room's awning.
+    (The sheets on the room side of the winch house's two lights are the materials line's to
+    place, see lining().)"""
     p = _Pen(canvas, origin)
     _platform(p)
     _track(p)
@@ -522,4 +595,4 @@ def build(canvas, origin=(0, 0, 0)):
     for y in (FEET, FEET + 1):          # the spawn cell stays empty
         p.clear(HEAD, y, AXIS)
     _light(canvas, origin)
-    return 0
+    return _awnings(p)
