@@ -47,6 +47,8 @@ END_LAMP_X = 14.5                               # the fourth lamp of a gallery w
 END_LEVEL = 7                                   # under it: 6 beside it on the walk, 5 on the railing's top at the wall
 RAIL_LEVEL = 7                                  # over the south railing, between the lamps at 4.5 and 8: 5 two cells off
 WEST_LEVEL = 6                                  # beside the first lamp's foot: 5 in the gallery's last cell
+CORNER_LEVEL = 6                                # an aisle's corner cell holds the dado's panel: the source stands in the
+#                                                 row before it, and leaves 5 at the head of who stands in the corner
 FILL = 5                                        # in the cell of the head of the place it is for, and no further
 
 # (the cell, its level, what it lights): building coordinates
@@ -58,8 +60,8 @@ SOURCES = (
     ((X0 + 1, DECK + HEAD, Z0), WEST_LEVEL, "north gallery west"),
     ((X0 + 1, DECK + HEAD, Z1), WEST_LEVEL, "south gallery west"),
     ((X0, DECK + HEAD, Z1 - 1), FILL, "south railing west"),
-    ((X0, FEET + HEAD, Z0), FILL, "north aisle corner"),
-    ((X0, FEET + HEAD, Z1), FILL, "south aisle corner"),
+    ((X0, FEET + HEAD, Z0 + 1), CORNER_LEVEL, "north aisle corner"),
+    ((X0, FEET + HEAD, Z1 - 1), CORNER_LEVEL, "south aisle corner"),
     ((9, FEET + HEAD, -3), FILL, "roundel north"),
     ((9, FEET + HEAD, 3), FILL, "roundel south"),
 )
