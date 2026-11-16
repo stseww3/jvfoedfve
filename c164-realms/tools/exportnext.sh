@@ -9,15 +9,16 @@
 #       save for Realms and the same without the shaders, each made and verified
 #   bash c164-realms/tools/exportnext.sh done ["what is new in this one"]
 #       after the job's receipt: pulls the dist branch, writes dist/history.json and the table of
-#       dist/README.md (tools/export.py page), takes the older saves out of the tree, pushes, and
-#       prints the lines to report
+#       dist/README.md (tools/export.py page), pushes, and prints the lines to report
 #
 # Two working trees, both the caller's own (never the shared checkout):
 #   C164_EXPORT_TREE   the export branch: the tool and its notes  (default: outb's)
 #   C164_DIST_TREE     the dist branch: the export branch plus c164-realms/dist/, which never goes
 #                      to the assembly (the director's #61069)
-# The numbers go up by one each round (A1, A2, ...); only the newest save stays in the tree, the
-# older ones are in the branch's history at the commits the table names.
+# The numbers go up by one each round (A1, A2, ...). A numbered folder is never taken out of the
+# tree again: its path may have been handed to somebody, and a path that was given out must not go
+# dead (the director's #77375, after A5 had gone from the head with the round of A6). A1 to A4,
+# from before that rule, are in the branch's history at the commits the table names.
 set -euo pipefail
 
 ASSEMBLY=${C164_ASSEMBLY:-cursor/c164-assembly-fable-a9f5}
@@ -39,9 +40,6 @@ if [ "${1:-}" = "done" ]; then
     HELD=$(git -C "$DT" rev-parse --short=8 HEAD)
     OUT=$(cd "$DT/c164-realms" && python3 tools/export.py page dist --commit "$HELD" ${2:+--note "$2"})
     echo "$OUT" | grep -v "^REPORT " || true
-    for old in "$DIST"/A[0-9]*; do
-        [ "$old" = "$DIST/A$N" ] || git -C "$DT" rm -q -r "$old"
-    done
     git -C "$DT" add "$DIST"
     git -C "$DT" commit -q -m "c164-outb: dist -- the whole save A$N is the newest; the page and the history say what is in it"
     hush git -C "$DT" push -q -u origin "$DB"
@@ -57,6 +55,12 @@ print("1. `{branch}`，`c164-realms/dist/{n}/c164-{n}.zip`，sha256 {sha}。".fo
 print("2. 存档 {zip}，其中资源包 {pack}（{pack_files} 个文件，上限 250 兆）；{blocks} 方块、{entities} 个显示实体。".format(**r))
 print("3. 服务端冷启动两次，{checks} 项{ok}，日志警告和报错 {console} 条。导出 {make_s} 秒，验证 {verify_s} 秒。".format(**r))
 print("数据包：函数 {functions}、标签 {tags}、注册表文件 {registry_files}；占位贴图 {standins} 张；资源包里着色器 {shaders} 个。".format(**dict(r, shaders=r.get("shaders") or 0)))
+print("光照：存盘前等到不再变（{} 秒）。".format(r["light"]) if r.get("light") else "光照：存盘时还在变，这一版的光不全！" if r.get("light") is False else "光照：没等。")
+print("导览：带（进服的标题、牌子、星图）" + ("；存档在世界列表里叫「{}」。".format(r["title"]) if r.get("title") else "。") if r.get("guide") else "导览：不带。")
+if r.get("bare"):
+    print("不带导览的：`{}`，{}，sha256 {}，{}。".format(
+        r["bare"]["file"], mb(r["bare"]["bytes"]), r["bare"]["sha256"][:8] + "…" + r["bare"]["sha256"][-4:],
+        "验证全过" if r["bare"].get("verified") else "验证没过" if r["bare"].get("verified") is False else "没验"))
 if r.get("plain"):
     print("不带着色器的（资源包加载失败时换这个）：`{}`，{}，sha256 {}，{}。".format(
         r["plain"]["file"], mb(r["plain"]["bytes"]), r["plain"]["sha256"][:8] + "…" + r["plain"]["sha256"][-4:],
