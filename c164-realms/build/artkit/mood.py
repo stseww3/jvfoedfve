@@ -7,6 +7,10 @@ sky gradient, the haze, the tint of daylight and of lamp light, the stars.
 Biomes and timelines are registry entries. They load when the server starts and are sent to the
 client when it joins, so after these files change the server must be restarted and the client must
 reconnect; `/reload` does not pick them up.
+
+A world that holds a file of any registry is one "with experimental settings", and Realms takes no
+such world. A look that is to reach Realms is therefore carried by the resource pack: the look's
+module wraps its biomes in Carried, and the drivers write no registry file for it (see there).
 """
 import json
 import os
@@ -105,6 +109,36 @@ def one_body_sky(day, night, dusk=13050, dawn=22850, step=500):
 def timeline(tracks, clock="minecraft:overworld", period=24000):
     return {"clock": clock, "period_ticks": period,
             "tracks": {(k if ":" in k else VISUAL + k): v for k, v in tracks.items()}}
+
+
+class Carried(dict):
+    """Biomes whose look the resource pack carries instead of the data pack.
+
+    The dictionary still says what every biome would hold: the offline renderer draws from it as
+    before, and a scene still names its biome by its key. The drivers (build/place.py,
+    build/makepack.py, tools/check.py, tools/shoot.py) ask carried() and then
+
+        write no biome and no timeline; write() with nothing removes those of an earlier run
+        fill the scene's box with game_biome, one of the game's own
+        hold the clock at `clock`: the pack's sky is painted for that one hour, whatever "time" a
+            shot names
+        call pack(resource_pack_dir, biome) once the scene's own pack is written; it returns the
+            lines to print
+
+    The files pack() writes are the look's, not the scene's: a scene's write_pack() does not write
+    them as well.
+    """
+
+    def __init__(self, biomes, game_biome, clock, pack):
+        super().__init__(biomes)
+        self.game_biome, self.clock, self.pack = game_biome, int(clock), pack
+
+
+def carried(look):
+    """The biomes of a look's module (scenes/<scene>/mood.py) if the resource pack carries them,
+    else None; None for no module."""
+    biomes = getattr(look, "BIOMES", None)
+    return biomes if isinstance(biomes, Carried) else None
 
 
 def _write(path, data):
