@@ -59,6 +59,10 @@ V7_BOXES = (("pier N", (676, 450, 692, 580)), ("pier S", (588, 450, 606, 580)), 
             ("lining L", (0, 125, 150, 562)), ("lining R", (1125, 125, 1280, 562)), ("foot", (560, 650, 720, 700)),
             ("globe", (440, 590, 495, 635)), ("board", (795, 515, 870, 665)))
 
+# the rows of the half, from its top: the girder, the arch's crown, under the crown, the flight's steps 5 to 3, 2 and 1,
+# the first step, the floor before the flight, the roundel, the floor inside the door
+ROWS = (394, 406, 416, 425, 447, 478, 496, 510, 524, 540, 545)
+
 HALF, WARM = 0.22, 0.03             # the board's picture: the half of the doorway, and how much redder than blue
 PIER = (0.255, 0.26)                # the hall's picture: the pier's face beside the clock
 ARCH, ALIKE = 0.235, 0.02           # the flights behind the side arches, and how far the two may differ
@@ -156,6 +160,8 @@ def measure(hall, levels):
     print(f"== {said}  ({time.time() - t0:.0f} s)")
     print("V4 " + "  ".join(f"{name} {got[name][0]:.3f} ({got[name][1]:+.3f})" for name, _ in V4_BOXES))
     print("V7 " + "  ".join(f"{name} {got[name][0]:.3f}" for name, _ in V7_BOXES))
+    x0, _, x1, _ = V4_BOXES[0][1]
+    print("V4 rows " + "  ".join(f"{a}-{b} {read(v4, (x0, a, x1, b))[0]:.3f}" for a, b in zip(ROWS, ROWS[1:])))
     print("light " + " | ".join(f"{name} " + " ".join(str(light.get(c, 0)) for c in cells) for name, cells in CELLS))
     fails = []
     if odd:
