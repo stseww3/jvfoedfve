@@ -283,7 +283,7 @@ RED_LENS = _flat("signal_glow", 2)                      # the lamp alone is red 
 RED_HOT = _flat("signal_glow", 3)
 HOOD = _flat("iron", 0)
 DIAL = _flat("cream", 2)
-HOOP_SEED, STRAP_SEED = 9001, 9002
+HOOP_SEED, STRAP_SEED, CONE_SEED = 9001, 9002, 9005
 
 
 class _Px:
@@ -360,6 +360,7 @@ FINDER_OFF, FINDER_R = 17.5, 3.0
 FINDER = (16.0, 80.0)                   # the finder's tube: from, to (texels from the eyepiece's end)
 TAIL_PLATE = (19.0, 23.0, 9.0)          # from, to (texels from the eyepiece's end) and radius
 HAND_RING = (15.0, 10.0)                # the ring the observer swings the tube by: where, radius
+SKIRT = 35.0                            # degrees from the tube's line: under 45, or the game files a skirt under the shoulder's way
 
 
 def _dec_angle():
@@ -404,12 +405,45 @@ def _tube(version):
     for i in range(3):
         with side(spec["finder"] + 60.0 + 120.0 * i):
             d.rod((0.0, plate_r - 1.5, z(s0)), (0.0, ring_r, z(ring_s)), 0.6, BRASS_D, sides=4)
+    def plates(a, b, radius):
+        """A ring of the cone's plate from a to b: no line painted at its two ends, the skirt that
+        follows it is its edge."""
+        half = radius * math.tan(math.pi / 12.0)
+        middle = (0.0, 0.0, (z(a) + z(b)) / 2.0)
+        for i in range(6):
+            d.box((-half, -radius, z(b)), (half, radius, z(a)), TUBE, rot=("z", 30.0 * i, middle) if i else None,
+                  skip="we", grain="z", lit={"n": "cap", "s": "cap", "u": "plain", "d": "plain"}, seed=CONE_SEED)
+
+    def skirt(s, r0, r1):
+        """Where the tube steps out from r0 to r1 at s, going up it: twelve sloping plates over the
+        shoulder. A shoulder looks down the tube at the observer and the game gives it four tenths
+        of the light, a black gap under every ring; a plate that slopes SKIRT degrees is filed
+        under the way its facet of the tube looks and is lit with it, and it is painted one step
+        under that facet."""
+        run = (r1 - r0) / math.tan(math.radians(SKIRT))
+        long = math.hypot(run, r1 - r0)
+        half = r1 * math.tan(math.pi / 12.0)
+        y, zz = (r0 + r1) / 2.0, z(s) + run / 2.0
+        for i in range(12):
+            turn = math.radians(30.0 * i)
+            light = _dot((-math.sin(turn), math.cos(turn), 0.0), M.LIGHT)
+            tone = (1 if light > 0.45 else -1 if light < -0.45 else 0) - 1
+            with d.turned(("z", 30.0 * i)):
+                d.box((-half, y - 0.25, zz - long / 2.0), (half, y, zz + long / 2.0), TUBE, rot=("x", SKIRT, (0.0, y, zz)),
+                      skip="dnswe", grain="z", faces={"u": TUBE.variant(tone, 0)}, seed=CONE_SEED + 1)
+
     # cone and body: rings of plate, each lapped and riveted to the next under a hoop, the seams
     # of neighbouring rings a facet apart; a brass hoop where the cone ends
-    d.taper("z", (0.0, 0.0), z(s1), z(40.0), plate_r - 0.5, BODY_R, TUBE, sides=12, steps=4)
+    rings = [(s1 + (40.0 - s1) * i / 4.0, s1 + (40.0 - s1) * (i + 1) / 4.0,
+              plate_r - 0.5 + (BODY_R - plate_r + 0.5) * (i + 0.5) / 4.0) for i in range(4)]
+    for i, (a, b, radius) in enumerate(rings):
+        plates(a, b, radius)
+        if i:
+            skirt(a, rings[i - 1][2], radius)
     seg(40, 228, BODY_R, TUBE)
     for i, s in enumerate(HOOPS):
         seg(s - 1.5, s + 1.5, HOOP_R, TUBE_STUD if i else BRASS_STUD, seed=HOOP_SEED)
+        skirt(s - 1.5, BODY_R if i else rings[-1][2], HOOP_R)
     for i, (a, b) in enumerate(zip(HOOPS, HOOPS[1:] + (228.0,))):
         for across in (0.0, 180.0):
             with side(spec["seam"][i % 2] + across):
