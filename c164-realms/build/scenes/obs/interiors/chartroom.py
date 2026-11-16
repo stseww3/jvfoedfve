@@ -71,6 +71,7 @@ from ..main import _plan as MP
 from ..main import shell
 from ..props import _kit as K
 from ..props import lamps
+from . import _chartengine
 
 MOVED_IN = False        # the master scene dresses the room once it is past review
 NAME = "interiors/chartroom"
@@ -592,7 +593,7 @@ def _calculator():
 @functools.lru_cache(maxsize=None)
 def _models():
     out = {PREFIX + name: make(name, seed, plan) for name, (make, seed, plan) in SHELVES.items()}
-    for m in [_table(k) for k in range(PANES)] + [_bridge(), _viewer(), _plates(), _calculator()]:
+    for m in [_table(k) for k in range(PANES)] + [_chartengine.bridge(), _chartengine.viewer(COMET), _plates(), _calculator()]:
         out[m.name] = m
     return out
 
