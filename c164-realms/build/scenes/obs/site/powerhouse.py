@@ -77,8 +77,9 @@ ORDER = 70      # after the lower platform (20), the retaining wall (25) and the
 
 VERSION = "a"   # the roof that build() makes when it is not told: "a" the saw teeth, "b" the vault
 RUN = False     # the main's run along the ground of the upper terrace (see above)
-FIRE = False    # the boiler bays glow through the fire window. Off, and the curtain glass in its place,
-#                 until the role is in the assembly and materials/windows paints it (c188, g2 #37714)
+FIRE = True     # the boiler bays glow through the fire window; off, the curtain glass stands in its place.
+#                 On since the role is in the assembly, materials/windows paints it and the sky line's
+#                 kit knows it (review cr2, #74016)
 
 # --- where it stands --------------------------------------------------------------------------------
 X0, Z0, X1, Z1 = S.POWER_HOUSE["box"]               # x 67..89, z 20..42: the pier plane
