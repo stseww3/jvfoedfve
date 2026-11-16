@@ -16,6 +16,8 @@ tick for --ticks ticks, in one of four ways (a2's four):
   b   teleport_duration 0, a `tp` every tick
   c   teleport_duration 20, a `tp` every 20 ticks that moves it the way of 20 ticks
   d   teleport_duration 59, a `tp` every 59 ticks
+  e, f   as c, the display's glide one tick and three ticks longer than the wait for the next move
+  g   a `tp` every tick, glided over three ticks
 
 What is measured, not judged by eye: the riding client writes down where its camera stands at
 every frame it draws (the picture helper's `track`), so a ride that halts, jumps or goes back shows
@@ -49,7 +51,10 @@ from guidetrip import Row, SEAT, SECOND, FRAME  # noqa: E402
 from nodetrip import ROOT, WORK, CLOSING, Trip, end  # noqa: E402
 from savetrip import SERVER, LEVEL, KEPT, ask  # noqa: E402
 
-RIDES = {"a": (1, 1), "b": (0, 1), "c": (20, 20), "d": (59, 59)}     # teleport_duration, a tp every so many ticks
+# teleport_duration, a tp every so many ticks. a to d are a2's four; e and f: the same as c with the
+# display's glide a tick or three longer than the wait for the next move, so that it never comes to
+# rest between two moves; g: a move every tick, glided over three
+RIDES = {"a": (1, 1), "b": (0, 1), "c": (20, 20), "d": (59, 59), "e": (21, 20), "f": (23, 20), "g": (3, 1)}
 CAR = "@e[type=minecraft:item_display,tag=c164.ride,limit=1]"
 HEAD = ("# rides on a display entity tried in a save (tools/ridetrip.py): shot, the ride, commit that holds the "
         "zip, first 16 of the picture file's sha256, when it was taken, the distances")
@@ -134,6 +139,10 @@ def judge_camera(text, step, ticks, every):
     first = cam[0][1:4]
     along = [sum((row[1 + k] - first[k]) * unit[k] for k in range(3)) for row in cam]
     aside = [math.sqrt(max(0.0, sum((row[1 + k] - first[k]) ** 2 for k in range(3)) - s * s)) for row, s in zip(cam, along)]
+    # what comes after the ride (the player is put back where it joined) is no part of it
+    cam = [row for row, s, off_line in zip(cam, along, aside) if off_line < 0.5 and -0.2 < s < whole + 0.5]
+    along = [sum((row[1 + k] - first[k]) * unit[k] for k in range(3)) for row in cam]
+    aside = [math.sqrt(max(0.0, sum((row[1 + k] - first[k]) ** 2 for k in range(3)) - s * s)) for row, s in zip(cam, along)]
     times = [row[0] / 1000.0 for row in cam]
     moving = [i for i, s in enumerate(along) if 0.05 < s < max(along) - 0.05]
     if len(moving) < 8:
@@ -158,6 +167,10 @@ def judge_camera(text, step, ticks, every):
            f"{quantile(per_frame, 0.95):.2f} blocks a second for nine frames in ten, {min(per_frame):.2f} at the least, "
            f"{max(per_frame):.2f} at the most; the longest the camera stood still: {still * 1000:.0f} ms; "
            f"{len(back)} frames went back" + (f" (by up to {-min(back):.3f} blocks)" if back else "")]
+    whole_ticks = sum(1 for i in range(a, b + 1) if abs(along[i] / far - round(along[i] / far)) < 0.02)
+    out.append(f"{whole_ticks} of the {n + 1} frames have the camera where a whole tick puts it (a camera that is "
+               f"carried on between two ticks stands at such a place only by chance); the speed frame by frame, blocks "
+               f"a second: " + " ".join(f"{v:.1f}" for v in per_frame))
     if every > 1:
         # the seams: where one move ends and the next begins, by the camera's own clock
         leg = every / 20.0
