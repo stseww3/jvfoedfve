@@ -7,9 +7,10 @@ python -m scenes.obs_props_plaques_site --report  (a node's job: it builds the m
 with the plaques that hang in the open air before a camera of the board, nearer than the
 distance they are drawn from.
 
-One camera a plaque, 2.6 blocks before it at the height of the eye: where the real client's
-picture of its words is taken from. The offline renderer draws no text display, so the kept
-pictures show the wall the plaque hangs on and what stands round it.
+One camera a plaque, 2.6 blocks before it at the height of the eye (HOW: nearer where the room
+is shallower, higher where the plaque hangs low): where the real client's picture of its words
+is taken from. The offline renderer draws no text display, so the kept pictures show the wall
+the plaque hangs on and what stands round it.
 """
 import importlib
 import math
@@ -30,6 +31,12 @@ write_pack = obs.write_pack
 
 TIME = 14000
 BEFORE = 2.6                    # blocks from a plaque to the camera that reads it
+OVER = 0.1                      # and the camera over the plaque's middle: the eye, where a plaque hangs 1.5 over the floor
+# (blocks before, over the middle) where that does not do: the vault's aisle before its plaque is
+# two cells deep; the clock's hangs on the plinth, half a block over the floor
+HOW = {"plate_vault": (1.7, 0.37), "master_clock": (BEFORE, 1.12)}
+THIN = ("pressure_plate", "carpet", "rail", "trapdoor")    # a block of these lies on the floor: who stands on it stands in its cell
+CLEAR = ("glass", "pane", "bars", "fence", "chain", "rail", "ladder")  # and these do not hide what is behind them
 BOARD = [name for name in (f"V{i}" for i in range(1, 13)) if hasattr(S, name)]
 REACH = plaques.VIEW * 64.0     # blocks a plaque is drawn from, at the game's own entity distance
 
@@ -54,8 +61,9 @@ def shots():
     out = []
     for key, spec in plaques.site_plaques().items():
         x, y, z = spec["pos"]
-        dx, _, dz = K.turn(_yaw(spec), (0.3, 0.0, BEFORE))
-        out.append({"name": key, "pos": [round(x + dx, 2), round(y + 0.1, 2), round(z + dz, 2)],
+        before, over = HOW.get(key, (BEFORE, OVER))
+        dx, _, dz = K.turn(_yaw(spec), (0.3, 0.0, before))
+        out.append({"name": key, "pos": [round(x + dx, 2), round(y + over, 2), round(z + dz, 2)],
                     "look_at": [round(float(x), 2), round(float(y), 2), round(float(z), 2)], "time": TIME})
     if not out:
         out.append({"name": "v1", "pos": list(S.V1["pos"]), "look_at": list(S.V1["look_at"]), "time": TIME})
@@ -68,11 +76,39 @@ def _cell(point, yaw, off):
     return (math.floor(point[0] + dx), math.floor(point[1] + dy), math.floor(point[2] + dz))
 
 
+def _what(c, x, y, z):
+    """The name of what stands in a cell, "" for air and for a light block."""
+    name = (c.name(x, y, z) or "").split(":")[-1]
+    return "" if name in ("air", "cave_air", "light") else name
+
+
+def _stops(c, x, y, z):
+    """Whether a walker cannot be in this cell: something stands in it that is not laid on the floor."""
+    name = _what(c, x, y, z)
+    return bool(name) and not any(word in name for word in THIN)
+
+
+def _seen(c, eye, point):
+    """Whether no block stands between an eye and a point. The line is walked a tenth of a block at
+    a time; what is laid on the floor (THIN) and what one sees through (CLEAR) hides nothing, and
+    neither does a model: this errs towards seen."""
+    to = [p - e for p, e in zip(point, eye)]
+    far = math.sqrt(sum(v * v for v in to))
+    first = tuple(math.floor(v) for v in eye)
+    for i in range(1, int(far / 0.1)):
+        at = tuple(math.floor(e + d * (i * 0.1 / far)) for e, d in zip(eye, to))
+        name = _what(c, *at)
+        if at != first and name and not any(word in name for word in THIN + CLEAR):
+            return False
+    return True
+
+
 def faults(c):
     """What is wrong with where the plaques hang on the canvas of build(), [(key, words)]: a corner
-    of the plate with nothing behind it or inside a block, no place to stand and read it within
-    three blocks, its middle far from the reader's eye, more than one other plaque read from the
-    same spot. A plaque with nothing behind its middle does not hang at all and is not looked at."""
+    of the plate with nothing behind it or inside a block, no place to stand and read it in the
+    three cells before it, its middle far from the reader's eye, more than one other plaque seen
+    from where it is read. A plaque with nothing behind its middle does not hang at all and is not
+    looked at."""
     table = plaques.site_plaques()
     left = set(getattr(c, "plaques_left_out", []))
     inset = 0.02                                            # a corner on the edge of a cell belongs to the plate's side of it
@@ -94,31 +130,35 @@ def faults(c):
             out.append((key, f"the plate hangs over the edge of what it hangs on: nothing stands at {bare}"))
         if sunk:
             out.append((key, f"the plate is inside a block: {[(cell, c.get(*cell)) for cell in sunk]}"))
-        stands = []
-        for far in (1.0, 2.0, 3.0):
+        stands = []                                         # (blocks before the plaque, the y the feet are at)
+        for far in (0.5, 1.5, 2.5):                         # the three cells before the wall
             x, _, z = _cell(pos, yaw, (0.0, 0.0, far))
             for feet in range(math.floor(pos[1]) + 1, math.floor(pos[1]) - 4, -1):
-                if c.has(x, feet - 1, z) and not c.has(x, feet, z) and not c.has(x, feet + 1, z):
+                if _stops(c, x, feet - 1, z) and not _stops(c, x, feet, z) and not _stops(c, x, feet + 1, z):
                     stands.append((far, feet))
                     break
         if not stands:
-            out.append((key, "nobody can stand and read it: no floor with two cells of air within three blocks before it"))
+            out.append((key, "nobody can stand and read it: no floor with two cells of air in the three cells before it"))
+            eye = tuple(p + d for p, d in zip(pos, K.turn(yaw, (0.0, OVER, BEFORE))))
         else:
-            eye = min(abs(feet + S.EYE - pos[1]) for _, feet in stands)
-            if eye > 0.75:
-                out.append((key, f"its middle is {eye:.2f} from the eye of who stands before it "
+            far, feet = min(stands, key=lambda s: (abs(s[1] + S.EYE - pos[1]), -s[0]))
+            off = abs(feet + S.EYE - pos[1])
+            if off > 0.75:
+                out.append((key, f"its middle is {off:.2f} from the eye of who stands before it "
                                  f"(feet at y {sorted({feet for _, feet in stands})})"))
-        spot = tuple(p + d for p, d in zip(pos, K.turn(yaw, (0.0, 0.0, BEFORE))))
+            eye = tuple(p + d for p, d in zip(pos, K.turn(yaw, (0.0, feet + S.EYE - pos[1], far))))
         others = []
         for other, o in table.items():
             if other == key or other in left:
                 continue
-            to = tuple(a - b for a, b in zip(spot, o["pos"]))
             front = K.turn(_yaw(o), (0.0, 0.0, 1.0))
-            if math.sqrt(sum(v * v for v in to)) < 64.0 * o.get("view", plaques.VIEW) and sum(a * b for a, b in zip(to, front)) > 0.0:
-                others.append(other)
+            to = tuple(a - b for a, b in zip(eye, o["pos"]))
+            near = math.sqrt(sum(v * v for v in to))
+            if near < 64.0 * o.get("view", plaques.VIEW) and sum(a * b for a, b in zip(to, front)) > 0.0 \
+                    and _seen(c, eye, tuple(p + 0.05 * f for p, f in zip(o["pos"], front))):
+                others.append(f"{other} ({near:.1f} blocks)")
         if len(others) > 1:
-            out.append((key, f"who reads it stands where {len(others)} more plaques are drawn and look his way: {', '.join(others)}"))
+            out.append((key, f"who reads it sees {len(others)} more plaques by turning his head: {', '.join(others)}"))
     return out
 
 
