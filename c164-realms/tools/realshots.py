@@ -141,7 +141,11 @@ def take(source, tag, scene, kept_in=None):
     new, same = [], 0
     for shot, tick, commit, sha, when in rows:
         if kept.get(shot, ("", "", ""))[2] == sha and os.path.exists(os.path.join(folder, shot + ".jpg")):
-            same += 1           # the very picture that is kept: its line stays as it is
+            same += 1           # the very picture that is kept
+            if when != kept[shot][3]:
+                # shot again, and the same file came out: it shows this trip's code as well, and its
+                # line says so (a line the trip only carried in its note has the kept line's time)
+                kept[shot] = (tick, commit, sha, when) + ((view,) if view else ())
             continue
         shutil.copyfile(os.path.join(source, f"{stem}{shot}.jpg"), os.path.join(folder, shot + ".jpg"))
         new.append(shot)
