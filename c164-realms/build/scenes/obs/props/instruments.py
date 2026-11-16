@@ -59,6 +59,7 @@ STONE = P.mat("ashlar")
 WHITE = P.mat("cream", base=2, bevel=1)           # white paint on wood: the thermometer screen
 WHITE_D = P.mat("cream", base=1, bevel=1)
 LENS = K.flat("night_glass", 2)                   # the glass of an objective: dark, it holds the sky
+MIRROR = K.flat("night_glass", 4)                 # a silvered glass: it gives the sky back
 EYECUP = K.flat("iron", 1)
 KNOB = K.flat("brass", 4)                         # the bright end of a knurled knob
 ROD = K.flat("brass", 3)                          # a rod one pixel thick: one clean line, no edges
@@ -121,7 +122,7 @@ class _Ribs(pixelart.Mat):
 
 SKY = P.mat("enamel", kind="flat", bevel=0, base=1)          # the ground of the celestial globe
 SEA = P.mat("verdigris", kind="flat", bevel=0, base=1)       # and of the table globe
-GLASS = P.mat("night_glass", kind="flat", bevel=0, base=2)   # a glass ball that is not lit from inside
+GLASS = P.mat("night_glass", kind="flat", bevel=0, base=3)   # a glass ball that is not lit from inside
 SLATS = _Slats("cream_slats", P.RAMPS["cream"], kind="flat", bevel=0, base=3)
 DRUM = _Ribs("iron_slots", P.RAMPS["iron"], kind="flat", bevel=0, base=3)
 
@@ -184,21 +185,24 @@ def _lume(rows):
     return ["".join(ch if ch == "g" else "." for ch in row) for row in rows]
 
 
-GLINT = P.RAMPS["porcelain"][4]
-# two strokes like those of furniture._pane (c179, g2 #33282), one column further left: the clock's
-# door is seven pixels wide and its middle column is the pendulum rod's, which a glint would cut
-STROKES = ((2, 1), (1, 2), (0, 3), (2, 3), (1, 4))
+GLINT = P.RAMPS["porcelain"][4]         # the glint of a lens or of a glass ball: one pixel
+# Clear glass as the furniture draws it (_kit.sheen_texels): the glass is left out and its reflection
+# says it is there, a glancing stroke two pixels wide that climbs to the right and a shorter one
+# under it, in the tone the roof lights hold the sky in; a white one was the brightest thing on the
+# wall and read as paper. One column further left than the kit puts it: the clock's door is seven
+# pixels wide and its middle column is the pendulum rod's, which a stroke would cut in two.
+SHEEN = getattr(K, "SHEEN", P.RAMPS["night_glass"][4])
+STROKES = ((1, 1), (2, 1), (0, 2), (1, 2), (1, 5), (2, 5))
 
 
 def _pane(m, lo, hi):
-    """A pane of glass that looks +z, drawn the way the furniture draws its glass: the glass is
-    left out and its glint says it is there, two short white strokes in the upper left corner."""
+    """A pane of clear glass that looks +z: nothing but its reflection in the upper left corner."""
     w, h = int(round(hi[0] - lo[0])), int(round(hi[1] - lo[1]))
     rows = [["."] * w for _ in range(h)]
     for i, j in STROKES:
         if i < w and j < h:
             rows[j][i] = "g"
-    m.box(lo, hi, BRASS, skip="nudew", faces={"s": _sprite(f"glint_{w}x{h}", ["".join(row) for row in rows], g=GLINT)})
+    m.box(lo, hi, BRASS, skip="nudew", faces={"s": _sprite(f"sheen_{w}x{h}", ["".join(row) for row in rows], g=SHEEN)})
 
 
 def _ball(m, name, centre, radius, mat, sides, bands, paint, swing=0.0, crown=False, depth=1.5):
@@ -394,14 +398,15 @@ LANDS = (
 
 
 def _lands(lean):
-    """paint() for _ball: the map of the table globe, the lands two steps lighter than the seas."""
+    """paint() for _ball: the map of the table globe, the lands three steps lighter than the seas (two
+    are lost in the shade of the ball's own sides)."""
     def paint(points, clear):
         land = np.zeros(len(points), dtype=bool)
         for lon, lat, radius in LANDS:
             a, d = math.radians(lon), math.radians(lat)
             at = np.array(M._qrot(lean, (math.cos(d) * math.sin(a), math.sin(d), math.cos(d) * math.cos(a))))
             land |= points @ at > math.cos(math.radians(radius))
-        return [2 if on else None for on in land]
+        return [3 if on else None for on in land]
     return paint
 
 
@@ -606,9 +611,9 @@ def _sextant():
     c = at(arm, reach, 1.25)
     m.box((c[0] - 1.25, c[1] - 1.25, 0.75), (c[0] + 1.25, c[1] + 1.25, 2.0), BRASS_D)   # its clamp and vernier
     m.tube("z", (c[0], c[1]), 2.0, 3.0, 0.75, BRASS_D, cap=KNOB)
-    m.box((-0.5, top[1] - 0.25, 2.25), (0.5, top[1] + 2.5, 3.5), LENS)                  # index glass
+    m.box((-0.5, top[1] - 0.25, 2.25), (0.5, top[1] + 2.5, 3.5), MIRROR)                # index glass
     g = at(240.0, 5.5)
-    m.box((g[0] - 0.5, g[1] - 1.25, 0.75), (g[0] + 0.5, g[1] + 1.25, 3.0), LENS)        # horizon glass
+    m.box((g[0] - 0.5, g[1] - 1.25, 0.75), (g[0] + 0.5, g[1] + 1.25, 3.0), MIRROR)      # horizon glass
     t = at(300.0, 5.5)
     m.tube("x", (t[1], 1.75), t[0] - 0.5, t[0] + 4.5, 1.0, BRASS, cap=LENS)             # telescope
     m.tube("x", (t[1], 1.75), t[0] + 0.5, t[0] + 1.5, 1.25, BRASS_D)                    # and its collar
@@ -764,7 +769,7 @@ def _sunshine_recorder():
     # rests, the light it gathers low down, dark where one looks through it, and the sky on its
     # crown; the game lights the crown and shades the foot besides. Its glint is one white pixel up
     # and to the left of the front
-    _ball(m, "glass", (0.0, cy, 0.0), r + 0.15, GLASS, 10, 5, _glass((-1, 2, -1, 0, 1), (-0.5, 0.62, 0.6)))
+    _ball(m, "glass", (0.0, cy, 0.0), r + 0.15, GLASS, 10, 5, _glass((-1, 1, -1, 0, 0), (-0.5, 0.62, 0.6)))
     return m
 
 

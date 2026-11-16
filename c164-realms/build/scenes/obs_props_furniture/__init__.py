@@ -6,9 +6,10 @@ end frame are both judged. The rest is a room floor with the pieces set as a roo
 corner (coat stand, writing desk with a desk lamp, a swivel chair at the desk seen from behind and
 one pushed back that shows its seat, two card cabinets side by side and an instrument cabinet), the
 luggage as the cable station has it (furniture.luggage: the trunk along the wall, the small packing
-case on its lid), packing cases, the drafting table with its stool, a bookcase with the library
-ladder on its rail, a display case and a display table. Bracket lamps on the wall light the stage as
-lamps light a room.
+case on its lid), packing cases, two plate boxes one on the other, the drafting table with its
+stool, a bookcase with the library ladder on its rail, a display case and a display table, and at
+the east end the two display tables that come with what they show, side by side and three blocks
+apart as the star hall has them. Bracket lamps on the wall light the stage as lamps light a room.
 
 The furniture of the site (furniture.site: the benches of the sunset terrace, of the station and of
 the lookout) is judged where it stands, in the scene obs_props_furniture_site.
@@ -30,7 +31,7 @@ STONE, PAVING, FLOOR, SHELF = B.ASHLAR_FINE.block, B.TUFF_SMOOTH.block, B.FLOOR_
 WALL_Z = -1
 FACE = WALL_Z + 1               # the air cell in front of the wall; a wall prop's anchor sits on the face
 WALL_H = 6
-WEST, ROOM, EAST = -3, 11, 40   # the terrace runs from WEST to ROOM, the room floor from ROOM to EAST
+WEST, ROOM, EAST = -3, 11, 46   # the terrace runs from WEST to ROOM, the room floor from ROOM to EAST
 DEPTH = 12
 TIME = 14000                    # light version A, the default (INTERFACE: 18000 is B, 12900 is C)
 
@@ -48,13 +49,16 @@ LUGGAGE = (21.6, 0.0, FACE + 0.5)   # as site/cablecar gives it: a point half a 
 CRATES = ((23.9, 0.0, 0.9), (24.9, 0.0, 2.3))
 CRATE_YAWS = (0.0, 30.0)
 CRATE_SMALL = (23.95, furniture.TOP["crate"], 0.85)     # on the first of them
+PLATE_BOX = (25.3, 0.0, 0.55)   # against the wall, a second one on its lid
+PLATE_BOX_UP = (25.32, furniture.TOP["plate_box"] + furniture.STRAP, 0.56)
 DRAFT = (27.2, 0.0, 1.8)
 STOOL = (27.2, 0.0, 3.5)
 CASE_X = (30, 33)               # the bookcase: these cells along x, three high, one deep
 LADDER_X = 31.5
 CASE = (35.5, 0.0, 2.0)
 TABLE = (38.2, 0.0, 0.5)        # against the wall, as in the star hall
-LAMPS = (6.0, 13.5, 20.8, 28.6, 34.3, 38.2)
+SHOWN = (("display_table_plates", (41.0, 0.0, 0.5)), ("display_table_lenses", (44.0, 0.0, 0.5)))
+LAMPS = (6.0, 13.5, 20.8, 28.6, 34.3, 38.2, 42.5)
 
 
 def build():
@@ -79,6 +83,8 @@ def build():
     for pos, yaw in zip(CRATES, CRATE_YAWS):
         n += place(c, "crate", pos, yaw=yaw)
     n += place(c, "crate_small", CRATE_SMALL, yaw=-14.0)
+    n += place(c, "plate_box", PLATE_BOX)
+    n += place(c, "plate_box", PLATE_BOX_UP, yaw=7.0)
     n += place(c, "drafting_table", DRAFT)
     n += place(c, "stool", STOOL)
     shelf_front = FACE + 1.0
@@ -86,6 +92,8 @@ def build():
     n += furniture.rail(c, (CASE_X[0] + 0.5, 0.0, shelf_front), CASE_X[1] - CASE_X[0] + 1)
     n += place(c, "display_case", CASE)
     n += place(c, "display_table", TABLE)
+    for kind, pos in SHOWN:
+        n += place(c, kind, pos)
     for x in LAMPS:
         n += lamps.place(c, "bracket", (x, 3.5, float(FACE)))
     sky.build(c, (0, 0, 0))             # A2's light sources go in last, when every piece is in place
@@ -137,4 +145,13 @@ def shots():
     near("library_ladder", (LADDER_X, 0.0, 1.0), 1.5, back=3.4, side=1.6, eye=1.6)
     near("display_case", CASE, 0.8, back=1.9, side=1.0)
     near("display_table", TABLE, 0.6, back=2.0, side=-1.1)
+    near("plate_box", PLATE_BOX, 0.45, back=1.9, side=0.6, eye=1.4)
+    # the two tables with what they show: as the hall's visitor comes up to them, then each from
+    # where he stops before it, and what he sees when he looks down into it
+    (_, plates), (_, lenses) = SHOWN
+    shot("shown", ((plates[0] + lenses[0]) / 2.0, S.EYE, 4.4), ((plates[0] + lenses[0]) / 2.0, 0.7, 0.5))
+    near("plates", plates, 0.7, back=1.7, side=-0.7)
+    near("plates_over", plates, 0.7, back=0.85, side=0.0)
+    near("lenses", lenses, 0.7, back=1.7, side=0.7)
+    near("lenses_over", lenses, 0.7, back=0.85, side=0.0)
     return out

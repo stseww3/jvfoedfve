@@ -970,10 +970,13 @@ LEFT_STEP = 0.5
 COMET_GRID = 64                 # the comet's sight lines: one to a cell of this grid over the moon's square
 # How much of the front may be out of sight. Posts one block wide stand on the east edge by the
 # skeleton's rule, four apart, and each takes a strip of the base storey: a third of it in all, seen
-# at V1's slant. More than BASE_HIDDEN of it means a wall along the edge. In front of a great window
-# (and of the cornice over it) nothing wider than a lamp post belongs: more than WINDOW_HIDDEN of one
-# bay is named, more than WINDOW_LOST fails.
+# at V1's slant. More than BASE_HIDDEN of it behind blocks means a wall along the edge. The models
+# of display entities are counted apart and make no wall (A0 #64976, 11-16: the armillary's open
+# rings are a small circle of copper on the terrace); blocks and models together may take BASE_LOST.
+# In front of a great window (and of the cornice over it) nothing wider than a lamp post belongs,
+# block or model: more than WINDOW_HIDDEN of one bay is named, more than WINDOW_LOST fails.
 BASE_HIDDEN = 0.5
+BASE_LOST = 0.6
 WINDOW_HIDDEN = 0.25
 WINDOW_LOST = 0.5
 SKYLINE = ("the time-ball mast", "the clock tower", "the great dome", "the small dome")
@@ -1172,10 +1175,18 @@ def sight(rep, got, jar, shots_path):
                 fails.append(f"{name}: {th} of {n} sight lines pass through "
                              f"{_who(bl.labels, out['thru'], out['thru_cell'], pick & veiled & ~hidden)}")
         elif name == "the base storey":
-            if h > BASE_HIDDEN * n:
-                fails.append(f"{name} (y 4..{S.PANEL}): {100.0 * h / n:.0f}% is hidden; the posts of the east edge "
-                             f"alone take a third, more than {100 * BASE_HIDDEN:.0f}% reads as a wall: "
-                             f"{_who(bl.labels, out['what'], out['cell'], pick & hidden)}")
+            wall = bl.cast(eye, dirs[pick], reach[pick], models=False)
+            behind = np.isfinite(wall["t"])
+            walls = int(behind.sum())
+            data[name].update(hidden_by_blocks=walls, hidden_by_models=h - walls)
+            if walls > BASE_HIDDEN * n:
+                fails.append(f"{name} (y 4..{S.PANEL}): blocks hide {100.0 * walls / n:.0f}% of it; the posts of the "
+                             f"east edge alone take a third, more than {100 * BASE_HIDDEN:.0f}% reads as a wall: "
+                             f"{_who(bl.labels, wall['what'], wall['cell'], behind)}")
+            elif h > BASE_LOST * n:
+                fails.append(f"{name} (y 4..{S.PANEL}): {100.0 * h / n:.0f}% is hidden, {100.0 * walls / n:.0f}% by "
+                             f"blocks and the rest by the models of display entities; together they may take "
+                             f"{100 * BASE_LOST:.0f}%: {_who(bl.labels, out['what'], out['cell'], pick & hidden)}")
         elif h:
             # bay by bay, over the three columns between the pilasters; the bays that the same kinds
             # of thing hide are named together
@@ -1200,8 +1211,11 @@ def sight(rep, got, jar, shots_path):
                     warns.append(line + f"; a lamp post takes less than {100 * WINDOW_HIDDEN:.0f}% of a bay")
     front = np.isin(part_of, [names.index(k) for k in FRONT])
     share = {k: 100.0 * data[k]["hidden"] / data[k]["lines"] for k in FRONT}
+    base = data["the base storey"]
     words = [f"the front from y 4 up {100.0 * (front & hidden).sum() / front.sum():.1f}% hidden (base storey "
-             f"{share['the base storey']:.0f}%, great windows {share['the great windows']:.1f}%)"]
+             f"{100.0 * base['hidden_by_blocks'] / base['lines']:.1f}% by blocks and "
+             f"{100.0 * base['hidden_by_models'] / base['lines']:.1f}% more by models, great windows "
+             f"{share['the great windows']:.1f}%)"]
     sky_lines = sum(data[k]["lines"] for k in SKYLINE)
     sky_lost = sum(data[k]["hidden"] + data[k]["seen_through"] for k in SKYLINE)
     words.append(f"skyline {'clear' if not sky_lost else f'{sky_lost} of {sky_lines} sight lines lost'}")
