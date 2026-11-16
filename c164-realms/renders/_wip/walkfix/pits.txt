@@ -1,0 +1,50 @@
+ways from (78.5, -6.0, 31.5) within (60, 8, 100, 52): 6371 places
+
+==== the north place: x 79..83, z 23..25
+-- the blocks, one line a level (y), rows z north to south, columns x west to east, a cell wider all round; - is air
+y -4: z22:------A  z23:-BBBBBA  z24:-BBBBBA  z25:-BBBBBA  z26:-------
+      A=tuff_bricks, B=barrier
+y -5: z22:------A  z23:-BBBBBA  z24:CBBBBBA  z25:-BBBBBA  z26:-------
+      A=tuff_bricks, B=barrier, C=light
+y -6: z22:------A  z23:------A  z24:------A  z25:------A  z26:-------
+      A=polished_tuff
+y -7: z22:AAAAAAB  z23:AAAAAAB  z24:AAAAAAB  z25:AAAAAAB  z26:AAAAAAA
+      A=tuff_bricks, B=deepslate_bricks
+y -8: all air
+y -9: all air
+y -10: all air
+y -11: all air
+-- where feet stand at the middle of every cell (every height with a person's room over it, between y -13 and -3), and how that place is reached
+z 23: x79: -3/not reached; x80: -3/not reached; x81: -3/not reached; x82: -3/not reached; x83: -3/not reached
+z 24: x79: -3/not reached; x80: -3/not reached; x81: -3/not reached; x82: -3/not reached; x83: -3/not reached
+z 25: x79: -3/not reached; x80: -3/not reached; x81: -3/not reached; x82: -3/not reached; x83: -3/not reached
+-- places reached under the hall's level inside the rectangle (the lattice of half blocks): 0; feet at []; none
+-- the steps that lead in (from a place at the hall's level or over it to one under it):
+   none
+   the 0 places they start from are reached by: -
+-- and out again: from every place inside, the easiest way back to a walked place at the hall's level
+   jumps that start inside: 0
+
+==== the south place: x 79..83, z 27..29
+-- the blocks, one line a level (y), rows z north to south, columns x west to east, a cell wider all round; - is air
+y -4: z26:-------  z27:-AAAAA-  z28:-AAAAA-  z29:-AAAAA-  z30:-------
+      A=barrier
+y -5: z26:-------  z27:-AAAAA-  z28:BAAAAA-  z29:-AAAAA-  z30:-------
+      A=barrier, B=light
+y -6: all air
+y -7: z26:AAAAAAA  z27:AAAAAAA  z28:AAAAAAA  z29:AAAAAAA  z30:AAAAAAA
+      A=tuff_bricks
+y -8: all air
+y -9: all air
+y -10: all air
+y -11: all air
+-- where feet stand at the middle of every cell (every height with a person's room over it, between y -13 and -3), and how that place is reached
+z 27: x79: -3/not reached; x80: -3/not reached; x81: -3/not reached; x82: -3/not reached; x83: -3/not reached
+z 28: x79: -3/not reached; x80: -3/not reached; x81: -3/not reached; x82: -3/not reached; x83: -3/not reached
+z 29: x79: -3/not reached; x80: -3/not reached; x81: -3/not reached; x82: -3/not reached; x83: -3/not reached
+-- places reached under the hall's level inside the rectangle (the lattice of half blocks): 0; feet at []; none
+-- the steps that lead in (from a place at the hall's level or over it to one under it):
+   none
+   the 0 places they start from are reached by: -
+-- and out again: from every place inside, the easiest way back to a walked place at the hall's level
+   jumps that start inside: 0
