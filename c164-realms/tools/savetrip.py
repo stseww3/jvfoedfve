@@ -47,10 +47,11 @@ The trip
                              stations are this checkout's either way; the trip says when the test
                              world's board in renders/real/obs/ is of another commit)
     --only <a,b>             only these of as_joined and the twelve views (and the stops of --also)
-    --also <file>            further stops after the twelve, a list in tools/win/shots/: save-listen.json
-                             stands beside the master clock, in the power house and at the telegraph,
-                             inside the reach of the sounds played there, long enough for each to come
-                             round; the trip's log then says what the game complained of about sounds
+    --also <file>            further stops after the twelve, a list in tools/win/shots/ (may be given
+                             more than once). save-asked.json: the views somebody asked for in the save.
+                             save-listen.json: beside the master clock, in the power house and at the
+                             telegraph, inside the reach of the sounds played there, long enough for each
+                             to come round; the trip's log says what the game complained of about sounds
     --view, --server-view, --clouds, --settle, --first-settle, --still   as nodetrip.py has them
     --budget <seconds>       the trip stops what it is doing after this long and closes down (600)
 
@@ -308,7 +309,7 @@ def main():
     ap.add_argument("--name")
     ap.add_argument("--board", metavar="COMMIT")
     ap.add_argument("--only")
-    ap.add_argument("--also", metavar="FILE")
+    ap.add_argument("--also", action="append", default=[], metavar="FILE")
     ap.add_argument("--view", type=int, default=nodetrip.BOARD_VIEW)
     ap.add_argument("--server-view", type=int, default=nodetrip.REALM_VIEW)
     ap.add_argument("--clouds", type=int, default=128)
@@ -324,11 +325,11 @@ def main():
         sys.exit(f"--name {name}: a name of letters, digits, - and _")
     with open(STATIONS, encoding="utf-8") as fh:
         shots = [{"name": JOINED, "stay": True}] + json.load(fh)
-    if args.also:
-        with open(os.path.join(os.path.dirname(STATIONS), os.path.basename(args.also)), encoding="utf-8") as fh:
+    for extra in args.also:
+        with open(os.path.join(os.path.dirname(STATIONS), os.path.basename(extra)), encoding="utf-8") as fh:
             shots += json.load(fh)
         if len({s["name"] for s in shots}) != len(shots):
-            sys.exit(f"--also {args.also}: a stop of it has the name of a view of the board")
+            sys.exit(f"--also {extra}: a stop of it has the name of a view taken already")
     if args.only:
         wanted = args.only.split(",")
         missing = [n for n in wanted if n not in {s["name"] for s in shots}]
