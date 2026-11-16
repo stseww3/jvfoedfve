@@ -1,0 +1,15 @@
+delivery materials/windows: 841ef7d against b3a71e9 (forked at b3a71e9), 3 commits, 109 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[PASS] scope    109 of 109 files are the card's own
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[WARN] pictures 5 test scenes, 85 shots with a picture kept
+                obs_mat_windows: 26 pictures show b7d163ab; the card's code has changed since (_board.py, windows.py): draw them again
+                obs_mat_windows_b: 26 pictures show b7d163ab; the card's code has changed since (_board.py, windows.py): draw them again
+                obs_mat_windows_in: 11 pictures show b7d163ab; the card's code has changed since (_board.py, windows.py, placement.py): draw them again
+                obs_mat_windows_in_b: 11 pictures show b7d163ab; the card's code has changed since (_board.py, windows.py): draw them again
+                obs_mat_windows_in_off: 11 pictures show b7d163ab; the card's code has changed since (_board.py, windows.py): draw them again
+[PASS] merge    merges cleanly; 0 commits behind the base
+result: PASS (0 failed, 1 to look at)

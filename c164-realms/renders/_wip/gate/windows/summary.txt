@@ -1,0 +1,15 @@
+gate materials/windows 841ef7db: the merged tree 841ef7db, the assembly as it was b3a71e9d
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] pictures 5 test scenes, 85 shots with a picture kept
+                    obs_mat_windows: 26 pictures show b7d163ab; the card's code has changed since (_board.py, windows.py): draw them again
+                    obs_mat_windows_b: 26 pictures show b7d163ab; the card's code has changed since (_board.py, windows.py): draw them again
+                    obs_mat_windows_in: 11 pictures show b7d163ab; the card's code has changed since (_board.py, windows.py, placement.py): draw them again
+                    obs_mat_windows_in_b: 11 pictures show b7d163ab; the card's code has changed since (_board.py, windows.py): draw them again
+                    obs_mat_windows_in_off: 11 pictures show b7d163ab; the card's code has changed since (_board.py, windows.py): draw them again
+check.py: 78 scenes in 93 s: 78 pass (78 with warnings)
+pictures: [PASS] selfshots obs_mat_windows at 841ef7db: 26 of 26 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_mat_windows_b at 841ef7db: 26 of 26 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_mat_windows_in at 841ef7db: 11 of 11 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_mat_windows_in_b at 841ef7db: 11 of 11 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_mat_windows_in_off at 841ef7db: 11 of 11 kept pictures are what the code draws
+result: PASS

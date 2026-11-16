@@ -1,0 +1,172 @@
+{
+ "scene": "obs_mach_orrery",
+ "commit": "841ef7d",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "WARN",
+   "summary": "3016 blocks, 41 entities, 35 models, 783 resource-pack files, 281 data-pack files, look: 1 biomes, 1 timelines (1.0 s)",
+   "details": [
+    "registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json"
+   ]
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 782 files, no file written twice, the folders and the prefix of machines are kept (11 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "164 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "599 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "9 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "PASS",
+   "summary": "no wall face runs flat over more than 5x5",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "41 display entities, 14 shown through a matrix that is no turn, no face stretched",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "10 shots, most display entities in view: 41 (stair_b), limit 600; counted without what walls hide; the game draws up to 41 (v7_a): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "v7_a",
+      "in_view": 21,
+      "drawn": 41,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "under_a",
+      "in_view": 21,
+      "drawn": 41,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "gallery_a",
+      "in_view": 20,
+      "drawn": 41,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "stair_a",
+      "in_view": 21,
+      "drawn": 41,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "near_a",
+      "in_view": 20,
+      "drawn": 41,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v7_b",
+      "in_view": 20,
+      "drawn": 41,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "under_b",
+      "in_view": 20,
+      "drawn": 41,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "gallery_b",
+      "in_view": 40,
+      "drawn": 41,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "stair_b",
+      "in_view": 41,
+      "drawn": 41,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "near_b",
+      "in_view": 40,
+      "drawn": 41,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "25 parts and 0 points on 7 chains, 270 function files; 7 commands in the busiest tick (limit 40), 0.3 a tick on average (limit 10)",
+   "details": [
+    "chain of 1001 ticks: 25 functions, 79 commands a cycle, starts 1 ticks after start",
+    "chain of 1617 ticks: 31 functions, 96 commands a cycle, starts 3 ticks after start",
+    "chain of 2002 ticks: 34 functions, 92 commands a cycle, starts 4 ticks after start",
+    "chain of 2457 ticks: 57 functions, 146 commands a cycle, starts 2 ticks after start",
+    "chain of 3003 ticks: 21 functions, 43 commands a cycle, starts 6 ticks after start",
+    "chain of 5577 ticks: 33 functions, 166 commands a cycle, starts 9 ticks after start",
+    "chain of 9009 ticks: 63 functions, 316 commands a cycle, starts 5 ticks after start",
+    "mach_orrery_a_lay: 21 steps in 3003 ticks: its middle lies 0.01 blocks off the axis",
+    "mach_orrery_a_arm_mercury: 11 steps in 1001 ticks: its middle lies 0.19 blocks off the axis",
+    "mach_orrery_a_under_mercury: 15 steps in 1001 ticks: its middle lies 0.56 blocks off the axis",
+    "mach_orrery_a_arm_venus: 11 steps in 1617 ticks: its middle lies 0.26 blocks off the axis",
+    "mach_orrery_a_under_venus: 21 steps in 1617 ticks: its middle lies 0.80 blocks off the axis",
+    "mach_orrery_a_arm_earth: 11 steps in 2002 ticks: its middle lies 0.01 blocks off the axis",
+    "mach_orrery_a_under_earth: 11 steps in 2002 ticks: its middle lies 0.02 blocks off the axis",
+    "mach_orrery_a_arm_mars: 13 steps in 2457 ticks: its middle lies 0.47 blocks off the axis",
+    "mach_orrery_a_under_mars: 27 steps in 2457 ticks: its middle lies 1.29 blocks off the axis",
+    "mach_orrery_a_arm_jupiter: 33 steps in 5577 ticks: its middle lies 0.01 blocks off the axis",
+    "mach_orrery_a_under_jupiter: 33 steps in 5577 ticks: its middle lies 0.03 blocks off the axis",
+    "mach_orrery_a_arm_saturn: 63 steps in 9009 ticks: its middle lies 0.87 blocks off the axis",
+    "mach_orrery_a_under_saturn: 63 steps in 9009 ticks: its middle lies 2.13 blocks off the axis",
+    "mach_orrery_b_arm_mercury: 11 steps in 1001 ticks: its middle lies 0.23 blocks off the axis",
+    "mach_orrery_b_under_mercury: 15 steps in 1001 ticks: its middle lies 0.59 blocks off the axis",
+    "mach_orrery_b_arm_venus: 11 steps in 1617 ticks: its middle lies 0.35 blocks off the axis",
+    "mach_orrery_b_under_venus: 21 steps in 1617 ticks: its middle lies 0.85 blocks off the axis",
+    "mach_orrery_b_arm_earth: 13 steps in 2002 ticks: its middle lies 0.50 blocks off the axis",
+    "mach_orrery_b_under_earth: 22 steps in 2002 ticks: its middle lies 1.15 blocks off the axis",
+    "mach_orrery_b_arm_mars: 21 steps in 2457 ticks: its middle lies 0.60 blocks off the axis",
+    "mach_orrery_b_under_mars: 27 steps in 2457 ticks: its middle lies 1.39 blocks off the axis",
+    "mach_orrery_b_arm_jupiter: 33 steps in 5577 ticks: its middle lies 0.79 blocks off the axis",
+    "mach_orrery_b_under_jupiter: 33 steps in 5577 ticks: its middle lies 1.77 blocks off the axis",
+    "mach_orrery_b_arm_saturn: 63 steps in 9009 ticks: its middle lies 1.06 blocks off the axis",
+    "mach_orrery_b_under_saturn: 63 steps in 9009 ticks: its middle lies 2.14 blocks off the axis"
+   ]
+  }
+ ]
+}
