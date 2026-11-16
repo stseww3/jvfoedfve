@@ -18,8 +18,12 @@ that exist already on top of one another:
                              S.DOME_ROOM_DOORS; anything else is floor
 
 A floor cell is dark under --floor, a step and a threshold under --step. Not counted, and listed
-apart: a cell under the open sky (no block over the head; the night lights it), and the dome
-room (the director, #442: it is kept dark). The dark cells are put in heaps: by room
+apart: a cell the sky lights, and the dome room (the director, #442: it is kept dark). The sky
+lights a cell that is open to it straight up (glass over it does not shut it; a whole block, a
+stair, a slab or a trapdoor does), and outside the shell's rooms a cell under an overhang that
+its light reaches from the side at SKY_NEAR or more (the game takes a level off with every step:
+the strip under a cornice, the first cells inside an open gateway). In a room of the shell only
+block light counts, whatever the windows let in. The dark cells are put in heaps: by room
 (main/shell.room_at) or, outside the shell's rooms, by the stretch of the walk-through route whose
 point is nearest; within that, cells that touch are one heap, with its box, its darkest cell and
 the nearest source sky/lights has placed.
@@ -49,6 +53,8 @@ ROUTES = ("plan/reviews/walk/in-route.json", "plan/reviews/walk/out-route.json")
 NEAR = 24.0             # a cell further than this from every route point is "off the routes"
 LEVELS = 3.0            # a block up or down counts as this many along, when the nearest point is looked for
 KINDS = ("floor", "step", "threshold")
+ROOFING = ("_stairs", "_slab", "_trapdoor")     # shapes with a whole face: the sky's light is not let through them
+SKY_NEAR = 13           # the sky's light from which a cell under an overhang counts as lit by the sky
 
 
 def survey(canvas):
@@ -65,6 +71,50 @@ def survey(canvas):
         if not source[state] and cell[1] > tops.get((cell[0], cell[2]), -10 ** 9):
             tops[(cell[0], cell[2])] = cell[1]
     return L.levels(canvas, tuple(lo), tuple(hi)), tops
+
+
+def sky_light(cells, least=SKY_NEAR):
+    """The sky's light as the game spreads it, where it is `least` or more but not the full 15:
+    ({cell: level}, {(x, z): the lowest row of the column that is open to the sky}). Straight down a
+    column it is 15 as far as the first block that stops it; from a cell of 15 it loses a level
+    with every step sideways, up or down. Whole blocks stop it, and so do stairs, slabs and
+    trapdoors (the game lets a little by on their open sides; here none passes, so that nothing
+    roofed with them counts as lit by the sky). Glass does not stop it."""
+    stop, none = {}, -10 ** 9
+
+    def stops(state):
+        if state not in stop:
+            stop[state] = L._stops_light(state) or AB.name_of(state).endswith(ROOFING)
+        return stop[state]
+
+    open_y, bottom = {}, 10 ** 9
+    for (x, y, z), state in cells.items():
+        bottom = min(bottom, y)
+        if stops(state) and y + 1 > open_y.get((x, z), none):
+            open_y[(x, z)] = y + 1
+    out, ring = {}, []
+    for (x, z), low in open_y.items():              # the cells under a roof that stand beside a cell of 15
+        for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            for y in range(max(open_y.get((x + dx, z + dz), none), bottom - 1), low):
+                cell = (x, y, z)
+                state = cells.get(cell)
+                if (state is None or not stops(state)) and cell not in out:
+                    out[cell] = 14
+                    ring.append(cell)
+    level = 14
+    while level > least and ring:
+        following = []
+        for x, y, z in ring:
+            for n in ((x + 1, y, z), (x - 1, y, z), (x, y + 1, z), (x, y - 1, z), (x, y, z + 1), (x, y, z - 1)):
+                if n in out or n[1] >= open_y.get((n[0], n[2]), none):
+                    continue
+                state = cells.get(n)
+                if state is not None and stops(state):
+                    continue
+                out[n] = level - 1
+                following.append(n)
+        ring, level = following, level - 1
+    return out, open_y
 
 
 def route_points(root):
@@ -187,6 +237,8 @@ def main():
     print(f"darkfloor: the master scene, {len(cells)} blocks ({time.time() - t0:.0f} s)")
     light, tops = survey(canvas)
     print(f"darkfloor: block light in {len(light)} cells ({time.time() - t0:.0f} s)")
+    sky, open_y = sky_light(cells)
+    print(f"darkfloor: the sky's light reaches {len(sky)} cells under a roof from the side ({time.time() - t0:.0f} s)")
     if master:
         m = S.mass_bounds()
         world = W.World(cells, (m[0] - 40, m[2] - 40, m[3] + 40, m[5] + 40))
@@ -225,8 +277,11 @@ def main():
         else:
             kind = "floor"
         best = max(light.get(cell, 0), light.get((cx, cy + 1, cz), 0))
+        from_sky = 15 if cy >= open_y.get((cx, cz), -10 ** 9) else max(sky.get(cell, 0), sky.get((cx, cy + 1, cz), 0))
+        room = room_at(cx, cy, cz)
         rows[cell] = dict(how=how, kind=kind, light=best, need=args.floor if kind == "floor" else args.step,
-                          sky=tops.get((cx, cz), -10 ** 9) <= cy + 1, room=room_at(cx, cy, cz), under=under)
+                          sky=from_sky, room=room, under=under,
+                          place="room" if room else "open" if from_sky == 15 else "eaves" if from_sky >= SKY_NEAR else "roofed")
 
     def section(cell, row):
         if row["room"]:
@@ -238,14 +293,16 @@ def main():
                 best = (d, label)
         return best[1] if best is not None and best[0] <= NEAR else "off the routes"
 
-    dark, open_sky, dome = {}, {}, []
+    dark, open_sky, eaves, dome = {}, {}, {}, []
     for cell, row in rows.items():
         if row["light"] >= row["need"]:
             continue
         if row["room"] == "dome room":
             dome.append(cell)
-        elif row["sky"]:
+        elif row["place"] == "open":
             open_sky.setdefault(section(cell, row), []).append(cell)
+        elif row["place"] == "eaves":
+            eaves.setdefault(section(cell, row), []).append(cell)
         else:
             dark.setdefault(section(cell, row), []).append(cell)
 
@@ -281,7 +338,8 @@ def main():
         sections.append(dict(name=name, cells=len(dark[name]), darkest=min(rows[c]["light"] for c in dark[name]),
                              heaps=found_heaps))
 
-    roofed = sum(not r["sky"] for r in rows.values())
+    roofed = sum(r["place"] in ("room", "roofed") for r in rows.values())
+    n_eaves = sum(len(v) for v in eaves.values())
     n_dark = sum(s["cells"] for s in sections)
     by_kind = {k: sum(hp["kinds"][k] for s in sections for hp in s["heaps"]) for k in KINDS}
     n_heaps = sum(len(s["heaps"]) for s in sections)
@@ -293,6 +351,8 @@ def main():
         starts=[dict(start=name, new=new) for name, new in used], no_standing_at=lost,
         dark=dict(cells=n_dark, heaps=n_heaps, **by_kind), sections=sections,
         open_sky={name: dict(cells=len(v), lo=box(v)[0], hi=box(v)[1]) for name, v in sorted(open_sky.items())},
+        eaves={name: [dict(cells=len(hp), lo=box(hp)[0], hi=box(hp)[1], darkest=min(rows[c]["light"] for c in hp))
+                      for hp in sorted(heaps(v), key=lambda hp: -len(hp))] for name, v in sorted(eaves.items())},
         dome_room=dict(cells=len(dome)), sources=len(placed))
 
     title = (f"总装 {args.head}" if args.head else "总场景") if master else f"场景 {args.scene}"
@@ -300,12 +360,16 @@ def main():
           f"量法：`tools/walkreach.py` 算人走得到的地方（从出生点起；再加两条走查路线上出生点走不到的点），"
           f"`sky/_lightkit.levels` 算块光，取脚格和头格里亮的那个（同 `obs_sky_lights/ways.py`）。"
           f"地面低于 {args.floor}、台阶（脚下是 `_stairs`、`_slab`）和门槛（`facade.doors()`、`shell.doors()`、"
-          f"`S.DOME_ROOM_DOORS` 的格）低于 {args.step} 算暗。露天的（头上没有块）和穹顶室不算，另列。坐标是格子的整数坐标，y 是脚所在的那一行。",
+          f"`S.DOME_ROOM_DOORS` 的格）低于 {args.step} 算暗。坐标是格子的整数坐标，y 是脚所在的那一行。",
+          "",
+          f"不算暗、另列的三种：露天（正上方到天没有挡光的块；玻璃不挡，整块、台阶、半砖、活板门挡）；檐下"
+          f"（头上有东西，但天光从旁边照进来还有 {SKY_NEAR} 级以上，按游戏的算法每走一格减一级：檐口下贴墙的那一条、"
+          f"水塔底下、敞开的门洞里头两格）；穹顶室（总监 #442）。壳里的房间（`shell.room_at` 认得的）一律只看块光，不管窗子透进多少天光。",
           "",
           f"- 站得住的格：{len(rows)}（走得到 {report['standing']['walk']}，要跳一下 {report['standing']['hop']}），"
           f"其中屋顶下 {roofed}。只能掉下去才到的地方不算（{fell} 个落脚点）。",
           f"- **暗：{n_dark} 格，{n_heaps} 堆**（地面 {by_kind['floor']}，台阶 {by_kind['step']}，门槛 {by_kind['threshold']}）。",
-          f"- 露天不算暗：{n_sky} 格。穹顶室不算：{len(dome)} 格。sky/lights 现在放了 {len(placed)} 个光源。"]
+          f"- 不算暗：露天 {n_sky} 格，檐下 {n_eaves} 格，穹顶室 {len(dome)} 格。sky/lights 现在放了 {len(placed)} 个光源。"]
     if lost:
         md.append(f"- 路线上站不住人的点（没有从那里起算）：{len(lost)} 个，如 {'；'.join(lost[:4])}")
     md += ["", "每堆一行：范围（x，y，z）、格数、最暗的块光、地面/台阶/门槛各几格、最近的 sky/lights 光源（走格数、级、它的说明）。", ""]
@@ -318,7 +382,13 @@ def main():
             md.append(f"| {span(lo, hi, 0)} | {span(lo, hi, 1)} | {span(lo, hi, 2)} | {hp['cells']} | {hp['darkest']} | "
                       f"{hp['kinds']['floor']}/{hp['kinds']['step']}/{hp['kinds']['threshold']} | {said} |")
         md.append("")
-    md += ["## 露天的（不算暗，天光照得到）", "", "| 地段 | 格数 | x | y | z |", "| --- | --- | --- | --- | --- |"]
+    md += ["## 檐下的（不算暗：天光从旁边照得到；块光不够，要不要补由 lights 看）", "",
+           "| 地段 | x | y | z | 格数 | 最暗的块光 |", "| --- | --- | --- | --- | --- | --- |"]
+    for name, found_heaps in sorted(report["eaves"].items(), key=lambda kv: -sum(hp["cells"] for hp in kv[1])):
+        for hp in found_heaps:
+            md.append(f"| {name} | {span(hp['lo'], hp['hi'], 0)} | {span(hp['lo'], hp['hi'], 1)} | "
+                      f"{span(hp['lo'], hp['hi'], 2)} | {hp['cells']} | {hp['darkest']} |")
+    md += ["", "## 露天的（不算暗）", "", "| 地段 | 格数 | x | y | z |", "| --- | --- | --- | --- | --- |"]
     for name, v in sorted(open_sky.items(), key=lambda kv: -len(kv[1])):
         lo, hi = box(v)
         md.append(f"| {name} | {len(v)} | {span(lo, hi, 0)} | {span(lo, hi, 1)} | {span(lo, hi, 2)} |")
@@ -332,7 +402,7 @@ def main():
         fh.write("\n")
     print(f"darkfloor: {len(rows)} standing cells, {roofed} under a roof; dark {n_dark} in {n_heaps} heaps "
           f"(floor {by_kind['floor']}, step {by_kind['step']}, threshold {by_kind['threshold']}); "
-          f"open sky {n_sky}, dome room {len(dome)}; {time.time() - t0:.0f} s")
+          f"open sky {n_sky}, under eaves {n_eaves}, dome room {len(dome)}; {time.time() - t0:.0f} s")
     for s in sections:
         big = s["heaps"][0]
         print(f"  {s['name']}: {s['cells']} cells in {len(s['heaps'])} heaps, darkest {s['darkest']}; the largest "
