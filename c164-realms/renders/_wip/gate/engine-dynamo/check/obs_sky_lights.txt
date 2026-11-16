@@ -1,0 +1,13 @@
+check obs_sky_lights at 5a5eeaf
+[PASS] regen     113930 blocks, 24 entities, 74 models, 889 resource-pack files, 55 data-pack files, look: 1 biomes, 1 timelines (1.7 s)
+[PASS] conflicts the scene writes 888 files, no file written twice, the folders and the prefix of sky are kept (1 package run alone)
+[PASS] strays    198 pictures, every colour in the palette; 9 sky pictures not checked (drawn by adding light)
+[PASS] refs      672 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    42 kinds of block placed, all in the occupancy table
+[SKIP] flatwall  a test scene of sky: its sample walls and backdrops are meant to be flat
+[PASS] entities  24 display entities, 71 models never placed
+[PASS] views     27 shots, most display entities in view: 8 (blue_front), limit 600; counted without what walls hide; the game draws up to 16 (blue_west): a display entity without width and height is drawn outside the view too
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 0.4% hidden (base storey 0.0% by blocks and 1.3% more by models, great windows 0.0%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 0.6 s)
+[PASS] motion    nothing moves
+result: PASS (0 failed, 0 with warnings)

@@ -1,0 +1,27 @@
+check obs at 5a5eeaf
+[PASS] regen     109260 blocks, 88 entities, 111 models, 1000 resource-pack files, 83 data-pack files, look: 1 biomes, 1 timelines (2.7 s)
+[PASS] conflicts 17 packages write 999 files; 10 files of sky are placeholders of the stand-ins, no file written twice, every file in its owner's folders
+[PASS] strays    235 pictures, every colour in the palette; 9 sky pictures not checked (drawn by adding light)
+[PASS] refs      746 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    69 kinds of block placed, all in the occupancy table
+[WARN] flatwall  8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+                 oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+                 oxidized_copper facing north: flat over 7x7, the square's top corner at (16, 38, -33)
+                 oxidized_copper facing south: flat over 7x7, the square's top corner at (16, 38, -27)
+                 oxidized_copper facing west: flat over 7x7, the square's top corner at (10, 38, -27)
+                 smooth_sandstone facing east: flat over 7x7, the square's top corner at (16, 23, -27)
+                 smooth_sandstone facing north: flat over 7x7, the square's top corner at (16, 24, -33)
+                 smooth_sandstone facing south: flat over 7x7, the square's top corner at (16, 26, -27)
+                 smooth_sandstone facing west: flat over 7x7, the square's top corner at (10, 24, -27)
+[PASS] entities  88 display entities of 3000, by category: site 7, machines 51, props 26, sky 4, 5 drawn out along one axis, 70 models never placed
+[SKIP] views     no shot list, so no per-view counts
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 13.9% hidden (base storey 43.8% by blocks and 2.4% more by models, great windows 1.7%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 1.3 s)
+[PASS] motion    9 parts and 0 points on 4 chains, 38 function files; 9 commands in the busiest tick (limit 40), 3.2 a tick on average (limit 10)
+                 chain of 16 ticks: 4 functions, 10 commands a cycle, starts 3 ticks after start
+                 chain of 24 ticks: 8 functions, 19 commands a cycle, starts 2 ticks after start
+                 chain of 40 ticks: 8 functions, 17 commands a cycle, starts 2 ticks after start
+                 chain of 48 ticks: 12 functions, 65 commands a cycle, starts 1 ticks after start
+                 site_weather_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.08 blocks off the axis
+                 mach_engine_rod: 12 steps in 48 ticks; its model strays 0.34 pixels from its arc (its middle lies 2.06 blocks off the axis), within the half pixel a fast part is let off with
+result: PASS (0 failed, 1 with warnings)
