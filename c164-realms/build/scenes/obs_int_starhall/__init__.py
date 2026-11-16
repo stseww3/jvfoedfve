@@ -70,8 +70,10 @@ def write_pack(pack_dir):
 
 
 def shots():
-    """The cameras, the same for both versions. v7 is the skeleton's locked view from outside the
-    door, v7_in its second from inside the doorway (A0 #365)."""
+    """The cameras, the same for both versions. v7 is the skeleton's locked view and goes where the
+    skeleton puts it; v7_in is its second from inside the doorway (A0 #365). door is where V7 stood
+    first, between the leaves of the open door: A0 moves V7 two cells in (#71961) and keeps this
+    one as the hall's own."""
     eye = S.EYE
     gallery = shell.DECK_Y + 1 + eye
     cx, cz = S.ORRERY_CENTRE
@@ -85,6 +87,7 @@ def shots():
         out.append(entry)
 
     shot("v7", S.V7["pos"], S.V7["look_at"])
+    shot("door", (19.5, eye, cz), (10.0, 5.5, cz))                      # between the door's leaves, the arch as frame
     shot("v7_in", (16.5, eye, cz), (8.0, 5.0, cz))
     shot("west", (13.5, eye, cz), (4.0, 3.6, cz))                       # the pier and the clock, the arcade behind
     shot("clock", (9.6, eye, cz + 0.9), (6.2, 2.9, cz))
@@ -94,11 +97,11 @@ def shots():
     shot("gallery", (15.3, gallery, 5.4), (3.0, 7.2, -1.6))             # along the hall from the south gallery's east end
     shot("rail", (cx, gallery, 4.9), (cx, 5.5, cz))                     # over the south railing: the orrery over its roundel
     shot("gallery_w", (6.4, gallery, -4.6), (14.0, 7.6, 1.5))           # along the north gallery to the entrance wall
-    shot("door", (8.4, eye, cz), (16.0, 4.6, cz))                       # back to the doorway: the second emblem
+    shot("emblem", (8.4, eye, cz), (16.0, 4.6, cz))                     # back to the doorway: the second emblem
     shot("aisle_n", (14.6, eye, -2.4), (4.0, 2.2, -4.4))
     shot("aisle_s", (14.6, eye, 3.4), (4.0, 2.2, 5.4))
     shot("stair_n", (6.6, eye, -3.4), (-3.5, 3.2, -3.6))                # through the side arch to the stair foot
     shot("mezzanine", (0.5, gallery, cz + 2.2), (-7.0, 9.4, cz))        # the two lamps beside the great west window
     shot("way", (1.0, eye, cz), (-9.0, 2.2, cz))                        # under the vault to the west door, its two lamps
-    shot("arches", (S.V7["pos"][0] + 9.0, eye, cz), (16.0, 3.4, cz))    # the three arches from the forecourt's axis
+    shot("arches", (28.5, eye, cz), (16.0, 3.4, cz))                    # the three arches from the forecourt's axis
     return out
