@@ -647,7 +647,7 @@ def resource_pack(scene, path, description, when, shaders=False):
     tmp = os.path.join(WORK, "respack-" + os.path.basename(os.path.dirname(path)) + f"-{os.getpid()}")
     if os.path.isdir(tmp):
         shutil.rmtree(tmp)
-    makepack.write(scene, tmp)
+    makepack.write(scene, tmp, look=False)      # the look goes in below or not at all (--shaders)
     if shaders:
         from scenes.obs.sky import _shaders
         for line in _shaders.pack(tmp) or []:

@@ -12,10 +12,11 @@ skeleton is the one of this checkout, or of the build/ folder named in the envir
 C164_BUILD: the render station shoots other checkouts with its own tools (win/shuttle.py), and
 the board of a checkout is worked out from that checkout's skeleton.
 
-V1, V2, V5, V6, V7, V8 and V11 are the skeleton's own, LOCKED there. The other five have no place in
-the skeleton yet: what stands here for them is the render station's proposal (PROPOSED below), to be
-moved on the pictures. A view that gets fixed goes into the skeleton as V<n> = dict(pos=, look_at=)
-and is read from there; the proposal here then no longer counts (V5, V6, V7 and V8 have one each).
+V1, V2, V5, V6, V7, V8, V11 and V12 are the skeleton's own, LOCKED there. The other four have no
+place in the skeleton yet: what stands here for them is the render station's proposal (PROPOSED
+below), to be moved on the pictures. A view that gets fixed goes into the skeleton as
+V<n> = dict(pos=, look_at=) and is read from there; the proposal here then no longer counts (V5, V6,
+V7, V8 and V12 have one each).
 
 All twelve are taken in look A (tick 14000). The picture is the game's: 16:9, 77 degrees high (the
 camera player flies, which widens the game's 70), as build/render.py and tools/check.py take it.
@@ -102,10 +103,12 @@ VIEWS = [
         pos=(S.ROOM_X[1] - 0.5, MAIN_EYE, 2 * S.AXIS_Z - (S.STAR_HALL_Z[1] + 2.5)),
         look_at=(S.ROOM_X[0] + 2.0, S.STAND + 1.0, 2 * S.AXIS_Z - (S.pilaster_z(15) - 5.0)))),
     ("v11_lookout", "back from the south lookout, three-quarter, the afterglow on the left", "V11", S.V11),
-    # PROPOSED. From the south-east, high. Every mass of the site, the radio mast's top and all four
-    # corners of the lower platform are at least a tenth of the picture inside its edges, and nothing
-    # of the site is further off on the ground than the server sends display entities (153 blocks).
-    ("v12_aerial", "the whole site from above", "V12", dict(
+    # No longer counts: A0 fixed V12 low over the north-east (11-16 10:31), it is in the skeleton. The
+    # proposal was: from the south-east, high. Every mass of the site, the radio mast's top and all
+    # four corners of the lower platform are at least a tenth of the picture inside its edges, and
+    # nothing of the site is further off on the ground than the server sends display entities (153
+    # blocks). From there the picture was roofs, and the building small in it.
+    ("v12_aerial", "the whole island, slantwise from the north-east", "V12", dict(
         pos=(S.EAST_EDGE_X + 20.0, 90.0, S.Z_SOUTH + 46.0),
         look_at=(S.MERIDIAN_X, S.GROUND, S.AXIS_Z - 5.5))),
 ]

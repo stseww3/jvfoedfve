@@ -99,6 +99,7 @@ BEAM_STEP = 3                                   # the ceiling's beams: the two t
 FLOOR = B.ASHLAR_FINE.block                     # the hall's floor: the white square
 FLOOR_DARK = B.SLATE_SMOOTH.block               # and the black one
 SILL = B.SLATE_BRICK.block                      # the plinth's stone, in the floor of a doorway
+CASE = B.ASHLAR_PANEL.block                     # the stone case of a door through a cross wall: posts and head
 DECK = B.ASHLAR_FINE.block                      # galleries, mezzanine, landings
 GIRDER = B.IRON_RIVETED.block                   # the free edge of a deck, the ceiling's beams
 ROOM_FLOOR = B.FLOOR_WOOD.block                 # wing rooms and the dome room
@@ -146,14 +147,40 @@ LOWER = {"plate vault": 1, "battery room": -1}
 
 def doors():
     """The doorways in the shell's own walls, for whoever hangs a leaf in them, in the words of
-    facade.doors(): [dict(room, cells, inward, y)]. cells are the columns of the wall the doorway
-    goes through, inward the step into the room (from the gallery into a wing room, from the hall's
-    aisle into a room of LOWER), y its (bottom, top) rows. The doorways of the outer walls are the
-    facade's (facade.doors()), those of the dome room the skeleton's (S.DOME_ROOM_DOORS)."""
-    return ([dict(room=room, cells=[(x, s * CROSS_Z) for x in ROOM_DOOR_X], inward=(0, s), y=ROOM_DOOR_Y)
-             for room, s in (("time room", -1), ("chart room", 1))]
-            + [dict(room=room, cells=[(LOWER_DOOR_X, s * CROSS_Z)], inward=(0, s), y=LOWER_DOOR_Y)
-               for room, s in LOWER.items()])
+    facade.doors(): [dict(room, cells, inward, y, frame)]. cells are the columns of the wall the
+    doorway goes through, inward the step into the room (from the gallery into a wing room, from
+    the hall's aisle into a room of LOWER), y its (bottom, top) rows, frame the two columns of the
+    wall beside it, where the posts of its stone case stand (door_cases(); whoever dresses a wall
+    leaves their faces bare). The doorways of the outer walls are the facade's (facade.doors()),
+    those of the dome room the skeleton's (S.DOME_ROOM_DOORS)."""
+    out = ([dict(room=room, cells=[(x, s * CROSS_Z) for x in ROOM_DOOR_X], inward=(0, s), y=ROOM_DOOR_Y)
+            for room, s in (("time room", -1), ("chart room", 1))]
+           + [dict(room=room, cells=[(LOWER_DOOR_X, s * CROSS_Z)], inward=(0, s), y=LOWER_DOOR_Y)
+              for room, s in LOWER.items()])
+    for d in out:
+        xs, z = sorted(x for x, _z in d["cells"]), d["cells"][0][1]
+        d["frame"] = [(xs[0] - 1, z), (xs[-1] + 1, z)]
+    return out
+
+
+def door_cases():
+    """The stone case of every door of doors(): [(x, y, z, block)]. A doorway through a cross wall
+    was a hole in the coursed stone. Now the wall's own blocks round it are its case, two posts
+    and a head: the stone beside the opening from the floor to over the door's head (the columns
+    doors() calls frame) and the stone over the opening are the sunk panel, a square to a block.
+    On the galleries the sunk course at the foot of the main storey turns up at the door and goes
+    round it. Nothing stands before the wall and nothing in the opening, which is as wide and as
+    high as it was; both faces of the wall show the case, and the sides of the opening its
+    panels. In the hall's aisles a pilaster stands before the east post of the door under a wing,
+    and the hall's panelling ends at the west one. No emblem: the hall shows the observatory's
+    twice and no more (A0 #369)."""
+    out = []
+    for d in doors():
+        z, (foot, top) = d["cells"][0][1], d["y"]
+        for x, _z in d["frame"]:
+            out += [(x, y, z, CASE) for y in range(foot, top + 2)]
+        out += [(x, top + 1, z, CASE) for x, _z in d["cells"]]
+    return out
 
 
 def room_at(x, y, z):
@@ -472,6 +499,8 @@ def build(canvas, origin=(0, 0, 0)):
         put(c, S.PAVING_Y, SILL)
         for y in range(LOWER_DOOR_Y[0], LOWER_DOOR_Y[1] + 1):
             clear(c, y)
+    for x, y, z, block in door_cases():
+        put((x, z), y, block)
 
     # the wing rooms
     for cells in L.rooms.values():
@@ -766,6 +795,13 @@ def check():
     for x, z in L.sills | L.lower_doors:                    # and every doorway has its floor
         if c.name(x, S.PAVING_Y, z) != SILL:
             out.append(f"ground floor: no sill in the doorway at ({x}, {z})")
+    for x, y, z, block in door_cases():                     # every door stands in its case
+        if c.get(x, y, z) != block:
+            out.append(f"doors: the case's stone at ({x}, {y}, {z}) is not there")
+    for d in doors():                                       # ... which leaves the opening as it was
+        for x, z in d["cells"]:
+            if any(solid(x, y, z) for y in range(d["y"][0], d["y"][1] + 1)) or not solid(x, d["y"][1] + 1, z):
+                out.append(f"doors: the doorway of the {d['room']} at ({x}, {z}) is not open under its head")
     for d in doors():                                       # a room under a wing: two rows of air under a lintel, the
         if d["room"] in LOWER:                              # hall's aisle before it, the room's first cell behind it
             (x, z), (dx, dz), (y0, y1) = d["cells"][0], d["inward"], d["y"]
