@@ -56,3 +56,13 @@
 - 独占节点 28 台（node33~60）全停，名单节点一栏都标了。回来一台总控说一台。
 - 06:20 第四份【进度】已发；下一份 07:20。a3 06:30 问过（没卡）。
 - 派卡：outb→common/export；stair→interiors/batteryroom；mast→machines/switchboard-boiler。还没派：machines/recorders（留给下一个交卡的机器岗）、interiors/platevault、clockroom。都告诉了 s2。
+
+## 11-16 08:00 的状态（评审加人、机器随时会没）
+
+- 总监 07:53 的硬规矩：本地不许留没推的东西。我的脚本、发牌状态、这份笔记都推在 `cursor/c164-aide-f3-wip-b9ab` 的 `c164-realms/plan/aide-wip/` 里（`bash /tmp/c164_aide/wip_push.sh "<英文说明>"`，不用工作树）。机器没了：重新跑上线三步的第 1 步拿回工作树，然后 `git fetch origin cursor/c164-aide-f3-wip-b9ab`，把 `plan/aide-wip/` 里的文件拷回 `/tmp/c164_aide/`，`deal.py show` 看牌在谁手上。这条分支永远不合进总装，总装里我只改 `plan/ROSTER.md`。
+- 总监 07:30：评审排队过三件就加人。cr2 的 sky/tones、site/stair 挪给 cr3；第四评审 cr4 = stair（c337，分支 `cursor/c164-stair-cr4-f3-b330`，评审单 `plan/aesthetics/S3-reviews-v4-cr4.md`），先评 props/instruments、props/furniture。总监倾向 mast，我选 stair：mast 的 switchboard-boiler 已有粗稿，stair 的 batteryroom 还没提交。
+- `queue.py` 只认提交标题里写了「类别/包名」的评审，review 的 #20、#21 这种会漏数：报排队以前先问评审本人。
+- interiors/batteryroom 07:52 改派给 snow（分支 `cursor/c164-snow-batteryroom-f3-17de`，接 stair 留在 `cursor/c164-stair-batteryroom-f3-b330` 的半张草图和三处对口）。
+- Realms 的事（总监 07:24、07:53）：数据包不许带注册表文件，天、雾、光色改由 a2 的资源包着色器带；a2 的 sky/safe-look 和 outb 的试传存档要节点、要 s1 的真机都排最前；s1 另有服务端视距 10 的对比。a2 可能找我要 comet、cloud、lights 里的人手。
+- 下一次【进度】（08:15 前后）要单列一段室内四间：hall（星厅）、a3（穹顶室）、chart（图表室）、m2（授时室）各到哪一步、卡在什么上。总监看真机看板 V7、V9、V10 还是空壳。
+- 还没派的卡：machines/recorders（留给下一个交卡的机器岗，scope 的 refractor 07:41 过了关口，交付了就给他）；interiors/platevault、interiors/clockroom（P3，先交草图）；mast 的 switchboard-boiler 没有退回。
