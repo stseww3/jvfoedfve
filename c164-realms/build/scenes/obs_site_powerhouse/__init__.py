@@ -21,8 +21,9 @@ appear once their package is in the tree. The lamps of the site are the props li
 (props/lamps.DRESS): the street lamps of the way in, two of which stand in the yard before the
 house, and the low lamps on the terrace's lip.
 
-The cameras are VIEWS; the two that the skeleton locks are read from it (S.V6, the power house
-from the grand stair, here stair_south; S.V1, the arrival), so they turn when it turns them.
+The cameras are VIEWS; the three that the skeleton locks are read from it (S.V6, the power house
+from the grand stair, here stair_south; S.V1, the arrival; S.V12, from the air), so they turn when
+it turns them.
 
     python -m scenes.obs_site_powerhouse      (in build/) writes shots.json for both scenes
 """
@@ -62,6 +63,7 @@ VIEWS = [
     ("lookout_east", (48.5, S.SOUTH_LOOKOUT["feet"] + S.EYE, 50.5), (78.0, 3.0, 31.0)),     # the south-west corner
     ("aerial", (58.0, 34.0, 4.0), (78.0, 0.0, 31.0)),
     ("aerial_back", (100.0, 30.0, 56.0), (78.0, 0.0, 31.0)),
+    ("v12", S.V12["pos"], S.V12["look_at"]),                        # the locked view from the air: the roof
 ]
 
 
@@ -75,13 +77,14 @@ def shots():
 @contextlib.contextmanager
 def _as(version, run):
     """The site line builds its packages itself and hands them no choices: set the package's own
-    defaults for the time of the build and put them back."""
-    was = powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE, powerhouse.VENTS_ON
-    powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE, powerhouse.VENTS_ON = version, run, FIRE, True
+    defaults for the time of the build and put them back. The shell is shown with its own display
+    models (powerhouse.DRESS), which build_models() packs with the site line's."""
+    was = powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE, powerhouse.DRESS
+    powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE, powerhouse.DRESS = version, run, FIRE, True
     try:
         yield
     finally:
-        powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE, powerhouse.VENTS_ON = was
+        powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE, powerhouse.DRESS = was
 
 
 def _fit(c):
