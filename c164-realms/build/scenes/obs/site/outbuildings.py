@@ -524,10 +524,13 @@ def _south_lookout(c, o):
                     _put(c, o, tx + ddx, foot, tz + ddz, BRASS_RING + f"[shape={shape}]")
 
     # the site's rail round the whole edge (the neck that leads here is three wide, so the north
-    # edge hangs free too), open where the steps arrive. Piers only at the four knuckles of the prow:
-    # V11 looks north-west over the north edge, and a pier there stands in the middle of the picture.
+    # edge hangs free too), open where the steps arrive. Piers at the four knuckles of the prow, and
+    # one on the north edge: the rail's end east of the steps' foot, capped like the two at the
+    # terrace's gap; the lamps line stands a lamp on it (A4, 11-16 10:30). The end west of the steps
+    # stays a rail: V11 looks north-west over the north edge, and a pier there stands in the middle
+    # of the picture.
     edge = [p for p in K.outline(cells) if not (p[1] == z0 and wx0 <= p[0] <= wx1)]
-    piers = {(x0, z1 - cut), (x1, z1 - cut), (x0 + cut, z1), (x1 - cut, z1)}
+    piers = {(x0, z1 - cut), (x1, z1 - cut), (x0 + cut, z1), (x1 - cut, z1), (wx1 + 1, z0)}
     K.rail(c, o, edge, piers, y=foot, kerb=True)
 
     # the props line's tripod telescope on the stand, turned to the cloud sea. V11 is taken two
