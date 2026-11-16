@@ -67,10 +67,11 @@ GRIP = K.BRASS                  # the damper lever's grip: brass the hand keeps 
 ROD = K.flat("iron", 3)         # the stay rods
 
 # what the weather and the fitter have left, as hand-drawn pictures on faces as thin as paper
-OIL = {"o": P.RAMPS["iron"][0], "b": P.RAMPS["dark_wood"][0]}                      # oil gone black, its burnt edge
+OIL = {"o": P.RAMPS["iron"][0], "b": P.RAMPS["dark_wood"][2], "t": P.RAMPS["dark_wood"][4]}     # old oil: black, brown, tan
 RUST = {"r": P.RAMPS["old_copper"][0], "d": P.RAMPS["dark_wood"][2], "l": P.RAMPS["old_copper"][1]}
 CHALK = {"c": P.RAMPS["porcelain"][4], "g": P.RAMPS["porcelain"][2]}
-OIL_RUN = Sprite(PREFIX + "oil_run", ["oob", "oo.", "bo.", ".o.", ".o.", ".ob", ".o.", "..o", "..o", "...", "..b"], OIL)
+OIL_RUN = Sprite(PREFIX + "oil_run", ["bot", "bob", "tob", ".ob", ".bt", ".ob", ".b.", ".tb", "..b", "..t", "..b"], OIL)
+WEEP = Sprite(PREFIX + "rust_weep", ["r.l", ".r.", "..l"], RUST)                                    # under a lap band, on the lee side
 RUST_FOOT = Sprite(PREFIX + "rust_foot", ["r.d.r", "rrdrl", ".rrr.", "l.r.."], RUST)                # on the lead, under the flange
 RUST_RISER = Sprite(PREFIX + "rust_riser", [".rr", "rr.", ".r.", ".rl", "r..", ".r.", ".l.", "..."], RUST)   # down the slate's edge
 RUST_RUN = Sprite(PREFIX + "rust_run", ["rr..l..", "rrrl...", "drr.l..", "r..l..."], RUST)         # and out over the next slate
@@ -225,7 +226,10 @@ def _stack(size):
     _decal(m, "u", (r + FLANGE_OUT - 0.2, APRON_UP + 0.05, -2.5), (out - 0.2, APRON_UP + 0.3, 2.5), RUST_FOOT)
     _decal(m, "e", (out + 0.02, -STEP, -1.5), (out + 0.27, 0.0, 1.5), RUST_RISER)
     _decal(m, "u", (out, -STEP + 0.05, -2.0), (out + 7.0, -STEP + 0.3, 2.0), RUST_RUN)
-    _decal(m, "w", (-r - 0.3, damper + 3.0, -2.0), (-r - 0.05, damper + 6.0, 2.0), TICK)
+    for y in k["bands"]:
+        _decal(m, "s", (-1.5, y - 3.0, r + 0.05), (1.5, y, r + 0.3), WEEP)
+    with m.turned(("y", 45.0)):                             # on the flat next to the damper's
+        _decal(m, "w", (-r - 0.3, damper - 1.5, -2.0), (-r - 0.05, damper + 1.5, 2.0), TICK)
     return K.settle(m)
 
 
