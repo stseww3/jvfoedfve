@@ -1,0 +1,25 @@
+a0job 1116-031946-sdome-f3-1fe7-3968: cursor/c164-sdome-f3-1fe7 @ 6b16542a on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.69 0.47 0.18, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- (cd build && python -m scenes.obs_main_smalldome >/dev/null) && (python tools/check.py --scene obs_main_smalldome > /tmp/sdome_check.txt 2>&1; R=$?; tail -n 12 /tmp/sdome_check.txt; cd build; python -m scenes.obs.main.roof check | tail
+[PASS] refs      867 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    78 kinds of block placed, 12 barrier cells (x 16, y 0..1, z -5..5), all in the occupancy table
+[PASS] flatwall  no wall face runs flat over more than 5x5
+[PASS] entities  258 display entities, 11 drawn out along one axis, 23 shown through a matrix that is no turn, no face stretched, 105 models never placed
+[PASS] views     19 shots, most display entities in view: 258 (v12), limit 600; counted without what walls hide; the game draws up to 258 (v11): a display entity without width and height is drawn outside the view too
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 13.9% hidden (base storey 43.8% by blocks and 2.4% more by models, great windows 1.7%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in th
+[PASS] motion    2 parts and 0 points on 1 chains, 12 function files; 5 commands in the busiest tick (limit 40), 0.8 a tick on average (limit 10)
+                 chain of 24 ticks: 6 functions, 20 commands a cycle, starts 1 ticks after start
+                 site_weather_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.08 blocks off the axis
+                 bld_tower_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.09 blocks off the axis
+result: PASS (0 failed, 0 with warnings)
+self-check: terraces closed, channels joined, roof lights, both ways walkable and alike, nothing above the ridge, door leaves and plates, nothing on the parapets, the pockets by the drum closed -- all good
+self-check: footprint, apex, slit and leaf, shell, room, skirt and corbel, windows and door -- all good
+1 sightings: the roofs show in a view that has to keep the fronts' outline
+==== NODEJOB RESULT ====
+exit=0 secs=12 host=cursor cores=4 head=6b16542a commit=none pushed=no branch=cursor/c164-sdome-f3-1fe7 files=0
+a0job: exit=0 secs=12
