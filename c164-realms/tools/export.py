@@ -106,6 +106,7 @@ BOT = "C164Probe"           # the fake player of verify
 # what other packages hang on a player's arrival: {our function tag: [their functions]}. `first` is run
 # for who has never been here, `join` for everyone who comes in (for who is new before `first`)
 HOOKS = {"first": [f"{ART}:guide/first"], "join": [f"{ART}:guide/join"]}
+RIDING = "riding"           # our predicate: the player is on a vehicle (a seat of the train)
 CATCH = -30                 # scene y: feet under it are put back on the spot (agreed with cloud
                             # c329 #62206 and a4 c323 #64103: the cloud layer's top is -28, the
                             # lowest rock a foot finds is -27, the eye is in the cloud by then)
@@ -503,13 +504,18 @@ def functions(spec):
     # who is held to the walks: every visitor (the functions set adventure at every joining). An
     # operator who has put himself in spectator or creative mode is left to fly where he likes.
     held = "@a[gamemode=!spectator,gamemode=!creative]"
+    # and not who rides: the train of the opening comes up out of the cloud sea with him in it
+    # (plan/round2.md), under the line and through the cloud's skin. It is the riding that is asked
+    # for (the predicate RIDING), not a mark on him: who gets off on the way falls, and is put back
+    # on the spot like anybody
+    walks = f"unless predicate {NS}:{RIDING} "
     out = {
         "load": [f"scoreboard objectives add {LEFT} minecraft.custom:minecraft.leave_game"],
         "tick": [
             f"execute as @a[tag=!{IN_TAG}] run function {NS}:first",
             f"execute as @a[scores={{{LEFT}=1..}}] run function {NS}:join",
             # feet under the line: the volume from y to y + dy + 1 is tested against the player's box
-            f"execute as {held} at @s if entity @s[y={low},dy={spec['catch'] - low - 1}] run function {NS}:back",
+            f"execute as {held} at @s {walks}if entity @s[y={low},dy={spec['catch'] - low - 1}] run function {NS}:back",
         ],
         # who is new is set up and then handed to what other packages hang on his arrival (HOOKS), as
         # himself and where he stands; who comes back is set up again and told nothing
@@ -524,7 +530,7 @@ def functions(spec):
     }
     if spec["cloud"]:
         # the block the feet rest on (the cloud sea is a skin of full blocks)
-        out["tick"].append(f"execute as {held} at @s if block ~ ~-0.2 ~ #{NS}:cloud run function {NS}:back")
+        out["tick"].append(f"execute as {held} at @s {walks}if block ~ ~-0.2 ~ #{NS}:cloud run function {NS}:back")
     if spec["trial"]:
         trial_functions(spec, out)
     else:
@@ -633,6 +639,11 @@ def write_functions(pack_dir, spec):
         with open(path, "w", encoding="utf-8", newline="\n") as fh:
             json.dump({"values": spec["cloud"]}, fh, indent=1)
             fh.write("\n")
+    path = os.path.join(folder, "predicate", RIDING + ".json")
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8", newline="\n") as fh:
+        json.dump({"condition": "minecraft:entity_properties", "entity": "this", "predicate": {"vehicle": {}}}, fh, indent=1)
+        fh.write("\n")
     for hook, names in HOOKS.items():
         path = os.path.join(folder, "tags", "function", hook + ".json")
         os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -1210,6 +1221,24 @@ def visit(server, spec, results, tag, came):
     bot.pump(1.0)
     check(results, tag + "spectator", near(stayed, under) and near(bot.position, feet),
           f"as a spectator put at y {under[1]}: a moment later at {stayed}; set to adventure there: a moment later at {bot.position}")
+    # who rides is left alone under the line (the opening's train comes up from under it), and who
+    # gets off there is put back: a seat is set under the line, he is put on it and taken off again.
+    # Where he is while he rides is the server's to say: the game does not tell a rider his place
+    if os.path.exists(os.path.join(server.world, "datapacks", PACK, "data", NS, "predicate", RIDING + ".json")):
+        seat = "c164.probe.seat"
+        server.cmd(f"summon minecraft:item_display {num(under[0])} {num(under[1])} {num(under[2])} {{Tags:[\"{seat}\"]}}", quiet=True)
+        on = server.cmd(f"ride {BOT} mount @e[tag={seat},limit=1]", quiet=True)
+        bot.pump(1.5)
+        rides = server.cmd(f"execute as {BOT} if predicate {NS}:{RIDING}", quiet=True)
+        where = re.search(r"\[(-?[\d.]+)d, (-?[\d.]+)d, (-?[\d.]+)d\]", server.cmd(f"data get entity {BOT} Pos", quiet=True))
+        seated = tuple(float(v) for v in where.groups()) if where else None
+        off = server.cmd(f"ride {BOT} dismount", quiet=True)
+        bot.pump(1.5)
+        server.cmd(f"kill @e[tag={seat}]", quiet=True)
+        check(results, tag + "rides", "passed" in rides and seated is not None and seated[1] < spec["catch"]
+              and abs(seated[0] - under[0]) < 1 and abs(seated[2] - under[2]) < 1 and near(bot.position, feet) and turned(bot),
+              f"put on a seat at y {under[1]}, under the line ({on}): a moment later the server has him at {seated}, riding: "
+              f"{rides}; taken off it ({off}): a moment later at {bot.position} facing {bot.rotation}")
     # the tick with him where the map begins, over the last hundred ticks
     bot.pump(4.0)
     one = server.cmd("tick query", quiet=True)
