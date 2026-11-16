@@ -142,11 +142,12 @@ OVER = (math.sin(_E), math.cos(_E), 0.0)                # square to the tube in 
 DIURNAL = _neg(POLE)                                    # the sky turns about this, right-handed: in the west it sinks, northwards
 
 # The mount follows the comet and comes back (plan/round2.md): it swings about the polar axis, the
-# way the sky goes first. 1.2 degrees take the eyepiece 0.12 blocks to either side and 0.08 up and
-# down; at 1.5 the tail would come down into the face of somebody who stands on the observing floor.
-FOLLOW = 1.2                    # degrees to either side of where the tube was set
-FOLLOW_PERIOD = 400             # ticks there and back: 20 seconds. Slow enough for cast iron, and the tail is
-#                                 seen to creep from the camera of V8: a pixel of the model in two seconds
+# way the sky goes first. 2 degrees take the eyepiece 0.2 blocks to either side, 0.14 of them up
+# and down; much further and the tail would come down into the face of somebody who stands on the
+# observing floor (report() measures both ends of the swing).
+FOLLOW = 2.0                    # degrees to either side of where the tube was set
+FOLLOW_PERIOD = 480             # ticks there and back: 24 seconds. Slow enough for cast iron; from the camera of
+#                                 V8 the tail is seen to creep, some eight pixels a second where it is quickest
 
 TUBE_LEN = 15.0
 TUBE_R = 0.75                   # the body; the objective's cell is CELL_R
