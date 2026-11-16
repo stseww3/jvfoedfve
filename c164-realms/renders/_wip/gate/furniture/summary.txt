@@ -1,0 +1,17 @@
+gate props/furniture 1b81b52f: the merged tree 56469ad0, the assembly as it was cd87ee52
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 53 scenes in 38 s: 53 pass (33 with warnings)
+pictures: [PASS] selfshots obs_props_furniture at 56469ad0: 22 of 22 kept pictures are what the code draws
+pictures: obs_props_furniture_site: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_props_furniture_site at 56469ad0: 5 of 10 kept pictures are what the code draws, 5 not
+    sunset_west: 5207 of 921600 pixels are not what the code draws (off by up to 27 of 255)
+    sunset_row: 1484 of 921600 pixels are not what the code draws (off by up to 8 of 255)
+    sunset_plan: 3243 of 921600 pixels are not what the code draws (off by up to 102 of 255)
+    lookout_bench: 673 of 921600 pixels are not what the code draws (off by up to 9 of 255)
+    lookout_v11: 1089 of 921600 pixels are not what the code draws (off by up to 6 of 255)
+pictures: obs_props_seams: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_props_seams at 56469ad0: 3 of 6 kept pictures are what the code draws, 3 not
+    iron_plate__iron_riveted: 4218 of 921600 pixels are not what the code draws (off by up to 17 of 255)
+    iron_cast__brass_plate: 4401 of 921600 pixels are not what the code draws (off by up to 17 of 255)
+    row: 1168 of 921600 pixels are not what the code draws (off by up to 17 of 255)
+result: PASS

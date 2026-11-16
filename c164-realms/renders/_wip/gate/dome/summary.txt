@@ -1,0 +1,21 @@
+gate main/dome ff4e9287: the merged tree 6c9f4c88, the assembly as it was 56469ad0
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 53 scenes in 37 s: 53 pass (33 with warnings)
+pictures: obs_main_dome: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_main_dome at 6c9f4c88: 5 of 11 kept pictures are what the code draws, 6 not
+    v1: 6988 of 921600 pixels are not what the code draws (off by up to 37 of 255)
+    v2_axis: 5712 of 921600 pixels are not what the code draws (off by up to 36 of 255)
+    gallery: 6325 of 921600 pixels are not what the code draws (off by up to 79 of 255)
+    top: 2823 of 921600 pixels are not what the code draws (off by up to 104 of 255)
+    slit: 1091 of 921600 pixels are not what the code draws (off by up to 119 of 255)
+    west: 169 of 921600 pixels are not what the code draws (off by up to 117 of 255)
+pictures: obs_main_dome_a: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_main_dome_a at 6c9f4c88: 5 of 11 kept pictures are what the code draws, 6 not
+    v1: 6988 of 921600 pixels are not what the code draws (off by up to 37 of 255)
+    v2_axis: 5712 of 921600 pixels are not what the code draws (off by up to 36 of 255)
+    gallery: 6325 of 921600 pixels are not what the code draws (off by up to 79 of 255)
+    top: 2823 of 921600 pixels are not what the code draws (off by up to 104 of 255)
+    slit: 1091 of 921600 pixels are not what the code draws (off by up to 119 of 255)
+    west: 169 of 921600 pixels are not what the code draws (off by up to 117 of 255)
+pictures: [PASS] selfshots obs_main_dome_slit at 6c9f4c88: 10 of 10 kept pictures are what the code draws
+result: PASS
