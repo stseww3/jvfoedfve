@@ -21,4 +21,6 @@
 
 ## 记录
 
-1. 11-16 13:10（a6）：头一版。
+1. 11-16 13:15（a6）：头一版，b93397c7。node48 上 `check.py --scene obs_props_nameplates` PASS（7 个实体，views 7，没有会动的）；`obs_props_plaques`、`obs_props_plaques_site` 改句子以后也 PASS。四张自查图 f77471d7（`renders/obs_props_nameplates/`）：字不反，二格处 `No. 13`、`No. 31` 读得出，三格处认得出是号牌，台徽在一格处看得清环、线、星。
+   - 检查里有一条提醒：`prop_nameplate_NN: 96/96/96 pixels to the block ... not 16`。是有意的：要在两格处读的字做不到 16 像素一格（`plan/fine.md` 的近层就是字和痕迹；说明牌的文字展示实体更细）。别的包用 `K.letters` 做小字牌也会有这一条。
+   - 牌子是一张片：没有螺钉头（左端是台徽，放不下）。近层再要的话加在上下沿中间。
