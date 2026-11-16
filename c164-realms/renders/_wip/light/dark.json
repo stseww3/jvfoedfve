@@ -1,18 +1,18 @@
 {
- "head": "9fbb2e0c",
+ "head": "01c7ab6e",
  "floor": 5,
  "step": 5,
  "standing": {
-  "cells": 36966,
-  "walk": 8609,
-  "hop": 28357,
-  "roofed": 1850,
-  "fall_only_nodes": 4385
+  "cells": 36972,
+  "walk": 8588,
+  "hop": 28384,
+  "roofed": 1848,
+  "fall_only_nodes": 4959
  },
  "starts": [
   {
    "start": "spawn",
-   "new": 144593
+   "new": 144619
   },
   {
    "start": "in-J the south roofs: corner terrace, ridge walk, the end terrace, the small dome #66",
@@ -29,27 +29,27 @@
  ],
  "no_standing_at": [],
  "dark": {
-  "cells": 223,
+  "cells": 210,
   "heaps": 47,
-  "floor": 192,
+  "floor": 179,
   "step": 28,
   "threshold": 3
  },
  "before": {
-  "head": "0dfcb27a",
-  "cells": 501,
-  "heaps": 48,
+  "head": "9fbb2e0c",
+  "cells": 223,
+  "heaps": 47,
   "then": {
-   "cells": 583,
-   "heaps": 60,
-   "rule": 27,
-   "spared": 55
+   "cells": 223,
+   "heaps": 47,
+   "rule": 0,
+   "spared": 0
   },
-  "still_dark": 193,
-  "lit": 280,
-  "no_standing": 28,
+  "still_dark": 210,
+  "lit": 13,
+  "no_standing": 0,
   "apart": 0,
-  "new_dark": 30
+  "new_dark": 0
  },
  "by_owner": {
   "lights：这一轮（astro 的 6 盏）": {
@@ -63,10 +63,6 @@
   "m2": {
    "cells": 27,
    "heaps": 3
-  },
-  "tower、clkrm：钟塔底厅": {
-   "cells": 25,
-   "heaps": 1
   },
   "dome、lights：屋面": {
    "cells": 20,
@@ -88,6 +84,10 @@
    "cells": 16,
    "heaps": 8
   },
+  "tower、clkrm：钟塔底厅": {
+   "cells": 12,
+   "heaps": 1
+  },
   "m1：石墩一圈": {
    "cells": 4,
    "heaps": 4
@@ -98,7 +98,7 @@
    "name": "room: stair hall",
    "cells": 76,
    "darkest": 0,
-   "was": 92,
+   "was": 76,
    "heaps": [
     {
      "lo": [
@@ -123,7 +123,7 @@
       "lights：22 盏之后剩的": 23,
       "lights：这一轮（astro 的 6 盏）": 15
      },
-     "was": 50,
+     "was": 38,
      "kept": 38,
      "nearest": {
       "steps": 3,
@@ -754,7 +754,7 @@
      "owner": {
       "m5：西门里": 2
      },
-     "was": 6,
+     "was": 2,
      "kept": 2,
      "nearest": {
       "steps": 3,
@@ -969,427 +969,10 @@
    ]
   },
   {
-   "name": "in-K the north roofs: corner terrace, ridge walk, the end terrace, the clock tower's foot",
-   "cells": 32,
-   "darkest": 0,
-   "was": 13,
-   "heaps": [
-    {
-     "lo": [
-      11,
-      18,
-      -32
-     ],
-     "hi": [
-      15,
-      18,
-      -28
-     ],
-     "cells": 25,
-     "darkest": 0,
-     "kinds": {
-      "floor": 25,
-      "step": 0,
-      "threshold": 0
-     },
-     "hop": 0,
-     "owner": {
-      "tower、clkrm：钟塔底厅": 25
-     },
-     "was": 0,
-     "kept": 0,
-     "nearest": {
-      "steps": 3,
-      "level": 7,
-      "why": "sky/lights:way",
-      "cell": [
-       9,
-       20,
-       -30
-      ]
-     },
-     "list": [
-      [
-       11,
-       18,
-       -32,
-       0,
-       "floor"
-      ],
-      [
-       11,
-       18,
-       -31,
-       3,
-       "floor"
-      ],
-      [
-       11,
-       18,
-       -30,
-       4,
-       "floor"
-      ],
-      [
-       11,
-       18,
-       -29,
-       3,
-       "floor"
-      ],
-      [
-       11,
-       18,
-       -28,
-       2,
-       "floor"
-      ],
-      [
-       12,
-       18,
-       -32,
-       1,
-       "floor"
-      ],
-      [
-       12,
-       18,
-       -31,
-       2,
-       "floor"
-      ],
-      [
-       12,
-       18,
-       -30,
-       3,
-       "floor"
-      ],
-      [
-       12,
-       18,
-       -29,
-       2,
-       "floor"
-      ],
-      [
-       12,
-       18,
-       -28,
-       1,
-       "floor"
-      ],
-      [
-       13,
-       18,
-       -32,
-       0,
-       "floor"
-      ],
-      [
-       13,
-       18,
-       -31,
-       1,
-       "floor"
-      ],
-      [
-       13,
-       18,
-       -30,
-       2,
-       "floor"
-      ],
-      [
-       13,
-       18,
-       -29,
-       1,
-       "floor"
-      ],
-      [
-       13,
-       18,
-       -28,
-       0,
-       "floor"
-      ],
-      [
-       14,
-       18,
-       -32,
-       0,
-       "floor"
-      ],
-      [
-       14,
-       18,
-       -31,
-       1,
-       "floor"
-      ],
-      [
-       14,
-       18,
-       -30,
-       2,
-       "floor"
-      ],
-      [
-       14,
-       18,
-       -29,
-       1,
-       "floor"
-      ],
-      [
-       14,
-       18,
-       -28,
-       0,
-       "floor"
-      ],
-      [
-       15,
-       18,
-       -32,
-       0,
-       "floor"
-      ],
-      [
-       15,
-       18,
-       -31,
-       0,
-       "floor"
-      ],
-      [
-       15,
-       18,
-       -30,
-       1,
-       "floor"
-      ],
-      [
-       15,
-       18,
-       -29,
-       0,
-       "floor"
-      ],
-      [
-       15,
-       18,
-       -28,
-       0,
-       "floor"
-      ]
-     ]
-    },
-    {
-     "lo": [
-      14,
-      18,
-      -9
-     ],
-     "hi": [
-      15,
-      18,
-      -8
-     ],
-     "cells": 3,
-     "darkest": 0,
-     "kinds": {
-      "floor": 3,
-      "step": 0,
-      "threshold": 0
-     },
-     "hop": 0,
-     "owner": {
-      "dome、lights：屋面": 3
-     },
-     "was": 3,
-     "kept": 3,
-     "nearest": {
-      "steps": 6,
-      "level": 8,
-      "why": "sky/lights:way",
-      "cell": [
-       12,
-       20,
-       -11
-      ]
-     },
-     "list": [
-      [
-       14,
-       18,
-       -8,
-       0,
-       "floor"
-      ],
-      [
-       15,
-       18,
-       -9,
-       2,
-       "floor"
-      ],
-      [
-       15,
-       18,
-       -8,
-       1,
-       "floor"
-      ]
-     ]
-    },
-    {
-     "lo": [
-      8,
-      20,
-      -13
-     ],
-     "hi": [
-      9,
-      20,
-      -13
-     ],
-     "cells": 2,
-     "darkest": 3,
-     "kinds": {
-      "floor": 2,
-      "step": 0,
-      "threshold": 0
-     },
-     "hop": 0,
-     "owner": {
-      "dome、lights：屋面": 2
-     },
-     "was": 2,
-     "kept": 2,
-     "nearest": {
-      "steps": 3,
-      "level": 6,
-      "why": "main/roof:walk",
-      "cell": [
-       8,
-       20,
-       -15
-      ]
-     },
-     "list": [
-      [
-       8,
-       20,
-       -13,
-       3,
-       "floor"
-      ],
-      [
-       9,
-       20,
-       -13,
-       3,
-       "floor"
-      ]
-     ]
-    },
-    {
-     "lo": [
-      12,
-      18,
-      -8
-     ],
-     "hi": [
-      12,
-      18,
-      -8
-     ],
-     "cells": 1,
-     "darkest": 4,
-     "kinds": {
-      "floor": 1,
-      "step": 0,
-      "threshold": 0
-     },
-     "hop": 0,
-     "owner": {
-      "dome、lights：屋面": 1
-     },
-     "was": 7,
-     "kept": 1,
-     "nearest": {
-      "steps": 4,
-      "level": 8,
-      "why": "sky/lights:way",
-      "cell": [
-       12,
-       20,
-       -11
-      ]
-     },
-     "list": [
-      [
-       12,
-       18,
-       -8,
-       4,
-       "floor"
-      ]
-     ]
-    },
-    {
-     "lo": [
-      14,
-      17,
-      -10
-     ],
-     "hi": [
-      14,
-      17,
-      -10
-     ],
-     "cells": 1,
-     "darkest": 3,
-     "kinds": {
-      "floor": 0,
-      "step": 1,
-      "threshold": 0
-     },
-     "hop": 0,
-     "owner": {
-      "dome、lights：屋面": 1
-     },
-     "was": 1,
-     "kept": 1,
-     "nearest": {
-      "steps": 5,
-      "level": 8,
-      "why": "sky/lights:way",
-      "cell": [
-       12,
-       20,
-       -11
-      ]
-     },
-     "list": [
-      [
-       14,
-       17,
-       -10,
-       3,
-       "step"
-      ]
-     ]
-    }
-   ]
-  },
-  {
    "name": "room: star hall",
    "cells": 29,
    "darkest": 3,
-   "was": 41,
+   "was": 29,
    "heaps": [
     {
      "lo": [
@@ -1493,7 +1076,7 @@
      "owner": {
       "lights：22 盏之后剩的": 4
      },
-     "was": 6,
+     "was": 4,
      "kept": 4,
      "nearest": {
       "steps": 3,
@@ -1783,7 +1366,7 @@
      "owner": {
       "m1：石墩一圈": 1
      },
-     "was": 6,
+     "was": 1,
      "kept": 1,
      "nearest": {
       "steps": 4,
@@ -2427,7 +2010,7 @@
    "name": "in-J the south roofs: corner terrace, ridge walk, the end terrace, the small dome",
    "cells": 25,
    "darkest": 0,
-   "was": 31,
+   "was": 25,
    "heaps": [
     {
      "lo": [
@@ -2451,8 +2034,8 @@
      "owner": {
       "dome：小穹顶里": 10
      },
-     "was": 12,
-     "kept": 7,
+     "was": 10,
+     "kept": 10,
      "nearest": {
       "steps": 2,
       "level": 5,
@@ -2558,8 +2141,8 @@
      "owner": {
       "dome：小穹顶里": 5
      },
-     "was": 3,
-     "kept": 3,
+     "was": 5,
+     "kept": 5,
      "nearest": {
       "steps": 3,
       "level": 5,
@@ -2797,7 +2380,7 @@
      "owner": {
       "dome、lights：屋面": 1
      },
-     "was": 7,
+     "was": 1,
      "kept": 1,
      "nearest": {
       "steps": 4,
@@ -2869,7 +2452,7 @@
    "name": "in-L the power house, inside",
    "cells": 20,
    "darkest": 2,
-   "was": 21,
+   "was": 20,
    "heaps": [
     {
      "lo": [
@@ -3056,7 +2639,7 @@
      "owner": {
       "power": 1
      },
-     "was": 2,
+     "was": 1,
      "kept": 1,
      "nearest": {
       "steps": 3,
@@ -3119,6 +2702,332 @@
        22,
        4,
        "floor"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "name": "in-K the north roofs: corner terrace, ridge walk, the end terrace, the clock tower's foot",
+   "cells": 19,
+   "darkest": 0,
+   "was": 32,
+   "heaps": [
+    {
+     "lo": [
+      11,
+      18,
+      -31
+     ],
+     "hi": [
+      15,
+      18,
+      -28
+     ],
+     "cells": 12,
+     "darkest": 1,
+     "kinds": {
+      "floor": 12,
+      "step": 0,
+      "threshold": 0
+     },
+     "hop": 0,
+     "owner": {
+      "tower、clkrm：钟塔底厅": 12
+     },
+     "was": 25,
+     "kept": 12,
+     "nearest": {
+      "steps": 4,
+      "level": 7,
+      "why": "sky/lights:window tower tower 1 shaft",
+      "cell": [
+       16,
+       22,
+       -30
+      ]
+     },
+     "list": [
+      [
+       11,
+       18,
+       -29,
+       4,
+       "floor"
+      ],
+      [
+       11,
+       18,
+       -28,
+       3,
+       "floor"
+      ],
+      [
+       12,
+       18,
+       -28,
+       4,
+       "floor"
+      ],
+      [
+       13,
+       18,
+       -29,
+       4,
+       "floor"
+      ],
+      [
+       13,
+       18,
+       -28,
+       3,
+       "floor"
+      ],
+      [
+       14,
+       18,
+       -30,
+       4,
+       "floor"
+      ],
+      [
+       14,
+       18,
+       -29,
+       3,
+       "floor"
+      ],
+      [
+       14,
+       18,
+       -28,
+       2,
+       "floor"
+      ],
+      [
+       15,
+       18,
+       -31,
+       4,
+       "floor"
+      ],
+      [
+       15,
+       18,
+       -30,
+       3,
+       "floor"
+      ],
+      [
+       15,
+       18,
+       -29,
+       2,
+       "floor"
+      ],
+      [
+       15,
+       18,
+       -28,
+       1,
+       "floor"
+      ]
+     ]
+    },
+    {
+     "lo": [
+      14,
+      18,
+      -9
+     ],
+     "hi": [
+      15,
+      18,
+      -8
+     ],
+     "cells": 3,
+     "darkest": 0,
+     "kinds": {
+      "floor": 3,
+      "step": 0,
+      "threshold": 0
+     },
+     "hop": 0,
+     "owner": {
+      "dome、lights：屋面": 3
+     },
+     "was": 3,
+     "kept": 3,
+     "nearest": {
+      "steps": 6,
+      "level": 8,
+      "why": "sky/lights:way",
+      "cell": [
+       12,
+       20,
+       -11
+      ]
+     },
+     "list": [
+      [
+       14,
+       18,
+       -8,
+       0,
+       "floor"
+      ],
+      [
+       15,
+       18,
+       -9,
+       2,
+       "floor"
+      ],
+      [
+       15,
+       18,
+       -8,
+       1,
+       "floor"
+      ]
+     ]
+    },
+    {
+     "lo": [
+      8,
+      20,
+      -13
+     ],
+     "hi": [
+      9,
+      20,
+      -13
+     ],
+     "cells": 2,
+     "darkest": 3,
+     "kinds": {
+      "floor": 2,
+      "step": 0,
+      "threshold": 0
+     },
+     "hop": 0,
+     "owner": {
+      "dome、lights：屋面": 2
+     },
+     "was": 2,
+     "kept": 2,
+     "nearest": {
+      "steps": 3,
+      "level": 6,
+      "why": "main/roof:walk",
+      "cell": [
+       8,
+       20,
+       -15
+      ]
+     },
+     "list": [
+      [
+       8,
+       20,
+       -13,
+       3,
+       "floor"
+      ],
+      [
+       9,
+       20,
+       -13,
+       3,
+       "floor"
+      ]
+     ]
+    },
+    {
+     "lo": [
+      12,
+      18,
+      -8
+     ],
+     "hi": [
+      12,
+      18,
+      -8
+     ],
+     "cells": 1,
+     "darkest": 4,
+     "kinds": {
+      "floor": 1,
+      "step": 0,
+      "threshold": 0
+     },
+     "hop": 0,
+     "owner": {
+      "dome、lights：屋面": 1
+     },
+     "was": 1,
+     "kept": 1,
+     "nearest": {
+      "steps": 4,
+      "level": 8,
+      "why": "sky/lights:way",
+      "cell": [
+       12,
+       20,
+       -11
+      ]
+     },
+     "list": [
+      [
+       12,
+       18,
+       -8,
+       4,
+       "floor"
+      ]
+     ]
+    },
+    {
+     "lo": [
+      14,
+      17,
+      -10
+     ],
+     "hi": [
+      14,
+      17,
+      -10
+     ],
+     "cells": 1,
+     "darkest": 3,
+     "kinds": {
+      "floor": 0,
+      "step": 1,
+      "threshold": 0
+     },
+     "hop": 0,
+     "owner": {
+      "dome、lights：屋面": 1
+     },
+     "was": 1,
+     "kept": 1,
+     "nearest": {
+      "steps": 5,
+      "level": 8,
+      "why": "sky/lights:way",
+      "cell": [
+       12,
+       20,
+       -11
+      ]
+     },
+     "list": [
+      [
+       14,
+       17,
+       -10,
+       3,
+       "step"
       ]
      ]
     }
@@ -3413,7 +3322,7 @@
    "name": "in-H the ring stair",
    "cells": 2,
    "darkest": 4,
-   "was": 10,
+   "was": 2,
    "heaps": [
     {
      "lo": [
@@ -3437,7 +3346,7 @@
      "owner": {
       "lights：22 盏之后剩的": 2
      },
-     "was": 10,
+     "was": 2,
      "kept": 2,
      "nearest": {
       "steps": 5,
@@ -3498,140 +3407,7 @@
    "m5：西门里"
   ]
  ],
- "cleared": [
-  {
-   "name": "room: plate vault",
-   "lo": [
-    2,
-    0,
-    7
-   ],
-   "hi": [
-    12,
-    1,
-    25
-   ],
-   "cells": 115,
-   "darkest": 0,
-   "owner": {
-    "vault": 115
-   },
-   "light_now": [
-    5,
-    8
-   ]
-  },
-  {
-   "name": "room: battery room",
-   "lo": [
-    2,
-    0,
-    -25
-   ],
-   "hi": [
-    6,
-    0,
-    -7
-   ],
-   "cells": 69,
-   "darkest": 0,
-   "owner": {
-    "astro": 69
-   },
-   "light_now": [
-    5,
-    8
-   ]
-  },
-  {
-   "name": "room: battery room",
-   "lo": [
-    9,
-    0,
-    -25
-   ],
-   "hi": [
-    13,
-    0,
-    -7
-   ],
-   "cells": 69,
-   "darkest": 0,
-   "owner": {
-    "astro": 69
-   },
-   "light_now": [
-    5,
-    8
-   ]
-  },
-  {
-   "name": "room: star hall",
-   "lo": [
-    2,
-    12,
-    3
-   ],
-   "hi": [
-    5,
-    13,
-    3
-   ],
-   "cells": 4,
-   "darkest": 1,
-   "owner": {
-    "lights：22 盏之后剩的": 4
-   },
-   "light_now": [
-    5,
-    6
-   ]
-  },
-  {
-   "name": "in-B the star hall, ground floor",
-   "lo": [
-    7,
-    0,
-    6
-   ],
-   "hi": [
-    7,
-    0,
-    6
-   ],
-   "cells": 1,
-   "darkest": 4,
-   "owner": {
-    "m5：各屋门口": 1
-   },
-   "light_now": [
-    7,
-    7
-   ]
-  },
-  {
-   "name": "room: star hall",
-   "lo": [
-    2,
-    8,
-    -3
-   ],
-   "hi": [
-    2,
-    8,
-    -3
-   ],
-   "cells": 1,
-   "darkest": 4,
-   "owner": {
-    "lights：22 盏之后剩的": 1
-   },
-   "light_now": [
-    5,
-    5
-   ]
-  }
- ],
+ "cleared": [],
  "spared": [
   {
    "why": "不补（A0 #22568：水塔底下）",
@@ -4116,16 +3892,16 @@
  ],
  "open_sky": {
   "in-A the entrance from the court": {
-   "cells": 8,
+   "cells": 4,
    "lo": [
     28,
     0,
-    -2
+    -1
    ],
    "hi": [
     29,
     0,
-    2
+    1
    ]
   },
   "in-C the way to the west door": {
@@ -4220,7 +3996,7 @@
    ]
   },
   "out-A arrival: the station platform, the walk to the axis": {
-   "cells": 314,
+   "cells": 313,
    "lo": [
     74,
     -12,
@@ -4246,7 +4022,7 @@
    ]
   },
   "out-C the front court: axis, meridian, the foot of the front": {
-   "cells": 1075,
+   "cells": 1065,
    "lo": [
     18,
     0,
@@ -5040,5 +4816,5 @@
  "dome_room": {
   "cells": 278
  },
- "sources": 292
+ "sources": 293
 }
