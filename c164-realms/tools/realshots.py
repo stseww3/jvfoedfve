@@ -9,8 +9,8 @@
 A trip of the render station (tools/nodetrip.py on a worker node, bin/trip.py on the admin's
 computer; both run tools/win/shuttle.py) leaves for every scene <scene>-<tag>-<shot>.jpg, the game's
 own screenshots, and a note <scene>-<tag>-real.txt that says for every shot its tick, the commit of
-the code it shows and the first 16 digits of the picture file's SHA-256, and in its heading the
-distances the game drew at. On a node they lie in the trip's folder and nodetrip.py takes them
+the code it shows, the first 16 digits of the picture file's SHA-256 and when it was taken, and in
+its heading the distances the game drew at. On a node they lie in the trip's folder and nodetrip.py takes them
 itself; from the admin's computer they arrived in the inbox of the cloud machine.
 
 --take checks every picture of a scene against the note (did it arrive, is it the file that was
@@ -72,8 +72,10 @@ def digest(path):
 
 
 def read_sent(path):
-    """A trip's note for one scene: (when the pictures were taken, the distances they were drawn
-    at or None when the note does not say, [(shot, tick, commit, sha)])."""
+    """A trip's note for one scene: (when the trip took its pictures, the distances they were drawn
+    at or None when the note does not say, [(shot, tick, commit, sha, when it was taken)]). A line
+    says when its own picture was taken where the trip left pictures of an earlier one under the
+    same distances in its note; a line that does not is of the head's time."""
     taken, view, rows = "?", None, []
     with open(path, encoding="utf-8") as fh:
         for line in fh:
@@ -91,11 +93,12 @@ def read_sent(path):
                                                   "dressed" if "the building's own lights on" in line else None]))
                 continue
             parts = line.split()
-            if len(parts) == 4 and NAME_OK.match(parts[0]):
+            if len(parts) in (4, 5) and NAME_OK.match(parts[0]) \
+                    and (len(parts) == 4 or re.fullmatch(r"\d{4}-\d\d-\d\dT\d\d:\d\d", parts[4])):
                 rows.append(tuple(parts))
             elif parts:
-                raise SystemExit(f"{path}: a line that is not 'shot tick commit sha256': {line[:80]}")
-    return taken, view, rows
+                raise SystemExit(f"{path}: a line that is not 'shot tick commit sha256 [taken]': {line[:80]}")
+    return taken, view, [row if len(row) == 5 else row + (taken,) for row in rows]
 
 
 def read_kept(path):
@@ -124,7 +127,7 @@ def take(source, tag, scene, kept_in=None):
     if not rows:
         return False, [f"{scene}: the note names no picture"]
     wrong = []
-    for shot, _, _, sha in rows:
+    for shot, _, _, sha, _ in rows:
         path = os.path.join(source, f"{stem}{shot}.jpg")
         if not os.path.exists(path):
             wrong.append(f"{shot}.jpg has not arrived")
@@ -136,13 +139,13 @@ def take(source, tag, scene, kept_in=None):
     os.makedirs(folder, exist_ok=True)
     kept = read_kept(os.path.join(folder, NOTE))
     new, same = [], 0
-    for shot, tick, commit, sha in rows:
+    for shot, tick, commit, sha, when in rows:
         if kept.get(shot, ("", "", ""))[2] == sha and os.path.exists(os.path.join(folder, shot + ".jpg")):
             same += 1           # the very picture that is kept: its line stays as it is
             continue
         shutil.copyfile(os.path.join(source, f"{stem}{shot}.jpg"), os.path.join(folder, shot + ".jpg"))
         new.append(shot)
-        kept[shot] = (tick, commit, sha, taken) + ((view,) if view else ())
+        kept[shot] = (tick, commit, sha, when) + ((view,) if view else ())
     with open(os.path.join(folder, NOTE), "w", encoding="utf-8", newline="\n") as fh:
         fh.write(HEAD + "\n" + "".join(f"{shot} {' '.join(row)}\n" for shot, row in kept.items()))
     commits = sorted({row[2] for row in rows})

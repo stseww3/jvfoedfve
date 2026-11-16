@@ -20,9 +20,12 @@ For the scenes named the trip
      went wrong on the way;
   5. leaves the pictures in <out>/<tag>/<scene>/<shot>.png and, ready to be sent, in
      <out>/<tag>/send/ as <scene>-<tag>-<shot>.jpg beside a note <scene>-<tag>-real.txt that says
-     for every shot its tick, the commit of the code it shows and the first 16 digits of the
-     picture file's SHA-256, and in its heading the distances the game drew at (the client's
-     render distance, the server's view distance, the cloud range). tools/realshots.py reads it.
+     for every shot its tick, the commit of the code it shows, the first 16 digits of the
+     picture file's SHA-256 and when it was taken, and in its heading the distances the game
+     drew at (the client's render distance, the server's view distance, the cloud range).
+     tools/realshots.py reads it. A trip that takes only some of a scene's shots (--only) leaves
+     the others of an earlier trip under the same tag in the note -- when that trip drew at the
+     same distances and for the same light version; else they are not this note's to describe.
 
     --project <dir>          the c164-realms whose scenes are shot (default: the one this file is in).
                              The station's own tools stay the ones beside this file, so a branch
@@ -435,23 +438,51 @@ def to_send(scene, tag, commit, at, shots, target, send, some, how="the game's o
             look=None, dress=False, trial=None):
     """Turn a scene's pictures into the files that go back to the cloud machine: JPEGs under the
     names the pipeline gives real-machine pictures, and the note that goes with them. When only
-    some of the scene's shots were taken, what an earlier trip under this tag left stays."""
+    some of the scene's shots were taken, what an earlier trip under this tag left stays, each
+    picture with the time it was taken at -- but only when that trip drew under what this one
+    draws under (the distances, the light version): the note's head says these once for all its
+    pictures, so pictures drawn under anything else are not kept under it."""
     from PIL import Image
     import shoot
     os.makedirs(send, exist_ok=True)
     stem = f"{scene}-{tag}-"
     note = os.path.join(send, stem + "real.txt")
+    now = datetime.datetime.now()
+    under = [f"# distances: {distances()}"]
+    if look:
+        under.append(f"# windows: lit by the table of look {look} (the scene was built for that light version)"
+                     + (f"; shot as its trial {trial}" if trial else "")
+                     + ("; the building's own lights on (sky/lights DRESS, which the code keeps off)" if dress else ""))
     rows = {}
     if some:
+        was_under, was_taken, earlier = [], None, []
         try:
             with open(note, encoding="utf-8") as fh:
                 for line in fh:
-                    parts = line.split()
-                    if len(parts) == 4 and not line.startswith("#") \
-                            and os.path.exists(os.path.join(send, f"{stem}{parts[0]}.jpg")):
-                        rows[parts[0]] = line.strip()
+                    line = line.strip()
+                    if line.startswith(("# distances:", "# windows:")):
+                        was_under.append(line)
+                    elif line.startswith("#"):
+                        m = re.search(r"taken (\d{4}-\d\d-\d\d) (\d\d:\d\d)", line)
+                        was_taken = f"{m.group(1)}T{m.group(2)}" if m else was_taken
+                    elif len(line.split()) in (4, 5):
+                        earlier.append(line.split())
         except OSError:
             pass
+        if was_under == under:
+            for parts in earlier:
+                if os.path.exists(os.path.join(send, f"{stem}{parts[0]}.jpg")):
+                    # a line of four is of a note written before the lines said when: the head's time
+                    rows[parts[0]] = " ".join(parts + ([was_taken] if len(parts) == 4 and was_taken else []))
+        elif earlier:
+            left = [parts[0] for parts in earlier if parts[0] not in {shot["name"] for shot in shots}]
+            for name in left:
+                if os.path.exists(os.path.join(send, f"{stem}{name}.jpg")):
+                    os.remove(os.path.join(send, f"{stem}{name}.jpg"))
+            say(f"{scene}: the earlier trip under tag {tag} drew under other distances or another light version "
+                f"({'; '.join(line[2:] for line in was_under) or 'its note does not say which'}): "
+                + (f"its {len(left)} other pictures ({', '.join(left)}) are not carried into this trip's note"
+                   if left else "none of its pictures is carried into this trip's note"))
     else:
         for old in os.listdir(send):
             if old.startswith(stem):
@@ -472,16 +503,11 @@ def to_send(scene, tag, commit, at, shots, target, send, some, how="the game's o
         with open(jpg, "rb") as fh:
             digest = hashlib.sha256(fh.read()).hexdigest()[:16]
         rows[shot["name"]] = (f"{shot['name']} {time if time is not None else shot.get('time', shoot.DEFAULT_TIME)} "
-                              f"{commit} {digest}")
+                              f"{commit} {digest} {now.strftime('%Y-%m-%dT%H:%M')}")
     head = ["# real-machine pictures (tools/win/shuttle.py): shot, tick, commit of the code the picture shows, "
-            "first 16 of the picture file's sha256",
+            "first 16 of the picture file's sha256, when it was taken",
             f"# scene {scene}, tag {tag}, plot {at[0]} {at[1]} {at[2]}, taken "
-            f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}, {how} as JPEG {JPEG_QUALITY}",
-            f"# distances: {distances()}"]
-    if look:
-        head.append(f"# windows: lit by the table of look {look} (the scene was built for that light version)"
-                    + (f"; shot as its trial {trial}" if trial else "")
-                    + ("; the building's own lights on (sky/lights DRESS, which the code keeps off)" if dress else ""))
+            f"{now.strftime('%Y-%m-%d %H:%M')}, {how} as JPEG {JPEG_QUALITY}"] + under
     with open(note, "w", encoding="utf-8", newline="\n") as fh:
         fh.write("\n".join(head + list(rows.values())) + "\n")
     return len(rows)
@@ -689,6 +715,11 @@ def main():
             target = os.path.join(out, scene)
             if scene not in only:
                 shutil.rmtree(target, ignore_errors=True)
+            else:
+                # a shot that fails now must not be stood in for by an earlier trip's picture of it
+                for shot in shots:
+                    if os.path.exists(os.path.join(target, shot["name"] + ".png")):
+                        os.remove(os.path.join(target, shot["name"] + ".png"))
             code, said, said_too = 0, "", ""
             if shots_file:
                 say(f"shooting {scene}: {len(shots)} shots of {shown(shots_file)}")
