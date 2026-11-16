@@ -1,5 +1,5 @@
 {
- "head": "0cb464c3",
+ "head": "556dfe31",
  "floor": 5,
  "step": 5,
  "standing": {
@@ -24,20 +24,20 @@
   "threshold": 3
  },
  "before": {
-  "head": "9fbb2e0c",
-  "cells": 223,
-  "heaps": 47,
+  "head": "0cb464c3",
+  "cells": 39,
+  "heaps": 11,
   "then": {
-   "cells": 223,
-   "heaps": 47,
+   "cells": 39,
+   "heaps": 11,
    "rule": 0,
    "spared": 0
   },
-  "still_dark": 30,
-  "lit": 193,
+  "still_dark": 39,
+  "lit": 0,
   "no_standing": 0,
   "apart": 0,
-  "new_dark": 9
+  "new_dark": 0
  },
  "by_owner": {
   "m2": {
@@ -54,7 +54,7 @@
    "name": "room: time room",
    "cells": 22,
    "darkest": 2,
-   "was": 27,
+   "was": 22,
    "heaps": [
     {
      "lo": [
@@ -79,8 +79,8 @@
      "owner": {
       "m2": 13
      },
-     "was": 24,
-     "kept": 10,
+     "was": 13,
+     "kept": 13,
      "nearest": {
       "steps": 5,
       "level": 9,
@@ -221,8 +221,8 @@
      "owner": {
       "m2": 6
      },
-     "was": 3,
-     "kept": 3,
+     "was": 6,
+     "kept": 6,
      "nearest": {
       "steps": 3,
       "level": 7,
@@ -307,8 +307,8 @@
      "owner": {
       "m2": 1
      },
-     "was": 0,
-     "kept": 0,
+     "was": 1,
+     "kept": 1,
      "nearest": {
       "steps": 5,
       "level": 9,
@@ -353,8 +353,8 @@
      "owner": {
       "m2": 1
      },
-     "was": 0,
-     "kept": 0,
+     "was": 1,
+     "kept": 1,
      "nearest": {
       "steps": 5,
       "level": 9,
@@ -399,8 +399,8 @@
      "owner": {
       "m2": 1
      },
-     "was": 0,
-     "kept": 0,
+     "was": 1,
+     "kept": 1,
      "nearest": {
       "steps": 5,
       "level": 9,
@@ -428,7 +428,7 @@
    "name": "room: stair hall",
    "cells": 11,
    "darkest": 3,
-   "was": 76,
+   "was": 11,
    "heaps": [
     {
      "lo": [
@@ -639,7 +639,7 @@
      "owner": {
       "m5：西门里": 1
      },
-     "was": 2,
+     "was": 1,
      "kept": 1,
      "nearest": {
       "steps": 3,
@@ -685,7 +685,7 @@
      "owner": {
       "m5：西门里": 1
      },
-     "was": 2,
+     "was": 1,
      "kept": 1,
      "nearest": {
       "steps": 3,
@@ -834,846 +834,7 @@
    "m5：西门里"
   ]
  ],
- "cleared": [
-  {
-   "name": "room: stair hall",
-   "lo": [
-    -5,
-    7,
-    -5
-   ],
-   "hi": [
-    1,
-    8,
-    5
-   ],
-   "cells": 38,
-   "darkest": 2,
-   "owner": {
-    "lights：22 盏之后剩的": 23,
-    "lights：这一轮（astro 的 6 盏）": 15
-   },
-   "light_now": [
-    5,
-    9
-   ]
-  },
-  {
-   "name": "in-K the north roofs: corner terrace, ridge walk, the end terrace, the clock tower's foot",
-   "lo": [
-    11,
-    18,
-    -32
-   ],
-   "hi": [
-    15,
-    18,
-    -28
-   ],
-   "cells": 25,
-   "darkest": 0,
-   "owner": {
-    "clkrm：钟塔底厅": 25
-   },
-   "light_now": [
-    5,
-    8
-   ]
-  },
-  {
-   "name": "in-L the power house, inside",
-   "lo": [
-    83,
-    -6,
-    26
-   ],
-   "hi": [
-    87,
-    -5,
-    31
-   ],
-   "cells": 18,
-   "darkest": 2,
-   "owner": {
-    "power": 18
-   },
-   "light_now": [
-    5,
-    9
-   ]
-  },
-  {
-   "name": "room: stair hall",
-   "lo": [
-    -6,
-    4,
-    -5
-   ],
-   "hi": [
-    -2,
-    7,
-    -3
-   ],
-   "cells": 12,
-   "darkest": 0,
-   "owner": {
-    "lights：这一轮（astro 的 6 盏）": 12
-   },
-   "light_now": [
-    5,
-    7
-   ]
-  },
-  {
-   "name": "room: stair hall",
-   "lo": [
-    -6,
-    4,
-    3
-   ],
-   "hi": [
-    -2,
-    7,
-    5
-   ],
-   "cells": 12,
-   "darkest": 0,
-   "owner": {
-    "lights：这一轮（astro 的 6 盏）": 12
-   },
-   "light_now": [
-    5,
-    7
-   ]
-  },
-  {
-   "name": "in-J the south roofs: corner terrace, ridge walk, the end terrace, the small dome",
-   "lo": [
-    11,
-    18,
-    27
-   ],
-   "hi": [
-    14,
-    20,
-    31
-   ],
-   "cells": 10,
-   "darkest": 0,
-   "owner": {
-    "dome：小穹顶里": 10
-   },
-   "light_now": [
-    5,
-    7
-   ]
-  },
-  {
-   "name": "room: star hall",
-   "lo": [
-    5,
-    7,
-    4
-   ],
-   "hi": [
-    8,
-    8,
-    5
-   ],
-   "cells": 6,
-   "darkest": 3,
-   "owner": {
-    "hall": 3,
-    "lights：22 盏之后剩的": 3
-   },
-   "light_now": [
-    5,
-    7
-   ]
-  },
-  {
-   "name": "in-J the south roofs: corner terrace, ridge walk, the end terrace, the small dome",
-   "lo": [
-    11,
-    19,
-    32
-   ],
-   "hi": [
-    14,
-    20,
-    33
-   ],
-   "cells": 5,
-   "darkest": 2,
-   "owner": {
-    "dome：小穹顶里": 5
-   },
-   "light_now": [
-    5,
-    8
-   ]
-  },
-  {
-   "name": "room: star hall",
-   "lo": [
-    2,
-    7,
-    4
-   ],
-   "hi": [
-    3,
-    8,
-    5
-   ],
-   "cells": 4,
-   "darkest": 3,
-   "owner": {
-    "lights：22 盏之后剩的": 4
-   },
-   "light_now": [
-    5,
-    6
-   ]
-  },
-  {
-   "name": "room: star hall",
-   "lo": [
-    14,
-    7,
-    -5
-   ],
-   "hi": [
-    15,
-    8,
-    -4
-   ],
-   "cells": 4,
-   "darkest": 3,
-   "owner": {
-    "hall": 4
-   },
-   "light_now": [
-    5,
-    7
-   ]
-  },
-  {
-   "name": "room: star hall",
-   "lo": [
-    14,
-    7,
-    4
-   ],
-   "hi": [
-    15,
-    8,
-    5
-   ],
-   "cells": 4,
-   "darkest": 3,
-   "owner": {
-    "hall": 4
-   },
-   "light_now": [
-    5,
-    7
-   ]
-  },
-  {
-   "name": "in-J the south roofs: corner terrace, ridge walk, the end terrace, the small dome",
-   "lo": [
-    14,
-    18,
-    8
-   ],
-   "hi": [
-    15,
-    18,
-    9
-   ],
-   "cells": 3,
-   "darkest": 0,
-   "owner": {
-    "dome、lights：屋面": 3
-   },
-   "light_now": [
-    6,
-    8
-   ]
-  },
-  {
-   "name": "in-J the south roofs: corner terrace, ridge walk, the end terrace, the small dome",
-   "lo": [
-    15,
-    20,
-    29
-   ],
-   "hi": [
-    15,
-    20,
-    31
-   ],
-   "cells": 3,
-   "darkest": 0,
-   "owner": {
-    "dome：小穹顶里": 3
-   },
-   "light_now": [
-    5,
-    6
-   ]
-  },
-  {
-   "name": "in-K the north roofs: corner terrace, ridge walk, the end terrace, the clock tower's foot",
-   "lo": [
-    14,
-    18,
-    -9
-   ],
-   "hi": [
-    15,
-    18,
-    -8
-   ],
-   "cells": 3,
-   "darkest": 0,
-   "owner": {
-    "dome、lights：屋面": 3
-   },
-   "light_now": [
-    6,
-    8
-   ]
-  },
-  {
-   "name": "in-H the ring stair",
-   "lo": [
-    5,
-    17,
-    -3
-   ],
-   "hi": [
-    6,
-    17,
-    -3
-   ],
-   "cells": 2,
-   "darkest": 4,
-   "owner": {
-    "lights：22 盏之后剩的": 2
-   },
-   "light_now": [
-    5,
-    6
-   ]
-  },
-  {
-   "name": "in-I the dome room",
-   "lo": [
-    0,
-    18,
-    -13
-   ],
-   "hi": [
-    0,
-    18,
-    -12
-   ],
-   "cells": 2,
-   "darkest": 0,
-   "owner": {
-    "dome、lights：屋面": 2
-   },
-   "light_now": [
-    5,
-    6
-   ]
-  },
-  {
-   "name": "in-I the dome room",
-   "lo": [
-    0,
-    18,
-    12
-   ],
-   "hi": [
-    0,
-    18,
-    13
-   ],
-   "cells": 2,
-   "darkest": 0,
-   "owner": {
-    "dome、lights：屋面": 2
-   },
-   "light_now": [
-    5,
-    6
-   ]
-  },
-  {
-   "name": "in-J the south roofs: corner terrace, ridge walk, the end terrace, the small dome",
-   "lo": [
-    8,
-    20,
-    13
-   ],
-   "hi": [
-    9,
-    20,
-    13
-   ],
-   "cells": 2,
-   "darkest": 3,
-   "owner": {
-    "dome、lights：屋面": 2
-   },
-   "light_now": [
-    5,
-    6
-   ]
-  },
-  {
-   "name": "in-K the north roofs: corner terrace, ridge walk, the end terrace, the clock tower's foot",
-   "lo": [
-    8,
-    20,
-    -13
-   ],
-   "hi": [
-    9,
-    20,
-    -13
-   ],
-   "cells": 2,
-   "darkest": 3,
-   "owner": {
-    "dome、lights：屋面": 2
-   },
-   "light_now": [
-    5,
-    6
-   ]
-  },
-  {
-   "name": "room: star hall",
-   "lo": [
-    2,
-    7,
-    -5
-   ],
-   "hi": [
-    3,
-    7,
-    -5
-   ],
-   "cells": 2,
-   "darkest": 3,
-   "owner": {
-    "lights：22 盏之后剩的": 2
-   },
-   "light_now": [
-    6,
-    6
-   ]
-  },
-  {
-   "name": "in-I the dome room",
-   "lo": [
-    4,
-    18,
-    -13
-   ],
-   "hi": [
-    4,
-    18,
-    -13
-   ],
-   "cells": 1,
-   "darkest": 0,
-   "owner": {
-    "dome、lights：屋面": 1
-   },
-   "light_now": [
-    5,
-    5
-   ]
-  },
-  {
-   "name": "in-I the dome room",
-   "lo": [
-    4,
-    18,
-    13
-   ],
-   "hi": [
-    4,
-    18,
-    13
-   ],
-   "cells": 1,
-   "darkest": 1,
-   "owner": {
-    "dome、lights：屋面": 1
-   },
-   "light_now": [
-    5,
-    5
-   ]
-  },
-  {
-   "name": "in-J the south roofs: corner terrace, ridge walk, the end terrace, the small dome",
-   "lo": [
-    12,
-    18,
-    8
-   ],
-   "hi": [
-    12,
-    18,
-    8
-   ],
-   "cells": 1,
-   "darkest": 4,
-   "owner": {
-    "dome、lights：屋面": 1
-   },
-   "light_now": [
-    5,
-    5
-   ]
-  },
-  {
-   "name": "in-J the south roofs: corner terrace, ridge walk, the end terrace, the small dome",
-   "lo": [
-    14,
-    17,
-    10
-   ],
-   "hi": [
-    14,
-    17,
-    10
-   ],
-   "cells": 1,
-   "darkest": 3,
-   "owner": {
-    "dome、lights：屋面": 1
-   },
-   "light_now": [
-    5,
-    5
-   ]
-  },
-  {
-   "name": "in-K the north roofs: corner terrace, ridge walk, the end terrace, the clock tower's foot",
-   "lo": [
-    12,
-    18,
-    -8
-   ],
-   "hi": [
-    12,
-    18,
-    -8
-   ],
-   "cells": 1,
-   "darkest": 4,
-   "owner": {
-    "dome、lights：屋面": 1
-   },
-   "light_now": [
-    5,
-    5
-   ]
-  },
-  {
-   "name": "in-K the north roofs: corner terrace, ridge walk, the end terrace, the clock tower's foot",
-   "lo": [
-    14,
-    17,
-    -10
-   ],
-   "hi": [
-    14,
-    17,
-    -10
-   ],
-   "cells": 1,
-   "darkest": 3,
-   "owner": {
-    "dome、lights：屋面": 1
-   },
-   "light_now": [
-    5,
-    5
-   ]
-  },
-  {
-   "name": "in-L the power house, inside",
-   "lo": [
-    69,
-    -6,
-    25
-   ],
-   "hi": [
-    69,
-    -6,
-    25
-   ],
-   "cells": 1,
-   "darkest": 4,
-   "owner": {
-    "power": 1
-   },
-   "light_now": [
-    5,
-    5
-   ]
-  },
-  {
-   "name": "in-L the power house, inside",
-   "lo": [
-    83,
-    -6,
-    22
-   ],
-   "hi": [
-    83,
-    -6,
-    22
-   ],
-   "cells": 1,
-   "darkest": 4,
-   "owner": {
-    "power": 1
-   },
-   "light_now": [
-    6,
-    6
-   ]
-  },
-  {
-   "name": "room: stair hall",
-   "lo": [
-    1,
-    11,
-    3
-   ],
-   "hi": [
-    1,
-    11,
-    3
-   ],
-   "cells": 1,
-   "darkest": 4,
-   "owner": {
-    "lights：这一轮（astro 的 6 盏）": 1
-   },
-   "light_now": [
-    5,
-    5
-   ]
-  },
-  {
-   "name": "room: star hall",
-   "lo": [
-    2,
-    0,
-    -5
-   ],
-   "hi": [
-    2,
-    0,
-    -5
-   ],
-   "cells": 1,
-   "darkest": 4,
-   "owner": {
-    "hall": 1
-   },
-   "light_now": [
-    5,
-    5
-   ]
-  },
-  {
-   "name": "room: star hall",
-   "lo": [
-    2,
-    0,
-    -3
-   ],
-   "hi": [
-    2,
-    0,
-    -3
-   ],
-   "cells": 1,
-   "darkest": 4,
-   "owner": {
-    "m1：石墩一圈": 1
-   },
-   "light_now": [
-    5,
-    5
-   ]
-  },
-  {
-   "name": "room: star hall",
-   "lo": [
-    2,
-    0,
-    3
-   ],
-   "hi": [
-    2,
-    0,
-    3
-   ],
-   "cells": 1,
-   "darkest": 4,
-   "owner": {
-    "m1：石墩一圈": 1
-   },
-   "light_now": [
-    5,
-    5
-   ]
-  },
-  {
-   "name": "room: star hall",
-   "lo": [
-    2,
-    0,
-    5
-   ],
-   "hi": [
-    2,
-    0,
-    5
-   ],
-   "cells": 1,
-   "darkest": 4,
-   "owner": {
-    "hall": 1
-   },
-   "light_now": [
-    5,
-    5
-   ]
-  },
-  {
-   "name": "room: star hall",
-   "lo": [
-    3,
-    0,
-    -2
-   ],
-   "hi": [
-    3,
-    0,
-    -2
-   ],
-   "cells": 1,
-   "darkest": 4,
-   "owner": {
-    "m1：石墩一圈": 1
-   },
-   "light_now": [
-    5,
-    5
-   ]
-  },
-  {
-   "name": "room: star hall",
-   "lo": [
-    3,
-    0,
-    2
-   ],
-   "hi": [
-    3,
-    0,
-    2
-   ],
-   "cells": 1,
-   "darkest": 4,
-   "owner": {
-    "m1：石墩一圈": 1
-   },
-   "light_now": [
-    5,
-    5
-   ]
-  },
-  {
-   "name": "room: star hall",
-   "lo": [
-    8,
-    7,
-    -5
-   ],
-   "hi": [
-    8,
-    7,
-    -5
-   ],
-   "cells": 1,
-   "darkest": 4,
-   "owner": {
-    "hall": 1
-   },
-   "light_now": [
-    5,
-    5
-   ]
-  },
-  {
-   "name": "room: star hall",
-   "lo": [
-    9,
-    0,
-    -3
-   ],
-   "hi": [
-    9,
-    0,
-    -3
-   ],
-   "cells": 1,
-   "darkest": 4,
-   "owner": {
-    "hall": 1
-   },
-   "light_now": [
-    5,
-    5
-   ]
-  },
-  {
-   "name": "room: star hall",
-   "lo": [
-    9,
-    0,
-    3
-   ],
-   "hi": [
-    9,
-    0,
-    3
-   ],
-   "cells": 1,
-   "darkest": 4,
-   "owner": {
-    "hall": 1
-   },
-   "light_now": [
-    5,
-    5
-   ]
-  }
- ],
+ "cleared": [],
  "spared": [
   {
    "why": "不补（A0 #22568：水塔底下）",
@@ -2198,7 +1359,7 @@
    ]
   },
   "in-J the south roofs: corner terrace, ridge walk, the end terrace, the small dome": {
-   "cells": 219,
+   "cells": 222,
    "lo": [
     0,
     17,
@@ -2466,33 +1627,33 @@
      20,
      14
     ],
+    "darkest": 4
+   },
+   {
+    "cells": 2,
+    "lo": [
+     10,
+     18,
+     29
+    ],
+    "hi": [
+     11,
+     18,
+     29
+    ],
     "darkest": 3
    },
    {
     "cells": 1,
     "lo": [
-     11,
+     10,
      18,
-     29
+     31
     ],
     "hi": [
-     11,
+     10,
      18,
-     29
-    ],
-    "darkest": 4
-   },
-   {
-    "cells": 1,
-    "lo": [
-     14,
-     17,
-     11
-    ],
-    "hi": [
-     14,
-     17,
-     11
+     31
     ],
     "darkest": 4
    }
@@ -2552,7 +1713,7 @@
      20,
      -14
     ],
-    "darkest": 3
+    "darkest": 4
    },
    {
     "cells": 2,
@@ -2567,20 +1728,6 @@
      -27
     ],
     "darkest": 3
-   },
-   {
-    "cells": 1,
-    "lo": [
-     14,
-     17,
-     -11
-    ],
-    "hi": [
-     14,
-     17,
-     -11
-    ],
-    "darkest": 4
    }
   ],
   "in-M the meridian hut": [
@@ -3025,5 +2172,5 @@
  "dome_room": {
   "cells": 278
  },
- "sources": 339
+ "sources": 336
 }
