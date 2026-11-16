@@ -1,0 +1,10 @@
+gate props/electrics-signs 2ed0cc4b: the merged tree 2ed0cc4b, the assembly as it was 5b56af2d
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] scope    46 of 48 files are the card's own
+                    not this card's file: A build/scenes/obs/props/electrics.py
+                    not this card's file: A build/scenes/obs/props/signs.py
+check.py: 58 scenes in 43 s: 58 pass (58 with warnings)
+pictures: [PASS] selfshots obs_props_elecsign at 2ed0cc4b: 18 of 18 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_props_elecsign_room at 2ed0cc4b: 7 of 7 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_props_elecsign_station at 2ed0cc4b: 4 of 4 kept pictures are what the code draws
+result: PASS

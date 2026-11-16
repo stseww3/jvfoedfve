@@ -1,0 +1,12 @@
+delivery props/electrics-signs: 2ed0cc4 against 5b56af2 (forked at 5b56af2), 31 commits, 48 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[WARN] scope    46 of 48 files are the card's own
+                not this card's file: A build/scenes/obs/props/electrics.py
+                not this card's file: A build/scenes/obs/props/signs.py
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[PASS] pictures 3 test scenes, 29 shots with a picture kept; every shot has one, each the file its note describes
+[PASS] merge    merges cleanly; 0 commits behind the base
+result: PASS (0 failed, 1 to look at)
