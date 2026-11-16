@@ -1,0 +1,38 @@
+a0job 1116-043044-sdome-astromove-f3-1fe7-8567: cursor/c164-sdome-astromove-f3-1fe7 @ 4d1746d3 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.43 0.47 0.96, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- (cd build && python -m scenes.obs_mach_meridian_astrograph >/dev/null) && (python tools/check.py --scene obs_mach_meridian_astrograph > /tmp/sdome_mcheck.txt 2>&1; R=$?; tail -n 22 /tmp/sdome_mcheck.txt | cut -c1-330; cd build; python 
+check obs_mach_meridian_astrograph at 4d1746d
+[PASS] regen     1660 blocks, 20 entities, 8 models, 712 resource-pack files, 26 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (0.9 s)
+[PASS] conflicts the scene writes 711 files, no file written twice, the folders and the prefix of machines are kept (14 packages run alone)
+[PASS] strays    137 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      545 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    22 kinds of block placed, 4 barrier cells (x 33..37, y 0..1, z -30), all in the occupancy table
+[WARN] flatwall  2 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+                 smooth_sandstone facing north: flat over 6x6, the square's top corner at (67, 5, -37)
+                 smooth_sandstone facing south: flat over 6x6, the square's top corner at (67, 5, -37)
+[PASS] entities  20 display entities
+[PASS] views     21 shots, most display entities in view: 20 (dome_door), limit 600; counted without what walls hide; the game draws up to 20 (hut_door): a display entity without width and height is drawn outside the view too
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    6 parts and 0 points on 1 chains, 14 function files; 9 commands in the busiest tick (limit 40), 0.1 a tick on average (limit 10)
+                 chain of 400 ticks: 8 functions, 58 commands a cycle, starts 1 ticks after start
+result: PASS (0 failed, 1 with warnings)
+tube: looks west, 41.05 degrees up; pivot (12.5, 20.5, 30.5), objective (9.53, 23.09, 30.5), plate (14.08, 19.12, 30.5)
+mount: head (11.91, 19.82, 29.82), foot (11.91, 18.0, 30.18); the saddle -53.0 degrees round the tube
+sweep: centre (12.5, 20.5, 30.5), radius 4.23
+4 display entities
+tracking: 2.5 degrees to either side about the polar axis, there and back in 400 ticks; the object glass goes 2.6 texels either way, the plate goes 1.5 texels either way, the outer weight goes 0.8 texels either way
+  mach_astro_tube: scale 2, 153 boxes, 27.9 x 29.3 x 95.5 texels
+  mach_astro_back: scale 1, 27 boxes, 25.2 x 16.5 x 7.5 texels
+  mach_astro_axis: scale 1, 94 boxes, 15.0 x 15.5 x 25.0 texels
+  mach_astro_mount: scale 1, 133 boxes, 20.0 x 28.2 x 26.3 texels
+self-check: sizes, the frames, the room, the slit, the plate holder, the tracking -- all good
+self-check: the budget, the ring inside the corbel, the frame under the plates, the crank at the rack, the astrograph clear -- all good
+self-check: sizes, the room, the turn over the floor, the circles, the microscopes, the slot -- all good
+==== NODEJOB RESULT ====
+exit=0 secs=12 host=cursor cores=4 head=4d1746d3 commit=none pushed=no branch=cursor/c164-sdome-astromove-f3-1fe7 files=0
+a0job: exit=0 secs=12
