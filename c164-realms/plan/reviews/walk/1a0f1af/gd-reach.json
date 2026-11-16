@@ -3,7 +3,7 @@
  "scene": "obs",
  "bounds": [
   -36,
-  -29,
+  -19,
   82,
   35
  ],
@@ -19,16 +19,16 @@
      0.5
     ],
     "nodes": {
-     "walk": 26410,
-     "hop": 1509,
-     "fall": 1309,
-     "trap": 4542
+     "walk": 22677,
+     "hop": 1422,
+     "fall": 1125,
+     "trap": 3524
     },
     "ground": {
-     "walk": 6602.5,
-     "hop": 377.2,
-     "fall": 327.2,
-     "trap": 1135.5
+     "walk": 5669.2,
+     "hop": 355.5,
+     "fall": 281.2,
+     "trap": 881.0
     },
     "cut short": false,
     "lowest block": -34,
@@ -36,79 +36,77 @@
     "joins worked out as the game does": "yes",
     "shapes guessed as whole cubes": {},
     "shapes written down": {
-     "smooth_sandstone_stairs": 764,
-     "waxed_exposed_cut_copper_slab": 513,
-     "dark_oak_trapdoor": 457,
-     "waxed_oxidized_cut_copper_slab": 282,
-     "oxidized_cut_copper_slab": 280,
-     "oxidized_copper_bars": 254,
-     "deepslate_tile_slab": 244,
+     "smooth_sandstone_stairs": 678,
+     "dark_oak_trapdoor": 437,
+     "waxed_exposed_cut_copper_slab": 435,
+     "waxed_oxidized_cut_copper_slab": 275,
+     "oxidized_cut_copper_slab": 233,
+     "oxidized_copper_bars": 213,
+     "deepslate_tile_slab": 189,
      "deepslate_tile_stairs": 180,
-     "deepslate_brick_stairs": 159,
-     "oxidized_cut_copper_stairs": 146,
-     "dark_oak_slab": 118,
-     "polished_deepslate_slab": 77,
-     "snow": 67,
-     "polished_tuff_stairs": 65,
-     "oxidized_copper_trapdoor": 62,
+     "deepslate_brick_stairs": 140,
+     "oxidized_cut_copper_stairs": 140,
+     "dark_oak_slab": 114,
+     "polished_deepslate_slab": 76,
+     "snow": 63,
      "polished_tuff_slab": 54,
-     "waxed_oxidized_cut_copper_stairs": 54,
-     "sandstone_slab": 51,
+     "oxidized_copper_trapdoor": 48,
      "waxed_weathered_cut_copper_slab": 46,
+     "sandstone_slab": 41,
+     "polished_tuff_stairs": 41,
      "spruce_stairs": 35,
-     "sandstone_wall": 33,
-     "oxidized_lightning_rod": 32,
      "sandstone_stairs": 32,
-     "smooth_sandstone_slab": 28,
+     "oxidized_lightning_rod": 30,
+     "sandstone_wall": 25,
+     "smooth_sandstone_slab": 23,
      "tuff_brick_stairs": 16,
      "oxidized_copper_chain": 11,
-     "oxidized_copper_door": 10,
-     "waxed_exposed_cut_copper_stairs": 8,
-     "gray_stained_glass_pane": 5,
-     "cut_sandstone_slab": 3,
+     "oxidized_copper_door": 8,
+     "gray_stained_glass_pane": 3,
      "bamboo_fence": 2,
+     "cut_sandstone_slab": 1,
      "deepslate_brick_slab": 1
     },
     "no collision": {
-     "light": 304,
-     "rail": 138,
+     "light": 247,
+     "rail": 128,
      "activator_rail": 4,
      "detector_rail": 1
     },
     "traps": [
      {
-      "nodes": 4542,
+      "nodes": 3524,
       "at": [
-       -27.5,
-       -5.0,
-       5.5
+       -26.5,
+       -7.0,
+       13.5
       ],
       "x": [
        -36.0,
        -10.5
       ],
       "z": [
-       -29.0,
+       -19.0,
        36.0
       ],
       "y": [
        -28.0,
-       -0.5
+       -1.0
       ],
       "falls in from": [
        {
-        "nodes": 181,
+        "nodes": 155,
         "at": [
-         -27.0,
+         -25.0,
          0.0,
-         5.5
+         10.5
         ],
         "x": [
          -28.0,
          -10.0
         ],
         "z": [
-         -29.0,
+         -19.0,
          36.0
         ],
         "y": [
@@ -125,30 +123,30 @@
        }
       ],
       "edges in": 1,
-      "ways in": 181,
+      "ways in": 155,
       "rise to get out": 1.5,
       "stands on": {
-       "air": 1869,
-       "deepslate": 1668,
-       "cobbled_deepslate": 1561,
-       "dead_brain_coral_block": 596
+       "air": 1357,
+       "cobbled_deepslate": 1329,
+       "deepslate": 1221,
+       "dead_brain_coral_block": 468
       }
      }
     ],
     "trap ground by height (square blocks in each two blocks of height, from the top)": {
-     "-2..0": 47.2,
-     "-4..-2": 58.8,
-     "-6..-4": 70.0,
-     "-8..-6": 190.0,
-     "-10..-8": 41.5,
-     "-12..-10": 26.5,
-     "-14..-12": 73.5,
-     "-16..-14": 169.0,
-     "-18..-16": 43.0,
-     "-20..-18": 30.5,
-     "-22..-20": 62.0,
-     "-24..-22": 190.8,
-     "-26..-24": 102.8,
+     "-2..0": 10.5,
+     "-4..-2": 37.8,
+     "-6..-4": 44.8,
+     "-8..-6": 165.0,
+     "-10..-8": 24.5,
+     "-12..-10": 15.0,
+     "-14..-12": 58.0,
+     "-16..-14": 156.5,
+     "-18..-16": 29.0,
+     "-20..-18": 22.0,
+     "-22..-20": 56.5,
+     "-24..-22": 138.2,
+     "-26..-24": 93.2,
      "-28..-26": 30.0
     },
     "lowest feet on walk or hop ground": -6.0,
@@ -161,80 +159,29 @@
      "dead_tube_coral_block"
     ],
     "ground on those blocks": {
-     "trap": 206.0
+     "trap": 166.0
     },
     "stuck (no way back and no way on to where one is sent home)": [],
     "stuck (no way back and no way down to the line)": [],
     "void": [
      {
-      "nodes": 373,
+      "nodes": 675,
       "at": [
-       -6.5,
-       0.0,
-       36.0
+       17.0,
+       16.5,
+       -19.0
       ],
       "x": [
        -36.0,
-       66.5
+       83.0
       ],
       "z": [
-       -29.0,
+       -19.0,
        36.0
       ],
       "y": [
        -28.0,
-       16.5
-      ],
-      "kinds": [
-       "fall",
-       "hop",
-       "trap",
-       "walk"
-      ]
-     },
-     {
-      "nodes": 183,
-      "at": [
-       83.0,
-       -6.0,
-       -16.0
-      ],
-      "x": [
-       40.5,
-       83.0
-      ],
-      "z": [
-       -29.0,
-       19.5
-      ],
-      "y": [
-       -6.0,
-       1.5
-      ],
-      "kinds": [
-       "fall",
-       "hop",
-       "walk"
-      ]
-     },
-     {
-      "nodes": 49,
-      "at": [
-       -2.0,
-       0.0,
-       -29.0
-      ],
-      "x": [
-       -13.5,
-       9.5
-      ],
-      "z": [
-       -29.0,
-       -29.0
-      ],
-      "y": [
-       -4.0,
-       18.5
+       20.0
       ],
       "kinds": [
        "fall",
@@ -266,47 +213,23 @@
        "hop",
        "walk"
       ]
-     },
-     {
-      "nodes": 29,
-      "at": [
-       23.5,
-       0.0,
-       -29.0
-      ],
-      "x": [
-       17.5,
-       30.5
-      ],
-      "z": [
-       -29.0,
-       -29.0
-      ],
-      "y": [
-       0.0,
-       16.5
-      ],
-      "kinds": [
-       "fall",
-       "walk"
-      ]
      }
     ],
-    "void not listed (short)": 6,
+    "void not listed (short)": 2,
     "hop only": [
      {
-      "nodes": 495,
+      "nodes": 445,
       "at": [
-       -26.5,
-       1.0,
-       4.5
+       -25.0,
+       1.5,
+       8.0
       ],
       "x": [
        -28.0,
        -9.0
       ],
       "z": [
-       -29.0,
+       -19.0,
        36.0
       ],
       "y": [
@@ -316,17 +239,17 @@
       "jumps in": [
        {
         "at": [
-         -20.5,
+         -27.0,
          0.0,
-         14.0
+         1.5
         ],
         "rise": 1.0
        },
        {
         "at": [
-         -27.0,
+         -20.5,
          0.0,
-         1.5
+         14.0
         ],
         "rise": 1.0
        },
@@ -349,18 +272,18 @@
       ]
      },
      {
-      "nodes": 190,
+      "nodes": 143,
       "at": [
-       61.0,
-       1.5,
-       -14.0
+       65.5,
+       -1.5,
+       -9.0
       ],
       "x": [
        60.0,
        74.0
       ],
       "z": [
-       -29.0,
+       -19.0,
        -8.0
       ],
       "y": [
@@ -727,6 +650,60 @@
       ]
      },
      {
+      "nodes": 43,
+      "at": [
+       0.5,
+       18.0,
+       -15.5
+      ],
+      "x": [
+       0.0,
+       1.5
+      ],
+      "z": [
+       -19.0,
+       -11.5
+      ],
+      "y": [
+       18.0,
+       18.0
+      ],
+      "jumps in": [
+       {
+        "at": [
+         1.5,
+         17.0,
+         -17.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         1.5,
+         17.0,
+         -18.0
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         1.5,
+         17.0,
+         -15.5
+        ],
+        "rise": 1.0
+       },
+       {
+        "at": [
+         1.5,
+         17.0,
+         -18.5
+        ],
+        "rise": 1.0
+       }
+      ]
+     },
+     {
       "nodes": 38,
       "at": [
        8.0,
@@ -991,114 +968,6 @@
          3.5,
          7.0,
          -10.5
-        ],
-        "rise": 1.0
-       }
-      ]
-     },
-     {
-      "nodes": 18,
-      "at": [
-       8.0,
-       8.0,
-       -23.5
-      ],
-      "x": [
-       6.0,
-       10.0
-      ],
-      "z": [
-       -23.5,
-       -23.0
-      ],
-      "y": [
-       8.0,
-       8.0
-      ],
-      "jumps in": [
-       {
-        "at": [
-         10.0,
-         7.0,
-         -22.5
-        ],
-        "rise": 1.0
-       },
-       {
-        "at": [
-         7.5,
-         7.0,
-         -22.5
-        ],
-        "rise": 1.0
-       },
-       {
-        "at": [
-         5.5,
-         7.0,
-         -23.0
-        ],
-        "rise": 1.0
-       },
-       {
-        "at": [
-         7.0,
-         7.0,
-         -22.5
-        ],
-        "rise": 1.0
-       }
-      ]
-     },
-     {
-      "nodes": 15,
-      "at": [
-       8.0,
-       21.0,
-       -25.5
-      ],
-      "x": [
-       7.0,
-       9.0
-      ],
-      "z": [
-       -26.0,
-       -25.0
-      ],
-      "y": [
-       21.0,
-       21.0
-      ],
-      "jumps in": [
-       {
-        "at": [
-         9.5,
-         20.0,
-         -26.0
-        ],
-        "rise": 1.0
-       },
-       {
-        "at": [
-         8.0,
-         20.0,
-         -24.5
-        ],
-        "rise": 1.0
-       },
-       {
-        "at": [
-         6.5,
-         20.0,
-         -25.0
-        ],
-        "rise": 1.0
-       },
-       {
-        "at": [
-         9.0,
-         20.0,
-         -24.5
         ],
         "rise": 1.0
        }
