@@ -1,21 +1,22 @@
 {
-  "version": "A7 1a0f1af9",
-  "note": "A7 (s1 954d8eaf, renders/real-save/c164-A7/), all twelve scored by 11:59: review V2 V3 4.0 pass, V4 3.8 (doorway half 0.16, grey; hall's 3b09f9d is in A8; vault's now), V5 3.8 (hut gable 0.26-0.30; a4's stone f0925b0c is in A8); cr2 V1 V6 V11 V12 all 4/4/4/4/4 pass (V6 for the first time); cr3 V7 4.0, V8 4.2, V9 4.0 pass, V10 3.6 (three places still compete with the instrument wall; m2 changes colours and shades only)",
+  "version": "A8 8cddfa98",
+  "note": "A8 (s1 0885a5aa, renders/real-save/c164-A8/). review 12:27: V2 4.0, V3 4.0 pass, V5 4.0 pass now (the hut's gable 0.15-0.18 under the clock tower), V4 3.8 fails (the doorway's half 0.188, warm, the floor inside the door short; vault at work, two versions waiting for cr3 on V7's vault). cr2 (V1 V6 V11 V12) and cr3 (V7-V10) have not scored A8; on A7 they were pass except V10 3.6.",
   "pass": [
-    "V1",
     "V2",
     "V3",
+    "V5"
+  ],
+  "fail": {
+    "V4": "3.8"
+  },
+  "wait": [
+    "V1",
     "V6",
+    "V11",
+    "V12",
     "V7",
     "V8",
     "V9",
-    "V11",
-    "V12"
-  ],
-  "fail": {
-    "V4": "3.8",
-    "V5": "3.8",
-    "V10": "3.6"
-  },
-  "wait": []
+    "V10"
+  ]
 }
