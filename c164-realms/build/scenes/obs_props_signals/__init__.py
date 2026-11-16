@@ -1,20 +1,22 @@
 """Test scene of the work package props/signals: the home signal of the rack railway by itself.
 
-A paved pad, nine cells by seven, stands for the corner of the station platform the signal has in
-the master scene (site/cablecar's railed bay): the signal in its middle, facing east as it does
-there, and a post lamp of props/lamps north-west of it, where the station's pendant hangs from
-the signal. The signal is stood by signals.signal(), the call signals.build() makes for the real
-platform; every model of the family is held to _kit.settle here.
+A paved pad stands for the rock beside the trestle, and the rails are thought RAIL over it, as
+far as they are over the rock where the signal stands in the master scene (site/_rail, s 8). Two
+signals stand on it, both facing east as for a train that comes from there: the one in front
+(lower z) at "stop" with its wire, which runs back to a stub of wall that stands for the winch
+house's corner, and a second one at "clear", placed so by signals.signal(clear=True) for the
+picture: in the map the arm is moved by the train's trip. Every model of the family is held to
+_kit.settle here.
 
 The shots are written from the numbers below:  python -m scenes.obs_props_signals
+The near shots stand two to three blocks from what they show (plan/fine.md: the near layer).
 """
 from artkit.canvas import Canvas
 
 from scenes.obs import materials, sky
 from scenes.obs.common import blocks as B
-from scenes.obs.common import skeleton as S
 from scenes.obs.props import _kit as K
-from scenes.obs.props import lamps, signals
+from scenes.obs.props import signals
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 32
@@ -22,12 +24,14 @@ BIOME_MARGIN_Y = 32
 TIME = 14000                    # light version A, the default (INTERFACE: 18000 is B)
 TIME_DEEP = 18000
 
-PAD = (0, 0, 8, 6)              # x0, z0, x1, z1 of the pad
+PAD = (0, 0, 11, 13)            # x0, z0, x1, z1 of the pad
 TOP = 0                         # its paving course
 FEET = TOP + 1
-FOOT = (4.5, float(FEET), 3.5)  # the signal's foot: the middle of the pad
-FACING = "east"
-LAMP = (2.5, float(FEET), 1.5)  # the post lamp's foot
+RAIL = FEET + 4.5               # the level of the rails: so far over the rock in the master scene
+STOP = (6.0, RAIL, 4.5)         # the signal at "stop": the point on its mast at the level of the rails
+CLEAR = (6.0, RAIL, 10.0)       # the one at "clear"
+WALL = dict(x=2, z=(3, 5), y=(FEET, FEET + 7))          # the stub of wall the wire goes into
+WIRE = ((WALL["x"] + 1.0, RAIL + 0.66, STOP[2] + 0.5), "east")
 
 PAVE = B.TUFF_BRICK.block
 KERB = B.TUFF_SMOOTH.block
@@ -40,22 +44,22 @@ def build():
         for z in range(z0, z1 + 1):
             c.set(x, TOP - 1, z, PAVE)
             c.set(x, TOP, z, KERB if x in (x0, x1) or z in (z0, z1) else PAVE)
+    for z in range(WALL["z"][0], WALL["z"][1] + 1):
+        for y in range(WALL["y"][0], WALL["y"][1] + 1):
+            c.set(WALL["x"], y, z, PAVE)
     for name, model in signals.models().items():
         faults = K.unsettled(model)
         if faults:
             raise ValueError(f"{name}: {len(faults)} faces stand between two axes; run it through _kit.settle")
-    n = signals.signal(c, FOOT, facing=FACING)
-    n += lamps.place(c, "post", LAMP)
+    n = signals.signal(c, STOP, facing="east", wire_to=WIRE)
+    n += signals.signal(c, CLEAR, facing="east", clear=True)
     lit = sky.build(c, (0, 0, 0))   # A2's light sources go in last, when everything that glows is in place
     c.entity_counts = {"props": n, "sky": lit or 0}
     return c
 
 
 def build_models():
-    """The family's models and the post lamp's."""
-    out = dict(lamps.models())
-    out.update(signals.models())
-    return out
+    return dict(signals.models())
 
 
 def write_pack(pack_dir):
@@ -66,21 +70,26 @@ def write_pack(pack_dir):
 
 # ---- the cameras ------------------------------------------------------------------------------------------
 def shots():
-    """The front as the train sees it, in the default light and in the deep night; the back as
-    the platform sees it; the whole signal from the south-east; the lamp and the spectacle from
-    close by."""
+    """Both signals as the train sees them, ten blocks off, in the default light and in the deep
+    night; the two from below; the signal at "stop" from the station's side; then the near shots:
+    its head from the front and from behind, the gear at the level of the rails, and the head of
+    the one at "clear"."""
     out = []
 
     def shot(name, pos, look_at, time=TIME):
         out.append({"name": name, "pos": [round(float(v), 2) for v in pos],
                     "look_at": [round(float(v), 2) for v in look_at], "time": time})
 
-    x, y, z = FOOT
+    x, y, z = STOP
     spindle = y + signals.HEIGHT
-    eye = FEET + S.EYE
-    shot("front", (x + 8.0, eye, z), (x, spindle - 0.5, z + 0.5))
-    shot("front_deep", (x + 8.0, eye, z), (x, spindle - 0.5, z + 0.5), TIME_DEEP)
-    shot("back", (x - 4.0, eye, z - 0.5), (x, spindle - 0.2, z + 0.7))
-    shot("whole", (x + 6.0, eye, z + 5.0), (x, y + 2.6, z + 0.3))
-    shot("head_near", (x + 2.5, spindle - 0.8, z - 1.9), (x, spindle, z - 0.2))
+    mid = (z + CLEAR[2]) / 2.0
+    shot("front", (x + 10.0, y + 1.6, mid), (x, y + 3.0, mid - 0.5))
+    shot("front_deep", (x + 10.0, y + 1.6, mid), (x, y + 3.0, mid - 0.5), TIME_DEEP)
+    shot("whole", (x + 8.0, FEET + 1.6, CLEAR[2] + 3.0), (x, y + 1.5, mid - 1.0))
+    shot("back", (x - 5.0, y + 1.6, z + 3.5), (x, spindle - 0.7, z + 0.1))
+    shot("head_near", (x + 2.5, spindle - 0.3, z + 1.8), (x, spindle, z - 0.2))
+    shot("head_near_deep", (x + 2.5, spindle - 0.3, z + 1.8), (x, spindle, z - 0.2), TIME_DEEP)
+    shot("head_back_near", (x - 2.5, spindle - 0.5, z + 1.4), (x, spindle, z - 0.1))
+    shot("gear_near", (x + 2.3, y + 1.1, z - 1.5), (x + 0.2, y + 0.7, z - 0.1))
+    shot("clear_near", (x + 2.5, spindle - 0.3, CLEAR[2] + 1.8), (x, spindle - 0.2, CLEAR[2] - 0.3))
     return out

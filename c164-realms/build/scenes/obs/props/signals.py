@@ -1,82 +1,134 @@
 """props/signals -- the signalling of the rack railway (plan/round2.md, card props/signals; A0 g2
 11-16 12:12: the train is how the map opens, and where its line comes into the station stands a
-semaphore whose arm falls when the train comes).
+semaphore whose arm falls when the train comes; plan/fine.md: one thing, made fine in three
+layers, before the next is begun).
 
-One motif, the railway's own of the 1880s: a red blade on a slender iron post, an oil lamp behind
-two coloured glasses, white enamel and black figures on what is read from the train.
+One motif, the railway's own of the 1880s: a red blade on a slender iron mast, an oil lamp behind
+a red glass, white enamel and black figures on what is read from the train.
 
-    home signal    a post five blocks high beside the track where it comes on to the platform,
-                   on the left of whoever drives up. Four pieces: the cast foot, the post (drawn
-                   out between foot and head), the head -- the top of the post under a pointed cap
-                   and the lamp on its bracket -- and the arm, which is the only piece that moves.
+The home signal. It stands where the line's owner puts poles and signals (site/_rail: on the left
+of one going out, the side away from the mountain): beside the brow of the incline, HOME["s"]
+along the line and HOME["out"] from its centre, on the rock beside the trestle. For the train
+that climbs it is on the right, at the top of the slope, and it never stands between a passenger
+and the observatory. Ten pieces:
+
+    far (60 blocks)    the mast in two lengths (the shaft from the rock to the level of the
+                       rails, four pixels thick; the mast above it, three), the head and the arm:
+                       a mast, a blade to one side, a lamp to the other. Nothing stands across the
+                       mast and it has no ladder: a bracket against the sky, never a cross (plan
+                       red line 8).
+    middle (10)        the head: a cap with a ball and a spike, the lamp on its shelf and strut
+                       -- an iron case with a brass bezel, a chimney and a cowl --, the spindle,
+                       the guide of the down rod. The arm: the blade with its band, the casting
+                       at its root with two bolts and the boss with its oil cup, the spectacle (a
+                       cast ring with the red glass), the crank. At the level of the rails the
+                       gear: a collar where the mast gets thinner, a clamp with the bracket of the
+                       balance lever, the lever with its cast weight, a brass wheel that turns the
+                       signal wire up to the lever, the number plate. The down rod from the crank
+                       to the lever; the wire from the wheel back to the winch house, where the
+                       man who works the winch works the signal; a wheel on the wall there that
+                       turns the wire down into the ground. The cast foot on the rock.
+    near (2)           the plate's figure; the bolt heads; rust run down the blade's white back
+                       from the casting; oil run down the mast under the spindle; soot on the cowl
+                       and the top of the lamp; the rim of the weight and the lever's end rubbed
+                       bright; the flame in the lamp's back light.
 
 The arm. A blade a block and a half long, red with a white band towards the train, white with a
-black band towards the station; it turns on a spindle through the post, and beyond the spindle it
-carries the spectacle, a cast ring with one red glass. At rest the blade is level (stop) and the
-red glass stands before the lamp: the light is red. For a train the blade falls DROP degrees (the
-lower quadrant), the glass swings up and away, and the lamp shows its own light: until the 1890s
-the light of "all right" was the bare white one, which here is the amber every lamp of the hill
-has -- so the signal brings no new colour of light, and red stays what it is everywhere else, a
-warning. The blade is on one side of the post only and nothing stands across it: seen against the
-sky the signal is a bracket, never a cross (plan red line 8), and it has no ladder.
+black band towards the station; it turns on a spindle through the mast, and beyond the spindle it
+carries the spectacle. At rest the blade is level (stop) and the red glass stands before the lamp:
+the light is red. For a train the blade falls DROP degrees (the lower quadrant), the glass swings
+up and away, and the lamp shows its own light: until the 1890s the light of "all right" was the
+bare white one, which here is the amber every lamp of the hill has -- so the signal brings no new
+colour of light, and red stays what it is everywhere else, a warning.
 
-The lamp burns oil: a small iron case with a chimney, its lens behind the spectacle and a small
-back light towards the station, by which the signalman sees that it burns. The glass is lit only
-where the lamp stands behind it, so the arm has two models: MODEL_STOP with the lit glass, and
-MODEL_CLEAR with the same glass dark.
+The lamp burns oil, the one flame among the hill's electric lamps: its lens shimmers, the red
+glass before it with it, and in the small back light towards the station, by which the man in the
+winch house sees that it burns, the flame itself stands and leans (moving pictures, artkit
+pixelart.Frames: no command, no entity). The glass is lit only where the lamp stands behind it, so
+the arm has two models: MODEL_STOP with the lit glass, MODEL_CLEAR with the same glass dark.
 
-Moving pieces, for motion. The arm's entity is tagged TAG_ARM. It is placed at "stop". pose(clear)
-is what one `data merge` gives it for either position: the whole "transformation" (the anchor is
-the spindle, not the middle of the model, so the translation changes with the turn) and the item
-with the model of that position. The train does not come round in a cycle: every trip is started
-by itself (motion/_train), and the two poses are hung on the trip. Until that is in the tree the
-arm stands at stop.
+Moving pieces, for motion. The arm's entity is tagged TAG_ARM, the balance lever's TAG_WEIGHT.
+Both are placed at "stop". pose(clear) and weight_pose(clear) are what one `data merge` gives
+each for either position: the whole "transformation" (the anchors are the spindle and the lever's
+pin, not the middles of the models, so the translation changes with the turn), and for the arm
+the item with the model of that position. When the arm falls the crank pushes the rod down, the
+rod the lever's short end, and the weight rises LIFT degrees; let go, the weight brings the arm
+back to stop. The train does not come round in a cycle: every trip is started by itself
+(motion/travel), and the poses are hung on the trip. Until that is in the tree the arm stands at
+stop.
 
 For the other lines:
 
     from scenes.obs.props import signals
-    n += signals.signal(canvas, (x, y, z), facing="east", origin=origin)   # the foot; facing: towards the train
+    n += signals.signal(canvas, (x, y, z), yaw=point.yaw, origin=origin)
 
-build() stands the home signal at the cable station (site/cablecar), in the railed bay south of
-the track at the platform's east edge, facing down the line. Mounting and materials are _kit's.
-The test scene is build/scenes/obs_props_signals.
+(x, y, z) is the point on the mast's axis at the level of the rails; yaw is the way the front
+looks, towards the train the signal speaks to (site/_rail: Point.yaw of one going out). build()
+stands the home signal. Mounting and materials are _kit's. The test scene is
+build/scenes/obs_props_signals.
 """
 import functools
 import math
 
 from artkit import models as M
+from artkit import pixelart
 
 from ..common import palette as P
 from . import _kit as K
-from .signs import _picture
+from .signs import _picture, _plate_face
 
 PREFIX = "prop_signal_"
 DRESS = True                    # build() stands the home signal in the master scene
-VIEW = M.MID                    # seen from the platform and from the train on the last of its climb
 
-IRON, IRON_D = K.IRON, K.IRON_D
-POST = K.flat("iron", 3)        # the post: one tone, so drawing it out smears nothing
+# How far the pieces are drawn (the bands of artkit.models): the mast, the head and the arm are
+# seen from the platform and from the train on the last of its climb; what hangs on the mast is
+# small detail.
+VIEW_FAR, VIEW_NEAR = M.MID, M.NEAR
+
+IRON, IRON_D, BRASS_D = K.IRON, K.IRON_D, K.BRASS_D
+POST = K.flat("iron", 3)        # mast and shaft: one tone, so drawing them out smears nothing
 EDGE = K.flat("iron", 1)        # the edge of a sheet
+SOOT = K.flat("iron", 0)        # soot and oil; the wire
+WORN = K.flat("iron", 5)        # iron rubbed bright
 SG = P.RAMPS["signal"]
 CR = P.RAMPS["cream"]
 IR = P.RAMPS["iron"]
-RED_LIT = (K.flat("signal_glow", 2), K.flat("signal_glow", 3))   # the lit glass: its field, its middle
+GL = P.RAMPS["glow"]
+RUST = P.RAMPS["old_copper"]
 
-# Measures in pixels (16 to the block), from the spindle: x to the right of whoever looks at the
-# signal's front, y up, z towards him.
-POST_R = 1.25                   # the post is two and a half pixels thick
+# Measures in pixels (16 to the block): x to the right of whoever looks at the signal's front, y
+# up, z towards him. The signal stands on the right of its track for the train it speaks to, so
+# the track is on -x: the lamp is on that side, the blade and the balance weight on the other.
+MAST_R = 1.5                    # the mast, from the gear up: three pixels thick
+SHAFT_R = 2.0                   # the shaft, from the foot to the gear: four
 BLADE = 23                      # the painted blade, from its tip to the casting at its root
 ROOT = 3                        # the casting at the root reaches this far either side of the spindle
 BLADE_H = 4
 BAND = (3, 5)                   # the band across the blade: its pixels, counted from the tip
-SHEET = (2.5, 3.0)              # the blade is a sheet this far before the post's axis
-LENS = (5.5, 0.5)               # the lamp's axis: right of the spindle and half a pixel over it
-STUB = 4.0                      # the head carries the post this far down from the spindle
+SHEET = (2.25, 2.75)            # the blade is a sheet this far before the mast's axis
+LENS = (-5.5, 0.5)              # the lamp's axis: left of the spindle and half a pixel over it
+CASE = 2.5                      # the lamp's case reaches this far from its axis: a cube of five
+CRANK = (3.0, -1.5)             # the pin on the arm's casting that the down rod hangs on
+ROD = (3.0, 1.5)                # the down rod: x and z of its axis, from the mast's
+PIVOT = (7.0, 4.5)              # the balance lever's pin: x and y from the gear's anchor
+SHORT = PIVOT[0] - ROD[0]       # 4: the lever's short arm, from the pin to the rod's eye
+CAP = 5.0                       # the mast ends this far over the spindle, under its cap
 DROP = 45.0                     # degrees the arm falls from "stop" to "clear"
-HEIGHT = 5.0                    # blocks from the foot to the spindle
-TAG_ARM = "c164_signal_arm"
-MODEL_STOP, MODEL_CLEAR = PREFIX + "arm", PREFIX + "arm_clear"
+LIFT = 25.0                     # degrees the balance lever turns with it (the crank goes down 1.7 pixels)
 SWING = 16                      # ticks the arm takes from one position to the other
+HEIGHT = 5.0                    # blocks from the rails to the spindle
+GEAR_UP = 0.75                  # blocks from the rails to the collar, the gear's anchor
+NUMBER = "73"                   # the figures on the plate: the signal is No. 73 of the hill (A6, plan/parts/numbers.md)
+TAG_ARM, TAG_WEIGHT = "c164_signal_arm", "c164_signal_weight"
+MODEL_STOP, MODEL_CLEAR = PREFIX + "arm", PREFIX + "arm_clear"
+
+# Where the home signal stands, for site/_rail: so far along the line from the buffers and so far
+# to the left of its centre for one going out (A4, 11-16: beside the brow, where the platform
+# sees it; the lamp's case, the nearest thing to the track, then lies 2 blocks from the centre
+# line, outside the three rows the train needs). The wire's far end: the middle of the wheel's
+# plate on the east face of the winch house, at its south corner (site/cablecar).
+HOME = dict(s=8.0, out=2.5)
+WIRE_UP = 0.25                  # the wall wheel's plate: its middle over the platform's paving
 
 # The spectacle, as the train sees it: i the cast ring, R the red glass, three pixels square, on
 # the lamp's axis while the blade is level.
@@ -85,18 +137,17 @@ _SPECTACLE = (".iii.",
               "iRRRi",
               "iRRRi",
               ".iii.")
-SPECTACLE_AT = (LENS[0] - 2.5, LENS[1] + 2.5)   # its upper left corner, seen from the front
 
 
-# ---- the models -----------------------------------------------------------------------------------------
+# ---- the pictures ---------------------------------------------------------------------------------------
 def _blade_face(front):
     """One face of the blade with the casting at its root, as whoever looks at that face sees it:
-    the front red with a white band, the back white with a black one. From the front the tip is
-    on the left, from the back on the right."""
+    the front red with a white band, the back white with a black one and the rust that has run
+    from the casting's bolts. From the front the tip is on the right, from the back on the left."""
     w = BLADE + 2 * ROOT
     grid = [[None] * w for _ in range(BLADE_H)]
     for c in range(w):
-        tip = c if front else w - 1 - c                 # pixels from the tip
+        tip = w - 1 - c if front else c                 # pixels from the tip
         for r in range(BLADE_H):
             low = r == BLADE_H - 1
             if tip >= BLADE:
@@ -107,6 +158,11 @@ def _blade_face(front):
                 grid[r][c] = SG[1] if r else SG[2]
             else:
                 grid[r][c] = CR[1] if low else CR[2]
+    for r, tip in ((1, BLADE + 1), (2, BLADE + 4)):     # the two bolts through the casting
+        grid[r][w - 1 - tip if front else tip] = IR[5]
+    if not front:
+        for r, tip, tone in ((2, BLADE - 1, RUST[1]), (3, BLADE - 1, RUST[0]), (3, BLADE - 2, RUST[2])):
+            grid[r][tip] = tone
     return grid
 
 
@@ -118,78 +174,223 @@ def _spectacle_face(front):
     return grid if front else [row[::-1] for row in grid]
 
 
+def _lit(name, grid, ramp, share):
+    """A small lit picture that shimmers with the lamp's flame: its pixels go a step up or down
+    `ramp` now and then. The first frame is the picture itself."""
+    return pixelart.shimmer(name, _picture(name + "_still", grid).paint(len(grid[0]), len(grid)), ramp,
+                            frames=6, frametime=3, share=share)
+
+
+def _red_light():
+    """The red glass with the lamp behind it."""
+    return _lit("signal_red_light", [[SG[1], SG[2], SG[1]], [SG[2], SG[3], SG[2]], [SG[1], SG[2], SG[1]]], SG, 0.4)
+
+
+def _lens():
+    """The lamp's lens: an oil flame behind a bull's eye, more orange than a filament and never
+    lighter than the middle of the glow ramp (the review's cap on a lamp's glass, #78243)."""
+    return _lit("signal_lens", [[GL[0], GL[1], GL[0]], [GL[1], GL[2], GL[1]], [GL[0], GL[1], GL[0]]], GL[:3], 0.5)
+
+
+def _case_side():
+    """A side of the lamp's case: the door with its two hinges and its latch, three air holes
+    under the top."""
+    grid = [[IR[2]] * 5 for _ in range(5)]
+    grid[0] = [IR[1]] * 5
+    for c in (1, 2, 3):
+        grid[1][c] = IR[0]
+    grid[2][0] = grid[4][0] = IR[4]
+    grid[3][4] = IR[5]
+    return grid
+
+
+def _case_back():
+    """The back of the lamp's case: the dark opening of the back light, a rivet in each corner."""
+    grid = [[IR[2]] * 5 for _ in range(5)]
+    for r in (1, 2, 3):
+        for c in (1, 2, 3):
+            grid[r][c] = IR[0]
+    for r, c in ((0, 0), (0, 4), (4, 0), (4, 4)):
+        grid[r][c] = IR[4]
+    return grid
+
+
+# ---- the models -----------------------------------------------------------------------------------------
 def _arm(name, lit):
-    """The arm: the blade, the casting at its root with the boss of the spindle, and the
-    spectacle beyond it; `lit` with the lamp's light in the glass (the blade level), or dark.
-    Anchor: the spindle, on the post's axis; the blade lies along -x."""
+    """The arm: the blade, the casting at its root with the boss of the spindle and its oil cup,
+    the crank behind it, and the spectacle beyond the spindle; `lit` with the lamp's light in the
+    glass (the blade level), or dark. Anchor: the spindle, on the mast's axis; the blade lies
+    along +x."""
     m = M.Model(name, px=1.0)
     z0, z1 = SHEET
-    m.box((-(BLADE + ROOT), -BLADE_H / 2.0, z0), (ROOT, BLADE_H / 2.0, z1), EDGE,
+    m.box((-ROOT, -BLADE_H / 2.0, z0), (BLADE + ROOT, BLADE_H / 2.0, z1), EDGE,
           faces={"s": _picture("signal_blade_front", _blade_face(True)),
                  "n": _picture("signal_blade_back", _blade_face(False))})
-    x, y = SPECTACLE_AT
-    w, h = len(_SPECTACLE[0]), len(_SPECTACLE)
-    m.box((x, y - h, z0 + 0.05), (x + w, y, z1 + 0.05), EDGE, skip="ewud",
+    lx, ly = LENS
+    m.box((lx - CASE, ly - CASE, z0 + 0.05), (lx + CASE, ly + CASE, z1 + 0.05), EDGE, skip="ewud",
           faces={"s": _picture("signal_spectacle_front", _spectacle_face(True)),
                  "n": _picture("signal_spectacle_back", _spectacle_face(False))})
     if lit:
-        lx, ly = LENS
-        field, middle = RED_LIT
-        m.box((lx - 1.5, ly - 1.5, z1 + 0.05), (lx + 1.5, ly + 1.5, z1 + 0.2), field,
-              skip="n", emit=15, shade=False)
-        m.box((lx - 0.5, ly - 0.5, z1 + 0.2), (lx + 0.5, ly + 0.5, z1 + 0.3), middle,
-              skip="n", emit=15, shade=False)
-    m.tube("z", (0.0, 0.0), z0 - 0.5, z1 + 0.6, 1.5, IRON_D)                # the boss on the spindle
+        m.box((lx - 1.5, ly - 1.5, z1 + 0.05), (lx + 1.5, ly + 1.5, z1 + 0.15), K.flat("signal_glow", 2),
+              faces={"s": _red_light()}, skip="newud", emit=15, shade=False)
+    m.tube("z", (0.0, 0.0), z0 - 0.5, z1 + 0.75, 1.5, IRON_D)               # the boss on the spindle
+    m.tube("z", (0.0, 0.0), z1 + 0.75, z1 + 1.25, 0.75, WORN, sides=4)      # its nut
+    m.tube("y", (0.0, z1 + 0.25), 1.5, 2.5, 0.5, BRASS_D, sides=4)          # the oil cup
+    cx, cy = CRANK
+    m.box((cx - 1.0, cy - 1.0, z0 - 0.75), (cx + 1.0, cy + 1.0, z0), IRON_D)        # the crank's lug
+    m.tube("z", CRANK, ROD[1] - 0.5, z0 - 0.75, 0.5, IRON, sides=4)         # its pin, through the rod's eye
     return m
 
 
 def _head():
-    """The head: the top of the post under a pointed cap, the spindle through it, and on a
-    bracket beside it the lamp -- an iron case with a chimney and a cowl, the lens towards the
-    train behind the spectacle, a small back light towards the station. Anchor: the spindle."""
+    """The head, what the mast carries at its top: the cap with a ball and a spike, the spindle
+    through the mast, and on a shelf beside it the lamp -- an iron case, a cube of five pixels,
+    with a brass bezel round the lens towards the train, a back light towards the station in
+    which the flame is seen, a chimney and a cowl black with soot -- and under the spindle the
+    guide of the down rod and the oil that has run from the bearing. The mast itself is not in
+    the model (it is drawn out through it). Anchor: the spindle, on the mast's axis."""
     m = M.Model(PREFIX + "head", px=1.0)
-    m.tube("y", (0.0, 0.0), -STUB, 5.0, POST_R, POST)                       # the top of the post
-    m.taper("y", (0.0, 0.0), 5.0, 7.5, 2.0, 0.5, IRON_D, steps=3)           # its cap
-    m.tube("z", (0.0, 0.0), -2.0, SHEET[0] - 0.5, 0.75, IRON_D)             # the spindle
+    m.tube("y", (0.0, 0.0), CAP - 0.5, CAP + 1.0, 2.25, IRON_D)             # the cap's moulding
+    m.taper("y", (0.0, 0.0), CAP + 1.0, CAP + 3.0, 2.0, 1.0, IRON, steps=2)
+    m.ball((0.0, CAP + 4.25, 0.0), 1.25, IRON_D, sides=8, layers=4)         # the ball
+    m.taper("y", (0.0, 0.0), CAP + 5.5, CAP + 9.0, 0.6, 0.2, IRON, sides=4, steps=2)        # the spike
+    m.tube("z", (0.0, 0.0), -2.5, SHEET[0] - 0.5, 0.75, IRON_D)             # the spindle
+    m.tube("z", (0.0, 0.0), -3.0, -2.5, 1.25, IRON)                         # its collar at the back
+    m.box((-0.5, -7.0, MAST_R), (0.5, -2.0, MAST_R + 0.05), SOOT, skip="newud")     # oil from the bearing
     lx, ly = LENS
-    m.box((POST_R - 0.25, ly - 2.5, -1.5), (lx - 2.0, ly - 1.5, -0.5), IRON)        # the bracket
-    m.box((lx - 2.0, ly - 2.5, -2.5), (lx + 2.0, ly + 2.5, 1.5), IRON_D, grain="y")  # the case
-    K.glass_prism(m, "z", LENS, 1.5, 2.25, 1.25, K.GLOW_MID)                # the lens
-    K.glass_prism(m, "z", LENS, -3.0, -2.5, 0.75, K.GLOW_DIM)               # the back light
-    m.tube("y", (lx, -0.5), ly + 2.5, ly + 3.5, 1.0, IRON)                  # the chimney
-    m.taper("y", (lx, -0.5), ly + 3.5, ly + 4.5, 1.75, 0.75, IRON_D, steps=2)        # its cowl
+    x0, x1, y0, y1 = lx - CASE, lx + CASE, ly - CASE, ly + CASE             # the case: x -8..-3, y -2..3
+    z0, z1 = -3.5, 1.5
+    m.tube("y", (0.0, 0.0), y0 - 2.0, y0, 2.0, IRON_D)                      # the clamp of the shelf
+    m.box((x0 - 0.5, y0 - 1.0, z0 - 0.25), (-1.0, y0, z1 + 0.25), IRON)     # the shelf
+    m.tube("y", (0.0, 0.0), y0 - 9.5, y0 - 8.0, 2.0, IRON_D)                # the clamp of its strut
+    m.beam((-1.25, y0 - 8.75, -1.0), (x0 + 1.5, y0 - 1.0, -1.0), 0.75, 1.0, IRON_D)        # the strut
+    side = _picture("signal_case_side", _case_side())
+    m.box((x0, y0, z0), (x1, y1, z1), IRON_D,
+          faces={"w": side, "e": side, "n": _picture("signal_case_back", _case_back()), "u": SOOT})
+    m.box((lx - 2.0, ly - 2.0, z1), (lx + 2.0, ly + 2.0, z1 + 0.5), BRASS_D)        # the bezel
+    m.box((lx - 1.5, ly - 1.5, z1 + 0.5), (lx + 1.5, ly + 1.5, z1 + 0.7), K.GLOW_DIM,
+          faces={"s": _lens()}, skip="newud", emit=15, shade=False)
+    flame = pixelart.flame("signal_flame", (GL[0], GL[1], GL[2]), 3, 3, frames=8, frametime=2)
+    m.box((lx - 1.5, ly - 1.5, z0 - 0.05), (lx + 1.5, ly + 1.5, z0), K.GLOW_DIM,
+          faces={"n": flame}, skip="sewud", emit=15, shade=False)
+    m.tube("y", (lx, -1.0), y1, y1 + 1.5, 1.0, IRON)                        # the chimney
+    m.taper("y", (lx, -1.0), y1 + 1.5, y1 + 2.5, 1.75, 0.75, SOOT, steps=2)         # its cowl
+    m.ring("x", (lx, y1 + 3.0, -1.0), 1.0, 0.5, 0.5, IRON, sides=8, arc=(0.0, 180.0))       # the handle
+    rx, rz = ROD
+    m.box((MAST_R - 0.25, -16.0, rz - 0.75), (rx + 0.75, -15.0, rz + 0.75), IRON_D)         # the rod's guide
     return m
 
 
-def _post():
-    """The post between foot and head: runs along +z from the anchor, 48 long, in one flat tone,
-    and is drawn out to the length wanted (models.between)."""
-    m = M.Model(PREFIX + "post", px=1.0)
-    m.tube("z", (0.0, 0.0), 0.0, 48.0, POST_R, POST)
+def _gear():
+    """The gear, at the level of the rails: the collar where the shaft becomes the mast, the
+    clamp with the two cheeks that carry the balance lever's pin, the brass wheel that turns the
+    signal wire up to the lever, the wire's last length, and under the collar the number plate.
+    Neither mast nor shaft is in the model. Anchor: the collar's upper edge, on the mast's axis."""
+    m = M.Model(PREFIX + "gear", px=1.0)
+    m.tube("y", (0.0, 0.0), -1.0, 0.0, 2.75, IRON_D)                        # the collar
+    m.tube("y", (0.0, 0.0), 0.0, 1.0, 2.25, IRON)
+    px, py = PIVOT
+    m.tube("y", (0.0, 0.0), py - 1.5, py + 1.5, 2.25, IRON_D)               # the clamp
+    for z0, z1 in ((-1.0, -0.25), (0.25, 1.0)):                             # its cheeks
+        m.box((1.25, py - 1.0, z0), (px + 1.0, py + 1.0, z1), IRON)
+    m.tube("z", PIVOT, -1.5, 1.5, 0.5, WORN, sides=4)                       # the pin
+    rx = ROD[0]
+    m.tube("x", (1.5, -1.5), rx - 0.5, rx + 0.5, 1.5, BRASS_D)              # the wire's wheel
+    m.tube("x", (1.5, -1.5), rx - 1.0, rx + 1.25, 0.4, IRON_D, sides=4)     # its axle
+    m.box((rx + 0.75, 1.0, -2.0), (rx + 1.25, py - 1.0, -1.0), IRON)        # the strap it hangs in
+    m.box((rx - 0.25, 1.5, -0.25), (rx + 0.25, py, 0.25), SOOT)             # the wire, up to the lever
+    grid = _plate_face(NUMBER, "white")
+    w, h = len(grid[0]), len(grid)
+    m.box((-w / 2.0, -4.0 - h, SHAFT_R), (w / 2.0, -4.0, SHAFT_R + 0.5), K.flat("cream", 1),
+          faces={"s": _picture("signal_plate", grid)}, skip="n")
+    m.tube("y", (0.0, 0.0), -4.5 - h, -3.5 - h, 2.5, IRON_D)                # the band the plate hangs on
     return m
+
+
+def _weight():
+    """The balance lever: a flat bar on its pin, the eye of the down rod and of the wire at its
+    short end, a cast weight on the long one, its rim and its set screw rubbed bright. Anchor:
+    the pin; the weight lies along +x."""
+    m = M.Model(PREFIX + "weight", px=1.0)
+    m.box((-SHORT - 0.5, -0.75, -0.25), (8.5, 0.75, 0.25), IRON)
+    m.tube("z", (-SHORT, 0.0), -0.5, ROD[1] + 0.5, 0.5, IRON_D, sides=4)    # the eye's pin
+    m.tube("z", (7.0, 0.0), -1.25, 1.25, 2.5, IRON_D)                       # the weight
+    m.tube("z", (7.0, 0.0), -1.5, 1.5, 1.0, WORN)                           # its hub
+    m.box((6.5, 2.5, -0.5), (7.5, 3.25, 0.5), WORN)                         # the set screw
+    return m
+
+
+def _long(name, radius):
+    """A length of mast: runs along +y from the anchor, 48 long, in one flat tone, and is drawn
+    out to the length wanted."""
+    m = M.Model(PREFIX + name, px=1.0)
+    m.tube("y", (0.0, 0.0), 0.0, 48.0, radius, POST)
+    return m
+
+
+def _rod():
+    """The down rod: half a pixel square, along +y from the anchor, 48 long; drawn out."""
+    m = M.Model(PREFIX + "rod", px=1.0)
+    m.box((-0.25, 0.0, -0.25), (0.25, 48.0, 0.25), EDGE)
+    return m
+
+
+def _wire():
+    """The signal wire: runs along +z from the anchor, 48 long; drawn out (models.between)."""
+    m = M.Model(PREFIX + "wire", px=1.0)
+    m.box((-0.2, -0.2, 0.0), (0.2, 0.2, 48.0), SOOT)
+    return m
+
+
+def _wire_end():
+    """Where the wire goes into the house: a plate bolted to the wall, a fork, a brass wheel over
+    which the wire turns down, and the wire down into the ground. Anchor: the middle of the
+    plate's back, on the wall; the wire comes in at the wheel's top, WHEEL_TOP."""
+    m = M.Model(PREFIX + "wire_end", px=1.0)
+    m.box((-2.5, -3.0, 0.0), (2.5, 3.0, 0.75), IRON, grain="y")
+    for x in (-1.75, 1.75):
+        for y in (-2.25, 2.25):
+            K.rivet(m, (x, y, 0.75), out="z")
+    for x0, x1 in ((-1.5, -0.75), (0.75, 1.5)):
+        m.box((x0, -0.5, 0.75), (x1, 0.5, 3.75), IRON_D)
+    m.tube("x", (0.0, 2.75), -0.75, 0.75, 1.75, BRASS_D)
+    m.tube("x", (0.0, 2.75), -1.75, 1.75, 0.4, WORN, sides=4)
+    m.box((-0.2, -8.0, 0.8), (0.2, 0.0, 1.2), SOOT)
+    return m
+
+
+WHEEL_TOP = (0.0, 1.75, 2.75)   # on the wall wheel, where the wire comes in: pixels from the plate's anchor
 
 
 def _foot():
-    """The foot: a cast-iron shoe bolted to the paving, the post standing in its socket. Anchor:
-    the middle of its foot; it is one block high."""
+    """The foot: a cast base bolted to the rock, a plinth and a moulded socket round the shaft
+    (which is drawn out through it). Anchor: the middle of its underside; it is a block high."""
     m = M.Model(PREFIX + "foot", px=1.0)
-    m.box((-3.5, 0.0, -3.5), (3.5, 1.5, 3.5), IRON, grain="x")
-    for x in (-2.5, 2.5):
-        for z in (-2.5, 2.5):
+    m.box((-5.0, 0.0, -5.0), (5.0, 1.5, 5.0), IRON_D, grain="x")
+    for x in (-3.75, 3.75):
+        for z in (-3.75, 3.75):
             K.rivet(m, (x, 1.5, z), out="y")
-    m.taper("y", (0.0, 0.0), 1.5, 8.0, 2.75, 1.75, IRON_D, steps=3)
-    m.tube("y", (0.0, 0.0), 8.0, 9.0, 2.25, IRON)
-    m.tube("y", (0.0, 0.0), 9.0, 16.0, POST_R, POST)
+    m.tube("y", (0.0, 0.0), 1.5, 5.0, 3.75, IRON)
+    m.tube("y", (0.0, 0.0), 5.0, 6.0, 4.25, IRON_D)
+    m.taper("y", (0.0, 0.0), 6.0, 12.0, 3.75, 2.75, IRON, steps=3)
+    m.tube("y", (0.0, 0.0), 12.0, 13.0, 3.25, IRON_D)
+    m.tube("y", (0.0, 0.0), 13.0, 16.0, 2.5, IRON)
     return m
 
 
 # ---- models and placing ---------------------------------------------------------------------------------
 SPEC = {
-    "foot": dict(build=_foot, mount="floor"),
-    "post": dict(build=_post, mount="floor"),
-    "head": dict(build=_head, mount="floor"),
-    "arm": dict(build=lambda: _arm(MODEL_STOP, True), mount="floor"),
-    "arm_clear": dict(build=lambda: _arm(MODEL_CLEAR, False), mount="floor"),
+    "foot": dict(build=_foot),
+    "shaft": dict(build=lambda: _long("shaft", SHAFT_R)),
+    "gear": dict(build=_gear),
+    "weight": dict(build=_weight),
+    "mast": dict(build=lambda: _long("mast", MAST_R)),
+    "rod": dict(build=_rod),
+    "head": dict(build=_head),
+    "arm": dict(build=lambda: _arm(MODEL_STOP, True)),
+    "arm_clear": dict(build=lambda: _arm(MODEL_CLEAR, False)),
+    "wire": dict(build=_wire),
+    "wire_end": dict(build=_wire_end),
 }
 SCALE = {PREFIX + kind: 1.0 for kind in SPEC}
 
@@ -208,57 +409,119 @@ def pose(clear=False):
     "stop" (the default, the pose it is placed in): the blade level, the glass lit. "clear": the
     blade DROP degrees down, the glass dark and away from the lamp."""
     model = _models()[MODEL_CLEAR if clear else MODEL_STOP]
-    nbt = M.display(model, turns=(("z", DROP if clear else 0.0),))
+    nbt = M.display(model, turns=(("z", -DROP if clear else 0.0),))
     return {"transformation": nbt["transformation"], "item": nbt["item"]}
 
 
-def signal(canvas, foot, facing="east", height=HEIGHT, origin=(0, 0, 0), view=VIEW):
-    """Stand a semaphore signal at `foot` (the middle of its foot on the ground, scene
-    coordinates), the spindle `height` blocks over it. `facing` is the way its front looks:
-    towards the train it speaks to. The blade lies to the left of the post for that train and the
-    lamp to the right, so the signal stands on the left of its track. It is placed at "stop".
-    Returns the number of display entities (four: foot, post, head, arm)."""
-    if height < 2.0:
-        raise ValueError(f"a signal's spindle is at least 2 blocks over its foot, not {height:g}")
+def weight_pose(clear=False):
+    """What the balance lever's entity is given for a position: dict(transformation). At "clear"
+    the weight is LIFT degrees up."""
+    nbt = M.display(_models()[PREFIX + "weight"], turns=(("z", LIFT if clear else 0.0),))
+    return {"transformation": nbt["transformation"]}
+
+
+def _drawn(canvas, model, foot, length, yaw, view):
+    """One entity of a model that runs 48 along +y, drawn out to `length` blocks from `foot`."""
+    canvas.add_entity(foot[0], foot[1], foot[2],
+                      M.display(model, yaw=yaw, scale=(1.0, length * 16.0 / 48.0, 1.0), view=view))
+    return 1
+
+
+def signal(canvas, at, facing="east", yaw=None, ground=None, height=HEIGHT, wire_to=None, clear=False,
+           origin=(0, 0, 0)):
+    """Stand a semaphore signal. `at` is the point on its mast's axis at the level of the rails
+    (scene coordinates). `yaw` (or `facing`) is the way its front looks: towards the train it
+    speaks to; the blade lies to the right of the mast for that train and the lamp to the left,
+    so the signal stands on the right of its track. `ground` is the y its foot stands on (found
+    on the canvas under `at` when not given: the first block down). The spindle is `height`
+    blocks over the rails. `wire_to` is the point on a wall where the signal wire goes in, the
+    middle of the wall wheel's plate, with the way that wall looks: ((x, y, z), facing); None
+    hangs no wire. It is placed at "stop"; clear=True places it at "clear" (for a picture).
+    Returns the number of display entities (eight, ten with the wire)."""
+    if height < GEAR_UP + 3.0:
+        raise ValueError(f"a signal's spindle is at least {GEAR_UP + 3.0:g} blocks over the rails, not {height:g}")
     built = _models()
-    yaw = K.FACING[facing]
-    x, y, z = (foot[i] + origin[i] for i in range(3))
-    spindle = (foot[0], foot[1] + height, foot[2])
-    n = K.put(canvas, built[PREFIX + "foot"], foot, yaw=yaw, origin=origin, view=view)
-    lower, upper = y + 1.0, y + height - STUB / 16.0
-    canvas.add_entity(x, lower, z, M.between(built[PREFIX + "post"], (x, lower, z), (x, upper, z), view=view))
-    n += 1 + K.put(canvas, built[PREFIX + "head"], spindle, yaw=yaw, origin=origin, view=view)
-    n += K.put(canvas, built[MODEL_STOP], spindle, yaw=yaw, origin=origin, view=view)
+    yaw = K.FACING[facing] if yaw is None else yaw
+    x, y, z = (at[i] + origin[i] for i in range(3))
+    if ground is None:
+        cell = [int(math.floor(x)), int(math.floor(y + 1e-6)), int(math.floor(z))]
+        while cell[1] > y - 64 and not canvas.has(*cell):
+            cell[1] -= 1
+        if not canvas.has(*cell):
+            raise ValueError(f"no ground under the signal at ({x:g}, {y:g}, {z:g})")
+        ground = cell[1] + 1.0
+    else:
+        ground = ground + origin[1]
+    collar, spindle, top = y + GEAR_UP, y + height, y + height + CAP / 16.0
+    put = functools.partial(K.put, canvas, yaw=yaw)
+    n = put(built[PREFIX + "foot"], (x, ground, z), view=VIEW_NEAR)
+    n += _drawn(canvas, built[PREFIX + "shaft"], (x, ground, z), collar - ground, yaw, VIEW_FAR)
+    n += _drawn(canvas, built[PREFIX + "mast"], (x, collar, z), top - collar, yaw, VIEW_FAR)
+    n += put(built[PREFIX + "gear"], (x, collar, z), view=VIEW_NEAR)
+    px, py = PIVOT
+    dx, dy, dz = K.turn(yaw, (px / 16.0, py / 16.0, 0.0))
+    n += put(built[PREFIX + "weight"], (x + dx, collar + dy, z + dz), view=VIEW_NEAR,
+             turns=(("z", LIFT if clear else 0.0),))
+    canvas.entities[-1][3]["Tags"].append(TAG_WEIGHT)
+    dx, _, dz = K.turn(yaw, (ROD[0] / 16.0, 0.0, ROD[1] / 16.0))            # the rod: lever's eye to crank
+    low, high = collar + py / 16.0, spindle + CRANK[1] / 16.0 - 0.5 / 16.0
+    n += _drawn(canvas, built[PREFIX + "rod"], (x + dx, low, z + dz), high - low, yaw, VIEW_NEAR)
+    n += put(built[PREFIX + "head"], (x, spindle, z), view=VIEW_FAR)
+    n += put(built[MODEL_CLEAR if clear else MODEL_STOP], (x, spindle, z), view=VIEW_FAR,
+             turns=(("z", -DROP if clear else 0.0),))
     canvas.entities[-1][3]["Tags"].append(TAG_ARM)
+    if wire_to is not None:
+        (wx, wy, wz), wall = wire_to
+        wx, wy, wz = wx + origin[0], wy + origin[1], wz + origin[2]
+        n += K.put(canvas, built[PREFIX + "wire_end"], (wx, wy, wz), mount="wall", facing=wall, view=VIEW_NEAR)
+        ex, ey, ez = K.turn(K.FACING[wall], tuple(v / 16.0 for v in WHEEL_TOP))
+        a = (wx + ex, wy + ey, wz + ez)
+        dx, dy, dz = K.turn(yaw, (ROD[0] / 16.0, 0.0, -3.0 / 16.0))         # under the wheel on the mast
+        b = (x + dx, collar + dy, z + dz)
+        canvas.add_entity(a[0], a[1], a[2], M.between(built[PREFIX + "wire"], a, b, view=VIEW_NEAR))
+        n += 1
     return n
 
 
 def _home():
-    """Where the home signal stands: dict(foot, facing), read off site/cablecar -- the cell of the
-    railed bay in the platform's east row, next to the canopy's south girder, three cells south
-    of the track's axis; it faces east, down the line -- or None while that package is not in the
-    tree."""
+    """Where the home signal stands: dict(at, yaw, wire_to), read off site/_rail (the line) and
+    site/cablecar (the winch house, where the wire goes in), or None while the line is not in
+    the tree."""
     try:
-        from ..site import cablecar
+        from ..site import _rail
     except ImportError:
         return None
+    point = _rail.at(HOME["s"])
+    seat = dict(at=point.off(-HOME["out"]), yaw=point.yaw, wire_to=None)
     try:
-        east, girder, feet = cablecar.X1, cablecar.GIRDER_Z, cablecar.FEET
-    except AttributeError:
-        return None
-    return dict(foot=(east - 0.5, float(feet), girder + 1.5), facing="east")
+        from ..site import cablecar
+        box, feet = cablecar.WINCH, cablecar.FEET
+    except (ImportError, AttributeError):
+        return seat
+    seat["wire_to"] = ((box[2] + 1.0, feet + WIRE_UP, box[3] + 0.5), "east")
+    return seat
 
 
 def build(canvas, origin=(0, 0, 0)):
-    """What signals place in the master scene: the home signal at the cable station. Nothing is
-    stood where the platform's paving is not on the canvas or the cell over it is taken by
-    anything but a light source."""
+    """What signals place in the master scene: the home signal beside the brow of the incline.
+    Nothing is stood while the line is not in the tree or there is no rock under the place; the
+    wire is hung only where the wall it goes into stands on the canvas."""
     if not DRESS:
         return 0
     seat = _home()
     if seat is None:
         return 0
-    x, y, z = (int(math.floor(seat["foot"][i] + origin[i] + 1e-6)) for i in range(3))
-    if not canvas.has(x, y - 1, z) or canvas.name(x, y, z) not in (None, "light"):
+    x, y, z = (seat["at"][i] + origin[i] for i in range(3))
+    cell = [int(math.floor(x)), int(math.floor(y + 1e-6)), int(math.floor(z))]
+    if canvas.has(*cell):
+        return 0                # something is built where the mast would pass the rails
+    while cell[1] > y - 16 and not canvas.has(*cell):
+        cell[1] -= 1
+    if not canvas.has(*cell):
         return 0
-    return signal(canvas, seat["foot"], facing=seat["facing"], origin=origin)
+    wire = seat["wire_to"]
+    if wire is not None:
+        wx, wy, wz = (wire[0][i] + origin[i] for i in range(3))
+        if not canvas.has(int(math.floor(wx - 0.5)), int(math.floor(wy)), int(math.floor(wz))):
+            wire = None
+    return signal(canvas, seat["at"], yaw=seat["yaw"], wire_to=wire, origin=origin)
