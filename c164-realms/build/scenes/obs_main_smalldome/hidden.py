@@ -41,10 +41,13 @@ def jar_path():
 
 
 def laid():
-    """{cell: state} of everything main/roof lays, on an empty canvas."""
+    """({cell: state} of everything main/roof lays that is seen, the cells of its guard), on an empty
+    canvas. The guard over the parapets is barriers, which the game draws for nobody: no ray is
+    cast at them, and in the main line a rod or a wall may stand where the empty canvas has one."""
     c = Canvas()
     roof.build(c)
-    return dict(c.b)
+    guard = {cell for cell, state in c.b.items() if state == roof.GUARD}
+    return {cell: state for cell, state in c.b.items() if cell not in guard}, guard
 
 
 def probes():
@@ -105,11 +108,12 @@ def run():
         return 2
     scene = Canvas()
     main.build(scene)
-    cells = laid()
+    cells, guard = laid()
     missing = [cell for cell, state in cells.items() if scene.get(*cell) != state]
     if missing:
         print(f"{len(missing)} of the {len(cells)} cells main/roof lays are not in the main line as it lays them "
               f"(first: {sorted(missing)[0]}): is the package in the tree, has a later one built over it?")
+    print(f"the guard over the parapets: {len(guard)} cells of {roof.GUARD}, which no view draws; no ray is cast at them")
     lamps = {cell for s in roof.WINGS.values() for cell in roof.lamps(s)}
     found = 0
     with tempfile.TemporaryDirectory() as pack:
