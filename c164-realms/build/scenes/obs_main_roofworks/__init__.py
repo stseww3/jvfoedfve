@@ -19,8 +19,7 @@ BIOME = "obs_blue"
 BIOME_MARGIN = 80
 BIOME_MARGIN_Y = 160
 LINES = (main, sky)
-TIME = 14000                    # the blue hour, the default look
-NOON = 6000                     # for the shots that are to show how a thing is made
+TIME = 14000                    # the blue hour, the map's one look (the resource pack carries it: no shot is by day)
 
 
 def build():
@@ -52,6 +51,7 @@ def shots():
     nx, _ny, nz = big[False]["at"]
     sx, _sy, sz = big[True]["at"]
     head = big[False]["top"] - 0.5
+    foot = big[False]["at"][1]
     ridge = roof.RIDGE[1] + 0.5
     eye = roof.RIDGE_TOP + 1.62
     return [
@@ -68,8 +68,17 @@ def shots():
         # from the ridge walk at eye height, as a visitor comes along it
         shot("walk_north", (ridge, eye, nz + 4.0), (nx, head - 0.6, nz - 1.0)),
         shot("walk_south", (ridge, eye, sz - 4.0), (sx, head - 0.6, sz + 1.0)),
-        # how they are made: by day, close, from over the parapet and from the air
-        shot("made", (nx + 3.2, head + 0.4, nz + 2.6), (nx, head - 1.2, nz), NOON),
-        shot("made_small", (nx + 3.0, head, small[False]["at"][2] + 2.4), (nx, head - 1.2, small[False]["at"][2]), NOON),
-        shot("air_north", (nx + 12.0, head + 7.0, nz + 9.0), (nx - 2.0, head - 2.0, nz - 2.0), NOON),
+        # how they are made: close, from over the parapet and from the air
+        shot("made", (nx + 3.2, head + 0.4, nz + 2.6), (nx, head - 1.2, nz)),
+        shot("made_small", (nx + 3.0, head, small[False]["at"][2] + 2.4), (nx, head - 1.2, small[False]["at"][2])),
+        shot("air_north", (nx + 12.0, head + 7.0, nz + 9.0), (nx - 2.0, head - 2.0, nz - 2.0)),
+        # the near layer (plan/fine.md). From the walk's edge, the nearest a visitor comes: three blocks from the
+        # shaft's west flat with the damper. Then two blocks off, where only the camera stands: the west flat
+        # (damper, lever, the fitter's tick), the south one (the oil's run), the east one (the seam, the rust's
+        # run over lead and slate), and the head from above (the cone's seams, the oil cup)
+        shot("near_walk", (ridge + 0.45, eye, nz + 0.9), (nx, foot + 1.2, nz)),
+        shot("near_west", (nx - 2.0, foot + 1.5, nz + 0.5), (nx, foot + 0.9, nz)),
+        shot("near_south", (nx - 0.6, foot + 1.6, nz + 2.0), (nx, foot + 1.2, nz)),
+        shot("near_east", (nx + 2.1, foot + 1.3, nz + 1.1), (nx, foot + 0.7, nz)),
+        shot("near_head", (nx - 1.6, head + 1.0, nz + 1.5), (nx, head, nz)),
     ]
