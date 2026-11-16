@@ -1,0 +1,31 @@
+check obs_sky_lights at a274d36
+[WARN] regen     113945 blocks, 411 entities, 152 models, 1134 resource-pack files, 72 data-pack files, look: 1 biomes, 1 timelines (2.0 s)
+                 registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+[PASS] conflicts the scene writes 1133 files, no file written twice, the folders and the prefix of sky are kept (2 packages run alone)
+[PASS] strays    281 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      833 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    45 kinds of block placed, 36 barrier cells (x -384..16, y 0..1, z -5..5), all in the occupancy table
+[SKIP] flatwall  a test scene of sky: its sample walls and backdrops are meant to be flat
+[PASS] entities  411 display entities, 27 drawn out along one axis, 3 shown through a matrix that is no turn, no face stretched, 119 models never placed
+[WARN] views     28 shots, most display entities in view: 139 (blue_axis), limit 600; counted without what walls hide; the game draws up to 276 (deep_front): a display entity without width and height is drawn outside the view too
+                 blue_front: 2 of the 133 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 blue_axis: 2 of the 139 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 blue_slant: 2 of the 50 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 blue_surround: 2 of the 105 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 blue_v3: 2 of the 102 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 blue_door: 2 of the 97 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 blue_v7: 2 of the 50 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 blue_wash: 2 of the 112 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 blue_stair: 26 of the 40 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 deep_front: 2 of the 133 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 deep_axis: 2 of the 139 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 deep_slant: 2 of the 50 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 ... and 4 more
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 0.4% hidden (base storey 0.0% by blocks and 1.3% more by models, great windows 0.0%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 1.0 s)
+[PASS] motion    3 parts and 0 points on 1 chains, 12 function files; 6 commands in the busiest tick (limit 40), 1.1 a tick on average (limit 10)
+                 chain of 24 ticks: 6 functions, 26 commands a cycle, starts 1 ticks after start
+                 bld_tower_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.09 blocks off the axis
+                 bld_tower_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.09 blocks off the axis
+                 bld_tower_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.09 blocks off the axis
+result: PASS (0 failed, 2 with warnings)
