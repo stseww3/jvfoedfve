@@ -52,6 +52,7 @@ archive goes to dist/ and from there to the branch cursor/c164-dist-<suffix>, ne
 """
 import argparse
 import atexit
+import calendar
 import glob
 import hashlib
 import importlib
@@ -94,6 +95,7 @@ CATCH = -30                 # scene y: feet under it are put back on the spot (a
                             # c329 #62206 and a4 c323 #64103: the cloud layer's top is -28, the
                             # lowest rock a foot finds is -27, the eye is in the cloud by then)
 DATA_FORMAT = 121           # 26.3, as build/artkit/export.py
+DAY_EASE = (0.362, 0.241, 0.638, 0.759)     # the cubic bezier of the game's day (see plain_time)
 # what a finished map's data pack may hold (COMMON.md 5.5). Any other folder is a registry's, and
 # one file of a registry makes the game call the world experimental, which Realms does not take.
 ALLOWED_KINDS = ("function", "tags", "structure", "advancement", "loot_table", "predicate", "recipe", "item_modifier")
@@ -365,8 +367,15 @@ def scene_spec(args):
     look = bool(args.look == "on" and getattr(scene, "BIOME", None))
     on_cloud = args.on_cloud or ("ignore" if args.trial else "back")
     when = args.time
-    if when is None:
-        when = getattr(scene, "TIME", 14000) if look else getattr(scene, "TIME_PLAIN", getattr(scene, "TIME", 14000))
+    if when is None and (look or not getattr(scene, "BIOME", None)):
+        when = getattr(scene, "TIME", 14000)
+    elif when is None:
+        # the scene has a look and the save goes without it: the game's own sky, held where its moon
+        # stands as the look keeps ours (the comet is the moon's picture)
+        # (a2 c322 #71364: the sky's shaders count the stars' turn from the same tick, mood.LOCK_TICK
+        # once that is in the assembly; plain_time() is the same number worked out from the look)
+        from scenes.obs.sky import mood
+        when = getattr(scene, "TIME_PLAIN", None) or getattr(mood, "LOCK_TICK", None) or plain_time()
     return {
         "scene": args.scene, "name": args.name, "at": [ox, oy, oz], "look": look,
         "biome": f"{ART}:{scene.BIOME}" if look else None,
@@ -378,6 +387,36 @@ def scene_spec(args):
         "cloud": [f"minecraft:{b}" for b in B.CLOUD] if on_cloud == "back" else [],
         "trial": args.trial,
     }
+
+
+def plain_time():
+    """The tick at which the game's own clock holds the moon where the look holds it for good, in
+    the phase the default look wears. The comet is the moon's picture (sky/comet.py); without the
+    timeline the moon follows the game's day, and at the look's own tick 14000 it stands 20 degrees
+    up in the east, the comet upside down behind who arrives.
+
+    The game's day, data/minecraft/timeline/day.json of 26.3: the moon's angle from the zenith
+    westwards runs from 180 at tick 6000 through a full turn in 24000 ticks, eased by DAY_EASE (the
+    sun's and the stars' likewise). The phase follows the count of days (timeline/moon.json):
+    full_moon on day 0, the next on day 1, eight in all."""
+    from scenes.obs.sky import mood
+    phases = ("full_moon", "waning_gibbous", "third_quarter", "waning_crescent", "new_moon", "waxing_crescent",
+              "first_quarter", "waxing_gibbous")
+    x1, y1, x2, y2 = DAY_EASE
+
+    def curve(t, p, q):
+        return 3.0 * (1.0 - t) ** 2 * t * p + 3.0 * (1.0 - t) * t * t * q + t ** 3
+
+    want = ((mood.MOON_ANGLE - 180.0) % 360.0) / 360.0      # how far through its turn the moon is to be
+    lo, hi = 0.0, 1.0
+    for _ in range(60):
+        mid = (lo + hi) / 2.0
+        if curve(mid, y1, y2) < want:
+            lo = mid
+        else:
+            hi = mid
+    tick = int(round(6000.0 + 24000.0 * curve(lo, x1, x2))) % 24000
+    return tick + 24000 * phases.index(mood.LOOKS[mood.DEFAULT]["moon_phase"])
 
 
 def num(v):
@@ -1235,11 +1274,19 @@ def page(args):
             checks = json.load(fh)
     if not made.get("ok"):
         fail(f"{name}.json says the save was not made whole; the page is left as it is")
-    at = time.strptime(made["made_at"], "%Y-%m-%dT%H:%M:%SZ") if made.get("made_at") else time.gmtime(os.path.getmtime(folder))
-    at = time.gmtime(time.mktime(at) - time.timezone + 8 * 3600)        # the project's clock is UTC+8
+    at = None
+    if made.get("made_at"):         # the project's clock is UTC+8
+        at = time.strftime("%m-%d %H:%M", time.gmtime(calendar.timegm(time.strptime(made["made_at"], "%Y-%m-%dT%H:%M:%SZ")) + 8 * 3600))
     failed = [c["check"] for c in checks["checks"] if not c["ok"]]
+    look = None
+    if os.path.exists(os.path.join(folder, name + "-look.json")):
+        with open(os.path.join(folder, name + "-look.json"), encoding="utf-8") as fh:
+            with_look = json.load(fh)
+        if with_look.get("ok"):
+            look = {"file": with_look["zip"]["file"], "bytes": with_look["zip"]["bytes"], "sha256": with_look["zip"]["sha256"],
+                    "registry_files": len(with_look["registry_files"]), "time": with_look["spec"]["time"]}
     row = {
-        "n": f"A{n}", "assembly": made.get("assembly") or "?", "at": time.strftime("%m-%d %H:%M", at),
+        "n": f"A{n}", "assembly": made.get("assembly"), "at": at, "time": made["spec"]["time"], "look": look,
         "zip_bytes": made["zip"]["bytes"], "sha256": made["zip"]["sha256"],
         "pack_bytes": made["resource_pack"].get("bytes"), "pack_files": made["resource_pack"]["files"],
         "standins": len(made["resource_pack"]["standins"]),
@@ -1250,8 +1297,14 @@ def page(args):
         "make_s": made["seconds"], "verify_s": checks["seconds"], "checks": len(checks["checks"]), "failed": failed,
         "verified": checks["ok"], "console": len(made.get("issues") or []) + sum(
             len(v) for k, v in checks.items() if k.endswith("issues") and isinstance(v, list)),
-        "note": args.note or "", "commit": args.commit or "",
+        "note": args.note, "commit": args.commit,
     }
+    # what this run does not know stays as the row had it (a note given earlier, the figures of a
+    # save made before its note told them)
+    old = next((r for r in rows if r["n"] == row["n"]), {})
+    for key, value in row.items():
+        if value is None and old.get(key) is not None:
+            row[key] = old[key]
     rows = [r for r in rows if r["n"] != row["n"]] + [row]
     rows.sort(key=lambda r: -int(r["n"][1:]))
     with open(path, "w", encoding="utf-8", newline="\n") as fh:
@@ -1269,17 +1322,20 @@ def page(args):
         else:
             checked = "没过：" + "、".join(r.get("failed") or ["?"])
         gone = "" if r["n"] == row["n"] else "已从这里拿掉。"
-        return (f"| {r['n']} | {r['assembly']} | {r['at']} | {mb(r['zip_bytes'])} | {mb(r['pack_bytes'])}，{r['pack_files']} 个文件 | "
+        return (f"| {r['n']} | {r['assembly'] or '?'} | {r['at'] or '?'} | {mb(r['zip_bytes'])} | {mb(r['pack_bytes'])}，{r['pack_files']} 个文件 | "
                 f"{r['blocks'] if r['blocks'] is not None else '?'} / {r['entities']} / {r['moving'] if r['moving'] is not None else '?'} | "
-                f"{checked} | {r['note']}{gone} | {r['commit'] or '?'} |")
+                f"{r.get('time') or '?'} | {checked} | {r['note'] or ''}{gone} | {r['commit'] or '?'} |")
 
     text = [
         PAGE_OPEN,
-        f"**最新：`A{n}/{name}.zip`**（总装 {row['assembly']}，{row['at']} 导出，sha256 `{row['sha256']}`）。",
+        f"**最新，传 Realms 用这个：`A{n}/{name}.zip`**（总装 {row['assembly']}，{row['at']} 导出，{mb(row['zip_bytes'])}，"
+        f"sha256 `{row['sha256']}`）。不带注册表文件，钟锁在 {row['time']} 刻。",
+        *([f"同一个总装头、带着我们的天的：`A{n}/{look['file']}`（{mb(look['bytes'])}，sha256 `{look['sha256']}`，钟锁在 {look['time']} 刻）。"
+           f"**它带 {look['registry_files']} 个注册表文件（群系、时间线），只给单人打开看样子，不传 Realms。**"] if look else []),
         "总装每半小时跟着 s1 的看板重导一次，编号往上加；这里只留最新的一个，旧的在分支历史里，表的最后一列是它所在的提交。",
         "",
-        "| 编号 | 总装头 | 导出时间 | 存档 zip | 其中资源包 | 方块 / 显示实体 / 会动的件 | 冷启动验证 | 说明 | 在提交 |",
-        "| --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+        "| 编号 | 总装头 | 导出时间 | 存档 zip | 其中资源包 | 方块 / 显示实体 / 会动的件 | 钟 | 冷启动验证 | 说明 | 在提交 |",
+        "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
         *[line(r) for r in rows],
         "",
         f"最新这一个：建世界到封包 {row['make_s']} 秒" + (f"，验证 {row['verify_s']} 秒" if row["verify_s"] is not None else "，没验")
@@ -1312,8 +1368,9 @@ def main():
         p.add_argument("--look", choices=("on", "off"), default="off",
                        help="carry our biome and timeline (registry data: the world counts as experimental)")
         p.add_argument("--at", type=int, nargs=3, default=[0, 200, 0], metavar=("X", "Y", "Z"))
-        p.add_argument("--time", type=int, help="the tick the clock is held at (default: the scene's TIME, or TIME_PLAIN "
-                                                "with the look off)")
+        p.add_argument("--time", type=int, help="the tick the clock is held at (default: the scene's TIME; with the look "
+                                                "off the scene's TIME_PLAIN, or the tick at which the game's own moon "
+                                                "stands where the look keeps the comet)")
         p.add_argument("--catch", type=int, default=CATCH, help="scene y: feet under it are put back on the spot")
         p.add_argument("--on-cloud", choices=("back", "ignore"),
                        help="back: who stands on a block of the cloud sea is put back on the spot too "
