@@ -7,9 +7,12 @@ The sea is blocks and nothing else. The game's own cloud layer cannot be the sea
 is a registry value, which the map may not carry, and at its own height it would drift through the
 lower platform. clouds.png is blanked, so no layer is drawn whatever the player's cloud setting is.
 What lies beyond the blocks is the sky's, drawn by the resource pack's shaders (A2's). The join
-proposed to A2 and not settled yet: under the horizon the sky is painted in the colour of level
-cloud, and the fog takes every block into what the sky shows in the same direction, so the blocks
-need no rim and no fading of their own.
+agreed with A2 (11-16; his sky/mood holds the numbers): under the horizon the sky is painted as a
+level sea at the height of FACE in the colour of level cloud, sunk into the colour of the horizon
+by a long haze of its own (1 - exp(-distance / 800)); the blocks' fog runs from 60 to 150 blocks
+from the eye and takes a block under the horizon into the far sea of its own direction, a block
+above it into the sky's lowest ring. Level cloud is the far sea's colour already, so the blocks
+need no rim and no fading of their own: where they end, nothing changes.
 
 One surface, laid as far as REACH from where people stand, a single block thick wherever it is
 level:
@@ -42,8 +45,8 @@ light of the sky), through materials/_kit like everyone else. The pictures are f
 sky_cloud_0..4 and the game's own face shading is turned off (shade=False, ao=False): which tone a
 block wears is baked here from the shape, lit from the west where the afterglow is. Level cloud
 wears the second lightest tone, the top of a head as much as the calm sea (sky/mood's "cloud" is
-that tone as the blue hour lights it: the colour proposed for the far sea, so that the blocks end
-in their own colour). What faces west is the lightest tone, what faces east the two below; the
+that tone as the blue hour lights it: the colour of the far sea, so that the blocks end in their
+own colour). What faces west is the lightest tone, what faces east the two below; the
 foot of a head and the creases between two are darker again, the sea in the lee of a head lies in
 its shadow, and the crowns of the piles catch the light. The swell is shaded as broadly as it is
 shaped: its western slopes a tone lighter, its eastern slopes a tone darker, the steps themselves
@@ -60,6 +63,11 @@ from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
 from ..materials import _kit as K
+
+# The director's switch for what is laid over the whole site (COMMON 0.5; since 11-16 08:24 the
+# author turns it on in the commit he delivers): off, build() places nothing and takes nothing up,
+# and site/terrain's stand-in ring stays; a test scene asks with dress=True whatever it says.
+DRESS = True
 
 # The blocks this package paints; nobody else may (the stand-in reads this and lets them go).
 BLOCKS = K.blocks(B.CLOUD)
@@ -528,8 +536,10 @@ def _shade(h):
     return 0.75 + turn - 0.22 * crease + 0.10 * crest + 0.12 * crown
 
 
-def build(canvas, origin=(0, 0, 0), *, seed=SEED):
+def build(canvas, origin=(0, 0, 0), *, seed=SEED, dress=None):
     """Lay the sea of clouds into the canvas. Places blocks only, so it returns 0 display entities."""
+    if not (DRESS if dress is None else dress):
+        return 0
     # The sea is laid once: a sheet of cloud tones put down earlier (site/terrain's stand-in for this
     # package) is taken up.
     names = list(B.CLOUD)                           # dark..light, as the tone index runs

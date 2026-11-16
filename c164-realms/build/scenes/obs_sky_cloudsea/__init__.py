@@ -180,7 +180,7 @@ def build():
     _paving(c)
     _massing(c)
     _trestle(c)
-    cloudsea.build(c, (0, 0, 0))
+    cloudsea.build(c, (0, 0, 0), dress=True)
     return c
 
 
