@@ -1849,6 +1849,11 @@ def page(args):
     if made.get("made_at"):         # the project's clock is UTC+8
         at = time.strftime("%m-%d %H:%M", time.gmtime(calendar.timegm(time.strptime(made["made_at"], "%Y-%m-%dT%H:%M:%SZ")) + 8 * 3600))
     failed = [c["check"] for c in checks["checks"] if not c["ok"]]
+    # the average time of a tick with one player on the spot, the larger of the two cold starts
+    # (plan/round2.md: told with every save, over 10 ms it is reported)
+    ticks = [float(m.group(1)) for c in checks["checks"] if c["check"].endswith("tick, one player")
+             for m in [re.search(r"Average time per tick: ([\d.]+)ms", c["detail"])] if m]
+    kinds = made["numbers"]["entities"]
     look = None
     if os.path.exists(os.path.join(folder, name + "-look.json")):
         with open(os.path.join(folder, name + "-look.json"), encoding="utf-8") as fh:
@@ -1885,7 +1890,10 @@ def page(args):
         "pack_bytes": made["resource_pack"].get("bytes"), "pack_files": made["resource_pack"]["files"],
         "standins": len(made["resource_pack"]["standins"]),
         "shaders": len(made["resource_pack"].get("shaders") or []),
-        "blocks": (made.get("built") or {}).get("blocks"), "entities": sum(made["numbers"]["entities"].values()),
+        "blocks": (made.get("built") or {}).get("blocks"), "entities": sum(kinds.values()),
+        # what is in the save beside display entities (a cat on a chair), by kind
+        "others": {k.split(":", 1)[-1]: v for k, v in sorted(kinds.items()) if not k.endswith("_display")},
+        "tick_ms": max(ticks) if ticks else None,
         "moving": (made.get("built") or {}).get("moving"),
         "functions": (made.get("data_pack") or {}).get("function"), "tags": (made.get("data_pack") or {}).get("tags"),
         "registry_files": len(made["registry_files"]), "cloud": bool(made["spec"].get("cloud")),
@@ -1971,6 +1979,8 @@ def page(args):
         f"最新这一个：建世界到封包 {row['make_s']} 秒" + (f"，验证 {row['verify_s']} 秒" if row["verify_s"] is not None else "，没验")
         + f"；服务端日志里的警告和报错一共 {row['console']} 条（做的那次，加上验的两次冷启动：一次按最不利的服务端设置生存、简单，"
         "一次按 Realms 槽位会填的冒险、和平）。"
+        + (f"一个人站在出生点时服务器每拍平均 {row['tick_ms']} 毫秒（一拍有 50 毫秒，我们的线是 10）。" if row.get("tick_ms") is not None else "")
+        + (f"展示实体以外的实体：{'、'.join(f'{k} {v} 个' for k, v in row['others'].items())}。" if row.get("others") else "")
         + f"数据包里函数 {row['functions']} 个、标签 {row['tags']} 个，注册表文件 {row['registry_files']} 个；"
         + (f"资源包里还有 {row['standins']} 张占位贴图（`ph_` 开头，等正式的换下来）。" if row["standins"] else "资源包里没有占位贴图。")
         + ("" if row["cloud"] else "**这一个没开「站到云海方块上送回」。**")

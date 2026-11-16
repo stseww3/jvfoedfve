@@ -69,6 +69,10 @@ print("【{n}】总装 {assembly}，钟锁 {time}。".format(**r) + ("" if r.get
 print("1. `{branch}`，`c164-realms/dist/{n}/c164-{n}.zip`，sha256 {sha}。".format(**r))
 print("2. 存档 {zip}，其中资源包 {pack}（{pack_files} 个文件，上限 250 兆）；{blocks} 方块、{entities} 个显示实体。".format(**r))
 print("3. 服务端冷启动两次，{checks} 项{ok}，日志警告和报错 {console} 条。导出 {make_s} 秒，验证 {verify_s} 秒。".format(**r))
+if r.get("tick_ms") is not None:
+    print("每拍用时：一个人站在出生点时平均 {} 毫秒（线是 10）{}".format(r["tick_ms"], "。" if r["tick_ms"] <= 10 else "，**超线了**。"))
+if r.get("others"):
+    print("展示实体以外的实体：" + "、".join("{} {} 个".format(k, v) for k, v in r["others"].items()) + "。")
 print("数据包：函数 {functions}、标签 {tags}、注册表文件 {registry_files}；占位贴图 {standins} 张；资源包里着色器 {shaders} 个。".format(**dict(r, shaders=r.get("shaders") or 0)))
 print("光照：存盘前等到不再变（{} 秒）。".format(r["light"]) if r.get("light") else "光照：存盘时还在变，这一版的光不全！" if r.get("light") is False else "光照：没等。")
 print("导览：带（进服的标题、牌子、星图）" + ("；存档在世界列表里叫「{}」。".format(r["title"]) if r.get("title") else "。") if r.get("guide") else "导览：不带。")
