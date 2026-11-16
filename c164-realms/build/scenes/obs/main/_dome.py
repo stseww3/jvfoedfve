@@ -20,8 +20,7 @@ Rows, from the main cornice (y 15) up:
     17..21   the drum, dressed stone: a pilaster under every seam that meets a straight run of the
              round wall; in every gore a niche one block wide and one deep, the small window at
              its head (y 20) and a sunk panel under it (y 18..19); in two gores the niche is
-             the door of the dome room instead (the skeleton's DOME_ROOM_DOORS), with a caged
-             lamp on the wall's step beside it, over the door's head (door_lamps()). Indoors, the two
+             the door of the dome room instead (the skeleton's DOME_ROOM_DOORS). Indoors, the two
              blocks of the inner leaf that look into the corner where the hand gear's upright
              shaft climbs the wall are cased in iron plate up to the ledge (GEAR_SHAFT)
     22       a corbel course; it breaks forward over the pilasters
@@ -88,13 +87,6 @@ PILASTER_OFF = 4.5                      # a pilaster stands at most this many de
 SLIT_HALF = S.SLIT_W // 2               # 2: the slit is z -2..2
 SLIT_HEAD = CX - 2                      # 2: the last column of the slit; the crown starts east of it
 DOORS = getattr(S, "DOME_ROOM_DOORS", dict(cells=((12, 10), (12, -10)), y=(18, 19)))
-# The lamp of a door: a caged one (props/lamps) in the row over the door's head, on the flank of
-# the round wall's step beside the doorway, so that its source hangs over the cell one stands in
-# before the door. It lights the threshold, the corner terrace and, through the open door, the
-# first steps into the dome room, which has no lamp of its own to walk by (the lights line, c331:
-# no higher than this row, and under the gallery, so that nothing of it falls on the dome).
-DOOR_LAMP_Y = DOORS["y"][1] + 1         # 20
-DOOR_LAMP = 8                           # the level of its source: the top of the third rank (sky.md 6)
 # The column of the room in which the upright shaft of the dome's hand gear climbs the wall, from the
 # floor to its pinion in the toothed ring (machines/dome: riser_at(); interiors/domeroom leaves its
 # lining open there, GEAR_SHAFT). What the room sees of the drum in that corner is the shaft's casing
@@ -222,24 +214,6 @@ def doors(p):
         while O.step(run[-1], inward) not in p.core and len(run) < 4:
             run.append(O.step(run[-1], inward))
         out.append(run)
-    return out
-
-
-def door_lamps(p):
-    """[(the point of the wall face a door's lamp is fixed at, the way that face looks, the cell
-    of its source)], one to a door: on the wall column that flanks the cell before the door, in
-    the row over the door's head. None where the round wall does not step beside a door."""
-    out = []
-    for run in doors(p):
-        c = run[0]
-        before = O.step(c, p.outs[c][0])
-        flanks = [d for d in O.SIDES if O.step(before, d) in p.wall and O.step(before, d) != c]
-        if not flanks:
-            continue
-        d = flanks[0]
-        w = O.step(before, d)
-        at = (w[0] + 0.5 - 0.5 * d[0], DOOR_LAMP_Y + 0.5, w[1] + 0.5 - 0.5 * d[1])
-        out.append((at, O.NAME[(-d[0], -d[1])], (before[0], DOOR_LAMP_Y, before[1])))
     return out
 
 
