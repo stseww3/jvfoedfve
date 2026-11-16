@@ -303,12 +303,16 @@ _GRIME = 1.0                            # the corners of a light, where the soot
 # flares in a round, half as long, wandering the other way; and two in which the whole window
 # brightens. Each is as long across as a block or half of one, so a round runs through a bay
 # without a seam whichever pictures the game has mixed there, and the rows over one another move
-# as one sheet. A light's ranks stay its own: what changes is how many of its pixels show the
-# darker of two tones, and the points go and come back where they are, in the same order every
-# time. So the glass keeps its stains and the fire behind it flickers. The first frame is the
-# still picture: what the offline pictures and the checks see.
-FLICKER = 16                            # frames in a round
-FLICKER_TIME = 4                        # ticks a frame: a1's pace for a furnace fire; a round takes 3.2 s
+# as one sheet. And the points of the fire wander: where a row of a light stands among the ambers
+# (_EMBER), its ranks go round by one from frame to frame, so the points of the deeper tone sit
+# elsewhere in every frame and are as many as before (a row of a light holds each rank once). Not
+# in the rows that hold a light's corners, where the grime sits, and not higher up, where the
+# dither is brown and soot: that is on the glass and stays where it is. So the glass keeps its
+# stains and the fire behind it flickers. The first frame is the still picture: what the offline
+# pictures and the checks see.
+FLICKER = 14                            # frames in a round: the ranks go round twice
+FLICKER_TIME = 4                        # ticks a frame: a1's pace for a furnace fire; a round takes 2.8 s
+_EMBER = 2                              # the steps of _HEAT whose dither has an amber in it
 _FLARES = ((0.30, 1, 1.0, 1, 0.0), (0.20, 3, 2.0, -1, 1.0), (0.15, 2, 0.0, 0, math.pi / 2.0))
 #                                         (steps down the ladder at its height, how often in a round, lengths
 #                                         across a block, block widths it wanders in a round, where it starts)
@@ -355,10 +359,13 @@ def _furnace(version, row, variant, frame=0):
         rank = _ranks((4 * row + variant) * len(_LIGHTS[version]) + n, x1 - x0 + 1, y1 - y0 + 1)
         for y in range(y0, y1 + 1):
             hung = soot * (0.5 + (y1 - y) / float(y1 - y0))
+            height = TILE * (row + 1) - 1 - y
+            wander = frame % 7 if y not in (y0, y1) and _heat(height, hung)[0] < _EMBER else 0
             for x in range(x0, x1 + 1):
                 grime = _GRIME if x in (x0, x1) and y in (y0, y1) else 0.0
-                step, sevenths = _heat(TILE * (row + 1) - 1 - y, hung + grime + _flare(frame, x))
-                px[y, x, :3] = P.colour(*_HEAT[min(step + (rank[y - y0][x - x0] < sevenths), len(_HEAT) - 1)])
+                step, sevenths = _heat(height, hung + grime + _flare(frame, x))
+                deeper = (rank[y - y0][x - x0] + wander) % 7 < sevenths
+                px[y, x, :3] = P.colour(*_HEAT[min(step + deeper, len(_HEAT) - 1)])
     return _bars(px, version)
 
 
