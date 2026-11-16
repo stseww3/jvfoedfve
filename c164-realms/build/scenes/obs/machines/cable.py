@@ -435,8 +435,9 @@ def _axle():
     for s in (-1.0, 1.0):
         m.ring("z", (0.0, 0.0, G * s), CAR_WHEEL - 0.5, 1.0, 3.0, IRON, sides=8, seed=_WHEEL)          # tyre
         a, b = sorted(((G - 0.5) * s, (G + 0.5) * s))
-        m.box((-3.0, -0.5, a), (3.0, 0.5, b), IRON_D, seed=_WHEEL + 1)             # four spokes, a cross
-        m.box((-0.5, -3.0, a), (0.5, 3.0, b), IRON_D, seed=_WHEEL + 1)
+        for k in range(3):                                                         # six spokes: three bars through the hub
+            m.box((-3.0, -0.5, a), (3.0, 0.5, b), IRON_D, rot=("z", 60.0 * k, (0.0, 0.0, 0.0)) if k else None,
+                  seed=_WHEEL + 1)
         a, b = sorted(((G - 1.0) * s, (G + 1.5) * s))
         m.tube("z", (0.0, 0.0), a, b, 1.5, IRON, seed=_WHEEL + 3)                  # hub
     return m
