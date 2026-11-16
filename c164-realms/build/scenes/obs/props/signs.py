@@ -59,7 +59,8 @@ other lines:
     n += signs.flagpole(canvas, (x, y, z), height=7, origin=origin)
 
 A flag has no facing to choose: the map has one wind (the skeleton's WIND_TO) and every flag flies
-with it. Mounting, materials and lights are _kit's. The test scene is build/scenes/obs_props_elecsign
+with it, swaying about its pole (flagpole() registers the cloth with the motion line, FLAG_SWING to
+either side). Mounting, materials and lights are _kit's. The test scene is build/scenes/obs_props_elecsign
 (shared with props/electrics).
 """
 import functools
@@ -70,6 +71,7 @@ from artkit.pixelart import Sprite
 
 from ..common import palette as P
 from ..common import skeleton as S
+from ..motion import _kit as MK
 from . import _kit as K
 
 PREFIX = "prop_sign_"
@@ -534,6 +536,9 @@ def _station_board():
 # ---- the flag and its pole ------------------------------------------------------------------------------
 FLAG = (24, 16)                 # the cloth in pixels: a block and a half by a block
 FLAG_WAVE = (16.0, -20.0, 14.0)     # how its three widths hang turned against each other, in degrees
+FLAG_SWING = 6.0                # degrees the cloth sways about the pole, to either side of how it hangs,
+                                # there and back in the motion line's FLAG_SWAY (a2 #82552: a first guess,
+                                # to be set on the real machine)
 # One wind for the whole map, a north wind (A0, g2 11-15): the skeleton's WIND_TO is the side every
 # flag flies to, in the words used for facing; south while the skeleton in the tree does not say.
 WIND_TO = getattr(S, "WIND_TO", "south")
@@ -559,9 +564,9 @@ def _flag_face(hoist):
 
 def _flag():
     """The flag, hanging in three widths turned a little against each other so that it is cloth
-    and not a board; both sides show the emblem the right way round. The still flag: its flutter
-    is A8's. Anchor: the upper corner of the hoist, on the pole's axis; the cloth hangs below it
-    and flies along +x."""
+    and not a board; both sides show the emblem the right way round. The flag as it hangs at
+    rest: flagpole() registers its sway. Anchor: the upper corner of the hoist, on the pole's axis,
+    which is the axis it sways about; the cloth hangs below it and flies along +x."""
     m = M.Model(PREFIX + "flag", px=1.0)
     w, h = FLAG
     part = w // 3
@@ -731,6 +736,7 @@ def flagpole(canvas, foot, height=7.0, origin=(0, 0, 0), flag=True):
     if flag:
         hoist = (foot[0], foot[1] + height - 0.25, foot[2])
         n += K.put(canvas, built[PREFIX + "flag"], hoist, yaw=yaw, origin=origin)
+        MK.swing(canvas, "y", FLAG_SWING, MK.FLAG_SWAY)
     return n
 
 
