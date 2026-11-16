@@ -570,10 +570,11 @@ def _heaps(X, Z, seed):
     for di in (-1, 0, 1):
         for dk in (-1, 0, 1):
             i, k = ci + di, ck + dk
-            px = (i + 0.15 + 0.7 * _hash3(i, k, 1, seed)) * HEAPS
-            pz = (k + 0.15 + 0.7 * _hash3(i, k, 2, seed)) * 1.3 * HEAPS
-            rad = HEAPS * (0.55 + 0.30 * _hash3(i, k, 3, seed))
-            full = 0.55 + 0.45 * _hash3(i, k, 4, seed)
+            bits = np.rint(_hash3(i, k, 1, seed) * 16777216.0).astype(np.int64)     # 24 of them: six to a number
+            px = (i + 0.15 + 0.7 * ((bits & 63) / 64.0)) * HEAPS
+            pz = (k + 0.15 + 0.7 * (((bits >> 6) & 63) / 64.0)) * 1.3 * HEAPS
+            rad = HEAPS * (0.55 + 0.30 * (((bits >> 12) & 63) / 64.0))
+            full = 0.55 + 0.45 * (((bits >> 18) & 63) / 64.0)
             d2 = ((X - px) / rad) ** 2 + ((Z - pz) / (1.3 * rad)) ** 2
             out = np.maximum(out, full * np.sqrt(np.clip(1.0 - d2, 0.0, 1.0)))
     return out
@@ -612,29 +613,31 @@ def _shade(h):
 # _face(), so that in a calm lane the painting is the blocks' own picture and the blocks end in it
 # without a seam. Further out, where a pixel covers several blocks, the tones run together into
 # their mean.
-FAR_FOLD = 2.4                  # the crease read from the four columns beside one, for build()'s blur over 5 x 5
-FAR_LIE = 1.0                   # the lie of the slope read from the two columns beside one, for build()'s blur over 9 x 9
+FAR_SPAN = 2.0                  # the lie of the face is read from the two columns this far west and east of one
+FAR_LIE = 1.0                   # ... and counts for this much of the slope build() reads from the blurred face
 FAR_PIXEL = 600.0               # pixels to a radian: how much sea a pixel covers at a distance
 FAR_FINE = (3.0, 7.0)           # the tones are whole while a pixel covers this many blocks, run together from the second on
-FAR_MEAN = (0.0, 0.03, 0.22, 0.61, 0.14)    # the share of each tone on the open face: what they run together into
+FAR_MEAN = (0.0, 0.0, 0.14, 0.72, 0.14)     # the share of each tone on the open face: what they run together into
 
 
 def far_tone(x, z, seed=SEED):
     """The tone (0..4, an index into B.CLOUD) of the far sea's column (x, z): whole numbers or
-    numpy arrays of them, scene coordinates."""
+    numpy arrays of them, scene coordinates. build() reads a column's light from its own height,
+    from the slope across it and from the slope of the face blurred over nine columns; here the
+    face is read at two places only, FAR_SPAN to the west and to the east, which the shader can
+    afford for every pixel of the sea: the slope between them stands for both slopes and their
+    mean for the height."""
     x, z = np.asarray(x, dtype=float), np.asarray(z, dtype=float)
 
     def height(i, k):
         return np.clip(_face(i, k, seed)[1], TROUGH, MEAN + 1.45) - MEAN
 
-    h, west, east = height(x, z), height(x - 1.0, z), height(x + 1.0, z)
-    lie = 0.5 * (east - west)                       # rising eastwards = facing west
-    fold = 0.25 * (west + east + height(x, z - 1.0) + height(x, z + 1.0)) - h
-    low = np.clip(1.6 - h, 0.0, 1.0)
+    west, east = height(x - FAR_SPAN, z), height(x + FAR_SPAN, z)
+    lie = (east - west) / (2.0 * FAR_SPAN)          # rising eastwards = facing west
+    low = np.clip(1.6 - 0.5 * (west + east), 0.0, 1.0)
     turn = np.clip(0.30 * np.tanh(1.3 * lie) + 0.16 * low * np.tanh(LIE * FAR_LIE * lie), -0.34, 0.30)
-    crease = np.clip((FAR_FOLD * fold - 0.35) / 0.75, 0.0, 1.0)
     last = len(B.CLOUD) - 1
-    return np.clip(np.rint(last * (0.75 + turn - 0.22 * crease)), 0, last).astype(int)
+    return np.clip(np.rint(last * (0.75 + turn)), 0, last).astype(int)
 
 
 def far_tints():
@@ -704,10 +707,12 @@ float c164_heaps(vec2 p, int seed) {
         for (int dk = -1; dk <= 1; dk++) {
             int i = c.x + di;
             int k = c.y + dk;
-            vec2 middle = (vec2(float(i), float(k)) + 0.15 + 0.7 * vec2(c164_hash(i, k, 1, seed), c164_hash(i, k, 2, seed))) * cell;
-            float rad = {heaps} * (0.55 + 0.30 * c164_hash(i, k, 3, seed));
+            uint bits = c164_bits(i, k, 1, seed);
+            vec2 middle = (vec2(float(i), float(k)) + 0.15
+                + 0.7 * vec2(float(bits & 63u), float((bits >> 6) & 63u)) / 64.0) * cell;
+            float rad = {heaps} * (0.55 + 0.30 * float((bits >> 12) & 63u) / 64.0);
             vec2 q = (p - middle) / vec2(rad, 1.3 * rad);
-            best = max(best, (0.55 + 0.45 * c164_hash(i, k, 4, seed)) * sqrt(clamp(1.0 - dot(q, q), 0.0, 1.0)));
+            best = max(best, (0.55 + 0.45 * float((bits >> 18) & 63u) / 64.0) * sqrt(clamp(1.0 - dot(q, q), 0.0, 1.0)));
         }
     }
     return best;
@@ -732,14 +737,12 @@ vec3 c164_far_sea(vec3 sea, vec2 at, float reach, float height) {
     vec3 tint = {tint_mean};
     if (blur < 1.0) {
         vec2 p = floor(at - {origin});
-        float h = c164_face(p);
-        float west = c164_face(p - vec2(1.0, 0.0));
-        float east = c164_face(p + vec2(1.0, 0.0));
-        float lie = 0.5 * (east - west);
-        float fold = 0.25 * (west + east + c164_face(p - vec2(0.0, 1.0)) + c164_face(p + vec2(0.0, 1.0))) - h;
-        float turn = clamp(0.30 * tanh(1.3 * lie) + 0.16 * clamp(1.6 - h, 0.0, 1.0) * tanh({lie} * lie), -0.34, 0.30);
-        float crease = clamp(({fold} * fold - 0.35) / 0.75, 0.0, 1.0);
-        int tone = int(clamp(floor({last} * (0.75 + turn - 0.22 * crease) + 0.5), 0.0, {last}));
+        float west = c164_face(p - vec2({span}, 0.0));
+        float east = c164_face(p + vec2({span}, 0.0));
+        float lie = (east - west) / (2.0 * {span});
+        float low = clamp(1.6 - 0.5 * (west + east), 0.0, 1.0);
+        float turn = clamp(0.30 * tanh(1.3 * lie) + 0.16 * low * tanh({lie} * lie), -0.34, 0.30);
+        int tone = int(clamp(floor({last} * (0.75 + turn) + 0.5), 0.0, {last}));
         vec3 own = {tints};
         tint = mix(own, tint, blur);
     }
@@ -765,7 +768,7 @@ def far_glsl(origin=(0.0, 0.0), seed=SEED):
     values = dict(heaps=f(HEAPS), heaps_long=f(1.3 * HEAPS), seed=str(int(seed)), roll_x=f(ROLL[0]), roll_z=f(ROLL[1]),
                   swell=f(SWELL), pillow=f(PILLOW), bank=f(BANK), trough=f(TROUGH - MEAN), pixel=f(FAR_PIXEL),
                   fine_0=f(FAR_FINE[0]), fine_1=f(FAR_FINE[1]), tint_mean=vec3(tints[-1]),
-                  origin=f"vec2({f(origin[0])}, {f(origin[1])})", lie=f(LIE * FAR_LIE), fold=f(FAR_FOLD), last=f(last), tints=own)
+                  origin=f"vec2({f(origin[0])}, {f(origin[1])})", lie=f(LIE * FAR_LIE), span=f(FAR_SPAN), last=f(last), tints=own)
     text = FAR_GLSL
     for key, value in values.items():
         text = text.replace("{" + key + "}", value)

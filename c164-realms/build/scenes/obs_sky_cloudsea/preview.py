@@ -285,14 +285,19 @@ def agreement(cells, trial=False):
         for dz in range(-6, 7):
             near |= np.roll(np.roll(high, dx, axis=0), dz, axis=1)
     calm = ~near[cols[:, 0] - x0, cols[:, 1] - z0]
+    print("  the blocks' shares " + ", ".join(f"{v:.3f}" for v in np.bincount(tones[calm], minlength=5) / calm.sum()))
     if trial:
-        was = cloudsea.FAR_LIE, cloudsea.FAR_FOLD
-        for lie in (1.0, 0.8, 0.65, 0.5, 0.4):
-            for fold in (1.6, 2.4, 3.2):
-                cloudsea.FAR_LIE, cloudsea.FAR_FOLD = lie, fold
-                same = (cloudsea.far_tone(cols[calm, 0], cols[calm, 1]) == tones[calm]).mean()
-                print(f"  FAR_LIE {lie:g}, FAR_FOLD {fold:g}: the same tone on {same:.1%}")
-        cloudsea.FAR_LIE, cloudsea.FAR_FOLD = was
+        was = cloudsea.FAR_SPAN, cloudsea.FAR_LIE
+        found = []
+        for span in (1.0, 1.5, 2.0, 2.5, 3.0, 4.0):
+            for lie in (0.4, 0.5, 0.65, 0.8, 1.0, 1.25, 1.6):
+                cloudsea.FAR_SPAN, cloudsea.FAR_LIE = span, lie
+                theirs = cloudsea.far_tone(cols[calm, 0], cols[calm, 1])
+                found.append(((theirs == tones[calm]).mean(), span, lie, np.bincount(theirs, minlength=5) / len(theirs)))
+        cloudsea.FAR_SPAN, cloudsea.FAR_LIE = was
+        for same, span, lie, shares in sorted(found, key=lambda row: -row[0])[:12]:
+            print(f"  FAR_SPAN {span:g}, FAR_LIE {lie:g}: the same tone on {same:.1%}; painted shares "
+                  + ", ".join(f"{v:.3f}" for v in shares))
     theirs = cloudsea.far_tone(cols[calm, 0], cols[calm, 1])
     table = np.zeros((5, 5), dtype=int)
     np.add.at(table, (tones[calm], theirs), 1)
