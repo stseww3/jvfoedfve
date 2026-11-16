@@ -311,6 +311,47 @@ def read709():
     return rows
 
 
+# The fires flicker (W.furnace_frames): every picture is W.FLICKER frames, one under the other. The
+# first is the still picture, which everything above is measured on; the others are the same glass
+# with the fire a little up or down: a flicker, not a flash, and no frame like the one before it.
+FLICKER_SWING = 0.08            # how far the glass of a frame may stand from the still picture's, in Rec.709
+FLICKER_LEAST = 4               # pixels of a block's glass that change from one frame to the next, at least,
+#                                 in the two rows where the fire is (the third is soot: it may stand still)
+
+
+def flicker():
+    """[(version, row, lowest and highest glass of the row's frames, fewest and most pixels that
+    change from a frame to the next)] and what is wrong with them."""
+    rows, bad = [], []
+    for v in W.VERSIONS:
+        glass = ~_bars(v)
+        for r, (stills, moving) in enumerate(zip(W.furnace_face(v), W.furnace_frames(v))):
+            lows, highs, fewest, most = [], [], [], []
+            for k, (still, sheet) in enumerate(zip(stills, moving)):
+                label = f"furnace {v} row {r} picture {k}"
+                sheet = np.asarray(sheet)
+                if sheet.shape[0] != W.FLICKER * W.TILE or sheet.shape[1] != W.TILE:
+                    bad.append(f"{label}: its frames are {sheet.shape[1]}x{sheet.shape[0]}, not {W.FLICKER} of {W.TILE}")
+                    continue
+                frames = [sheet[f * W.TILE:(f + 1) * W.TILE] for f in range(W.FLICKER)]
+                if not np.array_equal(frames[0], np.asarray(still)):
+                    bad.append(f"{label}: the first frame is not the still picture")
+                at = [float((((fr[..., :3].astype(float) @ COEF709) / 255.0)[glass]).mean()) for fr in frames]
+                steps = [int((frames[f] != frames[(f + 1) % W.FLICKER]).any(axis=2).sum()) for f in range(W.FLICKER)]
+                lows.append(min(at))
+                highs.append(max(at))
+                fewest.append(min(steps))
+                most.append(max(steps))
+                if max(abs(a - at[0]) for a in at) > FLICKER_SWING:
+                    bad.append(f"{label}: a frame's glass stands {max(abs(a - at[0]) for a in at):.3f} from the "
+                               f"still picture's {at[0]:.3f}; a flicker keeps within {FLICKER_SWING}")
+                if r < 2 and min(steps) < FLICKER_LEAST:
+                    bad.append(f"{label}: between two frames only {min(steps)} pixels change; the fire stands still there")
+            if lows:
+                rows.append((v, r, min(lows), max(highs), min(fewest), max(most)))
+    return rows, bad
+
+
 def main():
     print(f"glass glow[2]={P.RAMPS['glow'][2]}  opal[0]={P.RAMPS['opal'][0]}  "
           f"night_glass[3,4]={P.RAMPS['night_glass'][3]},{P.RAMPS['night_glass'][4]}  bar iron[1]={P.RAMPS['iron'][1]}")
@@ -341,7 +382,12 @@ def main():
     scattered, bad_scattered = dither()
     for v, lights, pairs, knots in scattered:
         print(f"{v:3} {'':8} {lights:12d} {pairs:12d} {knots:6d}")
-    bad += bad_lined + bad_fired + bad_glowing + bad_scattered
+    print(f"\n{'ver':3} {'flicker':8} the glass of a row's frames from - to (Rec.709); pixels that change "
+          f"from a frame to the next, fewest - most")
+    moving, bad_moving = flicker()
+    for v, r, low, high, fewest, most in moving:
+        print(f"{v:3} {('sill', 'second', 'third')[r]:8} {low:.3f} - {high:.3f}   {fewest:3d} - {most:3d}")
+    bad += bad_lined + bad_fired + bad_glowing + bad_scattered + bad_moving
     if bad:
         print("\nOUT OF LADDER:")
         for line in bad:
