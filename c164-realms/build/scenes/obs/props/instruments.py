@@ -13,7 +13,8 @@ wood, cast iron or stone. Phosphor green is on dials only and nothing else glows
     barometer          a banjo barometer for the wall, two blocks tall, the dial at the foot
     louvre_box         a white louvred thermometer screen on four legs and a stone slab
     regulator_clock    a precision pendulum clock in a long glazed case, two blocks tall; its
-                       pendulum is the separate model regulator_pendulum (see PENDULUM)
+                       pendulum is the separate model regulator_pendulum, which the loop of
+                       motion/_kit swings (see PENDULUM)
     calc_machine       a hand-cranked calculating machine on a board, for a table
     sunshine_recorder  a glass ball before a brass bowl, for the stone pedestal of the weather station
                        (not on the card: site/outbuildings keeps a pedestal for it)
@@ -47,6 +48,7 @@ from artkit.pixelart import Sprite
 from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
+from ..motion import _kit as MK
 from . import _kit as K
 
 PREFIX = "prop_inst_"
@@ -806,10 +808,13 @@ SPEC = {
     "sunshine_recorder": dict(build=_sunshine_recorder, mount="floor"),
 }
 SCALE = {PREFIX + name: 1.0 for name in SPEC}
-# what motion needs to swing the pendulum: the entity carries the tag, stands on the pivot and turns
-# about the axis the clock faces along (the model's z); a seconds pendulum, a block long
+# How the pendulum swings: its entity stands on the pivot and turns about the axis the clock faces
+# along (the model's z), `swing` degrees to either side (at 3 the bob keeps within the door's glass,
+# at 5 it would pass behind the stiles), there and back in the beat every pendulum of the house
+# keeps (motion/_kit). place() registers it with the loop. The tag is what motion/sound finds the
+# clocks by, to tick where each pendulum hangs.
 PENDULUM = dict(tag="c164_pendulum", pivot=tuple(v / 16.0 for v in PENDULUM_PIVOT), axis="z",
-                swing=3.0, period_ticks=40)
+                swing=3.0, period_ticks=MK.PENDULUM)
 
 
 @functools.lru_cache(maxsize=None)
@@ -827,7 +832,8 @@ def models():
 def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), yaw=None, **opts):
     """Put one instrument into the scene; returns the number of display entities (1; the clock 2).
 
-    kind     a key of SPEC ("regulator_pendulum" comes with the clock).
+    kind     a key of SPEC ("regulator_pendulum" comes with the clock, hanging plumb, and the loop
+             of motion/_kit swings it from there; placed by itself it hangs still).
     pos      scene coordinates. A standing piece: the middle of its foot on the floor or on the
              table top. "barometer" and "regulator_clock": the point on the wall face behind the
              middle of the piece's foot (both are 2 blocks tall from there).
@@ -844,6 +850,7 @@ def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), yaw=None, **opts)
         n += K.put(canvas, _models()[PREFIX + "regulator_pendulum"], (pos[0] + dx, pos[1] + dy, pos[2] + dz),
                    mount="wall", yaw=yaw, origin=origin, **opts)
         canvas.entities[-1][3]["Tags"].append(PENDULUM["tag"])
+        MK.swing(canvas, PENDULUM["axis"], PENDULUM["swing"], MK.PENDULUM)
     return n
 
 
@@ -858,6 +865,10 @@ def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), yaw=None, **opts)
 DRESS = True            # on from the merge on (the fast lane, COMMON 0.10); a test scene may still ask
                         # for the site's instruments with dress(canvas), or call site()
 SUNSET_SCOPE = 16.0     # blocks west of the middle of the terrace's half-circle, on the axis
+# How far what this package places itself is drawn (the assembly brings it down to this after
+# build()): the telescope stands out of doors and is looked at from its own terrace. The instruments
+# of the rooms are placed by the rooms and take their band.
+VIEW = M.MID
 
 
 def site_pieces():

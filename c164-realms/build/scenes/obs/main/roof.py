@@ -16,8 +16,8 @@ the shell, the tower and the domes. The flags stay as the facade lays them; what
                         gutters' metal here and nothing else's), and an iron plate in the flags
                         before each door.
   the corner terraces   the two pockets between the great drum, a wing's gable and the east
-                        parapet. The dome room's doors open onto them; the leaves hang here, set
-                        back in the wall.
+                        parapet. The dome room's doors open onto them; the leaves hang here and
+                        stand open against the east jamb, within the wall.
   the end terraces      the flat roofs of the two end pavilions, west of the clock tower and of
                         the small dome. A roof light leans against the gable: six blocks of glass
                         level with the flags, an iron kerb on its three open sides, a ceiling light
@@ -39,6 +39,23 @@ the shell, the tower and the domes. The flags stay as the facade lays them; what
                         tower's to the north) is straight ahead on the terrace's axis. No step is
                         higher than half a block, and to either side of the grating the slates
                         are half a block down: the way needs no guard.
+  the parapets          a guard nobody sees: two rows of barrier over the coping, all the way
+                        round. The end terraces' flags are level with the coping, so a visitor
+                        walked out onto it and dropped to the cornice, from where the only way on
+                        is down to the court; over a wing's gutter the coping is one jump up (the
+                        walk-out of 11-16, plan/reviews/walk/1a0f1af). The outline stays as it is
+                        (the director, A0 #84088), and two rows are all a barrier may stand. They
+                        are rows 19 and 20, one clear of the coping: the row left under them is one
+                        block high, which nobody gets into, and their top is at 21, out of a
+                        jump's reach from every step of the gables. Rows 18 and 19 would have their
+                        top at 20, one block up and two columns away from the gables' steps at
+                        x 3 and 12: an ordinary jump. Two columns are laid otherwise: on the pier
+                        east of either door of the dome room the lights line hangs a caged lamp,
+                        and its source belongs in row 19 over the parapet beside it. There the
+                        barriers are rows 18 and 20 and the cell between them is the lamp's: one
+                        block high like the row under the others, and the top is at 21 as it is
+                        all the way round (facade #90287; the lamps were out in the first version
+                        that had the guard).
 
 Light: the caged lamps are blocks of this package (their own light is 4); over each the light kit
 is asked for a walkway's level (sky.md 6; agreed with the lights line, c220 #34654), where the kit
@@ -114,6 +131,14 @@ GLASS = B.SKYLIGHT.block
 LAYLIGHT = B.WINDOW_DARK.block                          # the ceiling light of the room under a roof light
 KERB = f"{B.IRON_RIVETED.slab}[type=bottom]"
 LEAF = B.IRON_DOOR
+DOORS_OPEN = True                                       # the dome room's two leaves stand open (doors())
+GUARD = B.BARRIER                                       # over the parapets, and not seen (guard())
+GUARD_Y = (S.PARAPET[1] + 2, S.PARAPET[1] + 3)          # 19, 20: one row clear of the coping (the header says why)
+# the two columns of the parapet beside the piers that carry the lights line's lamps of the corner
+# terraces (sky/_ways_roofs.py and _ways_roofsouth.py: fixed to (14, 19, -9) and (14, 19, 9), looking
+# east): the lamp's source stands in row 19, between a barrier on the coping and one in the upper row
+GUARD_LAMPS = ((15, -9), (15, 9))                       # (x, z)
+GUARD_LAMP_Y = (S.PARAPET[1] + 1, S.PARAPET[1] + 3)     # 18, 20
 
 SHAFT = frozenset(O.box(S.CLOCK_SHAFT_X[0], S.CLOCK_SHAFT_Z[0], S.CLOCK_SHAFT_X[1], S.CLOCK_SHAFT_Z[1]))
 
@@ -196,14 +221,48 @@ def walkway(s):
 
 def doors():
     """[(x, y, z, state)] of the leaves in the dome room's two doors (skeleton DOME_ROOM_DOORS; the
-    drum opens them, main/dome.py). A leaf stands on the inner edge of the outer wall's block, so
-    the doorway shows its depth from the terrace; both are hinged on the east jamb."""
+    drum opens them, main/dome.py). Both are hinged on the east jamb and stand open against it,
+    three texels of the doorway's sixteen, within the block of the outer wall: nothing in the map
+    is clicked (its reach is 0) and an iron door is not opened by hand anyway, so shut leaves cut
+    the roof walks, the clock room and the small dome off from the house (a4's walk of 11-16).
+    Shut (DOORS_OPEN off), a leaf stands on the inner edge of the outer wall's block."""
     y0, y1 = S.DOME_ROOM_DOORS["y"]
     out = []
+    is_open = "true" if DOORS_OPEN else "false"
     for x, z in S.DOME_ROOM_DOORS["cells"]:
         outward, hinge = ("south", "left") if z > 0 else ("north", "right")
         for y, half in zip(range(y0, y1 + 1), ("lower", "upper")):
-            out.append((x, y, z, f"{LEAF}[facing={outward},half={half},hinge={hinge},open=false]"))
+            out.append((x, y, z, f"{LEAF}[facing={outward},half={half},hinge={hinge},open={is_open}]"))
+    return out
+
+
+def guard():
+    """The cells of the guard over the parapets, sorted: two over every column that carries the
+    parapet (the wall line, but where the great drum stands on it: main/facade.py's order), rows
+    GUARD_Y, and rows GUARD_LAMP_Y in the two columns of GUARD_LAMPS. build() lays a barrier in each
+    that is empty. A lightning rod, the clock tower's wall and the small drum's stand on the wall
+    line as well and shut their cells themselves."""
+    return sorted((x, y, z) for x, z in guard_columns()
+                  for y in (GUARD_LAMP_Y if (x, z) in GUARD_LAMPS else GUARD_Y))
+
+
+def guard_columns():
+    """The columns (x, z) that carry the parapet, and so the guard."""
+    return sorted((x, z) for x, z in facade.shell().wall if (x, z) not in facade.ROTUNDA)
+
+
+def guard_lamp_cells():
+    """The cells the guard leaves to the lights line's two lamps: one in each column of GUARD_LAMPS,
+    between its two barriers."""
+    return sorted((x, GUARD_LAMP_Y[0] + 1, z) for x, z in GUARD_LAMPS)
+
+
+def guard_tally(c):
+    """{block: cells} of what stands in the guard's cells on a canvas ("air": open)."""
+    out = {}
+    for cell in guard():
+        kind = (c.get(*cell) or "air").partition("[")[0]
+        out[kind] = out.get(kind, 0) + 1
     return out
 
 
@@ -236,7 +295,7 @@ def _ask_light(canvas, cell, level, why):
 
 def build(canvas, origin=(0, 0, 0)):
     """Lay the channels, the plates, the roof lights, the walkways and the door leaves over what
-    stands there. No display entities."""
+    stands there, and the guard over the parapets where nothing stands. No display entities."""
     ox, oy, oz = origin
 
     def put(x, y, z, state):
@@ -263,6 +322,8 @@ def build(canvas, origin=(0, 0, 0)):
             _ask_light(canvas, (ox + x, oy + RIDGE_TOP, oz + z), LAMP_LEVEL, "main/roof:walk")
     for x, y, z, state in doors():
         put(x, y, z, state)
+    for x, y, z in guard():
+        canvas.set(ox + x, oy + y, oz + z, GUARD, keep=True)
     return 0
 
 
@@ -359,19 +420,25 @@ def check(c=None):
     for x, y, z, state in doors():
         if c.get(x, y, z) != state:
             out.append(f"door: no leaf at ({x}, {y}, {z})")
+        elif DOORS_OPEN and "open=true" not in state:
+            out.append(f"door: the leaf at ({x}, {y}, {z}) is shut, the way to the roofs is cut")
     for x, z in S.DOME_ROOM_DOORS["cells"]:
         if not c.has(x, S.DOME_ROOM_DOORS["y"][0] - 1, z):
             out.append(f"door: the leaf at ({x}, {z}) stands on nothing")
     for x, z in thresholds():
         if c.get(x, DECK_Y, z) != PLATE or c.has(x, STAND, z):
             out.append(f"door: the plate at ({x}, {z}) is not as laid")
-    # 7. nothing of this package stands on a parapet or outside the walls, and nothing higher than
-    #    the kerbs and the door leaves
+    # 7. nothing of this package that is seen stands on a parapet or outside the walls, and nothing
+    #    higher than the kerbs and the door leaves; the guard, which is not seen, is laid over the
+    #    parapets' columns and nowhere else
     plan = facade.shell()
     inside = plan.leaf | plan.core
     scratch = Canvas()
     build(scratch)
-    for x, y, z in sorted(scratch.b):
+    unseen = set(guard())
+    if {cell for cell, state in scratch.b.items() if state == GUARD} != unseen:
+        out.append("guard: the barriers are not laid over the parapets' columns alone")
+    for x, y, z in sorted(set(scratch.b) - unseen):
         if (x, z) not in inside:
             out.append(f"outline: ({x}, {y}, {z}) lies outside the parapets")
         if y >= RIDGE_TOP:
@@ -382,20 +449,44 @@ def check(c=None):
         for x, az in POCKET:
             if any(c.get(x, y, s * az) != FILL for y in range(STAND, POCKET_TOP)):
                 out.append(f"{where} pocket: ({x}, {s * az}) is not closed up to {POCKET_TOP}")
+    # 9. the guard: two rows, the lower one a row clear of the coping and no more; over every
+    #    column of the parapet the coping stands and both rows are shut, by a barrier or by what
+    #    stood there before it. In the two columns beside the lamps of the corner terraces the
+    #    barriers are the row on the coping and the upper row, and the one cell between them is
+    #    left empty by this package: the lamp's source goes there. That nobody gets past any of it
+    #    is scenes/obs_main_smalldome/kept.py's to show, on foot
+    if len(GUARD_Y) != 2 or GUARD_Y != (S.PARAPET[1] + 2, S.PARAPET[1] + 3):
+        out.append(f"guard: rows {GUARD_Y}, not the two over the row above the coping")
+    if GUARD_LAMP_Y != (S.PARAPET[1] + 1, GUARD_Y[1]):
+        out.append(f"guard: rows {GUARD_LAMP_Y} beside the lamps, not the row on the coping and the upper row")
+    columns = set(guard_columns())
+    for x, z in GUARD_LAMPS:
+        if (x, z) not in columns:
+            out.append(f"guard: the lamp's column ({x}, {z}) carries no parapet")
+    for x, y, z in guard_lamp_cells():
+        if (x, y, z) in scratch.b:
+            out.append(f"guard: ({x}, {y}, {z}) is the lamp's cell, and this package has laid {scratch.b[(x, y, z)]} in it")
+    for x, y, z in guard():
+        if not c.has(x, y, z):
+            out.append(f"guard: ({x}, {y}, {z}) is open")
+    for x, z in sorted(columns):
+        if not c.has(x, S.PARAPET[1], z):
+            out.append(f"guard: no coping under ({x}, {z}), the way under the barriers is open")
     return out
 
 
-_MARKS = {LEAF: "J", B.IRON_BULB: "@", B.VERDIGRIS_CAST: "A", B.IRON_CAST: "K", B.IRON_HATCH: "|"}
+_MARKS = {LEAF: "J", B.IRON_BULB: "@", B.VERDIGRIS_CAST: "A", B.IRON_CAST: "K", B.IRON_HATCH: "|", GUARD: "x"}
 
 
 def _top_plan(c, zs, y_hi=22, y_lo=16):
-    """The roofs from above (north up): the letter of the highest block of every column."""
+    """The roofs from above (north up): the letter of the highest block of every column that is
+    seen (the guard's barriers are left out)."""
     xs = range(S.WALL_W - 2, S.WALL_E + 4)
     lines = ["        " + "".join("%d" % (abs(x) % 10) for x in xs)]
     for z in range(zs[0], zs[1] + 1):
         row = []
         for x in xs:
-            y = next((y for y in range(y_hi, y_lo - 1, -1) if c.has(x, y, z)), None)
+            y = next((y for y in range(y_hi, y_lo - 1, -1) if c.has(x, y, z) and c.get(x, y, z) != GUARD), None)
             row.append("." if y is None else O.mark(c.get(x, y, z)))
         lines.append("z %4d  %s" % (z, "".join(row)))
     return "\n".join(lines)
@@ -422,8 +513,11 @@ def _drawings(c):
     print(f"\nSECTION through the south terrace on the doors' row, z = {DOOR_Z} (west on the left):\n")
     print(O.section(c, "z", DOOR_Z, xs, (DECK_Y - 2, STAND + 4)))
     print("\nLetters: M slate flags, c copper channel, Y roof light, D its ceiling light, i iron kerb")
-    print("and treads, I iron plate and block, % grating, @ caged lamp, J door leaf, T t slates, F stone.")
-    print("Small letters are slabs and stairs.")
+    print("and treads, I iron plate and block, % grating, @ caged lamp, J door leaf, T t slates, F stone,")
+    print("x the guard's barriers (in the sections; nobody sees them). Small letters are slabs and stairs.")
+    print(f"\nthe guard over the parapets, rows {GUARD_Y[0]} and {GUARD_Y[1]} "
+          f"({GUARD_LAMP_Y[0]} and {GUARD_LAMP_Y[1]} in the {len(GUARD_LAMPS)} columns beside the lamps): "
+          + ", ".join(f"{n} {kind}" for kind, n in sorted(guard_tally(c).items())))
     for where, s in WINGS.items():
         way = route(s)
         print(f"\nthe way, {where} wing: {len(way)} columns from the dome room's door {way[0][:2]} to "
@@ -439,6 +533,6 @@ if __name__ == "__main__":
     found = check(scene)
     print("\n".join(found) if found else
           "self-check: terraces closed, channels joined, roof lights, both ways walkable and alike, "
-          "nothing above the ridge, door leaves and plates, nothing on the parapets, the pockets "
-          "by the drum closed -- all good")
+          "nothing above the ridge, door leaves and plates, nothing seen on the parapets, the pockets "
+          "by the drum closed, the guard over the parapets shut -- all good")
     sys.exit(1 if found else 0)

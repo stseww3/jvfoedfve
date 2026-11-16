@@ -105,7 +105,7 @@ def shots():
     shot("room", (X1 - 0.5, 1.62, Z1 - 0.5), (X0 + 0.9, 1.5, Z0 + 0.9))
     shot("phone_near", (px + 0.6, py + 0.8, pz + 1.5), (px, py + 0.72, pz + 0.2))
     shot("phone_left", (px - 0.95, py + 0.6, pz + 1.35), (px + 0.06, py + 0.75, pz + 0.2))
-    shot("key_near", (kx - 0.2, ky + 0.55, kz + 1.05), (kx - 0.24, ky + 0.15, kz))
+    shot("key_near", (kx - 0.36, ky + 0.46, kz + 0.62), (kx + 0.03, ky + 0.12, kz))
     shot("key_side", (kx - 0.6, ky + 0.3, kz + 0.35), (kx, ky + 0.12, kz))
     shot("door_plates", (X0 + 2.2, 1.62, door), (X0, 1.6, door))
     shot("way_near", (X0 + 0.75, PLATE_Y + 0.03, DOOR_Z + 2.15), (X0, PLATE_Y, DOOR_Z + 2.15))
