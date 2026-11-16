@@ -1,0 +1,157 @@
+{
+ "scene": "obs_props_steam",
+ "commit": "103a420",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "3912 blocks, 46 entities, 36 models, 796 resource-pack files, 20 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (0.9 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 795 files, no file written twice, the folders and the prefix of props are kept (10 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "165 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "601 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "18 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of props: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "46 display entities, 12 drawn out along one axis, 23 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "13 shots, most display entities in view: 46 (front), limit 600; counted without what walls hide; the game draws up to 46 (board_v3): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "board_v3",
+      "in_view": 29,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "board_v4",
+      "in_view": 24,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "front",
+      "in_view": 46,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "along_north",
+      "in_view": 37,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "along_south",
+      "in_view": 39,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "walk",
+      "in_view": 31,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "valve",
+      "in_view": 24,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "trap",
+      "in_view": 31,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "bend",
+      "in_view": 23,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "bend_under",
+      "in_view": 39,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "into_wall",
+      "in_view": 36,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "pilaster",
+      "in_view": 27,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "start",
+      "in_view": 11,
+      "drawn": 46,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "0 parts and 6 points on 1 chains, 12 function files; 4 commands in the busiest tick (limit 120), 0.1 a tick on average (limit 40)",
+   "details": [
+    "chain of 160 ticks: 6 functions, 14 commands a cycle, starts 1 ticks after start"
+   ]
+  }
+ ]
+}

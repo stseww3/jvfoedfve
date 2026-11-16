@@ -1,0 +1,20 @@
+gate main/smalldome 82d217da: the merged tree 103a4205, the assembly as it was ec8c262b
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] scope    19 of 20 files are the card's own
+                    not this card's file: M build/scenes/obs/main/roof.py
+check.py: 102 scenes in 148 s: 102 pass (56 with warnings)
+pictures: obs_main_smalldome: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_main_smalldome at 103a4205: 6 of 19 kept pictures are what the code draws, 13 not
+    v1: 194 of 921600 pixels are not what the code draws (off by up to 138 of 255)
+    v2: 1447 of 921600 pixels are not what the code draws (off by up to 93 of 255)
+    v11_dome: 1404 of 921600 pixels are not what the code draws (off by up to 105 of 255)
+    court: 6572 of 921600 pixels are not what the code draws (off by up to 96 of 255)
+    corner: 754 of 921600 pixels are not what the code draws (off by up to 125 of 255)
+    slit: 255 of 921600 pixels are not what the code draws (off by up to 110 of 255)
+    west_high: 2178 of 921600 pixels are not what the code draws (off by up to 124 of 255)
+    walk: 34430 of 921600 pixels are not what the code draws (off by up to 189 of 255)
+    terrace: 32 of 921600 pixels are not what the code draws (off by up to 109 of 255)
+    roofs: 3 of 921600 pixels are not what the code draws (off by up to 58 of 255)
+    roofs_north: 540 of 921600 pixels are not what the code draws (off by up to 121 of 255)
+    aerial: 472 of 921600 pixels are not what the code draws (off by up to 85 of 255)
+result: PASS

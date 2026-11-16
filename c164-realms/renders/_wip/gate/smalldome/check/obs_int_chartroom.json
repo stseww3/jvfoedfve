@@ -1,0 +1,159 @@
+{
+ "scene": "obs_int_chartroom",
+ "commit": "103a420",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "2003 blocks, 86 entities, 172 models, 1204 resource-pack files, 46 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.4 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 1203 files, no file written twice, the folders and the prefix of interiors are kept (9 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "301 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "873 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "14 kinds of block placed, 14 barrier cells (x 7..8, y 7, z 11..17), all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "WARN",
+   "summary": "1 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)",
+   "details": [
+    "smooth_sandstone facing west: flat over 9x9, the square's top corner at (0, 14, 14)"
+   ],
+   "data": {
+    "largest": 9,
+    "faces": 1
+   }
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "86 display entities, 2 drawn out along one axis, 115 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "12 shots, most display entities in view: 86 (int_door), limit 600; counted without what walls hide; the game draws up to 86 (v9): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "v9",
+      "in_view": 78,
+      "drawn": 86,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v9_deep",
+      "in_view": 78,
+      "drawn": 86,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v9_glow",
+      "in_view": 78,
+      "drawn": 86,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v9_board",
+      "in_view": 75,
+      "drawn": 86,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_table",
+      "in_view": 64,
+      "drawn": 86,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_viewer",
+      "in_view": 53,
+      "drawn": 86,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_desk",
+      "in_view": 28,
+      "drawn": 86,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_shelf",
+      "in_view": 33,
+      "drawn": 86,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_cabinets",
+      "in_view": 12,
+      "drawn": 86,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_west",
+      "in_view": 38,
+      "drawn": 86,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_back",
+      "in_view": 53,
+      "drawn": 86,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_door",
+      "in_view": 86,
+      "drawn": 86,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "3 parts and 0 points on 2 chains, 38 function files; 4 commands in the busiest tick (limit 120), 0.8 a tick on average (limit 40)",
+   "details": [
+    "chain of 40 ticks: 8 functions, 18 commands a cycle, starts 1 ticks after start",
+    "chain of 240 ticks: 24 functions, 73 commands a cycle, starts 2 ticks after start",
+    "int_chart_bridge_screw: 24 steps in 240 ticks; its model strays 0.31 pixels from its arc (its middle lies 0.03 blocks off the axis), within the half pixel a fast part is let off with"
+   ]
+  }
+ ]
+}
