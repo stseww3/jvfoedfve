@@ -1049,6 +1049,26 @@ def seal(world, spec, out_dir, head, when, facts):
     for path in glob.glob(os.path.join(pack_dir, "*.json")):
         os.remove(path)
         removed.append(os.path.relpath(path, stage))
+    # the loop's stop is the builder's (a2 c322 #82424: nothing in the pack runs it; start is run by
+    # watch, rest and halt are parts of the loop), and a finished map keeps no tool of the building.
+    # Left where anything in the pack does name it.
+    stop = os.path.join(pack_dir, "data", ART, "function", f"{spec['scene']}-motion", "stop.mcfunction")
+    if os.path.exists(stop):
+        named = re.compile(re.escape(f"{ART}:{spec['scene']}-motion/stop") + r"(?![\w/.-])")
+        users = []
+        for folder, _dirs, names in os.walk(os.path.join(pack_dir, "data")):
+            for n in names:
+                path = os.path.join(folder, n)
+                if path != stop and n.endswith((".mcfunction", ".json")):
+                    with open(path, encoding="utf-8") as fh:
+                        if named.search(fh.read()):
+                            users.append(os.path.relpath(path, pack_dir))
+        if users:
+            facts.setdefault("notes", []).append(
+                f"{os.path.relpath(stop, pack_dir)} is left in the pack: named by {', '.join(sorted(users))}")
+        else:
+            os.remove(stop)
+            removed.append(os.path.relpath(stop, stage))
     # the map's name, where a player meets it: the world's name in the list of worlds (the folder
     # and the archive keep the save's number) and what the two packs say of themselves
     title = spec.get("title")
