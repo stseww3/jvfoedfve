@@ -9,6 +9,7 @@ attitude. Everything here builds on that: `tube()`, `ring()` and `ball()` make r
 many sides as wanted, `rod()`, `beam()` and `hose()` run between points, and whatever is drawn inside
 `with m.turned(...)` or `with m.aimed(a, b)` is moved as one piece.
 """
+import fnmatch
 import json
 import math
 import os
@@ -30,6 +31,12 @@ IDENT = (0.0, 0.0, 0.0, 1.0)
 
 # where the highlight painted into round shapes comes from (model space: up, a little west and north)
 LIGHT = (-0.35, 0.80, -0.48)
+
+# A model with a moving picture (pixelart.Frames) on a face: the largest sheet it may have and the
+# most frames. At every change of frame the client redraws the whole sheet, so the moving part of a
+# large model belongs in a small model of its own.
+MOVING_SHEET = 128
+MOVING_FRAMES = 32
 
 
 def _flat(mat, shift=-1):
@@ -382,11 +389,40 @@ class Model:
             raise ValueError(f"{self.name}: texture does not fit 512x512")
 
         img = np.zeros((S, S, 4), dtype=np.uint8)
+        moving = []    # (x, y, w, h, frames, material) of the faces whose picture changes with time
         for kk, (x, y) in pos.items():
             w, h, mat, grain, seed = rects[kk]
-            tex = mat.paint(w, h, grain, seed)
+            shots = mat.frames(w, h, grain, seed) if hasattr(mat, "frames") else None
+            tex = shots[0] if shots else mat.paint(w, h, grain, seed)
             padded = np.pad(tex, ((1, 1), (1, 1), (0, 0)), mode="edge")
             img[y:y + h + 2, x:x + w + 2] = padded
+            if shots:
+                moving.append((x, y, w, h, shots, mat))
+
+        # A moving picture (pixelart.Frames) makes the whole sheet an animated texture: the frames
+        # of the sheet stacked downwards, each a copy of the sheet with the moving faces repainted,
+        # and a .mcmeta beside it. The model's uv stay as they are: the game maps them onto one frame.
+        meta, count = None, 1
+        if moving:
+            pace = sorted({(m.frametime, m.interpolate) for *_, m in moving})
+            if len(pace) != 1:
+                raise ValueError(f"{self.name}: its moving pictures disagree on (frametime, interpolate): {pace}; "
+                                 f"one sheet has one pace")
+            count = math.lcm(*(len(shots) for *_, shots, _ in moving))
+            if S > MOVING_SHEET or count > MOVING_FRAMES:
+                raise ValueError(f"{self.name}: a moving sheet of {S}x{S} in {count} frames (at most {MOVING_SHEET}x"
+                                 f"{MOVING_SHEET} in {MOVING_FRAMES}): the client redraws the whole sheet at every "
+                                 f"change of frame; put the moving part into a small model of its own")
+            sheets = []
+            for k in range(count):
+                frame = img.copy()
+                for x, y, w, h, shots, _ in moving:
+                    frame[y:y + h + 2, x:x + w + 2] = np.pad(shots[k % len(shots)], ((1, 1), (1, 1), (0, 0)), mode="edge")
+                sheets.append(frame)
+            img = np.concatenate(sheets, axis=0)
+            meta = {"animation": {"frametime": pace[0][0]}}
+            if pace[0][1]:
+                meta["animation"]["interpolate"] = True
 
         elements = []
         by_part = {}
@@ -424,12 +460,18 @@ class Model:
         for d in (tex_dir, mdl_dir, itm_dir):
             os.makedirs(d, exist_ok=True)
         Image.fromarray(img, "RGBA").save(os.path.join(tex_dir, self.name + ".png"))
+        note = os.path.join(tex_dir, self.name + ".png.mcmeta")
+        if meta:
+            with open(note, "w") as fh:
+                json.dump(meta, fh, separators=(",", ":"))
+        elif os.path.exists(note):
+            os.remove(note)         # a sheet that moved when this folder was last written
         tex = f"{ns}:item/{self.name}"
         with open(os.path.join(mdl_dir, self.name + ".json"), "w") as fh:
             json.dump({"textures": {"0": tex, "particle": tex}, "elements": elements}, fh, separators=(",", ":"))
         with open(os.path.join(itm_dir, self.name + ".json"), "w") as fh:
             json.dump({"model": {"type": "minecraft:model", "model": f"{ns}:item/{self.name}"}}, fh)
-        return {"name": self.name, "elements": len(elements), "texture": S, "rects": len(rects)}
+        return {"name": self.name, "elements": len(elements), "texture": S, "rects": len(rects), "frames": count}
 
 
 # ---- rotations -------------------------------------------------------------------------------
@@ -519,6 +561,52 @@ def display(model, yaw=0.0, scale=1.0, turns=(), brightness=None, ns="c164", vie
         sky, block = brightness if isinstance(brightness, (tuple, list)) else (brightness, brightness)
         nbt["brightness"] = {"sky": int(sky), "block": int(block)}
     return nbt
+
+
+# ---- how far a display entity is drawn -----------------------------------------------------------
+# view_range: the game draws a display entity up to 64 blocks times this number away, and it draws it
+# whatever walls stand between. With the 3.0 that display() gives by default a thing in a room is
+# drawn for a person who stands on the far side of the site. Four bands (A0, 11-16 12:25):
+FAR = 3.0       # 192 blocks: only what is seen across the whole site -- the train, what moves on the
+#                 domes and the tower, the wind engine, the gas holder, the globe lamps, and the few
+#                 things a board view sees through a window
+MID = 1.0       # 64 blocks: furniture and machines out of doors, seen within one terrace
+NEAR = 0.5      # 32 blocks: everything indoors, and the small detail out of doors (valves, rivets, tools)
+SMALL = 0.25    # 16 blocks: what lies on a desk, and the plaques
+BANDS = (("far", FAR), ("mid", MID), ("near", NEAR), ("small", SMALL))
+DISPLAY_IDS = ("minecraft:item_display", "minecraft:block_display", "minecraft:text_display")
+
+
+def shown_model(nbt):
+    """The name of the model an item display shows, without its namespace; '' when it shows none."""
+    ref = ((nbt.get("item") or {}).get("components") or {}).get("minecraft:item_model") or ""
+    return str(ref).split(":", 1)[-1]
+
+
+def band(canvas, first, view, keep=()):
+    """Give the display entities placed on the canvas since `first` the view range `view`.
+
+        first = len(canvas.entities)            # before the part is built
+        ...                                     # the part builds as before, with whatever kit it uses
+        M.band(canvas, first, M.NEAR, keep=("int_hall_orrery*",))
+
+    It only ever lowers: an entity that was given less already (a plaque's 0.25) keeps that. `keep`
+    names the models that stay as they were built, the ones a board view sees through a window, by
+    their names without the namespace; * and ? match as in file names. Returns how many entities
+    were changed. A package module that is all of one band needs no call: it sets VIEW (and
+    VIEW_KEEP) at its top and the assembly does this after its build (scenes/obs/common/assembly.py).
+    """
+    changed = 0
+    for _, _, _, nbt in canvas.entities[first:]:
+        if nbt.get("id") not in DISPLAY_IDS:
+            continue
+        name = shown_model(nbt)
+        if any(fnmatch.fnmatchcase(name, pattern) for pattern in keep):
+            continue
+        if float(nbt.get("view_range", 1.0)) > view:
+            nbt["view_range"] = Float(view)
+            changed += 1
+    return changed
 
 
 def between(model, a, b, thick=1.0, length=48.0, **kw):
