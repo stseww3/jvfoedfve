@@ -60,7 +60,7 @@ VIEWS = [
     ("winch", (87.0, STAND, -30.0), (89.0, -1.9, -37.4)),
     ("winch_near", (89.6, STAND, -34.1), (88.8, -2.6, -37.4)),
     ("drum_east", (90.9, -2.3, -34.9), (88.9, -2.5, -37.2)),
-    ("motor", (86.9, -2.9, -34.9), (88.0, -3.3, -36.0)),
+    ("motor", (87.25, -2.9, -34.95), (88.0, -3.3, -36.0)),
     ("sheave", (90.7, -3.0, -34.9), (cable.SHEAVE[0], -3.45, cable.SHEAVE[2])),
     # the rope: off the platform, round the level roller and over the brow; down the trestle
     ("brow", (94.3, -2.9, -31.0), (94.0, -3.8, -33.3)),
