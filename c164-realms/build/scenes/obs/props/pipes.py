@@ -897,10 +897,10 @@ def dress(canvas, origin=(0, 0, 0)):
 
 
 # How far off the family is drawn in the master scene (artkit.models' bands). A line -- the pipe, its
-# hopper or head, a bend, the bonnet and the straps of the main laid in blocks -- is seen within one
-# terrace: VIEW, which the assembly gives to everything build() places. What is small on a line --
-# clips, sleeves, plates, flanges, valves, the gauge -- is drawn from near by only.
-VIEW = M.MID
+# hopper or head, a bend, the bonnet and the straps of the main laid in blocks -- belongs to the
+# outline of the front it stands on and is drawn as far off as the front is seen: it keeps the far
+# band it is built with (plan/roles/INTERFACE.md, section 7). What is small on a line -- clips,
+# sleeves, plates, flanges, valves, the gauge -- is drawn from near by only.
 VIEW_SMALL = M.NEAR
 LINES = ("down", "drain", "fine", "main_?", "down_hopper_*", "drain_head", "elbow_?", "expansion_?", "tee_?",
          "bonnet", "band")

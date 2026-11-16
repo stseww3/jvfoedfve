@@ -26,7 +26,11 @@ from artkit.nbtw import Float
 from ..common import palette as P
 from ..motion import _kit as MK
 
-ON = True                       # False: no head is placed
+# Off since 11-16 13:15 (cr2): on the real client the heads' sides are darker than the sea (an item's
+# faces are shaded by the way they face, 0.74 north and south, 0.5 east and west, whatever the
+# model says; the block sea's are not), so a head reads as a stone stair. Until its shape is one
+# of faces that look up, no head is placed.
+ON = False                      # False: no head is placed
 PREFIX = "sky_cloudsea_swell_"
 
 VOXEL = 4.0                     # texels to a voxel of the model
