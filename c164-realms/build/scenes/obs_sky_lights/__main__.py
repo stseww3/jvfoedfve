@@ -1,8 +1,8 @@
-"""python -m scenes.obs_sky_lights (in build/): writes this scene's shots.json and that of its twin
-obs_sky_lights_nolend, then prints what the lights came to: the report of sky/lights, the lighting
-map of each look, and the block light that reaches the stone round the windows of the levels board,
-round a lit window of a wing, round the entrance (with and without what the brightest window lends)
-and on the washed pilasters (of the building, and of the buildings that try another level)."""
+"""python -m scenes.obs_sky_lights (in build/): writes this scene's shots.json, then prints what the
+lights came to: the report of sky/lights, the lighting map of each look, and the block light that
+reaches the stone round the windows of the levels board, round a lit window of a wing, round the
+entrance, on the ground at the foot of a street lamp and on the washed pilasters (of the building,
+and of the buildings that try another level)."""
 import json
 import os
 
@@ -11,7 +11,7 @@ from scenes.obs.common import skeleton as S
 from scenes.obs.sky import _lightkit as L
 from scenes.obs.sky import lights
 
-from . import BOARD, BOARD_LEVELS, NOLEND_LOOKS, NOLEND_SHOTS, STATIONS, SURROUND_BAY, VARIANTS, WING_X, build, shots
+from . import BOARD, BOARD_LEVELS, STATIONS, SURROUND_BAY, VARIANTS, WING_X, build, shots
 
 
 def surround(canvas, o, wall, bay):
@@ -45,10 +45,8 @@ def surround(canvas, o, wall, bay):
 def main():
     here = os.path.dirname(os.path.abspath(__file__))
     path = os.path.join(here, "shots.json")
-    for folder, only in ((here, None), (here + "_nolend", NOLEND_SHOTS)):
-        listed = [shot for shot in shots() if only is None or shot["name"] in only]
-        with open(os.path.join(folder, "shots.json"), "w", encoding="utf-8", newline="\n") as fh:
-            fh.write("[\n" + ",\n".join(" " + json.dumps(shot) for shot in listed) + "\n]\n")
+    with open(path, "w", encoding="utf-8", newline="\n") as fh:
+        fh.write("[\n" + ",\n".join(" " + json.dumps(shot) for shot in shots()) + "\n]\n")
     print(f"{len(shots())} shots -> {path}\n")
 
     canvas = build()
@@ -72,14 +70,18 @@ def main():
     wall = S.east_wall_x(9)
     print("  blue, over the door:   " + "; ".join(f"{k} {v}" for k, v in surround(canvas, o, wall, 9).items()))
     beside = lights.ENTRANCE_BAYS[-1]       # its jamb and pilaster side of surround() are the ones towards the door
-    bare = build(only=NOLEND_LOOKS, lends=False)
-    for c, what in ((canvas, f"blue, beside the door (bay {beside}):"), (bare, "the same, nothing lent:")):
-        print(f"  {what:<32} "
-              + "; ".join(f"{k} {v}" for k, v in surround(c, o, S.east_wall_x(beside), beside).items()))
+    print(f"  blue, beside the door (bay {beside}): "
+          + "; ".join(f"{k} {v}" for k, v in surround(canvas, o, S.east_wall_x(beside), beside).items()))
     lv = L.levels(canvas, (o[0] + wall - 9, o[1], o[2] - 8), (o[0] + wall + 12, o[1] + 8, o[2] + 8))
     row = [lv.get((o[0] + x, o[1], o[2]), 0) for x in range(wall - 8, wall + 12)]
     print(f"\nblue, on the ground along the axis, x {wall - 8}..{wall + 11} (the wall face is x {wall}): "
           + " ".join(str(v) for v in row))
+    r = lights.report(canvas)
+    for foot in sorted(cell for cell in r["pools"] if cell[0] > o[0] - 100):
+        lv = L.levels(canvas, (foot[0] - 8, foot[1], foot[2] - 1), (foot[0] + 8, foot[1] + 6, foot[2] + 1))
+        row = [lv.get((foot[0] + d, foot[1], foot[2]), 0) for d in range(-7, 8)]
+        print(f"blue, on the ground through the foot of the street lamp at {foot} (a pool of {L.POOL} there), "
+              f"x {foot[0] - 7}..{foot[0] + 7}: " + " ".join(str(v) for v in row))
     for x, what in ((wall + 1, "the door's jambs at the pilaster plane"), (wall - 5, "five cells behind the wall line")):
         print(f"blue, {what} (x {x}), rows y 6..0, z -6..6:")
         for y in range(6, -1, -1):

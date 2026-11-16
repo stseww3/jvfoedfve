@@ -70,6 +70,7 @@ def check():
     plates = D.plates()
     slit = sorted(col for col in plates if D._in_slit(*col))
     edge = sorted(col for col in plates if any(O.step(col, d) not in plates for d in O.SIDES))
+    corners = D.corners()
     reach = D.R + 2
     for version in D.VERSIONS:
         for state in D.STATES:
@@ -113,6 +114,11 @@ def check():
             for col, (rows, face) in sorted(cols.items()):
                 if col in slit and col not in shut and col not in edge:
                     continue                            # the open slit
+                if col in corners:                      # the ring beam's block, and over it the column's own plates
+                    if not rows or rows[0] != D.SKIRT_Y:
+                        out.append(f"{tag} shell: column {col} in a corner of the wall line has no ring beam under it")
+                        continue
+                    rows = rows[1:]
                 if not rows or rows != list(range(rows[0], rows[-1] + 1)):
                     out.append(f"{tag} shell: column {col} is missing or broken: rows {rows}")
                     continue
@@ -124,13 +130,18 @@ def check():
                         if n in slit and n not in shut:
                             continue                    # beside the open slit the shell shows its thickness
                         out.append(f"{tag} shell: a gap under column {col} over its neighbour {n}")
-            # 6. the ring beam: riveted iron all round, twenty axle boxes in it, one to a seam
-            ring = {col: name(col[0], D.SKIRT_Y, col[1]) for col in edge}
-            if any(what not in (D.SKIRT, D.AXLE_BOX) for what in ring.values()):
-                out.append(f"{tag} ring beam: the dome's edge at y {D.SKIRT_Y} is not iron all round")
+            # 6. the ring beam: riveted iron on the whole wall line, the corners behind the dome's
+            #    edge included (the room looks at those), twenty axle boxes in it, one to a seam;
+            #    in version b the curtain's two rails stand on it
+            ring = {col: name(col[0], D.SKIRT_Y, col[1]) for col in set(edge) | corners}
+            if set(ring) != p.wall or any(what not in (D.SKIRT, D.AXLE_BOX) for what in ring.values()):
+                out.append(f"{tag} ring beam: the wall line at y {D.SKIRT_Y} is not iron all round")
             boxes = {col for col, what in ring.items() if what == D.AXLE_BOX}
             if boxes != D.axle_boxes() or len(boxes) != D.GORES:
                 out.append(f"{tag} ring beam: {len(boxes)} axle boxes, not one under each of the {D.GORES} seams")
+            feet = [col for col in edge if D._railed(col[0], col[1], version)]
+            if version == "b" and (len(feet) != 2 or any(name(x, D.SILL_Y, z) != D.LEAF.block for x, z in feet)):
+                out.append(f"{tag} rails: the curtain's rails do not stand on the ring beam at {feet}")
             # 7. the gallery: gutter, cove and posts; nothing else stands over it
             if any(name(x, D.DRUM_TOP, z) != D.GUTTER.slab for x, z in p.front):
                 out.append(f"{tag} gallery: the gutter at y {D.DRUM_TOP} is not copper slabs all round")
@@ -174,6 +185,12 @@ def check():
             for x, z in p.core:
                 if any(c.has(x, y, z) for y in range(D.ATTIC, D.SKIRT_Y + 1)):
                     out.append(f"{tag} room: something stands inside the inner leaf at ({x}, {z})")
+            #    the corner of the hand gear's shaft is in the room, and the leaf's two blocks that
+            #    look into it are iron plate from the floor to the ledge
+            cased = D.casing(p)
+            if D.GEAR_SHAFT not in p.core or len(cased) != 2 or any(
+                    name(x, y, z) != D.CASING for x, z in cased for y in O.rows(D.CASED_Y)):
+                out.append(f"{tag} room: the corner of the hand gear's shaft at {D.GEAR_SHAFT} is not cased in iron plate")
             # 9. the seams: version a draws them with the uncut sheet, and has the darker copper
             #    only where a run stains a seam; version b draws its ribs with the darker copper
             #    and has no sheet
