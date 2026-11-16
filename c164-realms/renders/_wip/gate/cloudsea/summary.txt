@@ -1,0 +1,7 @@
+gate sky/cloudsea 934cb10d: the merged tree 40840924, the assembly as it was 73cf5734
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] pictures 1 test scene, 12 shots with a picture kept
+                    obs_sky_cloudsea: 12 pictures show 8c8256a6; the card's code has changed since (_lightkit.py, _shaders.py, _swell.py, _ways_pier.py ...): draw them again
+check.py: 103 scenes in 189 s: 103 pass (56 with warnings)
+pictures: [PASS] selfshots obs_sky_cloudsea at 40840924: 12 of 12 kept pictures are what the code draws
+result: PASS
