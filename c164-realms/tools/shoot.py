@@ -8,6 +8,7 @@ shots.json is a list of shots:
     {"name": "wide", "pos": [x, y, z], "look_at": [x, y, z]}          camera (eye) aimed at a point
     {"name": "front", "pos": [x, y, z], "yaw": 180, "pitch": 10}      explicit angles
     {"name": "as_joined", "stay": true}                               where the player stands
+    {"name": "at_sign", "walk": true, "pos": [x, y, z], "look_at": [x, y, z]}    the player goes there itself
 Optional per shot: "time" (e.g. "noon", "midnight" or a tick number; without it the shot is taken
 at 14000, look A, as build/render.py does), "settle" (seconds to wait), "still" (seconds, instead
 of --still; 0: the first picture after the wait is the one). --time <tick> takes every shot at
@@ -18,7 +19,14 @@ is (savetrip.py) -- is shot with --keep-clock: no time is set and the clock is n
 pictures show the hour the world itself keeps. A shot with "stay" is taken where the player stands
 and as the player is: nothing is asked of the server for it, and while no other shot came before
 it the player is still in the game mode the world gave (hand, hotbar and all: what a visitor sees
-on joining).
+on joining). A shot with "walk" moves the player as a visitor would stand there: in the game
+mode it joined in, on its feet (pos is still the eye), so that what the world does to somebody who
+comes by is done to it -- a tag given on coming near, a title shown -- and the picture has the
+hand, the hotbar and whatever the game writes over the view.
+
+Two more keys, for a trip that tries what a world does: "do" is a list of commands sent to the
+server before the move, "ask" a list sent after the picture is taken, each answer printed as
+`asked at <shot>: <command> -> <answer>`; {player} in a command is the camera player's name.
 
 How long the game needs after a move depends on the machine: a graphics card has the new view in
 a second or two, a software renderer on a worker node may need many. --still <seconds> therefore
@@ -37,6 +45,7 @@ import itertools
 import json
 import math
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -51,6 +60,7 @@ EYE = 1.62  # "pos" is where the camera's eye goes; /tp moves the feet
 # A shot that names no time is taken in look A, the blue hour (plan/roles/INTERFACE.md 3); the same
 # number as build/render.py's DEFAULT_TIME, so a shot list means the same picture in both.
 DEFAULT_TIME = 14000
+GAME_MODES = {0: "survival", 1: "creative", 2: "adventure", 3: "spectator"}     # as a player's data numbers them
 WIP = ".wip.png"        # after a picture's name while it is being taken; EARLIER, the one before it
 EARLIER = ".earlier.png"
 
@@ -283,6 +293,8 @@ def main():
                          "has one hour, which place.py holds the clock at and notes in <scene>.placed.json")
     ap.add_argument("--keep-clock", action="store_true",
                     help="the world's own clock is left alone: no time is set and the clock is not stopped")
+    ap.add_argument("--walk-as", choices=tuple(GAME_MODES.values()), metavar="MODE",
+                    help="the game mode of the shots that walk (default: the one the player has before its first move)")
     ap.add_argument("--origin", type=float, nargs=3, default=[0.0, 0.0, 0.0], metavar=("X", "Y", "Z"),
                     help="added to every pos/look_at, for shot lists written in scene coordinates")
     args = ap.parse_args()
@@ -317,6 +329,7 @@ def main():
 
     last_time = None
     spectator = False
+    joined_as = args.walk_as    # the game mode of the shots that walk: the one the player had before its first move
     made = collections.Counter()
     try:
         for i, shot in enumerate(shots):
@@ -324,8 +337,18 @@ def main():
             if when != last_time and not args.keep_clock:
                 rc.command(f"time set {when}")
                 last_time = when
+            for command in shot.get("do", ()):
+                command = command.replace("{player}", args.player)
+                print(f"done at {shot['name']}: {command} -> {' '.join(rc.command(command).split())[:300]}", flush=True)
             if not shot.get("stay"):
-                if not spectator:
+                if joined_as is None:
+                    found = re.search(r"(\d+)\s*$", rc.command(f"data get entity {args.player} playerGameType"))
+                    joined_as = GAME_MODES.get(int(found.group(1)) if found else -1, "adventure")
+                if shot.get("walk"):
+                    if spectator:
+                        rc.command(f"gamemode {joined_as} {args.player}")
+                        spectator = False
+                elif not spectator:
                     rc.command(f"gamemode spectator {args.player}")
                     spectator = True
                 pos = [shot["pos"][k] + args.origin[k] for k in range(3)]
@@ -350,6 +373,9 @@ def main():
                 os.replace(wip, path)
                 print(path, flush=True)
             made[take.last] += 1
+            for command in shot.get("ask", ()):
+                command = command.replace("{player}", args.player)
+                print(f"asked at {shot['name']}: {command} -> {' '.join(rc.command(command).split())[:400]}", flush=True)
     finally:
         print(summary(made), flush=True)        # also when a shot failed: the note says how the others were made
     rc.close()
