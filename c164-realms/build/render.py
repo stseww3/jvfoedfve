@@ -135,6 +135,9 @@ def main():
     world = gamescene.Scene(assets, cells, entities, look_at(6000), place=args.place, say=lambda s: print(f"{s} ({time.time() - t0:.0f} s)"))
     if world.missing:
         print("not drawn:", ", ".join(f"{k} x{v}" for k, v in sorted(world.missing.items())))
+    if world.undrawn:
+        print("left to the game (no item display, these pictures do not show them):",
+              ", ".join(f"{k} x{v}" for k, v in sorted(world.undrawn.items())))
 
     with open(args.shots) as fh:
         shots = json.load(fh)
