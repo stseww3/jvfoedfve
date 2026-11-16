@@ -39,7 +39,8 @@ BIOME_MARGIN = 60
 VERSION = "a"
 GROUND = (S.WALL_W - 14, S.Z_NORTH - 6, S.WALL_E + 15, S.Z_SOUTH + 6)  # paving under and before the building
 ORIGIN = (0, 0, 0)
-OPTIONAL = ("machines.orrery", "machines.clock", "props.furniture")    # packages whose models the hall shows
+OPTIONAL = ("machines.orrery", "machines.clock", "props.furniture", "props.instruments", "props.paper")
+#          packages whose models the hall shows, each as soon as it is in the tree
 DOOR_ENV, POOL_ENV = "C164_HALL_DOOR", "C164_HALL_POOL"
 
 
