@@ -12,10 +12,11 @@ field of spines:
                   of two panelled doors; above, a plain sunk field for the room's wall clock
                   (CLOCK_AT, CLOCK_FIELD), and nothing in it that the eye could take for a light.
   two storeys     The first ends in the board that carries the ladder rail of props/furniture (its
-                  middle 44.5 texels over the floor) and in a cornice. Below that cornice nothing
-                  stands proud of the front, so the ladder runs the whole wall. The piers of the
-                  second storey stand a texel proud, on the cornice, and their faces are bare from
-                  72 to 88 texels (LAMP_Y): the room fixes its bracket lamps there.
+                  middle 44.5 texels over the floor; the ladder's rollers ride on it and reach 46.8)
+                  and in a cornice from 47. Below that cornice nothing stands proud of the front,
+                  so the ladder runs the whole wall. The piers of the second storey stand a texel
+                  proud, on the cornice, and their faces are bare from 72 to 88 texels (LAMP_Y):
+                  the room fixes its bracket lamps there.
   entablature     a block high under the ceiling: an architrave, a frieze with the letter of each
                   bay on an enamel plate, a cornice of two steps. The piers run on through the
                   frieze as blocks.
@@ -58,15 +59,16 @@ HIGH = (ROOM["ceiling"] - FEET) * 16.0          # 112
 
 # ---- the order of the wall (texels) -----------------------------------------------------------------
 FRONT = 6.0                                     # the face of the case
-BAYS = ((2.0, 34.0), (40.0, 72.0), (78.0, 114.0), (120.0, 152.0), (158.0, 190.0))
-PIERS = ((34.0, 40.0), (72.0, 78.0), (114.0, 120.0), (152.0, 158.0))
-CHEEKS = ((0.0, 2.0), (190.0, 192.0))
-STRIPS = ((0.0, 40.0), (40.0, 78.0), (78.0, 114.0), (114.0, 152.0), (152.0, 192.0))     # one model wide each
+BAYS = ((4.0, 35.0), (41.0, 72.0), (78.0, 114.0), (120.0, 151.0), (157.0, 188.0))
+PIERS = ((35.0, 41.0), (72.0, 78.0), (114.0, 120.0), (151.0, 157.0))
+CHEEKS = ((0.0, 4.0), (188.0, 192.0))           # the panelling of the long walls hides three texels of each below the sill
+STRIPS = ((0.0, 41.0), (41.0, 78.0), (78.0, 114.0), (114.0, 151.0), (151.0, 192.0))     # one model wide each
 TIERS = ((0.0, 48.0), (48.0, 96.0), (96.0, HIGH))                                       # one model high each
 MIDDLE = 2                                      # the bay on the axis
 PLINTH = 4.0
-RAIL = (43.0, 46.0)                             # the board the ladder rail is fixed on: flat from end to end
-CORNICE = (46.0, 48.0)                          # the first storey's cornice, a texel proud
+RAIL = (43.0, 47.0)                             # the board the ladder rail is fixed on: flat from end to end
+CORNICE = (47.0, 49.0)                          # the first storey's cornice, a texel proud: its upper half is the
+#                                                 foot of the second tier
 LOW_BOARDS = (15.0, 25.0, 34.0)                 # the undersides of the first storey's shelves
 CHEST_TOP = (24.0, 26.0)                        # the top of a plan chest
 HIGH_BOARDS = (60.0, 72.0, 84.0)                # of the second storey's
@@ -78,7 +80,7 @@ FIELD_Z = 5.0                                   # its face
 
 # ---- for the room (scene coordinates) ---------------------------------------------------------------
 FRONT_Z = SOUTH - FRONT * PX                    # 25.625: the plane of the case's front, where the rail runs
-PIER_X = tuple(EAST - (a + b) / 32.0 for a, b in PIERS)     # 11.6875, 9.3125, 6.6875, 4.3125: the piers' middles
+PIER_X = tuple(EAST - (a + b) / 32.0 for a, b in PIERS)     # 11.625, 9.3125, 6.6875, 4.375: the piers' middles
 PIER_FACE_Z = SOUTH - (FRONT + 1.0) * PX        # 25.5625: the face of a pier above the first cornice
 LAMP_Y = (FEET + 4.5, FEET + 5.5)               # a pier's face is bare between these
 CLOCK_AT = (EAST - 96.0 * PX, FEET + 4.5, SOUTH - FIELD_Z * PX)     # (8, 11.5, 25.6875): the middle of the field
@@ -92,26 +94,33 @@ SHADOW = K.flat("dark_wood", 0)                 # the inside of the case
 BRASS, BRASS_D = K.BRASS, K.BRASS_D
 CARD = P.mat("old_copper", kind="plain", noise=0.06, base=1, bevel=1)       # brown pasteboard
 CARD_D = P.mat("old_copper", kind="plain", noise=0.06, base=0, bevel=1)
-PAPER = P.mat("cream", base=1, bevel=0)         # rolled sheets
 LABEL = K.flat("cream", 1)
-CR, EN, BR, DW = (P.RAMPS[k] for k in ("cream", "enamel", "brass", "dark_wood"))
+CR, EN, BR, DW, OC = (P.RAMPS[k] for k in ("cream", "enamel", "brass", "dark_wood", "old_copper"))
 
-ROLL_END = Sprite("chart_shelf_roll", ["aba", "bcb", "aba"], {"a": CR[0], "b": CR[2], "c": DW[0]})
-ROLL_END_B = Sprite("chart_shelf_roll_b", ["aba", "bcb", "aba"], {"a": P.RAMPS["old_copper"][1], "b": CR[1], "c": DW[0]})
-KEYHOLE = Sprite("chart_shelf_key", ["bb", "kb", "bb"], {"b": BR[2], "k": DW[0]})
+# A rolled chart, end on: a ring of paper round its dark hollow. Old sheets are grey, the ones in a
+# wrapper brown, and only the odd new one is pale: a rack of white rings on dark wood read as dice.
+ROLLS = tuple((Sprite(f"chart_shelf_roll_{k}", ["aba", "bcb", "aba"], {"a": a, "b": b, "c": DW[0]}), body)
+              for k, (a, b, body) in enumerate((
+                  (OC[2], CR[0], P.mat("cream", base=0, bevel=0)),
+                  (OC[1], OC[3], P.mat("old_copper", kind="plain", noise=0.06, base=2, bevel=0)),
+                  (CR[0], CR[1], P.mat("cream", base=1, bevel=0)))))
+CARD_LABEL = K.flat("cream", 0)                 # the card on a drawer's front
+KEYHOLE = Sprite("chart_shelf_key", ["b", "k", "b"], {"b": BR[2], "k": DW[0]})
 
-# the bays' letters, three by five, and the enamel plate each stands on
+# the bays' letters, five high, and the enamel plate each stands on. The middle bay is an even number
+# of texels wide, so its letter is too: every plate sits on the texel grid at the middle of its bay.
 _LETTERS = {
     "A": (".#.", "#.#", "###", "#.#", "#.#"),
     "B": ("##.", "#.#", "##.", "#.#", "##."),
-    "C": (".##", "#..", "#..", "#..", ".##"),
+    "C": (".###", "#...", "#...", "#...", ".###"),
     "D": ("##.", "#.#", "#.#", "#.#", "##."),
     "E": ("###", "#..", "##.", "#..", "###"),
 }
 
 
 def _plate(letter):
-    rows = ["rrrrrrr"] + ["rg" + "".join("w" if ch == "#" else "g" for ch in row) + "gr" for row in _LETTERS[letter]] + ["rrrrrrr"]
+    wide = len(_LETTERS[letter][0]) + 4
+    rows = ["r" * wide] + ["rg" + "".join("w" if ch == "#" else "g" for ch in row) + "gr" for row in _LETTERS[letter]] + ["r" * wide]
     return Sprite(f"chart_shelf_plate_{letter.lower()}", rows, {"r": EN[3], "g": EN[1], "w": CR[2]})
 
 
@@ -230,7 +239,10 @@ class _Piece:
         return next(((a, b) for a, b in BAYS if self.u0 <= a and b <= self.u1), None)
 
     def piers(self):
-        return [(a, b) for a, b in PIERS + CHEEKS if self.u0 <= a and b <= self.u1]
+        return [(a, b) for a, b in PIERS if self.u0 <= a and b <= self.u1]
+
+    def cheeks(self):
+        return [(a, b) for a, b in CHEEKS if self.u0 <= a and b <= self.u1]
 
 
 # ---- what stands on the shelves ---------------------------------------------------------------------
@@ -280,49 +292,50 @@ def _piles(p, u, y, top, bindings):
     right = _Pile(f"chart_shelf_pile_{p.strip}_{seed}b", bindings)
     high_l, high_r = float(p.rnd.choice((7, 8))), float(p.rnd.choice((5, 6)))
     p.box((a + 1.0, a + 14.0), (y, y + high_l), (1.0, 5.0), SHADOW, skip="nd", faces={"s": left}, seed=seed)
-    p.box((b - 13.0, b - 1.0), (y, y + high_r), (1.0, 5.0), SHADOW, skip="nd", faces={"s": right}, seed=seed + 1)
+    p.box((b - 12.0, b - 1.0), (y, y + high_r), (1.0, 5.0), SHADOW, skip="nd", faces={"s": right}, seed=seed + 1)
     folio = P.mat("enamel", kind="plain", noise=0.05, base=1, bevel=0)
-    p.box((a + 15.5, a + 17.0), (y, top - 2.0), (1.5, 5.0), folio, rot=("z", 10.0, (a + 15.5, y, 3.0)), skip="n", grain="y")
-    p.box((a + 17.5, a + 18.5), (y, top - 3.0), (1.5, 5.0), CARD, rot=("z", 6.0, (a + 17.5, y, 3.0)), skip="n", grain="y")
+    p.box((a + 15.0, a + 17.0), (y, top - 2.0), (1.5, 5.0), folio, rot=("z", 10.0, (a + 15.0, y, 3.0)), skip="n", grain="y")
+    p.box((a + 17.0, a + 18.0), (y, top - 3.0), (1.5, 5.0), CARD, rot=("z", 6.0, (a + 17.0, y, 3.0)), skip="n", grain="y")
 
 
 def _pigeonholes(p, u, y, top):
     """A rack of pigeonholes for rolled charts: two groups of three columns either side of an upright,
-    four rows; most holes hold a roll, end on, some further out than others."""
+    four rows; nearly every hole holds a roll, end on, some further out than others. A hole is four
+    texels each way, a roll three."""
     a, b = u
     p.box((a, a + 1.0), (y, top), (1.0, 5.5), WOOD, grain="y")
     p.box((b - 1.0, b), (y, top), (1.0, 5.5), WOOD, grain="y")
-    p.box((a + 15.0, a + 17.0), (y, top), (1.0, 5.5), WOOD, grain="y")
+    p.box((a + 15.0, b - 15.0), (y, top), (1.0, 5.5), WOOD, grain="y")
     floors = [y + 2.0 + 5.0 * i for i in range(4)]
     p.box((a + 1.0, b - 1.0), (y, y + 2.0), (1.0, 5.5), WOOD, grain="x")
     p.box((a + 1.0, b - 1.0), (floors[-1] + 4.0, top), (1.0, 5.5), WOOD, grain="x")
     for f in floors[1:]:
         p.box((a + 1.0, b - 1.0), (f - 1.0, f), (1.0, 5.25), WOOD, grain="x")
-    columns = [a + 1.0 + 5.0 * i for i in range(3)] + [a + 17.0 + 5.0 * i for i in range(3)]
+    columns = [a + 1.0 + 5.0 * i for i in range(3)] + [b - 15.0 + 5.0 * i for i in range(3)]
     for c in columns:
-        if c not in (a + 1.0, a + 17.0):
+        if c not in (a + 1.0, b - 15.0):
             p.box((c - 1.0, c), (y + 2.0, floors[-1] + 4.0), (1.0, 5.25), WOOD, grain="y")
     for f in floors:
         for c in columns:
-            r = p.rnd.random()
-            if r < 0.16:
+            if p.rnd.random() < 0.08:
                 continue
-            out = 5.75 if r > 0.85 else 5.0 if r > 0.45 else 4.5
-            end, body = (ROLL_END_B, CARD) if r > 0.92 else (ROLL_END, PAPER)
+            out = p.rnd.choice((4.5, 4.5, 5.0, 5.0, 5.0, 5.75))
+            end, body = ROLLS[p.rnd.choice((0, 0, 0, 0, 0, 1, 1, 1, 2))]
             p.box((c + 0.5, c + 3.5), (f, f + 3.0), (1.0, out), body, skip="n", grain="z", faces={"s": end})
 
 
 def _chest(p, u):
-    """A plan chest in the foot of a bay: five shallow drawers for the flat sheets, two brass pulls
-    and a label to each."""
+    """A plan chest in the foot of a bay: five shallow drawers for the flat sheets, each with a bar
+    pull at either hand and a card at its middle."""
     a, b = u
+    mid = (a + b) / 2.0
     p.box((a, b), (PLINTH, CHEST_TOP[0]), (1.0, 5.5), WOOD_D, skip="n", grain="x")
     for i in range(5):
-        y = PLINTH + 0.5 + 4.0 * i
-        p.box((a + 1.0, b - 1.0), (y, y + 3.5), (5.5, FRONT - 0.25), WOOD, skip="n", grain="x")
+        y = PLINTH + 1.0 + 4.0 * i              # three texels of front, one of the carcass between two
+        p.box((a + 1.0, b - 1.0), (y, y + 3.0), (5.5, FRONT - 0.25), WOOD, skip="n", grain="x")
         for x in (a + 6.0, b - 9.0):
             p.box((x, x + 3.0), (y + 1.0, y + 2.0), (FRONT - 0.25, FRONT + 0.25), BRASS_D, skip="n")
-        p.box((a + 14.0, a + 18.0), (y + 1.0, y + 3.0), (FRONT - 0.25, FRONT), LABEL, skip="n")
+        p.box((mid - 1.5, mid + 1.5), (y + 1.0, y + 2.0), (FRONT - 0.25, FRONT), CARD_LABEL, skip="n")
     p.box((a, b), CHEST_TOP, (1.0, FRONT), WOOD, skip="n", grain="x")
 
 
@@ -338,20 +351,20 @@ def _panelled(p, u, y, depth=FRONT, stile=3.0, rails=()):
 
 
 def _cupboard(p, u):
-    """The foot of the middle bay: two panelled doors, a knob to each and a keyhole."""
+    """The foot of the middle bay: two panelled doors that meet on the axis, a knob on each meeting
+    stile and a keyhole under the right one."""
     a, b = u
     mid = (a + b) / 2.0
     y0, y1 = PLINTH + 1.0, RAIL[0] - 1.0
     p.box((a, b), (PLINTH, y0), (1.0, FRONT), WOOD, skip="n", grain="x")
     p.box((a, b), (y1, RAIL[0]), (1.0, FRONT), WOOD, skip="n", grain="x")
-    for x0, x1 in ((a + 1.0, mid - 0.5), (mid + 0.5, b - 1.0)):
-        _panelled(p, (x0, x1), (y0, y1), depth=FRONT - 0.25, rails=(y0 + 15.0,))
     p.box((a, a + 1.0), (y0, y1), (1.0, FRONT), WOOD, skip="n", grain="y")
     p.box((b - 1.0, b), (y0, y1), (1.0, FRONT), WOOD, skip="n", grain="y")
-    p.box((mid - 0.5, mid + 0.5), (y0, y1), (1.0, FRONT - 1.0), SHADOW, skip="n")
-    for x in (mid - 3.0, mid + 1.5):
-        p.box((x, x + 1.5), (y0 + 18.5, y0 + 20.0), (FRONT - 0.25, FRONT + 0.25), BRASS_D, skip="n")
-    p.box((mid + 1.0, mid + 3.0), (y0 + 12.5, y0 + 15.5), (FRONT - 0.25, FRONT), BRASS_D, skip="n", faces={"s": KEYHOLE})
+    for x0, x1 in ((a + 1.0, mid), (mid, b - 1.0)):
+        _panelled(p, (x0, x1), (y0, y1), depth=FRONT - 0.25, rails=(y0 + 15.0,))
+    for x in (mid - 2.0, mid + 1.0):
+        p.box((x, x + 1.0), (y0 + 19.0, y0 + 21.0), (FRONT - 0.25, FRONT + 0.5), BRASS_D, skip="n")
+    p.box((mid + 1.0, mid + 2.0), (y0 + 13.0, y0 + 16.0), (FRONT - 0.25, FRONT), BRASS_D, skip="n", faces={"s": KEYHOLE})
 
 
 # ---- the three tiers of a strip ---------------------------------------------------------------------
@@ -363,12 +376,11 @@ def _first(strip):
     p.box(u, (0.0, 48.0), (0.0, 1.0), SHADOW, skip="nudew")
     p.box(u, (0.0, PLINTH), (1.0, FRONT), WOOD_D, skip="nd", grain="x")
     p.box(u, RAIL, (1.0, FRONT), WOOD, skip="n", grain="x")
-    p.box(u, CORNICE, (0.0, FRONT + 1.0), WOOD_D, skip="n", grain="x")
-    for a, b in p.piers():
-        if b - a < 4.0:                         # a cheek
-            p.box((a, b), (PLINTH, RAIL[0]), (1.0, FRONT), WOOD, skip="n", grain="y")
-        else:                                   # a pier: a sunk panel between two fillets
-            _panelled(p, (a, b), (PLINTH, RAIL[0]), stile=1.5)
+    p.box(u, (CORNICE[0], p.y1), (0.0, FRONT + 1.0), WOOD_D, skip="n", grain="x")
+    for a, b in p.cheeks():
+        p.box((a, b), (PLINTH, RAIL[0]), (1.0, FRONT), WOOD, skip="n", grain="y")
+    for a, b in p.piers():                      # a sunk panel in a fillet
+        _panelled(p, (a, b), (PLINTH, RAIL[0]), stile=1.0)
     bay = p.bay()
     if strip == MIDDLE:
         _cupboard(p, bay)
@@ -404,28 +416,33 @@ def _second(strip):
     p = _Piece(strip, 1)
     u = (p.u0, p.u1)
     p.box(u, (48.0, 96.0), (0.0, 1.0), SHADOW, skip="nudew")
-    p.box(u, (48.0, 49.0), (1.0, FRONT), WOOD, skip="nd", grain="x")
+    p.box(u, (p.y0, CORNICE[1]), (1.0, FRONT + 1.0), WOOD_D, skip="nd", grain="x")
     p.box(u, HEAD, (1.0, FRONT), WOOD, skip="nu", grain="x")
-    for a, b in p.piers():
-        if b - a < 4.0:
-            p.box((a, b), (49.0, HEAD[0]), (1.0, FRONT), WOOD, skip="n", grain="y")
-        else:
-            p.box((a, b), (49.0, CAPITAL), (1.0, FRONT + 1.0), WOOD, skip="n", grain="y")
-            p.box((a, b), (CAPITAL, HEAD[1]), (1.0, FRONT + 2.0), WOOD_D, skip="n", grain="x")
-            p.box((a, b), (49.0, 51.0), (1.0, FRONT + 2.0), WOOD_D, skip="n", grain="x")
+    foot = CORNICE[1]
+    for a, b in p.cheeks():
+        p.box((a, b), (foot, HEAD[0]), (1.0, FRONT), WOOD, skip="n", grain="y")
+    for a, b in p.piers():                      # a shaft on a base, under a capital
+        p.box((a, b), (foot, CAPITAL), (1.0, FRONT + 1.0), WOOD, skip="n", grain="y")
+        p.box((a, b), (CAPITAL, HEAD[1]), (1.0, FRONT + 2.0), WOOD_D, skip="n", grain="x")
+        p.box((a, b), (foot, foot + 2.0), (1.0, FRONT + 2.0), WOOD_D, skip="n", grain="x")
     bay = p.bay()
     a, b = bay
-    if strip == MIDDLE:                         # the clock's field
-        _panelled(p, bay, (49.0, HEAD[0]), stile=4.0)
+    if strip == MIDDLE:                         # the clock's field, a bead of lighter wood round it
+        _panelled(p, bay, (CORNICE[1], HEAD[0]), stile=3.0)
+        (fa, fb), (fy0, fy1) = FIELD_U, FIELD_Y
+        for x in (fa - 1.0, fb):
+            p.box((x, x + 1.0), (fy0 - 1.0, fy1 + 1.0), (1.0, FIELD_Z + 0.5), WOOD_L, skip="n", grain="y")
+        for y in (fy0 - 1.0, fy1):
+            p.box((fa, fb), (y, y + 1.0), (1.0, FIELD_Z + 0.5), WOOD_L, skip="n", grain="x")
         return p
     outer = strip in (0, len(STRIPS) - 1)
     boards = HIGH_BOARDS[1:] if not outer else HIGH_BOARDS
     for y in boards:
         p.box((a, b), (y, y + 1.0), (1.0, FRONT - 0.5), WOOD, skip="n", grain="x")
-    floors = ((49.0,) if outer else ()) + tuple(y + 1.0 for y in boards)
+    floors = ((foot,) if outer else ()) + tuple(y + 1.0 for y in boards)
     tops = tuple(boards[(0 if outer else 1):]) + (HEAD[0],)
     if not outer:
-        _pigeonholes(p, bay, 49.0, HIGH_BOARDS[1])
+        _pigeonholes(p, bay, foot, HIGH_BOARDS[1])
     for i, (y, top) in enumerate(zip(floors, tops)):
         if outer and i == 1:
             split = a + 13.0 if strip == 0 else b - 13.0
@@ -450,12 +467,13 @@ def _third(strip):
     p.box(u, CROWN, (0.0, FRONT + 1.0), WOOD, skip="n", grain="x")
     p.box(u, (CROWN[1], HIGH), (0.0, FRONT + 2.0), WOOD_D, skip="nu", grain="x")
     for a, b in p.piers():
-        if b - a >= 4.0:
-            p.box((a, b), FRIEZE, (FRONT, FRONT + 1.0), WOOD, skip="n", grain="y")
+        p.box((a, b), FRIEZE, (FRONT, FRONT + 1.0), WOOD, skip="n", grain="y")
     a, b = p.bay()
     mid = (a + b) / 2.0
-    p.box((mid - 3.5, mid + 3.5), (FRIEZE[0] + 1.0, FRIEZE[0] + 8.0), (FRONT, FRONT + 0.5), K.flat("enamel", 3),
-          skip="n", faces={"s": _plate("ABCDE"[strip])})
+    plate = _plate("ABCDE"[strip])
+    half = len(plate.rows[0]) / 2.0
+    p.box((mid - half, mid + half), (FRIEZE[0] + 1.0, FRIEZE[0] + 8.0), (FRONT, FRONT + 0.5), K.flat("enamel", 3),
+          skip="n", faces={"s": plate})
     return p
 
 
