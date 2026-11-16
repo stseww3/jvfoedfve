@@ -786,6 +786,64 @@ def find_cloud(server, spec, reach=320, step=4):
     return None, asked
 
 
+def light_state(world, before=None):
+    """{(folder, region file, cx, cz): (digest of the chunk as saved, digest of its light)} of every
+    chunk of the world's region files. A chunk saved as it was at the reading before is not opened again."""
+    sys.path.insert(0, HERE)
+    import census
+    out = {}
+    for base, dirs, files in os.walk(world):
+        dirs.sort()
+        if os.path.basename(base) != "region":
+            continue
+        for name in sorted(f for f in files if f.endswith(".mca")):
+            for cx, cz, raw in census.read_chunks(os.path.join(base, name)):
+                key = (os.path.relpath(base, world), name, cx, cz)
+                saved = hashlib.blake2b(raw, digest_size=16).digest()
+                old = (before or {}).get(key)
+                if old is not None and old[0] == saved:
+                    out[key] = old
+                    continue
+                light = hashlib.blake2b(digest_size=16)
+                for section in sorted(census.parse_nbt(raw).get("sections", []), key=lambda s: int(s.get("Y", 0))):
+                    for part in ("SkyLight", "BlockLight"):
+                        value = section.get(part)
+                        light.update(f"{int(section.get('Y', 0))} {part} ".encode())
+                        light.update(b"-" if value is None else value.tobytes())
+                out[key] = (saved, light.digest())
+    return out
+
+
+def settle_light(server, limit=180.0, pause=2.0, quiet=3):
+    """Waits for the game's light engine to come to rest, with the chunks still loaded. The engine
+    works behind the game: after the last block is set it still has light to take away and to
+    spread, a chunk is saved with the light it has at that moment, and what was not done by then
+    is not done when the chunk is loaded again (two saves of one commit held different light in
+    274 of 2862 chunks, by up to 15). So the world is saved and the light of every chunk read,
+    over and over, until `quiet` readings in a row are the same as the one before each."""
+    t = time.time()
+    state, changed, still = None, [], 0
+    while True:
+        server.cmd("save-all flush", quiet=True)
+        try:
+            new = light_state(server.world, state)
+        except Exception as exc:    # noqa: BLE001 -- a file met half written; the reading is taken again
+            say(f"  light: a reading failed ({type(exc).__name__}: {exc}); again")
+            new = None
+        if new is not None:
+            if state is not None:
+                changed.append(sum(1 for k, v in new.items() if state.get(k, (None, None))[1] != v[1]))
+                still = still + 1 if changed[-1] == 0 else 0
+            state = new
+        if still >= quiet or time.time() - t > limit:
+            break
+        time.sleep(pause)
+    out = {"settled": still >= quiet, "seconds": round(time.time() - t, 1), "chunks": len(state or {}), "changed": changed}
+    say(f"light: {'at rest' if out['settled'] else 'NOT at rest'} after {out['seconds']} s; {out['chunks']} chunks, "
+        f"chunks whose light had changed at each reading: {changed}")
+    return out
+
+
 def make(args):
     node_only()
     if not re.fullmatch(r"[A-Za-z0-9_\-]{1,40}", args.name):
@@ -878,6 +936,13 @@ def make(args):
                 fail(f"the save's name was not hung up: {reply}")
         server.cmd(f"gamerule max_block_modifications {default.group(1)}")
         facts["loop"] = server.cmd("scoreboard players get #run c164m")
+        # last of all, with every chunk still loaded: the light is waited for
+        facts["light"] = settle_light(server)
+        if not facts["light"]["settled"]:
+            facts["notes"].append(f"the light was still changing {facts['light']['seconds']} s after the last block was set "
+                                  f"(chunks whose light changed at each reading: {facts['light']['changed']}): the save holds "
+                                  "the light of that moment, and two saves of this commit will not hold the same.")
+            say("NOTE: " + facts["notes"][-1])
         server.cmd("forceload remove all")
         # the spawn's own chunk stays loaded. Where the default game mode is adventure the game sets
         # who is new on the world spawn and lets him sink to the first thing that carries him; in
@@ -1200,6 +1265,11 @@ def verify(args):
                       (f"{len(sky)} shader files in the resource pack" if sky else "no shader file in the resource pack")
                       + f"; the save was made {'to carry' if spec.get('shaders') else 'without'} the look as shaders"
                       + f", {'with' if spec['look'] else 'without'} the biome")
+                light = made.get("light")       # saves made before the light was waited for say nothing of it
+                if light is not None:
+                    check(results, "light", bool(light.get("settled")),
+                          f"the light was {'at rest' if light.get('settled') else 'NOT at rest'} when the world was saved: waited "
+                          f"{light.get('seconds')} s, chunks whose light had changed at each reading {light.get('changed')}")
             elif strip:
                 gone = registry_files(pack_dir)
                 for rel in gone:
