@@ -6,7 +6,7 @@ Round the shell there is a slab of the lower platform and nothing else. The room
 the set: the engine and the dynamo, the gratings, the pipes, the coal and the lamps are other
 packages'. The floor is a stand-in for the room's (interiors/powerhouse). The light is the set's
 own and nothing more: the two sources before the fire doors (boiler.LIGHTS) and the two before
-the board (board.LIGHTS), which the modules place themselves.
+the board (board.LIGHTS), which the modules hand to the sky line; sky.build() places them last.
 
 The last shot stands at the skeleton's V6, the view the house itself is judged by.
 
@@ -42,6 +42,7 @@ def build():
     shell = powerhouse.build(c, (0, 0, 0))          # its own entities: the lamp over the wicket
     n = boiler.build(c, (0, 0, 0)) + board.build(c, (0, 0, 0))
     c.entity_counts = {"machines": n, "site": int(shell or 0)}
+    sky.build(c, (0, 0, 0))                         # the sky line's light sources go in last
     return c
 
 

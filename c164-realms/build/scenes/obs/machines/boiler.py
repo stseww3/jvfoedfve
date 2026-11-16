@@ -73,7 +73,7 @@ _TURN = (88, 96)                        # the south flue: straight to here, on i
 
 # --- for the others (scene coordinates, blocks) -------------------------------------------------------
 # Where the fire doors throw their light: the cell before each door (ART-PLAN 3.2, second grade).
-# build() puts the sources there itself: a boiler without them is black.
+# build() hands them to the sky line: a boiler without them is black.
 LIGHTS = [((FRONT_X + STAND[0], FLOOR + STAND[1], z), 10) for z in AXES_Z]
 # The stop valve's flange on each steam dome, looking up: the steam pipes start on it (interiors).
 STEAM_OUT = [(FRONT_X + DOME_X, FLOOR + 5.0, z) for z in AXES_Z]
@@ -444,7 +444,7 @@ def models():
 def build(canvas, origin=(0, 0, 0)):
     """Place the two boilers and the light of their fires; returns the number of display entities."""
     drawn = _drawn()
-    K.light(canvas, LIGHTS, origin)
+    K.light(canvas, LIGHTS, origin, "machines/boiler:fire")
     n = 0
     for i, z in enumerate(AXES_Z):
         at = (FRONT_X + STAND[0], FLOOR + STAND[1], z + STAND[2])

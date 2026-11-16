@@ -19,7 +19,7 @@ Z[0]..Z[1], its faces to the east; behind it the alley between board and wall.
 
 How it is lit. Each slab is one piece, drawn in the kit's leaning frame so that what looks into the
 room is shown at its full tone; its entity stands in the air before it, in the light of the room's
-two shaded lamps before the board, whose sources build() puts there itself (LIGHTS: the same
+two shaded lamps before the board, whose sources build() hands to the sky line (LIGHTS: the same
 cells and level as interiors/powerhouse hangs its lamps at). The meters' ticks and the pilot lamps
 glow by themselves. The three pointers are pieces of their own and tremble.
 
@@ -70,7 +70,7 @@ _BELL_TOP = 76
 
 # --- for the others (scene coordinates, blocks) -------------------------------------------------------
 # The light the board stands in: the sources of the room's two shaded lamps before it (third grade
-# on the slabs, which stand a cell or two away). build() puts them there itself.
+# on the slabs, which stand a cell or two away). build() hands them to the sky line.
 LIGHTS = [((X + 1.5, FLOOR + 2.5, 28.5), 10), ((X + 1.5, FLOOR + 2.5, 31.5), 10)]
 # The tops of the two lead-in insulators at the south end: the dynamo's leads end here (interiors).
 LEAD_IN = tuple((FACE_X + x / 16.0, FLOOR + _BELL_TOP / 16.0, Z[0] + z / 16.0) for x, z in _BELLS)
@@ -294,7 +294,7 @@ def models():
 def build(canvas, origin=(0, 0, 0)):
     """Lay the base course, place the board and its light; returns the number of display entities."""
     drawn = _drawn()
-    K.light(canvas, LIGHTS, origin)
+    K.light(canvas, LIGHTS, origin, "machines/board:lamp")
     ox, oy, oz = (int(v) for v in origin)
     for i, name in enumerate(BASE):
         canvas.set(ox + X, oy + int(FLOOR), oz + Z[0] + i, st(B.PANELS[name], facing=FACING))

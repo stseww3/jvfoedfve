@@ -131,12 +131,22 @@ def place(canvas, drawn, pos, origin, yaw=0.0, turns=(), brightness=None):
     return 1
 
 
-def light(canvas, lights, origin):
-    """The invisible sources a piece of the set stands in: [((x, y, z), level)], never over a block."""
-    from ..common import blocks as B
+def light(canvas, lights, origin, why, rank=2):
+    """Hand the sources a piece stands in, [((x, y, z), level)], to the sky line, which places them
+    with the rest when everything stands (sky/_lightkit.suggest). While that tool is not in the tree
+    the blocks are put down here, never over another."""
+    try:
+        from ..sky import _lightkit
+        suggest = getattr(_lightkit, "suggest", None)
+    except ImportError:
+        suggest = None
     for (x, y, z), level in lights:
-        canvas.set(int(origin[0] + x // 1), int(origin[1] + y // 1), int(origin[2] + z // 1),
-                   f"{B.LIGHT}[level={int(level)}]", keep=True)
+        cell = (int((origin[0] + x) // 1), int((origin[1] + y) // 1), int((origin[2] + z) // 1))
+        if suggest is not None:
+            suggest(canvas, cell, level, why, rank=rank)
+        else:
+            from ..common import blocks as B
+            canvas.set(cell[0], cell[1], cell[2], f"{B.LIGHT}[level={int(level)}]", keep=True)
 
 
 # ---- painting a face pixel by pixel ----------------------------------------------------------------------
