@@ -1,0 +1,3 @@
+branch=cursor/c164-m3-pipes-f3-8e52
+head=e7196936407a91337d6f91d19eb4752395492153
+args=--no-push --tail 40 --limit 600 \(cd\ build\ \&\&\ python\ -m\ scenes.obs_props_pipes.fit\ 2\>\&1\ \|\ tail\ -6\)\ \&\&\ python\ tools/check.py\ --scene\ obs_props_pipes\ 2\>\&1\ \|\ tail\ -14 
