@@ -79,16 +79,20 @@
   "【23c8c31b（facade 09:27 合 b2ade25e）：乙方案撤掉（塔顶定甲，四坡弧顶，facade 08:53 定）；给钟室的 way_up()（梯子是占用表的 `B.LADDER`），不调时塔照旧关着；`plan/packages/main/tower-inside.md` 是给 `interiors/clockroom` 的一页（井的尺寸和净空）。V5 用它算出的站位（骨架 S.V5）】"
  ],
  "main/dome": [],
- "interiors/batteryroom": [],
+ "interiors/batteryroom": [
+  "【第一版 4373c72e（cr4 09:48 合 f644005f）：MOVED_IN = False，主场景里还没有东西，外观逐像素不变；实体 107；下一笔打开 MOVED_IN，门洞 (7, 0..1, −6) 请 shell 开。墙上的配电板和铜排是 `machines/batteryboard`（mast）】"
+ ],
  "interiors/platevault": [
-  "【第一版 de1db354（cr4 09:37 合 252fb598）：MOVED_IN 已开，实体 92；门洞 (7, 0..1, 6) 还没开（已请 shell）；升降机停在天花下，楼板不开】"
+  "【第一版 de1db354（cr4 09:37 合 252fb598）：MOVED_IN 已开，实体 92；门洞 (7, 0..1, 6) 还没开（已请 shell）；升降机停在天花下，楼板不开】",
+  "【第一版 de1db354（cr4 09:37 合 252fb598）：MOVED_IN 已开，实体 92；升降机停在天花下，楼板不开。打磨轮 15b5857f（09:50 合 648a0ed1）：暗房件和升降机换成 `interiors/_darkroom.py`（power 写的），侧走道每根梁下一盏灯，实体 101。**门洞 (7, 0..1, 6) 09:53 开了**（shell 602b96f2 → be109b75；星厅 24a44203 → 4a12aa41 让开了堵着的两块墙裙板）】"
  ],
  "interiors/clockroom": [],
  "interiors/astroroom": [
   "【第一版改由 snow c336 做（sdome 同意，cr4 09:38 报），赶 10:30 那版整包】"
  ],
  "motion/smoke": [
-  "【第一版 1d64f141（cr2 09:21 合 ff666b9a）、第二版 49a5644e（09:34 合 6a2a425e）；smoke c357】"
+  "【第一版 1d64f141（cr2 09:21 合 ff666b9a）、第二版 49a5644e（09:34 合 6a2a425e）；smoke c357】",
+  "【第一版 1d64f141（cr2 09:21 合 ff666b9a）、第二版 49a5644e（09:34 合 6a2a425e）、第三版 b1dab34f（安全阀的汽，新测试场景 obs_mot_smoke_room；09:49 合 d7374d32）；smoke c357】"
  ],
  "motion/sound": [
   "【第一版 3fd56da4（cr2 09:33 合 0b22315b；sound c361）：资源包只多一个 `assets/c164/sounds.json`，全指向游戏自带的声音】"
@@ -97,7 +101,8 @@
  "common/skeleton": [
   "【11-16：V6 往右转 4.5°（7d1508c0，注释 3b4a2d2b）；V5 新加（a06744bd，进总装 49e4e723）】",
   "【11-16：V6 往右转 4.5°（7d1508c0，注释 3b4a2d2b）；V5 新加（a06744bd，进总装 49e4e723）；占用表加 `LADDER`（原版木梯，室内；03a6be57）、总场景画布的 `master` 记号（d9117af8），进总装 7ad81e1d】",
-  "【11-16：V6 往右转 4.5°（7d1508c0，注释 3b4a2d2b）；V5 新加（a06744bd，进总装 49e4e723）；占用表加 `LADDER`（原版木梯，室内；03a6be57）、总场景画布的 `master` 记号（d9117af8），进总装 7ad81e1d；**V7 往门里挪两格**（总监 09:23：pos (17.5, 1.62, 0.5)，look_at (9.0, 6.0, 0.5)；5ae79b0a，进总装 cda721ae）】"
+  "【11-16：V6 往右转 4.5°（7d1508c0，注释 3b4a2d2b）；V5 新加（a06744bd，进总装 49e4e723）；占用表加 `LADDER`（原版木梯，室内；03a6be57）、总场景画布的 `master` 记号（d9117af8），进总装 7ad81e1d；**V7 往门里挪两格**（总监 09:23：pos (17.5, 1.62, 0.5)，look_at (9.0, 6.0, 0.5)；5ae79b0a，进总装 cda721ae）】",
+  "【11-16：V6 往右转 4.5°（7d1508c0，注释 3b4a2d2b）；V5 新加（a06744bd，进总装 49e4e723）；占用表加 `LADDER`（原版木梯，室内；03a6be57）、总场景画布的 `master` 记号（d9117af8），进总装 7ad81e1d；**V7 往门里挪两格**（总监 09:23：pos (17.5, 1.62, 0.5)，look_at (9.0, 6.0, 0.5)；5ae79b0a，进总装 cda721ae）；**V8 新加**，是折射镜自己算的站位 `machines/scope.V8[\"a\"]`：pos (12.7, 19.62, −0.7)，look_at (0.0, 25.2, 0.9)（a3 09:49 要的；1f833f0a，进总装 ce14cac9；看板原来用出图站的提议，贴着筒的平面站，筒正对镜头、挡掉半条缝）】"
  ],
  "common/check": [
   "【11-16：sight 底层只算方块（9afe22e8）；regen 的注册表文件门闸（5eaedb7b）；entities 按整个矩阵逐面量（073b058c，进总装 49e4e723）】",
@@ -120,7 +125,8 @@
   "【4d94d264（s2 09:31 合 63d53344；关口 PASS，来源 clean）：`tools/walk.py` 现行版（round 一条命令走完整轮）、路线 `plan/reviews/walk/in-route.json`、第 1 轮 636ad21（站表、可达性、58 张总表、`in-findings.md`）、第 2 轮 6a0494e 的站表和可达性（图在出）。第 1 轮挡人的四处：R1、R2（两翼屋脊近端的坑；smalldome bc70da9f 填了，等复走）、F1（正门的占位亮墙，已撤，复查）、T1（报时塔脚；tower 23c8c31b 给了 way_up()）。第 2 轮可达性：入口到星厅通了】"
  ],
  "common/export": [
-  "【整包一版一版在 `cursor/c164-dist-f4b8` 的 `c164-realms/dist/A<n>/`（A3 09:02：不带注册表文件，数据包只有函数 290、标签 3，服务端冷启动 0 警告，天是原版夜空；A4 09:30 起钟锁 20370，彗星在正西；**A5 10:00 是第一个候选版**）。导出工具第一版 09:55 前过关口交 s2】"
+  "【整包一版一版在 `cursor/c164-dist-f4b8` 的 `c164-realms/dist/A<n>/`（A3 09:02：不带注册表文件，数据包只有函数 290、标签 3，服务端冷启动 0 警告，天是原版夜空；A4 09:30 起钟锁 20370，彗星在正西；**A5 10:00 是第一个候选版**）。导出工具第一版 09:55 前过关口交 s2】",
+  "【导出工具第一版 d6df8bcf（s2 09:46 合 8f3a0621；关口 PASS 对 29e5f1e7，来源 clean）：`tools/export.py`（make/verify/pack/compare/page）、`tools/exportnext.sh`（一轮的 git 部分）、探针场景 `obs_export_probe`、空跑报告 `plan/reviews/export/451f458.md`、`realms-rules.md`、`questions.md`。着色器的接法在里面（树里有 `sky/_shaders` 才生效；`--shaders auto|on|off`），**还没在节点上跑过，A5 是第一次**；没做：同一提交导两次逐文件比。整包一版一版在 `cursor/c164-dist-f4b8` 的 `c164-realms/dist/A<n>/`，不进总装（A3 09:02：不带注册表文件，数据包只有函数 290、标签 3，服务端冷启动 0 警告，天是原版夜空；A4 09:30 起钟锁 20370，彗星在正西；**A5 10:00 是第一个候选版**，管理员 10:05 拿它传 Realm，旁边另导一个不带着色器的 `c164-A5-plain.zip` 备用）】"
  ],
  "common/interface": [
   "【11-16 09:15：`delivery.py` 的 scope 给 common 的卡开口，`plan/reviews/<卡名到第一个连字符>/` 算卡自己的文件（72c96d29，进总装 c3eedd60）。总监 09:11 的第五次补充：屏障的第二种用法，看得见的实心大件模型里面（出生点站台上的车厢，12 格，随 cablecar-winch 进）】"

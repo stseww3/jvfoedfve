@@ -42,3 +42,17 @@ cda721ae	骨架 V7 往门里挪两格（总监 09:23）：pos (17.5, 1.62, 0.5)�
 ed68adce	只改灯级（灯台、吊灯 12，书架壁柱 11，壁灯 10，台灯 8）；v9_board 改成看板的机位
 9740ba1d	室外走查提的三处：落日平台轴线上的栏杆墩挪开，气象站台阶两侧的沟抬成矮坡，下平台西南角山石抬高两格（走不出去了）
 d94d2fa0	第二版：门边壁灯和灯级（五条路过 lights 的规矩）、台上摆进转鼓记录仪和电报机、屋里电线 `_timeroom_wiring.py`（lamps 写）、V10 用东南角机位、世界钟的针改细条
+3fe88b4e	轨道口两侧铜栏改墩，车顶下栈桥的路断了（室外走查）
+2a000a4e	管桥头改形：铆接柱脚落在石台上、牛腿、两块盖板
+8f3a0621	第一版（outb）：`tools/export.py`（make/verify/pack/compare/page）、`tools/exportnext.sh`、探针场景 obs_export_probe、空跑报告 `plan/reviews/export/451f458.md`；着色器的接法在里面（树里有 sky/_shaders 才生效），A5 是第一次在节点上跑
+4effdbab	way_up() 加钟室的壳：楼板、铁盖板、梯子；不调时塔照旧关着
+f644005f	第一版（astro c360）：MOVED_IN = False，主场景里还没有东西；实体 107；门洞 (7, 0..1, −6) 请 shell 开
+d7374d32	第三版：安全阀的汽；新测试场景 obs_mot_smoke_room
+648a0ed1	打磨轮：暗房件和升降机换成 `interiors/_darkroom.py`（power 写的），侧走道每根梁下一盏灯，实体 101；楼板不开、门不变
+62b8ac30	屏障补丁：手摇机构立轴那一列的脚 (−1, 18, −9) 一格；手轮那格不放（没有整格落在模型里）；帘卷空格的铁衬板（dome 要的）；17 张图对着 a3 的真房间重出
+83ed32a8	第三版：门套和两扇开着的门（`_timeroom_door.py`、`_doorcase.py`，shell 写；5 个实体，开 100 度），衣帽架挪开，留图照 instruments 第二轮重画
+be109b75	开底片库的门洞：星厅南墙 (7, 0..1, 6)；ROOMS、doors()、room_at() 认它
+4a12aa41	让开底片库的门 (7, 0..1, 5)（原来两块墙裙板堵着），西门过道两盏灯（lights 要的，7 级），明线和回廊陈设分件（`_starhall_gallery.py`、`_starhall_wiring.py`），东窗从屋里看暗了；新 V7 下次交付重画
+ce14cac9	骨架 V8 = 折射镜自己算的站位 machines/scope.V8["a"]：pos (12.7, 19.62, −0.7)，look_at (0.0, 25.2, 0.9)；看板清单同步（1f833f0a；a3 09:49 要的）
+bd2f2874	挡土墙在 x 60 接到下平台两个后角，盖住生岩面
+cf433541	第三次：试验场景的 V7 跟骨架挪到新机位，v7_a、v7_b 重画；卡的记录补了 _relit.py 和定版；不动模型
