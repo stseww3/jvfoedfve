@@ -1,0 +1,27 @@
+a0job 1116-051849-m5-domegear-f3-b9c1-2192: cursor/c164-m5-domegear-f3-b9c1 @ 509719e2 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.17 0.23 0.27, Python 3.12.3
+  [cloud_setup    1s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- t=$(mktemp -d); env PYTHONPATH=build python -m scenes.obs_mach_domegear >$t/s 2>&1; echo "self-test exit=$?"; sed -n 2,8p $t/s; python tools/check.py --scene obs_mach_domegear >$t/c 2>&1; code=$?; tail -n 16 $t/c | cut -c1-200 | grep -
+self-test exit=0
+barrier cells: 1 [(-1, 18, -9)]
+stands in a block: 0
+hangs on nothing: 0
+a barrier that is not inside the gear: 0
+a face that stands between two axes: 0
+the curtain parked where it shows: 0
+the bar off the curtain's path on its way: 0.23 px at the most
+[PASS] flatwall  no wall face runs flat over more than 5x5
+[PASS] entities  117 display entities, 506 models never placed
+[PASS] views     17 shots, most display entities in view: 117 (foot_outside), limit 600; counted without what walls hide; the game draws up to 117 (v8): a display entity without width and height is dr
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[WARN] motion    26 parts and 0 points on 9 chains, 260 function files; 12 commands in the busiest tick (limit 120), 1.6 a tick on average (limit 40)
+                 int_domeroom_time_dial_seconds: 60 steps in 1200 ticks set by hand (lead -17); its model strays 0.00 pixels from its arc
+result: PASS (0 failed, 1 with warnings)
+check exit=0
+clean      509719e2  (3845 commits in its history)
+==== NODEJOB RESULT ====
+exit=0 secs=13 host=cursor cores=4 head=509719e2 commit=none pushed=no branch=cursor/c164-m5-domegear-f3-b9c1 files=0
+a0job: exit=0 secs=13
