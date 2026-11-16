@@ -12,18 +12,27 @@ The title
              plates and in the game's own letters. They come up in a second, stand for four and
              go in a second and a half (FADE_IN, STAY, FADE_OUT). Nothing else is said.
     who      whoever is new, and he alone. Who comes back is told nothing.
-    when     WAIT ticks after the map has put him on the platform. At that moment his game still
+    when     With the opening (motion/arrival: who is new rides up in the train): as his car
+             comes up out of the cloud, over cloud and sky, and gone before the mountain is
+             before him; arrival.py sends it and says when. On the platform nothing is said.
+             Without the opening, as in A8, and for whom the opening ended before its title
+             (he got off on the way, there was no seat for him, he left and came back): WAIT
+             ticks after the map has put him on the platform. At that moment his game still
              shows its "loading terrain" picture over everything and a title sent then is used
              up behind it; two seconds later he is looking at the observatory.
     how      Three functions in the data pack, written by the motion kit (MK.function) and named
              by the map's function tags (tools/export.py: HOOKS):
                guide/first   as who is new, once: marks him (MARK) and sets the title off in
-                             WAIT ticks
+                             WAIT ticks; with the opening it marks him and hands him to the
+                             train (arrival.first())
                guide/join    as whoever joins, every time: if he still carries the mark, his
                              line having dropped in those two seconds, the title is set off
-                             again; for everybody else it does nothing
+                             again; for everybody else it does nothing. With the opening,
+                             who left in the middle of his ride is first put on the platform
+                             (arrival.join())
                guide/title   WAIT ticks later, as nobody: shows the title to whoever carries
-                             the mark and is there, and takes the mark off him
+                             the mark, is there and is not in the opening (RIDE), and takes
+                             the mark off him
              The schedule is the game's own kind, "replace": one more arrival within the two
              seconds moves the one pending title to two seconds after the later arrival, for
              both. Nothing runs every tick and nothing on a loop; the three run when somebody
@@ -60,6 +69,11 @@ The switch is the main scene's GUIDE (scenes/obs/__init__.py), read when the sce
 tools/export.py --no-guide turns it off after everything is imported. With the switch off, or in
 a tree whose main scene has none, nothing is registered, the data pack has no guide/ folder and
 no plate hangs; the map's function tags name functions that are not there and pass them over.
+The opening has a switch of its own beside it, ARRIVAL (arrival.py).
+
+RIDE_MOST is a promise to whoever verifies a save (tools/export.py): so many ticks after a
+newcomer has joined he stands on the platform, at the latest and whatever the train does. With
+the train on time and nobody else in the map it is the ride and half a second, 950 ticks or so.
 """
 import importlib
 import json
@@ -77,6 +91,8 @@ MAP_NAME = " ".join(part for part in MAP_TITLE if part)     # the name in one li
 FADE_IN, STAY, FADE_OUT = 20, 80, 30    # ticks
 WAIT = 40                               # ticks from the arrival to the title
 MARK = "c164.new"                       # the tag of who has arrived and has not been shown the title
+RIDE = "c164.ride"                      # the tag of who is in the opening: put on and taken off by arrival.py
+RIDE_MOST = 2600                        # ticks from a newcomer's joining to his standing on the platform, at the most
 COLOUR = P.RAMPS["cream"][-1]           # #f2ead6, the letters of the map's plates
 
 FIRST, JOIN, SHOW = "guide/first", "guide/join", "guide/title"
@@ -127,32 +143,44 @@ def _text(text):
     return json.dumps({"text": text, "color": COLOUR}, separators=(",", ":"))
 
 
-def functions(name=None):
-    """{name: [lines]} of the three functions, as MK.function() takes them, for the name of two
-    lines given (MAP_TITLE). A name that would be cut off is refused."""
+def show(selector, name=None):
+    """The commands that show the title to the players of a selector and take the mark off them.
+    A name that would be cut off is refused."""
     name = MAP_TITLE if name is None else name
     wrong = misfits(name)
     if wrong:
         raise ValueError("motion/guide-title: " + "; ".join(wrong))
-    marked = f"@a[tag={MARK}]"
+    return [
+        f"title {selector} times {FADE_IN} {STAY} {FADE_OUT}",
+        f"title {selector} subtitle {_text(name[1])}",
+        f"title {selector} title {_text(name[0])}",
+        f"tag {selector} remove {MARK}",
+    ]
+
+
+def functions(name=None, opening=None):
+    """{name: [lines]} of the three functions, as MK.function() takes them, for the name of two
+    lines given (MAP_TITLE). A name that would be cut off is refused.
+
+    opening   None: who is new is shown the title on the platform. With the opening,
+              {"first": [lines], "join": [lines]} of motion/arrival: what guide/first does with
+              him once he is marked, and what guide/join does before anything else."""
+    walkers = f"@a[tag={MARK},tag=!{RIDE}]"
     later = f"schedule function {{ns}}:{SHOW} {WAIT}t"
+    shown = show(walkers, name)
+    if opening is None:
+        first = ["# as whoever is new, once (the map's function tag first): the title, in two seconds",
+                 f"tag @s add {MARK}", later]
+        join = []
+    else:
+        first = ["# as whoever is new, once (the map's function tag first): on to the train",
+                 f"tag @s add {MARK}"] + list(opening["first"])
+        join = list(opening["join"])
     return {
-        FIRST: [
-            "# as whoever is new, once (the map's function tag first): the title, in two seconds",
-            f"tag @s add {MARK}",
-            later,
-        ],
-        JOIN: [
-            "# as whoever joins (the map's function tag join): who left before his title came is owed it",
-            f"execute if entity @s[tag={MARK}] run {later}",
-        ],
-        SHOW: [
-            "# the map's name, once, to whoever is new and is there",
-            f"title {marked} times {FADE_IN} {STAY} {FADE_OUT}",
-            f"title {marked} subtitle {_text(name[1])}",
-            f"title {marked} title {_text(name[0])}",
-            f"tag {marked} remove {MARK}",
-        ],
+        FIRST: first,
+        JOIN: ["# as whoever joins (the map's function tag join): who left before his title came is owed it"]
+              + join + [f"execute if entity @s[tag={MARK},tag=!{RIDE}] run {later}"],
+        SHOW: ["# the map's name, once, to whoever is new, is there and is not in the train"] + shown,
     }
 
 
@@ -173,8 +201,13 @@ def guide():
 
 
 def title(canvas, name=None):
-    """Register the three functions on the canvas."""
-    for function, lines in functions(name).items():
+    """Register the three functions on the canvas: with the opening's lines where the canvas has
+    the train and the opening is on (motion/arrival registers its own functions itself)."""
+    from . import arrival           # here and not above: arrival reads this module
+    opening = None
+    if arrival.train(canvas) is not None:
+        opening = {"first": arrival.first(), "join": arrival.join()}
+    for function, lines in functions(name, opening).items():
         MK.function(canvas, function, lines)
     return 0
 

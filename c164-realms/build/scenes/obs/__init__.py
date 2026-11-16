@@ -31,6 +31,8 @@ BIOME_MARGIN_Y = 160
 # charts. Their packages and tools/export.py read these two switches from here.
 GUIDE = True                # False: no part of the guide is built (export: --no-guide)
 GUIDE_CHARTS = True         # False: the star charts alone are left out
+# The opening (card motion/arrival): who comes for the first time rides up in the train.
+ARRIVAL = True              # False: he stands on the platform as in A8, the train keeps its timetable (export: --no-arrival)
 
 
 def _line(name):
