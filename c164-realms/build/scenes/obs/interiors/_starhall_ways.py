@@ -41,10 +41,25 @@ seen. So:
                   the floor's middle stays darker than the clock's dial). The east pair is the
                   lower: it is the nearer to the doorway's linings
   the stair foot  the hall raises its two lamps by one (starhall.STAIR_FOOT_LEVEL); the corner
-                  sources before the first step go with them, two under the lamp, so that the
-                  first riser is as light as the next four (it was two levels under them)
-  the pier        a source beside the clock's dial on either side, in the row of the clock's own
-                  lamp: the face's two outer columns go up by one level, the dial has its own light
+                  sources before the first step go with them, one under the lamp: the first riser
+                  was two levels under the four over it and is now one over them
+  the pier        two sources beside the clock's dial on either side, in the row of the clock's
+                  own lamp and two rows over it: the face's two outer columns go up by one level
+                  and by two at their head, the dial has its own light
+
+What that comes to, read by obs_int_starhall/doorway.py in the hall's test scene (traced without
+the game; the hall of the 12:00 save reads 0.183 there where the game showed 0.188, the pier's
+face 0.231 for 0.232, the flights 0.209 for 0.213, the linings 0.071 for 0.088):
+
+                        the 12:00 save    now
+  V4, the half          0.183 (+0.039)    0.216 (+0.082)
+  V7, the pier's face   0.233, 0.229      0.254, 0.251
+  V7, the two flights   0.211, 0.207      0.232, 0.228
+  V7, the linings       0.071             0.091, 0.087
+
+One level less anywhere is 0.004 to 0.005 less in the half; one more on the pier is 0.267, over
+its line. The half's girder, the crown of the arch under it and the slate before the flight
+(a quarter of the half between them) stay under 0.19 whatever the lamps.
 
 The limits this part kept before (no source over 8, nothing before the door) were the hall's for
 the hall's own picture; the director's order for the board's goes before them, and the three
@@ -71,22 +86,23 @@ END_LAMP_X = 14.5                               # the fourth lamp of a gallery w
 END_LEVEL = 7                                   # under it: 6 beside it on the walk, 5 on the railing's top at the wall
 RAIL_LEVEL = 7                                  # over the south railing, between the lamps at 4.5 and 8: 5 two cells off
 WEST_LEVEL = 6                                  # beside the first lamp's foot: 5 in the gallery's last cell
-CORNER_UNDER = 2                                # an aisle's corner cell holds the dado's panel: the source stands in the
+CORNER_UNDER = 1                                # an aisle's corner cell holds the dado's panel: the source stands in the
 #                                                 row before it, which is the cell before the flight's first step. It is
-#                                                 this far under the stair foot's lamp: the first riser then has what the
-#                                                 lamp gives the four over it (6 left 5 at the head of who stands in the corner)
+#                                                 this far under the stair foot's lamp: the first two risers then have one
+#                                                 level more than the lamp gives the three over them (the 6 it had left 5
+#                                                 at the head of who stands in the corner, and the first riser at 6 of 8)
 FILL = 5                                        # in the cell of the head of the place it is for, and no further
 
 # the first look through the door (the head of this file)
 DOOR_EAST = (12, 1)                             # the floor's east pair: x, and the rows off the meridian's cell (z 0)
-DOOR_EAST_LEVEL = 9                             # 8 under it, 7 beside; 5 and 4 by the time it is at the doorway's linings
+DOOR_EAST_LEVEL = 10                            # 9 under it, 8 beside; 6 and 5 by the time it is at the doorway's linings
 DOOR_WEST = (9, 2)                              # the west pair: on the roundel's ring, towards the arcade
-DOOR_WEST_LEVEL = 10
+DOOR_WEST_LEVEL = 11
 PIER_SIDE = (7, 3, 1)                           # beside the dial: x (the cell before the pier's face), y, rows off the axis
 PIER_SIDE_LEVEL = 11                            # the clock's lamp between them has 11 too: the outer columns get what the
 #                                                 middle one has
-PIER_UPPER = 5                                  # a second row of the same, two rows higher, when its level is not 0:
-PIER_UPPER_LEVEL = 0                            # for the comparison in obs_int_starhall/doorway.py
+PIER_UPPER = 5                                  # a second row of the same, two rows higher: the head of the rough courses
+PIER_UPPER_LEVEL = 11
 
 def corner_level():
     """The level of the two sources before the flights' first steps: it follows the stair foot's lamps."""

@@ -125,6 +125,7 @@ STAIR_FOOT_LEVEL = 12       # 7 shows nothing of the risers through the side arc
 #                             12 (vault for the hall, A0 #83714, cr3 #87129): the half of the doorway the board's
 #                             picture looks into is to read 0.22, and the flight is most of it. The flights may
 #                             go to 0.235 with the pier's face at 0.255: _starhall_ways lifts the face with them
+#                             and has the numbers
 MEZZANINE_LEVEL = 7
 MEZZANINE_LAMP_Y = 9.5
 WAY_LEVELS = (10, 9)        # the way to the west door, which had no light at all (the walk, S1), its west lamp and
