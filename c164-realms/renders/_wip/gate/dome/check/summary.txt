@@ -1,0 +1,382 @@
+PASS  obs: 0 failed, 5 with warnings (18 s)
+      [WARN] blocks: 98 kinds of block placed, 551 barrier cells (x -1..91, y -6..20, z -38..47), barriers away from any model
+          116 barrier cells have no model within 3 blocks (x 0..17, y 19..20, z -34..34): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 1292 display entities of 3000, by category: materials 28, site 10, main 3, machines 177, interiors 663, props 299, motion 10, sky 102, by view range: far 853, near 323, small 48
+          prop_elec_cable x1: 10.67/10.67/11.99 pixels to the block along x/y/z, not 16
+      [WARN] views: the board's 12 views, display entities in view: V1 799, V2 709, V3 653, V4 700, V5 452, V6 115, V7 466, V8 91, V9 229, V10 252, V11 743, V12 851; most 851 (v12_aerial), limit 600; 
+          v01_arrival: 799 display entities in view, a view may have 600 -- interiors/platevault 104, interiors/starhall 97, props/ironwork 80, interiors/chartroom 70, props/lamps 70, sky/lights 66, p
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+      [WARN] motion: 116 parts and 73 points on 37 chains, 920 function files and 38 of the packages' own; 21 commands in the busiest tick (limit 120), 10.5 a tick on average (limit 40)
+          int_domeroom_time_dial_seconds: 60 steps in 1200 ticks set by hand (lead -17); its model strays 0.00 pixels from its arc
+PASS  obs_export_probe: 0 failed, 0 with warnings, skipped: sight (2 s)
+PASS  obs_int_astroroom: 0 failed, 0 with warnings, skipped: sight (4 s)
+PASS  obs_int_batteryroom: 0 failed, 0 with warnings, skipped: sight (4 s)
+PASS  obs_int_batteryroom_bare: 0 failed, 0 with warnings, skipped: sight (3 s)
+PASS  obs_int_chartroom: 0 failed, 1 with warnings, skipped: sight (5 s)
+      [WARN] flatwall: 1 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          smooth_sandstone facing west: flat over 9x9, the square's top corner at (0, 14, 14)
+PASS  obs_int_clockroom: 0 failed, 0 with warnings (5 s)
+PASS  obs_int_clockroom_bare: 0 failed, 0 with warnings (5 s)
+PASS  obs_int_domeroom: 0 failed, 1 with warnings, skipped: sight (5 s)
+      [WARN] motion: 8 parts and 0 points on 6 chains, 102 function files; 6 commands in the busiest tick (limit 120), 1.2 a tick on average (limit 40)
+          int_domeroom_time_dial_seconds: 60 steps in 1200 ticks set by hand (lead -17); its model strays 0.00 pixels from its arc
+PASS  obs_int_platevault: 0 failed, 2 with warnings, skipped: sight (4 s)
+      [WARN] flatwall: 6 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          smooth_sandstone facing east: flat over 10x10, the square's top corner at (1, 16, 17)
+      [WARN] entities: 105 display entities, 1 drawn out along one axis, 70 models never placed
+          int_vault_dark_rope x1: drawn out along z, where the picture of cream~base1 is not even: it smears
+PASS  obs_int_powerhouse: 0 failed, 3 with warnings, skipped: sight (11 s)
+      [WARN] blocks: 83 kinds of block placed, 404 barrier cells (x -1..91, y -6..20, z -38..47), barriers away from any model
+          233 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 557 display entities, 33 drawn out along one axis, 31 shown through a matrix that is no turn, no face stretched, 196 models never placed
+          prop_elec_cable x1: 10.67/10.67/11.99 pixels to the block along x/y/z, not 16
+      [WARN] views: 16 shots, most display entities in view: 411 (engine_east), limit 600; counted without what walls hide; the game draws up to 497 (fires): a display entity without width and height 
+          int_switchboard: 4 of the 339 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+PASS  obs_int_starhall: 0 failed, 1 with warnings, skipped: sight (6 s)
+      [WARN] blocks: 55 kinds of block placed, 234 barrier cells (x 0..17, y 1..20, z -34..34), barriers away from any model
+          232 barrier cells have no model within 3 blocks (x 0..17, y 19..20, z -34..34): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+PASS  obs_int_starhall_b: 0 failed, 1 with warnings, skipped: sight (6 s)
+      [WARN] blocks: 59 kinds of block placed, 234 barrier cells (x 0..17, y 1..20, z -34..34), barriers away from any model
+          232 barrier cells have no model within 3 blocks (x 0..17, y 19..20, z -34..34): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+PASS  obs_int_timeroom: 0 failed, 1 with warnings, skipped: sight (4 s)
+      [WARN] flatwall: 1 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          smooth_sandstone facing west: flat over 9x9, the square's top corner at (0, 14, -6)
+PASS  obs_mach_armillary: 0 failed, 4 with warnings (10 s)
+      [WARN] blocks: 79 kinds of block placed, 245 barrier cells (x 0..47, y -4..20, z -34..47), barriers away from any model
+          233 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 344 display entities, 11 drawn out along one axis, 23 shown through a matrix that is no turn, no face stretched, 104 models never placed
+          sky_cloudsea_swell_a x6: 4/4/4 pixels to the block along x/y/z, not 16
+      [WARN] views: 11 shots, most display entities in view: 275 (aerial), limit 600; counted without what walls hide; the game draws up to 288 (oblique): a display entity without width and height is 
+          v2_axis: 2 of the 188 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+PASS  obs_mach_batteryboard: 0 failed, 0 with warnings, skipped: sight (4 s)
+PASS  obs_mach_cablecar_winch: 0 failed, 4 with warnings (15 s)
+      [WARN] blocks: 83 kinds of block placed, 404 barrier cells (x -1..91, y -6..20, z -38..47), barriers away from any model
+          233 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 517 display entities, 25 drawn out along one axis, 31 shown through a matrix that is no turn, no face stretched, 210 models never placed
+          sky_cloudsea_swell_a x6: 4/4/4 pixels to the block along x/y/z, not 16
+      [WARN] views: 14 shots, most display entities in view: 369 (v1), limit 600; counted without what walls hide; the game draws up to 462 (sheave): a display entity without width and height is drawn
+          v1: 2 of the 369 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+PASS  obs_mach_clocks: 0 failed, 0 with warnings (5 s)
+PASS  obs_mach_clocks_b: 0 failed, 0 with warnings (5 s)
+PASS  obs_mach_domegear: 0 failed, 1 with warnings, skipped: sight (11 s)
+      [WARN] motion: 8 parts and 0 points on 6 chains, 102 function files; 6 commands in the busiest tick (limit 120), 1.2 a tick on average (limit 40)
+          int_domeroom_time_dial_seconds: 60 steps in 1200 ticks set by hand (lead -17); its model strays 0.00 pixels from its arc
+PASS  obs_mach_engine_dynamo: 0 failed, 0 with warnings, skipped: sight (4 s)
+PASS  obs_mach_meridian_astrograph: 0 failed, 1 with warnings, skipped: sight (4 s)
+      [WARN] flatwall: 2 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          smooth_sandstone facing north: flat over 6x6, the square's top corner at (67, 5, -37)
+PASS  obs_mach_orrery: 0 failed, 0 with warnings, skipped: sight (4 s)
+PASS  obs_mach_radiomast: 0 failed, 0 with warnings (4 s)
+PASS  obs_mach_radiomast_b: 0 failed, 0 with warnings (5 s)
+PASS  obs_mach_recorders: 0 failed, 1 with warnings, skipped: sight (5 s)
+      [WARN] flatwall: 1 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          smooth_sandstone facing west: flat over 9x9, the square's top corner at (0, 14, -6)
+PASS  obs_mach_refractor: 0 failed, 0 with warnings, skipped: sight (4 s)
+PASS  obs_mach_switchboard_boiler: 0 failed, 0 with warnings, skipped: sight (4 s)
+PASS  obs_main_dome: 0 failed, 3 with warnings (8 s)
+      [WARN] blocks: 79 kinds of block placed, 245 barrier cells (x 0..47, y -4..20, z -34..47), barriers away from any model
+          233 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 331 display entities, 11 drawn out along one axis, 23 shown through a matrix that is no turn, no face stretched, 104 models never placed
+          sky_cloudsea_swell_a x6: 4/4/4 pixels to the block along x/y/z, not 16
+      [WARN] views: 11 shots, most display entities in view: 261 (west), limit 600; counted without what walls hide; the game draws up to 277 (roof): a display entity without width and height is drawn
+          v1: 2 of the 244 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+PASS  obs_main_dome_a: 0 failed, 3 with warnings (8 s)
+      [WARN] blocks: 80 kinds of block placed, 245 barrier cells (x 0..47, y -4..20, z -34..47), barriers away from any model
+          233 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 331 display entities, 11 drawn out along one axis, 23 shown through a matrix that is no turn, no face stretched, 104 models never placed
+          sky_cloudsea_swell_a x6: 4/4/4 pixels to the block along x/y/z, not 16
+      [WARN] views: 11 shots, most display entities in view: 261 (west), limit 600; counted without what walls hide; the game draws up to 277 (roof): a display entity without width and height is drawn
+          v1: 2 of the 244 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+PASS  obs_main_dome_slit: 0 failed, 0 with warnings, skipped: sight (2 s)
+PASS  obs_main_facade: 0 failed, 5 with warnings (17 s)
+      [WARN] blocks: 98 kinds of block placed, 551 barrier cells (x -1..91, y -6..20, z -38..47), barriers away from any model
+          185 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 1196 display entities, 70 drawn out along one axis, 31 shown through a matrix that is no turn, no face stretched, 102 models never placed
+          prop_elec_cable x1: 10.67/10.67/11.99 pixels to the block along x/y/z, not 16
+      [WARN] views: 10 shots, most display entities in view: 757 (west), limit 600; counted without what walls hide; the game draws up to 1039 (v7_door): a display entity without width and height is d
+          v2_axis: 636 display entities in view, a view may have 600
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+      [WARN] motion: 116 parts and 8 points on 35 chains, 901 function files; 17 commands in the busiest tick (limit 120), 7.9 a tick on average (limit 40)
+          int_domeroom_time_dial_seconds: 60 steps in 1200 ticks set by hand (lead -17); its model strays 0.00 pixels from its arc
+PASS  obs_main_facade_a: 0 failed, 5 with warnings (17 s)
+      [WARN] blocks: 98 kinds of block placed, 539 barrier cells (x -1..91, y -6..20, z -38..47), barriers away from any model
+          185 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 1186 display entities, 70 drawn out along one axis, 30 shown through a matrix that is no turn, no face stretched, 112 models never placed
+          prop_elec_cable x1: 10.67/10.67/11.99 pixels to the block along x/y/z, not 16
+      [WARN] views: 4 shots, most display entities in view: 699 (v1_far), limit 600; counted without what walls hide; the game draws up to 941 (v4_entrance): a display entity without width and height 
+          v2_axis: 626 display entities in view, a view may have 600
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+      [WARN] motion: 116 parts and 8 points on 35 chains, 901 function files; 17 commands in the busiest tick (limit 120), 7.9 a tick on average (limit 40)
+          int_domeroom_time_dial_seconds: 60 steps in 1200 ticks set by hand (lead -17); its model strays 0.00 pixels from its arc
+PASS  obs_main_facade_c: 0 failed, 5 with warnings (17 s)
+      [WARN] blocks: 98 kinds of block placed, 539 barrier cells (x -1..91, y -6..20, z -38..47), barriers away from any model
+          185 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 1186 display entities, 70 drawn out along one axis, 30 shown through a matrix that is no turn, no face stretched, 112 models never placed
+          prop_elec_cable x1: 10.67/10.67/11.99 pixels to the block along x/y/z, not 16
+      [WARN] views: 4 shots, most display entities in view: 699 (v1_far), limit 600; counted without what walls hide; the game draws up to 941 (v4_entrance): a display entity without width and height 
+          v2_axis: 626 display entities in view, a view may have 600
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+      [WARN] motion: 116 parts and 8 points on 35 chains, 901 function files; 17 commands in the busiest tick (limit 120), 7.9 a tick on average (limit 40)
+          int_domeroom_time_dial_seconds: 60 steps in 1200 ticks set by hand (lead -17); its model strays 0.00 pixels from its arc
+PASS  obs_main_facade_nocrown: 0 failed, 5 with warnings (18 s)
+      [WARN] blocks: 98 kinds of block placed, 551 barrier cells (x -1..91, y -6..20, z -38..47), barriers away from any model
+          185 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 1196 display entities, 70 drawn out along one axis, 31 shown through a matrix that is no turn, no face stretched, 102 models never placed
+          prop_elec_cable x1: 10.67/10.67/11.99 pixels to the block along x/y/z, not 16
+      [WARN] views: 5 shots, most display entities in view: 709 (v1_far), limit 600; counted without what walls hide; the game draws up to 951 (v4_entrance): a display entity without width and height 
+          v2_axis: 636 display entities in view, a view may have 600
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+      [WARN] motion: 116 parts and 8 points on 35 chains, 901 function files; 17 commands in the busiest tick (limit 120), 7.9 a tick on average (limit 40)
+          int_domeroom_time_dial_seconds: 60 steps in 1200 ticks set by hand (lead -17); its model strays 0.00 pixels from its arc
+PASS  obs_main_shell: 0 failed, 1 with warnings, skipped: sight (2 s)
+      [WARN] blocks: 46 kinds of block placed, 784 barrier cells (x 0..17, y 19..20, z -34..596), barriers away from any model
+          784 barrier cells have no model within 3 blocks (x 0..17, y 19..20, z -34..596): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees
+PASS  obs_main_smalldome: 0 failed, 3 with warnings (9 s)
+      [WARN] blocks: 79 kinds of block placed, 245 barrier cells (x 0..47, y -4..20, z -34..47), barriers away from any model
+          233 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 331 display entities, 11 drawn out along one axis, 23 shown through a matrix that is no turn, no face stretched, 104 models never placed
+          sky_cloudsea_swell_a x6: 4/4/4 pixels to the block along x/y/z, not 16
+      [WARN] views: 19 shots, most display entities in view: 267 (v12), limit 600; counted without what walls hide; the game draws up to 279 (pocket): a display entity without width and height is draw
+          v11: 3 of the 199 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+PASS  obs_main_tower: 0 failed, 4 with warnings (14 s)
+      [WARN] blocks: 83 kinds of block placed, 404 barrier cells (x -1..91, y -6..20, z -38..47), barriers away from any model
+          233 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 513 display entities, 25 drawn out along one axis, 31 shown through a matrix that is no turn, no face stretched, 139 models never placed
+          sky_cloudsea_swell_a x6: 4/4/4 pixels to the block along x/y/z, not 16
+      [WARN] views: 9 shots, most display entities in view: 389 (north_west), limit 600; counted without what walls hide; the game draws up to 454 (junction): a display entity without width and height
+          v1_stamp: 2 of the 369 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+PASS  obs_mat_anim: 0 failed, 0 with warnings, skipped: flatwall, sight (2 s)
+PASS  obs_mat_ashlar: 0 failed, 1 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] views: 19 shots, most display entities in view: 4 (walls_graze), limit 600; counted without what walls hide; the game draws up to 4 (stones_a): a display entity without width and height i
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_ashlar_b: 0 failed, 1 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] views: 19 shots, most display entities in view: 4 (walls_graze), limit 600; counted without what walls hide; the game draws up to 4 (stones_a): a display entity without width and height i
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_ashlar_c: 0 failed, 1 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] views: 19 shots, most display entities in view: 4 (walls_graze), limit 600; counted without what walls hide; the game draws up to 4 (stones_a): a display entity without width and height i
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_board: 0 failed, 0 with warnings, skipped: flatwall, sight (2 s)
+PASS  obs_mat_board_ashlar_a: 0 failed, 0 with warnings, skipped: flatwall, sight (2 s)
+PASS  obs_mat_board_ashlar_c: 0 failed, 0 with warnings, skipped: flatwall, sight (2 s)
+PASS  obs_mat_board_windows_b: 0 failed, 0 with warnings, skipped: flatwall, sight (2 s)
+PASS  obs_mat_brass: 0 failed, 2 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] blocks: 56 kinds of block placed, 5 not in the occupancy table (add them to the table through S2, or use a block of the table)
+          waxed_oxidized_copper_grate x6
+      [WARN] views: 25 shots, most display entities in view: 0 (brass_a), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_iron: 0 failed, 1 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] blocks: 41 kinds of block placed, 12 not in the occupancy table (add them to the table through S2, or use a block of the table)
+          waxed_oxidized_copper_grate x6
+PASS  obs_mat_panels: 0 failed, 0 with warnings, skipped: flatwall, sight (2 s)
+PASS  obs_mat_redirect: 0 failed, 2 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] blocks: 105 kinds of block placed, 12 not in the occupancy table (add them to the table through S2, or use a block of the table)
+          waxed_oxidized_copper_grate x6
+      [WARN] views: 16 shots, most display entities in view: 0 (plates_a), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_snow: 0 failed, 1 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] views: 13 shots, most display entities in view: 0 (order), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_windows: 0 failed, 1 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] views: 26 shots, most display entities in view: 0 (front), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_windows_b: 0 failed, 1 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] views: 26 shots, most display entities in view: 0 (front), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_windows_in: 0 failed, 1 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] views: 11 shots, most display entities in view: 6 (in_wall), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_windows_in_b: 0 failed, 1 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] views: 11 shots, most display entities in view: 6 (in_wall), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_windows_in_off: 0 failed, 1 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] views: 11 shots, most display entities in view: 0 (in_wall), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mot_guide: 0 failed, 0 with warnings, skipped: flatwall, sight (2 s)
+PASS  obs_mot_guide_title: 0 failed, 4 with warnings, skipped: flatwall (14 s)
+      [WARN] blocks: 83 kinds of block placed, 404 barrier cells (x -1..91, y -6..20, z -38..47), barriers away from any model
+          233 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 521 display entities, 25 drawn out along one axis, 31 shown through a matrix that is no turn, no face stretched, 210 models never placed
+          sky_cloudsea_swell_a x6: 4/4/4 pixels to the block along x/y/z, not 16
+      [WARN] views: 4 shots, most display entities in view: 373 (v1), limit 600; counted without what walls hide; the game draws up to 465 (from_car): a display entity without width and height is draw
+          v1: 2 of the 373 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+PASS  obs_mot_load: 0 failed, 2 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] views: 4 shots, most display entities in view: 200 (far), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+      [WARN] motion: 200 parts and 0 points on 1 chains, 30 function files; 36 commands in the busiest tick (limit 60), 34.4 a tick on average (limit 40)
+          the scene sets its own limits (60 in a tick, 40 on average, not 120 and 40): a load test
+PASS  obs_mot_loop: 0 failed, 2 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] views: 24 shots, most display entities in view: 16 (far), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+      [WARN] motion: 12 parts and 0 points on 6 chains, 102 function files; 9 commands in the busiest tick (limit 120), 2.1 a tick on average (limit 40)
+          mot_wheel: 4 steps in 48 ticks set by hand (lead 0); its model strays 0.00 pixels from its arc
+PASS  obs_mot_smoke: 0 failed, 0 with warnings, skipped: flatwall, sight (2 s)
+PASS  obs_mot_smoke_bench: 0 failed, 0 with warnings, skipped: flatwall, sight (3 s)
+PASS  obs_mot_smoke_room: 0 failed, 0 with warnings, skipped: flatwall, sight (3 s)
+PASS  obs_mot_sound: 0 failed, 0 with warnings, skipped: flatwall, sight (2 s)
+PASS  obs_props_elecsign: 0 failed, 0 with warnings, skipped: flatwall, sight (3 s)
+PASS  obs_props_elecsign_room: 0 failed, 0 with warnings, skipped: flatwall, sight (3 s)
+PASS  obs_props_elecsign_station: 0 failed, 0 with warnings, skipped: flatwall, sight (3 s)
+PASS  obs_props_furniture: 0 failed, 0 with warnings, skipped: flatwall, sight (3 s)
+PASS  obs_props_furniture_site: 0 failed, 5 with warnings, skipped: flatwall (18 s)
+      [WARN] blocks: 98 kinds of block placed, 551 barrier cells (x -1..91, y -6..20, z -38..47), barriers away from any model
+          116 barrier cells have no model within 3 blocks (x 0..17, y 19..20, z -34..34): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 1292 display entities, 71 drawn out along one axis, 39 shown through a matrix that is no turn, no face stretched, 167 models never placed
+          prop_elec_cable x1: 10.67/10.67/11.99 pixels to the block along x/y/z, not 16
+      [WARN] views: 14 shots, most display entities in view: 845 (sunset_west), limit 600; counted without what walls hide; the game draws up to 1113 (sunset_door): a display entity without width and 
+          sunset_west: 845 display entities in view, a view may have 600
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+      [WARN] motion: 116 parts and 73 points on 37 chains, 920 function files and 38 of the packages' own; 21 commands in the busiest tick (limit 120), 10.5 a tick on average (limit 40)
+          int_domeroom_time_dial_seconds: 60 steps in 1200 ticks set by hand (lead -17); its model strays 0.00 pixels from its arc
+PASS  obs_props_instruments: 0 failed, 0 with warnings, skipped: flatwall, sight (3 s)
+PASS  obs_props_ironwork: 0 failed, 0 with warnings, skipped: flatwall, sight (3 s)
+PASS  obs_props_lamps: 0 failed, 0 with warnings, skipped: flatwall, sight (3 s)
+PASS  obs_props_lamps_site: 0 failed, 5 with warnings, skipped: flatwall (18 s)
+      [WARN] blocks: 98 kinds of block placed, 551 barrier cells (x -1..91, y -6..20, z -38..47), barriers away from any model
+          116 barrier cells have no model within 3 blocks (x 0..17, y 19..20, z -34..34): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 1292 display entities, 71 drawn out along one axis, 39 shown through a matrix that is no turn, no face stretched, 167 models never placed
+          prop_elec_cable x1: 10.67/10.67/11.99 pixels to the block along x/y/z, not 16
+      [WARN] views: 17 shots, most display entities in view: 855 (high), limit 600; counted without what walls hide; the game draws up to 1088 (court_side): a display entity without width and height i
+          v1: 799 display entities in view, a view may have 600
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+      [WARN] motion: 116 parts and 73 points on 37 chains, 920 function files and 38 of the packages' own; 21 commands in the busiest tick (limit 120), 10.5 a tick on average (limit 40)
+          int_domeroom_time_dial_seconds: 60 steps in 1200 ticks set by hand (lead -17); its model strays 0.00 pixels from its arc
+PASS  obs_props_lamps_site_nearpair: 0 failed, 5 with warnings, skipped: flatwall (19 s)
+      [WARN] blocks: 98 kinds of block placed, 551 barrier cells (x -1..91, y -6..20, z -38..47), barriers away from any model
+          116 barrier cells have no model within 3 blocks (x 0..17, y 19..20, z -34..34): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 1300 display entities, 71 drawn out along one axis, 41 shown through a matrix that is no turn, no face stretched, 167 models never placed
+          prop_elec_cable x1: 10.67/10.67/11.99 pixels to the block along x/y/z, not 16
+      [WARN] views: 6 shots, most display entities in view: 859 (v12), limit 600; counted without what walls hide; the game draws up to 896 (v2): a display entity without width and height is drawn out
+          v1: 807 display entities in view, a view may have 600
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 17.1% hidden (base storey 43.8% by blocks and 7.3% more by models, great windows 5.8%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+      [WARN] motion: 116 parts and 73 points on 37 chains, 920 function files and 38 of the packages' own; 21 commands in the busiest tick (limit 120), 10.5 a tick on average (limit 40)
+          int_domeroom_time_dial_seconds: 60 steps in 1200 ticks set by hand (lead -17); its model strays 0.00 pixels from its arc
+PASS  obs_props_paper: 0 failed, 0 with warnings, skipped: flatwall, sight (3 s)
+PASS  obs_props_pipes: 0 failed, 0 with warnings, skipped: flatwall, sight (3 s)
+PASS  obs_props_plaques: 0 failed, 0 with warnings, skipped: flatwall, sight (3 s)
+PASS  obs_props_plaques_site: 0 failed, 4 with warnings, skipped: flatwall, sight (13 s)
+      [WARN] blocks: 98 kinds of block placed, 551 barrier cells (x -1..91, y -6..20, z -38..47), barriers away from any model
+          185 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 1234 display entities, 70 drawn out along one axis, 31 shown through a matrix that is no turn, no face stretched, 167 models never placed
+          prop_elec_cable x1: 10.67/10.67/11.99 pixels to the block along x/y/z, not 16
+      [WARN] views: 12 shots, most display entities in view: 819 (sunset_terrace), limit 600; counted without what walls hide; the game draws up to 1133 (time_room): a display entity without width and
+          sunset_terrace: 819 display entities in view, a view may have 600
+      [WARN] motion: 116 parts and 73 points on 37 chains, 920 function files and 38 of the packages' own; 21 commands in the busiest tick (limit 120), 10.5 a tick on average (limit 40)
+          int_domeroom_time_dial_seconds: 60 steps in 1200 ticks set by hand (lead -17); its model strays 0.00 pixels from its arc
+PASS  obs_props_seams: 0 failed, 0 with warnings, skipped: flatwall, sight (3 s)
+PASS  obs_site_cablecar: 0 failed, 4 with warnings (14 s)
+      [WARN] blocks: 83 kinds of block placed, 404 barrier cells (x -1..91, y -6..20, z -38..47), barriers away from any model
+          233 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 517 display entities, 25 drawn out along one axis, 31 shown through a matrix that is no turn, no face stretched, 210 models never placed
+          sky_cloudsea_swell_a x6: 4/4/4 pixels to the block along x/y/z, not 16
+      [WARN] views: 12 shots, most display entities in view: 409 (east), limit 600; counted without what walls hide; the game draws up to 454 (trestle_side): a display entity without width and height 
+          v1: 2 of the 369 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+PASS  obs_site_court: 0 failed, 3 with warnings, skipped: sight (10 s)
+      [WARN] blocks: 83 kinds of block placed, 404 barrier cells (x -1..91, y -6..20, z -38..47), barriers away from any model
+          233 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 513 display entities, 25 drawn out along one axis, 31 shown through a matrix that is no turn, no face stretched, 211 models never placed
+          sky_cloudsea_swell_a x6: 4/4/4 pixels to the block along x/y/z, not 16
+      [WARN] views: 9 shots, most display entities in view: 420 (aerial), limit 600; counted without what walls hide; the game draws up to 461 (meridian_near): a display entity without width and heigh
+          v2_axis: 2 of the 296 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+PASS  obs_site_mastbase: 0 failed, 3 with warnings (8 s)
+      [WARN] blocks: 79 kinds of block placed, 245 barrier cells (x 0..47, y -4..20, z -34..47), barriers away from any model
+          233 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 331 display entities, 11 drawn out along one axis, 23 shown through a matrix that is no turn, no face stretched, 104 models never placed
+          sky_cloudsea_swell_a x6: 4/4/4 pixels to the block along x/y/z, not 16
+      [WARN] views: 6 shots, most display entities in view: 246 (aerial), limit 600; counted without what walls hide; the game draws up to 284 (base_near): a display entity without width and height is
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_site_outbuildings: 0 failed, 3 with warnings (8 s)
+      [WARN] blocks: 79 kinds of block placed, 245 barrier cells (x 0..47, y -4..20, z -34..47), barriers away from any model
+          233 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 331 display entities, 11 drawn out along one axis, 23 shown through a matrix that is no turn, no face stretched, 104 models never placed
+          sky_cloudsea_swell_a x6: 4/4/4 pixels to the block along x/y/z, not 16
+      [WARN] views: 14 shots, most display entities in view: 266 (aerial), limit 600; counted without what walls hide; the game draws up to 282 (hut_near): a display entity without width and height is
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_site_powerhouse: 0 failed, 3 with warnings (8 s)
+      [WARN] blocks: 79 kinds of block placed, 245 barrier cells (x 0..47, y -4..20, z -34..47), barriers away from any model
+          233 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 333 display entities, 11 drawn out along one axis, 23 shown through a matrix that is no turn, no face stretched, 175 models never placed
+          sky_cloudsea_swell_a x6: 4/4/4 pixels to the block along x/y/z, not 16
+      [WARN] views: 16 shots, most display entities in view: 266 (aerial_back), limit 600; counted without what walls hide; the game draws up to 275 (yard_west): a display entity without width and hei
+          door_axis: 1 of the 43 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+PASS  obs_site_powerhouse_b: 0 failed, 3 with warnings (9 s)
+      [WARN] blocks: 79 kinds of block placed, 245 barrier cells (x 0..47, y -4..20, z -34..47), barriers away from any model
+          233 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 333 display entities, 11 drawn out along one axis, 23 shown through a matrix that is no turn, no face stretched, 175 models never placed
+          sky_cloudsea_swell_a x6: 4/4/4 pixels to the block along x/y/z, not 16
+      [WARN] views: 16 shots, most display entities in view: 266 (aerial_back), limit 600; counted without what walls hide; the game draws up to 275 (yard_west): a display entity without width and hei
+          door_axis: 1 of the 43 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+PASS  obs_site_stair: 0 failed, 3 with warnings (8 s)
+      [WARN] blocks: 79 kinds of block placed, 245 barrier cells (x 0..47, y -4..20, z -34..47), barriers away from any model
+          233 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 331 display entities, 11 drawn out along one axis, 23 shown through a matrix that is no turn, no face stretched, 104 models never placed
+          sky_cloudsea_swell_a x6: 4/4/4 pixels to the block along x/y/z, not 16
+      [WARN] views: 14 shots, most display entities in view: 266 (aerial), limit 600; counted without what walls hide; the game draws up to 280 (corner_nw): a display entity without width and height i
+          v1: 2 of the 244 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+PASS  obs_site_stair_noband: 0 failed, 3 with warnings (8 s)
+      [WARN] blocks: 79 kinds of block placed, 245 barrier cells (x 0..47, y -4..20, z -34..47), barriers away from any model
+          233 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 331 display entities, 11 drawn out along one axis, 23 shown through a matrix that is no turn, no face stretched, 104 models never placed
+          sky_cloudsea_swell_a x6: 4/4/4 pixels to the block along x/y/z, not 16
+      [WARN] views: 5 shots, most display entities in view: 266 (aerial), limit 600; counted without what walls hide; the game draws up to 271 (v1): a display entity without width and height is drawn 
+          v1: 2 of the 244 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+PASS  obs_site_stair_nolamps: 0 failed, 3 with warnings (7 s)
+      [WARN] blocks: 79 kinds of block placed, 245 barrier cells (x 0..47, y -4..20, z -34..47), barriers away from any model
+          233 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 257 display entities, 11 drawn out along one axis, 6 shown through a matrix that is no turn, no face stretched, 108 models never placed
+          sky_cloudsea_swell_a x6: 4/4/4 pixels to the block along x/y/z, not 16
+      [WARN] views: 5 shots, most display entities in view: 192 (aerial), limit 600; counted without what walls hide; the game draws up to 197 (v1): a display entity without width and height is drawn 
+          v1: 2 of the 190 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+PASS  obs_site_terrain: 0 failed, 4 with warnings (14 s)
+      [WARN] blocks: 83 kinds of block placed, 404 barrier cells (x -1..91, y -6..20, z -38..47), barriers away from any model
+          233 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 513 display entities, 25 drawn out along one axis, 31 shown through a matrix that is no turn, no face stretched, 211 models never placed
+          sky_cloudsea_swell_a x6: 4/4/4 pixels to the block along x/y/z, not 16
+      [WARN] views: 9 shots, most display entities in view: 427 (west_prow), limit 600; counted without what walls hide; the game draws up to 448 (v1_arrival): a display entity without width and heigh
+          v1_arrival: 2 of the 369 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the 
+          the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a
+PASS  obs_site_terrain_nosnow: 0 failed, 3 with warnings, skipped: sight (10 s)
+      [WARN] blocks: 82 kinds of block placed, 404 barrier cells (x -1..91, y -6..20, z -38..47), barriers away from any model
+          233 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees 
+      [WARN] entities: 513 display entities, 25 drawn out along one axis, 31 shown through a matrix that is no turn, no face stretched, 211 models never placed
+          sky_cloudsea_swell_a x6: 4/4/4 pixels to the block along x/y/z, not 16
+      [WARN] views: 4 shots, most display entities in view: 427 (west_prow), limit 600; counted without what walls hide; the game draws up to 448 (south_flank): a display entity without width and heig
+          v11_sunset: 3 of the 318 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+PASS  obs_sky_cloudsea: 0 failed, 2 with warnings, skipped: flatwall (4 s)
+      [WARN] entities: 30 display entities
+          sky_cloudsea_swell_a x6: 4/4/4 pixels to the block along x/y/z, not 16
+      [WARN] views: 12 shots, most display entities in view: 9 (north_out), limit 600; counted without what walls hide
+          v1: 2 of the 3 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+PASS  obs_sky_comet: 0 failed, 0 with warnings, skipped: flatwall (1 s)
+PASS  obs_sky_comet_b: 0 failed, 0 with warnings, skipped: flatwall (1 s)
+PASS  obs_sky_comet_c: 0 failed, 0 with warnings, skipped: flatwall (1 s)
+PASS  obs_sky_lights: 0 failed, 4 with warnings, skipped: flatwall (14 s)
+      [WARN] blocks: 67 kinds of block placed, 1218 barrier cells (x -400..17, y 0..20, z -34..34), barriers away from any model
+          486 barrier cells have no model within 3 blocks (x -400..17, y 19..20, z -34..34): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody se
+      [WARN] entities: 2463 display entities, 111 drawn out along one axis, 42 shown through a matrix that is no turn, no face stretched, 223 models never placed
+          int_vault_dark_rope x3: drawn out along z, where the picture of cream~base1 is not even: it smears
+      [WARN] views: 32 shots, most display entities in view: 721 (blue_front), limit 600; counted without what walls hide; the game draws up to 1449 (deep_slant): a display entity without width and he
+          blue_front: 721 display entities in view, a view may have 600
+      [WARN] motion: 159 parts and 12 points on 27 chains, 802 function files; 24 commands in the busiest tick (limit 120), 8.6 a tick on average (limit 40)
+          int_domeroom_time_dial_seconds: 60 steps in 1200 ticks set by hand (lead -17); its model strays 0.00 pixels from its arc
+PASS  obs_sky_look: 0 failed, 0 with warnings, skipped: flatwall, sight (2 s)
+PASS  obs_sky_ridges: 0 failed, 0 with warnings, skipped: flatwall (1 s)
+97 scenes in 149 s: 97 pass (54 with warnings)

@@ -1,0 +1,41 @@
+check obs_mach_cablecar_winch at 8c5af58
+[PASS] regen     188147 blocks, 517 entities, 392 models, 1864 resource-pack files, 904 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (5.7 s)
+[PASS] conflicts the scene writes 1863 files, no file written twice, the folders and the prefix of machines are kept (14 packages run alone)
+[PASS] strays    521 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      1313 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[WARN] blocks    83 kinds of block placed, 404 barrier cells (x -1..91, y -6..20, z -38..47), barriers away from any model
+                 233 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees (A0 #457, 4)
+[PASS] flatwall  no wall face runs flat over more than 5x5
+[WARN] entities  517 display entities, 25 drawn out along one axis, 31 shown through a matrix that is no turn, no face stretched, 210 models never placed
+                 sky_cloudsea_swell_a x6: 4/4/4 pixels to the block along x/y/z, not 16
+                 sky_cloudsea_swell_b x14: 4/4/4 pixels to the block along x/y/z, not 16
+                 sky_cloudsea_swell_c x7: 4/4/4 pixels to the block along x/y/z, not 16
+                 sky_cloudsea_swell_d x9: 4/4/4 pixels to the block along x/y/z, not 16
+[WARN] views     14 shots, most display entities in view: 369 (v1), limit 600; counted without what walls hide; the game draws up to 462 (sheave): a display entity without width and height is drawn outside the view too
+                 v1: 2 of the 369 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 car_side: 3 of the 53 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 car_end: 8 of the 256 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 winch: 1 of the 50 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 winch_near: 1 of the 34 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 drum_east: 2 of the 99 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 sheave: 3 of the 104 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 brow: 3 of the 40 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 (the tracking range is read off the game's code, not yet seen on the real machine)
+[WARN] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 3.7 s)
+                 the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a_equator at x 35, y 4, z 0; 4 more kinds; a lamp post takes less than 25% of a bay
+[PASS] motion    91 parts and 7 points on 28 chains, 791 function files; 14 commands in the busiest tick (limit 120), 5.9 a tick on average (limit 40)
+                 chain of 16 ticks: 4 functions, 10 commands a cycle, starts 3 ticks after start
+                 chain of 24 ticks: 8 functions, 25 commands a cycle, starts 2 ticks after start
+                 chain of 28 ticks: 4 functions, 9 commands a cycle, starts 2 ticks after start
+                 chain of 32 ticks: 4 functions, 9 commands a cycle, starts 4 ticks after start
+                 chain of 40 ticks: 8 functions, 17 commands a cycle, starts 2 ticks after start
+                 chain of 48 ticks: 12 functions, 65 commands a cycle, starts 1 ticks after start
+                 chain of 60 ticks: 8 functions, 17 commands a cycle, starts 3 ticks after start
+                 chain of 64 ticks: 4 functions, 9 commands a cycle, starts 7 ticks after start
+                 chain of 80 ticks: 2 functions, 5 commands a cycle, starts 16 ticks after start
+                 chain of 90 ticks: 8 functions, 17 commands a cycle, starts 1 ticks after start
+                 chain of 100 ticks: 8 functions, 17 commands a cycle, starts 10 ticks after start
+                 chain of 130 ticks: 8 functions, 17 commands a cycle, starts 9 ticks after start
+                 ... and 48 more
+result: PASS (0 failed, 4 with warnings)

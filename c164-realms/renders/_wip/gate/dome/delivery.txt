@@ -1,0 +1,13 @@
+delivery main/dome: a5b474b against d83a45d (forked at bdfc379), 2 commits, 2 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[PASS] scope    2 of 2 files are the card's own
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[WARN] pictures 3 test scenes, 32 shots with a picture kept
+                obs_main_dome: 11 pictures show 40f8dbf7; the card's code has changed since (_dome.py): draw them again
+                obs_main_dome_a: 11 pictures show 40f8dbf7; the card's code has changed since (_dome.py): draw them again
+                obs_main_dome_slit: 10 pictures show 40f8dbf7; the card's code has changed since (_dome.py): draw them again
+[PASS] merge    merges cleanly; 49 commits behind the base
+result: PASS (0 failed, 1 to look at)
