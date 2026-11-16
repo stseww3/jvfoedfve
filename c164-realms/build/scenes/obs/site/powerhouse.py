@@ -16,9 +16,11 @@ between polished courses.
   windows   Iron-framed and dark. Only the two bays beside the chimney, where the boilers stand,
             glow in their lower three rows: the fire window, a block of its own for each row,
             brightest at the sill (B.WINDOW_FURNACE; the curtain glass stands in while the switch
-            FIRE is off). The sky line gives them their light (sky/_lightkit.glazed),
-            in the recess before the glass, which therefore stays empty; the materials line lines
-            their room side (materials/windows.line).
+            FIRE is off). The sky line gives them their light (sky/_lightkit.glazed): a source in
+            the room's first cell behind the glass, which the inside therefore leaves free. The
+            materials line lines their room side: in the master scene it reads windows() and
+            does so itself (materials/windows.build); a scene that builds the house without that
+            line calls lining().
   door      The second bay of the north front, from the yard: a riveted gate with a wicket. The
             wicket is the way into the house and stands open (A0, g2 #37124: a door that is to be
             walked through is not left for the visitor to open). A caged lamp on the gate's lintel
@@ -26,10 +28,14 @@ between polished courses.
   chimney   In the north-east corner, wholly inside the box and outside the arrival view. Its foot
             is a tower six cells square, the corner pier, a bay and the next pier built solid, with
             a blind arch on each outer face; three courses above the eaves it steps in under a
-            weathering to a round shaft four cells across, hooped with iron every fourth course,
+            weathering to a square shaft four cells across, banded with iron every fourth course,
             with a polished necking under the head. The head is a corbel course under a weathered
-            coping, six across with the corners left out; over it the mouth is as narrow as the
-            shaft again and rimmed with iron, at y 23 (S.POWER_HOUSE).
+            coping, six across and mitred at the corners like the weathering below; over it the
+            mouth is as narrow as the shaft again and rimmed with iron, at y 23 (S.POWER_HOUSE).
+            The shaft was a round once, a cross of twelve cells, and each of its four corners a
+            notch one cell deep: on the diagonal, which is how V6 sees it, that was a black groove
+            from the shoulder to the head and the shaft two posts side by side (review cr2-#7).
+            A block cannot round a corner at this size, so the shaft is square and its faces whole.
   roof      Two versions (VERSION), and they differ in nothing else. Both show their profile to
             the yard in the north, where V6 stands, and their flank to the court.
             "a"  Five saw teeth, one to the bay of the north front, their ridges north-south: a
@@ -54,9 +60,8 @@ between polished courses.
             FITTINGS, the valve head and the straps on the main; DRAINS, the gutter's two
             rainwater pipes.
 
-The shell is blocks. The only display entities build() places are the linings of the two fire
-windows, which it asks the materials line for, and the lamp over the wicket, which it asks the
-props line for.
+The shell is blocks. The only display entity build() places is the lamp over the wicket, which it
+asks the props line for.
 """
 import importlib
 
@@ -89,6 +94,10 @@ GLASS_Y = (FEET + 3, EAVES - 1)                     # -3..2, six rows of glass
 ARCH_Y = EAVES - 1                                  # 2, the arch hangs in the top row of the opening
 IMPOST_Y = ARCH_Y - 1                               # 1, the polished course of a pier the arches spring from
 FURNACE_Y = (GLASS_Y[0], GLASS_Y[0] + 2)            # -3..-1, the rows that glow in a boiler bay
+# The light behind a fire window, as sky/_lightkit counts it (windows(): level): the top of the
+# second rank, what the lit windows of the main building have behind them and no window may pass
+# (c331 #59302). It leaves 9 on the jambs and the sill, and 9 is where stone begins to turn warm.
+FURNACE_LEVEL = 12
 GATE_ROWS = 4                                       # the door bay: a gate this high, a lintel, glass
 FURNACE_LIGHT = 5                                   # the source before a boiler bay's glow while the sky line's kit
 #                                                     is not in the tree (its figure for a low curtain window)
@@ -103,8 +112,7 @@ TOWER = (TX0, TZ0, TX1, TZ1)
 PED_TOP = EAVES + 3                                 # 6, the cornice of the square foot
 HOOP_STEP = 4                                       # an iron hoop every fourth course of the shaft
 FLUE_DEPTH = 6                                      # the courses the flue is open, from the rim down
-SHAFT = [(x, z) for x in range(TX0 + 1, TX1) for z in range(TZ0 + 1, TZ1)
-         if (x in (TX0 + 1, TX1 - 1)) + (z in (TZ0 + 1, TZ1 - 1)) < 2]         # a round of four: 12 cells
+SHAFT = [(x, z) for x in range(TX0 + 1, TX1) for z in range(TZ0 + 1, TZ1)]     # a square of four: 16 cells
 FLUE = [(x, z) for x in (TX0 + 2, TX0 + 3) for z in (TZ0 + 2, TZ0 + 3)]
 SMOKE = (TX0 + 3.0, TOP + 1.0, TZ0 + 3.0)           # the middle of the flue's mouth, for the motion line's smoke
 
@@ -256,7 +264,11 @@ def windows(version=None):
     storey "main" is dark glass; "furnace" is the lower three rows of a boiler bay, which glow
     (the dark rows over them are that bay's "main"); "gable" is the middle light of the screen at
     either end of version b's vault, on the north and the south front (bay 0). Offsets are the
-    skeleton's: add the origin the house is built at."""
+    skeleton's: add the origin the house is built at.
+
+    A "furnace" record asks for its light by number (level, FURNACE_LEVEL): the fire window is the
+    one warm place of the works, and the tuff round it takes half the light ashlar does, so the
+    level a dim window gets leaves its bay black round the glass (review cr2-#7, 1)."""
     out = []
     for front in FRONTS.values():
         name = f"power.{front.name}"
@@ -265,7 +277,7 @@ def windows(version=None):
             common = dict(front=name, bay=bay, cells=[front.at(t0 + i, 1) for i in range(BAY - 1)],
                           inward=STEP[front.inward])
             if kind == FURNACE:
-                out.append(dict(common, storey="furnace", y=FURNACE_Y))
+                out.append(dict(common, storey="furnace", y=FURNACE_Y, level=FURNACE_LEVEL))
                 out.append(dict(common, storey="main", y=(FURNACE_Y[1] + 1, GLASS_Y[1])))
             elif kind == DOOR:
                 out.append(dict(common, storey="main", y=(FEET + GATE_ROWS + 1, GLASS_Y[1])))
@@ -413,31 +425,32 @@ def _tower(p):
         for z in range(TZ0, TZ1 + 1):
             facing = _ring_facing(x, z)
             p.put(x, y, z, BODY if facing is None else f"{BRICK_STAIRS}[facing={facing},half=bottom]")
-    # the shaft: round, hooped, the flue open in its top courses; under the head a polished necking
+    # the shaft: square, banded, the flue open in its top courses; under the head a polished necking
     for y in range(PED_TOP + 2, TOP - 2):
         hoop = (y - PED_TOP) % HOOP_STEP == 0
+        necking = y == TOP - 3
         for x, z in SHAFT:
             if y > TOP - FLUE_DEPTH and (x, z) in FLUE:
                 continue
-            p.put(x, y, z, IRON if hoop else COURSE if y == TOP - 3 else BODY)
-    # the head: a bead six across with the corners left out, a corbel course under a weathered
-    # coping (a stair hung under a stair), and over it the iron rim on the mouth of the shaft alone.
-    # As wide as the foot for three courses it made the chimney a dumbbell (cr2, g2 #36637), and a
-    # course and a half of whole blocks still read as a lid in the pictures: now the full width is
-    # one course, half of the corbel and half of the coping.
+            p.put(x, y, z, IRON if hoop else COURSE if necking else BODY)
+    # the head: a bead six across, a corbel course under a weathered coping (a stair hung under a
+    # stair), and over it the iron rim on the mouth of the shaft alone. The stairs of the four
+    # corners turn the corner of themselves, as those of the shoulder do: the corbel and the coping
+    # are mitred there. As wide as the foot for three courses it made the chimney a dumbbell (cr2,
+    # g2 #36637), and a course and a half of whole blocks still read as a lid in the pictures: now
+    # the full width is one course, half of the corbel and half of the coping.
     for x in range(TX0, TX1 + 1):
         for z in range(TZ0, TZ1 + 1):
-            if (x in (TX0, TX1) and z in (TZ0, TZ1)) or (x, z) in FLUE:
+            if (x, z) in FLUE:
                 continue
             facing = _ring_facing(x, z)
             if facing is None:
                 p.put(x, TOP - 2, z, BODY)
                 p.put(x, TOP - 1, z, COURSE)
+                p.put(x, TOP, z, IRON)
             else:
                 p.put(x, TOP - 2, z, f"{BRICK_STAIRS}[facing={facing},half=top]")
                 p.put(x, TOP - 1, z, f"{TABLE}[facing={facing},half=bottom]")
-            if (x, z) in SHAFT:
-                p.put(x, TOP, z, IRON)
 
 
 # --- the roofs ----------------------------------------------------------------------------------------
@@ -596,12 +609,17 @@ def _light(canvas, origin, version):
                    f"{B.LIGHT}[level={FURNACE_LIGHT}]", keep=True)
 
 
-def _lining(canvas, origin, version):
+def lining(canvas, origin=(0, 0, 0), version=None):
     """The room side of the glowing glass. Lit glass glows on every face, and somebody can stand
     behind these windows; the materials line covers the room side of such a window with a sheet,
     the one that goes with its glass (materials/windows.line: for the fire window night glass, the
     fire is in the room and the window looks out at the night). The sheets are display entities.
-    Returns how many were placed: none while that module has no line()."""
+    Returns how many were placed: none while that module has no line().
+
+    build() does not call this. In the master scene the materials line lines the two windows
+    itself, from windows() (materials/windows.build), and a scene that builds the site line
+    without the materials line's models has nothing to show a sheet with (c350, #58341). It is for
+    a scene that shows the house by itself and packs those models: this package's test scenes."""
     line = getattr(_other("materials.windows"), "line", None)
     if line is None:
         return 0
@@ -626,7 +644,8 @@ def _lamp(canvas, origin):
 def build(canvas, origin=(0, 0, 0), version=None, run=None):
     """Build the shell at `origin`. version: the roof, "a" or "b" (VERSION when not given);
     run: lay the main along the upper terrace (RUN when not given). Returns the number of display
-    entities placed: the linings of the fire windows (_lining) and the lamp over the wicket."""
+    entities placed: the lamp over the wicket. (The linings of the fire windows are the materials
+    line's to place, see lining().)"""
     version = version or VERSION
     if version not in ROOFS:
         raise ValueError(f"no roof version {version!r}; there are {', '.join(sorted(ROOFS))}")
@@ -637,4 +656,4 @@ def build(canvas, origin=(0, 0, 0), version=None, run=None):
     _tower(p)
     _bridge(p, RUN if run is None else run)
     _light(canvas, p.o, version)
-    return _lining(canvas, p.o, version) + _lamp(canvas, p.o)
+    return _lamp(canvas, p.o)
