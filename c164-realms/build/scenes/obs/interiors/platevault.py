@@ -74,6 +74,13 @@ PREFIX = "int_vault_"
 PX = 1 / 16.0
 VIEW = M.NEAR           # everything in the room is drawn within 32 blocks (s2, 11-16; the assembly lowers it after
 #                         build()): no board view looks into the base storey, whose windows the stacks stand before
+# What stands in the vault is drawn within 16 (s2 #92242: the board's V3 and V4 count 78 pieces of this
+# room through the front, and the game draws them through it). No clear line in the room is longer:
+# the nave from the door to the last face is 13, an aisle 15, and the stacks stand across every
+# diagonal. What the nave ends on stays near: the darkroom's pieces on its south wall and the curtain
+# are 19 from the door, and the caged lamps, the one over the door seen from the darkroom's bench.
+NEAR_KEPT = ("int_vault_dark_sink", "int_vault_dark_safelight", "int_vault_dark_timer", "int_vault_dark_shelf",
+             "int_vault_dark_rack", "int_vault_dark_bench", "int_vault_curtain", "prop_lamp_cage_*")
 
 # ---- the room (cells) ---------------------------------------------------------------------------
 _ABOVE = shell.ROOMS["chart room"]
@@ -384,6 +391,7 @@ def build_platevault(canvas, origin=(0, 0, 0)):
     ox, oy, oz = origin
     own = _models()
     n = 0
+    first = len(canvas.entities)
 
     def put(x, y, z, state):
         canvas.set(ox + x, oy + y, oz + z, state)
@@ -504,6 +512,7 @@ def build_platevault(canvas, origin=(0, 0, 0)):
     n += paper.place(canvas, "photo_plate_b", (check[0] + 0.3, glass, check[2] - 0.05), yaw=-12.0, origin=origin)
     n += furniture.place(canvas, "crate", (X1 - 0.75, float(FEET), Z0 + 0.6), yaw=4.0, origin=origin)
     n += furniture.place(canvas, "crate_small", (X1 - 0.8, FEET + furniture.TOP["crate"], Z0 + 0.6), yaw=20.0, origin=origin)
+    M.band(canvas, first, M.SMALL, keep=NEAR_KEPT)
     return n
 
 
