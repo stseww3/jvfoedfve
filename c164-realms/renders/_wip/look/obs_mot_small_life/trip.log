@@ -1,0 +1,41 @@
+[trip 04:53:41 +0s] trip of obs_mot_small_life: the code of 85e8e8de (tag 85e8e8d) of cursor/c164-smoke-smalllife-f3-e07b, checked out at /tmp/c164_s1/shot/85e8e8de, view distance 12 (the server's 10), cloud range 128; 4 cores, 1150 s at most
+[trip 04:53:41 +0s] clean: nodemc.py down  (up to 180 s)
+[trip 04:53:41 +0s] clean: exit 0, 0 s
+[trip 04:53:41 +0s] setup: nodemc.py setup  (up to 850 s)
+    [nodemc 04:53:42] installing mesa-vulkan-drivers vulkan-tools libegl1
+    [nodemc 04:53:45] installed
+    [nodemc 04:53:45] vulkan: apiVersion 1.4.318, deviceName llvmpipe (LLVM 20.1.2, 256 bits), driverInfo Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+    [nodemc 04:53:46] java: fetching OpenJDK25U-jre_x64_linux_hotspot_25.0.5_8.tar.gz (58 MB) from Adoptium
+    [nodemc 04:53:47] java: /agent/realms-study/jdk/jdk-25.0.5+8-jre/bin/java
+    [nodemc 04:53:54] game files: fetched from Mojang in 7 s ({"version": "26.3", "system": "linux", "mainClass": "net.minecraft.client.main.Main", "assetIndex": "34", "files": 5124, "downloaded": 5123, "assets_skipped": 92, "classpath_entries": 67, "server_down)
+    [nodemc 04:53:54] settings written: server26/server.properties, server26/eula.txt, client26/game/options.txt; render distance 12, the server's view distance 10, cloud range 128
+[trip 04:53:54 +12s] setup: exit 0, 12 s
+[trip 04:53:54 +12s] station: nodemc.py status  (up to 60 s)
+    server: no answer
+    client: not running
+    display: none
+    distances: client renderDistance 12, server view-distance 10, cloudRange 128
+    machine: 4 cores, load 0.91, 4915 MB of memory available, 238 GB of disk free under /agent/realms-study
+[trip 04:53:54 +12s] station: exit 0, 0 s
+[trip 04:53:54 +12s] shuttle: shuttle.py --tag 85e8e8d --commit 85e8e8de --settle 3.0 --first-settle 20.0 --still 0.0 --after-budget 300.0 --project /tmp/c164_s1/shot/85e8e8de/c164-realms --out /tmp/c164_s1/real --shots obs_mot_small_life=/tmp/c164_look_3974.json obs_mot_small_life  (up to 1018 s)
+    [shuttle 04:53:54] the code that is shot: /tmp/c164_s1/shot/85e8e8de/c164-realms at 85e8e8de; tag 85e8e8d
+    [shuttle 04:53:54] new plots, this test world's own (a scene of the assembly gets its plot in tools/win/plots.json): "obs_mot_small_life": 200
+        server: no answer
+        client: not running
+        display: none
+        distances: client renderDistance 12, server view-distance 10, cloudRange 128
+        machine: 4 cores, load 0.91, 4889 MB of memory available, 238 GB of disk free under /agent/realms-study
+        [nodemc 04:54:00] server is up (6 s)
+    [shuttle 04:54:00] placing obs_mot_small_life at 200000 200 0
+        BIOME 'obs_blue' of scene obs_mot_small_life is not one of its look's biomes (the scene has no mood.py)
+    [shuttle 04:54:00] stopped: place.py obs_mot_small_life ended with 1
+    [shuttle 04:54:00] trip done with failures: place.py obs_mot_small_life ended with 1 (6 s)
+[trip 04:54:00 +19s] shuttle: exit 1, 6 s
+[trip 04:54:00 +19s] obs_mot_small_life: no note obs_mot_small_life-85e8e8d-real.txt in /tmp/c164_s1/real/85e8e8d/send (not sent yet, or another tag)
+[trip 04:54:00 +19s] what the game said: nodemc.py client-said 1794804822 /tmp/dais_jobs/c357-look/c164-realms/renders/real/_trips/20261116-045341-85e8e8d-obs_mot_small_life-client.txt  (up to 30 s)
+    client said: 0 records on shaders, pipelines and packs, 0 of a failure; written to /tmp/dais_jobs/c357-look/c164-realms/renders/real/_trips/20261116-045341-85e8e8d-obs_mot_small_life-client.txt
+[trip 04:54:00 +19s] what the game said: exit 0, 0 s
+[trip 04:54:00 +19s] close: nodemc.py down  (up to 180 s)
+    [nodemc 04:54:01] server stopped
+[trip 04:54:01 +20s] close: exit 0, 1 s
+[trip 04:54:01 +20s] trip done with failures: the shuttle ended with 1; obs_mot_small_life: no pictures kept; pictures kept: none; log renders/real/_trips/20261116-045341-85e8e8d-obs_mot_small_life.log
