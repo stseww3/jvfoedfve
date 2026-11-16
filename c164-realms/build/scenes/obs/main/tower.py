@@ -19,31 +19,28 @@ heights CLOCK_SHAFT_TOP, CLOCK_TOP and CLOCK_BALL_MAST:
                moulding and gutter, and from below it is their soffit that is seen
     y 42..53   the mast of the time ball, the cup anemometer and the wind vane at its head
 
-The lookout and the top come in two versions (VERSION, or build(version=...)); what they compare
-is the shape of the top, pointed against round:
+The top is pointed, beside the two round domes (main's approver, 11-16, on the pictures of two
+versions; the round one, an octagonal kiosk under a dome, is in the history at b01b871f): the
+lookout has four arches of three columns between corner piers, a round head to each, under a
+four-sided roof whose faces rise in an arc: eaves hung in the row of the arch heads, a kick on
+them, an upright foot on the wall line, a shoulder, and 45 degrees to the finial.
 
-    a   pointed: four arches of three columns between corner piers, a round head to each,
-        under a four-sided roof whose faces rise in an arc: eaves hung in the row of the arch
-        heads, a kick on them, an upright foot on the wall line, a shoulder, and 45 degrees
-        to the finial;
-    b   round: an octagonal kiosk of eight colonnettes on a plinth inside the square of the
-        shaft, a short pinnacle on each of the shaft's corners, under an octagonal dome with
-        eaves of its own: an upright foot, two slopes, a flat crown.
-
-Neither has a cross anywhere: the plans are a square and an octagon, and the mast carries a
-pennant at its tip and the cup wheel lower down on the other side.
+There is no cross anywhere: the plan is a square, and the mast carries a pennant at its tip and
+the cup wheel lower down on the other side.
 
 Not here: the dials, their hands and the time ball are machines/clock, which finds the recesses and
 the mast by itself (DIAL_CENTRES and MAST_MODEL say where they are); the light of the lit slits and
 of the lookout's lamp is placed by sky/lights (windows(), and the kit's suggest()). The radio mast
 hangs no wire to the tower (the director, 11-16: the mast itself is the aerial), so the shaft
-carries no bracket or hook for one: its four faces are flush alike.
+carries no bracket or hook for one: its four faces are flush alike. The clock room behind the
+dials is interiors/clockroom; what it reads of the well is WELL_X/Z/Y, ROOM_FLOOR, backs() and
+DIAL_BACKS, and way_up() opens the door, stands the ladder and lays the room's floor for it.
 
 The mast is two display models, the only ones of the main line: bld_tower_mast, the pole with all
 that is fixed to it, and bld_tower_cups, the cup wheel, a piece of its own so that the motion line
 can turn it about its spindle. build() returns 2.
 
-    python -m scenes.obs.main.tower            # both versions as text: elevation, section, plans
+    python -m scenes.obs.main.tower            # as text: elevation, sections, plans, the way up
 """
 import functools
 import math
@@ -67,7 +64,6 @@ AXIS = (CX + 0.5, CZ + 0.5)         # (13.5, -29.5): the tower's axis, a point
 BODY = O.box(X0, Z0, X1, Z1)        # the 49 columns of the shaft
 INSIDE = O.shrink(BODY)             # the well, 5 x 5
 WALLS = BODY - INSIDE               # the 24 columns of the wall
-CORNERS = {(X0, Z0), (X1, Z0), (X0, Z1), (X1, Z1)}
 LAST = X1 - X0                      # 6: a face's seven columns are counted 0 .. 6
 MID = LAST // 2                     # 3: the middle one
 ARCH = (2, 3, 4)                    # the three columns of a sunk square and of a lookout arch
@@ -80,8 +76,8 @@ FIELD_Y = (SLIT_Y[0] - 1, SLIT_Y[1])            # 21 .. 23: the sunk field a sli
 DIAL_Y = (26, 28)                   # the dial recesses
 SHAFT_TOP = S.CLOCK_SHAFT_TOP       # 31: the cornice row, and the floor of the lookout
 FRIEZE_Y = SHAFT_TOP - 1            # 30: the frieze under the cornice
-LOOKOUT = (32, 35)                  # its open rows; version a's eaves hang in the last of them
-HEAD = 36                           # its ceiling; version b's eaves, and the foot of version a's roof
+LOOKOUT = (32, 35)                  # its open rows; the eaves hang in the last of them
+HEAD = 36                           # its ceiling, and the foot of the roof
 ROOF = (37, S.CLOCK_TOP)            # 37 .. 41: copper and nothing else
 APEX = S.CLOCK_TOP                  # 41: the finial block
 
@@ -107,14 +103,18 @@ FRONT, STOREY = "tower", "shaft"    # the slits' keys for the light line; the ba
 LIT_FACES = ("east", "west")        # the slits that are lit: opposite faces, never two neighbours
 SLIT_LIGHT = 7                      # the stand-in source of a lit slit: what sky/lights places (9 - 2)
 LAMP = True                         # a caged lamp let into the lookout's ceiling
-LAMP_LEVEL = 7                      # the fill it asks the light line for (rank 3)
+LAMP_LEVEL = 12                     # the light it asks the light line for: the top of the second rank. From
+#                                     the forecourt it is the ceiling's underside that is seen in the arches,
+#                                     which the game draws at half its light: at 7 the lookout reads unlit
+#                                     in V5 (the review of the board, 11-16)
+LAMP_RANK = 2                       # the rank it asks in: a caged lamp's own is the third, which stops at 8
 
 # --- materials: roles of the occupancy table ------------------------------------------------------------
 WALL = B.ASHLAR_FINE
-QUOIN = B.ASHLAR_ROUGH              # quoins and base; the colonnettes and pinnacles of version b
+QUOIN = B.ASHLAR_ROUGH              # quoins and base
 PANEL = B.ASHLAR_PANEL              # the field of the slits, the frieze
 PLATE = B.IRON_PLATE                # the back of the dial recesses
-BARS = B.IRON_BARS                  # the railing in the arches of version a
+BARS = B.IRON_BARS                  # the railing in the lookout's arches
 CEILING = B.ASHLAR_PANEL            # pale, so that the lookout holds the glow of its lamp
 DOOR, BULB = B.IRON_DOOR, B.IRON_BULB
 COPPER = B.VERDIGRIS_CUT
@@ -162,20 +162,42 @@ def _mouth(face):
 # east (17.0, 27.5, -29.5), south (13.5, 27.5, -26.0), west (10.0, 27.5, -29.5), north (13.5, 27.5, -33.0)
 DIAL_CENTRES = {f.name: _mouth(f) for f in FACES}
 
+# --- the inside: the well of the shaft, and the way up to interiors/clockroom ---------------------------
+WELL_X, WELL_Z = (X0 + 1, X1 - 1), (Z0 + 1, Z1 - 1)     # 11 .. 15 and -32 .. -28: the well, 5 x 5
+WELL_Y = (FOOT, FRIEZE_Y)           # 18 .. 30: its rows, between the roof's deck (row 17, whole) and the
+#                                     lookout's floor (row 31, whole); the walls round it are one block thick
+ROOM_FLOOR = DIAL_Y[0] - 2.0        # 24.0: the top of the clock room's floor. The rows 24 and 25 are clear
+#                                     from wall to wall: the room is walked under the backs of the dials
+LADDER_AT = (X0 + 1, Z0 + 1)        # (11, -32): the well's north-west corner. Only the four corner columns
+#                                     and the middle 3 x 3 run clear all the way from the deck to the room
+LADDER_Y = (FOOT, int(ROOM_FLOOR))  # 18 .. 24: the ladder's rows. Row 23 is the hatch in the room's floor;
+#                                     the last one stands above the floor, to step off by
+LADDER = B.LADDER                   # the game's ladder: it is climbed by walking into it, without a click
+FLOOR = B.FLOOR_WOOD                # the boards of the clock room's floor, as in the building's rooms
+COVER = B.IRON_HATCH                # the plates that lie on the heads of the slits' fields in the room's floor
 
-def _cut_square(reach, most):
-    """The columns no further than `reach` from the middle column along x and along z, without
-    those whose two distances add up to more than `most`: a square with its corners cut."""
-    return {(CX + dx, CZ + dz) for dx in range(-reach, reach + 1) for dz in range(-reach, reach + 1)
-            if abs(dx) + abs(dz) <= most}
+
+def backs(face):
+    """The cells the two sunk squares of a face ("east", ...) fill inside the well, without the
+    origin: "field", the nine behind the slit (panelled; "glass" names the two of them that are the
+    slit's glass), and "plate", the nine of iron plate behind the dial. In those six rows the well
+    is its middle 3 x 3 and its four corner columns; in the others it is 5 x 5."""
+    f = FACE[face]
+    cells = [f.cell(i, 1) for i in ARCH]
+    gx, gz = f.cell(MID, 1)
+    return dict(field=[(x, y, z) for x, z in cells for y in range(FIELD_Y[0], FIELD_Y[1] + 1)],
+                glass=[(gx, y, gz) for y in range(SLIT_Y[0], SLIT_Y[1] + 1)],
+                plate=[(x, y, z) for x, z in cells for y in range(DIAL_Y[0], DIAL_Y[1] + 1)])
 
 
-# --- the plan of version b ------------------------------------------------------------------------------
-OCT = _cut_square(3, 4)             # 37 columns: the kiosk, inside the square of the shaft
-OCT_IN = _cut_square(2, 3)          # 21: its floor
-OCT_WALL = OCT - OCT_IN             # 16: three to a side on the axes, one on each diagonal
-OCT_PIERS = {(x, z) for x, z in OCT_WALL if sorted((abs(x - CX), abs(z - CZ))) == [1, 3]}       # 8
-CROWN = O.box(CX - 1, CZ - 1, CX + 1, CZ + 1)                                                   # 3 x 3
+def _back(face):
+    """The middle of the side a dial's plate turns to the room: a point in the well."""
+    x, z = face.cell(MID, 1)
+    return (x + 0.5 - face.out[0] * 0.5, (DIAL_Y[0] + DIAL_Y[1] + 1) / 2.0, z + 0.5 - face.out[1] * 0.5)
+
+
+# east (15.0, 27.5, -29.5), south (13.5, 27.5, -28.0), west (12.0, 27.5, -29.5), north (13.5, 27.5, -31.0)
+DIAL_BACKS = {f.name: _back(f) for f in FACES}
 
 
 # --- small builders -------------------------------------------------------------------------------------
@@ -251,14 +273,47 @@ def _shaft(c, o, s):
                 _set(c, o, bx, y, bz, PLATE)
     _fill(c, o, BODY, SHAFT_TOP, WALL.block)
     s.mould(BODY, SHAFT_TOP, WALL.stairs, "top")
-    # the door of the roof walk, in the middle of the west face: shut, the leaf on the inner side
-    # of the wall (a shut door facing west fills the east 3/16 of its cell)
+    _door(c, o, False)
+
+
+def _door(c, o, opened):
+    """The door of the roof walk, in the middle of the west face. Shut, its leaf is on the inner
+    side of the wall (a shut door facing west fills the east 3/16 of its cell); open, it stands
+    against the south jamb, within the wall's thickness, and leaves 13/16 of the doorway."""
     x, z = FACE["west"].cell(MID)
     for y, half in ((FOOT, "lower"), (FOOT + 1, "upper")):
-        _set(c, o, x, y, z, st(DOOR, facing="west", half=half, hinge="left", open="false"))
+        _set(c, o, x, y, z, st(DOOR, facing="west", half=half, hinge="left", open="true" if opened else "false"))
 
 
-# --- the lookout and the top: version a ---------------------------------------------------------------------
+def way_up(canvas, origin=(0, 0, 0)):
+    """Let visitors into the tower and up to the clock room: for interiors/clockroom, which calls
+    this from its build(). Until it does the tower is shut and its well empty.
+
+    The door of the roof walk stands open. A ladder climbs the north-west corner of the well, on
+    the west wall, from the deck through the hatch in the room's floor and one row past it, to
+    step off by (LADDER_AT, LADDER_Y). The room's floor lies in the row under ROOM_FLOOR: boards
+    wherever the well is open in that row, but for the ladder's corner. Along the middle of each
+    wall the heads of the slit's field stand in that row already, two of panelled stone and the
+    glass between them: a run of three iron plates lies on them, 3/16 thick, so that the floor
+    shows no pane underfoot. Under the backs of the dials 1.81 blocks are left above the plates.
+    Nothing on the way is clicked: the map's reach is 0. Returns the ladder's cells, without the
+    origin: the room keeps them clear."""
+    _door(canvas, origin, True)
+    x, z = LADDER_AT
+    cells = [(x, y, z) for y in range(LADDER_Y[0], LADDER_Y[1] + 1)]
+    for x, y, z in cells:
+        _set(canvas, origin, x, y, z, st(LADDER, facing="east"))
+    row = int(ROOM_FLOOR) - 1
+    fields = {f.cell(i, 1) for f in FACES for i in ARCH}
+    _fill(canvas, origin, INSIDE - fields - {LADDER_AT}, row, FLOOR.block)
+    for f in FACES:
+        for i in ARCH:
+            x, z = f.cell(i, 1)
+            _set(canvas, origin, x, row + 1, z, st(COVER, facing=O.NAME[f.inward], half="bottom", open="false"))
+    return cells
+
+
+# --- the lookout and the top ------------------------------------------------------------------------------
 # The roof above its eaves, ring by ring: (row, how far the ring stands from the middle column, what
 # it is made of). Half-widths by the half row from y 36: 4.5 4.0 | 3.5 3.5 | 3.5 3.0 | 2.5 2.0 |
 # 1.5 1.0 | 0.5 -- a kick on the eaves, an upright foot on the wall line, a shoulder, and 45 degrees
@@ -272,7 +327,7 @@ def _square(reach):
     return O.box(CX - reach, CZ - reach, CX + reach, CZ + reach)
 
 
-def _top_a(c, o, s):
+def _top(c, o, s):
     """Square: corner piers two columns wide (the quoin and one of dressed stone) and between them
     an arch of three with a railing in its foot. The roof begins with its eaves, a copper moulding
     hung in the row of the arch heads: from the court and from the station it is the soffit that
@@ -314,56 +369,6 @@ def _top_a(c, o, s):
     return HEAD
 
 
-# --- the lookout and the top: version b ---------------------------------------------------------------------
-def _slope(c, o, cells, y):
-    """One ring of the dome: a stair on each column of the octagon's four long sides, rising
-    towards the axis, and a slab on the columns of its diagonals (a stair there would have to turn
-    an inner corner, and no state can ask for one)."""
-    for x, z in cells:
-        dx, dz = x - CX, z - CZ
-        if abs(dx) == abs(dz):
-            state = st(COPPER.slab, type="bottom")
-        elif abs(dx) > abs(dz):
-            state = st(COPPER.stairs, facing="west" if dx > 0 else "east", half="bottom")
-        else:
-            state = st(COPPER.stairs, facing="north" if dz > 0 else "south", half="bottom")
-        _set(c, o, x, y, z, state)
-
-
-def _top_b(c, o, s):
-    """Octagonal: a plinth one row high inside the square of the shaft, on it eight colonnettes
-    at the corners of the octagon (the sky shows between them all round) under a stone architrave;
-    on each corner of the shaft a pedestal with a short pinnacle. The dome begins with its eaves,
-    a copper moulding round the architrave, and stands on the kiosk's wall line: an upright foot,
-    two slopes of 45 degrees and a flat crown under the finial. Half-widths on the axes by the
-    half row from y 36: 4.0 4.5 | 3.5 3.5 | 3.5 3.0 | 2.5 2.0 | 1.5 0.5 | 0.5. Returns the row of
-    the ceiling."""
-    y0, y1 = LOOKOUT
-    _fill(c, o, OCT_WALL, y0, WALL.block)
-    for y in range(y0 + 1, y1 + 1):
-        _fill(c, o, OCT_PIERS, y, QUOIN.wall)
-    for x, z in CORNERS:
-        _set(c, o, x, y0, z, QUOIN.block)
-        _set(c, o, x, y0 + 1, z, QUOIN.wall)
-    _fill(c, o, OCT_WALL, HEAD, WALL.block)
-    _fill(c, o, OCT_IN, HEAD, CEILING.block)
-    s.mould(OCT, HEAD, COPPER.stairs, "top")
-    y = ROOF[0]
-    _fill(c, o, OCT, y, COPPER.block)                   # 37: the upright foot
-    _fill(c, o, OCT_IN, y + 1, COPPER.block)            # 38: the first slope, on the kiosk's wall line
-    _slope(c, o, OCT_WALL, y + 1)
-    _fill(c, o, CROWN, y + 2, COPPER.block)             # 39: the second slope
-    _slope(c, o, OCT_IN - CROWN, y + 2)
-    _fill(c, o, CROWN, y + 3, st(COPPER.slab, type="bottom"))      # 40: the dome flattens
-    _set(c, o, CX, y + 3, CZ, COPPER.block)
-    _set(c, o, CX, APEX, CZ, FINIAL)
-    return HEAD
-
-
-TOPS = {"a": _top_a, "b": _top_b}
-VERSION = "a"                       # what the master scene shows until the director has picked one
-
-
 # --- the lamp and the light -------------------------------------------------------------------------------
 def _lamp(c, o, head):
     """A caged lamp let into the middle of the lookout's ceiling, which lies in row `head`. The
@@ -375,7 +380,7 @@ def _lamp(c, o, head):
     below = (o[0] + CX, o[1] + head - 1, o[2] + CZ)
     suggest = getattr(_kit(), "suggest", None)
     if suggest is not None:
-        suggest(c, below, LAMP_LEVEL, "main/tower:cage", rank=3)
+        suggest(c, below, LAMP_LEVEL, "main/tower:lookout", rank=LAMP_RANK)
     else:
         c.set(below[0], below[1], below[2], f"{B.LIGHT}[level={LAMP_LEVEL}]", keep=True)
 
@@ -472,13 +477,12 @@ def _mast(c, o):
 
 
 # --- the package ----------------------------------------------------------------------------------------------
-def build(canvas, origin=(0, 0, 0), version=None):
-    """Place the clock tower on the north pavilion's deck. `version` picks the lookout and the top
-    (a: arches under a four-sided roof, b: an octagonal kiosk under a dome; VERSION when left out);
-    the shaft and the mast are the same for both. Returns the display entities placed: 2."""
+def build(canvas, origin=(0, 0, 0)):
+    """Place the clock tower on the north pavilion's deck: the shaft, the lookout under its
+    four-sided roof, the mast. Returns the display entities placed: 2."""
     s = O.Laying(canvas, O.Plan(BODY), origin, None)
     _shaft(canvas, origin, s)
-    head = TOPS[version or VERSION](canvas, origin, s)
+    head = _top(canvas, origin, s)
     _lamp(canvas, origin, head)
     _slit_lights(canvas, origin)
     return _mast(canvas, origin)
@@ -494,17 +498,22 @@ def _plan_row(c, y):
 
 
 def _drawings():
-    for version in ("a", "b"):
-        c = Canvas()
-        n = build(c, version=version)
-        print(f"\n=== clock tower, version {version}: {len(c.b)} blocks, {n} display entities ===")
-        print("\nEAST ELEVATION (seen from the court; south on the left):\n")
-        print(O.elevation(c, "east", (Z0 - 2, Z1 + 2), (FOOT, APEX), X1 + 4, X0 - 1))
-        print(f"\nSECTION through the middle (z = {CZ}; west on the left):\n")
-        print(O.section(c, "z", CZ, (X0 - 2, X1 + 2), (FOOT, APEX)))
-        for y in (LOOKOUT[0], LOOKOUT[0] + 1, LOOKOUT[1], HEAD, *range(ROOF[0], APEX)):
-            print(f"\nPLAN of row y = {y} (north up):\n")
-            print(_plan_row(c, y))
+    c = Canvas()
+    n = build(c)
+    print(f"\n=== clock tower: {len(c.b)} blocks, {n} display entities ===")
+    print("\nEAST ELEVATION (seen from the court; south on the left):\n")
+    print(O.elevation(c, "east", (Z0 - 2, Z1 + 2), (FOOT, APEX), X1 + 4, X0 - 1))
+    print(f"\nSECTION through the middle (z = {CZ}; west on the left):\n")
+    print(O.section(c, "z", CZ, (X0 - 2, X1 + 2), (FOOT, APEX)))
+    for y in (LOOKOUT[0], LOOKOUT[0] + 1, LOOKOUT[1], HEAD, *range(ROOF[0], APEX)):
+        print(f"\nPLAN of row y = {y} (north up):\n")
+        print(_plan_row(c, y))
+    way_up(c)
+    print(f"\nSECTION through the ladder with the way up open (z = {LADDER_AT[1]}; west on the left):\n")
+    print(O.section(c, "z", LADDER_AT[1], (X0 - 2, X1 + 2), (FOOT, SHAFT_TOP)))
+    for y in (FOOT, SLIT_Y[0], int(ROOM_FLOOR) - 1, int(ROOM_FLOOR), DIAL_Y[0]):
+        print(f"\nPLAN of row y = {y} with the way up open (north up):\n")
+        print(_plan_row(c, y))
 
 
 if __name__ == "__main__":

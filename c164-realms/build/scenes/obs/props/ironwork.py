@@ -550,6 +550,7 @@ def _brace(m, x, r, top):
 
 
 OPAL = [K.flat("opal", i) for i in range(len(P.RAMPS["opal"]))]
+LAMP_TOP = 2                                  # the brightest tone of the canopy lamp's globe: OPAL[LAMP_TOP]
 LAMP_QUARTERS = ("in", "left", "right")       # the pieces of the lamp that are glass alone (_canopy_lamp):
 LAMP_PIECES = ["canopy_lamp"] + ["canopy_lamp_" + way for way in LAMP_QUARTERS + ("under",)]      # ... and all of it
 
@@ -560,10 +561,16 @@ def _canopy_lamp(way="out"):
     the lamp is 28.5 px below it. The lamp is five pieces, so the globe shows its tones as painted
     from wherever one comes: four (WAYS), each drawn in the frame tilted for its quarter of the
     globe -- the one that looks out of the wall has the iron as well, the other three are glass
-    alone -- and "under", the steps of the globe's lower half, which look down (SLIDE)."""
+    alone -- and "under", the steps of the globe's lower half, which look down (SLIDE).
+
+    The globe's tones stop at LAMP_TOP, the third of the opal ramp (0.89), in the band round its
+    waist, and fall a tone a band to either end (c332, 11-16: with the two white tones of the ramp
+    the lamp was 0.98 on the boards, more white in sight than the head of the comet, which is to
+    be the one white of the map; the lamp is still the brightest point of the entrance)."""
     m = M.Model(PREFIX + "canopy_lamp" + ("" if way == "out" else "_" + way), px=1.0)
-    bands = [(-1.0, -0.75, 1, OPAL[0]), (-0.75, -0.5, 1, OPAL[1]), (-0.5, -0.25, 1, OPAL[2]),
-             (-0.25, 0.25, 1, OPAL[4]), (0.25, 0.5, 1, OPAL[3]), (0.5, 0.75, 1, OPAL[2]), (0.75, 1.0, 1, OPAL[1])]
+    tone = [OPAL[max(0, LAMP_TOP - away)] for away in (3, 2, 1, 0, 1, 2, 3)]
+    bands = [(-1.0, -0.75, 1, tone[0]), (-0.75, -0.5, 1, tone[1]), (-0.5, -0.25, 1, tone[2]),
+             (-0.25, 0.25, 1, tone[3]), (0.25, 0.5, 1, tone[4]), (0.5, 0.75, 1, tone[5]), (0.75, 1.0, 1, tone[6])]
     globe = dict(centre=(0.0, -21.0, 0.0), radius=5.0, bands=bands, sides=12, squash=1.0)
     if way == "under":
         return _ball_under(m, **globe)
@@ -606,31 +613,60 @@ def _railing_panel(width=2, height=1):
 
 # ---- the inspection ladder ------------------------------------------------------------------------
 LADDER_H = 48.0     # three blocks to a length; rungs every 8 px and hoops every 16, so lengths stack
+HOOPS = (8.0, 24.0, 40.0)       # the hoops of a caged length, each 2 px deep
+STILE, STAND = 4.5, 4.0         # a stile's x either side of the middle; how far its middle stands off the wall
+HEAD_UP = 13.5      # the stiles' returns stand this high over the wall head: a hand's hold, not a rail
+HEAD_BACK = 9.0     # ... and come down this far behind the stiles: 5 px in from the wall's face
 
 
-def _ladder(caged=False):
+def _ladder(caged=False, foot=False, top=False):
     """A three-block length of the inspection ladder, at scale 1 (anchor: the foot centre on the
-    wall; it stands 4 px off the wall on +z). Lengths stack without a break. `caged` is the length
+    wall; it stands 4 px off the wall on +z). Lengths stack without a break. `caged` is a length
     above head height: round hoops every block and five straps down them, a cage a block and an
-    eighth wide, so from in front it is a cage about the ladder and not three short lines."""
-    m = M.Model(PREFIX + ("ladder_cage" if caged else "ladder"), px=1.0)
-    rail, stand = 4.5, 4.0
+    eighth wide, so from in front it is a cage about the ladder and not three short lines. The
+    straps run from hoop to hoop: in the cage's lowest length (`foot`) they start at the lowest
+    hoop and in its highest (`top`) they stop at the highest. Run on to the end of the length they
+    stood over the wall head as a ring of spikes (review #24)."""
+    ends = ("_only" if top else "_foot") if foot else "_top" if top else ""
+    m = M.Model(PREFIX + ("ladder_cage" + ends if caged else "ladder"), px=1.0)
     for sx in (-1.0, 1.0):
-        m.box((sx * rail - 1.0, 0.0, stand - 1.0), (sx * rail + 1.0, LADDER_H, stand + 1.0), IRON, grain="y")
+        m.box((sx * STILE - 1.0, 0.0, STAND - 1.0), (sx * STILE + 1.0, LADDER_H, STAND + 1.0), IRON, grain="y")
         for y in (8.0, 40.0):                                                    # the stays to the wall
-            m.box((sx * rail - 0.5, y - 1.0, 0.0), (sx * rail + 0.5, y + 1.0, stand - 1.0), IRON_D, grain="z")
+            m.box((sx * STILE - 0.5, y - 1.0, 0.0), (sx * STILE + 0.5, y + 1.0, STAND - 1.0), IRON_D, grain="z")
     for i in range(6):
-        m.tube("x", (4.0 + 8.0 * i, stand), -rail, rail, 0.8, IRON_D, sides=8)   # a rung
+        m.tube("x", (4.0 + 8.0 * i, STAND), -STILE, STILE, 0.8, IRON_D, sides=8)  # a rung
     if caged:
-        centre, r = stand + 1.0, 9.0
-        for y in (8.0, 24.0, 40.0):
+        centre, r = STAND + 1.0, 9.0
+        for y in HOOPS:
             m.ring("y", (0.0, y, centre), r, 1.0, 2.0, IRON, sides=16, arc=(180.0, 360.0))
-            for sx in (-1.0, 1.0):                                               # the hoop's lugs, back to the rails
-                a, b = sorted((sx * (rail + 1.0), sx * (r + 0.5)))
+            for sx in (-1.0, 1.0):                                               # the hoop's lugs, back to the stiles
+                a, b = sorted((sx * (STILE + 1.0), sx * (r + 0.5)))
                 m.box((a, y - 1.0, centre - 1.0), (b, y + 1.0, centre), IRON, grain="x")
+        low = HOOPS[0] - 1.0 if foot else 0.0
+        high = HOOPS[-1] + 1.0 if top else LADDER_H
         for angle in (200.0, 235.0, 270.0, 305.0, 340.0):
-            m.box((r - 0.5, 0.0, centre - 0.5), (r + 0.5, LADDER_H, centre + 0.5), IRON_D,
+            m.box((r - 0.5, low, centre - 0.5), (r + 0.5, high, centre + 0.5), IRON_D,
                   rot=("y", angle, (0.0, 0.0, centre)), grain="y")
+    return m
+
+
+def _ladder_head():
+    """What stands over the wall head where the ladder ends, at scale 1 (anchor: the middle of the
+    ladder on the wall's face, level with the wall head): the two stiles run on, turn back over the
+    wall in a half round and come down on its head, each on a foot plate. It is the hold of whoever
+    steps off the top rung, and the only thing that rises there: the cage stops at its last hoop."""
+    m = M.Model(PREFIX + "ladder_head", px=1.0)
+    r = HEAD_BACK / 2.0
+    spring = HEAD_UP - r - 1.0                           # the half round springs here
+    back = STAND - HEAD_BACK
+    for sx in (-1.0, 1.0):
+        x = sx * STILE
+        m.box((x - 1.0, 0.0, STAND - 1.0), (x + 1.0, spring, STAND + 1.0), IRON, grain="y")
+        m.ring("x", (x, spring, STAND - r), r, 2.0, 2.0, IRON, sides=16, arc=(-90.0, 90.0))
+        m.box((x - 1.0, 1.0, back - 1.0), (x + 1.0, spring, back + 1.0), IRON, grain="y")
+        m.box((x - 2.0, 0.0, back - 2.0), (x + 2.0, 1.0, back + 2.0), IRON_D)   # its foot on the wall head
+        K.rivet(m, (x, 1.0, back - 1.5), out="y")
+        K.rivet(m, (x, 1.0, back + 1.5), out="y")
     return m
 
 
@@ -657,19 +693,32 @@ def _vent_cowl():
 
 
 # ---- the floor grating / louvre hatch -------------------------------------------------------------
+GRATE_BAR = P.mat("iron", base=4, bevel=0)       # the bars of a floor grating: walked bright, a step over the frame
+
+
 def _grate_hatch(width=1):
     """A square floor grating with a ring pull, at scale 1 (anchor: the foot centre, it lies flat on
-    the floor)."""
+    the floor): a frame let into the paving and a pixel proud of it, flat bars on edge level with
+    it, two tie bars under them and under all a plate as dark as iron goes. Bright bars over a
+    black pit: that is what says a cover over a hole. With a frame 2 px high and the paving for a
+    bottom it was a tray set down on the floor (review #24)."""
     m = M.Model(PREFIX + "grate_hatch", px=1.0)
     s = width * 16.0 / 2.0
+    top, clear = 1.0, s - 1.5                            # the frame's height; half the opening
     for sx in (-1.0, 1.0):
-        m.box((sx * s - 1.5, 0.0, -s), (sx * s + 1.5, 2.0, s), IRON, grain="z")
-        m.box((-s, 0.0, sx * s - 1.5), (s, 2.0, sx * s + 1.5), IRON, grain="x")
-    for i in range(int(2 * s // 3) - 1):                                         # grating bars
-        z = -s + 3.0 * (i + 1)
-        m.tube("x", (1.0, z), -s + 1.5, s - 1.5, 0.6, IRON_D, sides=6)
-    m.box((-s, 0.0, -s + 0.5), (-s + 1.5, 1.0, -s + 2.5), IRON_D)                # a hinge
-    m.ring("y", (s - 3.0, 1.5, 0.0), 2.0, 0.8, 0.8, BRASS, sides=12)            # ring pull
+        m.box((sx * s - 1.5, 0.0, -s - 1.5), (sx * s + 1.5, top, s + 1.5), IRON, grain="z")
+        m.box((-clear, 0.0, sx * s - 1.5), (clear, top, sx * s + 1.5), IRON, grain="x")
+    m.box((-clear, 0.0, -clear), (clear, 0.1, clear), HOLLOW)                    # the pit
+    bars = int(round(2.0 * clear / 2.5)) or 1                                    # a 1 px bar every 2.5 px
+    for i in range(bars):
+        z = 2.5 * (i - (bars - 1) / 2.0)
+        m.box((-clear, 0.1, z - 0.5), (clear, top, z + 0.5), GRATE_BAR, grain="x")
+    for sx in (-1.0, 1.0):                                                       # the tie bars, below the tread
+        x = sx * clear / 3.0
+        m.box((x - 0.4, 0.1, -clear), (x + 0.4, top - 0.4, clear), IRON_D, grain="z")
+    for sz in (-1.0, 1.0):                                                       # the hinges, on the frame
+        m.box((-s - 0.8, top - 0.4, sz * s / 2.0 - 1.5), (-s + 0.8, top + 0.7, sz * s / 2.0 + 1.5), IRON_D, grain="z")
+    m.ring("y", (s - 3.5, top + 0.45, 0.0), 2.0, 0.8, 0.8, BRASS, sides=12)     # the ring pull, lying on the bars
     return m
 
 
@@ -699,6 +748,10 @@ SPEC = {
     "railing_panel": dict(build=_railing_panel, mount="floor", scale=1.0, light=None),
     "ladder": dict(build=_ladder, mount="wall", scale=1.0, light=None),
     "ladder_cage": dict(build=lambda: _ladder(True), mount="wall", scale=1.0, light=None),
+    "ladder_cage_foot": dict(build=lambda: _ladder(True, foot=True), mount="wall", scale=1.0, light=None),
+    "ladder_cage_top": dict(build=lambda: _ladder(True, top=True), mount="wall", scale=1.0, light=None),
+    "ladder_cage_only": dict(build=lambda: _ladder(True, foot=True, top=True), mount="wall", scale=1.0, light=None),
+    "ladder_head": dict(build=_ladder_head, mount="wall", scale=1.0, light=None),
     "vent_cowl": dict(build=_vent_cowl, mount="floor", scale=1.0, light=None),
     "grate_hatch": dict(build=_grate_hatch, mount="floor", scale=1.0, light=None),
 }
@@ -707,7 +760,12 @@ SCALE = {PREFIX + name: spec["scale"] for name, spec in SPEC.items()}
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    return {PREFIX + name: spec["build"]() for name, spec in SPEC.items()}
+    """Every model once over K.settle (a6 #75961): the slanting flats of a round bar, ring or scroll
+    stand exactly between two model axes, and the light on such a face would come out of the last
+    bit of a float. Not the pieces drawn in a leaning frame of their own (those with "turns": the
+    fanlight, the lamp's five): where their faces look is what the frame is for."""
+    return {PREFIX + name: spec["build"]() if "turns" in spec else K.settle(spec["build"]())
+            for name, spec in SPEC.items()}
 
 
 def models():
@@ -792,13 +850,20 @@ def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), width=None, light
     return n
 
 
-def ladder(canvas, pos, lengths, facing="south", origin=(0, 0, 0), plain=1):
+def ladder(canvas, pos, lengths, facing="south", origin=(0, 0, 0), plain=1, head=True):
     """A ladder of `lengths` three-block lengths up a wall from pos (the foot centre on the wall);
-    the first `plain` of them are bare, so one can step on, the rest are caged."""
+    the first `plain` of them are bare, so one can step on, the rest are caged, the cage's straps
+    starting at its lowest hoop and stopping at its highest. `head`: the wall ends where the ladder
+    does, and the stiles turn back over the wall head and come down on it (_ladder_head)."""
     n = 0
     for i in range(lengths):
-        at = (pos[0], pos[1] + 3.0 * i, pos[2])
-        n += place(canvas, "ladder" if i < plain else "ladder_cage", at, facing=facing, origin=origin)
+        kind = "ladder"
+        if i >= plain:
+            first, last = i == plain, i == lengths - 1
+            kind = "ladder_cage" + (("_only" if last else "_foot") if first else "_top" if last else "")
+        n += place(canvas, kind, (pos[0], pos[1] + 3.0 * i, pos[2]), facing=facing, origin=origin)
+    if head:
+        n += place(canvas, "ladder_head", (pos[0], pos[1] + 3.0 * lengths, pos[2]), facing=facing, origin=origin)
     return n
 
 

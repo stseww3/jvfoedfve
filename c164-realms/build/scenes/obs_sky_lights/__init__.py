@@ -1,7 +1,9 @@
 """Test scene of the card sky/lights: the main building under its lights, once for each look.
 
 The building is the real one: what the main line and the props line build in the master scene
-(their build() at the building's origin), on a plain terrace that ends where the map's does (x 60), with the lower
+(their build() at the building's origin) and, between the two as there, the machines and the rooms
+that stand inside it (INSIDE: each as soon as it is in the tree; the hall's lamps are the star
+hall's since it moved in), on a plain terrace that ends where the map's does (x 60), with the lower
 platform six blocks under it, so that V1 (skeleton) sees each front as the arriving visitor will.
 Windows are blocks and do not change with the time, so every look has a building of its own, glazed
 for that look (_lightkit.under) and shot at that look's time. The buildings stand one behind the
@@ -26,19 +28,17 @@ for the building's own lights with _lightkit.dress(), whatever the switch sky/li
 and keeps to the entrance's lamps (the wall lamps and the pair of street lamps before the door):
 the other lamps of the site are judged on the site, in the master scene.
 
-The scene obs_sky_lights_nolend is the blue building alone, without what the brightest window lends
-to the windows beside it (_lightkit.LENDS): the shots of NOLEND_SHOTS, to lay beside their twins here.
-
-    python -m scenes.obs_sky_lights      writes shots.json, here and in obs_sky_lights_nolend; prints
-                                         the light report, the lighting maps of the three looks and
-                                         the levels on the stone
+    python -m scenes.obs_sky_lights      writes shots.json; prints the light report, the lighting
+                                         maps of the three looks and the levels on the stone
     python -m scenes.obs_sky_lights.outside against <commit>
                                          the block light of every cell, before and after
 """
+import importlib
+
 from artkit.canvas import Canvas
 
 from scenes.obs import main as main_line          # not `main`, `props`: this folder has modules of those names
-from scenes.obs import materials, sky
+from scenes.obs import sky
 from scenes.obs import props as props_line
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
@@ -52,8 +52,13 @@ BIOME_MARGIN_Y = 120
 
 
 def write_pack(pack_dir):
-    """The sky's pictures and the repainted blocks the fronts are built of."""
-    return list(sky.pack(pack_dir) or []) + list(materials.pack(pack_dir) or [])
+    """What the lines this scene builds from put into the pack, in the master scene's order: the
+    repainted blocks the fronts are built of, the pictures of the machines and the rooms inside,
+    the sky's."""
+    out = []
+    for name in ("materials", "main", "machines", "interiors", "props", "sky"):
+        out += list(importlib.import_module(f"scenes.obs.{name}").pack(pack_dir) or [])
+    return out
 
 
 STONE, ROUGH, PANEL, EMBLEM = B.ASHLAR_FINE.block, B.ASHLAR_ROUGH.block, B.ASHLAR_PANEL.block, B.ASHLAR_EMBLEM
@@ -93,12 +98,30 @@ def _ground(c, o, x0, x1, z0, z1, walk=False, lower=None):
         c.box(ox + x1 + 1, oy + S.LOWER_PAVING_Y, oz + z0, ox + lower, oy + S.LOWER_PAVING_Y, oz + z1, FIELD)
 
 
+# what stands inside the main building, in the master scene's order (machines, then interiors): the
+# packages of those two lines that are not on the site. (module, the function that builds it)
+INSIDE = (("machines.orrery", "build"), ("machines.clock", "build"), ("machines.scope", "build"),
+          ("interiors.starhall", "build"), ("interiors.timeroom", "build"), ("interiors.chartroom", "build"),
+          ("interiors.domeroom", "build"), ("interiors.platevault", "build"), ("interiors.batteryroom", "build"))
+
+
+def _inside(c, o):
+    n = 0
+    for module, function in INSIDE:
+        try:
+            package = importlib.import_module(f"scenes.obs.{module}")
+        except ImportError:
+            continue
+        n += int(getattr(package, function)(c, o) or 0)
+    return n
+
+
 def _station(c, name, o):
     """The building glazed for one look. Returns the display entities placed: (the other lines',
     sky's own)."""
     _ground(c, o, GROUND_X[0], GROUND_X[1], GROUND_Z[0], GROUND_Z[1], walk=True, lower=LOWER_X)
     with L.under(name):
-        n = int(main_line.build(c, o) or 0) + int(props_line.build(c, o) or 0)
+        n = int(main_line.build(c, o) or 0) + _inside(c, o) + int(props_line.build(c, o) or 0)
     return n, sky.build(c, o)
 
 
@@ -161,9 +184,8 @@ def _board(c, o):
     L.glazed(c, windows, origin=o, group="levels")      # lit by the first sky.build() that follows
 
 
-def build(only=None, lends=True):
-    """only: the buildings that are put up, by name (all of them, and the levels board, when None).
-    lends: False leaves out what the brightest window lends to the windows beside it."""
+def build(only=None):
+    """only: the buildings that are put up, by name (all of them, and the levels board, when None)."""
     c = Canvas()
     L.dress(c)                              # this scene shows the building's own lights, whatever the switch says
     if hasattr(lamps, "dress"):
@@ -177,8 +199,6 @@ def build(only=None, lends=True):
     for name, glazed, o, numbers in stations:
         if only is not None and name not in only:
             continue
-        if not lends:
-            numbers["LENDS"] = ()
         with L.trying(**numbers):
             n_props, n_sky = _station(c, glazed, o)
         counts["props"] += n_props
@@ -229,11 +249,16 @@ VIEWS = {   # name: (eye, looks at), from a building's origin
     "v7": (S.V7["pos"], S.V7["look_at"]),                                          # the hall from outside the door
     "wash": ((S.WALL_E + 9.5, EYE, -16.5), (S.WALL_E + 1.0, 2.0, -10.0)),          # the washed pilasters of the north wing
     "west": ((APSE_X - 28.5, EYE, AXIS), (APSE_X, 10.0, AXIS)),                    # from the sunset platform
+    "stair": ((8.5, S.STAND + EYE, -4.5), (5.5, 9.3, -3.5)),                       # the ring stair's newel lamp, from the north gallery
+    # the lamps of the ways (sky/lights "ways"), each from where one walks towards it
+    "passage": ((APSE_X + 2.0, EYE, AXIS), (3.0, 2.5, AXIS)),                      # in at the west door: the pier's lamp at the end
+    "cross": ((0.5, S.STAND + EYE, -4.5), (2.0, 9.6, 1.5)),                        # along the cross gallery, under the stair's west run
+    "ring": ((8.5, S.STAND + EYE, 5.5), (4.0, 12.2, 2.5)),                         # the south run and the pier's south face, from the south gallery
+    "turn": ((7.5, 14.0 + EYE, 3.5), (7.2, 16.6, -3.0)),                           # on the south-east landing, up the east run
 }
 EVERY_LOOK = ("front", "axis", "v1", "slant", "surround")
-SOME_LOOKS = {"blue": ("v3", "door", "v7", "wash", "west"), "deep": ("door", "wash")}
-NOLEND_LOOKS = ("blue",)                                    # what obs_sky_lights_nolend puts up and shows
-NOLEND_SHOTS = ("blue_front", "blue_axis", "blue_door")
+SOME_LOOKS = {"blue": ("v3", "door", "v7", "wash", "west", "stair", "passage", "cross", "ring", "turn"),
+              "deep": ("door", "wash")}
 BOARD_MID = (S.pilaster_z(BOARD_BAYS[0] - 1) + S.pilaster_z(BOARD_BAYS[-1])) / 2.0 + 0.5
 
 

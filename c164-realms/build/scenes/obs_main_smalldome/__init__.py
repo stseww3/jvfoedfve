@@ -72,6 +72,9 @@ def shots():
     shot("door", (door_x + 1.5, eye, gable + 0.5), (door_x + 0.5, S.ROOF_STAND + 1.0, door_z + 0.5))
     shot("treads", (S.WALL_E - 2.0, eye + 0.6, gable + 4.0), (ridge + 2.0, S.ROOF_STAND + 1.0, gable + 1.5))
     shot("walk", (ridge, P.ROOF_RIDGE_TOP + S.EYE, gable + 2.5), (cx - 2.0, spring - 0.5, cz))
+    # the pocket between the inner gable and the great drum, closed up to the gable's top: from
+    # over the walkway's near end, down past the gable (the walk-in round's station J08, a head higher)
+    shot("pocket", (ridge + 1.5, P.ROOF_RIDGE_TOP + S.EYE + 0.6, gable + 1.6), (ridge + 0.6, P.ROOF_RIDGE_TOP - 0.2, gable - 1.2))
     shot("terrace", (S.WALL_W + 2.5, eye, end_gable + 3.5), (cx - 3.0, S.ROOF_STAND + 2.6, cz))
     shot("roofs", (cx + 6.0, spring + 22.0, cz + 26.0), (ridge, S.ROOF_STAND, 14.0))
     # the north wing: from the west, where the tower does not stand in the way (the end terrace, the
@@ -85,8 +88,8 @@ def shots():
     shot("lookout", (tower_x, lookout, S.CLOCK_SHAFT_Z[1] + 1.1), (ridge, S.ROOF_STAND + 1.0, mirror - 12.0))
     shot("lookout_west", (S.CLOCK_SHAFT_X[0] - 0.4, lookout, tower_z), (S.WALL_W + 4.5, S.ROOF_STAND - 0.5, tower_z + 1.0))
     shot("aerial", (cx + 14.0, spring + 24.0, cz + 18.0), (cx, spring - 2.0, cz))
-    # V12, the board's view of the whole site from above: the skeleton does not lock it yet, so the
-    # numbers are the proposal of tools/boardshots.py, written out the same way
+    # V12, the board's view of the whole island: the skeleton's since 11-16 (A0 #77177: low, from the
+    # north-east); the numbers after `or` are the old proposal of tools/boardshots.py, from above
     v12 = getattr(S, "V12", None) or dict(pos=(S.EAST_EDGE_X + 20.0, 90.0, S.Z_SOUTH + 46.0),
                                           look_at=(S.MERIDIAN_X, S.GROUND, S.AXIS_Z - 5.5))
     shot("v12", v12["pos"], v12["look_at"])

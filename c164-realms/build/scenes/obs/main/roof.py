@@ -16,8 +16,8 @@ the shell, the tower and the domes. The flags stay as the facade lays them; what
                         gutters' metal here and nothing else's), and an iron plate in the flags
                         before each door.
   the corner terraces   the two pockets between the great drum, a wing's gable and the east
-                        parapet. The dome room's doors open onto them; the leaves hang here, set
-                        back in the wall.
+                        parapet. The dome room's doors open onto them; the leaves hang here and
+                        stand open against the east jamb, within the wall.
   the end terraces      the flat roofs of the two end pavilions, west of the clock tower and of
                         the small dome. A roof light leans against the gable: six blocks of glass
                         level with the flags, an iron kerb on its three open sides, a ceiling light
@@ -95,6 +95,15 @@ DOOR_Z = smalldome.CZ                                   # |z| 30: the row of bot
 LIGHT_X = (DOWN_X + 2, DOWN_X + 4)                      # 4..6: the glass
 LIGHT_DEEP = 2                                          # |z| 27..28: two rows of glass; the kerb's row is 29
 
+# the pocket behind the ridge, between a wing's inner gable and the great drum: three columns the
+# drum's wall cuts off from the corner terrace, two blocks under the gable's top and walled in on
+# every side, so that whoever stepped off the gable towards the drum could not leave (a4's walk-in
+# round, R1 and R2). The gable's stone is carried on to the drum, level with the gable's top beside
+# the ridge. The row of the drum's window over the innermost column stays open.
+POCKET = ((RIDGE[1], GABLE_IN - 2), (RIDGE[1], GABLE_IN - 1), (RIDGE[1] + 1, GABLE_IN - 1))    # (x, |z|): (8, 12), (8, 13), (9, 13)
+POCKET_TOP = RIDGE_TOP                                  # 20: where feet stand on it, as on the gable at x 9
+FILL = B.ASHLAR_FINE.block
+
 GUTTER = f"{B.OLD_COPPER_CUT.slab}[type=bottom]"        # the channel along a parapet, half a block down
 PLATE = B.IRON_RIVETED.block                            # the plate in the flags before a door
 GRATING = B.IRON_GRATE
@@ -105,6 +114,7 @@ GLASS = B.SKYLIGHT.block
 LAYLIGHT = B.WINDOW_DARK.block                          # the ceiling light of the room under a roof light
 KERB = f"{B.IRON_RIVETED.slab}[type=bottom]"
 LEAF = B.IRON_DOOR
+DOORS_OPEN = True                                       # the dome room's two leaves stand open (doors())
 
 SHAFT = frozenset(O.box(S.CLOCK_SHAFT_X[0], S.CLOCK_SHAFT_Z[0], S.CLOCK_SHAFT_X[1], S.CLOCK_SHAFT_Z[1]))
 
@@ -187,14 +197,18 @@ def walkway(s):
 
 def doors():
     """[(x, y, z, state)] of the leaves in the dome room's two doors (skeleton DOME_ROOM_DOORS; the
-    drum opens them, main/dome.py). A leaf stands on the inner edge of the outer wall's block, so
-    the doorway shows its depth from the terrace; both are hinged on the east jamb."""
+    drum opens them, main/dome.py). Both are hinged on the east jamb and stand open against it,
+    three texels of the doorway's sixteen, within the block of the outer wall: nothing in the map
+    is clicked (its reach is 0) and an iron door is not opened by hand anyway, so shut leaves cut
+    the roof walks, the clock room and the small dome off from the house (a4's walk of 11-16).
+    Shut (DOORS_OPEN off), a leaf stands on the inner edge of the outer wall's block."""
     y0, y1 = S.DOME_ROOM_DOORS["y"]
     out = []
+    is_open = "true" if DOORS_OPEN else "false"
     for x, z in S.DOME_ROOM_DOORS["cells"]:
         outward, hinge = ("south", "left") if z > 0 else ("north", "right")
         for y, half in zip(range(y0, y1 + 1), ("lower", "upper")):
-            out.append((x, y, z, f"{LEAF}[facing={outward},half={half},hinge={hinge},open=false]"))
+            out.append((x, y, z, f"{LEAF}[facing={outward},half={half},hinge={hinge},open={is_open}]"))
     return out
 
 
@@ -245,6 +259,9 @@ def build(canvas, origin=(0, 0, 0)):
         for x, z in kerb:
             put(x, STAND, z, KERB)
     for s in WINGS.values():
+        for x, az in POCKET:
+            for y in range(STAND, POCKET_TOP):
+                put(x, y, s * az, FILL)
         for (x, y, z), state in walkway(s).items():
             put(x, y, z, state)
         for x, y, z in lamps(s):
@@ -347,6 +364,8 @@ def check(c=None):
     for x, y, z, state in doors():
         if c.get(x, y, z) != state:
             out.append(f"door: no leaf at ({x}, {y}, {z})")
+        elif DOORS_OPEN and "open=true" not in state:
+            out.append(f"door: the leaf at ({x}, {y}, {z}) is shut, the way to the roofs is cut")
     for x, z in S.DOME_ROOM_DOORS["cells"]:
         if not c.has(x, S.DOME_ROOM_DOORS["y"][0] - 1, z):
             out.append(f"door: the leaf at ({x}, {z}) stands on nothing")
@@ -364,6 +383,12 @@ def check(c=None):
             out.append(f"outline: ({x}, {y}, {z}) lies outside the parapets")
         if y >= RIDGE_TOP:
             out.append(f"outline: ({x}, {y}, {z}) stands above the ridge")
+    # 8. the pocket between a wing's inner gable and the great drum is closed up to the gable's
+    #    top: nobody steps down into it
+    for where, s in WINGS.items():
+        for x, az in POCKET:
+            if any(c.get(x, y, s * az) != FILL for y in range(STAND, POCKET_TOP)):
+                out.append(f"{where} pocket: ({x}, {s * az}) is not closed up to {POCKET_TOP}")
     return out
 
 
@@ -421,5 +446,6 @@ if __name__ == "__main__":
     found = check(scene)
     print("\n".join(found) if found else
           "self-check: terraces closed, channels joined, roof lights, both ways walkable and alike, "
-          "nothing above the ridge, door leaves and plates, nothing on the parapets -- all good")
+          "nothing above the ridge, door leaves and plates, nothing on the parapets, the pockets "
+          "by the drum closed -- all good")
     sys.exit(1 if found else 0)

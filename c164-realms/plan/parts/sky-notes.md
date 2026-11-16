@@ -109,3 +109,27 @@
 5. 远景展示实体：大位移、大缩放下是否正常显示，是不是纯雾色。
 6. 16 万方块的云对摆放时间和帧数的影响。
 7. `tick freeze` 下 `time set` 切版本，画面是否立刻跟着变。
+
+## 11. 着色器载体：26.3 怎么编译、怎么用核心着色器（sky/safe-look）
+
+Realms 不收带注册表文件的数据包，天改由资源包里的核心着色器画（`sky/_shaders.py`，数出自 `sky/mood.py`）。下面是从 26.3 客户端 jar 里读出来的（`javap`），11-16 在真机上验过的写明。
+
+**编译。** 渲染库 `com.mojang.renderpearl`，OpenGL 和 Vulkan 两个后端。着色器一律由 `GlslCompiler` 用 shaderc 编成 SPIR-V：目标 Vulkan 1.2、自动分配绑定、带调试信息、不优化、入口 `main`；宏 `RENDERPEARL_DEPTH_IS_ZERO_TO_ONE`、`RENDERPEARL_EXPLICIT_DEPTH_INVARIANCE`、`RENDERPEARL_INSTANCE_INDEX_INCLUDES_BASE_INSTANCE` 看设备加，再加管线自己的宏。`#include <minecraft:x.glsl>` 按标识符取 `shaders/include/x.glsl`，可以嵌套，资源包里新加的包含文件也认（真机验过：`include/c164_layers.glsl`）。`#version 330` 下 `GL_VERTEX_SHADER` / `GL_FRAGMENT_SHADER` 两个阶段宏是有的。OpenGL 后端再用 SPIRV-Cross 把 SPIR-V 反编回 GLSL 330，阶段之间的变量按位置改名（`_interface_variable_NN`），所以多加一个位置 12 的变量两个后端都连得上。
+
+**管线拒收的情况**（`PipelineBuilder` 抛 `ShaderCompileException`，资源包整个被退回）：片元着色器在某个位置读、顶点着色器在那个位置没写；同一位置两边类型、长度、插值不同；顶点属性在顶点格式里没有；着色器声明的 uniform 块不在这条管线的绑定组里（按名字找）。绑定组里有而着色器没用的不算错，顶点着色器多写的输出不算错。
+
+**哪条管线有什么。** 有雾的管线都有 `Globals`（`CameraBlockPos`、`CameraOffset`、`GameTime`…），所以 `fog.glsl` 的片元那一半可以包含 `globals.glsl`；相机的世界高度是 `float(CameraBlockPos.y) - CameraOffset.y`。`GameTime` 是世界年龄不是钟点，着色器里读不到几点。`SKY`：`core/sky` 两段，只有它用；`STARS`：`core/stars`，叠加混合，**没有 Fog 组**（星的着色器不能包含 `fog.glsl`）；日月 `core/position_tex`、余晖扇面 `core/position_color` 都和别的东西共用，动不得；光照表 `core/lightmap.fsh`；云 `core/clouds`；信标光柱是唯一一条片元吃雾、顶点不包含 `fog.glsl` 的。全表在 `plan/parts/figs/sky_shaders.py` 的 `PAIRS`。
+
+**雾。** 所有片元着色器都经 `apply_fog(颜色, 球面距离, 柱面距离, 环境雾起止, 视距雾起止, FogColor)` 或 `total_fog_value(...)`。晴天主世界、原版属性：环境雾 0 到 1024，视距雾按柱面距离 `视距 − clamp(视距/10, 4, 64)` 到 `视距`（10 个区块：144 到 160）。水下、岩浆、细雪、失明、菜单的环境雾是别的数，靠它认出“露天”，别的情况留游戏自己的雾。交给 `fog_spherical_distance` 的位置对世界里的东西都是“相对相机、世界坐标轴”，所以改写这个函数、把位置用位置 12 的变量传给片元，每个吃雾的片元着色器就知道自己那个像素的方向和离海面多高，一个文件管住所有管线。
+
+**天。** 天盘：圆心 (0, 16, 0)、边缘半径 512，只盖到地平线上 1.8 度；`sky.vsh` 把它摊成整屏，四角带视线方向，`sky.fsh` 按方向逐像素画：天顶到地平线照游戏那张“16 格高、按距离吃雾的平面”（`s = min(1, (16 + 496.25·ρ/512)/E)`），余晖扇面用闭式（西 = −x，α = 余晖不透明度：`lift = 3·d.y/α; k = d·西 − lift; k ≤ 0 → 0; α·1.2·k / (|(lift, d·北)| + 1.2·k)`，正西地平线上是 α，6.65 度高处到 0），地平线以下是远海。星：`rotateY(-90°)·rotateX(星角)`；钟锁在 20370 时原版星角 221.9939，着色器再转到 `STAR_ANGLE` 133。
+
+**雾的两条律（总监 #68701，和 cloud 对定）。** `mood.fog_depth()`：沿视线的光学厚度 = 距离/`AIR` + 海上薄雾（海面处每 `MIST` 格一个厚度，随离海面的高度按 `MIST_HEIGHT` 指数变薄），剩下的是 `exp(-厚度)`，褪向那个方向的地平线色带。`mood.levelled()`：贴着海面的东西（离海面 8 格内）按水平距离 60 到 150 格收进它背后画的远海；远海就是 y 172 一张海色的面吃同一条 `fog_depth`，所以方块海和画的海没有接缝。游戏自己的视距雾（144 到 160）留着，褪向“背后画的东西”。
+
+**不用着色器的。** 水色、草色跟群系走：`minecraft:the_void` 的水是 `#3f76e4`，我们要的 `#1f3a6e` 正好是它三个通道各乘 0.49，改水的贴图就行；草和叶走原版色图（a1）。面打满光不吃朝向：`item.vsh` 里方块光 15 的面不乘朝向阴影；不靠着色器的备用办法是 orrery 的斜切矩阵（`machines/_relit.py`）。
+
+**OpenGL 那条路。** OpenGL 后端不直接吃我们的 GLSL：`GlPipelineRecompiler` 把上面编出的 SPIR-V 交给 SPIRV-Cross（lwjgl 的 `Spvc`，库文件 `libspirv-cross.so`，和 shaderc 一样在 Mojang 的库清单里）反编回 GLSL，再交给显卡驱动。建编译器 `spvc_context_create_compiler(ctx, GLSL, ir, 拷贝)`；选项按编号：GLSL 版本 `0x2000008` = 330，420pack `0x2000007` = 假，push constant 当 uniform 缓冲 `0x2000021` = 真，基实例非零 `0x2000005` = 设备支不支持 draw parameters；不在调试模式时再加 `0x1000036`、`0x1000002` = 真，并把顶点输入改名 `_vert_input_%02d`、片元输出 `_frag_output_%02d`、两段之间的量 `_interface_variable_%02d`（按位置号；调试模式在非 macOS 上改用 `0x2000006` 分离着色器对象）。所以驱动看到的永远是 `#version 330` 的文本，我们写的版本号、扩展名驱动看不到；能出事的只有两种：SPIRV-Cross 翻出来的文本要了 330 没有的扩展，或者驱动的编译器挑剔。`Fog` 这个 uniform 块只在 `include/fog.glsl` 里声明（我们整个替换了它），顶点、片元两段包含的是同一份，链接时对得上。天盘顶点着色器的反投影（`inverse(ProjMat * ModelViewMat)`，`gl_Position = vec4(角, 0.5, 1.0)`）在两种裁剪约定下都成立。
+
+**离线检查（`plan/parts/figs/sky_shaders.py`，库在 `sky_shaderc.py`）。** 两条路都照游戏的做法走一遍，用的是游戏自己的两个库。Vulkan 路：每条管线的顶点、片元两段用 shaderc 按游戏的选项编，再照 `PipelineBuilder` 的规则对接口。OpenGL 路：我们动过的每个着色器变体 → SPIR-V → SPIRV-Cross 按上面的选项翻成 `#version 330` 文本 → 再用 shaderc 按 OpenGL 的规矩（目标 OpenGL 4.5、自动分配位置和绑定）编一遍；同一变体游戏自己的原文也走一遍作对照，我们的过不了而原文过得了、或者我们的多要了扩展，算 FAIL。11-16 在 cccdceae 上：316 条管线全过，630 个变体全过，要的扩展我们 0 个、原文 0 个。`C164_KEEP_GLSL=<目录>` 把翻出来的文本留下。查不到的：各家驱动自己的编译器和链接。
+
+**真机（s1，11-16，llvmpipe）。** Vulkan：第一趟 07817cbe 着色器生效、包没被退回、日志里没有编译报错，天、星、彗星、余晖都在，V12 上楼从“雾里的影子”变清楚；第二趟 14240931（两条雾律）、第三趟 421cca00（带 comet 的远山层）同样没有报错，和注册表那套的并排图在 859bf30f。OpenGL：s1 的机器上 GLX 起不来，改走 EGL（他 nodemc.py 的 `MC_GL=egl`）起来了，日志 “Using graphics backend OpenGL … 4.5 (Core Profile) Mesa 25.2.8”，V1、V12 和 Vulkan 的逐眼相同、0 报错（6a3beaca，`renders/real-gl-egl/obs_sky_safe/`）。没验过的：NVIDIA、AMD、Intel、Apple 的驱动；管理员手里有一个不带着色器的备用包（outb 的 `c164-A5-plain.zip`）。

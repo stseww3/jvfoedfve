@@ -132,10 +132,88 @@ def rivet(m, p, out="z", mat=RIVET, proud=0.5):
     return m
 
 
+# ---- faces that stand between two axes ------------------------------------------------------------
+SETTLE = 0.1            # degrees: how far settle() turns a round piece, to take its faces off the fence
+_FENCE = math.sqrt(2.0) * math.sin(math.radians(SETTLE / 2.0))
+
+
+def _between(normal):
+    """The two model axes a face's normal stands between (within half of SETTLE of the plane that
+    divides them), or None. A face is asked by its normal, whatever shape it is a side of."""
+    order = sorted(range(3), key=lambda i: -abs(normal[i]))
+    if abs(normal[order[0]]) - abs(normal[order[1]]) >= _FENCE:
+        return None
+    return tuple(sorted(order[:2]))
+
+
+def _drawn(part):
+    """(box axis, the normal of its + face) for the pairs of sides of a part that have a face drawn."""
+    q = part["rot"][0] if part["rot"] else M.IDENT
+    for k in range(3):
+        if any(letter not in part["skip"] for letter in M.SIDE[k]):
+            yield k, M._qrot(q, M.NORMAL[M.SIDE[k][1]])
+
+
+def unsettled(model):
+    """The drawn faces of a model that stand between two axes: [(part's index, face letters, normal)].
+    Empty once settle() has been over the model; a family's test scene may hold its models to that."""
+    return [(i, "".join(M.SIDE[k]), normal) for i, part in enumerate(model.parts)
+            for k, normal in _drawn(part) if _between(normal)]
+
+
+def settle(m):
+    """Makes the light on a model the same in every copy of the game and in the offline pictures.
+    A family runs every model through it once, where it builds them: {name: K.settle(build())}.
+
+    A face of an item is lit as if it looked along the model axis nearest to its normal (the note at
+    the head of this file). The slanting flats of an eight-sided tube, ring or ball stand exactly
+    between two axes, and which of the two such a face is filed under comes out of the last bit of
+    a float: of two pieces of one kind one had its upper flats lit as "up" (1.00) and the other as
+    a side (0.50), and a change anywhere in a model could change it again (c342 saw it on the pipes
+    in the 26.3 client; this is what he wrote for them, for every family).
+
+    Every round shape that has such faces is turned SETTLE degrees as one piece (the boxes that one
+    call of tube(), ring(), ball(), glass_prism() made share a seed; a box of its own is a piece by
+    itself): about its own middle, about the model axis the two axes stand across, and always the
+    same way round, right-handed about that axis' positive end. The shape stays what it was and
+    its boxes meet in the same lines. Its flats then fall to the four directions two and two, the
+    same in every piece: of a tube along y, seen from above and counted clockwise from the north,
+    two flats are lit as north, two as east, two as south, two as west. A tenth of a degree moves
+    the rim of the widest piece a hundredth of a texel. Faces that are meant to stand in a frame
+    of their own (machines/_relit) are not for this: settle the rest of the model before they are
+    put in."""
+    groups = {}
+    for part in m.parts:
+        groups.setdefault(part["seed"], []).append(part)
+    for parts in groups.values():
+        for _ in range(4):
+            pair = next((pair for part in parts for _, normal in _drawn(part)
+                         for pair in [_between(normal)] if pair), None)
+            if pair is None:
+                break
+            turn_ = M.quat(M.AXES[3 - pair[0] - pair[1]], SETTLE)
+            centres = [[(part["lo"][i] + part["hi"][i]) / 2.0 for i in range(3)] for part in parts]
+            pivot = [sum(c[i] for c in centres) / len(centres) for i in range(3)]
+            for part, c in zip(parts, centres):
+                d = M._qrot(turn_, [c[i] - pivot[i] for i in range(3)])
+                to = [pivot[i] + d[i] for i in range(3)]
+                half = [(part["hi"][i] - part["lo"][i]) / 2.0 for i in range(3)]
+                q = part["rot"][0] if part["rot"] else M.IDENT
+                part["lo"] = tuple(to[i] - half[i] for i in range(3))
+                part["hi"] = tuple(to[i] + half[i] for i in range(3))
+                part["rot"] = (M._qmul(turn_, q), tuple(to))
+        else:
+            raise ValueError(f"{m.name}: faces stay between two axes however the piece is turned")
+    return m
+
+
 # Clear glass holds a little of the sky, as the roof lights do (materials/windows: their reflection is
 # night glass 4). A white stroke was the brightest thing in a room after the lamps and read as paper
 # stuck in the air; this tone shows on dark wood and on a pale lining alike and outshines neither.
 SHEEN = P.RAMPS["night_glass"][4]
+# On a narrow pane with dark wood close behind it the stroke is the one cold thing on the piece and
+# read as a blue ribbon stuck on the door (cr4-#2): there it is a step lower.
+SHEEN_DIM = P.RAMPS["night_glass"][3]
 _PANE_AXES = {"u": (0, 2), "n": (0, 1), "s": (0, 1), "e": (2, 1), "w": (2, 1)}   # across and down a face
 
 
@@ -154,15 +232,16 @@ def sheen_texels(w, h, n=None):
     return [(x, y) for x, y in out if 0 <= x < w and 0 <= y < h]
 
 
-def pane(m, lo, hi, face, sheen=True):
+def pane(m, lo, hi, face, sheen=True, dim=False):
     """A pane of clear glass on the face `face` ("n", "s", "e", "w" or "u") of the thin box lo..hi.
 
     The glass itself is left out. What says it is there is its reflection (sheen_texels) in the
     pane's upper corner as one looks at it (the far left corner of a pane that lies flat), cut out
     of nothing, so whatever is behind the pane shows. Every family draws clear glass this way.
     sheen=False leaves a pane bare: in a row of panes not every one has a reflection, as with the
-    block windows; a number is the length of the long stroke. The pane is at least five texels each
-    way, and sits a quarter of a texel behind its frame."""
+    block windows; a number is the length of the long stroke. dim=True is for a pane with dark
+    wood close behind it (SHEEN_DIM). The pane is at least five texels each way, and sits a
+    quarter of a texel behind its frame."""
     if not sheen:
         return m
     across, down = _PANE_AXES[face]
@@ -171,8 +250,8 @@ def pane(m, lo, hi, face, sheen=True):
     rows = [["."] * w for _ in range(h)]
     for i, j in sheen_texels(w, h, n):
         rows[j][i] = "g"
-    name = f"prop_sheen_{w}x{h}" + ("" if n is None else f"_{n}")
-    picture = Sprite(name, ["".join(row) for row in rows], {"g": SHEEN})
+    name = f"prop_sheen_{w}x{h}" + ("" if n is None else f"_{n}") + ("_dim" if dim else "")
+    picture = Sprite(name, ["".join(row) for row in rows], {"g": SHEEN_DIM if dim else SHEEN})
     m.box(lo, hi, BRASS, skip="".join(f for f in "nsewud" if f != face), faces={face: picture})
     return m
 
@@ -237,12 +316,14 @@ GLOW_DIM, GLOW_MID, GLOW_HOT = flat("glow", 1), flat("glow", 2), flat("glow", 3)
 
 
 def bulb(m, top, glass=3.0, cap=1.5):
-    """A bare incandescent bulb hanging from `top`: a brass cap and a small pear of amber glass, the
-    hot spot in the middle of it. The glass is the only thing that glows."""
+    """A bare incandescent bulb hanging from `top`: a brass cap and a small pear of amber glass.
+    The glass is the only thing that glows, and none of it is brighter than the middle of the glow
+    ramp: under the pack's shaders a glowing face shows its whole tone, and a lamp's glass is not
+    to be the whitest thing in a room (the review, #78243: nothing of it over 0.89 of white)."""
     x, y, z = top
     m.tube("y", (x, z), y - cap, y, 1.0, BRASS_D, sides=4)
     y -= cap
     glass_prism(m, "y", (x, z), y - 1.0, y, 1.0, GLOW_DIM, cap=GLOW_DIM)
-    glass_prism(m, "y", (x, z), y - glass, y - 1.0, 1.5, GLOW_HOT, cap=GLOW_MID)
+    glass_prism(m, "y", (x, z), y - glass, y - 1.0, 1.5, GLOW_MID, cap=GLOW_MID)
     glass_prism(m, "y", (x, z), y - glass - 0.75, y - glass, 0.75, GLOW_MID, sides=4, cap=GLOW_MID)
     return y - glass - 0.75

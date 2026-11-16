@@ -13,7 +13,7 @@ lines. Those call this module and nothing else of the light:
     L.glazed(canvas, windows, origin)       # the windows of a front that main's table does not list
     L.dress(canvas)                         # a test scene: light the building although the switch is off
     with L.under("deep"): ...               # a test scene: what is built inside is glazed for that look
-    with L.trying(LENDS=()): ...            # a test scene: a variant of the sources beside the building as it is
+    with L.trying(WASH=12): ...             # a test scene: a variant of the sources beside the building as it is
 
 Ranks: the levels of the invisible sources. 15 is never used: light of 15 is nine parts white and 13
 is half white already.
@@ -21,8 +21,9 @@ is half white already.
     1   13-14   the open main door 14, canopy bulbs 13, street and stair lamps 14, the platform 13
     2    9-12   behind a lit great window 12 (the wings' as the one over the main door; the director,
                 #58003), behind a lit small one 9, the bracket lamps beside a door 12, the wall wash 10
-                (the director, #62755: no higher)
-    3    5-8    walkways 5-7, beside machines 6-8, fill for a caged lamp 6-7
+                (the director, #62755: no higher), the pool at the foot of a street lamp 12
+    3    5-8    walkways 5-7, beside machines 6-8, fill for a caged lamp 6-7, the lamp on the ring
+                stair's newel 8
 
 Light falls by one a cell, and a face is lit by the cell in front of it. A source of level n in the
 first cell behind the glass leaves n-3 on the jambs, n-2 to n-3 on the sill, n-4 on the sides of the
@@ -175,17 +176,12 @@ TALL = 4                    # a window of this many rows or more is a tall one
 # way through the room: the recess of another window of the same room and the cells before it,
 # where that window is dark glass (a lit one has a source of its own, and its recess is as it was).
 THROUGH = 2
-# That way through the room is kept for the brightest window. Behind the glass its sources lit the
-# recesses of the two windows beside it as if no pier stood between: the stone round the curtained
-# windows of the entrance stands in the gold one's light (6 to 7 on their inner jambs; 4 to 5 from
-# their own source), and that is the entrance as the director has seen it. So each source of such a
-# window lends one to the window on either side, where that one is lit itself: in the column
-# nearest to it, in its own row, as many levels lower as the two columns are cells apart. The other
-# tiers lend nothing, and a dark window is lent nothing. Beside a lit window of a wing stands a
-# dark one; it had up to 5 in its recess from the room behind it (as much as 8 where the lit window
-# stands round the corner of the same room), which a dark room does not give, and keeps what the
-# front gives it.
-LENDS = (BRIGHT,)
+# The brightest window is treated as every other: behind the glass its sources lit the recesses of
+# the two curtained windows beside it as if no pier stood between (6 to 7 on their inner jambs),
+# and for a while each of them lent one to either neighbour to keep that. Laid side by side the two
+# pictures differ by 0.04 at most, on two jambs. The director (#66198): a difference that is not
+# seen is not worth four sources and a special case; nothing is lent, each of the entrance's three
+# windows lights its own surround (4 to 5 on those jambs).
 # The wall wash: the level of the source where a projector's beam lands, before the foot of a
 # pilaster's shaft. In a picture the foot of a washed pilaster stands at 0.28 with 8 there, 0.31
 # with 10 and 0.34 with 12, an unlit one at 0.22 and the corner pilaster that carries a bracket
@@ -196,6 +192,33 @@ LENDS = (BRIGHT,)
 # front are 14, 12 and 10. Up the shaft the light falls by a level a row, 0.02 to 0.03 from the
 # foot to the string course: a steeper fall is not to be had from a block light.
 WASH = 10
+# The pool at the foot of a street lamp. Its globe hangs four cells over the paving, so of the
+# lamp's 13 the ground gets 9 at the foot and one less with every cell: on the dark slate that is
+# 0.22 at the foot against 0.15 where no lamp stands, a lamp that glows over ground it hardly
+# lights. One source in the cell at the foot of the post gives the ground the pool a lamp throws:
+# 12 at the foot, three levels over what the globe leaves there, falling by one a cell like the
+# globe's own light, so that the pool is as wide as before and brighter in its middle. 10 adds one
+# level, which is not seen (0.01); 12 is the top of the second rank and under the globe that
+# throws it. 0 places none.
+POOL = 12
+# The lamp on the newel of the ring stair, on the gallery: a small opal globe that says where the
+# way up begins. The top of the third rank; it reaches neither the mother clock's dial nor the
+# pier's east face, which lead in the hall.
+STAIR = 8
+# The caged lamps along the ways indoors that no room lights (the ring stair round the pier, the
+# pier's foot at the end of the way from the west door, the cross gallery): the top of the third
+# rank, as the hall's own lamps beside them. A caged lamp two cells from where one walks leaves 6
+# at the head and 5 at the feet.
+WAY = 8
+# What a lamp of the ways may be raised to where 8 leaves the floor under the walk's line (5 at
+# the feet or at the head): under the top of the second rank, which is the pendants' and the
+# orrery's sun's (the director, #78649: the stair hall's lamps up to 11, as far as the line asks
+# and no further).
+WAY_TOP = 11
+# The low lamps on the piers where a way leaves the upper terrace: the top of the second rank, as
+# the pool under a street lamp. The lamp stands a cell and a half over the paving and the steps
+# fall away below it; at 10, the level of the lip's low lamps, the third row of steps is at 3.
+GATE = 12
 
 _PRIORITY, _WAKE, _BLIND = 0, 1, 3      # salts of the hash; 2 was the curtains', handed out by look once
 _TIER_OF = {block: tier for tier, role in ROLE.items() for block in role.all()}
@@ -237,13 +260,13 @@ def under(look):
         _UNDER.pop()
 
 
-_TRIED = ("BEHIND", "THROUGH", "LENDS", "WASH")     # the numbers of the sources; which windows are lit is not tried here
+_TRIED = ("BEHIND", "THROUGH", "WASH", "POOL")      # the numbers of the sources; which windows are lit is not tried here
 
 
 @contextlib.contextmanager
 def trying(**numbers):
     """Place the sources of what sky/lights.build() lights inside the block by other numbers than
-    this module has: trying(LENDS=()), trying(BEHIND={...}), trying(WASH=12). They are put back
+    this module has: trying(BEHIND={...}), trying(WASH=12), trying(POOL=0). They are put back
     when the block closes.
     For a test scene that shows a variant beside the building as it is; the master scene never does."""
     unknown = sorted(set(numbers) - set(_TRIED))
@@ -561,7 +584,7 @@ def dress(canvas, on=True):
 
 # ---- a look at the result without drawing it -------------------------------------------------------
 _OPEN_SHAPES = ("_stairs", "_slab", "_wall", "_pane", "_bars", "_door", "_trapdoor", "_rod", "_chain",
-                "_lantern", "_fence", "_fence_gate", "_button", "_sign", "_carpet", "_torch")
+                "_lantern", "_fence", "_fence_gate", "_button", "_sign", "_carpet", "_torch", "ladder")
 
 
 def _stops_light(state):
@@ -576,12 +599,14 @@ def levels(canvas, lo, hi):
     game shut it out on their closed sides: here a little more light gets by them)."""
     out, rings = {}, {}
     box = [range(lo[i], hi[i] + 1) for i in range(3)]
+    emits, stops = {}, {}           # by state: the master scene has millions of cells and a few hundred states
     for cell, state in canvas.b.items():
-        if cell[0] in box[0] and cell[1] in box[1] and cell[2] in box[2]:
-            e = F.emission(*AB.parse(state))
-            if e > 0:
-                out[cell] = e
-                rings.setdefault(e, []).append(cell)
+        e = emits.get(state)
+        if e is None:
+            e = emits[state] = F.emission(*AB.parse(state))
+        if e > 0 and cell[0] in box[0] and cell[1] in box[1] and cell[2] in box[2]:
+            out[cell] = e
+            rings.setdefault(e, []).append(cell)
     for level in range(15, 1, -1):
         for x, y, z in rings.get(level, ()):
             if out.get((x, y, z)) != level:
@@ -590,8 +615,12 @@ def levels(canvas, lo, hi):
                 if out.get(n, 0) >= level - 1 or not (n[0] in box[0] and n[1] in box[1] and n[2] in box[2]):
                     continue
                 state = canvas.b.get(n)
-                if state is not None and _stops_light(state):
-                    continue
+                if state is not None:
+                    shut = stops.get(state)
+                    if shut is None:
+                        shut = stops[state] = _stops_light(state)
+                    if shut:
+                        continue
                 out[n] = level - 1
                 rings.setdefault(level - 1, []).append(n)
     return out
