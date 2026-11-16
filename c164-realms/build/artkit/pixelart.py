@@ -4,6 +4,7 @@ Each material is a short colour ramp (dark to light) plus a rule for how levels 
 the manner of the vanilla textures: a few flat tones, one-pixel shading, no gradients.
 """
 import copy
+import math
 
 import numpy as np
 
@@ -156,6 +157,123 @@ class Sprite:
                     out[y, x, :3] = self.colours[ch]
                     out[y, x, 3] = 255
         return out
+
+
+class Frames:
+    """A picture that changes with time: `mats` are shown one after the other, each for `frametime`
+    ticks (a twentieth of a second), and round again. Anything with paint() will do for a frame (a
+    Mat, a Sprite, a kit's drawn picture). A model with such a material on any face gets an animated
+    sheet (models.Model.export): the game runs it by itself in every client, without a command and
+    without an entity, and out of step with the server's clock and with every other client.
+
+    The first frame is the one the offline pictures and the checks see: make it the look the thing
+    is to have in a still. interpolate: the game blends each frame into the next, tick by tick
+    (soft, and the client redraws the whole sheet every tick: for small sheets only).
+    Rules and examples: plan/parts/materials.md, section 2 D.
+    """
+
+    def __init__(self, name, mats, frametime=2, interpolate=False):
+        mats = list(mats)
+        if len(mats) < 2:
+            raise ValueError(f"{name}: a moving picture needs two frames at least")
+        if int(frametime) < 1:
+            raise ValueError(f"{name}: frametime {frametime!r}; a frame lasts one tick at least")
+        self.name = name
+        self.mats = mats
+        self.frametime = int(frametime)
+        self.interpolate = bool(interpolate)
+
+    def variant(self, shift=0, bevel=None):
+        """The same frames, each `shift` steps lighter or darker where a frame can be (a Mat)."""
+        if shift == 0 and bevel is None:
+            return self
+        mats = [m.variant(shift, bevel) if hasattr(m, "variant") else m for m in self.mats]
+        return Frames(f"{self.name}~{shift}~{bevel}", mats, self.frametime, self.interpolate)
+
+    def paint(self, w, h, grain="u", seed=0):
+        return self.mats[0].paint(w, h, grain, seed)
+
+    def frames(self, w, h, grain="u", seed=0):
+        return [m.paint(w, h, grain, seed) for m in self.mats]
+
+
+class Picture:
+    """Ready pixels as a material: an (h, w, 4) array for a face of that size. On a larger face it
+    is centred and the rest left clear; of a smaller face it shows its middle."""
+
+    def __init__(self, name, pixels):
+        self.name = name
+        self.pixels = np.asarray(pixels, dtype=np.uint8)
+
+    def paint(self, w, h, grain="u", seed=0):
+        ph, pw = self.pixels.shape[:2]
+        out = np.zeros((h, w, 4), dtype=np.uint8)
+        y0, x0 = (h - ph) // 2, (w - pw) // 2
+        ys, xs = max(0, y0), max(0, x0)
+        ye, xe = min(h, y0 + ph), min(w, x0 + pw)
+        out[ys:ye, xs:xe] = self.pixels[ys - y0:ye - y0, xs - x0:xe - x0]
+        return out
+
+
+def shimmer(name, pixels, ramp, frames=6, frametime=3, share=0.3, seed=0, interpolate=False):
+    """A drawn picture of something that glows, made to flicker: Frames whose first frame is the
+    picture itself; in each later frame a `share` of the pixels that have a colour of `ramp` (hex
+    strings or (r, g, b), dark to light) go one step up or down it. Every other pixel stays, so
+    the iron round a fire does not move. For coals, embers, a filament, a glowing slot or pane."""
+    base = np.asarray(pixels, dtype=np.uint8)
+    steps = np.array([hx(c) if isinstance(c, str) else tuple(c) for c in ramp], dtype=np.int32).reshape(-1, 3)
+    level = np.full(base.shape[:2], -1, dtype=np.int32)
+    for n, rgb in enumerate(steps):
+        level[(base[..., :3] == rgb).all(axis=2) & (base[..., 3] > 0)] = n
+    jj, ii = np.meshgrid(np.arange(base.shape[0]), np.arange(base.shape[1]), indexing="ij")
+    out = [Picture(f"{name}_0", base)]
+    for k in range(1, int(frames)):
+        r = _hash(ii, jj, seed * 131 + k * 17 + 5)
+        move = np.where(r < share / 2.0, -1, np.where(r > 1.0 - share / 2.0, 1, 0))
+        new = np.where(level >= 0, np.clip(level + move, 0, len(steps) - 1), -1)
+        frame = base.copy()
+        frame[..., :3] = np.where((new >= 0)[..., None], steps[np.maximum(new, 0)], base[..., :3])
+        out.append(Picture(f"{name}_{k}", frame))
+    return Frames(name, out, frametime, interpolate)
+
+
+def flame(name, ramp, w, h, frames=8, frametime=2, seed=0, fan=False):
+    """A small flame on a clear ground, w by h pixels, as Frames: `ramp` is three colours from the
+    flame's edge to its heart (hex strings or (r, g, b)). A tongue that stands on the middle of the
+    bottom row, leans a pixel to either side and rises and sinks by one (an oil lamp, a candle);
+    fan=True is the flat fishtail of a gas burner, widest above its middle, whose top edge ripples.
+    The first frame is the flame upright at its mean height."""
+    tones = [hx(c) if isinstance(c, str) else tuple(c) for c in ramp]
+    if len(tones) != 3:
+        raise ValueError(f"{name}: a flame takes three colours (edge, body, heart), got {len(tones)}")
+    out = []
+    for k in range(int(frames)):
+        # the tip goes once round a small circle in the course of the frames: (lean, drop) from
+        # upright and mean, to one side, up, to the other side, down
+        turn = 2.0 * math.pi * k / int(frames) + (0.0 if k == 0 else 0.4 * (float(_hash(k, 1, seed)) - 0.5))
+        lean = 0 if k == 0 else int(round(1.2 * math.sin(turn)))
+        drop = 0 if k == 0 else int(round(1.2 * math.sin(turn * 2.0 + 1.0 + seed)))
+        px = np.zeros((h, w, 4), dtype=np.uint8)
+        top = min(max(1 + drop, 0), h - 2)
+        tall = h - top
+        for y in range(top, h):
+            t = (h - 1 - y) / max(1.0, tall - 1.0)              # 0 at the foot, 1 at the tip
+            if fan:
+                half = (0.5 + 2.4 * t / 0.6) * (w / 7.0) if t < 0.6 else (2.9 - 2.2 * (t - 0.6) / 0.4) * (w / 7.0)
+                half += 0.9 * (float(_hash(k, y, seed + 9)) - 0.5) if t > 0.6 and k else 0.0
+            else:
+                half = (0.45 + 1.6 * math.sin(math.pi * min(1.0, 0.15 + t * 0.85)) * (1.0 - 0.45 * t)) * (w / 5.0)
+            mid = (w - 1) / 2.0 + (lean if t > 0.55 else 0)
+            for x in range(w):
+                d = abs(x - mid)
+                if d > half:
+                    continue
+                inner = d <= half - 1.0
+                heart = inner and d <= max(0.0, half - 2.0) and 0.08 < t < 0.6
+                px[y, x, :3] = tones[2] if heart else tones[1] if inner else tones[0]
+                px[y, x, 3] = 255
+        out.append(Picture(f"{name}_{k}", px))
+    return Frames(name, out, frametime)
 
 
 # ---- stock materials -------------------------------------------------------------------------
