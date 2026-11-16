@@ -1,0 +1,59 @@
+a0job 1116-044434-clocks-f3-00d6-30000: cursor/c164-clocks-f3-00d6 @ 1c458180 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.77 0.82 0.79, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- cd build && python ../tools/check.py --scene obs_mach_clocks | grep -E "^\[(FAIL|WARN)|regen|entities|strays|refs|views|motion|^result" | cut -c1-260 ; python ../tools/check.py --scene obs_mach_clocks_b | grep -E "^\[(FAIL|WARN)|^resul
+from collections import Counter
+from scenes.obs_mach_clocks import build
+from scenes.obs.machines import clock
+from scenes.obs.motion import _kit as MK
+c = build()
+rows = Counter((MK._model_name(e[3]), float(e[3].get("view_range", 1.0))) for e in c.entities if str(MK._model_name(e[3]) or "").startswith("mach_clock"))
+for (name, view), n in sorted(rows.items()):
+    print(f"{name:28s} view_range {view:g} x{n}")
+px = clock._tower_dial(clock.OPEN_HOLE).pixels
+tones = {}
+for j in range(px.shape[0]):
+    row = ""
+    for i in range(px.shape[1]):
+        if px[j, i, 3] == 0:
+            row += " "
+        else:
+            key = tuple(int(v) for v in px[j, i, :3])
+            row += tones.setdefault(key, "abcdefghijklmnop"[len(tones)])
+    print(row)
+print({v: "#%02x%02x%02x" % k for k, v in tones.items()})
+m = clock.models()["mach_clock_face_open"]
+print("face_open:", len(m.parts) if hasattr(m, "parts") else "?", "elements; face:", len(clock.models()["mach_clock_face"].parts))
+print("works_sides():", clock.works_sides())
+EOF ---- exit 1, 0 s, last 70 lines of 25:
+[FAIL] regen     does not generate from nothing
+result: FAIL (1 failed, 0 with warnings)
+[FAIL] regen     does not generate from nothing
+result: FAIL (1 failed, 0 with warnings)
+Traceback (most recent call last):
+  File "<stdin>", line 5, in <module>
+  File "/tmp/dais_jobs/c164a0/c164-realms/build/scenes/obs_mach_clocks/__init__.py", line 282, in build
+    n = clock.master(c) + clock.tower(c, colour=ball, works=WORKS)
+        ^^^^^^^^^^^^^^^
+  File "/tmp/dais_jobs/c164a0/c164-realms/build/scenes/obs/machines/clock.py", line 835, in master
+    n = _put(canvas, "master", _out(MASTER_AT, face, (0.0, MASTER_HOLD, 0.0)), origin, face, view=INDOORS)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/dais_jobs/c164a0/c164-realms/build/scenes/obs/machines/clock.py", line 750, in _put
+    model = _models()[PREFIX + name]
+            ^^^^^^^^^
+  File "/tmp/dais_jobs/c164a0/c164-realms/build/scenes/obs/machines/clock.py", line 722, in _models
+    (_pendulum(), 1.0), (_face(), 2.0), (_face_open(), 2.0), (_hand("h"), 1.0), (_hand("m"), 1.0)]
+                                         ^^^^^^^^^^^^
+  File "/tmp/dais_jobs/c164a0/c164-realms/build/scenes/obs/machines/clock.py", line 575, in _face_open
+    m.box((-10.0, -10.0, 0.0), (10.0, 10.0, 0.5), CREAM, skip="nweud", faces={"s": _tower_dial(OPEN_HOLE)})
+                                                                                   ^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/dais_jobs/c164a0/c164-realms/build/scenes/obs/machines/clock.py", line 423, in _tower_dial
+    px[j, i, :3] = brass[4] if y - x > 0.6 * r else brass[2] if x - y > 0.6 * r else brass[3]
+    ~~^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: '#dcb650'
+==== NODEJOB RESULT ====
+exit=1 secs=1 host=cursor cores=4 head=1c458180 commit=none pushed=no branch=cursor/c164-clocks-f3-00d6 files=0
+a0job: exit=1 secs=1
