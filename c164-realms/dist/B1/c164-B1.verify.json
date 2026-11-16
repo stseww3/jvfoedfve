@@ -1,12 +1,12 @@
 {
  "name": "c164-B1",
- "archive_sha256": "daa66eadca91c73f3e4f20dcf4b3e80d159b9468f3480b3c9a69e28e486e886c",
- "made_from": "5d6b6838",
+ "archive_sha256": "8c0dc254f99158c9f38c9f56dc94a2f565a9fb1befee6e0dd385643b2ade976b",
+ "made_from": "c1ee784e",
  "checks": [
   {
    "check": "archive",
    "ok": true,
-   "detail": "3316620 bytes, sha256 daa66eadca91c73f, as the note beside it says"
+   "detail": "3365125 bytes, sha256 8c0dc254f99158c9, as the note beside it says"
   },
   {
    "check": "level.dat",
@@ -21,7 +21,7 @@
   {
    "check": "resource pack",
    "ok": true,
-   "detail": "2420 files, pack.mcmeta at its top: True; 0 stand-ins (ph_)"
+   "detail": "2453 files, pack.mcmeta at its top: True; 0 stand-ins (ph_)"
   },
   {
    "check": "shaders",
@@ -31,7 +31,7 @@
   {
    "check": "light",
    "ok": true,
-   "detail": "the light was at rest when the world was saved: waited 10.0 s, chunks whose light had changed at each reading [337, 0, 0, 0]"
+   "detail": "the light was at rest when the world was saved: waited 9.6 s, chunks whose light had changed at each reading [281, 0, 0, 0]"
   },
   {
    "check": "starts",
@@ -56,7 +56,7 @@
   {
    "check": "tick, empty",
    "ok": true,
-   "detail": "The game is running normallyTarget tick rate: 20.0 per second. | Average time per tick: 1.1ms (Target: 50.0ms)Percentiles: P50: 0.6ms P95: 2.4ms P99: 17.7ms. Sample: 100"
+   "detail": "The game is running normallyTarget tick rate: 20.0 per second. | Average time per tick: 1.3ms (Target: 50.0ms)Percentiles: P50: 0.6ms P95: 1.7ms P99: 19.8ms. Sample: 100"
   },
   {
    "check": "difficulty",
@@ -111,7 +111,7 @@
   {
    "check": "tick, one player",
    "ok": true,
-   "detail": "The game is running normallyTarget tick rate: 20.0 per second. | Average time per tick: 1.2ms (Target: 50.0ms)Percentiles: P50: 1.2ms P95: 1.6ms P99: 2.2ms. Sample: 100"
+   "detail": "The game is running normallyTarget tick rate: 20.0 per second. | Average time per tick: 1.2ms (Target: 50.0ms)Percentiles: P50: 1.2ms P95: 1.5ms P99: 1.5ms. Sample: 100"
   },
   {
    "check": "on the cloud",
@@ -146,7 +146,7 @@
   {
    "check": "loop",
    "ok": true,
-   "detail": "53 moving parts named in the loop, 40 of the first 40 loaded near the spawn, 21 of them changed within 3 s (e.g. m.bboard_needle_east, m.bboard_needle_main, m.bboard_needle_west, m.bld_tower_cups); #run has 571309228 [c164m]"
+   "detail": "68 moving parts named in the loop, 40 of the first 40 loaded near the spawn, 22 of them changed within 3 s (e.g. m.bboard_needle_east, m.bboard_needle_main, m.bboard_needle_west, m.bld_tower_cups); #run has 571309228 [c164m]"
   },
   {
    "check": "charts",
@@ -156,7 +156,7 @@
   {
    "check": "lens",
    "ok": true,
-   "detail": "behind the eyepiece with 3 of 6: over the hotbar ['Star charts: 3 of 6'] (3 times), titles none; with all 6: titles ['THE COMET, IN FOCUS'], over the hotbar nothing, the tag c164.done set; standing on: titles none, over the hotbar nothing; 90 packets of particles in those five seconds; in the chat: nothing"
+   "detail": "behind the eyepiece with 3 of 6: over the hotbar ['Star charts: 3 of 6'] (3 times), titles none; with all 6: titles ['THE COMET, IN FOCUS'], over the hotbar nothing, the tag c164.done set; standing on: titles none, over the hotbar nothing; 88 packets of particles in those five seconds; in the chat: nothing"
   },
   {
    "check": "console",
@@ -221,7 +221,7 @@
   {
    "check": "as set: tick, one player",
    "ok": true,
-   "detail": "The game is running normallyTarget tick rate: 20.0 per second. | Average time per tick: 1.5ms (Target: 50.0ms)Percentiles: P50: 1.5ms P95: 1.9ms P99: 2.1ms. Sample: 100"
+   "detail": "The game is running normallyTarget tick rate: 20.0 per second. | Average time per tick: 1.5ms (Target: 50.0ms)Percentiles: P50: 1.3ms P95: 2.1ms P99: 5.8ms. Sample: 100"
   },
   {
    "check": "as set: on the cloud",
@@ -318,7 +318,7 @@
   "ServerBrands": [
    "vanilla"
   ],
-  "Time": 342
+  "Time": 333
  },
  "rules": {
   "advance_time": "false",
