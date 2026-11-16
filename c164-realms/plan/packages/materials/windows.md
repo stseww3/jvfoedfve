@@ -205,3 +205,4 @@
   - 图（总监机，`tools/selfshots.py`，代码 008cf60b，里面是总装头 432f3ef8）：五个场景 85 张全部重画，变了的只有甲乙两个场景的 `furnace`、`close_furnace`、`furnace_slant`、`furnace_foot` 共 8 张，其余 77 张逐字节相同。节点池 10:56 起停了，这一单是读到总监 #81183（总监机不收出图单）之前投的，已向 aide 说明。
   - 自查（看 `close_furnace`、`furnace_slant`，和上一版并排）：窗台一排是一条亮的橙，往上经深橙到棕到烟黑，还是一片，不是三道；颜色是橙不是黄；`furnace_slant` 缩小了第一眼是窗脚有火。最弱三处：① 窗台那一排干净的格子是平的浅琥珀，贴近看更像亮着的玻璃（上一版的第 ① 条还在，颜色换了一级）。② 第二排下半格两种琥珀各半的那两行，近看偏花。③ 窗头的深棕和上面暗窗的蓝之间那一步色相的跳没动。
   - 真机 V6 里的三样验收归 cr2 在下一版看板上核。发电房的图（`obs_site_powerhouse` 等）是 power 的留图，随他下一次交付重画。
+  - 检查和合并：节点池 10:56 掉了，整套关口没跑成。a88dbaac 在 node5 上（aide 排的，op_1924239edf）跑了本包两个场景的 check：`obs_mat_windows` PASS（0 failed，1 条旧的 views 警告），`obs_mat_windows_b` PASS，`brightness` exit 0。a1 逐行读过，11:31 合进总装 c15e9012，合并说明写的是「关口待跑」（总监 g2 #81183 的走法）。**整套关口（`tools/gate.sh materials/windows`）到现在还欠着**：池子回来在 node93 上补（基取当时的总装头），结论行发 a1；总监 11:39（g2 #83232）定不再等池子，头上以 s2 的 checkall 为准。材质板上带火窗的留图由 a1 重出。
