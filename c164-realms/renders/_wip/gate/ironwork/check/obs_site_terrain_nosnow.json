@@ -1,0 +1,111 @@
+{
+ "scene": "obs_site_terrain_nosnow",
+ "commit": "5ae7789",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "WARN",
+   "summary": "184368 blocks, 189 entities, 155 models, 1108 resource-pack files, 102 data-pack files, look: 1 biomes, 1 timelines (3.1 s)",
+   "details": [
+    "registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json"
+   ]
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 1107 files, no file written twice, the folders and the prefix of site are kept (1 package run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "274 pictures, every colour in the palette",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "824 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "86 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "74 kinds of block placed, 12 barrier cells (x 16, y 0..1, z -5..5), all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "PASS",
+   "summary": "no wall face runs flat over more than 5x5",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "189 display entities, 11 drawn out along one axis, 1 shown through a matrix that is no turn, no face stretched, 105 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "WARN",
+   "summary": "4 shots, most display entities in view: 189 (v12_aerial), limit 600; counted without what walls hide; the game draws up to 189 (v11_sunset): a display entity without width and height is drawn outside the view too",
+   "details": [
+    "the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(materials.pack(d) or []) + list(sky.pack(d) or [])",
+    "west_prow: 3 of the 189 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "(the tracking range is read off the game's code, not yet seen on the real machine)"
+   ],
+   "data": {
+    "shots": [
+     {
+      "name": "v11_sunset",
+      "in_view": 154,
+      "drawn": 189,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v12_aerial",
+      "in_view": 189,
+      "drawn": 189,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "west_prow",
+      "in_view": 189,
+      "drawn": 189,
+      "beyond_tracking": 3
+     },
+     {
+      "name": "south_flank",
+      "in_view": 165,
+      "drawn": 189,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "2 parts and 0 points on 1 chains, 12 function files; 5 commands in the busiest tick (limit 40), 0.8 a tick on average (limit 10)",
+   "details": [
+    "chain of 24 ticks: 6 functions, 20 commands a cycle, starts 1 ticks after start",
+    "site_weather_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.08 blocks off the axis",
+    "bld_tower_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.09 blocks off the axis"
+   ]
+  }
+ ]
+}
