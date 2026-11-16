@@ -1,0 +1,14 @@
+# pictures of a save opened as it comes (tools/savetrip.py): shot, the save's hour (daytime) when it was taken, commit that holds the zip, first 16 of the picture file's sha256, when it was taken, the distances
+# the save: dist/A4/c164-A4.zip of be47a561 (cursor/c164-dist-f4b8), 2529895 bytes, sha256 a1d7924d75b764c95dad03cf4e6810293f38252835b41abcd3f2f700f106380b
+# exported from the assembly commit 29e5f1e7, as the one who asked for the trip says
+# level.dat: world c164-A4, game 26.3, game mode adventure, difficulty peaceful, spawn 88 196 -33, yaw 67.71, pitch -22.69, commands off, data packs vanilla file/c164art
+# the server: the node's test server on this save, game mode adventure (not forced), difficulty peaceful, as a Realm's slot is filled from the world; the camera is no operator
+# resource pack: resourcepacks/resources.zip of the save (1321441 bytes, sha256 1f120526424d99a8, 1830 files, pack.mcmeta { "pack": { "description": "c164 c164-A4 (f9293b2e)", "min_format": 97, "max_format": 97 } }) is the client's pack (whether a Realm hands it to those who join is not shown here)
+# the server, before anybody joined: Can't find element 'minecraft:daytime' of type 'minecraft:timeline'...ry daytime<--[HERE]; Game rule advance_time is currently set to false; The difficulty is Peaceful; There are 2 data pack(s) enabled: [vanilla (built-in)], [file/c164art (world)]
+# as joined: C164Cam has the following entity data: [88.5d, 196.0d, -32.5d]; C164Cam has the following entity data: [67.71f, -22.69f]; C164Cam has the following entity data: 2 (0 survival, 1 creative, 2 adventure, 3 spectator)
+# the save's clock: daytime None when the player had joined, None after the last picture (it stands)
+# distances: client render distance 12, server view distance 10, cloud range 128; pictures: 4 saved by the game itself, 0 taken off the display
+as_joined None be47a561 38ee1c72afcdd226 2026-11-16T01:40 view12,server10,clouds128
+v01_arrival None be47a561 488e0dfabef0047e 2026-11-16T01:40 view12,server10,clouds128
+v02_axis None be47a561 4d1fb67de41bac5c 2026-11-16T01:40 view12,server10,clouds128
+v08_dome_room None be47a561 13008572d8c35e97 2026-11-16T01:40 view12,server10,clouds128

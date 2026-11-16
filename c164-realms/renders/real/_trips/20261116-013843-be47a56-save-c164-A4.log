@@ -1,0 +1,58 @@
+[trip 01:38:43 +0s] trip into the save dist/A4/c164-A4.zip of be47a561 (cursor/c164-dist-f4b8): 2529895 bytes, sha256 a1d7924d75b764c95dad03cf4e6810293f38252835b41abcd3f2f700f106380b, as asked; view distance 12 (the server's 10), cloud range 128; 4 cores, 600 s at most
+[trip 01:38:43 +0s] clean: nodemc.py down  (up to 180 s)
+[trip 01:38:43 +0s] clean: exit 0, 0 s
+[trip 01:38:43 +0s] the save: the world folder c164-A4 (326 entries) is unpacked as server26/save/; level.dat: name c164-A4, mode adventure, difficulty peaceful, spawn 88 196 -33, yaw 67.71, pitch -22.69, version 26.3, commands False, packs ['vanilla', 'file/c164art']
+[trip 01:38:43 +0s] setup: nodemc.py setup  (up to 300 s)
+    [nodemc 01:38:43] vulkan: apiVersion 1.4.318, deviceName llvmpipe (LLVM 20.1.2, 256 bits), driverInfo Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+    [nodemc 01:38:43] java: /agent/realms-study/jdk/jdk-25.0.5+8-jre/bin/java
+    [nodemc 01:38:43] game files: whole ({"version": "26.3", "system": "linux", "mainClass": "net.minecraft.client.main.Main", "assetIndex": "34", "files": 5124, "downloaded": 5123, "assets_skipped": 9)
+    [nodemc 01:38:43] settings written: server26/server.properties (level-name, gamemode, force-gamemode, difficulty); render distance 12, the server's view distance 10, cloud range 128; the world save, joined in adventure mode, difficulty peaceful
+[trip 01:38:43 +0s] setup: exit 0, 0 s
+[trip 01:38:43 +0s] resource pack: resourcepacks/resources.zip of the save (1321441 bytes, sha256 1f120526424d99a8, 1830 files, pack.mcmeta { "pack": { "description": "c164 c164-A4 (f9293b2e)", "min_format": 97, "max_format": 97 } }) is the client's pack
+[trip 01:38:43 +0s] server: nodemc.py server-up  (up to 400 s)
+    [nodemc 01:38:49] server is up (6 s)
+[trip 01:38:49 +6s] server: exit 0, 6 s
+[trip 01:38:49 +6s] server, asked `time query daytime`: Can't find element 'minecraft:daytime' of type 'minecraft:timeline'...ry daytime<--[HERE]
+[trip 01:38:49 +6s] server, asked `time query gametime`: The game time is 148 tick(s)
+[trip 01:38:49 +6s] server, asked `gamerule advance_time`: Game rule advance_time is currently set to false
+[trip 01:38:49 +6s] server, asked `difficulty`: The difficulty is Peaceful
+[trip 01:38:49 +6s] server, asked `datapack list enabled`: There are 2 data pack(s) enabled: [vanilla (built-in)], [file/c164art (world)]
+[trip 01:38:49 +6s] game: nodemc.py client-up  (up to 474 s)
+    [nodemc 01:39:00] C164Cam is online (10 s)
+    [nodemc 01:39:00] game: [01:38:54] [Render thread/INFO]: Backend library: LWJGL version 3.4.3+4
+    [nodemc 01:39:00] game: [01:38:55] [Render thread/ERROR]: Failed to create backend OpenGL
+    [nodemc 01:39:00] game: com.mojang.renderpearl.api.device.BackendCreationException: Failed to create window for OpenGL context: Couldn't find matching GLX visual
+    [nodemc 01:39:00] game: [01:38:55] [Render thread/INFO]: Using graphics backend Vulkan, using drivers: 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+    [nodemc 01:39:00] game: [01:38:55] [Render thread/INFO]: Using graphics device: llvmpipe (LLVM 20.1.2, 256 bits) (0x10005)
+    [nodemc 01:39:00] pictures: saved by the game itself (helper)
+[trip 01:39:00 +17s] game: exit 0, 10 s
+[trip 01:39:00 +17s] server, asked `data get entity C164Cam Pos`: C164Cam has the following entity data: [88.5d, 196.0d, -32.5d]
+[trip 01:39:00 +17s] server, asked `data get entity C164Cam Rotation`: C164Cam has the following entity data: [67.71f, -22.69f]
+[trip 01:39:00 +17s] server, asked `data get entity C164Cam playerGameType`: C164Cam has the following entity data: 2
+[trip 01:39:00 +17s] server, asked `time query daytime`: Can't find element 'minecraft:daytime' of type 'minecraft:timeline'...ry daytime<--[HERE]
+[trip 01:39:00 +17s] pictures: shoot.py /tmp/c164_s1/real/save/c164-A4/shots.json --pw-file /agent/realms-study/server26/.rcon_pw --out /tmp/c164_s1/real/save/c164-A4/shots --origin 0 200 0 --keep-clock --settle 10.0 --first-settle 60.0 --still 60.0  (up to 463 s)
+    /tmp/c164_s1/real/save/c164-A4/shots/as_joined.png (still after 3 s more, 0.00% of it moved between the last two)
+    /tmp/c164_s1/real/save/c164-A4/shots/v01_arrival.png (still after 3 s more, 0.00% of it moved between the last two)
+    /tmp/c164_s1/real/save/c164-A4/shots/v02_axis.png (still after 3 s more, 0.00% of it moved between the last two)
+    /tmp/c164_s1/real/save/c164-A4/shots/v08_dome_room.png (still after 3 s more, 0.00% of it moved between the last two)
+    pictures: 4 saved by the game itself, 0 taken off the display
+[trip 01:40:45 +122s] pictures: exit 0, 105 s
+[trip 01:40:45 +122s] server, asked `time query daytime`: Can't find element 'minecraft:daytime' of type 'minecraft:timeline'...ry daytime<--[HERE]
+[trip 01:40:45 +122s] server, asked `data get entity C164Cam playerGameType`: C164Cam has the following entity data: 3
+[trip 01:40:45 +122s] 4 pictures kept in renders/real-save/c164-A4/: as_joined, v01_arrival, v02_axis, v08_dome_room; sheet.jpg, beside.jpg (beside the board of 29e5f1e7)
+[trip 01:40:45 +122s] what the game said: nodemc.py client-said 1794793123 /tmp/dais_jobs/c319/c164-realms/renders/real/_trips/20261116-013843-be47a56-save-c164-A4-client.txt  (up to 30 s)
+    client said: 5 records on shaders, pipelines and packs, 1 of a failure; written to /tmp/dais_jobs/c319/c164-realms/renders/real/_trips/20261116-013843-be47a56-save-c164-A4-client.txt
+[trip 01:40:45 +122s] what the game said: exit 0, 0 s
+[trip 01:40:45 +122s] the packs the game loaded: [01:38:55] [Render thread/INFO]: Reloading ResourceManager: vanilla, vanilla, file/c164art
+[trip 01:40:45 +122s] the server on the save: 4 warnings, 0 errors in its log (20261116-013843-be47a56-save-c164-A4-server.txt)
+[trip 01:40:45 +122s] close: nodemc.py down  (up to 180 s)
+    [nodemc 01:40:46] client stopped
+    [nodemc 01:40:47] server stopped
+[trip 01:40:47 +124s] close: exit 0, 2 s
+[trip 01:40:47 +124s] back to the test world: nodemc.py setup  (up to 120 s)
+    [nodemc 01:40:47] vulkan: apiVersion 1.4.318, deviceName llvmpipe (LLVM 20.1.2, 256 bits), driverInfo Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+    [nodemc 01:40:47] java: /agent/realms-study/jdk/jdk-25.0.5+8-jre/bin/java
+    [nodemc 01:40:47] game files: whole ({"version": "26.3", "system": "linux", "mainClass": "net.minecraft.client.main.Main", "assetIndex": "34", "files": 5124, "downloaded": 5123, "assets_skipped": 9)
+    [nodemc 01:40:47] settings written: server26/server.properties (level-name, gamemode, force-gamemode, difficulty); render distance 12, the server's view distance 10, cloud range 128
+[trip 01:40:47 +125s] back to the test world: exit 0, 0 s
+[trip 01:40:47 +125s] trip done; pictures kept: renders/real-save/c164-A4/; log renders/real/_trips/20261116-013843-be47a56-save-c164-A4.log
