@@ -232,8 +232,9 @@ class Blockers:
                                        bottom=float(wlo[1]),
                                        cell=np.floor(np.array([x, y, z], dtype=float)).astype(np.int64)))
 
-    def cast(self, eye, dirs, reach):
-        """Follow the rays eye + t * dirs[i] for 0 <= t <= reach[i]; dirs are unit vectors.
+    def cast(self, eye, dirs, reach, models=True):
+        """Follow the rays eye + t * dirs[i] for 0 <= t <= reach[i]; dirs are unit vectors. With
+        models=False the display entities are left out: what the blocks alone hide.
 
         Returns a dict of arrays, one entry per ray: t, the distance to the first thing that hides
         what is behind it (inf where the ray gets through); what, its number in self.labels (-1);
@@ -311,7 +312,7 @@ class Blockers:
             keep = ~done & (tcur < t1[live]) & np.all((cell >= self.lo) & (cell < self.lo + self.shape), axis=1)
             live, tcur, cell, step, tnext, tdelta = (v[keep] for v in (live, tcur, cell, step, tnext, tdelta))
 
-        for number, box in enumerate(self.boxes):
+        for number, box in enumerate(self.boxes if models else ()):
             v = box["centre"] - eye
             dist = float(np.linalg.norm(v))
             if dist > box["radius"]:
