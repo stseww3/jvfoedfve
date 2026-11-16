@@ -32,6 +32,7 @@ barrier, no light, so nobody is stopped, nobody climbs them and no cell is darke
 Coordinates are scene cells (x east, z south, y up), as everywhere in the main line.
 """
 import functools
+import math
 import sys
 
 from artkit import models as M
@@ -53,7 +54,8 @@ BAND = K.IRON                   # its lap bands, the curb and the storm collar: 
 APRON = K.flat("iron", 1)       # the lead dressed over the slates round its foot
 VANES = (K.IRON, K.IRON_D)      # the head's vanes, light and dark by turns: a turning head is seen to turn
 HOOP = K.IRON
-CAP = K.IRON_D
+HUB = K.IRON_D
+CAP = K.COPPER_D                # the head's low cone: copper gone green, as the domes it stands between
 OILER = K.BRASS_D               # the oil cup over the head's bearing
 
 # The two sizes, in pixels (a display entity is never scaled: 16 pixels to the block everywhere).
@@ -63,8 +65,8 @@ OILER = K.BRASS_D               # the oil cup over the head's bearing
 #   vane      how high a vane is
 #   cap       the cone's radius at its eaves and its height
 SIZES = {
-    "": dict(shaft=3.5, top=35.0, bands=(12.0, 24.0), hoop=6.5, vane=8.5, cap=(7.75, 3.0)),
-    "_small": dict(shaft=3.0, top=27.0, bands=(14.0,), hoop=5.25, vane=6.5, cap=(6.25, 2.5)),
+    "": dict(shaft=5.0, top=27.0, bands=(9.0, 18.0), hoop=10.0, vane=10.0, cap=(11.5, 4.0)),
+    "_small": dict(shaft=4.0, top=21.0, bands=(10.5,), hoop=8.0, vane=8.0, cap=(9.25, 3.25)),
 }
 APRON_OUT, APRON_UP = 3.0, 1.0  # the apron: this far beyond the shaft, this thick
 CURB_OUT, CURB_UP = 1.5, 2.5    # the curb the shaft stands in
@@ -75,8 +77,10 @@ BEARING = 1.5                   # the gap between the collar and the head: the s
 HOOP_THICK, HOOP_UP = 1.5, 1.5
 HUB_R = 1.25
 VANE_N = 8
-VANE_IN, VANE_THICK, VANE_OFF = 1.5, 0.8, 0.54  # a vane is a plate along a chord, this share of the hoop's radius off the
-#                                                 axis: it stands slanted to the wind, its outer edge trailing
+VANE_IN, VANE_THICK, VANE_OFF = 0.25, 0.8, 0.54 # a vane is a plate along a chord, this share of the hoop's radius off the
+#                                                 axis, and begins this share of it from the chord's middle: it stands
+#                                                 slanted to the wind, its outer edge trailing, and the head is hollow
+VANE_PROUD = 0.5                # how far a vane's outer edge stands out of the hoops
 CAP_TOP_R = 2.0
 OILER_R, OILER_UP = 0.9, 1.75
 
@@ -154,10 +158,11 @@ def _head(size):
     h = M.Model(head_model(size))
     for y0, y1 in ((0.0, HOOP_UP), (high - 0.25, eaves)):
         h.ring("y", (0.0, (y0 + y1) / 2.0, 0.0), hoop, HOOP_THICK, y1 - y0, HOOP)
-    h.tube("y", on, 0.0, eaves, HUB_R, CAP, sides=4)
+    h.tube("y", on, 0.0, eaves, HUB_R, HUB, sides=4)
     off = VANE_OFF * hoop
+    tip = math.sqrt((hoop + HOOP_THICK / 2.0 + VANE_PROUD) ** 2 - off ** 2)
     for n in range(VANE_N):
-        h.box((VANE_IN, HOOP_UP, off - VANE_THICK / 2.0), (hoop + 0.3, high, off + VANE_THICK / 2.0), VANES[n % 2],
+        h.box((VANE_IN * hoop, HOOP_UP, off - VANE_THICK / 2.0), (tip, high, off + VANE_THICK / 2.0), VANES[n % 2],
               rot=("y", 360.0 * n / VANE_N, (0.0, 0.0, 0.0)), grain="y")
     h.taper("y", on, eaves, eaves + k["cap"][1], k["cap"][0], CAP_TOP_R, CAP, steps=3)
     h.tube("y", on, eaves + k["cap"][1], eaves + k["cap"][1] + OILER_UP, OILER_R, OILER, sides=4)
