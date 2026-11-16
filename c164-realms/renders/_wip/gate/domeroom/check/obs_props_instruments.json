@@ -1,0 +1,229 @@
+{
+ "scene": "obs_props_instruments",
+ "commit": "8a73652",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "WARN",
+   "summary": "1826 blocks, 22 entities, 44 models, 810 resource-pack files, 12 data-pack files, look: 1 biomes, 1 timelines (0.9 s)",
+   "details": [
+    "registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json"
+   ]
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 809 files, no file written twice, the folders and the prefix of props are kept (8 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "173 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "617 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "5 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of props: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "22 display entities, 30 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "25 shots, most display entities in view: 18 (hall), limit 600; counted without what walls hide; the game draws up to 22 (terrace): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "terrace",
+      "in_view": 4,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "scope",
+      "in_view": 1,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "scope_near",
+      "in_view": 1,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "scope_behind",
+      "in_view": 2,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "scope_comet",
+      "in_view": 1,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "scope_comet_near",
+      "in_view": 1,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "scope_comet_aim",
+      "in_view": 1,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "louvre",
+      "in_view": 2,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "louvre_near",
+      "in_view": 2,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "sunshine",
+      "in_view": 1,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "sunshine_near",
+      "in_view": 1,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "hall",
+      "in_view": 18,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "globe",
+      "in_view": 7,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "globe_near",
+      "in_view": 4,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "globe_top",
+      "in_view": 3,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "globe_edge",
+      "in_view": 17,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "barometer",
+      "in_view": 3,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "barometer_dial",
+      "in_view": 1,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "clock",
+      "in_view": 5,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "clock_dial",
+      "in_view": 4,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "pendulum",
+      "in_view": 3,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "table",
+      "in_view": 6,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "table_globe_near",
+      "in_view": 2,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "sextant_near",
+      "in_view": 3,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "calc_near",
+      "in_view": 2,
+      "drawn": 22,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "nothing moves",
+   "details": []
+  }
+ ]
+}
