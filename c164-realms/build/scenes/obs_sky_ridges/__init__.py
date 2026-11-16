@@ -1,38 +1,35 @@
 """Test scene for the card sky/ridges: the far ridges seen from where people stand.
 
-    python -m scenes.obs_sky_ridges             writes shots.json and prints what every shot holds
-    python -m scenes.obs_sky_ridges.sheet DIR   a preview of the shots by the game's own arithmetic
+    python -m scenes.obs_sky_ridges                 writes shots.json and prints what every shot holds
+    python -m scenes.obs_sky_ridges.preview DIR     the sky with the ridges on it, by the shader's twin
+
+The ridges are painted by the sky's shader (scenes.obs.sky.ridges hands it the layer). So this is
+a world as a Realms map has it (card sky/safe-look, scene obs_sky_safe): no biome and no timeline
+of ours (mood.py), the plot filled with one of the game's own biomes, the clock stopped at the
+look's hour, and the look in the resource pack's core shaders.
 
 A stand-in for the site in plain vanilla blocks, enough to stand on and to hide what the real site
 hides: the upper terrace with the half-round sunset platform at its west end, the main building
 as a plain block, the lower platform and the south lookout, each with walls that go down under
-the cloud layer, since the real site is a mountain. The ridges themselves are the four
-display entities of scenes.obs.sky.ridges, which stand in the middle of the terrace and are drawn
-360 to 446 blocks out.
+the cloud layer, since the real site is a mountain.
 
-The offline pictures cannot show the ridges: the offline renderer follows a ray as far as the game
-draws blocks (192 blocks at 12 chunks) and it has no afterglow. They show where the cameras
-stand. Whether the game draws a sheet that far out, in which colour and without flicker, is only
-seen in the game: the card's first question (sky-notes.md 10.5). Until the game has answered,
-sheet.py draws what the game's arithmetic gives for the same cameras; it is a tool to shape the
-ridges with, not evidence.
+No offline picture is kept: the offline renderer does not run the game's shaders, so it shows
+neither this sky nor the ridges on it. What the game draws is seen in the game. preview.py draws
+the sky as the shader's twin gives it: a tool to shape the ridges with, not evidence.
+
+A ridge stands at no distance: its line is the same for every eye. What a shot holds of it is
+the part of the line that lies in the frame and that the stand-in does not hide (describe()).
 
 The shots (the card's list):
   west, northwest, southwest   from the west rail of the sunset platform, where the view is open
-  west_glow, west_deep         the same view under the other two lights: under glow the afterglow
-                               is strongest, so a ridge that is drawn at all shows there
   east                         from the court to the east: no ridge may show
   back_west                    from the east edge of the terrace, 87 blocks further back: the ridges
-                               on either side of the main building; set against `west` it shows how
-                               far the ridge line shifts against the horizon when a person walks
-  v11                          the skeleton's V11: it looks north-north-west with the afterglow at its
-                               left edge, and the strip of horizon it has left of the terrace is the
-                               gap between the two ranges, moved north by the 52 blocks the lookout
-                               lies south of the axis; no ridge shows there, and none should
+                               on either side of the main building, as high over the horizon as
+                               in `west`
+  v11                          the skeleton's V11, from the south lookout north-north-west, the
+                               afterglow at its left edge
   v1, v2                       the skeleton's arrival view and axis view, the two pictures the map is
-                               known by: in V1 the north range stands in the strip of sky at the right
-                               edge, north of the terrace; in V2 the outer peaks of both ranges stand
-                               low at the picture's edges, on either side of the main building
+                               known by
 """
 import functools
 import json
@@ -45,10 +42,10 @@ from artkit.canvas import Canvas
 from scenes.obs import sky
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
-from scenes.obs.sky import mood, ridges
+from scenes.obs.sky import _shaders, mood, ridges
 
-BIOME = "obs_blue"
-BIOME_MARGIN = 120          # the look has to reach past the cameras, not only over the blocks
+BIOME = "minecraft:the_void"        # as in obs_sky_safe: no weather, nothing spawns
+BIOME_MARGIN = 120          # the biome has to reach past the cameras, not only over the blocks
 BIOME_MARGIN_Y = 150
 
 STONE = B.TUFF_SMOOTH.block          # the stand-in's walls
@@ -61,6 +58,7 @@ ASPECT = 16.0 / 9.0
 
 RAIL = (S.SUNSET_PLATFORM["centre"][0] - S.SUNSET_PLATFORM["radius"] + 1.5, S.GROUND + S.EYE, S.AXIS_Z)
 BACK = (S.EAST_EDGE_X - 0.5, S.GROUND + S.EYE, S.AXIS_Z)
+COURT = (S.MERIDIAN_X + 0.5, S.GROUND + S.EYE, S.AXIS_Z)
 
 
 def _towards(pos, bearing, up, reach=100.0):
@@ -70,29 +68,29 @@ def _towards(pos, bearing, up, reach=100.0):
             round(pos[2] - reach * math.cos(e) * math.sin(a), 2))
 
 
-# name: (eye, look_at, light)
+# name: (eye, look_at)
 CAMERAS = {
-    "west": (RAIL, _towards(RAIL, 0.0, 6.0), "blue"),
-    "northwest": (RAIL, _towards(RAIL, 45.0, 6.0), "blue"),
-    "southwest": (RAIL, _towards(RAIL, -45.0, 6.0), "blue"),
-    "west_glow": (RAIL, _towards(RAIL, 0.0, 6.0), "glow"),
-    "west_deep": (RAIL, _towards(RAIL, 0.0, 6.0), "deep"),
-    "east": ((S.MERIDIAN_X + 0.5, S.GROUND + S.EYE, S.AXIS_Z), _towards((S.MERIDIAN_X + 0.5, S.GROUND + S.EYE, S.AXIS_Z), 180.0, 6.0), "blue"),
-    "back_west": (BACK, _towards(BACK, 0.0, 6.0), "blue"),
-    "v11": (S.V11["pos"], S.V11["look_at"], "blue"),
-    "v1": (S.V1["pos"], S.V1["look_at"], "blue"),
-    "v2": (S.V2["pos"], S.V2["look_at"], "blue"),
+    "west": (RAIL, _towards(RAIL, 0.0, 6.0)),
+    "northwest": (RAIL, _towards(RAIL, 45.0, 6.0)),
+    "southwest": (RAIL, _towards(RAIL, -45.0, 6.0)),
+    "east": (COURT, _towards(COURT, 180.0, 6.0)),
+    "back_west": (BACK, _towards(BACK, 0.0, 6.0)),
+    "v11": (S.V11["pos"], S.V11["look_at"]),
+    "v1": (S.V1["pos"], S.V1["look_at"]),
+    "v2": (S.V2["pos"], S.V2["look_at"]),
 }
 
 
 def write_pack(pack_dir):
-    """The sky's pack (the sun painted out, the comet in the moon's slot): the scene uses the map's hour."""
-    return list(sky.pack(pack_dir) or [])
+    """The sky's pack (the sun painted out, the comet in the moon's slot) and the shaders that carry
+    the look, the ridges' layer in them."""
+    return list(sky.pack(pack_dir) or []) + _shaders.pack(pack_dir)
 
 
 def shots():
-    return [dict(name=name, pos=[float(v) for v in pos], look_at=[float(v) for v in at], time=mood.tick(look))
-            for name, (pos, at, look) in CAMERAS.items()]
+    """Every camera at the hour the clock is stopped at."""
+    return [dict(name=name, pos=[float(v) for v in pos], look_at=[float(v) for v in at], time=mood.LOCK_TICK)
+            for name, (pos, at) in CAMERAS.items()]
 
 
 def _rect(x0, z0, x1, z1):
@@ -148,26 +146,21 @@ def build():
     for x, z in lookout:
         c.set(x, S.SOUTH_LOOKOUT["feet"] - 1, z, DARK)
     _skirt(c, lookout, S.SOUTH_LOOKOUT["feet"] - 1)
-    ridges.dress(c)
-    ridges.build(c)
     return c
 
 
 # ---- what a camera holds -------------------------------------------------------------------------
-def seen(pos, name):
-    """A sheet's ridge line as a camera sees it: for each of its columns (bearing north of due west,
-    degrees up, distance), only where the sheet has a ridge."""
-    ridge = ridges.crest(name)
-    low_left, low_right = ridges.corners(name)[:2]
-    out = []
-    for i in range(ridges.WIDTH):
-        p = low_left + (low_right - low_left) * ((i + 0.5) / ridges.WIDTH)
-        if ridge[i] <= ridges.FOOT:
-            continue
-        dx, dz = p[0] - pos[0], p[2] - pos[2]
-        reach = math.hypot(dx, dz)
-        out.append((math.degrees(math.atan2(-dz, -dx)), math.degrees(math.atan2(ridge[i] - pos[1], reach)), reach))
-    return out
+def ridge_line():
+    """The ridge line as the shader has it: (bearing north of due west, degrees up) for every
+    column of the table in which a ridge stands."""
+    up = ridges.baked() * ridges.STEP
+    bearing = ridges.FROM + (np.arange(ridges.COLUMNS) + 0.5) * ridges.STEP
+    return [(float(b), float(u)) for b, u in zip(bearing, up) if u > 0.0]
+
+
+def _direction(bearing, up):
+    a, e = math.radians(bearing), math.radians(up)
+    return np.array([-math.cos(e) * math.cos(a), math.sin(e), -math.cos(e) * math.sin(a)])
 
 
 def _frame(pos, at):
@@ -181,8 +174,7 @@ def _frame(pos, at):
 def _inside(pos, at, bearing, up):
     """Whether a direction (bearing north of due west, degrees up) lies in a shot's picture."""
     f, right, top = _frame(pos, at)
-    a, e = math.radians(bearing), math.radians(up)
-    d = np.array([-math.cos(e) * math.cos(a), math.sin(e), -math.cos(e) * math.sin(a)])
+    d = _direction(bearing, up)
     along = d @ f
     if along <= 0.0:
         return False
@@ -193,8 +185,7 @@ def _inside(pos, at, bearing, up):
 def hidden(pos, bearing, up, reach=160.0, step=0.25):
     """Whether the stand-in stands in the way of a direction from pos (bearing north of due west,
     degrees up): the sight line is walked in steps as far as the stand-in reaches."""
-    a, e = math.radians(bearing), math.radians(up)
-    d = np.array([-math.cos(e) * math.cos(a), math.sin(e), -math.cos(e) * math.sin(a)])
+    d = _direction(bearing, up)
     p = np.array(pos, dtype=float)[None, :] + np.arange(step, reach, step)[:, None] * d[None, :]
     cells = list(zip(np.floor(p[:, 0]).astype(int).tolist(), np.floor(p[:, 2]).astype(int).tolist()))
     for mass, low, top in masses():
@@ -205,25 +196,26 @@ def hidden(pos, bearing, up, reach=160.0, step=0.25):
 
 
 def describe():
-    """What every shot shows of the ridges: the part of each ridge line that lies in the frame and
-    that the stand-in does not hide."""
+    """What every shot shows of the ridges: the part of each range's line whose top lies in the
+    frame and is not hidden by the stand-in."""
     lines = list(ridges.report())
-    for name, (pos, at, look) in CAMERAS.items():
-        alpha = mood.look(look)["glow_alpha"]
+    twin = _shaders.Twin(mood.DEFAULT)
+    whole = ridge_line()
+    for name, (pos, at) in CAMERAS.items():
         parts = []
         behind = False
-        for sheet in ridges.SHEETS:
-            line = [p for p in seen(pos, sheet) if _inside(pos, at, p[0], p[1])]
+        for side, sign in (("north", 1.0), ("south", -1.0)):
+            line = [p for p in whole if p[0] * sign > 0.0 and _inside(pos, at, *p)]
             behind = behind or bool(line)
-            line = [p for p in line if not hidden(pos, p[0], p[1])]
+            line = [p for p in line if not hidden(pos, *p)]
             if not line:
                 continue
             top = max(line, key=lambda p: p[1])
-            fan = max(ridges.fan(abs(b), max(u, 0.0), alpha) for b, u, _ in line)
-            parts.append(f"{sheet} {min(p[0] for p in line):.0f} to {max(p[0] for p in line):.0f}, "
-                         f"up to {top[1]:.1f} degrees at {top[0]:.0f} ({top[2]:.0f} blocks), afterglow to {fan:.2f}")
+            glow = float(twin.fan(np.array([_direction(*p) for p in line])).max())
+            parts.append(f"{side} {min(p[0] for p in line):.0f} to {max(p[0] for p in line):.0f}, "
+                         f"up to {top[1]:.2f} degrees at {top[0]:.0f}, afterglow to {glow:.2f}")
         none = "no ridge in sight: what the frame holds of them is behind the stand-in" if behind else "no ridge in the frame"
-        lines.append(f"{name:10s} ({look}) " + ("; ".join(parts) if parts else none))
+        lines.append(f"{name:10s} " + ("; ".join(parts) if parts else none))
     return lines
 
 
