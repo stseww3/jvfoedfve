@@ -2,7 +2,7 @@
 """Where the ways a visitor walks are dark: the list for "the ways are all lit" (the closing list
 of 11-16, item 3). It only reads; the lamps are sky/lights' to place.
 
-    python tools/darkfloor.py [--out <folder>] [--floor 5] [--step 7] [--head <assembly commit>]
+    python tools/darkfloor.py [--out <folder>] [--floor 5] [--step 5] [--head <assembly commit>]
                               [--before <the dark.json of the list before this one>]
 
 Builds the master scene once (on a worker node, never on the shared machine) and puts three things
@@ -18,8 +18,10 @@ that exist already on top of one another:
                              a threshold: a cell of facade.doors(), shell.doors() or
                              S.DOME_ROOM_DOORS; anything else is floor
 
-A floor cell is dark under --floor, a step and a threshold under --step. Not counted, and listed
-apart: a cell the sky lights, and the dome room (the director, #442: it is kept dark). The sky
+A floor cell is dark under --floor, a step and a threshold under --step (one line for all three
+since cr2's #77677: 5; steps and thresholds were held to 7 before). Not counted, and listed apart:
+a cell the sky lights, the dome room (the director, #442: it is kept dark) and the other places that
+are meant to stay as they are (the lines of OWNERS that begin with SPARED). The sky
 lights a cell that is open to it straight up (glass over it does not shut it; a whole block, a
 stair, a slab or a trapdoor does), and outside the shell's rooms a cell under an overhang that
 its light reaches from the side at SKY_NEAR or more (the game takes a level off with every step:
@@ -30,10 +32,12 @@ point is nearest; within that, cells that touch are one heap, with its box, its 
 the nearest source sky/lights has placed.
 
 Every heap is given to somebody (OWNERS: as sky/lights dealt them out; what he did not name goes
-to the room's own package with a star, or stays undealt). With --before every heap also says how
-many cells it had in the list before: a cell that is still dark counts for the heap it is in now,
-a cell that is not for the heap that holds most of what is left of its old heap; an old heap of
-which nothing is left is listed as cleared. The dark thresholds are listed cell by cell.
+to the room's own package, or stays undealt). With --before every heap also says how many cells it
+had in the list before: a cell that is still dark counts for the heap it is in now, a cell that is
+not for the heap that holds most of what is left of its old heap; an old heap of which nothing is
+left is listed as cleared. The list before is first read by the lines of today (a step that had 5
+or 6, a place that is kept dark now, are taken out of it and counted), so that what it is compared
+with is what the lamps changed and not what the rule did. The dark thresholds are listed cell by cell.
 
 Writes <folder>/dark.md (the list, in Chinese) and <folder>/dark.json (every cell), and prints the
 head of the list. Ends with 0 whatever it finds.
@@ -67,42 +71,44 @@ KINDS = ("floor", "step", "threshold")
 ROOFING = ("_stairs", "_slab", "_trapdoor")     # shapes with a whole face: the sky's light is not let through them
 SKY_NEAR = 13           # the sky's light from which a cell under an overhang counts as lit by the sky
 
-# Who lights which heap, as sky/lights (c331) dealt them out on 11-16 (#74750, #75829) and cr2 after
-# him (the plate vault: floor 5, thresholds 7 as everywhere, its darkroom end at 5 to 6). The first line
-# that fits a cell names its owner: (who, the section's name starts with, the box
-# (x0, y0, z0, x1, y1, z1) in the building's own coordinates or None for the whole section).
+# Who lights which heap, as sky/lights (c331) dealt them out on 11-16 (#74750, #75829, #76033, #77817)
+# and cr2 after him (a room whose door is opened is a way like the others). The first line that fits a
+# cell names its owner: (who, the section's name starts with, the box (x0, y0, z0, x1, y1, z1) in the
+# building's own coordinates or None for the whole section). An owner that begins with SPARED is a place
+# that is meant to stay as it is: its cells are not in the count of the dark ones, they are listed apart.
 NOBODY = "未分"
-BATCH = "lights：这批 22 盏"            # his lamps of the ways that are at the gate (#75829): ring stair, cross gallery, roofs, ...
+SPARED = "不补"
+LEFT = "lights：22 盏之后剩的"          # what his lamps of the ways (in the assembly since ebdec90d) left dark
 OWNERS = (
-    ("不补（总监 #58129）", "room: star hall", (12, 0, -5, 15, 0, 5)),        # inside the east doors
-    ("不补（总监 #58129）", "", (16, 0, -5, 17, 0, 5)),                       # the east doorways: the frame darker than what it frames
-    (BATCH, "room: star hall", (2, 0, -3, 3, 0, 3)),                          # the pier's foot
-    (BATCH, "room: star hall", (1, 7, -4, 7, 17, 4)),                         # the ring stair and the deck under its runs
-    (BATCH, "room: star hall", (2, 7, -5, 3, 8, 5)),                          # where the cross gallery meets the side galleries
-    (BATCH, "in-H", None),                                                    # the ring stair
-    (BATCH, "room: stair hall", (-1, 7, -5, 1, 8, 5)),                        # the cross gallery
-    ("lights：astro 找位置", "room: stair hall", (-7, 1, -5, 1, 13, 5)),      # the mezzanine and the two flights
-    ("hall：下一次交付", "room: stair hall", (-7, 0, -5, 1, 0, 5)),           # the way to the west door
-    ("hall：下一次交付", "in-C", None),
+    (SPARED + "（总监 #58129：厅入口）", "room: star hall", (12, 0, -5, 15, 0, 5)),   # inside the east doors
+    (SPARED + "（总监 #58129：厅入口）", "", (16, 0, -5, 17, 0, 5)),            # the east doorways: the frame darker than what it frames
+    (SPARED + "（A0 #22568：水塔底下）", "out-E", (-21, -3, -35, -13, -1, -27)),      # a small building keeps the one lamp at its door
+    (SPARED + "（观测室：子午仪小屋）", "in-M", None),
+    ("m1：石墩一圈", "room: star hall", (1, 0, -3, 7, 0, 3)),                 # round the pier's foot (S.PIER_ENVELOPE)
+    (LEFT, "room: star hall", (1, 7, -4, 7, 17, 4)),                          # the ring stair and the deck under its runs
+    (LEFT, "room: star hall", (2, 7, -5, 3, 8, 5)),                           # where the cross gallery meets the side galleries
+    (LEFT, "in-H", None),                                                     # the ring stair
+    (LEFT, "room: stair hall", (-1, 7, -5, 1, 8, 5)),                         # the cross gallery
+    ("lights：这一轮（astro 的 6 盏）", "room: stair hall", (-7, 1, -5, 1, 13, 5)),   # the mezzanine and the two flights
+    ("m5：西门里", "room: stair hall", (-7, 0, -5, 1, 0, 5)),                 # the way to the west door
+    ("m5：西门里", "in-C", None),
+    ("m5：各屋门口", "", (7, 7, -6, 8, 7, -6)),                               # the thresholds of the time room,
+    ("m5：各屋门口", "", (7, 7, 6, 8, 7, 6)),                                 # of the chart room,
+    ("m5：各屋门口", "", (7, 0, 6, 7, 1, 6)),                                 # of the plate vault
+    ("m5：各屋门口", "", (7, 0, -6, 7, 1, -6)),                               # and of the battery room
     ("m2", "room: time room", None),
-    ("m2", "", (7, 7, -6, 8, 7, -6)),                                         # the time room's threshold: his lamp beside the door
-    ("chart", "", (7, 7, 6, 8, 7, 6)),                                        # the chart room's threshold
     ("vault", "room: plate vault", None),                                     # cr2, #75753: the vault is a way like the others
-    ("vault", "", (7, 0, 6, 7, 1, 6)),                                        # its threshold
     ("astro", "room: battery room", None),                                    # lights, #76033: the vault's twin, counted the same way
-    ("astro", "", (7, 0, -6, 7, 1, -6)),                                      # its threshold
     ("power", "in-L", None),
     ("tower、clkrm：钟塔底厅", "", (11, 18, -32, 15, 23, -28)),               # the well of the clock tower at the roof walk's level
     ("dome：小穹顶里", "in-J", (10, 17, 26, 16, 23, 34)),                     # inside the small dome (lights, #74750)
-    ("dome、lights：这批屋面 8 盏", "in-I", None),                            # the roof round the dome room (the room itself is not counted)
-    ("dome、lights：这批屋面 8 盏", "in-J", None),
-    ("dome、lights：这批屋面 8 盏", "in-K", None),
-    ("lights：下一轮", "out-E", (-21, -3, -35, -13, -1, -27)),                # under the water tower: a caged lamp on a leg
-    ("不补（观测室）", "in-M", None),
+    ("dome、lights：屋面", "in-I", None),                                     # the roof round the dome room (the room itself is not counted)
+    ("dome、lights：屋面", "in-J", None),
+    ("dome、lights：屋面", "in-K", None),
 )
 # The rooms' own packages (plan/ROSTER.md), for what nobody named. cr2, #76117: a room whose door is
-# opened counts as a way like the others (floor 5, thresholds 7) and is its owner's; only a room its
-# owner says is meant to be dark goes to him to decide.
+# opened counts as a way like the others and is its owner's; only a room its owner says is meant to be
+# dark goes to him to decide.
 ROOM_OWNERS = {"star hall": "hall", "stair hall": "lights", "time room": "m2", "chart room": "chart",
                "plate vault": "vault", "battery room": "astro"}
 
@@ -255,12 +261,30 @@ def thresholds():
     return out
 
 
-def heaps_before(path):
-    """The list before this one: (its head, [(section, {cell: its light then})] heap by heap)."""
+def heaps_before(path, need):
+    """The list before this one, read by the lines of today: (its head, [(section, {cell: its light
+    then})] heap by heap, what it counted then and what today's lines take out of it). `need` is
+    {kind: the light under which a cell of that kind is dark}; a cell that had that much then, and a
+    cell of a place that is kept dark now, are not in the heaps (a heap left empty is dropped)."""
     with open(path, encoding="utf-8") as fh:
         data = json.load(fh)
-    return data.get("head", ""), [(s["name"], {tuple(c[:3]): c[3] for c in hp["list"]})
-                                  for s in data.get("sections", ()) for hp in s["heaps"]]
+    out, then = [], dict(cells=0, heaps=0, rule=0, spared=0)
+    for s in data.get("sections", ()):
+        for hp in s["heaps"]:
+            then["cells"] += len(hp["list"])
+            then["heaps"] += 1
+            left = {}
+            for c in hp["list"]:
+                cell, level, kind = tuple(c[:3]), c[3], c[4] if len(c) > 4 else "floor"
+                if owner_of(s["name"], cell).startswith(SPARED):
+                    then["spared"] += 1
+                elif level >= need[kind]:
+                    then["rule"] += 1
+                else:
+                    left[cell] = level
+            if left:
+                out.append((s["name"], left))
+    return data.get("head", ""), out, then
 
 
 def room_of():
@@ -304,7 +328,7 @@ def main():
     ap = argparse.ArgumentParser(description="the dark cells of the ways a visitor walks")
     ap.add_argument("--out", default="renders/_wip/light")
     ap.add_argument("--floor", type=int, default=5)
-    ap.add_argument("--step", type=int, default=7)
+    ap.add_argument("--step", type=int, default=5)
     ap.add_argument("--head", default="", help="the assembly commit the list is of (for its title)")
     ap.add_argument("--before", default="", help="the dark.json of the list before this one: every heap says what it had then")
     ap.add_argument("--scene", default="obs", help="another scene than the master scene (a test scene: give --start)")
@@ -379,7 +403,7 @@ def main():
                 best = (d, label)
         return best[1] if best is not None and best[0] <= NEAR else "off the routes"
 
-    dark, open_sky, eaves, dome = {}, {}, {}, []
+    dark, open_sky, eaves, dome, spared = {}, {}, {}, [], {}
     for cell, row in rows.items():
         if row["light"] >= row["need"]:
             continue
@@ -389,6 +413,8 @@ def main():
             open_sky.setdefault(section(cell, row), []).append(cell)
         elif row["place"] == "eaves":
             eaves.setdefault(section(cell, row), []).append(cell)
+        elif (who := owner_of(section(cell, row), cell)).startswith(SPARED):
+            spared.setdefault((who, section(cell, row)), []).append(cell)
         else:
             dark.setdefault(section(cell, row), []).append(cell)
 
@@ -427,7 +453,7 @@ def main():
     # against the list before: what every heap had then, and the heaps of which nothing is left
     before, cleared, gone = None, [], dict(lit=0, no_standing=0, apart=0)
     if args.before:
-        head_before, old_heaps = heaps_before(args.before)
+        head_before, old_heaps, then = heaps_before(args.before, dict(floor=args.floor, step=args.step, threshold=args.step))
         now = {tuple(c[:3]): (si, hi) for si, s in enumerate(sections) for hi, hp in enumerate(s["heaps"]) for c in hp["list"]}
         for s in sections:
             s["was"] = 0
@@ -461,7 +487,7 @@ def main():
             s["was"] = was_in.get(s["name"], 0)
         cleared.sort(key=lambda hp: (-hp["cells"], hp["name"], hp["lo"]))
         before = dict(head=head_before, cells=sum(len(old) for _name, old in old_heaps), heaps=len(old_heaps),
-                      still_dark=sum(hp["kept"] for s in sections for hp in s["heaps"]), **gone)
+                      then=then, still_dark=sum(hp["kept"] for s in sections for hp in s["heaps"]), **gone)
         before["new_dark"] = sum(s["cells"] for s in sections) - before["still_dark"]
 
     by_owner = {}
@@ -482,13 +508,19 @@ def main():
     by_kind = {k: sum(hp["kinds"][k] for s in sections for hp in s["heaps"]) for k in KINDS}
     n_heaps = sum(len(s["heaps"]) for s in sections)
     n_sky = sum(len(v) for v in open_sky.values())
+    spared_heaps = sorted((dict(why=who, name=name, lo=box(hp)[0], hi=box(hp)[1], cells=len(hp),
+                              darkest=min(rows[c]["light"] for c in hp),
+                              list=sorted([list(c) + [rows[c]["light"], rows[c]["kind"]] for c in hp]))
+                         for (who, name), v in spared.items() for hp in heaps(v)),
+                        key=lambda hp: (hp["why"], -hp["cells"], hp["lo"]))
+    n_spared = sum(hp["cells"] for hp in spared_heaps)
     report = dict(
         head=args.head, floor=args.floor, step=args.step,
         standing=dict(cells=len(rows), walk=sum(r["how"] == "walk" for r in rows.values()),
                       hop=sum(r["how"] == "hop" for r in rows.values()), roofed=roofed, fall_only_nodes=fell),
         starts=[dict(start=name, new=new) for name, new in used], no_standing_at=lost,
         dark=dict(cells=n_dark, heaps=n_heaps, **by_kind), before=before, by_owner=by_owner, sections=sections,
-        thresholds=sills, cleared=cleared,
+        thresholds=sills, cleared=cleared, spared=spared_heaps,
         open_sky={name: dict(cells=len(v), lo=box(v)[0], hi=box(v)[1]) for name, v in sorted(open_sky.items())},
         eaves={name: [dict(cells=len(hp), lo=box(hp)[0], hi=box(hp)[1], darkest=min(rows[c]["light"] for c in hp))
                       for hp in sorted(heaps(v), key=lambda hp: -len(hp))] for name, v in sorted(eaves.items())},
@@ -507,21 +539,30 @@ def main():
     md = [f"# 路上的光：暗格清单（{title}）", "",
           f"量法：`tools/walkreach.py` 算人走得到的地方（从出生点起；再加两条走查路线上出生点走不到的点），"
           f"`sky/_lightkit.levels` 算块光，取脚格和头格里亮的那个（同 `obs_sky_lights/ways.py`）。"
-          f"地面低于 {args.floor}、台阶（脚下是 `_stairs`、`_slab`）和门槛（`facade.doors()`、`shell.doors()`、"
-          f"`S.DOME_ROOM_DOORS` 的格）低于 {args.step} 算暗。坐标是格子的整数坐标，y 是脚所在的那一行。",
+          + (f"地面、台阶、门槛一个线：低于 {args.floor} 算暗（cr2 #77677；11-16 10:39 以前的几版台阶、门槛按 7）。"
+             if args.floor == args.step else
+             f"地面低于 {args.floor}、台阶和门槛低于 {args.step} 算暗。")
+          + "台阶是脚下是 `_stairs`、`_slab` 的格，门槛是 `facade.doors()`、`shell.doors()`、`S.DOME_ROOM_DOORS` 的格。"
+            "坐标是格子的整数坐标，y 是脚所在的那一行。",
           "",
-          f"不算暗、另列的三种：露天（正上方到天没有挡光的块；玻璃不挡，整块、台阶、半砖、活板门挡）；檐下"
+          f"不算进暗的总数、另列的四种：露天（正上方到天没有挡光的块；玻璃不挡，整块、台阶、半砖、活板门挡）；檐下"
           f"（头上有东西，但天光从旁边照进来还有 {SKY_NEAR} 级以上，按游戏的算法每走一格减一级：檐口下贴墙的那一条、"
-          f"水塔底下、敞开的门洞里头两格）；穹顶室（总监 #442）。壳里的房间（`shell.room_at` 认得的）一律只看块光，不管窗子透进多少天光。",
+          f"敞开的门洞里头两格）；穹顶室（总监 #442）；定了不补的几处（厅入口 x 12..17、子午仪小屋、水塔底下，见「不补的」一节）。"
+          f"壳里的房间（`shell.room_at` 认得的）一律只看块光，不管窗子透进多少天光。",
           "",
           f"- 站得住的格：{len(rows)}（走得到 {report['standing']['walk']}，要跳一下 {report['standing']['hop']}），"
           f"其中屋顶下 {roofed}。只能掉下去才到的地方不算（{fell} 个落脚点）。",
           f"- **暗：{n_dark} 格，{n_heaps} 堆**（地面 {by_kind['floor']}，台阶 {by_kind['step']}，门槛 {by_kind['threshold']}）。",
-          f"- 不算暗：露天 {n_sky} 格，檐下 {n_eaves} 格，穹顶室 {len(dome)} 格。sky/lights 现在放了 {len(placed)} 个光源。"]
+          f"- 不算进总数：定了不补的 {n_spared} 格（{len(spared_heaps)} 堆，见后面），露天 {n_sky} 格，檐下 {n_eaves} 格，"
+          f"穹顶室 {len(dome)} 格。sky/lights 现在放了 {len(placed)} 个光源。"]
     if before:
-        md.append(f"- 比上一版（{('总装 ' + before['head']) if before['head'] else '没写总装号'}，暗 {before['cells']} 格 {before['heaps']} 堆）："
-                  f"还暗着 {before['still_dark']} 格，新暗 {before['new_dark']} 格；上一版的暗格里亮了 {before['lit']} 格，"
-                  f"现在站不了人的 {before['no_standing']} 格，改算露天、檐下或穹顶室的 {before['apart']} 格；"
+        then = before["then"]
+        same = "" if not (then["rule"] or then["spared"]) else (
+            f"照现在的算法是 {before['cells']} 格 {before['heaps']} 堆"
+            f"（台阶、门槛里已经够 {args.step} 级的 {then['rule']} 格不再算暗，不补的 {then['spared']} 格另列），拿这个数比：")
+        md.append(f"- 比上一版（{('总装 ' + before['head']) if before['head'] else '没写总装号'}，当时算暗 {then['cells']} 格 {then['heaps']} 堆）：{same}"
+                  f"还暗着 {before['still_dark']} 格，新暗 {before['new_dark']} 格；亮了 {before['lit']} 格，"
+                  f"现在站不了人的 {before['no_standing']} 格，改算露天、檐下的 {before['apart']} 格；"
                   f"整堆清掉的 {len(cleared)} 堆（见后面）。")
     if lost:
         md.append(f"- 路线上站不住人的点（没有从那里起算）：{len(lost)} 个，如 {'；'.join(lost[:4])}")
@@ -538,7 +579,7 @@ def main():
            "`c164-realms/renders/_wip/light/`。「比上一版」比的是 sound 发出去的最近一版，所以自己那几堆少了多少一眼看得到。"
            "只量不改：它不动场景里任何东西。"]
     md += ["", "## 按归属", "",
-           "归属照 lights（c331）11-16 的分法（#74750、#75829、#76033）；房间里没点到的堆归房间主人，"
+           "归属照 lights（c331）11-16 的分法（#74750、#75829、#76033、#77817）；房间里没点到的堆归房间主人，"
            "新开门的房间一律算路、归主人（cr2 #75753、#76117）；「未分」是还没人认的。", "",
            "| 归谁 | 格数 | 堆数 |", "| --- | --- | --- |"]
     md += [f"| {who} | {v['cells']} | {v['heaps']} |" for who, v in by_owner.items()]
@@ -569,6 +610,13 @@ def main():
             md.append(f"| {hp['name']} | {span(hp['lo'], hp['hi'], 0)} | {span(hp['lo'], hp['hi'], 1)} | {span(hp['lo'], hp['hi'], 2)} | "
                       f"{hp['cells']} | {hp['darkest']} | {lit} | {said_owners(hp['owner'])} |")
         md.append("")
+    md += [f"## 不补的（不算进暗的总数：{n_spared} 格，{len(spared_heaps)} 堆）", "",
+           "总监 #58129：厅入口（东门洞和门里 x 12..17）门框要比它框住的石墩暗；A0 #22568：山上的小建筑只留门口一盏，水塔已经有了；"
+           "子午仪小屋是观测室，和穹顶室一样不点灯（穹顶室整间不量，只在上面记格数）。", "",
+           "| 为什么 | 地段 | x | y | z | 格数 | 最暗的块光 |", "| --- | --- | --- | --- | --- | --- | --- |"]
+    md += [f"| {hp['why']} | {hp['name']} | {span(hp['lo'], hp['hi'], 0)} | {span(hp['lo'], hp['hi'], 1)} | "
+           f"{span(hp['lo'], hp['hi'], 2)} | {hp['cells']} | {hp['darkest']} |" for hp in spared_heaps]
+    md.append("")
     md += ["## 檐下的（不算暗：天光从旁边照得到；块光不够，要不要补由 lights 看）", "",
            "| 地段 | x | y | z | 格数 | 最暗的块光 |", "| --- | --- | --- | --- | --- | --- |"]
     for name, found_heaps in sorted(report["eaves"].items(), key=lambda kv: -sum(hp["cells"] for hp in kv[1])):
@@ -589,11 +637,15 @@ def main():
         fh.write("\n")
     print(f"darkfloor: {len(rows)} standing cells, {roofed} under a roof; dark {n_dark} in {n_heaps} heaps "
           f"(floor {by_kind['floor']}, step {by_kind['step']}, threshold {by_kind['threshold']}); "
-          f"open sky {n_sky}, under eaves {n_eaves}, dome room {len(dome)}; {time.time() - t0:.0f} s")
+          f"not to be lit {n_spared} in {len(spared_heaps)} heaps, open sky {n_sky}, under eaves {n_eaves}, "
+          f"dome room {len(dome)}; {time.time() - t0:.0f} s")
     if before:
-        print(f"  against {before['head'] or 'the list before'} ({before['cells']} in {before['heaps']} heaps): still dark "
-              f"{before['still_dark']}, new {before['new_dark']}; lit {before['lit']}, no standing place now {before['no_standing']}, "
-              f"counted apart now {before['apart']}; {len(cleared)} heaps cleared")
+        then = before["then"]
+        print(f"  against {before['head'] or 'the list before'} ({then['cells']} in {then['heaps']} heaps then; by today's lines "
+              f"{before['cells']} in {before['heaps']}: {then['rule']} steps and thresholds had {args.step} or more, "
+              f"{then['spared']} are not to be lit): still dark {before['still_dark']}, new {before['new_dark']}; "
+              f"lit {before['lit']}, no standing place now {before['no_standing']}, counted apart now {before['apart']}; "
+              f"{len(cleared)} heaps cleared")
     for who, v in by_owner.items():
         print(f"  owner {who}: {v['cells']} cells in {v['heaps']} heaps")
     for s in sections:
@@ -601,7 +653,7 @@ def main():
         print(f"  {s['name']}: {s['cells']} cells{'' if s['was'] is None else ' (' + str(s['was']) + ' before)'} in {len(s['heaps'])} heaps, "
               f"darkest {s['darkest']}; the largest "
               f"x {span(big['lo'], big['hi'], 0)} y {span(big['lo'], big['hi'], 1)} z {span(big['lo'], big['hi'], 2)} "
-              f"({big['cells']})")
+              f"({big['cells']}, {said_owners(big['owner'])})")
     print(f"written: {args.out}/dark.md, dark.json")
     return 0
 
