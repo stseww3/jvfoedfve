@@ -35,14 +35,18 @@ and its inner leaf it touches only the floor of the doorways):
     dome-room floor at (4, -4), eleven blocks above. A balustrade of iron panels on both sides:
     the inner one in the steps' own cells so the ring stays empty, the outer one two rows high,
     one unbroken band from the gallery to the trimmer. The west run, which crosses the well,
-    hangs by four rods from the beam over it;
+    hangs by four rods from the beam over it. A brass post on the railing's head marks each
+    mouth; the cell over it stays free (the light line stands a lamp on the gallery's);
   * the wing rooms of the main floor (time-service room north, star-chart room south): floor,
     ceiling, the wall towards the rotunda, the wall towards the end pavilion;
   * the dome-room floor, with the envelope left open, an iron curb and a railing round it.
 
-The ground floor of the wings, the end pavilions and the pockets of the apse beside the cross walls
-stay closed. Furniture, wall panelling, lamps, machines: the interiors, props and machines lines.
-ROOMS and doors() below are what they read.
+The end pavilions and the pockets of the apse beside the cross walls stay closed, and so does the
+ground floor of a wing until a room moves into it: then it is in ROOMS and in LOWER (the plate
+vault under the chart room, the battery room under the time room), and the shell opens its door
+from the hall's aisle. Furniture, wall
+panelling, lamps, machines: the interiors, props and machines lines. ROOMS and doors() below are
+what they read.
 
     python -m scenes.obs.main.shell            # the three plans, the stair tables, the self-check
     python -m scenes.obs.main.shell check      # the self-check alone (exit code 1 on a finding)
@@ -80,6 +84,8 @@ ARCADE_X = (0, 1)                               # the west arcade: where the wes
 ARCH_Y = S.BASE[1]                              # 5: the row of the arch heads, as in the entrance
 ROOM_DOOR_X = (7, 8)                            # gallery -> wing room, through a cross wall
 ROOM_DOOR_Y = (S.STAND, S.STAND + 2)
+LOWER_DOOR_X = ROOM_DOOR_X[0]                   # 7: hall -> a room on the ground floor of a wing, under the wing room's door:
+LOWER_DOOR_Y = (S.GROUND, S.GROUND + 1)         # one cell wide, two rows high, through the plinth courses of the cross wall
 GALLERY_X = (S.ROOM_X[0], S.ROOM_X[1])          # 2..13: the side galleries' walk; their edge runs on to the entrance wall
 FOOT = (CX, S.PIER_ENVELOPE[1])                 # (4, -3): the ring stair's first step, and its last one a turn higher
 BRIDGE = (FOOT[0], FOOT[1] - 1)                 # (4, -4): the gap in the north railing where the ring stair starts
@@ -103,6 +109,7 @@ GRATING = B.IRON_GRATE
 TREAD = B.IRON_RIVETED
 PANEL = B.IRON_HATCH                            # an iron hatch on edge: the thin balustrade panel
 HANGER = f"{B.IRON_ROD}[facing=up]"             # a thin rod from the trimmer down to the ring stair's balustrade
+POST = B.BRASS_RAIL                             # one brass post on a railing's head: the newel at a mouth of the ring stair
 TRIM = B.IRON_RIVETED.block                     # the iron curb round the stair's opening, ceiling to floor
 HEADROOM = 2                                    # rows that stay free over a deck one walks on
 
@@ -122,23 +129,37 @@ ROOMS = {
     "dome room": dict(centre=S.DOME_CENTRE, radius=S.DOME_R - 2, feet=S.ROOF_STAND, ceiling=None,
                       note="inside the drum; the envelope x 1..7, z -3..3 is open, a railing round it; the "
                            "stair lets one off at (4, -4), north of the cap (EXIT: that cell and three above it stay free)"),
+    "plate vault": dict(box=(S.ROOM_X[0], WING_Z[0], S.ROOM_X[1], WING_Z[1]), feet=S.GROUND, ceiling=DECK_Y,
+                        note="south wing, ground floor: the cavity under the chart room, whose floor is its ceiling; "
+                             "door at x 7 in the wall on z 6, two rows high; nothing of the shell is in it, the room "
+                             "lays its own floor"),
+    "battery room": dict(box=(S.ROOM_X[0], -WING_Z[1], S.ROOM_X[1], -WING_Z[0]), feet=S.GROUND, ceiling=DECK_Y,
+                         note="north wing, ground floor: the cavity under the time room, whose floor is its ceiling; "
+                              "door at x 7 in the wall on z -6, two rows high; nothing of the shell is in it, the room "
+                              "lays its own floor"),
 }
+# The rooms on the ground floor of the wings and the side of the axis each lies on. A wing's ground
+# floor is a closed cavity until its room is in the assembly (interiors/platevault and
+# interiors/batteryroom, 11-16): then the room is named here and has its doorway.
+LOWER = {"plate vault": 1, "battery room": -1}
 
 
 def doors():
     """The doorways in the shell's own walls, for whoever hangs a leaf in them, in the words of
     facade.doors(): [dict(room, cells, inward, y)]. cells are the columns of the wall the doorway
-    goes through, inward the step from the gallery into the room, y its (bottom, top) rows. The
-    doorways of the outer walls are the facade's (facade.doors()), those of the dome room the
-    skeleton's (S.DOME_ROOM_DOORS)."""
-    return [dict(room=room, cells=[(x, s * CROSS_Z) for x in ROOM_DOOR_X], inward=(0, s), y=ROOM_DOOR_Y)
-            for room, s in (("time room", -1), ("chart room", 1))]
+    goes through, inward the step into the room (from the gallery into a wing room, from the hall's
+    aisle into a room of LOWER), y its (bottom, top) rows. The doorways of the outer walls are the
+    facade's (facade.doors()), those of the dome room the skeleton's (S.DOME_ROOM_DOORS)."""
+    return ([dict(room=room, cells=[(x, s * CROSS_Z) for x in ROOM_DOOR_X], inward=(0, s), y=ROOM_DOOR_Y)
+             for room, s in (("time room", -1), ("chart room", 1))]
+            + [dict(room=room, cells=[(LOWER_DOOR_X, s * CROSS_Z)], inward=(0, s), y=LOWER_DOOR_Y)
+               for room, s in LOWER.items()])
 
 
 def room_at(x, y, z):
     """The room a cell lies in -- a key of ROOMS -- or None: the closed parts of the building (the
-    ground floor of the wings, the end pavilions, the pockets beside the cross walls) and whatever
-    is not the inside of the shell. For whoever has to know whether somebody can stand behind a
+    ground floor of a wing no room has moved into, the end pavilions, the pockets beside the cross
+    walls) and whatever is not the inside of the shell. For whoever has to know whether somebody can stand behind a
     window (A0 #32732): ask for the cell one step inside the glass. The apse is the stair hall:
     the flights, the landings and the mezzanine are in it. The two window niches the facade cuts
     into its lining at the east end of the galleries (layout().niches) are the star hall's."""
@@ -149,6 +170,9 @@ def room_at(x, y, z):
         return "star hall"                      # a window niche at the end of a gallery
     for name, cells in L.rooms.items():
         if (x, z) in cells and S.STAND <= y < CEIL_Y:
+            return name
+    for name, cells in L.lower.items():
+        if (x, z) in cells and S.GROUND <= y < DECK_Y:
             return name
     if ((x, z) in L.dome_floor or (x, z) in L.envelope) and y >= S.ROOF_STAND:
         return "dome room"
@@ -254,6 +278,8 @@ def _layout(entrance):
     L.partition = {c for c in core if abs(c[1]) == PAVILION_Z}
     L.west = {c for c in core if c[0] == S.GLASS_W and abs(c[1]) > CROSS_Z}   # the wings' wall to the rotunda
     L.rooms = {name: O.box(*ROOMS[name]["box"]) & core for name in ("time room", "chart room")}
+    L.lower = {name: O.box(*ROOMS[name]["box"]) & core for name in LOWER}
+    L.lower_doors = {(LOWER_DOOR_X, s * CROSS_Z) for s in LOWER.values()}
     # the stair hall
     L.flights = {s: [(x, y, z) for x, y in grand_stair() for z in rows] for s, rows in FLIGHT_ROWS.items()}
     L.landing = {(LANDING_X, z) for rows in FLIGHT_ROWS.values() for z in rows if (LANDING_X, z) in core}
@@ -377,6 +403,23 @@ def stair_hangers():
             if y_of[(x0, z)] + 2 <= CEIL_Y - 1]
 
 
+def stair_posts():
+    """The newel at each mouth of the ring stair: [(x, y, z)], a brass post one block high on the
+    head of the railing beside the gap (review 16). Seen from the gallery the foot of the stair
+    is a gap one cell wide in a railing with a stack of iron plates behind it, and the way off in
+    the dome room is a gap in a railing too: the post says where one goes up and where one goes
+    back down. Brass at both mouths, the only brass of the stair: an iron rod is lost before the
+    iron plates at the foot, across the well the brass is a small bright stroke that shows the
+    way, and the two ends of one stair are a pair. It stands on the side of the plate that closes
+    the stair's end -- east of the bridge on the gallery, west of the way off in the dome room --
+    and on the bars, which it does not replace (bars and a post do not join, and the gap between
+    them would let one through). The cell over each post stays free: on the gallery's the light
+    line stands a low lamp (sky/lights, the lamp of the parapet piers); the dome room's stays
+    bare, a newel and no more -- that room keeps its dark."""
+    cells = [(x, z) for x, z, _y, _half, _top in ring_stair()]
+    return [(cells[-2][0], S.STAND + 1, BRIDGE[1]), (cells[1][0], S.ROOF_STAND + 1, EXIT[1])]
+
+
 @contextlib.contextmanager
 def hall_open():
     """Build the main line inside this block to get the hall as it stands once the facade's
@@ -424,6 +467,10 @@ def build(canvas, origin=(0, 0, 0)):
             put(c, y, wall_block(y))
     for c in L.doors:
         for y in range(ROOM_DOOR_Y[0], ROOM_DOOR_Y[1] + 1):
+            clear(c, y)
+    for c in L.lower_doors:                     # into a room on the ground floor: the plinth's stone in its floor
+        put(c, S.PAVING_Y, SILL)
+        for y in range(LOWER_DOOR_Y[0], LOWER_DOOR_Y[1] + 1):
             clear(c, y)
 
     # the wing rooms
@@ -503,6 +550,8 @@ def build(canvas, origin=(0, 0, 0)):
     for x, y0, y1, z in stair_hangers():
         for y in range(y0, y1 + 1):
             put((x, z), y, HANGER)
+    for x, y, z in stair_posts():
+        put((x, z), y, POST)
     return 0
 
 
@@ -510,7 +559,7 @@ def build(canvas, origin=(0, 0, 0)):
 LEGEND = [
     ("#", "outer wall (main/facade.py)"), (":", "its inner leaf, with the glass"),
     ("W", "wall of the shell, solid through this storey"),
-    ("D", "door opening (on the ground floor: a doorway of the facade, its sill)"),
+    ("D", "door opening (on the ground floor: a doorway of the facade or of a room under a wing, its sill)"),
     (".", "floor or deck"), ("o", "open to the level below"), ("x", "closed space"),
     ("r", "railing on the edge of a deck"), ("T", "telescope pier (the cap, at the dome room)"),
     ("=", "iron grating round the pier's foot"), ("m", "the mother clock's seat: the pier's footing, level with the floor"),
@@ -518,6 +567,7 @@ LEGEND = [
     ("s", "ring stair"), ("S", "ring stair passing over a deck or its railing"),
     ("P", "ring stair resting on its plinth"), ("n", "window niche of the facade, its floor level with the galleries"),
     ("b", "the bridge onto the ring stair"), ("e", "where the ring stair lets one off"),
+    ("p", "brass post on the railing's head, beside a mouth of the ring stair"),
 ]
 
 
@@ -525,6 +575,7 @@ def drawing(level):
     """One of the three plans as text, north up: "ground" (feet 0), "main" (feet 7), "dome" (feet 18)."""
     L = layout()
     f = facade.shell()
+    foot_post, top_post = [(x, z) for x, _y, z in stair_posts()]
     g = {}
     for c in f.wall:
         g[c] = "#"
@@ -541,6 +592,11 @@ def drawing(level):
             g[c] = "D"
         for c in L.cross | L.partition | L.west | L.cheek | L.arcade | L.landing:
             g[c] = "W"
+        for cells in L.lower.values():
+            for c in cells:
+                g[c] = "."
+        for c in L.lower_doors:
+            g[c] = "D"
         for cells in L.flights.values():
             for x, _y, z in cells:
                 g[(x, z)] = "<"
@@ -567,6 +623,7 @@ def drawing(level):
         for c in L.niches:
             g[c] = "n"
         g[BRIDGE] = "b"
+        g[foot_post] = "p"
     else:
         d = O.disc(CX, CZ, S.DOME_R)
         g = {c: "#" for c in d}
@@ -580,6 +637,7 @@ def drawing(level):
             if top > ROOF_Y:
                 g[(x, z)] = "s"
         g[EXIT] = "e"
+        g[top_post] = "p"
     if level != "ground":
         for c in (L.cap if level == "dome" else L.shaft):
             g[c] = "T"
@@ -673,6 +731,10 @@ def check():
             out.append(f"ring stair: the hanger at ({x}, {z}) does not hang from a beam")
         if any(c.get(x, y, z) != HANGER for y in range(y0, y1 + 1)):
             out.append(f"ring stair: the hanger at ({x}, {z}) is broken")
+    #    and a post marks each mouth: on the railing beside the gap, the cell over it free for a lamp
+    for (x, y, z), mouth in zip(stair_posts(), (BRIDGE, EXIT)):
+        if (abs(x - mouth[0]), z) != (1, mouth[1]) or c.name(x, y - 1, z) != RAIL or c.get(x, y, z) != POST or solid(x, y + 1, z):
+            out.append(f"ring stair: no post on the railing beside the mouth at ({x}, {y}, {z})")
     # 4. the grand stair: three blocks of air over every step
     for cells in L.flights.values():
         for x, y, z in cells:
@@ -701,9 +763,18 @@ def check():
     for what, cell in (("the west door", west_door), ("the north flight", (FLIGHT_X[0], -4)), ("the south flight", (FLIGHT_X[0], 4))):
         if cell not in from_door:
             out.append(f"ground floor: no way from the entrance to {what}")
-    for x, z in L.sills:                                    # and every doorway has its floor
+    for x, z in L.sills | L.lower_doors:                    # and every doorway has its floor
         if c.name(x, S.PAVING_Y, z) != SILL:
             out.append(f"ground floor: no sill in the doorway at ({x}, {z})")
+    for d in doors():                                       # a room under a wing: two rows of air under a lintel, the
+        if d["room"] in LOWER:                              # hall's aisle before it, the room's first cell behind it
+            (x, z), (dx, dz), (y0, y1) = d["cells"][0], d["inward"], d["y"]
+            if any(solid(x, y, z) for y in range(y0, y1 + 1)) or not solid(x, y1 + 1, z):
+                out.append(f"ground floor: the doorway of the {d['room']} at ({x}, {z}) is not two rows of air under a lintel")
+            if (x - dx, z - dz) not in from_door:
+                out.append(f"ground floor: no way from the entrance to the door of the {d['room']}")
+            if (x + dx, z + dz) not in L.lower[d["room"]]:
+                out.append(f"ground floor: the door at ({x}, {z}) does not open into the {d['room']}")
     upper = set(L.walk) | L.doors | L.rooms["time room"] | L.rooms["chart room"]
     upper |= {(FLIGHT_X[1], z) for rows in FLIGHT_ROWS.values() for z in rows}
     from_stair = reach(upper, (FLIGHT_X[1], -4))

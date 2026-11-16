@@ -14,13 +14,14 @@ do not shake, which is why the regulator is fixed to it. Behind the glazed door 
 the brass plate and the two wheels of the movement, two copper coils on an iron yoke with the
 armature on the pendulum rod between them (the clock is driven and read electrically), the
 pendulum, and the beat scale under its pointer. Nothing glows. The dial is a piece of its own with
-a fixed light (MASTER_DIAL_LIGHT), a step above what the case gets, so that it is the light spot
-of the clock; case and pendulum take the light of the cell they stand in, at the height of the
-trunk's top. The light source that goes with the clock is one hidden light in front of the trunk
-(MASTER_LAMP), handed to sky/_lightkit, which places it. It is a strong one, of the second rank:
-looking in from the court along the axis, what is lit at the far end of the hall is the master
-clock on its pier, with no lamp to be seen (A0, 11-15); the orrery's sun stays the brightest thing
-in the hall.
+a fixed light (MASTER_DIAL_LIGHT), the top of the light table and well above what the case gets:
+it is the white spot of the clock and of the hall. Looking in from the court along the axis (V7),
+the dial and the east face of the pier are what is seen first, the orrery's sun is the warmest
+point and the floor comes third (A0, 11-16). Case and pendulum take the light of the cell they
+stand in, at the height of the trunk's top. The light source that goes with the clock is one
+hidden light in front of the trunk (MASTER_LAMP), handed to sky/_lightkit, which places it. It is
+a strong one, of the second rank: what is lit at the far end of the hall is the master clock on
+its pier, with no lamp to be seen (A0, 11-15).
 
 The tower clock (time tower). Four equal dials, one in the middle of each face of the shaft, centre
 at y 27.5, 2.75 blocks across: white enamel, a thin brass rim, a mark at every hour (no numerals:
@@ -113,13 +114,24 @@ MASTER_FACING = S.MOTHER_CLOCK["facing"]                                        
 MASTER_HOLD = 40.0
 MASTER_PIVOT = (0.0, 37.0, 6.25)     # the pendulum's pivot
 MASTER_DIAL = (0.0, 51.0, 10.5)      # the middle of the dial's back, on the front of the hood
-# (sky, block) for the dial and its hands. A0, 11-15: 11 with the lamp below; back to (0, 9), the lamp
-# unchanged, if in V7 the dial comes near the orrery's sun.
-MASTER_DIAL_LIGHT = (0, 11)
+# (sky, block) for the dial and its hands. A0, 11-16: in V7 the dial comes first and reads 0.35 or
+# more. A face that looks east is drawn at half the light it is given, so the white enamel read
+# 0.32 at (0, 11) and would read 0.40 at 13, the whole dial with its marks and hands a sixth less.
+# 14 is the top of the light table, white light: the enamel reads 0.46 and its warmth is its own.
+# The lamp in front of the trunk stays at 11. scenes/obs_mach_clocks/measure.py reads the dial.
+MASTER_DIAL_LIGHT = (0, 14)
 # the hidden light in front of the trunk: the cell, the level and the rank (A0, 11-15: (7, 3, 0), 11,
 # second rank; the case, in the cell behind it, gets 10)
 MASTER_LAMP = ((int(MASTER_AT[0]) + 1, int(MASTER_AT[1]) + 2, int(math.floor(MASTER_AT[2]))), 11)
 MASTER_LAMP_RANK = 2
+# The case is solid to the eye and a model stops nobody: who jumped on the stone under it stood in
+# the trunk. Barriers fill the cell the case stands in, as high as a walker is (INTERFACE, the fifth
+# supplement of 11-16: inside a solid model, not a cell outside its outline, never more than two
+# high). The cell is the middle block of the stone: to the east its face is the stone's own, which
+# stops a walker in that plane already; to the north and the south the case's foot is four pixels
+# wider than the cell, as far as a model may stand out from what stops the eye (props/ironwork: EYE
+# - NEAR). The case and the pendulum are lit by the cell over the two.
+MASTER_SOLID = 2
 PENDULUM_SWING = 5.0                 # degrees each way (A8)
 PENDULUM_POSE = 0.0                  # the still pose is where the loop starts: plumb (motion, 11-15)
 
@@ -190,8 +202,10 @@ BRASS = P.mat("brass")
 BRASS_DARK = P.mat("brass_dark")
 # rims and bosses that look at the viewer: Model.ring and Model.tube paint such a face one step down
 BRASS_LIGHT = P.mat("brass", base=4)
-BRASS_BRIGHT = P.mat("brass", base=5)
 BRASS_LINE = K.flat("brass", 3)              # a line one pixel wide: one tone, or it breaks into dashes
+# the rim of the movement's great wheel, piece by piece: flat tones, the second a step under the first
+WHEEL_TEETH = 12
+BRASS_TOOTH = (K.flat("brass", 5), K.flat("brass", 4))
 IRON_DARK = P.mat("iron_dark")
 STEEL = P.mat("iron", base=5)
 COPPER = P.mat("old_copper")
@@ -203,7 +217,9 @@ BALL_IRON = P.mat("iron", base=4)
 BALL_IRON_UNDER = K.flat("iron", 5)
 
 INK = P.colour("iron", 1)
-INK_FLAT = K.flat("iron", 1)                 # the hands of the small dial: one tone, like its marks
+# the hands of the small dial: blued steel in one tone, two steps lighter than the ink of the marks,
+# so that the tip of the minute hand and the mark it points at stay two things (cr3, 11-16)
+HAND_FLAT = K.flat("iron", 3)
 ENAMEL = [P.colour("cream", i) for i in range(len(P.RAMPS["cream"]))]      # dark to light
 # The paint of the ball: the model's name, the ramp and its steps for the five zones from the far
 # side to the highlight. The middle zone is the paint as it is (the step its material starts
@@ -217,6 +233,13 @@ BALL_TONES = {
 # that look up and down. A ledge is painted in the step that comes out nearest to the side next to it.
 BALL_SIDE_SHADE = 0.65
 BALL_LEDGE_SHADE = {"u": 1.0, "d": 0.4}
+# The ledges that look down are most of what the ball shows to the ground, and at four tenths no
+# step of the ramp is light enough for them beside a light side: they lay round the lower half as
+# dark hoops (the pictures of 11-16). They are elements of their own that take the top of the light
+# table (BALL_UNDER_EMIT), which at the map's hour is BALL_UNDER_GAIN times what BALL_LIGHT gives,
+# and they are painted for that.
+BALL_UNDER_EMIT = 15
+BALL_UNDER_GAIN = 1.28
 # what a piece is turned by where it stands, before any turn of its own
 _STANDING = {name: (("y", BALL_TURN),) for name, _paint in BALL_TONES.values()}
 
@@ -262,12 +285,15 @@ def _disc(size, radius, shade):
     return px
 
 
-def _marks(px, quarter, other):
-    """Twelve hour marks in ink. quarter and other are (from, to, half width) in pixels, measured
-    out from the centre and across the mark: the marks at twelve, three, six and nine, and the rest."""
+def _marks(px, quarter, other=None):
+    """Hour marks in ink. quarter and other are (from, to, half width) in pixels, measured out from
+    the centre and across the mark: the marks at twelve, three, six and nine, and the rest (left
+    out without `other`)."""
     size = px.shape[0]
     c = size / 2.0
     for hour in range(12):
+        if hour % 3 and other is None:
+            continue
         s, k = math.sin(math.radians(30.0 * hour)), math.cos(math.radians(30.0 * hour))
         lo, hi, half = other if hour % 3 else quarter
         for j in range(size):
@@ -278,17 +304,41 @@ def _marks(px, quarter, other):
                     px[j, i, 3] = 255
 
 
+# The eight marks between the quarters of the tower dial are placed by hand: a square of two
+# pixels a side against the inside of the minute track. Turned by 30 and 60 degrees and put on
+# the grid, such a square came out a small plus lying on the track (cr3, 11-16). TOWER_MARK is the
+# lower left pixel of the one at one o'clock, counted from the centre in whole pixels (to the right,
+# upwards): it hangs from the track by its upper right pixel, 29.7 degrees past twelve. The mark at
+# two o'clock is its mirror in the diagonal, the other six are these two in the other quadrants.
+TOWER_MARK = (7, 13)
+
+
+def _squares(px, corner):
+    """A square of two pixels a side with its lower left pixel at `corner`, its mirror in the
+    diagonal, and both again in each of the other three quadrants."""
+    c = px.shape[0] // 2
+    for a in (0, 1):
+        for b in (0, 1):
+            for right, up in ((corner[0] + a, corner[1] + b), (corner[1] + b, corner[0] + a)):
+                for i in (c + right, c - 1 - right):
+                    for j in (c - 1 - up, c + up):
+                        px[j, i, :3] = INK
+                        px[j, i, 3] = 255
+
+
 def _tower_dial():
-    """The tower dial, 40 pixels across inside its rim. From the rim in: a line all round and a bar
-    hanging from it at every hour, two pixels wide, longer at the quarters. The disc is drawn a
-    little under the rim so that no gap shows at the corners of the many-sided ring."""
+    """The tower dial, 40 pixels across inside its rim. From the rim in: a line all round (the
+    minute track), a bar of two pixels by four hanging from it at each quarter and a square of two
+    by two at each of the other hours. The disc is drawn a little under the rim so that no gap
+    shows at the corners of the many-sided ring."""
     size, c = 40, 20.0
     px = _disc(size, 20.7, 18.6)
     for j in range(size):
         for i in range(size):
             if 17.5 < math.hypot(i + 0.5 - c, c - (j + 0.5)) <= 18.5:
                 px[j, i, :3] = INK
-    _marks(px, (13.5, 17.5, 1.0), (15.5, 17.5, 1.0))
+    _marks(px, (13.5, 17.5, 1.0))
+    _squares(px, TOWER_MARK)
     return _Picture("clock_tower_dial", px)
 
 
@@ -326,6 +376,14 @@ def _master():
     box((-11, 2, 0), (11, 8, 11), WOOD, skip="nud", grain="y", faces={"s": WOOD_FRONT})
     box((-8, 3, 11), (8, 7, 11.5), WOOD_FRONT, skip="n", grain="x")
     box((-12, 8, 0), (12, 10, 12), WOOD, skip="n", grain="x")
+    # A line of brass round the head of the skirting and round the foot of the cap. From the door
+    # the plinth stands in front of the slate at the pier's foot, which is as dark as its wood:
+    # the two lines are what draws it there (cr3, 11-16). A line is three strips a quarter of a
+    # pixel proud of the wood, closed above and below: the eye of someone standing looks down on them.
+    for y in (1, 8):
+        box((-12.25, y, 12), (12.25, y + 1, 12.25), BRASS_LINE, skip="n")
+        box((-12.25, y, 0), (-12, y + 1, 12), BRASS_LINE, skip="nse")
+        box((12, y, 0), (12.25, y + 1, 12), BRASS_LINE, skip="nsw")
 
     # the trunk: back board, two sides, the door's rails, its brass bead and its knob
     box((-7, 10, 0), (7, 38, 2), WOOD_DEEP, skip="nweud", grain="y")
@@ -338,8 +396,9 @@ def _master():
     box((-6, 12, 8.25), (6, 13, 9.25), BRASS_LINE, skip="we")
     box((-6, 35, 8.25), (6, 36, 9.25), BRASS_LINE, skip="we")
     box((7, 23, 9), (9, 25, 9.75), BRASS, skip="n")
-    # The glass of the door is clear and nothing is drawn on it: a glint has to be lighter than
-    # what is behind it, and behind it is brass (the dark ones of the first draft read as dirt).
+    # The glass of the door is clear and nothing is drawn for it. A glint has to be lighter than what
+    # it lies on: it read as dirt on the brass of the movement, and as a stain on the beat scale when
+    # it was moved to the corner over the dark back board (cr3, 11-16, twice).
 
     # inside, from the bottom: the beat scale, the coils and their yoke, the movement
     scale = Sprite("clock_beat_scale", ["#.#.##.#.#", "....##...."], {"#": P.RAMPS["iron"][1]}, back=CREAM)
@@ -354,9 +413,13 @@ def _master():
         tube("y", (x, 4.0), 24, 25, 2.5, IRON_DARK, sides=8)
     box((-6.5, 29, 1.5), (6.5, 30, 5.5), IRON_DARK, grain="x")
     box((-5, 30, 2), (5, 36, 3), BRASS_DARK, skip="n", grain="x")
-    # the great wheel: a light rim round a darker web, the arbor in the middle; the small wheel beside it
+    # the great wheel: a light rim round a darker web, the arbor in the middle; the small wheel beside it.
+    # The rim is its teeth: twelve pieces, light and a step darker by turns. No spokes: the wheel is
+    # six pixels across (cr3, 11-16).
     tube("z", (-1.5, 33.0), 3, 3.5, 2.0, BRASS, sides=12)
-    m.ring("z", (-0.75, 16.5, 1.875), 1.25, 0.5, 0.75, BRASS_BRIGHT, sides=12)
+    for k in range(WHEEL_TEETH):
+        m.ring("z", (-0.75, 16.5, 1.875), 1.25, 0.5, 0.75, BRASS_TOOTH[k % 2], sides=WHEEL_TEETH,
+               arc=(360.0 * k / WHEEL_TEETH, 360.0 * (k + 1) / WHEEL_TEETH))
     tube("z", (2.5, 33.5), 3, 4.5, 1.5, BRASS_LIGHT, sides=8)
     box((-2, 32.5, 3.5), (-1, 33.5, 4.5), IRON_DARK)
     box((2, 33, 4.5), (3, 34, 5), IRON_DARK)
@@ -382,13 +445,13 @@ def _master_hand(kind):
     m = M.Model(PREFIX + "master_hand_" + kind, px=1.0)
     if kind == "h":
         # a spear: three wide at the boss, two, and a point of one
-        m.box((-1.5, -1.0, 0.75), (1.5, 2.5, 1.25), INK_FLAT)
-        m.box((-1.0, 2.5, 0.75), (1.0, 4.0, 1.25), INK_FLAT, skip="d")
-        m.box((-0.5, 4.0, 0.75), (0.5, 5.5, 1.25), INK_FLAT, skip="d")
+        m.box((-1.5, -1.0, 0.75), (1.5, 2.5, 1.25), HAND_FLAT)
+        m.box((-1.0, 2.5, 0.75), (1.0, 4.0, 1.25), HAND_FLAT, skip="d")
+        m.box((-0.5, 4.0, 0.75), (0.5, 5.5, 1.25), HAND_FLAT, skip="d")
     else:
         # two wide as far as the hour hand reaches, one from there to the marks
-        m.box((-1.0, -1.5, 1.5), (1.0, 4.5, 2.0), INK_FLAT)
-        m.box((-0.5, 4.5, 1.5), (0.5, 7.5, 2.0), INK_FLAT, skip="d")
+        m.box((-1.0, -1.5, 1.5), (1.0, 4.5, 2.0), HAND_FLAT)
+        m.box((-0.5, 4.5, 1.5), (0.5, 7.5, 2.0), HAND_FLAT, skip="d")
         m.tube("z", (0.0, 0.0), 1.5, 2.5, 1.25, BRASS_LIGHT, sides=8)
     return m
 
@@ -448,6 +511,20 @@ def _ball_zone(normal):
     return sum(1 for edge in BALL_ZONES if light >= edge)
 
 
+def _ball_tone(zone, column, row):
+    """The zone a pixel of the ball is painted in. zone(dx, dy) is the zone of the place dx pixels
+    to the right of it and dy pixels up. Where two tones meet, the first row of the lighter one
+    takes the darker tone on every other pixel, so that they part in a row of checks: a hard line
+    between two tones reads as a stripe from close by (cr3, 11-16). The checks are counted along
+    the line: by the column where the darker tone lies above or below, else by the row."""
+    here = zone(0, 0)
+    if zone(0, 1) < here or zone(0, -1) < here:
+        return here - 1 if column % 2 else here
+    if zone(1, 0) < here or zone(-1, 0) < here:
+        return here - 1 if row % 2 else here
+    return here
+
+
 def _ball_side(label, colours, r, y0, y1, turn, back):
     """One side of a layer, painted pixel by pixel: each pixel takes the tone of the place on the
     ball it covers, so the tones meet along curves a pixel fine and not along the edges of the
@@ -455,16 +532,22 @@ def _ball_side(label, colours, r, y0, y1, turn, back):
     mast; `back` is its far side (the box's north face), which is seen from the other way."""
     width = 2.0 * r * math.tan(math.pi / BALL_SIDES)
     w, h = max(1, int(round(width))), max(1, int(round(y1 - y0)))
+    # the columns are counted on round the layer, so that the checks keep step from side to side
+    first = (int(turn / 360.0 * BALL_SIDES) + (BALL_SIDES // 2 if back else 0)) * w
     px = np.zeros((h, w, 4), dtype=np.uint8)
-    for j in range(h):
+
+    def zone(i, j):
         y = y1 - (j + 0.5) * (y1 - y0) / h
         up = max(-1.0, min(1.0, y / BALL_R))
         flat = math.sqrt(1.0 - up * up)
+        across = ((i + 0.5) / w - 0.5) * width
+        x, z = (-across, -r) if back else (across, r)
+        at = math.atan2(x, z) + math.radians(turn + BALL_TURN)
+        return _ball_zone((flat * math.sin(at), up, flat * math.cos(at)))
+
+    for j in range(h):
         for i in range(w):
-            across = ((i + 0.5) / w - 0.5) * width
-            x, z = (-across, -r) if back else (across, r)
-            at = math.atan2(x, z) + math.radians(turn + BALL_TURN)
-            px[j, i, :3] = colours[_ball_zone((flat * math.sin(at), up, flat * math.cos(at)))]
+            px[j, i, :3] = colours[_ball_tone(lambda dx, dy: zone(i + dx, j - dy), first + i, int(y1) - j)]
             px[j, i, 3] = 255
     return _Picture(label, px)
 
@@ -483,12 +566,16 @@ def _ball_ledge(label, colours, r, y, turn, letter):
     up = max(-1.0, min(1.0, y / BALL_R))
     flat = math.sqrt(1.0 - up * up)
     px = np.zeros((h, w, 4), dtype=np.uint8)
-    for j in range(h):
+
+    def zone(i, j):
         z = ((j + 0.5) / h - 0.5) * 2.0 * r * (1.0 if letter == "u" else -1.0)
+        x = ((i + 0.5) / w - 0.5) * width
+        at = math.atan2(x, z) + math.radians(turn + BALL_TURN)
+        return _ball_zone((flat * math.sin(at), up, flat * math.cos(at)))
+
+    for j in range(h):
         for i in range(w):
-            x = ((i + 0.5) / w - 0.5) * width
-            at = math.atan2(x, z) + math.radians(turn + BALL_TURN)
-            px[j, i, :3] = colours[_ball_zone((flat * math.sin(at), up, flat * math.cos(at)))]
+            px[j, i, :3] = colours[_ball_tone(lambda dx, dy: zone(i + dx, j - dy), i, j)]
             px[j, i, 3] = 255
     return _Picture(label, px)
 
@@ -503,8 +590,9 @@ def _ball(name, paint):
     ramp, zones = paint
     tones = [P.colour(ramp, step) for step in range(max(zones) + 1)]
     colours = [tones[step] for step in zones]
+    drawn = {"u": BALL_LEDGE_SHADE["u"], "d": BALL_LEDGE_SHADE["d"] * BALL_UNDER_GAIN}
     ledges = {letter: [min(tones, key=lambda c: abs(_luma(c) * shade - _luma(side) * BALL_SIDE_SHADE)) for side in colours]
-              for letter, shade in BALL_LEDGE_SHADE.items()}
+              for letter, shade in drawn.items()}
     m = M.Model(PREFIX + name, px=1.0)
     half = math.tan(math.pi / BALL_SIDES)
     for sign in (1.0, -1.0):
@@ -516,11 +604,16 @@ def _ball(name, paint):
             for side in range(BALL_SIDES // 2):
                 turn = 360.0 * (side + 0.5) / BALL_SIDES
                 label = f"clock_{name}_{ledge}{layer}_{side}"
-                faces = {ledge: _ball_ledge(label, ledges[ledge], r, sign * a1, turn, ledge),
-                         "s": _ball_side(label + "s", colours, r, y0, y1, turn, False),
+                face = {ledge: _ball_ledge(label, ledges[ledge], r, sign * a1, turn, ledge)}
+                sides = {"s": _ball_side(label + "s", colours, r, y0, y1, turn, False),
                          "n": _ball_side(label + "n", colours, r, y0, y1, turn, True)}
-                m.box((-r * half, y0, -r), (r * half, y1, r), K.flat(ramp, zones[2]), rot=("y", turn, (0.0, 0.0, 0.0)),
-                      skip="ew" + ("d" if sign > 0 else "u"), faces=faces, seed=1)
+                box = dict(rot=("y", turn, (0.0, 0.0, 0.0)), seed=1)
+                lo, hi, paint = (-r * half, y0, -r), (r * half, y1, r), K.flat(ramp, zones[2])
+                if sign > 0:
+                    m.box(lo, hi, paint, skip="ewd", faces={**face, **sides}, **box)
+                else:
+                    m.box(lo, hi, paint, skip="ewud", faces=sides, **box)
+                    m.box(lo, hi, paint, skip="ewsnu", faces=face, emit=BALL_UNDER_EMIT, **box)
     top = BALL_LAYERS[-1]
     m.tube("y", (0.0, 0.0), top - 0.5, BALL_R + 2.5, BALL_SLEEVE, BALL_IRON, sides=12)
     m.tube("y", (0.0, 0.0), -top - 2.0, -top, BALL_PLATE, BALL_IRON, sides=16, cap=BALL_IRON_UNDER)
@@ -535,8 +628,13 @@ def _models():
     made = [(_master(), 2.0), (_master_dial_model(), 1.0), (_master_hand("h"), 1.0), (_master_hand("m"), 1.0),
             (_pendulum(), 1.0), (_face(), 2.0), (_hand("h"), 1.0), (_hand("m"), 1.0)]
     made += [(_ball(name, paint), 1.0) for name, paint in BALL_TONES.values()]
+    # The tubes and rings of eight, sixteen and twenty-four sides (weights, arbors, bezels, the drum
+    # behind a dial, the plate under the ball) have flats exactly between two axes, and the game lights
+    # such a flat as the one or the other by the last bit of a float: K.settle turns each such piece a
+    # tenth of a degree, so that every copy of the game and the offline pictures light it one way. The
+    # ball's own facets stand 11.25 degrees off the fence and are not touched.
     for model, scale in made:
-        out[model.name] = model
+        out[model.name] = K.settle(model)
         SCALE[model.name] = scale
     return out
 
@@ -595,6 +693,13 @@ def _lamp(canvas, origin):
         canvas.set(cell[0], cell[1], cell[2], f"{B.LIGHT}[level={level}]", keep=True)
 
 
+def _collide(canvas, origin):
+    """The case's collision (MASTER_SOLID): barriers in the cell it stands in, never over a block."""
+    x, y, z = int(MASTER_AT[0]), int(MASTER_AT[1]), int(math.floor(MASTER_AT[2]))
+    for k in range(MASTER_SOLID):
+        canvas.set(x + int(origin[0]), y + k + int(origin[1]), z + int(origin[2]), B.BARRIER, keep=True)
+
+
 def _swing(canvas):
     """Register the pendulum, the piece placed last, with the motion line (plan/parts/motion.md 4):
     it swings about its model's z axis through its anchor, the pivot, PENDULUM_SWING degrees to
@@ -609,7 +714,8 @@ def _swing(canvas):
 
 
 def master(canvas, origin=(0, 0, 0), time=None):
-    """The master clock on the pier: case, dial, two hands and pendulum; returns the entity count."""
+    """The master clock on the pier: case, dial, two hands and pendulum, the case's collision and
+    its lamp; returns the entity count."""
     hour, minute = hand_angles(*(time or TIME))
     face = MASTER_FACING
     n = _put(canvas, "master", _out(MASTER_AT, face, (0.0, MASTER_HOLD, 0.0)), origin, face)
@@ -621,6 +727,7 @@ def master(canvas, origin=(0, 0, 0), time=None):
     n += _put(canvas, "master_dial", centre, origin, face, **lit)
     n += _put(canvas, "master_hand_h", centre, origin, face, tag=TAG_HOUR, turns=(("z", -hour),), **lit)
     n += _put(canvas, "master_hand_m", centre, origin, face, tag=TAG_MINUTE, turns=(("z", -minute),), **lit)
+    _collide(canvas, origin)
     _lamp(canvas, origin)
     return n
 

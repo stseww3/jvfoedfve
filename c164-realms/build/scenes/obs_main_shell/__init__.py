@@ -11,9 +11,11 @@ The main line built whole (walls, drum and dome, the shell inside them) seven ti
   at z 200    cut off above y 13: the main floor -- galleries, mezzanine, the well, the wing rooms,
               the first turn of the ring stair;
   at z 300    cut off above y 19: the dome-room floor, the opening round the pier, the stair's top;
-  at z 400    whole and lit like the first, with plain blocks standing in for the two things the
-              hall is the background of: the orrery hung from the ceiling and the mother clock on
-              the pier. The board's view of the star hall (V7, from outside the door) is taken here;
+  at z 400    whole and lit like the first, with what other lines bring: plain blocks standing in
+              for the two things the hall is the background of, the orrery hung from the ceiling
+              and the mother clock on the pier, and the lamp the light line stands on the ring
+              stair's post at the gallery. The board's view of the star hall (V7, from outside the
+              door) is taken here, and the view of the stair's foot (stair_foot);
   at z 500    cut off east of x 2, between the pier and the arcade: the cross section, looking
               west -- the three arches side by side as no one standing in the hall sees them (the
               pier stands before the middle one), a flight in each of the outer two, the cross
@@ -31,10 +33,11 @@ hall is fitted out) is left out: the scene shows the hall as it is without it.
 from artkit import arch
 from artkit.canvas import Canvas
 
-from scenes.obs import main, materials
+from scenes.obs import main, materials, sky
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
 from scenes.obs.main import shell
+from scenes.obs.props import lamps
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 60
@@ -55,6 +58,8 @@ FLIGHT_LIGHTS = [(1, 4, -4), (1, 4, 4)]                                 # under 
 FLIGHT_LIGHT_LEVEL = 11                                                 # hangs a lamp at the foot of each flight: dimmer than the hall
 LIGHT_OVER_CUT = 2                                                      # a cut keeps the lights up to this far beyond its last row or column
 CLOCK_HIGH = 4                                                          # the mother clock on its plinth (A0, 11-15)
+POST_LAMP = "post"                                                      # the lamp on the gallery's post: the low lamp of the parapet
+POST_LAMP_LEVEL = 8                                                     # piers, its source in its own cell (sky/lights, c331)
 
 
 def stand_ins(c, dz):
@@ -62,7 +67,13 @@ def stand_ins(c, dz):
     (interiors/_stubs.py). The orrery (machines/orrery) as its envelope: an orbit five across round
     a pale sun at the ring's height, a rod up to the beam it hangs from. The mother clock
     (machines/clocks): a dark case with its dial, on the star hall's plinth before the pier's east
-    face."""
+    face.
+
+    And the lamp of the ring stair's foot, which is no stand-in but the lamp itself: the light
+    line stands the low lamp of the parapet piers (props/lamps) on the gallery's post, with its
+    source in the lamp's own cell; lights.py does that in the map, the scene does it here by hand
+    (review 16 looks at the foot of the stair with its lamp). The post in the dome room stays
+    bare: that room keeps one small red lamp by the eyepiece and no other (A0)."""
     cx, cz = S.ORRERY_CENTRE
     x, z, ring_y = int(cx - 0.5), int(cz - 0.5), int(S.ORRERY_RING_Y)
     for ox, oz in arch.outline(cx, cz, S.ORRERY_R):
@@ -76,6 +87,9 @@ def stand_ins(c, dz):
     for y in range(y0, y0 + CLOCK_HIGH):
         c.set(x, y, z + dz, B.DARK_WOOD.block)
     c.set(x, y0 + CLOCK_HIGH - 2, z + dz, f"{B.PANELS['dial']}[facing=east]")
+    x, y, z = shell.stair_posts()[0]
+    lamps.place(c, POST_LAMP, (x + 0.5, y + 1.0, z + 0.5 + dz), light=False)
+    c.set(x, y + 1, z + dz, f"{B.LIGHT}[level={POST_LAMP_LEVEL}]")
 
 
 def copies():
@@ -106,9 +120,11 @@ def build():
 
 
 def build_models():
-    return main.models() or {}
+    return {**(main.models() or {}), **lamps.models_of(POST_LAMP)}
 
 
 def write_pack(pack_dir):
-    """The shell paints nothing; it stands on the repainted blocks as the materials line has them."""
-    return materials.pack(pack_dir)
+    """The shell paints nothing; it stands on the repainted blocks as the materials line has them,
+    under the sky line's sky: the scene takes the map's hour, and without the sky's pictures the
+    game's own sun lies on the western horizon in every shot that sees the open sky."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
