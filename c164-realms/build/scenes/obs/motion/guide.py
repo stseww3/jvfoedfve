@@ -71,10 +71,11 @@ COUNT = "c164g"                 # objective: the charts a player has
 GLOW = "c164f"                  # objective: the beats of light a player is still to see
 
 CHIME = ("minecraft:block.note_block.chime", 0.6, 1.2)      # the game's event, volume, pitch
-# The game's sound table plays every file of the bell at 12 times the volume asked for and cuts
-# the product off at 1 (sound, c361, read off the game's table): from 0.084 up it is the bell
-# struck at one's ear. 0.06 is 0.72 of that: fuller than the chime, the tower's bell and no blow.
-BELL = ("minecraft:block.bell.use", 0.06, 0.8)
+# The bell at 1.0 is the game's bell rung by hand beside one: the loudness a player knows. The
+# game's sound table plays every file of the bell at 12 times the volume asked for and cuts the
+# product off at 1 (sound, c361, read off the game's table), so from 0.084 up nothing changes;
+# to have it softer the number is 0.065 for about eight tenths (cr2, 11-16 12:03: not now).
+BELL = ("minecraft:block.bell.use", 1.0, 0.8)
 SOURCE = "master"               # the volume slider both are under: the one nobody has turned off
 TITLE = "THE COMET, IN FOCUS"
 TITLE_TIMES = (20, 80, 30)      # ticks: fading in, standing, fading out (the arrival title's)
