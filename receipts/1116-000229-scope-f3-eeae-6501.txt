@@ -1,0 +1,31 @@
+a0job 1116-000229-scope-f3-eeae-6501: cursor/c164-scope-f3-eeae @ a135262b on the director's machine
+(the branch moved after the job was sent: it ran on a135262b, not on cfbc3126)
+  [cloud_setup    0s] machine: 4 cores, load 1.58 2.19 2.33, Python 3.12.3
+  [cloud_setup    1s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/selfshots.py obs_mach_refractor --only v8_a,v8_south_a,eye_a,tail_a,east_a,lamp_a,mount_north_a,south_a,eye_b,lamp_b,tail_b,v8_b --out renders/_wip ---- exit 0, 96 s, last 30 lines of 20:
+  obs_mach_refractor: 9480 blocks, 10 entities (0 s)
+  obs_mach_refractor: resource pack written to /tmp/c164pack-erxhlkeh (1 s)
+  obs_mach_refractor: water: 0 sources, 0 cells of running water (1 s)
+  obs_mach_refractor: grid 33 x 29 x 73, 9480 blocks, 1279 entity boxes (1 s)
+  obs_mach_refractor: 58 states -> 217 looks, 492 boxes, 47 pictures (1 s)
+  obs_mach_refractor: light done (2 s)
+  obs_mach_refractor: v8_a (tick 14000, 6 s)
+  obs_mach_refractor: v8_south_a (tick 14000, 5 s)
+  obs_mach_refractor: eye_a (tick 14000, 8 s)
+  obs_mach_refractor: south_a (tick 14000, 3 s)
+  obs_mach_refractor: east_a (tick 14000, 5 s)
+  obs_mach_refractor: mount_north_a (tick 14000, 4 s)
+  obs_mach_refractor: tail_a (tick 14000, 7 s)
+  obs_mach_refractor: lamp_a (tick 14000, 11 s)
+  obs_mach_refractor: v8_b (tick 14000, 5 s)
+  obs_mach_refractor: eye_b (tick 14000, 8 s)
+  obs_mach_refractor: tail_b (tick 14000, 9 s)
+  obs_mach_refractor: lamp_b (tick 14000, 12 s)
+/tmp/dais_jobs/c164a0/c164-realms/renders/_wip/obs_mach_refractor-*: 12 pictures of a135262b drawn, 6.0 MB
+                for a look only: nothing went into renders/obs_mach_refractor/ (tools/nodejob.sh --wip pushes renders/_wip to your scratch branch)
+==== NODEJOB RESULT ====
+exit=0 secs=102 host=cursor cores=4 head=a135262b commit=89f0e7e8 pushed=yes branch=cursor/c164-scope-f3-eeae-wip files=13
+a0job: exit=0 secs=103
