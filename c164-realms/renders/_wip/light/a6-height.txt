@@ -1,0 +1,41 @@
+[export    26s] light: at rest after 9.9 s; 1120 chunks, chunks whose light had changed at each reading: [257, 0, 0, 0]
+[export    33s] sky: the look "blue" as core shaders, 10 files (core/clouds.vsh, core/item.vsh, core/lightmap.fsh, core/rendertype_beacon_beam.vsh, core/sky.fsh, core/sky.vsh, core/stars.fsh, core/stars.vsh, include/c164_layers.glsl, include/fog.glsl)
+[export    34s] made L1.zip: 2.94 MB, 407 files, 2862 chunks, 997 entities
+=== the save with its light at rest (L1) and c164-A6, both of cfa03ef7
+407 and 407 files; 387 the same, 20 differ, 0 only in the first, 0 only in the second
+entities: 42 and 42 chunks; 33 hold the same, 9 differ, 0 are in one save only
+poi: 12 and 12 chunks; 12 hold the same, 0 differ, 0 are in one save only
+region: 2862 and 2862 chunks; 2641 hold the same, 221 differ, 0 are in one save only
+  in the sections of the chunks that differ: BlockLight in 7 chunks, SkyLight in 221 chunks
+  chunks whose blocks, counted by name, are not the same: 0
+  SkyLight: in 520 sections both saves have it and 1504636 values differ, by up to 15 (1504636 are higher in the second, 0 lower); in 4 sections one save has none (the other's is all 15 in 4)
+  BlockLight: in 2 sections both saves have it and 1599 values differ, by up to 11 (0 are higher in the second, 1599 lower); in 10 sections one save has none (the other's is mixed in 10)
+      SkyLight by height: y 144..159: 218 sections, 796400 values, by up to 15; y 160..175: 219 sections, 672650 values, by up to 15; y 176..191: 76 sections, 26973 values, by up to 15; y 192..207: 6 sections, 8101 values, by up to 15; y 208..223: 1 sections, 512 values, by up to 15
+      BlockLight by height: y 192..207: 2 sections, 1599 values, by up to 11
+      x 80..95 y 192..207 z 16..31: BlockLight, none in the second save; the other's is mixed, 1726 values above 0
+      x 64..79 y 192..207 z 32..47: BlockLight, none in the second save; the other's is mixed, 1165 values above 0
+      x 80..95 y 192..207 z 32..47: BlockLight, none in the second save; the other's is mixed, 955 values above 0
+      x 96..111 y 192..207 z 16..31: BlockLight, none in the second save; the other's is mixed, 140 values above 0
+      x 80..95 y 176..191 z 16..31: BlockLight, none in the second save; the other's is mixed, 73 values above 0
+      x 80..95 y 176..191 z 32..47: BlockLight, none in the second save; the other's is mixed, 38 values above 0
+      x 64..79 y 176..191 z 32..47: BlockLight, none in the second save; the other's is mixed, 25 values above 0
+      x 64..79 y 176..191 z 16..31: BlockLight, none in the second save; the other's is mixed, 23 values above 0
+      x 96..111 y 176..191 z 16..31: BlockLight, none in the second save; the other's is mixed, 5 values above 0
+      x 96..111 y 192..207 z 32..47: BlockLight, none in the second save; the other's is mixed, 1 values above 0
+      x -176..-161 y 144..159 z 112..127: SkyLight, none in the second save; the other's is all 15, 4096 values above 0
+      x -176..-161 y 160..175 z 112..127: SkyLight, none in the second save; the other's is all 15, 4096 values above 0
+      x -176..-161 y 176..191 z 112..127: SkyLight, none in the second save; the other's is all 15, 4096 values above 0
+      x -144..-129 y 192..207 z 80..95: SkyLight, none in the second save; the other's is all 15, 4096 values above 0
+      x 64..79 y 192..207 z 16..31: BlockLight, 1597 values, by up to 11
+      x 48..63 y 192..207 z 16..31: BlockLight, 2 values, by up to 1
+      x 224..239 y 144..159 z 48..63: SkyLight, 4096 values, by up to 15
+      x 224..239 y 144..159 z 32..47: SkyLight, 4096 values, by up to 15
+      x 224..239 y 144..159 z -16..-1: SkyLight, 4096 values, by up to 15
+      x 224..239 y 144..159 z -32..-17: SkyLight, 4096 values, by up to 15
+      x 224..239 y 144..159 z -48..-33: SkyLight, 4096 values, by up to 15
+      x 208..223 y 144..159 z 80..95: SkyLight, 4096 values, by up to 15
+      x 208..223 y 144..159 z 64..79: SkyLight, 4096 values, by up to 15
+      x 208..223 y 144..159 z 48..63: SkyLight, 4096 values, by up to 15
+      all of them within x 48..255, y 144..223, z -192..223
+  ... and 209 more
+the chunks do NOT hold the same
