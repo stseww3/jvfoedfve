@@ -95,6 +95,7 @@ FOV = 77.0                   # vertical, as render.py and tools/shoot.py take th
 DISPLAYS = {"minecraft:item_display", "minecraft:block_display", "minecraft:text_display"}
 FLAT = 5                     # a wall face may run flat over FLAT x FLAT blocks
 KEPT = ".c164-check"         # marks a --keep folder as this script's, so the next run may empty it
+BOARD = os.path.join(HERE, "win", "shots", "obs-board.json")    # the twelve board views (tools/boardshots.py)
 
 # The server sends an entity only to the players within its tracking range: 10 chunks for the
 # display entities, measured level. S1 read that off the 26.3 code (EntityType, ChunkMap); it has
@@ -1002,9 +1003,14 @@ def _own_sun(got):
 
 
 def views(rep, got, shots_path):
+    board = False
     if not shots_path or not os.path.exists(shots_path):
-        rep.add("views", "SKIP", "no shot list, so no per-view counts")
-        return
+        # The master scene has no shot list of its own: its views are the board's twelve, the list
+        # tools/boardshots.py keeps from the skeleton, and a view's budget is counted on those.
+        if not (is_master(got["scene"]) and os.path.exists(BOARD)):
+            rep.add("views", "SKIP", "no shot list, so no per-view counts")
+            return
+        shots_path, board = BOARD, True
     with open(shots_path, encoding="utf-8") as fh:
         shots = json.load(fh)
     shown = _displays(got["canvas"])
@@ -1052,6 +1058,11 @@ def views(rep, got, shots_path):
     most = max(rows, key=lambda row: row["in_view"]) if rows else {"name": "-", "in_view": 0}
     summary = (f"{len(shots)} shots, most display entities in view: {most['in_view']} ({most['name']}), "
                f"limit {S.ENTITY_PER_VIEW}; counted without what walls hide")
+    if board:       # the ledger of the views: every one of the twelve, by its number
+        each = ", ".join(f"V{int(m.group(1))} {row['in_view']}" if (m := re.match(r"v(\d+)", row["name"]))
+                         else f"{row['name']} {row['in_view']}" for row in rows)
+        summary = (f"the board's {len(shots)} views, display entities in view: {each}; most {most['in_view']} "
+                   f"({most['name']}), limit {S.ENTITY_PER_VIEW}; counted without what walls hide")
     busiest = max(rows, key=lambda row: row["drawn"]) if rows else None
     if busiest is not None and busiest["drawn"] > busiest["in_view"]:
         summary += (f"; the game draws up to {busiest['drawn']} ({busiest['name']}): a display entity without "
