@@ -35,6 +35,11 @@ stand at S.LOWER_GROUND; the paving course is S.LOWER_PAVING_Y.
           house's south wall stands in the row next to the south edge and leaves no ground to rail
           off: under it the kerb runs on alone, and the railing ends on the cell past either
           corner of the house, where its last bar is let into the plinth of the corner pier.
+          West the retaining wall is the edge, and it is only as long as the terrace above it
+          (stair.WZ0..WZ1): the platform's corner piers stand four and five rows beyond its ends.
+          In the rows between the mountain comes down to the paving -- in the south-west level
+          with it, a way out onto the rock (the walk of 11-16) -- so the edge runs on up the west
+          side, from each corner pier to the wall's last buttress, which its last bar joins.
   wall    Under the kerb a slate wall goes down the face of the mountain. It only fills air: it
           shows where the rock (site/terrain) falls away from the platform and is lost in it
           elsewhere.
@@ -48,7 +53,7 @@ import importlib
 from ..common import blocks as B
 from ..common import skeleton as S
 from . import _kit as K
-from .stair import APRON_X, APRON_Z, BUTTRESS_Z, FOOT_X, WALK_Z
+from .stair import APRON_X, APRON_Z, BUTTRESS_Z, FOOT_X, WALK_Z, WZ0, WZ1
 
 ORDER = 20      # after the terrain (10); before the stair (25), the court (60) and what stands on the platform
 
@@ -122,7 +127,7 @@ def _stone(x, z):
         return BAND                     # the walk to the power house's door, into its doorway
     if _in(x, z, S.CABLE_STATION) or _in(x, z, S.POWER_HOUSE["box"]):
         return FIELD
-    if x == X0 or x == X1 - 1 or z == Z0 + 1 or z == Z1 - 1:
+    if x == X0 or x == X1 - 1 or z == Z0 + 1 or z == Z1 - 1 or (x == X0 + 1 and not WZ0 <= z <= WZ1):
         return BAND                     # along the retaining wall's foot, and inside the kerb
     if z in BUTTRESS_Z or z in COURT_Z:
         return BAND
@@ -138,12 +143,15 @@ def _stone(x, z):
 
 
 def _rim():
-    """The cells of the north, east and south edges in one run, from the north-west corner round
-    to the south-west one."""
+    """The cells of the edge in one run: from the north end of the retaining wall down the west
+    side to the north-west corner, the north, east and south edges, and from the south-west corner
+    up the west side to the wall's south end."""
+    west_n = [(X0, z) for z in range(WZ0 - 1, Z0, -1)]
     north = [(x, Z0) for x in range(X0, X1 + 1)]
     east = [(X1, z) for z in range(Z0 + 1, Z1)]
     south = [(x, Z1) for x in range(X1, X0 - 1, -1)]
-    return north + east + south
+    west_s = [(X0, z) for z in range(Z1 - 1, WZ1, -1)]
+    return west_n + north + east + south + west_s
 
 
 def _south_piers():
