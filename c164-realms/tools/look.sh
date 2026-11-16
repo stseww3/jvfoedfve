@@ -8,7 +8,8 @@
 #
 #   <scene>                  a test scene of your build/scenes/, or obs for the whole observatory
 #   --from X Y Z --to X Y Z  where the eye is and the point it looks at, in the scene's own
-#                            coordinates (as in its shots.json; obs: the world's)
+#                            coordinates, as in its shots.json (obs: the scene's too, as the board's
+#                            views have them -- 200 less in y than the exported world)
 #   --only <shot>[,<shot>]   instead: shots of the scene's own shots.json by name (obs: board views,
 #                            v01_arrival ...); neither given: every shot of the scene's list
 #   --shots <n>              pictures a view (6), --every <seconds> apart (2)
@@ -23,10 +24,11 @@
 # To see one:  git fetch -q origin <your branch>-wip && git show FETCH_HEAD:c164-realms/renders/_wip/look/<scene>/look_strip.jpg > /tmp/c164_<you>/strip.jpg
 #
 # A node that never ran the game installs it in the same job, by itself (Java, the game's files
-# from Mojang, a display): the first look on a node takes about four minutes longer, and must be
-# the only job on that node meanwhile. A test scene then takes two to three minutes, the whole
-# observatory about ten. The tools are the render station's (s1), taken from its branch as they
-# are at that moment; nothing of them is written into your branch.
+# from Mojang, the software renderer): half a minute more on the first look (measured on five new
+# nodes, 11-16), which must be the only job on that node meanwhile. A test scene takes a minute
+# and a half to two, the whole observatory a little over two (two views of four pictures: 135 s).
+# The tools are the render station's (s1), taken from its branch as they are at that moment;
+# nothing of them is written into your branch.
 main() {
   set -uo pipefail
   local station="cursor/c164-s1-render-f3-fd9c"
