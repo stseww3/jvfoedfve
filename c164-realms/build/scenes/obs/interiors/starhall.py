@@ -75,7 +75,7 @@ PREFIX = "int_starhall_"
 WHY = "interiors/starhall"
 # Pieces of the hall that stand in files of their own beside this one, each as soon as it is in the
 # tree: dress(canvas, origin, version) -> display entities placed, models() -> {name: model}.
-PARTS = ("_starhall_meridian", "_starhall_wiring", "_starhall_gallery", "_starhall_ways")
+PARTS = ("_starhall_meridian", "_starhall_wiring", "_starhall_gallery", "_starhall_ways", "_starhall_life")
 NEIGHBOURS = ("batteryroom", "platevault")      # rooms behind the aisle walls that open a door into the hall
 
 ROOM = shell.ROOMS["star hall"]
