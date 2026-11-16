@@ -1,0 +1,3 @@
+branch=cursor/c164-vault-v4door-f3-4cc1
+head=41a5c3d3a2597b9a98d260e40f5d66ce497253c4
+args=--no-push --tail 60 env\ PYTHONPATH=build\ python\ -m\ scenes.obs_int_starhall.doorway\ now\ \&\&\ python\ tools/check.py\ --scene\ obs_int_starhall\ 2\>\&1\ \|\ grep\ -E\ \'\^\\\[\|\^result\' 
