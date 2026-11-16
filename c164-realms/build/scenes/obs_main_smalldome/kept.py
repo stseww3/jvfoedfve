@@ -78,6 +78,9 @@ def run():
     tally = roof.guard_tally(canvas)
     print(f"the guard over the parapets, rows {roof.GUARD_Y[0]} and {roof.GUARD_Y[1]}, in the scene: "
           + ", ".join(f"{n} {kind}" for kind, n in sorted(tally.items())))
+    print(f"    rows {roof.GUARD_LAMP_Y[0]} and {roof.GUARD_LAMP_Y[1]} in the two columns beside the corner terraces' "
+          "lamps; the cell between them holds "
+          + ", ".join(f"{(canvas.get(*cell) or 'air').partition('[')[0]} at {cell}" for cell in roof.guard_lamp_cells()))
     at = start()
     print(f"from {at}, the scene's blocks from y {FLOOR} up:")
     open_reach = W.reach_of(bare, at)

@@ -56,6 +56,8 @@ import functools
 import math
 import sys
 
+from artkit import models as M
+
 from ..common import palette as P
 from ..common import skeleton as S
 from . import meridian as K
@@ -67,6 +69,7 @@ except ImportError:                     # the motion line is not in the tree: th
 
 PREFIX = "mach_astro_"
 BRIGHTNESS = K.BRIGHTNESS
+VIEW = M.NEAR                   # it stands in a room: the master scene draws it for 32 blocks (artkit.models.band)
 
 IRON, IRON_D, PLATE, STEEL, BRASS, BRASS_D, WOOD = K.IRON, K.IRON_D, K.PLATE, K.STEEL, K.BRASS, K.BRASS_D, K.WOOD
 WOOD_D = P.mat("dark_wood", base=1)                   # the plate holder: a step darker than the box
