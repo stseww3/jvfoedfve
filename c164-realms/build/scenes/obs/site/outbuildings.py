@@ -268,7 +268,7 @@ WHEEL_OUT = 12.0                        # pixels the wheel's middle stands befor
 MAST_UP = 36.0                          # pixels from the cone's point to the wheel's shaft
 TAIL_HINGE = 4.0                        # pixels the tail's hinge pin stands behind the mast's axis, down the wind
 TAIL_HUNT = (6.0, 160)                  # degrees to either side, ticks there and back
-ROD_STROKE = 2.0                        # pixels the pump rod rises and falls, once a turn
+ROD_STROKE = 3.0                        # pixels the pump rod rises and falls, once a turn
 ROD_OFF = 4.5                           # pixels the rod stands off the riser's axis, into the wind
 ROD_GUIDES = (3.25, 5.25, 7.25)         # blocks above the tower's feet: a guide holds the rod every two blocks
 WIND_NUMBER = 31                        # the machine's number, on its plate (plan/fine.md 4; a6 #90826)
@@ -370,6 +370,10 @@ def _wind_models():
     # the pump barrel up into the deck.
     rod = M.Model(MODEL_WIND_ROD, px=2.0)
     rod.tube("y", on, 0.0, 48.0, 0.5, iron, sides=4)
+    # its couplings, the lowest of brass: a plain rod that slides along itself is not seen to move.
+    # Each keeps clear of the guides (ROD_GUIDES) through the stroke
+    for at, mat in ((4.5, brass), (18.0, dark), (34.0, dark)):
+        rod.tube("y", on, at, at + 1.25, 1.0, mat)
 
     # The pump, in pixels from the top of the valve box, about the rod's axis; +z is down the wind,
     # where the riser stands. A flanged barrel in two lengths, bolted down; a gland with its brass
