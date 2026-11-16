@@ -154,9 +154,11 @@ LOGBOOK = (4.5, 10.4375)                        # (x, z) on the desk: the night'
 CLOCK_LIFT = 1.25                               # the regulator clock (props/instruments) hangs on the lining
 #                                                 of the south axis, its foot this far above the floor: a
 #                                                 hand's breadth over the gallery at the back of the desk
-# the mean-time dial (the room's own model) stands on the card cabinet of the north axis, in the
-# line of the stair's exit. Every clock on the hill is stopped at one time (director, g2 #34140)
-TIME_DIAL = FURNITURE[3]
+# the mean-time dial (the room's own model) stands on the cabinets of the north axis, before whoever
+# comes out of the stair: on the western one, so that V8 has all of it inside its right edge as it
+# has all of the sidereal clock inside its left one (review cr4, #74681: nothing that glows is cut
+# by the frame). Every clock on the hill is stopped at one time (director, g2 #34140)
+TIME_DIAL = FURNITURE[2]
 CLOCK = getattr(S, "CLOCK", (7, 55))
 DIAL_GLOW = 6                                   # the light its opal face is shown in, whatever the room's
 DIAL_FACE = (                                   # c the lit glass, k the quarters, m the other hours
