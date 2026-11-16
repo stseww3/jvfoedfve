@@ -317,9 +317,10 @@ class Glslc:
 class Game:
     """The game's own build of shaderc, called as the game calls it (sky_shaderc.py)."""
 
-    def __init__(self, library):
+    def __init__(self, library, spvc=None):
         import sky_shaderc
         self.shaderc = sky_shaderc.Shaderc(library)
+        self.spvc = sky_shaderc.Spvc(spvc) if spvc else None
         self.cache = {}
 
     def describe(self):
@@ -338,6 +339,39 @@ class Game:
             good, out = self.shaderc.compile(texts[shader], shader.endswith(".fsh"), shader, _macros(macros, defines),
                                              include, preprocess)
             self.cache[key] = (good, out if isinstance(out, str) else "")
+        return self.cache[key]
+
+    def opengl(self, root, shader, defines, macros=MACROS):
+        """(ok, message, extensions): the shader as the OpenGL backend treats it. The SPIR-V goes
+        back to GLSL 330 through the game's SPIRV-Cross with the game's options; that text is
+        then compiled by the same strict front end under OpenGL's rules, as a driver would."""
+        name, texts = root
+        key = ("gl", name, shader, tuple(defines), tuple(macros))
+        if key not in self.cache:
+            def include(wanted):
+                space, _, rest = wanted.partition(":")
+                return texts.get("include/" + rest) if space == "minecraft" else None
+            fragment = shader.endswith(".fsh")
+            good, spirv = self.shaderc.compile(texts[shader], fragment, shader, _macros(macros, defines), include, spirv=True)
+            if not good:
+                self.cache[key] = (False, "no SPIR-V: " + spirv, ())
+                return self.cache[key]
+            good, text = self.spvc.glsl(spirv)
+            if not good:
+                self.cache[key] = (False, "SPIRV-Cross: " + text, ())
+                return self.cache[key]
+            extensions = tuple(sorted(set(re.findall(r"^\s*#extension\s+(\w+)", text, flags=re.M))))
+            version = re.search(r"^\s*#version\s+(.+)$", text, flags=re.M)
+            good, out = self.shaderc.compile(text, fragment, shader + " as GLSL 330", {}, lambda wanted: None, opengl=True)
+            message = "" if good else "the GLSL 330 is refused: " + str(out)
+            if good and (version is None or version.group(1).strip() != "330"):
+                good, message = False, f"the text is not #version 330 but {version.group(1) if version else 'nothing'}"
+            self.cache[key] = (good, message, extensions)
+            if os.environ.get("C164_KEEP_GLSL"):
+                path = os.path.join(os.environ["C164_KEEP_GLSL"], name, shader.replace("/", "_") + "." + "_".join(list(defines) + list(macros))[:80] + ".glsl")
+                os.makedirs(os.path.dirname(path), exist_ok=True)
+                with open(path, "w") as fh:
+                    fh.write(text)
         return self.cache[key]
 
 
@@ -403,6 +437,11 @@ def compiled(c, look):
                         failures.append(f"{label}: location {loc} is {match} in the vertex shader and {(kind, flat)} in the fragment shader")
     print(f"[{'ok' if ok else 'FAIL'}] compiled with {c.describe()}: {done} pipelines' pairs with our "
           f"{len(ours)} files in place ({len(touched)} of the game's shaders are touched: they include fog.glsl or are replaced)")
+    if getattr(c, "spvc", None) is not None:
+        ok &= opengl(c, before, after, touched)
+    else:
+        print("[--] the OpenGL backend's path (SPIR-V back to GLSL 330 by the game's SPIRV-Cross) was not run: "
+              "that library is not to be had here")
     seen = set()
     for line in failures:
         if line not in seen:
@@ -411,6 +450,53 @@ def compiled(c, look):
     if skipped:
         print(f"       {len(skipped)} combinations the game's own text does not compile under here were left out "
               f"(the transparency passes' defines are guessed): {'; '.join(skipped[:6])}{' ...' if len(skipped) > 6 else ''}")
+    return ok
+
+
+def opengl(c, before, after, touched):
+    """The OpenGL backend's path for every touched shader, ours beside the game's own text: where
+    the game's own does not get through this check, the check cannot judge ours either."""
+    ok, done, blind, failures, ext_game, ext_ours = True, 0, [], [], set(), set()
+    seen = set()
+    for vsh, fsh, defines in pairs():
+        sets = [defines]
+        if "oit.glsl" in before[1][f"core/{fsh}.fsh"] and "OIT" not in defines:
+            sets += [defines + OIT + extra for extra in OIT_PASSES]
+        for ds in sets:
+            for macros in (MACROS, ()):
+                for shader in (f"core/{vsh}.vsh", f"core/{fsh}.fsh"):
+                    key = (shader, tuple(ds), tuple(macros))
+                    if shader not in touched or key in seen:
+                        continue
+                    seen.add(key)
+                    if not c.run(before, shader, ds, macros=macros)[0]:
+                        continue                    # not a combination the game's own text compiles under
+                    label = f"{shader} [{','.join(ds)}]{'' if macros else ' without the device macros'}"
+                    game_ok, game_message, game_ext = c.opengl(before, shader, ds, macros)
+                    our_ok, our_message, our_ext = c.opengl(after, shader, ds, macros)
+                    ext_game |= set(game_ext)
+                    ext_ours |= set(our_ext)
+                    if our_ok:
+                        done += 1
+                    elif game_ok:
+                        ok = False
+                        failures.append(f"{label}: {our_message}")
+                    else:
+                        blind.append(f"{label}: ours: {our_message.splitlines()[0][:160] if our_message else ''} | the game's: {game_message.splitlines()[0][:160] if game_message else ''}")
+    more = sorted(ext_ours - ext_game)
+    if more:
+        ok = False
+    print(f"[{'ok' if ok else 'FAIL'}] the OpenGL backend's path: {done} shader variants of ours go back to GLSL 330 through the game's "
+          f"SPIRV-Cross ({c.spvc.version()}, the game's options) and that text compiles under OpenGL's rules "
+          f"(the same strict front end, target OpenGL 4.5); extensions the text asks for: ours {sorted(ext_ours) or 'none'}, "
+          f"the game's own {sorted(ext_game) or 'none'}")
+    for line in failures[:12]:
+        print("  FAIL " + "\n         ".join(line.splitlines()[:10]))
+    if more:
+        print(f"  FAIL our text asks for extensions the game's own does not: {more}")
+    if blind:
+        print(f"       {len(blind)} variants this check cannot judge (the game's own text does not get through it either): "
+              f"{'; '.join(blind[:3])}{' ...' if len(blind) > 3 else ''}")
     return ok
 
 
@@ -428,7 +514,12 @@ def compiler(args):
         import sky_shaderc
         with zipfile.ZipFile(S.jar()) as z:
             version = json.loads(z.read("version.json"))["id"]
-        return Game(sky_shaderc.library(version)), None
+        try:
+            spvc = sky_shaderc.library(version, name="spvc", inner_name="libspirv-cross.so")
+        except Exception as exc:  # the OpenGL path is then left out, and said so
+            print(f"       (the game's SPIRV-Cross is not to be had here: {type(exc).__name__}: {exc})")
+            spvc = None
+        return Game(sky_shaderc.library(version), spvc), None
     except Exception as exc:  # no compiler is a note, not a failure
         return None, f"{type(exc).__name__}: {exc}"
 
