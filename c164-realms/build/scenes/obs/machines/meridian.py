@@ -56,6 +56,7 @@ import numpy as np
 from artkit import models as M
 from artkit.pixelart import Mat
 
+from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
 
@@ -557,6 +558,25 @@ def placed():
     return [(PREFIX + name, at, frame, scale) for name, at, frame, scale in out]
 
 
+BARRIER_HIGH = 2                # rows of collision in a pier: as high as a barrier may stand
+
+
+def barriers(origin=(0, 0, 0)):
+    """The cells that give the two piers their collision (plan/roles/INTERFACE.md, the fifth
+    addition of 11-16: barriers inside a solid model one could walk into, never outside it, two
+    rows at most). A pier stands in the middle of its floor cell and its cast foot fills that cell
+    from side to side, so the cell is the pier's own plan; the casing over the foot is half a texel
+    to a texel narrower on each side. Two rows reach 32 texels, the height of the axis: the cap is
+    at 28.5 and the bearing on it goes on to 33.5. A pier that does not stand in the middle of a
+    cell (the bench of the test scene) gets none, since a whole cell would reach out of it."""
+    out = []
+    for x, y, z in piers(origin):
+        if abs(x % 1.0 - 0.5) > 1e-6 or abs(z % 1.0 - 0.5) > 1e-6 or abs(y - round(y)) > 1e-6:
+            continue
+        out += [(int(math.floor(x)), int(round(y)) + dy, int(math.floor(z))) for dy in range(BARRIER_HIGH)]
+    return out
+
+
 def build(canvas, origin=(0, 0, 0), lamp=True, brightness=BRIGHTNESS):
     """Stand the transit circle in the meridian hut. Returns the number of display entities.
 
@@ -566,6 +586,8 @@ def build(canvas, origin=(0, 0, 0), lamp=True, brightness=BRIGHTNESS):
     n = 0
     for name, at, frame, scale in placed():
         n += put(canvas, built[name], at, frame, scale, origin, brightness)
+    for cell in barriers(origin):
+        canvas.set(*cell, B.BARRIER, keep=True)
     if lamp:
         try:
             from ..sky import _lightkit as L
@@ -647,6 +669,13 @@ def check():
         mine = [tuple(int(math.floor(v)) for v in p) for p in piers()]
         if cells is not None and [tuple(c) for c in cells] != mine:
             out.append(f"piers: site/outbuildings gives {cells}, the piers stand in {mine}")
+    # 6. the piers' collision: two rows in each pier's own floor cell and nowhere else, the foot as
+    #    wide as the cell, the rows no higher than what the pier carries on its cap
+    want = [(int(math.floor(x)), int(round(y)) + dy, int(math.floor(z))) for x, y, z in piers() for dy in range(BARRIER_HIGH)]
+    if barriers() != want:
+        out.append(f"barriers: {barriers()}, the piers' cells are {want}")
+    if BARRIER_HIGH > 2 or BARRIER_HIGH * 16.0 > AXIS_Y + 1.5:
+        out.append(f"barriers: {BARRIER_HIGH} rows, the pier and its bearing end {AXIS_Y + 1.5:g} texels up")
     return out
 
 
@@ -656,6 +685,7 @@ def report():
              f"eyepiece {tuple(round(v, 2) for v in eyepiece())}",
              f"sweep: centre {sweep()[0]}, radius {sweep()[1]:.2f}",
              f"lamp: cell {lamp_cell()}, level {LAMP_LEVEL}",
+             f"barriers: {barriers()}",
              f"{len(placed())} display entities"]
     for name, model in _built().items():
         lo, hi = model.bounds()
