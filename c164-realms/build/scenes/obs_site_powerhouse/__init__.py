@@ -16,15 +16,22 @@ stand on the same walls in the same place, so they are shown from the same camer
 so the same pair of pictures also shows the terrace with and without the run.
 
 Both show what the finished site has round the house and the props line still keeps behind its
-switches: the fittings on the bridge and the gutter's pipes (powerhouse.FITTINGS, DRAINS), the
-street lamps of the way in and the low lamps on the terrace's lip. Each appears once its package
-is in the tree.
+switch: the fittings on the bridge and the gutter's pipes (powerhouse.FITTINGS, DRAINS), which
+appear once their package is in the tree. The lamps of the site are the props line's own by now
+(props/lamps.DRESS): the street lamps of the way in, two of which stand in the yard before the
+house, and the low lamps on the terrace's lip.
+
+The cameras are VIEWS; the two that the skeleton locks are read from it (S.V6, the power house
+from the grand stair, here stair_south; S.V1, the arrival), so they turn when it turns them.
+
+    python -m scenes.obs_site_powerhouse      (in build/) writes shots.json for both scenes
 """
 import contextlib
 
 from artkit.canvas import Canvas
 
 from scenes.obs import main, materials, props, site, sky
+from scenes.obs.common import skeleton as S
 from scenes.obs.site import powerhouse
 
 BIOME = "obs_blue"
@@ -34,6 +41,32 @@ LINES = (site, main, props, sky)
 VERSION = "a"
 RUN = True
 FIRE = True     # both scenes: the boiler bays glow through the fire window, as the card wants them judged
+
+TIME = 14000
+LOW = S.LOWER_GROUND + S.EYE        # -4.38: the eye of a person on the lower platform
+HIGH = S.GROUND + S.EYE             # 1.62: on the upper terrace
+VIEWS = [
+    ("door_axis", (74.5, LOW, 2.5), (78.5, 6.0, 31.5)),             # on the door's axis, from the yard's north edge
+    ("yard_west", (63.5, LOW, 12.5), (78.0, 4.0, 31.0)),            # the north-west corner, from south of the stair
+    ("stair_south", S.V6["pos"], S.V6["look_at"]),                  # the locked view of the house
+    ("stair_axis", (66.5, S.V6["pos"][1], 0.5), (76.5, 8.0, 32.5)), # the same tread, on the stair's axis
+    ("v1", S.V1["pos"], S.V1["look_at"]),                           # the arrival: the bridge must not touch the main building
+    ("court_back", (46.5, HIGH, 8.5), (80.0, 6.0, 30.0)),           # from the court: the roof's glazed side
+    ("lip_south", (58.5, HIGH, 12.5), (80.0, 5.0, 30.0)),           # from the terrace's lip
+    ("chimney_up", (82.5, LOW, 1.5), (89.0, 5.5, 22.5)),            # the chimney and the fire window, from the yard
+    ("bridge_near", (64.5, LOW, 21.5), (62.5, 0.0, 33.5)),          # under the pipe bridge
+    ("bridge_head", (41.5, HIGH, 35.5), (60.0, 1.5, 32.5)),         # along the main on the terrace to the bridge head
+    ("lookout_east", (48.5, S.SOUTH_LOOKOUT["feet"] + S.EYE, 50.5), (78.0, 3.0, 31.0)),     # the south-west corner
+    ("aerial", (58.0, 34.0, 4.0), (78.0, 0.0, 31.0)),
+    ("aerial_back", (100.0, 30.0, 56.0), (78.0, 0.0, 31.0)),
+]
+
+
+def shots():
+    """The shot list both scenes are drawn from."""
+    return [{"name": name, "pos": [round(float(v), 2) for v in pos],
+             "look_at": [round(float(v), 2) for v in look_at], "time": TIME}
+            for name, pos, look_at in VIEWS]
 
 
 @contextlib.contextmanager
@@ -63,29 +96,13 @@ def _fit(c):
     return int(fittings(c, (0, 0, 0)) or 0)
 
 
-def _lamps(c):
-    """The lamps the finished site has in these pictures: the street lamps of the way in, one of
-    which stands in the yard before the chimney's foot, and the low lamps on the lip of the terrace,
-    two of which flank the bridge head. The view of the works is to be chosen with them in it (cr2
-    and c220, g2 #36637, #37080). props/lamps places a lamp once, so its own switch may be on or
-    off; nothing while it has no site()."""
-    try:
-        from scenes.obs.props import lamps
-    except ImportError:
-        return 0
-    site_lamps = getattr(lamps, "site", None)
-    if site_lamps is None:
-        return 0
-    return int(site_lamps(c, (0, 0, 0), groups=("way", "lip")) or 0)
-
-
 def build(version=None, run=None):
     c = Canvas()
     with _as(version or VERSION, RUN if run is None else run):
         for line in LINES:
             if line is sky:         # after the props line; before the light sources, which go last
                 _fit(c)
-                _lamps(c)
+                powerhouse.lining(c)    # the materials line is not built here: the fire windows' room side
             line.build(c, (0, 0, 0))
     return c
 
@@ -99,11 +116,13 @@ def build_models():
     except ImportError:
         windows = None
     if getattr(windows, "line", None) is not None:
-        out.update(windows.models())        # the linings of the fire windows (powerhouse._lining)
+        out.update(windows.models())        # the linings of the fire windows (powerhouse.lining)
     return out
 
 
 def write_pack(pack_dir):
     """The power house paints nothing itself; it stands on the repainted blocks as the materials
-    line has them today (tuff, slate, cast iron, the window glasses)."""
-    return materials.pack(pack_dir)
+    line has them today (tuff, slate, cast iron, the window glasses), under the map's sky: the
+    scene stands in the map's hour, and without the sky's pack the game's own sun is a white and
+    yellow square on the western horizon."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])

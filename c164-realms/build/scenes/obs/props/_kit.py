@@ -14,10 +14,20 @@ the surface: the anchor is then in the air cell and not in the wall.
 Light: a lamp model only glows itself. The light it throws is an invisible light block, and those
 are A2's (sky/_lightkit). `offer_lights()` hands them over; until that tool is in the tree it puts
 the blocks down itself so that a test scene is lit.
+
+A face that glows is still lit by the way it looks. The game lights every face of an item by two
+lamps fixed in the world, whatever the face emits (the item shader's minecraft_mix_light; the
+offline renderer draws the same): a face that looks up shows its tone as painted, one that looks
+north or south 0.74 of it, east or west 0.50, down 0.40. shade=False is read for blocks only. A
+face is lit as if it looked along the axis of its model nearest to its normal, and that axis turns
+with the display: so a glowing piece that must show its tones to one side is drawn in a frame
+tilted towards that side and turned back by its display (c342 read it off the 26.3 client and
+wrote the frame: ironwork.TILT; between 38.2 and 45 degrees the face that looks out is lit 1.00).
 """
 import math
 
 from artkit import models as M
+from artkit.pixelart import Sprite
 
 from ..common import blocks as B
 from ..common import palette as P
@@ -31,6 +41,9 @@ IRON_D = P.mat("iron_dark")
 BRASS = P.mat("brass")
 BRASS_D = P.mat("brass_dark")
 COPPER = P.mat("old_copper")
+# The old copper of the outdoor rain pipes, level with the copper block's plate, which went down a
+# step (A0, review #8). The small copper of lamps, ironwork and furniture keeps COPPER.
+COPPER_D = P.mat("old_copper", base=1)
 ENAMEL = P.mat("enamel")
 CREAM = P.mat("cream")
 
@@ -108,13 +121,59 @@ def east_face(canvas, y, z, x_lo, x_hi, origin=(0, 0, 0)):
 RIVET = flat("iron", 5)
 
 
-def rivet(m, p, out="z", mat=RIVET):
-    """A rivet head: one texel square, half a texel proud of the face it sits on. p is the middle of
-    its foot on that face; `out` is the way the face looks: "x", "-x", "y", "-y", "z" or "-z"."""
+def rivet(m, p, out="z", mat=RIVET, proud=0.5):
+    """A rivet head: one texel square, half a texel proud of the face it sits on (or `proud`). p is
+    the middle of its foot on that face; `out` is the way the face looks: "x", "-x", "y", "-y", "z"
+    or "-z"."""
     k = M.AXES.index(out[-1])
     lo, hi = [v - 0.5 for v in p], [v + 0.5 for v in p]
-    lo[k], hi[k] = sorted((p[k], p[k] + (-0.5 if out.startswith("-") else 0.5)))
+    lo[k], hi[k] = sorted((p[k], p[k] + (-proud if out.startswith("-") else proud)))
     m.box(tuple(lo), tuple(hi), mat)
+    return m
+
+
+# Clear glass holds a little of the sky, as the roof lights do (materials/windows: their reflection is
+# night glass 4). A white stroke was the brightest thing in a room after the lamps and read as paper
+# stuck in the air; this tone shows on dark wood and on a pale lining alike and outshines neither.
+SHEEN = P.RAMPS["night_glass"][4]
+_PANE_AXES = {"u": (0, 2), "n": (0, 1), "s": (0, 1), "e": (2, 1), "w": (2, 1)}   # across and down a face
+
+
+def sheen_texels(w, h, n=None):
+    """The texels of the reflection on a pane w by h texels, as (across, down) from its upper left
+    corner: a glancing stroke two texels wide that climbs n steps to the right (the block windows'
+    stroke, materials/windows), and a shorter one beside it, or under it where the pane is narrow.
+    Two texels wide, so the steps share edges and the stroke is a band, not a row of dots. n is a
+    third of the pane's shorter side unless given, 2 to 4."""
+    if n is None:
+        n = max(2, min(4, int(round(min(w, h) / 3.0))))
+    left = 1 if w >= n + 3 else 0
+    out = [(left + i + d, n - i) for i in range(n) for d in (0, 1)]
+    x0, y0 = (left + 3, n + 2) if w >= n + 6 else (left + 1, n + 3)
+    out += [(x0 + i + d, y0 - i) for i in range(n - 1) for d in (0, 1)]
+    return [(x, y) for x, y in out if 0 <= x < w and 0 <= y < h]
+
+
+def pane(m, lo, hi, face, sheen=True):
+    """A pane of clear glass on the face `face` ("n", "s", "e", "w" or "u") of the thin box lo..hi.
+
+    The glass itself is left out. What says it is there is its reflection (sheen_texels) in the
+    pane's upper corner as one looks at it (the far left corner of a pane that lies flat), cut out
+    of nothing, so whatever is behind the pane shows. Every family draws clear glass this way.
+    sheen=False leaves a pane bare: in a row of panes not every one has a reflection, as with the
+    block windows; a number is the length of the long stroke. The pane is at least five texels each
+    way, and sits a quarter of a texel behind its frame."""
+    if not sheen:
+        return m
+    across, down = _PANE_AXES[face]
+    w, h = (max(1, int(round(abs(hi[i] - lo[i]) * m.px))) for i in (across, down))   # as Model.faces() sizes it
+    n = None if sheen is True else int(sheen)
+    rows = [["."] * w for _ in range(h)]
+    for i, j in sheen_texels(w, h, n):
+        rows[j][i] = "g"
+    name = f"prop_sheen_{w}x{h}" + ("" if n is None else f"_{n}")
+    picture = Sprite(name, ["".join(row) for row in rows], {"g": SHEEN})
+    m.box(lo, hi, BRASS, skip="".join(f for f in "nsewud" if f != face), faces={face: picture})
     return m
 
 
@@ -141,10 +200,10 @@ def switch_key(m, at, side=1.0):
 
 def glass_ball(m, centre, radius, bands, sides=8, squash=1.0, emit=15):
     """A glass ball drawn as bands of flat tone: bands = [(from, to, layers, material)] with from/to
-    as in Model.ball (-1 the bottom, 1 the top). Every face of a band has the one tone, so the ball
-    looks the same from all sides. Lit (the default) it is full bright with no face shading: the
-    light and dark of it is what is painted (A2: emission 15, shading in the texture). emit=0 is
-    the same glass switched off."""
+    as in Model.ball (-1 the bottom, 1 the top). Every face of a band has the one tone. Lit (the
+    default) every face emits (A2: emission 15, the light and dark painted as bands), so the cell's
+    own light does not count; the way a face looks still does (the note at the head of this file):
+    the faces that look east or west show half their tone. emit=0 is the same glass switched off."""
     for t0, t1, layers, mat in bands:
         m.ball(centre, radius, mat, sides=sides, layers=layers, squash=squash, part=(t0, t1),
                faces={"n": mat, "s": mat, "u": mat, "d": mat}, emit=emit, shade=not emit)
@@ -152,7 +211,8 @@ def glass_ball(m, centre, radius, bands, sides=8, squash=1.0, emit=15):
 
 
 def glass_prism(m, axis, c, a0, a1, radius, mat, sides=8, cap=None, emit=15):
-    """A glass prism along `axis` in one flat tone (Model.tube would shade its sides)."""
+    """A glass prism along `axis` in one flat tone (Model.tube would shade its sides in the picture;
+    the game still lights each side by the way it looks, see the note at the head of this file)."""
     k = M.AXES.index(axis)
     o1, o2 = [i for i in range(3) if i != k]
     origin = [0.0, 0.0, 0.0]
