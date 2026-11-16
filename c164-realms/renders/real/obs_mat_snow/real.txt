@@ -1,5 +1,14 @@
-# real-machine pictures (tools/realshots.py): shot, tick, commit of the code the picture shows, first 16 of the picture file's sha256, when it was taken, view distance and cloud range in chunks
-order_down 14000 3a3c6efc 8083868042872f26 2026-11-15T22:34 view12,clouds128
-slope 14000 3a3c6efc 14f3ff44c5a4983e 2026-11-15T22:34 view12,clouds128
-rim 14000 3a3c6efc 9c1b05e5ee7bf3c4 2026-11-15T22:34 view12,clouds128
-field_down 14000 3a3c6efc 50ffc1177eb56b63 2026-11-15T22:34 view12,clouds128
+# real-machine pictures (tools/realshots.py): shot, tick, commit of the code the picture shows, first 16 of the picture file's sha256, when it was taken, the client's render distance, the server's view distance (where none is given: the client's) and the cloud range in chunks
+order_down 14000 d55813f0 52009326e709cd23 2026-11-16T00:28 view12,server10,clouds128
+slope 14000 d55813f0 05df78d59d64ed7c 2026-11-16T00:28 view12,server10,clouds128
+rim 14000 d55813f0 30f04392fbd8ab12 2026-11-16T00:28 view12,server10,clouds128
+field_down 14000 d55813f0 d5ec6a95ebfe0c2d 2026-11-16T00:28 view12,server10,clouds128
+order 14000 d55813f0 10ea5bd0b7b2b4fa 2026-11-16T00:28 view12,server10,clouds128
+order_dusk 12900 d55813f0 288c7ab623a58d37 2026-11-16T00:28 view12,server10,clouds128
+slope_along 14000 d55813f0 1093631df31bd8d4 2026-11-16T00:28 view12,server10,clouds128
+layers 14000 d55813f0 c5d767a59a925a41 2026-11-16T00:28 view12,server10,clouds128
+layers_thin 14000 d55813f0 5e80e8b83ccf1ad9 2026-11-16T00:28 view12,server10,clouds128
+layers_deep 14000 d55813f0 761cbb183a15e07a 2026-11-16T00:28 view12,server10,clouds128
+field_walk 14000 d55813f0 de564e0609f33c7d 2026-11-16T00:28 view12,server10,clouds128
+wall_snow 14000 d55813f0 e3380edd6272e00a 2026-11-16T00:28 view12,server10,clouds128
+field_far 14000 d55813f0 9d7e558f3dc03be5 2026-11-16T00:28 view12,server10,clouds128
