@@ -370,6 +370,16 @@ def scene_spec(args):
     ex, ey, ez = spot["pos"]
     dx, dy, dz = (b - a for a, b in zip(spot["pos"], spot["look_at"]))
     look = bool(args.look == "on" and getattr(scene, "BIOME", None))
+    if look:
+        from artkit import mood as MOOD
+        try:
+            module = importlib.import_module(f"scenes.{args.scene}.mood")
+        except ModuleNotFoundError:
+            module = None
+        if getattr(MOOD, "carried", None) is not None and MOOD.carried(module) is not None:
+            fail("--look on: this scene's look is carried by the resource pack (artkit.mood.Carried), and the "
+                 "drivers write no biome and no timeline for it any more. The save with the biome is gone; "
+                 "the look is in the save made without --look (its resource pack's shaders)")
     on_cloud = args.on_cloud or ("ignore" if args.trial else "back")
     when = args.time
     if when is None and (look or not getattr(scene, "BIOME", None)):
