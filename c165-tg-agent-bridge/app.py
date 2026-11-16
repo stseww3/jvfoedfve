@@ -2244,15 +2244,18 @@ def next_worker_host_num() -> int:
     return r + 1
 
 
+MAX_WORKER_POOL = 200
+
+
 def worker_pool_target() -> int:
     raw = (store.get("worker_pool_target") or "").strip()
     if raw.lstrip("-").isdigit():
-        return max(0, min(60, int(raw)))
+        return max(0, min(MAX_WORKER_POOL, int(raw)))
     return DEFAULT_WORKER_POOL_SIZE
 
 
 def set_worker_pool_target(count: int) -> int:
-    val = max(0, min(60, int(count)))
+    val = max(0, min(MAX_WORKER_POOL, int(count)))
     store.set("worker_pool_target", str(val))
     return val
 
@@ -3100,11 +3103,16 @@ def active_or_starting_runner_count() -> int:
     return cnt
 
 
-def reconcile_worker_pool(min_target: int | None = None, requester: str = "auto_pool", allow_main_fallback: bool = False) -> list[str]:
-    target = worker_pool_target() if min_target is None else max(0, min(60, int(min_target)))
+def reconcile_worker_pool(
+    min_target: int | None = None,
+    requester: str = "auto_pool",
+    allow_main_fallback: bool = False,
+    max_batch: int = 25,
+) -> list[str]:
+    target = worker_pool_target() if min_target is None else max(0, min(MAX_WORKER_POOL, int(min_target)))
     cur = active_or_starting_runner_count()
     spawned: list[str] = []
-    while cur < target:
+    while cur < target and len(spawned) < max_batch:
         res = spawn_worker_vm_via_host(requester=requester, allow_main_fallback=allow_main_fallback)
         if res is None:
             break
@@ -3622,7 +3630,7 @@ async def t_join(args: dict) -> ToolResult:
     if mode in ("worker_host", "coordinator"):
         # 算力池母机一号入网：携带合法 main_key 直接 0 秒自动放行，并立即自动投递独立新云机算力节点启动单！
         if "pool_size" in args and args.get("pool_size") is not None:
-            set_worker_pool_target(arg_int(args, "pool_size", DEFAULT_WORKER_POOL_SIZE, 0, 60))
+            set_worker_pool_target(arg_int(args, "pool_size", DEFAULT_WORKER_POOL_SIZE, 0, MAX_WORKER_POOL))
         whost_id, whost_ag = make_worker_host_node(custom_name=name)
         spawned_list = reconcile_worker_pool(requester=whost_id)
         ensure_controller_alive()
@@ -5743,7 +5751,7 @@ async def t_manage_node(agent, args):
         )
 
     if action == "scale_workers":
-        cnt = arg_int(args, "count", worker_pool_target(), 0, 60)
+        cnt = arg_int(args, "count", worker_pool_target(), 0, MAX_WORKER_POOL)
         new_target = set_worker_pool_target(cnt)
         spawned = reconcile_worker_pool(min_target=new_target, requester=agent["conv"], allow_main_fallback=True)
         cur_total = active_or_starting_runner_count()
@@ -5992,6 +6000,11 @@ async def t_submit_op_result(agent, args):
     if op_type == "launch_subagent":
         if tid and conv_id:
             store.run("UPDATE convs SET task_agent_id=? WHERE id=?", (tid, conv_id))
+        if status != "ok" and is_worker_node_id(conv_id or ""):
+            store.run("UPDATE exec_nodes SET status='offline' WHERE id=? AND agent=''", (conv_id,))
+            if is_worker_host_id(agent["conv"]) and is_quota_exceeded_output(output):
+                store.run("UPDATE exec_nodes SET status='draining' WHERE id=?", (agent["conv"],))
+                log.warning("auto-drained %s due to model quota exceeded on launch", agent["conv"])
         if status != "ok" and requester in ("ctrl", "main"):
             system_note(
                 requester,
@@ -9683,6 +9696,11 @@ async def watchdog_tick() -> None:
 
 
 async def watchdog_loop() -> None:
+    await asyncio.sleep(5)
+    try:
+        reconcile_worker_pool(requester="startup_pool", allow_main_fallback=False, max_batch=25)
+    except Exception:
+        log.exception("initial reconcile_worker_pool failed")
     while True:
         await asyncio.sleep(WATCHDOG_SEC)
         try:
