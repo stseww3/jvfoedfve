@@ -66,6 +66,7 @@ from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
 from ..machines import batteryboard as BB
+from ..machines import board as PB
 from ..main import _plan as MP
 from ..main import shell
 from ..props import _kit as K
@@ -405,7 +406,7 @@ def models():
 def their_models():
     """The models of the pieces of other packages the room places: what a test scene packs besides
     the room's own."""
-    return {**lamps.models(), **BB.models()}
+    return {**lamps.models(), **PB.models(), **BB.models()}       # the board's pointers are the power house board's
 
 
 def window_cells():
