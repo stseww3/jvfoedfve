@@ -24,6 +24,11 @@ The map has no function that takes the charts away again (the card: no tool of t
 left in it). To walk the bench a second time an operator takes his own tags off by hand:
     /tag @s remove c164.c1   ... c164.c6, c164.done
 
+The bench writes the map's own function names (c164art:guide/...) and marks a player with the
+map's own tags. In a world that also holds the master scene with the guide switched on, the two
+write the same files, and the lights are those of the scene that was written last (the rest is
+the same text in both): put the bench into a world without the master scene, or write it last.
+
 The camera shows the bench twice, as every scene of this line does; nothing in the picture moves
 until a player has all six.
 
