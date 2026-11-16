@@ -7,7 +7,7 @@
   F: 18 places, 18 under a roof; light 4..11, median 7; lit 16, dim 2, dark 0 (0 under a roof); longest run unlit under a roof 1
   G: 18 places, 18 under a roof; light 6..12, median 8; lit 18, dim 0, dark 0 (0 under a roof); longest run unlit under a roof 0
   H: 11 places, 10 under a roof; light 3..7, median 5; lit 7, dim 4, dark 0 (0 under a roof); longest run unlit under a roof 2
-  I: 15 places, 14 under a roof; light 0..2, median 0; lit 0, dim 4, dark 11 (10 under a roof); longest run unlit under a roof 12   <-- unlit
+  I: 15 places, 14 under a roof; light 0..4, median 0; lit 0, dim 5, dark 10 (9 under a roof); longest run unlit under a roof 12   <-- unlit
   J: 20 places, 6 under a roof; light 1..7, median 5; lit 12, dim 8, dark 0 (0 under a roof); longest run unlit under a roof 2
   K: 18 places, 5 under a roof; light 1..7, median 5; lit 10, dim 8, dark 0 (0 under a roof); longest run unlit under a roof 2
   L: 19 places, 18 under a roof; light 4..10, median 7; lit 17, dim 2, dark 0 (0 under a roof); longest run unlit under a roof 1
@@ -78,7 +78,7 @@
   in-F14       12.50   7.00  -12.25  roof  feet  9 head  8  lit 
   in-F15       12.50   7.00   -8.50  roof  feet  7 head  6  lit 
   in-F16        8.00   7.00  -12.50  roof  feet  5 head  4  lit 
-  in-F17        8.00   7.00  -16.50  roof  feet  4 head  3  dim   <--   nearest source 10 interiors/timeroom:rating bench at (3, 7, -16), 7 cells
+  in-F17        8.00   7.00  -16.50  roof  feet  4 head  3  dim   <--   nearest source 7 interiors/batteryroom:aisle north at (8, 3, -17), 5 cells
   in-F18        8.00   7.00  -20.50  roof  feet  6 head  7  lit 
   in-G01        8.00   7.00    6.50  roof  feet  5 head  6  lit 
   in-G02        8.00   7.00    9.50  roof  feet  8 head  9  lit 
@@ -109,21 +109,21 @@
   in-H09        7.50  16.50   -2.50  roof  feet  4 head  5  lit 
   in-H10        4.50  18.00   -2.50  roof  feet  4 head  3  dim   <--   nearest source 8 sky/lights:way at (4, 15, -2), 5 cells
   in-H11        4.50  18.00   -3.50  roof  feet  3 head  2  dim   <--   nearest source 8 sky/lights:way at (4, 15, -2), 6 cells
-  in-I01        4.50  18.00   -7.50  roof  feet  0 head  0  dark  <--   nearest source 7 interiors/timeroom:ceiling over the world clocks at (4, 13, -9), 7 cells
-  in-I02        7.35  18.00   -6.35  roof  feet  0 head  0  dark  <--   nearest source 8 sky/lights:way at (7, 17, 0), 9 cells
+  in-I01        4.50  18.00   -7.50  roof  feet  1 head  2  dim   <--   nearest source 5 interiors/domeroom:time_dial at (4, 20, -10), 3 cells
+  in-I02        7.35  18.00   -6.35  roof  feet  0 head  0  dark  <--   nearest source 5 interiors/domeroom:time_dial at (4, 20, -10), 7 cells
   in-I03       10.20  18.00   -5.20  roof  feet  0 head  0  dark  <--   nearest source 4 machines/scope:lamp at (9, 20, 0), 8 cells
-  in-I04       11.35  18.00   -2.35  roof  feet  0 head  0  dark  <--   nearest source 3 interiors/domeroom:pilot_lamps at (14, 19, 0), 6 cells
-  in-I05       12.50  18.00    0.50  roof  feet  2 head  1  dim   <--   nearest source 3 interiors/domeroom:pilot_lamps at (14, 19, 0), 2 cells
-  in-I06       11.35  18.00    3.35  roof  feet  2 head  1  dim   <--   nearest source 3 interiors/domeroom:pilot_lamps at (14, 19, 0), 6 cells
+  in-I04       11.35  18.00   -2.35  roof  feet  0 head  0  dark  <--   nearest source 4 machines/scope:lamp at (9, 20, 0), 6 cells
+  in-I05       12.50  18.00    0.50  roof  feet  3 head  4  dim   <--   nearest source 6 interiors/domeroom:pilot_lamps at (14, 19, 0), 2 cells
+  in-I06       11.35  18.00    3.35  roof  feet  2 head  1  dim   <--   nearest source 4 machines/scope:lamp at (9, 20, 0), 6 cells
   in-I07       10.20  18.00    6.20  roof  feet  0 head  0  dark  <--   nearest source 4 machines/scope:lamp at (9, 20, 0), 8 cells
-  in-I08        7.35  18.00    7.35  roof  feet  2 head  1  dim   <--   nearest source 3 interiors/domeroom:clock_dial at (4, 19, 10), 6 cells
-  in-I09        4.50  18.00    8.50  roof  feet  0 head  1  dim   <--   nearest source 3 interiors/domeroom:clock_dial at (4, 19, 10), 2 cells
-  in-I10        1.65  18.00    7.35  roof  feet  0 head  0  dark  <--   nearest source 3 interiors/domeroom:clock_dial at (4, 19, 10), 6 cells
-  in-I11       -1.20  18.00    6.20  roof  feet  0 head  0  dark  <--   nearest source 3 interiors/domeroom:clock_dial at (4, 19, 10), 10 cells
+  in-I08        7.35  18.00    7.35  roof  feet  2 head  1  dim   <--   nearest source 5 interiors/domeroom:clock_dial at (4, 20, 10), 7 cells
+  in-I09        4.50  18.00    8.50  roof  feet  1 head  2  dim   <--   nearest source 5 interiors/domeroom:clock_dial at (4, 20, 10), 3 cells
+  in-I10        1.65  18.00    7.35  roof  feet  0 head  0  dark  <--   nearest source 5 interiors/domeroom:clock_dial at (4, 20, 10), 7 cells
+  in-I11       -1.20  18.00    6.20  roof  feet  0 head  0  dark  <--   nearest source 5 interiors/domeroom:clock_dial at (4, 20, 10), 11 cells
   in-I12       -2.35  18.00    3.35  roof  feet  0 head  0  dark  <--   nearest source 8 sky/lights:way at (7, 16, 3), 13 cells
   in-I13       -3.50  18.00    0.50  sky   feet  0 head  0  dark  (sky)   nearest source 10 sky/lights:window apse 0 main at (-9, 12, 0), 12 cells
   in-I14       -2.35  18.00   -2.35  roof  feet  0 head  0  dark  <--   nearest source 8 sky/lights:way at (4, 15, -2), 12 cells
-  in-I15       -1.20  18.00   -5.20  roof  feet  0 head  0  dark  <--   nearest source 7 sky/lights:way at (0, 10, -5), 12 cells
+  in-I15       -1.20  18.00   -5.20  roof  feet  0 head  0  dark  <--   nearest source 5 interiors/domeroom:time_dial at (4, 20, -10), 11 cells
   in-J01       11.50  18.00    6.50  roof  feet  0 head  1  dim   <--   nearest source 8 sky/lights:way at (12, 20, 11), 7 cells
   in-J02       12.50  18.00    8.50  roof  feet  3 head  4  dim   <--   nearest source 8 sky/lights:way at (12, 20, 11), 4 cells
   in-J03       12.50  18.00   10.50  roof  feet  5 head  6  lit 

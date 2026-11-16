@@ -1,4 +1,4 @@
-sources placed: 200 (rank 1: 13, rank 2: 106, rank 3: 81); levels 13x13, 12x35, 11x7, 10x57, 9x4, 8x41, 7x22, 6x15, 5x2, 4x2, 3x2
+sources placed: 225 (rank 1: 13, rank 2: 106, rank 3: 106); levels 13x13, 12x35, 11x7, 10x57, 9x4, 8x47, 7x40, 6x16, 5x4, 4x2
 windows main: dark 68, dim 3, lit 14, bright 1 (79% dark), 33 sources
 windows power: dark 18, dim 2, lit 0, bright 0 (90% dark), 2 sources
 windows station: dark 8, dim 0, lit 3, bright 0 (73% dark), 5 sources
@@ -13,7 +13,11 @@ moved: ((84, -5, 35), (84, -5, 36), 'interiors/powerhouse:engine lamp x 84')
 merged: ((71, -4, 28), 10, 'interiors/powerhouse:switchboard lamp z 28')
 merged: ((71, -4, 31), 10, 'interiors/powerhouse:switchboard lamp z 31')
 
-sources by what throws them (65 kinds):
+sources by what throws them (70 kinds):
+  interiors/batteryroom:aisle north      8: 8x2, 7x6   at (8, 1, -17) (7, 1, -17) (8, 3, -17) (8, 1, -16) (8, 1, -18) (7, 3, -17) (7, 1, -16) (7, 1, -18)
+  interiors/batteryroom:aisle south      8: 8x2, 7x6   at (8, 1, -9) (7, 1, -9) (8, 3, -9) (8, 1, -8) (8, 1, -10) (7, 3, -9) (7, 1, -8) (7, 1, -10)
+  interiors/batteryroom:board            4: 8x2, 7x2   at (8, 4, -24) (7, 4, -24) (8, 1, -23) (7, 1, -23)
+  interiors/batteryroom:fill             4: 7x4   at (8, 2, -13) (8, 2, -21) (7, 2, -13) (7, 2, -21)
   interiors/chartroom:bench              1: 12x1   at (12, 7, 20)
   interiors/chartroom:blackboard         1: 10x1   at (3, 8, 12)
   interiors/chartroom:bracket lamp on a pier of the bookcase   2: 11x2   at (11, 10, 24) (4, 10, 24)
@@ -25,8 +29,9 @@ sources by what throws them (65 kinds):
   interiors/chartroom:the light table 2   1: 12x1   at (8, 8, 12)
   interiors/chartroom:the light table 3   1: 12x1   at (7, 8, 16)
   interiors/chartroom:the light table 4   1: 12x1   at (8, 8, 16)
-  interiors/domeroom:clock_dial          1: 3x1   at (4, 19, 10)
-  interiors/domeroom:pilot_lamps         1: 3x1   at (14, 19, 0)
+  interiors/domeroom:clock_dial          1: 5x1   at (4, 20, 10)
+  interiors/domeroom:pilot_lamps         1: 6x1   at (14, 19, 0)
+  interiors/domeroom:time_dial           1: 5x1   at (4, 20, -10)
   interiors/platevault:checker           1: 7x1   at (10, 1, 7)
   interiors/platevault:safelight         1: 5x1   at (7, 2, 24)
   interiors/powerhouse:desk lamp         1: 6x1   at (69, -5, 22)
