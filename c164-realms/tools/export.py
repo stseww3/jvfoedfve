@@ -1152,8 +1152,10 @@ def seal(world, spec, out_dir, head, when, facts):
             removed.append(os.path.relpath(stop, stage))
     # the map's name, where a player meets it: the world's name in the list of worlds (the folder
     # and the archive keep the save's number) and what the two packs say of themselves
-    title = spec.get("title")
-    told = f"{title} ({name} {head})" if title else f"c164 {name} ({head})"
+    # ... with the commit of the assembly it is made of where that is told (s1 c319 #91613: the
+    # tree a round is made in is the dist branch's, and its commit says nothing to who reads it)
+    title, of = spec.get("title"), str(facts.get("assembly") or head)[:8]
+    told = f"{title} ({name} {of})" if title else f"c164 {name} ({of})"
     if title:
         import nbtlib
         level = nbtlib.load(os.path.join(stage, "level.dat"))
