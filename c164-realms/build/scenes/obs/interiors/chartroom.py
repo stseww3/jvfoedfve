@@ -233,6 +233,16 @@ TABLE_LIGHTS = tuple((x, SILL, z) for z in (12, 16) for x in (7, 8))     # the c
 #                                     table stands in, so that the pool is the same on both hands and towards both ends
 
 
+def _table_cells():
+    """The cells the table fills: the two columns it stands in, every row wholly within its length."""
+    z0, z1 = TABLE_AT[2] - TABLE_L / 2.0 * PX, TABLE_AT[2] + TABLE_L / 2.0 * PX      # 10.94 .. 18.06
+    xs = range(int(TABLE_AT[0] - TABLE_W / 2.0 * PX), int(TABLE_AT[0] + TABLE_W / 2.0 * PX) + 1)     # 7, 8
+    return tuple((x, FEET, z) for x in xs for z in range(-int(-z0 // 1), int(z1 // 1)))
+
+
+TABLE_CELLS = _table_cells()        # (7|8, 7, 11..17): 14 cells
+
+
 def pane_z(k):
     """Pane k of the table, counted from the north end: where it begins and ends."""
     a = -TABLE_L / 2.0 + BAR + k * (PANE + BAR)
@@ -458,6 +468,11 @@ def build_chartroom(c, origin=(0, 0, 0), roles=B):
     held = tuple(TABLE_AT[i] + HELD[i] * PX for i in range(3))
     for k in range(PANES):
         n += K.put(c, own[part_name(k)], held, origin=origin)
+    # The table is a model and has no collision: a barrier in every cell that lies wholly within its
+    # length, one high, in the two columns it stands in, so that nobody walks through it (A0's second
+    # use of the barrier, INTERFACE.md: inside a solid model that is seen, never beyond its outline)
+    for x, y, z in TABLE_CELLS:
+        put(x, y, z, roles.BARRIER)
 
     def on_table(x, z, up=GLASS):
         """A point over the table: texels from the middle of its foot."""
