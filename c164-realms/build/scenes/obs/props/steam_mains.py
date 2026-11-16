@@ -129,7 +129,7 @@ def _arc(cx, cz, a0, a1, rho=BEND, steps=3):
 TRAP_OUT = 6.5          # the pot's axis off the main's
 TRAP_FOOT = -13.0       # the pot's foot under the main's axis: on the plinth's lower step when the main lies
 #                         WALL over its upper one (half a block down)
-TRAP_SPOUT = (10.25, -11.5)     # the spout's mouth: out (its lip is over the edge of the step), and under the main's axis
+TRAP_SPOUT = (10.0, -11.5)      # the spout's mouth: out (its lip stands over the edge of the step), and under the main's axis
 # A trap blows: the condensate goes, and a little steam with it. The wisps of one blow, in the BREATH
 # of pipes.weep (motion/smoke's slow chain): the tick, the blocks a tick it leaves the spout with, and
 # its way as (away from the wall, up, with the wind).
