@@ -75,7 +75,8 @@ CEIL_Y = S.STAR_HALL_CEIL                   # 14, the ceiling block
 DOOR_Y = (0, 5)                             # the entrance, three wide
 JOINT_X = (S.PIER_SHAFT[0] - 1, int(S.MOTHER_CLOCK["back_x"]) + 1)      # 2..7: the grating ring round pier and step
 SUN_LIGHT = 12                              # the orrery's sun, the brightest thing in the hall (lights)
-V7 = S.V7                                   # the star hall from outside the door (A0, 11-15)
+V7 = S.V7                                   # the first look into the star hall (A0, 11-16: two blocks further in
+#                                             than before; this hall's front is one wall thick, it stands before it)
 # The arrival view as A0 lifted it on 11-15: the dial, the ball and the comet stand one over the other
 # in it, and the colour of the ball is picked on it.
 V1 = S.V1
