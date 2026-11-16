@@ -65,6 +65,10 @@ KNOB = K.flat("brass", 4)                         # the bright end of a knurled 
 ROD = K.flat("brass", 3)                          # a rod one pixel thick: one clean line, no edges
 INK = P.RAMPS["iron"][1]
 LUME = P.RAMPS["phosphor"][2]
+# The light the luminous marks hold of themselves. In a lit room they take the room's light like the
+# paint beside them; in the dark they are a glimmer. At 15 they were the brightest points of a dark
+# room and of a lit one and read as small green lamps (real client, V8 and V10).
+LUME_LEVEL = 8
 
 
 # ---- painted surfaces ----------------------------------------------------------------------------
@@ -134,20 +138,21 @@ def _sprite(name, rows, **colours):
 FACE, FACE_D = P.RAMPS["porcelain"][3], P.RAMPS["porcelain"][2]
 MARK = P.RAMPS["iron"][5]       # what is printed on a dial; only what points is as dark as ink
 DIAL_COLOURS = dict(c=FACE, d=FACE_D, k=INK, m=MARK, h=P.RAMPS["iron"][0], b=P.RAMPS["brass"][3], g=LUME)
-# the barometer: a scale over the upper arc, three luminous marks; the hand is one straight line
-# through the middle and points at "fair"
+# the barometer: a scale over the upper arc, three luminous marks. No hand is painted on a dial: the
+# hands are strips in front of it (_dial), each at its true angle
 BARO_DIAL = [
     "..mcgcm..",
-    ".mccccch.",
-    "cccccchcc",
-    "mcccchccm",
+    ".mcccccm.",
+    "ccccccccc",
+    "mcccccccm",
     "gcccbcccg",
-    "mcchccccm",
+    "mcccccccm",
     "ccccccccc",
     ".dcccccd.",
     "..ddddd..",
 ]
-# the clock: twelve marks, the quarters luminous; the hands are drawn in by _hands()
+BARO_HAND = (45.0, 4.0, 1.5)    # degrees right of upright, its length from the pivot, its tail: it points at "fair"
+# the clock: twelve marks, the quarters luminous
 CLOCK_DIAL = [
     "..mcgcm..",
     ".ccccccc.",
@@ -162,22 +167,13 @@ CLOCK_DIAL = [
 # every clock on the hill is stopped at one time, five minutes before the time ball drops (director,
 # g2 #34140): the skeleton's CLOCK once it has it
 CLOCK = getattr(S, "CLOCK", (7, 55))
+HAND = K.flat("iron", 0)        # what points is as dark as ink
 
 
-def _hands(rows, hour, minute):
-    """A nine-pixel dial with its hands drawn in from the middle: the hour hand two pixels long, the
-    minute hand three, one pixel to each step along the way the hand leans most."""
-    grid = [list(row) for row in rows]
-    mid = len(rows) // 2
-    for turn, length in (((hour % 12 + minute / 60.0) / 12.0, 2), (minute / 60.0, 3)):
-        dx, dy = math.sin(2.0 * math.pi * turn), -math.cos(2.0 * math.pi * turn)
-        for i in range(1, length + 1):
-            if abs(dx) > abs(dy):
-                x, y = mid + (i if dx > 0 else -i), int(round(mid + i * dy / abs(dx)))
-            else:
-                x, y = int(round(mid + i * dx / abs(dy))), mid + (i if dy > 0 else -i)
-            grid[y][x] = "h"
-    return ["".join(row) for row in grid]
+def _clock_hands(hour, minute):
+    """The two hands of a nine-pixel dial as _dial takes them, the hour hand first (it lies under
+    the other): (degrees right of upright, length, tail)."""
+    return (((hour % 12 + minute / 60.0) * 30.0, 2.5, 0.0), (minute * 6.0, 3.75, 0.0))
 
 
 def _lume(rows):
@@ -397,16 +393,19 @@ LANDS = (
 )
 
 
+LAND = P.RAMPS["cream"][1]      # the lands of the table globe: the paper of a map. A lighter green on the green
+#                                 of the seas was taken for the shine of the ball
+
+
 def _lands(lean):
-    """paint() for _ball: the map of the table globe, the lands three steps lighter than the seas (two
-    are lost in the shade of the ball's own sides)."""
+    """paint() for _ball: the map of the table globe, the lands in the cream of its paper."""
     def paint(points, clear):
         land = np.zeros(len(points), dtype=bool)
         for lon, lat, radius in LANDS:
             a, d = math.radians(lon), math.radians(lat)
             at = np.array(M._qrot(lean, (math.cos(d) * math.sin(a), math.sin(d), math.cos(d) * math.cos(a))))
             land |= points @ at > math.cos(math.radians(radius))
-        return [3 if on else None for on in land]
+        return [LAND if on else None for on in land]
     return paint
 
 
@@ -422,15 +421,25 @@ def _glass(tones, glint):
     return paint
 
 
-def _dial(m, name, rows, centre, z):
-    """A round dial nine pixels across on a face that looks +z: the painted face, and in front of it
-    a plate with only its luminous marks, which glows in the dark."""
+def _dial(m, name, rows, centre, z, hands=()):
+    """A round dial nine pixels across on a face that looks +z: the painted face, in front of it a
+    plate with only its luminous marks, which glows in the dark, and the hands: each a strip one
+    pixel wide turned to its true angle about the middle of the dial, (degrees right of upright,
+    length, tail), one lying on the other in the order given, and a brass boss on the pivot. Painted
+    into nine pixels a hand is a stair of blocks; a strip is one clean line at any angle."""
     x, y = centre
     half = len(rows) / 2.0
     m.box((x - half, y - half, z - 0.25), (x + half, y + half, z), K.flat("porcelain", 3), skip="nudew",
           faces={"s": _sprite(name, rows, **DIAL_COLOURS)})
     m.box((x - half, y - half, z), (x + half, y + half, z + 0.1), K.flat("phosphor", 2), skip="nudew",
-          faces={"s": _sprite(name + "_lume", _lume(rows), g=LUME)}, emit=15, shade=False)
+          faces={"s": _sprite(name + "_lume", _lume(rows), g=LUME)}, emit=LUME_LEVEL, shade=False)
+    top = z + 0.1
+    for lean, length, tail in hands:
+        m.box((x - 0.5, y - tail, top), (x + 0.5, y + length, top + 0.2), HAND, grain="y",
+              rot=("z", -lean, (x, y, top + 0.1)))
+        top += 0.2
+    if hands:
+        m.box((x - 0.5, y - 0.5, top), (x + 0.5, y + 0.5, top + 0.15), KNOB)
 
 
 # ---- the models ------------------------------------------------------------------------------------
@@ -479,15 +488,22 @@ def _scope(name, tilt, diagonal=False):
     for x in (-4.0, 3.0):
         m.box((x, foot + 1.0, -1.5), (x + 1.0, SCOPE_PIVOT + 1.5, 1.5), IRON, grain="y")
     m.tube("x", (SCOPE_PIVOT, 0), -5.5, -4.0, 1.5, BRASS_D, cap=KNOB)                   # clamp knob, on the left
-    limb = _scale("last", 3, 1, 1)
     with m.turned(("x", -tilt), about=(0, SCOPE_PIVOT, 0)):
         c = (0, SCOPE_PIVOT)
-        side, ends = 4.5, (101.25, 258.75)                                              # on the right the altitude
-        m.ring("x", (side, SCOPE_PIVOT, 0), 5.5, 2.0, 0.75, BRASS, sides=16, arc=ends,
-               faces={"w": limb, "e": limb})                                            # arc: a graduated sector
-        for deg in ends:                                                                # hung from the axis
+        # on the right the altitude arc, a graduated sector hung from the axis: three pixels deep, its
+        # outline whole, a line to every other pixel of the limb from its inner edge and every second
+        # line a pixel longer, engraved two steps down only. A row of marks as deep as the limb is
+        # wide and as dark as shadow was a rack's teeth. Every piece of the arc is two pixels of
+        # limb, so it carries one line: the long and the short ones take turns piece by piece
+        side, step, pieces = 4.5, 15.0, 11
+        ends = (180.0 - pieces * step / 2.0, 180.0 + pieces * step / 2.0)
+        for i in range(pieces):
+            limb = _scale("last", 2, 0, 2 if i % 2 == 0 else 1, ink=2)
+            m.ring("x", (side, SCOPE_PIVOT, 0), 5.0, 3.0, 0.75, BRASS, sides=24,
+                   arc=(ends[0] + i * step, ends[0] + (i + 1) * step), faces={"w": limb, "e": limb})
+        for deg in ends:
             a = math.radians(deg)
-            m.beam((side, SCOPE_PIVOT, 0.0), (side, SCOPE_PIVOT + 4.75 * math.cos(a), 4.75 * math.sin(a)),
+            m.beam((side, SCOPE_PIVOT, 0.0), (side, SCOPE_PIVOT + 4.0 * math.cos(a), 4.0 * math.sin(a)),
                    0.5, 1.0, BRASS_D)
         m.tube("x", (SCOPE_PIVOT, 0), 4.0, 5.25, 1.25, BRASS_D, cap=KNOB)               # its boss
         m.tube("z", c, -7.0, 12.0, 2.0, BRASS, sides=12)                                # main tube
@@ -567,7 +583,7 @@ def _celestial_globe():
 
 
 def _globe():
-    """A table globe 18 px tall: a verdigris ball 10 px across with its lands a lighter green, its
+    """A table globe 18 px tall: a verdigris ball 10 px across with its lands in cream, its
     axis leaning 23.5 degrees, in a graduated brass half meridian on a turned wooden foot. Anchor:
     the table under its middle."""
     m = M.Model(PREFIX + "globe")
@@ -636,7 +652,7 @@ def _barometer():
     m.box((-1.5, 0.0, 0.0), (1.5, 1.0, 2.0), WOOD_D)                                    # drop under the case
     m.tube("z", (0, y), 0.0, 2.0, 6.0, WOOD, sides=16, cap=K.flat("dark_wood", 3))      # the round case
     m.ring("z", (0, y, 2.5), 5.0, 1.5, 1.0, BRASS, sides=16)                            # bezel
-    _dial(m, "baro_dial", BARO_DIAL, (0.0, y), 2.5)
+    _dial(m, "baro_dial", BARO_DIAL, (0.0, y), 2.5, hands=(BARO_HAND,))
     m.tube("z", (0, y - 5.0), 3.0, 3.5, 0.75, BRASS_D, cap=KNOB)                        # set-hand knob, on the bezel
     m.box((-2.5, y + 5.0, 0.0), (2.5, 29.0, 1.0), WOOD, grain="y")                      # neck
     m.box((-1.5, 15.0, 1.0), (1.5, 27.0, 1.25), K.flat("porcelain", 3), skip="nudew",
@@ -669,7 +685,7 @@ def _regulator_clock():
     m.box((-6.5, 0.0, 0.0), (6.5, 2.0, 6.0), WOOD_D)                                    # plinth
     m.box((-6.5, 30.0, 0.0), (6.5, 32.0, 6.0), WOOD_D)                                  # cornice
     m.box((-4.5, 19.0, 4.0), (4.5, 30.0, 5.0), WOOD_L)                                  # hood: the dial board
-    _dial(m, "clock_dial", _hands(CLOCK_DIAL, *CLOCK), (0.0, CLOCK_DIAL_Y), 5.25)
+    _dial(m, "clock_dial", CLOCK_DIAL, (0.0, CLOCK_DIAL_Y), 5.25, hands=_clock_hands(*CLOCK))
     m.ring("z", (0, CLOCK_DIAL_Y, 5.375), 5.0, 1.0, 0.75, BRASS, sides=16)              # bezel
     for x in (-4.5, 3.5):                                                               # the door: stiles and rails
         m.box((x, 2.0, 4.0), (x + 1.0, 19.0, 5.0), WOOD_L, grain="y")

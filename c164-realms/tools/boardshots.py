@@ -12,12 +12,12 @@ skeleton is the one of this checkout, or of the build/ folder named in the envir
 C164_BUILD: the render station shoots other checkouts with its own tools (win/shuttle.py), and
 the board of a checkout is worked out from that checkout's skeleton.
 
-V1, V2, V5, V6, V7 and V11 are the skeleton's own, LOCKED there, and are read from there. The other
-six have no place in the skeleton yet: what stands here for them is the render station's proposal
-(PROPOSED below), to be moved on the pictures. A view that gets fixed goes into the skeleton as
-V<n> = dict(pos=, look_at=) and is read from there; what stands here for it then no longer counts
-(V5, V6 and V7 have such an entry each). It is still what a checkout with an older skeleton is shot
-with: A0's ruling where there was one before the skeleton had the view (RULED below), else the
+V1, V2, V5, V6, V7, V8 and V11 are the skeleton's own, LOCKED there, and are read from there. The
+other five have no place in the skeleton yet: what stands here for them is the render station's
+proposal (PROPOSED below), to be moved on the pictures. A view that gets fixed goes into the skeleton
+as V<n> = dict(pos=, look_at=) and is read from there; what stands here for it then no longer counts
+(V5, V6, V7 and V8 have such an entry each). It is still what a checkout with an older skeleton is
+shot with: A0's ruling where there was one before the skeleton had the view (RULED below), else the
 station's proposal as it stood last.
 
 All twelve are taken in look A (tick 14000). The picture is the game's: 16:9, 77 degrees high (the
@@ -93,8 +93,10 @@ VIEWS = [
     # (The station's own proposal stood on the south gallery, level with the ring of planets.)
     ("v07_hall", "the star hall and the orrery, in through the entrance", "V7", dict(
         pos=(19.5, 1.62, 0.5), look_at=(10, 5.5, 0.5))),
-    # PROPOSED. On the dome-room floor east of the pier, inside the slit's width and beside the tube,
-    # so that the line due west at the comet's height runs out through the slit.
+    # No longer counts: V8 is in the skeleton, the refractor's own station (S2 11-16). The proposal
+    # was: on the dome-room floor east of the pier, inside the slit's width and beside the tube, so
+    # that the line due west at the comet's height runs out through the slit. From there the tube
+    # points at the lens and hides half the slit.
     ("v08_dome_room", "the great refractor, the open slit, the comet beyond it", "V8", dict(
         pos=(S.DOME_AXIS[0] + 8.0, S.ROOF_STAND + EYE, S.DOME_AXIS[1] + 1.5),
         look_at=(S.DOME_AXIS[0] - 10.0, S.ROOF_STAND + 10.0, S.DOME_AXIS[1]))),
