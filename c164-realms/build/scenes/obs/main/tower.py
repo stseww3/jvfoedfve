@@ -168,7 +168,7 @@ LADDER_AT = (X0 + 1, Z0 + 1)        # (11, -32): the well's north-west corner. O
 #                                     and the middle 3 x 3 run clear all the way from the deck to the room
 LADDER_Y = (FOOT, int(ROOM_FLOOR) - 1)                  # 18 .. 23: the ladder's rows; the last one is the
 #                                                         hatch in the room's floor
-LADDER = "ladder"                   # the game's ladder: it is climbed by walking into it, without a click
+LADDER = B.LADDER                   # the game's ladder: it is climbed by walking into it, without a click
 
 
 def backs(face):
