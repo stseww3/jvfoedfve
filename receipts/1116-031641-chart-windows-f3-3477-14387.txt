@@ -1,0 +1,22 @@
+a0job 1116-031641-chart-windows-f3-3477-14387: cursor/c164-chart-windows-f3-3477 @ 008cf60b on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.08 0.05 0.01, Python 3.12.3
+  [cloud_setup    1s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/selfshots.py obs_mat_windows --only furnace,close_furnace,furnace_slant,furnace_foot --out renders/_wip ---- exit 0, 6 s, last 14 lines of 12:
+  obs_mat_windows: 8403 blocks, 0 entities (0 s)
+  obs_mat_windows: resource pack written to /tmp/c164pack-no8mgbs0 (1 s)
+  obs_mat_windows: water: 0 sources, 0 cells of running water (1 s)
+  obs_mat_windows: grid 23 x 21 x 253, 8403 blocks, 0 entity boxes (1 s)
+  obs_mat_windows: 46 states -> 90 looks, 164 boxes, 53 pictures (1 s)
+  obs_mat_windows: light done (1 s)
+  obs_mat_windows: furnace (tick 14000, 1 s)
+  obs_mat_windows: close_furnace (tick 14000, 0 s)
+  obs_mat_windows: furnace_slant (tick 14000, 1 s)
+  obs_mat_windows: furnace_foot (tick 14000, 0 s)
+/tmp/dais_jobs/c164a0/c164-realms/renders/_wip/obs_mat_windows-*: 4 pictures of 008cf60b drawn, 0.7 MB
+                for a look only: nothing went into renders/obs_mat_windows/ (tools/nodejob.sh --wip pushes renders/_wip to your scratch branch)
+==== NODEJOB RESULT ====
+exit=0 secs=11 host=cursor cores=4 head=008cf60b commit=2163fc3c pushed=yes branch=cursor/c164-chart-windows-f3-3477-wip files=5
+a0job: exit=0 secs=12
