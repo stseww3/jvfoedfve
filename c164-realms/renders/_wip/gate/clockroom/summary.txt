@@ -1,0 +1,21 @@
+gate interiors/clockroom 299745d2: the merged tree c29ad293, the assembly as it was 7df4594a
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 97 scenes in 140 s: 97 pass (54 with warnings)
+pictures: [PASS] selfshots obs_int_clockroom at c29ad293: 9 of 9 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_int_clockroom_bare at c29ad293: 2 of 2 kept pictures are what the code draws
+pictures: obs_int_domeroom: the kept pictures are NOT what the delivered commit 299745d2 draws (it goes back):
+    [FAIL] selfshots obs_int_domeroom at c29ad293: 0 of 18 kept pictures are what the code draws, 18 not
+    v8: 127577 of 921600 pixels are not what the code draws (off by up to 134 of 255)
+    v8_deep: 128154 of 921600 pixels are not what the code draws (off by up to 123 of 255)
+    v8_glow: 127061 of 921600 pixels are not what the code draws (off by up to 148 of 255)
+    v8_south: 123809 of 921600 pixels are not what the code draws (off by up to 134 of 255)
+    int_slit: 91574 of 921600 pixels are not what the code draws (off by up to 129 of 255)
+    slit_foot: 504 of 921600 pixels are not what the code draws (off by up to 44 of 255)
+    girder: 9277 of 921600 pixels are not what the code draws (off by up to 139 of 255)
+    int_desk: 255581 of 921600 pixels are not what the code draws (off by up to 25 of 255)
+    ladder: 79379 of 921600 pixels are not what the code draws (off by up to 51 of 255)
+    far_door: 243083 of 921600 pixels are not what the code draws (off by up to 133 of 255)
+    stair_exit: 58866 of 921600 pixels are not what the code draws (off by up to 98 of 255)
+    stair_turn: 50613 of 921600 pixels are not what the code draws (off by up to 125 of 255)
+pictures: [PASS] selfshots obs_mach_clocks at c29ad293: 15 of 15 kept pictures are what the code draws
+result: FAIL

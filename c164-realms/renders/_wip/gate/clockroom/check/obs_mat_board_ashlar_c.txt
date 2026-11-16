@@ -1,0 +1,13 @@
+check obs_mat_board_ashlar_c at c29ad29
+[PASS] regen     11827 blocks, 0 entities, 0 models, 574 resource-pack files, 12 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (0.6 s)
+[PASS] conflicts the scene writes 573 files, no file written twice, the folders and the prefix of materials are kept (7 packages run alone)
+[PASS] strays    112 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      432 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   81 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    148 kinds of block placed, all in the occupancy table
+[SKIP] flatwall  a test scene of materials: its sample walls and backdrops are meant to be flat
+[PASS] entities  0 display entities
+[PASS] views     9 shots, most display entities in view: 0 (all), limit 600; counted without what walls hide
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    nothing moves
+result: PASS (0 failed, 0 with warnings)
