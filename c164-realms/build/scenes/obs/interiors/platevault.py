@@ -55,6 +55,7 @@ import numpy as np
 
 from artkit import models as M
 from artkit.blocks import st
+from artkit.pixelart import Frames, Picture
 
 from ..common import blocks as B
 from ..common import palette as P
@@ -71,6 +72,15 @@ MOVED_IN = True         # the master scene dresses the room (fast lane: a card's
 NAME = "interiors/platevault"
 PREFIX = "int_vault_"
 PX = 1 / 16.0
+VIEW = M.NEAR           # everything in the room is drawn within 32 blocks (s2, 11-16; the assembly lowers it after
+#                         build()): no board view looks into the base storey, whose windows the stacks stand before
+# What stands in the vault is drawn within 16 (s2 #92242: the board's V3 and V4 count 78 pieces of this
+# room through the front, and the game draws them through it). No clear line in the room is longer:
+# the nave from the door to the last face is 13, an aisle 15, and the stacks stand across every
+# diagonal. What the nave ends on stays near: the darkroom's pieces on its south wall and the curtain
+# are 19 from the door, and the caged lamps, the one over the door seen from the darkroom's bench.
+NEAR_KEPT = ("int_vault_dark_sink", "int_vault_dark_safelight", "int_vault_dark_timer", "int_vault_dark_shelf",
+             "int_vault_dark_rack", "int_vault_dark_bench", "int_vault_curtain", "prop_lamp_cage_*")
 
 # ---- the room (cells) ---------------------------------------------------------------------------
 _ABOVE = shell.ROOMS["chart room"]
@@ -120,6 +130,28 @@ ASK_DARK = 6                        # the darkroom: as low as a source can be th
 PANEL_T = 3 * PX                    # a panel of the wainscot, off its wall
 
 DRIP = 50                           # ticks between two drops of the sink's tap
+
+# ---- the developer: tonight's plate comes up in the first tray (A0 #86939) ------------------------
+# The comet as the plate on the checking table has it (props/paper: the head low on the left, the tail
+# up and away to the right, field stars), on a plate of 8 by 5 under the bath. A digit is how dense
+# the silver gets there, 1 to 6: the densest comes up first, the faintest last, as on a plate.
+COMET = (
+    "....3221",
+    "1..443..",
+    ".665...2",
+    ".66.....",
+    "....1.2.",
+)
+SILVER = (("cream", 1), ("cream", 0), ("ashlar", 0), ("slate", 6), ("slate", 4), ("slate", 2), ("slate", 0))
+#          the emulsion seen through the bath, then the silver from density 1 to 6: neutral, as the plates on the racks
+CREST = ("cream", 2)                # the plate under a crest of the bath
+BATH, BATH_LIT = ("old_copper", 0), ("old_copper", 1)       # the developer (the tone of the kit's bath), a crest
+GLINT, GLINT_TAIL = ("signal", 1), ("signal", 0)       # the safelight on the bath, at the side the lamp hangs,
+#                                                         and its streak towards who looks
+BATH_W, BATH_D = 10, 7              # texels: the sheet over the tray's bath (10.5 by 7.5), the plate a texel in
+BATH_TOP = 1.85                     # texels above the tray's underside: over the plate the kit's tray has (1.75)
+BATH_BEAT = 15                      # ticks a picture is shown; the game blends each into the next
+HOLD, WASH, RISE = 9, 5, 18         # pictures: the plate lies done, the bath swills over it, the picture comes up
 
 # ---- blocks ---------------------------------------------------------------------------------------
 FLOOR = B.FLOOR_WOOD.block
@@ -253,6 +285,70 @@ def _curtain():
     return m
 
 
+def bath_pictures():
+    """The pictures of the developer's surface, one after the other, as rows of (ramp, step): the
+    plate lies done under the bath (the first picture, which is the still one), the bath swills over
+    it from the east and leaves it clear, and the comet comes up again, the head first. All the
+    while a crest runs along the far rim and one along the near rim, and the safelight's glint
+    stands on the side the lamp hangs, a texel up or down."""
+    w, h = BATH_W, BATH_D
+    done = [[-1] * w for _ in range(h)]                         # -1: the bath; 0 to 6: the plate, by its silver
+    for j, row in enumerate(COMET):
+        for i, ch in enumerate(row):
+            done[1 + j][1 + i] = 0 if ch == "." else int(ch)
+    count = HOLD + WASH + RISE
+    out = []
+    for k in range(count):
+        crest = None
+        if k < HOLD:
+            grown = 1.0
+        elif k < HOLD + WASH:
+            grown, crest = 1.0, 2 * (k - HOLD)                  # the column of the crest; west of it the old picture
+        else:
+            grown = (k - HOLD - WASH + 1) / float(RISE)
+        far = {(k * 2 * w // count + i) % w for i in range(3)}  # twice along the far rim in a round, westwards
+        near = {(w - 3 - k * w // count - i) % w for i in range(2)}     # once along the near rim, eastwards
+        glint = 2 + (k // 4) % 2
+        rows = []
+        for y in range(h):
+            row = []
+            for x in range(w):
+                silver = done[y][x]
+                if silver < 0:
+                    lit = (y == 0 and x in far) or (y == h - 1 and x in near) or x == crest
+                    edge = x == w - 1
+                    tone = (GLINT if edge and y == glint else GLINT_TAIL if edge and y == glint + 1
+                            else BATH_LIT if lit else BATH)
+                elif x == crest:
+                    tone = CREST
+                elif crest is not None and x < crest:
+                    tone = SILVER[0]
+                else:
+                    tone = SILVER[min(silver, int(silver * grown + 0.5))]
+                row.append(tone)
+            rows.append(row)
+        out.append(rows)
+    return out
+
+
+def _bath():
+    """The surface of the developer in the first tray of the kit, with tonight's plate under it: one
+    sheet whose picture moves by itself in the client (plan/parts/materials.md, 2 D), no command and
+    no part. Anchor: the middle of the tray's underside, so it takes the tray's light."""
+    shots = []
+    for k, rows in enumerate(bath_pictures()):
+        px = np.empty((BATH_D, BATH_W, 4), dtype=np.uint8)
+        px[..., 3] = 255
+        for y, row in enumerate(rows):
+            for x, tone in enumerate(row):
+                px[y, x, :3] = P.colour(*tone)
+        shots.append(Picture(f"{PREFIX}bath_{k}", px))
+    m = M.Model(PREFIX + "bath")
+    m.box((-BATH_W / 2.0, BATH_TOP - 0.1, -BATH_D / 2.0), (BATH_W / 2.0, BATH_TOP, BATH_D / 2.0), K.flat(*BATH),
+          skip="nsewd", faces={"u": Frames(PREFIX + "bath_surface", shots, frametime=BATH_BEAT, interpolate=True)})
+    return m
+
+
 @functools.lru_cache(maxsize=None)
 def _models():
     out = {}
@@ -260,7 +356,7 @@ def _models():
         for tag, anchor in (("", LOW), ("_up", HIGH)):
             m = _face(name + tag, seed + (500 if tag else 0), anchor)
             out[m.name] = m
-    for m in (_checker(), _curtain()):
+    for m in (_checker(), _curtain(), _bath()):
         out[m.name] = m
     return out
 
@@ -295,6 +391,7 @@ def build_platevault(canvas, origin=(0, 0, 0)):
     ox, oy, oz = origin
     own = _models()
     n = 0
+    first = len(canvas.entities)
 
     def put(x, y, z, state):
         canvas.set(ox + x, oy + y, oz + z, state)
@@ -394,6 +491,10 @@ def build_platevault(canvas, origin=(0, 0, 0)):
                    f"{NAME}:safelight")
     tap = K.turn(K.FACING["north"], D.TAP)              # the mouth of the tap that drips, from the sink's anchor
     MK.puff(canvas, (AXIS_X + tap[0], FEET + tap[1], south + tap[2]), "dripping_water", DRIP, origin=origin)
+    # tonight's plate in the developer: the sheet lies in the kit's first tray, at the tray's own anchor
+    n += K.put(canvas, own[PREFIX + "bath"],
+               (dict(D.TRAYS)["tray_dev"], FEET + D.TOP["bench"], south - (D.BENCH_OUT / 2.0 + 0.5) * PX),
+               facing="north", origin=origin, view=M.SMALL)
     n += D.lift(canvas, (LIFT[0], FEET, LIFT[1]), "east", origin, top=CEIL_Y - FEET)
 
     # ---- the register desk beside the lift, the day's cases by the door ------------------------------
@@ -411,6 +512,7 @@ def build_platevault(canvas, origin=(0, 0, 0)):
     n += paper.place(canvas, "photo_plate_b", (check[0] + 0.3, glass, check[2] - 0.05), yaw=-12.0, origin=origin)
     n += furniture.place(canvas, "crate", (X1 - 0.75, float(FEET), Z0 + 0.6), yaw=4.0, origin=origin)
     n += furniture.place(canvas, "crate_small", (X1 - 0.8, FEET + furniture.TOP["crate"], Z0 + 0.6), yaw=20.0, origin=origin)
+    M.band(canvas, first, M.SMALL, keep=NEAR_KEPT)
     return n
 
 

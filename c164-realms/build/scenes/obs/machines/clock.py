@@ -53,13 +53,16 @@ Models; px equals the scale each is shown at, so every texture is 16 pixels to t
   mach_clock_master_dial     the master dial and its bezel; anchor = the middle of its back   1
   mach_clock_master_hand_h   its hour hand; anchor = the dial centre                           1
   mach_clock_master_hand_m   its minute hand                                                   1
+  mach_clock_master_hand_s   its seconds hand, a gilt needle over the other two                1
   mach_clock_pendulum        rod, armature, bob and pointer; anchor = the pivot                1
   mach_clock_face            one tower dial; anchor = its centre on the back plane             2
+  mach_clock_face_open       the same with the enamel open in the middle and a hoop for a drum:
+                             the dial of a face whose works main/tower shows (its WORKS_SIDES)  2
   mach_clock_hand_h          a tower hour hand; anchor = the dial centre                       1
   mach_clock_hand_m          a tower minute hand                                               1
   mach_clock_ball            the time ball in old copper; anchor = its centre                  1
   mach_clock_ball_red        the same in dark red                                              1
-18 display entities in all (master 5, tower 12, ball 1); the budget of this card is 40.
+19 display entities in all (master 6, tower 12, ball 1); the budget of this card is 40.
 
 Moving pieces (motion/_kit registers each where it is placed and writes the functions). In the
 first round only the pendulum moved (A0, 11-15: the sky is locked at eight in the evening and a
@@ -75,12 +78,16 @@ starts and what every offline picture shows: 7:55, the ball at half mast, the pe
         dials run twelve times as fast as a day: an hour of theirs is five minutes, so that the
         minute hand is seen to creep. transformation(name, -degrees) with degrees from
         hand_angles(hour, minute) is the pose of a hand at a time.
+  the seconds hand   of the master clock (tag c164_clock_hand_s) jumps a sixtieth of a turn on
+        every BEAT, a second, and is once round in SECONDS: MK.turn. It is placed at twelve.
   the ball       (tag c164_clock_ball) slides along the mast, y only, once in every hour of the
         dials: from half mast (BALL_HALF_Y, where it waits) to the top (BALL_UP_Y) two minutes of
         the dials before the hour, down to the foot of the mast (BALL_REST_Y) on the hour, and
         back to half mast half a minute later: ball_moves(). It keeps its turn about the mast.
-Every other dial of the hill that is placed at TIME and turns in HOUR and HALF_DAY keeps time with
-these; ticks_to(hour, minute) is the tick of the loop at which the dials show a time.
+Every other dial of the hill keeps time with these in one line a hand, after the line that places
+the hand at TIME: clock.drive(canvas, "h" | "m" | "s", axis), the axis the one that points out of
+the dial. ticks_to(hour, minute) is the tick of the loop at which the dials show a time; strikes()
+and quarters() are the ticks of the full hours and of the quarters, for the bells.
 transformation() gives the whole "transformation" of the entity for a turn, because the anchor of a
 hand or of the pendulum is not the middle of its model and the translation changes with the turn.
 
@@ -114,6 +121,14 @@ TIME = tuple(S.CLOCK)
 # starts with the others and stays with them (the clock room, the station clock: they read these).
 HOUR = 6000                      # ticks from one hour of the dials to the next: a minute hand once round
 HALF_DAY = 12 * HOUR             # 72000: an hour hand once round
+# The station has one beat, the master clock's (plan/fine.md 4: one time and one beat for every
+# clock, watch and time mark): a second. On it every pendulum passes the plumb line (the kit's
+# PENDULUM is two beats, there and back), the master clock ticks and every seconds hand jumps a
+# sixtieth of a turn. The seconds are real ones and are not sped up with the dials: a hand that
+# went round in a minute of the dials would whirl.
+BEAT = 20                        # ticks from beat to beat, the first on tick 0 of the loop
+SECONDS = 60 * BEAT              # 1200: a seconds hand once round
+SECOND_JUMP = 3                  # ticks a seconds hand is on its way from one second to the next
 
 
 def ticks_to(hour, minute=0.0):
@@ -124,7 +139,19 @@ def ticks_to(hour, minute=0.0):
     return int(round(((then - now) % 720.0) * HOUR / 60.0))
 
 
-TAG_HOUR, TAG_MINUTE = "c164_clock_hand_h", "c164_clock_hand_m"
+def strikes():
+    """((tick, hour), ...): the ticks of the loop on which the dials show a full hour, and the hour,
+    in the loop's order and once round in HALF_DAY: what an hour bell strikes, and when."""
+    return tuple(sorted((ticks_to(hour), hour) for hour in range(1, 13)))
+
+
+def quarters():
+    """((tick, quarter), ...): the ticks of a round of HOUR on which the dials show a quarter past
+    (1), half past (2), a quarter to (3) and the full hour (4), in the loop's order."""
+    return tuple(sorted((ticks_to(TIME[0], 15 * q) % HOUR, q) for q in (1, 2, 3, 4)))
+
+
+TAG_HOUR, TAG_MINUTE, TAG_SECOND = "c164_clock_hand_h", "c164_clock_hand_m", "c164_clock_hand_s"
 TAG_BALL = "c164_clock_ball"
 
 # --- the master clock ---------------------------------------------------------------------------
@@ -180,7 +207,26 @@ DIAL_DRUM = 0.75                 # the drum behind the dial, in blocks
 # (#645858, 0.36 of full white) to within a hundredth, between the stone of the wall (0.22) and
 # the lit frosted window (0.54). scenes/obs_mach_clocks/measure.py reads all of it off the pictures.
 DIAL_LIGHT = {"east": (15, 9), "west": (15, 9), "south": (8, 6), "north": (8, 6)}
-FAR = 4.0                        # view_range of everything on the tower: seen from the far platforms
+# view_range, in the classes of plan/round2.md (12:27). The client draws a display entity wherever
+# the camera looks, walls or no walls, as far as its view range goes: from the platform every piece
+# of the hall was drawn behind the front.
+FAR = M.FAR                      # everything on the tower, seen across the whole site: 192 blocks
+INDOORS = M.NEAR                 # the master clock: 32 blocks. No view of the board sees it from
+#                                  outside (on the axis the armillary sphere and the door stand before it)
+# The dial whose works are seen (plan/round2.md, main/tower-works). main/tower builds the works and
+# says on which faces, in its WORKS_SIDES: the south one, 55 pixels across in V4, where the east one
+# is 16 in V5 (the review, 11-16 12:28). Such a dial's enamel is open in the middle, to OPEN_HOLE
+# pixels from the centre, with a brass edge round the opening painted on the plate; the drum behind
+# it is a hoop that leaves OPEN_DRUM pixels clear all round the axis, the whole of DIAL_DRUM deep,
+# for the wheels and the lit backing. The hands' bosses hang in the opening on main/tower's arbor.
+# What of the works stands still (the backing, the plates, the arbor) main/tower draws into this
+# dial's own model, so that it costs the views no entity: _face_open() hands it the model
+# (tower.works_into(model, 2.0), the 2.0 being the pixels to one of the model's units; the origin
+# is the dial's centre on its back plane, +z looks at whoever reads the dial, the hoop is z -6..0
+# and clear within 9, the plate z 0..0.5 with its opening 5.5). WORKS_IN_FACE says that it does.
+OPEN_HOLE = 11.0                 # pixels: an opening of 1.375 blocks in a dial of 2.5
+OPEN_DRUM = 18.0                 # pixels: the hoop's inner radius, 1.125 blocks
+WORKS_IN_FACE = True
 
 # --- the time ball ------------------------------------------------------------------------------
 BALL = "copper"                  # the colour tower() hangs (A0, 11-16); "red" is the other one made
@@ -268,6 +314,9 @@ INK = P.colour("iron", 1)
 # the hands of the small dial: blued steel in one tone, two steps lighter than the ink of the marks,
 # so that the tip of the minute hand and the mark it points at stay two things (cr3, 11-16)
 HAND_FLAT = K.flat("iron", 3)
+# the seconds hand of the small dial: gilt, the one tone that parts it from the enamel under it and
+# from the two blued hands it passes over
+HAND_GILT = K.flat("brass", 2)
 ENAMEL = [P.colour("cream", i) for i in range(len(P.RAMPS["cream"]))]      # dark to light
 # The paint of the ball: the model's name, the ramp and its steps for the five zones from the far
 # side to the highlight. The middle zone is the paint as it is (the step its material starts
@@ -380,11 +429,12 @@ def _squares(px, corner):
                         px[j, i, 3] = 255
 
 
-def _tower_dial():
+def _tower_dial(hole=0.0):
     """The tower dial, 40 pixels across inside its rim. From the rim in: a line all round (the
     minute track), a bar of two pixels by four hanging from it at each quarter and a square of two
     by two at each of the other hours. The disc is drawn a little under the rim so that no gap
-    shows at the corners of the many-sided ring."""
+    shows at the corners of the many-sided ring. With `hole` the enamel is open that many pixels
+    from the centre, a brass edge of one pixel round the opening: the dial that shows the works."""
     size, c = 40, 20.0
     px = _disc(size, 20.7, 18.6)
     for j in range(size):
@@ -393,7 +443,19 @@ def _tower_dial():
                 px[j, i, :3] = INK
     _marks(px, (13.5, 17.5, 1.0))
     _squares(px, TOWER_MARK)
-    return _Picture("clock_tower_dial", px)
+    if not hole:
+        return _Picture("clock_tower_dial", px)
+    brass = [P.colour("brass", i) for i in range(len(P.RAMPS["brass"]))]       # dark to light
+    for j in range(size):
+        for i in range(size):
+            x, y = i + 0.5 - c, c - (j + 0.5)
+            r = math.hypot(x, y)
+            if r <= hole:
+                px[j, i] = 0
+            elif r <= hole + 1.0:
+                # the edge of the opening: brass, lit from the upper left as the rim is
+                px[j, i, :3] = brass[4] if y - x > 0.6 * r else brass[2] if x - y > 0.6 * r else brass[3]
+    return _Picture("clock_tower_dial_open", px)
 
 
 def _master_dial():
@@ -502,6 +564,12 @@ def _master_hand(kind):
         m.box((-1.5, -1.0, 0.75), (1.5, 2.5, 1.25), HAND_FLAT)
         m.box((-1.0, 2.5, 0.75), (1.0, 4.0, 1.25), HAND_FLAT, skip="d")
         m.box((-0.5, 4.0, 0.75), (0.5, 5.5, 1.25), HAND_FLAT, skip="d")
+    elif kind == "s":
+        # the seconds hand, over the other two: a gilt needle out to the marks, a short tail with
+        # its counterpoise, a cap on the arbor. It is the one hand that is seen to go from the door.
+        m.box((-0.3, -1.5, 2.5), (0.3, 8.0, 2.75), HAND_GILT)
+        m.tube("z", (0.0, -2.25), 2.5, 2.75, 0.75, HAND_GILT, sides=8)
+        m.tube("z", (0.0, 0.0), 2.5, 3.0, 0.6, HAND_GILT, sides=8)
     else:
         # two wide as far as the hour hand reaches, one from there to the marks
         m.box((-1.0, -1.5, 1.5), (1.0, 4.5, 2.0), HAND_FLAT)
@@ -535,6 +603,20 @@ def _face():
     m.tube("z", (0.0, 0.0), -DIAL_DRUM * 8.0, 0.0, 10.75, IRON_DARK, sides=24)
     m.box((-10.0, -10.0, 0.0), (10.0, 10.0, 0.5), CREAM, skip="nweud", faces={"s": _tower_dial()})
     m.ring("z", (0.0, 0.0, 0.75), 10.5, 1.0, 1.5, BRASS_LIGHT, sides=24)
+    return m
+
+
+def _face_open():
+    """The tower dial that shows the works: the same plate and rim, the enamel open in the middle
+    (OPEN_HOLE), the drum a hoop of the same outside that is clear within OPEN_DRUM."""
+    m = M.Model(PREFIX + "face_open", px=2.0)
+    inner, outer, deep = OPEN_DRUM / 2.0, 10.75, DIAL_DRUM * 8.0
+    m.ring("z", (0.0, 0.0, -deep / 2.0), (inner + outer) / 2.0, outer - inner, deep, IRON_DARK, sides=24)
+    m.box((-10.0, -10.0, 0.0), (10.0, 10.0, 0.5), CREAM, skip="nweud", faces={"s": _tower_dial(OPEN_HOLE)})
+    m.ring("z", (0.0, 0.0, 0.75), 10.5, 1.0, 1.5, BRASS_LIGHT, sides=24)
+    works = getattr(_tower_module(), "works_into", None)
+    if works is not None:
+        works(m, 2.0)
     return m
 
 
@@ -680,7 +762,7 @@ def _ball(name, paint):
 def _models():
     out = {}
     made = [(_master(), 2.0), (_master_dial_model(), 1.0), (_master_hand("h"), 1.0), (_master_hand("m"), 1.0),
-            (_pendulum(), 1.0), (_face(), 2.0), (_hand("h"), 1.0), (_hand("m"), 1.0)]
+            (_master_hand("s"), 1.0), (_pendulum(), 1.0), (_face(), 2.0), (_face_open(), 2.0), (_hand("h"), 1.0), (_hand("m"), 1.0)]
     made += [(_ball(name, paint), 1.0) for name, paint in BALL_TONES.values()]
     # The tubes and rings of eight, sixteen and twenty-four sides (weights, arbors, bezels, the drum
     # behind a dial, the plate under the ball) have flats exactly between two axes, and the game lights
@@ -773,12 +855,28 @@ def _swing(canvas):
         MK.swing(canvas, "z", PENDULUM_SWING, MK.PENDULUM)
 
 
-def _run(canvas, period):
-    """Register the hand placed last: it turns about its model's z axis through its anchor, the
-    dial's centre, clockwise as the dial is looked at, once in `period` ticks (HOUR or HALF_DAY)."""
+def drive(canvas, kind, axis="z", **which):
+    """One hand of a dial keeps the station's time, on this dial or on any other of the hill.
+
+    Registers the display entity placed last (or the one the motion kit is told of: entity=,
+    model=, name=) with the motion line:
+      "h"   an hour hand: once round in HALF_DAY
+      "m"   a minute hand: once round in HOUR
+      "s"   a seconds hand: a sixtieth of a turn on every BEAT, once round in SECONDS
+    axis is the model's own axis ("z", "-x", ...) or a direction in the world that points out of
+    the dial at whoever reads it; the hand turns clockwise as he sees it, about its entity's place.
+    The hand is placed at TIME: hand_angles(*TIME) are the degrees past twelve of the hour and the
+    minute hand, a seconds hand stands at twelve. A seconds hand costs a command a second, the
+    other two one in ten seconds. Returns 0; in a tree without the motion kit nothing is done."""
     MK = _kit()
-    if MK is not None:
-        MK.spin(canvas, "z", -int(period))
+    if kind not in ("h", "m", "s"):
+        raise ValueError(f"machines/clock: a hand is \"h\", \"m\" or \"s\", not {kind!r}")
+    if MK is None:
+        return 0
+    if kind == "s":
+        moves = [(k * BEAT, -6.0 * (k + 1), SECOND_JUMP) for k in range(60)]
+        return MK.turn(canvas, axis, moves, SECONDS, **which)
+    return MK.spin(canvas, axis, -(HALF_DAY if kind == "h" else HOUR), **which)
 
 
 def _drop(canvas):
@@ -793,17 +891,19 @@ def master(canvas, origin=(0, 0, 0), time=None):
     its lamp; returns the entity count."""
     hour, minute = hand_angles(*(time or TIME))
     face = MASTER_FACING
-    n = _put(canvas, "master", _out(MASTER_AT, face, (0.0, MASTER_HOLD, 0.0)), origin, face)
+    n = _put(canvas, "master", _out(MASTER_AT, face, (0.0, MASTER_HOLD, 0.0)), origin, face, view=INDOORS)
     n += _put(canvas, "pendulum", _out(MASTER_AT, face, MASTER_PIVOT), origin, face,
-              turns=(("z", PENDULUM_POSE),))
+              turns=(("z", PENDULUM_POSE),), view=INDOORS)
     _swing(canvas)
     centre = _out(MASTER_AT, face, MASTER_DIAL)
-    lit = dict(brightness=MASTER_DIAL_LIGHT)
+    lit = dict(brightness=MASTER_DIAL_LIGHT, view=INDOORS)
     n += _put(canvas, "master_dial", centre, origin, face, **lit)
     n += _put(canvas, "master_hand_h", centre, origin, face, tag=TAG_HOUR, turns=(("z", -hour),), **lit)
-    _run(canvas, HALF_DAY)
+    drive(canvas, "h")
     n += _put(canvas, "master_hand_m", centre, origin, face, tag=TAG_MINUTE, turns=(("z", -minute),), **lit)
-    _run(canvas, HOUR)
+    drive(canvas, "m")
+    n += _put(canvas, "master_hand_s", centre, origin, face, tag=TAG_SECOND, **lit)
+    drive(canvas, "s")
     _collide(canvas, origin)
     _lamp(canvas, origin)
     return n
@@ -877,18 +977,35 @@ def ball(canvas, pos, colour=None, origin=(0, 0, 0)):
     return _put(canvas, name, pos, origin, tag=TAG_BALL, brightness=BALL_LIGHT, view=FAR, turns=_STANDING[name])
 
 
-def tower(canvas, origin=(0, 0, 0), time=None, sides=SIDES, colour=None):
-    """The four dials of the tower with their hands, and the time ball; returns the entity count."""
+def _tower_module():
+    """main/tower, or None in a tree that has none."""
+    try:
+        from ..main import tower as T
+    except ImportError:
+        return None
+    return T
+
+
+def works_sides():
+    """The faces of the tower whose works main/tower shows behind the dial: its WORKS_SIDES. A tree
+    whose tower says nothing has every dial whole."""
+    return tuple(getattr(_tower_module(), "WORKS_SIDES", ()))
+
+
+def tower(canvas, origin=(0, 0, 0), time=None, sides=SIDES, colour=None, works=None):
+    """The four dials of the tower with their hands, and the time ball; returns the entity count.
+    `works` names the faces whose dial is open in the middle (works_sides() when left out)."""
     hour, minute = hand_angles(*(time or TIME))
+    shown = works_sides() if works is None else tuple(works)
     n = 0
     for facing in sides:
         pos = dial_centre(canvas, facing, origin)
         lit = dict(brightness=DIAL_LIGHT[facing], view=FAR)
-        n += _put(canvas, "face", pos, origin, facing, **lit)
+        n += _put(canvas, "face_open" if facing in shown else "face", pos, origin, facing, **lit)
         n += _put(canvas, "hand_h", pos, origin, facing, tag=TAG_HOUR, turns=(("z", -hour),), **lit)
-        _run(canvas, HALF_DAY)
+        drive(canvas, "h")
         n += _put(canvas, "hand_m", pos, origin, facing, tag=TAG_MINUTE, turns=(("z", -minute),), **lit)
-        _run(canvas, HOUR)
+        drive(canvas, "m")
     # the ball makes its round on a mast alone: where none stands it lies at the foot and stays there
     hoisted = mast_stands(canvas, origin)
     n += ball(canvas, (BALL_AXIS[0], BALL_HALF_Y if hoisted else BALL_REST_Y, BALL_AXIS[1]), colour, origin)

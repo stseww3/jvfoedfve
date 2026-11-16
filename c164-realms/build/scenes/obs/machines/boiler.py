@@ -43,12 +43,18 @@ y up from the floor, z from the axis (south is positive).
 import functools
 import math
 
+from artkit import models as M
+from artkit import pixelart as PX
+
 from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
 from . import _powerkit as K
 
 PREFIX = "mach_boiler_"
+VIEW = M.NEAR                           # the assembly's view band (s2 #88336): a machine indoors is drawn
+#                                         within 32 blocks. Of the board's twelve views only V6 looks
+#                                         into the power house, from 24 blocks
 
 # --- where they stand (scene coordinates, blocks) -----------------------------------------------------
 FLOOR = float(S.LOWER_GROUND)           # -6.0
@@ -250,6 +256,20 @@ def _fire_picture():
     return p
 
 
+# The fire moves: the pictures that show its glow are frames (plan/parts/materials.md 2 D). The game
+# runs them by itself, no command and no entity; all the moving pictures of one model keep one pace.
+_FIRE_FRAMES = 6
+_FIRE_TICKS = 4                         # a frame of the fire lasts a fifth of a second
+
+
+def _alive(pix, name, seed):
+    """A drawn picture of the fire's glow, flickering: from frame to frame its two tones change
+    places here and there (pixelart.shimmer). The first frame is the picture as it was drawn, and
+    that is the one the offline pictures show."""
+    return PX.shimmer(name, pix.sprite(name).paint(pix.w, pix.h), [K.TONES["u"], K.TONES["v"]],
+                      frames=_FIRE_FRAMES, frametime=_FIRE_TICKS, share=0.3, seed=seed)
+
+
 def _door_picture():
     w, h = _DOOR
     p = K.Pix(w, h, _i(3))
@@ -376,7 +396,7 @@ def _door(number):
     d.tube("x", (_FURNACE, 0), -2, 1, _MOUTH, IRON_L, sides=16)
     d.plate("w", (-2, _FURNACE, 0), 22, 22, _mouth_picture().sprite(PREFIX + "mouth"), lift=0.25)
     w, h = _DOOR
-    d.plate("w", (-2.25, _DOOR_Y, 0), w + 2, h + 2, _fire_picture().sprite(PREFIX + "fire"), lift=0.25, emit=15)
+    d.plate("w", (-2.25, _DOOR_Y, 0), w + 2, h + 2, _alive(_fire_picture(), PREFIX + "fire", 1), lift=0.25, emit=15)
     d.plate("w", (-2.25, _FURNACE - 7.5, -1.5), 5, 1, K.Pix(5, 1, "u").sprite(PREFIX + "ash"), lift=0.25, emit=15)
     for y in (20, 25):                                  # the hinges, on the south jamb
         d.box((-4.5, y, w / 2.0), (-2, y + 2, w / 2.0 + 2), IRON_L)
@@ -385,13 +405,13 @@ def _door(number):
     def leaf():
         d.box((-4, _DOOR_Y - h / 2.0, -w / 2.0), (-3, _DOOR_Y + h / 2.0, w / 2.0), _fl(2), seed=0,
               faces={"w": _door_picture().sprite(PREFIX + "leaf"), "u": _fl(4), "n": _fl(3), "s": _fl(3)})
-        d.plate("w", (-4, _DOOR_Y - 1.5, 0), 8, 5, _slots_picture().sprite(PREFIX + "slots"), lift=0.25, emit=15)
+        d.plate("w", (-4, _DOOR_Y - 1.5, 0), 8, 5, _alive(_slots_picture(), PREFIX + "slots", 2), lift=0.25, emit=15)
         d.box((-5.5, _DOOR_Y - 2, -w / 2.0 + 1), (-4, _DOOR_Y + 2, -w / 2.0 + 2), IRON_L)    # the latch's grip
 
     if number == 2:
         with d.turned(("y", _AJAR), about=(-3, _DOOR_Y, w / 2.0)):
             leaf()
-            d.plate("e", (-3, _DOOR_Y, 0), w, h, _lining_picture().sprite(PREFIX + "lining"), lift=0.25, emit=15)
+            d.plate("e", (-3, _DOOR_Y, 0), w, h, _alive(_lining_picture(), PREFIX + "lining", 3), lift=0.25, emit=15)
     else:
         leaf()
 

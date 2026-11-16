@@ -77,9 +77,10 @@ def rail(c, o, cells, piers, y=S.GROUND, kerb=True):
 
 # --- the ridge under the cable track --------------------------------------------------------------
 # East of the station the mountain keeps one ridge for the trestle to stand on (site/cablecar): it
-# leaves the lower platform's east edge in row z -33 and runs east by north, one cell north for
-# every three east, falling slowly at first and then fast, down to the lowest top the rock has
-# (ROCK_LOWEST, at x 120 and 121); beyond it the trestle stands in the sea.
+# leaves the lower platform's east edge in row z -33 and runs due east, as the railway does
+# (site/_rail: the line is straight from the buffers to the incline's foot), falling slowly at
+# first and then fast, down to the lowest top the rock has (ROCK_LOWEST, at x 120 and 121). The
+# viaduct's first piers stand on its far end; beyond it they stand in the sea.
 CABLE_RIDGE_X = (S.LOWER_PLATFORM[2] + 1, S.LOWER_PLATFORM[2] + 30)     # x 92..121
 CABLE_RIDGE_Z = -33
 ROCK_FLOOR = -29                # the top block of level cloud (sky/cloudsea's MEAN): what stands in the sea counts its
@@ -98,6 +99,6 @@ def cable_ridge(x):
     if not x0 <= x <= x1:
         return None
     d = x - x0 + 1
-    z = int(round(CABLE_RIDGE_Z - (x - x0) / 3.0))
+    z = CABLE_RIDGE_Z
     y = max(ROCK_LOWEST, int(round(S.LOWER_PAVING_Y - 1 - 0.30 * d - 0.014 * d * d)))
     return z, y
