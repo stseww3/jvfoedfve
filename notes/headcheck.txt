@@ -62,3 +62,15 @@
 12:06 4b9e5169 96 个场景全过（警告 48：blocks 27、views 26、sight 15、entities 12、flatwall 5、motion 2），看板 --check 过（总监机；含导览乙两张表 fcbbacb9、8037655a）；主场景 obs：1224 个显示实体（上限 3000：machines 177、interiors 631、props 298、motion 10、sky 68、materials 28、site 10、main 2），只有 entities、sight 两条老警告，blocks 没报 a4 的屏障
 12:13 68f419ae 96 个场景全过（警告 48），看板 --check 过（总监机；含 cable 的屏障 9dceff4a）
 12:23 3a3a5bb7 96 个场景全过（警告 48），看板 --check 过（node8；含 b8800503、2cb96a14、e4fd53fe、329644d2、s2 的 views 改动 d1b7bc0a）；主场景 views：V1 1062、V2 952、V3 792、V4 750、V5 702、V6 116、V7 466、V8 90、V9 225、V10 227、V11 983、V12 1112
+12:27 88e64304 96 个场景全过（警告 51），看板 --check 过（node33，新盘头一单；含 7e2f5291 小穹顶女儿墙屏障）；主场景 4 警；实体 1222（sky 66，比上一头少 2）；views：V1 1060、V2 950、V3 790、V4 749、V5 700、V6 116、V7 466、V8 90、V9 225、V10 227、V11 981、V12 1110
+12:39 f8bb4ab7 91 过 5 红（node8）：五个红同一行，motion 平均每拍 10.0 条压在 _kit 的旧线 MEAN = 10 上（obs 和四个带整山的 props 场景）；a2 改成第二轮的 40/120（0f01075e → ca741f15，cr2 12:42 合）
+12:43 b97bf1f2 96 个场景全过（警告 51），看板 --check 过（node33；a6 在 node48 上也是 96 全过）
+12:45 3e595cac 97 个场景 74 过 23 红（node8）：obs 和 22 个室内场景断在 models.export（TypeError: 'list' object is not callable）——贴图动画进公共件（34d720dd，s2 12:39 合的）和蓄电池室的缸（067100cd）撞名；s2 12:45 在公共件里修（3abd2789）
+12:48 3abd2789 97 pass (53 with warnings), node33 -- B1's head
+12:58 a839446a 96 pass 5 FAIL (node97): the power house's vents (site/powerhouse e12e2109, merge 73a2f0b0 by a4) -- c164:site_power_vent not in the packs of the five test scenes that borrow the shell; views V1 426 V2 357 V3 624 V4 669 V5 268 V6 119 V7 474 V8 91 V9 235 V10 254 V11 385 V12 479
+13:00 e1b88659 97 pass 5 FAIL (node73): the same five; views V1 391 V2 335 V3 610 V4 654 V5 233 V6 119 V7 459 V8 87 V9 242 V10 254 V11 363 V12 444; 1337 display entities (far 459, mid 36, near 754)
+12:59 4de549d8 (dd3d8f3d + the lines of fine.md, mine) 97 pass 5 FAIL (node33): the same five, nothing of mine
+13:03 ec8c262b 102 pass (56 with warnings), node33 -- green again after a4's revert of the vents; 1329 display entities of 6000; views V1 392 V2 335 V3 610 V4 654 V5 233 V6 115 V7 459 V8 87 V9 242 V10 254 V11 363 V12 445
+13:05 103a4205 102 pass (56 with warnings), node73 -- the two roof lamps are back (sky 104, lights: not placed here 0); 1331 display entities of 6000; views V1 394 V2 337 V3 612 V4 655 V5 235 V6 115 V7 459 V8 87 V9 242 V10 254 V11 365 V12 447; motion 134 parts, busiest tick 22 of 120, mean 12.6 of 40
+13:08 316941ab 102 pass (56 with warnings), node33 -- B2's head; 1331 display entities of 6000; views V1 326 V2 300 V3 610 V4 654 V5 207 V6 115 V7 459 V8 87 V9 242 V10 254 V11 318 V12 379; motion 134 parts, busiest tick 22 of 120, mean 12.6 of 40
+13:12 58fa4d5d 102 pass (56 with warnings), node73; 1332 display entities; views V1 277 V2 272 V3 605 V4 654 V5 191 V6 115 V7 460 V8 87 V9 242 V10 254 V11 284 V12 322; motion 135 parts, busiest tick 22, mean 12.6

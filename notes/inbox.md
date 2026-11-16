@@ -378,3 +378,23 @@
 - 12:23 node8 op_72ca1524f3: 3a3a5bb7 96 pass (48 warnings).
 - 12:25 STATUS 88e64304: 80 cards (12 round-2 cards in the tables: 制作中 12, 已合并 42, 已出图 1, 暂过 1, 已过审 24).
 - 12:23 aide: MY NODE IS node33 again (new disk; probe ok 12:24). 12:25 first job there: setup + checkall of the head, op pending.
+
+## 11-16 12:26 to 13:13 (round 2, B1 and B2)
+
+- 12:25 director #86330: four bands of view range (far 3.0, mid 1.0, near 0.5, small 0.25); the line a view 600 by my count; B1 warnings only, from B2's head red. I built it (6626f4e3), g2 #1763.
+- 12:36 director #87948: heads at :40 and :10; the head checked all the time on node73-76 (mine); approvers merge first and run their gate at once, red: mend in ten minutes or revert; I name the merge.
+- 12:39-12:45 the head broken by my merge of a1's moving pictures (34d720dd); mended 3abd2789. Promise: whole mountain on a node before anything goes into common.
+- 12:42 director #88691: a budget line that lags his numbers: I change it to the card page's numbers without asking.
+- 12:47 director #89525: plan/fine.md (variety frozen, three layers of detail, budgets 6000 / 600 / 400).
+- 12:48 B1's head 3abd2789 (97 pass); pinned cursor/c164-s2-b1-89df.
+- 12:50 director #89922: the train's size (car 5 x 3, engine 3.5, 12 seats).
+- 12:53 merged common/export v4 a44c3e40 -> a22c75a3 and a4's walks ed0ea799 -> c1fe7c71.
+- 12:55 machines: node73-76 opened for me; aide gave node90-92; node8 is cr2's now; node84, node107 authorized by the system (aide hands out public numbers: ask before using).
+- 12:58 head red: the power house's vents (73a2f0b0, a4); named to a4 and power; a4 reverted 13:01 (ec8c262b).
+- 13:00 my lines of fine.md in the assembly (468f75e7): 6000, 400 a room, 600 a view; obs-board-were.json (B1's numbers); viewbands --lost.
+- 13:04 STATUS 7b036648.
+- 13:08 B2's head 316941ab (102 pass), pinned cursor/c164-s2-b2-89df; sent outb, s1, a4, facade, director.
+- 13:09 facade: the two roof lamps go back to the east face (lights 59afa5ad -> 4fb893c8 at 13:11); sdome's barriers stay as changed.
+- 13:10 director #91951: out of doors, what is part of the outline or carries a light keeps the far band; only what is within a block goes to mid; owners change back by 13:35 (B3's head); V3 and V4 come down by the rooms counted through the front. INTERFACE 7 (3a5231a5), g2 #1854 with the list by owner.
+- 13:12 head 58fa4d5d 102 pass: V1 277 V2 272 V3 605 V4 654 V5 191 V6 115 V7 460 V8 87 V9 242 V10 254 V11 284 V12 322.
+- open: the baseline of the views (B1's numbers in the file; B2's would fail the ordered return of outdoor pieces in V3/V4 -- being measured); rows for bells and roofworks added; B3 at 13:40.

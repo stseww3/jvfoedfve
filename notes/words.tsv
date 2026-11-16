@@ -130,3 +130,72 @@ f8373a4a	附属屋·墩帽旁一格屏障 fd95e1dc（a4 合）：南观景台墩
 3a3a5bb7	室外走查·A8 3cb2961f（s2 合）：A8（8cddfa98）室外挡人的 0 处、卡死 0，21 个地标全走；a4 的墩帽屏障验过；矮栅和女儿墙不在 A8 里；另记一条冲刺跳（挡车器顶上车顶，不卡），随火车定；只加 plan/reviews/walk/8cddfa9/ 下 14 个文件
 745b9167	仪器·精密钟的摆 329644d2（a6 合，**关口待跑**；m1）：instruments.place() 里一行 MK.swing（左右各 3°），穹顶室 1 只、授时室 2 只摆起来；模型和图不变；三个场景的 check 在总监机过
 51002f1e	小穹顶·女儿墙上的屏障 7e2f5291（facade 合，**关口待跑**；sdome）：女儿墙一圈 136 列各两格屏障（y 19、20，实放 232 格），外形一格没动；本场景 check 0 败 1 警（屏障离模型远，总监认了）；A7 室外走查小毛病第 3 条
+dd948486	主楼外壳·西门过道 3944c14a（facade 合，**关口待跑**；shell）：S1 西门过道分两跨（一道拱肋、肋脚嵌板石、拱顶换细石、地面黑石板带），全是方块，不碰灯，净宽三格净高四格没动；本场景 check 过
+23d249b2	塔·风向标会摆 9428a680（facade 合，**关口待跑**；tower，第二轮第一样）：风向标从杆的模型里拆成单件，`MK.swing` 左右各 16°、5 秒一个来回；方块没动，展示实体 2 → 3；本场景 check 过
+34df4723	管线·表针抖、阀漏汽 e7196936（a6 合，**关口待跑**；m3）：进楼口干管的压力表针拆成单件 `MK.swing` 抖 ±2.5°；角阀和管桥头阀的填料函 `MK.puff` 漏汽；本场景 check 过（motion 1 件 3 点，最忙一拍 4 条）
+4ca80807	卷扬机会转 b2778f3c（cr3 合，**关口待跑**；cable）：卷筒和导轮用 `MK.spin` 转起来（64 拍、28 拍，收缆）；本场景 check 过，静止姿态没变
+b9b6c9cc	浑天仪会转 c5742a12（cr3 合，**关口待跑**；ashlar）：极轴上六件绕极轴一分钟一圈；本场景 check 过，静止姿态没变
+7f1ae791	彗星·成品包的月相 ec93ad08（cr2 合，关口待跑；a2）：成品包的 new_moon.png 不再是箭头测试卡，八个月相都是彗星；obs_sky_comet_b 和整山 obs（node7）过
+1ed295ca	烟·第七版 35742ec0（cr2 合，关口待跑；smoke）：烟囱每秒 8 团、16 条道；三个烟场景和整山 obs（node7）过，motion 最忙一拍 16、平均 7.7
+b5c51865	记录仪会动 752dbdaf（cr3 合，**关口待跑**；rec）：调速飞球转、笔按秒跳、电报机衔铁敲，带第二版鼓纸和托盘；本场景 check 过
+c6880ffb	钟·针走球落 7232d1af（cr3 合，**关口待跑**；clocks）：五只分针五只时针走（12 倍速），报时球每 5 分钟一个来回；本场景 check 过
+a4dfc4f0	时间室·V10 压三处亮的 157032b1（cr3 代 cr4 合，**关口待跑**；m2）：纸、台灯唇、壁灯琥珀玻璃，光源没动；本场景 check 过
+ce4b3ae6	主楼外壳 S1 的留档图 376b1df3（facade 合，**关口已跑**；shell）：17 个文件全在 renders/obs_main_shell，代码和总装一样；作者 node39 关口 PASS（delivery、check 96 场景、留档图 34/34 和代码一致）
+b97bf1f2	说明牌·缆车站改名 60672b3c（a6 合，关口 node48 补跑 PASS、checkall 96 全过；a6）：缆车站说明牌改名 SUMMIT STATION，只改 plaques.TEXT 一行
+052adc47	星厅·墩面垂线和星板 940af03c（cr3 合，**关口待跑**；orrery）：本场景 check 过
+067100cd	蓄电池室·缸里冒泡 d3a02b66（cr3 合，**关口待跑**；astro）：缸里冒泡的贴图动画、铁门扇（带 shell 的 `_doorcase` 507c0daf）；本场景 check 过。**进了公共件的贴图动画（34d720dd）以后和它撞名，头红了 6 分钟，s2 在公共件里修（3abd2789）**
+e36ca0c2	无线电桅·顶灯明灭 3e864a1a（cr3 合，**关口待跑**；mast）：顶灯明灭、火花隙；本场景 check 过
+50feba62	穹顶室·秒针跳 c5de5410（cr3 合，**关口待跑**；dome）：秒针跳、表针颤；本场景 check 过
+b55224c3	大镜·绕极轴摆 9e2cb75d（cr3 合，**关口待跑**；scope）：大镜绕极轴摆、夹轴面，留图重画；本场景 check 过
+6adcf111	时间室·世界钟秒针 4cc41ab0（cr3 合，**关口待跑**；m2）：世界钟秒针走，室内的件改近档可见距离；本场景 check 过
+8d51207d	子午仪室·天体照相仪跟踪 439a660f（cr3 合，**关口待跑**；sdome）：照相仪的轴、筒、背板绕极轴摆 2.5°；带 `interiors/_astroshell.py` 自查一处
+bdfc379d	星厅·号牌箱 743429bc（cr3 合，**关口待跑**；lights 代 hall）
+8e2ed222	发电房·近档可见距离 d83bda9a（cr3 合，**关口待跑**；power）：只加 `VIEW`
+3e595cac	穹顶室·近档可见距离 6a08e267（cr3 合，**关口待跑**；dome）：只加 `VIEW`
+f117ec78	声音·第二轮第一包 5bf18d1e（cr2 合，关口待跑；sound）：声音表多 24 个事件，`place` 收 cycle=、at=、pitch=，留声机、塔钟报刻、火车时刻（顶替数）；主场景登记的点没变
+ca741f15	循环·预算改成第二轮的线 0f01075e（cr2 合，关口待跑；a2）：`_kit` 的 PEAK 120、MEAN 40.0（总监第二轮定的；12:36 的头因为平均 10.0 压在旧线 10 上红了 5 个场景），加 `MK.turn`（clkrm 的）；a2 在 node36 上 check obs、obs_mot_loop、两套自测全过
+29cb89fc	声音·测试场景留图 e9727158（cr2 合，关口待跑；sound）：只有 renders/obs_mot_sound 两个文件
+cc2329ec	线路的数 369858ab（a4 合，**关口待跑**；a4）：只有 `site/_rail.py`（火车线路：全长 198 格，约 47 秒；不摆任何方块）和卡
+34d720dd	色板和贴图·会动的贴图 97919f01（s2 合，逐行读过，关口待跑；a1 交给公共的）：`artkit` 的 `pixelart.Frames`、`Picture`、`shimmer()`、`flame()`，`models.export` 遇到 Frames 写成竖叠的动画图加 `.mcmeta`；测试场景 `obs_mat_anim`；真机 s1 证了在动（b83a3fa2）。**合进去 6 分钟后发现和蓄电池室的缸撞名（属性也叫 frames），主场景和 22 个室内场景断了，s2 改公共件一行（3abd2789）**
+e7ec8dbe	蓄电池室·改用公共件的贴图动画 b858c67e（cr3 合，修头红；astro）：缸里冒泡改用 `pixelart.Frames`、删了私有类，图逐字节不变，另加近档可见距离；node72 上本场景 check 过、留图重画
+2a28bbbc	云海·云涌 789dcac7（cr2 合，关口待跑；cloud）：新文件 `sky/_swell.py`，云面下藏着的云头升起再沉回（30 个展示实体，远档带剔除盒，每刻 0.14 条命令），离山和栈桥 12 格以上；`_swell.ON=False` 即关
+8c5af58e	穹顶·转动的拍子 a5b474b2（facade 合，关口在跑；dome）：`main/_dome` 加四个数（TURN_DEG 3.0、TURN_PERIOD 600、TURN_KEYS 8、TURN_SIGN 1），`machines/dome` 读；方块、实体、图都不变
+aa6f4844	导览·微光 bcf2775d（cr2 合，关口待跑；smoke）：GLINT 由 wax_off 改 end_rod，一行常量
+1dec58f0	小活物·第一版 85e8e8de（cr2 合，关口待跑；smoke）：只发粒子（发电房门口的汽、四盏灯的 7 只蛾）；整山 check obs 在 node85 过
+9f09e42e	线路·停车点 1e49efa0（a4 合，**关口待跑**；a4）：只改 `site/_rail.py` 的数（STOP 2.5 → 3.0）
+b3cee18a	线路·车长 d9f7c175（a4 合，**关口待跑**；a4）：只改 `site/_rail.py` 的数（客车 5 格、机车 3.5 格，照总监 12:50 定的）
+78d54b89	电气和标牌·分档、旗摆 5756cb1b（a6 合，关口在跑；lamps）：站名牌中档、门旁号牌小档、门上台徽留远档，旗杆带旗时旗摆（`MK.swing`，主场景没挂旗），加一个全场测试场景；作者 node86 上三个场景和 obs 的 check 过
+52238702	电铃 dfde1718（a6 合，关口在跑；a6）：正门南墩灯上方一只电铃（锤 15 秒打一遍三下加三下，带铃音，最忙一拍 4 条）和门边按钮，3 件中档；furniture 室外件改中档
+a22c75a3	导出工具第四版 a44c3e40（s2 合，读过；outb）：骑着东西的人不被两条送回规则拽下车（谓词 `c164map:riding`，开场的火车要它），verify 走星图和镜后，假玩家自己的抢跑不算存档的错，编号带系列（B1），每拍用时进报告；outb 在 node4 上 51 项全过
+ab3d47c2	时计·分档、开心盘 a36e1207（cr3 合，关口待跑；clocks）
+2e797d6e	天体照相室·只加可见距离 2c8adaa9（cr3 合，关口待跑）
+faeffdf1	折射镜·只加可见距离 f8ca3230（cr3 合，关口待跑；scope）
+d972a7e7	星厅·只加可见距离 7e193afe（cr3 合，关口待跑；lights）
+7df4594a	穹顶室·观测梯挪位 6da22d2f（cr3 合，关口待跑；a3）
+594dc1f2	钟室·摆旁的栏、可见距离 299745d2（cr3 合，关口待跑；clkrm）
+f8df4d6a	配电盘和锅炉·可见距离 9b12b64c（cr3 合，关口待跑；mast）：发电房的 board、boiler 和蓄电池室的 batteryboard 改近档；machines/mast 留 8.0（21 件，给实体距离调到 50% 的客户端）
+5ceb43f8	星厅·vault 门洞补光 41a5c3d3（cr3 合，关口待跑；lights）
+b68c7bcb	星厅·天球仪转 73104b4b（cr3 合；lights）：node45 关口过
+6ef580aa	子午仪和天体照相仪·可见距离 19091040（cr3 合，关口待跑；sdome）
+f763d77f	星图室·量片桥动、门、台脚光源 692101eb（cr3 合，关口待跑；chart）
+62db37ce	屋面设备·第二轮 c8c4229e（facade 合，关口在 node35；shell）：两翼东坡四只通风帽，头在转，8 个展示实体中档，4 件动，无方块无屏障；场景检查 node39 过
+73a2f0b0	发电房·屋脊通风器 e12e2109（a4 合，关口待跑；power）：锯齿屋顶脊上八只转的通风器（一个模型，60 拍一转，近档）
+c1fe7c71	室内走查·A8 和 B1 ed0ea799（s2 合；a4）：A8（8cddfa98）和 B1 的头 3abd2789 室内、屋顶各走一遍，挡人的 0 处，导览七处都走得到；`tools/walk.py` 记下每张图多亮（`<prefix>-light.json`）、`sheets --only`
+02d9a024	塔·留档图重画 d36b293a（facade 合；tower）：只有 renders/obs_main_tower 的 11 个文件，风向标之后重画，代码没动；node86 场景检查过
+da683af3	蒸汽干管 091d105b（a6 合，关口待跑；m3）：新模块 `props/steam.py`，东立面南翼墙脚的铜蒸汽干管（墙板、管卡、法兰、漏汽的手轮阀、喷汽的疏水阀、膨胀弯），26 件（直管弯头中档、其余近档），不挡路；作者 node56 上 fit、check 过，13 张图
+e1b88659	仪器·可见距离 7726f342（a6 合；m1）：只加一行 `VIEW = M.MID`（本包自己只摆落日平台那台望远镜）
+a839446a	底片库 acf8fbd1（cr3 合，关口待跑；vault）
+dd3d8f3d	穹顶传动 22c5d971（cr3 合，关口待跑；dome）
+fea4cfcc	材质看板·留档图重画 34df6714（a1 合；a1）：炉窗之后四张看板的 23 张留档图
+73a2f0b0	发电房·屋脊通风器 e12e2109（a4 合；power）：**13:01 a4 退了（ec8c262b）**：五个借发电房壳的测试场景红（`c164:site_power_vent` 场景的包里没有），power 改好再交
+468f75e7	公共·`plan/fine.md` 的线 4de549d8（s2）：全图 6000、一间屋 400（interiors 的一个包）、一个机位 600，按用途分的份额不再判红；B1 头上各机位的数存进 `tools/win/shots/obs-board-were.json`，从此超线的机位不许再涨、没超的不许过 600；`viewbands.py --lost`；INTERFACE 第 7 节
+103a4205	小穹顶·屏障给屋面两盏灯让格 82d217da（facade 合，关口排在 node35；sdome）：(15, ±9) 两列的屏障改成 y 18 和 y 20，y 19 留给灯的光源；重画 19 张留档图；作者 node42 上整座里两盏笼灯回来（sky/lights 68），check 过
+6e8e8809	线路·改直 6b9d7090（a4 合；a4）：从车挡到坡脚正东一条直线，没有折点（中线 z −32.5，x 88→112）；石拱桥右弯四分之一圆（半径 63.5）再正南，17 孔 18 墩，全长 179；`site/_rail.py` 的数，以后不再动
+d9062cc8	材质·痕迹的统一做法 8f0c5223（a1 合；a1）：`plan/parts/materials.md` 2 F（总监 12:58 交办）：贴花 `T.decal`、模型面上的 `T.stain`／`T.worn`、大景由总装按规则换同族材质；形状只一套（materials/traces，14:00 前第一版）
+316941ab	路灯·屋面两盏改挂墙墩 267134bb（cr2 合；lights）：穹顶室南北门外两盏挂到墙墩朝踏步的一面（光源 (14, 19, ±10)）；sky/lights 的可见距离（屋里近档、屋外中档）。和 sdome 的屏障让格（103a4205）两笔都进了
+66fd4858	管道·可见距离分档 1f9e2a05（a6 合，关口在 node48 补；m3）：管身中档、小件近档；欠的留图重画 15 张；只动 `props/pipes.py` 和它的图
+38735505	声音·第二包 b3678c03（cr2 合，关口排 node8；sound）：火车的声音写到 a2 的 `travel` 接口上（`sound.train`、`sound.timetable`），主场景登记的点没变
+3782ccd4	时计·全站一个节拍 e2a9c732（cr3 合，关口待跑；clocks）：`BEAT` 20 刻、`SECONDS` 1200，`clock.drive(canvas, "h"|"m"|"s", 轴)` 一行让任何一只钟的针跟全站走，`strikes()`、`quarters()`；母钟加一根每秒跳一格的秒针（实体 18→19）；只动 `clock.py`
+87332f88	屋面设备·第二包 e3ed6934（facade 合，关口在 node35；shell）：通风帽的中层、近层（法兰螺栓、箍上铆钉、立缝、风门扳杆、四根拉杆、铜绿锥帽；油迹锈痕粉笔勾）；位置、转速、8 件不变；作者 node39 场景检查过
+4fb893c8	路灯·屋面两盏挂回东面 59afa5ad（cr2 合；lights）：facade 定的，两盏挂回墙墩东面，光源回 (15, 19, ±9)；lights 在 node45 关口全过（delivery PASS，checkall 102 个场景）
+3a5231a5	公共·`INTERFACE.md` 第 7 节补一段 1aa2744f（s2）：室外的件凡是算在轮廓里或者挂着光的一律留远档，只有一格以内的小件才降中档（总监 13:10）；公告 #1854
