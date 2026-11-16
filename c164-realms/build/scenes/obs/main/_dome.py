@@ -20,13 +20,18 @@ Rows, from the main cornice (y 15) up:
     17..21   the drum, dressed stone: a pilaster under every seam that meets a straight run of the
              round wall; in every gore a niche one block wide and one deep, the small window at
              its head (y 20) and a sunk panel under it (y 18..19); in two gores the niche is
-             the door of the dome room instead (the skeleton's DOME_ROOM_DOORS)
+             the door of the dome room instead (the skeleton's DOME_ROOM_DOORS). Indoors, the two
+             blocks of the inner leaf that look into the corner where the hand gear's upright
+             shaft climbs the wall are cased in iron plate up to the ledge (GEAR_SHAFT)
     22       a corbel course; it breaks forward over the pilasters
     23       the gallery: the top of the wall is the iron track, in front of it the copper gutter,
              sunk half a block, and outside that an iron cove whose top is the walkway. Nothing
              stands on it: the roofs of this house have no railings, and posts without a rail
              between them read as a ring of nails (POSTS)
-    24       the ring beam of the dome, riveted iron, an axle box under every seam
+    24       the ring beam of the dome, riveted iron, an axle box under every seam. Where the round
+             wall steps it turns the corner on the inside as well (corners()): the shell is one
+             block thick and passes those columns by, and from the dome room one looked through
+             them, under the ring girder, at the back of the plates
     25..37   the dome's plates, whole blocks and slabs, in courses: one to a ring of the raster
              circle and level all the way round, as high as a half-ellipse is there, to the nearer
              half block. The first stands three rows upright over the ring beam (its first row is
@@ -82,6 +87,12 @@ PILASTER_OFF = 4.5                      # a pilaster stands at most this many de
 SLIT_HALF = S.SLIT_W // 2               # 2: the slit is z -2..2
 SLIT_HEAD = CX - 2                      # 2: the last column of the slit; the crown starts east of it
 DOORS = getattr(S, "DOME_ROOM_DOORS", dict(cells=((12, 10), (12, -10)), y=(18, 19)))
+# The column of the room in which the upright shaft of the dome's hand gear climbs the wall, from the
+# floor to its pinion in the toothed ring (machines/dome: riser_at(); interiors/domeroom leaves its
+# lining open there, GEAR_SHAFT). What the room sees of the drum in that corner is the shaft's casing
+# and not the wall: a column of white stone was the brightest thing in the right half of V8 (a3, 11-16)
+GEAR_SHAFT = getattr(S, "DOME_GEAR_SHAFT", (-1, -9))
+CASED_Y = S.DRUM                        # 18..23: from the room's floor to the ledge
 CAP = frozenset(O.box(CX - 1, CZ - 1, CX + 1, CZ + 1))      # the crown's nine columns
 
 PLATE = B.VERDIGRIS_CUT                 # the dome's plates
@@ -92,6 +103,7 @@ CAST = B.VERDIGRIS_CAST                 # the boss on the axis
 SKIRT = B.IRON_RIVETED.block
 AXLE_BOX = B.IRON_CAST
 TRACK = B.IRON_PLATE
+CASING = B.IRON_PLATE                   # behind the hand gear's upright shaft
 GUTTER = B.OLD_COPPER_CUT
 WALK = B.IRON_RIVETED                   # the gallery's cove
 POST = B.IRON_ROD
@@ -212,6 +224,11 @@ def niches(p):
     return [(op.cells[0], op.behind()[0]) for op in p.openings if op.cells[0] not in taken]
 
 
+def casing(p):
+    """The columns of the inner leaf that look into the corner of the hand gear's shaft by a side."""
+    return sorted(c for c in (O.step(GEAR_SHAFT, d) for d in O.SIDES) if c in p.leaf)
+
+
 def posts(p):
     """The columns of the gallery's walkway that carry a post, POSTS of them at equal angles, each
     where the walkway touches the gutter by a whole side."""
@@ -235,6 +252,9 @@ def drum(canvas, origin=(0, 0, 0), glass=None):
         for y in O.rows(tuple(DOORS["y"])):
             for c in run:
                 s.clear(c, y)
+    for c in casing(p):
+        for y in O.rows(CASED_Y):
+            s.put(c, y, CASING)
     s.fill(p.wall, DRUM_TOP, TRACK)
     s.fill(p.front, DRUM_TOP, f"{GUTTER.slab}[type=bottom]")
     s.mould(p.body | p.front, DRUM_TOP, WALK.stairs, "top")
@@ -385,12 +405,25 @@ def axle_boxes():
     return {_nearest(edge, a)[0] for a in rib_angles()}
 
 
+def corners():
+    """The columns of the wall line that show no side to the open: where the raster circle steps,
+    the one in the corner behind the two that do. The shell passes them by -- each holds one plate
+    of the first course's top and nothing under it -- so they were pockets open to the room in the
+    ring beam's row, and through them the room saw the plates of the foot from behind, verdigris
+    under an iron ring girder. The ring beam fills them: from the room the wall line's top is iron
+    all the way round."""
+    body = O.disc(CX, CZ, R)
+    return {c for c in body - O.shrink(body) if all(O.step(c, d) in body for d in O.SIDES)}
+
+
 def dome(canvas, origin=(0, 0, 0), version="a"):
     """The dome's shell, one block thick, the slit left open above its sill; in version b the two
-    rails of the curtain as well."""
+    rails of the curtain as well, from the sill's row up: they stand on the ring beam."""
     ox, oy, oz = origin
     tops = surface(version)
     boxes = axle_boxes()
+    for (x, z) in sorted(corners()):
+        canvas.set(ox + x, oy + SKIRT_Y, oz + z, SKIRT)
     for (x, z) in sorted(tops):
         slit = _in_slit(x, z)
         rail = _railed(x, z, version)
@@ -402,7 +435,7 @@ def dome(canvas, origin=(0, 0, 0), version="a"):
                 state = AXLE_BOX if (x, z) in boxes else SKIRT
             elif (x, z) == (CX, CZ):
                 state = CAST
-            elif rail and y > SILL_Y:
+            elif rail and y >= SILL_Y:
                 state = _state(LEAF, slab)
             elif lined:
                 state = _state(RIB if _stained(x, z, version) else SEAM[version], slab)

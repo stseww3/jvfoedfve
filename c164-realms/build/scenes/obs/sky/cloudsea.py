@@ -66,7 +66,8 @@ from ..materials import _kit as K
 
 # The director's switch for what is laid over the whole site (COMMON 0.5; since 11-16 08:24 the
 # author turns it on in the commit he delivers): off, build() places nothing and takes nothing up,
-# and site/terrain's stand-in ring stays; a test scene asks with dress=True whatever it says.
+# and site/terrain's stand-in ring stays. On, the sea is laid on every canvas that has something
+# standing in it (see build()); a test scene asks with dress=True whatever the switch says.
 DRESS = True
 
 # The blocks this package paints; nobody else may (the stand-in reads this and lets them go).
@@ -77,8 +78,10 @@ MEAN = FACE - 1                 # -29: the top block of level cloud
 TROUGH = MEAN - 1               # -30: ... of a hollow of the swell; the sea has no block lower than this
 FOOT = FACE - 0.5               # a height field at or over this puts a block above the face
 FLOOR_Y = TROUGH - 2            # -32: the sunk floor under a gap beside a wall or a fence
-SWELL = 2.4                     # how far the surface rolls about its level, in blocks, where it rolls most
-ROLL = (38.0, 64.0)             # ... and how long its waves are, across the wind and along it
+SWELL = 1.2                     # how far the long waves roll the surface about its level, in blocks
+ROLL = (38.0, 64.0)             # ... and how long they are, across the wind and along it
+PILLOW = 1.6                    # how high the low heaps the face is made of stand over the creases between them
+HEAPS = 10                      # ... and how far apart they lie
 BANK = 0.5                      # the banks ride this much higher than the calm lanes between them
 BROAD = 4                       # no patch of a level of the swell is narrower than this many blocks
 HEAP = 4.6                      # a head of cloud stands this far out of the face (to y -24)
@@ -117,7 +120,7 @@ REACH = 150.0
 THIN_OUT = (REACH - 56.0, REACH - 14.0)     # the banks thin out between these and the last of the sea is calm
 WIND = {"north": (0.0, -1.0), "south": (0.0, 1.0), "west": (-1.0, 0.0), "east": (1.0, 0.0)}[S.WIND_FROM]
 
-LIE = 24.0                      # the shading: how readily the lie of the swell turns a tone
+LIE = 9.0                      # the shading: how readily the lie of the swell turns a tone
 GRAIN = 0.08                    # share of a tone's pixels nudged one step, within the cloud ramp
 
 
@@ -352,9 +355,9 @@ def _field(seed, land, sunk=()):
     core = N.smoothstep(-0.20, 0.04, N.fbm2((X + bend) / 44.0, Z / 70.0, seed + 1, octaves=2))
     # how hard it boils: the heads stand high here and lie low and woolly there
     vigour = N.smoothstep(-0.25, 0.25, N.fbm2(X / 44.0, Z / 44.0, seed + 3, octaves=2))
-    # the swell: long low waves, half as high in the lanes as under the banks, the banks riding higher
+    # the face: low heaps lying side by side on long low waves, the banks riding higher
     roll = N.fbm2((X + bend) / ROLL[0], Z / ROLL[1], seed + 11, octaves=2)
-    base = MEAN + SWELL * (0.55 + 0.45 * core) * roll + BANK * (core - 0.5)
+    base = MEAN + SWELL * roll + PILLOW * (_heaps(X + 0.5 * bend, Z, seed + 17) - 0.45) + BANK * (core - 0.5)
 
     top = np.full((nx, nz), -np.inf)
 
@@ -516,12 +519,34 @@ def _field(seed, land, sunk=()):
     return level, height, sea
 
 
+def _heaps(X, Z, seed):
+    """The low heaps the face of the sea is made of: for every column how high the highest of the
+    flat domes over it stands, 0 in a crease between two and 1 on the top of a full one. One dome
+    to a cell of a grid HEAPS wide, each somewhere in its cell, wider than the cell so that it
+    leans on its neighbours, longer along the wind than across it."""
+    ci, ck = np.floor(X / HEAPS).astype(np.int64), np.floor(Z / (1.3 * HEAPS)).astype(np.int64)
+    out = np.zeros(X.shape)
+    for di in (-1, 0, 1):
+        for dk in (-1, 0, 1):
+            i, k = ci + di, ck + dk
+            px = (i + 0.15 + 0.7 * _hash3(i, k, 1, seed)) * HEAPS
+            pz = (k + 0.15 + 0.7 * _hash3(i, k, 2, seed)) * 1.3 * HEAPS
+            rad = HEAPS * (0.55 + 0.30 * _hash3(i, k, 3, seed))
+            full = 0.55 + 0.45 * _hash3(i, k, 4, seed)
+            d2 = ((X - px) / rad) ** 2 + ((Z - pz) / (1.3 * rad)) ** 2
+            out = np.maximum(out, full * np.sqrt(np.clip(1.0 - d2, 0.0, 1.0)))
+    return out
+
+
 def _shade(h):
     """Light 0..1 per column from the smooth height of its top, lit from the west, low. Level cloud
     takes 0.75 (the second lightest tone) whatever its height. What faces west takes more and what
-    faces east less: the steep side of a head by its own slope, the swell by the lie of the whole
-    slope it is part of. What lies lower than the cloud round it -- the foot of a head, a crease
-    between two, the sea in the lee of a head -- is darker; what stands over the cloud round it has
+    faces east less: the steep side of a head by its own slope; the low heaps of the face, whose
+    slopes are slight, by the lie of the whole slope, so that a heap is light on its west third and
+    dark on its east; the top of a head is level cloud again, so that seen from the west, with the
+    light behind the eye, a head is a light side under a darker top and no pale plate. What lies
+    lower than the cloud round it is darker: the foot of a head and a crease between two by a
+    tone, the floor of a lane walled in by heads as well. What stands over the cloud round it has
     a breath more, and the crowns of the piles catch the light."""
     h = (h - MEAN).astype(np.float32)               # the blur reads zero outside the grid: level cloud
 
@@ -529,21 +554,31 @@ def _shade(h):
         p = np.pad(a, 1, mode="edge")
         return (p[2:, 1:-1] - p[:-2, 1:-1]) * 0.5
 
-    turn = np.clip(0.30 * np.tanh(1.3 * westward(h)) + 0.16 * np.tanh(LIE * westward(_blur(h, 3))), -0.34, 0.30)
+    low = np.clip(1.6 - h, 0.0, 1.0)                # 1 on the face and its heaps, 0 on a head
+    turn = np.clip(0.30 * np.tanh(1.3 * westward(h)) + 0.16 * low * np.tanh(LIE * westward(_blur(h, 2))), -0.34, 0.30)
     crease = np.clip((_blur(h, 1) - h - 0.35) / 0.75, 0.0, 1.0)
+    walled = np.clip((_blur(h, 4) - h - 0.4) / 1.4, 0.0, 1.0)
     crest = np.clip(h - _blur(h, 3) - 0.5, 0.0, 1.0)
     crown = np.clip((h - (LOW - MEAN)) / 4.0, 0.0, 1.0)
-    return 0.75 + turn - 0.22 * crease + 0.10 * crest + 0.12 * crown
+    return 0.75 + turn - 0.22 * crease - 0.18 * walled + 0.10 * crest + 0.12 * crown
 
 
 def build(canvas, origin=(0, 0, 0), *, seed=SEED, dress=None):
     """Lay the sea of clouds into the canvas. Places blocks only, so it returns 0 display entities."""
     if not (DRESS if dress is None else dress):
         return 0
+    names = list(B.CLOUD)                           # dark..light, as the tone index runs
+    mine = [k for k, state in canvas.b.items() if state.partition("[")[0].split(":")[-1] in names]
+    # The sea is laid where something stands in it. Every category's test scene calls the sky's
+    # build() for its light sources (INTERFACE 4); one that builds on the terraces alone, nothing
+    # of it reaching down to the sea's face, is no mountain and is left as it is. A scene that
+    # wants the sea all the same says dress=True.
+    cloud = set(mine)
+    if dress is None and not any(k[1] - origin[1] <= MEAN for k in canvas.b if k not in cloud):
+        return 0
     # The sea is laid once: a sheet of cloud tones put down earlier (site/terrain's stand-in for this
     # package) is taken up.
-    names = list(B.CLOUD)                           # dark..light, as the tone index runs
-    for key in [k for k, state in canvas.b.items() if state.partition("[")[0].split(":")[-1] in names]:
+    for key in mine:
         del canvas.b[key]
 
     x0, z0, nx, nz = _grid()

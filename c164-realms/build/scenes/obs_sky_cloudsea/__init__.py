@@ -214,6 +214,9 @@ VIEWS = {
                      (S.CABLE_STATION[2] + 110, -27, -52), 14000),                # down the trestle
     "north_out": ((3.5, S.WEATHER_STATION["feet"] + S.EYE, S.WEATHER_STATION["box"][1] + 0.5),
                   (3.5, -26, -174), 14000),                                       # from the weather station
+    # from the station's south-east corner along the track to where it runs into the cloud
+    "track_end": ((S.CABLE_STATION[2] - 0.5, S.STATION_GROUND + S.EYE, S.CABLE_STATION[3] - 0.5),
+                  (141, -27, -49), 14000),
 }
 
 # What preview.py draws when it is not told which: the whole site from above, the sunset rail
