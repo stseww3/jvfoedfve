@@ -26,9 +26,11 @@ rotunda's stretch of the west wall (z -10..-7) the leaf is not there. Whose ever
   materials/windows    a lit window is lined on the room side and is unlit glass from inside (A0,
     (c205)             g2 #32711). The lining is windows.line(), one call for each lit window
                        (g2 #34907); with it the box glazes a lit window with the opal glass it
-                       really has. Until it is in the tree the box glazes the lit windows with the
-                       dark glass, which is what the room sees; nobody looks at the box from
-                       outside
+                       really has. The room is panelled in dark wood, so the box asks for the deep
+                       lining (panelled=True; c350, 11-16: the pale one was the lightest large
+                       thing of V10), as windows.build() does for this room in the master scene.
+                       Until line() is in the tree the box glazes the lit windows with the dark
+                       glass, which is what the room sees; nobody looks at the box from outside
 
 Beyond the door the box has a piece of the hall's side gallery, shut in by a floor, a lid and three
 walls with one lamp of the hall on the cross wall beside the door: the gallery is indoors, and
@@ -126,7 +128,7 @@ def build(c, origin=(0, 0, 0)):
                 middle = rows[len(rows) // 2]
                 sources += [((face_x, y, middle), OUTSIDE) for y in (S.WINDOW[0] + 1, S.WINDOW[1] - 1)]
                 if LINE:
-                    LINE(c, panes, inward, glass, origin=origin)
+                    LINE(c, panes, inward, glass, origin=origin, panelled=True)
 
     # the door, and a piece of the gallery beyond it: indoors, so a floor, a lid and three walls stand
     # in for the hall, and one of the hall's lamps hangs on the cross wall beside the door
