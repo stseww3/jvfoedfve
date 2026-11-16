@@ -1,0 +1,64 @@
+display entities: 771 of 3000 (logged 771); returned by line: materials 28, site 7, main 2, machines 173, interiors 381, props 175, sky 5
+budgets: props 1100, interiors 1000 (250 a room), machines 400, a view 600, props in a view 400
+opal-globe lamps in all: street 12, post 7, bracket_a 3, pendant_a 1 = 23; +3 each = +69: 771 -> 840 of 3000
+by line and package: entities, opal-globe lamps, entities with +3 a lamp
+  materials: 28; lamps none; with them 28
+    windows: 28; lamps none; with them 28
+  site: 7; lamps none; with them 7
+    outbuildings: 6; lamps none; with them 6
+    powerhouse: 1; lamps none; with them 1
+  main: 2; lamps none; with them 2
+    tower: 2; lamps none; with them 2
+  machines: 173 of 400; lamps bracket_a 1; with them 176 (+224 to the budget)
+    dome: 36; lamps none; with them 36
+    cable: 26; lamps bracket_a 1; with them 29
+    orrery: 21; lamps none; with them 21
+    mast: 20; lamps none; with them 20
+    clock: 18; lamps none; with them 18
+    engine: 13; lamps none; with them 13
+    boiler: 10; lamps none; with them 10
+    armillary: 8; lamps none; with them 8
+    board: 6; lamps none; with them 6
+    meridian: 6; lamps none; with them 6
+    scope: 5; lamps none; with them 5
+    astro: 4; lamps none; with them 4
+  interiors: 381 of 1000; lamps none; with them 381 (+619 to the budget)
+    platevault: 100; lamps none; with them 100 of 250
+    timeroom: 71; lamps none; with them 71 of 250
+    chartroom: 70; lamps none; with them 70 of 250
+    domeroom: 55; lamps none; with them 55 of 250
+    starhall: 46; lamps none; with them 46 of 250
+    powerhouse: 39; lamps none; with them 39 of 250
+  props: 175 of 1100; lamps street 12, post 6, bracket_a 2, pendant_a 1; with them 238 (+862 to the budget)
+    ironwork: 80; lamps none; with them 80
+    pipes: 56; lamps none; with them 56
+    lamps: 27; lamps street 12, post 6, bracket_a 2, pendant_a 1; with them 90
+    furniture: 9; lamps none; with them 9
+    signs: 2; lamps none; with them 2
+    instruments: 1; lamps none; with them 1
+  sky: 5; lamps post 1; with them 8
+    lights: 5; lamps post 1; with them 8
+opal-globe lamps by who placed them:
+  machines/cable: bracket_a 1
+  props/lamps: street 12, post 6, bracket_a 2, pendant_a 1
+  sky/lights: post 1
+by where a thing stands (the rooms of main/shell.ROOMS, whoever placed it): entities, lamps, with +3 a lamp
+  chart room: 76; lamps none; with them 76
+  dome room: 94; lamps none; with them 94
+  outside main/shell's rooms: 441; lamps street 12, post 6, bracket_a 3, pendant_a 1; with them 507
+  stair hall: 6; lamps none; with them 6
+  star hall: 75; lamps post 1; with them 78
+  time room: 79; lamps none; with them 79
+by view (obs-board.json): in view, lamps in view, with +3 a lamp (limit 600); props alone, with them (limit 400)
+  v01_arrival: 685, 17, 736; props 163, 211  OVER
+  v02_axis: 629, 7, 650; props 138, 156  OVER
+  v03_facade: 506, 3, 515; props 94, 100
+  v04_entrance: 476, 3, 485; props 94, 100
+  v05_tower: 421, 3, 430; props 83, 89
+  v06_power: 91, 2, 97; props 19, 25
+  v07_hall: 318, 1, 321; props 27, 27
+  v08_dome_room: 70, 0, 70; props 0, 0
+  v09_chart_room: 189, 0, 189; props 43, 43
+  v10_time_room: 119, 0, 119; props 36, 36
+  v11_lookout: 636, 11, 669; props 142, 172  OVER
+  v12_aerial: 755, 23, 824; props 175, 238  OVER
