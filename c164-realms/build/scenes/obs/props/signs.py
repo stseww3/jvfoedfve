@@ -76,6 +76,10 @@ from . import _kit as K
 
 PREFIX = "prop_sign_"
 DRESS = True                    # build() dresses the master scene: on from the merge (COMMON 0.10)
+# How far each piece is drawn (the bands of artkit.models; A0, 11-16 12:25). The great piece is
+# seen from the station across the whole site and keeps what display() gives (FAR). The station's
+# board is read on its own terrace: MID. The plate beside the door is a plaque: SMALL -- the two
+# board views that show it, V3 and V4, stand within 13 blocks of it.
 VERSION = "a"                   # the great piece over the entrance: the cast emblem (A0, g2 11-15, on the
                                 # pictures of V2). The clock stays in the module as version b.
 VERSIONS = {"a": "emblem", "b": "clock"}
@@ -774,7 +778,7 @@ def station(canvas, seat=None, origin=(0, 0, 0)):
                  for side in (-0.5, 0.5))
     if not canvas.has(*wall) or canvas.name(*air) not in (None, "light"):
         return 0
-    return place(canvas, "station_board", seat["point"], facing=seat["facing"], origin=origin)
+    return place(canvas, "station_board", seat["point"], facing=seat["facing"], origin=origin, view=M.MID)
 
 
 # ---- the plate beside the entrance ------------------------------------------------------------------------
@@ -829,6 +833,7 @@ def doorplate(canvas, seat=None, origin=(0, 0, 0), **opts):
     if not canvas.has(*wall) or canvas.name(*air) not in (None, "light"):
         return 0
     opts.setdefault("brightness", DOOR_PLATE_SHOWN)
+    opts.setdefault("view", M.SMALL)
     return plate(canvas, DOOR_PLATE, seat["point"], facing=seat["facing"], origin=origin, **opts)
 
 
