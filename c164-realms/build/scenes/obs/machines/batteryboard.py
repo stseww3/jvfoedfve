@@ -28,6 +28,9 @@ quarter turn, so that what looks into the room is shown at its full tone. All of
 one cell, STAND, in the air before the middle slab, and take its light: the room hangs its lamp
 so that this cell is lit. The meters' ticks glow by themselves.
 
+What stops whoever walks into it. A model has no collision: place() puts barriers into the cells
+the slabs stand in (SOLID), two high from the slabs' foot.
+
 Every model is drawn in texels in the board's own frame: x from the slabs' face into the room,
 y up from the floor, z along the board from its east end.
 """
@@ -96,6 +99,9 @@ RISERS = tuple(_w(_RISER_X, _RISER_Y[1], z) for z in sorted(_RISERS, reverse=Tru
 FEED_IN = _w(-_T - _GAP / 2.0, 34, _SLABS["west"][1])
 # The pivot of the battery ammeter's pointer, the piece that moves.
 NEEDLE = _w(3.75, _METER_Y, _METERS["main"][0])
+# The cells in which place() puts the collision of the slabs (barriers): the row of cells before
+# the wall, from the slabs' foot two high. Under them nobody gets.
+SOLID = tuple((x, int(FLOOR) + y, int(WALL_Z)) for x in range(int(X[0]), int(X[1])) for y in (1, 2))
 KEEP_CLEAR = ((X[0] - 0.25, FLOOR, WALL_Z, X[1] + 0.25, FLOOR + 4.75, FACE_Z + 0.5),                # the board
               (X[0] + 0.625, FLOOR + 2.375, FACE_Z, X[0] + 1.375, FLOOR + 2.875, FACE_Z + _BUS_X / 16.0),   # the bars' ends
               (X[1] - 1.375, FLOOR + 2.375, FACE_Z, X[1] - 0.625, FLOOR + 2.875, FACE_Z + _BUS_X / 16.0),
@@ -222,9 +228,11 @@ def models():
 
 # ---- placing --------------------------------------------------------------------------------------------
 def place(canvas, origin=(0, 0, 0)):
-    """The board before the north wall: three slabs, their pointers, the two conduits. Returns the
-    number of display entities (8). The battery ammeter's pointer swings."""
+    """The board before the north wall: three slabs, their pointers, the two conduits, and the
+    slabs' collision (SOLID). Returns the number of display entities (8). The battery ammeter's
+    pointer swings."""
     drawn = _drawn()
+    K.solid(canvas, SOLID, origin)
     n = 0
     for name in _SLABS:
         n += K.place(canvas, drawn["panel_" + name], STAND, origin, yaw=YAW)
