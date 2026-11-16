@@ -1,0 +1,11 @@
+delivery props/instruments: 7726f34 against dd3d8f3 (forked at 6626f4e), 1 commits, 1 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[PASS] scope    1 of 1 files are the card's own
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[WARN] pictures 1 test scene, 25 shots with a picture kept
+                obs_props_instruments: 25 pictures show c95c0b72; the card's code has changed since (_kit.py, _plaques_east.py, _plaques_west.py, instruments.py): draw them again
+[PASS] merge    merges cleanly; 203 commits behind the base
+result: PASS (0 failed, 1 to look at)

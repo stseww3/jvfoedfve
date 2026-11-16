@@ -1,0 +1,308 @@
+{
+ "scene": "obs_main_smalldome",
+ "commit": "e1b8865",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "187708 blocks, 376 entities, 185 models, 1243 resource-pack files, 215 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (3.7 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 1242 files, no file written twice, the folders and the prefix of main are kept (2 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "314 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "899 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "WARN",
+   "summary": "79 kinds of block placed, 245 barrier cells (x 0..47, y -4..20, z -34..47), barriers away from any model",
+   "details": [
+    "195 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees (A0 #457, 4)"
+   ]
+  },
+  {
+   "check": "flatwall",
+   "status": "PASS",
+   "summary": "no wall face runs flat over more than 5x5",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "WARN",
+   "summary": "376 display entities, 19 drawn out along one axis, 23 shown through a matrix that is no turn, no face stretched, 100 models never placed",
+   "details": [
+    "sky_cloudsea_swell_a x6: 4/4/4 pixels to the block along x/y/z, not 16",
+    "sky_cloudsea_swell_b x14: 4/4/4 pixels to the block along x/y/z, not 16",
+    "sky_cloudsea_swell_c x7: 4/4/4 pixels to the block along x/y/z, not 16",
+    "sky_cloudsea_swell_d x9: 4/4/4 pixels to the block along x/y/z, not 16"
+   ]
+  },
+  {
+   "check": "views",
+   "status": "WARN",
+   "summary": "19 shots, most display entities in view: 261 (roofs_north), limit 600; counted without what walls hide; the game draws up to 309 (pocket): a display entity without width and height is drawn outside the view too",
+   "details": [
+    "v11: 3 of the 213 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "v1: 2 of the 236 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "v2: 2 of the 198 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "corner: 2 of the 186 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "slit: 3 of the 143 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "west_high: 3 of the 217 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "door: 6 of the 111 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "treads: 4 of the 96 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "pocket: 5 of the 146 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "terrace: 2 of the 101 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "roofs: 4 of the 260 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "roofs_north: 1 of the 261 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "lookout: 5 of the 179 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "aerial: 1 of the 220 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "v12: 3 of the 254 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "(the tracking range is read off the game's code, not yet seen on the real machine)"
+   ],
+   "data": {
+    "shots": [
+     {
+      "name": "v11",
+      "in_view": 213,
+      "drawn": 280,
+      "beyond_tracking": 3
+     },
+     {
+      "name": "v1",
+      "in_view": 236,
+      "drawn": 263,
+      "beyond_tracking": 2
+     },
+     {
+      "name": "v2",
+      "in_view": 198,
+      "drawn": 288,
+      "beyond_tracking": 2
+     },
+     {
+      "name": "v11_dome",
+      "in_view": 177,
+      "drawn": 271,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "court",
+      "in_view": 101,
+      "drawn": 288,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "corner",
+      "in_view": 186,
+      "drawn": 284,
+      "beyond_tracking": 2
+     },
+     {
+      "name": "slit",
+      "in_view": 143,
+      "drawn": 295,
+      "beyond_tracking": 3
+     },
+     {
+      "name": "west_high",
+      "in_view": 217,
+      "drawn": 286,
+      "beyond_tracking": 3
+     },
+     {
+      "name": "door",
+      "in_view": 111,
+      "drawn": 308,
+      "beyond_tracking": 6
+     },
+     {
+      "name": "treads",
+      "in_view": 96,
+      "drawn": 306,
+      "beyond_tracking": 4
+     },
+     {
+      "name": "walk",
+      "in_view": 23,
+      "drawn": 296,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "pocket",
+      "in_view": 146,
+      "drawn": 309,
+      "beyond_tracking": 5
+     },
+     {
+      "name": "terrace",
+      "in_view": 101,
+      "drawn": 298,
+      "beyond_tracking": 2
+     },
+     {
+      "name": "roofs",
+      "in_view": 260,
+      "drawn": 279,
+      "beyond_tracking": 4
+     },
+     {
+      "name": "roofs_north",
+      "in_view": 261,
+      "drawn": 264,
+      "beyond_tracking": 1
+     },
+     {
+      "name": "lookout",
+      "in_view": 179,
+      "drawn": 286,
+      "beyond_tracking": 5
+     },
+     {
+      "name": "lookout_west",
+      "in_view": 133,
+      "drawn": 283,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "aerial",
+      "in_view": 220,
+      "drawn": 280,
+      "beyond_tracking": 1
+     },
+     {
+      "name": "v12",
+      "in_view": 254,
+      "drawn": 254,
+      "beyond_tracking": 3
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "PASS",
+   "summary": "V1 at (88.5, -2.38, -32.5): the front from y 4 up 13.9% hidden (base storey 43.8% by blocks and 2.4% more by models, great windows 1.7%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 1.8 s)",
+   "details": [],
+   "data": {
+    "the base storey": {
+     "lines": 1104,
+     "hidden": 509,
+     "seen_through": 327,
+     "hidden_by_blocks": 483,
+     "hidden_by_models": 26
+    },
+    "the great windows": {
+     "lines": 1656,
+     "hidden": 28,
+     "seen_through": 0
+    },
+    "the cornice": {
+     "lines": 1104,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the clock tower": {
+     "lines": 672,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the time-ball mast": {
+     "lines": 22,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the great dome": {
+     "lines": 1688,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the small dome": {
+     "lines": 290,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "comet": {
+     "elevation": 41.0,
+     "across": 0.6128,
+     "down": 0.2647,
+     "lost": 0,
+     "body": {
+      "lines": 350,
+      "outside_clear": 0,
+      "covered": 0,
+      "from": -7.29,
+      "to": 1.2,
+      "low": 39.99,
+      "up": 54.24
+     }
+    },
+    "clear": {
+     "up": 61.0,
+     "blocks": [
+      {
+       "name": "between the two ends of the main building",
+       "from": -1.24,
+       "to": 44.16,
+       "low": 0.0,
+       "up": 61.0,
+       "lines": 44835,
+       "covered": 0
+      },
+      {
+       "name": "where the comet hangs, north of the main building",
+       "from": -15.0,
+       "to": -1.49,
+       "low": 35.0,
+       "up": 61.0,
+       "lines": 5880,
+       "covered": 0
+      }
+     ]
+    },
+    "left": {
+     "from": 44.66,
+     "to": 70.0,
+     "posts": []
+    }
+   }
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "53 parts and 13 points on 8 chains, 103 function files; 12 commands in the busiest tick (limit 120), 2.5 a tick on average (limit 40)",
+   "details": [
+    "chain of 24 ticks: 6 functions, 20 commands a cycle, starts 3 ticks after start",
+    "chain of 60 ticks: 12 functions, 53 commands a cycle, starts 1 ticks after start",
+    "chain of 100 ticks: 8 functions, 17 commands a cycle, starts 2 ticks after start",
+    "chain of 120 ticks: 4 functions, 13 commands a cycle, starts 6 ticks after start",
+    "chain of 128 ticks: 4 functions, 13 commands a cycle, starts 1 ticks after start",
+    "chain of 160 ticks: 11 functions, 24 commands a cycle, starts 8 ticks after start",
+    "chain of 300 ticks: 12 functions, 31 commands a cycle, starts 4 ticks after start",
+    "chain of 1600 ticks: 40 functions, 257 commands a cycle, starts 2 ticks after start",
+    "site_weather_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.08 blocks off the axis",
+    "bld_tower_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.09 blocks off the axis"
+   ]
+  }
+ ]
+}
