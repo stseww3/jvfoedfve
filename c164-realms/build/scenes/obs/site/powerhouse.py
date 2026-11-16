@@ -50,9 +50,13 @@ between polished courses.
   bridge    The steam main leaves the west front through the pier in row PIPE_Z, a course under
             the cornice, and runs west in that one row: over the alley on a girder that a portal
             of two iron posts carries, over the terrace's railing without touching it (the girder's
-            underside is half a block above the bars), to a shoe on the terrace, where it turns
-            down into the ground. A cable runs over it. The row is south of the court and never
-            crosses the axis.
+            underside is half a block above the bars), to the bridge head two cells inside the
+            railing, where it turns down into the ground: a riveted elbow, a length of plate, a
+            riveted foot on a stone plinth three cells square and half a block high, the terrace's
+            dressing stone. A knee on the down pipe carries the girder's end, so that one sees
+            between the pipe and the railing; two cover plates in the paving west of the plinth
+            say which way the main goes on under the court. A cable runs over it. The row is south
+            of the court and never crosses the axis.
   run       RUN lays the main on along the ground of the upper terrace to the foot of the main
             building. Off by default: the master scene shows the main going into the ground at the
             bridge head and nothing more of it up there.
@@ -73,8 +77,9 @@ ORDER = 70      # after the lower platform (20), the retaining wall (25) and the
 
 VERSION = "a"   # the roof that build() makes when it is not told: "a" the saw teeth, "b" the vault
 RUN = False     # the main's run along the ground of the upper terrace (see above)
-FIRE = False    # the boiler bays glow through the fire window. Off, and the curtain glass in its place,
-#                 until the role is in the assembly and materials/windows paints it (c188, g2 #37714)
+FIRE = True     # the boiler bays glow through the fire window; off, the curtain glass stands in its place.
+#                 On since the role is in the assembly, materials/windows paints it and the sky line's
+#                 kit knows it (review cr2, #74016)
 
 # --- where it stands --------------------------------------------------------------------------------
 X0, Z0, X1, Z1 = S.POWER_HOUSE["box"]               # x 67..89, z 20..42: the pier plane
@@ -98,6 +103,17 @@ FURNACE_Y = (GLASS_Y[0], GLASS_Y[0] + 2)            # -3..-1, the rows that glow
 # second rank, what the lit windows of the main building have behind them and no window may pass
 # (c331 #59302). It leaves 9 on the jambs and the sill, and 9 is where stone begins to turn warm.
 FURNACE_LEVEL = 12
+# The fire's light on the ground before a boiler bay. The sky line's source stands in the recess
+# before the glass, three rows over the paving, and what reaches the paving the night swallows:
+# the bay glowed over black ground (reviews cr2-#7, 1 and #74016, 1). So the shell offers that line
+# one more source to a fire window (pools()): before the pier plane in the window's middle column,
+# two rows under the glass, which is as low as that line lets a source stand from what glows. As
+# bright as what the window has behind it and no brighter: the paving under it gets 11, the cells
+# round that 10 and 9, three cells out from the wall (in the picture 0.22 where 0.16 was; the
+# ground before the door has 0.23). With 10, what the recess has, the pool was there by numbers
+# and not in the picture: the yard at dusk is as bright as 9 by itself.
+POOL_LEVEL = FURNACE_LEVEL
+POOL_WHY = "site/powerhouse:fire window"
 GATE_ROWS = 4                                       # the door bay: a gate this high, a lintel, glass
 FURNACE_LIGHT = 5                                   # the source before a boiler bay's glow while the sky line's kit
 #                                                     is not in the tree (its figure for a low curtain window)
@@ -136,6 +152,7 @@ HEAD_X = S.EAST_EDGE_X - 2                          # 58, where the main goes do
 POSTS_X = (X0 - 5, X0 - 2)                          # 62 and 65, the portal in the alley
 JOINT_STEP = 3                                      # a riveted collar on the main every third cell
 RUN_X = (K.FOOT_STRIP_X + 2, HEAD_X - 1)            # x 22..57, the main on the terrace's ground when RUN is on
+COVERS_X = (HEAD_X - 3, HEAD_X - 2)                 # 55 and 56: cover plates in the paving west of the head's plinth
 CROSSING = (43, 47)                                 # there the path to the south lookout crosses it (the site
 #                                                     lead's figures): the main dips under five cover plates
 # What the props line hangs on the main, as props/pipes.mount() takes it: (kind, point, keywords).
@@ -169,6 +186,7 @@ GLOW = B.WINDOW_CURTAIN.block                       # stands in for the fire win
 ROOF_GLASS = B.SKYLIGHT.block
 SLATE = B.SLATE_TILE.stairs
 VERGE_CAP = B.TUFF_SMOOTH.slab + "[type=bottom]"    # the stone on the point of a saw tooth's gable
+PLINTH = B.TUFF_SMOOTH.slab + "[type=bottom]"       # the bridge head's plinth on the upper terrace
 
 # --- the fronts -------------------------------------------------------------------------------------
 STEP = {"north": (0, -1), "south": (0, 1), "west": (-1, 0), "east": (1, 0)}
@@ -290,6 +308,19 @@ def windows(version=None):
             out.append(dict(front=f"power.{front.name}", bay=0, storey="gable",
                             cells=[(x, z) for x in range(mid - LIGHT_MULLION + 1, mid + LIGHT_MULLION)],
                             inward=STEP[front.inward], y=(EAVES + 2, EAVES + 4)))
+    return out
+
+
+def pools(version=None):
+    """Where the fire's light falls on the ground before a boiler bay: [(x, y, z)], the cell of the
+    source the shell offers the sky line for each "furnace" record of windows() (POOL_LEVEL).
+    Offsets are the skeleton's."""
+    out = []
+    for w in windows(version):
+        if w["storey"] == "furnace":
+            x, z = w["cells"][len(w["cells"]) // 2]
+            dx, dz = w["inward"]
+            out.append((x - 2 * dx, w["y"][0] - 2, z - 2 * dz))
     return out
 
 
@@ -554,7 +585,9 @@ def _bridge(p, run):
     # terrace's railing by half a block), a whole block over the shoe and from post to post of the
     # portal, a haunch on either side of the portal
     for x in range(HEAD_X + 1, X0):
-        if x == HEAD_X + 1 or POSTS_X[0] <= x <= POSTS_X[1]:
+        if x == HEAD_X + 1:
+            girder = f"{IRON_STAIRS}[facing=west,half=top]"     # the knee on the down pipe
+        elif POSTS_X[0] <= x <= POSTS_X[1]:
             girder = IRON
         elif x == POSTS_X[0] - 1:
             girder = f"{IRON_STAIRS}[facing=east,half=top]"
@@ -573,13 +606,18 @@ def _bridge(p, run):
     for x in range(POSTS_X[0] + 1, POSTS_X[1]):
         for y in (PIPE_Y - 3, PIPE_Y - 2):
             p.put(x, y, z, B.IRON_BARS)
-    # the bridge head on the upper terrace: a shoe under the girder's end (a stair, so that the
-    # terrace's railing beside it does not reach out to it), and the main turning down
-    p.put(HEAD_X + 1, S.GROUND, z, f"{IRON_STAIRS}[facing=west,half=bottom]")
-    for y in range(S.GROUND, PIPE_Y):
+    # the bridge head on the upper terrace: the main turns down and goes into the ground through a
+    # riveted foot on a stone plinth; nothing stands between the down pipe and the terrace's railing
+    for x in range(HEAD_X - 1, HEAD_X + 2):
+        for row in range(z - 1, z + 2):
+            p.put(x, S.GROUND, row, PLINTH)
+    p.put(HEAD_X, S.GROUND, z, IRON)
+    for y in range(S.GROUND + 1, PIPE_Y):
         p.put(HEAD_X, y, z, PLATE)
     if not run:
         p.put(HEAD_X, S.PAVING_Y, z, IRON)                      # the sleeve where it enters the ground
+        for x in COVERS_X:
+            p.put(x, S.PAVING_Y, z, IRON)                       # the trench's cover plates, level with the paving
         return
     for x in range(RUN_X[0], RUN_X[1] + 1):
         if CROSSING[0] <= x <= CROSSING[1]:
@@ -591,13 +629,18 @@ def _bridge(p, run):
 
 # --- light --------------------------------------------------------------------------------------------
 def _light(canvas, origin, version):
-    """Hand the windows to the sky line, which gives the glowing ones their light. While its kit is
+    """Hand the windows to the sky line, which gives the glowing ones their light, and offer it the
+    source that lays the fire's light on the ground before each of them (pools()). While its kit is
     not in the tree a dim source stands in for it here, as the sky line places its own: in the
     recess before the middle of the glowing rows, never over a block."""
     table = windows(version)
-    glazed = getattr(_other("sky._lightkit"), "glazed", None)
+    kit = _other("sky._lightkit")
+    glazed = getattr(kit, "glazed", None)
     if glazed is not None:
         glazed(canvas, table, origin, group="power")
+        suggest = getattr(kit, "suggest", None)
+        for x, y, z in pools(version) if suggest is not None else ():
+            suggest(canvas, (origin[0] + x, origin[1] + y, origin[2] + z), POOL_LEVEL, POOL_WHY, rank=2)
         return
     for w in table:
         if w["storey"] != "furnace":

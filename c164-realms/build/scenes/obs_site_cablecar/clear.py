@@ -79,6 +79,7 @@ FOV, ASPECT = 77.0, 16.0 / 9.0  # the billboard pictures (build/render.py, tools
 GRID = (480, 270)               # sight lines over V1's picture, for the station's share of it
 FRAME_LIGHT = 4                 # the most block light on what V1 sees of the waiting room (card, record 5)
 FRAME = "waiting room"
+AWNING = "awning"               # the iron awning along its front: the station's own display entities
 OTHERS = "other packages"       # what stands at the station and is not its own
 # The same record's figures for a drawn picture of V1, in the picture's own brightness (0 .. 1):
 # the wall's median within `apart` of the sky's beside it and not over `wall`, the shut windows'
@@ -225,6 +226,14 @@ def _stand(entity):
     those another package set in the same place."""
     x, y, z, nbt = entity
     return (round(float(x), 3), round(float(y), 3), round(float(z), 3), _model(nbt))
+
+
+def part_of_entity(entity):
+    """Which part of the station a display entity of site/cablecar is: the awning along the
+    waiting room's front, the package's one model; anything else by the cell it stands in."""
+    if C.MODEL_AWNING in _model(entity[3]):
+        return AWNING
+    return part_of(tuple(int(math.floor(v)) for v in entity[:3]))
 
 
 def station_cells(canvas=None):
@@ -384,8 +393,7 @@ def main():
     shapes = SL.Shapes(Assets(args.jar, packs=(_pack(scene),)))
     own, own_entities, alone = station_cells()
     mine = {_stand(e) for e in own_entities}
-    whose = lambda e: (part_of(tuple(int(math.floor(v)) for v in e[:3]))            # noqa: E731
-                       if _stand(e) in mine else OTHERS)
+    whose = lambda e: part_of_entity(e) if _stand(e) in mine else OTHERS            # noqa: E731
     if scene is not None:
         canvas = scene.build()
         x0, z0, x1, z1 = S.CABLE_STATION
