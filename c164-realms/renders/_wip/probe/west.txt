@@ -1,0 +1,175 @@
+west: x -13..2, y -1..6, z -4..4; a free cell shows its block light, '*n' is a light source of level n (hex)
+
+y 6
+  z\x  -13 -12 -11 -10  -9  -8  -7  -6  -5  -4  -3  -2  -1   0   1   2
+   -4    .   .   1  ss  ss  sa  sa  sa  ss   1   2   3  oc  sa  sa  oc
+   -3    .   1   2  ss  sa  sa  sa  sa  ss   1   1   2  oc  sa  sa  oc
+   -2    1   2  ss  sa  sa  sa  sa  sa  sa  sa  sa  sa  sa  sa  sa  oc
+   -1    2   3   4  ss  sa  sa  sa  sa  sa  sa  sa  sa  sa  sa  sa   4
+    0    3   4   5  ss  sa  sa  sa  sa  sa  sa  sa  sa  sa  sa  sa   5
+    1    2   3   4  ss  sa  sa  sa  sa  sa  sa  sa  sa  sa  sa  sa   4
+    2    1   2  ss  sa  sa  sa  sa  sa  sa  sa  sa  sa  sa  sa  sa  oc
+    3    .   1   2  ss  sa  sa  sa  sa  ss   1   1   2  oc  sa  sa  oc
+    4    .   .   1  ss  ss  sa  sa  sa  ss   1   2   3  oc  sa  sa  oc
+
+y 5
+  z\x  -13 -12 -11 -10  -9  -8  -7  -6  -5  -4  -3  -2  -1   0   1   2
+   -4    .   .   .   .   .  sb  sb  sb  sb  ss   3   4   5  sc  sc   6
+   -3    .   .   1   .  sb  sb  sb  sb  sb  ss   2   3   4  sd  sd   5
+   -2    .   1   2  sb  sb  sb  sb  sb  sb  sb  sb  sb  sb  sb  sb   4
+   -1    1   2   3   4  sb  sb  sd  sd  sd  sd  sd  sd  sd  sd  sd   4
+    0    2   3   4   5  sb  sb  sc  sc  sc  sc  sc  sc  sc  sc  sc   5
+    1    1   2   3   4  sb  sb  sd  sd  sd  sd  sd  sd  sd  sd  sd   4
+    2    .   1   2  sb  sb  sb  sb  sb  sb  sb  sb  sb  sb  sb  sb   4
+    3    .   .   1   .  sb  sb  sb  sb  sb  ss   2   3   4  sd  sd   5
+    4    .   .   .   .   .  sb  sb  sb  sb  ss   3   4   5  sc  sc   6
+
+y 4
+  z\x  -13 -12 -11 -10  -9  -8  -7  -6  -5  -4  -3  -2  -1   0   1   2
+   -4    .   .   .   .   .  sb  sb  sb  sb  sb  ss   5   6   7  *8   7
+   -3    .   .   .   .  sb  sb  sb  sb  sb  sb  ss   4   5   6   7   6
+   -2    .   .   1  sb  sb  sb  sb  sb  sb  sb  sb  sb  sb  sb  sb   5
+   -1    .   1   2   3  sb  sb   3   4   3   2   3   4   3   3   4   5
+    0    1   2   3   4  sb  sb   4   5   4   3   4   5   4   4   5   6
+    1    .   1   2   3  sb  sb   3   4   3   2   3   4   3   3   4   5
+    2    .   .   1  sb  sb  sb  sb  sb  sb  sb  sb  sb  sb  sb  sb   5
+    3    .   .   .   .  sb  sb  sb  sb  sb  sb  ss   4   5   6   7   6
+    4    .   .   .   .   .  sb  sb  sb  sb  sb  ss   5   6   7  *8   7
+
+y 3
+  z\x  -13 -12 -11 -10  -9  -8  -7  -6  -5  -4  -3  -2  -1   0   1   2
+   -4    .   .   .   .   .  sb  sb  sb  sb  sb  sb  ss   5   6   7   6
+   -3    .   .   .   .  sb  sb  sb  sb  sb  sb  sb  ss   4   5   6   5
+   -2    .   .   .  sb  sb  sb  sb  sb  sb  sb  sb  sb  sb  sb  sb   5
+   -1    .   .   1   2   2   3   4   5   4   3   4   5   4   4   5   6
+    0    .   1   2   3   3   4   5   6   5   4   5   6   5   5   6   7
+    1    .   .   1   2   2   3   4   5   4   3   4   5   4   4   5   6
+    2    .   .   .  sb  sb  sb  sb  sb  sb  sb  sb  sb  sb  sb  sb   5
+    3    .   .   .   .  sb  sb  sb  sb  sb  sb  sb  ss   4   5   6   5
+    4    .   .   .   .   .  sb  sb  sb  sb  sb  sb  ss   5   6   7   6
+
+y 2
+  z\x  -13 -12 -11 -10  -9  -8  -7  -6  -5  -4  -3  -2  -1   0   1   2
+   -4    .   .   .   .   .  sb  sb  sb  sb  sb  sb  sb  ss   5   6   5
+   -3    .   .   .   .  sb  sb  sb  sb  sb  sb  sb  sb  ss   4   5   5
+   -2    .   .   .  sb  sb  sb  sb  sb  sb  sb  sb  sb  sb  sb  sb   6
+   -1    .   .   1   2   3   4   5   6   5   4   5   6   5   5   6   7
+    0    .   1   2   3   4   5   6  *7   6   5   6  *7   6   6   7  *8
+    1    .   .   1   2   3   4   5   6   5   4   5   6   5   5   6   7
+    2    .   .   .  sb  sb  sb  sb  sb  sb  sb  sb  sb  sb  sb  sb   6
+    3    .   .   .   .  sb  sb  sb  sb  sb  sb  sb  sb  ss   4   5   5
+    4    .   .   .   .   .  sb  sb  sb  sb  sb  sb  sb  ss   5   6   5
+
+y 1
+  z\x  -13 -12 -11 -10  -9  -8  -7  -6  -5  -4  -3  -2  -1   0   1   2
+   -4    .   .   .  ds  ds  db  db  db  db  db  db  db  db  ss   5   5
+   -3    .   .   .  ds  db  db  db  db  db  db  db  db  db  ss   4   4
+   -2    .   .   .  db  db  db  db  db  db  db  db  db  db  db  db   5
+   -1    .   .   .   1   2   3   4   5   4   3   4   5   4   4   5   6
+    0    .   .   1   2   3   4   5   6   5   4   5   6   5   5   6   7
+    1    .   .   .   1   2   3   4   5   4   3   4   5   4   4   5   6
+    2    .   .   .  db  db  db  db  db  db  db  db  db  db  db  db   5
+    3    .   .   .  ds  db  db  db  db  db  db  db  db  db  ss   4   4
+    4    .   .   .  ds  ds  db  db  db  db  db  db  db  db  ss   5   5
+
+y 0
+  z\x  -13 -12 -11 -10  -9  -8  -7  -6  -5  -4  -3  -2  -1   0   1   2
+   -4    .   .   .  db  db  db  db  db  db  db  db  db  db  db  ss   4
+   -3    .   .   .  db  db  db  db  db  db  db  db  db  db  db  ss   3
+   -2    .   .   .  db  db  db  db  db  db  db  db  db  db  db  db   4
+   -1    .   .   .   .   1   2   3   4   3   2   3   4   3   3   4   5
+    0    .   .   .   1   2   3   4   5   4   3   4   5   4   4   5   6
+    1    .   .   .   .   1   2   3   4   3   2   3   4   3   3   4   5
+    2    .   .   .  db  db  db  db  db  db  db  db  db  db  db  db   4
+    3    .   .   .  db  db  db  db  db  db  db  db  db  db  db  ss   3
+    4    .   .   .  db  db  db  db  db  db  db  db  db  db  db  ss   4
+
+y -1
+  z\x  -13 -12 -11 -10  -9  -8  -7  -6  -5  -4  -3  -2  -1   0   1   2
+   -4   db  db  db  db  pd  pd  pd  sa  sa  pd  pd  sa  sa  pd  pd  pd
+   -3   db  db  db  db  pd  pd  pd  sa  sa  pd  pd  sa  sa  pd  pd  pd
+   -2   pt  pt  pt  pt  pd  pd  pd  pd  pd  pd  pd  pd  pd  pd  pd  og
+   -1   pt  pt  pt  pt  db  db  sa  sa  sa  sa  sa  sa  sa  sa  sa  og
+    0   pt  pt  pt  pt  db  db  sa  sa  sa  sa  sa  sa  sa  sa  sa  og
+    1   pt  pt  pt  pt  db  db  sa  sa  sa  sa  sa  sa  sa  sa  sa  og
+    2   pt  pt  pt  pt  pd  pd  pd  pd  pd  pd  pd  pd  pd  pd  pd  og
+    3   db  db  db  db  pd  pd  pd  sa  sa  pd  pd  sa  sa  pd  pd  pd
+    4   db  db  db  db  pd  pd  pd  sa  sa  pd  pd  sa  sa  pd  pd  pd
+
+blocks:
+  db  deepslate_bricks
+  ds  deepslate_brick_stairs   [facing=east,half=bottom | facing=north,half=bottom | facing=south,half=bottom]
+  oc  oxidized_cut_copper
+  og  oxidized_copper_grate
+  pd  polished_deepslate
+  pt  polished_tuff
+  sa  smooth_sandstone
+  sb  sandstone
+  sc  sandstone_slab   [type=top]
+  sd  sandstone_stairs   [facing=north,half=top | facing=south,half=top]
+  ss  smooth_sandstone_stairs   [facing=east,half=top | facing=north,half=top | facing=south,half=top | facing=west,half=bottom]
+
+light sources within 7 cells of the box (cell, level, who):
+  (-9, 9, 0)  10  sky/lights:window apse 0 main
+  (-9, 12, 0)  10  sky/lights:window apse 0 main
+  (-6, 2, 0)   7  interiors/starhall:way west
+  (-6, 9, -2)   7  props/lamps:cage_a
+  (-6, 9, 2)   7  props/lamps:cage_a
+  (-2, 2, 0)   7  interiors/starhall:way west
+  (0, 10, -5)   7  sky/lights:way
+  (0, 10, 5)   7  sky/lights:way
+  (1, 4, -4)   8  interiors/starhall:stair foot
+  (1, 4, 4)   8  interiors/starhall:stair foot
+  (2, 1, -11)   7  interiors/batteryroom:west way south
+  (2, 1, -7)   7  interiors/batteryroom:west way south
+  (2, 1, 8)   7  interiors/platevault:lift
+  (2, 2, 0)   8  sky/lights:way
+  (2, 9, 0)   8  sky/lights:way
+  (3, 1, -11)   7  interiors/batteryroom:west way south
+  (3, 1, -9)   8  interiors/batteryroom:west way south
+  (3, 1, -7)   7  interiors/batteryroom:west way south
+  (3, 9, -10)  10  interiors/timeroom:world clocks
+  (4, 1, -11)   7  interiors/batteryroom:west way south
+  (4, 1, -7)   7  interiors/batteryroom:west way south
+  (4, 1, 10)   8  interiors/platevault:way
+  (4, 10, -5)   7  props/lamps:cage_a
+  (4, 10, 5)   7  props/lamps:cage_a
+  (4, 10, 8)  10  interiors/chartroom:sky_map
+  (4, 12, 2)   8  sky/lights:way
+  (4, 13, -9)   7  interiors/timeroom:ceiling over the world clocks
+  (5, 1, -4)   8  interiors/starhall:aisle lamp
+  (5, 1, 4)   8  interiors/starhall:aisle lamp
+  (5, 1, 7)   6  props/lamps:desk_green
+  (5, 9, -8)  11  interiors/timeroom:card cabinets
+  (5, 9, -4)   8  sky/lights:stair
+  (7, 1, -10)   7  interiors/batteryroom:aisle south
+  (7, 1, -9)   8  interiors/batteryroom:aisle south
+  (7, 1, -8)   7  interiors/batteryroom:aisle south
+  (7, 1, -7)   8  interiors/batteryroom:aisle south
+  (7, 1, 7)   8  interiors/platevault:way
+  (7, 1, 10)   8  interiors/platevault:way
+  (7, 3, -9)   7  interiors/batteryroom:aisle south
+  (7, 3, 0)  11  machines/clock:master
+  (8, 1, -10)   7  interiors/batteryroom:aisle south
+  (8, 1, -9)   8  interiors/batteryroom:aisle south
+  (8, 1, -8)   7  interiors/batteryroom:aisle south
+  (8, 1, -7)   8  interiors/batteryroom:aisle south
+  (8, 3, -9)   7  interiors/batteryroom:aisle south
+  (8, 10, -5)   6  props/lamps:cage_a
+  (8, 10, 5)   6  props/lamps:cage_a
+
+display entities in the box and a cell round it (x, y, z, model):
+    -8.363   0.000   -0.860  c164:prop_iron_glazed_leaf
+    -8.363   0.000    1.860  c164:prop_iron_glazed_leaf
+     2.990   1.500   -4.500  c164:int_starhall_board_end_a
+     2.990   2.500    0.500  c164:prop_lamp_cage_a
+     3.000   3.000    5.990  c164:prop_paper_star_chart
+    -5.490   5.490    0.500  c164:prop_lamp_cage_a
+    -1.490   5.490    0.500  c164:prop_lamp_cage_a
+     1.000   5.490   -3.490  c164:prop_lamp_cage_a
+     1.000   5.490    4.490  c164:prop_lamp_cage_a
+     2.500   7.000    5.547  c164:prop_furn_card_cabinet
+     3.500   7.000    5.547  c164:prop_furn_card_cabinet
+    -8.010   8.000    0.500  c164:prop_iron_window_arch
+    -7.010   8.000   -4.000  c164:prop_iron_window_arch_2
+    -7.010   8.000    5.000  c164:prop_iron_window_arch_2

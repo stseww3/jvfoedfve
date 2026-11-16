@@ -1,0 +1,152 @@
+chart: x 3..12, y 6..11, z 3..9; a free cell shows its block light, '*n' is a light source of level n (hex)
+
+y 11
+  z\x    3   4   5   6   7   8   9  10  11  12
+    3    5   6   5   4   3   3   3   4   5   4
+    4    4   5   4   3   3   4   3   3   4   3
+    5    5   6   5   4   4   5   4   4   5   4
+    6   ss  ss  ss  ss  ss  ss  ss  ss  ss  ss
+    7   dt  dt  dt  dt  dt  dt  dt  dt  dt  dt
+    8    8   9   8   7   6   6   7   8   9   8
+    9    7   8   7   6   6   6   6   7   8   7
+
+y 10
+  z\x    3   4   5   6   7   8   9  10  11  12
+    3    4   5   4   3   3   4   4   5   6   5
+    4    5   6   5   4   4   5   4   4   5   4
+    5    6  *7   6   5   5  *6   5   5  *6   5
+    6   ss  ss  ss  ss  ss  ss  ss  ss  ss  ss
+    7   dt  dt  dt  dt  dt  dt  dt  dt  dt  dt
+    8    9  *a   9   8   7   7   8   9  *a   9
+    9    8   9   8   7   7   7   7   8   9   8
+
+y 9
+  z\x    3   4   5   6   7   8   9  10  11  12
+    3    4   4   3   2   3   4   5   6   7   6
+    4    4   5   4   3   3   4   4   5   6   5
+    5    5   6   5   4   4   5   4   4   5   4
+    6   ss  ss  ss  ss   5   5  ss  ss  ss  ss
+    7   dt  dt  dt  dt   6   6  dt  dt  dt  dt
+    8    8   9   8   7   7   7   7   8   9   8
+    9    7   8   7   7   8   8   7   7   8   7
+
+y 8
+  z\x    3   4   5   6   7   8   9  10  11  12
+    3    3   3   2   3   4   5   6   7   8   7
+    4    3   4   3   3   4   4   5   6   7   6
+    5    4   5   4   4   5   5   4   5   6   5
+    6   ss  ss  ss  ss   6   6  ss  ss  ss  ss
+    7   dt  dt  dt  dt   7   7  dt  dt  dt  dt
+    8    7   8   7   7   8   8   7   7   8   7
+    9    7   7   7   8   9   9   8   7   7   6
+
+y 7
+  z\x    3   4   5   6   7   8   9  10  11  12
+    3    2   2   3   4   5   6   7   8   9   8
+    4   ob  ob  ob  ob  ob  ob  ob  ob  ob  ob
+    5    3   4   3   3   4   4   5   6   7   6
+    6   cs  cs  cs  cs   5   5  cs  cs  cs  cs
+    7   dt  dt  dt  dt   6   6  dt  dt  dt  dt
+    8    6   7   6   6   7   7   6   6   7   6
+    9    6   6   6   7   8   8   7   6   6   5
+
+y 6
+  z\x    3   4   5   6   7   8   9  10  11  12
+    3    3   2   3   4   5   5   6   7   8   7
+    4   oc  oc  oc  oc  oc  oc  oc  oc  oc  oc
+    5   ss  ss  ss  ss  ss  ss  ss  ss  ss  ss
+    6   ss  ss  ss  ss  ss  ss  ss  ss  ss  ss
+    7   dp  dp  dp  dp  dp  dp  dp  dp  dp  dp
+    8   dp  dp  dp  dp  dp  dp  dp  dp  dp  dp
+    9   dp  dp  dp  dp  dp  dp  dp  dp  dp  dp
+
+blocks:
+  cs  cut_sandstone
+  dp  dark_oak_planks
+  dt  dark_oak_trapdoor   [facing=south,half=bottom,open=true]
+  ob  oxidized_copper_bars
+  oc  oxidized_cut_copper
+  ss  smooth_sandstone
+
+light sources within 7 cells of the box (cell, level, who):
+  (-2, 2, 0)   7  interiors/starhall:way west
+  (0, 10, 5)   7  sky/lights:way
+  (1, 4, -4)   8  interiors/starhall:stair foot
+  (1, 4, 4)   8  interiors/starhall:stair foot
+  (2, 1, 8)   7  interiors/platevault:lift
+  (2, 2, 0)   8  sky/lights:way
+  (2, 9, 0)   8  sky/lights:way
+  (3, 7, 16)  12  interiors/chartroom:drafting table
+  (3, 8, 12)  10  interiors/chartroom:blackboard
+  (4, 1, 10)   8  interiors/platevault:way
+  (4, 1, 14)   8  interiors/platevault:way
+  (4, 10, 5)   7  props/lamps:cage_a
+  (4, 10, 8)  10  interiors/chartroom:sky_map
+  (4, 12, 2)   8  sky/lights:way
+  (4, 15, -2)   8  sky/lights:way
+  (5, 1, -4)   8  interiors/starhall:aisle lamp
+  (5, 1, 4)   8  interiors/starhall:aisle lamp
+  (5, 1, 7)   6  props/lamps:desk_green
+  (5, 9, -4)   8  sky/lights:stair
+  (7, 1, 7)   8  interiors/platevault:way
+  (7, 1, 10)   8  interiors/platevault:way
+  (7, 1, 14)   8  interiors/platevault:way
+  (7, 3, 0)  11  machines/clock:master
+  (7, 8, 12)  12  interiors/chartroom:the light table 1
+  (7, 8, 16)  12  interiors/chartroom:the light table 3
+  (7, 16, 3)   8  sky/lights:way
+  (7, 17, 0)   8  sky/lights:way
+  (8, 8, 12)  12  interiors/chartroom:the light table 2
+  (8, 8, 16)  12  interiors/chartroom:the light table 4
+  (8, 10, 5)   6  props/lamps:cage_a
+  (10, 1, 7)   7  interiors/platevault:checker
+  (10, 2, 5)   8  props/lamps:bracket_b
+  (11, 1, 0)   8  interiors/starhall:the sun's pool
+  (11, 1, 10)   8  interiors/platevault:way
+  (11, 1, 14)   8  interiors/platevault:way
+  (11, 7, 0)  12  machines/orrery:a
+  (11, 10, 5)   6  props/lamps:cage_a
+  (11, 10, 8)  10  interiors/chartroom:sky_map_b
+  (12, 7, 12)   8  interiors/chartroom:the green desk lamp
+  (12, 18, 13)   8  sky/lights:way
+  (13, 2, 5)   7  props/lamps:bracket_b
+  (15, 2, 5)   8  props/lamps:bracket_b
+  (15, 9, 12)  10  sky/lights:window east 12 main
+  (15, 12, 12)  10  sky/lights:window east 12 main
+  (17, 2, 10)  10  sky/lights:wash
+  (17, 2, 14)  10  sky/lights:wash
+  (17, 4, 0)   9  props/ironwork:door_frame
+  (17, 9, 0)  10  sky/lights:window east 9 main
+  (17, 10, -4)   6  sky/lights:window east 8 main
+  (17, 10, 4)   6  sky/lights:window east 10 main
+  (17, 12, 0)  10  sky/lights:window east 9 main
+  (18, 0, 10)   8  props/lamps:uplight
+  (18, 0, 14)   8  props/lamps:uplight
+  (19, 4, 6)  12  props/lamps:bracket_a
+  (19, 14, 0)   8  props/signs:emblem
+
+display entities in the box and a cell round it (x, y, z, model):
+     2.500   7.000    5.547  c164:prop_furn_card_cabinet
+     2.594   7.000    8.500  c164:prop_furn_card_cabinet
+     2.594   7.000    9.438  c164:prop_furn_card_cabinet
+     2.594   7.000   10.375  c164:prop_furn_card_cabinet
+     3.500   7.000    5.547  c164:prop_furn_card_cabinet
+     4.500   7.000    5.547  c164:prop_furn_instrument_cabinet
+     5.500   7.000    5.484  c164:prop_furn_display_case
+    12.900   7.000    7.900  c164:prop_furn_coat_stand
+     5.500   7.703    5.484  c164:prop_paper_logbook
+    11.500   8.750    5.990  c164:prop_paper_sky_map_b
+     2.500   8.875    5.531  c164:prop_inst_sunshine_recorder
+     2.594   8.875    8.500  c164:prop_inst_globe
+     3.500   8.875    5.531  c164:prop_paper_logbook_shut
+     4.500   8.875    5.539  c164:prop_inst_sextant
+     3.500   9.000    5.531  c164:prop_paper_logbook_shut
+     2.197   9.875    9.438  c164:prop_paper_moon_map
+     4.500  10.500    5.990  c164:prop_lamp_cage_a
+     4.500  10.500    7.197  c164:prop_paper_sky_map
+     8.000  10.500    5.990  c164:prop_lamp_cage_a
+    11.500  10.500    5.990  c164:prop_lamp_cage_a
+    11.500  10.500    7.197  c164:prop_paper_sky_map_b
+     4.500  12.500    2.010  c164:prop_lamp_cage_a
+     4.500  12.750    7.197  c164:prop_lamp_bracket_b
+    11.500  12.750    7.197  c164:prop_lamp_bracket_b

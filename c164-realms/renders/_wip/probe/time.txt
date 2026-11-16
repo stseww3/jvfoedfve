@@ -1,0 +1,192 @@
+time: x 3..12, y 6..11, z -9..-3; a free cell shows its block light, '*n' is a light source of level n (hex)
+
+y 11
+  z\x    3   4   5   6   7   8   9  10  11  12
+   -9    7   7   8   7   6   5   4   3   2   3
+   -8    7   8   9   8   7   6   5   4   3   2
+   -7   dt  dt  dt  dt  dt  dt  dt  dt  dt  dt
+   -6   ss  ss  ss  ss  ss  ss  ss  ss  ss  ss
+   -5    5   6   5   4   4   5   4   4   5   4
+   -4    4   5   6   5   4   4   3   3   4   3
+   -3    3   4   5   4   3   3   3   4   5   4
+
+y 10
+  z\x    3   4   5   6   7   8   9  10  11  12
+   -9    8   8   9   8   7   6   5   4   3   4
+   -8    8   9  10   9   8   7   6   5   4   3
+   -7   dt  dt  dt  dt  dt  dt  dt  dt  dt  dt
+   -6   ss  ss  ss  ss  ss  ss  ss  ss  ss  ss
+   -5    6  *7   6   5   5  *6   5   5  *6   5
+   -4    5   6   7   6   5   5   4   4   5   4
+   -3    4   5   6   5   4   4   4   5   6   5
+
+y 9
+  z\x    3   4   5   6   7   8   9  10  11  12
+   -9    9   9  10   9   8   7   6   5   4   5
+   -8    9  10  *b  10   9   8   7   6   5   4
+   -7   dt  dt  dt  dt   8   7  dt  dt  dt  dt
+   -6   ss  ss  ss  ss   7   6  ss  ss  ss  ss
+   -5    5   6   7   6   6   5   4   4   5   4
+   -4    6   7  *8   7   6   5   4   5   6   5
+   -3    5   6   7   6   5   4   5   6   7   6
+
+y 8
+  z\x    3   4   5   6   7   8   9  10  11  12
+   -9    8   8   9   8   7   6   5   4   5   6
+   -8    8   9  10   9   8   7   6   5   4   5
+   -7   dt  dt  dt  dt   7   6  dt  dt  dt  dt
+   -6   ss  ss  ss  ss   6   5  ss  ss  ss  ss
+   -5    4   5   6   5   5   4   4   5   6   5
+   -4   ot   6  bf   6   5   4   5   6   7   6
+   -3   ot  ot  ot   5   4   5   6   7   8   7
+
+y 7
+  z\x    3   4   5   6   7   8   9  10  11  12
+   -9    7   7   8   7   6   5   4   5   6   7
+   -8    7   8   9   8   7   6   5   4   5   6
+   -7   dt  dt  dt  dt   6   5  dt  dt  dt  dt
+   -6   cs  cs  cs  cs   5   4  cs  cs  cs  cs
+   -5    3   4   5   4   4   4   5   6   7   6
+   -4   ob   5  ob  ob  ob  ob  ob  ob  ob  ob
+   -3   os  os  ot   4   5   6   7   8   9   8
+
+y 6
+  z\x    3   4   5   6   7   8   9  10  11  12
+   -9   dp  dp  dp  dp  dp  dp  dp  dp  dp  dp
+   -8   dp  dp  dp  dp  dp  dp  dp  dp  dp  dp
+   -7   dp  dp  dp  dp  dp  dp  dp  dp  dp  dp
+   -6   ss  ss  ss  ss  ss  ss  ss  ss  ss  ss
+   -5   ss  ss  ss  ss  ss  ss  ss  ss  ss  ss
+   -4   oc  oc  oc  oc  oc  oc  oc  oc  oc  oc
+   -3    3   3   4   4   5   5   6   7   8   7
+
+blocks:
+  bf  bamboo_fence
+  cs  cut_sandstone
+  dp  dark_oak_planks
+  dt  dark_oak_trapdoor   [facing=north,half=bottom,open=true]
+  ob  oxidized_copper_bars
+  oc  oxidized_cut_copper
+  os  oxidized_cut_copper_slab   [type=bottom | type=top]
+  ot  oxidized_copper_trapdoor   [facing=east,half=bottom,open=true | facing=north,half=bottom,open=true]
+  ss  smooth_sandstone
+
+light sources within 7 cells of the box (cell, level, who):
+  (-2, 2, 0)   7  interiors/starhall:way west
+  (0, 9, -16)  10  sky/lights:window west 5 main
+  (0, 10, -5)   7  sky/lights:way
+  (0, 12, -16)  10  sky/lights:window west 5 main
+  (1, 4, -4)   8  interiors/starhall:stair foot
+  (1, 4, 4)   8  interiors/starhall:stair foot
+  (2, 1, -15)   7  interiors/batteryroom:west way north
+  (2, 1, -11)   7  interiors/batteryroom:west way south
+  (2, 1, -7)   7  interiors/batteryroom:west way south
+  (2, 2, 0)   8  sky/lights:way
+  (2, 9, 0)   8  sky/lights:way
+  (3, 1, -15)   7  interiors/batteryroom:west way north
+  (3, 1, -11)   7  interiors/batteryroom:west way south
+  (3, 1, -9)   8  interiors/batteryroom:west way south
+  (3, 1, -7)   7  interiors/batteryroom:west way south
+  (3, 7, -16)  10  interiors/timeroom:rating bench
+  (3, 9, -10)  10  interiors/timeroom:world clocks
+  (4, 1, -15)   7  interiors/batteryroom:west way north
+  (4, 1, -11)   7  interiors/batteryroom:west way south
+  (4, 1, -7)   7  interiors/batteryroom:west way south
+  (4, 10, -5)   7  props/lamps:cage_a
+  (4, 12, 2)   8  sky/lights:way
+  (4, 13, -15)   8  interiors/timeroom:ceiling over the rating bench
+  (4, 13, -9)   7  interiors/timeroom:ceiling over the world clocks
+  (4, 15, -2)   8  sky/lights:way
+  (5, 1, -4)   8  interiors/starhall:aisle lamp
+  (5, 1, 4)   8  interiors/starhall:aisle lamp
+  (5, 9, -8)  11  interiors/timeroom:card cabinets
+  (5, 9, -4)   8  sky/lights:stair
+  (7, 1, -16)   7  interiors/batteryroom:aisle north
+  (7, 1, -10)   7  interiors/batteryroom:aisle south
+  (7, 1, -9)   8  interiors/batteryroom:aisle south
+  (7, 1, -8)   7  interiors/batteryroom:aisle south
+  (7, 1, -7)   8  interiors/batteryroom:aisle south
+  (7, 2, -13)   7  interiors/batteryroom:fill
+  (7, 3, -9)   7  interiors/batteryroom:aisle south
+  (7, 3, 0)  11  machines/clock:master
+  (7, 16, 3)   8  sky/lights:way
+  (7, 17, 0)   8  sky/lights:way
+  (8, 1, -16)   7  interiors/batteryroom:aisle north
+  (8, 1, -10)   7  interiors/batteryroom:aisle south
+  (8, 1, -9)   8  interiors/batteryroom:aisle south
+  (8, 1, -8)   7  interiors/batteryroom:aisle south
+  (8, 1, -7)   8  interiors/batteryroom:aisle south
+  (8, 2, -13)   7  interiors/batteryroom:fill
+  (8, 3, -9)   7  interiors/batteryroom:aisle south
+  (8, 10, -5)   6  props/lamps:cage_a
+  (10, 2, -5)   8  props/lamps:bracket_b
+  (11, 1, -15)   7  interiors/batteryroom:east way north
+  (11, 1, -11)   7  interiors/batteryroom:east way south
+  (11, 1, -7)   7  interiors/batteryroom:east way south
+  (11, 1, 0)   8  interiors/starhall:the sun's pool
+  (11, 7, 0)  12  machines/orrery:a
+  (11, 10, -5)   6  props/lamps:cage_a
+  (11, 13, -13)   8  interiors/timeroom:ceiling over the message desk
+  (12, 1, -15)   7  interiors/batteryroom:east way north
+  (12, 1, -11)   7  interiors/batteryroom:east way south
+  (12, 1, -9)   8  interiors/batteryroom:east way south
+  (12, 1, -7)   7  interiors/batteryroom:east way south
+  (12, 7, -12)  10  interiors/timeroom:message desk
+  (12, 18, -13)   8  sky/lights:way
+  (13, 1, -15)   7  interiors/batteryroom:east way north
+  (13, 1, -11)   7  interiors/batteryroom:east way south
+  (13, 1, -7)   7  interiors/batteryroom:east way south
+  (13, 2, -5)   7  props/lamps:bracket_b
+  (15, 2, -5)   8  props/lamps:bracket_b
+  (15, 9, -12)  10  sky/lights:window east 6 main
+  (15, 12, -12)  10  sky/lights:window east 6 main
+  (17, 2, -14)  10  sky/lights:wash
+  (17, 2, -10)  10  sky/lights:wash
+  (17, 4, 0)   9  props/ironwork:door_frame
+  (17, 9, 0)  10  sky/lights:window east 9 main
+  (17, 10, -4)   6  sky/lights:window east 8 main
+  (17, 10, 4)   6  sky/lights:window east 10 main
+  (17, 12, 0)  10  sky/lights:window east 9 main
+  (18, 0, -14)   8  props/lamps:uplight
+  (18, 0, -10)   8  props/lamps:uplight
+  (19, 4, -6)  12  props/lamps:bracket_a
+  (19, 14, 0)   8  props/signs:emblem
+
+display entities in the box and a cell round it (x, y, z, model):
+     3.500   5.312   -8.990  c164:prop_lamp_cage_a
+     8.000   5.312   -8.990  c164:prop_lamp_cage_a
+    12.500   5.312   -8.990  c164:prop_lamp_cage_a
+     4.500   7.000   -6.600  c164:prop_furn_card_cabinet
+     5.500   7.000   -6.600  c164:prop_furn_card_cabinet
+    10.400   7.000   -6.600  c164:prop_furn_coat_stand
+    13.500   7.000   -4.547  c164:prop_furn_instrument_cabinet
+    13.803   8.000   -9.500  c164:mach_rec_tube
+     8.000   8.500   -6.197  c164:int_timeroom_door_jamb_l
+     8.000   8.500   -6.197  c164:int_timeroom_door_jamb_r
+     8.000   8.500   -6.197  c164:int_timeroom_door_head
+     8.000   8.500   -6.197  c164:int_timeroom_door_leaf_l
+     8.000   8.500   -6.197  c164:int_timeroom_door_leaf_r
+    11.500   8.750   -4.990  c164:prop_paper_sky_map
+    13.500   8.875   -4.539  c164:prop_inst_globe
+     5.500   9.000   -3.500  c164:prop_lamp_post
+     5.500   9.391   -3.500  c164:prop_lamp_post_globe_side0
+     5.500   9.391   -3.500  c164:prop_lamp_post_globe_side1
+     5.500   9.391   -3.500  c164:prop_lamp_post_globe_under
+     2.197   9.531   -9.500  c164:int_timeroom_clock_home
+     2.197   9.531   -8.500  c164:int_timeroom_clock_w3
+     2.197   9.531   -7.500  c164:int_timeroom_clock_w5
+     5.000   9.625   -6.197  c164:prop_paper_blueprint
+    13.803  10.250   -9.500  c164:mach_rec_tube_run
+     2.197  10.375   -9.500  c164:int_timeroom_wire_tap
+     2.197  10.375   -8.500  c164:int_timeroom_wire_tap
+     2.197  10.375   -7.500  c164:int_timeroom_wire_tap
+     3.010  10.375   -6.594  c164:int_timeroom_wire_outlet
+     3.219  10.375   -6.281  c164:int_timeroom_wire
+     3.750  10.375   -6.197  c164:int_timeroom_wire_clip
+     6.250  10.375   -6.197  c164:int_timeroom_wire_clip
+     4.500  10.500   -4.990  c164:prop_lamp_cage_a
+     8.000  10.500   -4.990  c164:prop_lamp_cage_a
+    11.500  10.500   -4.990  c164:prop_lamp_cage_a
+     8.000  10.938   -6.197  c164:int_timeroom_bell
+     2.197  11.344   -9.500  c164:prop_lamp_bracket_b
+     5.000  11.344   -6.197  c164:prop_lamp_bracket_b
