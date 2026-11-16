@@ -19,6 +19,8 @@ darker than the pier's face (lights, #75636).
   C164_HALL_SPOT=<level>   starhall.SPOT_LEVEL likewise; 0: the globe and the board's ends take
                            the light of their cells
   C164_HALL_FOOT=<level>   starhall.STAIR_FOOT_LEVEL likewise
+  C164_HALL_DOOR=<level>   starhall.DOOR_LEVEL likewise (0: no lamp in the doorway)
+  C164_HALL_WAY=<w>,<e>    starhall.WAY_LEVELS likewise
   C164_HALL_AISLE=a,b,c,d  starhall.AISLE_LEVELS likewise, from the pier to the door
   C164_HALL_CLOCK=<level>  the level of the mother clock's lamp before the pier (machines/clock.MASTER_LAMP)
 """
@@ -42,6 +44,7 @@ GROUND = (S.WALL_W - 14, S.Z_NORTH - 6, S.WALL_E + 15, S.Z_SOUTH + 6)  # paving 
 ORIGIN = (0, 0, 0)
 # what the environment may set, to compare
 TRY = {"C164_HALL_POOL": "SUN_POOL", "C164_HALL_SPOT": "SPOT_LEVEL", "C164_HALL_FOOT": "STAIR_FOOT_LEVEL",
+       "C164_HALL_DOOR": "DOOR_LEVEL", "C164_HALL_WAY": "WAY_LEVELS",
        "C164_HALL_AISLE": "AISLE_LEVELS"}
 CLOCK_ENV = "C164_HALL_CLOCK"
 
