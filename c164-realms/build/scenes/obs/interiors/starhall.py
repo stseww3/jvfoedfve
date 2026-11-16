@@ -720,7 +720,9 @@ def _board_end(version):
 def _models():
     made = [_star(), _boss("a"), _boss("b"), _board_end("a"), _board_end("b")]
     made += [_panel(name, kind) for name in ("sky", "plate") for kind in ("panel", "strip")]
-    return {m.name: m for m in made}
+    # settled: the slanting flats of the boss's rings and of the star's rays stand between two axes, and
+    # which of the two such a face is lit as came out of a float's last bit (props/_kit.settle, a6 11-16)
+    return {m.name: K.settle(m) for m in made}
 
 
 def _parts():
