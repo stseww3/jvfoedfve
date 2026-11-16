@@ -1,0 +1,328 @@
+[export     0s] make T13: scene obs of 3066a294 at [0, 200, 0], look off, tick 20370, spawn feet [88.5, 196.0, -32.5] yaw 67.71 pitch -22.69, back to it under y 170 and from the cloud sea's blocks
+[export     0s] server.jar 26.3: there, sha1 33680f5f2ac32864d6d7cf5e56a705fdb3e05f4c
+[export     0s] functions c164map: back, first, join, load, tick
+[export     7s] server up after 6 s (srv/T13)
+[export     7s]   > datapack list enabled
+      There are 2 data pack(s) enabled: [vanilla (built-in)], [file/c164art (world)]
+[export     7s]   > gamerule max_block_modifications
+      Game rule max_block_modifications is currently set to 32768
+[export    15s]   place: built 191090 blocks, 1332 entities in 3.4s
+[export    15s]   place: exported 74 tiles (190205 + 885 blocks) in 0.4s
+[export    15s]   place: motion: 135 parts and 189 points registered, the loop is started once the scene stands
+[export    15s]   place: Reloading!
+[export    15s]   place: placed in 1.3s, 0 failed
+[export    15s]   place: function c164art:obs-motion/start -> Running function c164art:obs-motion/start
+[export    15s]   place: the look is carried by the resource pack: the clock is held at 20370 (shoot.py --clock 20370)
+[export    15s] TRIAL: a stand-in train is written into the pack: go, park, restart, standin_tick; the tick tag is [{'id': 'c164map:tick', 'required': False}, 'c164art:train/standin_tick']
+[export    16s]   > reload
+      Reloading!
+[export    16s]   > function c164art:train/restart
+      Running function c164art:train/restart
+[export    16s] a cloud block to stand on: [104, 174, -17] (386 blocks asked for in 0.1 s)
+[export    16s]   > gamerule advance_time false
+      Game rule advance_time is already set to false
+[export    16s]   > gamerule advance_weather false
+      Game rule advance_weather is already set to false
+[export    16s]   > gamerule fall_damage false
+      Game rule fall_damage is now set to false
+[export    16s]   > gamerule random_tick_speed 0
+      Game rule random_tick_speed is already set to 0
+[export    16s]   > gamerule spawn_mobs false
+      Game rule spawn_mobs is already set to false
+[export    16s]   > gamerule block_drops false
+      Game rule block_drops is already set to false
+[export    16s]   > gamerule entity_drops false
+      Game rule entity_drops is already set to false
+[export    16s]   > gamerule spawn_wandering_traders false
+      Game rule spawn_wandering_traders is now set to false
+[export    16s]   > gamerule spawn_patrols false
+      Game rule spawn_patrols is now set to false
+[export    16s]   > gamerule spawn_phantoms false
+      Game rule spawn_phantoms is now set to false
+[export    16s]   > gamerule pvp false
+      Game rule pvp is now set to false
+[export    16s]   > gamerule send_command_feedback false
+      Game rule send_command_feedback is now set to false
+[export    16s]   > gamerule command_block_output false
+      Game rule command_block_output is now set to false
+[export    16s]   > gamerule fire_damage false
+      Game rule fire_damage is now set to false
+[export    16s]   > gamerule drowning_damage false
+      Game rule drowning_damage is now set to false
+[export    16s]   > gamerule freeze_damage false
+      Game rule freeze_damage is now set to false
+[export    16s]   > gamerule immediate_respawn true
+      Game rule immediate_respawn is now set to true
+[export    16s]   > gamerule show_death_messages false
+      Game rule show_death_messages is now set to false
+[export    16s]   > gamerule locator_bar false
+      Game rule locator_bar is now set to false
+[export    16s]   > gamerule respawn_radius 0
+      Game rule respawn_radius is now set to 0
+[export    16s]   > difficulty peaceful
+      The difficulty did not change; it is already set to Peaceful
+[export    16s]   > defaultgamemode adventure
+      The default game mode is now Adventure Mode
+[export    16s]   > setworldspawn 88 196 -33 67.71 -22.69
+      Set the world spawn point to 88, 196, -33 [67.71, -22.69] in minecraft:overworld
+[export    16s]   > time set 20370
+      Clock minecraft:overworld is already set to 20370 tick(s)
+[export    16s]   > weather clear 1d
+      Set the weather to clear
+[export    16s]   > gamerule max_block_modifications 32768
+      Game rule max_block_modifications is now set to 32768
+[export    16s]   > scoreboard players get #run c164m
+      #run has 571309228 [c164m]
+[export    25s] light: at rest after 9.7 s; 1120 chunks, chunks whose light had changed at each reading: [199, 0, 0, 0]
+[export    25s]   > forceload remove all
+      Unmarked all force loaded chunks in minecraft:overworld
+[export    25s]   > forceload add 88 -33
+      Marked chunk [5, -3] in minecraft:overworld to be force loaded
+[export    26s]   > forceload query
+      23 force loaded chunks were found in minecraft:overworld at: [5, -3], [6, -3], [7, -3], [8, -3], [5, -2], [6, -2], [7, -2], [8, -2], [9, -2], [9, -1], [10, -1], [10, 0], [11, 0], [10, 1], [11, 1], [10, 2], [11, 2], [10, 3], [11, 3], [10, 4], [11, 4], [10, 5], [11, 5]
+[export    26s]   > tick query
+      The game is running normallyTarget tick rate: 20.0 per second.
+Average time per tick: 1.8ms (Target: 50.0ms)Percentiles: P50: 1.1ms P95: 1.6ms P99: 61.8ms. Sample: 100
+[export    26s]   > function c164art:train/restart
+      Running function c164art:train/restart
+[export    26s] train: restart; before standing in the station (#t.train 2), saved on its way up (#t.train 1)
+[export    26s]   > save-all flush
+      Saving the game (this may take a moment!)Saved the game
+[export    27s] server stopped
+[export    32s] sky: the look "blue" as core shaders, 10 files (core/clouds.vsh, core/item.vsh, core/lightmap.fsh, core/rendertype_beacon_beam.vsh, core/sky.fsh, core/sky.vsh, core/stars.fsh, core/stars.vsh, include/c164_layers.glsl, include/fog.glsl)
+[export    32s] sealed: removed datapacks/c164art/data/c164art/function/obs-motion/stop.mcfunction, datapacks/c164art/data/c164art/function/obs/, datapacks/c164art/data/c164art/structure/, datapacks/c164art/obs.manifest.json, datapacks/c164art/obs.motion.json, datapacks/c164art/obs.placed.json, level.dat_old, players/, session.lock; registry files: none; resource pack 2525 files, 10 of them shaders (the look)
+[export    32s] made T13.zip: 3.53 MB, 1097 files, 2862 chunks, 1332 entities
+[export     0s]   [ok] archive: 3525050 bytes, sha256 0abe1e640ba4a415, as the note beside it says
+[export     1s] server.jar 26.3: there, sha1 33680f5f2ac32864d6d7cf5e56a705fdb3e05f4c
+[export     1s]   [ok] level.dat: GameType 2, difficulty {'difficulty': 'peaceful', 'hardcore': 0, 'locked': 0}, spawn {'pos': [88, 196, -33], 'pitch': -22.690000534057617, 'dimension': 'minecraft:overworld', 'yaw': 67.70999908447266}
+[export     1s]   [ok] files: has ['level.dat', 'resourcepacks/resources.zip', 'datapacks/c164art/pack.mcmeta']; left over nothing
+[export     1s]   [ok] resource pack: 2525 files, pack.mcmeta at its top: True; 0 stand-ins (ph_)
+[export     1s]   [ok] shaders: 10 shader files in the resource pack; the save was made to carry the look as shaders, without the biome
+[export     1s]   [ok] light: the light was at rest when the world was saved: waited 9.7 s, chunks whose light had changed at each reading [199, 0, 0, 0]
+[export     8s] server up after 6 s (srv/T13)
+[export     8s]   [ok] starts: up in 6 s, the server's own settings: {'gamemode': 'survival', 'difficulty': 'easy'}
+[export     8s]   [ok] data pack: There are 2 data pack(s) enabled: [vanilla (built-in)], [file/c164art (world)]
+[export     8s]   [ok] game rules: 21 of 21 as the list says; max_block_modifications 32768
+[export     8s]   [ok] forced chunks: 23 chunks are kept loaded (wanted: the spawn's chunk and the 22 others the railway runs through)
+[export    11s]   [ok] tick, empty: The game is running normallyTarget tick rate: 20.0 per second. | Average time per tick: 1.7ms (Target: 50.0ms)Percentiles: P50: 0.8ms P95: 2.5ms P99: 22.2ms. Sample: 100
+[export    11s]   [ok] difficulty: The difficulty is Peaceful (the server's own setting is easy)
+[export    14s]   [ok] join: joined in 0.4 s at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617), after the functions at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617); wanted (88.5, 196.0, -32.5) facing (67.71, -22.69)
+[export    14s]   [ok] spawn: the game set him at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617) (this server's game mode is survival: told, not held against the save)
+[export    14s]   [ok] mode: C164Probe has the following entity data: 2
+[export    14s]   [ok] reach: The base value of attribute Block Interaction Range for entity C164Probe is 0.0
+[export    14s]   [ok] tag: C164Probe has 1 tag(s): c164.in
+[export    14s]   [ok] quiet: nothing stood in the chat, as it should be
+[export    16s]   [ok] fall: put at y 164, a moment later at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617)
+[export    18s]   [ok] spectator: as a spectator put at y 164: a moment later at (108.5, 164.0, -32.5); set to adventure there: a moment later at (88.5, 196.0, -32.5)
+[export    21s]   [ok] rides: put on a seat at y 164, under the line (C164Probe started riding Item Display): a moment later the server has him at (108.5, 163.4, -32.5), riding: Test passed; taken off it (C164Probe stopped riding Item Display): a moment later at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617)
+[export    25s]   [ok] tick, one player: The game is running normallyTarget tick rate: 20.0 per second. | Average time per tick: 1.5ms (Target: 50.0ms)Percentiles: P50: 1.4ms P95: 1.8ms P99: 2.2ms. Sample: 100
+[export    26s]   [ok] on the cloud: stood on the cloud block at [104, 174, -17] (Test passed), a moment later at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617)
+[export    28s]   [ok] over the cloud: put three blocks over it, a moment later at (104.5, 178.0, -16.5)
+[export    30s]   [ok] over the line: put at y 170.5, a moment later at (3088.5, 170.5, -32.5)
+[export    30s]   [ok] title: titles shown to who is new: ['BLUE HOUR']; under them: ['OBSERVATORY']; lines over the hotbar: none; wanted once each: BLUE HOUR / OBSERVATORY
+[export    35s]   [ok] rejoin: where he left: (3088.5, 170.5, -32.5) (left at (3088.5, 170.5, -32.5)); C164Probe has the following entity data: 2; The base value of attribute Block Interaction Range for entity C164Probe is 0.0; 2 things shown before he left
+[export    35s]   [ok] title, again: titles shown to who comes back: none; lines over the hotbar: none; wanted neither (he is told nothing)
+[export    43s]   [ok] loop: 88 moving parts named in the loop, 40 of the first 40 loaded near the spawn, 22 of them changed within 3 s (e.g. m.bboard_needle_east, m.bboard_needle_main, m.bboard_needle_west, m.bld_roof_cowl_head); #run has 571309228 [c164m]
+[export    52s]   [ok] charts: 6 charts, each had by standing before it; over the hotbar in turn: ['Star chart 1 of 6', 'Star chart 2 of 6', 'Star chart 3 of 6', 'Star chart 4 of 6', 'Star chart 5 of 6', 'Star chart 6 of 6']
+[export    57s]   [ok] lens: behind the eyepiece with 3 of 6: over the hotbar ['Star charts: 3 of 6'] (3 times), titles none; with all 6: titles ['THE COMET, IN FOCUS'], over the hotbar nothing, the tag c164.done set; standing on: titles none, over the hotbar nothing; 93 packets of particles in those five seconds; in the chat: nothing
+[export    57s]   [ok] train: 0 s after the save was opened on its way up (#t.train 1); 49 s after the save was opened on its way down (#t.train 3); wanted: on its round with nobody aboard (seen away from its rest at one of the looks)
+[export    57s]   > save-all flush
+      Saving the game (this may take a moment!)Saved the game
+[export    58s] server stopped
+[export    58s]   [ok] console: 0 warnings and errors
+[export    64s] server up after 6 s (set/T13)
+[export    64s]   [ok] as set: starts: up in 6 s, the server's own settings: {'gamemode': 'adventure', 'difficulty': 'peaceful'}
+[export    64s]   [ok] as set: data pack: There are 2 data pack(s) enabled: [vanilla (built-in)], [file/c164art (world)]
+[export    67s]   [ok] as set: join: joined in 0.5 s at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617), after the functions at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617); wanted (88.5, 196.0, -32.5) facing (67.71, -22.69)
+[export    67s]   [ok] as set: spawn: the game set him at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617)
+[export    67s]   [ok] as set: mode: C164Probe has the following entity data: 2
+[export    67s]   [ok] as set: reach: The base value of attribute Block Interaction Range for entity C164Probe is 0.0
+[export    67s]   [ok] as set: tag: C164Probe has 1 tag(s): c164.in
+[export    67s]   [ok] as set: quiet: nothing stood in the chat, as it should be
+[export    69s]   [ok] as set: fall: put at y 164, a moment later at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617)
+[export    71s]   [ok] as set: spectator: as a spectator put at y 164: a moment later at (108.5, 164.0, -32.5); set to adventure there: a moment later at (88.5, 196.0, -32.5)
+[export    74s]   [ok] as set: rides: put on a seat at y 164, under the line (C164Probe started riding Item Display): a moment later the server has him at (108.5, 163.4, -32.5), riding: Test passed; taken off it (C164Probe stopped riding Item Display): a moment later at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617)
+[export    78s]   [ok] as set: tick, one player: The game is running normallyTarget tick rate: 20.0 per second. | Average time per tick: 1.5ms (Target: 50.0ms)Percentiles: P50: 1.5ms P95: 2.0ms P99: 2.2ms. Sample: 100
+[export    79s]   [ok] as set: on the cloud: stood on the cloud block at [104, 174, -17] (Test passed), a moment later at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617)
+[export    81s]   [ok] as set: over the cloud: put three blocks over it, a moment later at (104.5, 178.0, -16.5)
+[export    83s]   [ok] as set: over the line: put at y 170.5, a moment later at (3088.5, 170.5, -32.5)
+[export    83s]   [ok] as set: title: titles shown to who is new: ['BLUE HOUR']; under them: ['OBSERVATORY']; lines over the hotbar: none; wanted once each: BLUE HOUR / OBSERVATORY
+[export    89s]   [ok] as set: rejoin: where he left: (3088.5, 170.5, -32.5) (left at (3088.5, 170.5, -32.5)); C164Probe has the following entity data: 2; The base value of attribute Block Interaction Range for entity C164Probe is 0.0; 2 things shown before he left
+[export    89s]   [ok] as set: title, again: titles shown to who comes back: none; lines over the hotbar: none; wanted neither (he is told nothing)
+[export    90s]   [ok] as set: train: 0 s after the save was opened on its way up (#t.train 1); 26 s after the save was opened at rest at the line's far end (#t.train 0); wanted: on its round with nobody aboard (seen away from its rest at one of the looks)
+[export    90s]   > save-all flush
+      Saving the game (this may take a moment!)Saved the game
+[export    90s] server stopped
+[export    90s]   [ok] as set: console: 0 warnings and errors
+[export    90s] verify T13: every check holds
+A: exit 0
+[export     0s] make T14: scene obs of 3066a294 at [0, 200, 0], look off, tick 20370, spawn feet [88.5, 196.0, -32.5] yaw 67.71 pitch -22.69, back to it under y 170 and from the cloud sea's blocks
+[export     0s] server.jar 26.3: there, sha1 33680f5f2ac32864d6d7cf5e56a705fdb3e05f4c
+[export     0s] functions c164map: back, first, join, load, tick
+[export     6s] server up after 6 s (srv/T14)
+[export     6s]   > datapack list enabled
+      There are 2 data pack(s) enabled: [vanilla (built-in)], [file/c164art (world)]
+[export     6s]   > gamerule max_block_modifications
+      Game rule max_block_modifications is currently set to 32768
+[export    15s]   place: built 191090 blocks, 1332 entities in 3.0s
+[export    15s]   place: exported 74 tiles (190205 + 885 blocks) in 0.4s
+[export    15s]   place: motion: 135 parts and 189 points registered, the loop is started once the scene stands
+[export    15s]   place: Reloading!
+[export    15s]   place: placed in 1.3s, 0 failed
+[export    15s]   place: function c164art:obs-motion/start -> Running function c164art:obs-motion/start
+[export    15s]   place: the look is carried by the resource pack: the clock is held at 20370 (shoot.py --clock 20370)
+[export    15s] TRIAL: a stand-in train is written into the pack: go, park, restart, standin_tick; the tick tag is [{'id': 'c164map:tick', 'required': False}, 'c164art:train/standin_tick']
+[export    15s]   > reload
+      Reloading!
+[export    15s]   > function c164art:train/restart
+      Running function c164art:train/restart
+[export    15s] a cloud block to stand on: [104, 174, -17] (386 blocks asked for in 0.1 s)
+[export    15s]   > gamerule advance_time false
+      Game rule advance_time is already set to false
+[export    15s]   > gamerule advance_weather false
+      Game rule advance_weather is already set to false
+[export    15s]   > gamerule fall_damage false
+      Game rule fall_damage is now set to false
+[export    15s]   > gamerule random_tick_speed 0
+      Game rule random_tick_speed is already set to 0
+[export    15s]   > gamerule spawn_mobs false
+      Game rule spawn_mobs is already set to false
+[export    15s]   > gamerule block_drops false
+      Game rule block_drops is already set to false
+[export    15s]   > gamerule entity_drops false
+      Game rule entity_drops is already set to false
+[export    15s]   > gamerule spawn_wandering_traders false
+      Game rule spawn_wandering_traders is now set to false
+[export    15s]   > gamerule spawn_patrols false
+      Game rule spawn_patrols is now set to false
+[export    15s]   > gamerule spawn_phantoms false
+      Game rule spawn_phantoms is now set to false
+[export    15s]   > gamerule pvp false
+      Game rule pvp is now set to false
+[export    15s]   > gamerule send_command_feedback false
+      Game rule send_command_feedback is now set to false
+[export    15s]   > gamerule command_block_output false
+      Game rule command_block_output is now set to false
+[export    15s]   > gamerule fire_damage false
+      Game rule fire_damage is now set to false
+[export    15s]   > gamerule drowning_damage false
+      Game rule drowning_damage is now set to false
+[export    15s]   > gamerule freeze_damage false
+      Game rule freeze_damage is now set to false
+[export    15s]   > gamerule immediate_respawn true
+      Game rule immediate_respawn is now set to true
+[export    15s]   > gamerule show_death_messages false
+      Game rule show_death_messages is now set to false
+[export    15s]   > gamerule locator_bar false
+      Game rule locator_bar is now set to false
+[export    15s]   > gamerule respawn_radius 0
+      Game rule respawn_radius is now set to 0
+[export    15s]   > difficulty peaceful
+      The difficulty did not change; it is already set to Peaceful
+[export    15s]   > defaultgamemode adventure
+      The default game mode is now Adventure Mode
+[export    15s]   > setworldspawn 88 196 -33 67.71 -22.69
+      Set the world spawn point to 88, 196, -33 [67.71, -22.69] in minecraft:overworld
+[export    15s]   > time set 20370
+      Clock minecraft:overworld is already set to 20370 tick(s)
+[export    15s]   > weather clear 1d
+      Set the weather to clear
+[export    15s]   > gamerule max_block_modifications 32768
+      Game rule max_block_modifications is now set to 32768
+[export    15s]   > scoreboard players get #run c164m
+      #run has 571309228 [c164m]
+[export    25s] light: at rest after 9.6 s; 1120 chunks, chunks whose light had changed at each reading: [184, 0, 0, 0]
+[export    25s]   > forceload remove all
+      Unmarked all force loaded chunks in minecraft:overworld
+[export    25s]   > forceload add 88 -33
+      Marked chunk [5, -3] in minecraft:overworld to be force loaded
+[export    25s]   > forceload query
+      23 force loaded chunks were found in minecraft:overworld at: [5, -3], [6, -3], [7, -3], [8, -3], [5, -2], [6, -2], [7, -2], [8, -2], [9, -2], [9, -1], [10, -1], [10, 0], [11, 0], [10, 1], [11, 1], [10, 2], [11, 2], [10, 3], [11, 3], [10, 4], [11, 4], [10, 5], [11, 5]
+[export    25s]   > tick query
+      The game is running normallyTarget tick rate: 20.0 per second.
+Average time per tick: 2.1ms (Target: 50.0ms)Percentiles: P50: 1.0ms P95: 1.4ms P99: 62.4ms. Sample: 100
+[export    25s]   > function c164art:train/park
+      Running function c164art:train/park
+[export    26s] train: park; before standing in the station (#t.train 2), saved at rest at the line's far end (#t.train 0)
+[export    26s]   > save-all flush
+      Saving the game (this may take a moment!)Saved the game
+[export    26s] server stopped
+[export    31s] sky: the look "blue" as core shaders, 10 files (core/clouds.vsh, core/item.vsh, core/lightmap.fsh, core/rendertype_beacon_beam.vsh, core/sky.fsh, core/sky.vsh, core/stars.fsh, core/stars.vsh, include/c164_layers.glsl, include/fog.glsl)
+[export    31s] sealed: removed datapacks/c164art/data/c164art/function/obs-motion/stop.mcfunction, datapacks/c164art/data/c164art/function/obs/, datapacks/c164art/data/c164art/structure/, datapacks/c164art/obs.manifest.json, datapacks/c164art/obs.motion.json, datapacks/c164art/obs.placed.json, level.dat_old, players/, session.lock; registry files: none; resource pack 2525 files, 10 of them shaders (the look)
+[export    31s] made T14.zip: 3.53 MB, 1097 files, 2862 chunks, 1332 entities
+stand-in opening written into T14.zip: ['arrive', 'first', 'join', 'off', 'title2', 'train']; tick tag [{'id': 'c164map:tick', 'required': False}, 'c164art:train/standin_tick', 'c164art:guide/train']; 1101 files, sha256 12625566b8e1957a
+[export     0s]   [ok] archive: 3530867 bytes, sha256 12625566b8e1957a, as the note beside it says
+[export     0s] server.jar 26.3: there, sha1 33680f5f2ac32864d6d7cf5e56a705fdb3e05f4c
+[export     0s]   [ok] level.dat: GameType 2, difficulty {'difficulty': 'peaceful', 'hardcore': 0, 'locked': 0}, spawn {'pos': [88, 196, -33], 'pitch': -22.690000534057617, 'dimension': 'minecraft:overworld', 'yaw': 67.70999908447266}
+[export     0s]   [ok] files: has ['level.dat', 'resourcepacks/resources.zip', 'datapacks/c164art/pack.mcmeta']; left over nothing
+[export     0s]   [ok] resource pack: 2525 files, pack.mcmeta at its top: True; 0 stand-ins (ph_)
+[export     0s]   [ok] shaders: 10 shader files in the resource pack; the save was made to carry the look as shaders, without the biome
+[export     0s]   [ok] light: the light was at rest when the world was saved: waited 9.6 s, chunks whose light had changed at each reading [184, 0, 0, 0]
+[export     6s] server up after 6 s (srv/T14)
+[export     6s]   [ok] starts: up in 6 s, the server's own settings: {'gamemode': 'survival', 'difficulty': 'easy'}
+[export     6s]   [ok] data pack: There are 2 data pack(s) enabled: [vanilla (built-in)], [file/c164art (world)]
+[export     6s]   [ok] train: as the save is opened: at rest at the line's far end (#t.train 0); wanted at rest at the line's far end, where the first to come is set on it
+[export     6s]   [ok] game rules: 21 of 21 as the list says; max_block_modifications 32768
+[export     6s]   [ok] forced chunks: 23 chunks are kept loaded (wanted: the spawn's chunk and the 22 others the railway runs through)
+[export     9s]   [ok] tick, empty: The game is running normallyTarget tick rate: 20.0 per second. | Average time per tick: 1.5ms (Target: 50.0ms)Percentiles: P50: 0.7ms P95: 2.3ms P99: 22.3ms. Sample: 100
+[export     9s]   [ok] difficulty: The difficulty is Peaceful (the server's own setting is easy)
+[export    24s]   [ok] arrival, seated: on a seat 1.0 s after he came, at (88.5, 200.0, -30.2)
+[export    24s]   [ok] arrival, rides: on the seat from 1.0 s to 12.1 s after he came without a break; carried 20.8 blocks from where he was set down, (88.5, 200.0, -30.2), lowest at y 195.4
+[export    24s]   [ok] arrival, off: 13.1 s after he came (the scene's longest is 15 s) the server has him at (88.5, 196.0, -32.5), on his feet; he was told he stands at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617)
+[export    24s]   [ok] arrival, title: the title came within 13.1 s of his coming, within 0 s of his getting off, at (88.5, 196.0, -32.5)
+[export    24s]   [ok] arrival, unhurt: whole (20 of 20) at every look
+[export    27s]   [ok] join: joined in 0.4 s at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617), after the functions at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617); wanted (88.5, 196.0, -32.5) facing (67.71, -22.69)
+[export    27s]   [ok] spawn: the game set him at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617) (this server's game mode is survival: told, not held against the save)
+[export    27s]   [ok] mode: C164Probe has the following entity data: 2
+[export    27s]   [ok] reach: The base value of attribute Block Interaction Range for entity C164Probe is 0.0
+[export    27s]   [ok] tag: C164Probe has 1 tag(s): c164.in
+[export    27s]   [ok] quiet: nothing stood in the chat, as it should be
+[export    28s]   [ok] fall: put at y 164, a moment later at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617)
+[export    30s]   [ok] spectator: as a spectator put at y 164: a moment later at (108.5, 164.0, -32.5); set to adventure there: a moment later at (88.5, 196.0, -32.5)
+[export    33s]   [ok] rides: put on a seat at y 164, under the line (C164Probe started riding Item Display): a moment later the server has him at (108.5, 163.4, -32.5), riding: Test passed; taken off it (C164Probe stopped riding Item Display): a moment later at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617)
+[export    37s]   [ok] tick, one player: The game is running normallyTarget tick rate: 20.0 per second. | Average time per tick: 2.4ms (Target: 50.0ms)Percentiles: P50: 2.4ms P95: 3.9ms P99: 8.3ms. Sample: 100
+[export    39s]   [ok] on the cloud: stood on the cloud block at [104, 174, -17] (Test passed), a moment later at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617)
+[export    40s]   [ok] over the cloud: put three blocks over it, a moment later at (104.5, 178.0, -16.5)
+[export    43s]   [ok] over the line: put at y 170.5, a moment later at (3088.5, 170.5, -32.5)
+[export    43s]   [ok] title: titles shown to who is new: ['BLUE HOUR']; under them: ['OBSERVATORY']; lines over the hotbar: none; wanted once each: BLUE HOUR / OBSERVATORY
+[export    48s]   [ok] rejoin: where he left: (3088.5, 170.5, -32.5) (left at (3088.5, 170.5, -32.5)); C164Probe has the following entity data: 2; The base value of attribute Block Interaction Range for entity C164Probe is 0.0; 2 things shown before he left
+[export    48s]   [ok] title, again: titles shown to who comes back: none; lines over the hotbar: none; wanted neither (he is told nothing)
+[export    55s]   [ok] loop: 88 moving parts named in the loop, 40 of the first 40 loaded near the spawn, 26 of them changed within 3 s (e.g. m.bboard_needle_east, m.bboard_needle_main, m.bboard_needle_west, m.bld_roof_cowl_head); #run has 571309228 [c164m]
+[export    65s]   [ok] charts: 6 charts, each had by standing before it; over the hotbar in turn: ['Star chart 1 of 6', 'Star chart 2 of 6', 'Star chart 3 of 6', 'Star chart 4 of 6', 'Star chart 5 of 6', 'Star chart 6 of 6']
+[export    70s]   [ok] lens: behind the eyepiece with 3 of 6: over the hotbar ['Star charts: 3 of 6'] (3 times), titles none; with all 6: titles ['THE COMET, IN FOCUS'], over the hotbar nothing, the tag c164.done set; standing on: titles none, over the hotbar nothing; 93 packets of particles in those five seconds; in the chat: nothing
+[export    83s]   [ok] arrival, left on the way: C164Probe2 left riding at (88.5, 207.5999999999993, -26.399999999999913); six seconds after he came back the server has him at (88.5, 196.0, -32.5), on his feet; he was told he stands at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617); titles before he left none, after he came back ['BLUE HOUR']
+[export    84s]   > save-all flush
+      Saving the game (this may take a moment!)Saved the game
+[export    85s] server stopped
+[export    85s]   [ok] console: 0 warnings and errors
+[export    91s] server up after 6 s (set/T14)
+[export    91s]   [ok] as set: starts: up in 6 s, the server's own settings: {'gamemode': 'adventure', 'difficulty': 'peaceful'}
+[export    91s]   [ok] as set: data pack: There are 2 data pack(s) enabled: [vanilla (built-in)], [file/c164art (world)]
+[export    91s]   [ok] as set: train: as the save is opened: at rest at the line's far end (#t.train 0); wanted at rest at the line's far end, where the first to come is set on it
+[export   105s]   [ok] as set: arrival, seated: on a seat 1.0 s after he came, at (88.5, 200.2, -30.1)
+[export   105s]   [ok] as set: arrival, rides: on the seat from 1.0 s to 12.1 s after he came without a break; carried 20.3 blocks from where he was set down, (88.5, 200.2, -30.1), lowest at y 195.4
+[export   105s]   [ok] as set: arrival, off: 13.1 s after he came (the scene's longest is 15 s) the server has him at (88.5, 196.0, -32.5), on his feet; he was told he stands at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617)
+[export   105s]   [ok] as set: arrival, title: the title came within 13.1 s of his coming, within 0 s of his getting off, at (88.5, 196.0, -32.5)
+[export   105s]   [ok] as set: arrival, unhurt: whole (20 of 20) at every look
+[export   108s]   [ok] as set: join: joined in 0.5 s at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617), after the functions at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617); wanted (88.5, 196.0, -32.5) facing (67.71, -22.69)
+[export   108s]   [ok] as set: spawn: the game set him at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617)
+[export   108s]   [ok] as set: mode: C164Probe has the following entity data: 2
+[export   108s]   [ok] as set: reach: The base value of attribute Block Interaction Range for entity C164Probe is 0.0
+[export   108s]   [ok] as set: tag: C164Probe has 1 tag(s): c164.in
+[export   108s]   [ok] as set: quiet: nothing stood in the chat, as it should be
+[export   110s]   [ok] as set: fall: put at y 164, a moment later at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617)
+[export   112s]   [ok] as set: spectator: as a spectator put at y 164: a moment later at (108.5, 164.0, -32.5); set to adventure there: a moment later at (88.5, 196.0, -32.5)
+[export   115s]   [ok] as set: rides: put on a seat at y 164, under the line (C164Probe started riding Item Display): a moment later the server has him at (108.5, 163.4, -32.5), riding: Test passed; taken off it (C164Probe stopped riding Item Display): a moment later at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617)
+[export   119s]   [ok] as set: tick, one player: The game is running normallyTarget tick rate: 20.0 per second. | Average time per tick: 1.4ms (Target: 50.0ms)Percentiles: P50: 1.3ms P95: 2.3ms P99: 2.7ms. Sample: 100
+[export   120s]   [ok] as set: on the cloud: stood on the cloud block at [104, 174, -17] (Test passed), a moment later at (88.5, 196.0, -32.5) facing (67.70999908447266, -22.690000534057617)
+[export   122s]   [ok] as set: over the cloud: put three blocks over it, a moment later at (104.5, 178.0, -16.5)
+[export   124s]   [ok] as set: over the line: put at y 170.5, a moment later at (3088.5, 170.5, -32.5)
+[export   124s]   [ok] as set: title: titles shown to who is new: ['BLUE HOUR']; under them: ['OBSERVATORY']; lines over the hotbar: none; wanted once each: BLUE HOUR / OBSERVATORY
+[export   130s]   [ok] as set: rejoin: where he left: (3088.5, 170.5, -32.5) (left at (3088.5, 170.5, -32.5)); C164Probe has the following entity data: 2; The base value of attribute Block Interaction Range for entity C164Probe is 0.0; 2 things shown before he left
+[export   130s]   [ok] as set: title, again: titles shown to who comes back: none; lines over the hotbar: none; wanted neither (he is told nothing)
+[export   131s]   > save-all flush
+      Saving the game (this may take a moment!)Saved the game
+[export   131s] server stopped
+[export   131s]   [ok] as set: console: 0 warnings and errors
+[export   131s] verify T14: every check holds
+B: exit 0
