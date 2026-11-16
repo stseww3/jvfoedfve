@@ -21,7 +21,9 @@ It needs neither a server nor the game window and draws nothing: seconds for a t
 
 Each check prints PASS, WARN or FAIL; the exit code is 1 when one fails.
 
-  regen      the scene, its models, resource pack, data pack and look generate from nothing
+  regen      the scene, its models, resource pack, data pack and look generate from nothing; the
+             data pack holds no file of a registry (Realms takes no world with experimental
+             settings; the look's two files are named until they have moved into the shaders)
   conflicts  no resource-pack file is written by two packages; files lie in their category's
              folders and have names the game reads; model names carry their category's prefix
              (plan/roles/INTERFACE.md 4). A package's test scene is held to the same table: the
@@ -204,6 +206,29 @@ def category_of(scene, name):
 
 
 # ---- regen -------------------------------------------------------------------------------------
+# What a data pack may hold: functions, tags, structures, advancements, loot tables, predicates,
+# recipes and item modifiers, the folder of each straight under its namespace. A file of any
+# registry (a biome under worldgen/, a dimension, a timeline, a damage type, an enchantment, a
+# variant ...) makes the game mark the world as one with experimental settings, and Realms takes
+# no such world, a map of the content library no more than an upload (plan/roles/COMMON.md 5, red
+# line 5; A0 11-16 07:53, announcement #1196). The look's two files are let through and named
+# until the sky line has moved them into the resource pack's core shaders (A0 #65808): then
+# DATA_LET is empty.
+DATA_KINDS = ("function", "tags", "structure", "advancement", "loot_table", "predicate", "recipe",
+              "item_modifier")
+DATA_LET = ("data/c164art/worldgen/biome/obs_blue.json", "data/c164art/timeline/obs_looks.json")
+
+
+def registry_files(root):
+    """The files of a data pack that are not of the kinds it may hold: [path under the pack]."""
+    out = []
+    for path in files_under(root):
+        parts = path.split("/")
+        if parts[0] == "data" and len(parts) >= 3 and parts[2] not in DATA_KINDS:
+            out.append(path)
+    return out
+
+
 def regen(rep, name, work):
     """Generate what the drivers generate, from nothing. Returns what the other checks read."""
     t0 = time.time()
@@ -240,7 +265,21 @@ def regen(rep, name, work):
               f"{len(files_under(data))} data-pack files"]
     if look is not None:
         words.append(f"look: {len(look.BIOMES)} biomes, {len(getattr(look, 'TIMELINES', None) or {})} timelines")
-    rep.add("regen", "PASS", ", ".join(words) + f" ({time.time() - t0:.1f} s)")
+    found = registry_files(data)
+    banned = [f for f in found if f not in DATA_LET]
+    status, details = "PASS", []
+    if banned:
+        status = "FAIL"
+        kinds = sorted({f.split("/")[2] for f in banned})
+        words.append(f"{len(banned)} registry files in the data pack ({', '.join(kinds)})")
+        details = [f"the data pack holds files of a registry: Realms takes no world with experimental settings. "
+                   f"A data pack may hold {', '.join(DATA_KINDS)} and nothing else (plan/roles/COMMON.md 5)"]
+        details += clip(banned)
+    elif found:
+        status = "WARN"
+        details = [f"registry files in the data pack, let through until the look has moved into the resource "
+                   f"pack's shaders (A0 11-16): {', '.join(f.partition('/')[2] for f in found)}"]
+    rep.add("regen", status, ", ".join(words) + f" ({time.time() - t0:.1f} s)", details)
     return {"scene": scene, "name": name, "category": category_of(scene, name), "builder": builder,
             "canvas": canvas, "models": models, "pack": pack, "look": look}
 
