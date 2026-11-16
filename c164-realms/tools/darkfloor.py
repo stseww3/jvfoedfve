@@ -375,6 +375,8 @@ def main():
     ap.add_argument("--before", default="", help="the dark.json of the list before this one: every heap says what it had then")
     ap.add_argument("--scene", default="obs", help="another scene than the master scene (a test scene: give --start)")
     ap.add_argument("--start", action="append", default=[], help="x,y,z of one more place to start from (repeatable)")
+    ap.add_argument("--probe", action="append", default=[], help="x,y,z of a cell to say everything about: what "
+                    "stands in its column and in the four beside it, its light and the sky's (repeatable)")
     args = ap.parse_args()
     if args.head == "auto":
         try:
@@ -445,6 +447,18 @@ def main():
         rows[cell] = dict(how=how, kind=kind, light=best, need=args.floor if kind == "floor" else args.step,
                           sky=from_sky, room=room, under=under, door=door,
                           place="room" if room else "open" if from_sky == 15 else "eaves" if from_sky >= SKY_NEAR else "roofed")
+
+    for text in args.probe:
+        px, py, pz = (int(v) for v in text.split(","))
+        row = rows.get((px, py, pz))
+        print(f"probe ({px}, {py}, {pz}): " + ("nobody stands here" if row is None else
+              ", ".join(f"{k} {row[k]}" for k in ("how", "kind", "light", "need", "sky", "place", "room", "under", "door"))))
+        for dx, dz in ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)):
+            x, z = px + dx, pz + dz
+            column = "; ".join(f"{y} {name_of(cells[(x, y, z)]) if (x, y, z) in cells else '.'}"
+                               f" b{light.get((x, y, z), 0)} s{15 if y >= open_y.get((x, z), -10 ** 9) else sky.get((x, y, z), 0)}"
+                               f"{' *' if (x, y, z) in rows else ''}" for y in range(py + 5, py - 3, -1))
+            print(f"  x {x} z {z}, open to the sky from row {open_y.get((x, z))}: {column}")
 
     def section(cell, row):
         if row["room"]:
