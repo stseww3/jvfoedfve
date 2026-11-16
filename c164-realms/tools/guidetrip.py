@@ -218,12 +218,23 @@ def walk_shots(found):
     close = next((tag for tag in places if tag.endswith(".done") and places[tag]["stand"]), None)
     shots, stops, have = [], [], []
 
+    lights = found.get("sparks") or []
+
+    def aim(tag):
+        """What the visitor looks at there: the chart (the place is the floor under it, the card lies
+        some way over that), at the close the lights when the save has any."""
+        at = places[tag]["at"]
+        if tag == close:
+            if lights:
+                return [round(sum(p[k] for p in lights) / len(lights), 2) for k in range(3)]
+            return [at[0] - 4.0, at[1] + EYE + 1.5, at[2]]
+        return [at[0], at[1] + 0.85, at[2]]
+
     def stop(name, tag, expect, settle, add=None):
-        place = places[tag]
-        feet = place["stand"]
+        feet = places[tag]["stand"]
         if add:
             have.append(add)
-        shots.append({"name": name, "walk": True, "pos": [feet[0], feet[1] + EYE, feet[2]], "look_at": place["at"],
+        shots.append({"name": name, "walk": True, "pos": [feet[0], feet[1] + EYE, feet[2]], "look_at": aim(tag),
                       "settle": settle, "still": 0, "ask": ["tag {player} list"]})
         stops.append((name, expect, list(have)))
 
@@ -251,7 +262,7 @@ def walk_shots(found):
         if charts:
             away = places[charts[-1]]
             shots.append({"name": f"w{n:02d}_away", "walk": True, "pos": [away["stand"][0], away["stand"][1] + EYE, away["stand"][2]],
-                          "look_at": away["at"], "settle": 8.0, "still": 0})
+                          "look_at": aim(charts[-1]), "settle": 8.0, "still": 0})
             stops.append((shots[-1]["name"], "away from the step, until the title is gone", list(have)))
             n += 1
         stop(f"w{n:02d}_step_again", close, "the step once more: nothing is written", 2.0)
@@ -361,8 +372,8 @@ def main():
         for function, kind, words in found["shown"]:
             tell(f"  {function}: {kind} {words}")
         for tag, place in found["watched"].items():
-            tell(f"  {tag}: within {place['reach']} of {place['at']} ({place['function']}); a visitor's feet at "
-                 f"{place['stand']} on {place['on']}, {place['far']} away")
+            tell(f"  {tag}: within reach of {place['near']} ({place['function']}); a visitor's feet at "
+                 f"{place['stand']} on {place['on']}, {place['far']} from the last of them")
         walk, stops, charts, close = walk_shots(found)
         plaques, listed = plaque_shots(found, blocks)
         if "walk" in parts and not walk:
@@ -469,7 +480,7 @@ def main():
                     feet = place["stand"]
                     taken, answers = shoot("second-own", [{
                         "name": "two_own_chart", "walk": True, "pos": [feet[0], feet[1] + EYE, feet[2]],
-                        "look_at": place["at"], "settle": 1.2, "still": 0,
+                        "look_at": [place["at"][0], place["at"][1] + 0.85, place["at"][2]], "settle": 1.2, "still": 0,
                         "ask": ["tag {player} list", f"tag {cam} list"]}],
                         "--seat", SEAT, "--player", SECOND, "--walk-as", mode, env=seat)
                     names += taken
