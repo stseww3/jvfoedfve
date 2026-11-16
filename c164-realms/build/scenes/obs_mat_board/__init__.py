@@ -309,12 +309,16 @@ def pack(pack_dir, **versions):
     return list(K.pack_with(pack_dir, **versions) or []) + list(sky.pack(pack_dir) or [])
 
 
+UNSEEN = (B.BARRIER,)       # in the occupancy table and nothing to look at: the collision of a door made of models
+
+
 def lacking(c=None):
     """(repainted, vanilla): the blocks of the occupancy table that are not on the board. The card
-    wants the first list empty; the second is kept empty too, so the board is the whole table."""
+    wants the first list empty; the second is kept empty too, so the board is the whole table,
+    all but what draws nothing (UNSEEN; the invisible lamp does stand on the board, as its lamps)."""
     placed = {state.partition("[")[0] for state in (c or build()).b.values()}
     return ([b for b in B.ids(B.REPAINTED) if b not in placed],
-            [b for b in B.ids(B.VANILLA) if b not in placed])
+            [b for b in B.ids(B.VANILLA) if b not in placed and b not in UNSEEN])
 
 
 GLOWS = {B.LIGHT: None, B.IRON_LANTERN: 15, B.IRON_BULB: 15}    # what gives light: the most it gives (None: its level)
