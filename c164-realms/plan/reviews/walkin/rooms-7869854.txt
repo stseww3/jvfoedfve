@@ -1,0 +1,277 @@
+walkin obs, props, interiors together, room by room: 190785 blocks, 1127 entities; 152326 standing places reached from (88.5, -4.0, -32.5) (4328 only through one of 12 door blocks); 308 barrier cells in the scene
+
+the pieces somebody stands in or gets his eye (1.62 over the feet) into; the number is the piece's in walkin-<category>.txt
+
+  battery room: the eye gets into 0 pieces, 1 more are walked through below the eye
+    -- walked through, the eye stays out --
+    interiors 30. int_batteryroom_carboy x3; placed by interiors/batteryroom; cells x 2, y 0, z -9..-7
+         stands in it: walk 8 at x 2.5..3, feet 0, z -8.5..-6.5; body up to 43% in the model; a barrier fits in no cell (the fullest is 3% model)
+
+  cable station: the eye gets into 0 pieces, 4 more are walked through below the eye
+    -- walked through, the eye stays out --
+    props 8. prop_furn_trunk; placed by props/furniture; cells x 84..85, y -4, z -36
+         stands in it: walk 3 at x 84..85, feet -4, z -35.5..-35.5; body up to 43% in the model; a barrier fits in no cell (the fullest is 0% model)
+    props 9. prop_furn_crate_small; placed by props/furniture; cells x 84..85, y -4..-3, z -36
+         stands in it: walk 1 at x 85..85, feet -4, z -35.5..-35.5; body up to 29% in the model; a barrier fits in no cell (the fullest is 22% model)
+    props 6. prop_furn_bench; placed by props/furniture; cells x 79, y -5..-3, z -39..-38
+         stands in it: walk 3 at x 79.5..79.5, feet -4, z -38.5..-37.5; body up to 9% in the model; a barrier fits in no cell (the fullest is 16% model)
+    props 7. prop_furn_bench; placed by props/furniture; cells x 80..82, y -5..-3, z -36
+         stands in it: walk 3 at x 81..82, feet -4, z -35.5..-35.5; body up to 9% in the model; a barrier fits in no cell (the fullest is 12% model)
+
+  chart room: the eye gets into 2 pieces, 11 more are walked through below the eye
+    -- the eye gets in --
+    interiors 71. prop_furn_card_cabinet x3; placed by interiors/chartroom; cells x 2..3, y 7..8, z 8..10
+         eye in: walk 10 (2.5 m2) at x 2.5..3, feet 7, z 8.5..10.5; stands in it: walk 10 at x 2.5..3, feet 7, z 8.5..10.5; body up to 94% in the model; a barrier fits in no cell (the fullest is 88% model)
+    interiors 78. prop_inst_celestial_globe; placed by interiors/chartroom; cells x 2..4, y 7..8, z 19..21
+         eye in: walk 2 (0.5 m2) at x 3.5..4, feet 7, z 20.5..20.5; stands in it: walk 10 at x 3..4.5, feet 7, z 20..21; body up to 80% in the model; a barrier fits in no cell (the fullest is 88% model)
+    -- walked through, the eye stays out --
+    interiors 92. int_chart_viewer; placed by interiors/chartroom; cells x 6..9, y 7..9, z 16..17
+         stands in it: hop 7 at x 7.5..9, feet 8, z 17..17.5; body up to 57% in the model; a barrier fits in no cell (the fullest is 50% model)
+    interiors 114. prop_furn_trunk; placed by interiors/chartroom; cells x 12..13, y 7, z 22..24
+         stands in it: walk 3 at x 13..13, feet 7, z 23..24; body up to 43% in the model; a barrier fits in no cell (the fullest is 0% model)
+    interiors 110. prop_inst_tripod_scope_comet; placed by interiors/chartroom; cells x 11..13, y 6..9, z 15..17
+         stands in it: walk 2 at x 12..12.5, feet 7, z 16.5..16.5; body up to 27% in the model; a barrier fits in no cell (the fullest is 20% model)
+    interiors 119. prop_inst_calc_machine; placed by interiors/chartroom; cells x 13, y 7..8, z 12..13
+         stands in it: walk 2 at x 13..13.5, feet 7, z 12.5..12.5; body up to 27% in the model; a barrier fits in no cell (the fullest is 66% model)
+    interiors 112. prop_furn_coat_stand; placed by interiors/chartroom; cells x 12..13, y 6..8, z 7..8
+         stands in it: walk 1 at x 13..13, feet 7, z 8..8; body up to 24% in the model; a barrier fits in no cell (the fullest is 9% model)
+    interiors 116. prop_furn_writing_desk; placed by interiors/chartroom; cells x 12..13, y 6..7, z 11..13
+         stands in it: walk 8 at x 13..13.5, feet 7, z 11.5..13.5; body up to 24% in the model; a barrier fits in no cell (the fullest is 19% model)
+    interiors 72. prop_furn_drafting_table; placed by interiors/chartroom; cells x 2..3, y 6..8, z 15..17
+         stands in it: walk 6 at x 2.5..3, feet 7, z 16..17; body up to 23% in the model; a barrier fits in no cell (the fullest is 14% model)
+    interiors 88. int_chart_bridge; placed by interiors/chartroom; cells x 6..9, y 7..8, z 13
+         stands in it: hop 4 at x 7..8.5, feet 8, z 13.5..13.5; body up to 21% in the model; a barrier fits in no cell (the fullest is 0% model)
+    interiors 111. prop_furn_swivel_chair; placed by interiors/chartroom; cells x 11..12, y 6..7, z 11..12
+         stands in it: walk 1 at x 12.5..12.5, feet 7, z 12.5..12.5; body up to 18% in the model; a barrier fits in no cell (the fullest is 8% model)
+    interiors 117. prop_furn_bench; placed by interiors/chartroom; cells x 12..13, y 6..8, z 19..21
+         stands in it: walk 3 at x 13.5..13.5, feet 7, z 20..21; body up to 16% in the model; a barrier fits in no cell (the fullest is 16% model)
+    interiors 74. prop_paper_blackboard; placed by interiors/chartroom; cells x 2, y 8..9, z 11..13
+         stands in it: walk 2 at x 2.5..2.5, feet 7, z 12.5..13; body up to 13% in the model; a barrier fits in no cell (the fullest is 0% model)
+
+  court and terraces: the eye gets into 1 pieces, 9 more are walked through below the eye
+    -- the eye gets in --
+    props 10. prop_inst_tripod_scope_comet; placed by props/instruments; cells x -26..-24, y -1..2, z -1..1
+         eye in: walk 1 (0.25 m2) at x -24.5..-24.5, feet 0, z 0.5..0.5; stands in it: walk 2 at x -24.5..-24, feet 0, z 0.5..0.5; body up to 40% in the model; a barrier fits in no cell (the fullest is 20% model)
+    -- walked through, the eye stays out --
+    props 100. prop_lamp_street; placed by props/lamps; cells x 44, y 0..5, z -6
+         stands in it: walk 1 at x 44.5..44.5, feet 0, z -5.5..-5.5; body up to 61% in the model; a barrier fits in no cell (the fullest is 50% model)
+    props 101. prop_lamp_street; placed by props/lamps; cells x 44, y 0..5, z 6
+         stands in it: walk 1 at x 44.5..44.5, feet 0, z 6.5..6.5; body up to 61% in the model; a barrier fits in no cell (the fullest is 50% model)
+    props 91. prop_lamp_street; placed by props/lamps; cells x 26, y 0..5, z -6
+         stands in it: walk 1 at x 26.5..26.5, feet 0, z -5.5..-5.5; body up to 61% in the model; a barrier fits in no cell (the fullest is 50% model)
+    props 92. prop_lamp_street; placed by props/lamps; cells x 26, y 0..5, z 6
+         stands in it: walk 1 at x 26.5..26.5, feet 0, z 6.5..6.5; body up to 61% in the model; a barrier fits in no cell (the fullest is 50% model)
+    props 169. prop_pipe_valve_angle_l; placed by props/pipes; cells x 18..19, y -1..0, z 33
+         stands in it: walk 2 at x 18.5..19, feet 0, z 33.5..33.5; body up to 42% in the model; a barrier fits in no cell (the fullest is 22% model)
+    props 1. prop_furn_bench; placed by props/furniture; cells x -24..-23, y -1..1, z -4..-3
+         stands in it: walk 3 at x -23..-23, feet 0, z -3.5..-2.5; body up to 9% in the model; a barrier fits in no cell (the fullest is 12% model)
+    props 2. prop_furn_bench; placed by props/furniture; cells x -24..-23, y -1..1, z 3..4
+         stands in it: walk 3 at x -23..-23, feet 0, z 3.5..4.5; body up to 9% in the model; a barrier fits in no cell (the fullest is 12% model)
+    props 3. prop_furn_bench; placed by props/furniture; cells x -22, y -1..1, z -8..-7
+         stands in it: walk 3 at x -21.5..-21.5, feet 0, z -7.5..-6.5; body up to 9% in the model; a barrier fits in no cell (the fullest is 12% model)
+    props 4. prop_furn_bench; placed by props/furniture; cells x -22, y -1..1, z 7..8
+         stands in it: walk 3 at x -21.5..-21.5, feet 0, z 7.5..8.5; body up to 9% in the model; a barrier fits in no cell (the fullest is 12% model)
+
+  dome room: the eye gets into 3 pieces, 7 more are walked through below the eye
+    -- the eye gets in --
+    interiors 176. prop_furn_card_cabinet; placed by interiors/domeroom; cells x 4, y 18..19, z -10
+         eye in: walk 4 (1 m2) at x 4..5, feet 18, z -9.5..-9; stands in it: walk 4 at x 4..5, feet 18, z -9.5..-9; body up to 93% in the model; a barrier fits in no cell (the fullest is 84% model)
+    interiors 171. prop_furn_instrument_cabinet; placed by interiors/domeroom; cells x 3, y 18..19, z -10
+         eye in: walk 2 (0.5 m2) at x 3.5..4, feet 18, z -9.5..-9.5; stands in it: walk 3 at x 3.5..4, feet 18, z -9.5..-9; body up to 93% in the model; a barrier fits in no cell (the fullest is 78% model)
+    interiors 183. prop_furn_instrument_cabinet; placed by interiors/domeroom; cells x 5, y 18..19, z -10
+         eye in: walk 2 (0.5 m2) at x 5..5.5, feet 18, z -9.5..-9.5; stands in it: walk 3 at x 5..5.5, feet 18, z -9.5..-9; body up to 93% in the model; a barrier fits in no cell (the fullest is 78% model)
+    -- walked through, the eye stays out --
+    interiors 191. prop_furn_plate_box x3; placed by interiors/domeroom; cells x 7..8, y 18..19, z 8..9
+         stands in it: walk 3 at x 7.5..8.5, feet 18, z 9.5..9.5; body up to 71% in the model; a barrier fits in no cell (the fullest is 52% model)
+    interiors 162. int_domeroom_chair; placed by interiors/domeroom; cells x -3..-1, y 18..20, z 3..5
+         stands in it: walk 9 at x -2..-1, feet 18, z 4..5.5; body up to 30% in the model; a barrier fits in no cell (the fullest is 41% model)
+    interiors 188. prop_furn_drafting_table; placed by interiors/domeroom; cells x 6..8, y 17..19, z -9
+         stands in it: walk 8 at x 6.5..8.5, feet 18, z -8.5..-8; body up to 27% in the model; a barrier fits in no cell (the fullest is 17% model)
+    interiors 177. prop_furn_swivel_chair; placed by interiors/domeroom; cells x 4, y 17..18, z 9
+         stands in it: walk 1 at x 4.5..4.5, feet 18, z 9.5..9.5; body up to 21% in the model; a barrier fits in no cell (the fullest is 9% model)
+    interiors 175. prop_furn_writing_desk; placed by interiors/domeroom; cells x 3..5, y 17..18, z 10
+         stands in it: walk 5 at x 3.5..5.5, feet 18, z 10.5..10.5; body up to 20% in the model; a barrier fits in no cell (the fullest is 16% model)
+    interiors 201. prop_furn_stool; placed by interiors/domeroom; cells x 13, y 17..18, z 1
+         stands in it: walk 1 at x 13.5..13.5, feet 18, z 1.5..1.5; body up to 19% in the model; a barrier fits in no cell (the fullest is 0% model)
+    interiors 179. prop_paper_logbook; placed by interiors/domeroom; cells x 4, y 18, z 10
+         stands in it: walk 1 at x 4.5..4.5, feet 18, z 10.5..10.5; body up to 5% in the model; a barrier fits in no cell (the fullest is 30% model)
+
+  lower platform: the eye gets into 0 pieces, 8 more are walked through below the eye
+    -- walked through, the eye stays out --
+    props 116. prop_lamp_street; placed by props/lamps; cells x 72..73, y -3..2, z -10..-9
+         stands in it: hop 1 at x 73..73, feet -3, z -9..-9; body up to 61% in the model; a barrier fits in no cell (the fullest is 12% model)
+    props 117. prop_lamp_street; placed by props/lamps; cells x 72..73, y -3..2, z 9..10
+         stands in it: hop 1 at x 73..73, feet -3, z 10..10; body up to 61% in the model; a barrier fits in no cell (the fullest is 12% model)
+    props 120. prop_lamp_street; placed by props/lamps; cells x 79, y -6..-1, z -10
+         stands in it: walk 1 at x 79.5..79.5, feet -6, z -9.5..-9.5; body up to 61% in the model; a barrier fits in no cell (the fullest is 50% model)
+    props 121. prop_lamp_street; placed by props/lamps; cells x 79, y -6..-1, z 10
+         stands in it: walk 1 at x 79.5..79.5, feet -6, z 10.5..10.5; body up to 61% in the model; a barrier fits in no cell (the fullest is 50% model)
+    props 124. prop_lamp_street; placed by props/lamps; cells x 80, y -6..-1, z -18
+         stands in it: walk 1 at x 80.5..80.5, feet -6, z -17.5..-17.5; body up to 61% in the model; a barrier fits in no cell (the fullest is 50% model)
+    props 126. prop_lamp_street; placed by props/lamps; cells x 86, y -6..-1, z -18
+         stands in it: walk 1 at x 86.5..86.5, feet -6, z -17.5..-17.5; body up to 61% in the model; a barrier fits in no cell (the fullest is 50% model)
+    props 128. prop_lamp_street; placed by props/lamps; cells x 87, y -6..-1, z -10
+         stands in it: walk 1 at x 87.5..87.5, feet -6, z -9.5..-9.5; body up to 61% in the model; a barrier fits in no cell (the fullest is 50% model)
+    props 129. prop_lamp_street; placed by props/lamps; cells x 87, y -6..-1, z 10
+         stands in it: walk 1 at x 87.5..87.5, feet -6, z 10.5..10.5; body up to 61% in the model; a barrier fits in no cell (the fullest is 50% model)
+
+  plate vault: the eye gets into 1 pieces, 8 more are walked through below the eye
+    -- the eye gets in --
+    interiors 249. int_vault_dark_safelight; placed by interiors/platevault; cells x 7, y 2..3, z 25
+         eye in: hop 1 (0.25 m2) at x 7.5..7.5, feet 1, z 25.5..25.5; stands in it: hop 1 at x 7.5..7.5, feet 1, z 25.5..25.5; body up to 32% in the model; a barrier fits in no cell (the fullest is 0% model)
+    -- walked through, the eye stays out --
+    interiors 208. int_vault_dark_rack x2; placed by interiors/platevault; cells x 3..5, y 0..1, z 25
+         stands in it: hop 5 at x 3.5..5.5, feet 1, z 25.5..25.5; body up to 38% in the model; 3 barrier cells in it, 3 of them out of the model sideways
+    interiors 281. prop_furn_crate; placed by interiors/platevault; cells x 11..12, y 0, z 7..8
+         stands in it: walk 2 at x 12..12.5, feet 0, z 7.5..7.5; body up to 34% in the model; a barrier fits in no cell (the fullest is 19% model)
+    interiors 264. int_vault_checker; placed by interiors/platevault; cells x 9..11, y 0, z 7..8
+         stands in it: walk 4 at x 10..11, feet 0, z 7.5..8; body up to 23% in the model; a barrier fits in no cell (the fullest is 88% model)
+    interiors 280. prop_furn_crate_small; placed by interiors/platevault; cells x 11..12, y 0..1, z 7
+         stands in it: walk 1 at x 12..12, feet 0, z 7.5..7.5; body up to 23% in the model; a barrier fits in no cell (the fullest is 33% model)
+    interiors 220. prop_furn_writing_desk; placed by interiors/platevault; cells x 3..5, y -1..0, z 7
+         stands in it: walk 8 at x 3.5..5.5, feet 0, z 7.5..8; body up to 21% in the model; a barrier fits in no cell (the fullest is 19% model)
+    interiors 274. int_vault_dark_shelf; placed by interiors/platevault; cells x 10..11, y 1..2, z 25
+         stands in it: hop 3 at x 10.5..11.5, feet 1, z 25.5..25.5; body up to 17% in the model; a barrier fits in no cell (the fullest is 22% model)
+    interiors 222. prop_furn_stool; placed by interiors/platevault; cells x 4, y -1..0, z 8
+         stands in it: walk 1 at x 4.5..4.5, feet 0, z 8.5..8.5; body up to 15% in the model; a barrier fits in no cell (the fullest is 0% model)
+    interiors 223. prop_lamp_desk_green; placed by interiors/platevault; cells x 4..5, y 0..1, z 7
+         stands in it: walk 1 at x 5..5, feet 0, z 7.5..7.5; body up to 14% in the model; a barrier fits in no cell (the fullest is 11% model)
+
+  power house: the eye gets into 1 pieces, 5 more are walked through below the eye
+    -- the eye gets in --
+    interiors 322. prop_pipe_valve_l; placed by interiors/powerhouse; cells x 85, y -3..-2, z 35..36
+         eye in: hop 1 (0.25 m2) at x 85.5..85.5, feet -4, z 36..36; stands in it: hop 2 at x 85.5..85.5, feet -4, z 35.5..36; body up to 12% in the model; a barrier fits in no cell (the fullest is 0% model)
+    -- walked through, the eye stays out --
+    interiors 313. int_power_lantern; placed by interiors/powerhouse; cells x 76, y -6..-5, z 25
+         stands in it: walk 1 at x 76.5..76.5, feet -6, z 25.5..25.5; body up to 51% in the model; a barrier fits in no cell (the fullest is 16% model)
+    interiors 316. int_power_coal; placed by interiors/powerhouse; cells x 76..78, y -7..-5, z 21..23
+         stands in it: walk 6 at x 77..78, feet -6, z 22.5..23; body up to 44% in the model; a barrier fits in no cell (the fullest is 41% model)
+    interiors 301. prop_furn_swivel_chair; placed by interiors/powerhouse; cells x 70, y -7..-6, z 22..23
+         stands in it: walk 1 at x 70.5..70.5, feet -6, z 23..23; body up to 22% in the model; a barrier fits in no cell (the fullest is 3% model)
+    interiors 293. prop_furn_writing_desk; placed by interiors/powerhouse; cells x 69, y -7..-6, z 22..23
+         stands in it: walk 4 at x 69.5..69.5, feet -6, z 22.5..24; body up to 20% in the model; a barrier fits in no cell (the fullest is 22% model)
+    interiors 323. prop_pipe_flange_l; placed by interiors/powerhouse; cells x 85, y -4, z 35..36
+         stands in it: hop 1 at x 85.5..85.5, feet -4, z 36..36; body up to 13% in the model; a barrier fits in no cell (the fullest is 0% model)
+
+  roofs and what stands on them: the eye gets into 1 pieces, 6 more are walked through below the eye
+    -- the eye gets in --
+    interiors 1. int_astroroom_shell_ring x2; placed by interiors/astroroom; cells x 9..15, y 20..21, z 27..33
+         eye in: hop 3 (3 only through a door of blocks) (0.75 m2) at x 12.5..15, feet 19, z 28..33; stands in it: hop 24 (24 only through a door of blocks) at x 10.5..15, feet 19..20, z 28..33; body up to 46% in the model; a barrier fits in no cell (the fullest is 33% model)
+    -- walked through, the eye stays out --
+    interiors 4. prop_furn_plate_box x2; placed by interiors/astroroom; cells x 10, y 18..19, z 28..29
+         stands in it: walk 1 (1 only through a door of blocks) at x 10.5..10.5, feet 18, z 29.5..29.5; body up to 68% in the model; a barrier fits in no cell (the fullest is 50% model)
+    interiors 19. prop_furn_plate_box; placed by interiors/astroroom; cells x 12..13, y 19, z 28
+         stands in it: hop 1 (1 only through a door of blocks) at x 13.5..13.5, feet 19, z 28.5..28.5; body up to 29% in the model; a barrier fits in no cell (the fullest is 0% model)
+    interiors 20. int_astroroom_plate_box_open; placed by interiors/astroroom; cells x 13, y 18..19, z 32
+         stands in it: hop 1 (1 only through a door of blocks) at x 13.5..13.5, feet 19, z 32.5..32.5; body up to 16% in the model; a barrier fits in no cell (the fullest is 0% model)
+    interiors 18. prop_furn_stool; placed by interiors/astroroom; cells x 12..13, y 17..18, z 31
+         stands in it: walk 1 (1 only through a door of blocks) at x 13..13, feet 18, z 31.5..31.5; body up to 14% in the model; a barrier fits in no cell (the fullest is 0% model)
+    interiors 24. int_astroroom_steps; placed by interiors/astroroom; cells x 14, y 18..19, z 31
+         stands in it: walk 2 (2 only through a door of blocks) at x 14..14.5, feet 18, z 31.5..31.5; body up to 12% in the model; a barrier fits in no cell (the fullest is 11% model)
+    interiors 13. int_astroroom_holder x2; placed by interiors/astroroom; cells x 12, y 19, z 28
+         stands in it: hop 1 (1 only through a door of blocks) at x 12.5..12.5, feet 19, z 28.5..28.5; body up to 6% in the model; a barrier fits in no cell (the fullest is 0% model)
+
+  slopes and below: the eye gets into 0 pieces, 1 more are walked through below the eye
+    -- walked through, the eye stays out --
+    props 5. prop_furn_bench; placed by props/furniture; cells x 49, y -6..-4, z 50..51
+         stands in it: walk 3 at x 49.5..49.5, feet -5, z 50.5..51.5; body up to 14% in the model; a barrier fits in no cell (the fullest is 16% model)
+
+  star hall: the eye gets into 1 pieces, 13 more are walked through below the eye
+    -- the eye gets in --
+    interiors 339. prop_inst_celestial_globe; placed by interiors/starhall; cells x 3..5, y 0..1, z 3..5
+         eye in: walk 2 (0.5 m2) at x 4.5..4.5, feet 0, z 4.5..5; stands in it: walk 10 at x 4..5, feet 0, z 4..5.5; body up to 79% in the model; a barrier fits in no cell (the fullest is 77% model)
+    -- walked through, the eye stays out --
+    interiors 361. prop_furn_display_table_plates; placed by interiors/starhall; cells x 9..10, y -1..1, z -5..-4
+         stands in it: walk 6 at x 9.5..10.5, feet 0, z -4.5..-4; body up to 34% in the model; a barrier fits in no cell (the fullest is 75% model)
+    interiors 383. prop_furn_display_table_lenses; placed by interiors/starhall; cells x 12..13, y -1..1, z -5..-4
+         stands in it: walk 6 at x 12.5..13.5, feet 0, z -4.5..-4; body up to 32% in the model; a barrier fits in no cell (the fullest is 50% model)
+    interiors 360. prop_furn_bench; placed by interiors/starhall; cells x 9..10, y -1..1, z 4..5
+         stands in it: walk 3 at x 9.5..10.5, feet 0, z 5.5..5.5; body up to 15% in the model; a barrier fits in no cell (the fullest is 16% model)
+    interiors 382. prop_furn_bench; placed by interiors/starhall; cells x 12..13, y -1..1, z 4..5
+         stands in it: walk 3 at x 12.5..13.5, feet 0, z 5.5..5.5; body up to 15% in the model; a barrier fits in no cell (the fullest is 16% model)
+    interiors 369. int_starhall_meridian_a_1; placed by interiors/starhall; cells x 11, y 0, z -4
+         stands in it: walk 4 at x 11..12, feet 0, z -3.5..-3; body up to 7% in the model; a barrier fits in no cell (the fullest is 0% model)
+    interiors 370. int_starhall_meridian_a_ring; placed by interiors/starhall; cells x 11, y 0, z -3
+         stands in it: walk 5 at x 11..12, feet 0, z -3..-2; body up to 7% in the model; a barrier fits in no cell (the fullest is 0% model)
+    interiors 371. int_starhall_meridian_a_2; placed by interiors/starhall; cells x 11, y 0, z -2
+         stands in it: walk 5 at x 11..12, feet 0, z -2..-1; body up to 7% in the model; a barrier fits in no cell (the fullest is 0% model)
+    interiors 372. int_starhall_meridian_a_3; placed by interiors/starhall; cells x 11, y 0, z -1
+         stands in it: walk 5 at x 11..12, feet 0, z -1..0; body up to 7% in the model; a barrier fits in no cell (the fullest is 0% model)
+    interiors 373. int_starhall_meridian_a_noon; placed by interiors/starhall; cells x 11, y 0, z 0
+         stands in it: walk 5 at x 11..12, feet 0, z 0..1; body up to 7% in the model; a barrier fits in no cell (the fullest is 0% model)
+    interiors 374. int_starhall_meridian_a_4; placed by interiors/starhall; cells x 11, y 0, z 1
+         stands in it: walk 5 at x 11..12, feet 0, z 1..2; body up to 7% in the model; a barrier fits in no cell (the fullest is 0% model)
+    interiors 375. int_starhall_meridian_a_5; placed by interiors/starhall; cells x 11, y 0, z 2
+         stands in it: walk 5 at x 11..12, feet 0, z 2..3; body up to 7% in the model; a barrier fits in no cell (the fullest is 0% model)
+    interiors 376. int_starhall_meridian_a_ring; placed by interiors/starhall; cells x 11, y 0, z 3
+         stands in it: walk 5 at x 11..12, feet 0, z 3..4; body up to 7% in the model; a barrier fits in no cell (the fullest is 0% model)
+    interiors 377. int_starhall_meridian_a_6; placed by interiors/starhall; cells x 11, y 0, z 4
+         stands in it: walk 4 at x 11..12, feet 0, z 4..4.5; body up to 7% in the model; a barrier fits in no cell (the fullest is 0% model)
+
+  star hall, galleries: the eye gets into 3 pieces, 2 more are walked through below the eye
+    -- the eye gets in --
+    interiors 333. prop_furn_card_cabinet x2; placed by interiors/starhall; cells x 2..3, y 7..8, z 5
+         eye in: walk 5 (1.25 m2) at x 2..4, feet 7, z 5.5..5.5; stands in it: walk 5 at x 2..4, feet 7, z 5.5..5.5; body up to 95% in the model; a barrier fits in no cell (the fullest is 88% model)
+    interiors 340. prop_furn_instrument_cabinet; placed by interiors/starhall; cells x 4, y 7..8, z 5
+         eye in: walk 3 (0.75 m2) at x 4..5, feet 7, z 5.5..5.5; stands in it: walk 3 at x 4..5, feet 7, z 5.5..5.5; body up to 93% in the model; a barrier fits in no cell (the fullest is 88% model)
+    interiors 389. prop_furn_instrument_cabinet; placed by interiors/starhall; cells x 13, y 7..8, z -5
+         eye in: walk 3 (0.75 m2) at x 13..14, feet 7, z -4.5..-4.5; stands in it: walk 3 at x 13..14, feet 7, z -4.5..-4.5; body up to 93% in the model; a barrier fits in no cell (the fullest is 88% model)
+    -- walked through, the eye stays out --
+    interiors 349. prop_furn_display_case; placed by interiors/starhall; cells x 5, y 7..8, z 5
+         stands in it: walk 4 at x 5..6, feet 7, z 5..5.5; body up to 71% in the model; a barrier fits in no cell (the fullest is 44% model)
+    interiors 350. prop_paper_logbook; placed by interiors/starhall; cells x 5, y 7, z 5
+         stands in it: walk 1 at x 5.5..5.5, feet 7, z 5.5..5.5; body up to 14% in the model; a barrier fits in no cell (the fullest is 27% model)
+
+  time room: the eye gets into 11 pieces, 12 more are walked through below the eye
+    -- the eye gets in --
+    interiors 418. prop_furn_card_cabinet x2; placed by interiors/timeroom; cells x 4..5, y 7..8, z -8..-7
+         eye in: walk 6 (1.5 m2) at x 4.5..5.5, feet 7, z -7..-6.5; stands in it: walk 8 at x 4..6, feet 7, z -7..-6.5; body up to 95% in the model; a barrier fits in no cell (the fullest is 88% model)
+    interiors 422. prop_lamp_pendant_b; placed by interiors/timeroom; cells x 5..7, y 9..10, z -24..-23
+         eye in: hop 2 (0.5 m2) at x 6.5..6.5, feet 8, z -23.5..-23; stands in it: hop 2 at x 6.5..6.5, feet 8, z -23.5..-23; body up to 21% in the model; a barrier fits in no cell (the fullest is 0% model)
+    interiors 433. prop_lamp_pendant_b; placed by interiors/timeroom; cells x 8..10, y 9..10, z -24..-23
+         eye in: hop 2 (0.5 m2) at x 9.5..9.5, feet 8, z -23.5..-23; stands in it: hop 2 at x 9.5..9.5, feet 8, z -23.5..-23; body up to 21% in the model; a barrier fits in no cell (the fullest is 0% model)
+    interiors 446. int_timeroom_phone_feed, prop_elec_wall_phone; placed by interiors/timeroom; cells x 13, y 7..9, z -14
+         eye in: walk 1 (0.25 m2) at x 13.5..13.5, feet 7, z -13.5..-13.5; stands in it: walk 1 at x 13.5..13.5, feet 7, z -13.5..-13.5; body up to 26% in the model; a barrier fits in no cell (the fullest is 16% model)
+    interiors 398. prop_inst_regulator_clock; placed by interiors/timeroom; cells x 2, y 8..9, z -25
+         eye in: walk 1 (0.25 m2) at x 2.5..2.5, feet 7, z -24.5..-24.5; stands in it: walk 1 at x 2.5..2.5, feet 7, z -24.5..-24.5; body up to 21% in the model; a barrier fits in no cell (the fullest is 0% model)
+    interiors 445. prop_inst_regulator_clock; placed by interiors/timeroom; cells x 13, y 8..9, z -25
+         eye in: walk 1 (0.25 m2) at x 13.5..13.5, feet 7, z -24.5..-24.5; stands in it: walk 1 at x 13.5..13.5, feet 7, z -24.5..-24.5; body up to 21% in the model; a barrier fits in no cell (the fullest is 0% model)
+    interiors 402. int_timeroom_clock_e5; placed by interiors/timeroom; cells x 2, y 8..10, z -12
+         eye in: hop 1 (0.25 m2) at x 2.5..2.5, feet 8, z -11.5..-11.5; stands in it: hop 1 at x 2.5..2.5, feet 8, z -11.5..-11.5; body up to 20% in the model; a barrier fits in no cell (the fullest is 0% model)
+    interiors 403. int_timeroom_clock_e2; placed by interiors/timeroom; cells x 2, y 8..10, z -11
+         eye in: hop 1 (0.25 m2) at x 2.5..2.5, feet 8, z -10.5..-10.5; stands in it: hop 1 at x 2.5..2.5, feet 8, z -10.5..-10.5; body up to 20% in the model; a barrier fits in no cell (the fullest is 0% model)
+    interiors 404. int_timeroom_clock_home; placed by interiors/timeroom; cells x 2, y 8..10, z -10
+         eye in: hop 1 (0.25 m2) at x 2.5..2.5, feet 8, z -9.5..-9.5; stands in it: hop 1 at x 2.5..2.5, feet 8, z -9.5..-9.5; body up to 20% in the model; a barrier fits in no cell (the fullest is 0% model)
+    interiors 405. int_timeroom_clock_w3; placed by interiors/timeroom; cells x 2, y 8..10, z -9
+         eye in: hop 1 (0.25 m2) at x 2.5..2.5, feet 8, z -8.5..-8.5; stands in it: hop 1 at x 2.5..2.5, feet 8, z -8.5..-8.5; body up to 20% in the model; a barrier fits in no cell (the fullest is 0% model)
+    interiors 406. int_timeroom_clock_w5; placed by interiors/timeroom; cells x 2, y 8..10, z -8
+         eye in: hop 1 (0.25 m2) at x 2.5..2.5, feet 8, z -7.5..-7.5; stands in it: hop 1 at x 2.5..2.5, feet 8, z -7.5..-7.5; body up to 20% in the model; a barrier fits in no cell (the fullest is 0% model)
+    -- walked through, the eye stays out --
+    interiors 432. mach_rec_drum; placed by interiors/timeroom; cells x 8..9, y 8, z -24
+         stands in it: hop 1 at x 9..9, feet 8, z -23.5..-23.5; body up to 34% in the model; a barrier fits in no cell (the fullest is 27% model)
+    interiors 423. mach_rec_tape, mach_rec_telegraph; placed by interiors/timeroom; cells x 6, y 7..8, z -24..-23
+         stands in it: hop 4 at x 6..7, feet 8, z -23.5..-23; body up to 33% in the model; a barrier fits in no cell (the fullest is 17% model)
+    interiors 431. mach_rec_drum_frame; placed by interiors/timeroom; cells x 8..9, y 8, z -24
+         stands in it: hop 4 at x 8.5..10, feet 8, z -23.5..-23.5; body up to 27% in the model; a barrier fits in no cell (the fullest is 11% model)
+    interiors 438. int_timeroom_jacket, prop_furn_swivel_chair; placed by interiors/timeroom; cells x 11..12, y 6..7, z -12
+         stands in it: walk 2 at x 12..12.5, feet 7, z -11.5..-11.5; body up to 27% in the model; a barrier fits in no cell (the fullest is 17% model)
+    interiors 400. prop_furn_writing_desk; placed by interiors/timeroom; cells x 2..3, y 6..7, z -17..-15
+         stands in it: walk 8 at x 2.5..3, feet 7, z -16.5..-14.5; body up to 24% in the model; a barrier fits in no cell (the fullest is 19% model)
+    interiors 440. prop_furn_writing_desk; placed by interiors/timeroom; cells x 12..13, y 6..7, z -13..-11
+         stands in it: walk 8 at x 13..13.5, feet 7, z -12.5..-10.5; body up to 24% in the model; a barrier fits in no cell (the fullest is 19% model)
+    interiors 436. prop_furn_coat_stand; placed by interiors/timeroom; cells x 10, y 6..8, z -7
+         stands in it: walk 1 at x 10.5..10.5, feet 7, z -6.5..-6.5; body up to 23% in the model; a barrier fits in no cell (the fullest is 12% model)
+    interiors 427. prop_furn_stool; placed by interiors/timeroom; cells x 7, y 6..7, z -23
+         stands in it: walk 1 at x 7.5..7.5, feet 7, z -22.5..-22.5; body up to 19% in the model; a barrier fits in no cell (the fullest is 0% model)
+    interiors 416. prop_furn_swivel_chair; placed by interiors/timeroom; cells x 3..4, y 6..7, z -16
+         stands in it: walk 2 at x 3.5..4, feet 7, z -15.5..-15.5; body up to 17% in the model; a barrier fits in no cell (the fullest is 6% model)
+    interiors 412. int_timeroom_chronometer x2; placed by interiors/timeroom; cells x 2, y 7..8, z -16..-15
+         stands in it: walk 1 at x 2.5..2.5, feet 7, z -15..-15; body up to 12% in the model; a barrier fits in no cell (the fullest is 14% model)
+    interiors 449. mach_rec_tube; placed by interiors/timeroom; cells x 13, y 8..10, z -10
+         stands in it: walk 1 at x 13.5..13.5, feet 7, z -9.5..-9.5; body up to 12% in the model; a barrier fits in no cell (the fullest is 0% model)
+    interiors 428. prop_elec_telegraph_key; placed by interiors/timeroom; cells x 7, y 8, z -24
+         stands in it: hop 1 at x 7.5..7.5, feet 8, z -23.5..-23.5; body up to 8% in the model; a barrier fits in no cell (the fullest is 0% model)
+
+barriers of the scene in no model of props, interiors: 161 cells -- 1 at x -1, y 18, z -9; 18 at x 3..5, y 18..19, z -1..1; 2 at x 6, y 1..2, z 0; 6 at x 16, y 0..1, z -5..-3; 6 at x 16, y 0..1, z 3..5; 2 at x 33, y 0..1, z -30; 2 at x 37, y 0..1, z -30; 14 at x 70, y -5..-4, z 26..32; 8 at x 71..72, y -6..-5, z 37..38; 2 at x 77, y -6..-5, z 37; 30 at x 79..83, y -5..-4, z 23..25; 30 at x 79..83, y -5..-4, z 27..29; 24 at x 80..85, y -6..-5, z 34..35; 4 at x 88..89, y -4..-3, z -38; 12 at x 90..91, y -4..-3, z -34..-32
+
+result: the eye gets into 24 of 637 pieces, 87 more are walked through below the eye
