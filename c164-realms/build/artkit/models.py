@@ -392,7 +392,10 @@ class Model:
         moving = []    # (x, y, w, h, frames, material) of the faces whose picture changes with time
         for kk, (x, y) in pos.items():
             w, h, mat, grain, seed = rects[kk]
-            shots = mat.frames(w, h, grain, seed) if hasattr(mat, "frames") else None
+            # frames(): pixelart.Frames' method. A material that keeps a list under that name (the jars of
+            # interiors/batteryroom) is no Frames and is painted as before.
+            frames_of = getattr(mat, "frames", None)
+            shots = frames_of(w, h, grain, seed) if callable(frames_of) else None
             tex = shots[0] if shots else mat.paint(w, h, grain, seed)
             padded = np.pad(tex, ((1, 1), (1, 1), (0, 0)), mode="edge")
             img[y:y + h + 2, x:x + w + 2] = padded

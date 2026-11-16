@@ -33,7 +33,7 @@ left of one going out (the side away from the mountain, the curve's outer side):
 Walkers do not get on to the line. The station's track is paving and is walked on; the line's
 mouth is the three cells MOUTH in the first column east of the platform. While the train is away
 they are shut two blocks high (a gate that is seen, with barriers for its collision), and while it
-stands in the station the engine stands in them. East of the mouth nothing is ground for a walker:
+stands in the station the car stands in them. East of the mouth nothing is ground for a walker:
 no walk starts there and the walk-through counts any place it reaches there as a way out.
 """
 import functools
@@ -75,13 +75,16 @@ S_CURVE = S_FOOT + RADIUS * (math.pi / 2.0 - _A0)       # 116.36: the curve's en
 LENGTH = S_FOOT + SPANS * PITCH + PIER      # 198.06: the line's end, at (175.5, 88.46), the rails at -29.8
 FOOT_LEVEL = FEET - STEEP * (FOOT - BROW)   # -12.5
 
-# The train: the car leads uphill and the engine pushes at the downhill end. The numbers are the
-# car's middle, s of travel(): STOP with the car where the cable car stood (x 89..91) and the
-# engine east of it on the level track, START with both under the cloud at the line's end.
-CAR = 3.0                                   # the car's length
-ENGINE = 4.0                                # the engine's, at the most: the level track east of the car is as long
-STOP = S_EDGE - CAR / 2.0                   # 2.5
-START = LENGTH - CAR / 2.0 - ENGINE - 1.0   # 191.56
+# The train: one car, which leads uphill, and the engine that pushes it at the downhill end (A0
+# #89927). The numbers are the car's middle, s of travel(). STOP: the car's west door where the cable
+# car's was (x 90) and its body out over the level track east of the platform, so that it stands in
+# the mouth; the engine east of it on the brow and the head of the incline. START: both under the
+# cloud at the line's end.
+CAR = 5.0                                   # the car's length; it is three wide, the track's three rows
+ENGINE = 3.5                                # the engine's
+DOOR = S.CABLE_STATION[2] - 1.0             # 90.0: the car's west end when it stands in the station
+STOP = DOOR + CAR / 2.0 - HEAD              # 4.5: the car on x 90..95
+START = LENGTH - 6.5                        # 191.56: the engine's far end half a block short of the line's end
 SPEED = dict(station=1.5, incline=2.5, viaduct=4.5)     # blocks a second, proposed: START to STOP in about 50 s
 
 GAUGE = dict(half=1.5, height=5.0, parapet=1.0)
