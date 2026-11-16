@@ -14,7 +14,7 @@ view: on the real machine the ridges were missing for someone who arrives at the
 looks west (s1, 11-16, server view distance 10), and stood there after a look back at the site.
 
 The cloud sea needs an end. Blocks cannot give it one: the game draws none beyond the view
-distance (192 blocks at the 12 chunks the map is shown at). So the far shore is painted: four
+distance (160 blocks at the 10 chunks a Realms server sends). So the far shore is painted: four
 upright sheets, each the cut-out picture of a jagged ridge, standing 360 to 446 blocks out in the
 west half of the horizon. Two ranges, one to the north and one to the south of due west; due west
 stays open, a notch between two capes where the afterglow is strongest and over which the comet
