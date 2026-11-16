@@ -61,8 +61,10 @@ def cards():
                 name = re.split(r"[（(]", cells[0])[0].strip()
                 who = cells[3].split()[0] if cells[3] and cells[3] != "—" else ""
                 out.append({"key": "%s/%s" % (cat, name), "state": cells[2], "who": who})
+    have = {c["key"] for c in out}
     for cat, name, who in EXTRA:
-        out.append({"key": "%s/%s" % (cat, name), "state": "制作中", "who": who})
+        if "%s/%s" % (cat, name) not in have:
+            out.append({"key": "%s/%s" % (cat, name), "state": "制作中", "who": who})
     for c in out:
         c["who"] = OWNER.get(c["key"], c["who"])
     return out
@@ -134,10 +136,9 @@ def gates():
 
 def own_commits(code):
     refs = git("for-each-ref", "--format=%(refname)", "refs/remotes/origin/cursor/c164-%s-*" % code).stdout.split()
-    n = 0
-    for ref in refs:
-        log = git("log", "--format=%s", "--since=%d" % SHIFT3, ref, "--not", ASM).stdout
-        n += sum(1 for s in log.split("\n") if s.startswith("c164-%s:" % code))
+    # the ones that went into the assembly count too: a merged first version is still his
+    log = git("log", "--format=%H %s", "--since=%d" % SHIFT3, ASM, *refs).stdout
+    n = sum(1 for s in log.split("\n") if s[41:].startswith("c164-%s:" % code))
     return n, len(refs)
 
 
@@ -215,7 +216,7 @@ def main():
     print("【五行 %s｜合用机负载 %s（4 核）】" % (hm(now), load))
     back = sum(1 for c in work if returned(c))
     print("1. 卡 %d 张（66 加新开 %d）：进总装 %d，在做 %d%s，没人领 %d。"
-          % (len(cs), len(EXTRA), len(inside), len(work), "（其中退回 %d）" % back if back else "", len(unclaimed)))
+          % (len(cs), len(cs) - 66, len(inside), len(work), "（其中退回 %d）" % back if back else "", len(unclaimed)))
     print("2. 08:20 快车道以后：新交付 %d 件（关口 PASS），合进 %d 件。" % (len(passes), len(merged)))
     print("3. 室内：" + "；".join(rooms) + "。")
     print("4. 新人有提交的：%s；还没有：%s。"
