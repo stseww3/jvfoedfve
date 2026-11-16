@@ -143,7 +143,10 @@ FURNITURE = (
     ("card_cabinet", (4.5, -9.5), "south"),         # lining, below the window
     ("instrument_cabinet", (5.5, -9.5), "south"),
     ("stool", (13.5, 1.5), "east"),                 # at the switchboard
-    ("coat_stand", (10.5, -6.5), "south"),          # inside the north door
+    # inside the north door, its claws against both faces of the corner the lining makes there: a
+    # post with a crown of hooks at the height of the eye has no body to be kept out of (walk-through,
+    # m5 #75476), so it stands where nobody's way goes
+    ("coat_stand", (9.6875, -7.6875), "south"),
     ("drafting_table", (7.5, -8.5), "south"),       # the night's chart, under the window east of the cabinets
 )
 # the boxes the plates are carried in, by the south wall: (x, z, how many boxes it stands on, yaw).
@@ -154,9 +157,11 @@ LOGBOOK = (4.5, 10.4375)                        # (x, z) on the desk: the night'
 CLOCK_LIFT = 1.25                               # the regulator clock (props/instruments) hangs on the lining
 #                                                 of the south axis, its foot this far above the floor: a
 #                                                 hand's breadth over the gallery at the back of the desk
-# the mean-time dial (the room's own model) stands on the card cabinet of the north axis, in the
-# line of the stair's exit. Every clock on the hill is stopped at one time (director, g2 #34140)
-TIME_DIAL = FURNITURE[3]
+# the mean-time dial (the room's own model) stands on the cabinets of the north axis, before whoever
+# comes out of the stair: on the western one, so that V8 has all of it inside its right edge as it
+# has all of the sidereal clock inside its left one (review cr4, #74681: nothing that glows is cut
+# by the frame). Every clock on the hill is stopped at one time (director, g2 #34140)
+TIME_DIAL = FURNITURE[2]
 CLOCK = getattr(S, "CLOCK", (7, 55))
 DIAL_GLOW = 6                                   # the light its opal face is shown in, whatever the room's
 DIAL_FACE = (                                   # c the lit glass, k the quarters, m the other hours
