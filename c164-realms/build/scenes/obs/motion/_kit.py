@@ -101,8 +101,8 @@ MIN_STEP = 3                    # ticks; a part that needs shorter steps is too 
 MAX_STEP = 200                  # ticks; a player who arrives sees a part stand still until its next step
 LEAD = 2                        # ticks a step is aimed beyond the next one, so a late step is not a halt
 MAX_TURN = 150.0                # degrees one step may aim through; at 180 the short way round is the wrong way
-PEAK = 40                       # commands in any one tick
-MEAN = 10.0                     # commands a tick on average
+PEAK = 120                      # commands in any one tick (round 2, plan/round2.md section 2; 40 before)
+MEAN = 40.0                     # commands a tick on average (10 before)
 FILES = 3000                    # function files of one scene
 EVENTS = 720                    # functions of one chain
 
