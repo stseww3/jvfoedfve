@@ -50,6 +50,8 @@ VIEWS = [
     ("int_up", (12.4, EYE, -30.6), (CX + 0.1, 29.5, CZ + 0.1)),
     # the lobby as one comes in by the door: the ladder, the bob over the heads, the weights in the corners
     ("lobby", (11.45, LOBBY, CZ + 0.3), (CX + 0.4, 21.3, -28.9)),
+    # the way up, from the middle of the lobby: the ladder in its corner, the lamp beside its foot
+    ("ladder", (CX - 0.2, LOBBY, CZ + 0.4), (11.7, 21.2, -31.7)),
     # the arrival view V1 from the station: the tower on the skyline
     ("ext_v1", S.V1["pos"], S.V1["look_at"]),
 ]

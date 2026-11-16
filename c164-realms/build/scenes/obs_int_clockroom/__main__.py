@@ -34,7 +34,8 @@ def main():
     print(f"light on the walk: {len(walk)} places, the least {min(walk.values())}, the most {max(walk.values())};",
           "under %d: %s" % (room.WALK_LIGHT, " ".join(f"{c}={v}" for c, v in sorted(low.items())) or "none"))
     from scenes.obs.props import _kit as K
-    loose = {name: len(K.unsettled(m)) for name, m in room.models().items() if K.unsettled(m)}
+    loose = {name: len(K.unsettled(m)) for name, m in room.models().items()
+             if K.unsettled(m) and name != room.PREFIX + "dial"}       # the dial's back stands in a frame of its own
     print("faces between two axes:", " ".join(f"{name}={n}" for name, n in sorted(loose.items())) or "none")
     way = way_light(full)
     print(f"light on the way up: {len(way)} cells, the least {min(way.values())};",
