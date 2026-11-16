@@ -262,7 +262,7 @@ def checked(q, twin, camera_y, n=4000):
         raise SystemExit(f"preview: _hazed() and Twin.apply() differ by up to {np.abs(ours - theirs).max():g}")
 
 
-def agreement(cells):
+def agreement(cells, trial=False):
     """How the far sea's painting agrees with the blocks: over the columns of the open face (the
     top block at the face's own levels, no cloud column higher than those within six blocks), the
     tone build() gave against far_tone()."""
@@ -285,6 +285,14 @@ def agreement(cells):
         for dz in range(-6, 7):
             near |= np.roll(np.roll(high, dx, axis=0), dz, axis=1)
     calm = ~near[cols[:, 0] - x0, cols[:, 1] - z0]
+    if trial:
+        was = cloudsea.FAR_LIE, cloudsea.FAR_FOLD
+        for lie in (1.0, 0.8, 0.65, 0.5, 0.4):
+            for fold in (1.6, 2.4, 3.2):
+                cloudsea.FAR_LIE, cloudsea.FAR_FOLD = lie, fold
+                same = (cloudsea.far_tone(cols[calm, 0], cols[calm, 1]) == tones[calm]).mean()
+                print(f"  FAR_LIE {lie:g}, FAR_FOLD {fold:g}: the same tone on {same:.1%}")
+        cloudsea.FAR_LIE, cloudsea.FAR_FOLD = was
     theirs = cloudsea.far_tone(cols[calm, 0], cols[calm, 1])
     table = np.zeros((5, 5), dtype=int)
     np.add.at(table, (tones[calm], theirs), 1)
@@ -353,7 +361,8 @@ def main():
     ap.add_argument("--fov", type=float, default=77.0)
     ap.add_argument("--plan", action="store_true", help="also write <out>-plan.png")
     ap.add_argument("--flat", action="store_true", help="the far sea in one colour, without the tones of its face")
-    ap.add_argument("--agree", action="store_true", help="print how the far sea's painting agrees with the blocks")
+    ap.add_argument("--agree", action="count", default=0,
+                    help="print how the far sea's painting agrees with the blocks; twice: try other numbers for it as well")
     ap.add_argument("--sheet", type=int, default=0, help="one picture <out>-sheet.png, this many views to a row")
     ap.add_argument("--set", action="append", default=[], metavar="NAME=VALUE",
                     help="a constant of scenes.obs.sky.cloudsea for this run (a Python expression)")
@@ -390,7 +399,7 @@ def main():
     if args.plan:
         plan(cells, look_at(sky.tick("blue")), f"{args.out}-plan.png")
     if args.agree:
-        agreement(cells)
+        agreement(cells, trial=args.agree > 1)
     if not names:
         return
     views = {s["name"]: s for s in base.shots()}

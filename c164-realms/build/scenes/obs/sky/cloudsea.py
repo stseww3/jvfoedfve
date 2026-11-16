@@ -612,6 +612,7 @@ def _shade(h):
 # without a seam. Further out, where a pixel covers several blocks, the tones run together into
 # their mean.
 FAR_FOLD = 2.4                  # the crease read from the four columns beside one, for build()'s blur over 5 x 5
+FAR_LIE = 1.0                   # the lie of the slope read from the two columns beside one, for build()'s blur over 9 x 9
 FAR_PIXEL = 600.0               # pixels to a radian: how much sea a pixel covers at a distance
 FAR_FINE = (3.0, 7.0)           # the tones are whole while a pixel covers this many blocks, run together from the second on
 FAR_MEAN = (0.0, 0.03, 0.22, 0.61, 0.14)    # the share of each tone on the open face: what they run together into
@@ -629,7 +630,7 @@ def far_tone(x, z, seed=SEED):
     lie = 0.5 * (east - west)                       # rising eastwards = facing west
     fold = 0.25 * (west + east + height(x, z - 1.0) + height(x, z + 1.0)) - h
     low = np.clip(1.6 - h, 0.0, 1.0)
-    turn = np.clip(0.30 * np.tanh(1.3 * lie) + 0.16 * low * np.tanh(LIE * lie), -0.34, 0.30)
+    turn = np.clip(0.30 * np.tanh(1.3 * lie) + 0.16 * low * np.tanh(LIE * FAR_LIE * lie), -0.34, 0.30)
     crease = np.clip((FAR_FOLD * fold - 0.35) / 0.75, 0.0, 1.0)
     last = len(B.CLOUD) - 1
     return np.clip(np.rint(last * (0.75 + turn - 0.22 * crease)), 0, last).astype(int)
@@ -763,7 +764,7 @@ def far_glsl(origin=(0.0, 0.0), seed=SEED):
     values = dict(heaps=f(HEAPS), heaps_long=f(1.3 * HEAPS), seed=str(int(seed)), roll_x=f(ROLL[0]), roll_z=f(ROLL[1]),
                   swell=f(SWELL), pillow=f(PILLOW), bank=f(BANK), trough=f(TROUGH - MEAN), pixel=f(FAR_PIXEL),
                   fine_0=f(FAR_FINE[0]), fine_1=f(FAR_FINE[1]), tint_mean=vec3(tints[-1]),
-                  origin=f"vec2({f(origin[0])}, {f(origin[1])})", lie=f(LIE), fold=f(FAR_FOLD), last=f(last), tints=own)
+                  origin=f"vec2({f(origin[0])}, {f(origin[1])})", lie=f(LIE * FAR_LIE), fold=f(FAR_FOLD), last=f(last), tints=own)
     text = FAR_GLSL
     for key, value in values.items():
         text = text.replace("{" + key + "}", value)
