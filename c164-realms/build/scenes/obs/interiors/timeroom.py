@@ -123,7 +123,6 @@ import math
 
 from artkit import models as M
 from artkit.blocks import st
-from artkit.nbtw import Float
 from artkit.pixelart import Sprite
 
 from ..common import blocks as B
@@ -269,8 +268,8 @@ SECONDS = dict(tip=4.0, tail=1.25, wide=0.5, off=4.15, thick=0.15)      # px: a 
 #                                                     to the end of its tail, its width, how far off the wall it turns (over the
 #                                                     boss of the two hands), its thickness
 SECONDS_TURN = 60 * MK.SECOND                       # ticks: once round the dial in a minute, the five in step (slaves of one clock)
-VIEW = 0.5                                          # how far off a piece of the room is drawn, in 64 blocks: the "near" class of
-#                                                     plan/round2 2 (nothing of the room is looked at from further than the door)
+VIEW = M.NEAR                                       # how far off a piece of the room is drawn: the class of everything indoors
+#                                                     (plan/round2 2); no board view looks into the room through a window
 
 # ---- the patch cords: at the jack fields of the rack, which are the panels beside the two ends of the console
 JACK_FIELDS = tuple((RACK_X[0] + i, CORNICE_Y - 1 - j)                              # (5, 8) and (10, 8): the cells, x and y
@@ -1055,9 +1054,7 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
 
     # ---- how far off the room's pieces are drawn, whoever made them: the game draws a display entity through
     # walls, so one that is drawn from across the site costs every picture taken out of doors
-    for entity in c.entities[first:]:
-        if "view_range" in entity[3]:
-            entity[3]["view_range"] = Float(VIEW)
+    M.band(c, first, VIEW)
     return {"entities": n, "lights": lights}
 
 
