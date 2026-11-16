@@ -180,7 +180,12 @@ DIAL_DRUM = 0.75                 # the drum behind the dial, in blocks
 # (#645858, 0.36 of full white) to within a hundredth, between the stone of the wall (0.22) and
 # the lit frosted window (0.54). scenes/obs_mach_clocks/measure.py reads all of it off the pictures.
 DIAL_LIGHT = {"east": (15, 9), "west": (15, 9), "south": (8, 6), "north": (8, 6)}
-FAR = 4.0                        # view_range of everything on the tower: seen from the far platforms
+# view_range, in the classes of plan/round2.md (12:27). The client draws a display entity wherever
+# the camera looks, walls or no walls, as far as its view range goes: from the platform every piece
+# of the hall was drawn behind the front.
+FAR = 3.0                        # everything on the tower, seen across the whole site: 192 blocks
+INDOORS = 0.5                    # the master clock: 32 blocks. No view of the board sees it from
+#                                  outside (on the axis the armillary sphere and the door stand before it)
 
 # --- the time ball ------------------------------------------------------------------------------
 BALL = "copper"                  # the colour tower() hangs (A0, 11-16); "red" is the other one made
@@ -793,12 +798,12 @@ def master(canvas, origin=(0, 0, 0), time=None):
     its lamp; returns the entity count."""
     hour, minute = hand_angles(*(time or TIME))
     face = MASTER_FACING
-    n = _put(canvas, "master", _out(MASTER_AT, face, (0.0, MASTER_HOLD, 0.0)), origin, face)
+    n = _put(canvas, "master", _out(MASTER_AT, face, (0.0, MASTER_HOLD, 0.0)), origin, face, view=INDOORS)
     n += _put(canvas, "pendulum", _out(MASTER_AT, face, MASTER_PIVOT), origin, face,
-              turns=(("z", PENDULUM_POSE),))
+              turns=(("z", PENDULUM_POSE),), view=INDOORS)
     _swing(canvas)
     centre = _out(MASTER_AT, face, MASTER_DIAL)
-    lit = dict(brightness=MASTER_DIAL_LIGHT)
+    lit = dict(brightness=MASTER_DIAL_LIGHT, view=INDOORS)
     n += _put(canvas, "master_dial", centre, origin, face, **lit)
     n += _put(canvas, "master_hand_h", centre, origin, face, tag=TAG_HOUR, turns=(("z", -hour),), **lit)
     _run(canvas, HALF_DAY)
