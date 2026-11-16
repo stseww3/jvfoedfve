@@ -103,7 +103,11 @@ FRONT, STOREY = "tower", "shaft"    # the slits' keys for the light line; the ba
 LIT_FACES = ("east", "west")        # the slits that are lit: opposite faces, never two neighbours
 SLIT_LIGHT = 7                      # the stand-in source of a lit slit: what sky/lights places (9 - 2)
 LAMP = True                         # a caged lamp let into the lookout's ceiling
-LAMP_LEVEL = 7                      # the fill it asks the light line for (rank 3)
+LAMP_LEVEL = 12                     # the light it asks the light line for: the top of the second rank. From
+#                                     the forecourt it is the ceiling's underside that is seen in the arches,
+#                                     which the game draws at half its light: at 7 the lookout reads unlit
+#                                     in V5 (the review of the board, 11-16)
+LAMP_RANK = 2                       # the rank it asks in: a caged lamp's own is the third, which stops at 8
 
 # --- materials: roles of the occupancy table ------------------------------------------------------------
 WALL = B.ASHLAR_FINE
@@ -376,7 +380,7 @@ def _lamp(c, o, head):
     below = (o[0] + CX, o[1] + head - 1, o[2] + CZ)
     suggest = getattr(_kit(), "suggest", None)
     if suggest is not None:
-        suggest(c, below, LAMP_LEVEL, "main/tower:cage", rank=3)
+        suggest(c, below, LAMP_LEVEL, "main/tower:lookout", rank=LAMP_RANK)
     else:
         c.set(below[0], below[1], below[2], f"{B.LIGHT}[level={LAMP_LEVEL}]", keep=True)
 
