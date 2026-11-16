@@ -65,6 +65,7 @@ from ..motion import _kit as MK
 from ..props import _kit as K
 from ..props import furniture, lamps, paper, signs
 from . import _darkroom as D
+from . import _doorcase
 
 ORDER = 80              # a room that moves into the shell (INTERFACE 3)
 MOVED_IN = True         # the master scene dresses the room (fast lane: a card's switch is turned on with its delivery)
@@ -81,6 +82,7 @@ CEIL_Y = _ABOVE["feet"] - 1         # 6: the chart room's floor block is this ro
 TOP = CEIL_Y - 1                    # 5: the highest clear row, and the row of the beams
 HALL_DOOR = (7, Z0 - 1)             # (7, 6): the wall cell of the door to the star hall (hall reads this name)
 DOOR_Y = (FEET, FEET + 1)           # the doorway's rows: two high, as the battery room's across the hall
+DOOR = next(d for d in shell.doors() if d["room"] == "plate vault")
 AXIS_X = S.mid(HALL_DOOR[0])        # 7.5: the room's axis runs through the door
 LIFT = (X0, Z0)                     # (2, 7): the hand lift's shaft, under the chart room's cased riser
 PIER_Z = tuple(z for z in range(Z0, Z1 + 1) if MP.on_pilaster(z))      # 10, 14, 18, 22: the beams' rows
@@ -267,7 +269,7 @@ def _models():
 
 def models():
     """The room's own models and those of the darkroom kit, which is no package of its own."""
-    return dict(D.models(), **_models())
+    return dict(D.models(), **_models(), **_doorcase.iron_models(PREFIX, DOOR, "west"))
 
 
 # ---- building -----------------------------------------------------------------------------------
@@ -411,6 +413,7 @@ def build_platevault(canvas, origin=(0, 0, 0)):
     n += paper.place(canvas, "photo_plate_b", (check[0] + 0.3, glass, check[2] - 0.05), yaw=-12.0, origin=origin)
     n += furniture.place(canvas, "crate", (X1 - 0.75, float(FEET), Z0 + 0.6), yaw=4.0, origin=origin)
     n += furniture.place(canvas, "crate_small", (X1 - 0.8, FEET + furniture.TOP["crate"], Z0 + 0.6), yaw=20.0, origin=origin)
+    n += _doorcase.iron_place(canvas, PREFIX, DOOR, "west", origin=origin)
     return n
 
 

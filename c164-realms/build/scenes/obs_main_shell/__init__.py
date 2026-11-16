@@ -39,6 +39,7 @@ from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
 from scenes.obs.main import shell
 from scenes.obs.props import lamps
+from scenes.obs.interiors import _doorcase
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 60
@@ -113,6 +114,11 @@ def build():
             if axis is None or cell[axis] <= last:
                 c.set(cell[0], cell[1], cell[2] + dz, state)
     stand_ins(c, DRESSED)
+    for d in shell.doors():
+        if d["room"] in shell.LOWER:
+            _doorcase.iron_place(c, "look_" + d["room"].split()[0] + "_", d, "west")
+            (x, z), (dx, dz) = d["cells"][0], d["inward"]
+            c.set(x, 1, z + 2 * dz, f"{B.LIGHT}[level=13]", keep=True)
     for dz, axis, last in copies():
         for cell, level in lights:
             if axis is None or cell[axis] <= last + LIGHT_OVER_CUT:
@@ -121,7 +127,11 @@ def build():
 
 
 def build_models():
-    return {**(main.models() or {}), **lamps.models_of(POST_LAMP)}
+    out = {**(main.models() or {}), **lamps.models_of(POST_LAMP)}
+    for d in shell.doors():
+        if d["room"] in shell.LOWER:
+            out.update(_doorcase.iron_models("look_" + d["room"].split()[0] + "_", d, "west"))
+    return out
 
 
 def write_pack(pack_dir):

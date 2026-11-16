@@ -78,6 +78,7 @@ from ..main import _plan as MP
 from ..main import shell
 from ..props import _kit as K
 from ..props import lamps
+from . import _doorcase
 
 MOVED_IN = True            # the master scene dresses the room (a card's switch is turned on with its delivery); the
 #                            doorway is main/shell's to cut (HALL_DOOR): until then the room stands closed
@@ -95,6 +96,7 @@ NORTH, SOUTH, WEST, EAST = float(Z0), Z1 + 1.0, float(X0), X1 + 1.0     # the fo
 HALL_DOOR = (7, Z1 + 1)                             # (7, -6): the cell of the south wall the door stands in. The star
 #                                                     hall reads this name (aisle_doors); x 8 is a pilaster of the hall
 DOOR_Y = (FEET, FEET + 1)                           # the doorway is two rows high
+DOOR = next(d for d in shell.doors() if d["room"] == "battery room")
 BEAM_Z = tuple(z for z in range(Z0, Z1 + 1) if MP.on_pilaster(z))               # -22, -18, -14, -10
 EAST_BAYS = tuple(b for b in range(1, S.N_BAYS + 1) if set(MP.window_rows(b)) <= set(range(Z0, Z1 + 1)))
 WEST_BAYS = tuple(b for b in EAST_BAYS if all(abs(z - S.DOME_CENTRE[1]) > MP.WEST_BLIND_Z for z in MP.window_rows(b)))
@@ -441,7 +443,7 @@ def models():
     """The room's own models: a block of the battery, the gantry over a bank, the cable and what
     holds it, the small pieces. The board and the bars are machines/batteryboard's, the lamps
     props/lamps'."""
-    return dict(_models())
+    return dict(_models(), **_doorcase.iron_models(PREFIX, DOOR, "west"))
 
 
 def their_models():
@@ -548,6 +550,7 @@ def build_batteryroom(c, origin=(0, 0, 0), roles=B):
         at = (ox + cell[0], oy + cell[1], oz + cell[2])
         lights.append((at, FILL, f"{NAME}:fill"))
         _offer(c, at, FILL, f"{NAME}:fill", CAGE_RANK)
+    n += _doorcase.iron_place(c, PREFIX, DOOR, "west", origin=origin)
     return {"entities": n, "lights": lights}
 
 
