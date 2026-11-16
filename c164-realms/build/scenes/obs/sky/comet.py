@@ -3,7 +3,13 @@
 Card plan/packages/sky/comet.md. Three versions to choose from, painted by one function from one
 table (STYLES):
 
-    a  jia   a soft long tail: a small coma and long smooth tails; only the nucleus is big pixels
+    a  jia   a soft long tail: a small coma and long smooth tails; only the nucleus is big pixels.
+             The dust tail leads: a slender blade that curves away to the north and ends four
+             fifths of the way up the ion tail, which is fainter and widens towards its end. (Until
+             11-16 the two were equally long and nearly straight: at the size of a stamp a narrow V,
+             not a head that trails a tail. The blade is slender so that its curve does not carry
+             it nearer to the radio mast's light in V1 than the straight tail stood.) The version
+             the map shows (A0 #56164, on the pictures from the game)
     b  yi    hard pixels: the whole sprite on the 64 grid in five levels of brightness, flat tones
              with stepped outlines, the way the vanilla sun and moon are drawn. The dust tail is a
              plume that opens all the way to a round end; its three tones lie in it one inside the
@@ -32,7 +38,8 @@ Where it stands. The moon's square is 22.6 degrees wide and always due west of t
 centre 90 - moon_angle up. The head sits 7 degrees below the centre (HEAD_ELEVATION, 41 degrees with
 moon_angle 42: 4.5 above the top line of the great dome as V2 sees it, which is the dome's near
 shoulder and not its apex; measured on the white model of obs_sky_comet), the tails go up and end
-inside the square in every light (the longest, in the deep night, 4 degrees short of its top edge).
+inside the square in every light (the longest, in the deep night, 4.5 degrees short of its top edge
+or more: report() prints the margin of every version).
 directions(), light() and reach() say where its light is on the sky of any viewer; whatever checks
 what stands in front of the comet reads them and does not work the square's attitude out again.
 
@@ -65,7 +72,7 @@ SIZE = 256
 GRID = 64                    # the big pixels: the nucleus in every version, all of version b
 SPAN = 22.62                 # degrees across the moon's square (half-size 20 at distance 100)
 HEAD_BELOW = 7.0             # the head sits this far below the centre of the square; tails go up
-DEFAULT_STYLE = "a"          # the version pack() paints for the map; the review settles it
+DEFAULT_STYLE = "a"          # the version pack() paints for the map: chosen on the pictures from the game
 
 # brightness and length of the comet in each light version: deep is the brightest and longest, glow
 # the faintest and shortest, so that the three are told apart at the size of a stamp
@@ -132,9 +139,9 @@ HEAD_ELEVATION = 90.0 - mood.MOON_ANGLE + _above_centre((HEAD_ROW + 0.5) * _CELL
 # kink.
 _SQUARE = ((0, 0, 1.0), (1, 0, .72), (0, 1, .72), (1, 1, .50))
 STYLES = {
-    "a": dict(coma=0.60, coma_amp=0.32, dust_len=14.5, dust_w=(0.30, 1.40), flare=1.0, lean=0.12,
-              curve=0.012, edge=2.0, skew=0.30, spine=0.35, dust_fall=1.5, dust_amp=0.50, cool=1.2,
-              ion_len=15.0, ion_w=(0.12, 0.30), ion_lean=-0.03, ion_fall=1.1, ion_amp=0.15,
+    "a": dict(coma=0.60, coma_amp=0.32, dust_len=12.0, dust_w=(0.30, 1.20), flare=1.0, lean=0.12,
+              curve=0.020, edge=2.0, skew=0.20, spine=0.35, dust_fall=1.5, dust_amp=0.50, cool=1.2,
+              ion_len=15.0, ion_w=(0.12, 0.45), ion_lean=-0.03, ion_fall=1.1, ion_amp=0.11,
               nucleus=_SQUARE),
     "b": dict(coma=0.62, coma_amp=0.36, dust_len=13.5, dust_w=(0.30, 1.75), flare=1.0, lean=0.15,
               curve=0.013, edge=4.0, skew=0.35, spine=0.0, dust_fall=1.7, dust_amp=0.36, cool=1.0,
