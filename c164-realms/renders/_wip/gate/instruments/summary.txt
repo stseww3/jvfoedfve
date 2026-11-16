@@ -1,0 +1,18 @@
+gate props/instruments 167eb53e: the merged tree 167eb53e, the assembly as it was ecac536e
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 73 scenes in 84 s: 73 pass (73 with warnings)
+pictures: obs_props_instruments: the kept pictures are NOT what the delivered commit 167eb53e draws (it goes back):
+    [FAIL] selfshots obs_props_instruments at 167eb53e: 10 of 25 kept pictures are what the code draws, 15 not
+    terrace: 53 of 921600 pixels are not what the code draws (off by up to 4 of 255)
+    scope: 5197 of 921600 pixels are not what the code draws (off by up to 92 of 255)
+    scope_near: 17899 of 921600 pixels are not what the code draws (off by up to 92 of 255)
+    scope_behind: 24665 of 921600 pixels are not what the code draws (off by up to 92 of 255)
+    scope_comet: 19496 of 921600 pixels are not what the code draws (off by up to 92 of 255)
+    scope_comet_near: 60535 of 921600 pixels are not what the code draws (off by up to 92 of 255)
+    scope_comet_aim: 4994 of 921600 pixels are not what the code draws (off by up to 24 of 255)
+    louvre: 5420 of 921600 pixels are not what the code draws (off by up to 92 of 255)
+    louvre_near: 21144 of 921600 pixels are not what the code draws (off by up to 92 of 255)
+    sunshine: 19035 of 921600 pixels are not what the code draws (off by up to 92 of 255)
+    sunshine_near: 26518 of 921600 pixels are not what the code draws (off by up to 92 of 255)
+    globe: 23 of 921600 pixels are not what the code draws (off by up to 33 of 255)
+result: FAIL
