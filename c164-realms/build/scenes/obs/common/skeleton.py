@@ -317,10 +317,15 @@ V5 = dict(pos=(52.5, GROUND + EYE, -13.5), look_at=(13.5, 27, -31.5))       # th
 # third before the chimney's foot. No further: at six degrees it touches the left edge and its
 # pedestal is mostly outside (cr2 #64341; it would leave only past sixteen, the chimney cut at twelve).
 V6 = dict(pos=(66.5, LOWER_GROUND + 3 + EYE, 6.5), look_at=(74.4, 8.0, 33.2))   # the eye at y -1.38
-# V7, the star hall from outside the door (A0 #365, 11-15), the entrance arch as its frame: the
-# orrery overhead, the mother clock on the pier straight ahead, the floor underfoot. The camera in
-# the doorway stays as a second one; the test scenes call it v7_in.
-V7 = dict(pos=(19.5, GROUND + EYE, AXIS_Z), look_at=(10, 5.5, AXIS_Z))      # the eye at y 1.62
+# V7, the star hall from its doorway (A0 #365, 11-15; two blocks further in since 11-16, A0 09:23,
+# tried at 17.5, 15.5 and 13.5 on the assembly 73ba97f1): the whole orrery under the star ceiling,
+# the mother clock on the pier straight ahead, the lamps of both galleries, the two flights of the
+# stair, the floor underfoot; the walls of the vestibule close the picture left and right. From
+# outside the door, at x 19.5 where it stood, the two open leaves took six tenths of the picture and
+# the hall was a slit between them; further in than this the picture's top edge cuts the orrery.
+# The station between the leaves stays a shot of the hall's own test scenes, as does v7_in, one
+# block further in than this.
+V7 = dict(pos=(17.5, GROUND + EYE, AXIS_Z), look_at=(9.0, 6.0, AXIS_Z))     # the eye at y 1.62
 # V11, the look back from the south lookout (A4's, approved by A0 #19260.6): the main building in
 # three-quarter view fills the middle third, the afterglow is on the left.
 V11 = dict(pos=(45.5, SOUTH_LOOKOUT["feet"] + EYE, 52.5), look_at=(6, 14, 0.5))     # the eye at y -3.38

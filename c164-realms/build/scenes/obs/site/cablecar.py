@@ -289,13 +289,16 @@ def _platform(p):
         for z in (CANOPY[1], CANOPY[3]):
             p.set(x, TOP, z, KERB)
     # the hill's railing: the north edge west of the waiting room; the bay's south side and its east
-    # side as far as the column; the east edge either side of the track
+    # side as far as the column; on the east edge a pier either side of the track
     north = [(x, Z0) for x in range(X0 + 2, WAIT[0])]
     K.rail(p.c, p.o, north, north[:1], y=FEET, kerb=False)
     bay = [(x, Z1) for x in range(BAY, X1)] + [(X1, z) for z in range(Z1, GIRDER_Z, -1)]
     K.rail(p.c, p.o, bay, [(BAY, Z1), (X1, Z1)], y=FEET, kerb=False)
+    # Piers, not bars, beside the car: bars are a block high and a jump clears them, and from their
+    # top the next jump is the car's roof and the way down the trestle (walkreach, m3 11-16). A
+    # pier's cap is a block and a half up; it is the line of the car's window sills.
     for z in (CANOPY[1], CANOPY[3]):
-        K.rail(p.c, p.o, [(X1, z)], [], y=FEET, kerb=False)
+        K.rail(p.c, p.o, [(X1, z)], [(X1, z)], y=FEET, kerb=False)
 
 
 def _track(p):
