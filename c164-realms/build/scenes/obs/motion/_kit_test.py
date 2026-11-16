@@ -317,12 +317,74 @@ def test_turn():
     _refused("after the cycle", c, "z", [(0, 90.0, 10), (35, 0.0, 10)], 40)
     _refused("names no move", c, "z", [], 40)
     _refused("more ticks", c, "z", [(0, 3600.0, 30)], 40)                   # 120 degrees a tick
-    _refused("not written yet", c, "z", [(0, 360.0, 30)], 40, in_step=20)
+    for other in (30, 80, 0, -20, 2.5):                                     # in_step= is a cycle that divides its own
+        _refused("divides its own", c, "z", [(0, 360.0, 30)], 40, in_step=other)
     c.add_entity(12.5, 64.0, 0.5, _display("mot_no", anchor=(4.0, 0.0, 0.0)))
     _refused("off its arc", c, "z", [(0, 360.0, 30)], 40)                    # an arm of four blocks, a turn in 30 ticks
     # two moves may touch: the second sets off on the tick the first ends
     MK.turn(c, "z", [(0, 2.0, 10), (10, 4.0, 10), (20, 0.0, 10)], 40, model="mot_no", name="touching")
     assert [s[:3] for s in _last(c).steps] == [(0, 10, 2.0), (10, 10, 4.0), (20, 10, 0.0)]
+
+
+TOCK = "minecraft:block.note_block.hat"
+
+
+def _clock(in_step):
+    """A pendulum that swings in 80 ticks and is heard on ticks 7 and 47 of them, and an escape
+    wheel that goes round in 1200 and is let go on those ticks. Returns the canvas and its parts
+    by name."""
+    c = _Canvas()
+    south = (0, 0, 1)
+    c.add_entity(15.5, 5.5, 0.25, _display("mot_pendulum", anchor=(0.0, 0.5, 0.0)))
+    MK.swing(c, south, 5.0, 80)
+    MK.sound(c, (15.5, 5.5, 0.25), TOCK, 80, at=(7, 47), volume=0.3)
+    c.add_entity(2.5, 3.5, 0.25, _display("mot_escape"))
+    MK.turn(c, south, [(7 + 40 * k, 12.0 * (k + 1), 6) for k in range(30)], 1200, in_step=in_step)
+    return c, dict(zip(("pendulum", "escape"), c.motion.parts))
+
+
+def _zero(c):
+    """{cycle: the tick after the start on which the chain's tick 0 falls, less one}"""
+    return {chain.cycle: chain.offset - chain.files[0][0] for chain in MK._plan(c, "t", (0, 64, 0), "c164art").chains}
+
+
+def test_in_step():
+    """turn(in_step=): the chain of the part's cycle is started so that its ticks are the other
+    chain's, the two are counted as one where the busiest tick is looked for, and what cannot be
+    kept in step is refused."""
+    # left to themselves the two chains are started beside each other
+    zero = _zero(_clock(None)[0])
+    assert (zero[1200] - zero[80]) % 40 != 0, zero
+    # in step: tick 0 of the long chain is a tick 0 of the short one, and the wheel's first function
+    # (guard, schedule, pose) is counted on top of the tock's (schedule, sound)
+    c = _clock(80)[0]
+    zero = _zero(c)
+    assert (zero[1200] - zero[80]) % 80 == 0, zero
+    plan = MK._plan(c, "t", (0, 64, 0), "c164art")
+    assert [chain.follows for chain in plan.chains] == [None, 80] and all(chain.offset >= 0 for chain in plan.chains)
+    assert plan.peak == 5, plan.peak
+    assert MK.check(c)[0] == "PASS", MK.check(c)
+    # its own cycle: it is on that chain as it is
+    c = _clock(1200)[0]
+    assert _last(c).in_step is None and _zero(c) == _zero(_clock(None)[0])
+    # three chains, each in step with the next shorter one
+    c = _Canvas()
+    MK.sound(c, (0.5, 5.5, 0.25), TOCK, 40, at=(3,))
+    c.add_entity(2.5, 3.5, 0.25, _display("mot_arm"))
+    MK.turn(c, "z", [(13, 30.0, 10), (53, 0.0, 10)], 80, in_step=40)
+    c.add_entity(6.5, 3.5, 0.25, _display("mot_escape"))
+    MK.turn(c, "z", [(13 + 40 * k, 12.0 * (k + 1), 6) for k in range(30)], 1200, in_step=80)
+    zero = _zero(c)
+    assert (zero[80] - zero[40]) % 40 == 0 and (zero[1200] - zero[80]) % 80 == 0, zero
+    # a cycle nothing in the scene has; two parts of one cycle that name two others
+    status, _summary, details = MK.check(_clock(50)[0])
+    assert status == "FAIL" and "nothing in this scene has a cycle of 50 ticks" in details[0], details
+    c = _clock(80)[0]
+    MK.sound(c, (0.5, 5.5, 0.25), TOCK, 40, at=(3,))
+    c.add_entity(6.5, 3.5, 0.25, _display("mot_fly"))
+    MK.turn(c, "z", [(100, 2880.0, 60)], 1200, in_step=40)
+    status, _summary, details = MK.check(c)
+    assert status == "FAIL" and "keeps in step with one other" in details[0], details
 
 
 def test_write():
@@ -940,6 +1002,32 @@ def test_play_turn():
         assert all(_close(e.pose(game.tick)[k], e.rest[k]) for e in shown.values() for k in range(4))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
+
+
+def test_play_in_step():
+    """An escape wheel kept in step with its pendulum (turn(in_step=)) is let go on the ticks the
+    tock is heard, turn after turn; left to itself its chain runs a few ticks beside them."""
+    for in_step in (None, 80):
+        game, shown, parts, tmp = _played(canvas=_clock(in_step))
+        try:
+            game.call("c164art:t-motion/start")
+            game.run(2 * 1200 + 100)
+            assert not game.lost and not game.missed, (game.lost[:3], game.missed[:3])
+            tocks = {tick for tick, line in game.said if line.startswith("playsound ")}
+            steps = [tick for tick, name in game.calls if "-motion/c1200/" in name]
+            assert len(steps) >= 60 and {b - a for a, b in zip(steps, steps[1:])} == {40}, steps[:5]
+            if in_step:
+                assert tocks.issuperset(steps), (steps[:3], sorted(tocks)[:3])
+                # and the wheel is on its way while the tock sounds: half a tooth in the six ticks after it
+                e = shown["escape"]
+                for k, tick in enumerate(steps[:40]):
+                    was = _angle(e.point(tick, (1.0, 0.0, 0.0)), e.pos)
+                    assert abs(_turned(was, _angle(e.point(tick + 6, (1.0, 0.0, 0.0)), e.pos)) - 12.0) < 1e-3, k
+                    assert abs(_turned(12.0 * k, was)) < 1e-3, k
+            else:
+                assert not tocks.intersection(steps), (steps[:3], sorted(tocks)[:3])
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
 
 
 def test_play_late():

@@ -249,6 +249,7 @@ class _Part:
         self.turn = 0.0                 # the widest turn a step aims through, degrees
         self.stray = 0.0                # the furthest the model's middle leaves its arc, blocks
         self.forced = False             # the maker set the steps or the lead by hand
+        self.in_step = None             # the cycle of the chain its own chain keeps in step with (turn())
 
     def local(self, spec):
         """A direction in the entity's own frame, the frame its transformation is given in.
@@ -613,17 +614,22 @@ def turn(canvas, axis, moves, cycle, *, entity=None, model=None, name=None, phas
              moves it stands still. The last move ends at 0 or at whole turns, the pose the part
              was placed in: a loop comes back to where it starts.
     cycle    ticks after which the moves repeat
-    in_step  not written yet: the chain of this cycle is started a few ticks apart from the
-             others (STAGGER), by a difference that stays the same
+    in_step  another cycle of this scene, one that divides `cycle`: the moves' ticks are then ticks
+             of that chain too. An escape wheel with a cycle of 1200 and in_step=80 is let go on
+             tick 0 and tick 40 of the pendulum's 80. Left out, the chains of two cycles are
+             started a few ticks apart (STAGGER), by a difference that stays the same
 
     A move is cut into steps where it takes longer than MAX_STEP ticks, turns further than
     MAX_TURN degrees, or would take a model whose middle lies off the axis from its arc (WOBBLE,
     as in spin()); the steps of one move run into each other, and its last one ends on the pose
     the move names. A move too fast for that is refused, with the reason.
     """
-    if in_step is not None:
-        raise ValueError("turn(in_step=) is not written yet: leave it out, the chains then start a few ticks apart")
     part = _register(canvas, "turn", cycle, entity, model, name, phase)
+    if in_step is not None:
+        if int(in_step) != in_step or in_step < 1 or part.cycle % int(in_step):
+            raise ValueError(f"{part.name}: in_step={in_step!r} is not a cycle that divides its own of {part.cycle} ticks")
+        if int(in_step) != part.cycle:      # its own cycle: it is on that chain as it is
+            part.in_step = int(in_step)
     part.axis = part.local(axis)
     track, at, here = [], 0, 0.0
     for start, to, travel in moves:
@@ -871,6 +877,7 @@ class _Chain:
         self.more = {}          # tick -> commands its lines count as beyond one each (run(weight=))
         self.files = []         # (tick, [lines]) in order, once the plan is drawn up
         self.offset = 0         # ticks after start() the chain's first function runs (plus one)
+        self.follows = None     # the cycle of the chain it keeps in step with (turn(in_step=))
 
     def add(self, tick, command, weight=1):
         tick %= self.cycle
@@ -916,6 +923,17 @@ class _Plan:
                 chain.add(tick + point.phase, text, point.weight)
         self.own = {own: [_fill(line, spots, self.at, namespace) for line in lines]
                     for own, (lines, spots) in book.own.items()}
+        for part in book.parts:
+            if part.in_step is None:
+                continue
+            chain = chains[part.cycle]
+            if part.in_step not in chains:
+                raise ValueError(f"{part.name}: in_step={part.in_step}, and nothing in this scene has a cycle of "
+                                 f"{part.in_step} ticks")
+            if chain.follows not in (None, part.in_step):
+                raise ValueError(f"{part.name}: in_step={part.in_step}, and another part of its cycle of {part.cycle} "
+                                 f"ticks has in_step={chain.follows}; a chain keeps in step with one other")
+            chain.follows = part.in_step
         self.chains = [chains[c] for c in sorted(chains)]
         if not self.chains:     # functions of the packages' own and nothing that loops
             self.peak, self.mean, self.watch, self.files = 0, 0.0, 0, {}
@@ -970,24 +988,48 @@ class _Plan:
 
     def _stagger(self):
         """Start the chains a few ticks apart, so that their busy ticks do not fall together: the
-        heaviest chain first, each at the offset that keeps the busiest tick lowest. Returns the
-        number of commands in the busiest tick."""
+        heaviest chain first, each at the offset that keeps the busiest tick lowest. A chain that
+        keeps in step with another (turn(in_step=)) goes with that one, at the offset that lets
+        its tick 0 fall on a tick 0 of the other's; the two are weighed and placed as one. Returns
+        the number of commands in the busiest tick."""
         load = [0] * HORIZON
-        for chain in sorted(self.chains, key=lambda c: (-c.count() / float(c.cycle), c.cycle)):
-            first = chain.files[0][0]
-            marks = [(tick - first, chain.load(tick, lines)) for tick, lines in chain.files]
+        led = {}
+        for chain in self.chains:
+            if chain.follows is not None:
+                led.setdefault(chain.follows, []).append(chain)
+
+        def team(chain, offset):
+            """[(chain, its offset)] of a chain started at `offset` and of those in step with it. A
+            chain's tick t comes offset + t - (its first tick) ticks after the start."""
+            out = [(chain, offset)]
+            for other in led.get(chain.cycle, ()):
+                out += team(other, (offset - chain.files[0][0] + other.files[0][0]) % chain.cycle)
+            return out
+
+        def due(chain, offset):
+            """{tick after the start: commands} of the chain's team, within the horizon."""
+            out = {}
+            for member, off in team(chain, offset):
+                first = member.files[0][0]
+                for tick, lines in member.files:
+                    for t in range(off + tick - first, HORIZON, member.cycle):
+                        out[t] = out.get(t, 0) + member.load(tick, lines)
+            return out
+
+        def weight(chain):
+            return sum(member.count() / float(member.cycle) for member, _off in team(chain, 0))
+
+        for chain in sorted((c for c in self.chains if c.follows is None), key=lambda c: (-weight(c), c.cycle)):
             best = None
             for off in range(min(chain.cycle, STAGGER)):
-                peak = 0
-                for rel, n in marks:
-                    for t in range(off + rel, HORIZON, chain.cycle):
-                        peak = max(peak, load[t] + n)
+                marks = due(chain, off)
+                peak = max((load[t] + n for t, n in marks.items()), default=0)
                 if best is None or peak < best[0]:
-                    best = (peak, off)
-            chain.offset = best[1]
-            for rel, n in marks:
-                for t in range(chain.offset + rel, HORIZON, chain.cycle):
-                    load[t] += n
+                    best = (peak, off, marks)
+            for member, off in team(chain, best[1]):
+                member.offset = off
+            for t, n in best[2].items():
+                load[t] += n
         return max(load)
 
     def _files(self, holder):
