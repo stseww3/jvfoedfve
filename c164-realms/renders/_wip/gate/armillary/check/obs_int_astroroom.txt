@@ -1,0 +1,17 @@
+check obs_int_astroroom at 504bb3e
+[PASS] regen     453 blocks, 35 entities, 78 models, 930 resource-pack files, 34 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.5 s)
+[PASS] conflicts the scene writes 929 files, no file written twice, the folders and the prefix of interiors are kept (9 packages run alone)
+[PASS] strays    207 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      685 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    15 kinds of block placed, 5 barrier cells (x 11..13, y 18, z 28..32), all in the occupancy table
+[PASS] flatwall  no wall face runs flat over more than 5x5
+[PASS] entities  35 display entities, 54 models never placed
+[PASS] views     9 shots, most display entities in view: 35 (ext_door), limit 600; counted without what walls hide; the game draws up to 35 (int_door): a display entity without width and height is drawn outside the view too
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    6 parts and 0 points on 4 chains, 26 function files; 5 commands in the busiest tick (limit 120), 0.5 a tick on average (limit 40)
+                 chain of 32 ticks: 4 functions, 10 commands a cycle, starts 1 ticks after start
+                 chain of 160 ticks: 4 functions, 9 commands a cycle, starts 3 ticks after start
+                 chain of 280 ticks: 4 functions, 9 commands a cycle, starts 4 ticks after start
+                 chain of 400 ticks: 8 functions, 33 commands a cycle, starts 2 ticks after start
+result: PASS (0 failed, 0 with warnings)

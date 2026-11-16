@@ -1,0 +1,10 @@
+gate machines/armillary 979b817a: the merged tree 504bb3ee, the assembly as it was 656d70be
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 108 scenes in 182 s: 108 pass (59 with warnings)
+pictures: obs_mach_armillary: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_mach_armillary at 504bb3ee: 7 of 11 kept pictures are what the code draws, 4 not
+    aerial: 78 of 921600 pixels are not what the code draws (off by up to 83 of 255)
+    meridian: 66 of 921600 pixels are not what the code draws (off by up to 94 of 255)
+    south_edge: 35 of 921600 pixels are not what the code draws (off by up to 77 of 255)
+    door: 41 of 921600 pixels are not what the code draws (off by up to 95 of 255)
+result: PASS
