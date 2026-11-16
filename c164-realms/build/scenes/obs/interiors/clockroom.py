@@ -36,8 +36,9 @@ of the master clock's pendulum (a rod four times as long); the escape wheel turn
 every swing.
 
 Light. Nothing here adds a colour. The sources are offered to the light line (sky/_lightkit):
-one in front of each dial's back (rank 2), one at the caged lamp on the south wall and one at the
-hatch (rank 3). The movement takes no source of its own: its pieces are shown as the dials light
+one in front of each dial's back (rank 2), and one at each of three caged lamps (rank 3): on the
+south wall behind the movement, over the hatch, and in the lobby beside the ladder's foot, so
+that the way up has light all the way. The movement takes no source of its own: its pieces are shown as the dials light
 them (MOVEMENT_LIGHT). No slit window may be brighter outside than without the room. The tops of
 the slits' glass lie in the floor's row, under thin plates that light passes; over the two dark
 slits (north and south) a cabinet stands on the plate instead, a whole block: the switchboard of
@@ -115,8 +116,13 @@ BALL_ROPE = (18.25, 24.75, 13.0)                    # where the time ball's rope
 # In front of each dial's back, as behind a lit window. Four rows over the plates on the tops of
 # the lit slits: 6 arrives there, 5 in the glass under them, which is what the glass has already.
 DIAL_GLOW = (10, 2)
-CAGE_LAMP = (7, 3)              # at the caged lamp
-HATCH_LAMP = (6, 3)             # where one comes up: a walkway
+CAGE_LAMP = (7, 3)              # at the caged lamp behind the movement
+# The way up: a caged lamp over the hatch and one beside the ladder's foot, both at the top of the
+# third rank. The ladder climbs three rows shut in between the backs of two slit fields: 8 at each
+# end leaves 5 in the middle one. The lower lamp hangs five steps from the lobby's cell before the
+# north slit's glass, which keeps its 3.
+HATCH_LAMP = (8, 3)
+LADDER_LAMP = (8, 3)
 WALK_LIGHT = 5                  # the least a place to stand has, at the feet or at the head
 # What the pieces are shown with, (sky, block): the movement as the four dials light it, whatever
 # the cell its anchor stands in; the pendulum a little less; the weights so that they are seen
@@ -125,6 +131,8 @@ MOVEMENT_LIGHT = (0, 12)
 PENDULUM_LIGHT = (0, 10)
 WEIGHT_LIGHT = (0, 7)
 LAMP_AT = (CX + 1.6, FLOOR_TOP + 1.4, WELL_Z[1] + 1.0)     # the caged lamp, on the south wall
+HATCH_LAMP_AT = (HATCH[0] + 0.5, FLOOR_TOP + 1.55, float(WELL_Z[0]))       # over the hatch, on the north wall
+LADDER_LAMP_AT = (HATCH[0] + 1.5, T.FOOT + 1.45, float(WELL_Z[0]))         # beside the ladder's foot, on the north wall
 
 # ---- materials ---------------------------------------------------------------------------------------------
 TILT = 40.0                     # the tilted frame of a face that glows (props/_kit, props/ironwork)
@@ -193,6 +201,15 @@ def walk():
     taken = {column for column, _, _ in CABINETS} | set(PIERS) | {(CX, CZ)}
     return [(x, z) for x in range(WELL_X[0], WELL_X[1] + 1) for z in range(WELL_Z[0], WELL_Z[1] + 1)
             if (x, z) not in taken]
+
+
+def way():
+    """The cells of the way up, from inside the door to the hatch: the head's row along the west
+    wall of the lobby, then the ladder's own cells up to the room's floor."""
+    x, z = HATCH
+    door = T.FACE["west"].cell(T.MID, 1)[1]
+    step = 1 if door > z else -1
+    return [(x, T.FOOT + 1, k) for k in range(door, z, -step)] + [(x, y, z) for y in range(T.FOOT + 1, FEET + 1)]
 
 
 # ---- models: wheels ----------------------------------------------------------------------------------------------
@@ -525,8 +542,10 @@ def _oilcan():
 @functools.lru_cache(maxsize=None)
 def _models():
     built = [_bed(), _trains(), _motor(), _winch(), _escape(), _pallets(), _pendulum(), _slot(1), _slot(-1),
-             _leads(), _dial(), _rope(), _sheave(), _weight(), _board(), _oilcan()]
-    return {m.name: m for m in built}
+             _leads(), _rope(), _sheave(), _weight(), _board(), _oilcan()]
+    # the round pieces settled (props/_kit: the flats that stand between two axes are lit alike in
+    # every copy of the game); the dial's back is drawn in a frame of its own and stays as it is
+    return {m.name: m for m in [K.settle(m) for m in built] + [_dial()]}
 
 
 def models():
@@ -654,10 +673,12 @@ def build_clockroom(c, origin=(0, 0, 0), roles=B):
                facing="south", origin=origin)
     n += K.put(c, own[PREFIX + "oilcan"], (AXIS[0] - 0.1, FLOOR_TOP + 1.0, WELL_Z[1] + 0.5), yaw=200.0, origin=origin)
 
-    # ---- the light: the caged lamp on the south wall, the hatch
+    # ---- the light: the caged lamps behind the movement, over the hatch and beside the ladder's foot
     n += lamps.place(c, "cage", LAMP_AT, facing="north", origin=origin, light=False)
     offer((LAMP_AT[0], LAMP_AT[1], LAMP_AT[2] - 0.5), CAGE_LAMP, "caged lamp")
-    offer((HATCH[0], FEET + 1, HATCH[1]), HATCH_LAMP, "hatch")
+    for where, ask, why in ((HATCH_LAMP_AT, HATCH_LAMP, "hatch lamp"), (LADDER_LAMP_AT, LADDER_LAMP, "ladder lamp")):
+        n += lamps.place(c, "cage", where, facing="south", origin=origin, light=False)
+        offer((where[0], where[1], where[2] + 0.5), ask, why)
     return {"entities": n, "lights": lights}
 
 
