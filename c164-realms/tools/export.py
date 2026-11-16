@@ -370,6 +370,16 @@ def scene_spec(args):
     ex, ey, ez = spot["pos"]
     dx, dy, dz = (b - a for a, b in zip(spot["pos"], spot["look_at"]))
     look = bool(args.look == "on" and getattr(scene, "BIOME", None))
+    if look:
+        from artkit import mood as MOOD
+        try:
+            module = importlib.import_module(f"scenes.{args.scene}.mood")
+        except ModuleNotFoundError:
+            module = None
+        if getattr(MOOD, "carried", None) is not None and MOOD.carried(module) is not None:
+            fail("--look on: this scene's look is carried by the resource pack (artkit.mood.Carried), and the "
+                 "drivers write no biome and no timeline for it any more. The save with the biome is gone; "
+                 "the look is in the save made without --look (its resource pack's shaders)")
     on_cloud = args.on_cloud or ("ignore" if args.trial else "back")
     when = args.time
     if when is None and (look or not getattr(scene, "BIOME", None)):
@@ -1324,8 +1334,18 @@ def page(args):
         if with_look.get("ok"):
             look = {"file": with_look["zip"]["file"], "bytes": with_look["zip"]["bytes"], "sha256": with_look["zip"]["sha256"],
                     "registry_files": len(with_look["registry_files"]), "time": with_look["spec"]["time"]}
+    plain = None
+    if os.path.exists(os.path.join(folder, name + "-plain.json")):
+        with open(os.path.join(folder, name + "-plain.json"), encoding="utf-8") as fh:
+            without = json.load(fh)
+        if without.get("ok"):
+            plain = {"file": without["zip"]["file"], "bytes": without["zip"]["bytes"], "sha256": without["zip"]["sha256"],
+                     "shaders": len(without["resource_pack"].get("shaders") or []), "verified": None}
+            if os.path.exists(os.path.join(folder, name + "-plain.verify.json")):
+                with open(os.path.join(folder, name + "-plain.verify.json"), encoding="utf-8") as fh:
+                    plain["verified"] = json.load(fh).get("ok")
     row = {
-        "n": f"A{n}", "assembly": made.get("assembly"), "at": at, "time": made["spec"]["time"], "look": look,
+        "n": f"A{n}", "assembly": made.get("assembly"), "at": at, "time": made["spec"]["time"], "look": look, "plain": plain,
         "zip_bytes": made["zip"]["bytes"], "sha256": made["zip"]["sha256"],
         "pack_bytes": made["resource_pack"].get("bytes"), "pack_files": made["resource_pack"]["files"],
         "standins": len(made["resource_pack"]["standins"]),
@@ -1372,6 +1392,10 @@ def page(args):
         f"sha256 `{row['sha256']}`）。不带注册表文件，钟锁在 {row['time']} 刻；"
         + (f"我们的天由资源包里的 {row['shaders']} 个着色器文件带着（sky/safe-look）。" if row.get("shaders")
            else "**资源包里没有着色器，天是原版的夜空。**"),
+        *([f"**资源包在你的机器上加载失败（楼成了原版的方块）就换这个：`A{n}/{plain['file']}`**（{mb(plain['bytes'])}，"
+           f"sha256 `{plain['sha256']}`）：同一个总装头，资源包里不带着色器，天是原版的夜空，别的都一样。"
+           + ("冷启动验证全过。" if plain.get("verified") else "**冷启动验证没过。**" if plain.get("verified") is False else "没验。")]
+          if plain and row.get("shaders") else []),
         *([f"同一个总装头、带着我们的天的：`A{n}/{look['file']}`（{mb(look['bytes'])}，sha256 `{look['sha256']}`，钟锁在 {look['time']} 刻）。"
            f"**它带 {look['registry_files']} 个注册表文件（群系、时间线），只给单人打开看样子，不传 Realms。**"] if look else []),
         "总装每半小时跟着 s1 的看板重导一次，编号往上加；这里只留最新的一个，旧的在分支历史里，表的最后一列是它所在的提交。",
