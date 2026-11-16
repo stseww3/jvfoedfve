@@ -1,0 +1,17 @@
+gate main/dome 301082c1: the merged tree 301082c1, the assembly as it was 648a0ed1
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 89 scenes in 123 s: 87 pass (87 with warnings), 2 FAIL: obs_int_domeroom, obs_mach_refractor
+    FAIL  obs_int_domeroom: 1 failed, 1 with warnings, skipped: sight (3 s)
+          [FAIL] entities: 62 display entities, 31 models never placed
+              2 display entities show 'c164:prop_lamp_cage_a', which the pack does not have
+          [WARN] regen: 6250 blocks, 62 entities, 59 models, 855 resource-pack files, 10 data-pack files, look: 1 biomes, 1 timelines (1.3 s)
+              registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+    FAIL  obs_mach_refractor: 1 failed, 1 with warnings, skipped: sight (4 s)
+          [FAIL] entities: 14 display entities
+              4 display entities show 'c164:prop_lamp_cage_a', which the pack does not have
+          [WARN] regen: 9540 blocks, 14 entities, 9 models, 705 resource-pack files, 12 data-pack files, look: 1 biomes, 1 timelines (0.9 s)
+              registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+pictures: [PASS] selfshots obs_main_dome at 301082c1: 11 of 11 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_main_dome_a at 301082c1: 11 of 11 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_main_dome_slit at 301082c1: 10 of 10 kept pictures are what the code draws
+result: FAIL
