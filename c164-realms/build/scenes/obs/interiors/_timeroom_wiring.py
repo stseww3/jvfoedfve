@@ -46,7 +46,10 @@ COIL = P.mat("old_copper", base=1)
 WOOD_D = P.mat("dark_wood", base=1)
 SCREW = K.flat("brass", 3)
 LABEL = K.flat("cream", 1)
-FLASH = Sprite("int_timeroom_flash", ["wwrw", "wrww", "rrrr", "wwrw", "wrww"],
+# the flash of the voltage plates, four pixels by five: two strokes that lean the same way and the
+# jog between them, a pixel wide throughout. No pixel of it has a neighbour on more than two sides:
+# drawn with a bar across its middle, at this size it was a red cross on a white plate
+FLASH = Sprite("int_timeroom_flash", ["wwrw", "wrww", "wrrw", "wwrw", "wrww"],
                {"w": P.RAMPS["cream"][1], "r": P.RAMPS["signal"][2]})
 
 # ---- the measures (px = 1/16 block unless a name says otherwise) ----------------------------------------
