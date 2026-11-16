@@ -63,7 +63,7 @@ from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
 from ..materials import _kit as K
-from . import _swell
+from . import _line, _swell
 
 # The director's switch for what is laid over the whole site (COMMON 0.5; since 11-16 08:24 the
 # author turns it on in the commit he delivers): off, build() places nothing and takes nothing up,
@@ -565,9 +565,10 @@ def _shade(h):
     return 0.75 + turn - 0.22 * crease - 0.18 * walled + 0.10 * crest + 0.12 * crown
 
 
-def build(canvas, origin=(0, 0, 0), *, seed=SEED, dress=None):
+def build(canvas, origin=(0, 0, 0), *, seed=SEED, dress=None, rock=None):
     """Lay the sea of clouds into the canvas: blocks, and the heads of its swell (_swell.py), which
-    are display entities. Returns how many of those."""
+    are display entities. Returns how many of those. ``rock(x, z)`` is for a scene whose mountain is
+    not site/terrain's: the y of its top block in a column, or None (the piers' feet, _line.py)."""
     if not (DRESS if dress is None else dress):
         return 0
     names = list(B.CLOUD)                           # dark..light, as the tone index runs
@@ -583,6 +584,11 @@ def build(canvas, origin=(0, 0, 0), *, seed=SEED, dress=None):
     # package) is taken up.
     for key in mine:
         del canvas.b[key]
+    # the railway (site/_rail): what of it stands lower than the cloud is built here, before the
+    # sea is laid against it
+    line = _line.built(canvas, origin, set(names))
+    if line:
+        _line.feet(canvas, origin, rock)
 
     x0, z0, nx, nz = _grid()
     y0, y1 = FLOOR_Y - 1, PEAK + 2
@@ -606,6 +612,13 @@ def build(canvas, origin=(0, 0, 0), *, seed=SEED, dress=None):
     thin = occ[np.arange(nx)[:, None], j, np.arange(nz)[None, :]] & ~whole[np.arange(nx)[:, None], j, np.arange(nz)[None, :]]
     sunk = thin & (high >= SUNK[0]) & (high <= SUNK[1]) & ~dry
     level, height, sea = _field(seed, land, [(i, k, int(high[i, k])) for i, k in zip(*np.nonzero(sunk))])
+    if line:                                        # the bank over the line's end, the track in a cleft through it
+        X, Z = np.meshgrid(np.arange(nx) + x0, np.arange(nz) + z0, indexing="ij")
+        heap = np.minimum(_line.bank(X, Z, LOW + 0.4), float(PEAK))
+        up = heap > height
+        height = np.where(up, heap, height).astype(height.dtype)
+        level = np.where(up, np.rint(np.where(up, heap, 0.0)), level).astype(level.dtype)
+        sea = sea | up
     here = sea & ~dry
     # A ledge of somebody's whole blocks that ends low and bare beside the sea -- the foot of the
     # rock, the head of a pier -- is lapped over: one block of cloud on it at least. Bare, with
@@ -626,6 +639,8 @@ def build(canvas, origin=(0, 0, 0), *, seed=SEED, dress=None):
     under = ys < roof[:, None, :]
     solid = here[:, None, :] & (ys >= TROUGH) & (ys <= level[:, None, :]) & ~occ & ~kept
     solid &= wet[:, None, :] | ~under
+    if line:                                        # the train's room, and the rift over the cleft
+        solid &= ~_line.room((x0, z0), (nx, ny, nz), y0)
 
     # the sunk floor: where the sea was opened beside a wall or a fence and nothing stands in the
     # column, the eye would drop through to the void; a dark course of cloud lies there, low in the gap

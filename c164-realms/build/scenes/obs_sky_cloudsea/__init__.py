@@ -26,7 +26,8 @@ from artkit.canvas import Canvas, Mix
 from scenes.obs import materials
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
-from scenes.obs.sky import cloudsea, comet
+from scenes.obs.site import _rail as R
+from scenes.obs.sky import _line, cloudsea, comet
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 240          # the look and the sea reach far past the hilltop
@@ -65,7 +66,8 @@ def _rock(x, y, z):
 
 def _mountain(c):
     """Every flat falls away at SLOPE with some crag; the highest wins. A watertight crust: a column
-    is filled from its surface down to its lowest neighbour, the rim down to ROCK_FLOOR."""
+    is filled from its surface down to its lowest neighbour, the rim down to ROCK_FLOOR. Returns the
+    y of the rock's top block in every column that has rock."""
     x0, x1, z0, z1 = -84, 138, -100, 104
     X, Z = np.meshgrid(np.arange(x0, x1 + 1), np.arange(z0, z1 + 1), indexing="ij")
     best = np.full(X.shape, -1e9)
@@ -81,10 +83,13 @@ def _mountain(c):
     p = np.pad(h, 1, constant_values=ROCK_FLOOR - 1)
     low = np.minimum(np.minimum(p[:-2, 1:-1], p[2:, 1:-1]), np.minimum(p[1:-1, :-2], p[1:-1, 2:]))
     floor = np.maximum(np.minimum(h, low + 1), ROCK_FLOOR)
+    tops = {}
     for i, j in zip(*np.nonzero(h >= ROCK_FLOOR)):
         x, z = int(X[i, j]), int(Z[i, j])
+        tops[(x, z)] = int(h[i, j])
         for y in range(int(h[i, j]), int(floor[i, j]) - 1, -1):
             c.set(x, y, z, _rock(x, y, z))
+    return tops
 
 
 def _sunset_cells():
@@ -143,44 +148,70 @@ def _massing(c):
 
 
 def _trestle(c):
-    """A stand-in for the cable trestle, on site/cablecar's figures: two rails of riveted slabs leave
-    the station deck in V1's row, run level for four cells and then fall one in two, a third of a
-    cell north for every cell east, and end where their upper face is one block over the sea's face
-    (x 141). Every six cells, as far as x 128, a tower: a girder across, two legs down to the rock or
-    into the surf, bars as far down as y -23 and thin pipes below. The last towers stand in the sea
-    and the track ends just over it: the card has to show how the cloud takes them."""
-    x1, axis = S.CABLE_STATION[2], int(S.V1["pos"][2] // 1)          # 91, -33
-    x = x1
-    while True:
-        x += 1
-        top = S.STATION_GROUND - 0.5 * max(0, x - x1 - 4)            # the upper face of the rails
-        z = int(round(axis - (x - x1 - 1) / 3.0))
-        y, half = (int(top) - 1, "top") if top == int(top) else (int(top // 1), "bottom")
-        for dz in (-1, 1):
-            c.set(x, y, z + dz, IRON.slab + f"[type={half}]")
-        if top <= TRACK_END:
-            break                                                     # the track's last column
-        cap = y if half == "top" else y - 1
-        if (x - x1 - 7) % 6 or cap - 1 <= cloudsea.LOW:
+    """A stand-in for the iron incline, on site/_rail's figures: two rails of riveted slabs leave the
+    station deck in V1's row, run level for four cells and then fall one in two, due east, as far as
+    the incline's foot (x 111). Every six cells a tower: a girder across, two legs down to the rock or
+    into the surf, bars as far down as y -23 and thin pipes below."""
+    x1 = S.CABLE_STATION[2]                                          # 91
+    for (x, z), cell in sorted(R.deck(1.5).items()):
+        if x <= x1 or x >= int(R.FOOT) or abs(cell.right) < 0.5:
             continue
-        for dz in (-1, 0, 1):                                         # a tower: x 98, 104 .. 128
-            c.set(x, cap, z + dz, IRON.block)
+        y, half = R.slab(cell.top)
+        c.set(x, y, z, IRON.slab + f"[type={half}]")
+    for x in range(x1 + 7, int(R.FOOT), 6):                          # a tower: x 98, 104, 110
+        y, half = R.slab(R.tread(x=x))
+        cap = y if half == "top" else y - 1
+        for dz in (-1, 0, 1):
+            z = R.ROW + dz
+            c.set(x, cap, z, IRON.block)
             for yy in range(cap - 1, SUNK - 1, -1):
-                if c.has(x, yy, z + dz):
+                if c.has(x, yy, z):
                     break                                             # down to the rock
                 if yy >= BARS_FROM:
-                    c.set(x, yy, z + dz, B.IRON_BARS)
+                    c.set(x, yy, z, B.IRON_BARS)
                 elif dz:
-                    c.set(x, yy, z + dz, B.IRON_PIPE + "[axis=y]")
+                    c.set(x, yy, z, B.IRON_PIPE + "[axis=y]")
+
+
+def _viaduct(c):
+    """The stone viaduct on site/_rail's line, from the incline's foot to the line's end under the
+    sea: site/viaduct's own where that package is there. Otherwise a stand-in: a bed of stone under
+    the track's three rows with the rails on it, a course of stone beside it in the row outside, and
+    at every pier (the deck's width and the row outside, a block either way of its middle) a shaft
+    as far down as y -24. Lower, a pier is the cloud's (sky/_line), and so is the sea over the
+    line's end."""
+    try:
+        from scenes.obs.site import viaduct
+    except ImportError:
+        viaduct = None
+    if viaduct is not None:
+        viaduct.build(c, (0, 0, 0))
+        return
+    piers = R.piers()
+    for (x, z), cell in R.deck(2.5).items():
+        if cell.s < R.S_FOOT:
+            continue
+        y, half = R.slab(cell.top)
+        if abs(cell.right) < 0.5:
+            c.set(x, y - 1, z, STONE)
+        elif abs(cell.right) < 1.5:
+            c.set(x, y, z, IRON.slab + f"[type={half}]")
+            c.set(x, y - 1, z, STONE)
+        else:
+            c.set(x, int(math.ceil(cell.top)) - 1, z, STONE)
+        if any(abs(cell.s - p.s) <= R.PIER / 2.0 for p in piers):
+            for yy in range(int(math.ceil(cell.top)) - 2, R.CLOUD - 1, -1):
+                c.set(x, yy, z, STONE)
 
 
 def build():
     c = Canvas()
-    _mountain(c)
+    tops = _mountain(c)
     _paving(c)
     _massing(c)
     _trestle(c)
-    cloudsea.build(c, (0, 0, 0), dress=True)
+    _viaduct(c)
+    cloudsea.build(c, (0, 0, 0), dress=True, rock=lambda x, z: tops.get((x, z)))
     return c
 
 
@@ -221,6 +252,13 @@ VIEWS = {
     # from the station's south-east corner along the track to where it runs into the cloud
     "track_end": ((S.CABLE_STATION[2] - 0.5, S.STATION_GROUND + S.EYE, S.CABLE_STATION[3] - 0.5),
                   (141, -27, -49), 14000),
+    # the railway's end (site/_rail, sky/_line): the bank over it from the mountain's side; the
+    # cutting and the mouth from up the line; what a rider sees in the cleft where the train waits,
+    # and on the way out of it
+    "bank": ((118, -2, 44), (R.FAR + 0.5, -25, R.at(_line.MOUTH + 12).z), 14000),
+    "mouth": (R.at(_line.MOUTH - 26).off(up=3.0), R.at(_line.MOUTH + 6).off(up=2.0), 14000),
+    "cleft": (R.at(R.START - 2).off(up=2.3), R.at(_line.MOUTH - 12).off(up=4.0), 14000),
+    "cleft_out": (R.at(_line.MOUTH + 3).off(up=2.3), R.at(_line.MOUTH - 30).off(up=5.0), 14000),
 }
 
 # What preview.py draws when it is not told which: the whole site from above, the sunset rail
