@@ -1314,8 +1314,23 @@ def chunks_of(world):
         dirs.sort()
         for name in sorted(f for f in files if f.endswith(".mca")):
             for cx, cz, raw in census.read_chunks(os.path.join(base, name)):
-                out[(os.path.basename(base), name, cx, cz)] = steady(census.parse_nbt(raw))
+                out[(os.path.basename(base), name, cx, cz)] = (steady(census.parse_nbt(raw)), raw)
     return out
+
+
+def blocks_of(raw):
+    """{block name: how many} of a region chunk, and per section what it holds besides."""
+    import census
+    counts, parts = {}, {}
+    for section in census.parse_nbt(raw).get("sections", []):
+        names, n = census.section_counts(section)
+        for name, k in zip(names or (), n if n is not None else ()):
+            counts[str(name)] = counts.get(str(name), 0) + int(k)
+        y = int(section.get("Y", 0))
+        for key in section:
+            if key != "Y":
+                parts[(y, str(key))] = steady(section[key], str(key))
+    return counts, parts
 
 
 def compare(args):
@@ -1352,8 +1367,8 @@ def compare(args):
     first, second = worlds
     bad = False
     for kind in sorted({k[0] for k in list(first) + list(second)}):
-        mine = {k: v for k, v in first.items() if k[0] == kind}
-        theirs = {k: v for k, v in second.items() if k[0] == kind}
+        mine = {k: v[0] for k, v in first.items() if k[0] == kind}
+        theirs = {k: v[0] for k, v in second.items() if k[0] == kind}
         lone = sorted(set(mine) ^ set(theirs))
         changed = sorted(k for k in set(mine) & set(theirs) if mine[k] != theirs[k])
         print(f"{kind}: {len(mine)} and {len(theirs)} chunks; {len(set(mine) & set(theirs)) - len(changed)} hold the same, "
@@ -1361,6 +1376,23 @@ def compare(args):
         bad = bad or bool(lone) or bool(changed)
         for k in lone[:10]:
             print(f"  in one save only: {k[1]} chunk {k[2]} {k[3]}")
+        if kind == "region" and changed:
+            # what of a section differs, and whether the blocks themselves do: counted by name
+            where, moved, other = {}, {}, 0
+            for k in changed:
+                (ca, pa), (cb, pb) = blocks_of(first[k][1]), blocks_of(second[k][1])
+                for part in sorted({p[1] for p in set(pa) | set(pb) if pa.get(p) != pb.get(p)}):
+                    where[part] = where.get(part, 0) + 1
+                if ca != cb:
+                    other += 1
+                    for name in set(ca) | set(cb):
+                        if ca.get(name, 0) != cb.get(name, 0):
+                            moved[name] = moved.get(name, 0) + cb.get(name, 0) - ca.get(name, 0)
+            print("  in the sections of the chunks that differ: "
+                  + (", ".join(f"{part} in {n} chunks" for part, n in sorted(where.items())) or "nothing (another key of the chunk)"))
+            print(f"  chunks whose blocks, counted by name, are not the same: {other}")
+            for name, n in sorted(moved.items(), key=lambda kv: (-abs(kv[1]), kv[0]))[:20]:
+                print(f"      {name}: {n:+d} in the second")
         told = 0
         for k in changed:
             x, y = dict(mine[k]), dict(theirs[k])
