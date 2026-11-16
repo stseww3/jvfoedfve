@@ -281,14 +281,42 @@ def plots(scenes, given):
 
 # ---- the look and the pack ---------------------------------------------------------------------------
 def look_of(scene):
-    """(biomes, timelines) of a scene's mood module, or None when it has none."""
+    """(biomes, timelines) of a scene's mood module, or None when it has none. A look that the
+    resource pack carries (artkit.mood.Carried, in the code that has it) has no registry file: it
+    is ({}, {}) here, so that step 1 only takes an earlier trip's biomes and timelines out of the
+    data pack, as build/place.py does for such a look; build/makepack.py puts its files into the
+    scene's pack and build/place.py holds the clock at its hour (held_clock)."""
     try:
         look = importlib.import_module(f"scenes.{scene}.mood")
     except ModuleNotFoundError as e:
         if e.name != f"scenes.{scene}.mood":
             raise
         return None
+    from artkit import mood as MOOD
+    if getattr(MOOD, "carried", lambda module: None)(look) is not None:
+        return {}, {}
     return look.BIOMES, getattr(look, "TIMELINES", None) or {}
+
+
+def held_clock(scenes):
+    """The tick the world's clock is held at under a look that the resource pack carries, or None
+    when no scene of the trip stands under one. build/place.py stops the clock there and notes it
+    as "clock" in <scene>.placed.json; the pack's sky is painted for that one hour and is the same
+    over every plot, so the whole trip is shot in it, whatever "time" a shot names."""
+    found = {}
+    for scene in scenes:
+        try:
+            with open(os.path.join(world(), "datapacks", NAMESPACE, f"{scene}.placed.json"), encoding="utf-8") as fh:
+                tick = json.load(fh).get("clock")
+        except (OSError, ValueError, AttributeError):
+            continue
+        if tick is not None:
+            found.setdefault(int(tick), []).append(scene)
+    if len(found) > 1:
+        groups = "; ".join(f"{tick}: {', '.join(names)}" for tick, names in sorted(found.items()))
+        raise Stop(f"these scenes hold the clock at different hours, and a trip has one sky: {groups}. "
+                   f"Run them in separate trips.")
+    return next(iter(found), None)
 
 
 def one_look(scenes):
@@ -705,6 +733,10 @@ def main():
                     raise Stop(f"{scene} changed the look while it was placed; the trip's look was not the scene's")
                 if ", 0 failed" not in text:
                     failed.append(f"{scene}: not placed whole")
+        clock = held_clock([scene for scene, _, _, _ in plan if scene not in models_only])
+        if clock is not None:
+            say(f"the look is carried by the resource pack and the clock is held at {clock}: every picture of this "
+                f"trip is taken at that tick" + (f", not at look {args.look}'s {when}" if when is not None else ""))
 
         # ---- 3. one resource pack ----
         merged, n = merge_pack(args.scenes, os.path.join(work, "packs"))
@@ -749,7 +781,7 @@ def main():
                               "--pw-file", os.path.join(SERVER, ".rcon_pw"),
                               "--out", target, "--origin", *at, "--settle", args.settle,
                               "--first-settle", args.first_settle, "--still", args.still,
-                              *(["--time", when] if when is not None else []),
+                              *(["--clock", clock] if clock is not None else ["--time", when] if when is not None else []),
                               *(["--only", ",".join(s["name"] for s in shots)] if scene in only else []), check=False)
             if scene in args.gallery:
                 bays_file, bays = gallery(scene, at, work)
@@ -757,7 +789,7 @@ def main():
                 again, said_too = run(os.path.join(TOOLS, "shoot.py"), bays_file,
                                "--pw-file", os.path.join(SERVER, ".rcon_pw"), "--out", target,
                                "--settle", args.settle, "--first-settle", args.first_settle,
-                               "--still", args.still, check=False)
+                               "--still", args.still, *(["--clock", clock] if clock is not None else []), check=False)
                 code, shots = code or again, shots + bays
             got = len([s for s in shots if os.path.exists(os.path.join(target, s["name"] + ".png"))])
             taken[scene] = (got, len(shots))
@@ -766,7 +798,8 @@ def main():
             # ---- 5. ready to be sent ----
             if got:
                 to_send(scene, args.tag, commit, at, shots, target, send, scene in only, how_made(said, said_too),
-                        when, windows, args.dress, args.look if windows != args.look else None)
+                        clock if clock is not None else when, windows, args.dress,
+                        args.look if windows != args.look else None)
             if OVER.is_set():
                 raise Stop(f"asked to end while {scene} was shot; what was taken of it is ready")
             # ---- 6. what the scene's author wants asked of the server while the scene stands ----

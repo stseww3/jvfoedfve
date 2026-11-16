@@ -278,11 +278,18 @@ def main():
                     help="after settling, take each picture again until two in a row are alike, this long at most")
     ap.add_argument("--only", help="comma separated shot names")
     ap.add_argument("--time", help="every shot is taken at this time, whatever the list says")
+    ap.add_argument("--clock", type=int, metavar="TICK",
+                    help="the same, under the name build/place.py gives it: a look that the resource pack carries "
+                         "has one hour, which place.py holds the clock at and notes in <scene>.placed.json")
     ap.add_argument("--keep-clock", action="store_true",
                     help="the world's own clock is left alone: no time is set and the clock is not stopped")
     ap.add_argument("--origin", type=float, nargs=3, default=[0.0, 0.0, 0.0], metavar=("X", "Y", "Z"),
                     help="added to every pos/look_at, for shot lists written in scene coordinates")
     args = ap.parse_args()
+    if args.clock is not None:
+        if args.time is not None and str(args.time) != str(args.clock):
+            raise SystemExit(f"--time {args.time} and --clock {args.clock}: one hour for every shot, not two")
+        args.time = args.clock
     if args.keep_clock and args.time is not None:
         raise SystemExit("--keep-clock leaves the world's clock alone and --time sets it: one or the other")
 
