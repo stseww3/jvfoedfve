@@ -133,3 +133,15 @@
 11-16 03:24	c164-cr2	merge sky/lights (lamps only: the roofs' ten lamps by dome and cable) 489c36e4	489c36e4	295f20d3
 11-16 03:24	c164-a1	merge materials/windows a88dbaac -- gate to run (the director's rule #81157 while the node pool is down)	a88dbaac	c15e9012
 11-16 03:25	c164-facade	merge main/smalldome b2b39b92 -- the dome room's two doors to the roofs stand open; the gate is still to run (the node pool is down), the scene's check passed on node6 and on the director's machine	b2b39b92	0cb464c3
+11-16 03:27	c164-s2	merge common 1405b0d8: the offline renderer leaves out entities that are no item display (text displays of the guide) instead of stopping; verified on node5 (24 of 24 pictures of obs_props_ironwork)	1405b0d8	c289d2ea
+11-16 03:37	c164-cr2	merge sky/lights (lamps only, the closing round: two lamps at 9, three taken away) 3aa56dc1	3aa56dc1	556dfe31
+11-16 03:40	c164-cr3	merge machines/domegear f014e4cc -- gate to run (the director's rule #81180 while the node pool is down)	f014e4cc	d78ee4c1
+11-16 03:42	c164-a6	merge props/plaques 006f0d1a -- gate pending (关口待跑): check of obs_props_plaques and obs_props_plaques_site passed on the director's machine at 006f0d1a; the package places nothing in the master scene until the switch GUIDE and the two tables come; the pictures of its two test scenes are not drawn yet (text displays are left to the game)	006f0d1a	404dcc3e
+11-16 03:47	c164-a4	merge site/outbuildings 34cfec9a -- the meridian hut in the power house's stone (A0 #82484, V5); gate pending (关口待跑): check of obs_site_outbuildings PASS on the director's machine at 34cfec9, read line by line; the test scene's pictures are of the old stone	34cfec9a	f0925b0c
+11-16 03:47	c164-cr2	merge motion/loop (the kit's run() and function() for the guide; gate to run) 5aae7398	5aae7398	c86c7d69
+11-16 03:47	c164-cr2	merge motion/guide-title (the guide's part A: the arrival title and the credit plate; gate to run) b254fe1	b254fe15	0e6b941a
+11-16 03:48	c164-s2	merge interiors/timeroom 39d46055 for cr4 (lamps only: the door lamp 12, two bracket lamps of the way on the east pier and east of the door) -- gate to run	39d46055	4368ebc9
+11-16 03:48	c164-s2	merge interiors/starhall 3b09f9d4 for cr4 (lamps only: the stair foot's two lamps 11, the way to the west door 10 and 9) -- gate to run	3b09f9d4	e10d420c
+11-16 03:50	c164-s2	merge common/export 026024ff (third version: the light is waited for, compare --deep, numbered folders stay, the guide's hooks and --no-guide) -- gate to run	026024ff	306a855e
+11-16 03:51	c164-cr2	merge motion/guide part C (six star charts as an easter egg: smoke's tests and finale, cloud's charts and glints; gate to run) 1272fcbf	1272fcbf	e57f5547
+11-16 03:54	c164-s2	merge common/walk-out 65f9cf36 (the outdoor walk of A7, 1a0f1af9: nothing stops a visitor; twelve files of the review, no code)	65f9cf36	c91b97b6

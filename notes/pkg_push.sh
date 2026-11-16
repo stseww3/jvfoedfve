@@ -5,7 +5,7 @@
 # head, merge --no-ff, provenance of the result, push; when the head has moved, again. Never forced.
 # Light: git only.
 set -u
-card="$1"; sha="$2"
+card="$1"; sha="$2"; more="${3:-}"       # more: words after the subject (" for cr4 -- gate to run")
 asm=/tmp/c164_s2/asm
 branch=cursor/c164-assembly-fable-a9f5
 filt() { sed -E 's#https?://[^ ]+#<remote>#g'; }
@@ -17,7 +17,7 @@ for try in 1 2 3 4; do
   if ! bash c164-realms/tools/provenance.sh "$sha" 2>&1 | filt | tail -n 1 | grep -q clean; then
     echo "pkg_push: the provenance of $sha is not clean; nothing merged"; exit 1
   fi
-  if ! git merge -q --no-ff --no-edit -m "c164-s2: merge $card $(git rev-parse --short=8 "$sha")" "$sha" 2>&1 | filt; then
+  if ! git merge -q --no-ff --no-edit -m "c164-s2: merge $card $(git rev-parse --short=8 "$sha")$more" "$sha" 2>&1 | filt; then
     echo "pkg_push: the merge does not go in cleanly"; git merge --abort 2>/dev/null; exit 1
   fi
   if ! bash c164-realms/tools/provenance.sh HEAD 2>&1 | filt | tail -n 1 | grep -q clean; then

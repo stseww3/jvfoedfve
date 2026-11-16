@@ -44,6 +44,8 @@ NAMES = {"c164-s2": "s2", "c164-a1": "a1", "c164-facade": "facade", "c164-cr2": 
          "c164-cr3": "cr3", "c164-a6": "a6", "c164-stair": "cr4", "c164-cr4": "cr4"}
 CARD_OF = {             # a name an approver wrote in a merge's subject -> the card it is a part of
     ("props", "signs"): ("props", "electrics-signs"),
+    ("motion", "guide-title"): ("motion", "guide"),      # the guide's part A (mast)
+    ("props", "plaques"): ("motion", "guide"),           # the guide's part B, the common half (a6)
 }
 
 

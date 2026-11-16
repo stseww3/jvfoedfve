@@ -339,3 +339,23 @@
 - Director 11:27: V5 the mast hut's gable 0.30-0.32 against the tower's 0.22: a4 changes the stone of the outbuildings (darker by one or two steps), for the 12:00 package, not A7.
 - aide 11:26: three packages still to come before 11:35: sdome's roof doors (in: 0cb464c3), hall 3b09f9d (west door, 17 dark cells; to cr4), m2 the time room's 27 cells (to cr4).
 - NEXT: 11:35 take the head; DM outb + s1 (wake), a4, facade; checkall on it (director's machine via a0job.sh, or node5); red -> revert that one merge, outb exports again.
+- 11:30 node5 op_78b83c8598: c289d2ea 92 pass, board ok. 11:31 STATUS pushed 1a0f1af9.
+- 11:33 a6 (g2): props/plaques public half on cursor/c164-a6-plaques-f3-4ad1 @ 5908789d (plaques.py; rec/ashlar add props/_plaques_west.py / _plaques_east.py; mast calls plaques.sign).
+- 11:35:08 head taken: 1a0f1af9 (= c289d2ea + STATUS.md) -> A7. DMs: outb, s1 (wake), a4, facade, director. No revert, nothing unverified.
+- 11:37 cr2: sky/lights closing round 3aa56dc1 -> 556dfe31 (after the 11:35 head; gate on node7 against c289d2ea PASS). Not in A7.
+- 11:38 head-check branch cursor/c164-s2-headcheck-89df (worktree /tmp/c164_s2/hc; hc_sync.sh fast-forwards it to the assembly head and pushes) for the director's machine: `cd /tmp/c164_s2/hc/c164-realms && bash tools/a0job.sh --wait 0 --no-push --always --tail 45 --limit 600 "<checkall line>"`, then `--receipt <id>`.
+- 11:39 director (g2 #83200): the lost nodes will mostly not return; only four closing jobs (dark cells m2/hall; V4, V5, V6, V10; the guide; each version's export/pictures/walk/scores/merges); everything else stops. 12:00: take the head -> A8 = the candidate for the admin's upload; what misses it goes to 12:30.
+
+## 11:39–11:56
+- 11:39 a4: indoor walk of A7: 0 blockers (217 stations; cursor/c164-a4-walkcand-f3-6824 @ 12d3016a, plan/reviews/walk/1a0f1af/in-findings.md); common/walk gate later.
+- 11:40 cr3: machines/domegear f014e4cc -> d78ee4c1 (gate to run). 11:43 a6: props/plaques 006f0d1a -> 404dcc3e (gate to run; two new scenes).
+- 11:43 aide: the eight machines: node4 outb; node12/5/6 s1; node17 facade; node9 sound; node7 lights; node8 tower; the director's machine (a0job.sh --no-push): my checkall + first scene checks.
+- 11:46 the director's machine: 404dcc3e 94 pass.
+- 11:45 director #83676: cr4, hall, comet sessions dropped. I merge for cr4 two lamps-only packages: m2 39d46055 -> 4368ebc9, hall 3b09f9d4 -> e10d420c (done 11:48; DMs director, m2, cr3). interiors approver now cr3; V4 doorway to vault.
+- 11:47 outb delivery common/export third version 026024ff: read line by line, merged 306a855e (11:50). a4: site/outbuildings 34cfec9a -> f0925b0c. cr2: motion/loop 5aae7398 -> c86c7d69; motion/guide-title b254fe1 -> 0e6b941a (the agreed two lines in scenes/obs/__init__.py verified); guide part C 1272fcbf -> e57f5547.
+- 11:49 s1: A7's real pictures (13) on cursor/c164-s1-render-f3-fd9c @ 954d8eaf, renders/real-save/c164-A7/.
+- 11:52 the director's machine: e10d420c 95 pass. 11:55: 2b7eb71e 96 pass, export.py compiles.
+- 11:54 facade delivery common/walk-out 65f9cf36 (A7 outdoors: 0 blockers; 12 review files) -> c91b97b6.
+- 11:56 STATUS pushed 0783ed11 (68 cards: merged 42, pictures 1, provisional 1, reviewed 24; 166 merges). status_gen CARD_OF: motion/guide-title and props/plaques -> motion/guide.
+- pkg_push.sh takes a third argument (words after the subject).
+- NEXT: 12:00 take the head -> A8 (the candidate for the admin's upload): DM outb + s1 (wake), a4, facade, director; checkall of that head on the director's machine if anything in it is unverified.
