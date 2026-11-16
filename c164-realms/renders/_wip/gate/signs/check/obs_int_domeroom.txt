@@ -1,0 +1,14 @@
+check obs_int_domeroom at 5671299
+[WARN] regen     6267 blocks, 84 entities, 75 models, 903 resource-pack files, 10 data-pack files, look: 1 biomes, 1 timelines (1.6 s)
+                 registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+[PASS] conflicts the scene writes 902 files, no file written twice, the folders and the prefix of interiors are kept (9 packages run alone)
+[PASS] strays    204 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      679 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    28 kinds of block placed, 18 barrier cells (x 3..5, y 18..19, z -1..1), all in the occupancy table
+[PASS] flatwall  no wall face runs flat over more than 5x5
+[PASS] entities  84 display entities, 32 models never placed
+[PASS] views     18 shots, most display entities in view: 61 (ribs_up), limit 600; counted without what walls hide; the game draws up to 84 (v8): a display entity without width and height is drawn outside the view too
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    nothing moves
+result: PASS (0 failed, 1 with warnings)
