@@ -57,7 +57,7 @@ def _ruled():
 
 V1, V2 = _ruled()
 # Where A0's rulings are, for the views the skeleton may not hold yet.
-RULED = {"V1": "A0 #304", "V2": "A0 #304", "V7": "A0 #365"}
+RULED = {"V1": "A0 #304", "V2": "A0 #304", "V7": "A0 #365", "V12": "A0 #77168"}
 
 # name, what the plan wants to see, the skeleton's name for it, the render station's proposal
 VIEWS = [
@@ -109,12 +109,14 @@ VIEWS = [
         pos=(S.ROOM_X[1] - 0.5, MAIN_EYE, 2 * S.AXIS_Z - (S.STAR_HALL_Z[1] + 2.5)),
         look_at=(S.ROOM_X[0] + 2.0, S.STAND + 1.0, 2 * S.AXIS_Z - (S.pilaster_z(15) - 5.0)))),
     ("v11_lookout", "back from the south lookout, three-quarter, the afterglow on the left", "V11", S.V11),
-    # PROPOSED. From the south-east, high. Every mass of the site, the radio mast's top and all four
-    # corners of the lower platform are at least a tenth of the picture inside its edges, and nothing
-    # of the site is further off on the ground than the server sends display entities (153 blocks).
+    # A0's ruling of 11-16 (group #77168), until the skeleton holds V12: from the north-east, low,
+    # across the whole island -- the cable station, the power house and its smoke, the lamps of both
+    # platforms, the grand stair, the front, both domes, the clock tower, the mast, the cliff's edge.
+    # Everything seen is within 146 blocks of it and it is not east of x 128 (the edge of what a
+    # server of view distance 10 sends). The station's own proposal was from the south-east, high,
+    # at (80, 90, 80): roofs, and most of the picture haze.
     ("v12_aerial", "the whole site from above", "V12", dict(
-        pos=(S.EAST_EDGE_X + 20.0, 90.0, S.Z_SOUTH + 46.0),
-        look_at=(S.MERIDIAN_X, S.GROUND, S.AXIS_Z - 5.5))),
+        pos=(126.0, 44.0, -50.0), look_at=(22.0, 4.0, 0.0))),
 ]
 
 
