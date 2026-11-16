@@ -37,8 +37,9 @@ What the room adds, from the floor up:
 and what stands in the room: the switchboard of the dome's drive on the east axis, the sidereal
 clock on the south axis and the record desk under it, three cabinets on the north axis and a chart
 table beside them, plate boxes by the south wall; round the pier the track of the observing ladder,
-and the ladder parked on it south-west of the pier (interiors/_domechair). The ladder rolls all the
-way round, so nothing else stands in the band it passes over.
+and the ladder parked on it north-west of the pier (interiors/_domechair), where it rolls a little
+way to and fro in the telescope's beat. The ladder rolls all the way round, so nothing else stands
+in the band it passes over.
 
 Light (plan 3.2): the sky in the slit is the cold base and the brightest thing. The room has one
 lamp, the telescope's red one by the eyepiece (director, g2 #33812); the desk has none. What else

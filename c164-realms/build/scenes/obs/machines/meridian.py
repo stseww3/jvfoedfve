@@ -62,6 +62,7 @@ from ..common import skeleton as S
 
 PREFIX = "mach_meridian_"
 BRIGHTNESS = (10, 7)            # (sky, block): the same as the great refractor's, for a room kept dark
+VIEW = M.NEAR                   # it stands in a room: the master scene draws it for 32 blocks (artkit.models.band)
 LAMP_LEVEL = 4                  # the lantern's light source, rank 3 (the refractor's lamp is 4 too)
 
 EAST, UP, SOUTH = (1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0)

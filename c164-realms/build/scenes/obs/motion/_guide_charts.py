@@ -24,9 +24,12 @@ plate viewer, which is as wide as the glass and a block and a half high; V10 sta
 south-east corner of the time room with its back to the card. The other cards are behind walls
 from every board view, or further off than the game shows a particle (32 blocks).
 
-The glint: one wax_off particle, GLINT_UP over the middle of the card's face, no spread and no
-speed, every GLINT_EVERY ticks; the six on six different ticks of the cycle. Six commands in 40
-ticks: 0.15 a tick on average, one in any one tick (budget agreed with a2 and c357, 11-16).
+The glint: one end_rod particle, GLINT_UP over the middle of the card's face, no spread and no
+speed, every GLINT_EVERY ticks; the six on six different ticks of the cycle. A small white point,
+the light of the slit of the dome at the end of the walk: a few grains of starlight met on the way
+(cr2, 11-16 12:34; the first version's wax_off was a pink cross as large as the card at a block
+and a half, a colour that is not ours). Six commands in 40 ticks: 0.15 a tick on average, one in
+any one tick (budget agreed with a2 and c357, 11-16).
 
 Interface (agreed with c357): CHARTS, in the order of the tags c164.c1 .. c164.c6, one row
 (name, (x, y, z), feet_y) to a chart: the middle of the card's face in scene coordinates, and the
@@ -49,7 +52,7 @@ LONG, SHORT = 32.0 * PX * SCALE, 16.0 * PX * SCALE      # 0.5 by 0.25 blocks
 PROUD = 2.0 * PX * SCALE            # the face of the card over what it lies or hangs on
 KINDS = ("star_chart", "star_chart_b")
 REACH = 1.6                         # blocks: the card's reach (the card of the package)
-GLINT = "wax_off"
+GLINT = "end_rod"
 GLINT_UP = 0.3                      # blocks over the middle of the face
 GLINT_EVERY = 2 * MK.SECOND         # ticks
 GLINT_AT = tuple(3 + 6 * i for i in range(6))           # 3, 9 .. 33: no two in one tick
