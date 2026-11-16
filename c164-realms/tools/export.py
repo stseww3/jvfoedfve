@@ -1408,7 +1408,7 @@ def light_of(pairs):
     the lines to print. The game saves the light it has at that moment; work its light engine has
     not come to is not in the file, and is not done again when the chunk is loaded."""
     import census
-    lone, both, worst = {}, {}, []
+    lone, both, worst, gaps = {}, {}, [], []
     for raw_a, raw_b in pairs:
         ta, tb = census.parse_nbt(raw_a), census.parse_nbt(raw_b)
         x0, z0 = int(ta.get("xPos", 0)) * 16, int(ta.get("zPos", 0)) * 16
@@ -1425,6 +1425,8 @@ def light_of(pairs):
                     same = len(set(there)) == 1 and there[0] >> 4 == there[0] & 15
                     key = (part, f"all {there[0] & 15}" if same else "mixed")
                     lone[key] = lone.get(key, 0) + 1
+                    gaps.append((part, x0, y * 16, z0, "first" if la is None else "second", key[1],
+                                 sum(((b & 15) > 0) + ((b >> 4) > 0) for b in there)))
                     continue
                 n = big = up = 0
                 for p, q in zip(la, lb):
@@ -1444,7 +1446,20 @@ def light_of(pairs):
             lines.append(f"  {part}: in {s} sections both saves have it and {k} values differ, by up to {b} "
                          f"({u} are higher in the second, {k - u} lower); in {sum(alone.values())} sections one save has none"
                          + (" (the other's is " + ", ".join(f"{name} in {v}" for name, v in sorted(alone.items())) + ")" if alone else ""))
-    for n, big, part, x, y, z in sorted(worst, reverse=True)[:12]:
+    for part in ("SkyLight", "BlockLight"):     # by height: what lies under a floor nobody gets under is not seen
+        levels = {}
+        for n, big, p, x, y, z in worst:
+            if p == part:
+                s, k, b = levels.get(y, (0, 0, 0))
+                levels[y] = (s + 1, k + n, max(b, big))
+        if levels:
+            lines.append(f"      {part} by height: " + "; ".join(
+                f"y {y}..{y + 15}: {s} sections, {k} values, by up to {b}" for y, (s, k, b) in sorted(levels.items())))
+    for part, x, y, z, which, kind, lit in sorted(gaps, key=lambda g: (g[0], -g[6]))[:20]:
+        lines.append(f"      x {x}..{x + 15} y {y}..{y + 15} z {z}..{z + 15}: {part}, none in the {which} save; "
+                     f"the other's is {kind}, {lit} values above 0")
+    few = [w for w in worst if w[2] == "BlockLight"]
+    for n, big, part, x, y, z in sorted(few, reverse=True)[:16] + sorted((w for w in worst if w[2] == "SkyLight"), reverse=True)[:8]:
         lines.append(f"      x {x}..{x + 15} y {y}..{y + 15} z {z}..{z + 15}: {part}, {n} values, by up to {big}")
     if worst:
         xs, ys, zs = [w[3] for w in worst], [w[4] for w in worst], [w[5] for w in worst]
