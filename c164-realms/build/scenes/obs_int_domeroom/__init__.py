@@ -2,8 +2,9 @@
 
 The dome room in a box: the drum and the dome with its two doorways (main/dome), what main/shell
 lays in the room and right under it (the floor, the opening round the pier with its curb and
-railing, the pier's cap, the head of the ring stair), and the telescope (machines/scope: the real
-one as soon as its module is in the tree, with its red lamp). Of main/shell only the rows from the
+railing, the pier's cap, the head of the ring stair), the telescope (machines/scope: the real
+one as soon as its module is in the tree, with its red lamp) and the dome's gear (machines/dome),
+so that V8 is drawn here with everything the map has in it. Of main/shell only the rows from the
 hall's ceiling up are taken: the hall itself is not in the box, which is closed off in dark stone
 under that ceiling. While a package is not in the tree a stand-in built from the skeleton's
 numbers takes its place.

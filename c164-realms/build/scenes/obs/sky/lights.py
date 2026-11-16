@@ -48,16 +48,18 @@ the canvas by then and places, in this order:
             None on the east face, which is the mother clock's and looks at the door. On the curb
             of the well, looking west and hidden from the hall, one over the stair's south-east
             landing and one in the mouth of the well, on the border of the dome room's floor
-            over the east run: its light comes up out of the well onto the foot of the
-            telescope's mount and the railing (the dome room has its one red lamp and no other,
-            the director, #442; what the picture of that room wanted was a foot to stand the
-            telescope on, a3 and cr4, #74961). At either end of the cross gallery one on the
-            wall, as high as the hall's own along the galleries and at their level (7). The way
-            to the west door and the grand stair have the hall's lamps. Over the roofs (dome
-            measured them, #74898, #75042): beside either door of the dome room, on the side of
-            the stepped corner; inside the small dome's door and over the clock tower's; low on
-            the inner gable where a roof way crosses it and at the foot of the way down from a
-            ridge walk to an end terrace. The sources are of the third rank (_lightkit.WAY, 8).
+            over the east run: its light comes up out of the well onto the rim of the pier's
+            cap, the railing and the floor about the mouth (the telescope's own pieces are shown
+            in a light of their own, scope.BRIGHTNESS, and take nothing from it; the dome room
+            has its one red lamp and no other, the director, #442; what the picture of that room
+            wanted was ground under the telescope, a3 and cr4, #74961). At either end of the
+            cross gallery one on the wall, as high as the hall's own along the galleries and at
+            their level (7). The way to the west door and the grand stair have the hall's lamps.
+            Over the roofs (dome measured them, #74898, #75042): beside either door of the dome
+            room, on the side of the stepped corner; inside the small dome's door and over the
+            clock tower's; low on the inner gable where a roof way crosses it and at the foot of
+            the way down from a ridge walk to an end terrace. The sources are of the third rank
+            (_lightkit.WAY, 8).
             They hang in the master scene and where a scene asks for the building's lights with
             _lightkit.dress(): not in another card's test scene, whose pack has no lamp in it.
   gates     where a way leaves the upper terrace (site/terrain's GAPS: to the south lookout, to
@@ -560,7 +562,7 @@ def way_lamps():
            ((cx, shell.ROOF_Y - 2, z0), "north", L.WAY, "the ring stair's last turn"),
            ((ex1 + 1, shell.ROOF_Y - 1, ez1), "west", L.WAY, "the ring stair's south-east landing"),
            ((ex1 + 1, shell.ROOF_Y, cz), "west", L.WAY,
-            "the ring stair's east run and, out of the mouth of the well, the foot of the telescope's mount")]
+            "the ring stair's east run and, out of the mouth of the well, the rim of the pier's cap and the railing")]
     x, row = shell.ARCADE_X[0], shell.DECK_Y + WAY_HIGH
     out += [((x, row, -shell.CROSS_Z), "south", L.WAY - 1, "the north end of the cross gallery"),
             ((x, row, shell.CROSS_Z), "north", L.WAY - 1, "the south end of the cross gallery")]

@@ -29,7 +29,7 @@
   in-B07       14.50   0.00   -4.50  roof  feet  0 head  0  dark  <--   nearest source 7 props/lamps:bracket_b at (13, 2, -5), 2 cells
   in-B08       10.50   0.00   -4.50  roof  feet  6 head  7  lit 
   in-B09        6.50   0.00   -4.50  roof  feet  5 head  6  lit 
-  in-B10        2.50   0.00   -4.50  roof  feet  3 head  4  dim   <--   nearest source 8 interiors/starhall:aisle lamp at (5, 1, -4), 4 cells
+  in-B10        2.50   0.00   -4.50  roof  feet  3 head  4  dim   <--   nearest source 7 interiors/batteryroom:west way south at (2, 1, -7), 2 cells
   in-B11        2.50   0.00   -1.17  roof  feet  4 head  5  lit 
   in-B12        2.50   0.00    2.17  roof  feet  4 head  5  lit 
   in-B13        2.50   0.00    5.50  roof  feet  3 head  4  dim   <--   nearest source 8 interiors/starhall:aisle lamp at (5, 1, 4), 4 cells
@@ -109,8 +109,8 @@
   in-H09        7.50  16.50   -2.50  roof  feet  4 head  5  lit 
   in-H10        4.50  18.00   -2.50  roof  feet  4 head  3  dim   <--   nearest source 8 sky/lights:way at (4, 15, -2), 5 cells
   in-H11        4.50  18.00   -3.50  roof  feet  3 head  2  dim   <--   nearest source 8 sky/lights:way at (4, 15, -2), 6 cells
-  in-I01        4.50  18.00   -7.50  roof  feet  1 head  2  dim   <--   nearest source 5 interiors/domeroom:time_dial at (4, 20, -10), 3 cells
-  in-I02        7.35  18.00   -6.35  roof  feet  0 head  0  dark  <--   nearest source 5 interiors/domeroom:time_dial at (4, 20, -10), 7 cells
+  in-I01        4.50  18.00   -7.50  roof  feet  0 head  1  dim   <--   nearest source 5 interiors/domeroom:time_dial at (3, 20, -10), 4 cells
+  in-I02        7.35  18.00   -6.35  roof  feet  0 head  0  dark  <--   nearest source 5 interiors/domeroom:time_dial at (3, 20, -10), 8 cells
   in-I03       10.20  18.00   -5.20  roof  feet  0 head  0  dark  <--   nearest source 4 machines/scope:lamp at (9, 20, 0), 8 cells
   in-I04       11.35  18.00   -2.35  roof  feet  0 head  0  dark  <--   nearest source 4 machines/scope:lamp at (9, 20, 0), 6 cells
   in-I05       12.50  18.00    0.50  roof  feet  3 head  4  dim   <--   nearest source 6 interiors/domeroom:pilot_lamps at (14, 19, 0), 2 cells
@@ -123,7 +123,7 @@
   in-I12       -2.35  18.00    3.35  roof  feet  0 head  0  dark  <--   nearest source 8 sky/lights:way at (7, 16, 3), 13 cells
   in-I13       -3.50  18.00    0.50  sky   feet  0 head  0  dark  (sky)   nearest source 10 sky/lights:window apse 0 main at (-9, 12, 0), 12 cells
   in-I14       -2.35  18.00   -2.35  roof  feet  0 head  0  dark  <--   nearest source 8 sky/lights:way at (4, 15, -2), 12 cells
-  in-I15       -1.20  18.00   -5.20  roof  feet  0 head  0  dark  <--   nearest source 5 interiors/domeroom:time_dial at (4, 20, -10), 11 cells
+  in-I15       -1.20  18.00   -5.20  roof  feet  0 head  0  dark  <--   nearest source 5 interiors/domeroom:time_dial at (3, 20, -10), 10 cells
   in-J01       11.50  18.00    6.50  roof  feet  0 head  1  dim   <--   nearest source 8 sky/lights:way at (12, 20, 11), 7 cells
   in-J02       12.50  18.00    8.50  roof  feet  3 head  4  dim   <--   nearest source 8 sky/lights:way at (12, 20, 11), 4 cells
   in-J03       12.50  18.00   10.50  roof  feet  5 head  6  lit 
@@ -177,7 +177,7 @@
   in-L13       86.50  -6.00   38.50  roof  feet  7 head  8  lit 
   in-L14       86.50  -6.00   34.83  roof  feet  7 head  8  lit 
   in-L15       86.50  -6.00   31.17  roof  feet  4 head  5  lit 
-  in-L16       86.50  -6.00   27.50  roof  feet  3 head  4  dim   <--   nearest source 10 sky/lights:window power power.east 2 furnace at (89, -2, 27), 6 cells
+  in-L16       86.50  -6.00   27.50  roof  feet  3 head  4  dim   <--   nearest source 12 site/powerhouse:fire window at (90, -5, 27), 4 cells
   in-L17       82.50  -6.00   27.50  roof  feet  6 head  5  lit 
   in-L18       82.50  -6.00   23.50  roof  feet  4 head  5  lit 
   in-L19       78.50  -6.00   31.50  roof  feet  6 head  7  lit 
@@ -201,7 +201,7 @@
   E: 41 places, 4 under a roof; light 0..10, median 0; lit 5, dim 8, dark 28 (1 under a roof); longest run unlit under a roof 1   <-- unlit
   F: 29 places, 5 under a roof; light 0..8, median 0; lit 4, dim 4, dark 21 (5 under a roof); longest run unlit under a roof 5   <-- unlit
   G: 16 places, 0 under a roof; light 0..7, median 3; lit 6, dim 5, dark 5 (0 under a roof); longest run unlit under a roof 0
-  H: 42 places, 0 under a roof; light 0..9, median 0.5; lit 10, dim 11, dark 21 (0 under a roof); longest run unlit under a roof 0
+  H: 42 places, 0 under a roof; light 0..12, median 1; lit 13, dim 10, dark 19 (0 under a roof); longest run unlit under a roof 0
   I: 28 places, 1 under a roof; light 0..7, median 0; lit 6, dim 4, dark 18 (0 under a roof); longest run unlit under a roof 0
 
   out-A01      88.50  -4.00  -32.50  roof  feet  6 head  7  lit 
@@ -249,8 +249,8 @@
   out-C18      25.83   0.00  -25.83  sky   feet  0 head  0  dark  (sky)   nearest source 4 machines/meridian:lamp at (32, 2, -30), 12 cells
   out-C19      23.17   0.00  -27.17  sky   feet  0 head  0  dark  (sky)   nearest source 5 sky/lights:window east 2 base at (16, 3, -28), 9 cells
   out-C20      20.50   0.00  -28.50  sky   feet  0 head  0  dark  (sky)   nearest source 5 sky/lights:window east 2 base at (16, 3, -28), 7 cells
-  out-C21      20.50   0.00  -25.00  sky   feet  0 head  0  dark  (sky)   nearest source 5 sky/lights:window east 2 base at (16, 3, -28), 9 cells
-  out-C22      20.50   0.00  -21.50  sky   feet  0 head  0  dark  (sky)   nearest source 8 props/lamps:uplight at (18, 0, -14), 11 cells
+  out-C21      20.50   0.00  -25.00  sky   feet  0 head  0  dark  (sky)   nearest source 7 interiors/batteryroom:east way board at (13, 1, -25), 7 cells
+  out-C22      20.50   0.00  -21.50  sky   feet  0 head  0  dark  (sky)   nearest source 7 interiors/batteryroom:east way board at (13, 1, -21), 8 cells
   out-C23      20.50   0.00  -18.00  sky   feet  2 head  2  dim   (sky)   nearest source 8 props/lamps:uplight at (18, 0, -14), 7 cells
   out-C24      20.50   0.00  -14.50  sky   feet  5 head  5  lit 
   out-C25      20.50   0.00  -11.00  sky   feet  5 head  5  lit 
@@ -335,13 +335,13 @@
   out-E13     -16.50  -2.00  -31.50  roof  feet  2 head  3  dim   <--   nearest source 7 props/lamps:cage_a at (-15, 1, -32), 4 cells
   out-E14      -8.50   0.00  -26.50  sky   feet  6 head  7  lit 
   out-E15      -8.50   0.00  -23.50  sky   feet  3 head  4  dim   (sky)   nearest source 12 sky/lights:gate at (-10, 2, -30), 8 cells
-  out-E16      -8.50   0.00  -20.50  sky   feet  0 head  1  dim   (sky)   nearest source 12 sky/lights:gate at (-10, 2, -30), 11 cells
-  out-E17      -8.50   0.00  -17.50  sky   feet  0 head  0  dark  (sky)   nearest source 12 sky/lights:gate at (-10, 2, -30), 14 cells
-  out-E18     -12.00   0.00  -16.00  sky   feet  0 head  0  dark  (sky)   nearest source 12 sky/lights:gate at (-10, 2, -30), 17 cells
-  out-E19     -15.50   0.00  -14.50  sky   feet  0 head  0  dark  (sky)   nearest source 7 props/lamps:cage_a at (-15, 1, -32), 18 cells
-  out-E20     -18.30   0.00  -12.30  sky   feet  0 head  0  dark  (sky)   nearest source 7 props/lamps:cage_a at (-15, 1, -32), 23 cells
-  out-E21     -21.10   0.00  -10.10  sky   feet  0 head  0  dark  (sky)   nearest source 7 interiors/starhall:way west at (-6, 2, 0), 28 cells
-  out-E22     -22.75   0.00   -6.95  sky   feet  0 head  0  dark  (sky)   nearest source 7 interiors/starhall:way west at (-6, 2, 0), 25 cells
+  out-E16      -8.50   0.00  -20.50  sky   feet  0 head  1  dim   (sky)   nearest source 7 interiors/batteryroom:west way board at (2, 1, -21), 11 cells
+  out-E17      -8.50   0.00  -17.50  sky   feet  0 head  0  dark  (sky)   nearest source 7 interiors/batteryroom:west way north at (2, 1, -19), 12 cells
+  out-E18     -12.00   0.00  -16.00  sky   feet  0 head  0  dark  (sky)   nearest source 7 interiors/batteryroom:west way north at (2, 1, -15), 15 cells
+  out-E19     -15.50   0.00  -14.50  sky   feet  0 head  0  dark  (sky)   nearest source 7 interiors/batteryroom:west way north at (2, 1, -15), 18 cells
+  out-E20     -18.30   0.00  -12.30  sky   feet  0 head  0  dark  (sky)   nearest source 7 interiors/batteryroom:west way north at (2, 1, -15), 23 cells
+  out-E21     -21.10   0.00  -10.10  sky   feet  0 head  0  dark  (sky)   nearest source 7 interiors/batteryroom:west way south at (2, 1, -11), 24 cells
+  out-E22     -22.75   0.00   -6.95  sky   feet  0 head  0  dark  (sky)   nearest source 7 interiors/batteryroom:west way south at (2, 1, -7), 25 cells
   out-E23     -24.40   0.00   -3.80  sky   feet  0 head  0  dark  (sky)   nearest source 7 interiors/starhall:way west at (-6, 2, 0), 24 cells
   out-E24     -25.45   0.00   -1.65  sky   feet  0 head  0  dark  (sky)   nearest source 7 interiors/starhall:way west at (-6, 2, 0), 23 cells
   out-E25     -26.50   0.00    0.50  sky   feet  0 head  0  dark  (sky)   nearest source 7 interiors/starhall:way west at (-6, 2, 0), 22 cells
@@ -439,13 +439,13 @@
   out-H31      83.50  -6.00   43.50  sky   feet  0 head  0  dark  (sky)   nearest source 12 interiors/powerhouse:engine lamp x 80 at (82, -5, 36), 8 cells
   out-H32      86.50  -6.00   43.50  sky   feet  0 head  0  dark  (sky)   nearest source 12 interiors/powerhouse:engine lamp x 84 at (84, -5, 36), 9 cells
   out-H33      90.50  -6.00   41.50  sky   feet  0 head  0  dark  (sky)   nearest source 12 interiors/powerhouse:engine lamp x 84 at (84, -5, 36), 11 cells
-  out-H34      90.50  -6.00   38.50  sky   feet  0 head  0  dark  (sky)   nearest source 12 interiors/powerhouse:engine lamp x 84 at (84, -5, 36), 8 cells
-  out-H35      90.50  -6.00   35.50  sky   feet  0 head  1  dim   (sky)   nearest source 12 interiors/powerhouse:engine lamp x 84 at (84, -5, 36), 7 cells
-  out-H36      90.50  -6.00   31.50  sky   feet  1 head  2  dim   (sky)   nearest source 10 sky/lights:window power power.east 2 furnace at (89, -2, 27), 8 cells
-  out-H37      90.50  -6.00   27.50  sky   feet  5 head  6  lit 
-  out-H38      90.50  -6.00   24.50  sky   feet  2 head  3  dim   (sky)   nearest source 10 sky/lights:window power power.east 2 furnace at (89, -2, 27), 7 cells
-  out-H39      90.50  -6.00   21.50  sky   feet  0 head  0  dark  (sky)   nearest source 10 sky/lights:window power power.east 2 furnace at (89, -2, 27), 10 cells
-  out-H40      90.50  -6.00   18.50  sky   feet  1 head  0  dim   (sky)   nearest source 12 sky/lights:pool at (87, -6, 10), 12 cells
+  out-H34      90.50  -6.00   38.50  sky   feet  0 head  1  dim   (sky)   nearest source 12 interiors/powerhouse:engine lamp x 84 at (84, -5, 36), 8 cells
+  out-H35      90.50  -6.00   35.50  sky   feet  3 head  4  dim   (sky)   nearest source 12 interiors/powerhouse:engine lamp x 84 at (84, -5, 36), 7 cells
+  out-H36      90.50  -6.00   31.50  sky   feet  7 head  8  lit 
+  out-H37      90.50  -6.00   27.50  sky   feet 11 head 12  lit 
+  out-H38      90.50  -6.00   24.50  sky   feet  8 head  9  lit 
+  out-H39      90.50  -6.00   21.50  sky   feet  5 head  6  lit 
+  out-H40      90.50  -6.00   18.50  sky   feet  2 head  3  dim   (sky)   nearest source 12 site/powerhouse:fire window at (82, -5, 19), 9 cells
   out-H41      90.50  -6.00   14.50  sky   feet  5 head  4  lit 
   out-H42      90.50  -6.00   10.50  sky   feet  9 head  8  lit 
   out-I01      90.50  -6.00    6.90  sky   feet  5 head  4  lit 
