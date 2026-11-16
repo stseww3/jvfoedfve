@@ -89,7 +89,9 @@ def dark_count():
     text = git("show", "%s:%s" % (ref, path)).stdout
     m = re.search(r"\*\*暗：(\d+) 格", text)
     head = re.search(r"总装 ([0-9a-f]{7,8})", text)
-    skip = sum(int(x) for x in re.findall(r"^\| 不补[^|]*\| (\d+) \|", text, re.M))
+    # since 10:46 the cells ruled "not to be lit" are listed apart and are not in the total
+    apart = re.search(r"定了不补的 (\d+) 格", text)
+    skip = int(apart.group(1)) if apart else None
     return (int(m.group(1)) if m else None), skip, head.group(1) if head else "?", ct
 
 
@@ -106,11 +108,12 @@ def first_line():
     wi, wo = walk_count("in"), walk_count("out")
     def w(x):
         return "?" if not x or x[0] is None else str(x[0])
-    heads = sorted({x[1] for x in (wi, wo) if x})
-    parts.append("走查还挡人：室内 %s、室外 %s（走的是 %s）" % (w(wi), w(wo), "、".join(heads) or "?"))
+    parts.append("走查还挡人：室内 %s（%s）、室外 %s（%s）"
+                 % (w(wi), wi[1] if wi else "?", w(wo), wo[1] if wo else "?"))
     d = dark_count()
     if d:
-        parts.append("路上还暗 %s 格（总装 %s，%s 量；其中定了不补 %d）" % (d[0], d[2], hm(d[3]), d[1]))
+        parts.append("路上还暗 %s 格（总装 %s，%s 量；定了不补的%s另算）"
+                     % (d[0], d[2], hm(d[3]), " %d 格" % d[1] if d[1] is not None else ""))
     else:
         parts.append("路上还暗 ? 格")
     b = board()
