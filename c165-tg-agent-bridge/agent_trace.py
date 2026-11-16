@@ -547,6 +547,10 @@ def handle_hook() -> int:
 
         # 子 agent 或顶层主 Agent 执行器试图结束回合时向桥查询身份是否仍有效，有效则提醒回到 read_chat 继续等待（防顶层 main 结束回合连带中止名下后台子会话！）
         if event in ("subagentStop", "stop"):
+            run_st = str(payload.get("status") or "").strip().lower()
+            if run_st in ("aborted", "error"):
+                print("{}")
+                return 0
             if agent_id and (agent_id.startswith("a_") or agent_id.startswith("m_")):
                 chk = get_json(
                     f"{bridge_url}/trace/check-active?agent={urllib.parse.quote(agent_id)}",
@@ -964,7 +968,10 @@ def ensure_hooks_intact(target_script: Path | None = None, reload_if_changed: bo
             if len(matched) != 1:
                 intact = False
                 break
-            if ev in ("subagentStop", "stop") and int(matched[0].get("loop_limit") or 0) != 20:
+            if ev in ("subagentStop", "stop") and not (
+                ("loop_limit" in matched[0] and matched[0]["loop_limit"] is None)
+                or int(matched[0].get("loop_limit") or 0) >= 200
+            ):
                 intact = False
                 break
     if intact:
@@ -986,7 +993,7 @@ def ensure_hooks_intact(target_script: Path | None = None, reload_if_changed: bo
         ]
         entry: dict[str, Any] = {"command": cmd_str}
         if ev in ("subagentStop", "stop"):
-            entry["loop_limit"] = 20
+            entry["loop_limit"] = None
         arr.append(entry)
         hooks_map[ev] = arr
 

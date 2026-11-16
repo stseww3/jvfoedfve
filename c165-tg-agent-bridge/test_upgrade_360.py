@@ -123,7 +123,7 @@ async def run_cluster_and_device_tests() -> dict[str, str]:
     )
     healed_cfg = json.loads(hooks_path.read_text(encoding="utf-8"))
     assert "subagentStop" in healed_cfg["hooks"] and "stop" in healed_cfg["hooks"] and "preToolUse" in healed_cfg["hooks"]
-    assert healed_cfg["hooks"]["stop"][0].get("loop_limit") == 20
+    assert healed_cfg["hooks"]["stop"][0]["loop_limit"] is None
     pid_f = HOME_DIR / ".cursor" / "agent_trace_daemon.pid"
     if pid_f.exists():
         try:
