@@ -85,7 +85,22 @@ def main():
         say(f"  ({x}, -4, {z}) is {state}; the same block is put at y -3" + ("" if (x, -3, z) not in cells else f" (there stood {cells[(x, -3, z)]})"))
         raised[(x, -3, z)] = state
     say()
-    look(raised, "with the five bars two blocks high:")
+    look(raised, "A. with the five bars of the east edge two blocks high:")
+
+    pier = dict(raised)                                 # B: A, and the corner pier (91, -26) a block higher
+    wall, slab = cells.get((91, -4, -26)), cells.get((91, -3, -26))
+    say(f"  the corner pier (91, -26): y -4 {wall}, y -3 {slab}; B puts the wall at y -3 as well and the slab on y -2")
+    pier[(91, -3, -26)], pier[(91, -2, -26)] = wall, slab
+    say()
+    look(pier, "B. A, and the corner pier (91, -26) one block higher:")
+
+    south = dict(raised)                                # C: A, and the south edge's bars two high as well
+    row = [(x, -26) for x in range(75, 91) if "bars" in str(cells.get((x, -4, -26)))]
+    say(f"  the south edge's bars (row z -26): columns x {[x for x, _ in row]}; C puts the same block at y -3 on each")
+    for x, z in row:
+        south[(x, -3, z)] = cells[(x, -4, z)]
+    say()
+    look(south, "C. A, and the south edge's bars two blocks high as well (the pier as built):")
     os.makedirs("renders/_wip/reach", exist_ok=True)
     with open("renders/_wip/reach/m3_whatif.txt", "w", encoding="utf-8") as fh:
         fh.write("\n".join(out) + "\n")
