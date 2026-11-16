@@ -1,0 +1,26 @@
+check obs_props_pneumatic at 005634f
+[PASS] regen     2096 blocks, 110 entities, 197 models, 1287 resource-pack files, 62 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.6 s)
+[PASS] conflicts the scene writes 1286 files, no file written twice, the folders and the prefix of props are kept (12 packages run alone)
+[PASS] strays    326 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      923 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    32 kinds of block placed, all in the occupancy table
+[SKIP] flatwall  a test scene of props: its sample walls and backdrops are meant to be flat
+[WARN] entities  110 display entities, 4 drawn out along one axis, 135 models never placed
+                 prop_pneu_plate_a1 x1: 64/64/64 pixels to the block along x/y/z, not 16
+[PASS] views     10 shots, most display entities in view: 95 (v10), limit 600; counted without what walls hide; the game draws up to 110 (v10): a display entity without width and height is drawn outside the view too
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    13 parts and 0 points on 6 chains, 54 function files; 7 commands in the busiest tick (limit 120), 1.2 a tick on average (limit 40)
+                 chain of 32 ticks: 4 functions, 10 commands a cycle, starts 2 ticks after start
+                 chain of 40 ticks: 10 functions, 31 commands a cycle, starts 1 ticks after start
+                 chain of 300 ticks: 12 functions, 25 commands a cycle, starts 13 ticks after start
+                 chain of 600 ticks: 4 functions, 9 commands a cycle, starts 9 ticks after start
+                 chain of 1200 ticks: 6 functions, 37 commands a cycle, starts 4 ticks after start
+                 chain of 2400 ticks: 12 functions, 25 commands a cycle, starts 5 ticks after start
+                 mach_rec_drum: 12 steps in 2400 ticks: its middle lies 0.05 blocks off the axis
+                 int_timeroom_clock_seconds: 6 steps in 1200 ticks: its middle lies 0.09 blocks off the axis
+                 int_timeroom_clock_seconds: 6 steps in 1200 ticks: its middle lies 0.09 blocks off the axis
+                 int_timeroom_clock_seconds: 6 steps in 1200 ticks: its middle lies 0.09 blocks off the axis
+                 int_timeroom_clock_seconds: 6 steps in 1200 ticks: its middle lies 0.09 blocks off the axis
+                 int_timeroom_clock_seconds: 6 steps in 1200 ticks: its middle lies 0.09 blocks off the axis
+result: PASS (0 failed, 1 with warnings)
