@@ -87,8 +87,9 @@ CAMERAS = {
 
 
 def write_pack(pack_dir):
-    """Only the comet's pictures: the white model is plain vanilla blocks, nothing repainted."""
-    return comet.pack(pack_dir, STYLE)
+    """Only the comet's pictures: the white model is plain vanilla blocks, nothing repainted. This
+    scene's pack has the test card in the new moon's picture (shots(): sky_card)."""
+    return comet.pack(pack_dir, STYLE, card=True)
 
 
 def shots(card=True):

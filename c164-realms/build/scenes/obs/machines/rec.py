@@ -7,20 +7,30 @@ package makes what stands in front of it and is a machine: it is seen to record 
   drum        the drum chronograph on the console. A wooden base, two brass standards, between them
               the drum with its sheet of paper; a clockwork case at its east end with a seconds
               dial and a fly-ball governor; in front of the drum a rail with the pen carriage.
-              Three display entities: the frame, the drum (it turns about its axle, once in
-              MK.DRUM_REV), the pen on its rail (a part of its own, so that the motion line can
-              move it). The trace on the sheet is drawn as it lies on a real one: a line round
-              the drum for every turn, a jog in it for every second, from the west end up to
-              where the pen stands.
+              Four display entities: the frame; the drum (it turns about its axle, once in
+              MK.DRUM_REV); the pen on its rail, which the clock's contact throws a pixel along
+              the drum at every second and lets go again (on the pendulums' ticks: the jog it
+              has written in the trace); the governor on the clockwork case, which spins. The
+              sheet is ruled paper, a faint line along the drum every four
+              pixels round it, and the trace lies on it as on a real one: a line round the drum
+              for a turn, a jog in it where a second fell. Two turns are written, the second
+              under the pen: three of them, a pixel apart, were a blue and white check from the
+              door (cr3, on the real client's V10).
   telegraph   the register on the console west of the key. A wooden base, the pair of coils and
               the armature lever over them, a reel of paper tape on two brackets, the tape down
-              through the printing head and out to the front. Two entities: the machine, and the
-              tape that hangs over the edge of the shelf and curls at its end (left out with
-              tape=False where the register stands on something else). Lying on the shelf the
-              tape would be a line from the door: the eye is little higher than the shelf.
+              through the printing head and out to the front. Three entities: the machine; the
+              sounder (the armature, the lever it is on and the printing wheel at the lever's
+              end), which comes down TAP on the tape and goes up again as the sound line's
+              sounder taps its word (motion/sound: the same ticks, so that what is heard is
+              what is seen); and the tape that hangs over the edge of the shelf and curls at
+              its end (left out with tape=False where the register stands on something else).
+              Lying on the shelf the tape would be a line from the door: the eye is little
+              higher than the shelf.
   tube        the pneumatic tube on a wall, no more than five and a half pixels off it. Two
               entities: the terminal (a board on the wall, the brass tube down it, its bell mouth
-              at the height of the hand, under the mouth a tray with a carrier in it) and the run
+              at the height of the hand, under the mouth a tray with a brass rim and a carrier in
+              it, cream between two brass heads, that stands two pixels over the rim: the tray
+              was iron and the carrier copper, and both were lost on the dark pier) and the run
               above it, which ends in a copper elbow into the wall, just under whatever stands
               at the head of the pier (TUBE_HEAD above the foot).
 
@@ -49,6 +59,10 @@ try:
     from ..motion import _kit as MK
 except ImportError:                     # the motion line is not in the tree: everything stands still
     MK = None
+try:
+    from ..motion import sound as SOUND
+except ImportError:                     # nor its sounds: the sounder then taps a beat of its own
+    SOUND = None
 
 NAME = "machines/rec"
 PREFIX = "mach_rec_"
@@ -62,8 +76,8 @@ IRON, IRON_D = K.IRON, K.IRON_D
 COPPER = K.COPPER
 PAPER = K.flat("cream", 2)              # paper under a lamp: a tone under the lightest, or it is a white dot from the door
 PAPER_EDGE = K.flat("cream", 1)
-INK = P.RAMPS["enamel"][2]              # what the printing wheel leaves on the tape: the blue of the paper line's headings
-TRACE_INK = P.RAMPS["enamel"][3]        # the pen's line on the sheet: thinner than a pixel, so a tone lighter
+INK = P.RAMPS["enamel"][2]              # what the printing wheel leaves on the tape and the pen on the sheet: the blue of the paper line's headings
+RULE = P.RAMPS["cream"][1]              # the ruling printed on the sheet: a tone under the paper
 
 # ---- the drum chronograph (pixels; x runs along the drum, the front is +z, 0 the middle of the foot)
 BASE = (22.0, 12.0, 2.0)                # the wooden base: wide, deep, high
@@ -75,12 +89,18 @@ STANDARDS = (-9.5, 4.5)                 # the middles of the two bearing standar
 CASE = ((5.0, -4.0), (10.0, 4.0), 10.0) # the clockwork case: (x, z) of two corners, its top
 RAIL = (9.5, 5.0)                       # the pen's rail: above the foot, and its z
 PEN_X = -1.0                            # where the pen stands on its rail: at the end of the trace
+KICK = 1.0                              # pixels the second's contact throws the pen along the drum: the jog of the trace
+GOVERNOR = ((CASE[0][0] + CASE[1][0]) / 2.0, CASE[2] + 0.5, 0.0)   # the foot of the governor's spindle, on the case
 DRUM_X = (SHEET[0] + SHEET[1]) / 2.0    # -2.5: the middle of the drum
-TRACE = (                               # the sheet, one face of the drum: a line round the drum for each turn,
-    ".i.i.i....",                       # a jog in every line where a second fell
-    ".i.i.i....",
-    "..i.i.i...",
-    ".i.i.i....",
+TRACE = (                               # the sheet, two faces of the drum that follow each other: on each a rule
+    ("rrrirrirrr",                      # along it and the two turns the pen has written (the second one under the
+     "...i..i...",                      # pen, at PEN_X). A turn has the jog of a second on every other face, and
+     "....i.i...",                      # the two turns on alternate ones: with both on every face, a face seen
+     "...i..i..."),                     # from below was a check again
+    ("rrrirrirrr",
+     "...i..i...",
+     "...i...i..",
+     "...i..i..."),
 )
 SECONDS_DIAL = (                        # the clockwork's seconds dial; the hand stands at 60, as at 7:55 sharp
     ".chc.",
@@ -100,6 +120,10 @@ SHELF = 8.0                             # z of the front edge of the shelf: a sh
 EDGE = SHELF + 0.5                      # z of the front of the tape that hangs over that edge
 HANG = 19.0                             # pixels the tape hangs below that roller before it curls
 TAPE_T = 0.25                           # the thickness of the tape
+TAP = 0.75                              # pixels the sounder comes down: from its rest to the wheel on the tape
+PIVOT = (6.25, HEAD[0] + 0.8 + TAP, HEAD[1] + 0.5)      # the middle of the lever in its post, the sounder at rest
+BEAT = (60, (0, 12, 16, 24, 32, 44), (6, 14, 18, 30, 38, 46))   # the sounder's own cycle, ticks down and ticks up,
+#                                         where the sound line is not in the tree to give them
 MARKS = "ii.i.i.ii.i.ii.i.i.i.ii.ii.i.i.ii.i.i.ii.i."    # what the wheel has printed, along the tape
 
 # ---- the pneumatic tube (x along the wall, z out of it, 0 the point of the wall behind the foot)
@@ -108,6 +132,8 @@ TUBE_OFF = 2.75                         # its axis off the wall
 BOARD = (5.0, 3.0, 27.0)                # the board on the wall: half its width, its foot and its top above pos
 MOUTH = 11.0                            # the lip of the bell mouth above pos: at the height of the hand
 TRAY = 4.0                              # the floor of the tray under it
+RIM = 1.0                               # the tray's brass rim over its floor
+CARRIER = (1.0, 1.5)                    # the carrier in the tray: the radius of its body and of its two heads
 TERMINAL = 36.0                         # where the terminal's model ends and the run's begins
 TUBE_HEAD = 79.5                        # the top of the run, the flange of its elbow on the wall: just under 5 blocks above pos
 
@@ -126,17 +152,19 @@ def _tape_face(name, n, across=3, start=0):
 def _prism(m, a0, a1, c, radius, mat, cap, sides=8, faces=None, seed=None):
     """A prism along x in one tone all round, for a part that turns: Model.tube paints a highlight
     on the side that looks at the light and the game shades a face by where it looks at rest, and a
-    wheel would carry both round with it."""
+    wheel would carry both round with it. faces: what the two long faces of each of its boxes
+    carry, or a list of those, taken in turn round the prism."""
     hw = radius * math.tan(math.pi / sides)
     lo, hi = (a0, c[0] - hw, c[1] - radius), (a1, c[0] + hw, c[1] + radius)
     side = mat.variant(0, "ends") if hasattr(mat, "variant") else mat
-    look = dict({"w": cap, "e": cap, "n": side, "s": side}, **(faces or {}))
+    looks = [dict({"w": cap, "e": cap, "n": side, "s": side}, **each)
+             for each in (faces if isinstance(faces, (list, tuple)) else [faces or {}])]
     m._n += 1
     seed = m._n if seed is None else seed
     for i in range(sides // 2):
         angle = 360.0 * i / sides
         m.box(lo, hi, mat, rot=("x", angle, ((a0 + a1) / 2.0, c[0], c[1])) if angle else None, skip="du",
-              faces=look, seed=seed, grain="x", shade=False)
+              faces=looks[i % len(looks)], seed=seed, grain="x", shade=False)
     return m
 
 
@@ -159,11 +187,17 @@ def _drum_frame():
     dial = Sprite(name + "_dial", list(SECONDS_DIAL), DIAL_COLOURS, back=BRASS)
     m.box((x0, h, z0), (x1, top, z1), BRASS, faces={"s": dial})                                 # the clockwork case
     m.box((x0 - 0.25, top, z0 - 0.25), (x1 + 0.25, top + 0.5, z1 + 0.25), BRASS_D)
-    gx = (x0 + x1) / 2.0                                                                        # the governor on it
-    m.tube("y", (gx, 0.0), top + 0.5, top + 5.0, 0.5, IRON, sides=4)
+    return m
+
+
+def _governor():
+    """The fly-ball governor of the drum's clockwork: what spins. Anchor: the foot of its spindle,
+    which stands upright in the middle of the model."""
+    m = M.Model(PREFIX + "drum_governor")
+    m.tube("y", (0.0, 0.0), 0.0, 4.5, 0.5, IRON, sides=4)
     for s in (-1.0, 1.0):
-        m.rod((gx, top + 4.5, 0.0), (gx + s * 2.5, top + 2.5, 0.0), 0.3, IRON, sides=4)
-        m.ball((gx + s * 2.5, top + 2.0, 0.0), 1.1, BRASS, sides=8, layers=3)
+        m.rod((0.0, 4.0, 0.0), (s * 2.5, 2.0, 0.0), 0.3, IRON, sides=4)
+        m.ball((s * 2.5, 1.5, 0.0), 1.1, BRASS, sides=8, layers=3)
     return m
 
 
@@ -172,9 +206,12 @@ def _drum():
     name = PREFIX + "drum"
     half = (SHEET[1] - SHEET[0]) / 2.0
     width, radius = FLANGE
-    trace = Sprite(name + "_trace", list(TRACE), dict(i=TRACE_INK), back=PAPER)
+    sheets, look = [], dict(i=INK, r=RULE)
+    for k, rows in enumerate(TRACE):                                    # the far face of a box: the same half a turn round,
+        sheets.append({"s": Sprite(f"{name}_trace{k}", list(rows), look, back=PAPER),               # so that the rules
+                       "n": Sprite(f"{name}_trace{k}_n", [row[::-1] for row in rows[::-1]], look, back=PAPER)})   # keep their step
     m = M.Model(name)
-    _prism(m, -half, half, (0.0, 0.0), DRUM_R, PAPER, PAPER_EDGE, faces={"s": trace, "n": trace.mirrored()})
+    _prism(m, -half, half, (0.0, 0.0), DRUM_R, PAPER, PAPER_EDGE, faces=sheets)
     for s in (-1.0, 1.0):
         a, b = sorted((s * half, s * (half + width)))
         _prism(m, a, b, (0.0, 0.0), radius, BRASS, K.flat("brass", 2))
@@ -224,19 +261,33 @@ def _telegraph():
     for x in (x0 - 0.75, x1 + 0.25):
         m.box((x, hy - 1.25, hz + 2.0), (x + 0.5, hy - 0.25, EDGE), BRASS_D, grain="z")         # the two arms out to the roller
     m.tube("x", (hy - 0.5, EDGE - 0.5), x0 - 0.25, x1 + 0.25, 0.5, BRASS, sides=4)              # the roller
-    # the pair of coils, the armature over them, the lever that carries the printing wheel
+    # the pair of coils; the armature over them and the lever are the sounder's (_sounder)
     for x in (2.0, 5.0):
         m.tube("y", (x, -2.5), h, h + 0.5, 1.6, BRASS_D, sides=8)
         m.tube("y", (x, -2.5), h + 0.5, 6.5, 1.25, COPPER, sides=8)
         m.tube("y", (x, -2.5), 6.5, 7.0, 1.6, BRASS_D, sides=8)
-    m.box((1.0, 7.25, -3.5), (6.0, 7.75, 0.9), IRON)
-    m.box((x0 + 1.25, hy + 0.5, hz + 0.1), (6.5, hy + 1.1, hz + 0.9), BRASS, grain="x")
-    m.box((x0 + 1.1, hy + TAPE_T, hz + 0.2), (x0 + 1.9, hy + 0.5, hz + 0.8), IRON_D)            # the wheel on the tape
-    m.box((5.75, h, hz), (6.75, hy + 1.5, hz + 1.0), BRASS, grain="y")                          # the lever's post
-    m.tube("y", (6.25, hz + 0.5), hy + 1.5, hy + 2.5, 0.4, IRON, sides=4)
+    # the lever's post: the lever's end is inside it wherever the sounder stands
+    m.box((5.75, h, hz), (6.75, hy + 1.5 + TAP, hz + 1.0), BRASS, grain="y")
+    m.tube("y", (6.25, hz + 0.5), hy + 1.5 + TAP, hy + 2.5 + TAP, 0.4, IRON, sides=4)
     for x in (2.5, 5.0):                                                                        # the line's two binding posts
         m.tube("y", (x, 4.5), h, h + 2.0, 0.5, BRASS, sides=4)
         m.tube("y", (x, 4.5), h + 2.0, h + 2.75, 0.9, BRASS_D, sides=8)
+    return m
+
+
+def _sounder():
+    """What moves of the register: the lever in its post, the armature it carries over the coils
+    and the printing wheel at its end. Anchor: PIVOT, the middle of the lever in the post; the
+    model is the sounder at rest, the wheel TAP over the tape."""
+    m = M.Model(PREFIX + "telegraph_sounder")
+    px, py, pz = PIVOT
+    x0 = LANE[0]
+    hy, hz = HEAD
+    up = TAP - py                                                       # from the register's frame, the sounder down
+    m.box((1.0 - px, 7.25 + up, -3.5 - pz), (6.0 - px, 7.75 + up, 0.9 - pz), IRON)              # the armature
+    m.box((2.5 - px, 7.75 + up, hz + 0.1 - pz), (3.5 - px, hy + 0.5 + up, hz + 0.9 - pz), BRASS_D)  # its foot on the lever
+    m.box((x0 + 1.25 - px, hy + 0.5 + up, hz + 0.1 - pz), (6.5 - px, hy + 1.1 + up, hz + 0.9 - pz), BRASS, grain="x")
+    m.box((x0 + 1.1 - px, hy + TAPE_T + up, hz + 0.2 - pz), (x0 + 1.9 - px, hy + 0.5 + up, hz + 0.8 - pz), IRON_D)   # the wheel
     return m
 
 
@@ -265,13 +316,16 @@ def _terminal():
     m.taper("y", (0.0, z), MOUTH, MOUTH + 3.0, TUBE_R + 1.0, TUBE_R + 0.25, BRASS_D, steps=2)   # the bell mouth
     m.box((-2.5, top - 4.0, 1.0), (2.5, top - 3.0, z + TUBE_R + 0.5), IRON_D)                   # the clip that holds it to the board
     lip = z + TUBE_R + 1.25                                                                     # 5.5: the tray's front
-    m.box((-4.5, TRAY, 1.0), (4.5, TRAY + 0.75, lip), IRON_D)                                   # the tray under the mouth
-    m.box((-4.5, TRAY + 0.75, lip - 0.75), (4.5, TRAY + 2.5, lip), IRON, grain="x")
+    floor = TRAY + 0.75
+    m.box((-4.5, TRAY, 1.0), (4.5, floor, lip), IRON_D)                                         # the tray under the mouth
+    m.box((-4.5, floor, lip - 0.75), (4.5, floor + RIM, lip), BRASS, grain="x")                 # its rim: the front, the two ends
     for x in (-4.5, 3.75):
-        m.box((x, TRAY + 0.75, 1.0), (x + 0.75, TRAY + 3.5, lip - 0.75), IRON, grain="z")
-    m.tube("x", (TRAY + 2.0, z + 0.25), -3.0, 3.0, 1.25, COPPER)                                # a carrier in the tray
-    for x in (-3.5, 3.0):
-        m.tube("x", (TRAY + 2.0, z + 0.25), x, x + 0.5, 1.0, K.flat("cream", 1), sides=8)       # its two felts
+        m.box((x, floor, 1.0), (x + 0.75, floor + RIM + 0.5, lip - 0.75), BRASS, grain="z")
+    body, head = CARRIER                                                                        # a carrier in the tray, on its two heads
+    at = (floor + head, z + 0.25)
+    m.tube("x", at, -2.75, 2.75, body, P.mat("cream", base=2), sides=8)
+    for x in (-3.5, 2.75):
+        m.tube("x", at, x, x + 0.75, head, BRASS_D, sides=8)
     return m
 
 
@@ -293,8 +347,8 @@ def _run():
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    made = (_drum_frame(), _drum(), _pen(), _telegraph(), _tape(), _terminal(), _run())
-    return {m.name: m for m in made}
+    made = (_drum_frame(), _drum(), _pen(), _governor(), _telegraph(), _sounder(), _tape(), _terminal(), _run())
+    return {m.name: K.settle(m) for m in made}          # round pieces off the fence between two axes (props/_kit)
 
 
 def models():
@@ -315,12 +369,34 @@ def _drum_at(canvas, pos, yaw, origin):
     if MK is not None:
         MK.spin(canvas, "x", MK.DRUM_REV)               # the top of the drum comes forward, to the pen
     n += K.put(canvas, own[PREFIX + "pen"], _at(pos, yaw, (PEN_X, RAIL[0], RAIL[1])), yaw=yaw, origin=origin)
+    if MK is not None:                                  # a second's contact: out in a tick, back in two, on the
+        half = MK.PENDULUM // 2                         # ticks the pendulums pass the plumb line (motion/sound: tick, tock)
+        MK.slide(canvas, "x", [(0, KICK * PX, 1), (2, 0.0, 2), (half, KICK * PX, 1), (half + 2, 0.0, 2)], MK.PENDULUM)
+    n += K.put(canvas, own[PREFIX + "drum_governor"], _at(pos, yaw, GOVERNOR), yaw=yaw, origin=origin)
+    if MK is not None:
+        MK.spin(canvas, "y", MK.SCOPE_GOVERNOR_REV)     # a driving clock's governor, as the astrograph's
     return n
+
+
+def taps():
+    """(cycle, ticks the sounder comes down on, ticks it goes up on): the sound line's, so that the
+    armature is seen to come down when it is heard; BEAT without that line."""
+    kinds = getattr(SOUND, "KINDS", {}).get("telegraph") if SOUND is not None else None
+    if not kinds:
+        return BEAT
+    downs = next(ticks for event, _cycle, ticks in kinds if not event.endswith("_up"))
+    ups = next(ticks for event, _cycle, ticks in kinds if event.endswith("_up"))
+    return kinds[0][1], tuple(downs), tuple(ups)
 
 
 def _telegraph_at(canvas, pos, yaw, origin, tape=True):
     own = _models()
     n = K.put(canvas, own[PREFIX + "telegraph"], pos, yaw=yaw, origin=origin)
+    n += K.put(canvas, own[PREFIX + "telegraph_sounder"], _at(pos, yaw, PIVOT), yaw=yaw, origin=origin)
+    if MK is not None:                                  # down in a tick, up in two: a dot is two ticks long
+        cycle, downs, ups = taps()
+        moves = sorted([(t, -TAP * PX, 1) for t in downs] + [(t, 0.0, 2) for t in ups])
+        MK.slide(canvas, "y", moves, cycle)
     if tape:
         n += K.put(canvas, own[PREFIX + "tape"], pos, yaw=yaw, origin=origin)
     return n

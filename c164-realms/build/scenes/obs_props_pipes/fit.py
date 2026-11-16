@@ -6,9 +6,9 @@
 
 The game lights a face of an item model by the model axis nearest to its normal, and of two axes
 that are equally near the last bit of a float decides. A picture drawn here and the game may then
-disagree, and two sister models may be lit differently. props/pipes leans such faces half a degree
-(pipes._settle); this holds every model of the family to it, and says how each face is filed by the
-renderer's single-precision copy of the game's code against the exact rule.
+disagree, and two sister models may be lit differently. props/pipes turns such shapes a tenth of a
+degree (the kit's K.settle); this holds every model of the family to it, and says how each face is
+filed by the renderer's single-precision copy of the game's code against the exact rule.
 """
 import json
 import os
@@ -17,6 +17,7 @@ import tempfile
 
 from artkit import gameassets as G
 from artkit import models as M
+from scenes.obs.props import _kit as K
 from scenes.obs.props import pipes
 
 FILED = ("down", "up", "north", "south", "west", "east")       # the order the game tries them in
@@ -80,7 +81,7 @@ def main():
     found = []
     models = pipes.models()
     for name, model in sorted(models.items()):
-        for i, letters, normal in pipes.unsettled(model):
+        for i, letters, normal in K.unsettled(model):
             found.append(f"{name}: part {i}, faces {letters} stand between two axes "
                          f"({normal[0]:.4f}, {normal[1]:.4f}, {normal[2]:.4f})")
     wrong, count = faces()
