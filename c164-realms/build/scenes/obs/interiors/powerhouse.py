@@ -21,7 +21,8 @@ What stands where (plan cells; north is -z, the door is in the north wall):
                     north wall, a drop light over the stoker's place.
   right hand        the switchboard before the west wall, its face to the room: a wooden mat to
                     stand on, two drop lights before it. North of it, in the corner between two
-                    windows, the engineer's desk.
+                    windows, the engineer's desk; on the pier between them the telephone to the
+                    observatory and its bell.
   the walk          a band of polished stone three cells wide from the door to the gangway: the
                     band the lower platform lays up to the door goes on indoors.
   the gangway       two rows of open grating across the room at the foot of the engine (z 32..33),
@@ -33,11 +34,12 @@ What stands where (plan cells; north is -z, the door is in the north wall):
                     wall under the eaves (site/powerhouse.PIPE_IN) and runs east over the gangway,
                     hung from every girder. A header leaves it north over the boilers, with a riser
                     down to the flange on each steam dome; east of the header it goes on to the
-                    cylinder's end and a small pipe drops from it to the engine's inlet, a stop valve
-                    with the red handwheel on it. No line ends in the air.
-  the cables        from the two terminals on the dynamo up to a pair of insulators on the west
-                    wall, along the wall before the window to the next pier, and down to the two
-                    lead-in insulators at the switchboard's south end.
+                    cylinder's end and a small pipe (props/pipes) drops from it to the engine's
+                    inlet, on it a stop valve with the red handwheel and a pressure gauge, both
+                    turned to the door. No line ends in the air.
+  the cables        from the two terminals on the dynamo up to the west wall, along the wall before
+                    the window from pier to pier on pin insulators (props/electrics), one line over
+                    the other, and down to the two lead-in insulators at the switchboard's south end.
 
 Light. The room is dark and is lit where somebody works. Every lamp is a shaded one (props/lamps'
 version B) and hangs low; a shade throws its light down, so a lamp's source is offered not at its
@@ -66,7 +68,7 @@ from artkit.blocks import st
 from ..common import blocks as B
 from ..common import palette as P
 from ..props import _kit as K
-from ..props import lamps
+from ..props import electrics, furniture, lamps, paper, pipes
 from ..site import powerhouse as SH
 
 MOVED_IN = True
@@ -77,9 +79,9 @@ PX = 1 / 16.0
 
 # ---- the other lines' packages ------------------------------------------------------------------------
 @functools.lru_cache(maxsize=None)
-def theirs(line, package):
-    """The package scenes.obs.<line>.<package>, or None while it is not in the tree."""
-    full = f"{__package__.rsplit('.', 1)[0]}.{line}.{package}"
+def theirs(package):
+    """The machine's module scenes.obs.machines.<package>, or None while it is not in the tree."""
+    full = f"{__package__.rsplit('.', 1)[0]}.machines.{package}"
     try:
         return importlib.import_module(full)
     except ModuleNotFoundError as missing:
@@ -93,9 +95,9 @@ def _told(module, name, default):
     return default if module is None else getattr(module, name, default)
 
 
-ENGINE = theirs("machines", "engine")
-BOILER = theirs("machines", "boiler")
-BOARD = theirs("machines", "board")
+ENGINE = theirs("engine")
+BOILER = theirs("boiler")
+BOARD = theirs("board")
 MACHINES = ("engine", "boiler", "board")
 
 
@@ -159,12 +161,12 @@ RISER_FOOT = int(math.floor(min(p[1] for p in STEAM_OUT)))                  # -1
 DROP_CELL = (int(math.floor(STEAM_IN[0])), int(math.floor(STEAM_IN[2])))    # (85, 35): the block the engine's pipe drops from
 VALVE_Y = -2.0                                      # the stop valve on the drop: over the governor, its wheel to the door
 GAUGE_Y = -0.75                                     # the pressure gauge's tapping, over the valve
-DROP_R = 3.0                                        # px: the drop is 6 px across (props/pipes' large bore)
+DROP = "l"                                          # the drop is props/pipes' large bore, 6 px across
 
 # ---- the cables -------------------------------------------------------------------------------------------
-RACK_Y = (-1.5, -1.0)                               # the two insulators of a rack, one above the other
-RACK_Z = tuple(z + 0.5 for z in (37, 33))           # the racks: on the west wall's piers by the dynamo and by the main
-SEAT = 4 * PX                                       # a cable in its insulator runs this far off the wall
+WIRE_Y = (-1.5, -0.75)                              # the two cables on the wall, one above the other
+WIRE_Z = tuple(z + 0.5 for z in (37, 33))           # they are held on the west wall's piers by the dynamo and by the main
+WIRE = 1.5                                          # a power cable is this many times the bell wire of props/electrics
 
 # ---- the coal ---------------------------------------------------------------------------------------------
 COAL_AT = (77.0, NORTH)                             # the bin's north-west corner, inside: against the north wall, east of the door
@@ -172,7 +174,8 @@ COAL = (24.0, 20.0, 15.0)                           # px: the heap east-west, no
 
 # ---- the desk ---------------------------------------------------------------------------------------------
 DESK_Z = (Z0, Z0 + 1)                               # 22..23: under the west wall's first window
-DESK_TOP = 1.0                                      # blocks: the top of the board that stands in for a desk
+PHONE_Z = SH.Z0 + SH.CORNER + SH.BAY - 0.5          # 25.5: the west wall's first pier, between the desk and the board
+PHONE_Y = FEET + 0.875                              # the telephone's foot: its mouthpiece at the height of the mouth
 
 # ---- light: what the room asks of the light line (level, rank); the lamps are props/lamps' models ---------
 LAMPS = "b"                 # the shaded lamps: a shade keeps a lamp's glow to what is under it
@@ -190,14 +193,10 @@ DOOR_LAMP_Y = -2.5
 DESK_LAMP = (6, 3)          # the green lamp on the desk
 
 # ---- materials (the palette's, and nothing else) ------------------------------------------------------------
-RED = P.mat("signal")
-PORCELAIN = P.mat("porcelain")
 WOOD = P.mat("dark_wood")
 WOOD_L = P.mat("dark_wood", base=3)
 COAL_CORE = K.flat("slate", 0)
 COAL_LUMP = (P.mat("slate", base=0, noise=0.5), P.mat("slate", base=1, noise=0.5), P.mat("iron", base=1, noise=0.4))
-CABLE = K.flat("old_copper", 1)
-PIPE = K.flat("iron", 2)
 
 
 def in_room(x, z):
@@ -301,83 +300,6 @@ def _coal():
     return m
 
 
-def _cable():
-    """A power cable: runs along +z from the anchor, 48 long, and is stretched between two points.
-    One flat tone, so stretching smears nothing."""
-    m = M.Model(PREFIX + "cable")
-    m.box((-0.75, -0.75, 0), (0.75, 0.75, 48), CABLE, grain="z")
-    return m
-
-
-def _rack():
-    """Two porcelain insulators on a wall strap, one above the other: the spools of a cable rack.
-    A cable lies in the waist of each. Anchor: on the wall, level with the lower spool; the upper
-    one is RACK_Y[1] - RACK_Y[0] higher; both stand SEAT off the wall."""
-    rise = (RACK_Y[1] - RACK_Y[0]) * 16.0
-    off = SEAT * 16.0
-    m = M.Model(PREFIX + "rack")
-    m.box((-1.0, -4.0, 0.0), (1.0, rise + 4.0, 1.0), K.IRON, grain="y")
-    for y in (-3.0, rise + 3.0):
-        K.rivet(m, (0.0, y, 1.0))
-    for y in (0.0, rise):
-        for dy in (-2.5, 1.5):
-            m.box((-0.5, y + dy, 1.0), (0.5, y + dy + 1.0, off + 1.5), K.IRON_D, grain="z")      # the strap's two arms
-        m.tube("y", (0.0, off), y - 1.5, y - 0.5, 1.75, PORCELAIN, sides=8)
-        m.tube("y", (0.0, off), y - 0.5, y + 0.5, 1.0, PORCELAIN, sides=8)                   # the waist
-        m.tube("y", (0.0, off), y + 0.5, y + 1.5, 1.75, PORCELAIN, sides=8)
-    return m
-
-
-def _drop():
-    """The engine's steam pipe while props/pipes is not in the tree: a plain iron pipe along +z, 48
-    long, stretched between two points."""
-    m = M.Model(PREFIX + "drop")
-    m.tube("z", (0, 0), 0.0, 48.0, DROP_R, PIPE, sides=8)
-    return m
-
-
-def _flange():
-    """A pair of bolted flanges on that pipe. Anchor: on the axis (z), between the two."""
-    m = M.Model(PREFIX + "flange")
-    m.tube("z", (0, 0), -1.5, -0.25, DROP_R + 2.0, K.IRON, sides=8)
-    m.tube("z", (0, 0), 0.25, 1.5, DROP_R + 2.0, K.IRON, sides=8)
-    m.tube("z", (0, 0), -0.25, 0.25, DROP_R + 1.0, K.IRON_D, sides=8)
-    return m
-
-
-def _valve():
-    """The stop valve on that pipe: a globe body between two flanges on the axis z, the bonnet, the
-    brass stem and the red handwheel out along +y. Anchor: the middle of the globe."""
-    m = M.Model(PREFIX + "valve")
-    body = DROP_R + 1.5
-    m.ball((0.0, 0.0, 0.0), body, K.IRON_D, sides=8, layers=3)
-    for z0, z1 in ((-body - 1.5, -body + 0.5), (body - 0.5, body + 1.5)):
-        m.tube("z", (0, 0), z0, z1, DROP_R + 2.0, K.IRON, sides=8)
-    m.tube("y", (0, 0), body - 1.0, body + 2.0, 2.0, K.IRON_D, sides=8)                     # the bonnet
-    m.tube("y", (0, 0), body + 2.0, body + 6.5, 0.5, K.BRASS, sides=4)                      # the stem
-    wheel = body + 5.5
-    m.ring("y", (0.0, wheel, 0.0), 4.0, 1.0, 1.0, RED, sides=12)
-    m.box((-3.5, wheel - 0.5, -0.5), (3.5, wheel + 0.5, 0.5), RED)
-    m.box((-0.5, wheel - 0.5, -3.5), (0.5, wheel + 0.5, 3.5), RED)
-    return m
-
-
-def _gauge():
-    """The pressure gauge on that pipe: a boss, a turn of small pipe, a brass case, the cream dial with
-    three luminous marks and the needle. Anchor: the tapping, on the pipe's skin; the stalk stands out
-    along +y, the dial looks along +z."""
-    m = M.Model(PREFIX + "gauge")
-    m.tube("y", (0, 0), -0.5, 1.5, 1.0, K.IRON_D, sides=8)
-    m.tube("y", (0, 0), 1.5, 4.0, 0.5, K.BRASS_D, sides=4)
-    yc = 6.5
-    m.tube("z", (0, yc), -1.0, 1.0, 3.0, K.BRASS, sides=12)
-    m.tube("z", (0, yc), 1.0, 1.25, 2.25, K.flat("cream", 3), sides=12, cap=K.flat("cream", 3))
-    m.box((-0.5, yc - 0.5, 1.25), (0.5, yc + 2.0, 1.5), K.flat("iron", 0), rot=("z", 40.0, (0.0, yc, 1.25)))
-    for x, y in ((0.0, yc + 1.5), (1.5, yc), (-1.5, yc)):
-        m.box((x - 0.5, y - 0.5, 1.25), (x + 0.5, y + 0.5, 1.4), K.flat("phosphor", 2), emit=10, shade=False)
-    return m
-
-
 def _toolboard():
     """A board of tools on the wall by the door: three spanners and a hammer on their pegs, a shelf
     under them with the oil can and a wad of cotton waste. Anchor: on the wall, the middle of the
@@ -412,38 +334,15 @@ def _oilcan():
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    built = [_coal(), _cable(), _rack(), _drop(), _flange(), _valve(), _gauge(), _toolboard(), _oilcan()]
+    built = [_coal(), _toolboard(), _oilcan()]
     return {m.name: m for m in built}
 
 
 def models():
-    """The room's own models: the coal in its bin, the power cable and the insulator rack, the tool
-    board and the oil can, and what stands in for props/pipes on the engine's steam pipe (the pipe,
-    its flanges, the stop valve, the gauge). The lamps are props/lamps', the machines the machines
-    line's."""
+    """The room's own models: the coal in its bin, the tool board, the oil can. The lamps, the
+    pipe fittings, the insulators and the cable, the desk and the telephone are the props line's,
+    the machines the machines line's."""
     return dict(_models())
-
-
-def their_models():
-    """The models of the other props packages' pieces the room places: what a test scene packs
-    besides the lamps and the room's own (the master scene collects every package's itself)."""
-    out = {}
-    for package in ("furniture", "paper", "pipes"):
-        module = theirs("props", package)
-        if module is not None:
-            out.update(module.models())
-    return out
-
-
-def _pipes():
-    """props/pipes, when it is in the tree and has the pieces the steam pipe is made of."""
-    pipes = theirs("props", "pipes")
-    spec = getattr(pipes, "SPEC", {})
-    if pipes is None or not all(hasattr(pipes, f) for f in ("run", "place")):
-        return None
-    if not all(kind in spec for kind in ("main_l", "flange_l", "valve_l", "gauge")):
-        return None
-    return pipes
 
 
 # ---- the room ----------------------------------------------------------------------------------------------
@@ -517,41 +416,31 @@ def build_powerhouse(c, origin=(0, 0, 0), roles=B, machines=None):
     for x, y, z in hangers():
         put(x, y, z, st(roles.IRON_PIPE, axis="y"))
 
-    # ---- the engine's steam pipe: from under the main's last block down to the inlet flange, the stop
-    # valve over the governor with its wheel to the door, the gauge over it. props/pipes' pieces when
-    # that package is in the tree, the room's own until then
-    top = (STEAM_IN[0], float(MAIN_Y), STEAM_IN[2])
-    valve, gauge = (STEAM_IN[0], VALVE_Y, STEAM_IN[2]), (STEAM_IN[0] - DROP_R * PX, GAUGE_Y, STEAM_IN[2])
-    pipes = _pipes()
-    if "engine" not in there:
-        pass
-    elif pipes is not None:
-        n += pipes.run(c, top, STEAM_IN, "main_l", origin=origin)
-        n += pipes.place(c, "flange_l", (top[0], top[1] - 2 * PX, top[2]), along="down", out="north", origin=origin)
-        n += pipes.place(c, "flange_l", (STEAM_IN[0], STEAM_IN[1] + PX, STEAM_IN[2]), along="down", out="north", origin=origin)
-        n += pipes.place(c, "valve_l", valve, along="down", out="north", origin=origin)
-        n += pipes.place(c, "gauge", gauge, along="down", out="west", origin=origin)
-    else:
-        n += span(own[PREFIX + "drop"], top, STEAM_IN)
-        upright = (("x", -90.0),)                   # the model's z up, its y to the north
-        for y in (top[1] - 2 * PX, STEAM_IN[1] + 1.5 * PX):
-            n += K.put(c, own[PREFIX + "flange"], (top[0], y, top[2]), yaw=0.0, turns=upright, origin=origin)
-        n += K.put(c, own[PREFIX + "valve"], valve, yaw=0.0, turns=upright, origin=origin)
-        # the gauge's stalk to the west, its dial to the door
-        n += K.put(c, own[PREFIX + "gauge"], gauge, yaw=0.0, turns=(("z", 90.0), ("x", 180.0)), origin=origin)
+    # ---- the engine's steam pipe (props/pipes): from the inlet flange up into the main's last block,
+    # the stop valve over the governor with its wheel to the door, the gauge over it with its dial
+    # to the door. The pipe stands, and is lit, at the engine's end
+    if "engine" in there:
+        top = (STEAM_IN[0], float(MAIN_Y), STEAM_IN[2])
+        skin = pipes.BORE[DROP] * PX
+        n += pipes.run(c, STEAM_IN, top, "main_" + DROP, origin=origin)
+        for y in (STEAM_IN[1] + 2 * PX, top[1] - 2 * PX):
+            n += pipes.place(c, "flange_" + DROP, (top[0], y, top[2]), along="up", out="north", origin=origin)
+        n += pipes.place(c, "valve_" + DROP, (top[0], VALVE_Y, top[2]), along="up", out="north", origin=origin)
+        n += pipes.place(c, "gauge", (top[0] - skin, GAUGE_Y, top[2]), along="up", out="west", origin=origin)
 
-    # ---- the cables: dynamo, rack by the dynamo, rack by the main, the board's lead-ins. The west
-    # terminal takes the lower insulator, so the two never cross
-    cable = own[PREFIX + "cable"]
-    seat_x = WEST + SEAT
-    wired = {"engine", "board"} <= there
-    for z in RACK_Z if wired else ():
-        n += K.put(c, own[PREFIX + "rack"], (WEST, RACK_Y[0], z), mount="wall", facing="east", origin=origin)
-    low, high = sorted(POWER_OUT), sorted(LEAD_IN, key=lambda p: -p[2])
-    for terminal, y, lead in zip(low, RACK_Y, high) if wired else ():
-        way = [terminal] + [(seat_x, y, z) for z in RACK_Z] + [lead]
-        for a, b in zip(way, way[1:]):
-            n += span(cable, a, b)
+    # ---- the cables (props/electrics): dynamo, the pier by the dynamo, the pier by the main, the
+    # board's lead-ins; a pin insulator under each cable on each pier. The west terminal takes the
+    # lower line, so the two never cross
+    if {"engine", "board"} <= there:
+        cable = electrics.models()[electrics.PREFIX + "cable"]
+        wire_x = WEST + electrics.WIRE_OUT
+        low, high = sorted(POWER_OUT), sorted(LEAD_IN, key=lambda p: -p[2])
+        for terminal, y, lead in zip(low, WIRE_Y, high):
+            for z in WIRE_Z:
+                n += electrics.place(c, "insulator", (WEST, y - electrics.WIRE_UP, z), facing="east", origin=origin)
+            way = [terminal] + [(wire_x, y, z) for z in WIRE_Z] + [lead]
+            for a, b in zip(way, way[1:]):
+                n += span(cable, a, b, thick=WIRE)
 
     # ---- the coal, the tools, the oil can
     n += K.put(c, own[PREFIX + "coal"], (COAL_AT[0], FEET, COAL_AT[1]), yaw=0.0, origin=origin)
@@ -564,22 +453,17 @@ def build_powerhouse(c, origin=(0, 0, 0), roles=B, machines=None):
         put(x, EAVES, north, st(roles.IRON_RIVETED.stairs, facing="north", half="top"))
         put(x, EAVES, Z1, st(roles.IRON_RIVETED.stairs, facing="south", half="top"))
 
-    # ---- the engineer's desk in the north-west corner: props/furniture's, or a board until it is in
-    # the tree; the green lamp on it
-    furniture, paper = theirs("props", "furniture"), theirs("props", "paper")
+    # ---- the engineer's desk in the north-west corner (props/furniture, props/paper), the green lamp on it
     desk_x, desk_z = WEST + 0.4375, DESK_Z[1] + 0.0
-    if furniture is not None and hasattr(furniture, "place"):
-        n += furniture.place(c, "writing_desk", (desk_x, FEET, desk_z), facing="east", origin=origin)
-        n += furniture.place(c, "swivel_chair", (desk_x + 1.075, FEET, desk_z), yaw=K.FACING["west"] + 20.0, origin=origin)
-        desk_top = FEET + furniture.TOP["writing_desk"]
-    else:
-        for z in range(DESK_Z[0], DESK_Z[1] + 1):
-            put(X0, FEET, z, st(roles.DARK_WOOD.slab, type="top"))
-        desk_top = FEET + DESK_TOP
-    if paper is not None and hasattr(paper, "place") and furniture is not None:
-        n += paper.place(c, "logbook", (desk_x + 0.1, desk_top, desk_z + 0.25), yaw=K.FACING["east"] + 8.0, origin=origin)
+    desk_top = FEET + furniture.TOP["writing_desk"]
+    n += furniture.place(c, "writing_desk", (desk_x, FEET, desk_z), facing="east", origin=origin)
+    n += furniture.place(c, "swivel_chair", (desk_x + 1.075, FEET, desk_z), yaw=K.FACING["west"] + 20.0, origin=origin)
+    n += paper.place(c, "logbook", (desk_x + 0.1, desk_top, desk_z + 0.25), yaw=K.FACING["east"] + 8.0, origin=origin)
     offer((X0, FEET + 1, DESK_Z[0]), DESK_LAMP, "desk lamp")
     n += lamps.place(c, "desk_green", (X0 + 0.45, desk_top, DESK_Z[0] + 0.5), facing="east", origin=origin, light=False)
+    # the telephone to the observatory and the bell over it, on the pier between the desk and the board
+    n += electrics.place(c, "wall_phone", (WEST, PHONE_Y, PHONE_Z), facing="east", origin=origin)
+    n += electrics.place(c, "bell", (WEST, PHONE_Y + 2.25, PHONE_Z), facing="east", origin=origin)
 
     # ---- the lamps. Over the engine: one under each girder, in a row; each of the engine's cells gets
     # the same light, offered in the cell itself
