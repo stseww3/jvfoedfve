@@ -1,0 +1,13 @@
+  obs_main_facade_c: 191104 blocks, 1217 entities (3 s)
+  obs_main_facade_c: resource pack written to /tmp/c164pack-t32_gz02 (7 s)
+  obs_main_facade_c: water: 0 sources, 0 cells of running water (7 s)
+  obs_main_facade_c: grid 432 x 98 x 419, 191104 blocks, 42657 entity boxes (18 s)
+  obs_main_facade_c: 296 states -> 543 looks, 1096 boxes, 557 pictures (18 s)
+  obs_main_facade_c: light done (18 s)
+  obs_main_facade_c: left to the game (no item display, these pictures do not show them): minecraft:text_display x59
+  obs_main_facade_c: v2_axis (tick 14000, 3 s)
+  obs_main_facade_c: v4_entrance (tick 14000, 5 s)
+  obs_main_facade_c: v1_far (tick 14000, 3 s)
+  obs_main_facade_c: arcade (tick 14000, 4 s)
+[FAIL] selfshots obs_main_facade_c at 4f9ea25f: 3 of 4 kept pictures are what the code draws, 1 not
+                v1_far: 10236 of 921600 pixels are not what the code draws (off by up to 69 of 255)

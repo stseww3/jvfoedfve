@@ -1,0 +1,20 @@
+gate main/facade 512dcc10: the merged tree 4f9ea25f, the assembly as it was 7fda4e45
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 104 scenes in 181 s: 104 pass (57 with warnings)
+pictures: obs_main_facade: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_main_facade at 4f9ea25f: 7 of 12 kept pictures are what the code draws, 5 not
+    v1_far: 10236 of 921600 pixels are not what the code draws (off by up to 69 of 255)
+    v7_door: 1 of 921600 pixels are not what the code draws (off by up to 10 of 255)
+    oblique: 3 of 921600 pixels are not what the code draws (off by up to 25 of 255)
+    roofs: 1959 of 921600 pixels are not what the code draws (off by up to 56 of 255)
+    west: 2 of 921600 pixels are not what the code draws (off by up to 9 of 255)
+pictures: obs_main_facade_a: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_main_facade_a at 4f9ea25f: 3 of 4 kept pictures are what the code draws, 1 not
+    v1_far: 10236 of 921600 pixels are not what the code draws (off by up to 69 of 255)
+pictures: obs_main_facade_c: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_main_facade_c at 4f9ea25f: 3 of 4 kept pictures are what the code draws, 1 not
+    v1_far: 10236 of 921600 pixels are not what the code draws (off by up to 69 of 255)
+pictures: obs_main_facade_nocrown: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_main_facade_nocrown at 4f9ea25f: 4 of 5 kept pictures are what the code draws, 1 not
+    v1_far: 10236 of 921600 pixels are not what the code draws (off by up to 69 of 255)
+result: PASS

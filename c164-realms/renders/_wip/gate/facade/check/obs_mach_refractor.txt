@@ -1,0 +1,15 @@
+check obs_mach_refractor at 4f9ea25
+[PASS] regen     9552 blocks, 10 entities, 9 models, 723 resource-pack files, 28 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.2 s)
+[PASS] conflicts the scene writes 722 files, no file written twice, the folders and the prefix of machines are kept (14 packages run alone)
+[PASS] strays    138 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      547 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    21 kinds of block placed, 18 barrier cells (x 3..5, y 18..19, z -1..1), all in the occupancy table
+[PASS] flatwall  no wall face runs flat over more than 5x5
+[PASS] entities  10 display entities
+[PASS] views     26 shots, most display entities in view: 6 (north_a), limit 600; counted without what walls hide; the game draws up to 10 (south_a): a display entity without width and height is drawn outside the view too
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    8 parts and 0 points on 2 chains, 18 function files; 8 commands in the busiest tick (limit 120), 0.6 a tick on average (limit 40)
+                 chain of 32 ticks: 4 functions, 14 commands a cycle, starts 1 ticks after start
+                 chain of 480 ticks: 8 functions, 57 commands a cycle, starts 2 ticks after start
+result: PASS (0 failed, 0 with warnings)
