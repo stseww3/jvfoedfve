@@ -62,7 +62,8 @@ IRON, IRON_D = K.IRON, K.IRON_D
 COPPER = K.COPPER
 PAPER = K.flat("cream", 2)              # paper under a lamp: a tone under the lightest, or it is a white dot from the door
 PAPER_EDGE = K.flat("cream", 1)
-INK = P.RAMPS["enamel"][1]              # what a pen and a printing wheel leave: the blue of the paper line's headings
+INK = P.RAMPS["enamel"][2]              # what the printing wheel leaves on the tape: the blue of the paper line's headings
+TRACE_INK = P.RAMPS["enamel"][3]        # the pen's line on the sheet: thinner than a pixel, so a tone lighter
 
 # ---- the drum chronograph (pixels; x runs along the drum, the front is +z, 0 the middle of the foot)
 BASE = (22.0, 12.0, 2.0)                # the wooden base: wide, deep, high
@@ -171,7 +172,7 @@ def _drum():
     name = PREFIX + "drum"
     half = (SHEET[1] - SHEET[0]) / 2.0
     width, radius = FLANGE
-    trace = Sprite(name + "_trace", list(TRACE), dict(i=INK), back=PAPER)
+    trace = Sprite(name + "_trace", list(TRACE), dict(i=TRACE_INK), back=PAPER)
     m = M.Model(name)
     _prism(m, -half, half, (0.0, 0.0), DRUM_R, PAPER, PAPER_EDGE, faces={"s": trace, "n": trace.mirrored()})
     for s in (-1.0, 1.0):
