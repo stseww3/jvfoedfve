@@ -39,7 +39,7 @@ checks them on the bay and on the bay beside its mirror image, as the room has i
 from artkit.blocks import st
 from artkit.canvas import Canvas
 
-from scenes.obs import materials
+from scenes.obs import materials, sky
 from scenes.obs.common import blocks as B
 from scenes.obs.materials import _board, panels
 
@@ -175,7 +175,8 @@ def build():
 
 
 def write_pack(pack_dir):
-    return materials.pack(pack_dir)
+    """The panels, and the map's sky: the bay and the posts stand in the open under it."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
 
 
 def shots():
