@@ -72,6 +72,7 @@ from artkit import models as M
 from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
+from ..motion import _kit as MK
 from ..props import _kit as K
 
 PREFIX = "mach_dome_"
