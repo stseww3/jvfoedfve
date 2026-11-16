@@ -4,7 +4,9 @@
 The geometry is main/_dome.py; this module is the package the category finds. It lays the drum
 from the rotunda's cornice up (y 16), the gallery, the dome and what shuts the slit. One block
 thick: the room inside is interiors', the track's rollers and the shutter's chains are machines',
-the round frames of the windows are props', the two door leaves the roof's.
+the round frames of the windows are props', the two door leaves the roof's. By either door of
+the dome room hangs one of the props line's caged lamps (_dome.door_lamps()): the way over the
+roofs begins and ends at those doors, and the room behind them has no lamp to walk by.
 
 Two versions (VERSION); the map is built with b, the director's choice of 11-16, and a is kept.
 The test scene obs_main_dome shows the map's version, obs_main_dome_a the other, obs_main_dome_slit
@@ -45,9 +47,18 @@ def _glass(front, bay, storey):
 
 
 def build(canvas, origin=(0, 0, 0), version=None, slit=None):
-    """The drum, the gallery, the dome and what shuts its slit. No display entities."""
+    """The drum, the gallery, the dome and what shuts its slit; a caged lamp at either door of the
+    dome room, where the props line's lamps are in the tree. Returns the number of display
+    entities: the lamps."""
     D.build(canvas, origin, glass=_glass, version=version or VERSION, slit=slit or SLIT)
-    return 0
+    try:
+        from ..props import lamps
+    except ImportError:
+        return 0
+    n = 0
+    for at, facing, _source in D.door_lamps(D.plan()):
+        n += lamps.place(canvas, "cage", at, facing=facing, origin=origin, version="a", level=D.DOOR_LAMP)
+    return n
 
 
 # --- self-check and drawings ----------------------------------------------------------------------------
@@ -182,6 +193,16 @@ def check():
                             out.append(f"{tag} doors: something stands in the doorway at ({x}, {y}, {z})")
             if len(D.doors(p)) != len(D.DOORS["cells"]):
                 out.append(f"{tag} doors: {len(D.doors(p))} doorways, not {len(D.DOORS['cells'])}")
+            #    a lamp to each door: the wall it hangs on stands in the row over the door's head,
+            #    and the cell of its source, over where one stands before the door, is free
+            lit = D.door_lamps(p)
+            if len(lit) != len(D.DOORS["cells"]):
+                out.append(f"{tag} doors: {len(lit)} lamps, not one to a door")
+            for (ax, ay, az), _facing, (sx, sy, sz) in lit:
+                wall = (int(2 * ax - sx - 1), int(2 * az - sz - 1))
+                if not c.has(wall[0], sy, wall[1]) or c.has(sx, sy, sz):
+                    out.append(f"{tag} doors: the lamp at ({ax}, {ay}, {az}) has no wall behind it, or the cell of "
+                               f"its source is taken")
             for x, z in p.core:
                 if any(c.has(x, y, z) for y in range(D.ATTIC, D.SKIRT_Y + 1)):
                     out.append(f"{tag} room: something stands inside the inner leaf at ({x}, {z})")
