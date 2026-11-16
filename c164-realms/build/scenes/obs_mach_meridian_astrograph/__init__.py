@@ -187,9 +187,11 @@ def shots():
       hut_court     from the court, due south of the door: the hut and what shows in its slot
       hut_rail      from the south-east corner, down along the railing's south run: the bars, where
                     they cross the brass line, the return to the east pier
+      hut_line, hut_line_north   in the doorway and against the north wall, down along the
+                    meridian towards the instrument: the brass line passing under the railing
 
     The dome:
-      dome_door     a step inside the west door (its leaf is shut) and a step to the south, the eye just
+      dome_door     a step inside the west door (its leaf stands open) and a step to the south, the eye just
                     under the pivot: the column and its head, the tube overhead and its hoops
       dome_south    from the south wall: the tube side on, the mount behind it
       dome_north    from the north wall: the head, the declination circle, the counterweights
@@ -235,6 +237,8 @@ def shots():
     shot("hut_sight", (far[0] + 0.9, far[1] + 0.3, far[2]), o)
     shot("hut_court", (door_x + 0.5, S.GROUND + eye, door_z + 11.5), (door_x + 0.5, S.GROUND + 2.2, HUT_Z + 0.5))
     shot("hut_rail", (east - 0.5, S.GROUND + eye, hi - 0.6), (a[0] - 1.0, S.GROUND + 0.5, a[2] + 0.9))
+    shot("hut_line", (door_x + 0.5, S.GROUND + eye, door_z + 0.35), (a[0], S.GROUND + 0.1, a[2] + 0.9))
+    shot("hut_line_north", (a[0], S.GROUND + eye, lo + 0.25), (a[0], S.GROUND + 0.1, a[2] - 0.9))
 
     # the dome
     p = astro.pivot()

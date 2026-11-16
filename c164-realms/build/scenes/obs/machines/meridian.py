@@ -22,6 +22,9 @@ middle of the hut (site/outbuildings), under the slot in the roof:
                hollow pivot onto the wires. The one light in the hut.
   the railing  a low iron railing round it all, two cells north and south of the piers' row and
                back to each pier: one walks round the instrument, not through it (railing()).
+  the line     where the railing crosses the meridian its bars stand in a cell of the hut's brass
+               line; a length of the line lies under them there, so the line runs unbroken from
+               the door to the north wall (line_under()).
 
 It is set on the pole star: due north, as high as the place's latitude (the evening's first
 reading, which says whether the axis still lies east and west). The tube is as long as the axis
@@ -38,8 +41,10 @@ What the other lines read (scene coordinates; give the origin to have it added):
     meridian.sweep()       (centre, radius) of the ball the tube and the circles never leave
     meridian.lamp_cell()   the cell the lamp's light is offered in (LAMP_LEVEL)
     meridian.railing()     the cells of the railing round it (blocks; a room keeps them free)
+    meridian.line_under()  the railing's cells on the meridian, where the line is a model
     meridian.ALTITUDE      degrees the tube looks up, due north
-    meridian.BRIGHTNESS    the light every piece is shown in, whatever cell it stands in
+    meridian.BRIGHTNESS    the light every piece is shown in, whatever cell it stands in (the
+                           line under the railing has none: it is lit as the floor's line is)
 
 The pieces that turn are models of their own, each anchored on the axis: the tube and the two
 circles turn together about their model's x (plan 7.1). This round they stand still (plan/parts/
@@ -535,14 +540,40 @@ def _lamp():
     return d.model
 
 
+# ---- the line under the railing -----------------------------------------------------------------------------
+# The hut's brass line is a block that takes its whole cell (B.BRASS_LINE, site/outbuildings lays
+# it), and where the railing crosses the meridian the bars take that cell. The meridian is what the
+# instrument is for, so the line goes on under the bars as a piece of the instrument: one cell's
+# length of it, drawn to the numbers of the block's picture (materials/brass_oldcopper_small._line:
+# two texels of trodden old copper down the middle of the cell, a hairline of slate either side)
+# and as high over the floor as the game draws a rail.
+LINE = P.mat("old_copper", kind="plain", noise=0.5, bevel=0, base=0)    # the darkest step, one texel in four the next
+LINE_JOINT = flat("slate", 2)
+LINE_BODY = (7.0, 9.0)          # texels from the cell's west side: the metal
+LINE_EDGE = 1.0                 # the hairline of shadow either side of it
+LINE_UP = 1.0                   # texels over the floor: where the game draws a rail's picture
+LINE_SCALE = 1.0
+LINE_ANCHOR = (8.0, 8.0, 8.0)   # the middle of the cell: the entity stands there and takes that cell's light
+
+
+def _line():
+    """One cell's length of the line, north to south, lying on the floor of its cell."""
+    d = Draw(PREFIX + "line", LINE_SCALE, anchor=LINE_ANCHOR)
+    lo, hi = LINE_BODY
+    d.box((lo, 0.0, 0.0), (hi, LINE_UP, 16.0), LINE, skip="dwe")
+    d.box((lo - LINE_EDGE, 0.0, 0.0), (lo, LINE_UP, 16.0), LINE_JOINT, skip="de")
+    d.box((hi, 0.0, 0.0), (hi + LINE_EDGE, LINE_UP, 16.0), LINE_JOINT, skip="dw")
+    return d.model
+
+
 # ---- the package --------------------------------------------------------------------------------------------
 SCALE = {PREFIX + "tube": TUBE_SCALE, PREFIX + "circle": CIRCLE_SCALE, PREFIX + "pier": PIER_SCALE,
-         PREFIX + "lamp": LAMP_SCALE}
+         PREFIX + "lamp": LAMP_SCALE, PREFIX + "line": LINE_SCALE}
 
 
 @functools.lru_cache(maxsize=None)
 def _built():
-    return {m.name: m for m in (_tube(), _circle(), _pier(), _lamp())}
+    return {m.name: m for m in (_tube(), _circle(), _pier(), _lamp(), _line())}
 
 
 def models():
@@ -600,8 +631,9 @@ def railing(origin=(0, 0, 0)):
     ball the tube and the circles turn in (sweep()): nothing that turns can meet them, and the eye
     end comes down between the rails. A row nearer would cross the tube itself. Bars do not join
     a barrier, so a return ends in its post, less than SQUEEZE short of the pier. Where the rows
-    cross the meridian they stand in the cell of the brass line. A pier that does not stand in
-    the middle of a cell (the bench of the test scene) gets none.
+    cross the meridian they stand in the cell of the brass line, which goes on under them as a
+    model (line_under()). A pier that does not stand in the middle of a cell (the bench of the
+    test scene) gets none.
     """
     feet = piers(origin)
     if any(abs(x % 1.0 - 0.5) > 1e-6 or abs(z % 1.0 - 0.5) > 1e-6 or abs(y - round(y)) > 1e-6 for x, y, z in feet):
@@ -631,6 +663,18 @@ def rail_runs(origin=(0, 0, 0)):
     return out
 
 
+def line_under(origin=(0, 0, 0)):
+    """The cells where a length of the brass line lies under the railing (cr3, 11-16: the line is
+    not to break at the railing's foot): the railing's cells in the meridian's column."""
+    column = int(math.floor(axis(origin)[0]))
+    return [cell for cell in railing(origin) if cell[0] == column]
+
+
+def _line_at(cell):
+    """Where the line's piece for a cell stands: the cell's middle (LINE_ANCHOR)."""
+    return tuple(cell[i] + LINE_ANCHOR[i] / 16.0 for i in range(3))
+
+
 def build(canvas, origin=(0, 0, 0), lamp=True, brightness=BRIGHTNESS):
     """Stand the transit circle in the meridian hut. Returns the number of display entities.
 
@@ -644,6 +688,9 @@ def build(canvas, origin=(0, 0, 0), lamp=True, brightness=BRIGHTNESS):
         canvas.set(*cell, B.BARRIER, keep=True)
     for cell in railing(origin):
         canvas.set(*cell, RAIL)
+    for cell in line_under(origin):
+        # no brightness of its own: it is lit by its cell, as the line's blocks north and south of it are
+        n += put(canvas, built[PREFIX + "line"], _line_at(cell), WORLD, LINE_SCALE, brightness=None)
     if lamp:
         try:
             from ..sky import _lightkit as L
@@ -760,6 +807,25 @@ def check():
             out.append(f"railing: {len(beside)} of its cells stand against the pier at ({x:g}, {z:g}), two close the pen")
     if 0.5 - RAIL_HALF >= SQUEEZE:
         out.append(f"railing: a return ends {0.5 - RAIL_HALF:g} short of its pier, a person passes {SQUEEZE:g}")
+    # 8. the line under the railing: a length of it in every cell where the railing crosses the
+    #    meridian, north and south of the axis; it lies in its own cell from end to end, so the
+    #    blocks of the line meet it on both sides, on the floor and as high as a rail's picture;
+    #    its metal lies about the meridian
+    under = line_under()
+    column = int(math.floor(axis()[0]))
+    if rail and sorted(c[2] < axis()[2] for c in under) != [False, True]:
+        out.append(f"line: it lies under the railing in {under}, the railing crosses the meridian north and south of the axis")
+    for cell in under:
+        pts = [p for _, p in corners(built[PREFIX + "line"], _line_at(cell), WORLD, LINE_SCALE)]
+        lo = [min(p[i] for p in pts) for i in range(3)]
+        hi = [max(p[i] for p in pts) for i in range(3)]
+        want_lo = (cell[0] + (LINE_BODY[0] - LINE_EDGE) / 16.0, float(cell[1]), float(cell[2]))
+        want_hi = (cell[0] + (LINE_BODY[1] + LINE_EDGE) / 16.0, cell[1] + LINE_UP / 16.0, cell[2] + 1.0)
+        if any(abs(lo[i] - want_lo[i]) > 1e-6 or abs(hi[i] - want_hi[i]) > 1e-6 for i in range(3)):
+            out.append(f"line: the piece in {cell} lies from {tuple(round(v, 4) for v in lo)} to "
+                       f"{tuple(round(v, 4) for v in hi)}, not from {want_lo} to {want_hi}")
+    if abs(sum(LINE_BODY) / 2.0 - 8.0) > 1e-6 or abs(column + sum(LINE_BODY) / 32.0 - axis()[0]) > 1e-6:
+        out.append(f"line: its metal, {LINE_BODY[0]:g} to {LINE_BODY[1]:g} texels across the cell, does not lie about the meridian")
     return out
 
 
@@ -771,7 +837,8 @@ def report():
              f"lamp: cell {lamp_cell()}, level {LAMP_LEVEL}",
              f"barriers: {barriers()}",
              f"railing: {len(railing())} cells of {RAIL}, {railing()}",
-             f"{len(placed())} display entities"]
+             f"line under the railing: {line_under()}",
+             f"{len(placed()) + len(line_under())} display entities"]
     for name, model in _built().items():
         lo, hi = model.bounds()
         lines.append(f"  {name}: scale {SCALE[name]:g}, {len(model.parts)} boxes, "
@@ -785,5 +852,5 @@ if __name__ == "__main__":
         print("\n".join(report()))
     print("self-check: " + ("; ".join(findings) if findings else
                             "sizes, the room, the turn over the floor, the circles, the microscopes, the slot, "
-                            "the barriers and the railing -- all good"))
+                            "the barriers, the railing and the line under it -- all good"))
     sys.exit(1 if findings else 0)
