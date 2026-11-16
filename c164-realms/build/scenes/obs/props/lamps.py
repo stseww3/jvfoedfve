@@ -491,7 +491,7 @@ _REPORTED = {
     ("site.court", "lip_lamps"): [(60, -18), (60, -26), (60, -34), (60, 18), (60, 26), (60, 34)],
     ("site.powerhouse", "PIPE_Z"): 33,      # c228: the row of the steam main, where its bridge crosses the lip
     ("site._kit", "PIER_TOP"): 1.5,
-    ("site.outbuildings", "LAMP_POINTS"): {"hut_door": (37.5, 2.5, -25.0), "tower_foot": (-14.5, 0.5, -32.0)},
+    ("site.outbuildings", "LAMP_POINTS"): {"hut_door": (37.5, 2.5, -25.0), "tower_foot": (-14.5, 1.5, -32.0)},
     # c226 (37fc9574): the hanging point under the ridge of the cable station's glass roof
     ("site.cablecar", "LAMP_POINTS"): {"car": (89.5, 3.0, -32.5)},
     # c246, g2 #33389: the cells off the corners of the armillary's base, and the cell its brass is lit by
