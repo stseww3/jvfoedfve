@@ -1,0 +1,24 @@
+a0job 1116-041936-shell-f3-3067-23847: cursor/c164-shell-f3-3067 @ 3944c14a on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.66 1.68 1.66, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- env PYTHONPATH=build python -m scenes.obs.main.shell check && python tools/check.py --scene obs_main_shell ---- exit 0, 2 s, last 30 lines of 14:
+self-check: inside the walls, the pier untouched, both stairs walkable, every room reached
+check obs_main_shell at 3944c14
+[PASS] regen     102858 blocks, 4 entities, 6 models, 706 resource-pack files, 43 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.2 s)
+[PASS] conflicts the scene writes 705 files, no file written twice, the folders and the prefix of main are kept (1 package run alone)
+[PASS] strays    135 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      541 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    45 kinds of block placed, all in the occupancy table
+[PASS] flatwall  no wall face runs flat over more than 5x5
+[PASS] entities  4 display entities, 1 shown through a matrix that is no turn, no face stretched, 2 models never placed
+[PASS] views     34 shots, most display entities in view: 4 (stair_foot), limit 600; counted without what walls hide; the game draws up to 4 (plan_dome): a display entity without width and height is drawn outside the view too
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    nothing moves
+result: PASS (0 failed, 0 with warnings)
+==== NODEJOB RESULT ====
+exit=0 secs=3 host=cursor cores=4 head=3944c14a commit=none pushed=no branch=cursor/c164-shell-f3-3067 files=0
+a0job: exit=0 secs=3
