@@ -1,5 +1,48 @@
 [
  {
+  "n": "B1",
+  "assembly": "3abd2789",
+  "at": "11-16 12:47",
+  "time": 20370,
+  "look": null,
+  "plain": {
+   "file": "c164-B1-plain.zip",
+   "bytes": 3386707,
+   "sha256": "7fbd2dc06a75292cff2f743486dc296f771f596691b5365db78f819c833cd963",
+   "shaders": 0,
+   "verified": true
+  },
+  "guide": true,
+  "title": "BLUE HOUR OBSERVATORY",
+  "bare": null,
+  "zip_bytes": 3365125,
+  "sha256": "8c0dc254f99158c9f38c9f56dc94a2f565a9fb1befee6e0dd385643b2ade976b",
+  "pack_bytes": 1839375,
+  "pack_files": 2453,
+  "standins": 0,
+  "shaders": 10,
+  "blocks": 191074,
+  "entities": 1256,
+  "others": {},
+  "tick_ms": 1.5,
+  "moving": 80,
+  "functions": 922,
+  "tags": 5,
+  "registry_files": 0,
+  "cloud": true,
+  "make_s": 31,
+  "verify_s": 89,
+  "checks": 51,
+  "failed": [],
+  "verified": true,
+  "console": 0,
+  "note": "第二轮头一版（在做的）：塔钟的针、报时球、风向标、卷扬机、浑天仪、大镜、桅顶灯在动；展示实体的可见距离分四档；骑着东西的人不被送回（给开场的火车留的）。还没有火车。",
+  "commit": "559a7329",
+  "light": 9.6,
+  "candidate": false,
+  "chosen": "A8"
+ },
+ {
   "n": "A8",
   "assembly": "8cddfa98",
   "at": "11-16 12:01",
@@ -36,7 +79,8 @@
   "console": 0,
   "note": "总装 8cddfa98（s2 12:00 报的头，checkall 过）。头一个带导览的：进服标题、六张星图；说明牌还没进总装。主包验了两遍：头一遍控制台有 1 条验证用的假玩家进服时的警告（记录留在 c164-A8.verify.first.*），第二遍全过",
   "commit": "5f0534ec",
-  "light": 10.0
+  "light": 10.0,
+  "candidate": true
  },
  {
   "n": "A7",
@@ -72,7 +116,8 @@
   "console": 0,
   "note": "总装 1a0f1af9（s2 11:35 报的头，checkall 过）。头一个存盘前等光照算完的存档",
   "commit": "7c66995e",
-  "light": 9.7
+  "light": 9.7,
+  "candidate": false
  },
  {
   "n": "A6",
@@ -107,7 +152,8 @@
   "verified": true,
   "console": 0,
   "note": "interiors 八间第一版全在（钟室、天文室，电池室和底片库的门洞开了），云海填了 (−19, 30) 的坑，山脊板撤了（远山在着色器里），发电房炉火窗开了，machines 的屏障和拦挡都销了。从这一版起不出 -look",
-  "commit": "7e1e9087"
+  "commit": "7e1e9087",
+  "candidate": false
  },
  {
   "n": "A5",
@@ -148,7 +194,8 @@
   "verified": true,
   "console": 0,
   "note": "第一个候选版。天由资源包里的 10 个着色器文件画（a2 的 sky/safe-look，Vulkan 真机验过）；旁边的 -plain 不带着色器，资源包加载失败时换它。总装头是 s2 09:57 报的绿头（89 个场景全过）：新 V7 和 V8、底片库的门洞、电池室第一版、时间室第三版、气象站和落日平台的走查修补、大台阶挡土墙",
-  "commit": "dac823bc"
+  "commit": "dac823bc",
+  "candidate": false
  },
  {
   "n": "A4",
@@ -181,7 +228,8 @@
   "verified": true,
   "console": 0,
   "note": "钟锁在 20370（彗星在正西 48 度高，总监 #71224）；总装头是 s2 09:28 报的绿头（78 个场景全过）：windows 再交、walk-out、furniture 第 2 轮、terrain 和 court 打磨、board、powerhouse 打磨、ironwork",
-  "commit": "524d5dce"
+  "commit": "524d5dce",
+  "candidate": false
  },
  {
   "n": "A3",
@@ -214,7 +262,8 @@
   "verified": true,
   "console": 0,
   "note": "正立面、远山、穹顶室、发电房室内进来了；「站到云海方块上送回」开了。钟还锁在 14000，彗星在正东、倒着。",
-  "commit": "912db4bd"
+  "commit": "912db4bd",
+  "candidate": false
  },
  {
   "n": "A2",
@@ -241,7 +290,8 @@
   "verified": true,
   "console": 0,
   "note": "索道站台和新云海进来了，V1 脚下有地。取的总装头带着后来被退回的窗（materials/windows），不要用。",
-  "commit": "80cc25a4"
+  "commit": "80cc25a4",
+  "candidate": false
  },
  {
   "n": "A1",
@@ -268,6 +318,7 @@
   "verified": true,
   "console": 0,
   "note": "V1 脚下还没有站台，人落到下平台上（低两格）。",
-  "commit": "c063e6ab"
+  "commit": "c063e6ab",
+  "candidate": false
  }
 ]
