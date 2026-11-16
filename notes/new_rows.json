@@ -3,5 +3,10 @@
   "sky",
   "ridges",
   "| safe-look（不带注册表文件的天：资源包的核心着色器） | P1 | 制作中 | a2 c322（帮手 comet c330、cloud c329、a1 c324） | — | — | 总监 11-16 06:54 加的卡（「不带注册表文件的备用天」），07:20 成了正路：Realms 不收注册表文件，天、雾、光色改由资源包的着色器带，`mood.py` 的 LOOKS 仍是唯一的数；着色器只有 a2 这一套。分支 `cursor/c164-a2-safelook-f3-695d`；a2 08:59 分的活在 `ROSTER.md`「帮手」一节（comet：远山进天的着色器，核彗星和星；cloud：远海的数）。收尾第 4 条（总监 09:12）。进了总装以后 s2 把 `check.py` regen 的放行表清空。 |"
+ ],
+ [
+  "machines",
+  "switchboard-boiler",
+  "| batteryboard（蓄电池室的配电板和铜排） | P3 | 已合并 | mast c346 | d4dfe8ca | `renders/obs_mach_batteryboard/`（离线图） | aide 11-16 派给 mast（#68848）：屋子归 astro c360（`interiors/batteryroom`），墙上那块配电板和汇过来的铜排跟 `machines/board` 是一家。模块 `machines/batteryboard.py` 没有 `build()`，主场景里自己不摆东西，由屋子来调；测试场景 `obs_mach_batteryboard`（一只替身盒子）。卡 `plan/packages/machines/batteryboard.md`。随 switchboard-boiler 的第二次交付进总装（cr3 09:25 合 d4dfe8ca），屏障 12 格随 26d70120。 |"
  ]
 ]

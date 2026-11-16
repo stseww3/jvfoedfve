@@ -4,14 +4,21 @@
 # and, for a merge, what it brought in by area, with the paths outside the package's own category
 # named; then the provenance of the new head. The head looked at is kept in head_seen.txt.
 #
+# Somebody who merges the assembly's head into his own line and pushes that (not the other way
+# round) turns the stretch of the assembly he took in into the second parent of his merge. Such a
+# merge ("merge the assembly ...") is opened: the commits on its second parent's line are listed as
+# if they stood on the first-parent line, so that no delivery's merge is lost from the ledger.
+#
 #   bash /tmp/c164_s2/watch.sh          list what is new and remember the head
 #   bash /tmp/c164_s2/watch.sh --peek   list only
 set -uo pipefail
 repo=/agent/repos/c164-s2-fable
 state=/tmp/c164_s2/head_seen.txt
+ledger=/tmp/c164_s2/ledger.tsv
 peek=0; [ "${1:-}" = "--peek" ] && peek=1
 cd "$repo" || exit 2
-git fetch -q origin cursor/c164-assembly-fable-a9f5 2>&1 | sed -E 's#https?://[^ ]+#<remote>#g'
+filt() { sed -E 's#https?://[^ ]+#<remote>#g'; }
+git fetch -q origin cursor/c164-assembly-fable-a9f5 2>&1 | filt
 head="$(git rev-parse FETCH_HEAD)"
 seen="$(cat "$state" 2>/dev/null || echo "")"
 if [ "$head" = "$seen" ]; then echo "head ${head:0:8}: nothing new"; exit 0; fi
@@ -20,17 +27,35 @@ if [ -z "$seen" ] || ! git merge-base --is-ancestor "$seen" "$head"; then
   exit 3
 fi
 echo "head ${seen:0:8} -> ${head:0:8}"
-for c in $(git rev-list --first-parent --reverse "$seen..$head"); do
+
+takes_in_the_assembly() {   # a merge whose subject says it merged the assembly into somebody's own line
+  git log -1 --format='%s' "$1" | grep -q -i -E 'merge (the )?assembly|merge (remote-tracking )?branch .*c164-assembly-fable'
+}
+
+walk() {                    # the commits after $1 up to $2, oldest first, such merges opened
+  local c parents
+  for c in $(git rev-list --first-parent --reverse "$1..$2"); do
+    parents=($(git rev-list --parents -n 1 "$c"))
+    if [ "${#parents[@]}" -ge 3 ] && takes_in_the_assembly "$c"; then
+      walk "${parents[1]}" "${parents[2]}"
+    fi
+    echo "$c"
+  done
+}
+
+for c in $(walk "$seen" "$head"); do
   parents=($(git rev-list --parents -n 1 "$c")); n=$(( ${#parents[@]} - 1 ))
-  echo "---- $(git log -1 --format='%h %ad %s' --date=format:'%H:%M' "$c" | sed -E 's#https?://[^ ]+#<remote>#g' | cut -c1-150)"
-  if [ "$n" -ge 2 ]; then
+  echo "---- $(git log -1 --format='%h %ad %s' --date=format:'%H:%M' "$c" | filt | cut -c1-150)"
+  if [ "$n" -ge 2 ] && takes_in_the_assembly "$c"; then
+    echo "     took in the assembly's line up to ${parents[2]:0:8} (its commits are listed above); his own side is on the first-parent line"
+  elif [ "$n" -ge 2 ]; then
     second="${parents[2]}"
     if [ "$peek" = 0 ]; then
       # the ledger STATUS is written from: time (UTC), who merged, what, the delivered commit, the merge
-      git log -1 --format='%ad%x09%s' --date=format:'%m-%d %H:%M' "$c" | sed -E 's#https?://[^ ]+#<remote>#g' \
-        | awk -F'\t' -v m="${c:0:8}" -v d="${second:0:8}" '{ who=$2; sub(/:.*/, "", who); what=$2; sub(/^[^:]*: */, "", what); sub(/ Co-authored-by.*/, "", what); print $1 "\t" who "\t" what "\t" d "\t" m }' >> /tmp/c164_s2/ledger.tsv
+      git log -1 --format='%ad%x09%s' --date=format:'%m-%d %H:%M' "$c" | filt \
+        | awk -F'\t' -v m="${c:0:8}" -v d="${second:0:8}" '{ who=$2; sub(/:.*/, "", who); what=$2; sub(/^[^:]*: */, "", what); sub(/ Co-authored-by.*/, "", what); print $1 "\t" who "\t" what "\t" d "\t" m }' >> "$ledger"
     fi
-    echo "     merge of ${second:0:8} ($(git log -1 --format='%s' "$second" | sed -E 's#https?://[^ ]+#<remote>#g' | cut -c1-80))"
+    echo "     merge of ${second:0:8} ($(git log -1 --format='%s' "$second" | filt | cut -c1-80))"
     git diff --name-only "$c^1" "$c" | sed 's#^c164-realms/##' | python3 -c '
 import sys, collections
 areas = collections.Counter(); odd = []

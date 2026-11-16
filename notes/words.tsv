@@ -12,3 +12,33 @@ b3a71e9d	第 2 轮：新增 plate_box、display_table_plates、display_table_len
 af411545	云换成 sky/cloudsea 的真图后四个场景重出；占用表新加的梯子上板；板上还是占位的只剩炉火窗三块
 c3eedd60	delivery.py 的 scope：common 的卡自己的文件加上 `plan/reviews/<卡名到第一个连字符>/`（走查和导出的交付物照卡放在那里）
 6a0494e3	室外走查第 1 回合（总装 5959264）：站表、47 张联系表、out-findings.md（没有挡人的）；`tools/walk.py`（a4 的）、`tools/walkreach.py`（人走得到哪里，从方块算）
+9552f843	打磨轮：进汽管换 props/pipes 的法兰、截止阀、压力表；电缆走 props/electrics 的瓷瓶；值班桌旁加电话和电铃；图换成真锅炉、真配电板、真发动机；MOVED_IN 已开
+0496865e	**退回以后再交**：绞车房那两扇改由 windows.build() 照 cable 的表贴；a1 合前在 node67 上对「总装 6a0494e3 加 841ef7db」跑 checkall，78 个全过，板上占位图剩 0 块
+29e5f1e7	评审 #24 的两处；新件 ladder_head 没放进总场景，总场景不变
+ff666b9a	第一版（smoke c357）
+2c9a095c	打磨轮：评审 cr4-#1 的三条
+d4dfe8ca	第二次；带进新卡 `machines/batteryboard`（蓄电池室的配电板和铜排，mast 做：batteryboard.py、场景 obs_mach_batteryboard、8 张图）
+fe8059e4	修走查 R1、R2：屋面山墙后两边各三格的坑填平（挡人的，等 a4 复走销账）
+b2ade25e	乙方案撤掉；给钟室的 way_up()，不调时塔照旧关着；`plan/packages/main/tower-inside.md` 是给 clockroom 的一页
+df800e74	第一版（chart）：MOVED_IN 已开；中轴长灯台占的 14 格里有屏障；已知弱处：灯下不亮、台侧百叶、挂钟未挂
+b1c0d7ae	关板：DRESS = False，总场景不再放远山板（远山改进天的着色器）
+9bee9ab8	打磨（评审 #25）；别的场景里拍到底片、小星图的留图会旧
+25058682	测试场景撤占位云，改建 sky 线；方块没动
+63d53344	室内走查：`tools/walk.py` 现行版（round 一条命令走完整轮）、路线 in-route.json、第 1 轮 636ad21（站表、可达性、58 张总表、in-findings.md）、第 2 轮 6a0494e 的站表和可达性
+57dbe262	新公用 `machines/_relit.py`（a6 的四只灯球等它），日球和行星底改用它；甲的吊杆折弯
+2fcc30f2	第一版（rec c356）：转鼓记录仪、电报机和纸带、传送管口，7 个实体；rec.build() 返回 0，等 m2 的钩子进总装才在总图里出现
+0b22315b	第一版（sound c361）：资源包只多一个 assets/c164/sounds.json，全指向游戏自带的声音
+16ad2817	着色器的天第一版（a2）：`sky/_shaders.py`（新）、`sky/mood.py`（雾 60 到 150、按高度变薄、LOCK_TICK）、样板场景 obs_sky_safe；各开发场景不变，成品包由 outb 导出时加着色器、不带注册表文件
+6a2a425e	第二版
+1711fa13	炉火窗是真图后四个场景重出，板上没有占位色了；新文件 `materials/_tints.py`；materials.md 第 7 节记了三条接口
+07fe40e0	check.py：`assets/minecraft/shaders/` 归 sky（materials 让出），场景的 BIOME 带命名空间的原样用；屏障第二种用法的措辞；INTERFACE 第 3、4 节（94353ca6、1d9ea412）
+252fb598	第一版（vault c358）：MOVED_IN 已开，实体 92；门洞 (7, 0..1, 6) 还没开（已请 shell）；升降机停在天花下，楼板不开
+08168ccd	第一版（cable）：车厢（体内 12 格屏障）、卷扬机、电机皮带、导轮、缆，26 个实体；模块叫 machines/cable.py（名字和卡不同，报黄，cr3 认）
+eac8ab85	走查补丁：屏障 34 格（机座连汽缸、发电机、外侧轴承，高两格），飞轮旁矮铁栏 19 格
+cda721ae	骨架 V7 往门里挪两格（总监 09:23）：pos (17.5, 1.62, 0.5)，look_at (9.0, 6.0, 0.5)；看板清单同步（5ae79b0a）
+43ae3131	屏障补丁：子午环两墩各 2 格；照相仪的柱不放（没有一整格落在柱里，cr3 定不破例）
+26d70120	屏障补丁：锅炉 60 格、配电盘 14、蓄电池板 12，都两格高；锅炉后端屏障比模型多出半格（烟道头一侧），cr3 认了
+99874c00	表盘夜光点的发光从 15 降到 8
+ed68adce	只改灯级（灯台、吊灯 12，书架壁柱 11，壁灯 10，台灯 8）；v9_board 改成看板的机位
+9740ba1d	室外走查提的三处：落日平台轴线上的栏杆墩挪开，气象站台阶两侧的沟抬成矮坡，下平台西南角山石抬高两格（走不出去了）
+d94d2fa0	第二版：门边壁灯和灯级（五条路过 lights 的规矩）、台上摆进转鼓记录仪和电报机、屋里电线 `_timeroom_wiring.py`（lamps 写）、V10 用东南角机位、世界钟的针改细条

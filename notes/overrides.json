@@ -8,9 +8,9 @@
   "note": "【评审 #23 过（第二轮打磨 7a661923，08:16）】"
  },
  "materials/windows": {
-  "state": "退回",
-  "commit": "39bcd249",
-  "note": "【11-16 08:47 退回：445733a3（a1 08:44 合 e41031f6）在总装头上让 18 个场景红（entities：`c164:mat_window_lining_frosted_1x2` 包里没有），s2 revert 2100f2b2，总装里是上一版。原因（chart 09:01）：site/cablecar 的 build() 叫了 windows.line()，带 site 线而不带 materials 模型的场景就红。cable 改了交 a4；chart 让 windows.build() 照 cable 的 windows() 表贴那两扇，合总装头、在自己分支上 `git revert 2100f2b2`、关口过了再交 a1】"
+  "state": "已合并",
+  "commit": "0496865e",
+  "note": "【11-16 09:20 再交 841ef7db，a1 合 0496865e（合前在 node67 上对「总装加这一单」跑 checkall，78 个全过）：亮窗的内衬；绞车房东墙两扇由 windows.build() 照 cable 的 windows() 表贴。08:47 退过一次：445733a3（a1 08:44 合 e41031f6）让 18 个场景红（`c164:mat_window_lining_frosted_1x2` 包里没有；原因是 site/cablecar 的 build() 自己叫了 windows.line()，cable 09:07 改掉，bda85cfa），s2 revert 2100f2b2；chart 合总装头、在自己分支上 revert 那条 revert、对着新头重过关口。上一版 39bcd249 过了评审，这一版还没评】"
  },
  "sky/comet": {
   "state": "已过审",
@@ -45,7 +45,7 @@
   "state": "已过审"
  },
  "machines/orrery": {
-  "note": "【定甲（cr3 08:58：六臂共面、三圈同心轨道，25c15148），乙不再做；朝下的面画进斜切矩阵的模型，引擎当它朝上】"
+  "note": "【43c8e0d1（cr3 09:32 合 57dbe262）：新公用 `machines/_relit.py`（朝下的面照亮；a6 的四只灯球等它），日球和行星底改用它，甲的吊杆折弯。定甲（cr3 08:58：六臂共面、三圈同心轨道），乙不再做】"
  },
  "machines/refractor": {
   "note": "【定甲（德式赤道仪），乙留分支和测试场景；红灯罩背面留红宝石看火孔，V8 里一个点（720p 不超过 3×3 像素），全室的红只此一处（总监 #60791）；调速器那一圈信号红改成旧铜】"
@@ -54,22 +54,23 @@
   "note": "【定甲（环多而细），不要地平环（总监 07:36）】"
  },
  "machines/recorders": {
-  "state": "制作中",
-  "who": "rec c356（11-16 08:36 新开，node101）"
+  "state": "已合并",
+  "note": "【第一版 d89b842（cr3 09:33 合 2fcc30f2）：转鼓记录仪、电报机和纸带、传送管口，7 个实体；rec.build() 返回 0，等 m2 的钩子 61ee81c0 进总装（interiors，cr4 合）才在总图里出现】"
  },
  "machines/cablecar-winch": {
-  "who": "cable c338（接 c240；11-16 08:42 开工）"
+  "state": "已合并",
+  "note": "【第一版 05cc54c4（cr3 09:38 合 08168ccd）：车厢（体内 12 格屏障 (90..91, −4..−3, −34..−32)，INTERFACE 第五次补充）、卷扬机、电机皮带、导轮、缆，26 个实体；模块叫 `machines/cable.py`（和卡名不同，报黄，cr3 认）】"
  },
  "props/lamps": {
   "state": "已过审",
   "note": "【评审 #20 过（灯链）；交叉看 a4（灯链 546c070e 和后续 066ecfab）、power（后续）过】"
  },
  "props/ironwork": {
-  "note": "【打磨轮 8e6bc4a5：交叉看 facade 过；DRESS 08:24 开（622f9f44）；entities 有一条 WARN：`prop_iron_canopy_lamp_under` 沿一个轴拉长】"
+  "note": "【评审 #24 的两处 5ae7789f（a6 09:20 合 29e5f1e7；新件 ladder_head 没放进总场景）。打磨轮 8e6bc4a5：交叉看 facade 过；DRESS 08:24 开（622f9f44）；entities 有一条 WARN：`prop_iron_canopy_lamp_under` 沿一个轴拉长】"
  },
  "props/instruments": {
   "state": "已过审",
-  "note": "【评审 cr4-#1 过（94b79e2，4/4/3/4/4；三处打磨）；DRESS 08:24 开（622f9f44）】"
+  "note": "【打磨轮 cd6602ba（cr4-#1 的三条；a6 09:23 合 2c9a095c）；b79f61d2（表盘夜光点的发光从 15 降到 8；09:41 合 99874c00）。评审 cr4-#1 过（94b79e2，4/4/3/4/4）；DRESS 08:24 开（622f9f44）】"
  },
  "props/furniture": {
   "note": "【第 2 轮 5d16c6fd（a6 09:12 合 b3a71e9d）：新增 plate_box、display_table_plates、display_table_lenses；`plan/parts/props-glow.md` 是发光面清单（总监 #64193 要的）。评审 cr4-#2 过（1b81b52，质感 4、风格 4；三处打磨留第 3 轮：仪器柜玻璃门的蓝划、货箱和地板一个棕、展柜是空的）；DRESS 08:24 开（622f9f44）；`props/_kit.py`：K.pane、K.SHEEN、K.sheen_texels、K.rivet(proud=)、K.COPPER_D 新加，K.GLINT 去掉】",
@@ -82,7 +83,7 @@
   "note": "【signs.DRESS 已开（入口大台徽；站牌等缆车站进树）】"
  },
  "main/tower": {
-  "note": "【塔顶定甲（四坡弧顶；facade 08:53 定，乙的场景和图打磨轮里撤）；`massing.py` 里塔的白模撤了；V5 用它算出的站位（骨架 S.V5）】"
+  "note": "【23c8c31b（facade 09:27 合 b2ade25e）：乙方案撤掉（塔顶定甲，四坡弧顶，facade 08:53 定）；给钟室的 way_up()（梯子是占用表的 `B.LADDER`），不调时塔照旧关着；`plan/packages/main/tower-inside.md` 是给 `interiors/clockroom` 的一页（井的尺寸和净空）。V5 用它算出的站位（骨架 S.V5）】"
  },
  "main/dome": {
   "state": "已过审"
@@ -91,33 +92,35 @@
   "who": "astro c360（11-16 08:36 新开，node105；接 stair 留在 `cursor/c164-stair-batteryroom-f3-b330` 的草图；搭档 mast）"
  },
  "interiors/platevault": {
-  "state": "制作中",
-  "who": "vault c358（11-16 08:36 新开，node103）"
+  "state": "已合并",
+  "note": "【第一版 de1db354（cr4 09:37 合 252fb598）：MOVED_IN 已开，实体 92；门洞 (7, 0..1, 6) 还没开（已请 shell）；升降机停在天花下，楼板不开】"
  },
  "interiors/clockroom": {
   "state": "制作中",
   "who": "clkrm c359（11-16 08:36 新开，node104；搭档 tower）"
  },
  "interiors/astroroom": {
-  "state": "制作中",
-  "who": "sdome c328"
+  "who": "snow c336（原 sdome c328）",
+  "note": "【第一版改由 snow c336 做（sdome 同意，cr4 09:38 报），赶 10:30 那版整包】"
  },
  "motion/smoke": {
-  "who": "smoke c357（11-16 08:36 新开，node102）"
+  "state": "已合并",
+  "note": "【第一版 1d64f141（cr2 09:21 合 ff666b9a）、第二版 49a5644e（09:34 合 6a2a425e）；smoke c357】"
  },
  "motion/sound": {
-  "who": "sound c361（11-16 08:36 新开，node106）"
+  "state": "已合并",
+  "note": "【第一版 3fd56da4（cr2 09:33 合 0b22315b；sound c361）：资源包只多一个 `assets/c164/sounds.json`，全指向游戏自带的声音】"
  },
  "motion/loop": {
   "state": "暂过"
  },
  "common/skeleton": {
-  "commit": "7ad81e1d",
-  "note": "【11-16：V6 往右转 4.5°（7d1508c0，注释 3b4a2d2b）；V5 新加（a06744bd，进总装 49e4e723）；占用表加 `LADDER`（原版木梯，室内；03a6be57）、总场景画布的 `master` 记号（d9117af8），进总装 7ad81e1d】"
+  "commit": "cda721ae",
+  "note": "【11-16：V6 往右转 4.5°（7d1508c0，注释 3b4a2d2b）；V5 新加（a06744bd，进总装 49e4e723）；占用表加 `LADDER`（原版木梯，室内；03a6be57）、总场景画布的 `master` 记号（d9117af8），进总装 7ad81e1d；**V7 往门里挪两格**（总监 09:23：pos (17.5, 1.62, 0.5)，look_at (9.0, 6.0, 0.5)；5ae79b0a，进总装 cda721ae）】"
  },
  "common/check": {
-  "commit": "49e4e723",
-  "note": "【11-16：sight 底层只算方块（9afe22e8）；regen 的注册表文件门闸（5eaedb7b）；entities 按整个矩阵逐面量（073b058c，进总装 49e4e723）】"
+  "commit": "07fe40e0",
+  "note": "【11-16：sight 底层只算方块（9afe22e8）；regen 的注册表文件门闸（5eaedb7b）；entities 按整个矩阵逐面量（073b058c，进总装 49e4e723）；`assets/minecraft/shaders/` 归 sky、BIOME 带命名空间的原样用、屏障第二种用法的措辞（94353ca6、1d9ea412，进总装 07fe40e0）】"
  },
  "materials/ashlar": {
   "note": "【交叉看 facade 过（a494bb19：V2 上墙面平，贴近读成琢面）】"
@@ -133,7 +136,8 @@
   "note": "【第 1 回合 59c4d284（总装 5959264 上走的；s2 09:15 合 6a0494e3，delivery.py PASS、来源 clean，合后头上 75 个场景全过）：`plan/reviews/walk/5959264/`（站表、47 张联系表、`out-findings.md`，没有挡人的）、`tools/walkreach.py`、路线 `plan/reviews/walk/out-route.json`。收尾第 2 条：A5 起每版候选在绿头上重走，挡人的直接派作者】"
  },
  "common/walk-in": {
-  "note": "【第 1 轮（总装 636ad21）在 a4 的分支 `cursor/c164-a4-walkin-f3-6824`：挡人的四处 R1、R2（两翼屋脊近端的坑，main/roof，sdome）、F1（正门的占位亮墙，已撤，复查）、T1（报时塔脚没有门洞，tower 已进总装，复查）；`tools/walk.py` 已随 walk-out 进总装（6a0494e3）。09:55 前过关口交 s2】"
+  "who": "a4 c323",
+  "note": "【4d94d264（s2 09:31 合 63d53344；关口 PASS，来源 clean）：`tools/walk.py` 现行版（round 一条命令走完整轮）、路线 `plan/reviews/walk/in-route.json`、第 1 轮 636ad21（站表、可达性、58 张总表、`in-findings.md`）、第 2 轮 6a0494e 的站表和可达性（图在出）。第 1 轮挡人的四处：R1、R2（两翼屋脊近端的坑；smalldome bc70da9f 填了，等复走）、F1（正门的占位亮墙，已撤，复查）、T1（报时塔脚；tower 23c8c31b 给了 way_up()）。第 2 轮可达性：入口到星厅通了】"
  },
  "common/export": {
   "note": "【整包一版一版在 `cursor/c164-dist-f4b8` 的 `c164-realms/dist/A<n>/`（A3 09:02：不带注册表文件，数据包只有函数 290、标签 3，服务端冷启动 0 警告，天是原版夜空；A4 09:30 起钟锁 20370，彗星在正西；**A5 10:00 是第一个候选版**）。导出工具第一版 09:55 前过关口交 s2】"
@@ -149,6 +153,32 @@
   "state": "已过审"
  },
  "main/smalldome": {
-  "state": "已过审"
+  "state": "已过审",
+  "note": "【bc70da9f（facade 09:27 合 fe8059e4）：修走查 R1、R2，屋面山墙后两边各三格的坑填平（挡人的，等 a4 复走销账）】"
+ },
+ "interiors/powerhouse": {
+  "note": "【打磨轮 975a63df（cr4 09:20 合 9552f843）：进汽管换 props/pipes 的法兰、截止阀、压力表；发电机到配电板的电缆走 props/electrics 的瓷瓶；值班桌旁加电话和电铃；图换成真锅炉、真配电板、真发动机；MOVED_IN 已开】"
+ },
+ "sky/safe-look": {
+  "state": "已合并",
+  "note": "【第一版 104b94b6（cr2 09:34 合 16ad2817）：着色器生成器 `sky/_shaders.py`、`sky/mood.py` 的数（雾 60 到 150、按高度变薄两条律、LOCK_TICK）、样板场景 `obs_sky_safe`。成品包由 outb 导出时加着色器、不带注册表文件；开发用的 obs 和各测试场景暂时还是注册表的天，整体切换（obs 的 BIOME、render.py、看板的时刻锁 20370）a2 和 cloud 备好补丁交 s2，10:00 的候选版导完以后动，到时清空 regen 的放行表。`check.py` 已认 sky 写 `assets/minecraft/shaders/`、BIOME 带命名空间的原样用（07fe40e0）】"
+ },
+ "sky/ridges": {
+  "note": "【关板 f960c7c9（cr2 09:28 合 b1c0d7ae）：DRESS = False，总场景不再放远山板；远山改进天的着色器（a2 分给 comet）。按 192 格写的说明撤板时一起清】"
+ },
+ "interiors/chartroom": {
+  "note": "【第一版 77f2fc84（cr4 09:28 合 df800e74）：MOVED_IN 已开；中轴长灯台占的 14 格里有屏障（看得见的实心模型里）；已知弱处：灯下不亮、台侧百叶、挂钟未挂】"
+ },
+ "machines/switchboard-boiler": {
+  "note": "【第二次 04c7541（cr3 09:25 合 d4dfe8ca，带进 `machines/batteryboard`）；屏障补丁 7bf0963（09:40 合 26d70120）：锅炉 60 格、配电盘 14、蓄电池板 12，都两格高；**锅炉后端屏障比模型多出半格**（烟道头一侧；后端板在半格上），cr3 认了】"
+ },
+ "machines/meridian-astrograph": {
+  "note": "【屏障补丁 30c6ef29（cr3 09:40 合 43ae3131）：子午环两墩各 2 格 (33 和 37, 0..1, −30)；照相仪的柱没有一整格落在柱里，不放（cr3 定不破例：穿得过、困不住人）。`hut_door` 里筒和轴一横一竖不算十字（cr3 08:58）】"
+ },
+ "machines/engine-dynamo": {
+  "note": "【走查补丁 a676e67（cr3 09:39 合 eac8ab85）：屏障 34 格（机座连汽缸、发电机、外侧轴承，高两格），飞轮旁矮铁栏 19 格（z 37，x 73..86，东头接 power 的栏）】"
+ },
+ "props/paper": {
+  "note": "【打磨 205caaa3（评审 #25；a6 09:31 合 9bee9ab8）；别的场景里拍到底片、小星图的留图会旧】"
  }
 }
