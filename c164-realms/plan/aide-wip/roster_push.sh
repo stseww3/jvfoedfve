@@ -28,10 +28,21 @@ for attempt in 1 2 3 4; do fetch_asm && { ok=1; break; }; sleep $((2 ** attempt)
 if git merge-base --is-ancestor HEAD "origin/$ASM" && [ "$(git rev-parse HEAD)" != "$(git rev-parse "origin/$ASM")" ]; then
   dirty=0
   git diff --quiet -- "$ROSTER" || dirty=1
-  [ "$dirty" = 0 ] || git stash push -q -- "$ROSTER"
-  git merge -q --ff-only "origin/$ASM"
+  # No `git stash`: the stash is one stack for every working tree of this repository (s2's rule).
   if [ "$dirty" = 1 ]; then
-    git stash pop -q || { echo "roster_push: the assembly changed the roster too; the stash did not apply, look by hand"; exit 1; }
+    keep="$(mktemp /tmp/c164_aide/roster.XXXXXX)"; base="$keep.base"
+    cp "$ROSTER" "$keep"
+    git show "HEAD:$ROSTER" > "$base"
+    git checkout -q -- "$ROSTER"
+    git merge -q --ff-only "origin/$ASM" || { echo "roster_push: cannot fast-forward; my roster is in $keep"; exit 1; }
+    if ! cmp -s "$base" "$ROSTER"; then
+      git merge-file -q "$keep" "$base" "$ROSTER" \
+        || { echo "roster_push: the assembly changed the roster too and the two do not merge; my roster is in $keep"; exit 1; }
+    fi
+    cp "$keep" "$ROSTER"
+    rm -f "$keep" "$base"
+  else
+    git merge -q --ff-only "origin/$ASM"
   fi
 fi
 

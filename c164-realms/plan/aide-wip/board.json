@@ -1,10 +1,11 @@
 {
-  "version": "A6 cfa03ef7",
-  "note": "the director's rule of 11-16 10:29: the mean of the five items is 4.0 or more and no item is below 3; kept by hand from the reviewers' lines (review V2-V5, cr2 V1 V6 V11 V12, cr3 V7, cr4 V8-V10). A6: review V2 V3 pass, V4 V5 3.8; cr3 V7 4.0 pass; cr4 V8 V9 pass, V10 3.6; cr2 10:56 on s1 d4b75c5b: V1 V11 V12 (new camera) pass 4/4/4/4/4, V6 3/4/3/4/4",
+  "version": "A7 1a0f1af9",
+  "note": "A7 (s1 954d8eaf, renders/real-save/c164-A7/), all twelve scored by 11:59: review V2 V3 4.0 pass, V4 3.8 (doorway half 0.16, grey; hall's 3b09f9d is in A8; vault's now), V5 3.8 (hut gable 0.26-0.30; a4's stone f0925b0c is in A8); cr2 V1 V6 V11 V12 all 4/4/4/4/4 pass (V6 for the first time); cr3 V7 4.0, V8 4.2, V9 4.0 pass, V10 3.6 (three places still compete with the instrument wall; m2 changes colours and shades only)",
   "pass": [
     "V1",
     "V2",
     "V3",
+    "V6",
     "V7",
     "V8",
     "V9",
@@ -14,7 +15,6 @@
   "fail": {
     "V4": "3.8",
     "V5": "3.8",
-    "V6": "3.6",
     "V10": "3.6"
   },
   "wait": []
