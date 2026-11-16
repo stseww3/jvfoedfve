@@ -119,6 +119,7 @@ SUN_POOL = 8                # where the sun's light lands: a source a cell over 
 STAIR_FOOT_LEVEL = 8        # 7 shows nothing of the risers through the side arches (lights, #559)
 MEZZANINE_LEVEL = 7
 MEZZANINE_LAMP_Y = 9.5
+WAY_LEVEL = 7               # the way to the west door, which had no light at all (the walk, S1): a step under the stair foot's
 
 SIDES = {(0, -1): "north", (0, 1): "south", (-1, 0): "west", (1, 0): "east"}
 ACROSS = {"north": "south", "south": "north", "west": "east", "east": "west"}
@@ -539,28 +540,44 @@ def _lamps(canvas, origin, version):
     return n
 
 
+def _flat_lamp(canvas, origin, version, at, towards, level, what):
+    """A caged lamp flat under the crown of an arch or a vault at (x, z), its conduit running
+    `towards`; where there is no crown, under the deck over it. Its source goes into the cell the
+    glass hangs in; under a crown that cell holds the crown, so it is the one below."""
+    ox, oy, oz = origin
+    x, z = (int(math.floor(v)) for v in at)
+    crowned = canvas.has(ox + x, oy + shell.ARCH_Y, oz + z)
+    under = shell.ARCH_Y + 0.5 if crowned else float(shell.DECK_Y)
+    n = lamps.place(canvas, "cage", (at[0], under - K.NUDGE, at[1]), facing=towards, origin=origin, version=version,
+                    light=False, turns=(("x", 90.0),))
+    L.suggest(canvas, (ox + x, oy + shell.ARCH_Y - (1 if crowned else 0), oz + z), level, f"{WHY}:{what}", rank=3)
+    return n
+
+
 def _stair_hall(canvas, origin, version):
     """The stair hall gets lamps and nothing else (A0 #541). One at the foot of each flight, flat
     under the crown of the side arch it is entered by, its conduit running to the pier between the
-    arches; where the arch has no crown, under the deck over it. One on each wall pier beside the
-    great west window, over the mezzanine."""
-    ox, oy, oz = origin
+    arches. One on each wall pier beside the great west window, over the mezzanine. Two under the
+    vault of the way to the west door, which had no light at all (the walk's S1)."""
     n = 0
     x = (shell.ARCADE_X[0] + shell.ARCADE_X[1] + 1) / 2.0
     for rows, towards in ((shell.FLIGHT_ROWS[-1], "south"), (shell.FLIGHT_ROWS[1], "north")):
-        z = rows[len(rows) // 2]
-        crowned = canvas.has(ox + int(x), oy + shell.ARCH_Y, oz + z)
-        under = shell.ARCH_Y + 0.5 if crowned else float(shell.DECK_Y)
-        n += lamps.place(canvas, "cage", (x, under - K.NUDGE, z + 0.5), facing=towards, origin=origin,
-                         version=version, light=False, turns=(("x", 90.0),))
-        # the source goes into the cell the glass hangs in; under a crown that cell holds the crown
-        L.suggest(canvas, (ox + int(x), oy + shell.ARCH_Y - (1 if crowned else 0), oz + z), STAIR_FOOT_LEVEL,
-                  f"{WHY}:stair foot", rank=3)
+        n += _flat_lamp(canvas, origin, version, (x, rows[len(rows) // 2] + 0.5), towards, STAIR_FOOT_LEVEL,
+                        "stair foot")
     wx = min(x for x, _ in shell.layout().mezzanine)
     for z in (CZ - shell.CHEEK_Z, CZ + shell.CHEEK_Z):
         n += lamps.place(canvas, "cage", (wx + 1.0, MEZZANINE_LAMP_Y, z + 0.5), facing="east", origin=origin,
                          version=version, level=MEZZANINE_LEVEL)
+    for x in way_lamp_xs():
+        n += _flat_lamp(canvas, origin, version, (x + 0.5, CZ + 0.5), "east", WAY_LEVEL, "way west")
     return n
+
+
+def way_lamp_xs():
+    """The cells of the two lamps of the way to the west door, flat under the crown of its vault:
+    a quarter of its length in from either end."""
+    xs = sorted(x for x, z in shell.layout().crown if x < shell.ARCADE_X[0] and z == CZ)
+    return (xs[len(xs) // 4], xs[-1 - len(xs) // 4]) if len(xs) > 3 else tuple(xs[:1])
 
 
 # ---- models -----------------------------------------------------------------------------------------------------

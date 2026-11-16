@@ -93,11 +93,12 @@ def shots():
     shot("floor", (cx, shell.DECK_Y + 0.4, cz), yaw=90.0, pitch=90.0)   # the plan of the floor, west at the top
     shot("gallery", (15.3, gallery, 5.4), (3.0, 7.2, -1.6))             # along the hall from the south gallery's east end
     shot("rail", (cx, gallery, 4.9), (cx, 5.5, cz))                     # over the south railing: the orrery over its roundel
-    shot("gallery_w", (2.6, gallery, -4.6), (13.0, 6.5, 2.5))           # from the gallery's west end to the entrance wall
+    shot("gallery_w", (6.4, gallery, -4.6), (14.0, 7.6, 1.5))           # along the north gallery to the entrance wall
     shot("door", (8.4, eye, cz), (16.0, 4.6, cz))                       # back to the doorway: the second emblem
     shot("aisle_n", (14.6, eye, -2.4), (4.0, 2.2, -4.4))
     shot("aisle_s", (14.6, eye, 3.4), (4.0, 2.2, 5.4))
     shot("stair_n", (6.6, eye, -3.4), (-3.5, 3.2, -3.6))                # through the side arch to the stair foot
     shot("mezzanine", (0.5, gallery, cz + 2.2), (-7.0, 9.4, cz))        # the two lamps beside the great west window
+    shot("way", (1.0, eye, cz), (-9.0, 2.2, cz))                        # under the vault to the west door, its two lamps
     shot("arches", (S.V7["pos"][0] + 9.0, eye, cz), (16.0, 3.4, cz))    # the three arches from the forecourt's axis
     return out
