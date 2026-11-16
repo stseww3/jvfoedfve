@@ -99,6 +99,15 @@
 - **等人听的**（接着上面那六条）：7. 汽笛三个候选哪个像（a 长笛两个音，b 方波，c 迪吉里杜管），一声 27 刻够不够长。8. 排汽的拍子用活塞声还是龙翼、马喷鼻。9. 塔钟的铃用原版的钟（不准但像）还是准的那两套；整个山顶都听得见吵不吵（现在的钟停在 7:55，tower 让它走起来以后才会响）。10. 留声机的调子认不认得出，音量盖不盖住值班室别的声音。
 - **还差的**：火车的声音登记进主场景（等 `travel` 和时刻表）；各人的件登记自己的声音以后重数预算（`python -m scenes.obs_mot_sound spots` 列得出来）。
 
+第二包（提交 `9bab7ada`，测试场景 `check.py` 在 node9 上 PASS：85 个点、14 条链、126 个函数文件，最忙的一刻 12 条命令，平均每刻 2.8 条）：
+
+- **火车的声音照 a2 的 `travel` 接口写好了**（卡 `plan/packages/motion/travel.md` 第 3 节；他的代码还没推，我拿一个照卡写的替身试的，替身不在仓库里）。一行：`sound.train(canvas, train, wheel=驱动轮半径, chimney=烟囱口, whistle=汽笛口, cocks=汽缸泄水口, car=客车正中轨面, bell=站铃)`，点都按车停在 `home` 时的场景坐标给；每条 `playsound` 交给 `train.run(…, pos=, car=)`，坐标由他在生成时照时刻表算好写死（不用 `execute at @e`：服务端的实体比画出来的车超前最多 21 刻）。
+  - `sound.timetable(train, 轮半径)` 从他的车读出一趟里的时刻（smoke 的烟读同一份，#86047 说好的键没改）：`runs` 哪几段在走、往哪头；`ticks` 排汽的那些刻（`train.beats(r, per_turn=2)`，只留上山的：齿轨机车下山靠压缩制动，不排汽）；`whistles` 开车一长声、离站台 45 格一长声、下山前一短声；`release` 到站后第 6 刻起放汽；`bell` 到站前 6 秒和开车前 3 秒的站铃；`joints` 车轴压过轨缝的那些刻（6 格一根轨，两根轴）；`rolls` 轮轨的滚动声每 40 刻续一次。
+  - 替身的时刻表（45 秒上山、停 20 秒、下山）下一趟 333 条命令，平均每刻 0.11 条。
+- `sound.commands("whistle")`：一声的 `playsound` 行（位置留 `{x} {y} {z}`，`MK.function(…, pos=)`、`MK.run`、`train.run` 会填），给不照循环响的东西用：cable 拉汽笛的手柄。
+- 新的两种：`joint` 轨缝的一下（下界合金块的脚步声，低沉的金属磕碰）、`ting` 小铃（音符盒的钟，轻、高）。
+- **气动信筒**（rec 的 `props/pneumatic`，#90934）：`build()` 里读 `pneumatic.LINES`、`lands(key)`、`LOOP`，每条线的小筒到站那一刻一声 `thump`、4 刻后一声 `ting`，听得见 6 格。他的包进了树自己登记上，现在总装里还没有。
+
 ### 本卡以外：帮 lights 量「人走的路都有光」（cr2 11-16 派，#73089）
 - 只出清单，不改别人的文件。工具和清单都不进总装：工具在分支 `cursor/c164-sound-lightaudit-f3-cbc6` 的 `tools/darkfloor.py`（用 a4 的 `tools/walkreach.py` 算人走得到的格，lights 的 `sky/_lightkit.levels` 算块光，量法写在文件头）；清单在 `cursor/c164-sound-lightaudit-f3-cbc6-wip` 的 `c164-realms/renders/_wip/light/dark.md`、`dark.json`。
 - 线：11-16 10:39 起地面、台阶、门槛一个线，块光不低于 5（lights #77817 转 cr2 #77677；之前台阶和门槛按 7）。露天、檐下（天光从旁边照进来 13 级以上）、穹顶室另列不算；定了不补的三处（厅入口 x 12..17、子午仪小屋、水塔底下）也另列，不进暗的总数（总监看的是那个总数，aide 从 dark.md 的「暗：N 格，M 堆」那一行读它）。新开门的房间一律算路、归房间主人（cr2 #76117）；主人说本来就该黑的才报 cr2。各堆归谁写在工具的 `OWNERS` 表里（lights #74750、#75829、#76033、#77817；钟塔底厅归 clkrm，tower #79484）。
