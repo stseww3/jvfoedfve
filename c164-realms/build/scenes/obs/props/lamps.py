@@ -18,7 +18,8 @@ For the other lines:
     n += lamps.festoon(canvas, a, b, origin=origin)                                # cable, bulbs, hangers
 
 Both return the number of display entities they placed. A lamp with an opal globe (street, post,
-bracket A, pendant A) is four: the lamp and the three models its glass is drawn in (GLOBES).
+bracket A, pendant A) is four: the lamp and the three models its glass is drawn in (GLOBES). One
+with a cone shade (bracket B, pendant B) is two: the lamp and the mouth of its shade (SHADES).
 """
 import functools
 import importlib
@@ -110,14 +111,58 @@ def _globe_top(m, name):
     return m
 
 
-def _cone_shade(m, c, top, bottom, r_top, r_bottom, steps):
-    """An enamel cone shade about the vertical line c = (x, z): blue outside, a pale rolled rim,
-    and the white inside lit by the bulb. Returns the y of the underside."""
-    m.taper("y", c, top, bottom, r_top, r_bottom, ENAMEL, steps=steps)
-    m.tube("y", c, bottom - 1.0, bottom, r_bottom, RIM)
-    K.glass_prism(m, "y", c, bottom - 1.1, bottom - 1.0, r_bottom - 0.75, OPAL[1])
-    K.glass_prism(m, "y", c, bottom - 1.2, bottom - 1.1, r_bottom * 0.5, OPAL[3])
-    return bottom - 1.0
+# ---- the cone shades ---------------------------------------------------------------------------------
+# What a room sees of a shaded lamp is the mouth of its shade: the white enamel the bulb lights,
+# and the bulb in the middle of it. All of that looks straight down, and drawn into the lamp's own
+# model it kept four tenths of its tone: in the game the shades hung over the rooms as grey
+# saucers with an ochre knob in the middle (s1's board of 11-16 10:00: V7, V9, V10). So the mouth
+# is a model of its own, leant over (RL.leant: what looks straight down is lit in full), one
+# display entity more on the middle of the mouth, not turned with the lamp (its outline is the
+# rim's octagon, which a quarter of a turn leaves as it is). It is flat: discs of one tone, each a
+# tenth of a pixel under the one before, the white of the enamel a step dimmer towards the rim,
+# the bulb the last two. A cone shade hides its bulb from every side but below, so nothing of
+# the bulb is left in the lamp's own model.
+SHADES = {              # lamp: the shade's axis (x, z), the top and the foot of its cone, the radius at each (pixels)
+    "bracket_b": dict(c=(0.0, 10.75), top=-2.0, bottom=-7.0, r_top=2.0, r_bottom=7.0),
+    "pendant_b": dict(c=(0.0, 0.0), top=-10.0, bottom=-15.0, r_top=2.0, r_bottom=8.0),
+}
+SHADE_STEPS = 5         # the lengths the cone is drawn in
+RIM_H = 1.0             # the rolled rim under the cone: its underside is the mouth
+RIM_IN = 0.75           # how much of the rim's underside is left round the lit inside
+MOUTH = ((None, 1), (0.72, 2), (0.46, 3))   # the enamel, from the rim inwards: its share of the mouth's radius
+                                            # (None: all but RIM_IN), the step of the opal ramp
+BULB = ((1.5, 3), (0.75, 4))                # the bulb and its hot middle: radius (pixels), the step of the glow ramp
+MOUTH_STEP = 0.1        # by this much (pixels) a disc lies under the one before, the first under the rim
+SHADE_PART = "_mouth"   # what the mouth's model is called, after the lamp's
+
+
+def _cone_shade(m, name):
+    """The enamel cone shade of the lamp `name` (SHADES): blue outside, a pale rolled rim. Its lit
+    inside is not in the lamp's model: _mouth."""
+    s = SHADES[name]
+    m.taper("y", s["c"], s["top"], s["bottom"], s["r_top"], s["r_bottom"], ENAMEL, steps=SHADE_STEPS)
+    m.tube("y", s["c"], s["bottom"] - RIM_H, s["bottom"], s["r_bottom"], RIM)
+    return m
+
+
+@functools.lru_cache(maxsize=None)
+def _mouth(name):
+    """The model the mouth of a lamp's shade is drawn in (RL.Faces: model and frame). Its anchor is
+    the middle of the rim's underside; every disc has the rim's eight sides, laid as Model.tube
+    lays them."""
+    s = SHADES[name]
+    px = SPEC[name].get("scale", 1.0) / 16.0                            # a pixel of the lamp's model, in blocks
+    part = RL.Faces(f"{PREFIX}{name}{SHADE_PART}", frame=RL.leant())
+    discs = [(s["r_bottom"] - RIM_IN if share is None else share * s["r_bottom"], OPAL[tone]) for share, tone in MOUTH]
+    discs += [(radius, GLOW[tone]) for radius, tone in BULB]
+    hw = math.tan(math.pi / 8.0)
+    for i, (radius, mat) in enumerate(discs):
+        y, r = -(i + 1) * MOUTH_STEP * px, radius * px
+        for k in range(4):
+            a = math.radians(45.0 * k)
+            part.face((0.0, y, 0.0), (0.0, -1.0, 0.0), (math.cos(a), 0.0, math.sin(a)), 2.0 * r * hw, 2.0 * r, mat,
+                      seed=1, grain="x", emit=15)
+    return part
 
 
 def _rose(m):
@@ -195,8 +240,9 @@ def _bracket_a():
 
 
 def _bracket_b():
-    """Version B wall lamp: an enamel cone shade and a bare bulb under a square arm with a strut,
-    on a riveted plate. Anchor: on the wall, at the underside of the arm."""
+    """Version B wall lamp: an enamel cone shade and a bare bulb (SHADES: the bulb is seen in the
+    shade's mouth) under a square arm with a strut, on a riveted plate. Anchor: on the wall, at the
+    underside of the arm."""
     m = M.Model(PREFIX + "bracket_b")
     m.box((-3, -11, 0), (3, 5, 1), IRON, grain="y")                     # riveted wall plate
     for x in (-2, 2):
@@ -205,11 +251,8 @@ def _bracket_b():
     m.box((-1, 0, 1), (1, 2, 12.5), IRON, grain="z")                    # square arm
     m.beam((0, -9.5, 1.0), (0, 0.5, 9.0), 1.0, 1.0, IRON_D)             # strut
     m.box((-1.5, -1, 9.0), (1.5, 3, 12.5), IRON_D)                      # junction box
-    c = (0, 10.75)
-    m.tube("y", c, -2.5, -1.0, 1.25, BRASS)                             # lampholder
-    _cone_shade(m, c, -2.0, -7.0, 2.0, 7.0, 5)
-    K.bulb(m, (0, -2.5, 10.75), glass=4.0)
-    return m
+    m.tube("y", SHADES["bracket_b"]["c"], -2.5, -1.0, 1.25, BRASS)      # lampholder
+    return _cone_shade(m, "bracket_b")
 
 
 def _cage_a():
@@ -268,15 +311,14 @@ def _pendant_a():
 
 
 def _pendant_b():
-    """Version B pendant: an enamel cone shade and a bare bulb on a rod. Anchor: the hanging point."""
+    """Version B pendant: an enamel cone shade and a bare bulb (SHADES: the bulb is seen in the
+    shade's mouth) on a rod. Anchor: the hanging point."""
     m = M.Model(PREFIX + "pendant_b")
     _rose(m)
     m.tube("y", (0, 0), -8.0, -2.0, 0.5, BRASS_D, sides=4)
     m.tube("y", (0, 0), -12.0, -8.0, 1.25, BRASS)                       # lampholder
     K.switch_key(m, (-1.25, -9.0, 0), side=-1.0)
-    _cone_shade(m, (0, 0), -10.0, -15.0, 2.0, 8.0, 5)
-    K.bulb(m, (0, -12.0, 0), glass=3.0)
-    return m
+    return _cone_shade(m, "pendant_b")
 
 
 def _desk_green():
@@ -382,18 +424,30 @@ SPEC = {
 }
 SCALE = {PREFIX + name: spec.get("scale", 1.0) for name, spec in SPEC.items()}
 SCALE.update({PREFIX + name + part: 1.0 for name in GLOBES for part in GLOBE_PARTS})
+SCALE.update({PREFIX + name + SHADE_PART: 1.0 for name in SHADES})
 VERSIONED = ("bracket", "cage", "pendant")
 STREET_CLEARANCE = 8    # A2: a street lamp stands at least this far from a main wall face
 HANG = 3.0 / 16.0       # a festoon under a ceiling runs this far below it: the height of its hangers
 
 
+def _parts(name):
+    """The models a lamp is drawn in beside its own, and where the display of each stands (blocks
+    from the anchor, in the lamp's frame): the glass of a globe, the mouth of a shade."""
+    if name in GLOBES:
+        return tuple((part, GLOBES[name]["at"]) for part in _glass(name))
+    if name in SHADES:
+        s, px = SHADES[name], SPEC[name].get("scale", 1.0) / 16.0
+        return ((_mouth(name), (s["c"][0] * px, (s["bottom"] - RIM_H) * px, s["c"][1] * px)),)
+    return ()
+
+
 @functools.lru_cache(maxsize=None)
 def _models():
     # settled: the slanting flats of shafts, galleries and rings are lit the same in every lamp
-    # (_kit.settle). Not the glass: its faces lie in frames of their own
+    # (_kit.settle). Not the glass nor a shade's mouth: their faces lie in frames of their own
     built = {PREFIX + name: K.settle(spec["build"]()) for name, spec in SPEC.items()}
-    for name in GLOBES:
-        built.update({part.m.name: part.m for part in _glass(name)})
+    for name in SPEC:
+        built.update({part.m.name: part.m for part, _at in _parts(name)})
     return built
 
 
@@ -403,19 +457,20 @@ def models():
 
 def models_of(*names):
     """The models of these lamps alone, for a scene whose pack carries one lamp and not the family:
-    the lamp's own model and, where it has an opal globe, the three of its glass. A name is a key
-    of SPEC ("bracket_a"), or the model's name (PREFIX before it)."""
+    the lamp's own model and whatever else it is drawn in (the three of a globe's glass, the mouth
+    of a shade). A name is a key of SPEC ("bracket_a"), or the model's name (PREFIX before it)."""
     built = _models()
     names = [name[len(PREFIX):] if name.startswith(PREFIX) else name for name in names]
     return {key: built[key] for name in names
-            for key in [PREFIX + name] + [PREFIX + name + part for part in GLOBE_PARTS if name in GLOBES]}
+            for key in [PREFIX + name] + [part.m.name for part, _at in _parts(name)]}
 
 
 # ---- placing -------------------------------------------------------------------------------------------
 def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), version=None, light=True, level=None,
           yaw=None, **opts):
     """Put one lamp into the scene; returns the number of display entities: 1, or 4 for a lamp with
-    an opal globe (the lamp and the three models of its glass, GLOBES).
+    an opal globe (the lamp and the three models of its glass, GLOBES), or 2 for one with a cone
+    shade (the lamp and the mouth of its shade, SHADES).
 
     kind     "street", "post", "bracket", "cage", "pendant", "desk_green", "signal", "signal_off",
              "uplight".
@@ -426,36 +481,40 @@ def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), version=None, lig
              turns it; the uplight looks that way). A pendant: the point on the ceiling it hangs from.
     light    offer the lamp's light source to A2's tool at the level A2 gave for this lamp, or at
              `level`. A line that registers its own lights passes light=False.
-    opts     go to artkit.models.display (brightness, view).
+    opts     go to artkit.models.display (brightness, view). A lamp that is drawn in more than one
+             model stands upright: no `turns` for it.
     Street lamps stand at least STREET_CLEARANCE blocks from a main wall face (A2).
     """
     name = f"{kind}_{version or VERSION}" if kind in VERSIONED else kind
     spec = SPEC[name]
     yaw = K.FACING[facing] if yaw is None else yaw
+    if opts.get("turns") and _parts(name):
+        raise ValueError(f"props/lamps: {name} is drawn in {1 + len(_parts(name))} models and cannot be tilted")
     n = K.put(canvas, _models()[PREFIX + name], pos, mount=spec["mount"], yaw=yaw,
               scale=spec.get("scale", 1.0), origin=origin, **opts)
     if name.startswith("signal"):
         canvas.entities[-1][3]["Tags"].append("c164_signal")
-    if name in GLOBES:
-        n += _put_glass(canvas, name, yaw)
+    n += _put_parts(canvas, name, yaw)
     if light and spec["light"] is not None:
         cell = K.light_cell(pos, yaw, spec["light"], origin)
         K.offer_lights(canvas, [(cell, spec["level"] if level is None else level)], f"props/lamps:{name}")
     return n
 
 
-def _put_glass(canvas, name, yaw):
-    """The glass of the lamp that was placed last: its three displays on the middle of the globe,
-    not turned with the lamp, seen as far and lit as the lamp is. Returns their number."""
+def _put_parts(canvas, name, yaw):
+    """What the lamp that was placed last is drawn in beside its own model (_parts): a display for
+    each, on the middle of the globe or of the shade's mouth, not turned with the lamp, seen as
+    far and lit as the lamp is. Returns their number."""
     x, y, z, lamp = canvas.entities[-1]
-    d = K.turn(yaw, GLOBES[name]["at"])
-    for part in _glass(name):
+    parts = _parts(name)
+    for part, at in parts:
+        d = K.turn(yaw, at)
         nbt = part.display(0.0)
         nbt["view_range"] = lamp["view_range"]
         if "brightness" in lamp:
             nbt["brightness"] = dict(lamp["brightness"])
         canvas.add_entity(x + d[0], y + d[1], z + d[2], nbt)
-    return len(GLOBE_PARTS)
+    return len(parts)
 
 
 def festoon(canvas, a, b, spacing=1.0, origin=(0, 0, 0), light=True, level=None, hangers=True):
