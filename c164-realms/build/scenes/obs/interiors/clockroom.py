@@ -34,10 +34,14 @@ of the master clock's pendulum (a rod four times as long); the escape wheel turn
 every swing.
 
 Light. Nothing here adds a colour. The sources are offered to the light line (sky/_lightkit):
-one in front of each dial's back (rank 2), one on the movement and one at the caged lamp on the
-south wall (rank 3), one at the hatch (rank 3). They are kept low enough that the cells over the
-tops of the four slit windows stay under what the lobby's own sources give the glass, so no slit
-is brighter outside than without the room (the test scene counts it: python -m scenes.obs_int_clockroom).
+one in front of each dial's back (rank 2), one at the caged lamp on the south wall and one at the
+hatch (rank 3). The movement takes no source of its own: its pieces are shown as the dials light
+them (MOVEMENT_LIGHT). No slit window may be brighter outside than without the room. The tops of
+the slits' glass lie in the floor's row, under thin plates that light passes; over the two dark
+slits (north and south) a cabinet stands on the plate instead, a whole block: the switchboard of
+the winding motor, and a chest of drawers. Through the pendulum's slot and under the bed the
+levels are kept to what reaches the lobby's glass anyway. The test scene counts both, the cells
+outside and the light on the walk: python -m scenes.obs_int_clockroom.
 """
 import functools
 import math
@@ -73,6 +77,8 @@ DIAL = T.DIAL_BACKS["east"][1]                      # 27.5: the height of the di
 HATCH = tuple(T.LADDER_AT)                          # (11, -32): the corner the ladder comes up in
 SLOT = (CX, CZ + 1)                                 # (13, -29): the pendulum's slot in the floor
 PIERS = ((CX - 1, CZ), (CX + 1, CZ))                # the two piers the bed lies on
+# the two cabinets over the tops of the dark slits: column, the panel it is (B.PANELS), the way it looks
+CABINETS = (((CX, WELL_Z[0]), "knife_switch", "south"), ((CX, WELL_Z[1]), "drawers", "north"))
 LOOKS = {"east": "west", "west": "east", "north": "south", "south": "north"}    # the way a dial's back looks
 
 # ---- the movement, in pixels from the middle of the floor (x east, y up, z south) -------------------------
@@ -104,10 +110,20 @@ SHEAVE_R, SHEAVE_DROP = 2.5, 4.5                    # a sheave's radius, and its
 BALL_ROPE = (18.25, 24.75, 13.0)                    # where the time ball's rope leaves its drum
 
 # ---- light: (level, rank) --------------------------------------------------------------------------------
-DIAL_GLOW = (9, 2)              # in front of each dial's back: as behind a lit small window
-MOVEMENT_LAMP = (8, 3)          # on the movement: the top of the third rank, beside a machine
+# In front of each dial's back, as behind a lit window: (level, rows above the dial's middle). The
+# south one stands over the pendulum's slot: a row higher and a level lower, so that the cell over
+# the slot keeps 5 and the lobby's south glass gets no more than it has.
+DIAL_GLOW = {"north": (10, 0), "east": (10, 0), "west": (10, 0), "south": (9, 1)}
+DIAL_RANK = 2
 CAGE_LAMP = (7, 3)              # at the caged lamp
 HATCH_LAMP = (6, 3)             # where one comes up: a walkway
+WALK_LIGHT = 5                  # the least a place to stand has, at the feet or at the head
+# What the pieces are shown with, (sky, block): the movement as the four dials light it, whatever
+# the cell its anchor stands in; the pendulum a little less; the weights so that they are seen
+# under the lobby's ceiling.
+MOVEMENT_LIGHT = (0, 12)
+PENDULUM_LIGHT = (0, 10)
+WEIGHT_LIGHT = (0, 7)
 LAMP_AT = (CX + 1.6, FLOOR_TOP + 1.4, WELL_Z[1] + 1.0)     # the caged lamp, on the south wall
 
 # ---- materials ---------------------------------------------------------------------------------------------
@@ -159,29 +175,28 @@ def spot(p):
 
 # ---- the floor -----------------------------------------------------------------------------------------------
 def floor_role(x, z, roles=B):
-    """(block, whether it replaces what lies there) for column (x, z) of the floor's row, or None
-    where this package lays nothing: the hatch, and the twelve cells of the tower's own (the backs
-    of the slit fields). The tower may lay a floor of its own in way_up(); only the cells the
-    movement needs are laid over it."""
+    """The block this package lays in column (x, z) of the floor's row, over the tower's boards
+    (tower.way_up()), or None where the tower's floor stays."""
     if (x, z) == HATCH:
         return None
-    edge_x, edge_z = x in WELL_X, z in WELL_Z
-    if edge_x and edge_z:
-        return roles.IRON_GRATE, True               # the three other corners: a weight's rope drops through
-    if edge_x or edge_z:
-        return None
+    if x in WELL_X and z in WELL_Z:
+        return roles.IRON_GRATE                     # the three other corners: a weight's rope drops through
     if (x, z) == SLOT:
-        return roles.IRON_BARS, True                # the pendulum's slot, barred against a fall
+        return roles.IRON_BARS                      # the pendulum's slot, barred: one walks over it
     if (x, z) == (CX, CZ):
-        return st(roles.IRON_RIVETED.slab, type="top"), True    # a slab: the slot's bars do not join it
+        return st(roles.IRON_RIVETED.slab, type="top")      # a slab: the slot's bars do not join it
     if (x, z) in PIERS:
-        return roles.IRON_RIVETED.block, True       # under the piers
-    return roles.IRON_GRATE, False
+        return roles.IRON_RIVETED.block             # under the piers
+    return None
 
 
-def lids():
-    """The cells over the tops of the four slit windows' glass, which lies in the floor's row."""
-    return [f.cell(T.MID, 1) for f in T.FACES]
+def walk():
+    """The columns one can stand in: the gallery but for the two cabinets, and the floor round the
+    movement but for the piers and the bars between them. The hatch is one of them (the ladder's
+    head)."""
+    taken = {column for column, _, _ in CABINETS} | set(PIERS) | {(CX, CZ)}
+    return [(x, z) for x in range(WELL_X[0], WELL_X[1] + 1) for z in range(WELL_Z[0], WELL_Z[1] + 1)
+            if (x, z) not in taken]
 
 
 # ---- models: wheels ----------------------------------------------------------------------------------------------
@@ -566,41 +581,43 @@ def build_clockroom(c, origin=(0, 0, 0), roles=B):
         _offer(c, at(cell), level, f"{NAME}:{why}", rank)
         lights.append((cell, level, why))
 
-    # ---- the floor: the cells the movement needs; elsewhere a grating where the tower has laid nothing
+    # ---- the floor: the cells the movement needs, over the tower's boards
     for x in range(WELL_X[0], WELL_X[1] + 1):
         for z in range(WELL_Z[0], WELL_Z[1] + 1):
             role = floor_role(x, z, roles)
             if role is not None:
-                put(x, FLOOR_Y, z, role[0], keep=not role[1])
-    for x, z in lids():
-        put(x, FEET, z, roles.IRON_HATCH + "[half=bottom]", keep=True)
+                put(x, FLOOR_Y, z, role)
     # the piers, and bars between them: nobody walks through under the bed
     for x, z in PIERS:
         put(x, FEET, z, roles.IRON_CAST)
     put(CX, FEET, CZ, roles.IRON_BARS)
+    # the two cabinets, in place of the plate over a dark slit's glass: whole blocks, no light gets down
+    for (x, z), panel, looks in CABINETS:
+        put(x, FEET, z, st(roles.PANELS[panel], facing=looks))
 
     # ---- the movement
     bed = spot((0.0, BED_TOP, 0.0))
     for name in ("bed", "trains", "motor", "winch"):
-        n += show(name, bed)
-    n += show("escape", spot(ESCAPE))
+        n += show(name, bed, brightness=MOVEMENT_LIGHT)
+    n += show("escape", spot(ESCAPE), brightness=MOVEMENT_LIGHT)
     period = BEATS * kit.PENDULUM if kit else 0
     if kit:
         kit.spin(c, "z", ESCAPE_TEETH * period)
-    n += show("pallets", spot(PALLETS))
+    n += show("pallets", spot(PALLETS), brightness=MOVEMENT_LIGHT)
     if kit:
         kit.swing(c, "z", SWING, period)
-    n += show("pendulum", spot(PIVOT), scale=2.0)
+    n += show("pendulum", spot(PIVOT), scale=2.0, brightness=PENDULUM_LIGHT)
     if kit:
         kit.swing(c, "z", SWING, period)
 
     # ---- the leading-off work and the dials' backs
-    n += show("leads", (AXIS[0], DIAL, AXIS[1]))
+    n += show("leads", (AXIS[0], DIAL, AXIS[1]), brightness=MOVEMENT_LIGHT)
     for name, back in T.DIAL_BACKS.items():
         n += K.put(c, own[PREFIX + "dial"], back, mount="wall", facing=LOOKS[name], scale=2.0, origin=origin,
                    turns=(("x", -TILT),))
         d = K.turn(K.FACING[LOOKS[name]], (0.0, 0.0, 0.5))
-        offer((back[0] + d[0], back[1], back[2] + d[2]), DIAL_GLOW, f"dial {name}")
+        level, rows = DIAL_GLOW[name]
+        offer((back[0] + d[0], back[1] + rows, back[2] + d[2]), (level, DIAL_RANK), f"dial {name}")
 
     # ---- the weight lines: up from the barrel, over two sheaves under the ceiling, down a corner
     r = SHEAVE_R * PX
@@ -618,27 +635,26 @@ def build_clockroom(c, origin=(0, 0, 0), roles=B):
         n += rope((first[0], hub + r, first[2]), (last[0], hub + r, last[2]))
         eye = (cx, line["eye"], cz)
         n += rope((cx, hub, cz), eye)
-        n += show("weight", eye)
+        n += show("weight", eye, brightness=WEIGHT_LIGHT)
     # the time ball's rope: from its drum up through the ceiling
     a = spot(BALL_ROPE)
     n += rope(a, (a[0], CEILING - K.NUDGE, a[2]))
 
-    # ---- the small pieces: the record on the east wall, the oil can by the west pier
-    n += K.put(c, own[PREFIX + "board"], (WELL_X[1] + 1.0, FLOOR_TOP + 1.3, CZ + 1.5), mount="wall",
-               facing="west", origin=origin)
-    n += K.put(c, own[PREFIX + "oilcan"], (CX - 0.75, FLOOR_TOP, CZ - 0.7), yaw=20.0, origin=origin)
+    # ---- the small pieces: the record over the switchboard, on the north wall; the oil can on the drawers
+    n += K.put(c, own[PREFIX + "board"], (AXIS[0], FLOOR_TOP + 1.5, float(WELL_Z[0])), mount="wall",
+               facing="south", origin=origin)
+    n += K.put(c, own[PREFIX + "oilcan"], (AXIS[0] - 0.1, FLOOR_TOP + 1.0, WELL_Z[1] + 0.5), yaw=200.0, origin=origin)
 
-    # ---- the light: the caged lamp on the south wall, the movement, the hatch
+    # ---- the light: the caged lamp on the south wall, the hatch
     n += lamps.place(c, "cage", LAMP_AT, facing="north", origin=origin, light=False)
     offer((LAMP_AT[0], LAMP_AT[1], LAMP_AT[2] - 0.5), CAGE_LAMP, "caged lamp")
-    offer(bed, MOVEMENT_LAMP, "movement")
     offer((HATCH[0], FEET + 1, HATCH[1]), HATCH_LAMP, "hatch")
     return {"entities": n, "lights": lights}
 
 
 def build(canvas, origin=(0, 0, 0)):
-    """The master scene's call: the tower's way up (the door open, the ladder, what the tower lays
-    of the floor), then the room."""
+    """The master scene's call: the tower's way up (the door open, the ladder, the room's floor and
+    the plates along its walls), then the room."""
     if not MOVED_IN:
         return 0
     T.way_up(canvas, origin)

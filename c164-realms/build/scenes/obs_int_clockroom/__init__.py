@@ -12,7 +12,7 @@ side; outside_light() counts the same thing, the light in the cells round the to
 without the room.
 
 The cameras are in VIEWS; `python -m scenes.obs_int_clockroom` writes shots.json from them and
-prints that count.
+prints that count, and the light on the places one can stand in (walk_light()).
 """
 from artkit.canvas import Canvas
 
@@ -35,9 +35,10 @@ DECK = 3                                # the stand-in deck reaches this far bey
 VIEWS = [
     # the first sight coming up the ladder, in the north-west corner: the movement, the nest of bevels
     # over it, the east and the south dial behind
-    ("int_arrive", (11.7, EYE, -31.3), (CX + 0.2, 26.3, CZ + 0.2)),
-    # the movement's front from the north gallery: the setting dial, the crank, the motor; the south dial over it
-    ("int_movement", (CX, EYE, -31.7), (CX, 25.75, CZ)),
+    ("int_arrive", (11.75, EYE, -31.25), (CX + 0.2, 26.3, CZ + 0.2)),
+    # the movement's front from the floor north-east of it: the setting dial, the crank, the three
+    # barrels, the motor at the far end
+    ("int_movement", (14.45, EYE, -30.9), (CX - 0.35, 25.7, CZ - 0.2)),
     # one dial's back and its rod, from the floor beside the movement
     ("int_dial", (12.3, EYE, -30.7), (15.0, 27.4, CZ)),
     # the board's view V5 from the court: the tower as it stands with the room in it
@@ -92,19 +93,39 @@ def write_pack(pack_dir):
     return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
 
 
-def outside_light():
-    """The block light in the cells round the tower's shaft (its recesses and two cells beyond its
-    faces, from the deck to the cornice), with the room and without it: {cell: (without, with)} for
-    every cell that differs. Empty when the room changes nothing outside."""
+BOX = ((tower.X0 - 2, tower.FOOT, tower.Z0 - 2), (tower.X1 + 2, tower.SHAFT_TOP, tower.Z1 + 2))
+
+
+def _levels(room_in):
+    """(the block light in the cells of the tower's shaft and two cells round it, from the deck to
+    the cornice; the sources in there, {cell: level})."""
+    from artkit import blocks as AB
     from scenes.obs.sky import _lightkit
 
-    lo = (tower.X0 - 2, tower.FOOT, tower.Z0 - 2)
-    hi = (tower.X1 + 2, tower.SHAFT_TOP, tower.Z1 + 2)
-    got = [_lightkit.levels(build(room_in), lo, hi) for room_in in (False, True)]
+    c = build(room_in)
+    lo, hi = BOX
+    sources = {}
+    for cell, state in c.b.items():
+        if all(lo[i] <= cell[i] <= hi[i] for i in range(3)) and AB.parse(state)[0] == "light":
+            sources[cell] = int(AB.parse(state)[1].get("level", 15))
+    return _lightkit.levels(c, lo, hi), sources
 
-    def outside(cell):
-        return not (tower.X0 < cell[0] < tower.X1 and tower.Z0 < cell[2] < tower.Z1)
 
-    cells = sorted(cell for cell in set(got[0]) | set(got[1]) if outside(cell))
-    return {cell: (got[0].get(cell, 0), got[1].get(cell, 0)) for cell in cells
-            if got[0].get(cell, 0) != got[1].get(cell, 0)}
+def _outside(cell):
+    return not (tower.X0 < cell[0] < tower.X1 and tower.Z0 < cell[2] < tower.Z1)
+
+
+def outside_light(got=None):
+    """The block light outside the tower's walls (its recesses and two cells beyond its faces) with
+    the room and without it: {cell: (without, with)} for every cell that differs. Empty when the
+    room changes nothing outside."""
+    bare, full = got or (_levels(False)[0], _levels(True)[0])
+    cells = sorted(cell for cell in set(bare) | set(full) if _outside(cell))
+    return {cell: (bare.get(cell, 0), full.get(cell, 0)) for cell in cells if bare.get(cell, 0) != full.get(cell, 0)}
+
+
+def walk_light(full=None):
+    """The light on every place one can stand in the room: {(x, z): the more of the feet's cell and
+    the head's}."""
+    full = full if full is not None else _levels(True)[0]
+    return {(x, z): max(full.get((x, room.FEET, z), 0), full.get((x, room.FEET + 1, z), 0)) for x, z in room.walk()}
