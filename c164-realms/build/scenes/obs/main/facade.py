@@ -12,7 +12,6 @@ What it builds:
     the west door of the apse;
   * the roofs that close it: plain decks over the three pavilions (stand-ins: terraces() names
     them for the package that finishes them), slate between gable walls over the wings;
-  * the drum and the dome above (_dome.py), as massing, until main/dome.py is in the tree;
   * a pale wall behind the entrance, a stand-in for the hall until the hall itself is there to be
     seen through the arches (screened()).
 
@@ -471,12 +470,6 @@ def _screen_lights(canvas, entrance, origin):
         canvas.set(ox + SCREEN_X + 1, oy + HALL_LIGHT_Y, oz + z, f"{B.LIGHT}[level={level}]", keep=True)
 
 
-def crowned():
-    """True when main/dome.py is in the tree: the rotunda's drum and dome are that package's then,
-    and the massing of _dome.py is not built here any more."""
-    return importlib.util.find_spec(__package__ + ".dome") is not None
-
-
 # --- the package --------------------------------------------------------------------------------------
 def build(canvas, origin=(0, 0, 0), entrance=None, screen=None):
     """screen: whether the stand-in behind the entrance is built; left out, screened() says."""
@@ -495,8 +488,6 @@ def build(canvas, origin=(0, 0, 0), entrance=None, screen=None):
         _screen(canvas, origin)
         if not lit():
             _screen_lights(canvas, entrance, origin)
-    if not crowned():
-        _dome.build(canvas, origin, glass=glass)
     return 0
 
 
