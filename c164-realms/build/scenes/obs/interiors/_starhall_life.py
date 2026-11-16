@@ -42,9 +42,11 @@ X0, Z0, X1, Z1 = ROOM["box"]                    # 2, -5, 15, 5
 FEET = ROOM["feet"]                             # 0
 
 HANG_Y = FEET + 3.0             # the middle of the case: on the shaft, which is the third and fourth block
-CASE = (7.0, -8.0, 5.0, 2.5)    # the case: half its width, its foot and its top about the anchor, its depth
-WINDOW = (2.5, 1.5)             # half the width and half the height of a window
-WINDOWS = tuple((x, y) for y in (1.75, -1.75, -5.25) for x in (-3.25, 3.25))
+CASE = (4.5, -8.0, 5.0, 2.5)    # the case: half its width, its foot and its top about the anchor, its depth. With
+#                                 its mouldings it is ten pixels wide and no more: the shaft it hangs on is the
+#                                 lightest stone of the first look's lower right, and keeps a margin either side (cr3)
+WINDOW = (1.5, 1.25)            # half the width and half the height of a window
+WINDOWS = tuple((x, y) for y in (2.0, -1.5, -5.0) for x in (-2.0, 2.0))
 # the windows in use and their cycles: (the window, ticks its flag is up, ticks it is down)
 CALLS = ((0, 190, 70), (3, 270, 70), (4, 350, 70))
 
@@ -55,8 +57,9 @@ FLAG = K.flat("cream", 2)
 
 
 def _annunciator():
-    """The case, 14 px wide and 13 tall, the bell 6 px across on its top. Anchor: on the wall,
-    8 px over the case's foot."""
+    """The case, 9 px wide and 13 tall, the bell 6 px across on its top. Anchor: on the wall,
+    8 px over the case's foot. The bell is dark brass: a gong of full brass, looking into the
+    hall under the aisle's lamps, would be lighter than the pier's face."""
     m = M.Model(PREFIX + "annunciator")
     w, y0, y1, d = CASE
     m.box((-w, y0, 0.0), (w, y1, d), WOOD_D, grain="y", skip="n")
@@ -71,10 +74,10 @@ def _annunciator():
                   K.BRASS_D, grain="y")
     top = y1 + 1.0
     m.box((-1.0, top, 0.5), (1.0, top + 1.0, 2.0), K.IRON_D)                        # the bell's bracket
-    m.tube("z", (0.0, top + 3.5), 1.0, 2.5, 3.0, K.BRASS, sides=12)                 # the gong
-    m.tube("z", (0.0, top + 3.5), 2.5, 3.0, 1.0, K.BRASS_D, sides=8)                # its nut
-    m.box((3.25, top, 1.25), (4.25, top + 2.5, 2.25), K.IRON)                       # the hammer beside it
-    m.box((2.0, top, 0.5), (5.5, top + 1.0, 2.5), K.IRON_D)                         # and its coils
+    m.tube("z", (0.0, top + 3.5), 1.0, 2.5, 3.0, K.BRASS_D, sides=12)               # the gong
+    m.tube("z", (0.0, top + 3.5), 2.5, 3.0, 1.0, K.flat("brass", 1), sides=8)       # its nut
+    m.box((3.0, top, 1.25), (4.0, top + 2.5, 2.25), K.IRON)                         # the hammer beside it
+    m.box((1.5, top, 0.5), (4.5, top + 1.0, 2.5), K.IRON_D)                         # and its coils
     return m
 
 
@@ -83,7 +86,7 @@ def _flag(name, mat):
     into it. Anchor: on the wall behind the window's middle."""
     m = M.Model(PREFIX + "flag_" + name)
     d = CASE[3]
-    m.box((-WINDOW[0] + 0.5, -WINDOW[1] + 0.5, d + 0.25), (WINDOW[0] - 0.5, WINDOW[1] - 0.5, d + 0.5), mat)
+    m.box((-WINDOW[0] + 0.25, -WINDOW[1] + 0.25, d + 0.25), (WINDOW[0] - 0.25, WINDOW[1] - 0.25, d + 0.5), mat)
     return m
 
 
