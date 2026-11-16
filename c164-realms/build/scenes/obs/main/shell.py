@@ -43,7 +43,8 @@ and its inner leaf it touches only the floor of the doorways):
 
 The end pavilions and the pockets of the apse beside the cross walls stay closed, and so does the
 ground floor of a wing until a room moves into it: then it is in ROOMS and in LOWER (the plate
-vault under the chart room), and the shell opens its door from the hall's aisle. Furniture, wall
+vault under the chart room, the battery room under the time room), and the shell opens its door
+from the hall's aisle. Furniture, wall
 panelling, lamps, machines: the interiors, props and machines lines. ROOMS and doors() below are
 what they read.
 
@@ -132,11 +133,15 @@ ROOMS = {
                         note="south wing, ground floor: the cavity under the chart room, whose floor is its ceiling; "
                              "door at x 7 in the wall on z 6, two rows high; nothing of the shell is in it, the room "
                              "lays its own floor"),
+    "battery room": dict(box=(S.ROOM_X[0], -WING_Z[1], S.ROOM_X[1], -WING_Z[0]), feet=S.GROUND, ceiling=DECK_Y,
+                         note="north wing, ground floor: the cavity under the time room, whose floor is its ceiling; "
+                              "door at x 7 in the wall on z -6, two rows high; nothing of the shell is in it, the room "
+                              "lays its own floor"),
 }
 # The rooms on the ground floor of the wings and the side of the axis each lies on. A wing's ground
-# floor is a closed cavity until its room is in the assembly (interiors/platevault, 11-16; the
-# battery room under the time room is to come): then the room is named here and has its doorway.
-LOWER = {"plate vault": 1}
+# floor is a closed cavity until its room is in the assembly (interiors/platevault and
+# interiors/batteryroom, 11-16): then the room is named here and has its doorway.
+LOWER = {"plate vault": 1, "battery room": -1}
 
 
 def doors():
