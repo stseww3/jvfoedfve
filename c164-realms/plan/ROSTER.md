@@ -1,6 +1,6 @@
 # 名单：第 3 班（11-16 凌晨起）
 
-总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 10:31。点名只点「聊天号」一栏；聊天号“—”是还没开出来。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
+总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 10:51。点名只点「聊天号」一栏；聊天号“—”是还没开出来。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
 
 - 总监：A0，聊天 c164。11-16 08:24 起只有三种事找他：碰红线的、跨类别对不拢的、要改 `ART-PLAN.md` 的。
 - 总监助理：aide，聊天 c320。名单上的事找他：谁是谁、找谁对接口、新分支报给他、节点不回单了报给他。手上的卡都交付了：11-16 09:12 起先找本类的审批人领他清单上的活，本类没有活的再找总监助理跨类派。
@@ -29,29 +29,29 @@
 | 代号 | 聊天号 | 节点 | 接手 | 卡 | 旧分支 @ 有效头 | 新分支 |
 | --- | --- | --- | --- | --- | --- | --- |
 | a1 | c324 | node67 | c176 | materials/board；materials 牵头 | `cursor/c164-a1-materials-3930` @ `db5682e9` | `cursor/c164-a1-board-f3-09d2` |
-| m1 | c335 | node78 | c194 | materials/brass-oldcopper-small（补图）、materials/panels 打磨轮；然后 props/instruments（接 c199） | `cursor/c164-m1-brass-fa68` @ `a2370b00`、`cursor/c164-m1-panels-polish-bc45` @ `baccd973`；`cursor/c164-instr-f5da` @ `97398871` | `cursor/c164-m1-brass-f3-c367`、`cursor/c164-m1-panels-f3-c367`、`cursor/c164-m1-instruments-f3-c367`、`cursor/c164-m1-domeboard-f3-c367` |
-| snow | c336 | node79 | c194 | materials/snow；然后 props/paper（接 c197；11-16 07:49 交付）（interiors/batteryroom 11-16 07:52 派给过他，没开工，总监 08:36 给了新开的 astro；`cursor/c164-snow-batteryroom-f3-17de` 留着不用） | `cursor/c164-m1-snow-bc45` @ `51f2fd69`；`cursor/c164-m4-paper-7345` @ `b3ff0866` | `cursor/c164-snow-f3-17de`、`cursor/c164-snow-paper-f3-17de`、`cursor/c164-snow-batteryroom-f3-17de`、`cursor/c164-snow-chartshelves-f3-17de` |
-| m5 | c352 | node95 | c198 | materials/iron 二次交付；然后 machines/domegear（接 c196） | `cursor/c164-m5-iron-8757` @ `3c2120de`；`cursor/c164-gear-6260` @ `c7045d80` | `cursor/c164-m5-iron-f3-b9c1`、`cursor/c164-m5-domegear-f3-b9c1`、`cursor/c164-m5-chartengine-f3-b9c1` |
-| ashlar | c353 | node96 | c204 | materials/ashlar 打磨（新台徽、细琢面的长短石）；然后 machines/armillary（接 c246） | `cursor/c164-ashlar-2cc1` @ `f57e5576`；`cursor/c164-arm-7c2a` @ `724d26be` | `cursor/c164-ashlar-polish-f3-799b`、`cursor/c164-ashlar-armillary-f3-799b`、`cursor/c164-ashlar-gallery-f3-799b` |
+| m1 | c335 | node78 | c194 | materials/brass-oldcopper-small（补图）、materials/panels 打磨轮；然后 props/instruments（接 c199） | `cursor/c164-m1-brass-fa68` @ `a2370b00`、`cursor/c164-m1-panels-polish-bc45` @ `baccd973`；`cursor/c164-instr-f5da` @ `97398871` | `cursor/c164-m1-brass-f3-c367`、`cursor/c164-m1-panels-f3-c367`、`cursor/c164-m1-instruments-f3-c367`、`cursor/c164-m1-domeboard-f3-c367`、`cursor/c164-m1-wayspier-f3-c367` |
+| snow | c336 | node79 | c194 | materials/snow；然后 props/paper（接 c197；11-16 07:49 交付）（interiors/batteryroom 11-16 07:52 派给过他，没开工，总监 08:36 给了新开的 astro；`cursor/c164-snow-batteryroom-f3-17de` 留着不用） | `cursor/c164-m1-snow-bc45` @ `51f2fd69`；`cursor/c164-m4-paper-7345` @ `b3ff0866` | `cursor/c164-snow-f3-17de`、`cursor/c164-snow-paper-f3-17de`、`cursor/c164-snow-batteryroom-f3-17de`、`cursor/c164-snow-chartshelves-f3-17de`、`cursor/c164-snow-astroroom-f3-17de` |
+| m5 | c352 | node95 | c198 | materials/iron 二次交付；然后 machines/domegear（接 c196） | `cursor/c164-m5-iron-8757` @ `3c2120de`；`cursor/c164-gear-6260` @ `c7045d80` | `cursor/c164-m5-iron-f3-b9c1`、`cursor/c164-m5-domegear-f3-b9c1`、`cursor/c164-m5-chartengine-f3-b9c1`、`cursor/c164-m5-walklight-f3-b9c1` |
+| ashlar | c353 | node96 | c204 | materials/ashlar 打磨（新台徽、细琢面的长短石）；然后 machines/armillary（接 c246） | `cursor/c164-ashlar-2cc1` @ `f57e5576`；`cursor/c164-arm-7c2a` @ `724d26be` | `cursor/c164-ashlar-polish-f3-799b`、`cursor/c164-ashlar-armillary-f3-799b`、`cursor/c164-ashlar-gallery-f3-799b`、`cursor/c164-ashlar-audit-f3-799b` |
 | facade | c321 | node64 | c206 | main/facade；main 牵头；然后 common/walk 的 walk-out（室外走查，P1，11-16 05:30 总监派；手上的短活先收尾） | `cursor/c164-facade-229b` @ `2c482b37` | `cursor/c164-facade-facade-f3-81a0`、`cursor/c164-facade-walkout-f3-81a0` |
-| shell | c325 | node68 | c231 | main/shell | `cursor/c164-shell-f063` @ `15b6cf2e` | `cursor/c164-shell-f3-3067`、`cursor/c164-shell-timedoor-f3-3067` |
+| shell | c325 | node68 | c231 | main/shell | `cursor/c164-shell-f063` @ `15b6cf2e` | `cursor/c164-shell-f3-3067`、`cursor/c164-shell-timedoor-f3-3067`、`cursor/c164-shell-battdoor-f3-3067`、`cursor/c164-shell-doorkit-f3-3067` |
 | dome | c326 | node69 | c222 | main/dome；然后 machines/engine-dynamo（11-16 04:50 派，没有前任，从总装开；dome 被退回时它优先） | `cursor/c164-dome-0dab` @ `ecda0e1e` | `cursor/c164-dome-f3-a244`、`cursor/c164-dome-engine-f3-a244` |
 | tower | c327 | node70 | c223 | main/tower | `cursor/c164-tower-21fb` @ `951a1877` | `cursor/c164-tower-f3-c402` |
-| sdome | c328 | node71 | c224 | main/smalldome（含屋面）；然后 machines/meridian-astrograph（11-16 03:55 派，没有前任，从总装开；smalldome 被退回时它优先）；再 interiors/astroroom（P3，05:30 他要了，留给他；11-16 08:34 两张卡都交了，开工，从照相仪的分支头开；总监 08:36 认了） | `cursor/c164-sdome-8013` @ `98d469e8` | `cursor/c164-sdome-f3-1fe7`、`cursor/c164-sdome-astro-f3-1fe7`、`cursor/c164-sdome-astroroom-f3-1fe7` |
-| a2 | c322 | node65 | c177 | sky/tones、motion/loop；sky 和 motion 牵头（motion/smoke、motion/sound 11-16 04:12 派给过他，没开工，总监 08:28 给了新开的 smoke、sound 两人）；**sky/safe-look**（总监 11-16 06:54 加：不带注册表文件的备用天，先交一页方案；头号风险，在他手上排最前，要节点和真机先给他） | `cursor/c164-a2-light-29fe` @ `b107652f` | `cursor/c164-a2-sky-f3-695d`、`cursor/c164-a2-loop-f3-695d`、`cursor/c164-a2-safelook-f3-695d` |
+| sdome | c328 | node71 | c224 | main/smalldome（含屋面）；然后 machines/meridian-astrograph（11-16 03:55 派，没有前任，从总装开；smalldome 被退回时它优先）；再 interiors/astroroom（P3，05:30 他要了，留给他；11-16 08:34 两张卡都交了，开工，从照相仪的分支头开；总监 08:36 认了） | `cursor/c164-sdome-8013` @ `98d469e8` | `cursor/c164-sdome-f3-1fe7`、`cursor/c164-sdome-astro-f3-1fe7`、`cursor/c164-sdome-astroroom-f3-1fe7`、`cursor/c164-sdome-astroshell-f3-1fe7` |
+| a2 | c322 | node65 | c177 | sky/tones、motion/loop；sky 和 motion 牵头（motion/smoke、motion/sound 11-16 04:12 派给过他，没开工，总监 08:28 给了新开的 smoke、sound 两人）；**sky/safe-look**（总监 11-16 06:54 加：不带注册表文件的备用天，先交一页方案；头号风险，在他手上排最前，要节点和真机先给他） | `cursor/c164-a2-light-29fe` @ `b107652f` | `cursor/c164-a2-sky-f3-695d`、`cursor/c164-a2-loop-f3-695d`、`cursor/c164-a2-safelook-f3-695d`、`cursor/c164-a2-lookswitch-f3-695d` |
 | lights | c331 | node74 | c220 | sky/lights（含洗墙轮） | `cursor/c164-lights-007c` @ `8972aa88`、`cursor/c164-lights-wash-0fe3` @ `632a2c09` | `cursor/c164-lights-f3-9479`、`cursor/c164-lights-wash-f3-9479`、`cursor/c164-lights-pools-f3-9479`、`cursor/c164-lights-walk-f3-9479` |
-| comet | c330 | node73 | c230 | sky/comet；然后 sky/ridges（P2，11-16 05:30 总监派，没有前任，从总装开；先找 cloud c329 对云海的高度；手上的打磨先收尾） | `cursor/c164-comet-986f` @ `b3950eb4` | `cursor/c164-comet-f3-793d`、`cursor/c164-comet-ridges-f3-793d`、`cursor/c164-comet-skyline-f3-793d` |
+| comet | c330 | node73 | c230 | sky/comet；然后 sky/ridges（P2，11-16 05:30 总监派，没有前任，从总装开；先找 cloud c329 对云海的高度；手上的打磨先收尾） | `cursor/c164-comet-986f` @ `b3950eb4` | `cursor/c164-comet-f3-793d`、`cursor/c164-comet-ridges-f3-793d`、`cursor/c164-comet-skyline-f3-793d`、`cursor/c164-comet-ridges-back-f3-793d`、`cursor/c164-comet-lamps-f3-793d` |
 | cloud | c329 | node72 | c227 | sky/cloudsea | `cursor/c164-cloud-wip-99a5` @ `55daddce` | `cursor/c164-cloud-cloudsea-f3-ad5e`、`cursor/c164-cloud-forecast-f3-ad5e` |
-| a4 | c323 | node66 | c221 | site/terrain、site/court 打磨；site 牵头；然后 common/walk 的 walk-in（室内和屋顶走查，P1，11-16 05:30 总监派；手上的短活先收尾） | `cursor/c164-a4-site-2af2` @ `7a18bacc` | `cursor/c164-a4-site-f3-6824`、`cursor/c164-a4-walkin-f3-6824` |
+| a4 | c323 | node66 | c221 | site/terrain、site/court 打磨；site 牵头；然后 common/walk 的 walk-in（室内和屋顶走查，P1，11-16 05:30 总监派；手上的短活先收尾） | `cursor/c164-a4-site-2af2` @ `7a18bacc` | `cursor/c164-a4-site-f3-6824`、`cursor/c164-a4-walkin-f3-6824`、`cursor/c164-a4-walka6-f3-6824`、`cursor/c164-a4-walkcand-f3-6824` |
 | stair | c337 | node80 | c225 | site/stair（两次交付都过了关口）；**11-16 07:30 起转第四评审，代号 cr4**（总监定，评审排队过三件）：读 `roles/S3-critic.md`，先评 props/instruments、props/furniture（头一轮的两件，从 review 队里分来），不评自己做过的包；site/stair 被退回时它优先。interiors/batteryroom 现在归新开的 astro（草图、出图脚本、交接说明留在蓄电池室那条分支上，`0aae4ace`） | `cursor/c164-stair-4aad` @ `36220ac4` | `cursor/c164-stair-f3-b330`、`cursor/c164-stair-cr4-f3-b330`；`cursor/c164-stair-batteryroom-f3-b330`（交接用） |
-| cable | c338 | node81 | c226 | site/cablecar（11-16 08:40 交付）；然后 machines/cablecar-winch（接 c240；08:42 开工） | `cursor/c164-cable-a47d` @ `4af8406b`；`cursor/c164-car-w3k9` @ `5a6186cc` | `cursor/c164-cable-cablecar-f3-9cf7`、`cursor/c164-cable-winch-f3-9cf7` |
+| cable | c338 | node81 | c226 | site/cablecar（11-16 08:40 交付）；然后 machines/cablecar-winch（接 c240；08:42 开工） | `cursor/c164-cable-a47d` @ `4af8406b`；`cursor/c164-car-w3k9` @ `5a6186cc` | `cursor/c164-cable-cablecar-f3-9cf7`、`cursor/c164-cable-winch-f3-9cf7`、`cursor/c164-cable-outb-f3-9cf7` |
 | power | c339 | node82 | c228 | site/powerhouse；然后 interiors/powerhouse（11-16 04:14 派，没有前任；外壳被退回时它优先） | `cursor/c164-power-f182` @ `5ae1738e` | `cursor/c164-power-f3-2e4a`、`cursor/c164-power-interior-f3-2e4a`、`cursor/c164-power-darkroom-f3-2e4a` |
 | outb | c340 | node83 | c229 | site/outbuildings、site/mastbase；然后 common/export（成品地图导出，现在空跑，P1，11-16 05:46 派，没有前任，从总装开；两张卡被退回时它们优先；**两个试传存档排最前**：蓝调的天用的注册表文件会让存档带「实验性」标记、Realms 不支持，总监 06:54 定为头号风险，要节点和真机先给他） | `cursor/c164-outb-0198` @ `6d320dd0` | `cursor/c164-outb-f3-f4b8`、`cursor/c164-outb-export-f3-f4b8` |
-| a6 | c334 | node77 | c179 | props/furniture、灯的模型；props 牵头；然后入口两盏壁灯的球罩试验（评审 #20，总监 11-16 06:54 加，排在 furniture 交付之后） | `cursor/c164-a6-props-7fb0` @ `8026cccb` | `cursor/c164-a6-furniture-f3-4ad1` |
-| lamps | c341 | node84 | c220 | props/lamps 的位置表和场地灯链；然后 props/electrics-signs（接 c242） | `cursor/c164-lamps-007c` @ `7c270e4c`；`cursor/c164-elec-7be8` @ `5ff667a1` | `cursor/c164-lamps-chain-f3-0dde`、`cursor/c164-lamps-elecsign-f3-0dde` |
-| m3 | c342 | node85 | c218 | props/ironwork 打磨轮（退回过）；然后 props/pipes（接 c241） | `cursor/c164-m3-ironwork-e6ba` @ `6f9eed36`；`cursor/c164-pipes-9deb` @ `c2bb7183` | `cursor/c164-m3-ironwork-f3-8e52`、`cursor/c164-m3-pipes-f3-8e52` |
+| a6 | c334 | node77 | c179 | props/furniture、灯的模型；props 牵头；然后入口两盏壁灯的球罩试验（评审 #20，总监 11-16 06:54 加，排在 furniture 交付之后） | `cursor/c164-a6-props-7fb0` @ `8026cccb` | `cursor/c164-a6-furniture-f3-4ad1`、`cursor/c164-a6-lamps-f3-4ad1`、`cursor/c164-a6-lamps2-f3-4ad1` |
+| lamps | c341 | node84 | c220 | props/lamps 的位置表和场地灯链；然后 props/electrics-signs（接 c242） | `cursor/c164-lamps-007c` @ `7c270e4c`；`cursor/c164-elec-7be8` @ `5ff667a1` | `cursor/c164-lamps-chain-f3-0dde`、`cursor/c164-lamps-elecsign-f3-0dde`、`cursor/c164-lamps-timeroom-wiring-f3-0dde` |
+| m3 | c342 | node85 | c218 | props/ironwork 打磨轮（退回过）；然后 props/pipes（接 c241） | `cursor/c164-m3-ironwork-e6ba` @ `6f9eed36`；`cursor/c164-pipes-9deb` @ `c2bb7183` | `cursor/c164-m3-ironwork-f3-8e52`、`cursor/c164-m3-pipes-f3-8e52`、`cursor/c164-m3-walkroute-f3-8e52` |
 | orrery | c343 | node86 | c236 | machines/orrery | `cursor/c164-orrery-6491` @ `f3a7e462` | `cursor/c164-orrery-f3-46d7`、`cursor/c164-orrery-meridian-f3-1cec` |
-| scope | c344 | node87 | c237 | machines/refractor | `cursor/c164-scope-6e0f` @ `5c674377` | `cursor/c164-scope-f3-eeae` |
+| scope | c344 | node87 | c237 | machines/refractor | `cursor/c164-scope-6e0f` @ `5c674377` | `cursor/c164-scope-f3-eeae`、`cursor/c164-scope-domechair-f3-eeae` |
 | clocks | c345 | node88 | c238 | machines/clocks | `cursor/c164-clocks-e99f` @ `abfd8079` | `cursor/c164-clocks-f3-00d6`、`cursor/c164-clocks-hallwiring-f3-00d6` |
 | mast | c346 | node89 | c239 | machines/radiomast；然后 machines/switchboard-boiler（P2，11-16 06:08 派，没有前任，从总装开；radiomast 被退回或来图时它优先） | `cursor/c164-mast-5dcd` @ `ffcb474c` | `cursor/c164-mast-f3-fc27`、`cursor/c164-mast-switchboard-f3-fc27` |
 | hall | c348 | node91 | c243 | interiors/starhall | `cursor/c164-hall-ddbd` @ `8f93cbdb` | `cursor/c164-hall-starhall-f3-2c05` |
@@ -65,12 +65,12 @@
 
 | 代号 | 聊天号 | 节点 | 卡 | 对口 | 审批人 | 新分支 |
 | --- | --- | --- | --- | --- | --- | --- |
-| rec | c356 | node101 | machines/recorders（第一批剩的那张，没有前任） | clocks（c345）：母钟和记录仪怎么接；m2（c351）：授时室木台上转鼓、电报机、传送管口的位置 | cr3 | `cursor/c164-rec-recorders-f3-aae1` |
+| rec | c356 | node101 | machines/recorders（第一批剩的那张，没有前任） | clocks（c345）：母钟和记录仪怎么接；m2（c351）：授时室木台上转鼓、电报机、传送管口的位置 | cr3 | `cursor/c164-rec-recorders-f3-aae1`、`cursor/c164-rec-astrodrive-f3-aae1`、`cursor/c164-rec-doorplate-f3-aae1` |
 | smoke | c357 | node102 | motion/smoke（没有前任） | a2（c322，motion 牵头）：循环和登记怎么用 | cr2 | `cursor/c164-smoke-smoke-f3-e07b` |
 | vault | c358 | node103 | interiors/platevault（南翼底层底片库和暗房，P3，没有前任） | 搭档 power（c339）：暗房的水槽、水管、小道具他来做；m1（c335）：仪器和配电板；shell（c325）：空腔和门洞 | cr4 | `cursor/c164-vault-platevault-f3-4cc1` |
 | clkrm | c359 | node104 | interiors/clockroom（报时塔钟室，P3，没有前任） | 搭档 tower（c327）：塔身这一侧（井、沉格背板、窗后光源、开口）他来备 | cr4 | `cursor/c164-clkrm-clockroom-f3-82c8` |
-| astro | c360 | node105 | interiors/batteryroom（北翼底层蓄电池室，P3；简报原写 astroroom，总监 08:36 改的）。接 stair 留在 `cursor/c164-stair-batteryroom-f3-b330`（`0aae4ace`）的草图、出图脚本和交接说明 | 搭档 mast（c346）：配电板和铜排他来做；hall（c348）：门；m2（c351）：上楼的两根立管；shell（c325）：空腔的门洞和楼板 | cr4 | `cursor/c164-astro-batteryroom-f3-e786` |
-| sound | c361 | node106 | motion/sound（没有前任） | a2（c322） | cr2 | `cursor/c164-sound-sound-f3-cbc6` |
+| astro | c360 | node105 | interiors/batteryroom（北翼底层蓄电池室，P3；简报原写 astroroom，总监 08:36 改的）。接 stair 留在 `cursor/c164-stair-batteryroom-f3-b330`（`0aae4ace`）的草图、出图脚本和交接说明 | 搭档 mast（c346）：配电板和铜排他来做；hall（c348）：门；m2（c351）：上楼的两根立管；shell（c325）：空腔的门洞和楼板 | cr4 | `cursor/c164-astro-batteryroom-f3-e786`、`cursor/c164-astro-stairhall-f3-e786` |
+| sound | c361 | node106 | motion/sound（没有前任） | a2（c322） | cr2 | `cursor/c164-sound-sound-f3-cbc6`、`cursor/c164-sound-lightaudit-f3-cbc6` |
 
 总监原打算再开四个（n7 到 n10），总控说先别开（没机器），没开。
 
@@ -80,7 +80,7 @@
 
 | 六条 | 谁管 |
 | --- | --- |
-| 1. 卡的第一版都在总装里（在做的 09:55 前交；赶不上的房间先用真门关着） | 各卡的主人，交本类审批人；关门找 cr4（他找 shell）。**10:24 齐了**：68 张卡 67 张在总装里（最后两张是天文室 10:17、钟室 10:24），剩 `common/offline-sky` 待定 |
+| 1. 卡的第一版都在总装里（在做的 09:55 前交；赶不上的房间先用真门关着） | 各卡的主人，交本类审批人；关门找 cr4（他找 shell）。**10:24 齐了，这一条销账**：67 张卡全在总装里（最后两张是天文室 10:17、钟室 10:24）；`common/offline-sky` 总监 10:32 砍了，不做 |
 | 2. 走查里挡人的全销账，每版候选在新总装头上重走一遍 | a4 管室内，facade 管室外，直接派给作者 |
 | 3. 人走的路都有光 | lights（c331），各间室内的主人配合；暗格由 sound 量（每进一批灯重量一趟）；帮手见下表 |
 | 4. 天进资源包着色器 | a2（c322），comet、cloud 帮 |
@@ -99,15 +99,16 @@
 | 授时室 m2（c351；08:40 进了总装） | shell（m2 另派一件）、lamps（屋里看得见的电线：子钟的线、门铃、电话进线）；活写在 m2 分支的 `plan/packages/interiors/timeroom-helpers.md` |
 | a2（c322）的着色器（Realms 不收注册表文件，天、雾、光色改由资源包的核心着色器带；头号风险） | a2 08:59 分的活：comet（远山改进天的着色器，核彗星和星）、cloud（远海的数，离线出图和着色器对得上）、a1（水和草的颜色在没有群系文件以后配回来，资源包总检查放行着色器；审批的活排最前）。三个人够了 |
 | 新房的搭档 | clockroom：tower 帮 clkrm（09:30 起 tower 直接领一半）；batteryroom：mast 帮 astro；platevault：power 帮 vault |
-| lights（c331）的「人走的路都有光」（cr2 10:28：最缺人的一条） | dome（09:21 起；主楼里环梯、大楼梯、回廊、西门过道）、astro（09:49 起；入口到蓄电池室一路）、m1 和 m5（10:31 起）；地段和文件由 lights 划，各自过关口交 cr2 |
+| lights（c331）的「人走的路都有光」（cr2 10:28：最缺人的一条） | dome（09:21 起；主楼里环梯、大楼梯、回廊、西门过道）、astro（09:49 起；入口到蓄电池室一路）、m1 和 m5（10:31 起）、comet（10:45 起，cr2 派的）、clocks（10:49 起：lights 名下还没人管的堆）；地段和文件由 lights 划，各自过关口交 cr2。dome 一人背屋面和小穹顶两堆，cable 10:50 起接其中一堆。暗格清单是 sound 量的：`cursor/c164-sound-lightaudit-f3-cbc6-wip` 的 `renders/_wip/light/dark.md`，按归属分了堆；总装每进一批灯他重跑一遍，头一行写着量的是哪个总装头（10:46 起台阶、门槛和地面都按 5 级算，定了不补的另列、不进总数：9fbb2e0c 上暗 223 格，不补 48 格） |
 | cable（c338）的 `machines/cablecar-winch`（09:38 进了总装） | m3（09:22 到 09:41：下平台东沿漏口的量，明细在 `cursor/c164-m3-cablehelp-f3-8e52-wip`） |
 | sdome（c328）的 `interiors/astroroom`（四间新房里只有它没有搭档） | rec（09:34 起；他的 `machines/recorders` 09:33 进了总装） |
 | a4（c323）：室内走查、每版候选重走、site 清单上他自己的三处 | m3（09:43 到 10:18：路线修补）；ashlar（10:18 起：用他的 `tools/walkin.py` 在候选版头上算 interiors、props 两类哪些件会被人走进去，进室内走查的发现表） |
-| 看板没过线的图（10:00 版）：V4 入口、V5 报时塔、V6 机房、V7 星厅、V10 授时室 | V4 门边的铭牌：rec（10:25 起，原归 lamps，交 a6）；雨棚吊灯封顶：m3（review 直接发的）；V5：clkrm 帮 tower（钟室的小版做完以后）；V6 炉火窗和门里的光：cable 帮 power（10:32 起）；V7：orrery 帮 hall（石墩正面，cr3 派的） |
+| 四间屋补灯（总监 10:43 的快道：屋主改评审点的，帮手只做灯，两个包并着走、各交各的；只加灯的包 check 过了就交，免重画留图，交付写明「只加灯」；会和屋主改到同一个文件的，灯放进 lights 的包。目标 11:30 版暗格到 0，定了不补的除外；关口加 `--no-verify`） | 星厅 hall←vault、clkrm（楼梯 39 格，总监 10:45 把楼梯厅的光源放到 11）；授时室 m2←a3（cr4 10:46 派的，clkrm 让出来改去星厅）；发电房 power 自己补（10:47，灯和光源都在他的包里，交 cr4）；底片库不用帮手（vault 自己的 116 格 10:41 已合）。g2 #1549 是 10:46 的头一版，以这一行为准 |
+| 看板没过线的图（10:00 版）：V4 入口、V5 报时塔、V6 机房、V7 星厅、V10 授时室 | V4 门边的铭牌：rec（10:25 起，原归 lamps，交 a6）；雨棚吊灯封顶：m3（review 直接发的）；V5：clkrm 帮 tower（钟室的小版做完以后）；V6 炉火窗和门里的光：vault、mast 帮 power（10:33 起；mast 管锅炉一侧；cable 不空）；V7：orrery 帮 hall（石墩正面，cr3 派的） |
 
 ## 还没人领的卡
 
-**现在没有待领的卡**（`common/offline-sky` 做不做待定，不算）。谁手上的卡都交付了：11-16 09:12 起先找本类的审批人领他清单上的活（见上面「收尾」）；本类没有挡候选版的活的，私信总监助理，他照各类的清单跨类派，记在「帮手」表里。
+**现在没有待领的卡**（`common/offline-sky` 总监 11-16 10:32 定了不做：验收看 s1 进存档拍的真机图，离线图只看构图和件在不在）。谁手上的卡都交付了：11-16 09:12 起先找本类的审批人领他清单上的活（见上面「收尾」）；本类没有挡候选版的活的，私信总监助理，他照各类的清单跨类派，记在「帮手」表里。
 
 派出去的卡都在哪：
 
