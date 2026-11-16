@@ -1,0 +1,23 @@
+a0job 1115-235829-orrery-f3-46d7-6356: cursor/c164-orrery-f3-46d7 @ 41993afb on the director's machine
+(the branch moved after the job was sent: it ran on 41993afb, not on ea2aa5cf)
+  [cloud_setup    0s] machine: 4 cores, load 2.00 2.37 2.41, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/selfshots.py obs_mach_orrery --only near_a,near_b,gallery_b,stair_b --out renders/_wip ---- exit 0, 57 s, last 30 lines of 12:
+  obs_mach_orrery: 3016 blocks, 41 entities (0 s)
+  obs_mach_orrery: resource pack written to /tmp/c164pack-2nd7eqq_ (1 s)
+  obs_mach_orrery: water: 0 sources, 0 cells of running water (1 s)
+  obs_mach_orrery: grid 26 x 18 x 39, 3016 blocks, 3331 entity boxes (2 s)
+  obs_mach_orrery: 11 states -> 28 looks, 41 boxes, 63 pictures (2 s)
+  obs_mach_orrery: light done (2 s)
+  obs_mach_orrery: near_a (tick 14000, 16 s)
+  obs_mach_orrery: gallery_b (tick 14000, 11 s)
+  obs_mach_orrery: stair_b (tick 14000, 7 s)
+  obs_mach_orrery: near_b (tick 14000, 18 s)
+/tmp/dais_jobs/c164a0/c164-realms/renders/_wip/obs_mach_orrery-*: 4 pictures of 41993afb drawn, 0.9 MB
+                for a look only: nothing went into renders/obs_mach_orrery/ (tools/nodejob.sh --wip pushes renders/_wip to your scratch branch)
+==== NODEJOB RESULT ====
+exit=0 secs=62 host=cursor cores=4 head=41993afb commit=5c4916e7 pushed=yes branch=cursor/c164-orrery-f3-46d7-wip files=5
+a0job: exit=0 secs=62
