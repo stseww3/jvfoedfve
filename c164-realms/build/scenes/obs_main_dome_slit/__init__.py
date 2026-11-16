@@ -39,7 +39,9 @@ def build():
         ox, oy, oz = origin(i)
         for x, z in O.disc(cx, cz, D.R + 6):
             c.set(ox + x, 0, oz + z, PAVING)
-        dome.build(c, (ox, oy, oz), version=version, slit=state)
+        # the shell alone: the lamps at the doors are the props line's models, which this scene
+        # does not carry (obs_main_dome shows them)
+        D.build(c, (ox, oy, oz), glass=dome._glass, version=version, slit=state)
     return c
 
 
