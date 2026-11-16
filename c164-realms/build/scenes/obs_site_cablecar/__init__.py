@@ -6,12 +6,8 @@ machines (the car and the winch in the station are theirs), the props line and t
 last. The lines are built whole, in the master scene's order, so the pictures keep up with them as
 their packages are merged. The station's lamp and its furniture belong to the props line. The
 lamp hangs in the master scene, with the other lamps of the site; the furniture, which the line
-keeps switched off there for now, is asked for here (_dress).
-
-One stand-in, in this scene only, for what is still on another branch: the sea of cloud beyond the
-ring that site/terrain lays round the mountain's foot (sky/cloudsea takes both over). The ring ends
-at x 129 on the track's line and the track goes on down to x 141. The sheet fills empty cells
-only, in the ring's courses and tones, and goes when the real sea is merged.
+keeps switched off there for now, is asked for here (_dress). The sea of cloud the track goes
+down into is the sky line's (sky/cloudsea); nothing in this scene stands in for anything.
 
 The views (shots(); python -m scenes.obs_site_cablecar writes them to shots.json): V1 as the
 skeleton fixes it (the station keeps the building's part of it and the comet's clear, and only the
@@ -22,25 +18,16 @@ side and looking back up it, and two from above.
 """
 import importlib
 
-import numpy as np
-
-from artkit import noise as N
 from artkit.canvas import Canvas
 
 from scenes.obs import machines, main, materials, props, site, sky
-from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
-from scenes.obs.site import cablecar, terrain
+from scenes.obs.site import cablecar
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 100
 BIOME_MARGIN_Y = 150
 LINES = (site, main, machines, props, sky)
-
-SEA = (61, -120, 200, 24)       # where the stand-in sea is drawn: east and north of the lower platform
-# the ring's own figures (site/terrain._cloud_sea, east of its middle), so that no seam shows where
-# the sheet takes over from it
-SEA_NOISE = dict(scale=0.08, seed=terrain.SEED + 20, octaves=2, lift=0.55)
 
 TIME = 14000
 # The arrival view is the skeleton's. It looks up at (8, 34, 0.5) since A0 #304; a tree whose
@@ -82,22 +69,6 @@ def shots(names=None):
             for name, pos, look_at in VIEWS if names is None or name in names]
 
 
-def _standins(c):
-    """The sheet of cloud over SEA, in the empty cells of the ring's three courses."""
-    xs = np.arange(SEA[0], SEA[2] + 1)
-    zs = np.arange(SEA[1], SEA[3] + 1)
-    X, Z = np.meshgrid(xs.astype(float), zs.astype(float), indexing="ij")
-    k = SEA_NOISE
-    n = N.fbm2(X * k["scale"], Z * k["scale"], k["seed"], octaves=k["octaves"])
-    tone = np.rint(np.clip(0.5 + 0.5 * n + 0.6 * (k["lift"] - 0.75), 0.0, 1.0) * (len(B.CLOUD) - 1)).astype(int)
-    for i, x in enumerate(xs):
-        for j, z in enumerate(zs):
-            rock = terrain.top(int(x), int(z))
-            if rock is None or rock < terrain.CLOUD_TOP:        # the ring's rule: not where the mountain stands out
-                for y in range(terrain.CLOUD_TOP, terrain.CLOUD_BOTTOM - 1, -1):
-                    c.set(int(x), y, int(z), B.CLOUD[tone[i, j]], keep=True)
-
-
 def _prop(name):
     """A package of the props line; None while it is not in the tree."""
     full = f"{props.__name__}.{name}"
@@ -125,7 +96,6 @@ def build():
     for line in LINES:
         line.build(c, (0, 0, 0))
         if line is site:
-            _standins(c)
             cablecar.lining(c)      # the materials line is not built here: the room side of the winch
             #                         house's two lights (it places them in the master scene)
         if line is props:
