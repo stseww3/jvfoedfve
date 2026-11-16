@@ -1,0 +1,237 @@
+{
+ "scene": "obs_mot_loop",
+ "commit": "205caaa",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "WARN",
+   "summary": "2663 blocks, 16 entities, 13 models, 692 resource-pack files, 115 data-pack files, look: 1 biomes, 1 timelines (0.5 s)",
+   "details": [
+    "registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json"
+   ]
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 691 files, no file written twice, the packages of motion write nothing into the pack",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "137 pictures, every colour in the palette",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "545 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "86 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "4 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of motion: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "16 display entities, 1 drawn out along one axis, 1 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "WARN",
+   "summary": "24 shots, most display entities in view: 16 (far), limit 600; counted without what walls hide",
+   "details": [
+    "the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(materials.pack(d) or []) + list(sky.pack(d) or [])"
+   ],
+   "data": {
+    "shots": [
+     {
+      "name": "far",
+      "in_view": 16,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "wheels",
+      "in_view": 2,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "arm",
+      "in_view": 5,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "arm_pin",
+      "in_view": 2,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "arm_coarse",
+      "in_view": 6,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "arm_coarse_pin",
+      "in_view": 2,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "pendulums",
+      "in_view": 3,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "crank",
+      "in_view": 5,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "crank_pins",
+      "in_view": 4,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "slider",
+      "in_view": 3,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "lamp",
+      "in_view": 2,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "bar",
+      "in_view": 2,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "far_again",
+      "in_view": 16,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "wheels_again",
+      "in_view": 2,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "arm_again",
+      "in_view": 5,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "arm_pin_again",
+      "in_view": 2,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "arm_coarse_again",
+      "in_view": 6,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "arm_coarse_pin_again",
+      "in_view": 2,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "pendulums_again",
+      "in_view": 3,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "crank_again",
+      "in_view": 5,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "crank_pins_again",
+      "in_view": 4,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "slider_again",
+      "in_view": 3,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "lamp_again",
+      "in_view": 2,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "bar_again",
+      "in_view": 2,
+      "drawn": 16,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "WARN",
+   "summary": "12 parts and 0 points on 6 chains, 102 function files; 9 commands in the busiest tick (limit 40), 2.1 a tick on average (limit 10)",
+   "details": [
+    "mot_wheel: 4 steps in 48 ticks set by hand (lead 0); its model strays 0.00 pixels from its arc",
+    "mot_arm: 8 steps in 1200 ticks set by hand (lead 2); its model strays 2.07 pixels from its arc",
+    "chain of 40 ticks: 8 functions, 22 commands a cycle, starts 2 ticks after start",
+    "chain of 48 ticks: 12 functions, 49 commands a cycle, starts 1 ticks after start",
+    "chain of 60 ticks: 2 functions, 5 commands a cycle, starts 4 ticks after start",
+    "chain of 120 ticks: 2 functions, 5 commands a cycle, starts 8 ticks after start",
+    "chain of 240 ticks: 40 functions, 81 commands a cycle, starts 3 ticks after start",
+    "chain of 1200 ticks: 32 functions, 66 commands a cycle, starts 6 ticks after start",
+    "mot_arm: 25 steps in 1200 ticks: its middle lies 1.57 blocks off the axis",
+    "mot_rod: 12 steps in 48 ticks; its model strays 0.33 pixels from its arc (its middle lies 2.00 blocks off the axis), within the half pixel a fast part is let off with",
+    "mot_bar: 40 steps in 240 ticks: its middle lies 1.25 blocks off the axis"
+   ]
+  }
+ ]
+}
