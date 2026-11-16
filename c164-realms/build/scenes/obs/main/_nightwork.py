@@ -51,6 +51,11 @@ LIT_AT = 0.6                # and that of the lit sheet over it
 NUDGE = 0.01                # blocks: the entity stands this far inside the grille's cell, which lights it
 VIEW = M.MID                # seen from the upper terrace, not from the station
 SHARE = 0.25                # of a window, at most, is lit by its lamp
+# The window stands deep in its wall and over the head of whoever walks along it: the sill hides
+# the foot of the glass, the more the nearer one stands (nine pixels of it from three blocks and a
+# half, the nearest one comes; one or two from the court). So the lamps are tall ones, and what
+# is to be told of an instrument is in its upper half.
+LAMP = 8                    # pixels of stem under a lamp's shade
 
 FRAME = 40                  # ticks a frame lasts: two seconds
 FRAMES = 16                 # a cycle of 32 seconds
@@ -125,9 +130,9 @@ class _Sketch:
         return px
 
 
-def _lamp(s, x, foot, high=3):
-    """A desk lamp: a foot, a stem, a shade of opal glass on it. Dark: its shape, the glass in the
-    darkest tone of the night. Lit: the shade, paler along its lip, and the mantle under it.
+def _lamp(s, x, foot, high=LAMP):
+    """A desk lamp: a foot, a tall stem, a shade of opal glass on it. Dark: its shape, the glass in
+    the darkest tone of the night. Lit: the shade, paler along its lip, and the mantle under it.
     Returns where the mantle is."""
     top = foot - high - 3
     s.box(x - 1, foot, x + 1, foot, "k")
@@ -148,25 +153,26 @@ def _desk():
     for x in (3, 6, 10, 13):
         s.box(x, 1, x, foot, "f")
     lamp = _lamp(s, 21, foot)
-    # the globe
-    s.disc(29, foot - 6, "k")
-    s.box(29, foot - 3, 29, foot - 1, "k")
+    # the globe on its column
+    s.disc(29, foot - 9, "k")
+    s.box(29, foot - 6, 29, foot - 1, "k")
     s.box(28, foot, 30, foot, "k")
-    for y in (foot - 7, foot - 6, foot - 5):
+    for y in (foot - 10, foot - 9, foot - 8):
         s.dot(27, y, "R")                           # the side that is turned to the lamp
     # the transit: two legs and the column, the tube aimed up and out
-    s.line(37, foot, 40, foot - 5, "k")
-    s.line(43, foot, 40, foot - 5, "k")
-    s.box(40, foot - 4, 40, foot, "k")
-    s.line(36, foot - 4, 44, foot - 10, "k")
-    s.line(36, foot - 5, 44, foot - 11, "k")
-    s.line(36, foot - 5, 39, foot - 7, "B")         # the brass of the tube catches the lamp
+    s.line(36, foot, 40, foot - 8, "k")
+    s.line(44, foot, 40, foot - 8, "k")
+    s.box(40, foot - 8, 40, foot - 4, "k")
+    s.line(36, foot - 8, 44, foot - 14, "k")
+    s.line(36, foot - 9, 44, foot - 15, "k")
+    s.line(36, foot - 9, 39, foot - 11, "B")        # the brass of the tube catches the lamp
     s.shine(*lamp)
     return s
 
 
 def _bench():
-    """The bench next door: a blind let half down, a balance under it, three bottles, the lamp."""
+    """The bench next door: a blind let half down, a balance under it, three bottles on their
+    stand, the lamp."""
     s = _Sketch(3 * TILE, 2 * TILE)
     foot = s.h - 1
     # the blind: slats over the upper half, its rail under them
@@ -175,19 +181,20 @@ def _bench():
         s.box(1, y, s.w - 1, y, "f")
     s.box(1, 13, s.w - 1, 13, "k")
     # the balance: column, beam, two pans on their threads, the foot
-    s.box(12, foot - 9, 12, foot - 1, "k")
-    s.box(6, foot - 9, 18, foot - 9, "k")
+    s.box(12, foot - 12, 12, foot - 1, "k")
+    s.box(6, foot - 12, 18, foot - 12, "k")
     for x in (6, 18):
-        s.box(x, foot - 8, x, foot - 5, "k")
-        s.box(x - 2, foot - 4, x + 2, foot - 4, "k")
+        s.box(x, foot - 11, x, foot - 8, "k")
+        s.box(x - 2, foot - 7, x + 2, foot - 7, "k")
     s.box(10, foot, 14, foot, "k")
-    s.dot(20, foot - 4, "B")                        # the lip of the pan nearer the lamp
-    # the bottles, the tall one stoppered
+    s.dot(20, foot - 7, "B")                        # the lip of the pan nearer the lamp
+    # the bottles on their stand, the tall one stoppered
+    s.box(25, foot - 3, 31, foot, "k")
     for x, high in ((26, 3), (28, 6), (30, 4)):
-        s.box(x, foot - high, x, foot, "k")
-    s.dot(28, foot - 7, "k")
-    s.box(29, foot - 5, 29, foot - 3, "R")
-    s.box(31, foot - 3, 31, foot - 1, "R")
+        s.box(x, foot - 3 - high, x, foot - 4, "k")
+    s.dot(28, foot - 10, "k")
+    s.box(29, foot - 8, 29, foot - 6, "R")
+    s.box(31, foot - 6, 31, foot - 4, "R")
     lamp = _lamp(s, 36, foot)
     s.shine(*lamp)
     return s
