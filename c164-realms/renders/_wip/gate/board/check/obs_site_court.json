@@ -1,0 +1,139 @@
+{
+ "scene": "obs_site_court",
+ "commit": "7a308c8",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "WARN",
+   "summary": "185131 blocks, 189 entities, 151 models, 1096 resource-pack files, 107 data-pack files, look: 1 biomes, 1 timelines (3.3 s)",
+   "details": [
+    "registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json"
+   ]
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 1095 files, no file written twice, the folders and the prefix of site are kept (1 package run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "270 pictures, every colour in the palette",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "816 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "86 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "75 kinds of block placed, 12 barrier cells (x 16, y 0..1, z -5..5), all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "PASS",
+   "summary": "no wall face runs flat over more than 5x5",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "189 display entities, 11 drawn out along one axis, 1 shown through a matrix that is no turn, no face stretched, 101 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "WARN",
+   "summary": "9 shots, most display entities in view: 184 (aerial), limit 600; counted without what walls hide; the game draws up to 189 (v2_axis): a display entity without width and height is drawn outside the view too",
+   "details": [
+    "the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(materials.pack(d) or []) + list(sky.pack(d) or [])"
+   ],
+   "data": {
+    "shots": [
+     {
+      "name": "v2_axis",
+      "in_view": 150,
+      "drawn": 189,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v2_high",
+      "in_view": 150,
+      "drawn": 189,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "court_oblique",
+      "in_view": 167,
+      "drawn": 189,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "meridian_north",
+      "in_view": 115,
+      "drawn": 189,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "meridian_near",
+      "in_view": 104,
+      "drawn": 189,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "emblem_top",
+      "in_view": 56,
+      "drawn": 189,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "lamp_pool",
+      "in_view": 106,
+      "drawn": 189,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "lip",
+      "in_view": 31,
+      "drawn": 189,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "aerial",
+      "in_view": 184,
+      "drawn": 189,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "2 parts and 0 points on 1 chains, 12 function files; 5 commands in the busiest tick (limit 40), 0.8 a tick on average (limit 10)",
+   "details": [
+    "chain of 24 ticks: 6 functions, 20 commands a cycle, starts 1 ticks after start",
+    "site_weather_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.08 blocks off the axis",
+    "bld_tower_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.09 blocks off the axis"
+   ]
+  }
+ ]
+}

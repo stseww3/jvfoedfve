@@ -1,0 +1,18 @@
+check obs_site_court at 7a308c8
+[WARN] regen     185131 blocks, 189 entities, 151 models, 1096 resource-pack files, 107 data-pack files, look: 1 biomes, 1 timelines (3.3 s)
+                 registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+[PASS] conflicts the scene writes 1095 files, no file written twice, the folders and the prefix of site are kept (1 package run alone)
+[PASS] strays    270 pictures, every colour in the palette
+[PASS] refs      816 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   86 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    75 kinds of block placed, 12 barrier cells (x 16, y 0..1, z -5..5), all in the occupancy table
+[PASS] flatwall  no wall face runs flat over more than 5x5
+[PASS] entities  189 display entities, 11 drawn out along one axis, 1 shown through a matrix that is no turn, no face stretched, 101 models never placed
+[WARN] views     9 shots, most display entities in view: 184 (aerial), limit 600; counted without what walls hide; the game draws up to 189 (v2_axis): a display entity without width and height is drawn outside the view too
+                 the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(materials.pack(d) or []) + list(sky.pack(d) or [])
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    2 parts and 0 points on 1 chains, 12 function files; 5 commands in the busiest tick (limit 40), 0.8 a tick on average (limit 10)
+                 chain of 24 ticks: 6 functions, 20 commands a cycle, starts 1 ticks after start
+                 site_weather_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.08 blocks off the axis
+                 bld_tower_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.09 blocks off the axis
+result: PASS (0 failed, 2 with warnings)
