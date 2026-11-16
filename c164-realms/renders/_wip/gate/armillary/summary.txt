@@ -1,0 +1,19 @@
+gate machines/armillary c5742a12: the merged tree b9b6c9cc, the assembly as it was 4ca80807
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] pictures 1 test scene, 11 shots with a picture kept
+                    obs_mach_armillary: 11 pictures show 52f633f3; the card's code has changed since (_powerkit.py, _relit.py, armillary.py): draw them again
+check.py: 96 scenes in 136 s: 96 pass (51 with warnings)
+pictures: obs_mach_armillary: the kept pictures are NOT what the delivered commit c5742a12 draws (it goes back):
+    [FAIL] selfshots obs_mach_armillary at b9b6c9cc: 0 of 11 kept pictures are what the code draws, 11 not
+    v2_axis: 221562 of 921600 pixels are not what the code draws (off by up to 212 of 255)
+    v2_entrance: 291249 of 921600 pixels are not what the code draws (off by up to 176 of 255)
+    v1_arrival: 247034 of 921600 pixels are not what the code draws (off by up to 213 of 255)
+    aerial: 452514 of 921600 pixels are not what the code draws (off by up to 202 of 255)
+    plan: 517374 of 921600 pixels are not what the code draws (off by up to 222 of 255)
+    oblique: 245866 of 921600 pixels are not what the code draws (off by up to 180 of 255)
+    meridian: 347425 of 921600 pixels are not what the code draws (off by up to 188 of 255)
+    south_edge: 65498 of 921600 pixels are not what the code draws (off by up to 154 of 255)
+    north_edge: 167391 of 921600 pixels are not what the code draws (off by up to 161 of 255)
+    rings: 349598 of 921600 pixels are not what the code draws (off by up to 184 of 255)
+    door: 351096 of 921600 pixels are not what the code draws (off by up to 187 of 255)
+result: FAIL
