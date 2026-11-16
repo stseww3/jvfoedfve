@@ -54,6 +54,7 @@ from artkit.pixelart import Mat
 from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
+from ..props import _kit as K
 
 PREFIX = "mach_scope_"
 VERSION = "a"                   # the version build() places: the director's pick (11-16)
@@ -103,6 +104,14 @@ def _elevation():
 
 ELEVATION = _elevation()
 LATITUDE = S.LATITUDE
+# How far from the upright the castings of a still model lean that carry the polar axis: a tenth of
+# a degree more than the pole itself. The game lights a face of a model as if it looked along the
+# axis of the model nearest its normal. Cast true to a latitude of 45 degrees, every face of them
+# would stand exactly between two axes, and which of the two it is filed under comes out of the last
+# bit of a float, face by face (props/_kit.settle). Leant a hair more, what lies on top of the slope
+# is lit as a top and what lies under it as an underside, the two ends as upright faces: in every
+# copy of the game as in the pictures.
+LEAN = 90.0 - LATITUDE + K.SETTLE
 AXIS = S.DOME_AXIS              # (4.5, 0.5): the middle of the pier's cap, what the dome turns about
 CAP_Y = S.PIER_TOP_Y            # 18.0: the top of the cap; the foot stands on it
 FLOOR_Y = float(S.ROOF_STAND)   # the observing floor
@@ -575,7 +584,7 @@ def _clock(d, at):
 def _bearing(d, at, half=4.0, wide=7.5, low=-10.0):
     """A plummer block cast to the latitude about the point `at` of the polar axis."""
     x, y, z = at
-    with d.turned(("x", -LATITUDE), about=at):
+    with d.turned(("x", -LEAN), about=at):
         d.box((x - wide, y - half, z + low), (x + wide, y + half, z + 4.0), IRON_D)
         d.box((x - wide, y - half + 1.0, z + 4.0), (x + wide, y + half - 1.0, z + 6.0), IRON)
         for sgn in (-1.0, 1.0):
@@ -635,7 +644,7 @@ def _pier_a():
     cy = _SPEC["a"]["rise"] * 16.0
     s0, s1, r = A_SLEEVE
     d.box((-13.5, y_top, -13.0), (13.5, y_top + 5.0, -5.0), IRON_D)
-    with d.turned(("x", -LATITUDE), about=(0.0, cy, 0.0)):
+    with d.turned(("x", -LEAN), about=(0.0, cy, 0.0)):
         for sgn in (-1.0, 1.0):
             a, b = sorted((sgn * r, sgn * (r + 3.5)))
             d.box((a, cy + s0 + 2.0, -30.0), (b, cy + A_CHEEK, 2.5), IRON_D)
@@ -787,7 +796,7 @@ def _piers_b():
     d.box((-4.0, 30.0, z1), (4.0, 35.0, z1 + 0.5), BRASS_D)
     d.box((-3.0, 31.0, z1 + 0.5), (3.0, 34.0, z1 + 0.75), BRASS_STUD)
     _bearing(d, south)
-    with d.turned(("x", -LATITUDE), about=south):
+    with d.turned(("x", -LEAN), about=south):
         d.box((-6.0, south[1] - 6.5, south[2] - 5.0), (6.0, south[1] - 4.0, south[2] + 5.0), IRON)
     # the north trestle: two legs on the cap's north edge, their heads cast into one block, tied
     # twice and open between the ties (the tube is seen through it), each braced back to the sleeper
@@ -811,7 +820,7 @@ def _piers_b():
     # the drive: the worm's box on the cheek of the south bearing, at the rim of the wheel; the
     # clock on the pedestal's east face under it, a shaft straight up
     leaves, governor = _clock(d, B_CLOCK)
-    with d.turned(("x", -LATITUDE), about=(0.0, cy, 0.0)):
+    with d.turned(("x", -LEAN), about=(0.0, cy, 0.0)):
         d.box((12.25, cy + B_WHEEL - 1.0, -3.5), (16.0, cy + B_WHEEL + 0.5, 3.5), BRASS_D)
         d.box((7.5, cy + B_WHEEL - 2.5, -2.0), (12.25, cy + B_WHEEL - 1.0, 2.0), IRON_D)
     worm = (14.0, cy + (B_WHEEL - 0.25) * sq - 3.5 * sq, -(B_WHEEL - 0.25) * sq - 3.5 * sq)
@@ -902,7 +911,8 @@ def _lamp(version):
 def _built():
     pier_a, piers_b = _pier_a(), _piers_b()
     lamps = {v: _lamp(v) for v in VERSIONS}
-    out = {m.name: m for m in (
+    # settle: the flats of the eight-sided pieces stand between two axes too; each piece is turned off the fence
+    out = {m.name: K.settle(m) for m in (
         _tube("a"), _tube("b"), pier_a.m, _axis_a(), piers_b.m, _yoke_b(), _governor(), lamps["a"].m, lamps["b"].m)}
     stands = {"a": tuple(v / 16.0 for v in pier_a.governor), "b": tuple(v / 16.0 for v in piers_b.governor)}
     return out, stands, {v: lamps[v].peep for v in VERSIONS}
@@ -1236,6 +1246,12 @@ def report(version=None):
         f"  {len(points)} display entities, {sum(len(built[n].parts) for n in points)} boxes",
     ]
     problems = []
+    fence = {name: len(K.unsettled(built[name])) for name in points}
+    if any(fence.values()):
+        problems.append("faces stand between two axes of their model, the game lights them one way or the other: "
+                        + ", ".join(f"{k} of {name}" for name, k in fence.items() if k))
+    else:
+        lines.append("  no face stands between two axes of its model: the game lights each the same way every time")
     if abs(ELEVATION - 41.0) > 0.5:
         problems.append(f"the tube looks {ELEVATION:.2f} degrees up, the comet's head is 41 up")
     if version == "b" and abs(spec["off"]) > 1e-9:
