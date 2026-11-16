@@ -161,7 +161,9 @@ BAND = (2.245, 2.495)                    # version a: the zodiac band, inner and
 #                                          corners of its 72 sides come to ORRERY_R)
 STAYS = (60.0, 180.0, 300.0)             # the three hangers of either version: never four
 STAY_R = 2.37                            # version a: the hangers stand on the middle of the band
-SPIDER_Y = 1.875                         # version a: underside of the iron spider the band hangs from
+SPIDER_Y = 1.875                         # underside of the iron spider the fixed ring hangs from
+BEND = 0.45                              # the radius of the bend where an arm of the spider turns down
+BEND_STEPS = 5                           # straight pieces to the bend
 MOVE_Y0 = 2.0                            # underside of the works
 WHEEL_Y = {k: MOVE_Y0 + 3 * PX * (i + 1) for i, k in enumerate(reversed(PLANETS))}   # underside of each pair
 MOVE_Y1 = 3.4375                         # top of the works: the column stands on it
@@ -743,21 +745,35 @@ def _arm(version, key):
 
 # --- what the fixed ring of either version hangs from ------------------------------------------------
 def _hangers(d, radius, flat=False):
-    """An iron spider under the works, over everything that turns, and three hangers down from the
-    ends of its arms to a ring at `radius` (three, never four). Round rods with a brass foot on the
-    ring; `flat` makes them straps, thin across and two texels wide along the ring, for a ring that
-    has a planet passing close inside it."""
+    """An iron spider under the works, over everything that turns: three arms (three, never four),
+    each bent down at its end, a quarter of a circle, into the hanger of a ring at `radius`. The
+    hangers are square bars with a brass foot on the ring; `flat` makes them straps, thin across
+    and two texels wide along the ring, for a ring that has a planet passing close inside it. The
+    side of a hanger that looks at the sun is a step lighter than the iron, the side that looks
+    away a step darker: the door sees the two near ones dark and the far one, under the sun, lit."""
     d.tube("y", (0, 0), SPIDER_Y, MOVE_Y0, 0.30, IRON, sides=12)               # the spider's middle
+    lit, dark = IRON.variant(1), IRON.variant(-1)
+    deep, ym = MOVE_Y0 - SPIDER_Y, (SPIDER_Y + MOVE_Y0) / 2.0
+    across = STRAP if flat else 2.0 * ROD                                      # the hanger, across the ring
+    foot = 1.5 * PX
     for a in STAYS:
-        x, z = radius * math.cos(math.radians(a)), radius * math.sin(math.radians(a))
-        if flat:
-            d.spoke(a, 0.24, radius + STRAP / 2.0, SPIDER_Y, MOVE_Y0, 2.5 * PX, IRON)
-            d.spoke(a, radius - STRAP / 2.0, radius + STRAP / 2.0, 1.5 * PX, SPIDER_Y, 2 * PX, IRON, grain="y")
-            continue
-        d.spoke(a, 0.24, radius + 0.07, SPIDER_Y, MOVE_Y0, 2.5 * PX, IRON)
-        d.tube("y", (x, z), 1.5 * PX, MOVE_Y0 + PX, ROD, IRON, sides=6)
-        d.tube("y", (x, z), 1.5 * PX, 3.5 * PX, 0.10, BRASS_D, sides=8)        # the foot on the band
-        d.tube("y", (x, z), SPIDER_Y - PX, SPIDER_Y, 0.10, IRON_D, sides=8)
+        ca, sa = math.cos(math.radians(a)), math.sin(math.radians(a))
+        d.spoke(a, 0.24, radius - BEND, SPIDER_Y, MOVE_Y0, 2.5 * PX, IRON, faces={"d": lit})
+        for i in range(BEND_STEPS):
+            t0, t1 = (math.radians(90.0 * k / BEND_STEPS) for k in (i, i + 1))
+            f = (i + 1.0) / BEND_STEPS
+            thick = deep + (across - deep) * f
+            more = thick / 2.0 * math.tan((t1 - t0) / 2.0)                     # so that the joints stay closed
+            r0, y0 = radius - BEND + BEND * math.sin(t0 - more / BEND), ym - BEND + BEND * math.cos(t0 - more / BEND)
+            r1, y1 = radius - BEND + BEND * math.sin(t1 + more / BEND), ym - BEND + BEND * math.cos(t1 + more / BEND)
+            d.beam((r0 * ca, y0, r0 * sa), (r1 * ca, y1, r1 * sa), (2.5 - 0.45 * f) * PX, thick, IRON,
+                   faces={"d": lit, "u": dark})
+        d.spoke(a, radius - across / 2.0, radius + across / 2.0, foot, ym - BEND, 2 * PX, IRON, grain="y",
+                faces={"w": lit, "e": dark})
+        if not flat:
+            x, z = radius * ca, radius * sa
+            d.tube("y", (x, z), foot, 3.5 * PX, 0.10, BRASS_D, sides=8)        # the foot on the band
+            d.tube("y", (x, z), ym - BEND - PX / 2.0, ym - BEND + PX / 2.0, 0.09, IRON_D, sides=8)
 
 
 # --- version a: planar, the works open ------------------------------------------------------------
