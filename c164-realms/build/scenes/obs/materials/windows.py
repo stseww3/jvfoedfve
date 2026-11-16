@@ -16,7 +16,8 @@ Six windows, each a full glass block and a glass pane:
     WINDOW_FURNACE   the glow of the fires behind dirty glass: no curtain, no flame. Three blocks,
                      one to a row from the sill up, painted as one sheet: about 0.50 along the
                      sill, 0.36 in the second row, 0.18 in the third, whose head is near a dark
-                     window (whole window ~0.35; the median pixel is a brown of 0.32)
+                     window (whole window ~0.35; the median pixel is a brown of 0.32). The fires
+                     flicker: every picture is FLICKER frames (the first is the still one)
 
 The numbers are the grey of the whole picture, glazing bars included, on a scale of 0 to 1: what a
 lit window shows on the screen, since it is drawn at full emission (agreed with c177, group g2 #82,
@@ -84,6 +85,7 @@ import contextlib
 import copy
 import functools
 import importlib
+import math
 
 import numpy as np
 
@@ -291,13 +293,37 @@ _SOOT = {
           ((0.0, 0.5), (0.5, 0.0))),
 }
 _GRIME = 1.0                            # the corners of a light, where the soot sits: a whole step further up
+# The fires move (A0, g2 #85347: everything is to move; a1's way, parts/materials.md 2 D: frames
+# stacked in one picture, the game plays them, no command is spent). A fire is fed and dies down:
+# the whole sheet stands a little lower or higher on the ladder from frame to frame, and not all of
+# it at once. Three slow turns are laid over one another: one that goes along the sill, a block's
+# width in a round; a quicker one of half that length that goes the other way; and one the whole
+# window breathes in. Each is as long across as a block or half of one, so the round runs through a
+# bay without a seam whichever pictures the game has mixed there, and the rows over one another
+# move as one sheet. A light's ranks stay its own: what changes is how many of its pixels show the
+# darker of two tones, and the points come and go where they are, in the same order every time. So
+# the glass keeps its stains and the fire behind it flickers. The first frame is the still picture:
+# what the offline pictures and the checks see, and what the levels of _RISE were read for.
+FLICKER = 16                            # frames in a round
+FLICKER_TIME = 4                        # ticks a frame: a1's pace for a furnace fire; a round takes 3.2 s
+_TURNS = ((0.12, 1, -1.0, 0.0), (0.07, 3, 2.0, 1.0), (0.05, 2, 0.0, 2.0))      # (steps of the ladder to either side,
+#                                         rounds in FLICKER frames, lengths across a block, where it starts)
+
+
+def _flare(frame, x):
+    """How far up the ladder (the fire low) or down it (the fire up) the column `x` of a block
+    stands in a frame, against the still picture: 0.0 in the first frame."""
+    def at(f):
+        return sum(reach * math.sin(2.0 * math.pi * (rounds * f / float(FLICKER) + lengths * x / float(TILE)) + start)
+                   for reach, rounds, lengths, start in _TURNS)
+    return at(frame % FLICKER) - at(0)
 
 
 def _heat(height, soot=0.0):
     """Where a pixel `height` pixels above the sill stands on _HEAT: (the step, how many sevenths
     of the way to the next)."""
     v = float(np.interp(height, [h for h, _ in _RISE], [v for _, v in _RISE])) + soot
-    v = min(v, len(_HEAT) - 1.0)
+    v = max(0.0, min(v, len(_HEAT) - 1.0))
     return int(v), int(round((v - int(v)) * 7))
 
 
@@ -312,10 +338,12 @@ def _ranks(serial, width, height):
             for y in range(height)]
 
 
-def _furnace(version, row, variant):
-    """One picture of the furnace window: the block `row` rows above the sill, in its `variant`.
-    Its tones hang on the height above the sill and on nothing else, so the three rows join into one
-    sheet and the pictures of a row stand side by side without a seam."""
+def _furnace(version, row, variant, frame=0):
+    """One picture of the furnace window: the block `row` rows above the sill, in its `variant`, at
+    a frame of the fire's flicker (the first is the still picture).
+    Its tones hang on the height above the sill and, from frame to frame, on the column, and on
+    nothing else, so the three rows join into one sheet and the pictures of a row stand side by
+    side without a seam."""
     px = _glass(BAR)
     for n, (x0, y0, x1, y1) in enumerate(_LIGHTS[version]):
         soot = _SOOT[version][row][variant][n]
@@ -324,7 +352,7 @@ def _furnace(version, row, variant):
             hung = soot * (0.5 + (y1 - y) / float(y1 - y0))
             for x in range(x0, x1 + 1):
                 grime = _GRIME if x in (x0, x1) and y in (y0, y1) else 0.0
-                step, sevenths = _heat(TILE * (row + 1) - 1 - y, hung + grime)
+                step, sevenths = _heat(TILE * (row + 1) - 1 - y, hung + grime + _flare(frame, x))
                 px[y, x, :3] = P.colour(*_HEAT[min(step + (rank[y - y0][x - x0] < sevenths), len(_HEAT) - 1)])
     return _bars(px, version)
 
@@ -343,6 +371,15 @@ def furnace_face(version="a"):
     the sill such a light is where the fire is low. The net is that of the other windows. No
     curtain, no slat, no shape of a flame."""
     return [[_furnace(version, row, variant) for variant in range(len(_SOOT[version][row]))]
+            for row in range(FURNACE_ROWS)]
+
+
+def furnace_frames(version="a"):
+    """The same pictures as the pack takes them, [row][picture]: each the FLICKER frames of the
+    fire's flicker one under the other (K.paint with an animation), the first the still picture of
+    furnace_face()."""
+    return [[np.concatenate([_furnace(version, row, variant, frame) for frame in range(FLICKER)], axis=0)
+             for variant in range(len(_SOOT[version][row]))]
             for row in range(FURNACE_ROWS)]
 
 
@@ -468,8 +505,12 @@ def pack(pack_dir, version=None):
     v = _version(version)
     out = [f"windows: version {v}"]
     K.paint(pack_dir, CAME, came())
+    flicker = dict(zip(FURNACE, furnace_frames(v)))
     for role, (pictures, how) in faces(v).items():
-        name = K.paint(pack_dir, NAMES[role], pictures)
+        if role in flicker:         # the furnace window's fires flicker: its pictures go in as frames
+            name = K.paint(pack_dir, NAMES[role], flicker[role], meta={"animation": {"frametime": FLICKER_TIME}})
+        else:
+            name = K.paint(pack_dir, NAMES[role], pictures)
         for block in role.all():                                   # the full glass block and the pane
             shown = {ref: CAME if ref.endswith("_pane_top") else name
                      for ref in respack.block_pictures(K.game(), block)}
