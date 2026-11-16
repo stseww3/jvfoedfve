@@ -41,7 +41,9 @@ Environment: MC_ROOT, MC_VERSION (26.3), MC_CAM (C164Cam), MC_SIZE (1280x720), M
 MC_VIEW (the client's render distance in chunks, 12), MC_SERVER_VIEW (the server's view distance,
 10: what a Realm runs at and cannot change -- the client draws the smaller of the two; these are
 the distances the board is judged at), MC_CLOUDS (cloud range in chunks, 128), MC_SERVER_HEAP (1500M), MC_CLIENT_HEAP (3G), LP_NUM_THREADS (the cores),
-MC_HELPER, JAVA (a Java 25 binary to use instead of looking for one). For a save that is opened
+MC_HELPER, JAVA (a Java 25 binary to use instead of looking for one), MC_GL (egl: SDL opens the
+game's window through EGL, so that the game's OpenGL backend comes up instead of Vulkan; whichever
+came up, the game's log says and every trip keeps that line). For a save that is opened
 as it comes (savetrip.py): MC_LEVEL (the world's folder under server26/, art), MC_GAMEMODE
 (spectator), MC_FORCE_GAMEMODE (true), MC_DIFFICULTY (easy); setup writes all four every time, so
 the next trip without them has the test world again.
@@ -400,6 +402,10 @@ SYSTEM = [
     (lambda: library("Xcursor"), "libxcursor1"), (lambda: library("Xi"), "libxi6"),
     (lambda: library("Xrandr"), "libxrandr2"), (lambda: library("Xfixes"), "libxfixes3"),
     (lambda: library("Xss"), "libxss1"), (lambda: library("xkbcommon"), "libxkbcommon0"),
+    # for the OpenGL backend (MC_GL=egl): the game asks for an sRGB window, which Xvfb's GLX has no
+    # visual for, and SDL is then told to open the window through EGL instead
+    (lambda: library("EGL"), "libegl1"), (lambda: library("GL"), "libgl1"),
+    (lambda: glob.glob("/usr/lib/*/dri/swrast_dri.so") or glob.glob("/usr/lib/*/libgallium*.so"), "libgl1-mesa-dri"),
 ]
 NEEDED = ("xvfb", "libvulkan1", "mesa-vulkan-drivers")      # without these there is no picture
 SOFTWARE_VULKAN = "/usr/share/vulkan/icd.d/lvp_icd*.json"   # the description of Mesa's software driver
@@ -659,7 +665,12 @@ def display_up():
                 if time.monotonic() > end:
                     raise SystemExit("the X display did not come up:\n" + tail(os.path.join(CLIENT, "xvfb.log")))
                 time.sleep(0.2)
-    return {**os.environ, "DISPLAY": f":{DISPLAY}", **software(), "SDL_VIDEODRIVER": "x11", "ALSOFT_DRIVERS": "null"}
+    env = {**os.environ, "DISPLAY": f":{DISPLAY}", **software(), "SDL_VIDEODRIVER": "x11", "ALSOFT_DRIVERS": "null"}
+    if os.environ.get("MC_GL") == "egl":
+        # the game tries OpenGL first and goes on with Vulkan when that fails: through EGL the
+        # OpenGL backend gets its window here (Mesa's llvmpipe), and the pictures are OpenGL's
+        env.update({"SDL_VIDEO_FORCE_EGL": "1", "SDL_VIDEO_X11_FORCE_EGL": "1"})
+    return env
 
 
 def client_command():
