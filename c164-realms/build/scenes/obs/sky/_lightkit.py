@@ -205,6 +205,11 @@ POOL = 12
 # way up begins. The top of the third rank; it reaches neither the mother clock's dial nor the
 # pier's east face, which lead in the hall.
 STAIR = 8
+# The caged lamps along the ways indoors that no room lights (the ring stair round the pier, the
+# pier's foot at the end of the way from the west door, the cross gallery): the top of the third
+# rank, as the hall's own lamps beside them. A caged lamp two cells from where one walks leaves 6
+# at the head and 5 at the feet.
+WAY = 8
 
 _PRIORITY, _WAKE, _BLIND = 0, 1, 3      # salts of the hash; 2 was the curtains', handed out by look once
 _TIER_OF = {block: tier for tier, role in ROLE.items() for block in role.all()}
@@ -585,12 +590,14 @@ def levels(canvas, lo, hi):
     game shut it out on their closed sides: here a little more light gets by them)."""
     out, rings = {}, {}
     box = [range(lo[i], hi[i] + 1) for i in range(3)]
+    emits, stops = {}, {}           # by state: the master scene has millions of cells and a few hundred states
     for cell, state in canvas.b.items():
-        if cell[0] in box[0] and cell[1] in box[1] and cell[2] in box[2]:
-            e = F.emission(*AB.parse(state))
-            if e > 0:
-                out[cell] = e
-                rings.setdefault(e, []).append(cell)
+        e = emits.get(state)
+        if e is None:
+            e = emits[state] = F.emission(*AB.parse(state))
+        if e > 0 and cell[0] in box[0] and cell[1] in box[1] and cell[2] in box[2]:
+            out[cell] = e
+            rings.setdefault(e, []).append(cell)
     for level in range(15, 1, -1):
         for x, y, z in rings.get(level, ()):
             if out.get((x, y, z)) != level:
@@ -599,8 +606,12 @@ def levels(canvas, lo, hi):
                 if out.get(n, 0) >= level - 1 or not (n[0] in box[0] and n[1] in box[1] and n[2] in box[2]):
                     continue
                 state = canvas.b.get(n)
-                if state is not None and _stops_light(state):
-                    continue
+                if state is not None:
+                    shut = stops.get(state)
+                    if shut is None:
+                        shut = stops[state] = _stops_light(state)
+                    if shut:
+                        continue
                 out[n] = level - 1
                 rings.setdefault(level - 1, []).append(n)
     return out
