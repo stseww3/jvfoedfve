@@ -86,7 +86,9 @@ CATCH = -30                 # scene y: feet under it are put back on the spot (a
                             # c329 #62206 and a4 c323 #64103: the cloud layer's top is -28, the
                             # lowest rock a foot finds is -27, the eye is in the cloud by then)
 DATA_FORMAT = 121           # 26.3, as build/artkit/export.py
-REGISTRY_FOLDERS = ("worldgen", "timeline", "dimension", "dimension_type")   # what --strip takes out
+# what a finished map's data pack may hold (COMMON.md 5.5). Any other folder is a registry's, and
+# one file of a registry makes the game call the world experimental, which Realms does not take.
+ALLOWED_KINDS = ("function", "tags", "structure", "advancement", "loot_table", "predicate", "recipe", "item_modifier")
 
 # The delivery list (plan/STATUS.md, "成品地图交付清单"; the director's #61069), in the order it is run.
 # max_block_modifications is put back to the game's own value separately.
@@ -402,42 +404,84 @@ def functions(spec):
     }
     if spec["cloud"]:
         out["tick"].append(f"execute as @a at @s if block ~ ~-0.2 ~ #{NS}:cloud run function {NS}:back")
-    label = spec["trial"]
-    if label:
-        head = snbt(f"[c164 试传 {label}] ", "gold")
-        out["load"].append(f"scoreboard objectives add {FACTS} dummy")
-        # a trial save greets on every joining, from the spot, and remembers how the player came in
-        out["join"][1:1] = [f"tag @s remove c164.adv", "execute if entity @s[gamemode=adventure] run tag @s add c164.adv"]
-        out["join"] += [f"function {NS}:back", "tag @s add c164.say1"]
-        # say2 stands before say1 in the tick function, so it runs one tick after it whatever
-        # became of say1's last line (a function that is not there when the biome is not)
-        out["tick"] += [f"execute as @a[tag=c164.say2] at @s run function {NS}:say2",
-                        f"execute as @a[tag=c164.say1] at @s run function {NS}:say1"]
-        out["say1"] = [
-            "tag @s remove c164.say1",
-            "tag @s add c164.say2",
-            f"tellraw @s [{head},{snbt('数据包的函数在跑：这几行字是函数说的。')}]",
-            f"scoreboard players set #biome {FACTS} 0",
-        ]
-        out["say2"] = ["tag @s remove c164.say2", f"execute store result score #diff {FACTS} run difficulty"]
-        if spec["look"]:
-            out["say1"].append(f"function {NS}:biome")
-            out["biome"] = [f"execute if biome ~ ~ ~ {spec['biome']} run scoreboard players set #biome {FACTS} 1"]
-            out["say2"] += [
-                f"execute if score #biome {FACTS} matches 1 run tellraw @s "
-                f"[{head},{snbt('生物群系 ' + spec['biome'] + '：在。', 'green')}]",
-                f"execute unless score #biome {FACTS} matches 1 run tellraw @s "
-                f"[{head},{snbt('生物群系 ' + spec['biome'] + '：不在（注册表文件没有跟过来）。', 'red')}]",
-            ]
-        else:
-            out["say2"].append(f"tellraw @s [{head},{snbt('这个存档不带自定义生物群系和时间线，天是游戏自己的。')}]")
-        score = "{score:{name:\"#diff\",objective:\"" + FACTS + "\"}}"
-        out["say2"] += [
-            f"execute if entity @s[tag=c164.adv] run tellraw @s [{head},{snbt('进来时已经是冒险模式；难度 ')},{score},{snbt('（0 是和平）。')}]",
-            f"execute unless entity @s[tag=c164.adv] run tellraw @s [{head},{snbt('进来时不是冒险模式（函数已改成冒险）；难度 ')},{score},{snbt('（0 是和平）。')}]",
-            f"tellraw @s [{head},{snbt('请先别动鼠标，按 F2 截一张图；再低头看平台、回头看身后。', 'yellow')}]",
-        ]
+    if spec["trial"]:
+        trial_functions(spec, out)
+    else:
+        # a server sets its difficulty from its own settings at every start, not from the save
+        out["load"].append("difficulty peaceful")
     return out
+
+
+def label_lines(spec):
+    """The lines of text that hang in a trial save's first view, as the save is made: (text, colour).
+    The functions rewrite the second to the last when somebody joins, so one screenshot tells what
+    they found, and tells that they did not run when the lines still read as here."""
+    biome = (f"生物群系 {spec['biome'].split(':')[1]}：还没查", "gray") if spec["look"] else \
+        ("这个存档不带生物群系和时间线", "gray")
+    return [(f"c164 试传 {spec['trial']}", "gold"), ("数据包的函数：没有跑", "red"), biome,
+            ("进来时的游戏模式：还没查", "gray"), ("难度：还没查", "gray")]
+
+
+def trial_functions(spec, out):
+    """What a trial save's functions do beyond the map's: on every joining the player is put on the
+    spot, and they say what they found, in the chat and on the lines of text in the first view.
+
+    Three steps, each its own function, a later step on a later tick: say1 at once; say2 two
+    seconds on, when the chunk and the lines of text are loaded for certain; say3 the tick after.
+    say2's last line calls a function that is not there when the biome is not (a command naming an
+    unknown biome does not parse, and the file with it is dropped), so nothing may follow it."""
+    head = snbt(f"[c164 试传 {spec['trial']}] ", "gold")
+
+    def show(line, text, colour):
+        return f"data merge entity @e[type=minecraft:text_display,tag=c164.l{line},limit=1] {{text:{snbt(text, colour)}}}"
+
+    out["load"].append(f"scoreboard objectives add {FACTS} dummy")
+    out["join"][1:1] = ["tag @s remove c164.adv", "execute if entity @s[gamemode=adventure] run tag @s add c164.adv"]
+    out["join"] += [f"function {NS}:back", "tag @s remove c164.say2", "tag @s remove c164.say3", "tag @s add c164.say1"]
+    out["tick"] += [
+        f"execute as @a[tag=c164.say3] at @s run function {NS}:say3",
+        f"execute as @a[tag=c164.say2] run scoreboard players add @s {FACTS} 1",
+        f"execute as @a[tag=c164.say2,scores={{{FACTS}=40..}}] at @s run function {NS}:say2",
+        f"execute as @a[tag=c164.say1] at @s run function {NS}:say1",
+    ]
+    out["say1"] = [
+        "tag @s remove c164.say1",
+        "tag @s add c164.say2",
+        f"scoreboard players set @s {FACTS} 0",
+        f"tellraw @s [{head},{snbt('数据包的函数在跑：这几行字是函数说的。')}]",
+    ]
+    out["say2"] = [
+        "tag @s remove c164.say2",
+        "tag @s add c164.say3",
+        f"execute store result score #diff {FACTS} run difficulty",
+        show(2, "数据包的函数：在跑", "green"),
+        "execute if entity @s[tag=c164.adv] run " + show(4, "进来时：冒险模式", "green"),
+        "execute unless entity @s[tag=c164.adv] run " + show(4, "进来时：不是冒险模式", "yellow"),
+        f"execute if score #diff {FACTS} matches 0 run " + show(5, "难度：和平", "green"),
+    ]
+    out["say2"] += [f"execute if score #diff {FACTS} matches {n} run " + show(5, f"难度：{word}（不是和平）", "yellow")
+                    for n, word in ((1, "简单"), (2, "普通"), (3, "困难"))]
+    out["say3"] = ["tag @s remove c164.say3"]
+    if spec["look"]:
+        short = spec["biome"].split(":")[1]
+        out["say2"] += [f"scoreboard players set #biome {FACTS} 0", show(3, f"生物群系 {short}：不在", "red"),
+                        f"function {NS}:biome"]
+        out["biome"] = [f"execute if biome ~ ~ ~ {spec['biome']} run scoreboard players set #biome {FACTS} 1",
+                        f"execute if score #biome {FACTS} matches 1 run " + show(3, f"生物群系 {short}：在", "green")]
+        out["say3"] += [
+            f"execute if score #biome {FACTS} matches 1 run tellraw @s "
+            f"[{head},{snbt('生物群系 ' + spec['biome'] + '：在。', 'green')}]",
+            f"execute unless score #biome {FACTS} matches 1 run tellraw @s "
+            f"[{head},{snbt('生物群系 ' + spec['biome'] + '：不在（注册表文件没有跟过来）。', 'red')}]",
+        ]
+    else:
+        out["say3"].append(f"tellraw @s [{head},{snbt('这个存档不带自定义生物群系和时间线，天是游戏自己的。')}]")
+    score = "{score:{name:\"#diff\",objective:\"" + FACTS + "\"}}"
+    out["say3"] += [
+        f"execute if entity @s[tag=c164.adv] run tellraw @s [{head},{snbt('进来时已经是冒险模式；难度 ')},{score},{snbt('（0 是和平）。')}]",
+        f"execute unless entity @s[tag=c164.adv] run tellraw @s [{head},{snbt('进来时不是冒险模式（函数已改成冒险）；难度 ')},{score},{snbt('（0 是和平）。')}]",
+        f"tellraw @s [{head},{snbt('请先别动鼠标，按 F2 截一张图；再低头看平台、回头看身后。', 'yellow')}]",
+    ]
 
 
 def _tag(path, entry):
@@ -579,15 +623,21 @@ def listing(folder):
 
 
 def numbers(world):
-    """Chunks and entities of the saved world, counted from its region files."""
+    """Chunks and entities of the saved world, counted from its region files, wherever this
+    version of the game keeps them."""
     sys.path.insert(0, HERE)
     import census
-    out = {"chunks": 0, "entities": {}, "regions": 0}
-    for kind in ("region", "entities"):
-        for path in sorted(glob.glob(os.path.join(world, "dimensions", "minecraft", "overworld", kind, "*.mca"))):
+    out = {"chunks": 0, "entities": {}, "regions": 0, "folders": []}
+    for base, dirs, files in os.walk(world):
+        dirs.sort()
+        kind = os.path.basename(base)
+        names = sorted(f for f in files if f.endswith(".mca")) if kind in ("region", "entities") else []
+        if names:
+            out["folders"].append(os.path.relpath(base, world).replace(os.sep, "/"))
+        for name in names:
             if kind == "region":
                 out["regions"] += 1
-            for _cx, _cz, raw in census.read_chunks(path):
+            for _cx, _cz, raw in census.read_chunks(os.path.join(base, name)):
                 if kind == "region":
                     out["chunks"] += 1
                     continue
@@ -607,6 +657,7 @@ def level_facts(world):
     try:
         data = nbtlib.load(os.path.join(world, "level.dat"))
         data = data.get("Data", data.get("", {}).get("Data", data))
+        out["keys"] = sorted(str(k) for k in data.keys())
         for key in ("GameType", "Difficulty", "difficulty_settings", "spawn", "SpawnX", "SpawnY", "SpawnZ", "SpawnAngle",
                     "LevelName", "DataVersion", "Version", "DataPacks", "allowCommands", "hardcore", "initialized",
                     "WasModded", "ServerBrands", "raining", "thundering", "clearWeatherTime", "DayTime", "Time",
@@ -686,13 +737,18 @@ def make(args):
         if refused:
             fail("the server refused: " + "; ".join(refused))
         if spec["trial"]:
-            # the label: seven blocks ahead of who arrives, between what stands there and the sky
+            # the lines of text: seven blocks ahead of who arrives, between what stands there and the sky
             turn = math.radians(spec["yaw"])
-            lx, ly, lz = x - 7.0 * math.sin(turn), y + 4.6, z + 7.0 * math.cos(turn)
-            server.cmd(f"summon minecraft:text_display {num(lx)} {num(ly)} {num(lz)} "
-                       "{text:{text:\"c164 " + spec["trial"] + "\",color:\"gold\"},billboard:\"center\",background:0,"
-                       "brightness:{sky:15,block:15},Tags:[\"c164.label\"],transformation:{left_rotation:[0f,0f,0f,1f],"
-                       "right_rotation:[0f,0f,0f,1f],translation:[0f,0f,0f],scale:[1.5f,1.5f,1.5f]}}")
+            lx, lz = x - 7.0 * math.sin(turn), z + 7.0 * math.cos(turn)
+            for n, (text, colour) in enumerate(label_lines(spec), 1):
+                reply = server.cmd(
+                    f"summon minecraft:text_display {num(lx)} {num(y + 5.7 - 0.38 * (n - 1))} {num(lz)} "
+                    f"{{text:{snbt(text, colour)},billboard:\"center\",line_width:400,shadow:1b,"
+                    f"brightness:{{sky:15,block:15}},Tags:[\"c164.label\",\"c164.l{n}\"],"
+                    "transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],"
+                    "translation:[0f,0f,0f],scale:[1.2f,1.2f,1.2f]}}")
+                if "Summoned" not in reply:
+                    fail(f"the line of text {n} was not put up: {reply}")
         server.cmd(f"gamerule max_block_modifications {default.group(1)}")
         facts["loop"] = server.cmd("scoreboard players get #run c164m")
         server.cmd("forceload remove all")
@@ -710,6 +766,25 @@ def make(args):
             fh.write("\n".join(LOG) + "\n")
     say(f"made {facts['zip']['file']}: {facts['zip']['bytes'] / 1e6:.2f} MB, {facts['zip']['files']} files, "
         f"{facts['numbers']['chunks']} chunks, {sum(facts['numbers']['entities'].values())} entities")
+
+
+def registry_files(pack_dir):
+    """The pack's files outside the kinds a finished map may carry, from the pack's root. The tags
+    of timelines are counted with them: ours names a timeline that exists only with those files."""
+    out = []
+    data = os.path.join(pack_dir, "data")
+    for namespace in sorted(os.listdir(data)) if os.path.isdir(data) else []:
+        for kind in sorted(os.listdir(os.path.join(data, namespace))):
+            top = os.path.join(data, namespace, kind)
+            if kind == "tags":
+                top = os.path.join(top, "timeline")
+            elif kind in ALLOWED_KINDS:
+                continue
+            if os.path.isfile(top):
+                out.append(os.path.relpath(top, pack_dir))
+            for folder, _dirs, names in os.walk(top):
+                out.extend(os.path.relpath(os.path.join(folder, n), pack_dir) for n in names)
+    return sorted(out)
 
 
 def seal(world, spec, out_dir, head, when, facts):
@@ -738,8 +813,7 @@ def seal(world, spec, out_dir, head, when, facts):
         os.remove(path)
         removed.append(os.path.relpath(path, stage))
     pack_meta(pack_dir, f"c164 {name} ({head})", True)
-    registry = sorted(os.path.relpath(p, pack_dir) for folder in REGISTRY_FOLDERS
-                      for p in glob.glob(os.path.join(pack_dir, "data", "*", folder, "**", "*.json"), recursive=True))
+    registry = registry_files(pack_dir)
     if registry and not spec["look"]:
         fail("the look is off and the data pack still holds registry files: " + ", ".join(registry))
     count, standins = resource_pack(spec["scene"], os.path.join(stage, "resourcepacks", "resources.zip"),
@@ -765,12 +839,20 @@ def near(a, b, eps=0.02):
     return a is not None and all(abs(p - q) <= eps for p, q in zip(a, b))
 
 
-def visit(server, spec, results, tag):
-    """A fake player joins, is looked at, falls, leaves, comes back."""
+def told(bot):
+    """What the chat showed the fake player, without the server's own word of who came and went."""
+    return [s for s in bot.texts("chat") if not s.startswith("multiplayer.player.")]
+
+
+def visit(server, spec, results, tag, came):
+    """A fake player joins, is looked at, falls, leaves, comes back. `came` is what this server's
+    own settings and this save make of who joins: {"adventure", "peaceful": bool, "biome": bool or
+    None}; a trial save is to tell exactly that."""
     sys.path.insert(0, HERE)
     import mcbot
     feet = tuple(spec["feet"])
     aim = (spec["yaw"] % 360.0, spec["pitch"])
+    wait = 5.0 if spec["trial"] else 3.0        # a trial save takes two seconds to say all it says
 
     def turned(bot):
         return bot.rotation is not None and abs((bot.rotation[0] - aim[0] + 180.0) % 360.0 - 180.0) < 0.05 \
@@ -783,21 +865,32 @@ def visit(server, spec, results, tag):
         check(results, tag + "join", False, f"the fake player could not join: {type(exc).__name__}: {exc}")
         return
     joined = time.time() - t
-    first = bot.position
-    bot.pump(3.0)
+    first = (bot.position, bot.rotation)
+    bot.pump(wait)
     check(results, tag + "join", near(bot.position, feet) and turned(bot),
-          f"joined in {joined:.1f} s at {first}, after the functions at {bot.position} facing {bot.rotation}; "
-          f"wanted {feet} facing {aim}")
+          f"joined in {joined:.1f} s at {first[0]} facing {first[1]}, after the functions at {bot.position} "
+          f"facing {bot.rotation}; wanted {feet} facing {aim}")
     mode = server.cmd(f"data get entity {BOT} playerGameType", quiet=True)
     reach = server.cmd(f"attribute {BOT} minecraft:block_interaction_range base get", quiet=True)
     tags = server.cmd(f"tag {BOT} list", quiet=True)
     check(results, tag + "mode", mode.rstrip().endswith(": 2"), mode)
     check(results, tag + "reach", re.search(r"is 0(\.0+)?\s*$", reach) is not None, reach)
     check(results, tag + "tag", IN_TAG in tags, tags)
-    said = bot.texts("chat")
+    said = told(bot)
     if spec["trial"]:
         check(results, tag + "greeting", any("函数在跑" in s for s in said) and any("F2" in s for s in said),
               " | ".join(said) or "nothing was said")
+        lines = [server.cmd(f"data get entity @e[type=minecraft:text_display,tag=c164.l{n},limit=1] text", quiet=True)
+                 .split("entity data: ", 1)[-1].strip() for n in range(1, len(label_lines(spec)) + 1)]
+        right = ["在跑" in lines[1],
+                 ("不是冒险" in lines[3]) != came["adventure"] and "冒险模式" in lines[3],
+                 ("不是和平" in lines[4]) != came["peaceful"] and "难度：" in lines[4] and "还没查" not in lines[4]]
+        if came["biome"] is not None:
+            right += [("不在" in lines[2]) != came["biome"] and "还没查" not in lines[2],
+                      any("：在。" in s for s in said) == came["biome"], any("不在" in s for s in said) != came["biome"]]
+        check(results, tag + "lines of text", all(right),
+              " | ".join(lines) + f"; wanted them to tell: adventure {came['adventure']}, peaceful {came['peaceful']}"
+              + (f", biome {came['biome']}" if came["biome"] is not None else ""))
     else:
         check(results, tag + "quiet", not said, " | ".join(said) or "nothing was said, as it should be")
     # under the line: put there by hand, the tick function has him back before the next look
@@ -820,8 +913,8 @@ def visit(server, spec, results, tag):
     except Exception as exc:
         check(results, tag + "rejoin", False, f"the fake player could not come back: {type(exc).__name__}: {exc}")
         return
-    bot.pump(3.0)
-    said = bot.texts("chat")
+    bot.pump(wait)
+    said = told(bot)
     reach = server.cmd(f"attribute {BOT} minecraft:block_interaction_range base get", quiet=True)
     mode = server.cmd(f"data get entity {BOT} playerGameType", quiet=True)
     if spec["trial"]:
@@ -879,10 +972,17 @@ def verify(args):
     work = os.path.join(WORK, name + "-verify")
     if os.path.isdir(work):
         shutil.rmtree(work)
-    runs = [("", False)] + ([("stripped: ", True)] if args.strip else [])
+    # A server takes the game mode of who is new and the difficulty from its own settings at every
+    # start, not from the save (on Realms: from the slot's settings). The first start is given the
+    # wrong ones on purpose: what the save's functions are to hold must hold all the same. A trial
+    # save is started once more with the right ones, to hear it tell the difference.
+    hostile, as_set = dict(gamemode="survival", difficulty="easy"), dict(gamemode="adventure", difficulty="peaceful")
+    runs = [("", "srv", hostile)] + ([("as set: ", "set", as_set)] if spec["trial"] else []) \
+        + ([("stripped: ", "stripped", hostile)] if args.strip else [])
     try:
-        for tag, strip in runs:
-            folder = os.path.join(work, "stripped" if strip else "srv")
+        for tag, kind, own in runs:
+            strip, first = kind == "stripped", kind == "srv"
+            folder = os.path.join(work, kind)
             os.makedirs(folder)
             with zipfile.ZipFile(archive) as zf:
                 tops = {n.split("/", 1)[0] for n in zf.namelist()}
@@ -892,7 +992,7 @@ def verify(args):
                 break
             world = os.path.join(folder, name)
             pack_dir = os.path.join(world, "datapacks", PACK)
-            if not strip:
+            if first:
                 level = level_facts(world)
                 report["level"] = level
                 check(results, "level.dat", level.get("GameType") == 2 and "error" not in level,
@@ -907,27 +1007,20 @@ def verify(args):
                 check(results, "resource pack", "pack.mcmeta" in inner and any(n.startswith("assets/") for n in inner),
                       f"{len(inner)} files, pack.mcmeta at its top: {'pack.mcmeta' in inner}; "
                       f"{sum(1 for n in inner if os.path.basename(n).startswith('ph_'))} stand-ins (ph_)")
-            else:
-                gone = []
-                for kind in REGISTRY_FOLDERS:
-                    for path in glob.glob(os.path.join(pack_dir, "data", "*", kind)):
-                        shutil.rmtree(path)
-                        gone.append(os.path.relpath(path, pack_dir))
-                tag_file = os.path.join(pack_dir, "data", "minecraft", "tags", "timeline")
-                if os.path.isdir(tag_file):
-                    shutil.rmtree(tag_file)
-                    gone.append(os.path.relpath(tag_file, pack_dir))
+            elif strip:
+                gone = registry_files(pack_dir)
+                for rel in gone:
+                    os.remove(os.path.join(pack_dir, rel))
                 say(f"stripped run: taken out of the data pack: {', '.join(gone) or 'nothing (the save has no registry files)'}")
                 if not gone:
                     break
-            # not the world's own settings, on purpose: what holds must come from the save
             server = Server(folder, name, java, jar)
-            server.settings(gamemode="survival", difficulty="easy")
+            server.settings(**own)
             started = server.start()
-            check(results, tag + "starts", True, f"up in {started:.0f} s")
+            check(results, tag + "starts", True, f"up in {started:.0f} s, the server's own settings: {own}")
             packs = server.cmd("datapack list enabled", quiet=True)
             check(results, tag + "data pack", f"file/{PACK}" in packs, packs)
-            if not strip:
+            if first:
                 rules = {}
                 for rule, value in RULES + [("max_block_modifications", None)]:
                     reply = server.cmd(f"gamerule {rule}", quiet=True)
@@ -939,8 +1032,15 @@ def verify(args):
                 check(results, "forced chunks", True, server.cmd("forceload query", quiet=True))
                 time.sleep(3.0)
                 check(results, "tick, empty", True, server.cmd("tick query", quiet=True).replace("\n", " | "))
-            visit(server, spec, results, tag)
-            if not strip:
+                found = server.cmd("difficulty", quiet=True)
+                if spec["trial"]:       # a trial save leaves it alone, to tell what the server made of it
+                    check(results, "difficulty", True, found + " (the server's own; a trial save does not set it)")
+                else:
+                    check(results, "difficulty", "Peaceful" in found, found + " (the server's own setting is easy)")
+            came = {"adventure": own["gamemode"] == "adventure", "peaceful": own["difficulty"] == "peaceful",
+                    "biome": (not strip) if spec["look"] else None}
+            visit(server, spec, results, tag, came)
+            if first:
                 import mcbot
                 bot = mcbot.Bot(BOT, HOST, PORT).connect(timeout=60.0)
                 bot.pump(2.0)
@@ -949,7 +1049,9 @@ def verify(args):
             server.stop()
             issues = server.issues()
             report[tag + "issues"] = issues
-            check(results, tag + "console", not issues if not strip else True,
+            # the stripped save is expected to complain; a slow tick is the machine's, told but not held against the save
+            real = [] if strip else [i for i in issues if "Can't keep up!" not in i]
+            check(results, tag + "console", not real,
                   f"{len(issues)} warnings and errors" + ("".join("\n        " + i for i in issues[:25]) if issues else ""))
     finally:
         report["ok"] = bool(results) and all(r["ok"] for r in results)
