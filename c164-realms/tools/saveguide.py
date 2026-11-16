@@ -158,28 +158,30 @@ def shown(found):
     return out
 
 
-def place_of(line):
-    """(x, y, z, reach) a command watches: `positioned X Y Z` or a selector's x=, y=, z=, with a
-    distance=..R in the same command; None when the command watches no place."""
-    reach = re.search(r"distance=(?:" + NUMBER + r")?\.\.(" + NUMBER + ")", line)
-    if not reach:
-        return None
-    at = re.search(rf"positioned ({NUMBER}) ({NUMBER}) ({NUMBER})", line)
-    if at:
-        return tuple(float(v) for v in at.groups()) + (float(reach.group(1)),)
+def places_of(line):
+    """The places a command watches, [(x, y, z, reach)]: every `positioned X Y Z` that a
+    distance=..R follows before the next one (a chart is taken within reach of the floor under it
+    and of the spot one reads it from: two of them), or a selector's own x=, y=, z= and distance."""
+    out = []
+    parts = re.split(rf"\bpositioned ({NUMBER}) ({NUMBER}) ({NUMBER})", line)
+    for i in range(1, len(parts), 4):
+        reach = re.search(r"distance=(?:" + NUMBER + r")?\.\.(" + NUMBER + ")", parts[i + 3])
+        if reach:
+            out.append((float(parts[i]), float(parts[i + 1]), float(parts[i + 2]), float(reach.group(1))))
     for selector in re.findall(r"@[aprse]\[([^\]]*)\]", line):
         given = dict(part.split("=", 1) for part in selector.split(",") if "=" in part)
-        if all(k in given for k in "xyz"):
+        reach = re.fullmatch(r"(?:" + NUMBER + r")?\.\.(" + NUMBER + ")", given.get("distance", ""))
+        if reach and all(k in given for k in "xyz"):
             try:
-                return (float(given["x"]), float(given["y"]), float(given["z"]), float(reach.group(1)))
+                out.append((float(given["x"]), float(given["y"]), float(given["z"]), float(reach.group(1))))
             except ValueError:
                 continue
-    return None
+    return out
 
 
 def watched(found, depth=3):
-    """{tag: (x, y, z, reach, the function that watches)}: the places where coming near gives a
-    player a tag -- on the command itself, or in the function it runs (followed `depth` deep)."""
+    """{tag: ([(x, y, z, reach), ...], the function that watches)}: the places where coming near
+    gives a player a tag -- on the command itself, or in the function it runs (followed `depth` deep)."""
     def tags(lines, left):
         given = []
         for line in lines:
@@ -192,11 +194,35 @@ def watched(found, depth=3):
     out = {}
     for name, lines in sorted(found.items()):
         for line in lines:
-            place = place_of(line)
-            if not place:
+            places = places_of(line)
+            if not places:
                 continue
             for tag in tags([line], depth):
-                out.setdefault(tag, place + (name,))
+                out.setdefault(tag, (places, name))
+    return out
+
+
+def sparks(found, depth=2):
+    """The points at which a function that is run at a fixed place (`positioned X Y Z`, no reach)
+    starts particles relative to it: [(x, y, z)] -- the lights of a close, to look at."""
+    def relative(lines, left):
+        points = []
+        for line in lines:
+            m = re.search(rf"\bparticle \S+ ~({NUMBER})? ~({NUMBER})? ~({NUMBER})?", line)
+            if m:
+                points.append(tuple(float(v or 0) for v in m.groups()))
+            if left > 0:
+                for called in re.findall(r"\bfunction (\S+:\S+)", line):
+                    points += relative(found.get(called, []), left - 1)
+        return points
+
+    out = []
+    for lines in found.values():
+        for line in lines:
+            at = re.search(rf"\bpositioned ({NUMBER}) ({NUMBER}) ({NUMBER})", line)
+            if at and "distance=" not in line and re.search(r"\bfunction \S+:\S+", line):
+                base = tuple(float(v) for v in at.groups())
+                out += [tuple(base[k] + p[k] for k in range(3)) for p in relative([line], depth)]
     return out
 
 
@@ -250,39 +276,49 @@ class Blocks:
     def open(self, x, y, z):
         return bool(PASSABLE.search(self.at(x, y, z)))
 
-    def standing(self, place, reach, margin=0.1):
-        """Where a visitor's feet can be put inside `reach` of `place`: the middle of a cell with
-        two open cells for the body and something under the feet; the lowest floor first (not the
-        table the thing lies on), then the nearest. None when there is no such cell."""
-        px, py, pz = place
+    def stands(self, x, y, z):
+        """Can a visitor's feet be put here: two open cells for the body, something under the feet."""
+        return self.open(x, y, z) and self.open(x, y + 1, z) and not self.open(x, y - 0.5, z)
+
+    def standing(self, places, margin=0.1):
+        """Where a visitor's feet can be put inside the reach of every one of `places` [(x, y, z,
+        reach)]: the last of them itself when one can stand there (the spot the map means), else
+        the middle of a cell with two open cells for the body and something under the feet -- the
+        lowest floor first (not the table the thing lies on), then the nearest to the last place.
+        Returns ((x, y, z), how far from the last place) or None."""
+        def inside(spot):
+            return all(math.dist(spot, place[:3]) <= place[3] - margin for place in places)
+        px, py, pz = places[-1][:3]
+        if self.stands(px, py, pz) and inside((px, py, pz)):
+            return (px, py, pz), 0.0
         best = None
         for cx in range(math.floor(px) - 2, math.floor(px) + 3):
             for cz in range(math.floor(pz) - 2, math.floor(pz) + 3):
                 for cy in range(math.floor(py) - 2, math.floor(py) + 2):
                     spot = (cx + 0.5, float(cy), cz + 0.5)
-                    far = math.dist(spot, place)
-                    if far > reach - margin:
-                        continue
-                    if self.open(cx, cy, cz) and self.open(cx, cy + 1, cz) and not self.open(cx, cy - 1, cz):
+                    if inside(spot) and self.stands(*spot):
+                        far = math.dist(spot, (px, py, pz))
                         if best is None or (cy, far) < (best[0][1], best[1]):
                             best = (spot, far)
         return best
 
 
 def read(path):
-    """{"plaques": [...], "shown": [...], "watched": {tag: [x, y, z, reach, function, standing spot or None]}}"""
+    """{"plaques": [...], "shown": [...], "watched": {tag: {"at": the first place watched (the thing),
+    "reach", "near": every place the feet must be near, "function", "stand": where a visitor's feet
+    can be put or None, "far", "on"}}, "sparks": [...], "functions": how many}"""
     with zipfile.ZipFile(path) as archive:
         found = functions(archive)
         blocks = Blocks(archive)
         places = {}
-        for tag, (x, y, z, reach, name) in sorted(watched(found).items()):
-            spot = blocks.standing((x, y, z), reach)
-            places[tag] = {"at": [x, y, z], "reach": reach, "function": name,
-                           "stand": [round(v, 2) for v in spot[0]] if spot else None,
+        for tag, (near, name) in sorted(watched(found).items()):
+            spot = blocks.standing(near)
+            places[tag] = {"at": list(near[0][:3]), "reach": near[0][3], "near": [list(place) for place in near],
+                           "function": name, "stand": [round(v, 3) for v in spot[0]] if spot else None,
                            "far": round(spot[1], 2) if spot else None,
-                           "on": blocks.at(spot[0][0], spot[0][1] - 1, spot[0][2]) if spot else None}
+                           "on": blocks.at(spot[0][0], spot[0][1] - 0.5, spot[0][2]) if spot else None}
         return {"plaques": displays(archive), "shown": [list(row) for row in shown(found)], "watched": places,
-                "functions": len(found)}
+                "sparks": [[round(v, 2) for v in point] for point in sparks(found)], "functions": len(found)}
 
 
 def main():
@@ -301,8 +337,9 @@ def main():
     for name, kind, words in found["shown"]:
         print(f"  {name}: {kind} {words}")
     for tag, place in found["watched"].items():
-        print(f"  {tag}: within {place['reach']} of {place['at']} ({place['function']}); feet at {place['stand']} "
-              f"on {place['on']}, {place['far']} away")
+        print(f"  {tag}: within reach of {place['near']} ({place['function']}); feet at {place['stand']} "
+              f"on {place['on']}, {place['far']} from the last")
+    print(f"  {len(found['sparks'])} points at which particles are started at a fixed place")
 
 
 if __name__ == "__main__":
