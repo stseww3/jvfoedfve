@@ -21,6 +21,7 @@ import math
 import numpy as np
 
 from artkit import models as M
+from artkit.nbtw import Float
 
 from ..common import palette as P
 from ..motion import _kit as MK
@@ -56,11 +57,12 @@ BEND_OVER = 23.0                # ... over this many blocks (times 2 pi)
 AT_ONCE = 10                    # no more than this many heads set off on one beat
 
 PITCH = 26                      # one head to a square of this side, at most
-TRIES = 8                       # places tried in a square
+TRIES = 48                      # places tried in a square
 KEEP = 12                       # blocks between a head's rim and the land or anything built
 NEAR, FAR = 22.0, 112.0         # how far from where people stand a head may be
 SEED = 4127
-VIEW = 3.0                      # the display's view range: far, as the sea is
+VIEW = M.FAR                    # seen across the whole site, as the sea is; the fog takes a head long before
+ROOM = 0.5                      # blocks of room round a head in the box the game culls it by
 
 
 def _heights(shape):
@@ -108,8 +110,9 @@ def _tones(top):
 
 
 def _model(name, shape):
-    """A head: the anchor is the middle of its crown."""
-    m = M.Model(name, anchor=(SIDE * VOXEL / 2.0, TALL * VOXEL, SIDE * VOXEL / 2.0))
+    """A head: the anchor is the middle of its foot, so that the entity stands under all of it and
+    the box the game culls it by (the entity's width and height) holds it at rest and risen."""
+    m = M.Model(name, anchor=(SIDE * VOXEL / 2.0, 0.0, SIDE * VOXEL / 2.0))
     for (i, j, k), (tone, skip) in sorted(_tones(_heights(shape)).items()):
         m.box((i * VOXEL, j * VOXEL, k * VOXEL), ((i + 1) * VOXEL, (j + 1) * VOXEL, (k + 1) * VOXEL),
               P.mat("cloud", kind="flat", base=tone, bevel=0), skip=skip, seed=tone + 1, shade=False)
@@ -179,7 +182,8 @@ def place(canvas, origin, places, wind):
         rest = lo + 1 - UNDER                       # the upper face of the lowest block, less UNDER
         rise = hi + 1 + STAND - rest
         model = kit[(x * 7 + z * 13 + n) % len(kit)]
-        canvas.add_entity(origin[0] + x + 0.5 + OFF[0], origin[1] + rest, origin[2] + z + 0.5 + OFF[1],
-                          M.display(model, scale=SCALE, brightness=(15, 0), view=VIEW))
+        nbt = M.display(model, scale=SCALE, brightness=(15, 0), view=VIEW)
+        nbt["width"], nbt["height"] = Float(SIDE + 2 * ROOM), Float(TALL + rise + ROOM)
+        canvas.add_entity(origin[0] + x + 0.5 + OFF[0], origin[1] + rest - TALL, origin[2] + z + 0.5 + OFF[1], nbt)
         MK.slide(canvas, (0.0, 1.0, 0.0), [(t, share * rise, PACE) for t, share in PACES], CYCLE, phase=beat * BEAT)
     return len(places)
