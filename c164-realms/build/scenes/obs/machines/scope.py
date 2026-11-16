@@ -26,6 +26,7 @@ What the other lines read (scene coordinates; give the origin to have it added):
     scope.V8            the same by version
     scope.ELEVATION     degrees the tube looks up, due west: the comet's head (sky/comet)
     scope.BRIGHTNESS    the light every piece is shown in, whatever cell it hangs in
+    scope.solid()       the cells build() fills with a barrier: the inside of the pier's iron
 
 Every function takes version= ("a" or "b"; VERSION, the one that was picked, when left out).
 
@@ -415,7 +416,7 @@ def _tube(version):
             d.box((-half, -radius, z(b)), (half, radius, z(a)), TUBE, rot=("z", 30.0 * i, middle) if i else None,
                   skip="we", grain="z", lit={"n": "cap", "s": "cap", "u": "plain", "d": "plain"}, seed=CONE_SEED)
 
-    def skirt(s, r0, r1):
+    def skirt(s, r0, r1, mat=TUBE):
         """Where the tube steps out from r0 to r1 at s, going up it: twelve sloping plates over the
         shoulder. A shoulder looks down the tube at the observer and the game gives it four tenths
         of the light, a black gap under every ring; a plate that slopes SKIRT degrees is filed
@@ -430,8 +431,8 @@ def _tube(version):
             light = _dot((-math.sin(turn), math.cos(turn), 0.0), M.LIGHT)
             tone = (1 if light > 0.45 else -1 if light < -0.45 else 0) - 1
             with d.turned(("z", 30.0 * i)):
-                d.box((-half, y - 0.25, zz - long / 2.0), (half, y, zz + long / 2.0), TUBE, rot=("x", SKIRT, (0.0, y, zz)),
-                      skip="dnswe", grain="z", faces={"u": TUBE.variant(tone, 0)}, seed=CONE_SEED + 1)
+                d.box((-half, y - 0.25, zz - long / 2.0), (half, y, zz + long / 2.0), mat, rot=("x", SKIRT, (0.0, y, zz)),
+                      skip="dnswe", grain="z", faces={"u": mat.variant(tone, 0)}, seed=CONE_SEED + 1)
 
     # cone and body: rings of plate, each lapped and riveted to the next under a hoop, the seams
     # of neighbouring rings a facet apart; a brass hoop where the cone ends
@@ -444,7 +445,10 @@ def _tube(version):
     seg(40, 228, BODY_R, TUBE)
     for i, s in enumerate(HOOPS):
         seg(s - 1.5, s + 1.5, HOOP_R, TUBE_STUD if i else BRASS_STUD, seed=HOOP_SEED)
-        skirt(s - 1.5, BODY_R if i else rings[-1][2], HOOP_R)
+        if i:
+            skirt(s - 1.5, BODY_R, HOOP_R)
+        else:
+            skirt(s - 1.5, rings[-1][2], HOOP_R, BRASS_D)     # the brass hoop flares down over the cone's last ring
     for i, (a, b) in enumerate(zip(HOOPS, HOOPS[1:] + (228.0,))):
         for across in (0.0, 180.0):
             with side(spec["seam"][i % 2] + across):
