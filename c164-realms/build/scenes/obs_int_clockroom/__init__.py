@@ -50,6 +50,8 @@ VIEWS = [
     ("int_up", (12.4, EYE, -30.6), (CX + 0.1, 29.5, CZ + 0.1)),
     # the lobby as one comes in by the door: the ladder, the bob over the heads, the weights in the corners
     ("lobby", (11.45, LOBBY, CZ + 0.3), (CX + 0.4, 21.3, -28.9)),
+    # the way up, from the middle of the lobby: the ladder in its corner, the lamp beside its foot
+    ("ladder", (CX - 0.2, LOBBY, CZ + 0.4), (11.7, 21.2, -31.7)),
     # the arrival view V1 from the station: the tower on the skyline
     ("ext_v1", S.V1["pos"], S.V1["look_at"]),
 ]
@@ -103,6 +105,9 @@ def _levels(room_in):
 
     c = build(room_in)
     lo, hi = BOX
+    # the game lets light through a ladder; the light kit's count takes it for a whole block
+    for cell in [cell for cell, state in c.b.items() if AB.parse(state)[0] == tower.LADDER]:
+        del c.b[cell]
     sources = {}
     for cell, state in c.b.items():
         if all(lo[i] <= cell[i] <= hi[i] for i in range(3)) and AB.parse(state)[0] == "light":
@@ -114,10 +119,16 @@ def _outside(cell):
     return not (tower.X0 < cell[0] < tower.X1 and tower.Z0 < cell[2] < tower.Z1)
 
 
+def doorway():
+    """The two cells of the tower's door, in its wall: the way in, which the lobby's lamp lights."""
+    x, z = tower.FACE["west"].cell(tower.MID)
+    return [(x, tower.FOOT, z), (x, tower.FOOT + 1, z)]
+
+
 def outside_light(got=None):
-    """The block light outside the tower's walls (its recesses and two cells beyond its faces) with
-    the room and without it: {cell: (without, with)} for every cell that differs. Empty when the
-    room changes nothing outside."""
+    """The block light outside the tower's walls (its recesses, its door and two cells beyond its
+    faces) with the room and without it: {cell: (without, with)} for every cell that differs.
+    Empty when the room changes nothing outside."""
     bare, full = got or (_levels(False)[0], _levels(True)[0])
     cells = sorted(cell for cell in set(bare) | set(full) if _outside(cell))
     return {cell: (bare.get(cell, 0), full.get(cell, 0)) for cell in cells if bare.get(cell, 0) != full.get(cell, 0)}
@@ -128,3 +139,10 @@ def walk_light(full=None):
     the head's}."""
     full = full if full is not None else _levels(True)[0]
     return {(x, z): max(full.get((x, room.FEET, z), 0), full.get((x, room.FEET + 1, z), 0)) for x, z in room.walk()}
+
+
+def way_light(full=None):
+    """The light in every cell of the way up, from inside the door to the hatch: {cell: level}. The
+    door's lamp outside is the light line's and not in this scene: the first cell has more with it."""
+    full = full if full is not None else _levels(True)[0]
+    return {cell: full.get(cell, 0) for cell in room.way()}
