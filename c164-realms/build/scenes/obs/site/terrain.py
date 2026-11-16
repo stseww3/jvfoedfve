@@ -439,7 +439,7 @@ def _mountain():
         kept |= on & (np.abs(lat) <= 1.5) & (t <= down + nk["run"])
     cx0, cx1 = K.CABLE_RIDGE_X
     d = np.clip(X - cx0 + 1, 1.0, cx1 - cx0 + 1.0)
-    axis = K.CABLE_RIDGE_Z - (np.clip(X, cx0, cx1) - cx0) / 3.0
+    axis = float(K.CABLE_RIDGE_Z)
     crest = LOWER - 1 - 0.30 * d - 0.014 * d * d - 2.5 * np.maximum(X - cx1, 0.0)
     ridge = np.where(X >= cx0, crest - 2.0 * np.maximum(np.abs(Z - axis) - 1.5, 0.0), -99.0)
     on = ridge > h
