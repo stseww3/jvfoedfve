@@ -55,11 +55,11 @@ the canvas by then and places, in this order:
             wanted was ground under the telescope, a3 and cr4, #74961). At either end of the
             cross gallery one on the wall, as high as the hall's own along the galleries and at
             their level (7). The way to the west door and the grand stair have the hall's lamps.
-            Over the roofs (dome
-            measured them, #74898, #75042): beside either door of the dome room, on the side of
-            the stepped corner; inside the small dome's door and over the clock tower's; low on
-            the inner gable where a roof way crosses it and at the foot of the way down from a
-            ridge walk to an end terrace. The sources are of the third rank (_lightkit.WAY, 8).
+            Over the roofs (dome measured them, #74898, #75042): beside either door of the dome
+            room, on the side of the stepped corner; inside the small dome's door and over the
+            clock tower's; low on the inner gable where a roof way crosses it and at the foot of
+            the way down from a ridge walk to an end terrace. The sources are of the third rank
+            (_lightkit.WAY, 8).
             They hang in the master scene and where a scene asks for the building's lights with
             _lightkit.dress(): not in another card's test scene, whose pack has no lamp in it.
   gates     where a way leaves the upper terrace (site/terrain's GAPS: to the south lookout, to
