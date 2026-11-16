@@ -88,11 +88,17 @@ def table():
 #     beside it and read as a plate of iron. Under the same lamps it cannot outshine the wall, so
 #     it is no light;
 #   - the pieces of a kind within a small step of each other: the rail and the hem of a curtain
-#     do not make its head or its foot a band of another brightness.
+#     do not make its head or its foot a band of another brightness;
+#   - the frosted glass of a panelled room (m2, #65185) level with what stands round it there:
+#     under the lightest board of the panelling, and within a small step of the night glass that
+#     the dark windows beside it show. On a wall of dark wood the pale one was the lightest plane
+#     of the room; this one is told from the night glass by its hue, not by its brightness.
 LIGHT_RAMPS = ("glow", "opal")
 LINING_TOP = {"lit": TARGET["CURTAIN"][0], "curtain": TARGET["CURTAIN"][0],
-              "frosted": float(np.array(P.colour("ashlar", 0)) @ COEF) / 255.0}
+              "frosted": float(np.array(P.colour("ashlar", 0)) @ COEF) / 255.0,
+              W.DEEP: float(np.array(P.colour("dark_wood", 4)) @ COEF) / 255.0}
 FROSTED_OVER = 0.12             # the unlit frosted glass is at least this much lighter than the night glass
+DEEP_WITHIN = 0.05              # the deep frosted glass is this near to the night glass, over or under
 PIECES_WITHIN = 0.02
 
 
@@ -120,6 +126,9 @@ def linings():
         if whole["frosted"] - whole["lit"] < FROSTED_OVER:
             bad.append(f"lining {v}: frosted {whole['frosted']:.3f} is not {FROSTED_OVER} lighter than the "
                        f"night glass {whole['lit']:.3f}")
+        if abs(whole[W.DEEP] - whole["lit"]) > DEEP_WITHIN:
+            bad.append(f"lining {v}: the deep frosted glass {whole[W.DEEP]:.3f} is more than {DEEP_WITHIN} from "
+                       f"the night glass {whole['lit']:.3f}")
     return rows, bad
 
 
