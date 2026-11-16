@@ -8,13 +8,15 @@ clock (machines). The hall dresses the room they leave, and reads it from them: 
 shell.ROOMS, the beams from shell.layout().beams, the clock's seat from shell.layout().seat, the
 doorway from facade.doors().
 
-The first look (S.V7, from outside the door through the middle arch): the orrery overhead, the
-mother clock on the pier straight ahead, the floor underfoot. The hall keeps that picture clear,
-and in the order the director set (A0, 11-16): the clock's dial and the pier's east face first,
-the orrery's sun the warmest point, the floor third. Nothing of the hall's own stands on the
-axis; no stone of the floor is pale, since a floor is drawn at full light and a wall that looks
-east at six tenths, and a pale one under the same lamp outshines the pier; and no lamp of the
-hall shows its glass to the door.
+The first look (S.V7, from inside the main doorway): the whole orrery under the star ceiling, the
+mother clock on the pier straight ahead, the galleries' lamps, the two flights of the stair, the
+floor underfoot. The hall keeps that picture clear, and in the order the director set (A0,
+11-16): the clock's dial and the pier's east face first, the orrery's sun the warmest point, the
+floor third. Nothing of the hall's own stands on the axis; no stone of the floor is pale, since
+a floor is drawn at full light and a wall that looks east at six tenths, and a pale one under
+the same lamp outshines the pier; no lamp of the hall shows its glass to the door; and the
+doorway's two reveals, which close the picture left and right, are dark panelling: one looks out
+of a dark frame into the hall.
 
   floor     The hall lays its own from wall to wall round the pier's foot (the shell's shows in
             the stair hall only). The station's emblem under the orrery, in thin brass line: an
@@ -62,7 +64,7 @@ from ..common import palette as P
 from ..common import skeleton as S
 from ..main import shell
 from ..props import _kit as K
-from ..props import lamps
+from ..props import furniture, instruments, lamps, paper
 from ..sky import _lightkit as L
 
 ORDER = 80                  # after the shells (main/shell is 60) and whatever else stands in the hall
@@ -74,6 +76,7 @@ WHY = "interiors/starhall"
 # Pieces of the hall that stand in files of their own beside this one, each as soon as it is in the
 # tree: dress(canvas, origin, version) -> display entities placed, models() -> {name: model}.
 PARTS = ("_starhall_meridian", "_starhall_wiring", "_starhall_gallery")
+NEIGHBOURS = ("batteryroom", "platevault")      # rooms behind the aisle walls that open a door into the hall
 
 ROOM = shell.ROOMS["star hall"]
 X0, Z0, X1, Z1 = ROOM["box"]                    # 2, -5, 15, 5: the clear inside
@@ -118,6 +121,10 @@ SUN_POOL = 8                # where the sun's light lands: a source a cell over 
 STAIR_FOOT_LEVEL = 8        # 7 shows nothing of the risers through the side arches (lights, #559)
 MEZZANINE_LEVEL = 7
 MEZZANINE_LAMP_Y = 9.5
+WAY_LEVEL = 7               # the way to the west door, which had no light at all (the walk, S1): a step under the stair foot's
+WAY_SOURCE_Y = FEET + 2     # the row of its sources: over the head of who walks under the lamp. In the cell under
+#                             the crown they left 3 of the 7 at the feet, and a floor one walks on indoors is to
+#                             have 5 (lights, #72659; the light line knows a source for a lamp's up to six cells under it)
 
 SIDES = {(0, -1): "north", (0, 1): "south", (-1, 0): "west", (1, 0): "east"}
 ACROSS = {"north": "south", "south": "north", "west": "east", "east": "west"}
@@ -159,9 +166,7 @@ STYLE = {
     ),
 }
 
-WOOD = P.mat("dark_wood")
 WOOD_D = P.mat("dark_wood", base=1)
-NIGHT = P.mat("night_glass", base=2)
 PLATE = P.mat("iron", base=4)       # a step over the kit's iron: a display entity's face that looks east or west is
 #                                     drawn at half its light, and the kit's iron went dead black in its seams there
 
@@ -374,14 +379,22 @@ def _corbels(canvas, origin, style):
 
 def aisle_doors():
     """Doors other rooms open in the aisle walls on the ground floor: {(x, z of the aisle's row
-    before it)}. The battery room's, in the north wall beside the switchboard, is that room's to
-    set (interiors/batteryroom.HALL_DOOR, the wall's cell); the hall keeps the cell before it free."""
+    before it)}. Each is its room's to set (HALL_DOOR in the room's module, the wall's cell): the
+    battery room's in the north wall beside the switchboard, the plate vault's in the south wall
+    across from it. The shell cuts them and tells them in doors(), with the doors of the main
+    floor: of those the ones whose foot is the ground (shell, #74028). The hall keeps the cell
+    before a door free."""
     out = set()
-    room = _optional("interiors.batteryroom")
-    door = getattr(room, "HALL_DOOR", None)
-    if door is not None:
-        x, z = door
-        out.add((x, Z0 if z < Z0 else Z1))
+    for name in NEIGHBOURS:
+        door = getattr(_optional("interiors." + name), "HALL_DOOR", None)
+        if door is not None:
+            x, z = door
+            out.add((x, Z0 if z < Z0 else Z1))
+    for door in shell.doors():
+        if door["y"][0] == FEET:
+            dx, dz = door["inward"]
+            out |= {(x - dx, z - dz) for x, z in door["cells"]
+                    if X0 <= x - dx <= X1 and z - dz in (Z0, Z1)}
     return out
 
 
@@ -394,6 +407,26 @@ def _dado(canvas, origin):
         for x in range(X0, X1 + 1):
             for y in (FEET, FEET + 1):
                 if (x, z) not in doors and not canvas.has(ox + x, oy + y, oz + z):
+                    canvas.set(ox + x, oy + y, oz + z, st(B.WAINSCOT, facing=ACROSS[wall], half="bottom", open="true"))
+
+
+def _reveals(canvas, origin):
+    """The two reveals of the main doorway, in the inner leaf, lined with the dado's dark panelling
+    from the sill to the head. The first look stands in the doorway, and the two faces beside it,
+    bare stone in the pier's own tone, were a third of the picture; lined, one looks out of a dark
+    frame into the hall (cr3, #74066). In both versions: iron there is two black bars, and no
+    further out than the leaf's one cell, where the door's frame and leaves are (facade, #74675).
+    The stone is the facade's and is not touched: the panels stand in the doorway's own cells."""
+    from ..main import facade
+    ox, oy, oz = origin
+    for d in (facade.doors() if hasattr(facade, "doors") else ()):
+        if d["front"] != "east" or d["kind"] != "door" or len(d["cells"]) < 3:
+            continue
+        dx, dz = d["inward"]
+        cells = sorted((x + dx, z + dz) for x, z in d["cells"])
+        for (x, z), wall in ((cells[0], "north"), (cells[-1], "south")):
+            for y in range(d["y"][0], d["y"][1] + 1):
+                if not canvas.has(ox + x, oy + y, oz + z):
                     canvas.set(ox + x, oy + y, oz + z, st(B.WAINSCOT, facing=ACROSS[wall], half="bottom", open="true"))
 
 
@@ -463,38 +496,13 @@ def _ceiling(canvas, origin, version, style):
 
 
 # ---- furniture and what hangs on the walls ----------------------------------------------------------------
-def _stand_in(canvas, origin, kind, pos, facing):
-    """Blocks for a piece of props/furniture while that package is not in the tree."""
-    ox, oy, oz = origin
-    x, z = int(math.floor(pos[0])), int(math.floor(pos[1]))
-    wide = (x - 1, x) if pos[0] == int(pos[0]) else (x,)
-    if kind == "bench":
-        state = st(B.DARK_WOOD.stairs, facing=ACROSS[facing], half="bottom")
-    elif kind.startswith("display_table") or kind in ("writing_desk", "drafting_table"):
-        state = st(B.DARK_WOOD.slab, type="top")
-    elif kind in ("card_cabinet", "instrument_cabinet"):
-        state = B.DARK_WOOD.block
-        for cx in wide:
-            canvas.set(ox + cx, oy + FEET + 1, oz + z, state)
-    elif kind == "crate":
-        state = B.PALE_WOOD.block
-    else:
-        return
-    for cx in wide:
-        canvas.set(ox + cx, oy + FEET, oz + z, state)
-
-
 def _furnish(canvas, origin, style):
-    """What stands along the aisle walls. a's two display tables show star-field plates with a
-    measuring rule and a glass (by the pier) and lenses and eyepieces laid out by size (by the
-    door): table and exhibits are one piece of props/furniture's (a6, #61626), and the empty table
-    stands there until the family has them."""
-    furniture = _optional("props.furniture")
+    """What stands along the aisle walls (props/furniture). a's two display tables show star-field
+    plates with a measuring rule and a glass (by the pier) and lenses and eyepieces laid out by
+    size (by the door): table and exhibits are one piece of the family's (a6, #61626), and the
+    empty table stands there until the family has them."""
     n = 0
     for kind, (x, z), facing in style["furniture"]:
-        if furniture is None:
-            _stand_in(canvas, origin, kind, (x, z), facing)
-            continue
         if kind not in furniture.SPEC:
             kind = kind.rpartition("_")[0]
         n += furniture.place(canvas, kind, (x, FEET, z), facing=facing, origin=origin)
@@ -505,26 +513,16 @@ def _charts(canvas, origin):
     """The south aisle's west bay: the pair of star charts on the wall either side of the aisle's
     westernmost lamp, and a celestial globe before them under it. On each gallery wall one of the
     pair of great charts, a half of the sky, at the height of the eye under the lamp on the
-    meridian. The charts are props/paper's and the globe is props/instruments': until they are in
-    the tree the aisle has stand-ins of this package and the galleries' walls are bare."""
-    models = _models()
-    paper, instruments = _optional("props.paper"), _optional("props.instruments")
+    meridian. The charts are props/paper's and the globe, its north pole to true north, is
+    props/instruments'."""
     lamp = aisle_lamp_xs()[0]
     n = 0
     for kind, x in (("star_chart", lamp - 1.5), ("star_chart_b", lamp + 1.5)):
-        if paper is not None and kind in paper.SPEC:
-            n += paper.place(canvas, kind, (x, FEET + 3.0, Z1 + 1.0), facing="north", origin=origin)
-        else:
-            n += K.put(canvas, models[PREFIX + "chart"], (x, FEET + 3.0, Z1 + 1.0), mount="wall", facing="north",
-                       origin=origin)
-    if instruments is not None and "celestial_globe" in instruments.SPEC:
-        n += instruments.place(canvas, "celestial_globe", (lamp, FEET, Z1 - 0.2), facing="east", origin=origin)
-    else:
-        n += K.put(canvas, models[PREFIX + "globe"], (lamp, FEET, Z1 - 0.2), origin=origin)
+        n += paper.place(canvas, kind, (x, FEET + 3.0, Z1 + 1.0), facing="north", origin=origin)
+    n += instruments.place(canvas, "celestial_globe", (lamp, FEET, Z1 - 0.2), facing="east", origin=origin)
     x = gallery_lamp_xs()[-1]
     for kind, z, facing in (("sky_map", Z0, "south"), ("sky_map_b", Z1 + 1.0, "north")):
-        if paper is not None and kind in paper.SPEC:
-            n += paper.place(canvas, kind, (x, GALLERY_MAP_Y, float(z)), facing=facing, origin=origin)
+        n += paper.place(canvas, kind, (x, GALLERY_MAP_Y, float(z)), facing=facing, origin=origin)
     return n
 
 
@@ -574,28 +572,47 @@ def _lamps(canvas, origin, version):
     return n
 
 
+def _flat_lamp(canvas, origin, version, at, towards, level, what, source_y=None):
+    """A caged lamp flat under the crown of an arch or a vault at (x, z), its conduit running
+    `towards`; where there is no crown, under the deck over it. Its source goes into the cell the
+    glass hangs in; under a crown that cell holds the crown, so it is the one below. source_y: the
+    source's row, straight under the lamp, where the light is wanted lower than that."""
+    ox, oy, oz = origin
+    x, z = (int(math.floor(v)) for v in at)
+    crowned = canvas.has(ox + x, oy + shell.ARCH_Y, oz + z)
+    under = shell.ARCH_Y + 0.5 if crowned else float(shell.DECK_Y)
+    n = lamps.place(canvas, "cage", (at[0], under - K.NUDGE, at[1]), facing=towards, origin=origin, version=version,
+                    light=False, turns=(("x", 90.0),))
+    y = shell.ARCH_Y - (1 if crowned else 0) if source_y is None else source_y
+    L.suggest(canvas, (ox + x, oy + y, oz + z), level, f"{WHY}:{what}", rank=3)
+    return n
+
+
 def _stair_hall(canvas, origin, version):
     """The stair hall gets lamps and nothing else (A0 #541). One at the foot of each flight, flat
     under the crown of the side arch it is entered by, its conduit running to the pier between the
-    arches; where the arch has no crown, under the deck over it. One on each wall pier beside the
-    great west window, over the mezzanine."""
-    ox, oy, oz = origin
+    arches. One on each wall pier beside the great west window, over the mezzanine. Two under the
+    vault of the way to the west door, which had no light at all (the walk's S1)."""
     n = 0
     x = (shell.ARCADE_X[0] + shell.ARCADE_X[1] + 1) / 2.0
     for rows, towards in ((shell.FLIGHT_ROWS[-1], "south"), (shell.FLIGHT_ROWS[1], "north")):
-        z = rows[len(rows) // 2]
-        crowned = canvas.has(ox + int(x), oy + shell.ARCH_Y, oz + z)
-        under = shell.ARCH_Y + 0.5 if crowned else float(shell.DECK_Y)
-        n += lamps.place(canvas, "cage", (x, under - K.NUDGE, z + 0.5), facing=towards, origin=origin,
-                         version=version, light=False, turns=(("x", 90.0),))
-        # the source goes into the cell the glass hangs in; under a crown that cell holds the crown
-        L.suggest(canvas, (ox + int(x), oy + shell.ARCH_Y - (1 if crowned else 0), oz + z), STAIR_FOOT_LEVEL,
-                  f"{WHY}:stair foot", rank=3)
+        n += _flat_lamp(canvas, origin, version, (x, rows[len(rows) // 2] + 0.5), towards, STAIR_FOOT_LEVEL,
+                        "stair foot")
     wx = min(x for x, _ in shell.layout().mezzanine)
     for z in (CZ - shell.CHEEK_Z, CZ + shell.CHEEK_Z):
         n += lamps.place(canvas, "cage", (wx + 1.0, MEZZANINE_LAMP_Y, z + 0.5), facing="east", origin=origin,
                          version=version, level=MEZZANINE_LEVEL)
+    for x in way_lamp_xs():
+        n += _flat_lamp(canvas, origin, version, (x + 0.5, CZ + 0.5), "east", WAY_LEVEL, "way west",
+                        source_y=WAY_SOURCE_Y)
     return n
+
+
+def way_lamp_xs():
+    """The cells of the two lamps of the way to the west door, flat under the crown of its vault:
+    a quarter of its length in from either end."""
+    xs = sorted(x for x, z in shell.layout().crown if x < shell.ARCADE_X[0] and z == CZ)
+    return (xs[len(xs) // 4], xs[-1 - len(xs) // 4]) if len(xs) > 3 else tuple(xs[:1])
 
 
 # ---- models -----------------------------------------------------------------------------------------------------
@@ -683,39 +700,9 @@ def _board_end(version):
     return m
 
 
-def _chart():
-    """A stand-in star chart, two blocks square: the two hemispheres side by side on a cream sheet
-    in a dark frame. Anchor: the middle of its back, on the wall."""
-    m = M.Model(PREFIX + "chart")
-    m.box((-14, -14, 0), (14, 14, 0.5), K.CREAM)
-    for s in (-1.0, 1.0):
-        m.box((s * 15 - 1, -16, 0), (s * 15 + 1, 16, 1.0), WOOD_D, grain="y")
-        m.box((-14, s * 15 - 1, 0), (14, s * 15 + 1, 1.0), WOOD_D, grain="x")
-        m.ring("z", (s * 6.75, 0, 0.5), 6.0, 0.5, 0.25, K.IRON_D, sides=16)
-    for x, y in ((-9.5, 2.5), (-6.0, -3.0), (-4.0, 3.5), (-8.0, -1.0), (4.5, 1.0), (7.5, 3.5), (9.0, -2.5),
-                 (6.0, -4.0), (5.5, 4.0)):
-        m.box((x - 0.25, y - 0.25, 0.5), (x + 0.25, y + 0.25, 0.75), K.IRON_D)
-    return m
-
-
-def _globe():
-    """A stand-in celestial globe on a three-legged stand, a block and a half tall. Anchor: the
-    middle of its foot."""
-    m = M.Model(PREFIX + "globe")
-    for i in range(3):
-        a = math.radians(120.0 * i + 30.0)
-        m.rod((5.5 * math.cos(a), 0.0, 5.5 * math.sin(a)), (0.0, 9.0, 0.0), 0.6, WOOD)
-    m.tube("y", (0, 0), 8.5, 11.0, 1.0, WOOD_D)
-    m.ring("y", (0, 16.0, 0), 6.5, 1.0, 0.75, K.BRASS_D, sides=16)
-    m.ball((0, 16.0, 0), 5.25, NIGHT, sides=12, layers=6)
-    with m.turned(("z", 23.5), about=(0, 16.0, 0)):
-        m.ring("x", (0, 16.0, 0), 5.9, 0.6, 0.6, K.BRASS, sides=16)
-    return m
-
-
 @functools.lru_cache(maxsize=None)
 def _models():
-    made = [_star(), _boss("a"), _boss("b"), _board_end("a"), _board_end("b"), _chart(), _globe()]
+    made = [_star(), _boss("a"), _boss("b"), _board_end("a"), _board_end("b")]
     made += [_panel(name, kind) for name in ("sky", "plate") for kind in ("panel", "strip")]
     return {m.name: m for m in made}
 
@@ -747,6 +734,7 @@ def dress(canvas, origin=(0, 0, 0), version=None):
     n += _furnish(canvas, origin, style)
     if style["dado"]:
         _dado(canvas, origin)
+    _reveals(canvas, origin)
     _door_emblem(canvas, origin)
     n += _ceiling(canvas, origin, version, style)
     n += _charts(canvas, origin)

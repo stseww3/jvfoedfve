@@ -119,10 +119,11 @@ def write_pack(pack_dir):
 
 
 def shots():
-    """The cameras, the same five for each version: V7, from outside the front door, as the skeleton
-    locks it (A0 #365), the entrance as its frame; straight below, looking up; from the side
-    gallery, the eye a block above the ring; from the ring stair's first flight; and close, three
-    and a half blocks from the axis, between two of the hangers of version a."""
+    """The cameras, the same five for each version: V7, in the front door, as the skeleton locks it
+    (A0 #71956: two blocks further in than it first stood), the entrance as its frame; straight
+    below, looking up; from the side gallery, the eye a block above the ring; from the ring
+    stair's first flight; and close, three and a half blocks from the axis, between two of the
+    hangers of version a."""
     out = []
 
     def shot(name, pos, look_at):

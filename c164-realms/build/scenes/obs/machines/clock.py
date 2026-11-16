@@ -124,6 +124,14 @@ MASTER_DIAL_LIGHT = (0, 14)
 # second rank; the case, in the cell behind it, gets 10)
 MASTER_LAMP = ((int(MASTER_AT[0]) + 1, int(MASTER_AT[1]) + 2, int(math.floor(MASTER_AT[2]))), 11)
 MASTER_LAMP_RANK = 2
+# The case is solid to the eye and a model stops nobody: who jumped on the stone under it stood in
+# the trunk. Barriers fill the cell the case stands in, as high as a walker is (INTERFACE, the fifth
+# supplement of 11-16: inside a solid model, not a cell outside its outline, never more than two
+# high). The cell is the middle block of the stone: to the east its face is the stone's own, which
+# stops a walker in that plane already; to the north and the south the case's foot is four pixels
+# wider than the cell, as far as a model may stand out from what stops the eye (props/ironwork: EYE
+# - NEAR). The case and the pendulum are lit by the cell over the two.
+MASTER_SOLID = 2
 PENDULUM_SWING = 5.0                 # degrees each way (A8)
 PENDULUM_POSE = 0.0                  # the still pose is where the loop starts: plumb (motion, 11-15)
 
@@ -620,8 +628,13 @@ def _models():
     made = [(_master(), 2.0), (_master_dial_model(), 1.0), (_master_hand("h"), 1.0), (_master_hand("m"), 1.0),
             (_pendulum(), 1.0), (_face(), 2.0), (_hand("h"), 1.0), (_hand("m"), 1.0)]
     made += [(_ball(name, paint), 1.0) for name, paint in BALL_TONES.values()]
+    # The tubes and rings of eight, sixteen and twenty-four sides (weights, arbors, bezels, the drum
+    # behind a dial, the plate under the ball) have flats exactly between two axes, and the game lights
+    # such a flat as the one or the other by the last bit of a float: K.settle turns each such piece a
+    # tenth of a degree, so that every copy of the game and the offline pictures light it one way. The
+    # ball's own facets stand 11.25 degrees off the fence and are not touched.
     for model, scale in made:
-        out[model.name] = model
+        out[model.name] = K.settle(model)
         SCALE[model.name] = scale
     return out
 
@@ -680,6 +693,13 @@ def _lamp(canvas, origin):
         canvas.set(cell[0], cell[1], cell[2], f"{B.LIGHT}[level={level}]", keep=True)
 
 
+def _collide(canvas, origin):
+    """The case's collision (MASTER_SOLID): barriers in the cell it stands in, never over a block."""
+    x, y, z = int(MASTER_AT[0]), int(MASTER_AT[1]), int(math.floor(MASTER_AT[2]))
+    for k in range(MASTER_SOLID):
+        canvas.set(x + int(origin[0]), y + k + int(origin[1]), z + int(origin[2]), B.BARRIER, keep=True)
+
+
 def _swing(canvas):
     """Register the pendulum, the piece placed last, with the motion line (plan/parts/motion.md 4):
     it swings about its model's z axis through its anchor, the pivot, PENDULUM_SWING degrees to
@@ -694,7 +714,8 @@ def _swing(canvas):
 
 
 def master(canvas, origin=(0, 0, 0), time=None):
-    """The master clock on the pier: case, dial, two hands and pendulum; returns the entity count."""
+    """The master clock on the pier: case, dial, two hands and pendulum, the case's collision and
+    its lamp; returns the entity count."""
     hour, minute = hand_angles(*(time or TIME))
     face = MASTER_FACING
     n = _put(canvas, "master", _out(MASTER_AT, face, (0.0, MASTER_HOLD, 0.0)), origin, face)
@@ -706,6 +727,7 @@ def master(canvas, origin=(0, 0, 0), time=None):
     n += _put(canvas, "master_dial", centre, origin, face, **lit)
     n += _put(canvas, "master_hand_h", centre, origin, face, tag=TAG_HOUR, turns=(("z", -hour),), **lit)
     n += _put(canvas, "master_hand_m", centre, origin, face, tag=TAG_MINUTE, turns=(("z", -minute),), **lit)
+    _collide(canvas, origin)
     _lamp(canvas, origin)
     return n
 

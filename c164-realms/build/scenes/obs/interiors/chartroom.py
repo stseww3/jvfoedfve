@@ -131,10 +131,14 @@ LAMPS = "b"                 # every lamp of the room is the shaded one (props/la
 #                             keeps a lamp's glow to what is under it, and the opal globe of version A is itself the
 #                             lightest thing in a dark room
 CORD = lamps.PREFIX + "wire"            # the cord of a drop light: props/lamps' cable, stretched from the ceiling
-ASK_TABLE = (10, 2)         # the four sources over the panes of the light table: the room's main light
-ASK_SHELF = (9, 2)          # the bracket lamps on the two outer piers of the bookcase
-ASK_DESK = (8, 3)           # a drop light over a desk, and the green desk lamp
-ASK_WALL = (8, 3)           # a bracket lamp over what hangs on a wall
+# A source of 8 leaves what stands under its lamp at a fifth of its colour, one of 12 at half (the game's light
+# map): at 8 a shade glowed over a desk that stayed black. A lamp somebody works under asks for the top of its
+# rank; the walls ask for less, and the green lamp is of the third rank (sky/_lightkit.KIND_RANK).
+ASK_TABLE = (12, 2)         # the four sources over the panes of the light table: the room's main light
+ASK_SHELF = (11, 2)         # the bracket lamps on the two outer piers of the bookcase
+ASK_DROP = (12, 2)          # a drop light over a desk or a bench
+ASK_DESK = (8, 3)           # the green desk lamp
+ASK_WALL = (10, 2)          # a bracket lamp over what hangs on a wall
 OVER = 20 * PX              # a bracket's arm above the top of what it hangs over: the shade ends half a block over it
 DESK_HANG = FEET + 3.25     # 10.25: where a desk's drop light ends and its lamp hangs; the shade ends at 9.2, over the eye
 DRAFT_HANG = FEET + 3.75    # the same over the drafting table, whose board stands higher
@@ -510,7 +514,7 @@ def build_chartroom(c, origin=(0, 0, 0), roles=B):
     z = bay_z(DRAFT_BAY)
     n += piece(furniture, "furniture", "drafting_table", (PANEL_W + 8 * PX, FEET, z), facing="east")
     n += piece(furniture, "furniture", "stool", (PANEL_W + 8 * PX + 1.1, FEET, z), facing="west")
-    n += drop(PANEL_W + 0.75, z + 0.5, DRAFT_HANG, ASK_DESK, "drafting table", (X0 + 1, FEET, int(z)))
+    n += drop(PANEL_W + 0.75, z + 0.5, DRAFT_HANG, ASK_DROP, "drafting table", (X0 + 1, FEET, int(z)))
     n += piece(instruments, "instruments", "celestial_globe", (WEST + 1.6, FEET, bay_z(GLOBE_BAY)), facing="east")
 
     # ---- the north wall: the pair of great sky maps, one on each side of the door, a lamp over each
@@ -552,7 +556,7 @@ def build_chartroom(c, origin=(0, 0, 0), roles=B):
     n += piece(instruments, "instruments", "tripod_scope_comet", (EAST - 1.7, FEET, bay_z(SCOPE_BAY)), facing="east")
     z = bay_z(BENCH_BAY)
     n += piece(furniture, "furniture", "bench", (PANEL_E - 7.25 * PX, FEET, z), facing="west")
-    n += drop(PANEL_E - 0.75, z - 0.5, DESK_HANG, ASK_DESK, "bench", (X1 - 1, FEET, int(z)))
+    n += drop(PANEL_E - 0.75, z - 0.5, DESK_HANG, ASK_DROP, "bench", (X1 - 1, FEET, int(z)))
     n += piece(furniture, "furniture", "trunk", (EAST - 1.0, FEET, Z1 - 1.4), facing="west")
 
     # ---- the panelling: every solid stretch of wall where no block of the room stands, from the floor
