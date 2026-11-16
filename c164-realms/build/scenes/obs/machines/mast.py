@@ -25,10 +25,9 @@ How it is made, from the seat up:
           the block): 12 blocks are the 48 units a model may span.
   head    the legs gather to a pole that carries the lamp. No yard, no gallery, no arm: nothing
           crosses the upright.
-  lamp    one small red lantern, lit steadily (A0 #36376: it does not blink, the comet is the one
-          thing in the sky that may draw the eye). Its brightest tone is the signal ramp's second
-          lightest, level with the orange windows: a warning lamp, not one more star. Its entity is
-          tagged c164_signal and mach_mast_light_off is its dark twin, kept for the motion line.
+  lamp    one small red lantern. Its brightest tone is the signal ramp's second lightest, level
+          with the orange windows: a warning lamp, not one more star. Its entity is tagged
+          c164_signal and mach_mast_light_off is its dark twin (see "What moves").
           It throws no light: nothing stands near it to be lit, and a source up there would only
           pale the iron under it. Its glass lies in a frame of its own, turned so that the game
           gives every one of its faces the same light from wherever it is seen (see LAMP_FRAME).
@@ -53,6 +52,22 @@ How it is made, from the seat up:
 All pieces are given one brightness, the open sky's: each would otherwise take the light of the
 cell its anchor is in, and a lamp near the foot would show as a step where two pieces meet.
 
+What moves (the second round, the director's #85343: everything moves), both by motion/_kit's loop;
+with the loop stopped the lamp is lit and the gap is still:
+
+  the lamp   lit for one swing of the place's pendulums and dark for the next (LAMP_BEAT): two
+          seconds each, the slowest beat that is still seen at a glance. Dark, it is its twin of
+          the ramp's two darkest tones, without a glow. The lit lamp is the one the pictures of
+          the first round have (it was lit steadily then, A0 #36376: the comet is the one thing
+          in the sky that draws the eye); a slow beat of a lamp that is no brighter than a window
+          does not take the eye from it. Two swaps of a model in four seconds.
+  the gap    the mast sends what the time room's sounder taps: on every mark of its word (TIME in
+          Morse, once in 15 seconds: motion/sound.KINDS["telegraph"]) the spark gap at the foot
+          flashes over, a dot one flash, a dash three, of SPARKS electric sparks of the game's
+          between its two balls. Same cycle, same ticks, so the two are on one chain and in step.
+          Seen from the court and the pad, where the gap looks; from the board's cameras it is
+          too small to be seen. spark_gap() is its place, for whoever gives it a sound.
+
 Two ways to build the foot and the shaft, to be compared on pictures from near and from far (the
 test scenes obs_mach_radiomast and obs_mach_radiomast_b show them from the same cameras):
 
@@ -69,8 +84,9 @@ a is the default: legs, belts and diagonals are drawn one way and take the same 
 a leg of 5 texels is about two pixels wide in a 720p picture, the pipe block little more than one.
 
 What this module reads from its neighbour site.mastbase, with the same numbers as a fallback while
-it is not in the tree: TOP, GUY_ANCHORS and ANTENNA_HOOK. What the clocks' test scenes read from
-this one: build, models, BASE_Y, GUY_ANCHORS and LEAD_POST.
+it is not in the tree: TOP, GUY_ANCHORS and ANTENNA_HOOK; from motion/sound the sounder's cycle and
+marks, the same way. What the clocks' test scenes read from this one: build, models, BASE_Y,
+GUY_ANCHORS and LEAD_POST.
 """
 import functools
 import math
@@ -81,11 +97,16 @@ from artkit.blocks import st
 from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
+from ..motion import _kit as MK
 
 try:
     from ..site import mastbase as _base        # the stone foot, the guy anchors, the lead-in post
 except ImportError:
     _base = None
+try:
+    from ..motion import sound as _sound        # the time room's sounder: its cycle and its marks
+except ImportError:
+    _sound = None
 
 PREFIX = "mach_mast_"
 VERSIONS = ("a", "b")
@@ -138,6 +159,18 @@ GAP_OUT, GAP_Y = 1.5, 2.0       # the spark gap: this far outside its leg's axis
 GAP_BALL, GAP_AIR = 0.5, 0.5    # its two balls are 4 texels across and stand 2 texels apart
 LAMP_H = 10                     # texels: the lamp from the foot of its holder on the pole to its top
 LAMP_Y = TIP_Y - LAMP_H / 16.0  # 61.375
+
+# ---- what moves ------------------------------------------------------------------------------------
+LAMP_BEAT = (MK.PENDULUM, MK.PENDULUM)  # ticks the lamp is lit, ticks it is dark: a swing of the pendulums each
+# the sounder's word: (the cycle, the ticks its armature comes down on, the ticks it goes up on)
+_WORD = getattr(_sound, "KINDS", {}).get("telegraph")
+KEY_CYCLE, KEY_DOWN, KEY_UP = ((_WORD[0][1], tuple(_WORD[0][2]), tuple(_WORD[1][2])) if _WORD else
+                               (300, (0, 12, 16, 24, 32, 44), (6, 14, 18, 30, 38, 46)))
+SPARK = "electric_spark"        # the game's: a white spark with a little violet in it that lives two or three ticks
+SPARK_EVERY = 2                 # ticks from flash to flash while the key is down: a dot is one flash, a dash three
+SPARKS = 3                      # sparks to a flash
+SPARK_SCATTER = (0.03, 0.05, 0.03)      # blocks: they are born in the air between the two balls, 0.125 high
+SPARK_SPEED = 0.15              # the game quarters it: a spark strays 0.04 blocks a tick or so
 LAMP_HOLDER = 1.5               # texels of that which are the iron holder: a neck and a plate
 GLASS_Y = LAMP_Y + LAMP_HOLDER / 16.0   # 61.46875: the foot of the glass
 
@@ -237,6 +270,20 @@ def lead_lug():
     """The terminal on a shoe of the foot, where the lead to the lead-in post starts."""
     sx, sz = _corner(LEAD_POST)
     return AX + sx * FOOT_LUG[0] * U, BASE_Y + FOOT_LUG[1] * U, AZ + sz * FOOT_LUG[0] * U
+
+
+def spark_gap():
+    """The middle of the air between the spark gap's two balls. The foot is drawn with the gap on
+    the leg next to the lead's, the one that looks at the court as well."""
+    sx, sz = _corner(LEAD_POST)
+    out = (LEG_U + GAP_OUT) * U
+    return AX + sz * out, BASE_Y + GAP_Y * U, AZ - sx * out
+
+
+def spark_ticks():
+    """The ticks of the sounder's cycle on which the gap flashes: from every mark's start to its
+    end, SPARK_EVERY apart."""
+    return tuple(t for down, up in zip(KEY_DOWN, KEY_UP) for t in range(down, up, SPARK_EVERY))
 
 
 def lead_bottle():
@@ -582,7 +629,15 @@ def _shaft(canvas, origin, version):
 def _lamp(canvas, origin):
     n = _place(canvas, "light", (AX, GLASS_Y, AZ), origin, turns=LAMP_FRAME)
     canvas.entities[-1][3]["Tags"].append("c164_signal")
+    MK.blink(canvas, PREFIX + "light_off", *LAMP_BEAT)
     return n
+
+
+def _sparks(canvas, origin):
+    """The gap flashes over on the sounder's marks. No entity: particles of the loop."""
+    MK.puff(canvas, spark_gap(), SPARK, KEY_CYCLE, at=spark_ticks(), count=SPARKS, spread=SPARK_SCATTER,
+            speed=SPARK_SPEED, origin=origin)
+    return 0
 
 
 def _guys(canvas, origin):
@@ -606,6 +661,7 @@ def build(canvas, origin=(0, 0, 0), version=None):
     n = _shaft(canvas, origin, version)
     n += _place(canvas, "head", (AX, HEAD_Y, AZ), origin, scale=float(SCALE))
     n += _lamp(canvas, origin)
+    n += _sparks(canvas, origin)
     n += _guys(canvas, origin)
     # the feed lead from the shoe to the bottle on the lead-in post
     middle, cap = lead_bottle()
