@@ -222,9 +222,10 @@ VIEWS = {   # name: (eye, looks at), from a building's origin
     "v7": (S.V7["pos"], S.V7["look_at"]),                                          # the hall from outside the door
     "wash": ((S.WALL_E + 9.5, EYE, -16.5), (S.WALL_E + 1.0, 2.0, -10.0)),          # the washed pilasters of the north wing
     "west": ((APSE_X - 28.5, EYE, AXIS), (APSE_X, 10.0, AXIS)),                    # from the sunset platform
+    "stair": ((8.5, S.STAND + EYE, -4.5), (5.5, 9.3, -3.5)),                       # the ring stair's newel lamp, from the north gallery
 }
 EVERY_LOOK = ("front", "axis", "v1", "slant", "surround")
-SOME_LOOKS = {"blue": ("v3", "door", "v7", "wash", "west"), "deep": ("door", "wash")}
+SOME_LOOKS = {"blue": ("v3", "door", "v7", "wash", "west", "stair"), "deep": ("door", "wash")}
 BOARD_MID = (S.pilaster_z(BOARD_BAYS[0] - 1) + S.pilaster_z(BOARD_BAYS[-1])) / 2.0 + 0.5
 
 
