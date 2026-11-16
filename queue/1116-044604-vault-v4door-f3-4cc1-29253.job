@@ -1,0 +1,3 @@
+branch=cursor/c164-vault-v4door-f3-4cc1
+head=d0728bcae7b92498fa987239dda81783320807d0
+args=--no-push --tail 60 env PYTHONPATH=build python -m scenes.obs_int_starhall.doorway now foot=11\,under=5\,east=0\,west=0\,pier=0\,upper=0 under=2 
