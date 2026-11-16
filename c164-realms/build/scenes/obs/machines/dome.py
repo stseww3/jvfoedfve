@@ -504,7 +504,7 @@ def _riser():
     """The upright shaft: the crown wheel at its foot, a collar under and over each bearing, the
     pinion in the toothed ring at its top. Turns about its own axis."""
     d = _Draw("riser", 3, anchor=(0.0, HAND_H, 0.0))
-    d.tube("y", (0.0, 0.0), 5.0, RISER_TOP - 0.5, 1.5, IRON, sides=8)
+    d.tube("y", (0.0, 0.0), 5.0, RISER_TOP - 1.0, 1.5, IRON, sides=8)
     d.tube("y", (0.0, 0.0), 9.0, 11.0, 2.5, IRON_D, sides=8)                    # the crown wheel: its hub,
     d.tube("y", (0.0, 0.0), 11.0, PEG_Y[0], 5.5, IRON, sides=16)                # its disc
     for i in range(CROWN_PEGS):                                                 # and its pegs; a gap looks east
@@ -513,6 +513,7 @@ def _riser():
     for y0 in (50.0, 60.0, 86.0, 96.0):
         d.tube("y", (0.0, 0.0), y0, y0 + 2.0, 2.5, IRON_D, sides=8, seed=112)
     y0, y1 = (RISER_TOP - RACK_Y[1] + y for y in RACK_Y)                        # the pinion, as high as the toothed ring
+    y1 -= 0.5                                                                   # but for the air under the ring girder, which turns over it
     root = PINION_R * PX - DEDENDUM
     d.tube("y", (0.0, 0.0), y0 + 0.5, y1, root, ROOT_IRON, sides=20)
     d.tube("y", (0.0, 0.0), y0 - 1.0, y0 + 0.5, 3.0, IRON, sides=8, seed=114)   # its boss
