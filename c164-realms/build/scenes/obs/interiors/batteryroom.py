@@ -85,10 +85,10 @@ WINDOW_Y = MP.BASE_WINDOW                           # 3..4: the base storey's sm
 AISLE = (7, 8)
 BANKS = ((5, 6), (9, 10))                           # a bank: two rows of cells back to back
 BANK_Z = (BEAM_Z[0], BEAM_Z[-1])                    # -22..-10: thirteen blocks, from the first beam to the last
-JAR = (6.0, 9.0, 10.0)                              # px: a jar along its row, high, across the row
+JAR = (6.0, 10.0, 10.0)                             # px: a jar along its row, high, across the row
 JAR_AT = (-4.0, 4.0)                                # px along the row from the middle of a block: the middles of its two jars
 TIERS = (4.0, 19.0)                                 # px above the floor: where the jars of the two tiers stand
-LEVEL = 6.0                                         # px above a jar's foot: the level of its acid
+LEVEL = 6.0                                         # px above a jar's foot: the top of the line of its acid's level
 HELD = 1.0                                          # blocks above the floor: where the models of the battery are held
 #                                                     from. A display takes the light of the cell it is held in
 POST = (6.0, 8.0)                                   # px from the middle of a row: a post of the stand, at the row's two faces
@@ -98,68 +98,76 @@ BAR_OFF = 4.0                                       # px either side of the midd
 BAR_Z = (NORTH + 6 * PX, BANK_Z[1] + 1 - 1 * PX)    # from the face of the board to over the last jar
 
 # ---- the switchboard (a stand-in: the board is the machines line's)
-BOARD = ((5.5, 7.0), (7.0, 9.0), (9.0, 10.5))       # blocks along the north wall: its three slabs
-BOARD_Y = (0.75, 3.0)                               # blocks above the floor: the foot and the head of a slab
-BOARD_OFF = (4.0, 6.0)                              # px off the wall: the back and the face of a slab
+BOARD = ((5.0, 7.0), (7.0, 9.0), (9.0, 11.0))       # blocks along the north wall: its three slabs; a wing faces a bank
+BOARD_Y = (1.0, 4.0)                                # blocks above the floor: the foot and the head of a slab
+BOARD_OFF = (6.0, 10.0)                             # px off the wall: the back and the face of a slab (z -24.375)
+BOARD_LIGHT = (8, FEET + 4, Z0 + 1)                 # (8, 4, -24): the cell the board's lamp lights; the board's own
+#                                                     pieces are held one row under it (machines/batteryboard, c346)
 FEEDS = (6, 9)                                      # the columns the two feeders go up in: under the time room's two risers
 
 # ---- light: what the room asks of the light line. Caged lamps are third rank (5..8)
 LAMP_VERSION = "a"
+TROUGH_Z = Z0 + 1                                   # -24: the time room's cable trough hangs in the last row along this line
 LAMPS = (
     # where the lamp is fixed and the way that face looks; the cells its light is offered in; the level
-    ((AXIS_X, TOP + 0.5, BEAM_Z[-1] + 1.0), "south", ((AISLE[0], FEET + 2, BEAM_Z[-1] + 1), (AISLE[1], FEET + 2, BEAM_Z[-1] + 1)), 8,
-     "aisle south"),
-    ((AXIS_X, TOP + 0.5, BEAM_Z[1] + 1.0), "south", ((AISLE[0], FEET + 2, BEAM_Z[1] + 1), (AISLE[1], FEET + 2, BEAM_Z[1] + 1)), 7,
-     "aisle north"),
-    ((AXIS_X, FEET + 4.0, NORTH), "south", ((AISLE[0], FEET + 3, Z0), (AISLE[1], FEET + 3, Z0)), 8, "board"),
+    ((AXIS_X, TOP + 0.5, BEAM_Z[-1] + 1.0), "south", ((AISLE[0], FEET + 1, BEAM_Z[-1] + 1), (AISLE[1], FEET + 1, BEAM_Z[-1] + 1)), 8,
+     "aisle south"),                                                            # on the first beam, over the way in
+    ((AXIS_X, TOP + 0.5, BEAM_Z[1] + 1.0), "south", ((AISLE[0], FEET + 1, BEAM_Z[1] + 1), (AISLE[1], FEET + 1, BEAM_Z[1] + 1)), 7,
+     "aisle north"),                                                            # on the third beam
+    ((AXIS_X, TOP + 0.5, TROUGH_Z + 1.0), "south", (BOARD_LIGHT,), 8, "board"),  # on the trough's face, over the board
 )
 CAGE_RANK = 3
 
-# ---- the colours of a jar, seen through its glass
+# ---- a jar, drawn pixel for pixel. Clear glass is left out (props/_kit.pane): over the acid one looks
+# through the jar, and what says glass is its rim, one lit corner and the line of the acid's level
 GLASS = dict(
-    g=K.SHEEN,                          # the rim and the corners: clear glass holds a little of the sky
-    l=P.RAMPS["night_glass"][3],        # the level of the acid
-    a=P.RAMPS["night_glass"][0],        # acid in the shade
+    g=K.SHEEN,                          # the rim: clear glass holds a little of the sky
+    h=P.RAMPS["night_glass"][3],        # the corner the light catches, and the level of the acid
+    a=P.RAMPS["night_glass"][0],        # acid in the shade, beside the plates
     d=P.RAMPS["night_glass"][1],        # the thick foot of the jar
     n=P.RAMPS["iron"][5],               # a negative plate: lead grey
     m=P.RAMPS["iron"][4],               # the grid of its paste
-    p=P.RAMPS["old_copper"][0],         # a positive plate: brown
+    p=P.RAMPS["old_copper"][1],         # a positive plate: brown
 )
 JAR_SIDE = (                            # the face a jar turns to the aisle: its plates edge on
     "gggggg",
-    "g....g",
-    "g....g",
-    "llllll",
-    "gnpnpg",
-    "gnpnpg",
-    "gnpnpg",
-    "gnpnpg",
+    "h.....",
+    "h.....",
+    "h.....",
+    "hhhhhh",
+    "apnpna",
+    "apnpna",
+    "apnpna",
+    "apnpna",
     "dddddd",
 )
 JAR_END = (                             # the face at the end of a row: the last plate flat on
     "gggggggggg",
-    "g........g",
-    "g........g",
-    "llllllllll",
-    "gnnnnnnnng",
-    "gnmnmnmnng",
-    "gnnnnnnnng",
-    "gnmnmnmnng",
+    "h.........",
+    "h.........",
+    "h.........",
+    "hhhhhhhhhh",
+    "annnnnnnna",
+    "anmnmnmnna",
+    "annnnnnnna",
+    "anmnmnmnna",
     "dddddddddd",
 )
 JAR_TOP = (                             # looked into from above: the acid and the heads of the plates
-    "llllllllll",
-    "lnnnnnnnnl",
-    "lppppppppl",
-    "lnnnnnnnnl",
-    "lppppppppl",
-    "llllllllll",
+    "aaaaaaaaaa",
+    "appppppppa",
+    "annnnnnnna",
+    "appppppppa",
+    "annnnnnnna",
+    "aaaaaaaaaa",
 )
 assert (len(JAR_SIDE[0]), len(JAR_SIDE), len(JAR_END[0])) == JAR, "the faces of a jar are drawn pixel for pixel"
+assert len(JAR_SIDE) - JAR_SIDE.index("hhhhhh") == LEVEL, "the acid's surface lies at the line drawn on the glass"
 LEAD = K.flat("iron", 5)
 WOOD = P.mat("dark_wood", base=3)
 WOOD_D = P.mat("dark_wood", base=1)
 CHINA = P.mat("porcelain")
+CHINA_D = P.mat("porcelain", base=2)
 
 
 def _jar(m, name, foot, along):
@@ -170,7 +178,7 @@ def _jar(m, name, foot, along):
     lo, hi = (-deep / 2.0, foot, along - wide / 2.0), (deep / 2.0, foot + high, along + wide / 2.0)
     side, end = Sprite(name + "_side", JAR_SIDE, GLASS), Sprite(name + "_end", JAR_END, GLASS)
     m.box(lo, hi, K.flat("night_glass", 1), skip="ud", faces={"e": side, "w": side, "n": end, "s": end})
-    m.box((lo[0], foot + LEVEL - 0.5, lo[2]), (hi[0], foot + LEVEL, hi[2]), K.flat("night_glass", 1), skip="nsewd",
+    m.box((lo[0], foot + LEVEL - 1.0, lo[2]), (hi[0], foot + LEVEL - 0.5, hi[2]), K.flat("night_glass", 1), skip="nsewd",
           faces={"u": Sprite(name + "_top", JAR_TOP, GLASS)})
 
 
@@ -209,7 +217,7 @@ def _gantry():
     for side in (-1.0, 1.0):
         a, b = sorted((side * (reach - 2.0), side * reach))
         m.box((a, TIERS[1], -1.0), (b, GANTRY_TOP - 2.0, 1.0), WOOD_D, grain="y")
-        m.box((side * BAR_OFF - 1.0, GANTRY_TOP, -1.0), (side * BAR_OFF + 1.0, BAR_Y[0], 1.0), CHINA)
+        m.box((side * BAR_OFF - 1.0, GANTRY_TOP, -1.0), (side * BAR_OFF + 1.0, BAR_Y[0], 1.0), CHINA_D)
     m.box((-reach, GANTRY_TOP - 2.0, -1.0), (reach, GANTRY_TOP, 1.0), WOOD_D, grain="x")
     return m
 
@@ -218,7 +226,7 @@ def _bar():
     """A bus bar: a flat copper bar on edge, 48 long along +z from its anchor, to be stretched from
     the board to the last jar (artkit.models.between). One flat tone, so stretching smears nothing."""
     m = M.Model(PREFIX + "bar")
-    m.box((-0.5, 0.0, 0.0), (0.5, BAR_Y[1] - BAR_Y[0], 48.0), K.flat("old_copper", 3))
+    m.box((-0.5, 0.0, 0.0), (0.5, BAR_Y[1] - BAR_Y[0], 48.0), K.flat("old_copper", 2))
     return m
 
 
@@ -227,25 +235,36 @@ def board_name(i):
 
 
 def _board(i):
-    """A slab of the switchboard, a stand-in: slate standing off the wall on two iron uprights; on
-    the middle one the two meters, cream dials in brass rims. Anchor: the point on the wall behind
-    the middle of the slab's foot."""
+    """A slab of the switchboard, a stand-in: slate standing off the wall, one meter on it, a cream
+    dial in a brass rim, the middle slab's the largest. Anchor: the point on the wall behind the
+    middle of the slab's foot."""
     x0, x1 = BOARD[i]
     half = (x1 - x0) * 8.0
     high = (BOARD_Y[1] - BOARD_Y[0]) * 16.0
     m = M.Model(board_name(i))
     m.box((-half, 0.0, BOARD_OFF[0]), (half, high, BOARD_OFF[1]), P.mat("slate"))
-    for x in (-half + 2.0, half - 4.0):
-        m.box((x, -BOARD_Y[0] * 16.0, 0.0), (x + 2.0, high - 2.0, BOARD_OFF[0]), K.IRON_D, grain="y")
     if i == 1:
-        for x in (-8.0, 8.0):
-            m.tube("z", (x, high - 9.0), BOARD_OFF[1], BOARD_OFF[1] + 1.5, 4.5, K.BRASS, sides=12, cap=K.flat("cream", 3))
+        m.tube("z", (0.0, high - 12.0), BOARD_OFF[1], BOARD_OFF[1] + 1.5, 5.5, K.BRASS, sides=12, cap=K.flat("cream", 3))
+    else:
+        m.tube("z", (0.0, high - 10.0), BOARD_OFF[1], BOARD_OFF[1] + 1.0, 3.5, K.BRASS_D, sides=12, cap=K.flat("cream", 2))
+    return m
+
+
+def _legs():
+    """The iron legs a slab of the stand-in board stands on, from the floor to its foot, with the
+    stays that hold it off the wall. Anchor: the point at the foot of the wall behind the middle
+    of the slab."""
+    high = BOARD_Y[0] * 16.0
+    m = M.Model(PREFIX + "board_legs")
+    for x in (-13.0, 11.0):
+        m.box((x, 0.0, BOARD_OFF[0]), (x + 2.0, high, BOARD_OFF[1]), K.IRON_D, grain="y")
+        m.box((x, high - 2.0, 0.0), (x + 2.0, high, BOARD_OFF[0]), K.IRON_D, grain="z")
     return m
 
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    out = {PREFIX + "cells": _cells(), PREFIX + "gantry": _gantry(), PREFIX + "bar": _bar()}
+    out = {PREFIX + "cells": _cells(), PREFIX + "gantry": _gantry(), PREFIX + "bar": _bar(), PREFIX + "board_legs": _legs()}
     out.update({board_name(i): _board(i) for i in range(len(BOARD))})
     return out
 
@@ -319,6 +338,7 @@ def build_batteryroom(c, origin=(0, 0, 0), roles=B):
     # ---- the switchboard on the north wall (a stand-in)
     for i, (x0, x1) in enumerate(BOARD):
         n += K.put(c, own[board_name(i)], ((x0 + x1) / 2.0, FEET + BOARD_Y[0], NORTH), mount="wall", facing="south", origin=origin)
+        n += K.put(c, own[PREFIX + "board_legs"], ((x0 + x1) / 2.0, FEET + K.NUDGE, NORTH), mount="wall", facing="south", origin=origin)
 
     # ---- the caged lamps; the light of each is offered under it, at the height of the jars
     for pos, facing, cells, level, why in LAMPS:
