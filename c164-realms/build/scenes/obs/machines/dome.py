@@ -50,12 +50,15 @@ Moving pieces are models of their own, and place() sets them going with motion/_
                the rail under them (rail) is the drum's and lies still
   riser        turns about the vertical through riser_at(), sixteen times the ring's angle
   handwheel    turns about the line along x through its entity, HAND_GEAR turns to one of the riser
-  version b:
+  version b: the slit is shut and opened again once in CURTAIN_CYCLE ticks (curtain_moves())
+  bar          goes up the curtain's path from BAR_DEG to SHUT_DEG, HAUL blocks: it turns about the line
+               along z through CURTAIN_C, which keeps it on the path to a quarter pixel
+  laths0..2    the curtain behind the bar, in PANELS lengths that turn about the same line; with the
+               slit open they are parked in the wall under its foot
+  roll         turns about the line along z through its entity as the curtain comes off it
   winch        turns about the line along z through its entity, WINCH_TURNS turns from open to shut
-  roll         turns about the line along z through its entity
-  bar          runs up the curtain's path (on_curve) from BAR_DEG to SHUT_DEG, HAUL blocks, the slats after it
   weight       runs down its rail, WEIGHT_RUN blocks at RUN_DEG from the level, as the curtain goes up
-  pull         sways about the line along z through its entity, its wheel's axis (PULL_SWAY; place() sets it going)
+  pull         sways about the line along z through its entity, its wheel's axis (PULL_SWAY)
   version a:
   drive        turns about the line along x through its entity
   arm_n, arm_s slide along z towards the dome's meridian, TRAVEL blocks, as the leaves shut
@@ -69,6 +72,7 @@ Sizes inside the models are in sixteenths of a block (px) whatever scale a model
 import functools
 import importlib
 import math
+import os
 
 from artkit import models as M
 
@@ -84,7 +88,7 @@ MOVED_IN = True             # in the master scene since 11-16 (the director's fa
 # How far the pieces are drawn (the four bands of 11-16, artkit.models): the gear is seen from the
 # dome room. What the curtain is made of is seen through the slit from across the site
 VIEW = M.NEAR
-VIEW_KEEP = (PREFIX + "roll", PREFIX + "bar")
+VIEW_KEEP = (PREFIX + "roll", PREFIX + "bar", PREFIX + "laths?")
 
 IRON = P.mat("iron")
 IRON_D = P.mat("iron_dark")
@@ -95,6 +99,8 @@ COPPER = P.mat("old_copper", base=1)    # the weights' slabs: the tone of the ol
 SLAT = P.mat("verdigris", bevel="along")             # a slat of the curtain: the dome's plates, its long edges drawn
 SLAT_D = P.mat("verdigris", base=1, bevel="along")   # every third one, the darker copper
 SEAM = P.mat("verdigris", base=0, bevel=0)           # what shows between two slats on the roll
+SLAT_BACK = P.mat("iron_dark", bevel="along")        # a slat's face towards the room: the drawn curtain is dark from inside
+#                                                      (dome #93112: in green it was the brightest thing in the room but the brass)
 BRASS = P.mat("brass")
 BRASS_D = P.mat("brass_dark")
 
@@ -459,6 +465,95 @@ SHUT_DEG = HEAD_DEG - 3.0               # the bar with the slit shut, under the 
 HAUL = along(BAR_DEG, SHUT_DEG)         # 14.4 blocks: how far the bar is drawn
 WINCH_TURNS = HAUL * PX / (2.0 * math.pi * DRUM_R)      # 5.9
 WEIGHT_RUN = WINCH_TURNS * 2.0 * math.pi * ROPE_R / PX  # 2.6 blocks: to just over the lower stop
+
+
+# ---- the curtain drawn (round two): the slit is shut and opened again ---------------------------------
+# The curtain's path is half an ellipse. One turn about a line along z takes the bar from where it
+# rests to where it stands with the slit shut, pose for pose, and keeps it within a quarter pixel
+# of the path on the way (_pivot() finds the point the line passes through; off_path() says how
+# far off the bar gets). So the bar and the curtain behind it are display entities that stand on
+# that line and turn about it (motion/_kit's turn()): the client carries them round the curve.
+def _pivot():
+    (x0, y0), (x1, y1) = on_curve(BAR_DEG), on_curve(SHUT_DEG)
+    phi = math.radians(slope(SHUT_DEG) - slope(BAR_DEG))
+    c, s = math.cos(phi), math.sin(phi)
+    bx, by = x1 - (c * x0 - s * y0), y1 - (s * x0 + c * y0)
+    det = (1.0 - c) ** 2 + s ** 2
+    return ((1.0 - c) * bx - s * by) / det, (s * bx + (1.0 - c) * by) / det
+
+
+CURTAIN_C = _pivot()                    # (0.26, 24.34) in the dome's frame
+CURTAIN_R = math.hypot(on_curve(BAR_DEG)[0] - CURTAIN_C[0], on_curve(BAR_DEG)[1] - CURTAIN_C[1])        # 13.2 blocks
+# 164.7: where the bar rests, seen from CURTAIN_C (degrees from east towards the zenith)
+CURTAIN_POLAR = math.degrees(math.atan2(on_curve(BAR_DEG)[1] - CURTAIN_C[1], on_curve(BAR_DEG)[0] - CURTAIN_C[0]))
+CURTAIN_TURN = slope(BAR_DEG) - slope(SHUT_DEG)         # 62.4 degrees: the bar's way from open to shut
+CURTAIN_AXIS = (0.0, 0.0, -1.0)         # right-handed about this the bar goes up the slit
+CURTAIN_LIGHT = 14                      # the sky's light on the curtain: a level under the plates outside, one over the iron in the room
+LATH_DEG = math.degrees(LATH / PX / CURTAIN_R)          # 1.09: a slat's share of that circle
+TAIL_DEG = math.degrees((ROD / 2.0 + TAIL * LATH) / PX / CURTAIN_R)     # 2.58: the bar's own slats end this far below its middle
+# Behind the bar the curtain comes in PANELS lengths of PANEL_LATHS slats, four blocks each. With
+# the slit open they lie one in the other inside the wall under the slit's foot, where the same
+# circle runs down through the sill, the ring beam and three rows of the drum (whole blocks; the
+# test scene tells if a parked length shows: shown()). Shutting, the first comes up through the
+# sill's top until it meets the bar's own slats, the bar sets off with it, and each of the others
+# sets off when the one before it has gone its own length: one curtain from the bar down into the
+# sill. They go back the same way, and each stops where it was parked.
+PANELS = 4
+PANEL_LATHS = 16
+PANEL_DEG = PANEL_LATHS * LATH_DEG      # 17.4
+# 8.1: the sill's top, in degrees of that circle below the bar at rest
+SILL_DEG = 180.0 - math.degrees(math.asin((SILL_Y - CURTAIN_C[1]) / CURTAIN_R)) - CURTAIN_POLAR
+PARK_DEG = SILL_DEG + 1.4               # a parked length's upper edge: a third of a block under the sill's top
+CURTAIN_LEAD = PARK_DEG - TAIL_DEG      # 6.9: what the first length rises before the bar sets off
+CURTAIN_CYCLE = 2400                    # ticks: once in two minutes
+CURTAIN_AT = 1700                       # the tick the curtain sets off: for a minute and a half the comet stands in the open slit
+CURTAIN_TICKS = 277                     # from there to shut: the bar goes a block in a little under a second
+CURTAIN_HOLD = 120                      # ticks the slit stays shut
+
+
+def _still():
+    """For a still picture of the curtain drawn (the offline renderer shows every piece where it was
+    placed, so the slit open): the share of its way, 0 to 1, that the environment's C164_CURTAIN
+    names. place() then puts the bar and the curtain's lengths where they are by that time and
+    does not set them going. 0 when it is not set: the map is always built so."""
+    try:
+        return max(0.0, min(1.0, float(os.environ.get("C164_CURTAIN", "0") or 0.0)))
+    except ValueError:
+        return 0.0
+
+
+def off_path(steps=200):
+    """The furthest the bar's middle gets from the curtain's path on its way round CURTAIN_C, in px."""
+    a, b = _axes()
+    worst = 0.0
+    for i in range(steps + 1):
+        r = math.radians(CURTAIN_POLAR - CURTAIN_TURN * i / steps)
+        x, y = CURTAIN_C[0] + CURTAIN_R * math.cos(r), CURTAIN_C[1] + CURTAIN_R * math.sin(r) - LEDGE_Y
+        worst = max(worst, abs((x / a) ** 2 + (y / b) ** 2 - 1.0) / math.hypot(2.0 * x / a ** 2, 2.0 * y / b ** 2))
+    return worst * PX
+
+
+def curtain_moves():
+    """When the curtain's parts move in a cycle of CURTAIN_CYCLE ticks, as motion/_kit's turn() and
+    slide() take it: {part: [(tick it sets off, how far from its rest it goes, ticks it takes), ...]}.
+    "bar", ("laths", k), "roll" and "winch" in degrees, "weight" in blocks down its rail."""
+    first = CURTAIN_TURN + CURTAIN_LEAD                 # the first length's whole way
+    speed = first / CURTAIN_TICKS
+    back = CURTAIN_AT + CURTAIN_TICKS + CURTAIN_HOLD
+
+    def both(start, far):
+        return [(CURTAIN_AT + start, far, CURTAIN_TICKS - start), (back, 0.0, CURTAIN_TICKS - start)]
+
+    # whole ticks: the bar a tick early and a length a tick late rather than the other way, so that
+    # on the way there is a hair's gap between two pieces and never two slats in one place
+    bar = int(math.floor(CURTAIN_LEAD / speed))
+    out = {"bar": both(bar, CURTAIN_TURN)}
+    for k in range(PANELS):
+        out["laths", k] = both(int(math.ceil(k * PANEL_DEG / speed)), first - k * PANEL_DEG)
+    out["roll"] = both(0, first * CURTAIN_R * PX / (ROLL_R + LATH_T / 2.0))     # the curtain comes off it as fast as it goes
+    out["winch"] = both(bar, 360.0 * WINCH_TURNS)
+    out["weight"] = both(bar, WEIGHT_RUN)
+    return out
 
 
 def _drop():
@@ -853,17 +948,39 @@ def _rollseat():
 def _bar():
     """The curtain's bar with the slats between it and the roll, and an eye for a hauling chain at
     either end. The origin is the bar's middle (on_curve(BAR_DEG)) on the dome's meridian; the
-    piece lies along the curtain's path there, and runs up it."""
-    d = _Draw("bar", 3)
+    piece lies along the curtain's path there, and runs up it: it turns about the line along z
+    through CURTAIN_C, and the model's anchor lies on that line."""
+    bx, by = on_curve(BAR_DEG)
+    d = _Draw("bar", 3, anchor=((CURTAIN_C[0] - bx) * PX, (CURTAIN_C[1] - by) * PX, 0.0))
     with d.turned(("z", slope(BAR_DEG))):           # x up the path, y out through the dome's skin
         d.box((-ROD / 2.0, -ROD / 2.0, -ROLL_HALF - 1.5), (ROD / 2.0, ROD / 2.0, ROLL_HALF + 1.5), IRON, grain="z")
         for i in range(TAIL):
             x1 = -ROD / 2.0 - i * LATH
             d.box((x1 - LATH, -LATH_T / 2.0, -ROLL_HALF), (x1, LATH_T / 2.0, ROLL_HALF), SLAT_D if i % 3 == 1 else SLAT,
-                  grain="z", seed=621 + i % 3)
+                  grain="z", seed=621 + i % 3, faces={"d": SLAT_BACK})
         for side in (-1, 1):
             z0, z1 = sorted((side * (HAUL_Z - 1.0), side * (HAUL_Z + 1.0)))
             d.box((ROD / 2.0, -1.5, z0), (ROD / 2.0 + 2.0, 1.5, z1), IRON_D, seed=624)
+    return d
+
+
+def _lath_phase(k):
+    """Which of the three models the curtain's k-th length is: every third slat is of the darker
+    copper, counted on from the bar's own slats."""
+    return (TAIL + k * PANEL_LATHS) % 3
+
+
+def _laths(phase):
+    """One length of the curtain behind the bar, PANEL_LATHS slats on the circle about CURTAIN_C,
+    as it lies parked in the wall under the slit's foot: its upper edge PARK_DEG below the bar at
+    rest. The origin is CURTAIN_C, the axes are the dome's; it turns about the line along z
+    through the origin. phase: the first slat's place in the run of three (_lath_phase())."""
+    d = _Draw(f"laths{phase}", 3)
+    r = CURTAIN_R * PX
+    for j in range(PANEL_LATHS):
+        with d.turned(("z", CURTAIN_POLAR + PARK_DEG + (j + 0.5) * LATH_DEG)):      # x out through the dome's skin, y down the path
+            d.box((r - LATH_T / 2.0, -LATH / 2.0, -ROLL_HALF), (r + LATH_T / 2.0, LATH / 2.0, ROLL_HALF),
+                  SLAT_D if (phase + j) % 3 == 1 else SLAT, grain="z", seed=681 + (phase + j) % 3, faces={"w": SLAT_BACK})
     return d
 
 
@@ -993,6 +1110,7 @@ _PIECES = {
     "arm_n": lambda: _arm(-1), "arm_s": lambda: _arm(1), "run_n": lambda: _run(-1), "run_s": lambda: _run(1),
     "roll": _roll, "rollseat": _rollseat, "bar": _bar, "winch": _winch, "winchseat": _winchseat, "pull": _pull,
     "haul_n": lambda: _haul(-1), "haul_s": lambda: _haul(1),
+    "laths0": lambda: _laths(0), "laths1": lambda: _laths(1), "laths2": lambda: _laths(2),
     "runb_n": lambda: _run(-1, "b"), "runb_s": lambda: _run(1, "b"), "hang_n": lambda: _hang(-1), "hang_s": lambda: _hang(1),
 }
 
@@ -1046,7 +1164,9 @@ def layout(version=None):
     elif version == "b":
         for name in ("roll", "rollseat"):
             out.append((name, roll_at() + (0.0,), 0.0, ()))
-        out.append(("bar", on_curve(BAR_DEG) + (0.0,), 0.0, ()))
+        out.append(("bar", CURTAIN_C + (0.0,), 0.0, ()))            # the bar and the curtain's lengths stand on the line they turn about
+        for k in range(PANELS):
+            out.append((f"laths{_lath_phase(k)}", CURTAIN_C + (0.0,), 0.0, ()))
         for name in ("winch", "winchseat", "pull"):
             out.append((name, winch_at() + (0.0,), 0.0, ()))
         wx, wy = on_run(WEIGHT_S1)
@@ -1068,16 +1188,28 @@ def place(canvas, origin=(0, 0, 0), version=None):
     """The whole gear round DOME_AXIS, and its barrier where nothing stands yet. Returns the number
     of display entities."""
     ox, oy, oz = origin
+    version = shell_version() if version is None else version
     for cell in barrier_cells(origin):
         canvas.set(*cell, B.BARRIER, keep=True)
     n = 0
     deg, period, keys, sign = turning()
+    moves, panel, still = curtain_moves(), 0, _still()
     for name, (x, y, z), yaw, turns in layout(version):
         d = _piece(name)
-        lx, lz = on_rail(yaw) if name == "trucks" else (x, z)       # a length's light is that of its place on the ledge
+        part = "bar" if name == "bar" else ("laths", panel) if name.startswith("laths") else None
+        if part is not None:                                        # the curtain is out under the sky
+            sky = CURTAIN_LIGHT
+            if still:                                               # a still picture of the curtain on its way: where it is by then
+                start, far, ticks = moves[part][0]
+                turns = turns + (("z", -far * max(0.0, min(1.0, (still * CURTAIN_TICKS - (start - CURTAIN_AT)) / ticks))),)
+        else:
+            sky = night(*(on_rail(yaw) if name == "trucks" else (x, z)))    # a length's light is that of its place on the ledge
         canvas.add_entity(ox + AX + x, oy + y, oz + AZ + z,
-                          M.display(d.m, yaw=yaw, scale=d.scale, turns=turns, brightness=(night(lx, lz), 0)))
+                          M.display(d.m, yaw=yaw, scale=d.scale, turns=turns, brightness=(sky, 0)))
         n += 1
+        panel += name.startswith("laths")
+        if part is not None and still:                              # shown on its way, it stays there
+            continue
         # What moves is set going as it is placed (motion/_kit). The ring, its pinion's shaft and the
         # hand wheel swing in one period, so they are one chain and stay in mesh: sixteen turns of
         # the upright shaft to one of the ring, the same way round (the ring's teeth look inwards),
@@ -1090,6 +1222,21 @@ def place(canvas, origin=(0, 0, 0), version=None):
             MK.swing(canvas, (1.0, 0.0, 0.0), deg * RACK_TEETH / PINION_TEETH * HAND_GEAR, sign * period, keys=keys)
         elif name == "pull":                            # the hand chain hangs in the slit's draught
             MK.swing(canvas, (0.0, 0.0, 1.0), *PULL_SWAY)
+        # The slit is shut and opened once in CURTAIN_CYCLE ticks (curtain_moves()): the bar and the
+        # curtain's lengths turn about the line through CURTAIN_C, the roll pays the curtain out, the
+        # winch winds the hauling chains the other way round and lets the weights down their rails
+        elif name == "bar":
+            MK.turn(canvas, CURTAIN_AXIS, moves[part], CURTAIN_CYCLE)
+        elif name.startswith("laths"):
+            MK.turn(canvas, CURTAIN_AXIS, moves[part], CURTAIN_CYCLE, name=f"{PREFIX}curtain.{part[1]}")
+        elif name == "roll":
+            MK.turn(canvas, CURTAIN_AXIS, moves["roll"], CURTAIN_CYCLE)
+        elif name == "winch":
+            MK.turn(canvas, (0.0, 0.0, 1.0), moves["winch"], CURTAIN_CYCLE)
+        elif name == "weight" and version == "b":
+            down = math.radians(RUN_DEG + 180.0)
+            MK.slide(canvas, (math.cos(down), math.sin(down), 0.0), moves["weight"], CURTAIN_CYCLE,
+                     name=f"{PREFIX}weight.{'n' if z < 0 else 's'}")
     return n
 
 
@@ -1124,26 +1271,73 @@ def clash(canvas, origin=(0, 0, 0), version=None, ignore=("light",)):
     hand: a stair or a slab that a part only lies against is listed too."""
     ox, oy, oz = origin
     own = set(barrier_cells(origin))
-    swing = turning()[0]
     out = []
-    for name, (x, y, z), yaw, turns in layout(version):
+    for name, (x, y, z), yaw, turns, drawn in _poses(version):
         at = (ox + AX + x, oy + y, oz + AZ + z)
         seen = set()
-        for way in (yaw - swing, yaw, yaw + swing) if name == "trucks" else (yaw,):    # what turns: at both ends of its swing too
-            for p in _spots(_piece(name), way, turns):
-                cell = tuple(int(math.floor(at[i] + p[i])) for i in range(3))
-                if cell in seen:
-                    continue
-                seen.add(cell)
-                block = canvas.get(*cell)
-                if block is None or _kind(block) in ignore or (cell in own and _kind(block) == B.BARRIER):
-                    continue
+        for p in _spots(_piece(name), yaw, turns):
+            if drawn and at[1] + p[1] < oy + SILL_Y:    # the curtain under the sill's top: in the wall, as it is meant to be (shown())
+                continue
+            cell = tuple(int(math.floor(at[i] + p[i])) for i in range(3))
+            if cell in seen:
+                continue
+            seen.add(cell)
+            block = canvas.get(*cell)
+            if block is None or _kind(block) in ignore or (cell in own and _kind(block) == B.BARRIER):
+                continue
+            out.append((name, cell, block))
+    return out
+
+
+def _poses(version=None):
+    """layout() with what moves in the poses it is to be tried in as well: [(piece, place, yaw,
+    turns, drawn)]. The ring's lengths at both ends of the dome's swing; the bar and the curtain's
+    lengths every two degrees of their way up the slit, and drawn is True for those."""
+    swing = turning()[0]
+    moves, panel = curtain_moves(), 0
+    out = []
+    for name, at, yaw, turns in layout(version):
+        if name == "trucks":
+            out += [(name, at, way, turns, False) for way in (yaw - swing, yaw, yaw + swing)]
+        elif name == "bar" or name.startswith("laths"):
+            far = moves["bar"][0][1] if name == "bar" else moves["laths", panel][0][1]
+            panel += name != "bar"
+            n = int(math.ceil(far / 2.0))
+            out += [(name, at, yaw, turns + (("z", -far * i / n),), True) for i in range(n + 1)]
+        else:
+            out.append((name, at, yaw, turns, False))
+    return out
+
+
+def shown(canvas, origin=(0, 0, 0), version=None):
+    """Where the curtain that is not drawn could be seen: [(piece, cell, block)] for every cell
+    that holds a point of a parked length and is not a whole block one cannot see through. Empty
+    when the wall under the slit's foot hides them. With clash(), for the test scene."""
+    ox, oy, oz = origin
+    out = []
+    for name, (x, y, z), yaw, turns in layout(version):
+        if not name.startswith("laths"):
+            continue
+        at = (ox + AX + x, oy + y, oz + AZ + z)
+        seen = set()
+        for p in _spots(_piece(name), yaw, turns):
+            cell = tuple(int(math.floor(at[i] + p[i])) for i in range(3))
+            if cell in seen:
+                continue
+            seen.add(cell)
+            block = canvas.get(*cell)
+            if block is None or any(word in _kind(block) for word in SEEN_THROUGH):
                 out.append((name, cell, block))
     return out
 
 
 def _kind(block):
     return block.partition("[")[0].rpartition(":")[2]
+
+
+# kinds of block that do not hide what stands inside them: not a whole cube, or one that is seen through
+SEEN_THROUGH = ("glass", "slab", "stairs", "door", "fence", "wall", "pane", "bars", "chain", "carpet", "light", "barrier",
+                "leaves", "button", "lever", "rod", "torch", "lantern", "ladder", "rail", "sign", "banner", "air")
 
 
 def barred(canvas, origin=(0, 0, 0), version=None, ignore=("light",)):
