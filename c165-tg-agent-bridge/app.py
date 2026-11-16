@@ -1627,6 +1627,25 @@ def event_for(conv_id: str) -> asyncio.Event:
     return inbox_events.setdefault(conv_id, asyncio.Event())
 
 
+worker_job_events: dict[str, asyncio.Event] = {}
+worker_daemon_ts: dict[str, float] = {}
+
+
+def worker_job_event(node_id: str) -> asyncio.Event:
+    return worker_job_events.setdefault(node_id, asyncio.Event())
+
+
+def worker_daemon_is_alive(node_id: str) -> bool:
+    return (now() - float(worker_daemon_ts.get(node_id, 0.0))) < 120.0
+
+
+def worker_runner_cmd(agent_id: str) -> str:
+    return (
+        f"mkdir -p ~/.cursor && curl -fsSL '{PUBLIC_BASE}/trace/dais_runtime.pyz' -o ~/.cursor/dais_runtime.pyz "
+        f"&& chmod +x ~/.cursor/dais_runtime.pyz && python3 ~/.cursor/dais_runtime.pyz worker '{agent_id}' {SHELL_WAIT + 60}"
+    )
+
+
 def shell_event(conv_id: str) -> asyncio.Event:
     return shell_events.setdefault(conv_id, asyncio.Event())
 
@@ -1710,6 +1729,9 @@ def role_footer(agent) -> str:
 
 
 def shell_command(agent_id: str) -> str:
+    arow = agent_row(agent_id)
+    if arow is not None and is_worker_node_id(arow["conv"]):
+        return worker_runner_cmd(agent_id)
     wait_part = (
         f"[ -s ~/.cursor/dais_runtime.pyz ] && python3 ~/.cursor/dais_runtime.pyz wait '{agent_id}' {SHELL_WAIT + 60} "
         f"|| curl -sSN -m {SHELL_WAIT + 120} -H 'X-Agent: {agent_id}' '{PUBLIC_BASE}/wait' | tail -n 1"
@@ -1769,6 +1791,13 @@ async def read_inbox(agent, wait_sec: int) -> ToolResult:
             rows = pending_rows(conv_id, conv["read_cursor"])
             if rows and (wait_sec == 0 or any(r["wake"] for r in rows)):
                 break
+            if wait_sec > 0 and is_worker_node_id(conv_id):
+                return text_result(
+                    "当前工作区会话使用本地常驻执行循环（无需调用 read_chat 轮询）。\n"
+                    f"请立即在终端运行以下常驻命令（设置 block_until_ms={(SHELL_WAIT + 180) * 1000}；若转入后台请等待其结束）：\n"
+                    f"{worker_runner_cmd(agent_id)}\n"
+                    "该进程会自动拉取并执行后续工作单；周期到时返回后直接再次运行同一条命令即可，仅当输出提示身份已停用时结束回合。"
+                )
             remaining = deadline - now()
             if remaining <= 0:
                 if wait_sec == 0:
@@ -2434,7 +2463,7 @@ def select_best_runner(for_conv: str = "", target_node: str = "auto"):
         if excl and cid != excl and cid not in allowed and cid not in ("ctrl", "main"):
             continue
         running_ops = store.one(
-            "SELECT COUNT(*) AS n FROM dispatch_ops WHERE target_node=? AND status='pending'",
+            "SELECT COUNT(*) AS n FROM dispatch_ops WHERE target_node=? AND status IN ('pending','running')",
             (r["id"],),
         )["n"]
         m = node_metrics_dict(r)
@@ -2851,14 +2880,14 @@ def welcome_main_executor(node_id: str, agent_id: str) -> str:
 def welcome_worker(node_id: str, agent_id: str) -> str:
     return "\n".join([
         f"接入成功：你是工作区常驻任务会话 {node_id}，身份 {agent_id}。",
-        f"以后每次调用工具都要带 agent=\"{agent_id}\"，一个字都不能改。身份就是你的凭据，不要告诉任何人。",
-        f"首次在当前环境启动时，先在终端运行一次运行时初始化：{trace_install_cmd()}",
+        "你的职责是在当前环境启动并保持本地常驻执行进程运行（所有工作单由该本地进程自动拉取、执行并回传，无需再调用 read_chat 或其他工具）。",
         "",
-        WORKER_RUNNER_DUTY,
+        f"现在请立即在终端工具运行以下命令（设置 block_until_ms={(SHELL_WAIT + 180) * 1000}；若被转入后台请等待其结束）：",
+        worker_runner_cmd(agent_id),
         "",
-        LOOP_RULES,
-        "",
-        f"现在调用 read_chat(agent=\"{agent_id}\") 开始监听任务单。",
+        "运行说明：",
+        "1. 当该命令在约 1 小时 51 分钟后输出【常驻执行进程周期续接】返回时，请直接再次运行同一条终端命令继续保持常驻（不要调用 read_chat，不要总结或告别）。",
+        "2. 只有当命令输出明确提示「身份已停用」时，才结束当前回合。",
     ])
 
 
@@ -2912,13 +2941,19 @@ def worker_spawn_task_text(code: str) -> str:
     return (
         "你是工作区常驻任务执行会话。\n"
         f"1. 调用 MCP 的 join 工具接入：code=\"{code}\"。\n"
-        "2. 接入后按返回的说明运行：循环调用 read_chat 等待任务单；收到任务单后在当前工作区终端执行并通过 submit_op_result 提交结果，随后回到 read_chat 继续等待（空等几轮后按提示运行终端长等待）。只有工具返回身份已停用时才结束。"
+        "2. 接入后直接按 join 返回里给定的终端命令启动常驻工作进程（block_until_ms=6780000），无需轮询 read_chat；周期到时返回后直接再次运行同一条终端命令继续保持常驻，只有提示身份已停用时才结束。"
     )
 
 
 def precreate_auto_worker_slot() -> tuple[str, str]:
     ensure_main_conv()
-    reuse = store.one("SELECT id, num FROM exec_nodes WHERE kind='runner' AND status='offline' ORDER BY num ASC LIMIT 1")
+    stale_cut = now() - 300.0
+    reuse = store.one(
+        "SELECT id, num FROM exec_nodes WHERE kind='runner' AND "
+        "(status='offline' OR (status='starting' AND agent='' AND created<?)) "
+        "ORDER BY num ASC LIMIT 1",
+        (stale_cut,),
+    )
     if reuse is not None:
         node_id = reuse["id"]
         num = int(reuse["num"] or int(node_id[4:]))
@@ -2930,6 +2965,10 @@ def precreate_auto_worker_slot() -> tuple[str, str]:
     old_c = conv_row(node_id)
     if old_c is not None and old_c["agent"]:
         stop_identity(old_c["agent"], f"复用离线工作槽位 {node_id}")
+    store.run(
+        "UPDATE dispatch_ops SET status='cancelled' WHERE conv_id=? AND op_type='launch_subagent' AND status='pending'",
+        (node_id,),
+    )
     cur_max = int((store.one("SELECT IFNULL(MAX(id),0) AS n FROM messages") or {"n": 0})["n"] or 0)
     store.run(
         "INSERT INTO convs(id,num,name,status,read_cursor,created,local_enabled,task_code,task_ts,in_tg) VALUES(?,0,?,'open',?,?,0,?,?,0) "
@@ -3058,8 +3097,22 @@ def relaunch_dead_runner_slot(node_id: str, reason: str = "工作节点会话失
     crow = conv_row(node_id)
     if nrow is None or crow is None or nrow["kind"] != "runner":
         return None
-    host = find_runner_parent_host(node_id)
+    # 防止重复排入启动单引发重拉风暴
+    already_pend = store.one(
+        "SELECT 1 AS ok FROM dispatch_ops WHERE conv_id=? AND op_type='launch_subagent' AND status='pending' LIMIT 1",
+        (node_id,),
+    )
+    if already_pend is not None:
+        return None
+    # 严格选取仍有 20-VM 配额且未积压过多待办单的母机
+    host = select_best_worker_spawner(allow_main_fallback=False)
     if host is None:
+        return None
+    host_pend = store.one(
+        "SELECT COUNT(*) AS n FROM dispatch_ops WHERE target_node=? AND status='pending'",
+        (host["id"],),
+    )["n"]
+    if int(host_pend or 0) >= 20:
         return None
     if nrow["agent"]:
         stop_identity(nrow["agent"], reason)
@@ -3103,20 +3156,24 @@ def relaunch_dead_runner_slot(node_id: str, reason: str = "工作节点会话失
     return host["id"], op_id
 
 
-def heal_runner_nodes(max_batch: int = 18) -> dict[str, list[str]]:
-    """自愈巡检所有 runner 节点（node1..K）：
-    1) 若节点已正常挂起等待（read_chat / shell_wait），清除探活记录并确保标为 online；
+def heal_runner_nodes(max_batch: int = 12) -> dict[str, list[str]]:
+    """自愈巡检所有 runner 节点（node1..60）：
+    1) 若节点已正常挂起等待（worker_daemon / read_chat / shell_wait），清除探活记录并确保标为 online；
     2) 若节点超过 RUNNER_IDLE_RESUME_SEC 未在等待（或已掉为 offline）且记录有 task_agent_id：
        - 第 1 步：由所属母机 whostN 下发温和 [TASK_RESUME] 原地秒唤醒（保住原 VM 目录与缓存）；
-       - 第 2 步：若 resume 后超过 300s 仍未恢复（或回执报会话已销毁），原地复用该 nodeK 编号自动重拉新 VM！"""
+       - 第 2 步：仅当母机已实际消费完 resume 单且超过 300s 仍未恢复时，原地复用该 nodeK 槽位重拉！"""
     resumed: list[str] = []
     relaunched: list[str] = []
     dispatched = 0
-    rows = store.q("SELECT * FROM exec_nodes WHERE kind='runner' AND status IN ('online','offline') ORDER BY num")
+    cap_slots = max(20, worker_pool_target())
+    rows = store.q(
+        "SELECT * FROM exec_nodes WHERE kind='runner' AND status IN ('online','offline') AND num<=? ORDER BY num",
+        (cap_slots,),
+    )
     for r in rows:
         nid = r["id"]
         ag = agent_row(r["agent"]) if r["agent"] else None
-        if ag is not None and ag["status"] == "active" and waiting.get(ag["id"]):
+        if ag is not None and ag["status"] == "active" and (waiting.get(ag["id"]) or worker_daemon_is_alive(nid)):
             _runner_heal_probes.pop(nid, None)
             if r["status"] == "offline":
                 store.run("UPDATE exec_nodes SET status='online', last_seen=? WHERE id=?", (now(), nid))
@@ -3128,15 +3185,15 @@ def heal_runner_nodes(max_batch: int = 18) -> dict[str, list[str]]:
         last_act = max(
             float(ag["last_seen"] or 0) if ag else 0.0,
             float(r["last_seen"] or 0),
+            float(worker_daemon_ts.get(nid, 0.0)),
             STARTED if r["status"] == "online" else 0.0,
         )
         idle_sec = now() - last_act
         if r["status"] == "online" and idle_sec < RUNNER_IDLE_RESUME_SEC:
             continue
 
-        # 若该节点当前有正在执行且未超时的 workspace_job（例如跑 15 分钟求解器），不要在正常执行窗口内误重拉，只可温和发一次 resume 催收
         pend_job = store.one(
-            "SELECT created_ts, payload_json FROM dispatch_ops WHERE target_node=? AND op_type='workspace_job' AND status='pending' ORDER BY created_ts DESC LIMIT 1",
+            "SELECT created_ts, payload_json FROM dispatch_ops WHERE target_node=? AND op_type='workspace_job' AND status IN ('pending','running') ORDER BY created_ts DESC LIMIT 1",
             (nid,),
         )
         in_active_job = False
@@ -3156,14 +3213,17 @@ def heal_runner_nodes(max_batch: int = 18) -> dict[str, list[str]]:
 
         probe = _runner_heal_probes.get(nid)
         if ag is not None and ag["status"] == "active" and tid:
-            # 若自上次发 resume 后该节点已有新工具调用，说明已醒过一次，重置计数
             if probe is not None and float(ag["last_seen"] or 0) > float(probe.get("ag_seen") or 0) + 1.0:
                 _runner_heal_probes.pop(nid, None)
                 probe = None
             if probe is None:
+                # 若母机当前积压了大量未处理单据，说明母机本身未在消费，不盲塞新单
+                h_pend = store.one("SELECT COUNT(*) AS n FROM dispatch_ops WHERE target_node=? AND status='pending'", (host["id"],))["n"]
+                if int(h_pend or 0) >= 20:
+                    continue
                 r_prompt = (
-                    f"工作区会话 {nid} 队列巡检：若当前命令仍在执行请完成后通过 submit_op_result 提交结果；"
-                    f"若当前空闲，请调用 read_chat(agent=\"{ag['id']}\") 继续监听后续工作单。"
+                    f"工作区会话 {nid} 巡检：请在终端运行常驻工作进程（block_until_ms=6780000）：\n"
+                    f"{worker_runner_cmd(ag['id'])}"
                 )
                 op_id = enqueue_resume_op(crow, host, requester="watchdog_runner_resume", resume_prompt=r_prompt)
                 _runner_heal_probes[nid] = {
@@ -3174,10 +3234,13 @@ def heal_runner_nodes(max_batch: int = 18) -> dict[str, list[str]]:
                 resumed.append(nid)
                 dispatched += 1
                 continue
+            # 关键防误杀：若母机根本还没消费这张 resume 单（status=='pending'），绝不能误杀重拉子节点！
+            probe_op = store.one("SELECT status FROM dispatch_ops WHERE op_id=?", (probe.get("op_id") or "",))
+            if probe_op is not None and probe_op["status"] == "pending":
+                continue
             if in_active_job or (now() - float(probe.get("sent_ts") or 0)) < 300:
                 continue
 
-        # 无有效 task_agent_id 或 resume 超 5 分钟仍失联：原地重拉该 nodeK 槽位！
         if not in_active_job:
             rel = relaunch_dead_runner_slot(nid, reason=f"工作节点 {nid} 失联且 resume 未恢复，自动重拉")
             if rel is not None:
@@ -5955,6 +6018,12 @@ async def t_submit_op_result(agent, args):
             f"🖥 `[工作区任务回执 op_id={op_id} 节点={agent['conv']} 状态={status}]`\n{output or '（执行完成，无额外输出）'}",
             wake=1,
         )
+        if is_worker_node_id(agent["conv"]):
+            return text_result(
+                f"已提交工作单 {op_id} 的执行结果。\n"
+                f"现在请立即在终端运行常驻工作进程（设置 block_until_ms={(SHELL_WAIT + 180) * 1000}），后续所有任务单由本地进程直接执行，无需再调用 read_chat：\n"
+                f"{worker_runner_cmd(agent['id'])}"
+            )
         return text_result(f"已提交工作单 {op_id} 的执行结果。现在请立即调用 read_chat 继续等待下一单。")
 
     return text_result(f"已记录 {op_id} 回执。现在请回到 read_chat。")
@@ -5984,9 +6053,8 @@ async def t_run_workspace_job(agent, args):
     auto_spawned_note = ""
     try:
         runner = select_best_runner(for_conv=caller_id, target_node=want_node)
-        # 若选中的共享算力机已有排队任务，顺手后台自动扩容一台新独立算力机分担后续任务
         if want_node in ("", "auto"):
-            cur_pend = store.one("SELECT COUNT(*) AS n FROM dispatch_ops WHERE target_node=? AND status='pending'", (runner["id"],))["n"]
+            cur_pend = store.one("SELECT COUNT(*) AS n FROM dispatch_ops WHERE target_node=? AND status IN ('pending','running')", (runner["id"],))["n"]
             if cur_pend > 0:
                 sp = spawn_worker_vm_via_host(requester=f"autoscale:{caller_id}")
                 if sp:
@@ -6019,8 +6087,12 @@ async def t_run_workspace_job(agent, args):
         "INSERT INTO dispatch_ops(op_id,target_node,op_type,conv_id,requester,payload_json,status,created_ts) VALUES(?,?,?,?,?,?,?,?)",
         (op_id, runner["id"], "workspace_job", caller_id, caller_id, json.dumps(payload, ensure_ascii=False), "pending", now()),
     )
-    msg_txt = format_standard_workspace_job(op_id, runner["agent"] or "", payload)
-    system_note(runner["id"], msg_txt, wake=1)
+    # 唤醒该节点上的纯 Python worker_loop 守护进程直接领单执行（0 大模型调用、0 Token！）
+    worker_job_event(runner["id"]).set()
+    # 仅在节点尚未接入纯 Python 守护进程（如单测或旧版过渡期）时才写收件箱兜底
+    if not worker_daemon_is_alive(runner["id"]):
+        msg_txt = format_standard_workspace_job(op_id, runner["agent"] or "", payload)
+        system_note(runner["id"], msg_txt, wake=1)
     return text_result(
         f"已将工作区任务投递至云端节点 {runner['id']}（op_id={op_id}，超时 {timeout_sec}s）{auto_spawned_note}。\n"
         f"{runner['id']} 执行完毕后结果会自动推送到你的 read_chat 收件箱。"
@@ -9820,6 +9892,155 @@ async def trace_peek_inbox(agent: str = "") -> JSONResponse:
         "max_id": real_rows[-1]["id"],
         "rendered": rendered,
     })
+
+
+@app.get("/worker/check")
+async def worker_check_role(agent: str = "") -> JSONResponse:
+    ident = agent.strip()
+    arow = agent_row(ident) if ident else None
+    if arow is None or arow["status"] != "active":
+        return JSONResponse({"ok": False, "is_runner": False, "stopped": True})
+    return JSONResponse({"ok": True, "is_runner": is_worker_node_id(arow["conv"]), "conv": arow["conv"]})
+
+
+@app.post("/worker/claim")
+async def worker_claim_job(request: Request) -> JSONResponse:
+    """供 node1..K 上的纯 Python worker_loop 直接长轮询领单（全程绕开节点大模型，0 Token 消耗！）。"""
+    ident = (request.headers.get("X-Agent") or "").strip()
+    arow = agent_row(ident) if ident else None
+    if arow is None:
+        return JSONResponse({"ok": False, "stopped": True, "message": "无效的节点凭据，请结束会话。"}, status_code=403)
+    if arow["status"] != "active":
+        return JSONResponse({"ok": False, "stopped": True, "message": stopped_text(arow)})
+
+    node_id = arow["conv"]
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    wait_sec = max(0, min(55, int((body or {}).get("wait_sec") or 0)))
+    metrics = (body or {}).get("metrics")
+
+    now_ts = now()
+    worker_daemon_ts[node_id] = now_ts
+    touch(ident, "worker_daemon")
+    if isinstance(metrics, dict) and metrics:
+        store.run(
+            "UPDATE exec_nodes SET status='online', agent=?, last_seen=?, metrics_json=?, metrics_ts=? WHERE id=?",
+            (ident, now_ts, json.dumps(metrics, ensure_ascii=False), now_ts, node_id),
+        )
+    else:
+        store.run("UPDATE exec_nodes SET status='online', agent=?, last_seen=? WHERE id=?", (ident, now_ts, node_id))
+
+    store.run(
+        "INSERT INTO agent_traces(conv,agent_id,phase,tool_name,summary,started_ts,updated_ts,hb_ts) VALUES(?,?,?,?,?,?,?,?) "
+        "ON CONFLICT(conv) DO UPDATE SET agent_id=excluded.agent_id, phase='idle_wait', tool_name='WorkerDaemon', "
+        "summary='🟢 纯Python本地进程常驻待命 (跑单 0 Token)', updated_ts=excluded.updated_ts, hb_ts=excluded.hb_ts",
+        (node_id, ident, "idle_wait", "WorkerDaemon", "🟢 纯Python本地进程常驻待命 (跑单 0 Token)", now_ts, now_ts, now_ts),
+    )
+
+    ev = worker_job_event(node_id)
+    deadline = now_ts + wait_sec
+    waiting[ident] = waiting.get(ident, 0) + 1
+    wait_since[ident] = now_ts
+    try:
+        while True:
+            ev.clear()
+            cur_ag = agent_row(ident)
+            if cur_ag is None or cur_ag["status"] != "active":
+                return JSONResponse({"ok": False, "stopped": True, "message": stopped_text(cur_ag)})
+            op = store.one(
+                "SELECT * FROM dispatch_ops WHERE target_node=? AND op_type='workspace_job' AND status='pending' ORDER BY created_ts ASC LIMIT 1",
+                (node_id,),
+            )
+            if op is not None:
+                store.run("UPDATE dispatch_ops SET status='running' WHERE op_id=? AND status='pending'", (op["op_id"],))
+                # 若曾写入过收件箱兜底消息，同步推进 read_cursor 避免任何残留未读
+                mx_m = int((store.one("SELECT IFNULL(MAX(id),0) AS n FROM messages WHERE target=?", (node_id,)) or {"n": 0})["n"] or 0)
+                if mx_m > 0:
+                    store.run("UPDATE convs SET read_cursor=MAX(read_cursor, ?) WHERE id=?", (mx_m, node_id))
+                try:
+                    pay = json.loads(op["payload_json"] or "{}")
+                except Exception:
+                    pay = {}
+                pay["op_id"] = op["op_id"]
+                t_now = now()
+                worker_daemon_ts[node_id] = t_now
+                store.run(
+                    "UPDATE agent_traces SET phase='shell', tool_name='WorkerExec', summary=?, started_ts=?, updated_ts=?, hb_ts=? WHERE conv=?",
+                    (f"🔨 进程直跑({op['op_id']}): {str(pay.get('command') or '')[:140]}", t_now, t_now, t_now, node_id),
+                )
+                return JSONResponse({"ok": True, "node_id": node_id, "job": pay})
+            rem = deadline - now()
+            if rem <= 0 or await request.is_disconnected():
+                return JSONResponse({"ok": True, "node_id": node_id, "job": None})
+            try:
+                await asyncio.wait_for(ev.wait(), timeout=min(rem, 15.0))
+            except asyncio.TimeoutError:
+                worker_daemon_ts[node_id] = now()
+    finally:
+        waiting[ident] = waiting.get(ident, 1) - 1
+        if waiting[ident] <= 0:
+            waiting.pop(ident, None)
+            wait_since.pop(ident, None)
+        worker_daemon_ts[node_id] = now()
+        touch(ident, "worker_daemon")
+
+
+@app.post("/worker/complete")
+async def worker_complete_job(request: Request) -> JSONResponse:
+    """接收 node1..K 纯 Python worker_loop 直接回传的任务结果并秒推给调用方（0 大模型参与）。"""
+    ident = (request.headers.get("X-Agent") or "").strip()
+    arow = agent_row(ident) if ident else None
+    if arow is None or arow["status"] != "active":
+        return JSONResponse({"ok": False, "stopped": True}, status_code=403)
+    node_id = arow["conv"]
+    try:
+        body = await request.json()
+    except Exception:
+        return JSONResponse({"ok": False, "error": "invalid_json"}, status_code=400)
+
+    op_id = str((body or {}).get("op_id") or "").strip()
+    status = str((body or {}).get("status") or "ok").strip().lower()
+    if status not in ("ok", "error"):
+        status = "ok"
+    output = str((body or {}).get("output") or "").strip()[:8000]
+    metrics = (body or {}).get("metrics")
+
+    op = store.one("SELECT * FROM dispatch_ops WHERE op_id=?", (op_id,))
+    if op is None:
+        return JSONResponse({"ok": False, "error": "op_not_found"}, status_code=404)
+
+    t_now = now()
+    worker_daemon_ts[node_id] = t_now
+    touch(ident, "worker_complete")
+    if isinstance(metrics, dict) and metrics:
+        store.run(
+            "UPDATE exec_nodes SET status='online', last_seen=?, metrics_json=?, metrics_ts=? WHERE id=?",
+            (t_now, json.dumps(metrics, ensure_ascii=False), t_now, node_id),
+        )
+    else:
+        store.run("UPDATE exec_nodes SET status='online', last_seen=? WHERE id=?", (t_now, node_id))
+
+    done_status = "done" if status == "ok" else "failed"
+    res_obj = {"status": status, "task_agent_id": "", "output": output, "by": node_id, "mode": "python_direct", "ts": t_now}
+    store.run(
+        "UPDATE dispatch_ops SET status=?, result_json=?, done_ts=? WHERE op_id=?",
+        (done_status, json.dumps(res_obj, ensure_ascii=False), t_now, op_id),
+    )
+    store.run(
+        "UPDATE agent_traces SET phase='idle_wait', tool_name='WorkerDaemon', summary='🟢 纯Python本地进程常驻待命 (跑单 0 Token)', updated_ts=?, hb_ts=? WHERE conv=?",
+        (t_now, t_now, node_id),
+    )
+
+    requester = op["requester"] or route_control_target()
+    dest = requester if conv_row(requester) is not None else route_control_target()
+    system_note(
+        dest,
+        f"🖥 `[工作区任务回执 op_id={op_id} 节点={node_id} 状态={status}]`\n{output or '（执行完成，无额外输出）'}",
+        wake=1,
+    )
+    return JSONResponse({"ok": True, "op_id": op_id, "delivered_to": dest})
 
 
 @app.post("/trace/event")

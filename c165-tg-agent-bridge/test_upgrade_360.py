@@ -654,6 +654,38 @@ def run_web_console_tests() -> None:
             sse_res = client.get("/web/api/events?conv=c1&once=1")
             assert sse_res.status_code == 200 and "event: sync" in sse_res.text
 
+            # 10. Verify zero-token pure-Python worker process (/worker/claim + /worker/complete + storm-guard)!
+            n2_ag = bridge.node_row("node2")["agent"]
+            msg_cnt_before = bridge.store.one("SELECT COUNT(*) AS n FROM messages WHERE target='node2'")["n"]
+            # Node2's Python worker daemon polls /worker/claim -> marks worker_daemon_ts alive
+            claim_idle = client.post("/worker/claim", json={"wait_sec": 0, "metrics": {"cpu_percent": 4.2}}, headers={"X-Agent": n2_ag}).json()
+            assert claim_idle["ok"] and claim_idle["job"] is None
+            assert bridge.worker_daemon_is_alive("node2")
+
+            # Dispatch a workspace_job onto node2 -> MUST NOT write into node2's LLM messages inbox (0 LLM tokens!)
+            c3_ag_now = bridge.conv_row("c3")["agent"]
+            jb_res = asyncio.run(
+                bridge.call_tool("run_workspace_job", {"agent": c3_ag_now, "command": "echo DIRECT_PY_DAEMON_99", "node": "node2"})
+            )
+            assert not jb_res.is_error
+            msg_cnt_after = bridge.store.one("SELECT COUNT(*) AS n FROM messages WHERE target='node2'")["n"]
+            assert msg_cnt_after == msg_cnt_before, "workspace_job leaked into node LLM inbox despite active Python daemon!"
+
+            # Python worker daemon claims job, executes via _execute_worker_job, and posts to /worker/complete
+            claim_got = client.post("/worker/claim", json={"wait_sec": 0}, headers={"X-Agent": n2_ag}).json()
+            assert claim_got["ok"] and claim_got["job"]["command"] == "echo DIRECT_PY_DAEMON_99"
+            import agent_trace as _at
+            st_s, rc_v, out_s = _at._execute_worker_job(n2_ag, "http://127.0.0.1:18797", "node2", claim_got["job"])
+            assert st_s == "ok" and rc_v == 0 and "DIRECT_PY_DAEMON_99" in out_s
+            comp_res = client.post(
+                "/worker/complete",
+                json={"op_id": claim_got["job"]["op_id"], "status": st_s, "exit_code": rc_v, "output": out_s},
+                headers={"X-Agent": n2_ag},
+            ).json()
+            assert comp_res["ok"] and comp_res["delivered_to"] == "c3"
+            c3_got = text_of(asyncio.run(bridge.call_tool("read_chat", {"agent": c3_ag_now, "wait_sec": 0})))
+            assert "DIRECT_PY_DAEMON_99" in c3_got and "node2" in c3_got
+
         if log_file.exists():
             log_txt = log_file.read_text(encoding="utf-8", errors="replace")
             assert secret_pw not in log_txt and sub_pw not in log_txt

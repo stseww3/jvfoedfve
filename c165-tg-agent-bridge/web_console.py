@@ -884,7 +884,7 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
             for n in store.q("SELECT * FROM exec_nodes WHERE status!='removed' ORDER BY kind!='launcher', num"):
                 metrics = bridge.node_metrics_dict(n)
                 mounted = [c["id"] for c in bridge.open_convs() if bridge.cloud_of(c) == int(n["cloud_num"] or -999)] if n["kind"] == "launcher" else []
-                pend_ops = store.one("SELECT COUNT(*) AS n FROM dispatch_ops WHERE target_node=? AND status='pending'", (n["id"],))["n"]
+                pend_ops = store.one("SELECT COUNT(*) AS n FROM dispatch_ops WHERE target_node=? AND status IN ('pending','running')", (n["id"],))["n"]
                 nodes_out.append({
                     "id": n["id"],
                     "kind": n["kind"],
