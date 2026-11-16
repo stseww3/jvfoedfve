@@ -10,7 +10,14 @@ doorway (A0, #58129).
 
 shots.json is written by  python -m scenes.obs_int_starhall  (both scenes read the same file).
 
+The light line's own lamps along the ways people walk (the stair hall's among them) hang in the
+master scene and wherever a scene asks for the building's lights (_lightkit.dress): this one
+does, because the first look is judged with them: the three arches behind the pier are to stay
+darker than the pier's face (lights, #75636).
+
   C164_HALL_POOL=<level>   starhall.SUN_POOL at another level, to compare; 0: none
+  C164_HALL_SPOT=<level>   starhall.SPOT_LEVEL likewise; 0: the globe and the board's ends take
+                           the light of their cells
 """
 import os
 
@@ -23,13 +30,14 @@ from scenes.obs.interiors import starhall
 from scenes.obs.machines import clock, orrery
 from scenes.obs.main import shell
 from scenes.obs.props import furniture, instruments, lamps, paper
+from scenes.obs.sky import _lightkit
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 60
 VERSION = "a"
 GROUND = (S.WALL_W - 14, S.Z_NORTH - 6, S.WALL_E + 15, S.Z_SOUTH + 6)  # paving under and before the building
 ORIGIN = (0, 0, 0)
-POOL_ENV = "C164_HALL_POOL"
+TRY = {"C164_HALL_POOL": "SUN_POOL", "C164_HALL_SPOT": "SPOT_LEVEL"}     # what the environment may set, to compare
 
 
 def _machines(c):
@@ -44,13 +52,16 @@ def build(version=VERSION):
     counts = {"materials": materials.build(c, ORIGIN)}
     counts["main"] = main.build(c, ORIGIN)       # the hall has moved in (starhall.MOVED_IN): no stand-in wall
     counts["machines"] = _machines(c)
-    pool = starhall.SUN_POOL
-    if os.environ.get(POOL_ENV) is not None:
-        starhall.SUN_POOL = int(os.environ[POOL_ENV]) or None
+    kept = {name: getattr(starhall, name) for name in TRY.values()}
+    for env, name in TRY.items():
+        if os.environ.get(env) is not None:
+            setattr(starhall, name, int(os.environ[env]) or None)
     try:
         counts["interiors"] = starhall.dress(c, ORIGIN, version)
     finally:
-        starhall.SUN_POOL = pool
+        for name, value in kept.items():
+            setattr(starhall, name, value)
+    _lightkit.dress(c)
     counts["sky"] = sky.build(c, ORIGIN)
     c.entity_counts = {k: int(v or 0) for k, v in counts.items()}
     return c

@@ -111,6 +111,14 @@ BOARD_LAMP_Y = 4.5              # the same over the switchboard, whose top is at
 #                                 round it, lighter in the first look than the pier's face, and left the dado, the
 #                                 board's foot and the globe in the dark. The pair's sources are set apart from
 #                                 the lamps: a cell over the floor in the row before the wall's, under the shade
+SPOT_LEVEL = AISLE_LEVELS[0]    # the light the two things under that pair are shown at, the globe and the board's
+#                                 ends: the lamp's own. A display entity takes the light of the cell its anchor is
+#                                 in, which for both is two steps from the source: at 6, dark blue and dark iron
+#                                 before the dark dado were two blobs in the first look's lower third (cr3, #75730).
+#                                 No source is added or raised for it, and the stone round them stays as it was
+CHART_Y = FEET + 3.5            # the middle of a star chart, which is a block tall: its foot clears the lintel of
+#                                 the door case the shell sets round the vault's door beside it ((6..8, 2), #76162),
+#                                 its head is under the lamp's shade
 GALLERY_LEVELS = (7, 6, 6)  # the three lamps of a gallery wall, from its west end to the meridian
 GALLERY_LAMP_Y = 10.5
 GALLERY_MAP_Y = shell.DECK_Y + 2.75     # the middle of a great chart, two blocks tall: at the eye of who stands
@@ -438,11 +446,18 @@ def _door_emblem(canvas, origin):
         canvas.set(origin[0] + x, origin[1] + top + 1, origin[2] + z, B.ASHLAR_EMBLEM)
 
 
+def _spot():
+    """How a display entity under the westernmost pair of lamps is shown (SPOT_LEVEL): options for
+    its placing."""
+    return dict(brightness=(0, SPOT_LEVEL)) if SPOT_LEVEL else {}
+
+
 def _switchboard(canvas, origin, version, style):
     """The hall's switchboard against the north wall: instrument panels under an iron top. The
     aisle's westernmost lamp is fixed over its middle and throws its light down its face. An end
     that stands free is closed with a plate: the casing's own side is the darkest iron there is,
-    and the end that looks to the door was one dead black slab in the first look."""
+    and the end that looks to the door was one dead black slab in the first look. The plates are
+    shown in the lamp's light (SPOT_LEVEL)."""
     ox, oy, oz = origin
     rows = style["board"]
     x0 = BOARD_MID_X - len(rows[0]) // 2
@@ -455,7 +470,7 @@ def _switchboard(canvas, origin, version, style):
     for x, beside, facing in ((x0 + len(rows[0]), x0 + len(rows[0]), "east"), (x0, x0 - 1, "west")):
         if not canvas.has(ox + beside, oy + FEET + 1, oz + Z0):
             n += K.put(canvas, _models()[PREFIX + "board_end_" + version], (float(x), FEET + len(rows) / 2.0, Z0 + 0.5),
-                       mount="wall", facing=facing, origin=origin)
+                       mount="wall", facing=facing, origin=origin, **_spot())
     return n
 
 
@@ -511,15 +526,15 @@ def _furnish(canvas, origin, style):
 
 def _charts(canvas, origin):
     """The south aisle's west bay: the pair of star charts on the wall either side of the aisle's
-    westernmost lamp, and a celestial globe before them under it. On each gallery wall one of the
-    pair of great charts, a half of the sky, at the height of the eye under the lamp on the
-    meridian. The charts are props/paper's and the globe, its north pole to true north, is
-    props/instruments'."""
+    westernmost lamp, and a celestial globe before them under it, shown in that lamp's light
+    (SPOT_LEVEL). On each gallery wall one of the pair of great charts, a half of the sky, at the
+    height of the eye under the lamp on the meridian. The charts are props/paper's and the globe,
+    its north pole to true north, is props/instruments'."""
     lamp = aisle_lamp_xs()[0]
     n = 0
     for kind, x in (("star_chart", lamp - 1.5), ("star_chart_b", lamp + 1.5)):
-        n += paper.place(canvas, kind, (x, FEET + 3.0, Z1 + 1.0), facing="north", origin=origin)
-    n += instruments.place(canvas, "celestial_globe", (lamp, FEET, Z1 - 0.2), facing="east", origin=origin)
+        n += paper.place(canvas, kind, (x, CHART_Y, Z1 + 1.0), facing="north", origin=origin)
+    n += instruments.place(canvas, "celestial_globe", (lamp, FEET, Z1 - 0.2), facing="east", origin=origin, **_spot())
     x = gallery_lamp_xs()[-1]
     for kind, z, facing in (("sky_map", Z0, "south"), ("sky_map_b", Z1 + 1.0, "north")):
         n += paper.place(canvas, kind, (x, GALLERY_MAP_Y, float(z)), facing=facing, origin=origin)
