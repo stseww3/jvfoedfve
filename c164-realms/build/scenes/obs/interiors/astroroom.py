@@ -9,12 +9,15 @@ other three; the walls are two blocks high, their head a ledge all round at 20. 
 leaves eight cells clear from the floor up (the card has the numbers): the three behind the door
 and the two niches, north and south, each three cells wide and one deep. So:
 
-  north niche   where the plates are: a low cabinet of plate drawers along the whole wall, under
-                the window; on it the box of tonight's plates, its lid open against the wall, two
-                plate holders, and at the niche's east end the red lamp, by which plates are changed
-  south niche   where the night is written down: the writing desk in the east two cells, on it
-                the exposure log lying open, the desk lamp and a plate holder; a stool before it.
-                The driving clock's governor (_astrodrive, c356) hangs on the wall in the west cell
+  south niche   where the work is done, and the one place the instrument leaves in full view of the
+                door: the writing desk in the east two cells. At its east end the box of tonight's
+                plates stands open, its lid up, under the red lamp on the niche's end wall: there
+                the holders are loaded. Beside it the exposure log lies open under the desk lamp; a
+                stool before it. The driving clock's governor (_astrodrive, c356) hangs on the wall
+                in the west cell
+  north niche   where the plates are kept: a low cabinet of plate drawers along the whole wall,
+                under the window; on it a box of fresh plates and two plate holders. One sees it
+                in glimpses, under the tube and past the counterweights
   east wall     south of the camera back the observing steps: three treads on wheels, a rail to
                 hold on to, for the eye at the guiding telescope
   by the door   two plate boxes shut and stacked, to go down to the plate vault in the morning
@@ -22,8 +25,9 @@ and the two niches, north and south, each three cells wide and one deep. So:
 The floor is relaid in boards, with the head of the instrument's pier flush in it under the column.
 
 Light. Two lamps and no more (the card): the desk lamp, whose source is offered a cell north of the
-desk so that it dies before it reaches a window or the door, and the red lamp, lit glass and a
-source of the lowest rank beside the camera back. Nothing shows from outside.
+desk so that it dies before it reaches a window or the door, and the red lamp, which is lit glass
+and offers no source of its own. The red lamp's glass looks west along the niche and stands behind
+the south window's jamb. Nothing shows from outside.
 
 What is whose: the shell, the slit and the door are main/smalldome's; the astrograph is machines';
 desk, stool and the shut plate boxes are props/furniture's, the lamp props/lamps', the log
@@ -76,8 +80,9 @@ STOOL = (DESK[0] - 0.05, DESK[1] - 0.9)
 STEPS = (EAST - 0.5, CZ + 1.56)                         # (14.5, 31.56): against the east wall, south of the camera
 BOXES = (CX - 1.58, CZ - 0.6)                           # (10.42, 29.4): the shut boxes, left of the door
 LAMP_CELL = (NICHE_X[1], FEET, CZ + 1)                  # (13, 18, 31): where the desk lamp's source is offered
-RED_CELL = (NICHE_X[1], FEET, CZ - 1)                   # (13, 18, 29): and the red lamp's
-ASK_LAMP, ASK_RED = 5, 3                                # the lowest steps of the third rank
+ASK_LAMP = 5                                            # the lowest step of the third rank
+BOX_ON_DESK = (-8.5, 1.5)                               # the open plate box, in the desk's frame (on_desk)
+RED = (NICHE_EAST, FEET + 1.62, SOUTH - 0.5 - 1.5 / 16.0)       # the red lamp: on the niche's end wall, over the box
 
 # ---- materials: props/furniture's wood and brass, so the pieces are of one make -------------------
 WOOD = P.mat("dark_wood")
@@ -116,9 +121,9 @@ def _cabinet():
 
 
 def _plate_box_open():
-    """props/furniture's plate box with its lid up: the lid stands on its hinges against the wall
-    behind, its lining towards the room; in the box the night's plates in their paper sleeves, on
-    edge, and room for three more. Anchor: the middle of the box's underside; the lid is behind."""
+    """props/furniture's plate box with its lid up: the lid stands on its hinges behind the box,
+    its lining towards the room; in the box the night's plates in their paper sleeves, on edge,
+    and room for three more. Anchor: the middle of the box's underside; the lid is behind."""
     m = M.Model(PREFIX + "plate_box_open")
     m.box((-6.0, 0.0, -4.0), (6.0, 1.0, 4.0), WOOD, grain="x")
     for z0 in (-4.0, 3.0):
@@ -160,7 +165,8 @@ def _holder():
 
 def _safelight():
     """The red lamp: a small iron lamp house with a pane of ruby glass, a hood and a short flue; the
-    plate vault's safelight a size down. Anchor: on the wall, the middle of its back."""
+    plate vault's safelight a size down. It does not blink. Anchor: on the wall, the middle of its
+    back."""
     m = M.Model(PREFIX + "safelight")
     m.box((-3.0, -2.5, 0.0), (3.0, 2.5, 3.0), IRON_D, skip="n")
     m.box((-3.5, 2.5, 0.0), (3.5, 3.5, 4.0), IRON, skip="n")
@@ -227,26 +233,26 @@ def build_astroroom(canvas, origin=(0, 0, 0)):
     for x, z in ROOM:
         put(x, FLOOR_Y, z, STONE if (x, z) in PAD else BOARDS)
 
-    # ---- the north niche: the cabinet, tonight's box open on it, two holders, the red lamp --------
+    # ---- the north niche: the cabinet, on it a box of fresh plates and two holders ------------------
     top = FEET + CAB_H * PX
     n += piece("cabinet", (CABINET[0], float(FEET), CABINET[1]), mount="wall", facing="south")
     for x in range(NICHE_X[0], NICHE_X[1] + 1):                     # a model stops nobody
         put(x, FEET, CZ - 2, B.BARRIER)
-    n += piece("plate_box_open", (NICHE_EAST - 0.62, top, NORTH + 7.75 * PX))
+    n += furniture.place(canvas, "plate_box", (NICHE_EAST - 0.62, top, NORTH + 0.4), yaw=-6.0, origin=origin)
     n += piece("holder", (CABINET[0] - 0.15, top, NORTH + 0.42), yaw=4.0)
     n += piece("holder", (CABINET[0] - 0.1, top + PX, NORTH + 0.45), yaw=-12.0)
-    n += piece("safelight", (NICHE_EAST, FEET + 1.55, NORTH + 0.5), mount="wall", facing="west")
-    K.offer_lights(canvas, [((ox + RED_CELL[0], oy + RED_CELL[1], oz + RED_CELL[2]), ASK_RED)], f"{NAME}:red lamp")
 
-    # ---- the south niche: the desk, the log, the lamp, a holder; the stool; the driving clock ------
+    # ---- the south niche: the desk; tonight's box open under the red lamp; the log under the desk
+    #      lamp; the stool; the driving clock ---------------------------------------------------------
     n += furniture.place(canvas, "writing_desk", (DESK[0], float(FEET), DESK[1]), yaw=DESK_YAW, origin=origin)
     for x in DESK_CELLS:
         put(x, FEET, CZ + 2, B.BARRIER)
     n += furniture.place(canvas, "stool", (STOOL[0], float(FEET), STOOL[1]), origin=origin)
-    n += lamps.place(canvas, "desk_green", on_desk(-6.5, -3.0), yaw=DESK_YAW + 20.0, origin=origin, light=False)
+    n += piece("plate_box_open", on_desk(*BOX_ON_DESK), yaw=DESK_YAW)
+    n += piece("safelight", RED, mount="wall", facing="west")
+    n += lamps.place(canvas, "desk_green", on_desk(4.5, -3.25), yaw=DESK_YAW + 20.0, origin=origin, light=False)
     K.offer_lights(canvas, [((ox + LAMP_CELL[0], oy + LAMP_CELL[1], oz + LAMP_CELL[2]), ASK_LAMP)], f"{NAME}:desk lamp")
-    n += paper.place(canvas, "logbook", on_desk(1.5, 2.0), yaw=DESK_YAW - 7.0, origin=origin)
-    n += piece("holder", on_desk(10.75, 1.75), yaw=DESK_YAW + 5.0)
+    n += paper.place(canvas, "logbook", on_desk(3.75, 3.4), yaw=DESK_YAW - 4.0, origin=origin)
     n += _astrodrive.place(canvas, origin)
 
     # ---- the observing steps by the camera, the boxes that go down in the morning -------------------
