@@ -60,9 +60,14 @@ async def _mock_send_text(chat_id: int, text: str, **kwargs):
     return [{"message_id": 203}]
 
 
+async def _mock_send_doc(*args, **kwargs):
+    return {"message_id": 204}
+
+
 bridge.tg.call = _mock_tg_call
 bridge.tg.try_call = _mock_tg_call
 bridge.tg.send_text = _mock_send_text
+bridge.tg.send_document = _mock_send_doc
 
 
 def text_of(res) -> str:
@@ -584,6 +589,70 @@ def run_web_console_tests() -> None:
             assert alice_client.get("/web/api/convs/c1/messages").status_code == 200
             al_gpost = alice_client.post("/web/api/groups/g2/messages", json={"text": "我是Alice，在共享群发言", "mentions": ["c1"]}).json()
             assert al_gpost["ok"] and al_gpost["woke"] == ["c1"]
+
+            # 9. Verify owner:0 shared AI files, SVG images, outbox [发送文件 ...] (both delivered=1 & legacy extra=''),
+            #    default channel='human' filtering out subagent/group noise, after_id delta, reply_to_id & SSE!
+            c1_live_ag = bridge.conv_row("c1")["agent"]
+            if not c1_live_ag:
+                tcode_c1 = bridge.issue_task("c1")
+                j_c1 = asyncio.run(bridge.call_tool("join", {"code": tcode_c1, "name": "天文台"}))
+                assert not j_c1.is_error
+                c1_live_ag = bridge.conv_row("c1")["agent"]
+
+            # AI sends SVG image to group g2 (creates owner:0 file) -> alice MUST load & download 200 OK (no 403!)
+            svg_body = "<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'></svg>"
+            sf_grp = asyncio.run(
+                bridge.call_tool("send_file", {"agent": c1_live_ag, "filename": "nesting.svg", "text": svg_body, "to_group": "g2", "caption": "排料图"})
+            )
+            assert not sf_grp.is_error
+            g2_msgs = alice_client.get("/web/api/groups/g2/messages").json()["messages"]
+            svg_msg = next(m for m in g2_msgs if "nesting.svg" in m["text"] or (m["file"] and m["file"]["name"] == "nesting.svg"))
+            assert svg_msg["file"]["is_image"] is True and svg_msg["file"]["mime"] == "image/svg+xml"
+            al_svg_get = alice_client.get(svg_msg["file"]["url"])
+            assert al_svg_get.status_code == 200 and b"<svg" in al_svg_get.content
+            al_svg_dl = alice_client.get(svg_msg["file"]["download_url"])
+            assert al_svg_dl.status_code == 200 and "attachment" in al_svg_dl.headers.get("content-disposition", "")
+            # Even raw /web/api/files/<fid> without ?sig= must allow alice via _can_user_read_file!
+            assert alice_client.get(f"/web/api/files/{svg_msg['file']['file_id']}").status_code == 200
+
+            # AI sends file directly to selected TG chat (delivered=1) + simulate legacy historical [发送文件 ...] with extra=''
+            bridge.store.set("sel:7001", "c1")
+            sf_tg = asyncio.run(
+                bridge.call_tool("send_file", {"agent": c1_live_ag, "filename": "report_v2.txt", "text": "score=4.8420", "caption": "最新成绩单"})
+            )
+            assert not sf_tg.is_error
+            legacy_p = DATA_DIR / "outbox" / "aabbccddeeff_legacy_plot.png"
+            legacy_p.write_bytes(png_stub)
+            bridge.store.insert_message(
+                chat_id=7001, chat_type="private", user_id=999000, user_name="天文台",
+                text="[发送文件 legacy_plot.png] 历史无extra图片", outgoing=1, target="c1", conv="c1", delivered=1, extra=""
+            )
+
+            # Inject subagent noise (agent_dm) into c1 -> default GET /web/api/convs/c1/messages MUST stay pure 'human'!
+            c3_live_ag = bridge.conv_row("c3")["agent"]
+            asyncio.run(bridge.call_tool("send_agent_message", {"agent": c3_live_ag, "to": "c1", "text": "内部子工汇报杂音", "wake": False}))
+
+            zwt_c1_default = client.get("/web/api/convs/c1/messages").json()
+            assert zwt_c1_default["channel"] == "human"
+            assert all(m["channel"] == "human" for m in zwt_c1_default["messages"])
+            assert all("内部子工汇报杂音" not in m["text"] for m in zwt_c1_default["messages"])
+            assert any(m["file"] and m["file"]["name"] == "report_v2.txt" for m in zwt_c1_default["messages"])
+            legacy_hit = next(m for m in zwt_c1_default["messages"] if "legacy_plot.png" in m["text"])
+            assert legacy_hit["file"] is not None and legacy_hit["file"]["is_image"] is True
+            assert alice_client.get(legacy_hit["file"]["download_url"]).status_code == 200
+
+            # Alice attempting ?channel=all on c1 is still strictly locked to 'human'!
+            al_c1_try_all = alice_client.get("/web/api/convs/c1/messages?channel=all").json()
+            assert al_c1_try_all["channel"] == "human" and all(m["channel"] == "human" for m in al_c1_try_all["messages"])
+
+            # Verify reply_to_id & after_id delta & SSE /web/api/events?once=1
+            prev_max = max(m["id"] for m in zwt_c1_default["messages"])
+            q_rep = client.post("/web/api/convs/c1/messages", json={"text": "收到这张历史图", "reply_to_id": legacy_hit["id"]}).json()
+            assert q_rep["ok"] and q_rep["messages"][0]["text"].startswith(f"> [引用 #{legacy_hit['id']}")
+            delta_res = client.get(f"/web/api/convs/c1/messages?after_id={prev_max}").json()
+            assert len(delta_res["messages"]) == 1 and delta_res["messages"][0]["id"] == q_rep["message_ids"][0]
+            sse_res = client.get("/web/api/events?conv=c1&once=1")
+            assert sse_res.status_code == 200 and "event: sync" in sse_res.text
 
         if log_file.exists():
             log_txt = log_file.read_text(encoding="utf-8", errors="replace")

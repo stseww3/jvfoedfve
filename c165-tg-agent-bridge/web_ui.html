@@ -3,51 +3,61 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-<title>Agent Bridge Studio</title>
+<title>Bridge Studio · Telegram Web Console</title>
 <style>
 :root[data-theme="dark"] {
-  --bg-app: #171717;
-  --bg-sidebar: #111111;
-  --bg-surface: #212121;
-  --bg-elevated: #2a2a2a;
-  --bg-hover: rgba(255,255,255,0.06);
-  --bg-active: rgba(255,255,255,0.10);
-  --bg-user-msg: #2f2f2f;
-  --border: rgba(255,255,255,0.09);
-  --border-strong: rgba(255,255,255,0.16);
-  --text-main: #ececec;
-  --text-sub: #a1a1aa;
-  --text-muted: #71717a;
-  --accent: #d97757;
-  --accent-hover: #e38768;
-  --accent-soft: rgba(217,119,87,0.15);
-  --green: #10b981;
+  --bg-app: #0f1115;
+  --bg-chat: #0b0d11;
+  --bg-sidebar: #14171d;
+  --bg-surface: #1b1f27;
+  --bg-elevated: #242934;
+  --bg-hover: rgba(255,255,255,0.055);
+  --bg-active: rgba(82,136,193,0.18);
+  --bg-user-msg: #2b5278;
+  --bg-user-msg-text: #f3f7fc;
+  --bg-ai-msg: #18202b;
+  --bg-sys-card: rgba(255,255,255,0.04);
+  --border: rgba(255,255,255,0.08);
+  --border-strong: rgba(255,255,255,0.15);
+  --text-main: #eef1f6;
+  --text-sub: #9aa3b2;
+  --text-muted: #687282;
+  --accent: #4ea4f6;
+  --accent-hover: #64b2ff;
+  --accent-soft: rgba(78,164,246,0.15);
+  --green: #22c55e;
   --amber: #f59e0b;
   --red: #ef4444;
-  --code-bg: #0d0d0d;
-  --shadow: 0 12px 36px rgba(0,0,0,0.45);
+  --code-bg: #0c0e13;
+  --menu-bg: rgba(26,30,39,0.86);
+  --shadow: 0 14px 40px rgba(0,0,0,0.52);
 }
 :root[data-theme="light"] {
-  --bg-app: #faf9f6;
-  --bg-sidebar: #f2f0ea;
+  --bg-app: #ffffff;
+  --bg-chat: #eef2f6;
+  --bg-sidebar: #f7f8fa;
   --bg-surface: #ffffff;
-  --bg-elevated: #f5f3ee;
+  --bg-elevated: #f0f3f7;
   --bg-hover: rgba(0,0,0,0.045);
-  --bg-active: rgba(0,0,0,0.08);
-  --bg-user-msg: #efede6;
+  --bg-active: rgba(51,144,236,0.13);
+  --bg-user-msg: #effdde;
+  --bg-user-msg-text: #182218;
+  --bg-ai-msg: #ffffff;
+  --bg-sys-card: rgba(0,0,0,0.04);
   --border: rgba(0,0,0,0.08);
-  --border-strong: rgba(0,0,0,0.15);
-  --text-main: #1f1e1d;
-  --text-sub: #57534e;
-  --text-muted: #8a857e;
-  --accent: #c96442;
-  --accent-hover: #b55636;
-  --accent-soft: rgba(201,100,66,0.12);
-  --green: #059669;
+  --border-strong: rgba(0,0,0,0.14);
+  --text-main: #181c22;
+  --text-sub: #545d6a;
+  --text-muted: #86909e;
+  --accent: #3390ec;
+  --accent-hover: #247fd9;
+  --accent-soft: rgba(51,144,236,0.12);
+  --green: #16a34a;
   --amber: #d97706;
   --red: #dc2626;
-  --code-bg: #1e1e1e;
-  --shadow: 0 10px 30px rgba(0,0,0,0.10);
+  --code-bg: #181b22;
+  --menu-bg: rgba(255,255,255,0.90);
+  --shadow: 0 12px 32px rgba(15,23,42,0.14);
 }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body {
@@ -55,15 +65,13 @@ html, body {
   height: 100%; height: 100dvh;
   background: var(--bg-app);
   color: var(--text-main);
-  font-family: -apple-system, BlinkMacSystemFont, "Inter", "SF Pro Text", "PingFang SC", "Microsoft YaHei", sans-serif;
-  font-size: 15px;
-  line-height: 1.6;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 14.5px;
+  line-height: 1.56;
   overflow: hidden;
+  overscroll-behavior: none;
 }
-button, input, textarea, select {
-  font-family: inherit;
-  color: inherit;
-}
+button, input, textarea, select { font-family: inherit; color: inherit; }
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
 
@@ -72,53 +80,53 @@ button, input, textarea, select {
   position: fixed; inset: 0; z-index: 200;
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
-  background: radial-gradient(circle at 50% 0%, var(--accent-soft), transparent 60%), var(--bg-app);
+  background: radial-gradient(circle at 50% 0%, var(--accent-soft), transparent 62%), var(--bg-app);
 }
 .auth-card {
   width: 100%; max-width: 400px;
   background: var(--bg-surface);
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: 22px;
   padding: 32px 28px;
   box-shadow: var(--shadow);
 }
 .auth-logo {
-  width: 44px; height: 44px; border-radius: 12px;
+  width: 46px; height: 46px; border-radius: 14px;
   background: var(--accent); color: #fff;
   display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: 20px; margin-bottom: 18px;
+  font-weight: 700; font-size: 21px; margin-bottom: 18px;
 }
 .auth-title { font-size: 22px; font-weight: 650; margin: 0 0 6px; letter-spacing: -0.02em; }
 .auth-sub { color: var(--text-sub); font-size: 13.5px; margin: 0 0 22px; }
 .field { margin-bottom: 14px; }
 .field label { display: block; font-size: 12.5px; color: var(--text-sub); margin-bottom: 6px; font-weight: 500; }
 .input {
-  width: 100%; padding: 11px 13px;
+  width: 100%; padding: 10px 13px;
   background: var(--bg-app);
   border: 1px solid var(--border-strong);
-  border-radius: 11px;
-  font-size: 15px; outline: none;
-  transition: border-color .15s;
+  border-radius: 12px;
+  font-size: 14.5px; outline: none;
+  transition: border-color .15s, box-shadow .15s;
 }
-.input:focus { border-color: var(--accent); }
+.input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-  padding: 9px 15px; border-radius: 10px;
+  padding: 7px 13px; border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--bg-surface);
-  cursor: pointer; font-size: 13.5px; font-weight: 500;
-  transition: all .15s; min-height: 38px;
+  cursor: pointer; font-size: 13px; font-weight: 500;
+  transition: transform .1s, background .15s, border-color .15s;
+  min-height: 35px; user-select: none;
 }
 .btn:hover { background: var(--bg-hover); }
-.btn-primary {
-  background: var(--accent); border-color: var(--accent); color: #fff;
-}
-.btn-primary:hover { background: var(--accent-hover); }
-.btn-danger { color: var(--red); border-color: rgba(239,68,68,0.3); }
-.btn-block { width: 100%; padding: 12px; font-size: 15px; font-weight: 600; border-radius: 11px; }
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn-danger { color: var(--red); border-color: rgba(239,68,68,0.32); }
+.btn-block { width: 100%; padding: 12px; font-size: 15px; font-weight: 600; border-radius: 12px; }
 .auth-err {
   background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3);
-  color: var(--red); padding: 9px 12px; border-radius: 9px;
+  color: var(--red); padding: 9px 12px; border-radius: 10px;
   font-size: 13px; margin-bottom: 14px; display: none;
 }
 .setup-banner {
@@ -127,62 +135,82 @@ button, input, textarea, select {
   font-size: 13px; margin-bottom: 14px; display: none;
 }
 
-/* Main App Layout */
-.app {
-  display: flex; width: 100%; height: 100%; height: 100dvh; overflow: hidden;
-}
+/* Main Workspace */
+.app { display: flex; width: 100%; height: 100%; height: 100dvh; overflow: hidden; }
 .sidebar {
-  width: 288px; flex-shrink: 0;
+  width: 304px; flex-shrink: 0;
   background: var(--bg-sidebar);
   border-right: 1px solid var(--border);
   display: flex; flex-direction: column;
   height: 100%; z-index: 90;
-  transition: transform .24s cubic-bezier(.16,1,.3,1);
+  transition: transform .24s cubic-bezier(.2,.9,.25,1);
+  will-change: transform;
 }
 .sb-top {
-  padding: 14px 12px 10px;
-  display: flex; flex-direction: column; gap: 10px;
+  padding: 12px 12px 10px;
+  display: flex; flex-direction: column; gap: 9px;
   border-bottom: 1px solid var(--border);
 }
-.sb-brand-row {
-  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+.sb-brand-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.sb-brand { display: flex; align-items: center; gap: 9px; font-weight: 650; font-size: 15px; }
+.sb-dot {
+  width: 28px; height: 28px; border-radius: 9px;
+  background: linear-gradient(135deg, var(--accent), #2563eb);
+  color: #fff; display: inline-flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700;
 }
-.sb-brand {
-  display: flex; align-items: center; gap: 9px; font-weight: 650; font-size: 15px;
-}
-.sb-dot { width: 26px; height: 26px; border-radius: 8px; background: var(--accent); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+.sb-search-wrap { position: relative; display: flex; align-items: center; }
 .sb-search {
-  width: 100%; padding: 8px 11px; border-radius: 9px;
+  width: 100%; padding: 8px 30px 8px 12px; border-radius: 11px;
   border: 1px solid var(--border); background: var(--bg-surface);
-  font-size: 13px; outline: none;
+  font-size: 13px; outline: none; transition: border-color .15s;
 }
-.sb-list {
-  flex: 1; overflow-y: auto; padding: 8px 8px 14px;
+.sb-search:focus { border-color: var(--accent); }
+.sb-search-clear {
+  position: absolute; right: 7px; border: none; background: none;
+  color: var(--text-muted); cursor: pointer; font-size: 13px; display: none; padding: 2px 4px;
 }
+.sb-list { flex: 1; overflow-y: auto; padding: 6px 8px 14px; contain: content; }
 .sb-sec-title {
-  font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em;
+  font-size: 11px; font-weight: 600; letter-spacing: .04em;
   color: var(--text-muted); padding: 10px 8px 4px;
   display: flex; align-items: center; justify-content: space-between;
+  user-select: none;
 }
+.sb-sec-title.clickable { cursor: pointer; border-radius: 7px; }
+.sb-sec-title.clickable:hover { color: var(--text-sub); background: var(--bg-hover); }
 .sb-item {
-  display: flex; align-items: center; gap: 9px;
-  padding: 9px 10px; border-radius: 10px;
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: 11px;
   cursor: pointer; user-select: none;
   margin-bottom: 2px; transition: background .12s;
 }
 .sb-item:hover { background: var(--bg-hover); }
-.sb-item.active { background: var(--bg-active); font-weight: 550; }
-.status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: var(--text-muted); }
-.status-dot.online { background: var(--green); box-shadow: 0 0 6px rgba(16,185,129,.5); }
+.sb-item.active { background: var(--bg-active); }
+.sb-avatar {
+  width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+  background: var(--bg-elevated); color: var(--text-main);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 650; font-size: 13.5px; position: relative;
+}
+.sb-avatar.group { background: var(--accent-soft); color: var(--accent); }
+.sb-avatar.ctrl { background: rgba(168,85,247,0.16); color: #c084fc; }
+.status-dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--text-muted);
+  position: absolute; right: -1px; bottom: -1px;
+  border: 2px solid var(--bg-sidebar);
+}
+.status-dot.online { background: var(--green); }
 .status-dot.busy { background: var(--amber); }
 .status-dot.stuck, .status-dot.lost { background: var(--red); }
 .sb-item-body { flex: 1; min-width: 0; }
 .sb-item-title {
-  font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-size: 13.5px; font-weight: 550; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   display: flex; align-items: center; gap: 5px;
 }
 .sb-item-sub {
-  font-size: 11.5px; color: var(--text-muted);
+  font-size: 12px; color: var(--text-muted);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .pill {
@@ -192,14 +220,17 @@ button, input, textarea, select {
   border: 1px solid var(--border); flex-shrink: 0;
 }
 .pill.accent { background: var(--accent-soft); color: var(--accent); border-color: transparent; }
+.badge-unread {
+  min-width: 19px; height: 19px; padding: 0 6px; border-radius: 999px;
+  background: var(--accent); color: #fff; font-size: 11px; font-weight: 650;
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
 .sb-footer {
-  padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+  padding: 9px 12px calc(9px + env(safe-area-inset-bottom, 0px));
   border-top: 1px solid var(--border);
   display: flex; align-items: center; justify-content: space-between; gap: 6px;
 }
-.user-chip {
-  display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 13px; font-weight: 500;
-}
+.user-chip { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 13px; font-weight: 500; }
 .avatar {
   width: 28px; height: 28px; border-radius: 50%;
   background: var(--accent-soft); color: var(--accent);
@@ -207,202 +238,398 @@ button, input, textarea, select {
   font-weight: 700; font-size: 12px; flex-shrink: 0;
 }
 .icon-btn {
-  width: 34px; height: 34px; border-radius: 9px;
+  width: 34px; height: 34px; border-radius: 10px;
   border: 1px solid transparent; background: transparent;
   display: inline-flex; align-items: center; justify-content: center;
   cursor: pointer; color: var(--text-sub); font-size: 15px;
+  transition: background .12s, color .12s, transform .1s;
 }
 .icon-btn:hover { background: var(--bg-hover); color: var(--text-main); }
+.icon-btn:active { transform: scale(0.93); }
 
 /* Main Chat Pane */
 .main-pane {
-  flex: 1; display: flex; flex-direction: column; min-width: 0; height: 100%; position: relative;
+  flex: 1; display: flex; flex-direction: column; min-width: 0; height: 100%;
+  position: relative; background: var(--bg-chat);
 }
 .topbar {
-  min-height: 56px; padding: 8px 16px;
+  min-height: 54px; padding: 7px 14px;
   border-bottom: 1px solid var(--border);
   display: flex; align-items: center; justify-content: space-between; gap: 10px;
-  background: var(--bg-app); z-index: 20;
+  background: var(--bg-surface); z-index: 20;
 }
-.topbar-left { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; }
+.topbar-left { display: flex; align-items: center; gap: 9px; min-width: 0; flex: 1; }
 .menu-toggle { display: none; }
 .chat-head-info { min-width: 0; flex: 1; }
 .chat-head-title {
-  font-size: 15.5px; font-weight: 600; display: flex; align-items: center; gap: 7px;
+  font-size: 15px; font-weight: 650; display: flex; align-items: center; gap: 6px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .chat-head-trace {
   font-size: 12px; color: var(--text-sub);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  display: flex; align-items: center; gap: 6px;
+}
+.live-pulse {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+  display: none; flex-shrink: 0;
+  animation: tgPulse 1.3s ease-in-out infinite;
+}
+.live-pulse.on { display: inline-block; }
+@keyframes tgPulse {
+  0%, 100% { transform: scale(0.85); opacity: 0.5; }
+  50% { transform: scale(1.25); opacity: 1; }
 }
 .topbar-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
 
-/* Messages Stream */
+/* Four-Channel Filter Tabs */
+.channel-bar {
+  display: none; align-items: center; gap: 6px;
+  padding: 6px 14px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto; z-index: 18;
+}
+.channel-bar::-webkit-scrollbar { height: 0; }
+.ch-tab {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 11px; border-radius: 999px;
+  border: 1px solid var(--border);
+  background: transparent; color: var(--text-sub);
+  font-size: 12px; font-weight: 500; cursor: pointer; white-space: nowrap;
+  transition: all .14s;
+}
+.ch-tab:hover { background: var(--bg-hover); color: var(--text-main); }
+.ch-tab.active {
+  background: var(--accent-soft); color: var(--accent);
+  border-color: rgba(78,164,246,0.38); font-weight: 600;
+}
+.ch-cnt { font-size: 11px; opacity: 0.78; }
+
+/* Messages Area — NO smooth scroll-behavior so zero scroll fight / zero flicker! */
 .messages-area {
-  flex: 1; overflow-y: auto; padding: 18px 16px 12px;
-  scroll-behavior: smooth;
+  flex: 1; overflow-y: auto; overflow-x: hidden;
+  padding: 14px 14px 10px;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
 }
-.msg-container { max-width: 820px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
-.empty-state {
-  text-align: center; padding: 70px 20px; color: var(--text-sub);
+.msg-container {
+  max-width: 840px; margin: 0 auto;
+  display: flex; flex-direction: column; gap: 10px;
+  padding-bottom: 6px;
 }
-.msg-row { display: flex; flex-direction: column; gap: 4px; position: relative; }
+.history-loader {
+  text-align: center; font-size: 12px; color: var(--text-muted);
+  padding: 6px 0 10px; display: none;
+}
+.empty-state { text-align: center; padding: 72px 20px; color: var(--text-muted); font-size: 14px; }
+
+/* Telegram Message Bubbles & System/Collab Cards */
+.msg-row {
+  display: flex; flex-direction: column; position: relative;
+  transition: transform .18s cubic-bezier(.2,.9,.3,1), background-color .35s;
+  border-radius: 14px;
+}
+.msg-row.msg-enter { animation: msgEnter .18s cubic-bezier(.2,.9,.3,1); }
+@keyframes msgEnter {
+  from { opacity: 0; transform: translateY(8px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.msg-row.flash-jump { animation: flashJump 1.2s ease; }
+@keyframes flashJump {
+  0%, 100% { background-color: transparent; }
+  25%, 60% { background-color: var(--accent-soft); }
+}
+.msg-row.is-editing .msg-bubble { outline: 2px solid var(--accent); outline-offset: 1px; }
 .msg-row.user { align-items: flex-end; }
 .msg-row.ai { align-items: flex-start; }
-.msg-meta {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 11.5px; color: var(--text-muted); padding: 0 4px;
+.msg-row.collab-card { align-items: center; margin: 3px 0; }
+
+.swipe-reply-hint {
+  position: absolute; right: -34px; top: 50%; transform: translateY(-50%) scale(0.6);
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--bg-elevated); color: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; opacity: 0; pointer-events: none;
+  transition: opacity .12s, transform .12s;
 }
+.msg-row.swiping .swipe-reply-hint { opacity: 1; transform: translateY(-50%) scale(1); }
+
 .msg-bubble {
-  max-width: 92%;
-  padding: 11px 15px;
+  max-width: min(86%, 720px);
+  padding: 9px 13px 8px;
   border-radius: 16px;
   word-break: break-word;
   position: relative;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.12);
 }
 .msg-row.user .msg-bubble {
   background: var(--bg-user-msg);
+  color: var(--bg-user-msg-text);
   border-bottom-right-radius: 5px;
 }
 .msg-row.ai .msg-bubble {
-  background: transparent;
-  padding: 4px 4px;
-  max-width: 100%;
-  width: 100%;
-}
-.msg-row.group-item .msg-bubble {
-  background: var(--bg-surface);
+  background: var(--bg-ai-msg);
   border: 1px solid var(--border);
-  max-width: 96%;
+  border-bottom-left-radius: 5px;
+  max-width: min(94%, 780px);
 }
-.msg-content p { margin: 0 0 10px; }
+.msg-row.collab-card .msg-bubble {
+  width: 100%; max-width: 760px;
+  background: var(--bg-sys-card);
+  border: 1px dashed var(--border-strong);
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-size: 13.2px;
+}
+.msg-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  font-size: 11.5px; margin-bottom: 3px;
+}
+.msg-sender { font-weight: 600; color: var(--accent); }
+.msg-row.user .msg-sender { color: rgba(255,255,255,0.82); }
+:root[data-theme="light"] .msg-row.user .msg-sender { color: #2b6cb0; }
+.msg-more-btn {
+  opacity: 0; border: none; background: transparent; color: var(--text-muted);
+  cursor: pointer; padding: 0 4px; border-radius: 5px; font-size: 14px; line-height: 1;
+  transition: opacity .12s, background .12s;
+}
+.msg-bubble:hover .msg-more-btn { opacity: 0.85; }
+.msg-more-btn:hover { background: var(--bg-hover); color: var(--text-main); }
+
+/* Telegram Quote Block inside Bubble */
+.quote-block {
+  border-left: 3px solid var(--accent);
+  background: rgba(127,127,127,0.12);
+  border-radius: 4px 8px 8px 4px;
+  padding: 4px 9px; margin-bottom: 6px;
+  font-size: 12.5px; cursor: pointer;
+  overflow: hidden;
+}
+.quote-block:hover { background: rgba(127,127,127,0.19); }
+.quote-author { font-weight: 600; color: var(--accent); font-size: 11.5px; }
+.quote-snip { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; opacity: 0.88; }
+
+.msg-content p { margin: 0 0 8px; }
 .msg-content p:last-child { margin-bottom: 0; }
+.msg-content h1, .msg-content h2, .msg-content h3, .msg-content h4 {
+  margin: 8px 0 5px; font-weight: 650; line-height: 1.35;
+}
+.msg-content h1 { font-size: 17px; }
+.msg-content h2 { font-size: 15.5px; }
+.msg-content h3, .msg-content h4 { font-size: 14.5px; }
+.msg-content ul, .msg-content ol { margin: 5px 0 8px; padding-left: 20px; }
+.msg-content li { margin-bottom: 2px; }
+.msg-content blockquote {
+  margin: 6px 0; padding: 4px 10px;
+  border-left: 3px solid var(--border-strong); color: var(--text-sub);
+}
+.msg-content table {
+  border-collapse: collapse; width: 100%; margin: 8px 0; font-size: 13px;
+}
+.msg-content th, .msg-content td {
+  border: 1px solid var(--border-strong); padding: 5px 8px; text-align: left;
+}
+.msg-content th { background: rgba(127,127,127,0.1); }
 .msg-content pre {
   background: var(--code-bg); color: #e5e7eb;
-  padding: 12px 14px; border-radius: 10px;
+  padding: 11px 13px; border-radius: 10px;
   overflow-x: auto; font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 13px; margin: 10px 0; position: relative;
+  font-size: 12.8px; margin: 8px 0; position: relative;
   border: 1px solid rgba(255,255,255,0.08);
 }
 .msg-content code {
   font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 13px; background: var(--bg-elevated);
+  font-size: 12.8px; background: rgba(127,127,127,0.16);
   padding: 1.5px 5px; border-radius: 5px;
 }
 .msg-content pre code { background: transparent; padding: 0; }
 .copy-code-btn {
-  position: absolute; top: 7px; right: 8px;
-  background: rgba(255,255,255,0.12); color: #fff;
-  border: none; border-radius: 6px; padding: 3px 8px;
+  position: absolute; top: 6px; right: 7px;
+  background: rgba(255,255,255,0.13); color: #fff;
+  border: none; border-radius: 6px; padding: 2px 8px;
   font-size: 11px; cursor: pointer;
 }
-.msg-actions {
-  display: flex; align-items: center; gap: 4px;
-  opacity: 0; transition: opacity .15s; margin-top: 2px;
+.msg-foot {
+  display: flex; align-items: center; justify-content: flex-end; gap: 6px;
+  font-size: 11px; opacity: 0.66; margin-top: 4px; user-select: none;
 }
-.msg-row:hover .msg-actions { opacity: 1; }
-@media (hover: none) {
-  .msg-actions { opacity: 0.85; }
-}
-.act-chip {
-  border: 1px solid var(--border); background: var(--bg-surface);
-  color: var(--text-sub); border-radius: 7px;
-  padding: 2px 8px; font-size: 11.5px; cursor: pointer;
-}
-.act-chip:hover { color: var(--text-main); border-color: var(--border-strong); }
-.act-chip.del:hover { color: var(--red); border-color: var(--red); }
 
-.edit-box { width: 100%; min-width: min(520px, 84vw); margin-top: 6px; }
-.edit-box textarea {
-  width: 100%; min-height: 90px; padding: 10px;
-  border-radius: 10px; border: 1px solid var(--accent);
-  background: var(--bg-surface); font-size: 14px; resize: vertical;
+/* Attachments: Images & Files */
+.att-list { display: flex; flex-direction: column; gap: 7px; margin-top: 6px; }
+.img-att-wrap {
+  position: relative; display: inline-block; max-width: min(380px, 76vw);
+  border-radius: 12px; overflow: hidden; border: 1px solid var(--border);
+  background: rgba(0,0,0,0.16); min-height: 48px;
 }
-.edit-btns { display: flex; gap: 8px; justify-content: flex-end; margin-top: 6px; }
-
-/* Attachments in Messages */
 .msg-img {
-  max-width: min(360px, 78vw); max-height: 320px;
-  border-radius: 12px; border: 1px solid var(--border);
-  cursor: zoom-in; display: block; margin-top: 6px;
+  display: block; max-width: min(380px, 76vw); max-height: 340px;
+  width: auto; height: auto; object-fit: contain; cursor: zoom-in;
 }
-.msg-file-card {
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 9px 13px; border-radius: 11px;
-  background: var(--bg-elevated); border: 1px solid var(--border);
-  text-decoration: none; color: var(--text-main); margin-top: 6px; font-size: 13px;
+.img-dl-btn {
+  position: absolute; right: 7px; bottom: 7px;
+  background: rgba(15,17,21,0.74); backdrop-filter: blur(8px);
+  color: #fff; text-decoration: none; font-size: 11.5px;
+  padding: 3px 8px; border-radius: 8px; opacity: 0;
+  transition: opacity .15s; border: 1px solid rgba(255,255,255,0.16);
 }
+.img-att-wrap:hover .img-dl-btn { opacity: 1; }
+@media (hover: none) { .img-dl-btn { opacity: 0.88; } }
 
-/* Composer */
+.msg-file-card {
+  display: flex; align-items: center; gap: 11px;
+  padding: 9px 12px; border-radius: 12px;
+  background: rgba(127,127,127,0.12); border: 1px solid var(--border);
+  text-decoration: none; color: inherit; max-width: 360px;
+  transition: background .14s, border-color .14s;
+}
+.msg-file-card:hover { background: rgba(127,127,127,0.2); border-color: var(--accent); }
+.file-ext-icon {
+  width: 38px; height: 38px; border-radius: 10px;
+  background: var(--accent); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 11px; letter-spacing: -.02em; flex-shrink: 0;
+}
+.file-card-info { flex: 1; min-width: 0; }
+.file-card-name { font-size: 13px; font-weight: 550; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.file-card-sub { font-size: 11.5px; opacity: 0.72; }
+.file-card-dl { font-size: 15px; color: var(--accent); flex-shrink: 0; padding: 0 2px; }
+
+/* Floating Scroll-to-Bottom Button (Telegram style) */
+.scroll-bottom-btn {
+  position: absolute; right: 20px; bottom: 90px; z-index: 30;
+  width: 42px; height: 42px; border-radius: 50%;
+  background: var(--bg-surface); color: var(--text-main);
+  border: 1px solid var(--border-strong);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.32);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; cursor: pointer;
+  opacity: 0; pointer-events: none; transform: translateY(12px) scale(0.9);
+  transition: opacity .18s, transform .18s cubic-bezier(.2,.9,.3,1);
+}
+.scroll-bottom-btn.show { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
+.scroll-unread-badge {
+  position: absolute; top: -6px; right: -4px;
+  min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px;
+  background: var(--accent); color: #fff; font-size: 11px; font-weight: 700;
+  display: none; align-items: center; justify-content: center;
+}
+.scroll-unread-badge.show { display: inline-flex; }
+
+/* Frosted-Glass Context Menu */
+.ctx-menu {
+  position: fixed; z-index: 500; min-width: 168px;
+  background: var(--menu-bg);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-strong);
+  border-radius: 14px; padding: 5px;
+  box-shadow: var(--shadow);
+  display: none; flex-direction: column; gap: 1px;
+  transform-origin: top left;
+  animation: menuPop .13s cubic-bezier(.2,.9,.3,1);
+}
+.ctx-menu.open { display: flex; }
+@keyframes menuPop {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+.ctx-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 11px; border-radius: 9px;
+  border: none; background: transparent; width: 100%; text-align: left;
+  font-size: 13.5px; cursor: pointer; color: var(--text-main);
+}
+.ctx-item:hover { background: var(--bg-hover); }
+.ctx-item.danger { color: var(--red); }
+
+/* Composer + Telegram Reply/Edit Banner */
 .composer-wrap {
-  padding: 8px 14px calc(12px + env(safe-area-inset-bottom, 0px));
-  background: var(--bg-app);
+  padding: 6px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+  background: transparent; z-index: 22;
 }
 .composer-box {
-  max-width: 820px; margin: 0 auto;
+  max-width: 840px; margin: 0 auto;
   background: var(--bg-surface);
   border: 1px solid var(--border-strong);
   border-radius: 20px;
-  padding: 10px 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  padding: 8px 11px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.16);
   transition: border-color .15s;
 }
 .composer-box:focus-within { border-color: var(--accent); }
+.composer-banner {
+  display: none; align-items: center; gap: 10px;
+  padding: 5px 8px 7px; margin-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+  animation: bannerSlide .15s cubic-bezier(.2,.9,.3,1);
+}
+.composer-banner.open { display: flex; }
+@keyframes bannerSlide {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.banner-bar { width: 3px; align-self: stretch; border-radius: 2px; background: var(--accent); flex-shrink: 0; }
+.banner-body { flex: 1; min-width: 0; font-size: 12.5px; }
+.banner-title { font-weight: 600; color: var(--accent); }
+.banner-sub { color: var(--text-sub); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .group-wake-bar {
   display: none; flex-wrap: wrap; align-items: center; gap: 6px;
-  padding-bottom: 8px; margin-bottom: 8px; border-bottom: 1px solid var(--border);
+  padding-bottom: 7px; margin-bottom: 7px; border-bottom: 1px solid var(--border);
   font-size: 12px;
 }
 .member-tog {
-  padding: 2px 8px; border-radius: 999px; border: 1px solid var(--border);
+  padding: 2px 9px; border-radius: 999px; border: 1px solid var(--border);
   cursor: pointer; font-size: 11.5px; background: var(--bg-app); color: var(--text-sub);
+  user-select: none;
 }
 .member-tog.on { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); font-weight: 600; }
-.pending-files {
-  display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 6px;
-}
+.pending-files { display: flex; flex-wrap: wrap; gap: 8px; }
+.pending-files:not(:empty) { margin-bottom: 6px; }
 .pfile {
   display: flex; align-items: center; gap: 7px;
   background: var(--bg-elevated); border: 1px solid var(--border);
-  padding: 5px 9px; border-radius: 10px; font-size: 12px;
+  padding: 4px 9px; border-radius: 10px; font-size: 12px;
 }
-.pfile img { width: 32px; height: 32px; object-fit: cover; border-radius: 6px; }
+.pfile img { width: 30px; height: 30px; object-fit: cover; border-radius: 6px; }
 .pfile button { border: none; background: none; color: var(--text-sub); cursor: pointer; font-size: 14px; padding: 0 2px; }
 .composer-row { display: flex; align-items: flex-end; gap: 8px; }
 .composer-textarea {
   flex: 1; border: none; background: transparent; outline: none;
   resize: none; max-height: 180px; min-height: 26px;
-  font-size: 15px; line-height: 1.5; padding: 3px 2px;
+  font-size: 15px; line-height: 1.48; padding: 4px 2px;
 }
 .send-btn {
   width: 36px; height: 36px; border-radius: 50%; border: none;
   background: var(--accent); color: #fff; cursor: pointer;
   display: inline-flex; align-items: center; justify-content: center;
   flex-shrink: 0; font-size: 16px; font-weight: 700;
+  transition: transform .12s, background .15s;
 }
+.send-btn:hover { background: var(--accent-hover); }
+.send-btn:active { transform: scale(0.91); }
 .send-btn:disabled { opacity: 0.4; cursor: default; }
 
-/* Drag Overlay */
+/* Drag Overlay & Modals & Lightbox */
 .drop-mask {
   position: fixed; inset: 12px; z-index: 300;
   border: 2.5px dashed var(--accent); border-radius: 22px;
-  background: rgba(17,17,17,0.82); backdrop-filter: blur(6px);
+  background: rgba(15,17,21,0.84); backdrop-filter: blur(8px);
   display: none; align-items: center; justify-content: center;
-  color: #fff; font-size: 20px; font-weight: 600; pointer-events: none;
+  color: #fff; font-size: 19px; font-weight: 600; pointer-events: none;
 }
 .drop-mask.show { display: flex; }
 
-/* Modals & Lightbox */
 .modal-bg {
   position: fixed; inset: 0; z-index: 250;
-  background: rgba(0,0,0,0.58); backdrop-filter: blur(3px);
+  background: rgba(0,0,0,0.58); backdrop-filter: blur(4px);
   display: none; align-items: center; justify-content: center; padding: 16px;
 }
 .modal-bg.open { display: flex; }
 .modal {
   width: 100%; max-width: 560px; max-height: 88dvh; overflow-y: auto;
   background: var(--bg-surface); border: 1px solid var(--border-strong);
-  border-radius: 18px; padding: 22px; box-shadow: var(--shadow);
+  border-radius: 20px; padding: 22px; box-shadow: var(--shadow);
+  animation: menuPop .16s cubic-bezier(.2,.9,.3,1);
 }
 .modal h3 { margin: 0 0 12px; font-size: 18px; }
 .node-card {
@@ -411,30 +638,46 @@ button, input, textarea, select {
 }
 .meter { height: 7px; border-radius: 4px; background: var(--bg-elevated); overflow: hidden; margin-top: 5px; }
 .meter > span { display: block; height: 100%; background: var(--accent); border-radius: 4px; }
+
 .lightbox {
-  position: fixed; inset: 0; z-index: 400; background: rgba(0,0,0,0.88);
-  display: none; align-items: center; justify-content: center; padding: 16px; cursor: zoom-out;
+  position: fixed; inset: 0; z-index: 600; background: rgba(0,0,0,0.9);
+  backdrop-filter: blur(6px);
+  display: none; flex-direction: column; align-items: center; justify-content: center; padding: 16px;
 }
 .lightbox.open { display: flex; }
-.lightbox img { max-width: 95vw; max-height: 92dvh; border-radius: 10px; }
+.lightbox-bar {
+  position: absolute; top: 14px; right: 16px; display: flex; gap: 8px; z-index: 2;
+}
+.lightbox img { max-width: 95vw; max-height: 86dvh; border-radius: 10px; object-fit: contain; }
+.toast {
+  position: fixed; bottom: 86px; left: 50%; transform: translateX(-50%) translateY(10px);
+  background: rgba(20,24,32,0.92); color: #fff; border: 1px solid rgba(255,255,255,0.14);
+  padding: 7px 15px; border-radius: 999px; font-size: 13px; z-index: 700;
+  opacity: 0; pointer-events: none; transition: opacity .18s, transform .18s;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 .mobile-backdrop {
-  display: none; position: fixed; inset: 0; z-index: 80; background: rgba(0,0,0,0.5);
+  display: none; position: fixed; inset: 0; z-index: 80; background: rgba(0,0,0,0.52);
 }
 
 @media (max-width: 820px) {
   .sidebar {
     position: fixed; left: 0; top: 0; bottom: 0;
-    width: min(84vw, 310px);
+    width: min(85vw, 316px);
     transform: translateX(-102%);
   }
   .sidebar.open { transform: translateX(0); }
   .mobile-backdrop.open { display: block; }
   .menu-toggle { display: inline-flex; }
-  .topbar { padding: 8px 10px; }
-  .messages-area { padding: 12px 10px 8px; }
-  .composer-wrap { padding: 6px 8px calc(8px + env(safe-area-inset-bottom, 0px)); }
+  .topbar { padding: 7px 10px; }
+  .channel-bar { padding: 5px 10px; }
+  .messages-area { padding: 10px 9px 8px; }
+  .composer-wrap { padding: 5px 8px calc(8px + env(safe-area-inset-bottom, 0px)); }
+  .msg-bubble { max-width: 90%; }
+  .msg-row.ai .msg-bubble { max-width: 95%; }
   .btn .hide-sm { display: none; }
+  .scroll-bottom-btn { right: 12px; bottom: 82px; }
 }
 </style>
 </head>
@@ -445,8 +688,8 @@ button, input, textarea, select {
   <div class="auth-card">
     <div class="auth-logo">✦</div>
     <h1 class="auth-title" id="authTitle">登录控制台</h1>
-    <p class="auth-sub" id="authSub">Agent Bridge 集群管理与全量会话工作台</p>
-    <div class="setup-banner" id="setupBanner">👑 检测到超级管理员 <b>zwt</b> 首次访问，请设定你的专属加密登录密码（后端 PBKDF2 加盐存储，全程零日志记录）。</div>
+    <p class="auth-sub" id="authSub">Bridge Studio · 集群管理与全量会话工作台</p>
+    <div class="setup-banner" id="setupBanner">👑 检测到超级管理员 <b>zwt</b> 首次访问，请设定你的专属加密登录密码（PBKDF2 加盐存储，全程零日志记录）。</div>
     <div class="auth-err" id="authErr"></div>
     <form id="authForm">
       <div class="field">
@@ -469,6 +712,12 @@ button, input, textarea, select {
 <!-- Drag & Drop Fullscreen Indicator -->
 <div class="drop-mask" id="dropMask">📎 松开鼠标即可上传图片或文件到当前会话</div>
 
+<!-- Frosted Context Menu -->
+<div class="ctx-menu" id="ctxMenu"></div>
+
+<!-- Toast -->
+<div class="toast" id="toastEl"></div>
+
 <!-- Mobile Sidebar Backdrop -->
 <div class="mobile-backdrop" id="mobileBackdrop"></div>
 
@@ -478,12 +727,16 @@ button, input, textarea, select {
     <div class="sb-top">
       <div class="sb-brand-row">
         <div class="sb-brand"><span class="sb-dot">✦</span> <span>Bridge Studio</span></div>
-        <div style="display:flex;gap:4px">
+        <div style="display:flex;gap:3px">
           <button class="icon-btn" id="nodesModalBtn" title="集群机器与CPU/内存探针" style="display:none">🖥</button>
+          <button class="icon-btn" id="newGroupBtn" title="新建协作群" style="display:none">👥+</button>
           <button class="icon-btn" id="newConvBtn" title="新建对话">＋</button>
         </div>
       </div>
-      <input class="sb-search" id="searchInput" placeholder="搜索聊天 / 协作群 / 模型…" />
+      <div class="sb-search-wrap">
+        <input class="sb-search" id="searchInput" placeholder="搜索会话 / 协作群 / 模型 (⌘K)…" />
+        <button class="sb-search-clear" id="searchClearBtn" type="button">✕</button>
+      </div>
     </div>
     <div class="sb-list" id="sbList"></div>
     <div class="sb-footer">
@@ -499,35 +752,54 @@ button, input, textarea, select {
     </div>
   </aside>
 
-  <main class="main-pane">
+  <main class="main-pane" id="mainPane">
     <header class="topbar">
       <div class="topbar-left">
         <button class="icon-btn menu-toggle" id="menuBtn">☰</button>
         <div class="chat-head-info">
           <div class="chat-head-title" id="headTitle">选择一个会话</div>
-          <div class="chat-head-trace" id="headTrace">实时状态就绪</div>
+          <div class="chat-head-trace">
+            <span class="live-pulse" id="livePulse"></span>
+            <span id="headTrace" style="overflow:hidden;text-overflow:ellipsis">实时流就绪</span>
+          </div>
         </div>
       </div>
       <div class="topbar-actions">
         <button class="btn" id="restartBtn" style="display:none" title="携带完整上下文通知总控重开">🔄 <span class="hide-sm">重开会话</span></button>
-        <button class="btn" id="refreshBtn" title="立即刷新">↻</button>
+        <button class="btn" id="refreshBtn" title="同步最新状态">↻</button>
       </div>
     </header>
 
+    <nav class="channel-bar" id="channelBar"></nav>
+
     <section class="messages-area" id="messagesArea">
+      <div class="history-loader" id="historyLoader">↑ 正在加载更早记录…</div>
       <div class="msg-container" id="msgContainer">
-        <div class="empty-state">从左侧选择任意聊天、总控或 Agent 协作群开始对话</div>
+        <div class="empty-state">从左侧选择任意聊天、总控或协作群开始对话</div>
       </div>
     </section>
 
+    <button class="scroll-bottom-btn" id="scrollBottomBtn" type="button" title="回到底部">
+      ↓
+      <span class="scroll-unread-badge" id="unreadJumpBadge">0</span>
+    </button>
+
     <footer class="composer-wrap" id="composerWrap">
       <div class="composer-box">
+        <div class="composer-banner" id="composerBanner">
+          <div class="banner-bar"></div>
+          <div class="banner-body">
+            <div class="banner-title" id="bannerTitle"></div>
+            <div class="banner-sub" id="bannerSub"></div>
+          </div>
+          <button type="button" class="icon-btn" id="bannerCancelBtn" style="width:28px;height:28px">✕</button>
+        </div>
         <div class="group-wake-bar" id="groupWakeBar"></div>
         <div class="pending-files" id="pendingFiles"></div>
         <div class="composer-row">
           <input type="file" id="fileInput" multiple style="display:none" />
-          <button type="button" class="icon-btn" id="attachBtn" title="上传图片或文件（支持直接拖拽或 Ctrl+V 粘贴截图）">📎</button>
-          <textarea class="composer-textarea" id="composerInput" rows="1" placeholder="发消息…（支持拖拽文件、Ctrl+V 粘贴图片，Enter 发送 / Shift+Enter 换行）"></textarea>
+          <button type="button" class="icon-btn" id="attachBtn" title="上传图片或文件（支持拖拽或 Ctrl+V 粘贴截图）">📎</button>
+          <textarea class="composer-textarea" id="composerInput" rows="1" placeholder="发消息…（双击/左滑气泡引用，右键/长按更多操作，Ctrl+V 粘贴图片）"></textarea>
           <button type="button" class="send-btn" id="sendBtn" title="发送">↑</button>
         </div>
       </div>
@@ -545,7 +817,7 @@ button, input, textarea, select {
     </div>
     <div class="field" id="ncModelField">
       <label>指定模型（可选，留空默认继承）</label>
-      <input class="input" id="ncModel" placeholder="例如：claude-fable-5-2-max / gpt-5" />
+      <input class="input" id="ncModel" placeholder="例如：claude-fable-5-2-max / gemini-4-carbon" />
     </div>
     <div class="field">
       <label>任务说明（Brief）</label>
@@ -558,13 +830,40 @@ button, input, textarea, select {
   </div>
 </div>
 
+<!-- Modal: New Group (zwt) -->
+<div class="modal-bg" id="newGroupModal">
+  <div class="modal">
+    <h3>👥 新建多方协作群</h3>
+    <div class="field">
+      <label>群名称</label>
+      <input class="input" id="ngName" placeholder="例如：排料评审组" />
+    </div>
+    <div class="field">
+      <label>拉入 AI 会话编号（逗号或空格分隔）</label>
+      <input class="input" id="ngMembers" placeholder="例如：c160, c251" />
+    </div>
+    <div class="field">
+      <label>授权 Web 用户（可选，逗号分隔，zwt 自动在群内）</label>
+      <input class="input" id="ngWebUsers" placeholder="例如：wu" />
+    </div>
+    <div class="field">
+      <label>群主题说明（可选）</label>
+      <input class="input" id="ngTopic" placeholder="协作规则或主题" />
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn" onclick="closeModal('newGroupModal')">取消</button>
+      <button class="btn btn-primary" id="ngSubmitBtn">创建协作群</button>
+    </div>
+  </div>
+</div>
+
 <!-- Modal: Full-Context Restart -->
 <div class="modal-bg" id="restartModal">
   <div class="modal">
     <h3>🔄 重开会话并全量通知总控</h3>
     <p style="font-size:13.5px;color:var(--text-sub);margin-top:0" id="restartDesc"></p>
     <div class="field" id="restartTargetField">
-      <label>优先派往主 Agent（默认 auto 由总控按 CPU/内存探针自动优选）</label>
+      <label>优先派往主 Agent（默认 auto 由总控按探针自动优选）</label>
       <select class="input" id="restartTargetMain"><option value="auto">auto（总控按探针负载自动选最优）</option></select>
     </div>
     <div class="field">
@@ -580,9 +879,9 @@ button, input, textarea, select {
 
 <!-- Modal: Cluster Nodes & CPU/RAM Probes -->
 <div class="modal-bg" id="nodesModal">
-  <div class="modal" style="max-width:660px">
+  <div class="modal" style="max-width:680px">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-      <h3 style="margin:0">🖥 集群机器池与实时 CPU / 内存探针</h3>
+      <h3 style="margin:0">🖥 集群机器池与实时探针</h3>
       <button class="btn" onclick="closeModal('nodesModal')">关闭</button>
     </div>
     <div id="nodesListBody"></div>
@@ -591,7 +890,7 @@ button, input, textarea, select {
 
 <!-- Modal: User Management (zwt ONLY) -->
 <div class="modal-bg" id="usersModal">
-  <div class="modal" style="max-width:640px">
+  <div class="modal" style="max-width:650px">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
       <h3 style="margin:0">👥 Web 用户管理（仅 zwt 专属）</h3>
       <button class="btn" onclick="closeModal('usersModal')">关闭</button>
@@ -614,7 +913,11 @@ button, input, textarea, select {
 </div>
 
 <!-- Image Lightbox -->
-<div class="lightbox" id="lightbox" onclick="this.classList.remove('open')">
+<div class="lightbox" id="lightbox" onclick="if(event.target===this)closeLightbox()">
+  <div class="lightbox-bar">
+    <a class="btn btn-primary" id="lightboxDl" href="#" download>⬇ 下载原图</a>
+    <button class="btn" type="button" onclick="closeLightbox()">✕ 关闭</button>
+  </div>
   <img id="lightboxImg" src="" alt="preview" />
 </div>
 
@@ -627,57 +930,185 @@ const state = {
   nodes: [],
   activeType: null, // 'conv' | 'group'
   activeId: null,
+  activeChannel: 'human', // 'human' | 'collab' | 'system' | 'all'
+  channelCounts: { human: 0, collab: 0, system: 0, all: 0 },
+  hasMore: false,
+  loadingMore: false,
+  windowSig: '',
   messages: [],
+  msgMap: new Map(),
+  threadCache: new Map(),
   groupInfo: null,
-  groupWakeMode: 'all', // 'all' | 'none' | 'custom'
+  groupWakeMode: 'all',
   groupWakeSet: new Set(),
   pendingFiles: [],
   uploading: false,
-  editingId: null,
-  pollTimer: null,
+  editingMsg: null, // { id, isGroup, text }
+  replyToMsg: null, // { id, sender, snippet }
+  unreadWhileUp: 0,
+  sbShowBg: false,
+  sbShowClosed: false,
+  lastSbHtml: '',
+  sse: null,
+  sseTimer: null,
+  fallbackTimer: null,
+  syncLock: false,
 };
 
 function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 }
 
+function showToast(msg) {
+  const el = document.getElementById('toastEl');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => el.classList.remove('show'), 2100);
+}
+
 function fmtTime(ts) {
   if (!ts) return '';
   const d = new Date(ts * 1000);
   const pad = n => String(n).padStart(2, '0');
-  return `${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+  const now = new Date();
+  const sameDay = d.toDateString() === now.toDateString();
+  return sameDay
+    ? `${pad(d.getHours())}:${pad(d.getMinutes())}`
+    : `${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
 function fmtSize(bytes) {
-  if (!bytes) return '0 B';
-  if (bytes < 1024) return bytes + ' B';
-  if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
-  return (bytes / 1048576).toFixed(2) + ' MB';
+  const b = Number(bytes || 0);
+  if (b <= 0) return '0 B';
+  if (b < 1024) return b + ' B';
+  if (b < 1048576) return (b / 1024).toFixed(1) + ' KB';
+  return (b / 1048576).toFixed(2) + ' MB';
+}
+
+function fileExtBadge(name) {
+  const m = String(name || '').match(/\.([a-zA-Z0-9]{1,6})$/);
+  return m ? m[1].toUpperCase() : 'FILE';
+}
+
+function parseQuoteAndCleanText(raw, hasAttachments) {
+  let text = String(raw || '');
+  let quote = null;
+  const qm = text.match(/^> \[引用 #(\d+)\s*([^\]]*)\]\s*([^\n]*)\n?\n?/);
+  if (qm) {
+    quote = { id: Number(qm[1]), author: qm[2].trim() || '消息', snippet: qm[3].trim() };
+    text = text.slice(qm[0].length);
+  }
+  if (hasAttachments) {
+    text = text.replace(/^\[发送文件\s+[^\]]+\]\s*/m, '');
+    text = text.replace(/\[文件\s+f_[0-9a-f]{8,20}[^\]]*\]\n?/g, '');
+  }
+  return { quote, cleanText: text.trim() };
+}
+
+function renderInline(str) {
+  let s = esc(str);
+  s = s.replace(/`([^`\n]+)`/g, '<code>$1</code>');
+  s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  s = s.replace(/(^|[\s(])\*([^*\n]+)\*(?=[\s).,!?:;]|$)/g, '$1<em>$2</em>');
+  s = s.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline">$1</a>');
+  return s;
 }
 
 function renderMarkdown(raw) {
   if (!raw) return '';
   const codeBlocks = [];
-  let text = String(raw).replace(/```([a-zA-Z0-9_-]*)\n?([\s\S]*?)```/g, (_, lang, code) => {
+  let src = String(raw).replace(/\r\n/g, '\n').replace(/```([a-zA-Z0-9_.+-]*)\n?([\s\S]*?)```/g, (_, lang, code) => {
     const idx = codeBlocks.length;
-    codeBlocks.push({ lang: esc(lang), code: esc(code.replace(/\n$/, '')) });
-    return `\x00CODEBLOCK_${idx}\x00`;
+    codeBlocks.push({ lang: esc(lang || ''), code: esc(code.replace(/\n$/, '')) });
+    return `\x00CB_${idx}\x00`;
   });
-  text = esc(text);
-  text = text.replace(/`([^`\n]+)`/g, '<code>$1</code>');
-  text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-  text = text.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener" style="color:var(--accent)">$1</a>');
-  const paras = text.split(/\n{2,}/).map(p => `<p>${p.replace(/\n/g, '<br/>')}</p>`).join('');
-  return paras.replace(/\x00CODEBLOCK_(\d+)\x00/g, (_, i) => {
-    const b = codeBlocks[Number(i)];
-    return `<pre><button class="copy-code-btn" onclick="copyCode(this)">复制</button><code>${b.code}</code></pre>`;
+
+  const lines = src.split('\n');
+  const out = [];
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+    if (!line.trim()) { i++; continue; }
+    if (/^\x00CB_\d+\x00$/.test(line.trim())) {
+      out.push(line.trim());
+      i++; continue;
+    }
+    const hm = line.match(/^(#{1,4})\s+(.+)$/);
+    if (hm) {
+      const lv = hm[1].length;
+      out.push(`<h${lv}>${renderInline(hm[2])}</h${lv}>`);
+      i++; continue;
+    }
+    if (line.includes('|') && i + 1 < lines.length && /^\s*\|?[\s:-]+\|[\s|:-]*$/.test(lines[i + 1])) {
+      const parseRow = r => r.trim().replace(/^\||\|$/g, '').split('|').map(c => renderInline(c.trim()));
+      const headers = parseRow(line);
+      i += 2;
+      const bodyRows = [];
+      while (i < lines.length && lines[i].includes('|') && lines[i].trim()) {
+        bodyRows.push(parseRow(lines[i]));
+        i++;
+      }
+      out.push(`<table><thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${
+        bodyRows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')
+      }</tbody></table>`);
+      continue;
+    }
+    if (/^\s*[-*•]\s+/.test(line)) {
+      const items = [];
+      while (i < lines.length && /^\s*[-*•]\s+/.test(lines[i])) {
+        items.push(`<li>${renderInline(lines[i].replace(/^\s*[-*•]\s+/, ''))}</li>`);
+        i++;
+      }
+      out.push(`<ul>${items.join('')}</ul>`);
+      continue;
+    }
+    if (/^\s*\d+[.)]\s+/.test(line)) {
+      const items = [];
+      while (i < lines.length && /^\s*\d+[.)]\s+/.test(lines[i])) {
+        items.push(`<li>${renderInline(lines[i].replace(/^\s*\d+[.)]\s+/, ''))}</li>`);
+        i++;
+      }
+      out.push(`<ol>${items.join('')}</ol>`);
+      continue;
+    }
+    if (/^>\s?/.test(line)) {
+      const qlines = [];
+      while (i < lines.length && /^>\s?/.test(lines[i])) {
+        qlines.push(renderInline(lines[i].replace(/^>\s?/, '')));
+        i++;
+      }
+      out.push(`<blockquote>${qlines.join('<br/>')}</blockquote>`);
+      continue;
+    }
+    const pLines = [];
+    while (
+      i < lines.length &&
+      lines[i].trim() &&
+      !/^\x00CB_\d+\x00$/.test(lines[i].trim()) &&
+      !/^(#{1,4})\s+/.test(lines[i]) &&
+      !/^\s*[-*•]\s+/.test(lines[i]) &&
+      !/^\s*\d+[.)]\s+/.test(lines[i]) &&
+      !/^>\s?/.test(lines[i])
+    ) {
+      pLines.push(renderInline(lines[i]));
+      i++;
+    }
+    if (pLines.length) out.push(`<p>${pLines.join('<br/>')}</p>`);
+  }
+
+  return out.join('').replace(/\x00CB_(\d+)\x00/g, (_, idx) => {
+    const b = codeBlocks[Number(idx)];
+    const langTag = b.lang ? `<span style="position:absolute;top:6px;left:11px;font-size:10.5px;color:#9ca3af">${b.lang}</span>` : '';
+    const padTop = b.lang ? 'style="padding-top:26px"' : '';
+    return `<pre ${padTop}>${langTag}<button class="copy-code-btn" type="button" onclick="copyCode(this)">复制</button><code>${b.code}</code></pre>`;
   });
 }
 
 window.copyCode = function(btn) {
   const code = btn.parentElement.querySelector('code').innerText;
   navigator.clipboard.writeText(code).then(() => {
-    btn.textContent = '已复制';
+    btn.textContent = '已复制 ✓';
     setTimeout(() => (btn.textContent = '复制'), 1400);
   });
 };
@@ -692,6 +1123,7 @@ async function api(url, opts = {}) {
   const res = await fetch(url, Object.assign({ credentials: 'same-origin' }, opts, { headers }));
   const data = await res.json().catch(() => ({ ok: false, error: 'HTTP ' + res.status }));
   if (res.status === 401 && state.user) {
+    stopRealtime();
     state.user = null;
     showAuth();
   }
@@ -756,17 +1188,14 @@ document.getElementById('authForm').addEventListener('submit', async (e) => {
     enterApp(data.user);
   } else {
     const { data } = await api('/web/api/auth/login', { method: 'POST', json: { username, password } });
-    if (data.needs_setup) {
-      setSetupMode(true);
-      return;
-    }
+    if (data.needs_setup) { setSetupMode(true); return; }
     if (!data.ok) return showAuthErr(data.error || '登录失败');
     enterApp(data.user);
   }
 });
 
 function showAuth(zwtNeedsSetup = false) {
-  if (state.pollTimer) clearInterval(state.pollTimer);
+  stopRealtime();
   document.getElementById('appRoot').style.display = 'none';
   document.getElementById('authWrap').style.display = 'flex';
   if (zwtNeedsSetup) {
@@ -785,18 +1214,18 @@ async function enterApp(user) {
   document.getElementById('userAvatar').textContent = (user.username || 'U')[0].toUpperCase();
   document.getElementById('usersMgrBtn').style.display = user.is_zwt ? 'inline-flex' : 'none';
   document.getElementById('nodesModalBtn').style.display = user.is_zwt ? 'inline-flex' : 'none';
+  document.getElementById('newGroupBtn').style.display = user.is_zwt ? 'inline-flex' : 'none';
   document.getElementById('ncModelField').style.display = user.is_zwt ? 'block' : 'none';
   await loadBootstrap(true);
-  if (state.pollTimer) clearInterval(state.pollTimer);
-  state.pollTimer = setInterval(() => {
-    loadBootstrap(false);
-    if (state.activeId && state.editingId === null) loadActiveThread(false);
-  }, 3200);
+  startRealtime();
 }
 
 document.getElementById('logoutBtn').onclick = async () => {
+  stopRealtime();
   await api('/web/api/auth/logout', { method: 'POST' });
   state.user = null;
+  state.activeId = null;
+  state.threadCache.clear();
   showAuth();
 };
 
@@ -811,187 +1240,831 @@ function toggleSidebar(force) {
 document.getElementById('menuBtn').onclick = () => toggleSidebar();
 document.getElementById('mobileBackdrop').onclick = () => toggleSidebar(false);
 
-/* Sidebar Rendering */
+/* Sidebar Search & Rendering (Preserves scroll & skips unchanged DOM) */
+const searchInput = document.getElementById('searchInput');
+const searchClearBtn = document.getElementById('searchClearBtn');
+searchInput.addEventListener('input', () => {
+  searchClearBtn.style.display = searchInput.value ? 'block' : 'none';
+  renderSidebar(true);
+});
+searchClearBtn.onclick = () => {
+  searchInput.value = '';
+  searchClearBtn.style.display = 'none';
+  renderSidebar(true);
+};
+
 async function loadBootstrap(selectInitial = false) {
   const { data } = await api('/web/api/bootstrap');
   if (!data.ok) return;
   state.convs = data.convs || [];
   state.groups = data.groups || [];
   state.nodes = data.nodes || [];
-  renderSidebar();
+  renderSidebar(false);
   if (selectInitial && !state.activeId) {
-    const first = state.convs.find(c => c.kind === 'chat' && c.status === 'open') || state.convs[0];
-    if (first) selectTarget('conv', first.id);
+    const first = state.convs.find(c => c.kind === 'chat' && c.status === 'open' && c.in_tg)
+      || state.convs.find(c => c.kind === 'chat' && c.status === 'open')
+      || state.groups[0]
+      || state.convs[0];
+    if (first) {
+      if (first.members !== undefined) selectTarget('group', first.id);
+      else selectTarget('conv', first.id);
+    }
   } else if (state.activeType === 'conv') {
     const cur = state.convs.find(c => c.id === state.activeId);
     if (cur) updateTopbarForConv(cur);
   }
 }
 
-document.getElementById('searchInput').addEventListener('input', renderSidebar);
+window.toggleSbSection = function(which) {
+  if (which === 'bg') state.sbShowBg = !state.sbShowBg;
+  if (which === 'closed') state.sbShowClosed = !state.sbShowClosed;
+  renderSidebar(true);
+};
 
-function renderSidebar() {
-  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+function renderSidebarItemConv(c, iconPrefix = '') {
+  const act = state.activeType === 'conv' && state.activeId === c.id ? 'active' : '';
+  const avCls = c.kind === 'ctrl' ? 'ctrl' : '';
+  const avTxt = c.kind === 'ctrl' ? '🧠' : (c.kind === 'launcher' ? '⚙️' : (c.name || c.id || 'C').slice(0, 1).toUpperCase());
+  const mTag = c.model && c.kind === 'chat' ? `<span class="pill">${esc(c.model.slice(0, 12))}</span>` : '';
+  const unreadBadge = c.unread > 0 ? `<span class="badge-unread">${c.unread}</span>` : '';
+  return `<div class="sb-item ${act}" onclick="selectTarget('conv','${esc(c.id)}')">
+    <div class="sb-avatar ${avCls}">${esc(avTxt)}<span class="status-dot ${esc(c.state)}"></span></div>
+    <div class="sb-item-body">
+      <div class="sb-item-title">${iconPrefix}${esc(c.name)} <span style="color:var(--text-muted);font-size:11.5px;font-weight:400">${esc(c.id)}</span> ${mTag}</div>
+      <div class="sb-item-sub">${esc(c.trace_line || c.brief || c.state_label)}</div>
+    </div>
+    ${unreadBadge}
+  </div>`;
+}
+
+function renderSidebar(force = false) {
+  const q = searchInput.value.trim().toLowerCase();
   const box = document.getElementById('sbList');
   const match = (txt) => !q || String(txt || '').toLowerCase().includes(q);
 
   let html = '';
-  const sysConvs = state.convs.filter(c => (c.kind === 'ctrl' || c.kind === 'launcher') && match(c.id + ' ' + c.name));
+  const sysConvs = state.convs.filter(c => (c.kind === 'ctrl' || (c.kind === 'launcher' && (c.state === 'online' || c.state === 'busy' || q))) && match(c.id + ' ' + c.name));
   if (sysConvs.length) {
-    html += `<div class="sb-sec-title"><span>🧠 主控与主Agent池</span><span>${sysConvs.length}</span></div>`;
-    for (const c of sysConvs) {
-      const act = state.activeType === 'conv' && state.activeId === c.id ? 'active' : '';
-      const icon = c.kind === 'ctrl' ? '🧠' : '⚙️';
-      html += `<div class="sb-item ${act}" onclick="selectTarget('conv','${esc(c.id)}')">
-        <span class="status-dot ${esc(c.state)}"></span>
-        <div class="sb-item-body">
-          <div class="sb-item-title">${icon} ${esc(c.name)} <span class="pill">${esc(c.id)}</span></div>
-          <div class="sb-item-sub">${esc(c.trace_line || c.state_label)}</div>
-        </div>
-      </div>`;
-    }
+    html += `<div class="sb-sec-title"><span>🧠 主控与调度</span><span>${sysConvs.length}</span></div>`;
+    for (const c of sysConvs) html += renderSidebarItemConv(c);
   }
 
   const grps = state.groups.filter(g => match(g.id + ' ' + g.name + ' ' + g.topic));
   if (grps.length) {
-    html += `<div class="sb-sec-title"><span>👥 Agent 协作群</span><span>${grps.length}</span></div>`;
+    html += `<div class="sb-sec-title"><span>👥 协作群</span><span>${grps.length}</span></div>`;
     for (const g of grps) {
       const act = state.activeType === 'group' && state.activeId === g.id ? 'active' : '';
       const totalMem = (g.members?.length || 0) + (g.web_members?.length || 0);
       html += `<div class="sb-item ${act}" onclick="selectTarget('group','${esc(g.id)}')">
-        <span class="status-dot online"></span>
+        <div class="sb-avatar group">#<span class="status-dot online"></span></div>
         <div class="sb-item-body">
-          <div class="sb-item-title"># ${esc(g.name)} <span class="pill accent">${totalMem}成员</span></div>
+          <div class="sb-item-title">${esc(g.name)} <span class="pill accent">${totalMem}人</span></div>
           <div class="sb-item-sub">${esc(g.last_sender ? g.last_sender + ': ' + g.last_text : (g.topic || g.id))}</div>
         </div>
       </div>`;
     }
   }
 
-  const chats = state.convs.filter(c => c.kind === 'chat' && match(c.id + ' ' + c.name + ' ' + c.model + ' ' + c.brief));
-  html += `<div class="sb-sec-title"><span>💬 会话列表</span><span>${chats.length}</span></div>`;
-  for (const c of chats) {
-    const act = state.activeType === 'conv' && state.activeId === c.id ? 'active' : '';
-    const bgTag = !c.in_tg ? '<span class="pill">后台</span>' : '';
-    const mTag = c.model ? `<span class="pill">${esc(c.model.slice(0, 14))}</span>` : '';
-    html += `<div class="sb-item ${act}" onclick="selectTarget('conv','${esc(c.id)}')">
-      <span class="status-dot ${esc(c.state)}"></span>
-      <div class="sb-item-body">
-        <div class="sb-item-title">${esc(c.name)} <span style="color:var(--text-muted);font-size:11.5px">${esc(c.id)}</span> ${bgTag} ${mTag}</div>
-        <div class="sb-item-sub">${esc(c.trace_line || c.brief || c.state_label)}</div>
-      </div>
-    </div>`;
+  const allChats = state.convs.filter(c => c.kind === 'chat' && match(c.id + ' ' + c.name + ' ' + c.model + ' ' + c.brief));
+  const fgOpen = allChats.filter(c => c.status === 'open' && c.in_tg);
+  const bgOpen = allChats.filter(c => c.status === 'open' && !c.in_tg);
+  const closedChats = allChats.filter(c => c.status !== 'open');
+
+  html += `<div class="sb-sec-title"><span>💬 对话列表</span><span>${fgOpen.length}</span></div>`;
+  for (const c of fgOpen) html += renderSidebarItemConv(c);
+
+  if (bgOpen.length) {
+    const exp = q || state.sbShowBg || bgOpen.some(c => c.id === state.activeId);
+    html += `<div class="sb-sec-title clickable" onclick="toggleSbSection('bg')"><span>${exp ? '▾' : '▸'} 🤖 后台派生子Agent</span><span>${bgOpen.length}</span></div>`;
+    if (exp) for (const c of bgOpen) html += renderSidebarItemConv(c);
   }
+
+  if (closedChats.length) {
+    const expC = q || state.sbShowClosed || closedChats.some(c => c.id === state.activeId);
+    html += `<div class="sb-sec-title clickable" onclick="toggleSbSection('closed')"><span>${expC ? '▾' : '▸'} 📦 历史/已关闭</span><span>${closedChats.length}</span></div>`;
+    if (expC) for (const c of closedChats) html += renderSidebarItemConv(c);
+  }
+
+  if (!force && html === state.lastSbHtml) return;
+  const prevTop = box.scrollTop;
+  state.lastSbHtml = html;
   box.innerHTML = html;
+  box.scrollTop = prevTop;
+}
+
+/* Channel Bar (Default = 'human' for normal chats so 0 subagent noise!) */
+function defaultChannelForConv(cid) {
+  const c = state.convs.find(x => x.id === cid);
+  if (c && (c.kind === 'ctrl' || c.kind === 'launcher' || c.kind === 'runner')) return 'all';
+  return 'human';
+}
+
+function renderChannelBar() {
+  const bar = document.getElementById('channelBar');
+  if (state.activeType !== 'conv' || !state.user?.is_zwt) {
+    bar.style.display = 'none';
+    return;
+  }
+  bar.style.display = 'flex';
+  const cnt = state.channelCounts || {};
+  const tabs = [
+    { key: 'human', label: '💬 纯净对话', n: cnt.human || 0 },
+    { key: 'collab', label: '🤝 内部协作', n: cnt.collab || 0 },
+    { key: 'system', label: '⚙️ 系统单据', n: cnt.system || 0 },
+    { key: 'all', label: '全部时间线', n: cnt.all || 0 },
+  ];
+  bar.innerHTML = tabs.map(t => {
+    const act = state.activeChannel === t.key ? 'active' : '';
+    return `<button type="button" class="ch-tab ${act}" onclick="switchChannel('${t.key}')">${t.label} <span class="ch-cnt">${t.n}</span></button>`;
+  }).join('');
+}
+
+window.switchChannel = async function(ch) {
+  if (state.activeChannel === ch) return;
+  state.activeChannel = ch;
+  renderChannelBar();
+  await openThreadFromCacheAndSync(true);
+};
+
+/* Thread Selection with 0ms Cache Instant Render */
+function cacheKey() {
+  if (!state.activeId) return '';
+  return state.activeType === 'conv' ? `conv:${state.activeId}:${state.activeChannel}` : `group:${state.activeId}`;
 }
 
 window.selectTarget = async function(type, id) {
+  const changed = state.activeType !== type || state.activeId !== id;
   state.activeType = type;
   state.activeId = id;
-  state.editingId = null;
+  if (changed) {
+    clearBannerMode();
+    state.unreadWhileUp = 0;
+    updateJumpButton();
+    if (type === 'conv') state.activeChannel = defaultChannelForConv(id);
+  }
   toggleSidebar(false);
-  renderSidebar();
-  await loadActiveThread(true);
+  renderSidebar(true);
+  renderChannelBar();
+  reconnectSSE();
+  await openThreadFromCacheAndSync(true);
 };
+
+async function openThreadFromCacheAndSync(scrollToBottom) {
+  const key = cacheKey();
+  const cached = state.threadCache.get(key);
+  if (cached) {
+    state.messages = cached.messages.slice();
+    state.hasMore = cached.hasMore;
+    state.windowSig = cached.windowSig;
+    state.channelCounts = cached.channelCounts || state.channelCounts;
+    if (cached.conv) updateTopbarForConv(cached.conv);
+    if (cached.group) updateTopbarForGroup(cached.group);
+    renderChannelBar();
+    patchStream(state.messages, true);
+    if (scrollToBottom) jumpToBottomInstant();
+  }
+  await fetchFullThread(scrollToBottom && !cached);
+}
 
 function updateTopbarForConv(c) {
   const mBadge = c.model ? `<span class="pill accent">${esc(c.model)}</span>` : '';
-  const cBadge = c.cloud > 0 ? `<span class="pill">cloud${c.cloud}</span>` : (c.cloud === -1 ? `<span class="pill">无主池</span>` : '');
+  const cBadge = c.cloud > 0 ? `<span class="pill">cloud${c.cloud}</span>` : '';
   document.getElementById('headTitle').innerHTML = `${esc(c.name)} <span style="color:var(--text-muted);font-weight:400;font-size:13px">(${esc(c.id)})</span> ${mBadge} ${cBadge}`;
-  document.getElementById('headTrace').textContent = c.trace_line || `${c.state_label}${c.brief ? ' · ' + c.brief : ''}`;
+  const tline = c.trace_line || `${c.state_label}${c.brief ? ' · ' + c.brief : ''}`;
+  document.getElementById('headTrace').textContent = tline;
+  const busy = c.phase === 'thinking' || c.phase === 'shell' || c.phase === 'edit' || c.state === 'busy';
+  document.getElementById('livePulse').classList.toggle('on', busy);
   const canRestart = c.kind === 'chat' || c.id === 'ctrl';
   document.getElementById('restartBtn').style.display = canRestart ? 'inline-flex' : 'none';
   document.getElementById('groupWakeBar').style.display = 'none';
 }
 
-async function loadActiveThread(scrollToBottom = false) {
-  if (!state.activeId) return;
-  const area = document.getElementById('messagesArea');
-  const nearBottom = area.scrollHeight - area.scrollTop - area.clientHeight < 120;
-
-  if (state.activeType === 'conv') {
-    const { data } = await api(`/web/api/convs/${encodeURIComponent(state.activeId)}/messages?limit=150`);
-    if (!data.ok) return;
-    updateTopbarForConv(data.conv);
-    state.messages = data.messages || [];
-    renderConvMessages();
-  } else {
-    const { data } = await api(`/web/api/groups/${encodeURIComponent(state.activeId)}/messages?limit=180`);
-    if (!data.ok) return;
-    state.groupInfo = data.group;
-    state.messages = data.messages || [];
-    const g = data.group;
-    const humanList = (g.web_members || ['zwt']).map(u => `👤${u}`);
-    const aiList = (g.members || []).map(m => `✦${m.id}(${m.name})`);
-    const allMems = [...humanList, ...aiList];
-    document.getElementById('headTitle').innerHTML = `👥 ${esc(g.name)} <span class="pill accent">${esc(g.id)} · ${allMems.length} 成员</span>`;
-    document.getElementById('headTrace').textContent = '成员：' + allMems.join('、') + (g.topic ? ' · ' + g.topic : '');
-    document.getElementById('restartBtn').style.display = 'none';
-    renderGroupWakeBar(g);
-    renderGroupMessages();
-  }
-
-  if (scrollToBottom || nearBottom) {
-    area.scrollTop = area.scrollHeight;
-  }
+function updateTopbarForGroup(g) {
+  state.groupInfo = g;
+  const humanList = (g.web_members || ['zwt']).map(u => `👤${u}`);
+  const aiList = (g.members || []).map(m => `✦${m.id}(${m.name})`);
+  const allMems = [...humanList, ...aiList];
+  document.getElementById('headTitle').innerHTML = `👥 ${esc(g.name)} <span class="pill accent">${esc(g.id)} · ${allMems.length} 成员</span>`;
+  document.getElementById('headTrace').textContent = '成员：' + allMems.join('、') + (g.topic ? ' · ' + g.topic : '');
+  document.getElementById('livePulse').classList.remove('on');
+  document.getElementById('restartBtn').style.display = 'none';
+  renderGroupWakeBar(g);
 }
 
-function renderAttachment(f) {
-  if (!f) return '';
-  if (f.is_image) {
-    return `<img class="msg-img" src="${esc(f.url)}" alt="${esc(f.name)}" onclick="openLightbox('${esc(f.url)}')" />`;
-  }
-  return `<a class="msg-file-card" href="${esc(f.url)}" target="_blank" download="${esc(f.name)}">📄 <span>${esc(f.name)}</span> <span style="color:var(--text-muted)">(${fmtSize(f.size)})</span></a>`;
+/* Zero-Flicker Incremental DOM Patcher */
+function msgSig(m) {
+  const fl = (m.files || (m.file ? [m.file] : [])).map(f => f.file_id).join(',');
+  const txt = String(m.text || '');
+  return `${m.id}|${txt.length}|${txt.slice(0,36)}|${txt.slice(-24)}|${m.delivered ? 1 : 0}|${fl}|${m.optimistic ? 1 : 0}`;
 }
 
-window.openLightbox = function(url) {
-  document.getElementById('lightboxImg').src = url;
-  document.getElementById('lightbox').classList.add('open');
-};
-
-function renderConvMessages() {
-  const box = document.getElementById('msgContainer');
-  if (!state.messages.length) {
-    box.innerHTML = `<div class="empty-state">暂无对话记录，直接在下方发送消息、粘贴截图或拖入文件即可开始</div>`;
-    return;
-  }
-  box.innerHTML = state.messages.map(m => {
-    const roleCls = m.outgoing ? 'ai' : 'user';
-    const sender = m.outgoing ? `✦ ${m.user_name || 'AI'}` : (m.user_name || '用户');
-    const unsent = m.outgoing && !m.delivered ? '<span class="pill">TG待补发</span>' : '';
-    if (state.editingId === m.id) {
-      return `<div class="msg-row ${roleCls}">
-        <div class="msg-meta"><span>#${m.id} · ${esc(sender)}</span><span>${fmtTime(m.ts)}</span></div>
-        <div class="edit-box">
-          <textarea id="editArea_${m.id}">${esc(m.text)}</textarea>
-          <div class="edit-btns">
-            <button class="btn" onclick="cancelEdit()">取消</button>
-            <button class="btn btn-primary" onclick="saveEdit(${m.id}, false)">保存修改</button>
-          </div>
-        </div>
+function renderAttachmentList(m) {
+  const list = (m.files && m.files.length) ? m.files : (m.file ? [m.file] : []);
+  if (!list.length) return '';
+  const cards = list.map(f => {
+    const dlUrl = f.download_url || (f.url + (f.url.includes('?') ? '&' : '?') + 'download=1');
+    if (f.is_image) {
+      return `<div class="img-att-wrap">
+        <img class="msg-img" src="${esc(f.url)}" alt="${esc(f.name)}" loading="lazy" decoding="async"
+          onclick="openLightbox('${esc(f.url)}','${esc(dlUrl)}','${esc(f.name)}')"
+          onerror="this.parentElement.outerHTML='<a class=\\'msg-file-card\\' href=\\'${esc(dlUrl)}\\' download=\\'${esc(f.name)}\\'><div class=\\'file-ext-icon\\'>IMG</div><div class=\\'file-card-info\\'><div class=\\'file-card-name\\'>${esc(f.name)}</div><div class=\\'file-card-sub\\'>点击直接下载图片 (${fmtSize(f.size)})</div></div><span class=\\'file-card-dl\\'>⬇</span></a>'" />
+        <a class="img-dl-btn" href="${esc(dlUrl)}" download="${esc(f.name)}" onclick="event.stopPropagation()">⬇ 下载</a>
       </div>`;
     }
-    return `<div class="msg-row ${roleCls}">
-      <div class="msg-meta"><span>#${m.id} · ${esc(sender)}</span><span>${fmtTime(m.ts)}</span> ${unsent}</div>
-      <div class="msg-bubble">
-        <div class="msg-content">${renderMarkdown(m.text)}</div>
-        ${renderAttachment(m.file)}
+    return `<a class="msg-file-card" href="${esc(dlUrl)}" download="${esc(f.name)}">
+      <div class="file-ext-icon">${esc(fileExtBadge(f.name))}</div>
+      <div class="file-card-info">
+        <div class="file-card-name">${esc(f.name)}</div>
+        <div class="file-card-sub">${fmtSize(f.size)} · 点击下载</div>
       </div>
-      <div class="msg-actions">
-        <button class="act-chip" onclick="startEdit(${m.id})">✏️ 编辑</button>
-        <button class="act-chip del" onclick="removeMsg(${m.id}, false)">🗑 删除</button>
-      </div>
-    </div>`;
-  }).join('');
+      <span class="file-card-dl">⬇</span>
+    </a>`;
+  });
+  return `<div class="att-list">${cards.join('')}</div>`;
 }
 
+function buildMessageInnerHtml(m, isGroup) {
+  const hasAtt = Boolean((m.files && m.files.length) || m.file);
+  const { quote, cleanText } = parseQuoteAndCleanText(m.text, hasAtt);
+  let rowCls = 'ai';
+  let senderLabel = '';
+  let badgeHtml = '';
+
+  if (isGroup) {
+    const isSelf = (state.user?.is_zwt && m.sender_conv === 'admin') || m.sender_conv === ('web:' + (state.user?.username || ''));
+    rowCls = isSelf ? 'user' : 'ai';
+    senderLabel = m.sender_name || m.sender_conv || '成员';
+    if (m.mentions && m.mentions.length) {
+      badgeHtml = `<span class="pill" style="font-size:10px">@${esc(m.mentions.join(','))}</span>`;
+    }
+  } else {
+    const ch = m.channel || 'human';
+    if (ch === 'agent_dm' || ch === 'agent_group' || ch === 'system') {
+      rowCls = 'collab-card';
+      const icon = ch === 'agent_dm' ? '🤖 Agent私聊' : (ch === 'agent_group' ? '👥 群同步' : '⚙️ 系统');
+      senderLabel = `${icon} · ${m.sender_display || m.peer_label || ''}`;
+      if (m.peer_label && ch === 'agent_group') badgeHtml = `<span class="pill">${esc(m.peer_label)}</span>`;
+    } else if (m.outgoing) {
+      rowCls = 'ai';
+      senderLabel = `✦ ${m.sender_display || m.user_name || 'AI'}`;
+    } else {
+      rowCls = 'user';
+      senderLabel = m.sender_display || m.user_name || '我';
+    }
+  }
+
+  const quoteHtml = quote
+    ? `<div class="quote-block" onclick="jumpToMsg(${quote.id})"><div class="quote-author">↩ #${quote.id} ${esc(quote.author)}</div><div class="quote-snip">${esc(quote.snippet)}</div></div>`
+    : '';
+  const bodyHtml = cleanText ? `<div class="msg-content">${renderMarkdown(cleanText)}</div>` : '';
+  const attHtml = renderAttachmentList(m);
+  const statusTag = m.optimistic
+    ? '<span>🕒 发送中…</span>'
+    : (m.outgoing && m.delivered === false ? '<span title="管理员切回该TG聊天时自动补发">⏳ TG待补发</span>' : '');
+
+  return {
+    rowCls,
+    inner: `<div class="swipe-reply-hint">↩</div>
+      <div class="msg-bubble" ondblclick="onBubbleDblClick(event, ${JSON.stringify(m.id)})">
+        <div class="msg-head">
+          <span class="msg-sender">${esc(senderLabel)} ${badgeHtml}</span>
+          <button type="button" class="msg-more-btn" title="操作菜单" onclick="openMsgMenuBtn(event, ${JSON.stringify(m.id)})">⋯</button>
+        </div>
+        ${quoteHtml}
+        ${bodyHtml}
+        ${attHtml}
+        <div class="msg-foot">
+          <span>#${esc(m.id)}</span>
+          <span>${fmtTime(m.ts)}</span>
+          ${statusTag}
+        </div>
+      </div>`,
+  };
+}
+
+function createMsgDomNode(m, isGroup, animateEnter) {
+  const { rowCls, inner } = buildMessageInnerHtml(m, isGroup);
+  const el = document.createElement('div');
+  el.className = `msg-row ${rowCls}` + (animateEnter ? ' msg-enter' : '') + (state.editingMsg?.id === m.id ? ' is-editing' : '');
+  el.dataset.mid = String(m.id);
+  el.dataset.sig = msgSig(m);
+  el.innerHTML = inner;
+  bindBubbleGestures(el, m.id);
+  return el;
+}
+
+function patchStream(messages, forceReset = false) {
+  const box = document.getElementById('msgContainer');
+  const isGroup = state.activeType === 'group';
+  state.msgMap.clear();
+  for (const m of messages) state.msgMap.set(String(m.id), m);
+
+  if (!messages.length) {
+    const emptyHint = state.activeType === 'conv' && state.activeChannel === 'human' && (state.channelCounts.collab > 0 || state.channelCounts.system > 0)
+      ? `当前「纯净对话」暂无人类消息（内部协作有 ${state.channelCounts.collab} 条，可点上方标签查看）`
+      : `暂无发言记录，直接在下方输入消息、粘贴截图或拖入文件即可开始`;
+    box.innerHTML = `<div class="empty-state">${esc(emptyHint)}</div>`;
+    return;
+  }
+
+  if (forceReset || box.querySelector('.empty-state')) {
+    const frag = document.createDocumentFragment();
+    for (const m of messages) frag.appendChild(createMsgDomNode(m, isGroup, false));
+    box.replaceChildren(frag);
+    return;
+  }
+
+  const existingMap = new Map();
+  for (const child of Array.from(box.children)) {
+    if (child.dataset?.mid) existingMap.set(child.dataset.mid, child);
+    else child.remove();
+  }
+
+  const wantedIds = new Set(messages.map(m => String(m.id)));
+  for (const [mid, node] of existingMap.entries()) {
+    if (!wantedIds.has(mid)) node.remove();
+  }
+
+  let cursor = box.firstElementChild;
+  const maxPrevId = existingMap.size ? Math.max(...Array.from(existingMap.keys()).map(k => Number(k) || 0)) : 0;
+
+  for (const m of messages) {
+    const key = String(m.id);
+    const sig = msgSig(m);
+    let node = existingMap.get(key);
+    if (node) {
+      if (node.dataset.sig !== sig) {
+        const { rowCls, inner } = buildMessageInnerHtml(m, isGroup);
+        node.className = `msg-row ${rowCls}` + (state.editingMsg?.id === m.id ? ' is-editing' : '');
+        node.dataset.sig = sig;
+        node.innerHTML = inner;
+        bindBubbleGestures(node, m.id);
+      } else {
+        node.classList.toggle('is-editing', state.editingMsg?.id === m.id);
+      }
+      if (node !== cursor) box.insertBefore(node, cursor);
+      else cursor = cursor.nextElementSibling;
+    } else {
+      const isNewTail = Number(m.id) > maxPrevId || String(m.id).startsWith('tmp_');
+      const fresh = createMsgDomNode(m, isGroup, isNewTail);
+      box.insertBefore(fresh, cursor);
+    }
+  }
+}
+
+/* Scroll Management, Floating Jump Button & Infinite History Upward Load */
+const messagesArea = document.getElementById('messagesArea');
+const scrollBottomBtn = document.getElementById('scrollBottomBtn');
+const unreadJumpBadge = document.getElementById('unreadJumpBadge');
+
+function isNearBottom(threshold = 130) {
+  return messagesArea.scrollHeight - messagesArea.scrollTop - messagesArea.clientHeight < threshold;
+}
+
+function jumpToBottomInstant() {
+  messagesArea.scrollTop = messagesArea.scrollHeight;
+  state.unreadWhileUp = 0;
+  updateJumpButton();
+}
+
+function jumpToBottomSmooth() {
+  messagesArea.scrollTo({ top: messagesArea.scrollHeight, behavior: 'smooth' });
+  state.unreadWhileUp = 0;
+  updateJumpButton();
+}
+
+function updateJumpButton() {
+  const show = !isNearBottom(180) || state.unreadWhileUp > 0;
+  scrollBottomBtn.classList.toggle('show', show);
+  unreadJumpBadge.textContent = state.unreadWhileUp > 99 ? '99+' : String(state.unreadWhileUp);
+  unreadJumpBadge.classList.toggle('show', state.unreadWhileUp > 0);
+}
+
+scrollBottomBtn.onclick = jumpToBottomSmooth;
+
+messagesArea.addEventListener('scroll', () => {
+  if (isNearBottom(90) && state.unreadWhileUp > 0) state.unreadWhileUp = 0;
+  updateJumpButton();
+  if (messagesArea.scrollTop < 80 && state.hasMore && !state.loadingMore) {
+    loadOlderHistory();
+  }
+}, { passive: true });
+
+async function loadOlderHistory() {
+  if (!state.activeId || !state.hasMore || state.loadingMore || !state.messages.length) return;
+  const firstReal = state.messages.find(m => typeof m.id === 'number');
+  if (!firstReal) return;
+  state.loadingMore = true;
+  const loader = document.getElementById('historyLoader');
+  loader.style.display = 'block';
+  const targetKey = cacheKey();
+  try {
+    const url = state.activeType === 'conv'
+      ? `/web/api/convs/${encodeURIComponent(state.activeId)}/messages?channel=${encodeURIComponent(state.activeChannel)}&before_id=${firstReal.id}&limit=100`
+      : `/web/api/groups/${encodeURIComponent(state.activeId)}/messages?before_id=${firstReal.id}&limit=100`;
+    const { data } = await api(url);
+    if (data.ok && cacheKey() === targetKey) {
+      const older = data.messages || [];
+      state.hasMore = Boolean(data.has_more);
+      if (older.length) {
+        const prevHeight = messagesArea.scrollHeight;
+        const prevTop = messagesArea.scrollTop;
+        const existingIds = new Set(state.messages.map(m => m.id));
+        const merged = [...older.filter(m => !existingIds.has(m.id)), ...state.messages];
+        state.messages = merged;
+        patchStream(state.messages, false);
+        messagesArea.scrollTop = prevTop + (messagesArea.scrollHeight - prevHeight);
+        saveThreadCache();
+      }
+    }
+  } finally {
+    loader.style.display = 'none';
+    state.loadingMore = false;
+  }
+}
+
+function saveThreadCache(extra = {}) {
+  const key = cacheKey();
+  if (!key) return;
+  const prev = state.threadCache.get(key) || {};
+  state.threadCache.set(key, Object.assign({}, prev, {
+    messages: state.messages.filter(m => !m.optimistic),
+    hasMore: state.hasMore,
+    windowSig: state.windowSig,
+    channelCounts: state.channelCounts,
+  }, extra));
+}
+
+/* Full Load vs Zero-Flicker Delta Sync */
+async function fetchFullThread(scrollBottom = false) {
+  if (!state.activeId || state.syncLock) return;
+  state.syncLock = true;
+  const reqKey = cacheKey();
+  const wasNearBottom = isNearBottom(140);
+  try {
+    if (state.activeType === 'conv') {
+      const { data } = await api(`/web/api/convs/${encodeURIComponent(state.activeId)}/messages?channel=${encodeURIComponent(state.activeChannel)}&limit=120`);
+      if (!data.ok || cacheKey() !== reqKey) return;
+      updateTopbarForConv(data.conv);
+      state.channelCounts = data.channel_counts || state.channelCounts;
+      state.activeChannel = data.channel || state.activeChannel;
+      state.hasMore = Boolean(data.has_more);
+      state.windowSig = data.window_sig || '';
+      renderChannelBar();
+      const incoming = data.messages || [];
+      const prevMax = state.messages.reduce((mx, x) => typeof x.id === 'number' ? Math.max(mx, x.id) : mx, 0);
+      const newCount = prevMax > 0 ? incoming.filter(x => x.id > prevMax).length : 0;
+      state.messages = incoming;
+      patchStream(state.messages, false);
+      saveThreadCache({ conv: data.conv });
+      if (scrollBottom) jumpToBottomInstant();
+      else if (newCount > 0) {
+        if (wasNearBottom) jumpToBottomSmooth();
+        else { state.unreadWhileUp += newCount; updateJumpButton(); }
+      }
+    } else {
+      const { data } = await api(`/web/api/groups/${encodeURIComponent(state.activeId)}/messages?limit=150`);
+      if (!data.ok || cacheKey() !== reqKey) return;
+      updateTopbarForGroup(data.group);
+      state.hasMore = Boolean(data.has_more);
+      state.windowSig = data.window_sig || '';
+      const incoming = data.messages || [];
+      const prevMax = state.messages.reduce((mx, x) => typeof x.id === 'number' ? Math.max(mx, x.id) : mx, 0);
+      const newCount = prevMax > 0 ? incoming.filter(x => x.id > prevMax).length : 0;
+      state.messages = incoming;
+      patchStream(state.messages, false);
+      saveThreadCache({ group: data.group });
+      if (scrollBottom) jumpToBottomInstant();
+      else if (newCount > 0) {
+        if (wasNearBottom) jumpToBottomSmooth();
+        else { state.unreadWhileUp += newCount; updateJumpButton(); }
+      }
+    }
+  } finally {
+    state.syncLock = false;
+  }
+}
+
+async function syncActiveDelta() {
+  if (!state.activeId || state.syncLock) return;
+  const maxId = state.messages.reduce((mx, x) => typeof x.id === 'number' ? Math.max(mx, x.id) : mx, 0);
+  if (!maxId) return fetchFullThread(false);
+
+  state.syncLock = true;
+  const reqKey = cacheKey();
+  const wasNearBottom = isNearBottom(140);
+  try {
+    const url = state.activeType === 'conv'
+      ? `/web/api/convs/${encodeURIComponent(state.activeId)}/messages?channel=${encodeURIComponent(state.activeChannel)}&after_id=${maxId}&limit=100`
+      : `/web/api/groups/${encodeURIComponent(state.activeId)}/messages?after_id=${maxId}&limit=100`;
+    const { data } = await api(url);
+    if (!data.ok || cacheKey() !== reqKey) return;
+    if (data.conv) updateTopbarForConv(data.conv);
+    if (data.group) updateTopbarForGroup(data.group);
+    if (data.channel_counts) {
+      state.channelCounts = data.channel_counts;
+      renderChannelBar();
+    }
+    const delta = data.messages || [];
+    if (delta.length) {
+      const seen = new Set(state.messages.filter(m => !m.optimistic).map(m => m.id));
+      const cleanBase = state.messages.filter(m => !m.optimistic);
+      for (const dm of delta) if (!seen.has(dm.id)) cleanBase.push(dm);
+      state.messages = cleanBase;
+      state.windowSig = data.window_sig || state.windowSig;
+      patchStream(state.messages, false);
+      saveThreadCache();
+      if (wasNearBottom) jumpToBottomSmooth();
+      else { state.unreadWhileUp += delta.length; updateJumpButton(); }
+    } else if (data.window_sig && state.windowSig && data.window_sig !== state.windowSig) {
+      state.syncLock = false;
+      await fetchFullThread(false);
+      return;
+    }
+  } finally {
+    state.syncLock = false;
+  }
+}
+
+/* Real-Time SSE Stream (/web/api/events) + Light Fallback */
+function stopRealtime() {
+  if (state.sse) { try { state.sse.close(); } catch (_) {} state.sse = null; }
+  clearTimeout(state.sseTimer);
+  clearInterval(state.fallbackTimer);
+}
+
+function reconnectSSE() {
+  if (!state.user) return;
+  if (state.sse) { try { state.sse.close(); } catch (_) {} state.sse = null; }
+  clearTimeout(state.sseTimer);
+  const q = state.activeType === 'conv' && state.activeId
+    ? `?conv=${encodeURIComponent(state.activeId)}`
+    : (state.activeType === 'group' && state.activeId ? `?group=${encodeURIComponent(state.activeId)}` : '');
+  const es = new EventSource(`/web/api/events${q}`);
+  state.sse = es;
+  let firstEvt = true;
+  es.addEventListener('sync', (ev) => {
+    try {
+      const snap = JSON.parse(ev.data || '{}');
+      if (snap.active_conv && snap.active_conv.id === state.activeId) {
+        if (snap.active_conv.trace) {
+          document.getElementById('headTrace').textContent = snap.active_conv.trace;
+        }
+      }
+      if (!firstEvt) {
+        syncActiveDelta();
+        loadBootstrap(false);
+      }
+      firstEvt = false;
+    } catch (_) {}
+  });
+  es.onerror = () => {
+    try { es.close(); } catch (_) {}
+    if (state.sse === es) state.sse = null;
+    clearTimeout(state.sseTimer);
+    if (state.user) state.sseTimer = setTimeout(reconnectSSE, 1800);
+  };
+}
+
+function startRealtime() {
+  stopRealtime();
+  reconnectSSE();
+  state.fallbackTimer = setInterval(() => {
+    if (!state.user || document.hidden) return;
+    loadBootstrap(false);
+    if (state.activeId) syncActiveDelta();
+  }, 5000);
+}
+
+/* Telegram Context Menu, Bottom-Bar In-Place Edit, Quote Reply & Touch Gestures */
+const ctxMenu = document.getElementById('ctxMenu');
+
+function closeCtxMenu() {
+  ctxMenu.classList.remove('open');
+}
+document.addEventListener('click', (e) => {
+  if (!ctxMenu.contains(e.target)) closeCtxMenu();
+});
+window.addEventListener('scroll', closeCtxMenu, true);
+
+function canEditOrDeleteMsg(m) {
+  if (!m || m.optimistic) return false;
+  if (state.activeType === 'group') {
+    return Boolean(state.user?.is_zwt || m.sender_conv === ('web:' + (state.user?.username || '')));
+  }
+  return true;
+}
+
+function showMsgContextMenu(mid, x, y) {
+  const m = state.msgMap.get(String(mid));
+  if (!m) return;
+  const canMod = canEditOrDeleteMsg(m);
+  let itemsHtml = `
+    <button type="button" class="ctx-item" onclick="triggerReply(${JSON.stringify(m.id)})">↩ 引用回复</button>
+    <button type="button" class="ctx-item" onclick="copyMsgText(${JSON.stringify(m.id)})">📋 复制文本</button>`;
+  if (canMod) {
+    itemsHtml += `
+      <button type="button" class="ctx-item" onclick="startBottomEdit(${JSON.stringify(m.id)})">✏️ 编辑消息</button>
+      <button type="button" class="ctx-item danger" onclick="removeMsg(${JSON.stringify(m.id)})">🗑 删除消息</button>`;
+  }
+  ctxMenu.innerHTML = itemsHtml;
+  ctxMenu.classList.add('open');
+  const rect = ctxMenu.getBoundingClientRect();
+  const px = Math.min(Math.max(8, x), window.innerWidth - (rect.width || 176) - 8);
+  const py = Math.min(Math.max(8, y), window.innerHeight - (rect.height || 168) - 8);
+  ctxMenu.style.left = px + 'px';
+  ctxMenu.style.top = py + 'px';
+}
+
+window.openMsgMenuBtn = function(ev, mid) {
+  ev.stopPropagation();
+  showMsgContextMenu(mid, ev.clientX, ev.clientY + 6);
+};
+
+window.onBubbleDblClick = function(ev, mid) {
+  const sel = window.getSelection?.()?.toString() || '';
+  if (sel.length > 0) return;
+  ev.preventDefault();
+  triggerReply(mid);
+};
+
+function bindBubbleGestures(rowEl, mid) {
+  const bubble = rowEl.querySelector('.msg-bubble');
+  if (!bubble) return;
+  bubble.addEventListener('contextmenu', (e) => {
+    const sel = window.getSelection?.()?.toString() || '';
+    if (sel.length > 0) return;
+    e.preventDefault();
+    showMsgContextMenu(mid, e.clientX, e.clientY);
+  });
+
+  let startX = 0, startY = 0, dx = 0, swiping = false, lpTimer = null;
+  bubble.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) return;
+    const t = e.touches[0];
+    startX = t.clientX; startY = t.clientY; dx = 0; swiping = false;
+    clearTimeout(lpTimer);
+    lpTimer = setTimeout(() => {
+      if (!swiping) {
+        if (navigator.vibrate) navigator.vibrate(14);
+        showMsgContextMenu(mid, t.clientX, t.clientY);
+      }
+    }, 390);
+  }, { passive: true });
+
+  bubble.addEventListener('touchmove', (e) => {
+    if (e.touches.length !== 1) return;
+    const t = e.touches[0];
+    const curDx = t.clientX - startX;
+    const curDy = t.clientY - startY;
+    if (Math.abs(curDx) > 8 || Math.abs(curDy) > 8) clearTimeout(lpTimer);
+    if (!swiping && curDx < -14 && Math.abs(curDx) > Math.abs(curDy) * 1.4) {
+      swiping = true;
+    }
+    if (swiping) {
+      dx = Math.max(-64, Math.min(0, curDx * 0.65));
+      rowEl.style.transition = 'none';
+      rowEl.style.transform = `translateX(${dx}px)`;
+      rowEl.classList.toggle('swiping', dx < -34);
+    }
+  }, { passive: true });
+
+  const finishTouch = () => {
+    clearTimeout(lpTimer);
+    if (swiping) {
+      const triggered = dx < -42;
+      rowEl.style.transition = '';
+      rowEl.style.transform = '';
+      rowEl.classList.remove('swiping');
+      if (triggered) {
+        if (navigator.vibrate) navigator.vibrate(10);
+        triggerReply(mid);
+      }
+      swiping = false;
+    }
+  };
+  bubble.addEventListener('touchend', finishTouch, { passive: true });
+  bubble.addEventListener('touchcancel', finishTouch, { passive: true });
+}
+
+/* Mobile Left-Edge Right-Swipe to Return to Conversation List */
+(function initEdgeSwipeBack() {
+  let edgeStart = null;
+  document.addEventListener('touchstart', (e) => {
+    if (window.innerWidth > 820 || e.touches.length !== 1) { edgeStart = null; return; }
+    const t = e.touches[0];
+    if (t.clientX <= 26 && !document.getElementById('sidebar').classList.contains('open')) {
+      edgeStart = { x: t.clientX, y: t.clientY };
+    } else {
+      edgeStart = null;
+    }
+  }, { passive: true });
+  document.addEventListener('touchend', (e) => {
+    if (!edgeStart || !e.changedTouches.length) return;
+    const t = e.changedTouches[0];
+    if (t.clientX - edgeStart.x > 64 && Math.abs(t.clientY - edgeStart.y) < 56) {
+      toggleSidebar(true);
+    }
+    edgeStart = null;
+  }, { passive: true });
+})();
+
+window.copyMsgText = function(mid) {
+  closeCtxMenu();
+  const m = state.msgMap.get(String(mid));
+  if (!m) return;
+  navigator.clipboard.writeText(m.text || '').then(() => showToast('已复制消息内容'));
+};
+
+window.jumpToMsg = function(mid) {
+  const el = document.querySelector(`.msg-row[data-mid="${CSS.escape(String(mid))}"]`);
+  if (!el) return showToast(`消息 #${mid} 在更早历史中`);
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  el.classList.remove('flash-jump');
+  void el.offsetWidth;
+  el.classList.add('flash-jump');
+};
+
+/* Telegram Bottom Banner (Shared for Reply & In-Place Edit) */
+const composerBanner = document.getElementById('composerBanner');
+const composerInput = document.getElementById('composerInput');
+
+function autoResizeInput() {
+  composerInput.style.height = 'auto';
+  composerInput.style.height = Math.min(composerInput.scrollHeight, 180) + 'px';
+}
+
+function clearBannerMode() {
+  const hadEdit = Boolean(state.editingMsg);
+  state.editingMsg = null;
+  state.replyToMsg = null;
+  composerBanner.classList.remove('open');
+  document.getElementById('sendBtn').textContent = '↑';
+  if (hadEdit) {
+    composerInput.value = '';
+    autoResizeInput();
+    document.querySelectorAll('.msg-row.is-editing').forEach(n => n.classList.remove('is-editing'));
+  }
+}
+document.getElementById('bannerCancelBtn').onclick = clearBannerMode;
+
+window.triggerReply = function(mid) {
+  closeCtxMenu();
+  const m = state.msgMap.get(String(mid));
+  if (!m) return;
+  if (state.editingMsg) clearBannerMode();
+  const sender = state.activeType === 'group'
+    ? (m.sender_name || m.sender_conv || '成员')
+    : (m.sender_display || m.user_name || (m.outgoing ? 'AI' : '用户'));
+  const snip = String(m.text || '').replace(/^> \[引用 #[^\n]+\n*/, '').replace(/\s+/g, ' ').trim().slice(0, 72) || '[附件]';
+  state.replyToMsg = { id: m.id, sender, snippet: snip };
+  document.getElementById('bannerTitle').textContent = `↩ 回复 #${m.id} · ${sender}`;
+  document.getElementById('bannerSub').textContent = snip;
+  composerBanner.classList.add('open');
+  composerInput.focus();
+};
+
+window.startBottomEdit = function(mid) {
+  closeCtxMenu();
+  const m = state.msgMap.get(String(mid));
+  if (!m) return;
+  state.replyToMsg = null;
+  state.editingMsg = { id: m.id, isGroup: state.activeType === 'group', text: m.text || '' };
+  document.getElementById('bannerTitle').textContent = `✏️ 正在编辑消息 #${m.id}`;
+  document.getElementById('bannerSub').textContent = String(m.text || '').replace(/\s+/g, ' ').slice(0, 80) || '（空文本）';
+  document.getElementById('sendBtn').textContent = '✓';
+  composerBanner.classList.add('open');
+  composerInput.value = m.text || '';
+  autoResizeInput();
+  document.querySelectorAll('.msg-row.is-editing').forEach(n => n.classList.remove('is-editing'));
+  const node = document.querySelector(`.msg-row[data-mid="${CSS.escape(String(m.id))}"]`);
+  if (node) node.classList.add('is-editing');
+  composerInput.focus();
+  composerInput.setSelectionRange(composerInput.value.length, composerInput.value.length);
+};
+
+window.removeMsg = async function(mid) {
+  closeCtxMenu();
+  if (!confirm(`确定删除这条消息 (#${mid}) 吗？删除后 Agent 上下文也将同步移除该记录。`)) return;
+  const isGroup = state.activeType === 'group';
+  const url = isGroup ? `/web/api/group-messages/${mid}` : `/web/api/messages/${mid}`;
+  const { data } = await api(url, { method: 'DELETE' });
+  if (!data.ok) return alert(data.error || '删除失败');
+  if (state.editingMsg?.id === mid) clearBannerMode();
+  state.messages = state.messages.filter(m => m.id !== mid);
+  patchStream(state.messages, false);
+  saveThreadCache();
+  showToast(`已删除 #${mid}`);
+};
+
+/* Group Wake Bar */
 function renderGroupWakeBar(g) {
   const bar = document.getElementById('groupWakeBar');
   bar.style.display = 'flex';
   const allCls = state.groupWakeMode === 'all' ? 'on' : '';
   const noneCls = state.groupWakeMode === 'none' ? 'on' : '';
-  let html = `<span style="color:var(--text-sub);font-weight:500">发言唤醒：</span>
-    <span class="member-tog ${allCls}" onclick="setGroupWake('all')">🔔 全群唤醒</span>
+  let html = `<span style="color:var(--text-sub);font-weight:500">唤醒：</span>
+    <span class="member-tog ${allCls}" onclick="setGroupWake('all')">🔔 全群</span>
     <span class="member-tog ${noneCls}" onclick="setGroupWake('none')">🔕 静默留言</span>`;
   for (const m of g.members || []) {
     const isOn = state.groupWakeMode === 'custom' && state.groupWakeSet.has(m.id) ? 'on' : '';
@@ -999,7 +2072,6 @@ function renderGroupWakeBar(g) {
   }
   bar.innerHTML = html;
 }
-
 window.setGroupWake = function(mode) {
   state.groupWakeMode = mode;
   if (mode !== 'custom') state.groupWakeSet.clear();
@@ -1013,67 +2085,20 @@ window.toggleGroupMember = function(cid) {
   if (state.groupInfo) renderGroupWakeBar(state.groupInfo);
 };
 
-function renderGroupMessages() {
-  const box = document.getElementById('msgContainer');
-  if (!state.messages.length) {
-    box.innerHTML = `<div class="empty-state">该协作群暂无发言记录，你可以在下方直接插话指导群内所有 Agent</div>`;
-    return;
-  }
-  box.innerHTML = state.messages.map(m => {
-    const isSelf = (state.user?.is_zwt && m.sender_conv === 'admin') || m.sender_conv === ('web:' + (state.user?.username || ''));
-    const canManageMsg = state.user?.is_zwt || m.sender_conv === ('web:' + (state.user?.username || ''));
-    const mnt = (m.mentions && m.mentions.length) ? `<span class="pill">唤醒: ${esc(m.mentions.join(','))}</span>` : '<span class="pill">仅群聊</span>';
-    if (state.editingId === m.id) {
-      return `<div class="msg-row group-item">
-        <div class="edit-box">
-          <textarea id="editArea_${m.id}">${esc(m.text)}</textarea>
-          <div class="edit-btns">
-            <button class="btn" onclick="cancelEdit()">取消</button>
-            <button class="btn btn-primary" onclick="saveEdit(${m.id}, true)">保存修改</button>
-          </div>
-        </div>
-      </div>`;
-    }
-    const acts = canManageMsg ? `<div class="msg-actions">
-      <button class="act-chip" onclick="startEdit(${m.id})">✏️ 编辑</button>
-      <button class="act-chip del" onclick="removeMsg(${m.id}, true)">🗑 删除</button>
-    </div>` : '';
-    return `<div class="msg-row group-item ${isSelf ? 'user' : 'ai'}">
-      <div class="msg-meta"><span>#${m.id} · <b>${esc(m.sender_name)}</b></span> ${mnt} <span>${fmtTime(m.ts)}</span></div>
-      <div class="msg-bubble">
-        <div class="msg-content">${renderMarkdown(m.text)}</div>
-        ${renderAttachment(m.file)}
-      </div>
-      ${acts}
-    </div>`;
-  }).join('');
-}
-
-window.startEdit = function(id) {
-  state.editingId = id;
-  state.activeType === 'group' ? renderGroupMessages() : renderConvMessages();
+/* Lightbox */
+window.openLightbox = function(url, dlUrl, name) {
+  document.getElementById('lightboxImg').src = url;
+  const dl = document.getElementById('lightboxDl');
+  dl.href = dlUrl || url;
+  dl.setAttribute('download', name || 'image');
+  document.getElementById('lightbox').classList.add('open');
 };
-window.cancelEdit = function() {
-  state.editingId = null;
-  state.activeType === 'group' ? renderGroupMessages() : renderConvMessages();
-};
-window.saveEdit = async function(id, isGroup) {
-  const val = document.getElementById('editArea_' + id).value;
-  const url = isGroup ? `/web/api/group-messages/${id}` : `/web/api/messages/${id}`;
-  const { data } = await api(url, { method: 'PATCH', json: { text: val } });
-  if (!data.ok) return alert(data.error || '修改失败');
-  state.editingId = null;
-  await loadActiveThread(false);
-};
-window.removeMsg = async function(id, isGroup) {
-  if (!confirm(`确定永久删除这条消息 (#${id}) 吗？删除后 Agent 上下文也将同步移除该记录。`)) return;
-  const url = isGroup ? `/web/api/group-messages/${id}` : `/web/api/messages/${id}`;
-  const { data } = await api(url, { method: 'DELETE' });
-  if (!data.ok) return alert(data.error || '删除失败');
-  await loadActiveThread(false);
+window.closeLightbox = function() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.getElementById('lightboxImg').src = '';
 };
 
-/* File Upload (Drag & Drop + Paste + Input Picker) */
+/* File Upload (Drag & Drop + Paste + Picker) */
 async function uploadFiles(fileList) {
   if (!fileList || !fileList.length) return;
   state.uploading = true;
@@ -1144,11 +2169,8 @@ window.addEventListener('dragenter', (e) => {
   dragDepth++;
   document.getElementById('dropMask').classList.add('show');
 });
-window.addEventListener('dragover', (e) => {
-  if (!state.user) return;
-  e.preventDefault();
-});
-window.addEventListener('dragleave', (e) => {
+window.addEventListener('dragover', (e) => { if (state.user) e.preventDefault(); });
+window.addEventListener('dragleave', () => {
   if (!state.user) return;
   dragDepth = Math.max(0, dragDepth - 1);
   if (dragDepth === 0) document.getElementById('dropMask').classList.remove('show');
@@ -1161,53 +2183,161 @@ window.addEventListener('drop', (e) => {
   if (e.dataTransfer?.files?.length) uploadFiles(e.dataTransfer.files);
 });
 
-/* Composer Auto-height & Send */
-const composerInput = document.getElementById('composerInput');
-composerInput.addEventListener('input', () => {
-  composerInput.style.height = 'auto';
-  composerInput.style.height = Math.min(composerInput.scrollHeight, 180) + 'px';
-});
+/* Keyboard Shortcuts & Optimistic Send / Bottom-Bar Edit Save */
+composerInput.addEventListener('input', autoResizeInput);
 composerInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
-    if (window.innerWidth > 820) {
+    if (window.innerWidth > 820 || state.editingMsg) {
       e.preventDefault();
-      sendCurrentMessage();
+      submitComposer();
+      return;
+    }
+  }
+  if (e.key === 'ArrowUp' && !composerInput.value && !state.editingMsg) {
+    const lastOwn = [...state.messages].reverse().find(m =>
+      !m.optimistic && (state.activeType === 'group'
+        ? ((state.user?.is_zwt && m.sender_conv === 'admin') || m.sender_conv === ('web:' + (state.user?.username || '')))
+        : (!m.outgoing && m.channel === 'human'))
+    );
+    if (lastOwn) {
+      e.preventDefault();
+      startBottomEdit(lastOwn.id);
     }
   }
 });
-document.getElementById('sendBtn').onclick = sendCurrentMessage;
 
-async function sendCurrentMessage() {
+document.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+    e.preventDefault();
+    toggleSidebar(true);
+    searchInput.focus();
+    searchInput.select();
+    return;
+  }
+  if (e.key === 'Escape') {
+    if (document.getElementById('lightbox').classList.contains('open')) return closeLightbox();
+    if (ctxMenu.classList.contains('open')) return closeCtxMenu();
+    const openModal = document.querySelector('.modal-bg.open');
+    if (openModal) return openModal.classList.remove('open');
+    if (state.editingMsg || state.replyToMsg) return clearBannerMode();
+  }
+});
+
+document.getElementById('sendBtn').onclick = submitComposer;
+
+async function submitComposer() {
   if (!state.activeId || state.uploading) return;
+
+  // In-place Telegram bottom-bar edit save
+  if (state.editingMsg) {
+    const { id, isGroup } = state.editingMsg;
+    const newText = composerInput.value;
+    const url = isGroup ? `/web/api/group-messages/${id}` : `/web/api/messages/${id}`;
+    const { data } = await api(url, { method: 'PATCH', json: { text: newText } });
+    if (!data.ok) return alert(data.error || '修改失败');
+    clearBannerMode();
+    const hit = state.messages.find(m => m.id === id);
+    if (hit) hit.text = newText;
+    patchStream(state.messages, false);
+    saveThreadCache();
+    showToast(`已更新 #${id}`);
+    return;
+  }
+
   const text = composerInput.value.trim();
-  const file_ids = state.pendingFiles.map(f => f.file_id);
+  const filesSnapshot = state.pendingFiles.slice();
+  const file_ids = filesSnapshot.map(f => f.file_id);
   if (!text && !file_ids.length) return;
 
+  const replyInfo = state.replyToMsg;
+  const reply_to_id = replyInfo ? replyInfo.id : 0;
+
+  // If currently filtering system/collab tab, switch back to human tab when sending human msg
+  if (state.activeType === 'conv' && state.activeChannel !== 'human' && state.activeChannel !== 'all') {
+    state.activeChannel = 'human';
+    renderChannelBar();
+    await fetchFullThread(true);
+  }
+
   composerInput.value = '';
-  composerInput.style.height = 'auto';
+  autoResizeInput();
   state.pendingFiles = [];
   renderPendingFiles();
+  clearBannerMode();
+
+  // Optimistic instant bubble
+  const tempId = 'tmp_' + Date.now();
+  const optText = replyInfo ? `> [引用 #${replyInfo.id} ${replyInfo.sender}] ${replyInfo.snippet}\n\n${text}`.trim() : text;
+  const optMsg = state.activeType === 'conv' ? {
+    id: tempId,
+    ts: Date.now() / 1000,
+    channel: 'human',
+    sender_display: (state.user?.display_name || state.user?.username || '我') + ' (Web)',
+    user_name: state.user?.display_name || '我',
+    text: optText,
+    outgoing: false,
+    delivered: true,
+    file: filesSnapshot[0] || null,
+    files: filesSnapshot,
+    optimistic: true,
+  } : {
+    id: tempId,
+    ts: Date.now() / 1000,
+    sender_conv: state.user?.is_zwt ? 'admin' : ('web:' + (state.user?.username || '')),
+    sender_name: (state.user?.display_name || state.user?.username || '我') + ' (Web)',
+    text: optText,
+    mentions: state.groupWakeMode === 'all' ? ['all'] : (state.groupWakeMode === 'none' ? [] : Array.from(state.groupWakeSet)),
+    file: filesSnapshot[0] || null,
+    files: filesSnapshot,
+    optimistic: true,
+  };
+
+  state.messages.push(optMsg);
+  patchStream(state.messages, false);
+  jumpToBottomSmooth();
 
   if (state.activeType === 'conv') {
     const { data } = await api(`/web/api/convs/${encodeURIComponent(state.activeId)}/messages`, {
       method: 'POST',
-      json: { text, file_ids },
+      json: { text, file_ids, reply_to_id },
     });
-    if (!data.ok) alert(data.error || '发送失败');
+    state.messages = state.messages.filter(m => m.id !== tempId);
+    if (!data.ok) {
+      patchStream(state.messages, false);
+      return alert(data.error || '发送失败');
+    }
+    if (data.messages && data.messages.length) {
+      const seen = new Set(state.messages.map(m => m.id));
+      for (const sm of data.messages) if (!seen.has(sm.id)) state.messages.push(sm);
+      patchStream(state.messages, false);
+      saveThreadCache();
+    } else {
+      await syncActiveDelta();
+    }
   } else {
     const mentions = state.groupWakeMode === 'all' ? ['all'] : (state.groupWakeMode === 'none' ? [] : Array.from(state.groupWakeSet));
     const { data } = await api(`/web/api/groups/${encodeURIComponent(state.activeId)}/messages`, {
       method: 'POST',
-      json: { text, file_ids, mentions },
+      json: { text, file_ids, mentions, reply_to_id },
     });
-    if (!data.ok) alert(data.error || '群发言失败');
+    state.messages = state.messages.filter(m => m.id !== tempId);
+    if (!data.ok) {
+      patchStream(state.messages, false);
+      return alert(data.error || '群发言失败');
+    }
+    if (data.message) {
+      if (!state.messages.some(m => m.id === data.message.id)) state.messages.push(data.message);
+      patchStream(state.messages, false);
+      saveThreadCache();
+    } else {
+      await syncActiveDelta();
+    }
   }
-  await loadActiveThread(true);
 }
 
-/* Modals */
+/* Modals: New Conv, New Group, Restart, Nodes Probe, Users Management */
 window.closeModal = function(id) { document.getElementById(id).classList.remove('open'); };
-document.getElementById('refreshBtn').onclick = () => { loadBootstrap(false); loadActiveThread(false); };
+document.getElementById('refreshBtn').onclick = () => { loadBootstrap(false); fetchFullThread(false); showToast('已同步最新记录'); };
 
 document.getElementById('newConvBtn').onclick = () => {
   document.getElementById('ncName').value = '';
@@ -1226,7 +2356,25 @@ document.getElementById('ncSubmitBtn').onclick = async () => {
   selectTarget('conv', data.conv.id);
 };
 
-/* Full-Context Restart Modal */
+document.getElementById('newGroupBtn').onclick = () => {
+  document.getElementById('ngName').value = '';
+  document.getElementById('ngMembers').value = '';
+  document.getElementById('ngWebUsers').value = '';
+  document.getElementById('ngTopic').value = '';
+  document.getElementById('newGroupModal').classList.add('open');
+};
+document.getElementById('ngSubmitBtn').onclick = async () => {
+  const name = document.getElementById('ngName').value.trim();
+  const members = document.getElementById('ngMembers').value.trim();
+  const web_users = document.getElementById('ngWebUsers').value.trim();
+  const topic = document.getElementById('ngTopic').value.trim();
+  const { data } = await api('/web/api/groups', { method: 'POST', json: { name, members, web_users, topic } });
+  if (!data.ok) return alert(data.error || '创建群失败');
+  closeModal('newGroupModal');
+  await loadBootstrap(false);
+  selectTarget('group', data.group_id);
+};
+
 document.getElementById('restartBtn').onclick = () => {
   const c = state.convs.find(x => x.id === state.activeId);
   if (!c) return;
@@ -1249,40 +2397,42 @@ document.getElementById('confirmRestartBtn').onclick = async () => {
   });
   if (!data.ok) return alert(data.error || '重开失败');
   closeModal('restartModal');
+  showToast('已向总控下发全量重开指令');
   await loadBootstrap(false);
-  await loadActiveThread(false);
+  await fetchFullThread(false);
 };
 
-/* Cluster Nodes Probe Modal */
 document.getElementById('nodesModalBtn').onclick = async () => {
   await loadBootstrap(false);
   const box = document.getElementById('nodesListBody');
   if (!state.nodes.length) {
     box.innerHTML = `<div class="empty-state" style="padding:30px">暂无已注册节点</div>`;
   } else {
-    box.innerHTML = state.nodes.map(n => {
+    const onlineCnt = state.nodes.filter(n => n.online).length;
+    let html = `<div style="margin-bottom:10px;font-size:13px;color:var(--text-sub)">共 <b>${state.nodes.length}</b> 个注册节点，当前在线 <b style="color:var(--green)">${onlineCnt}</b> 台</div>`;
+    html += state.nodes.map(n => {
       const m = n.metrics || {};
       const cpu = Number(m.cpu_percent || 0);
       const memPct = Number(m.mem_percent || 0);
-      const badge = n.kind === 'launcher' ? `⚙️ 主Agent · cloud${n.cloud_num}` : `🖥 云端工作节点`;
+      const badge = n.kind === 'launcher' ? `⚙️ 主Agent · cloud${n.cloud_num}` : (n.kind === 'coordinator' ? '🧭 协调母机' : '🖥 工作节点');
       const excl = n.exclusive_conv ? `<span class="pill accent">🔒 独占: ${esc(n.exclusive_conv)}</span>` : `<span class="pill">共享池</span>`;
       const allow = (n.allowed_convs && n.allowed_convs.length) ? `<span class="pill">授权: ${esc(n.allowed_convs.join(','))}</span>` : '';
       return `<div class="node-card">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
           <div><b>${esc(n.id)}</b> · ${esc(n.name)} <span class="pill">${badge}</span> ${excl} ${allow}</div>
-          <span style="font-size:12.5px;color:${n.online ? 'var(--green)' : 'var(--text-muted)'}">${n.online ? '🟢 在线' : '⚪ 离线'}</span>
+          <span style="font-size:12.5px;color:${n.online ? 'var(--green)' : 'var(--text-muted)'}">${n.online ? '🟢 在线' : '⚪ 离线 (' + esc(n.status) + ')'}</span>
         </div>
-        <div style="font-size:12.5px;color:var(--text-sub);margin-top:8px">
-          CPU: ${cpu}% (${m.cpu_cores || '?'}核, load=${m.load_1m ?? 0}) · 可用内存: ${m.mem_usable_mb ?? '?'} MB / 总 ${m.mem_total_mb ?? '?'} MB (已用 ${memPct}%${m.balloon_mb ? `, balloon ${m.balloon_mb}MB` : ''}) · 磁盘剩余 ${m.disk_free_gb ?? '?'} GB
+        <div style="font-size:12.5px;color:var(--text-sub);margin-top:6px">
+          CPU: ${cpu}% (${m.cpu_cores || '?'}核, load=${m.load_1m ?? 0}) · 可用内存: ${m.mem_usable_mb ?? '?'} / ${m.mem_total_mb ?? '?'} MB (${memPct}%${m.balloon_mb ? `, balloon ${m.balloon_mb}MB` : ''}) · 待办单: ${n.pending_ops || 0}
         </div>
         <div class="meter"><span style="width:${Math.min(100, cpu)}%"></span></div>
       </div>`;
     }).join('');
+    box.innerHTML = html;
   }
   document.getElementById('nodesModal').classList.add('open');
 };
 
-/* User Management Modal (zwt only) */
 async function refreshUsersList() {
   const { data } = await api('/web/api/users');
   if (!data.ok) return alert(data.error || '加载用户失败');
@@ -1322,14 +2472,17 @@ document.getElementById('umSaveBtn').onclick = async () => {
   const password = document.getElementById('umPass').value;
   const allowed_convs = document.getElementById('umConvs').value.trim();
   const allowed_groups = document.getElementById('umGroups').value.trim();
-  const payload = { username, display_name, password, allowed_convs, allowed_groups };
-  const { data } = await api('/web/api/users', { method: 'POST', json: payload });
+  const { data } = await api('/web/api/users', {
+    method: 'POST',
+    json: { username, display_name, password, allowed_convs, allowed_groups },
+  });
   if (!data.ok) return alert(data.error || '保存失败');
   document.getElementById('umUser').value = '';
   document.getElementById('umDisp').value = '';
   document.getElementById('umPass').value = '';
   document.getElementById('umConvs').value = '';
   document.getElementById('umGroups').value = '';
+  showToast('账号权限已保存');
   await refreshUsersList();
 };
 window.delWebUser = async function(uname) {
@@ -1339,7 +2492,7 @@ window.delWebUser = async function(uname) {
   await refreshUsersList();
 };
 
-/* Initial Boot */
+/* Boot */
 (async function boot() {
   const { data } = await api('/web/api/auth/status');
   if (data.authenticated && data.user) {
