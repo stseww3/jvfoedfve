@@ -24,19 +24,20 @@ lies on the horizon, so the sea's far edge shows no line.
 
 The line is baked into a table of columns, STEP degrees of bearing each and whole steps of STEP
 high: the ridge keeps the stepped outline of a mountain of blocks seen from afar (a block 460
-blocks off is an eighth of a degree; steps twice that size were tried first and made the ranges
-look near and small).
+blocks off is an eighth of a degree, about what a pixel of the sheets was; steps twice that
+size were on the real machine first and showed as steps).
 
 Nothing is built and the pack gets no model or picture from here: the layer is all there is.
 
 The first carrier (11-15, 11-16) was four display entities with cut-out pictures, 360 to 446
-blocks out. Two things ended it. The game draws an entity only when the chunk section it stands
-in has been built, which happens once that section has been in view: at the Realms server's view
-distance the ridges were missing for someone who arrives at the west rail and looks west (s1).
-And a sheet stands at a place: seen from above it stood beyond the edge of the sea's disc, under
-the horizon (V12, cr2), and by the shaders' fog (mood.fog_depth()) it kept three quarters of its
-own dark paint 400 blocks out, where the old fog had turned it into the fog's colour. The card
-has the pictures.
+blocks out. Two things ended it. At the Realms server's view distance the ridges were missing on
+the real machine for someone who arrives at the west rail and looks west, and stood there after
+a look back at the site (s1); the likeliest cause is that the game draws an entity only when the
+chunk section it stands in has been built, which happens once that section has been in view.
+And a sheet stands at a place: seen from above (V12) it was a dark band in the air beyond the
+edge of the sea's disc, under the horizon (cr2). The shaders' fog would not have hidden it
+either: by mood.fog_depth() a thing 400 blocks out keeps three quarters of its own paint, where
+the old fog turned everything that far into the fog's colour. The card has the pictures.
 
     python -m scenes.obs.sky.ridges     prints where the ranges stand and how high they reach
 """
