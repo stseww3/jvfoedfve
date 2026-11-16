@@ -26,9 +26,9 @@ them on either side, and at the piers a row further out):
   the ring      dressed tuff a block thick round every opening, standing on an impost of the same
                 stone on the pier; over the crown a keystone goes up to the coping
   the pilaster  brick, a block proud of the face from the pier's foot to the parapet: a dressed
-                band where the two arches spring, a dressed cap level with the higher coping and
-                a half block on it. Poles and lamps that want to stand on the viaduct stand on
-                the caps: stand()
+                band where the two arches spring and a dressed cap level with the higher coping,
+                which the lower one runs into. Poles and lamps that want to stand on the viaduct
+                stand on the caps: stand()
 
 What is whose: the incline's last column is x 111 and nothing here stands west of x 112. This
 package builds no lower than LOWEST (the level the cloud may be laid up to beside what stands in
@@ -151,8 +151,6 @@ def _column(x, z, cell):
     else:
         out[cope - 1] = DRESSED
         upper = cope - 2
-        if off > HALF:
-            out[cope] = f"{DRESSED_SLAB}[type=bottom]"
     # the body: a pier down to the rock or to LOWEST, an arch down to its ring; under LOWEST only
     # what carries the track
     deep = min(LOWEST, cope - CROWN)
@@ -218,7 +216,7 @@ def stand(k, right=False):
     side poles stand on, _rail.left) or on the right: where a pole or a lamp may be stood."""
     p = R.piers()[k]
     x, _, z = p.off((WIDE + HALF) / 2.0 * (1.0 if right else -1.0))
-    return x, coping(k) + 0.5, z
+    return x, float(coping(k)), z
 
 
 def sketch(right=2.0, step=1.0):
