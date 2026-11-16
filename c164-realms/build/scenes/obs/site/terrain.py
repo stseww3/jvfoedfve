@@ -65,6 +65,11 @@ LOWEST = K.ROCK_LOWEST          # -28: the lowest top the rock has; a column tha
 SKIRT = K.ROCK_SKIRT            # -34: the outermost columns are carried straight down to here, under the sea
 NEEDLE = -24                    # a column no higher than this (where the surf reaches) with rock on one side at the
 #                                 most is left out too: it would stand in the cloud as a post
+SURF = -24                      # the heaps of cloud against the mountain reach this block (sky/cloudsea's LOW). No top
+#                                 of the mountain's own lies lower: a lower one beside a cliff was a hole between the
+#                                 rock and the heaps, two and three deep, with rock underfoot, so nobody was carried
+#                                 home from it (walk-out, 11-16: the cell (-19, 30), top -28). What would end lower is
+#                                 left to the sea; only the bed of the cable track runs on down to LOWEST.
 
 # the area the mountain is worked out on: wide enough for the longest ridge to reach the floor
 GX0, GX1 = -84, 134
@@ -498,7 +503,7 @@ def _mountain():
     for (x, z), y in neck_steps().items():      # the ground under the steps of each neck: exact
         H[x - GX0, z - GZ0] = y
         kept[x - GX0, z - GZ0] = True
-    valid = H >= LOWEST
+    valid = (H >= LOWEST) & (kept | (H >= SURF))
     for _ in range(2):                  # no needle of rock alone in the surf: rock on one side of it at the most
         beside = sum(n.astype(int) for n in _neighbours(valid))
         valid &= kept | (beside >= 2) | (H > NEEDLE)
