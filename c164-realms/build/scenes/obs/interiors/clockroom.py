@@ -18,7 +18,9 @@ of the outer two), the going train under an A-frame in the middle. Its front loo
 side one arrives on: the setting dial (it shows the tower's time), the winding crank, and the small
 electric winding motor with its worm, bolted on later. Its back looks south: the escape wheel, the
 pallets over it, the crutch, and the long pendulum, which hangs behind the bed and goes down
-through a slot in the floor; its bob swings under the ceiling of the tower's lobby. From the going
+through the floor; its bob swings under the ceiling of the tower's lobby. The floor under the bed
+and where the pendulum goes through is whole iron plate: the slot is a model on it, above and
+below, so no light gets down and nobody can fall. From the going
 train an upright shaft rises to a nest of bevels on a beam at the height of the dials' centres, and
 four leading-off rods run from there to the four dials: one movement, four dials.
 
@@ -39,9 +41,9 @@ hatch (rank 3). The movement takes no source of its own: its pieces are shown as
 them (MOVEMENT_LIGHT). No slit window may be brighter outside than without the room. The tops of
 the slits' glass lie in the floor's row, under thin plates that light passes; over the two dark
 slits (north and south) a cabinet stands on the plate instead, a whole block: the switchboard of
-the winding motor, and a chest of drawers. Through the pendulum's slot and under the bed the
-levels are kept to what reaches the lobby's glass anyway. The test scene counts both, the cells
-outside and the light on the walk: python -m scenes.obs_int_clockroom.
+the winding motor, and a chest of drawers. Over the two lit slits the level stays under what
+their glass has from the tower's own sources. The test scene counts both, the cells outside and
+the light on the walk: python -m scenes.obs_int_clockroom.
 """
 import functools
 import math
@@ -110,11 +112,9 @@ SHEAVE_R, SHEAVE_DROP = 2.5, 4.5                    # a sheave's radius, and its
 BALL_ROPE = (18.25, 24.75, 13.0)                    # where the time ball's rope leaves its drum
 
 # ---- light: (level, rank) --------------------------------------------------------------------------------
-# In front of each dial's back, as behind a lit window: (level, rows above the dial's middle). The
-# south one stands over the pendulum's slot: a row higher and a level lower, so that the cell over
-# the slot keeps 5 and the lobby's south glass gets no more than it has.
-DIAL_GLOW = {"north": (10, 0), "east": (10, 0), "west": (10, 0), "south": (9, 1)}
-DIAL_RANK = 2
+# In front of each dial's back, as behind a lit window. Four rows over the plates on the tops of
+# the lit slits: 6 arrives there, 5 in the glass under them, which is what the glass has already.
+DIAL_GLOW = (10, 2)
 CAGE_LAMP = (7, 3)              # at the caged lamp
 HATCH_LAMP = (6, 3)             # where one comes up: a walkway
 WALK_LIGHT = 5                  # the least a place to stand has, at the feet or at the head
@@ -181,12 +181,8 @@ def floor_role(x, z, roles=B):
         return None
     if x in WELL_X and z in WELL_Z:
         return roles.IRON_GRATE                     # the three other corners: a weight's rope drops through
-    if (x, z) == SLOT:
-        return roles.IRON_BARS                      # the pendulum's slot, barred: one walks over it
-    if (x, z) == (CX, CZ):
-        return st(roles.IRON_RIVETED.slab, type="top")      # a slab: the slot's bars do not join it
-    if (x, z) in PIERS:
-        return roles.IRON_RIVETED.block             # under the piers
+    if (x, z) in PIERS or (x, z) in ((CX, CZ), SLOT):
+        return roles.IRON_RIVETED.block             # under the bed and where the pendulum goes through: whole plate
     return None
 
 
@@ -463,6 +459,17 @@ def _dial():
 
 
 # ---- models: ropes, weights, small pieces ----------------------------------------------------------------------------
+def _slot(side):
+    """The pendulum's slot in the floor plate, its middle on the anchor: an iron rim round a dark
+    opening, long enough for the swing. side 1 lies on the floor, side -1 under the lobby's ceiling."""
+    m = M.Model(PREFIX + ("slot" if side > 0 else "slot_under"))
+    y0, y1 = sorted((0.0, side * 0.25))
+    m.box((-7.0, y0, -2.5), (7.0, y1, 2.5), IRON_L)
+    y0, y1 = sorted((side * 0.25, side * 0.3))
+    m.box((-6.0, y0, -1.5), (6.0, y1, 1.5), K.flat("iron", 0), skip="d" if side > 0 else "u")
+    return m
+
+
 def _rope():
     """A wire rope: one pixel square, along +z from its anchor, 48 long (artkit.models.between)."""
     m = M.Model(PREFIX + "rope")
@@ -517,8 +524,8 @@ def _oilcan():
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    built = [_bed(), _trains(), _motor(), _winch(), _escape(), _pallets(), _pendulum(), _leads(), _dial(),
-             _rope(), _sheave(), _weight(), _board(), _oilcan()]
+    built = [_bed(), _trains(), _motor(), _winch(), _escape(), _pallets(), _pendulum(), _slot(1), _slot(-1),
+             _leads(), _dial(), _rope(), _sheave(), _weight(), _board(), _oilcan()]
     return {m.name: m for m in built}
 
 
@@ -609,6 +616,9 @@ def build_clockroom(c, origin=(0, 0, 0), roles=B):
     n += show("pendulum", spot(PIVOT), scale=2.0, brightness=PENDULUM_LIGHT)
     if kit:
         kit.swing(c, "z", SWING, period)
+    through = spot(PIVOT)
+    n += K.put(c, own[PREFIX + "slot"], (through[0], FLOOR_TOP, through[2]), origin=origin)
+    n += K.put(c, own[PREFIX + "slot_under"], (through[0], float(FLOOR_Y), through[2]), mount="ceiling", origin=origin)
 
     # ---- the leading-off work and the dials' backs
     n += show("leads", (AXIS[0], DIAL, AXIS[1]), brightness=MOVEMENT_LIGHT)
@@ -616,8 +626,7 @@ def build_clockroom(c, origin=(0, 0, 0), roles=B):
         n += K.put(c, own[PREFIX + "dial"], back, mount="wall", facing=LOOKS[name], scale=2.0, origin=origin,
                    turns=(("x", -TILT),))
         d = K.turn(K.FACING[LOOKS[name]], (0.0, 0.0, 0.5))
-        level, rows = DIAL_GLOW[name]
-        offer((back[0] + d[0], back[1] + rows, back[2] + d[2]), (level, DIAL_RANK), f"dial {name}")
+        offer((back[0] + d[0], back[1], back[2] + d[2]), DIAL_GLOW, f"dial {name}")
 
     # ---- the weight lines: up from the barrel, over two sheaves under the ceiling, down a corner
     r = SHEAVE_R * PX
