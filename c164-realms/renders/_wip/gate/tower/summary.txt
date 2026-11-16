@@ -1,0 +1,16 @@
+gate main/tower 9428a680: the merged tree 23d249b2, the assembly as it was b9f4fd46
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] pictures 1 test scene, 9 shots with a picture kept
+                    obs_main_tower: 9 pictures show cf4cc50c; the card's code has changed since (tower.py): draw them again
+check.py: 96 scenes in 135 s: 96 pass (51 with warnings)
+pictures: obs_main_tower: the kept pictures are NOT what the delivered commit 9428a680 draws (it goes back):
+    [FAIL] selfshots obs_main_tower at 23d249b2: 1 of 9 kept pictures are what the code draws, 8 not
+    v5: 38660 of 921600 pixels are not what the code draws (off by up to 76 of 255)
+    v1_stamp: 3874 of 921600 pixels are not what the code draws (off by up to 50 of 255)
+    v2_axis: 28421 of 921600 pixels are not what the code draws (off by up to 73 of 255)
+    dial_close: 13 of 921600 pixels are not what the code draws (off by up to 5 of 255)
+    top_close: 341 of 921600 pixels are not what the code draws (off by up to 13 of 255)
+    top_level: 172 of 921600 pixels are not what the code draws (off by up to 26 of 255)
+    junction: 95 of 921600 pixels are not what the code draws (off by up to 59 of 255)
+    north_west: 3035 of 921600 pixels are not what the code draws (off by up to 69 of 255)
+result: FAIL
