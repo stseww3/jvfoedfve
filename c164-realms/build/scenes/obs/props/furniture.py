@@ -613,8 +613,8 @@ def rail(canvas, pos, blocks, facing="south", origin=(0, 0, 0)):
 #   lookout   one bench on the south lookout, its back to the east rail. Who sits there looks west,
 #             the observatory on the right. The view back (S.V11) is taken from the walk in the
 #             middle of the lookout and looks north-west: the bench is behind its right edge.
-DRESS = False           # off in the master scene until the family has passed review; a test scene asks
-                        # for the site's furniture with dress(canvas), or calls site() for its group
+DRESS = True            # on from the merge on (the fast lane, COMMON 0.10); a test scene may still ask
+                        # for the site's furniture with dress(canvas), or call site() for its group
 SUNSET_BENCHES = ((14.5, 3.5), (13.0, 7.5))     # (west of the terrace's middle, off the axis): a pair each
 LOOKOUT_BENCH = (0.6, -1.5)     # in from the face of the east rail's kerb; from the lookout's middle row:
                                 # half way between the rail's north corner and the pier at the prow's knuckle

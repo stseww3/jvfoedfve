@@ -48,8 +48,8 @@ from ..common import palette as P
 from . import _kit as K
 
 PREFIX = "prop_iron_"
-DRESS = False                    # build() dresses the master scene only when on: off until the family
-                                 # has passed review on the real wall (the test scene shows it meanwhile)
+DRESS = True                     # build() dresses the master scene only when on. On from the merge on
+                                 # (the fast lane, COMMON 0.10); review looks at it on the real wall
 
 IRON, IRON_D = K.IRON, K.IRON_D
 BRASS, BRASS_D = K.BRASS, K.BRASS_D
