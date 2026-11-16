@@ -36,6 +36,8 @@ y up from the floor, z along the board from its east end.
 """
 import functools
 
+from artkit import models as M
+
 from ..common import skeleton as S
 from ..main import shell
 from ..motion import _kit as MK
@@ -43,6 +45,9 @@ from . import _powerkit as K
 from . import board as PB
 
 PREFIX = "mach_bboard_"
+VIEW = M.NEAR                           # the assembly's view band (s2 #88336): a machine indoors is drawn
+#                                         within 32 blocks. No view of the board's twelve looks into
+#                                         the battery room
 
 # --- where it stands (scene coordinates, blocks) ------------------------------------------------------
 _BOX = shell.ROOMS.get("battery room", shell.ROOMS["time room"])["box"]     # the room lies under the time room
