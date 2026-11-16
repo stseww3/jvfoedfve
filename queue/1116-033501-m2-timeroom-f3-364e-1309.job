@@ -1,0 +1,3 @@
+branch=cursor/c164-m2-timeroom-f3-364e
+head=1db625251f1339537472896495f6b0400fab0a4d
+args=--no-push --tail 70 \(cd\ build\ \&\&\ python\ -m\ scenes.obs_int_timeroom\ 2\>\&1\ \|\ cut\ -c1-170\ \|\ tail\ -n\ 6\;\ true\)\ \&\&\ python\ tools/check.py\ --scene\ obs_int_timeroom 
