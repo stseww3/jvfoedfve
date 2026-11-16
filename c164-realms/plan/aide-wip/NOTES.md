@@ -104,3 +104,17 @@
   节点自己用 gh 凭据重推成了）：总控的口径是这种不算事故；重推也失败或远端没有提交的，停下把节点号、op 号、报错给我，我转总控；
   谁也不改节点上的凭据和 nodejob.sh（g2 #1380 发过公告，ROSTER 节点那一条也写了）。
 - 下一次来历检查（survey.py）10:15 前后；五行 10:00、10:30……
+
+## 11-16 10:40 的状态（卡全进了，五行第 1 行换成三个数）
+
+- 10:24 起 67 张卡的第一版全在总装里；总监 10:32 砍了 `common/offline-sky`（不做），六条的第 1 条销账。
+- 总监 10:32：五行的第 1 行改报三个数：走查还挡人的处数（室内、室外）、路上还暗的格数（lights 的量法）、12 张图过了几张。
+  `five.py` 已改：前两个从 git 读（a4、facade 分支上最新的 `plan/reviews/walk/<头>/in-findings.md`、`out-findings.md` 的结论行；
+  sound 的 `cursor/c164-sound-lightaudit-f3-cbc6-wip` 上 `renders/_wip/light/dark.md` 的「**暗：N 格**」）；
+  第三个手工记在 `/tmp/c164_aide/board.json`（四位主看的评审每版抄我一行：review V2 到 V5，cr2 V1、V6、V11、V12，cr3 V7，cr4 V8 到 V10；g2 #1508 要过）。
+- 怎么算过（总监 10:29）：一张图五项平均不低于 4.0、没有一项低于 3。10:00 版过 6 张（V1、V2、V3、V8、V9、V11），
+  没过 V4 3.8、V5 3.8、V6 3.6、V7 3.6、V10 3.6；V12 换了机位（总监 10:31），等新图。
+- 10:30 前后派出去的：m1、m5→lights（cr2：路上的光最缺人；dome、astro 已在帮）；rec→V4 门边铭牌（原归 lamps，交 a6）；
+  vault、mast→帮 power 过 V6（炉火窗、门里的光；mast 管锅炉一侧）；clkrm→帮 tower 过 V5；ashlar→a4（walkin 表）；
+  m3→雨棚吊灯封顶（review 直接发的）。cable 不空（cr3、a4 派了三件）。comet 手空，留着等 lights 或审批人要人。
+- 10:12 的来历检查：207 条 -f3 分支全干净，没有一小时不推的；下一次 11:15 前后。

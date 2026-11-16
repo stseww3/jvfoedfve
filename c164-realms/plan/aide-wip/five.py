@@ -45,6 +45,84 @@ def hm(ts):
     return time.strftime("%H:%M", time.gmtime(ts + 8 * 3600))
 
 
+# -- the first line since 11-16 10:32 (the director: the cards are all in, report these three) --------
+
+BOARD = "/tmp/c164_aide/board.json"   # kept by hand from the reviewers' lines
+
+
+def newest(patterns, suffix):
+    """The newest file ending in suffix on the branches matching the patterns: (time, ref, path)."""
+    best = None
+    refs = git("for-each-ref", "--format=%(refname:short)", *["refs/remotes/origin/cursor/" + p for p in patterns])
+    for ref in refs.stdout.split() + [ASM]:
+        for top in ("c164-realms/plan/reviews/walk", "c164-realms/renders/_wip/light"):
+            for path in git("ls-tree", "-r", "--name-only", ref, "--", top).stdout.split("\n"):
+                if not path.endswith(suffix):
+                    continue
+                ct = git("log", "-1", "--format=%ct", ref, "--", path).stdout.strip()
+                if ct and (best is None or int(ct) > best[0]):
+                    best = (int(ct), ref, path)
+    return best
+
+
+def walk_count(kind):
+    """(the places that still stop a visitor, the head walked, when written) of the newest findings."""
+    got = newest(["c164-a4-*", "c164-facade-*"], "/%s-findings.md" % kind)
+    if not got:
+        return None
+    ct, ref, path = got
+    text = git("show", "%s:%s" % (ref, path)).stdout
+    m = re.search(r"挡人的[：:]\s*(\d+)", text) or re.search(r"挡人的\s*(\d+)\s*处", text)
+    if not m and re.search(r"没有.{0,6}挡人|nobody is stopped", text):
+        n = 0
+    else:
+        n = int(m.group(1)) if m else None
+    return n, path.split("/")[-2], ct
+
+
+def dark_count():
+    """(dark cells, of them ruled 'not to be lit', the head measured, when) of sound's newest list."""
+    got = newest(["c164-sound-*", "c164-lights-*"], "/dark.md")
+    if not got:
+        return None
+    ct, ref, path = got
+    text = git("show", "%s:%s" % (ref, path)).stdout
+    m = re.search(r"\*\*暗：(\d+) 格", text)
+    head = re.search(r"总装 ([0-9a-f]{7,8})", text)
+    skip = sum(int(x) for x in re.findall(r"^\| 不补[^|]*\| (\d+) \|", text, re.M))
+    return (int(m.group(1)) if m else None), skip, head.group(1) if head else "?", ct
+
+
+def board():
+    import json
+    try:
+        return json.load(open(BOARD, encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+
+
+def first_line():
+    parts = []
+    wi, wo = walk_count("in"), walk_count("out")
+    def w(x):
+        return "?" if not x or x[0] is None else str(x[0])
+    heads = sorted({x[1] for x in (wi, wo) if x})
+    parts.append("走查还挡人：室内 %s、室外 %s（走的是 %s）" % (w(wi), w(wo), "、".join(heads) or "?"))
+    d = dark_count()
+    if d:
+        parts.append("路上还暗 %s 格（总装 %s，%s 量；其中定了不补 %d）" % (d[0], d[2], hm(d[3]), d[1]))
+    else:
+        parts.append("路上还暗 ? 格")
+    b = board()
+    if b:
+        parts.append("12 张图过 %d 张（%s；没过 %s%s）" % (
+            len(b["pass"]), b["version"], "、".join("%s %s" % kv for kv in b["fail"].items()) or "无",
+            "；等着 " + "、".join(b["wait"]) if b.get("wait") else ""))
+    else:
+        parts.append("12 张图过 ? 张")
+    return "1. " + "；".join(parts) + "。"
+
+
 def cards():
     text = git("show", ASM + ":c164-realms/plan/STATUS.md").stdout
     cat, out = None, []
@@ -215,8 +293,9 @@ def main():
         load = "?"
     print("【五行 %s｜合用机负载 %s（4 核）】" % (hm(now), load))
     back = sum(1 for c in work if returned(c))
-    print("1. 卡 %d 张（66 加新开 %d）：进总装 %d，在做 %d%s，没人领 %d。"
-          % (len(cs), len(cs) - 66, len(inside), len(work), "（其中退回 %d）" % back if back else "", len(unclaimed)))
+    print(first_line())
+    print("   卡 %d 张：进总装 %d，在做 %d%s，没人领或不做 %d。"
+          % (len(cs), len(inside), len(work), "（其中退回 %d）" % back if back else "", len(unclaimed)))
     print("2. 08:20 快车道以后：新交付 %d 件（关口 PASS），合进 %d 件。" % (len(passes), len(merged)))
     print("3. 室内：" + "；".join(rooms) + "。")
     print("4. 新人有提交的：%s；还没有：%s。"

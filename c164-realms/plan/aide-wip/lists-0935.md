@@ -77,3 +77,8 @@ main 五个包的第一版都在总装里。
 
 ## 跨类派的（aide，续）
 - tower → 和 clkrm 分钟室（clkrm 09:28 还没有自己的提交），09:30。
+- rec → 帮 sdome 的 interiors/astroroom，09:34。
+- m3 → 帮 a4（重走的量或者栏杆墩），09:43（cable 的活 09:41 结束）。
+- astro → 帮 lights（入口到蓄电池室这一路），09:49（batteryroom 第一版 4373c72 已交 cr4）。
+- clkrm 09:44：c77b2a64 第一版加场景已推，合了 tower 的壳 ffba0d15；09:55 赶不上，09:29 告诉了 cr4，门先关着，目标 10:25 前过关口。
+- vault 09:36：platevault 第一版 de1db354 已交（09:37 合），接着把 power 的暗房件和升降机（2c0b2eae）接进来。

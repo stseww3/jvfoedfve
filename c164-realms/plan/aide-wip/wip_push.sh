@@ -30,6 +30,7 @@ git read-tree "$parent"
 git rm -q -r --cached --ignore-unmatch "$DEST" >/dev/null 2>&1 || true
 for f in "$SRC"/*.py "$SRC"/*.sh "$SRC"/deal.json "$SRC"/deal_notes.md "$SRC"/scratch.txt \
          "$SRC"/asked.json "$SRC"/first_seen.json "$SRC"/lists-0935.md "$SRC"/newhires.md \
+         "$SRC"/board.json \
          /cursor/stores/self/c164-aide-f3/NOTES.md; do
   [ -f "$f" ] || continue
   if grep -q "a_[0-9a-f]\{16\}" "$f"; then echo "wip_push: $f names an identity; left out"; continue; fi
