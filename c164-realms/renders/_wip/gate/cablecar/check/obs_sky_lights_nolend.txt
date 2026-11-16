@@ -1,0 +1,16 @@
+check obs_sky_lights_nolend at bda85cf
+[WARN] regen     183331 blocks, 136 entities, 144 models, 1100 resource-pack files, 99 data-pack files, look: 1 biomes, 1 timelines (2.4 s)
+                 registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+[PASS] conflicts the scene writes 1099 files, no file written twice, the folders and the prefix of sky are kept (3 packages run alone)
+[PASS] strays    268 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      812 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    50 kinds of block placed, 12 barrier cells (x 16, y 0..1, z -5..5), all in the occupancy table
+[SKIP] flatwall  a test scene of sky: its sample walls and backdrops are meant to be flat
+[PASS] entities  136 display entities, 9 drawn out along one axis, 1 shown through a matrix that is no turn, no face stretched, 112 models never placed
+[PASS] views     3 shots, most display entities in view: 136 (blue_axis), limit 600; counted without what walls hide; the game draws up to 136 (blue_front): a display entity without width and height is drawn outside the view too
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    1 parts and 0 points on 1 chains, 12 function files; 4 commands in the busiest tick (limit 40), 0.6 a tick on average (limit 10)
+                 chain of 24 ticks: 6 functions, 14 commands a cycle, starts 1 ticks after start
+                 bld_tower_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.09 blocks off the axis
+result: PASS (0 failed, 1 with warnings)
