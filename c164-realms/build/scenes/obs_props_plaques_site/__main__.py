@@ -9,7 +9,7 @@ import sys
 
 from scenes.obs.props import plaques
 
-from . import build, in_board, shots
+from . import build, faults, in_board, shots
 
 if __name__ == "__main__":
     path = os.path.join(os.path.dirname(__file__), "shots.json")
@@ -28,6 +28,10 @@ if __name__ == "__main__":
         print("plaques that hang:", ", ".join(k for k in table if k not in left) or "none")
         for key in left:
             print(f"  left out, nothing stands behind it: {key} at {table[key]['pos']}")
+        found = faults(c)
+        for key, words in found:
+            print(f"  {key}: {words}")
+        print(f"{len(found)} faults in where the plaques hang")
         for s in shots():
             x, y, z = (int(v // 1) for v in s["pos"])
             if c.has(x, y, z):
