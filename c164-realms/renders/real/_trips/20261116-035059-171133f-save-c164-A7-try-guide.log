@@ -1,0 +1,119 @@
+[trip 03:50:59 +0s] the guide of the save dist/A7/c164-A7.zip of 171133f5 (cursor/c164-dist-f4b8): sha256 fad9215543b3e58573bfcc3b3c1389744ebb4b8c16b4dd839a6b252ae5d9afd0, as asked; parts walk, second; 4 cores, 700 s at most
+[trip 03:50:59 +0s] guide: PRETENDED: 4 places of guide-pretend.json are taken for watched; the save itself does nothing at them
+[trip 03:50:59 +0s] guide: in the save's files: 0 text displays, 0 commands that show words, 4 watched places, 371 functions
+[trip 03:50:59 +0s] guide:   c164.c1: within reach of [[78.75, 195.0, 28.5, 1.6]] (--pretend guide-pretend.json); a visitor's feet at [78.5, 194.0, 28.5] on minecraft:tuff_bricks, 1.03 from the last of them
+[trip 03:50:59 +0s] guide:   c164.c2: within reach of [[6.5, 203.0, 0.5, 1.6]] (--pretend guide-pretend.json); a visitor's feet at [6.5, 203.0, 0.5] on minecraft:barrier, 0.0 from the last of them
+[trip 03:50:59 +0s] guide:   c164.c3: within reach of [[26.5, 200.0, -5.5, 1.6], [27.44, 200.0, -5.5, 1.6]] (--pretend guide-pretend.json); a visitor's feet at [27.44, 200.0, -5.5] on minecraft:deepslate_tiles, 0.0 from the last of them
+[trip 03:50:59 +0s] guide:   c164.done: within reach of [[88.5, 196.0, -32.5, 1.0]] (--pretend guide-pretend.json); a visitor's feet at [88.5, 196.0, -32.5] on minecraft:oxidized_copper_grate, 0.0 from the last of them
+[trip 03:50:59 +0s] clean: nodemc.py down  (up to 180 s)
+[trip 03:50:59 +0s] clean: exit 0, 0 s
+[trip 03:50:59 +0s] the save: the world folder c164-A7 (407 entries) is unpacked as server26/save/; level.dat: name c164-A7, mode adventure, difficulty peaceful, spawn 88 196 -33, yaw 67.71, pitch -22.69, version 26.3, commands False, packs ['vanilla', 'file/c164art']
+[trip 03:50:59 +0s] setup: nodemc.py setup  (up to 400 s)
+    [nodemc 03:50:59] vulkan: apiVersion 1.4.318, deviceName llvmpipe (LLVM 20.1.2, 256 bits), driverInfo Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+    [nodemc 03:50:59] java: /agent/realms-study/jdk/jdk-25.0.5+8-jre/bin/java
+    [nodemc 03:50:59] game files: whole ({"version": "26.3", "system": "linux", "mainClass": "net.minecraft.client.main.Main", "assetIndex": "34", "files": 5124, "downloaded": 5123, "assets_skipped": 9)
+    [nodemc 03:50:59] settings written: server26/server.properties (level-name, gamemode, force-gamemode, difficulty); render distance 12, the server's view distance 10, cloud range 128; the world save, joined in adventure mode, difficulty peaceful
+[trip 03:50:59 +0s] setup: exit 0, 0 s
+[trip 03:51:00 +1s] resource pack: resourcepacks/resources.zip of the save (1793070 bytes, sha256 c7187032b57ed7f5, 2393 files, pack.mcmeta { "pack": { "description": "c164 c164-A7 (783c81df)", "min_format": 97, "max_format": 97 } }) is the client's pack
+[trip 03:51:00 +1s] server: nodemc.py server-up  (up to 400 s)
+    [nodemc 03:51:06] server is up (6 s)
+[trip 03:51:06 +7s] server: exit 0, 6 s
+[trip 03:51:06 +7s] server, asked `time query minecraft:day`: Timeline minecraft:day is at 20370 tick(s)
+[trip 03:51:06 +7s] game: nodemc.py client-up  (up to 573 s)
+    [nodemc 03:51:18] C164Cam is online (12 s)
+    [nodemc 03:51:18] game: [03:51:11] [Render thread/INFO]: Backend library: LWJGL version 3.4.3+4
+    [nodemc 03:51:18] game: [03:51:11] [Render thread/ERROR]: Failed to create backend OpenGL
+    [nodemc 03:51:18] game: com.mojang.renderpearl.api.device.BackendCreationException: Failed to create window for OpenGL context: Couldn't find matching GLX visual
+    [nodemc 03:51:18] game: [03:51:11] [Render thread/INFO]: Using graphics backend Vulkan, using drivers: 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+    [nodemc 03:51:18] game: [03:51:11] [Render thread/INFO]: Using graphics device: llvmpipe (LLVM 20.1.2, 256 bits) (0x10005)
+    [nodemc 03:51:18] pictures: saved by the game itself (helper)
+[trip 03:51:18 +19s] game: exit 0, 12 s
+[trip 03:51:33 +34s] guide: first joining: 22 pictures in a row from the joining on (taken), joined_NN; seconds after the joining and the share of the middle that differs from the last one: 00 1.7s 100%, 01 2.3s 71%, 02 2.8s 1%, 03 3.3s 0%, 04 3.8s 0%, 05 4.3s 0%, 06 5.0s 0%, 07 5.7s 0%, 08 6.5s 0%, 09 7.2s 0%, 10 7.9s 0%, 11 8.8s 0%, 12 9.5s 0%, 13 10.2s 0%, 14 10.9s 0%, 15 11.7s 0%, 16 12.4s 0%, 17 13.2s 0%, 18 14.0s 0%, 19 14.7s 0%, 20 15.5s 0%, 21 16.1s 0%
+[trip 03:51:33 +34s] server, asked `tag C164Cam list`: C164Cam has 1 tag(s): c164.in
+[trip 03:51:33 +34s] server, asked `data get entity C164Cam Pos`: C164Cam has the following entity data: [88.5d, 196.0d, -32.5d]
+[trip 03:51:33 +34s] server, asked `data get entity C164Cam playerGameType`: C164Cam has the following entity data: 2
+[trip 03:51:33 +34s] guide: after the first joining the player has the tags c164.in; C164Cam has the following entity data: [88.5d, 196.0d, -32.5d]; C164Cam has the following entity data: 2
+[trip 03:51:33 +34s] walk: shoot.py /tmp/c164_s1/real/save/c164-A7-try-guide/walk.json --pw-file /agent/realms-study/server26/.rcon_pw --out /tmp/c164_s1/real/save/c164-A7-try-guide/shots --keep-clock --settle 3.0 --first-settle 3.0 --walk-as adventure  (up to 546 s)
+    /tmp/c164_s1/real/save/c164-A7-try-guide/shots/w00_step_before.png
+    asked at w00_step_before: tag C164Cam list -> C164Cam has 1 tag(s): c164.in
+    /tmp/c164_s1/real/save/c164-A7-try-guide/shots/w01_chart1.png
+    asked at w01_chart1: tag C164Cam list -> C164Cam has 1 tag(s): c164.in
+    /tmp/c164_s1/real/save/c164-A7-try-guide/shots/w02_step_some.png
+    asked at w02_step_some: tag C164Cam list -> C164Cam has 1 tag(s): c164.in
+    /tmp/c164_s1/real/save/c164-A7-try-guide/shots/w03_chart2.png
+    asked at w03_chart2: tag C164Cam list -> C164Cam has 1 tag(s): c164.in
+    /tmp/c164_s1/real/save/c164-A7-try-guide/shots/w04_chart3.png
+    asked at w04_chart3: tag C164Cam list -> C164Cam has 1 tag(s): c164.in
+    /tmp/c164_s1/real/save/c164-A7-try-guide/shots/w05_chart1_again.png
+    asked at w05_chart1_again: tag C164Cam list -> C164Cam has 1 tag(s): c164.in
+    /tmp/c164_s1/real/save/c164-A7-try-guide/shots/w06_step_all.png
+    asked at w06_step_all: tag C164Cam list -> C164Cam has 1 tag(s): c164.in
+    /tmp/c164_s1/real/save/c164-A7-try-guide/shots/w07_step_after.png
+    /tmp/c164_s1/real/save/c164-A7-try-guide/shots/w08_away.png
+    /tmp/c164_s1/real/save/c164-A7-try-guide/shots/w09_step_again.png
+    asked at w09_step_again: tag C164Cam list -> C164Cam has 1 tag(s): c164.in
+    pictures: 10 saved by the game itself, 0 taken off the display
+[trip 03:52:00 +61s] walk: exit 0, 27 s
+[trip 03:52:00 +61s] guide: w00_step_before: before any chart: nothing is written, no tag is given. Tags after it: c164.in -- as the card has it
+[trip 03:52:00 +61s] guide: w01_chart1: the action bar says chart 1 of 3; the tag c164.c1 is given. Tags after it: c164.in -- NOT SO: lacks c164.c1
+[trip 03:52:00 +61s] guide: w02_step_some: with 1 of 3: the action bar counts them, no close. Tags after it: c164.in -- NOT SO: lacks c164.c1
+[trip 03:52:00 +61s] guide: w03_chart2: the action bar says chart 2 of 3; the tag c164.c2 is given. Tags after it: c164.in -- NOT SO: lacks c164.c1, c164.c2
+[trip 03:52:00 +61s] guide: w04_chart3: the action bar says chart 3 of 3; the tag c164.c3 is given. Tags after it: c164.in -- NOT SO: lacks c164.c1, c164.c2, c164.c3
+[trip 03:52:00 +61s] guide: w05_chart1_again: a chart taken before: nothing is written, nothing is counted twice. Tags after it: c164.in -- NOT SO: lacks c164.c1, c164.c2, c164.c3
+[trip 03:52:00 +61s] guide: w06_step_all: with every chart: the closing title, a bell, the tag c164.done. Tags after it: c164.in -- NOT SO: lacks c164.c1, c164.c2, c164.c3, c164.done
+[trip 03:52:00 +61s] guide: w07_step_after: three seconds later, the same place: the title going, the motes rising
+[trip 03:52:00 +61s] guide: w08_away: away from the step, until the title is gone
+[trip 03:52:00 +61s] guide: w09_step_again: the step once more: nothing is written. Tags after it: c164.in -- NOT SO: lacks c164.c1, c164.c2, c164.c3, c164.done
+[trip 03:52:00 +61s] server, asked `tag C164Cam list`: C164Cam has 1 tag(s): c164.in
+[trip 03:52:00 +61s] server, asked `tag C164Cam list`: C164Cam has 1 tag(s): c164.in
+[trip 03:52:00 +61s] second visitor: nodemc.py client-up  (up to 420 s)
+    [nodemc 03:52:14] C164Two is online (14 s)
+    [nodemc 03:52:14] game: [03:52:07] [Render thread/INFO]: Backend library: LWJGL version 3.4.3+4
+    [nodemc 03:52:14] game: [03:52:07] [Render thread/ERROR]: Failed to create backend OpenGL
+    [nodemc 03:52:14] game: com.mojang.renderpearl.api.device.BackendCreationException: Failed to create window for OpenGL context: Couldn't find matching GLX visual
+    [nodemc 03:52:14] game: [03:52:07] [Render thread/INFO]: Using graphics backend Vulkan, using drivers: 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+    [nodemc 03:52:14] game: [03:52:07] [Render thread/INFO]: Using graphics device: llvmpipe (LLVM 20.1.2, 256 bits) (0x10005)
+    [nodemc 03:52:14] pictures: saved by the game itself (helper)
+[trip 03:52:14 +75s] second visitor: exit 0, 14 s
+[trip 03:52:14 +75s] server, asked `list`: There are 2 of a max of 10 players online: C164Cam, C164Two
+[trip 03:52:14 +75s] server, asked `tag C164Two list`: C164Two has 1 tag(s): c164.in
+[trip 03:52:14 +75s] server, asked `tag C164Cam list`: C164Cam has 1 tag(s): c164.in
+[trip 03:52:14 +75s] guide: two visitors: There are 2 of a max of 10 players online: C164Cam, C164Two; the second one has the tags c164.in on joining, the first still c164.in
+[trip 03:52:14 +75s] second-own: shoot.py /tmp/c164_s1/real/save/c164-A7-try-guide/second-own.json --pw-file /agent/realms-study/server26/.rcon_pw --out /tmp/c164_s1/real/save/c164-A7-try-guide/shots --keep-clock --settle 3.0 --first-settle 3.0 --seat b --player C164Two --walk-as adventure  (up to 505 s)
+    /tmp/c164_s1/real/save/c164-A7-try-guide/shots/two_own_chart.png
+    asked at two_own_chart: tag C164Two list -> C164Two has 1 tag(s): c164.in
+    asked at two_own_chart: tag C164Cam list -> C164Cam has 1 tag(s): c164.in
+    pictures: 1 saved by the game itself, 0 taken off the display
+[trip 03:52:16 +77s] second-own: exit 0, 2 s
+[trip 03:52:16 +77s] second-seen: shoot.py /tmp/c164_s1/real/save/c164-A7-try-guide/second-seen.json --pw-file /agent/realms-study/server26/.rcon_pw --out /tmp/c164_s1/real/save/c164-A7-try-guide/shots --keep-clock --settle 3.0 --first-settle 3.0  (up to 503 s)
+    /tmp/c164_s1/real/save/c164-A7-try-guide/shots/two_seen_by_first.png
+    pictures: 1 saved by the game itself, 0 taken off the display
+[trip 03:52:20 +81s] second-seen: exit 0, 4 s
+[trip 03:52:20 +81s] server, asked `tag C164Cam list`: C164Cam has 1 tag(s): c164.in
+[trip 03:52:20 +81s] guide: the second visitor at one chart: its tags c164.in; the first one's tags c164.in -- unchanged by the second
+[trip 03:52:20 +81s] second visitor leaves: nodemc.py client-down  (up to 120 s)
+    [nodemc 03:52:21] client stopped (seat b)
+[trip 03:52:21 +82s] second visitor leaves: exit 0, 1 s
+[trip 03:52:21 +82s] what the game said: nodemc.py client-said 1794801060 /tmp/dais_jobs/c319/c164-realms/renders/real/_trips/20261116-035059-171133f-save-c164-A7-try-guide-client.txt  (up to 30 s)
+    client said: 45 records on shaders, pipelines and packs, 11 of a failure; written to /tmp/dais_jobs/c319/c164-realms/renders/real/_trips/20261116-035059-171133f-save-c164-A7-try-guide-client.txt
+    sounds started: 12 of 8 events, 9 of them of 5 events that are not the game's own
+        c164:engine x2
+        c164:fire x1
+        c164:hum x1
+        c164:tick x3
+        c164:tock x2
+        the game's own: ui.toast.in x1, music.game x1, ui.toast.out x1
+[trip 03:52:21 +82s] what the game said: exit 0, 0 s
+[trip 03:52:21 +82s] the server on the save: 0 warnings, 0 errors in its log
+[trip 03:52:21 +82s] close: nodemc.py down  (up to 180 s)
+    [nodemc 03:52:21] client stopped
+    [nodemc 03:52:22] server stopped
+[trip 03:52:23 +84s] close: exit 0, 2 s
+[trip 03:52:23 +84s] back to the test world: nodemc.py setup  (up to 120 s)
+    [nodemc 03:52:23] vulkan: apiVersion 1.4.318, deviceName llvmpipe (LLVM 20.1.2, 256 bits), driverInfo Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+    [nodemc 03:52:23] java: /agent/realms-study/jdk/jdk-25.0.5+8-jre/bin/java
+    [nodemc 03:52:23] game files: whole ({"version": "26.3", "system": "linux", "mainClass": "net.minecraft.client.main.Main", "assetIndex": "34", "files": 5124, "downloaded": 5123, "assets_skipped": 9)
+    [nodemc 03:52:23] settings written: server26/server.properties (level-name, gamemode, force-gamemode, difficulty); render distance 12, the server's view distance 10, cloud range 128
+[trip 03:52:23 +84s] back to the test world: exit 0, 0 s
+[trip 03:52:23 +84s] 12 pictures kept in renders/real-save/c164-A7-try-guide/ with guide.txt and a sheet for each of walk, second
+[trip 03:52:23 +84s] trip done; kept: renders/real-save/c164-A7-try-guide/; log renders/real/_trips/20261116-035059-171133f-save-c164-A7-try-guide.log
