@@ -62,6 +62,7 @@ build() is what the master scene calls; it places nothing while MOVED_IN is off.
 """
 import functools
 import importlib
+import math
 
 from artkit import models as M
 from artkit.blocks import st
@@ -77,6 +78,11 @@ from ..props import lamps
 from . import _chartengine
 from . import _chartshelves
 from . import _doorcase
+
+try:
+    from ..motion import _kit as MK
+except ImportError:                     # the motion line is not in the tree: the room stands still
+    MK = None
 
 MOVED_IN = True         # the master scene dresses the room (A0, g2 #67123: a card's switch is turned on with its delivery)
 NAME = "interiors/chartroom"
@@ -257,6 +263,26 @@ TABLE_FEET = tuple((x, FEET, z) for z in (12, 16) for x in (6, 9))      # and of
 DOOR_FACE = WAINSCOT_T / PX         # 3: how far the room's lining stands off the door's wall, in sixteenths
 DOOR_SWING = 100.0                  # how far the two leaves stand open, as the time room's
 
+# ---- what moves (motion/_kit; A0, g2 #85347: the measuring engine's carriage goes to and fro) ------
+# The engine measures by itself: the screw turns, the carriage with the microscope creeps along the
+# bed to the far end of its travel and comes back. Carriage and screw go through the same poses on
+# the same ticks, the carriage a quarter of the cycle ahead, so that the carriage moves exactly as
+# fast as the screw's turning draws it (a turn to 4 texels) and both stand for a moment where the
+# way turns round. Twelve seconds there and back: at its quickest two texels a second.
+MEASURE = 240                       # ticks, there and back
+MEASURE_KEYS = 24                   # poses in that: one every half second
+CLOCK_FOOT = _chartshelves.CLOCK_AT[1] - 1.0    # the regulator clock is two blocks tall and hangs in the middle of
+#                                     the board the bookcase keeps for it, on the room's axis
+
+
+def _measure_moves():
+    """The carriage's way as motion's slide() takes it: (tick it sets off, blocks from where it
+    was placed, ticks it takes), from pose to pose of the screw's swing."""
+    half = _chartengine.TRAVEL / 2.0 * PX
+    ticks = [k * MEASURE // MEASURE_KEYS for k in range(MEASURE_KEYS + 1)]
+    ends = [half * (1.0 - math.cos(2.0 * math.pi * k / MEASURE_KEYS)) for k in range(1, MEASURE_KEYS)] + [0.0]
+    return [(ticks[k], ends[k], ticks[k + 1] - ticks[k]) for k in range(MEASURE_KEYS)]
+
 
 def _table_cells():
     """The cells the table fills: the two columns it stands in, every row wholly within its length."""
@@ -380,7 +406,7 @@ def _calculator():
 def _models():
     out = dict(_chartshelves.models())
     out.update(_doorcase.models(PREFIX, _DOOR, DOOR_FACE, DOOR_SWING))
-    engines = [_chartengine.bridge(), _chartengine.viewer(COMET)]
+    engines = _chartengine.bridge_models() + [_chartengine.viewer(COMET)]
     for m in [_table(k) for k in range(PANES)] + engines + [_plates(), _calculator()]:
         out[m.name] = m
     return out
@@ -489,6 +515,17 @@ def build_chartroom(c, origin=(0, 0, 0), roles=B):
     for x in (_chartshelves.PIER_X[0], _chartshelves.PIER_X[-1]):
         n += lamp("bracket", (x, _chartshelves.LAMP_Y[0] + 11 * PX, _chartshelves.PIER_FACE_Z), ASK_SHELF,
                   "bracket lamp on a pier of the bookcase", (int(x), FEET + 3, Z1 - 1), facing="north")
+    # the room's clock on the board the bookcase keeps for it, on the axis: the regulator of
+    # props/instruments, and its pendulum swings as that module says it does (the motion line's
+    # sound ticks at every such pendulum on the canvas)
+    if has(instruments, "regulator_clock"):
+        n += instruments.place(c, "regulator_clock", (_chartshelves.CLOCK_AT[0], CLOCK_FOOT, _chartshelves.CLOCK_AT[2]),
+                               facing="north", origin=origin)
+        beat = instruments.PENDULUM
+        if MK is not None and not any(tag.startswith("m.") for tag in c.entities[-1][3].get("Tags", ())):
+            MK.swing(c, beat["axis"], beat["swing"], beat["period_ticks"])
+    else:
+        missing.append("instruments:regulator_clock")
 
     # ---- the light table: its four lengths, the bridge, the viewer, the plates; the sources of its glass
     held = tuple(TABLE_AT[i] + HELD[i] * PX for i in range(3))
@@ -504,7 +541,15 @@ def build_chartroom(c, origin=(0, 0, 0), roles=B):
         """A point over the table: texels from the middle of its foot."""
         return (TABLE_AT[0] + x * PX, TABLE_AT[1] + up * PX, TABLE_AT[2] + z * PX)
 
+    # the measuring engine: what stands still, the screw on its own axis, the carriage; the last two move
     n += K.put(c, own[PREFIX + "bridge"], on_table(0.0, BRIDGE_Z, FRAME_TOP + LIFT), origin=origin)
+    n += K.put(c, own[PREFIX + "bridge_screw"],
+               on_table(0.0, BRIDGE_Z + _chartengine.SCREW[1], FRAME_TOP + _chartengine.SCREW[0]), origin=origin)
+    if MK is not None:
+        MK.swing(c, "x", 180.0 * _chartengine.SCREW_TURNS, MEASURE, keys=MEASURE_KEYS, phase=MEASURE // 4)
+    n += K.put(c, own[PREFIX + "bridge_carriage"], on_table(0.0, BRIDGE_Z, FRAME_TOP + LIFT), origin=origin)
+    if MK is not None:
+        MK.slide(c, "x", _measure_moves(), MEASURE)
     n += K.put(c, own[PREFIX + "viewer"], on_table(0.0, VIEWER_Z, GLASS + LIFT), facing="north", origin=origin)
     if all(has(paper, kind) for kind, _, _ in PLATES):
         for kind, (x, z), turn in PLATES:
