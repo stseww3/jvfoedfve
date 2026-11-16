@@ -27,9 +27,10 @@ by the time it is down there. Two caged lamps are new, the fourth of each galler
 the other three and as far from the third as that is from the second; every other source stands
 within reach of a lamp the hall has hung already.
 
-    env PYTHONPATH=build python -m scenes.obs.interiors._starhall_ways     (from c164-realms/, on a worker node)
+    env PYTHONPATH=build python -m scenes.obs.interiors._starhall_ways [<folder>]     (from c164-realms/, on a worker node)
 
-builds the master scene and tells what sky/lights made of every source asked for here.
+builds the master scene and tells what sky/lights made of every source asked for here and what
+light the places they are for have; PASS or FAIL in the last line.
 """
 from ..main import shell
 from ..props import lamps
@@ -66,6 +67,17 @@ SOURCES = (
     ((9, FEET + HEAD, 3), FILL, "roundel south"),
 )
 
+LINE = 5
+# the places the sources are for, by the cell of the feet: the sixteen of the list and the galleries' west end
+PLACES = (
+    (5, 7, 5), (6, 7, 5), (8, 8, 4), (8, 7, -5),
+    (14, 7, -5), (15, 7, -5), (14, 8, -4), (15, 8, -4), (14, 7, 5), (15, 7, 5), (14, 8, 4), (15, 8, 4),
+    (2, 7, -5), (3, 7, -5), (2, 7, 5), (3, 7, 5),
+    (2, 0, -5), (2, 0, 5), (9, 0, -3), (9, 0, 3),
+)
+# the tops of the south railing beside them, which the list gives to the light line and these sources reach
+BESIDE = ((2, 8, 4), (3, 8, 4), (5, 8, 4), (6, 8, 4), (7, 8, 4))
+
 
 def models():
     return {}
@@ -83,11 +95,17 @@ def dress(canvas, origin=(0, 0, 0), version="a"):
     return n
 
 
-def main():
+def main(folder=None):
+    """Build the master scene; say what sky/lights made of every source asked for here and what
+    light the places they are for have now. With a folder, the same goes into
+    obs-starhall-ways.txt there."""
+    import os
+
     from .. import build
     from ..sky import lights
-    r = lights.report(build())
-    odd = 0
+    canvas = build()
+    r = lights.report(canvas)
+    out, odd = [], 0
     for cell, level, what in SOURCES:
         why = f"{WHY}:way {what}"
         got = r["placed"].get(cell)
@@ -98,9 +116,22 @@ def main():
                 if entry[0] == cell:
                     said += f"; {key}: {entry}"
                     odd += 1
-        print(f"{cell} {level} {what}: {said}")
-    print("ways: " + ("PASS" if not odd else "FAIL"))
+        out.append(f"{cell} {level} {what}: {said}")
+    light = L.levels(canvas, (X0 - 14, FEET - 3, Z0 - 7), (X1 + 7, ROOM["ceiling"] + 6, Z1 + 7))
+    low = 0
+    for name, cells in (("the hall's", PLACES), ("the light line's beside them", BESIDE)):
+        got = {c: max(light.get(c, 0), light.get((c[0], c[1] + 1, c[2]), 0)) for c in cells}
+        low += sum(v < LINE for v in got.values())
+        out.append(f"{name}: " + " ".join(f"({x},{y},{z})={v}" for (x, y, z), v in sorted(got.items())))
+    out.append(f"sources odd: {odd}; places under {LINE}: {low}")
+    out.append("ways: " + ("PASS" if not odd and not low else "FAIL"))
+    print("\n".join(out))
+    if folder:
+        os.makedirs(folder, exist_ok=True)
+        with open(os.path.join(folder, "obs-starhall-ways.txt"), "w", encoding="utf-8", newline="\n") as f:
+            f.write("\n".join(out) + "\n")
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+    main(sys.argv[1] if len(sys.argv) > 1 else None)
