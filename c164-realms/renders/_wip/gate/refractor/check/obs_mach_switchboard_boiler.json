@@ -1,0 +1,167 @@
+{
+ "scene": "obs_mach_switchboard_boiler",
+ "commit": "70e213b",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "WARN",
+   "summary": "6927 blocks, 17 entities, 26 models, 756 resource-pack files, 41 data-pack files, look: 1 biomes, 1 timelines (0.8 s)",
+   "details": [
+    "registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json"
+   ]
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 755 files, no file written twice, the folders and the prefix of machines are kept (14 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "155 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "581 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "26 kinds of block placed, 74 barrier cells (x 70..83, y -5..-4, z 23..32), all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "PASS",
+   "summary": "no wall face runs flat over more than 5x5",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "17 display entities, 14 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "14 shots, most display entities in view: 17 (hall), limit 600; counted without what walls hide; the game draws up to 17 (door): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "door",
+      "in_view": 15,
+      "drawn": 17,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "hall",
+      "in_view": 17,
+      "drawn": 17,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "fronts",
+      "in_view": 10,
+      "drawn": 17,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "fire",
+      "in_view": 10,
+      "drawn": 17,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "flank",
+      "in_view": 11,
+      "drawn": 17,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "dome",
+      "in_view": 11,
+      "drawn": 17,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "flues",
+      "in_view": 15,
+      "drawn": 17,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "guard",
+      "in_view": 2,
+      "drawn": 17,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "alley",
+      "in_view": 10,
+      "drawn": 17,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "board",
+      "in_view": 6,
+      "drawn": 17,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "board_near",
+      "in_view": 7,
+      "drawn": 17,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "board_side",
+      "in_view": 6,
+      "drawn": 17,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "above",
+      "in_view": 17,
+      "drawn": 17,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v6",
+      "in_view": 17,
+      "drawn": 17,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "3 parts and 0 points on 3 chains, 30 function files; 5 commands in the busiest tick (limit 40), 0.4 a tick on average (limit 10)",
+   "details": [
+    "chain of 90 ticks: 8 functions, 18 commands a cycle, starts 1 ticks after start",
+    "chain of 130 ticks: 8 functions, 17 commands a cycle, starts 4 ticks after start",
+    "chain of 170 ticks: 8 functions, 17 commands a cycle, starts 9 ticks after start"
+   ]
+  }
+ ]
+}
