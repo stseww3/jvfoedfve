@@ -40,10 +40,15 @@ What the other lines read (scene coordinates; give the origin to have it added):
     astro.ELEVATION     degrees the tube looks up, due west: the comet's head (sky/comet)
     astro.BRIGHTNESS    the light every piece is shown in, whatever cell it stands in
 
-The pieces that turn are models of their own, each anchored on the axis it turns about: the tube
-and the back about the declination axis (their model's line through the anchor along the
-declination), the axis piece about the polar axis (its model's y). This round they stand still
-(plan/parts/motion.md 1). No lamp: plates are changed in the dark.
+The pieces that turn are models of their own, and all three stand on the polar axis, at the head:
+the axis piece (its model's y is the polar axis), the tube and the back (drawn about the tube's
+pivot, anchored where the declination axis meets the polar one). The driving clock turns the
+polar axis after the sky, a turn in a day, which no visit sees. So the instrument is shown at
+work: it follows for TRACK degrees, is brought back and follows again, there and back in
+TRACK_PERIOD ticks, the three pieces as one (the second round, plan/round2.md: what stands is to
+move; registered with the motion line as they are placed, motion/_kit.swing). placed(turn) gives
+the instrument at any turn, for whoever has to keep clear of it. No lamp: plates are changed in
+the dark.
 
     python -m scenes.obs.machines.astro      the numbers above and the rules they are held to
 """
@@ -54,6 +59,11 @@ import sys
 from ..common import palette as P
 from ..common import skeleton as S
 from . import meridian as K
+
+try:
+    from ..motion import _kit as MK
+except ImportError:                     # the motion line is not in the tree: the instrument stands still
+    MK = None
 
 PREFIX = "mach_astro_"
 BRIGHTNESS = K.BRIGHTNESS
@@ -117,6 +127,12 @@ OFF = 18.0                      # from the polar axis to the tube's axis, along 
 FRONT, TAIL, BACK = 66.0, 26.0, 33.5    # from the pivot: to the dew cap's lip, the tail flange, the plate holder's back
 HOLD = 8.0                      # from the head down the polar axis to the bolt the cheeks hold the sleeve by
 TUBE_SCALE, MOUNT_SCALE, AXIS_SCALE, BACK_SCALE = 2.0, 1.0, 1.0, 1.0
+ON_POLE = tuple(-OFF * _dot(DEC, axis) for axis in TUBE_FRAME)     # the head, in the tube's texels from its pivot
+
+# the tracking: to either side of the pose the instrument stands in, about the polar axis
+TRACK = 2.5                     # degrees
+TRACK_PERIOD = 400              # ticks there and back: twenty seconds
+TRACK_KEYS = 8                  # poses in one swing: it slows down at the ends
 
 
 def pivot(origin=(0, 0, 0)):
@@ -141,10 +157,11 @@ def plate(origin=(0, 0, 0)):
 
 
 def sweep(origin=(0, 0, 0)):
-    """(centre, radius) of the ball round the pivot that holds every piece as it stands."""
+    """(centre, radius) of the ball round the pivot that holds every piece, as it stands and at
+    either end of its tracking."""
     built = _built()
     c = pivot()
-    r = max(math.dist(c, p) for name, at, frame, scale in placed()
+    r = max(math.dist(c, p) for turn in (-TRACK, 0.0, TRACK) for name, at, frame, scale in placed(turn)
             for _, p in K.corners(built[name], at, frame, scale))
     return _add(c, origin), r
 
@@ -167,7 +184,7 @@ def _saddle_angle():
 
 
 def _tube():
-    d = K.Draw(PREFIX + "tube", TUBE_SCALE)
+    d = K.Draw(PREFIX + "tube", TUBE_SCALE, anchor=ON_POLE)
 
     def seg(z0, z1, radius, mat, sides=12, **kw):
         d.tube("z", (0.0, 0.0), z0, z1, radius, mat, sides=sides, **kw)
@@ -231,8 +248,8 @@ def _tube():
 
 
 def _back():
-    """The camera: drawn in the tube's frame and anchored on the tube's pivot, so it turns with it."""
-    d = K.Draw(PREFIX + "back", BACK_SCALE)
+    """The camera: drawn in the tube's frame and anchored as the tube is, so it turns with it."""
+    d = K.Draw(PREFIX + "back", BACK_SCALE, anchor=ON_POLE)
     box0, box1 = TAIL, TAIL + 5.0
     d.box((-8.0, -8.0, box0), (8.0, 8.0, box1), WOOD, grain="x")
     for sx in (-1.0, 1.0):
@@ -377,19 +394,37 @@ def models():
     return dict(_built())
 
 
-def placed():
-    """What build() stands: [(model name, anchor in scene coordinates, frame, scale)]."""
+TURNING = (PREFIX + "axis", PREFIX + "tube", PREFIX + "back")       # what the polar axis carries
+
+
+def _turned(v, degrees):
+    """A direction turned about the polar axis, right-handed: counter-clockwise seen from its tip."""
+    a = math.radians(degrees)
+    c, s = math.cos(a), math.sin(a)
+    return _add(_add(_mul(v, c), _mul(_cross(POLE, v), s)), _mul(POLE, _dot(POLE, v) * (1.0 - c)))
+
+
+def placed(turn=0.0):
+    """What build() stands: [(model name, anchor in scene coordinates, frame, scale)]; with `turn`,
+    the instrument that many degrees along its tracking (within -TRACK .. TRACK as it runs)."""
     out = [("mount", foot(), WORLD, MOUNT_SCALE), ("axis", head(), AXIS_FRAME, AXIS_SCALE),
-           ("tube", pivot(), TUBE_FRAME, TUBE_SCALE), ("back", pivot(), TUBE_FRAME, BACK_SCALE)]
-    return [(PREFIX + name, at, frame, scale) for name, at, frame, scale in out]
+           ("tube", head(), TUBE_FRAME, TUBE_SCALE), ("back", head(), TUBE_FRAME, BACK_SCALE)]
+    out = [(PREFIX + name, at, frame, scale) for name, at, frame, scale in out]
+    if turn:
+        out = [(name, at, tuple(_turned(axis, turn) for axis in frame) if name in TURNING else frame, scale)
+               for name, at, frame, scale in out]
+    return out
 
 
 def build(canvas, origin=(0, 0, 0), brightness=BRIGHTNESS):
-    """Stand the astrograph in the small dome. Returns the number of display entities."""
+    """Stand the astrograph in the small dome and set it tracking. Returns the number of display
+    entities."""
     built = _built()
     n = 0
     for name, at, frame, scale in placed():
         n += K.put(canvas, built[name], at, frame, scale, origin, brightness)
+        if MK is not None and name in TURNING:
+            MK.swing(canvas, POLE, TRACK, -TRACK_PERIOD, keys=TRACK_KEYS)   # it sets off after the sky, westwards
     return n
 
 
@@ -423,14 +458,16 @@ def check():
             out.append(f"{name}: its frame is not square and right-handed")
     if abs(pivot()[2] - DOME_AXIS[1]) > 1e-9 or abs(SIGHT[2]) > 1e-9:
         out.append("tube: its axis is not in the plane of the slit")
-    # 2. nothing of it stands in the dome's shell or under the floor
+    # 2. nothing of it stands in the dome's shell or under the floor, as it stands and at either
+    #    end of its tracking
     if room is not None:
-        for name, at, frame, scale in placed():
-            bad = [p for _, p in K.corners(built[name], at, frame, scale) if p[1] < FLOOR or room.has(*cell(p))]
-            if bad:
-                p = bad[0]
-                out.append(f"{name}: {len(bad)} corners in the dome's shell or under the floor, e.g. "
-                           f"({p[0]:.2f}, {p[1]:.2f}, {p[2]:.2f})")
+        for turn in (0.0, -TRACK, TRACK):
+            for name, at, frame, scale in placed(turn):
+                bad = [p for _, p in K.corners(built[name], at, frame, scale) if p[1] < FLOOR or room.has(*cell(p))]
+                if bad:
+                    p = bad[0]
+                    out.append(f"{name}{f', turned {turn:g} degrees' if turn else ''}: {len(bad)} corners in the "
+                               f"dome's shell or under the floor, e.g. ({p[0]:.2f}, {p[1]:.2f}, {p[2]:.2f})")
         # 3. the object glass looks out of the slit: nothing of the shell on the sight line
         p = objective()
         (x0, _, z0), (x1, y1, z1) = room.bounds()
@@ -443,6 +480,30 @@ def check():
     y = plate()[1] - FLOOR
     if not 0.9 <= y <= 1.6:
         out.append(f"plate: its middle is {y:.2f} over the floor, a hand wants 0.9 to 1.6")
+    # 5. the tracking: the three pieces the polar axis carries stand on it, at the head; the tube
+    #    and the back, anchored there, still have their own axis through pivot(); all three are
+    #    registered with the motion line, and with nothing else
+    for name, at, frame, scale in placed():
+        if name not in TURNING:
+            continue
+        if math.dist(at, head()) > 1e-9:
+            out.append(f"{name}: it does not stand on the polar axis at the head")
+        if name == PREFIX + "axis":
+            continue
+        k = scale / 16.0
+        origin = at
+        for j in range(3):
+            origin = _add(origin, _mul(frame[j], -built[name].anchor[j] * k))
+        if math.dist(origin, pivot()) > 1e-9:
+            out.append(f"{name}: its own axis stands {math.dist(origin, pivot()):.4f} off the pivot")
+    if abs(_dot(_turned(DEC, 90.0), POLE)) > 1e-9 or math.dist(_turned(POLE, 37.0), POLE) > 1e-9:
+        out.append("tracking: the turn is not about the polar axis")
+    if MK is not None:
+        from artkit.canvas import Canvas
+        scratch = Canvas()
+        build(scratch)
+        if MK.registered(scratch) != (len(TURNING), 0):
+            out.append(f"tracking: {MK.registered(scratch)} parts and points are registered, not {len(TURNING)} parts")
     return out
 
 
@@ -454,6 +515,14 @@ def report():
              f"the saddle {_saddle_angle():.1f} degrees round the tube",
              f"sweep: centre {tuple(round(v, 2) for v in c)}, radius {r:.2f}",
              f"{len(placed())} display entities"]
+    far = {}
+    for what, p in (("the object glass", objective()), ("the plate", plate()),
+                    ("the outer weight", _add(head(), _mul(DEC, -WEIGHTS[-1][1] / 16.0)))):
+        v = _sub(p, head())
+        far[what] = math.dist(_add(head(), _turned(v, TRACK)), p) * 16.0
+    lines.append(f"tracking: {TRACK:g} degrees to either side about the polar axis, there and back in "
+                 f"{TRACK_PERIOD} ticks" + ("" if MK is not None else " (no motion line in the tree: it stands)") + "; "
+                 + ", ".join(f"{what} goes {px:.1f} texels either way" for what, px in far.items()))
     for name, model in _built().items():
         lo, hi = model.bounds()
         lines.append(f"  {name}: scale {SCALE[name]:g}, {len(model.parts)} boxes, "
@@ -466,5 +535,5 @@ if __name__ == "__main__":
     if "check" not in sys.argv[1:]:
         print("\n".join(report()))
     print("self-check: " + ("; ".join(findings) if findings else
-                            "sizes, the frames, the room, the slit, the plate holder -- all good"))
+                            "sizes, the frames, the room, the slit, the plate holder, the tracking -- all good"))
     sys.exit(1 if findings else 0)
