@@ -2,7 +2,7 @@
 """Where a visitor gets to on foot, worked out from the blocks (plan/packages/common/walk.md, "卡").
 
     walkreach.py <scene> [--canvas <pickle>] [--out <folder>] [--start x,y,z | <landmark>] [--points <file>]
-                 [--name reach] [--line y | none] [--bounds x0,z0,x1,z1] [--scale n]
+                 [--name reach] [--line y | none] [--home <blocks> | none] [--bounds x0,z0,x1,z1] [--scale n]
         builds the scene (or reads the pickle build/render.py --canvas wrote; a whole `obs` is built
         on a worker node, never on the shared machine), works out where a person can stand and how
         he gets from one place to the next, and writes <folder>/reach.json (what was found),
@@ -17,8 +17,8 @@ For the walk-through's other tool (tools/walk.py) and for anyone who wants the s
     walkreach.feet(cells, x, z, near_y)          # where the feet stand at the point (x, z); None: nowhere
     reach = walkreach.reach_of(cells, (x, y, z)) # everything a person gets to from there
     reach.kind_at(x, z, near_y)                  # "walk", "hop", "fall", "trap" or None
+    reach.report(points, line=walkreach.CATCH)   # what the command writes into reach.json; the line is the export's
     reach.path((x, y, z))                        # the way there from the start, a list of points
-    reach.report(points)                         # what the command writes into reach.json
 
 A person is the game's player: 0.6 wide and 1.8 high, the eye 1.62 up. He walks up a rise of 0.6
 (half a block: a slab, a stair) and has to jump for more; a jump clears 1.2 (a block, not a block
@@ -40,9 +40,10 @@ What is found, by how a place is reached from the start:
     void   a step off the lowest block of the scene, or out of the bounds looked at
 
 The finished map sends a visitor home who falls under a line in the cloud (the director's desk,
-11-16 06:08). So trap ground is told apart once more: the part with a way on down to that line
-(--line; a slope one slides off) and the part with none (a ledge, a pit: "stuck"), which that
-rule never sees.
+11-16 06:08) or comes to stand on a block of the cloud sea, which is solid (common/export: feet
+under y -30, CATCH; the block 0.2 under the middle of his feet one of the block table's CLOUD).
+So trap ground is told apart once more: the part with a way on to either (--line, --home; a slope
+one slides off) and the part with none (a ledge, a pit: "stuck"), which those rules never see.
 
 and besides: every piece reached by hopping only (a way that needs a jump is 走不通 for some), every
 standing place with less than two blocks over the head, every low gap beside the way that only
@@ -80,6 +81,8 @@ EPS = 1e-6
 Q = 32              # heights are kept as whole 32nds of a block
 
 KINDS = ("walk", "hop", "fall", "trap")
+CATCH = -30.0       # common/export's line: feet under it are put back at the spawn (plan/packages/site/terrain.md)
+UNDER = 0.2         # ... and so are feet with a block of the cloud sea this far under their middle
 
 
 # ---- the collision shapes ------------------------------------------------------------------------
@@ -241,12 +244,14 @@ def _props(state):
 class World:
     """The collision boxes of a scene's blocks, and what follows from them for a person standing."""
 
-    def __init__(self, cells, bounds=None):
+    def __init__(self, cells, bounds=None, home=()):
         """cells: {(x, y, z): state}, a canvas's b. bounds: (x0, z0, x1, z1) in blocks, the ground
-        looked at (cells outside are not read, and a step out of it counts as leaving)."""
+        looked at (cells outside are not read, and a step out of it counts as leaving). home: the
+        names of the blocks that send a visitor home who stands on them (the cloud sea's)."""
         self.census = {"cube": {}, "none": {}, "shape": {}, "guess": {}}
         self.climbs = 0
         cells, self.completed = complete(cells)
+        self.cells, self.home = cells, frozenset(home)
         shapes, full, part = {}, {}, {}
         ymin = None
         for (x, y, z), state in cells.items():
@@ -327,6 +332,27 @@ class World:
         if hit is None:
             hit = self._stand[key] = self.places(self.solid(i, j))
         return hit
+
+    def under(self, i, j, top):
+        """The names of the blocks the game finds UNDER the middle of feet that stand at `top` on the
+        lattice point ("air": none). A point on a joint between cells has the cell on either side
+        of it, a point on a corner all four."""
+        y = int(math.floor(top - UNDER + EPS))
+        cols = []
+        for v in (i * GRID, j * GRID):
+            near = int(round(v))
+            cols.append([near - 1, near] if abs(v - near) < EPS else [int(math.floor(v))])
+        names = []
+        for x in cols[0]:
+            for z in cols[1]:
+                state = self.cells.get((x, y, z))
+                names.append(_props(state)[0] if state else "air")
+        return names
+
+    def sends_home(self, i, j, top):
+        """Is a person who stands there put back at the spawn: is every block under his middle one
+        of `home`? (On a joint he is caught on one side of it only, which is the node beside this.)"""
+        return bool(self.home) and all(name in self.home for name in self.under(i, j, top))
 
     @staticmethod
     def places(spans):
@@ -420,12 +446,23 @@ def point(node):
 _WORLDS = {}
 
 
-def world_of(cells, bounds=None):
-    """The World of a dictionary of blocks, made once for each dictionary."""
-    key = (id(cells), bounds)
+def home_blocks():
+    """The names of the blocks that send a visitor home who stands on them: the cloud sea's, the
+    block table's CLOUD (common/export puts them in a block tag). () without the block table."""
+    try:
+        return tuple(importlib.import_module("scenes.obs.common.blocks").CLOUD)
+    except Exception:  # noqa: BLE001  no block table on the path, no cloud in it: no block sends anyone home
+        return ()
+
+
+def world_of(cells, bounds=None, home=None):
+    """The World of a dictionary of blocks, made once for each dictionary. home: the blocks that
+    send a visitor home (None: home_blocks())."""
+    home = tuple(home_blocks() if home is None else home)
+    key = (id(cells), bounds, home)
     if key not in _WORLDS:
         _WORLDS.clear()
-        _WORLDS[key] = World(cells, bounds)
+        _WORLDS[key] = World(cells, bounds, home)
     return _WORLDS[key]
 
 
@@ -461,7 +498,7 @@ class Reach:
         if self.start is None:
             raise ValueError(f"nobody can stand at or beside {start}")
         self.out, self.void, self.jumps, self.low, self.shut = {}, {}, [], {}, {}
-        self.cut = False
+        self.cut, self._sent = False, None
         self._explore(limit)
         self._sort()
 
@@ -545,11 +582,19 @@ class Reach:
             else:
                 self.kind[node], self.steps[node] = "trap", every[node]
 
+    def sent(self):
+        """The nodes on a block that sends a visitor home (the world's `home`)."""
+        if self._sent is None:
+            self._sent = {n for n in self.kind if self.world.sends_home(n[0], n[1], n[2] / float(Q))}
+        return self._sent
+
     def stuck(self, line):
-        """The trapped places from which there is no way down to `line` either (feet at or under it)
-        nor off the scene: whoever gets there stays there. The finished map sends a visitor home
-        who falls under a line in the cloud; these are the places over it that it never sees."""
-        low = [n for n in self.kind if n[2] <= int(round(line * Q))] + list(self.void)
+        """The trapped places from which there is no way on to where a visitor is sent home from
+        (feet under `line`, None: no such line; a block of the world's `home` under them) nor off
+        the scene: whoever gets there stays there. These are the places those rules never see."""
+        low = list(self.void) + list(self.sent())
+        if line is not None:
+            low += [n for n in self.kind if n[2] < int(round(line * Q))]
         if not low:
             return {n for n, k in self.kind.items() if k == "trap"}
         down = self._flood(lambda kind, rise: True, sources=low, back=self.back)
@@ -628,10 +673,20 @@ class Reach:
         out.sort(key=len, reverse=True)
         return out
 
+    def stands_on(self, nodes, most=4):
+        """{block name: nodes} of what is under the middle of the feet at these nodes, the commonest
+        first."""
+        tally = {}
+        for n in nodes:
+            for name in set(self.world.under(n[0], n[1], n[2] / float(Q))):
+                tally[name] = tally.get(name, 0) + 1
+        return dict(sorted(tally.items(), key=lambda kv: -kv[1])[:most])
+
     def report(self, points=None, least=12, line=None):
         """What was found, as plain data (reach.json). points: {name: (x, y, z)} to look up. A piece
         of fewer than `least` nodes (three square blocks) is counted, not listed. line: the height
-        at or under which a fallen visitor is sent home (None: nobody is)."""
+        under which a fallen visitor is sent home (None: there is no such line); the blocks that
+        send him home are the world's."""
         world = self.world
         count = {k: 0 for k in KINDS}
         for kind in self.kind.values():
@@ -674,6 +729,7 @@ class Reach:
             row["edges in"] = len(rims)
             row["ways in"] = len(drops)
             row["rise to get out"] = self._way_out(piece)
+            row["stands on"] = self.stands_on(piece)
             traps.append(row)
         self.rim = {src for node in into for src, _ in into[node]}
         traps.sort(key=lambda t: (min([order[k] for r in t["falls in from"] for k in r["kinds"][:1]] or [9]), -t["nodes"]))
@@ -687,8 +743,13 @@ class Reach:
             f"{b}..{b + 2}": round(v * GRID * GRID, 1) for b, v in sorted(bands.items(), reverse=True)}
         legit = [n[2] / float(Q) for n, k in self.kind.items() if k in ("walk", "hop")]
         out["lowest feet on walk or hop ground"] = round(min(legit), 2) if legit else None
-        self.fast = self.stuck(line) if line is not None else set(trapped)
+        self.fast = self.stuck(line) if line is not None or world.home else set(trapped)
         out["line"] = line
+        sent = {}
+        for n in self.sent():
+            sent[self.kind[n]] = sent.get(self.kind[n], 0) + 1
+        out["blocks that send home"] = sorted(world.home)
+        out["ground on those blocks"] = {k: round(sent[k] * GRID * GRID, 1) for k in KINDS if k in sent}
         fast = []
         for piece in self.pieces(self.fast):
             row = box_of(piece)
@@ -703,9 +764,11 @@ class Reach:
                  for rim in self.pieces_by_kind(drops)], key=lambda r: (order[r["kinds"][0]], -r["nodes"]))
             row["ways in from trap ground that is not stuck"] = slides
             row["rise to get out"] = self._way_out(piece)
+            row["stands on"] = self.stands_on(piece)
             fast.append(row)
         fast.sort(key=lambda t: (0 if t["falls in from"] else 1, -t["nodes"]))
-        out["stuck (no way back and no way down to the line)"] = fast
+        out["stuck (no way back and no way on to where one is sent home)"] = fast
+        out["stuck (no way back and no way down to the line)"] = fast       # its name before the cloud's rule, for who reads it
         # the steps off the scene
         edge = self.pieces_by_kind(self.void)
         out["void"] = [dict(box_of(piece), kinds=sorted({self.kind[n] for n in piece})) for piece in edge
@@ -894,7 +957,7 @@ def draw(reach, path, scale=4, grid=10, line=None):
         rim = {n for n, edges in reach.out.items() if reach.kind[n] != "trap"
                and any(reach.kind[nxt] == "trap" for nxt, _, _ in edges or ())}
     fast = getattr(reach, "fast", None)
-    if fast is None or line is None:
+    if fast is None or (line is None and not reach.world.home):
         fast = set()
     top = {}
     for node in reach.kind:
@@ -961,6 +1024,10 @@ def landmarks():
         box = part["box"]
         return S.mid(box[0], box[2]), part["feet"], S.mid(box[1], box[3])
 
+    # A landmark is a place the visitor stands, so none is put where the thing itself stands: the
+    # mast's base fills the middle of its pad, the tower's column the middle of its shelf, and the
+    # power house's corner the platform's south-east one.
+    pad, tower = S.MAST_PAD["box"], S.WATER_TOWER["box"]
     return {
         "spawn": (S.V1["pos"][0], S.STATION_GROUND, S.V1["pos"][2]),
         "lower platform, before the stair": (S.GRAND_STAIR["x1"] + 3.5, S.LOWER_GROUND, S.AXIS_Z),
@@ -972,16 +1039,16 @@ def landmarks():
         "court, north-west corner": (S.WALL_E + 4.5, S.GROUND, S.FRONT_COURT[1] + 2.5),
         "court, north end of the meridian": (S.MERIDIAN_X + 0.5, S.GROUND, hut["door"][1] + 2.5),
         "meridian hut, before its door": (hut["door"][0] + 0.5, S.GROUND, hut["door"][1] + 1.5),
-        "mast pad": (S.mid(S.MAST_PAD["box"][0], S.MAST_PAD["box"][2]), S.MAST_PAD["feet"], S.MAST_PAD["box"][3] - 0.5),
+        "mast pad": (S.mid(pad[0], pad[2]), S.MAST_PAD["feet"], pad[1] + 1.5),
         "weather station": shelf(S.WEATHER_STATION),
-        "water tower": shelf(S.WATER_TOWER),
+        "water tower": (tower[2] - 2.5, S.WATER_TOWER["feet"], S.mid(tower[1], tower[3])),
         "west side, north": (S.WALL_W - 4.5, S.GROUND, S.Z_NORTH + 10.5),
         "sunset platform, west edge": (sunset["centre"][0] - sunset["radius"] + 2.5, S.GROUND, S.AXIS_Z),
         "west side, south": (S.WALL_W - 4.5, S.GROUND, S.Z_SOUTH - 9.5),
         "south lookout": (S.V11["pos"][0], S.SOUTH_LOOKOUT["feet"], S.V11["pos"][2]),
         "power house, west side": (house[0] - 2.5, S.LOWER_GROUND, S.mid(house[1], house[3])),
         "power house, north side": (S.mid(house[0], house[2]), S.LOWER_GROUND, house[1] - 2.5),
-        "lower platform, south-east": (S.LOWER_PLATFORM[2] - 1.5, S.LOWER_GROUND, S.LOWER_PLATFORM[3] - 0.5),
+        "lower platform, south-east": (S.LOWER_PLATFORM[2] - 0.5, S.LOWER_GROUND, S.LOWER_PLATFORM[3] - 1.5),
         "back at the spawn": (S.V1["pos"][0], S.STATION_GROUND, S.V1["pos"][2]),
     }
 
@@ -994,22 +1061,29 @@ def say(report):
              + ("; CUT SHORT, the ground is larger than the limit" if report["cut short"] else "")]
     for t in report["traps"][:12]:
         lines.append(f"  trap: {t['nodes']} nodes at {t['at']}, x {t['x']}, z {t['z']}, y {t['y']}; the least rise "
-                     f"out of it is {t['rise to get out']}; {t['ways in']} ways in along {t['edges in']} edges:")
+                     f"out of it is {t['rise to get out']}; {t['ways in']} ways in along {t['edges in']} edges; "
+                     f"under the feet: " + ", ".join(f"{k} x{v}" for k, v in t.get("stands on", {}).items()))
         for e in t["falls in from"][:5]:
             lines.append(f"      from {'/'.join(e['kinds'])} ground at {e['at']}, x {e['x']}, z {e['z']}: "
                          f"{e['nodes']} nodes, a drop of {e['drop'][0]:g} to {e['drop'][1]:g}")
     if len(report["traps"]) > 12:
         lines.append(f"  ... and {len(report['traps']) - 12} more traps")
-    stuck = report.get("stuck (no way back and no way down to the line)") or []
-    if report.get("line") is not None:
-        lines.append(f"  a visitor at or under y {report['line']:g} is sent home; the lowest walk or hop ground is at "
-                     f"{report['lowest feet on walk or hop ground']}; trap ground with no way down to that line: "
+    stuck = report.get("stuck (no way back and no way on to where one is sent home)") or []
+    home = report.get("blocks that send home") or []
+    if report.get("line") is not None or home:
+        rules = ([f"under y {report['line']:g}"] if report.get("line") is not None else []) + (
+            [f"standing on {', '.join(home)} ("
+             + ", ".join(f"{k} {v:g}" for k, v in report["ground on those blocks"].items()) + " square blocks of it reached)"]
+            if home else [])
+        lines.append(f"  a visitor {' or '.join(rules)} is sent home; the lowest walk or hop ground is at "
+                     f"{report['lowest feet on walk or hop ground']}; trap ground with no way on to that: "
                      f"{sum(t['nodes'] for t in stuck) * GRID * GRID:g} square blocks in {len(stuck)} pieces")
         for t in stuck[:16]:
             ins = "; ".join(f"{'/'.join(e['kinds'])} ground at {e['at']} (drop {e['drop'][0]:g} to {e['drop'][1]:g})"
                             for e in t["falls in from"][:3])
-            lines.append(f"      stuck: {t['nodes']} nodes at {t['at']}, x {t['x']}, z {t['z']}, y {t['y']}; out is "
-                         f"{t['rise to get out']} up; from " + (ins or "trap ground only")
+            lines.append(f"      stuck: {t['nodes']} nodes at {t['at']}, x {t['x']}, z {t['z']}, y {t['y']}, on "
+                         + ", ".join(t.get("stands on", {})) + f"; out is {t['rise to get out']} up; from "
+                         + (ins or "trap ground only")
                          + (f"; and {t['ways in from trap ground that is not stuck']} ways from the slope"
                             if t["ways in from trap ground that is not stuck"] else ""))
         if len(stuck) > 16:
@@ -1142,6 +1216,31 @@ def selftest():
     cells[(4, -2, 1)] = "stone"
     reach, at = kinds(cells)
     check("pit with a step", at(5.5, 0.5, -2.0), "hop")
+    # who is sent home is not stuck: under the line, or on a block of the cloud; in a pit of stone over the line one is
+    key = "stuck (no way back and no way on to where one is sent home)"
+    cells = floor(0, 0, 8, 4)
+    for x in (4, 5):
+        for z in (1, 2):
+            del cells[(x, -1, z)]
+            cells[(x, -3, z)] = "stone"
+    reach, at = kinds(cells)
+    check("pit off the rim", at(4.5, 1.5, -2.0), "trap")
+    check("pit off the rim, no rule", [t["nodes"] for t in reach.report()[key]], [9])
+    check("pit off the rim, the line at its floor", [t["nodes"] for t in reach.report(line=-2.0)[key]], [9])
+    check("pit off the rim, the line over its floor", reach.report(line=-1.5)[key], [])
+    for x in (4, 5):
+        cells[(x, -3, 2)] = "minecraft:dead_horn_coral_block"
+    reach, at = kinds(cells, home=("dead_horn_coral_block",))
+    check("pit with cloud in it", at(4.5, 1.5, -2.0), "trap")
+    check("pit with cloud in it, on the cloud", reach.world.sends_home(9, 5, -2.0), True)
+    check("pit with cloud in it, on the joint", reach.world.sends_home(9, 4, -2.0), False)
+    check("pit with cloud in it, stuck", reach.report()[key], [])
+    check("pit with cloud in it, what is under", reach.report()["traps"][0]["stands on"],
+          {"stone": 6, "dead_horn_coral_block": 6})
+    cells.update(floor(4, 1, 5, 2, y=-3))
+    cells[(8, -1, 4)] = "dead_horn_coral_block"
+    reach, at = kinds(cells, home=("dead_horn_coral_block",))
+    check("pit of stone, cloud elsewhere", [t["nodes"] for t in reach.report()[key]], [9])
     # a ledge half way down a drop of six: reached by falling only, and on down to the ground one came from
     cells = floor(0, 0, 14, 1)
     for x in range(0, 12):                              # a ramp of half blocks in the row z = 2, up to 6
@@ -1195,8 +1294,10 @@ def main():
     ap.add_argument("--points", help="JSON file {name: [x, y, z]} of points to look up besides the route's landmarks")
     ap.add_argument("--bounds", help="x0,z0,x1,z1 of the ground looked at (default: the skeleton's masses and 40 more)")
     ap.add_argument("--scale", type=int, default=4, help="pixels a lattice point on the map")
-    ap.add_argument("--line", help="a visitor whose feet are at or under this height is sent home (default: the top "
-                                   "of the cloud sheet of site/terrain.py; 'none': nobody is)")
+    ap.add_argument("--line", help=f"a visitor whose feet are under this height is sent home (default: {CATCH:g}, "
+                                   "common/export's; 'none': no such line)")
+    ap.add_argument("--home", help="the blocks that send a visitor home who stands on them, names with commas "
+                                   "(default: the cloud sea's, the block table's CLOUD; 'none': none do)")
     ap.add_argument("--selftest", action="store_true")
     args = ap.parse_args()
     if args.selftest:
@@ -1218,15 +1319,13 @@ def main():
         m = S.mass_bounds()
         bounds = (m[0] - 40, m[2] - 40, m[3] + 40, m[5] + 40)
     cells = cells_of(args.scene, args.canvas)
-    world = World(cells, bounds)
-    reach = world.reach(start)
-    if args.line is None:
-        try:
-            line = float(importlib.import_module("scenes.obs.site.terrain").CLOUD_TOP + 1)
-        except Exception:  # noqa: BLE001  no such module, no such sheet: nobody is sent home
-            line = None
+    if args.home is None:
+        home = home_blocks()
     else:
-        line = None if args.line == "none" else float(args.line)
+        home = () if args.home == "none" else tuple(v.strip() for v in args.home.split(",") if v.strip())
+    world = World(cells, bounds, home)
+    reach = world.reach(start)
+    line = CATCH if args.line is None else None if args.line == "none" else float(args.line)
     report = reach.report(points, line=line)
     report["scene"], report["bounds"] = args.scene, list(bounds)
     print(say(report))
