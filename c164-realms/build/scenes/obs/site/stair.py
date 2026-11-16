@@ -85,6 +85,8 @@ BRICK = B.SLATE_BRICK.block
 SMOOTH = B.SLATE_SMOOTH.block
 WEATHERING = B.SLATE_BRICK.stairs + "[facing=west,half=bottom]"     # the high side against the wall
 HAUNCH = B.SLATE_BRICK.stairs       # upside down in an arch's two upper corners, its back to the pier
+PANEL = B.SLATE_TILE.block          # the back of a blind arch: a step darker than the wall and in a smaller bond,
+#                                     so the arch reads from across the yard (a4, 11-16)
 TREAD = B.SLATE_SMOOTH.block
 TREAD_SLAB = B.SLATE_SMOOTH.slab + "[type=bottom]"
 DRESSING = B.TUFF_SMOOTH            # the middle tone (site/_kit.STRIP is its block): band, coping, pedestals
@@ -212,15 +214,15 @@ def _buttress(c, o, z):
 
 def _arch(c, o, bay):
     """A blind arch: the wall's face cut away between the plinth course and the band, a panel of
-    brick one block behind it, and in the two upper corners a stair block upside down with its
-    back to the pier, which steps the head in. At the foot of the panel, in its middle, an iron
-    grating: the weep hole of the terrace's fill, with stone behind it and under it (the hill is
-    hollow there)."""
+    slate tiles one block behind it, and in the two upper corners a stair block upside down with
+    its back to the pier, which steps the head in. At the foot of the panel, in its middle, an
+    iron grating: the weep hole of the terrace's fill, with stone behind it and under it (the hill
+    is hollow there)."""
     x, back, z0, z1 = bay["x"], bay["back"], bay["z0"], bay["z1"]
     for z in range(z0, z1 + 1):
         for y in range(bay["y0"], bay["y1"] + 1):
             c.clear(o[0] + x, o[1] + y, o[2] + z)
-            _put(c, o, back, y, z, BRICK)
+            _put(c, o, back, y, z, PANEL)
     _put(c, o, x, bay["y1"], z0, f"{HAUNCH}[facing=north,half=top]")
     _put(c, o, x, bay["y1"], z1, f"{HAUNCH}[facing=south,half=top]")
     _put(c, o, back, bay["y0"], bay["z"], GRATE)
