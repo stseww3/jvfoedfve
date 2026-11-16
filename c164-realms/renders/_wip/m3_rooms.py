@@ -18,7 +18,10 @@ from artkit import models as M  # noqa: E402
 from scenes.obs.props import _kit as K  # noqa: E402
 
 BODY, TALL = 0.3, 1.8
-ROOMS = (("G the chart room", 7.0, (2.0, 6.5, 14.0, 26.0)), ("E the south gallery", 7.0, (-4.5, 2.5, 16.5, 7.0)))
+ROOMS = (("G the chart room", 7.0, (2.0, 6.5, 14.0, 26.0)), ("E the south gallery", 7.0, (-4.5, 2.5, 16.5, 7.0)),
+         ("E the north gallery", 7.0, (-4.5, -6.0, 16.5, -1.5)),
+         ("F the time room", 7.0, (2.0, -25.5, 15.0, -4.5)), ("L the engine hall", -6.0, (68.0, 16.5, 89.5, 41.0)),
+         ("B the star hall", 0.0, (1.0, -6.0, 17.0, 6.5)))
 out = []
 
 
@@ -145,9 +148,9 @@ def main():
             say(f"   {s['id']} ({fx:g}, {fy:g}, {fz:g}) {s.get('reach', '')}: " + ", ".join(sorted(set(found))))
     say(f"   {n} of {len(table['stations'])} stations")
     say()
-    say("== the stations of E and G")
+    say("== the stations of B, E, F, G, L")
     for s in table["stations"]:
-        if s["stretch"] in "EG":
+        if s["stretch"] in "BEFGL":
             flags = {k: s[k] for k in ("floor", "leg", "round", "from", "how") if k in s}
             say(f"   {s['id']} {s['feet']} {s.get('reach')} {flags or ''} {s.get('views', '')} {(s.get('node') or '')[:44]}")
     os.makedirs("renders/_wip/walkfix", exist_ok=True)
