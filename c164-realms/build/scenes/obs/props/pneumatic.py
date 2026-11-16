@@ -7,21 +7,29 @@ a word from the dome. The slip is rolled into a carrier, a brass cartridge as lo
 the carrier goes into the station on the wall, and the air takes it through a tube of glass to the
 room it is for. On the night of the comet the tubes are never still for long.
 
-What the family is made of. Every piece is drawn along its own +z, which is laid along the run;
-its +y is the way the surface looks that the run is fixed to (a wall, a beam's flank):
+What the family is made of. Every piece of a run is drawn along its own +z, which is laid along
+the run; its +y is the way the surface looks that the run is fixed to (a wall, a beam's flank):
 
     tube      a length of glass, never longer than PIECE. Nothing of the glass is drawn but its
               four edges: the two that stand off the wall in the sheen of clear glass, the two
               against it a step lower (K.pane: every family draws clear glass by its reflection),
               so what flies in it is seen. At its start a brass collar on a saddle screwed to the
-              wall, and against the collar the green ring of the air lines (plan/fine.md 3 and
-              plan/parts/pipes.md, c342: steam red, water blue, air green)
-    bend      a brass elbow that takes a run into the surface it runs along, bolted to it
+              wall, a pinch screw on the collar, and a pixel from the collar the green ring of the
+              air lines (plan/fine.md 3 and plan/parts/pipes.md, c342: steam red, water blue, air
+              green; a ring a pixel wide on a tube this thin, half a pixel proud of it)
+    bend      a brass elbow that takes a run into the surface it runs along, bolted to it; a plug
+              on its back, through which a carrier that sticks is pushed on
     flange    where a tube goes head-on into a ceiling, a wall or the shoe of a beam
-    station   on a wall, at the height of the hand: a brass box with a door and a window in it,
-              into whose top the tube comes down; under the box a wire basket with the carriers
-              that have come and wait to be sent back; beside the tube a bell that the carrier
-              strikes as it lands, and under it the push that calls the other end
+    plate     the line's number (c342's table: A 1 to A 5), dark on a small plate of cream enamel
+              strapped to the tube where it is read from two blocks away. No arrow: a carrier
+              goes both ways
+    station   on a wall, at the height of the hand, on a board of dark wood: a brass box with a
+              door and a window in it, into whose top the tube comes down; under the box a wire
+              basket with the carriers that have come and wait to be sent back; beside the tube
+              the bell that rings as a carrier lands and the card of the places the line serves;
+              beside the basket the push that calls the other end, its wire up to the bell and
+              down into the wall; and beside the box, in chalk, the tally of what has gone out
+              tonight
     carrier   the cartridge: a sleeve of pale felt between two brass caps
 
 Every line has a head and a foot (plan/fine.md 3: no pipe ends in the air): it leaves a station
@@ -32,10 +40,13 @@ near end, inside the station's box or inside the brass of a bend, flies to the f
 is out of sight again there, inside a bend or the stone. One after the other they are one carrier
 that goes the whole line, and later comes back: MK.slide, two moves a carrier in a LOOP of half a
 minute, a command each. motion/travel (c322), which takes one entity round corners, is not in the
-tree yet; a line laid with it would look the same from the room.
+tree yet; a line laid with it would look the same from the room. The thud and the bell as it
+lands are the sound line's (motion/sound, c361), which reads LINES, lands() and LOOP here.
 
     line(canvas, key, origin)   lay one of LINES
     build(canvas, origin)       every line whose room has moved in (the master scene calls this)
+    carrier(canvas, pos, way)   one carrier that lies still: on a desk, or in the glass for a picture
+    lands(key)                  when and where the line's carrier comes home
     models()                    {name: Model}
 
 All functions take scene coordinates plus `origin` and return the display entities they placed.
@@ -64,13 +75,17 @@ DIRS = {"east": (1, 0, 0), "west": (-1, 0, 0), "south": (0, 0, 1), "north": (0, 
 
 # pixels
 BORE = 1.5              # the glass: three pixels across
-COLLAR = 2.0            # a collar's radius
-STAND = 2.0             # the tube's axis off the surface it is fixed to: a collar lies against it
+COLLAR = 2.5            # a collar's radius
+RING = (BORE + 0.5, 1.0, 1.0)   # the ring of the air lines: its radius, its width, how far from the collar (c342's table)
+STAND = 2.5             # the tube's axis off the surface it is fixed to: a collar lies against it
 PIECE = 40.0            # a length of glass is no longer than this: a collar every two and a half blocks at the most
 BEND = 3.6              # from a bend's corner to the end of its socket
 SOCKET = 9.5            # the station's socket takes the tube this far above the station's anchor
-BOX = (7.0, 8.0, 5.0)   # the station's box: across, its height above the anchor, how far it stands off the wall
+BOARD = (-7.0, -10.0, 7.0, 13.0)        # the station's board: x and y of its lower left and upper right corner
+BOX = (7.0, 8.0, 5.5)   # the station's box: across, its height above the anchor, how far it stands off the wall
 CARRIER = (4.0, 0.9)    # the carrier: its length, its radius
+PLATE_UP = 19.5         # the middle of the number plate over a station's anchor: over the board, by the eye
+PLATE_OFF = BORE + 0.25  # the back of a number plate off the axis of the tube it is strapped to
 
 # ticks
 LOOP = 600              # a carrier goes out and comes back once in half a minute
@@ -80,18 +95,25 @@ HANDOVER = 2            # ticks between one length's carrier going out of sight 
 
 # the light the family is shown in (block light; no sky reaches it): brass under a room's lamps. The
 # tubes run where the rooms are darkest, along the heads of the walls and under the beams, and glass
-# that took its light from there would not be seen at all; the carrier is a step up, it is what moves
+# that took its light from there would not be seen at all; the carrier and the number are a step up:
+# the one is what moves, the other is to be read
 SHOWN = (0, 9)
 SHOWN_CARRIER = (0, 12)
+SHOWN_PLATE = (0, 12)
 
 BRASS, BRASS_D = K.BRASS, K.BRASS_D
 BRASS_L = P.mat("brass", base=4)
 IRON_D = K.IRON_D
 WOOD = P.mat("dark_wood")
-RING = K.flat("verdigris", 1)           # the air lines' ring (c342's table, plan/parts/pipes.md)
+BEAD = K.flat("dark_wood", 3)           # the bead round the station's board
+GREEN = K.flat("verdigris", 1)          # the air lines' ring (c342's table, plan/parts/pipes.md)
 SCREW = K.flat("iron", 5)
+SLOT = K.flat("iron", 1)
 FELT = K.flat("cream", 2)
+PAPER = K.flat("cream", 3)
+CHALK = K.flat("cream", 2)
 WIRE = K.flat("brass", 2)
+CORD = K.flat("iron", 0)                # a bell wire in its black cotton
 PUSH = K.flat("porcelain", 3)
 EDGE, EDGE_LOW = K.SHEEN, K.SHEEN_DIM
 
@@ -131,27 +153,41 @@ def _step(p, way, blocks):
     return tuple(p[i] + DIRS[way][i] * blocks for i in range(3))
 
 
+def _back(way):
+    return next(name for name, d in DIRS.items() if all(d[i] == -DIRS[way][i] for i in range(3)))
+
+
 # ---- the models -----------------------------------------------------------------------------------
+def _ring(m, z):
+    radius, width, _ = RING
+    m.tube("z", (0.0, 0.0), z, z + width, radius, GREEN, sides=8)
+
+
 def _saddle(m, z):
-    """A collar at z on the axis, on its saddle on the wall (the plane y = -STAND), the air lines'
-    ring against it."""
+    """A collar at z on the axis, on its saddle on the wall (the plane y = -STAND), its pinch screw
+    on top, the air lines' ring a pixel from it."""
     m.box((-3.0, -STAND, z), (3.0, -STAND + 0.4, z + 1.5), BRASS_D)
-    for x in (-2.85, 2.35):
+    for x in (-2.95, 2.45):
         m.box((x, -STAND + 0.4, z + 0.5), (x + 0.5, -STAND + 0.65, z + 1.0), SCREW)
     m.tube("z", (0.0, 0.0), z, z + 1.5, COLLAR, BRASS, sides=8)
-    m.tube("z", (0.0, 0.0), z + 1.5, z + 2.5, COLLAR - 0.25, RING, sides=8)
+    m.box((-0.3, COLLAR - 0.1, z + 0.45), (0.3, COLLAR + 0.35, z + 1.05), BRASS_L)
+    _ring(m, z + 1.5 + RING[2])
 
 
-def _tube(length):
-    """A length of glass, `length` pixels of it (a whole number), from the anchor along +z."""
+def _tube(length, last=False):
+    """A length of glass, `length` pixels of it (a whole number), from the anchor along +z. The
+    last length of a run that ends in a bend has a ring at that end too: one at every joint."""
     n = int(length)
-    m = M.Model(f"{PREFIX}tube_{n}")
+    tag = f"{n}e" if last else f"{n}"
+    m = M.Model(f"{PREFIX}tube_{tag}")
     side = Sprite(f"{PREFIX}glass_side_{n}", ["g" * n, "." * n, "d" * n], dict(g=EDGE, d=EDGE_LOW))
     front = Sprite(f"{PREFIX}glass_front_{n}", ["g.g"] * n, dict(g=EDGE))
     back = Sprite(f"{PREFIX}glass_back_{n}", ["d.d"] * n, dict(d=EDGE_LOW))
     m.box((-BORE, -BORE, 0.0), (BORE, BORE, float(n)), BRASS, skip="ns",
           faces={"e": side, "w": side, "u": front, "d": back})
     _saddle(m, 0.0)
+    if last:
+        _ring(m, n - RING[2] - RING[1])
     return m
 
 
@@ -159,15 +195,15 @@ def _bend():
     """An elbow from a run into the surface behind it. Anchor: the corner, on the run's axis; the
     run leaves along +z, the other leg goes into the surface along -y."""
     m = M.Model(PREFIX + "bend")
-    m.ball((0.0, 0.0, 0.0), 2.3, BRASS_D, sides=8, layers=4)
-    m.tube("z", (0.0, 0.0), 1.0, BEND - 0.6, 2.2, BRASS, sides=8)
-    m.tube("z", (0.0, 0.0), BEND - 0.6, BEND, 2.6, BRASS_D, sides=8)
-    m.tube("y", (0.0, 0.0), -STAND + 0.5, -1.0, 2.2, BRASS, sides=8)
-    m.tube("y", (0.0, 0.0), -STAND, -STAND + 0.5, 3.1, BRASS_D, sides=8)            # its flange on the surface
-    for x, z in ((-2.4, -2.4), (2.0, -2.4), (-2.4, 2.0), (2.0, 2.0)):
+    m.ball((0.0, 0.0, 0.0), 2.6, BRASS_D, sides=8, layers=4)
+    m.tube("z", (0.0, 0.0), 1.0, BEND - 0.6, 2.3, BRASS, sides=8)
+    m.tube("z", (0.0, 0.0), BEND - 0.6, BEND, 2.8, BRASS_D, sides=8)
+    m.tube("y", (0.0, 0.0), -STAND + 0.5, -1.0, 2.3, BRASS, sides=8)
+    m.tube("y", (0.0, 0.0), -STAND, -STAND + 0.5, 3.3, BRASS_D, sides=8)            # its flange on the surface
+    for x, z in ((-2.6, -2.6), (2.2, -2.6), (-2.6, 2.2), (2.2, 2.2)):
         m.box((x, -STAND + 0.5, z), (x + 0.4, -STAND + 0.8, z + 0.4), SCREW)
-    m.tube("y", (0.0, 0.0), 2.0, 2.7, 1.2, BRASS, sides=6)                          # the plug it is cleared through
-    m.box((-0.4, 2.7, -0.4), (0.4, 3.2, 0.4), BRASS_L)
+    m.tube("y", (0.0, 0.0), 2.2, 2.9, 1.2, BRASS, sides=6)                          # the plug it is cleared through
+    m.box((-0.4, 2.9, -0.4), (0.4, 3.4, 0.4), BRASS_L)
     return m
 
 
@@ -175,11 +211,65 @@ def _flange():
     """Where a tube goes head-on into a surface. Anchor: the point of the surface on the tube's
     axis; +z comes out of the surface, towards the tube."""
     m = M.Model(PREFIX + "flange")
-    m.tube("z", (0.0, 0.0), 0.0, 0.5, 3.0, BRASS_D, sides=8)
-    m.tube("z", (0.0, 0.0), 0.5, 2.0, 2.2, BRASS, sides=8)
-    m.tube("z", (0.0, 0.0), 2.0, 3.0, COLLAR - 0.25, RING, sides=8)
-    for x, y in ((-2.3, -0.2), (1.9, -0.2), (-0.2, -2.3), (-0.2, 1.9)):
+    m.tube("z", (0.0, 0.0), 0.0, 0.5, 3.2, BRASS_D, sides=8)
+    m.tube("z", (0.0, 0.0), 0.5, 2.0, COLLAR, BRASS, sides=8)
+    _ring(m, 2.0 + RING[2])
+    for x, y in ((-2.9, -0.2), (2.5, -0.2), (-0.2, -2.9), (-0.2, 2.5)):
         m.box((x, y, 0.5), (x + 0.4, y + 0.4, 0.8), SCREW)
+    return m
+
+
+def _figures(text):
+    """The rows of `text`, five high, '1' where there is ink: the figures of the enamel plates
+    (props/signs, c334), a clear column between two of them, a space one more."""
+    from . import signs
+    rows = [""] * 5
+    for i, ch in enumerate(text):
+        glyph = ["0"] * 5 if ch == " " else signs._FONT[ch]
+        for j in range(5):
+            rows[j] += ("0" if i else "") + glyph[j]
+    return rows
+
+
+def plate_name(number, lying=False):
+    return "plate_" + number.replace(" ", "").lower() + ("_h" if lying else "")
+
+
+def _plate(number, lying=False):
+    """The number of a line on its plate: cream enamel, dark figures, a fine dark line round the
+    edge with the corners knocked off, two brass studs through it and two straps behind it round
+    the tube. Wall-mounted: the anchor is the middle of its back, PLATE_OFF in front of the tube's
+    axis; the tube stands upright behind it, or lies (lying)."""
+    ink = _figures(number)
+    w, h = len(ink[0]) + 4, len(ink) + 4
+    rows = []
+    for y in range(h):
+        row = ""
+        for x in range(w):
+            if (x in (0, w - 1)) and (y in (0, h - 1)):
+                row += "."
+            elif x in (0, w - 1) or y in (0, h - 1):
+                row += "e"
+            elif 2 <= y < h - 2 and 2 <= x < w - 2 and ink[y - 2][x - 2] == "1":
+                row += "i"
+            else:
+                row += "s" if y == h - 2 else "f"
+        rows.append(row)
+    cream, iron = P.RAMPS["cream"], P.RAMPS["iron"]
+    name = PREFIX + plate_name(number, lying)
+    m = M.Model(name)
+    face = Sprite(name + "_face", rows, dict(e=iron[2], f=cream[3], s=cream[2], i=iron[0]))
+    m.box((-w / 2.0, -h / 2.0, 0.0), (w / 2.0, h / 2.0, 0.5), K.flat("cream", 1), faces={"s": face}, skip="n")
+    reach = PLATE_OFF + BORE + 0.5                  # the straps go round the back of the tube
+    for s in (-1.0, 1.0):
+        if lying:
+            x = s * (w / 2.0 - 2.0)
+            m.box((x - 0.5, -BORE - 0.5, -reach), (x + 0.5, BORE + 0.5, 0.0), BRASS_D)
+            m.box((x - 0.3, -0.3, 0.5), (x + 0.3, 0.3, 0.7), BRASS_L)
+        else:
+            y = s * (h / 2.0 - 1.0)
+            m.box((-BORE - 0.5, y - 0.5, -reach), (BORE + 0.5, y + 0.5, 0.0), BRASS_D)
+            m.box((-0.3, y - 0.3, 0.5), (0.3, y + 0.3, 0.7), BRASS_L)
     return m
 
 
@@ -193,16 +283,25 @@ DOOR = (                # the station's door, seven by eight: its frame, the rou
     "bdddddb",
     "bbbbbbb",
 )
+SIDE = (                # a side of the box, five by eight: a seam round it, a rivet in every corner
+    "ddddd",
+    "drbrd",
+    "dbbbd",
+    "dbbbd",
+    "dbbbd",
+    "dbbbd",
+    "drbrd",
+    "ddddd",
+)
 CARD = (                # the card of the places the line serves: a green spot for the line, pencil lines for the names
-    "ccccc",
-    "cvlll",
-    "ccccc",
-    "cllll",
-    "ccccc",
-    "clllc",
-    "ccccc",
+    "vcc",
+    "lll",
+    "ccc",
+    "llc",
 )
 MESH = ("w.w.w.w", ".w.w.w.", "w.w.w.w", ".w.w.w.", "w.w.w.w", "wwwwwww")      # the basket's wire, seven by six
+MESH_SIDE = ("w.w.", ".w.w", "w.w.", ".w.w", "w.w.", "wwww")                   # and its sides, four by six
+TALLY = 7               # carriers sent tonight so far: a gate of five and two strokes, in chalk
 
 
 def _station():
@@ -211,38 +310,75 @@ def _station():
     name = PREFIX + "station"
     m = M.Model(name)
     w, h, d = BOX
+    x0, y0, x1, y1 = BOARD
     brass = P.RAMPS["brass"]
-    m.box((-5.0, -9.0, 0.0), (5.0, 12.0, 0.5), WOOD, skip="n", grain="y")                       # the board on the wall
-    for x in (-4.6, 4.1):
-        for y in (-8.6, 11.1):
-            m.box((x, y, 0.5), (x + 0.5, y + 0.5, 0.7), SCREW)
+    # the board on the wall, a bead round it, a brass screw with its slot in every corner
+    m.box((x0, y0, 0.0), (x1, y1, 0.5), WOOD, skip="n", grain="y")
+    for a, b in (((x0, y0), (x1, y0 + 0.5)), ((x0, y1 - 0.5), (x1, y1)),
+                 ((x0, y0 + 0.5), (x0 + 0.5, y1 - 0.5)), ((x1 - 0.5, y0 + 0.5), (x1, y1 - 0.5))):
+        m.box((a[0], a[1], 0.5), (b[0], b[1], 0.75), BEAD)
+    for x in (x0 + 0.9, x1 - 1.5):
+        for y in (y0 + 0.9, y1 - 1.5):
+            m.box((x, y, 0.5), (x + 0.6, y + 0.6, 0.7), BRASS_L)
+            m.box((x + 0.05, y + 0.22, 0.7), (x + 0.55, y + 0.38, 0.73), SLOT)
+    # the box: its door with the round window, the hinge pin, the latch worn bright, the lid
     door = Sprite(name + "_door", list(DOOR), dict(b=brass[2], d=brass[3], g=brass[4], h=brass[1], k=brass[5],
                                                    n=P.RAMPS["night_glass"][1], s=K.SHEEN))
-    m.box((-w / 2.0, 0.0, 0.5), (w / 2.0, h, d), BRASS, faces={"s": door})                      # the box and its door
-    m.box((w / 2.0, 3.0, d - 0.25), (w / 2.0 + 0.5, 5.0, d + 0.5), BRASS_L)                     # the latch, worn bright
-    m.box((-w / 2.0 + 0.25, h, 0.5), (w / 2.0 - 0.25, h + 0.5, d - 0.25), BRASS_D)              # its top plate
-    m.tube("y", (0.0, STAND), h + 0.5, SOCKET + 0.5, 2.3, BRASS, sides=8)                       # the socket the tube stands in
-    m.tube("y", (0.0, STAND), SOCKET + 0.5, SOCKET + 1.5, COLLAR - 0.25, RING, sides=8)
-    # the basket under the box: what has come lies in it
+    side = Sprite(name + "_side", list(SIDE), dict(d=brass[1], b=brass[2], r=brass[4]))
+    m.box((-w / 2.0, 0.0, 0.5), (w / 2.0, h, d), BRASS, faces={"s": door, "e": side, "w": side})
+    m.tube("y", (-w / 2.0, d), 0.5, h - 0.5, 0.35, BRASS_D, sides=6)
+    for y in (1.0, h - 2.0):
+        m.tube("y", (-w / 2.0, d), y, y + 1.0, 0.55, BRASS_L, sides=6)
+    m.box((w / 2.0, 3.0, d - 0.5), (w / 2.0 + 0.75, 5.0, d + 0.25), BRASS_D)
+    m.tube("z", (w / 2.0 + 0.4, 4.0), d + 0.25, d + 0.9, 0.45, BRASS_L, sides=6)
+    m.box((-w / 2.0 - 0.25, h, 0.5), (w / 2.0 + 0.25, h + 0.5, d + 0.25), BRASS_D)
+    for x in (-w / 2.0 + 0.4, w / 2.0 - 0.9):
+        m.box((x, h + 0.5, d - 0.9), (x + 0.5, h + 0.7, d - 0.4), SCREW)
+    m.tube("y", (0.0, STAND), h + 0.5, SOCKET, 2.3, BRASS, sides=8)                             # the socket the tube stands in
+    # the basket under the box: what has come lies in it, a slip half out of the upper one
     mesh = Sprite(name + "_mesh", list(MESH), dict(w=brass[2]))
-    m.box((-w / 2.0, -7.0, 0.5), (w / 2.0, -1.0, d - 0.5), WIRE, skip="un", faces={"s": mesh, "e": mesh, "w": mesh})
-    m.box((-w / 2.0, -1.25, 0.5), (w / 2.0, -0.75, d - 0.5), BRASS_D, skip="ud")                # its rim
+    mesh_side = Sprite(name + "_mesh_side", list(MESH_SIDE), dict(w=brass[2]))
+    m.box((-w / 2.0, -7.0, 0.5), (w / 2.0, -1.0, 4.5), WIRE, skip="un", faces={"s": mesh, "e": mesh_side, "w": mesh_side})
+    m.box((-w / 2.0, -1.25, 0.5), (w / 2.0, -0.75, 4.5), BRASS_D, skip="ud")                    # its rim
     m.box((-2.5, -1.0, 0.5), (2.5, 0.0, 3.5), BRASS_D)                                          # the throat between box and basket
-    for x0, y, turn in ((-2.6, -6.1, 0.0), (-1.4, -5.0, 14.0)):                                 # two carriers in it
-        rot = ("z", turn, (x0 + 2.0, y, 2.4)) if turn else None
-        m.box((x0, y - 0.8, 1.6), (x0 + 4.0, y + 0.8, 3.2), FELT, rot=rot)
-        for x in (x0 - 0.4, x0 + 4.0):
+    for x0c, y, turn in ((-2.6, -6.1, 0.0), (-1.4, -4.9, 14.0)):
+        rot = ("z", turn, (x0c + 2.0, y, 2.4)) if turn else None
+        m.box((x0c, y - 0.8, 1.6), (x0c + 4.0, y + 0.8, 3.2), FELT, rot=rot)
+        for x in (x0c - 0.4, x0c + 4.0):
             m.box((x, y - 0.9, 1.5), (x + 0.4, y + 0.9, 3.3), BRASS_L, rot=rot)
-    # the bell the carrier strikes, right of the tube, and the push under it
-    m.tube("z", (3.4, 10.0), 0.5, 1.0, 0.5, IRON_D, sides=6)
-    m.tube("z", (3.4, 10.0), 1.0, 1.75, 1.4, BRASS_L, sides=8)
-    m.box((3.2, 8.3, 0.5), (3.6, 9.2, 1.2), IRON_D)                                             # its striker
-    m.box((2.6, -4.0, 0.5), (4.4, -2.2, 0.9), BRASS_D)
-    m.tube("z", (3.5, -3.1), 0.9, 1.5, 0.6, PUSH, sides=6)
+        if turn:
+            m.box((x0c + 4.4, y - 0.4, 2.0), (x0c + 5.4, y + 0.4, 2.8), PAPER, rot=rot)
+    # right of the tube: the bell that rings as a carrier lands, its hammer and its coils
+    m.tube("z", (4.6, 10.7), 0.5, 1.0, 0.5, IRON_D, sides=6)
+    m.tube("z", (4.6, 10.7), 1.0, 1.75, 1.4, BRASS_L, sides=8)
+    m.tube("z", (4.6, 10.7), 1.75, 2.0, 0.4, IRON_D, sides=6)
+    m.box((4.3, 8.85, 0.9), (4.9, 9.25, 1.5), SCREW)
+    m.box((4.5, 8.4, 1.0), (4.7, 8.85, 1.2), IRON_D)
+    m.box((3.9, 7.4, 0.5), (5.5, 8.4, 1.5), IRON_D)
+    for x in (4.1, 4.9):
+        m.box((x, 7.6, 1.5), (x + 0.4, 8.2, 1.7), K.COPPER)
+    # right of the basket: the push that calls the other end, on its rose; its wire up to the bell
+    # and down into the wall through a porcelain bush
+    m.box((4.0, -4.1, 0.5), (5.8, -2.3, 0.9), BRASS_D)
+    m.tube("z", (4.9, -3.2), 0.9, 1.5, 0.6, PUSH, sides=6)
+    m.box((5.9, -3.3, 0.5), (6.1, 7.4, 0.7), CORD)
+    m.box((5.5, 7.2, 0.5), (6.1, 7.4, 0.7), CORD)
+    m.box((5.8, -3.3, 0.5), (6.1, -3.1, 0.7), CORD)
+    m.box((4.8, -7.4, 0.5), (5.0, -4.1, 0.7), CORD)
+    m.tube("z", (4.9, -7.8), 0.5, 1.0, 0.6, PUSH, sides=6)
     # left of the tube: the card of the places the line serves, in its brass frame
     card = Sprite(name + "_card", list(CARD), dict(c=P.RAMPS["cream"][3], l=P.RAMPS["iron"][4], v=P.RAMPS["verdigris"][1]))
-    m.box((-4.75, 8.75, 0.5), (-2.25, 11.75, 0.75), BRASS_D)
-    m.box((-4.5, 9.0, 0.6), (-2.5, 11.5, 0.9), K.CREAM, skip="nudew", faces={"s": card})
+    m.box((-6.25, 8.25, 0.5), (-2.75, 12.75, 0.75), BRASS_D)
+    m.box((-6.0, 8.5, 0.65), (-3.0, 12.5, 0.9), K.CREAM, skip="nudew", faces={"s": card})
+    # left of the box: tonight's tally in chalk, four strokes and one across them, then the odd ones
+    for i in range(TALLY):
+        gate, k = divmod(i, 5)
+        y = 5.6 - gate * 2.9
+        if k < 4:
+            x = -6.1 + k * 0.5
+            m.box((x, y - 2.2, 0.5), (x + 0.2, y, 0.6), CHALK)
+        else:
+            m.box((-6.3, y - 1.2, 0.5), (-4.0, y - 1.0, 0.62), CHALK, rot=("z", 28.0, (-5.15, y - 1.1, 0.56)))
     return m
 
 
@@ -288,6 +424,7 @@ def _time_room():
     return dict(
         number="A 1",
         station=dict(pos=(t.PANEL_W, float(t.SILL), z), facing="east"),
+        plate=dict(pos=(west, t.SILL + PLATE_UP * PX, z), facing="east"),
         runs=[
             dict(a=(west, t.SILL + SOCKET * PX, z), b=(west, float(t.TOP), z), out="east",
                  rest=(west, t.SILL + BOX[1] / 2.0 * PX, z), far=(west, t.TOP + 0.3, z), end="flange"),
@@ -315,15 +452,29 @@ def _spans(run):
     return a, b, way
 
 
+def _glass(run):
+    """A run's lengths of glass as [(model name without the prefix, where it starts)]."""
+    a, b, way = _spans(run)
+    lengths = _pieces(_along(a, b)[1])
+    out, at = [], a
+    for i, n in enumerate(lengths):
+        last = run.get("end") == "bend" and i == len(lengths) - 1
+        out.append((f"tube_{n}e" if last else f"tube_{n}", at, n, last))
+        at = _step(at, way, n * PX)
+    return out
+
+
 @functools.lru_cache(maxsize=None)
 def _models():
     made = {PREFIX + name: build() for name, build in FIXED.items()}
     for key in LINES:
-        spec = LINES[key]()
-        for run in (spec or {}).get("runs", ()):
-            a, b, _ = _spans(run)
-            for n in _pieces(_along(a, b)[1]):
-                made.setdefault(f"{PREFIX}tube_{n}", _tube(n))
+        spec = LINES[key]() or {}
+        for run in spec.get("runs", ()):
+            for name, _, n, last in _glass(run):
+                made.setdefault(PREFIX + name, _tube(n, last))
+        if spec.get("plate"):
+            lying = spec["plate"].get("lying", False)
+            made.setdefault(PREFIX + plate_name(spec["number"], lying), _plate(spec["number"], lying))
     return {name: K.settle(m) for name, m in made.items()}
 
 
@@ -355,28 +506,31 @@ def _fly(canvas, rest, far, leaves, returns, origin):
 
 
 def line(canvas, key, origin=(0, 0, 0)):
-    """Lay the line `key` of LINES: its station, its glass, its fittings and its carriers. Returns
-    the display entities placed, 0 while the line's room is not in the tree."""
+    """Lay the line `key` of LINES: its station, its number, its glass, its fittings and its
+    carriers. Returns the display entities placed, 0 while the line's room is not in the tree."""
     spec = LINES[key]()
     if spec is None:
         return 0
-    n = K.put(canvas, _models()[PREFIX + "station"], spec["station"]["pos"], mount="wall",
+    own = _models()
+    n = K.put(canvas, own[PREFIX + "station"], spec["station"]["pos"], mount="wall",
               facing=spec["station"]["facing"], origin=origin, brightness=SHOWN, view=VIEW)
+    if spec.get("plate"):
+        plate = spec["plate"]
+        pos = _step(plate["pos"], plate["facing"], PLATE_OFF * PX)
+        n += K.put(canvas, own[PREFIX + plate_name(spec["number"], plate.get("lying", False))], pos, mount="wall",
+                   facing=plate["facing"], origin=origin, brightness=SHOWN_PLATE, view=VIEW)
     flights = []
     for run in spec["runs"]:
-        a, b, way = _spans(run)
+        _, _, way = _spans(run)
         out = run["out"]
-        at = a
-        for length in _pieces(_along(a, b)[1]):
-            n += _put(canvas, f"tube_{length}", at, way, out, origin)
-            at = _step(at, way, length * PX)
-        back = next(name for name, d in DIRS.items() if all(d[i] == -DIRS[way][i] for i in range(3)))
+        for name, at, _, _ in _glass(run):
+            n += _put(canvas, name, at, way, out, origin)
         if run.get("start") == "bend":
             n += _put(canvas, "bend", run["a"], way, out, origin)
         if run.get("end") == "bend":
-            n += _put(canvas, "bend", run["b"], back, out, origin)
+            n += _put(canvas, "bend", run["b"], _back(way), out, origin)
         elif run.get("end") == "flange":
-            n += _put(canvas, "flange", run["b"], back, out, origin)
+            n += _put(canvas, "flange", run["b"], _back(way), out, origin)
         flights.append((run.get("rest", run["a"]), run.get("far", run["b"])))
     # the carriers: out along the line one after the other, home in the opposite order
     spans = [max(1, int(round(_along(rest, far)[1] / SPEED))) for rest, far in flights]
