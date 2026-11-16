@@ -379,13 +379,20 @@ def aisle_doors():
     """Doors other rooms open in the aisle walls on the ground floor: {(x, z of the aisle's row
     before it)}. Each is its room's to set (HALL_DOOR in the room's module, the wall's cell): the
     battery room's in the north wall beside the switchboard, the plate vault's in the south wall
-    across from it. The hall keeps the cell before a door free."""
+    across from it. The shell cuts them and tells them in doors(), with the doors of the main
+    floor: of those the ones whose foot is the ground (shell, #74028). The hall keeps the cell
+    before a door free."""
     out = set()
     for name in NEIGHBOURS:
         door = getattr(_optional("interiors." + name), "HALL_DOOR", None)
         if door is not None:
             x, z = door
             out.add((x, Z0 if z < Z0 else Z1))
+    for door in shell.doors():
+        if door["y"][0] == FEET:
+            dx, dz = door["inward"]
+            out |= {(x - dx, z - dz) for x, z in door["cells"]
+                    if X0 <= x - dx <= X1 and z - dz in (Z0, Z1)}
     return out
 
 
