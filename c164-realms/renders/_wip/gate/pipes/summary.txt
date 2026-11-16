@@ -1,0 +1,15 @@
+gate props/pipes 52a938ee: the merged tree 52a938ee, the assembly as it was 5250a164
+delivery.py: PASS (0 failed, 2 to look at)
+    [WARN] scope    29 of 47 files are the card's own
+                    not this card's file: A build/scenes/obs/machines/orrery.py
+                    not this card's file: A build/scenes/obs_mach_orrery/__init__.py
+                    not this card's file: A build/scenes/obs_mach_orrery/__main__.py
+                    not this card's file: A build/scenes/obs_mach_orrery/mood.py
+                    not this card's file: A build/scenes/obs_mach_orrery/props.py
+                    not this card's file: A build/scenes/obs_mach_orrery/shots.json
+    [WARN] pictures 2 test scenes, 30 shots with a picture kept
+                    obs_mach_orrery: 10 pictures show acfc2ad9; the card's code has changed since (pipes.py): draw them again
+check.py: 58 scenes in 47 s: 58 pass (58 with warnings)
+pictures: [PASS] selfshots obs_mach_orrery at 52a938ee: 10 of 10 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_props_pipes at 52a938ee: 20 of 20 kept pictures are what the code draws
+result: PASS

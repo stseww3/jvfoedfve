@@ -1,0 +1,28 @@
+delivery props/pipes: 52a938e against 5250a16 (forked at 5250a16), 43 commits, 47 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[WARN] scope    29 of 47 files are the card's own
+                not this card's file: A build/scenes/obs/machines/orrery.py
+                not this card's file: A build/scenes/obs_mach_orrery/__init__.py
+                not this card's file: A build/scenes/obs_mach_orrery/__main__.py
+                not this card's file: A build/scenes/obs_mach_orrery/mood.py
+                not this card's file: A build/scenes/obs_mach_orrery/props.py
+                not this card's file: A build/scenes/obs_mach_orrery/shots.json
+                not this card's file: M plan/packages/machines/orrery.md
+                not this card's file: A renders/obs_mach_orrery/gallery_a.png
+                not this card's file: A renders/obs_mach_orrery/gallery_b.png
+                not this card's file: A renders/obs_mach_orrery/near_a.png
+                not this card's file: A renders/obs_mach_orrery/near_b.png
+                not this card's file: A renders/obs_mach_orrery/shots.txt
+                not this card's file: A renders/obs_mach_orrery/stair_a.png
+                not this card's file: A renders/obs_mach_orrery/stair_b.png
+                not this card's file: A renders/obs_mach_orrery/under_a.png
+                not this card's file: A renders/obs_mach_orrery/under_b.png
+                ... and 2 more
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[WARN] pictures 2 test scenes, 30 shots with a picture kept
+                obs_mach_orrery: 10 pictures show acfc2ad9; the card's code has changed since (pipes.py): draw them again
+[PASS] merge    merges cleanly; 0 commits behind the base
+result: PASS (0 failed, 2 to look at)

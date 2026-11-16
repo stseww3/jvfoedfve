@@ -1,0 +1,251 @@
+{
+ "scene": "obs_site_stair",
+ "commit": "52a938e",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "WARN",
+   "summary": "108856 blocks, 179 entities, 109 models, 994 resource-pack files, 58 data-pack files, look: 1 biomes, 1 timelines (1.9 s)",
+   "details": [
+    "registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json"
+   ]
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 993 files, no file written twice, the folders and the prefix of site are kept (1 package run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "233 pictures, every colour in the palette; 9 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "742 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "70 kinds of block placed, 12 barrier cells (x 16, y 0..1, z -5..5), all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "WARN",
+   "summary": "8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)",
+   "details": [
+    "oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)",
+    "oxidized_copper facing north: flat over 7x7, the square's top corner at (16, 38, -33)",
+    "oxidized_copper facing south: flat over 7x7, the square's top corner at (16, 38, -27)",
+    "oxidized_copper facing west: flat over 7x7, the square's top corner at (10, 38, -27)",
+    "smooth_sandstone facing east: flat over 7x7, the square's top corner at (16, 23, -27)",
+    "smooth_sandstone facing north: flat over 7x7, the square's top corner at (16, 24, -33)",
+    "smooth_sandstone facing south: flat over 7x7, the square's top corner at (16, 26, -27)",
+    "smooth_sandstone facing west: flat over 7x7, the square's top corner at (10, 24, -27)"
+   ],
+   "data": {
+    "largest": 7,
+    "faces": 8
+   }
+  },
+  {
+   "check": "entities",
+   "status": "WARN",
+   "summary": "179 display entities, 11 drawn out along one axis, 66 models never placed",
+   "details": [
+    "prop_iron_canopy_lamp_under x1: 5.79/16/44.19 pixels to the block along x/y/z, not 16"
+   ]
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "12 shots, most display entities in view: 179 (aerial), limit 600; counted without what walls hide; the game draws up to 179 (v1): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "v1",
+      "in_view": 169,
+      "drawn": 179,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "stair_axis",
+      "in_view": 169,
+      "drawn": 179,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "stair_foot",
+      "in_view": 151,
+      "drawn": 179,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "look_back",
+      "in_view": 15,
+      "drawn": 179,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "wall_near",
+      "in_view": 159,
+      "drawn": 179,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "cheek_side",
+      "in_view": 161,
+      "drawn": 179,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "pedestal",
+      "in_view": 150,
+      "drawn": 179,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "yard_south",
+      "in_view": 146,
+      "drawn": 179,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v6",
+      "in_view": 21,
+      "drawn": 179,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "aerial",
+      "in_view": 179,
+      "drawn": 179,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "axis_high",
+      "in_view": 179,
+      "drawn": 179,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v12_aerial",
+      "in_view": 179,
+      "drawn": 179,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "PASS",
+   "summary": "V1 at (88.5, -2.38, -32.5): the front from y 4 up 13.9% hidden (base storey 43.8% by blocks and 2.4% more by models, great windows 1.7%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 1.2 s)",
+   "details": [],
+   "data": {
+    "the base storey": {
+     "lines": 1104,
+     "hidden": 509,
+     "seen_through": 327,
+     "hidden_by_blocks": 483,
+     "hidden_by_models": 26
+    },
+    "the great windows": {
+     "lines": 1656,
+     "hidden": 28,
+     "seen_through": 0
+    },
+    "the cornice": {
+     "lines": 1104,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the clock tower": {
+     "lines": 672,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the time-ball mast": {
+     "lines": 22,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the great dome": {
+     "lines": 1688,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the small dome": {
+     "lines": 290,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "comet": {
+     "elevation": 41.0,
+     "across": 0.6128,
+     "down": 0.2647,
+     "lost": 0,
+     "body": {
+      "lines": 350,
+      "outside_clear": 0,
+      "covered": 0,
+      "from": -7.29,
+      "to": 1.2,
+      "low": 39.99,
+      "up": 54.24
+     }
+    },
+    "clear": {
+     "up": 61.0,
+     "blocks": [
+      {
+       "name": "between the two ends of the main building",
+       "from": -1.24,
+       "to": 44.16,
+       "low": 0.0,
+       "up": 61.0,
+       "lines": 44835,
+       "covered": 0
+      },
+      {
+       "name": "where the comet hangs, north of the main building",
+       "from": -15.0,
+       "to": -1.49,
+       "low": 35.0,
+       "up": 61.0,
+       "lines": 5880,
+       "covered": 0
+      }
+     ]
+    },
+    "left": {
+     "from": 44.66,
+     "to": 70.0,
+     "posts": []
+    }
+   }
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "1 parts and 0 points on 1 chains, 12 function files; 4 commands in the busiest tick (limit 40), 0.6 a tick on average (limit 10)",
+   "details": [
+    "chain of 24 ticks: 6 functions, 14 commands a cycle, starts 1 ticks after start",
+    "site_weather_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.08 blocks off the axis"
+   ]
+  }
+ ]
+}
