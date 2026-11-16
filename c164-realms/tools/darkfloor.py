@@ -85,6 +85,8 @@ OWNERS = (
     ("chart", "", (7, 7, 6, 8, 7, 6)),                                        # the chart room's threshold
     ("vault", "room: plate vault", None),                                     # cr2, #75753: the vault is a way like the others
     ("vault", "", (7, 0, 6, 7, 1, 6)),                                        # its threshold
+    ("astro", "room: battery room", None),                                    # lights, #76033: the vault's twin, counted the same way
+    ("astro", "", (7, 0, -6, 7, 1, -6)),                                      # its threshold
     ("power", "in-L", None),
     ("dome、lights：这批屋面 8 盏", "in-I", None),                            # the roof round the dome room (the room itself is not counted)
     ("dome、lights：这批屋面 8 盏", "in-J", None),
