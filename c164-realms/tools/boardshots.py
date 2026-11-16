@@ -12,11 +12,11 @@ skeleton is the one of this checkout, or of the build/ folder named in the envir
 C164_BUILD: the render station shoots other checkouts with its own tools (win/shuttle.py), and
 the board of a checkout is worked out from that checkout's skeleton.
 
-V1, V2, V6, V7 and V11 are the skeleton's own, LOCKED by A0, and are read from there. The other
-seven have no place in the skeleton yet: what stands here for them is the render station's proposal
-(PROPOSED below), for A0 to move on the pictures. A view that gets fixed goes into the skeleton as
+V1, V2, V5, V6, V7 and V11 are the skeleton's own, LOCKED there, and are read from there. The other
+six have no place in the skeleton yet: what stands here for them is the render station's proposal
+(PROPOSED below), to be moved on the pictures. A view that gets fixed goes into the skeleton as
 V<n> = dict(pos=, look_at=) and is read from there; what stands here for it then no longer counts
-(V6 and V7 have such an entry each). It is still what a checkout with an older skeleton is shot
+(V5, V6 and V7 have such an entry each). It is still what a checkout with an older skeleton is shot
 with: A0's ruling where there was one before the skeleton had the view (RULED below), else the
 station's proposal as it stood last.
 
@@ -72,8 +72,10 @@ VIEWS = [
     ("v04_entrance", "the iron door, the canopy, the bracket lamps, the name plate", "V4", dict(
         pos=(S.east_wall_x(9) + 10.5, S.GROUND + EYE, S.AXIS_Z + 3.0),
         look_at=(S.east_wall_x(9) + 0.5, 4.5, S.AXIS_Z))),
-    # PROPOSED. From the court, south-east of the tower, looking up its corner: the east and south
-    # dials, the time ball on its mast, the aerial across to the radio mast on the right.
+    # No longer counts: V5 is in the skeleton, 42 blocks from the tower (S2 11-16). The proposal was:
+    # from the court, south-east of the tower, looking up its corner: the east and south dials, the
+    # time ball on its mast, the aerial across to the radio mast on the right. From there the top,
+    # the ball and its pole are behind the cornice (main/tower worked it out from the blocks).
     ("v05_tower", "up the clock tower: the dials, the time ball, the aerial", "V5", dict(
         pos=(TOWER[0] + 15.0, S.GROUND + EYE, TOWER[1] + 15.0),
         look_at=(TOWER[0], S.CLOCK_SHAFT_TOP - 3.0, TOWER[1]))),
