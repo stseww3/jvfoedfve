@@ -256,9 +256,12 @@ PLACES = {"glass": (0,) + tuple(PITCH + N * i for i in range(5)) + (5 * PITCH, 6
 # one black block with the riser (0.11, the same hue), told apart only from near, by their relief
 # (review #22). These walls stand before tuff brick (0.21), as iron does in the power house; behind
 # the grate the brick shows through. A wall's ground is its bay of the riser: behind it, a cell
-# either side, the row over it. Not for verdigris, old copper and brass: old copper is as light as
-# the brick, and brass and verdigris on a light ground look duller than they are. Not the grey-white
-# stone: dark squares set in it are what the dark windows of the tier above are.
+# either side, the row over it. The ground stands a cell behind the wall's face, where the lamp row
+# gives it half the light the wall has (the brick read 0.16 there, the same brick as a wall 0.22):
+# a lamp in the gap either side of the wall, as bright as the lamp row is at the wall's own foot
+# (LAMP - 3) and so no more light on the wall. Not for verdigris, old copper and brass: old copper is
+# as light as the brick, and brass and verdigris on a light ground look duller than they are. Not
+# the grey-white stone: dark squares set in it are what the dark windows of the tier above are.
 GROUNDS = {name: B.TUFF_BRICK.block for name in ("slate_tile", "iron_plate", "iron_riveted", "iron_cast", "iron_grate")}
 # The row of small things: x of each. The groups stand apart by what a close shot needs to hold one
 # whole and nothing of the next: the lines and the openings, the bars and the lamps, the brass.
@@ -300,6 +303,8 @@ def build():
         for x, (wall, put, lamp) in zip(places(k), walls):
             if wall in GROUNDS:
                 c.box(x - 1, y, z - 1, x + N, y + RISE - 2, z - 1, GROUNDS[wall])
+                for gx in (x - 1, x + N):       # ... lit as the wall's own foot is, or the gap is the darkest thing again
+                    c.set(gx, y + 1, z, st(B.LIGHT, level=LAMP - 3))
             put(c, x, y, z)
             if lamp:
                 for dx in (1, 5):

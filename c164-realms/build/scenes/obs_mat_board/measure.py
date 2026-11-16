@@ -14,9 +14,10 @@ pixels tinted, to see that every patch sits on its material.
 
     walls     the middle four by four cells of every wall of eight by eight. On a window's wall
               that is glass and glazing bars, no frame
-    riser     the stone behind the walls of a tier, its top row: once for each ground the tier
-              has (the board's dark stone; tuff brick behind iron and slate tile), over the last
-              wall that stands before it
+    riser     the stone behind the walls of a tier, once for each ground the tier has (the
+              board's dark stone; tuff brick behind iron and slate tile), at the last wall that
+              stands before it: the row over the wall, under the sky alone, and the cell to the
+              left of it, the middle four rows, which is what parts two walls
     snow      the wall of whole blocks (a face to the south); the drift where it lies seven, four
               and one layer deep (a face to the sky)
     rock      the mountain's rock the drift and the cloud tones lie in: beside the tones, and
@@ -63,6 +64,7 @@ def patches():
             over[M.GROUNDS.get(name, M.FLOOR)] = (x, name)
         for x, name in over.values():
             out.append((tier, f"riser over {name}", (x + 1, y + M.N + 0.1, z), (x + M.N - 1, y + M.N + 0.9, z)))
+            out.append((tier, f"riser left of {name}", (x - 0.9, y + 2, z), (x - 0.1, y + M.N - 2, z)))
     y, z = M.at("ground")
     s, n = M.SNOW_AT, M.N
     out.append(("snow", "wall", (s + 2, y + 2, z + 1), (s + n - 2, y + n - 2, z + 1)))
