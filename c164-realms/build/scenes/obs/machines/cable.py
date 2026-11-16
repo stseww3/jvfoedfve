@@ -41,7 +41,8 @@ The models (all "mach_cable_"):
   hood     the cast cover at the head of the track, the step to the car.
   turn     the level roller that turns the rope on to the trestle's line.
   roller   a track roller on its tie, that carries the rope: at the brow and down the slope.
-  rope     the haul rope, drawn out between two points (M.between).
+  rope     the haul rope in the winch house, drawn out between two points (M.between).
+  haul     the same rope out on the track: thinner and a step darker, for the eye above it.
   control  the driver's stand on the north buffer stop: the controller and the hand brake.
   gong     the signal gong on the south buffer stop, and the maker's plate on that block's face.
 
@@ -93,6 +94,7 @@ WOOD_D = P.mat("dark_wood", base=1)                     # the sunk panel of the 
 RED = P.mat("signal")                                   # painted red: the brake's hand wheel
 GLOW = [PK.flat("glow", i) for i in range(len(P.RAMPS["glow"]))]
 ROPE, ROPE_TOP, ROPE_UNDER = PK.flat("iron", 4), PK.flat("iron", 5), PK.flat("iron", 2)
+HAUL, HAUL_TOP, HAUL_UNDER = PK.flat("iron", 3), PK.flat("iron", 4), PK.flat("iron", 1)        # out on the track
 BELT, BELT_EDGE = PK.flat("old_copper", 1), PK.flat("old_copper", 0)        # a leather belt
 
 
@@ -621,6 +623,16 @@ def _rope():
     return m
 
 
+def _haul():
+    """The haul rope out on the track. There it is looked down on, against the dark deck of the
+    trestle, and two texels of the tone it has under the winch house's lamp read as a girder: a
+    texel and a quarter across, a step darker. Its underside is where _rope's is, so it lies on
+    the same rollers."""
+    m = M.Model(PREFIX + "haul")
+    m.box((-0.625, -1, 0), (0.625, 0.25, 48), HAUL, grain="z", faces={"u": HAUL_TOP, "d": HAUL_UNDER})
+    return m
+
+
 def _control():
     """What the winch is driven with, on the north buffer stop. Anchor: the middle of the block's
     top; x is east (towards the car), z south. All of it stands in the north half of the top.
@@ -676,7 +688,7 @@ def _gong():
 
 BUILDERS = {"car": _car, "drum": _drum, "frame": _frame, "motor": _motor, "belt": _belt, "sheave": _sheave,
             "stand": _stand, "duct": _duct, "hood": _hood, "turn": _turn, "roller": _roller, "rope": _rope,
-            "control": _control, "gong": _gong}
+            "haul": _haul, "control": _control, "gong": _gong}
 SCALE = {PREFIX + name: 2.0 if name in ("drum", "frame") else 1.0 for name in BUILDERS}
 # For the motion line: what turns, about which axis of its own model (through the anchor), the tag
 # its entities carry, and how fast against the drum (the rope runs as fast on both). Positive pays out.
@@ -740,7 +752,7 @@ def build(canvas, origin=(0, 0, 0)):
     for tie in ROLLER_TIES:
         n += put("roller", _roller_at(tie), yaw=TRACK_YAW)
     for a, b in zip(ROPE_LINE, ROPE_LINE[1:]):
-        n += run("rope", a, b)
+        n += run("haul", a, b)
 
     # The car is lit within: its source is offered to the sky line, which places it (PK.offer_lights
     # hands it to sky/_lightkit, and puts it down itself in a tree without that). The winch's lamp
