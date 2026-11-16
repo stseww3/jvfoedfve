@@ -193,12 +193,14 @@ def ground(c, x, y, z):
 def pieces(c, x, y, z):
     """The shaped blocks in front of a fine stone wall, each on its own two cells: the iron pieces in
     two groups, then the brass family and the signs. A vanilla iron piece stands a cell from the
-    repainted one it is compared with."""
+    repainted one it is compared with. Each as the building uses it: the iron door one leaf (two
+    side by side are a pair of lit eyes), the plate of brass in the floor as a door's threshold (a
+    run of it is a carpet)."""
     c.box(x, y, z - 1, x + width(), y + 3, z - 1, B.ASHLAR_FINE.block)
     lifted = _Lifted(c, y)
     for dx, put, block in IRON:
         put(lifted, block, x + dx, z)
-    _board.brass(lifted, x + BRASS_AT, z, staged=False)
+    _board.brass(lifted, x + BRASS_AT, z, staged=False, plate="threshold")
     _board.hung(c, x + HUNG_AT, y, z)
     for lx in range(x + 1, x + width(), 4):
         c.set(lx, y + 1, z + 3, st(B.LIGHT, level=LAMP))     # no further forward: the snow wall's top is below
@@ -249,9 +251,18 @@ ROWS = {"ground": ground, "pieces": pieces}      # the tiers that are laid out b
 # windows), which leaves the furnace window a place of its own at the far end from the lamps of the
 # instrument wall; the skylight, the instruments and the woods stand where a PITCH puts them.
 PLACES = {"glass": (0,) + tuple(PITCH + N * i for i in range(5)) + (5 * PITCH, 6 * PITCH, 7 * PITCH)}
+# The riser behind a wall is the ground it is seen on, and the board's dark stone swallows what is as
+# dark as itself: in the picture of the whole board cast iron (0.12 to 0.14) and slate tile (0.12) were
+# one black block with the riser (0.11, the same hue), told apart only from near, by their relief
+# (review #22). These walls stand before tuff brick (0.21), as iron does in the power house; behind
+# the grate the brick shows through. A wall's ground is its bay of the riser: behind it, a cell
+# either side, the row over it. Not for verdigris, old copper and brass: old copper is as light as
+# the brick, and brass and verdigris on a light ground look duller than they are. Not the grey-white
+# stone: dark squares set in it are what the dark windows of the tier above are.
+GROUNDS = {name: B.TUFF_BRICK.block for name in ("slate_tile", "iron_plate", "iron_riveted", "iron_cast", "iron_grate")}
 # The row of small things: x of each. The groups stand apart by what a close shot needs to hold one
 # whole and nothing of the next: the lines and the openings, the bars and the lamps, the brass.
-IRON = ((2, _board.door, B.IRON_DOOR), (6, _board.hatch, B.IRON_HATCH), (10, _board.rod, B.IRON_ROD),
+IRON = ((2, _board.leaf, B.IRON_DOOR), (6, _board.hatch, B.IRON_HATCH), (10, _board.rod, B.IRON_ROD),
         (14, _board.pipe, B.IRON_PIPE), (17, _board.pipe, B.VANILLA_CHAIN),
         (23, _board.run, B.IRON_BARS), (26, _board.run, B.VANILLA_BARS), (30, _board.bulb, B.IRON_BULB),
         (34, _board.lantern, B.IRON_LANTERN))
@@ -286,7 +297,9 @@ def build():
         c.box(-1, y, z - 1, w, y + RISE - 2, z - 1, FLOOR)                              # the riser behind the walls
         if name in ROWS:
             ROWS[name](c, 0, y, z)
-        for x, (_, put, lamp) in zip(places(k), walls):
+        for x, (wall, put, lamp) in zip(places(k), walls):
+            if wall in GROUNDS:
+                c.box(x - 1, y, z - 1, x + N, y + RISE - 2, z - 1, GROUNDS[wall])
             put(c, x, y, z)
             if lamp:
                 for dx in (1, 5):
