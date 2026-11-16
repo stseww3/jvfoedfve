@@ -1,0 +1,136 @@
+{
+ "scene": "obs_mach_recorders",
+ "commit": "9dc42dc",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "WARN",
+   "summary": "2082 blocks, 80 entities, 172 models, 1194 resource-pack files, 29 data-pack files, look: 1 biomes, 1 timelines (1.2 s)",
+   "details": [
+    "registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json"
+   ]
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 1193 files, no file written twice, the folders and the prefix of machines are kept (14 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "301 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "873 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "32 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "WARN",
+   "summary": "1 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)",
+   "details": [
+    "smooth_sandstone facing west: flat over 9x9, the square's top corner at (0, 14, -6)"
+   ],
+   "data": {
+    "largest": 9,
+    "faces": 1
+   }
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "80 display entities, 5 drawn out along one axis, 122 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "8 shots, most display entities in view: 67 (v10), limit 600; counted without what walls hide; the game draws up to 80 (v10): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "v10",
+      "in_view": 67,
+      "drawn": 80,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "wall",
+      "in_view": 30,
+      "drawn": 80,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "console",
+      "in_view": 24,
+      "drawn": 80,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "drum",
+      "in_view": 18,
+      "drawn": 80,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "telegraph",
+      "in_view": 17,
+      "drawn": 80,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "record",
+      "in_view": 20,
+      "drawn": 80,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "tube",
+      "in_view": 10,
+      "drawn": 80,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "tube_desk",
+      "in_view": 29,
+      "drawn": 80,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "1 parts and 0 points on 1 chains, 18 function files; 4 commands in the busiest tick (limit 40), 0.0 a tick on average (limit 10)",
+   "details": [
+    "chain of 2400 ticks: 12 functions, 26 commands a cycle, starts 1 ticks after start",
+    "mach_rec_drum: 12 steps in 2400 ticks: its middle lies 0.05 blocks off the axis"
+   ]
+  }
+ ]
+}
