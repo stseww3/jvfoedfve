@@ -89,7 +89,9 @@ WOOD = P.mat("dark_wood")
 
 
 # ---- the pictures (drawn as whoever stands before the board sees them: left is south) -------------------
-def _slab_picture(name, w, labels):
+# What has no underscore before its name is the family's: the board of the battery room
+# (machines/batteryboard.py) is made of the same slabs, meters, switches and pointers.
+def slab_picture(name, w, labels):
     """A slab's face: polished slate with a few pale veins, a chamfer, a screw in each corner, and
     the engraved brass labels under what is mounted on it (labels: left texel, top texel, width)."""
     seed = sum(ord(c) for c in name)
@@ -116,7 +118,7 @@ def _slab_picture(name, w, labels):
     return p
 
 
-def _back_picture(name, w, risers):
+def back_picture(name, w, risers):
     """A slab's back, as the alley sees it: bare slate, the copper straps that rise to the bars."""
     p = K.Pix(w, _Y1 - _Y0, "B")
     p.specks("B", "C", "A", sum(ord(c) for c in name) + 5, share=0.08)
@@ -128,7 +130,7 @@ def _back_picture(name, w, risers):
     return p
 
 
-def _dial_picture(letter):
+def dial_picture(letter):
     """A meter's face: the brass bezel, the cream dial with its letter."""
     c = float(_METER_R)
     p = K.Pix(16, 16)
@@ -142,12 +144,13 @@ def _dial_picture(letter):
     return p
 
 
-def _ticks_picture():
-    """The ticks of a meter's scale, which glow: eight, on the upper arc of the dial."""
+def ticks_picture():
+    """A meter's scale, which glows: an arc over the upper half of the dial, a bright tick and a
+    faint one by turns, so that it reads as a scale from across the room and not as two dots."""
     p = K.Pix(16, 16)
-    for a in (-56.0, -40.0, -24.0, -8.0, 8.0, 24.0, 40.0, 56.0):
-        r = math.radians(a)
-        p.set(int(math.floor(8.0 + 4.7 * math.sin(r))), int(math.floor(8.0 - 4.7 * math.cos(r))), "j")
+    arc = ((4, 6), (4, 5), (5, 4), (6, 3), (7, 3), (8, 3), (9, 3), (10, 4), (11, 5), (11, 6))
+    for i, (x, y) in enumerate(arc):
+        p.set(x, y, "k" if min(i, len(arc) - 1 - i) % 2 == 0 else "i")       # the same from either end
     return p
 
 
@@ -171,7 +174,7 @@ def _lens_picture():
     return p
 
 
-def _strip_picture(n):
+def strip_picture(n):
     """The cover strip over a joint of two slabs: a flat iron bar with a screw every half block."""
     p = K.Pix(3, n, "2")
     p.rect(0, 0, 0, n - 1, "3")
@@ -183,7 +186,7 @@ def _strip_picture(n):
 
 
 # ---- the models -----------------------------------------------------------------------------------------
-def _knife(d, zc, y0, y1, half, blades, opened=False):
+def knife(d, zc, y0, y1, half, blades, opened=False):
     """A knife switch on the slab: a porcelain pad at foot and head, brass hinge posts and jaws, the
     blades, and the wooden bar that joins the blades at their upper ends, with its grip. The bar
     lies over the blades' ends; nothing of a blade stands above it."""
@@ -207,6 +210,13 @@ def _knife(d, zc, y0, y1, half, blades, opened=False):
         moving()
 
 
+def meter(d, y, z, letter):
+    """A meter on the slab: a brass case three texels proud, its dial, the ticks that glow."""
+    d.tube("x", (y, z), 0, 3, _METER_R, BRASS, sides=16)
+    d.plate("e", (3, y, z), 16, 16, dial_picture(letter).sprite(PREFIX + "dial_" + letter), lift=0.25)
+    d.plate("e", (3.25, y, z), 16, 16, ticks_picture().sprite(PREFIX + "ticks"), lift=0.25, emit=15)
+
+
 def _panel(name):
     z0, z1 = _SLABS[name]
     w = z1 - z0
@@ -224,13 +234,13 @@ def _panel(name):
         for zc, _ in _SWITCHES[name]:
             labels.append((u(zc) - 3, 43, 6))
             risers += [(zc - z0 - 3, 12), (zc - z0 + 2, 12)]
-    face = _slab_picture(name, w, labels).sprite(PREFIX + "slab_" + name)
-    back = _back_picture(name, w, risers).sprite(PREFIX + "back_" + name)
+    face = slab_picture(name, w, labels).sprite(PREFIX + "slab_" + name)
+    back = back_picture(name, w, risers).sprite(PREFIX + "back_" + name)
     d.box((-_T, _Y0, z0), (0, _Y1, z1), K.flat("slate", 2), skip="d", seed=0, faces={"e": face, "w": back})
 
     # the frame: head rail, a post behind each joint with its cover strip before it, the stays to the wall
     d.box((-7, _RAIL[0], z0), (1, _RAIL[1], z1), IRON_L)
-    strip = _strip_picture(_Y1 - _Y0 + 2).sprite(PREFIX + "strip")
+    strip = strip_picture(_Y1 - _Y0 + 2).sprite(PREFIX + "strip")
     joints = {"north": (1.5,), "main": (z0, z1), "south": (z1 - 1.5,)}[name]
     for zj in joints:
         d.box((-7, _Y0, zj - 1.5), (-_T, _Y1, zj + 1.5), IRON)
@@ -252,13 +262,10 @@ def _panel(name):
             d.tube("y", (x, z), _RAIL[1] + 8, _RAIL[1] + 9, 2.0, PORCELAIN, sides=8)
             d.tube("y", (x, z), _RAIL[1] + 9, _BELL_TOP, 0.75, BRASS, sides=4)
 
-    # the meter: a brass case three texels proud, its dial, the ticks that glow
-    d.tube("x", (_METER_Y, mz), 0, 3, _METER_R, BRASS, sides=16)
-    d.plate("e", (3, _METER_Y, mz), 16, 16, _dial_picture(letter).sprite(PREFIX + "dial_" + letter), lift=0.25)
-    d.plate("e", (3.25, _METER_Y, mz), 16, 16, _ticks_picture().sprite(PREFIX + "ticks"), lift=0.25, emit=15)
+    meter(d, _METER_Y, mz, letter)
 
     if name == "main":
-        _knife(d, mz, _SWITCH_Y[0] - 2, _SWITCH_Y[1], 8, (-5, 5))                       # the main switch
+        knife(d, mz, _SWITCH_Y[0] - 2, _SWITCH_Y[1], 8, (-5, 5))                       # the main switch
         wheel = _wheel_picture().sprite(PREFIX + "wheel")
         lens = _lens_picture().sprite(PREFIX + "lens")
         for zc in (mz - 16, mz + 16):
@@ -269,11 +276,11 @@ def _panel(name):
             d.plate("e", (2, _METER_Y + 2, zc), 3, 3, lens, lift=0.25, emit=15)
     else:
         for zc, opened in _SWITCHES[name]:
-            _knife(d, zc, _SWITCH_Y[0], _SWITCH_Y[1], 4, (-2, 2), opened)
+            knife(d, zc, _SWITCH_Y[0], _SWITCH_Y[1], 4, (-2, 2), opened)
     return d
 
 
-def _needle():
+def needle():
     """A meter's pointer, standing upright on its pivot."""
     d = K.Draw(PREFIX + "needle", scale=1.0, step=K.TEXEL)
     d.box((0, -1.5, -0.5), (0.5, 5.5, 0.5), K.flat("iron", 0), seed=0)
@@ -283,8 +290,13 @@ def _needle():
 
 @functools.lru_cache(maxsize=None)
 def _drawn():
-    built = [_panel(name) for name in _SLABS] + [_needle()]
+    built = [_panel(name) for name in _SLABS] + [needle()]
     return {d.m.name[len(PREFIX):]: d for d in built}
+
+
+def piece(name):
+    """A drawn piece by its short name ("needle"), for whoever places one of the family's pieces."""
+    return _drawn()[name]
 
 
 def models():
