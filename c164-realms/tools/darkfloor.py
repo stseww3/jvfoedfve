@@ -47,6 +47,7 @@ import importlib
 import json
 import math
 import os
+import subprocess
 import sys
 import time
 
@@ -360,11 +361,17 @@ def main():
     ap.add_argument("--out", default="renders/_wip/light")
     ap.add_argument("--floor", type=int, default=5)
     ap.add_argument("--step", type=int, default=5)
-    ap.add_argument("--head", default="", help="the assembly commit the list is of (for its title)")
+    ap.add_argument("--head", default="", help="the assembly commit the list is of (for its title); auto: the commit of the tree it is run in")
     ap.add_argument("--before", default="", help="the dark.json of the list before this one: every heap says what it had then")
     ap.add_argument("--scene", default="obs", help="another scene than the master scene (a test scene: give --start)")
     ap.add_argument("--start", action="append", default=[], help="x,y,z of one more place to start from (repeatable)")
     args = ap.parse_args()
+    if args.head == "auto":
+        try:
+            args.head = subprocess.run(["git", "rev-parse", "--short=8", "HEAD"], capture_output=True, text=True,
+                                       timeout=30).stdout.strip()
+        except (OSError, subprocess.SubprocessError):
+            args.head = ""
     root = os.path.normpath(os.path.join(HERE, ".."))
     if not os.path.isdir(os.path.join(root, "plan")):
         root = os.getcwd()                          # run from c164-realms/ with the file somewhere else
@@ -462,6 +469,14 @@ def main():
                 best = (d, level, why, c)
         return best
 
+    def stood_on(heap):
+        """{the name of the block under the feet: cells}, the commonest first."""
+        count = {}
+        for c in heap:
+            on = rows[c]["under"].replace("minecraft:", "") or "?"
+            count[on] = count.get(on, 0) + 1
+        return dict(sorted(count.items(), key=lambda kv: (-kv[1], kv[0])))
+
     def box(heap):
         lo = [min(c[i] for c in heap) for i in range(3)]
         hi = [max(c[i] for c in heap) for i in range(3)]
@@ -479,9 +494,10 @@ def main():
             found_heaps.append(dict(
                 lo=lo, hi=hi, cells=len(heap), darkest=min(rows[c]["light"] for c in heap),
                 kinds={k: sum(rows[c]["kind"] == k for c in heap) for k in KINDS},
-                hop=sum(rows[c]["how"] == "hop" for c in heap), owner=owners_of(name, heap), was=None, kept=None,
+                hop=sum(rows[c]["how"] == "hop" for c in heap), hop_on=stood_on(c for c in heap if rows[c]["how"] == "hop"),
+                owner=owners_of(name, heap), was=None, kept=None,
                 nearest=None if near is None else dict(steps=near[0], level=near[1], why=near[2], cell=list(near[3])),
-                list=sorted([list(c) + [rows[c]["light"], rows[c]["kind"]] for c in heap])))
+                list=sorted([list(c) + [rows[c]["light"], rows[c]["kind"], rows[c]["how"]] for c in heap])))
         found_heaps.sort(key=lambda hp: (-hp["cells"], hp["lo"]))
         sections.append(dict(name=name, cells=len(dark[name]), darkest=min(rows[c]["light"] for c in dark[name]),
                              was=None, heaps=found_heaps))
@@ -610,7 +626,7 @@ def main():
            f'bash c164-realms/tools/nodejob.sh --wip --always --tail 80 "git fetch -q origin {BRANCH} '
            "&& git show FETCH_HEAD:c164-realms/tools/darkfloor.py > /tmp/darkfloor.py "
            "&& git show FETCH_HEAD:c164-realms/tools/darkfloor_before.json > /tmp/darkfloor_before.json "
-           '&& python /tmp/darkfloor.py --head <自己的提交号> --before /tmp/darkfloor_before.json --out renders/_wip/light"',
+           '&& python /tmp/darkfloor.py --head auto --before /tmp/darkfloor_before.json --out renders/_wip/light"',
            "```", "",
            "十几秒一趟。回执里有总数、各归属的格数和每段最大的一堆；整份清单（就是这个文件的样子）推到自己的 `<分支>-wip` 的 "
            "`c164-realms/renders/_wip/light/`。「比上一版」比的是 sound 发出去的最近一版，所以自己那几堆少了多少一眼看得到。"
@@ -654,6 +670,16 @@ def main():
     md += [f"| {hp['why']} | {hp['name']} | {span(hp['lo'], hp['hi'], 0)} | {span(hp['lo'], hp['hi'], 1)} | "
            f"{span(hp['lo'], hp['hi'], 2)} | {hp['cells']} | {hp['darkest']} |" for hp in spared_heaps]
     md.append("")
+    hops = [(s["name"], hp) for s in sections for hp in s["heaps"] if hp["hop"]]
+    n_hop = sum(hp["hop"] for _name, hp in hops)
+    md += [f"## 暗格里要跳一下才站得上的（{n_hop} 格，算在上面的总数里）", "",
+           "走不上去、跳一格才站得上的地方：一级没有台阶块的坎，也可能是箱子、机座、台面的顶。脚下是什么块列在这里，"
+           "是不是「人走的路」由 cr2、lights 看。", "",
+           "| 地段 | x | y | z | 跳的格数 / 全堆 | 脚下的块 | 归谁 |", "| --- | --- | --- | --- | --- | --- | --- |"]
+    md += [f"| {name} | {span(hp['lo'], hp['hi'], 0)} | {span(hp['lo'], hp['hi'], 1)} | {span(hp['lo'], hp['hi'], 2)} | "
+           f"{hp['hop']} / {hp['cells']} | {'，'.join(f'{k} {v}' for k, v in hp['hop_on'].items())} | {said_owners(hp['owner'])} |"
+           for name, hp in hops]
+    md.append("")
     md += ["## 檐下的（不算暗：天光从旁边照得到；块光不够，要不要补由 lights 看）", "",
            "| 地段 | x | y | z | 格数 | 最暗的块光 |", "| --- | --- | --- | --- | --- | --- |"]
     for name, found_heaps in sorted(report["eaves"].items(), key=lambda kv: -sum(hp["cells"] for hp in kv[1])):
@@ -683,6 +709,9 @@ def main():
               f"{then['spared']} are not to be lit): still dark {before['still_dark']}, new {before['new_dark']}; "
               f"lit {before['lit']}, no standing place now {before['no_standing']}, counted apart now {before['apart']}; "
               f"{len(cleared)} heaps cleared")
+    print(f"  reached with a hop only: {n_hop} of the dark cells; " + "; ".join(
+        f"{name.split(':')[-1].strip()[:14]} x {span(hp['lo'], hp['hi'], 0)} y {span(hp['lo'], hp['hi'], 1)} z {span(hp['lo'], hp['hi'], 2)} "
+        f"{hp['hop']}/{hp['cells']} on {','.join(f'{k} {v}' for k, v in list(hp['hop_on'].items())[:3])}" for name, hp in hops))
     for who, v in by_owner.items():
         print(f"  owner {who}: {v['cells']} cells in {v['heaps']} heaps")
     for s in sections:
