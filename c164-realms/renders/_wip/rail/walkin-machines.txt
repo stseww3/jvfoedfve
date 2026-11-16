@@ -1,0 +1,37 @@
+walkin obs_mach_armillary, what machines placed: 8 entities in 1 pieces; of the scene: 187489 blocks, 200 entities; 153540 standing places reached from (40.5, 0.0, 0.5) (4316 only through one of 12 door blocks); 12 barrier cells in the scene (12 s)
+
+ 1. armillary: 8 entities (mach_armillary_a_tropic x2, mach_armillary_a_axis, mach_armillary_a_colure and 4 more models)
+    cells x 33..37, y 2..7, z -2..2   ->  WALKED INTO on foot: 1.75 m2 of standing ground, up to 87% of the body inside; no barrier
+    body: 12.0 m2 of ground under it, 5.2 high, its lowest point +0.00 from the floor at feet 2
+    beside it: walk 56
+    inside it: walk 2, hop 5 at x 35..36, feet 1..2, z -0.5..1.5; the outline there is 56% model; by floor: feet 2: 5, feet 1: 2
+    brushed:   walk 2, hop 4 at x 35..36, feet 1..2, z -0.5..2.5
+    body: up to 60% of it in the model (enclosed voxels)
+    a barrier fits in no cell: it would stand out of the model everywhere (the fullest cell is 53% model)
+      floor at feet 2; x 32..38 left to right, z -3..3 top to bottom
+      |       |
+      |   -   |
+      |  +++  |
+      | --o - |
+      |  -+   |
+      |   -   |
+      |       |
+      floor at feet 1; x 32..38 left to right, z -3..3 top to bottom
+      |       |
+      |  ...  |
+      | ..o.. |
+      | ..+.. |
+      | ..-.. |
+      |  ...  |
+      |       |
+
+room by room -- the pieces somebody stands in or gets his eye (1.62 over the feet) into:
+
+  court and terraces: the eye gets into 0 pieces, 1 more are walked through below the eye
+    -- walked through, the eye stays out --
+    1. mach_armillary_a_tropic x2, mach_armillary_a_axis, mach_armillary_a_colure, mach_armillary_a_ecliptic and 3 more models; placed by machines/armillary; cells x 33..37, y 2..7, z -2..2
+         stands in it: walk 2, hop 5 at x 35..36, feet 1..2, z -0.5..1.5; body up to 60% in the model; a barrier fits in no cell (the fullest is 53% model)
+
+barriers of the scene in no model of machines: 12 cells -- 6 at x 16, y 0..1, z -5..-3; 6 at x 16, y 0..1, z 3..5
+2 1 a barrier fits, two high or one  + the model takes half the cell or more  - a fifth or more  B a barrier stands there  . a person stands in the cell's middle beside the model  @ o he stands there inside it (@: where a barrier fits)
+result: 1 of 1 pieces can be walked into, the eye gets into 0
