@@ -1,5 +1,16 @@
 
-=== clock tower: 711 blocks, 2 display entities ===
+=== clock tower: 711 blocks, 3 display entities ===
+
+THE MAST (its models at rest, and what moves):
+
+bld_tower_mast  on (13.5, 42.5, -29.5)  x 13.156 .. 13.844  y 42.000 .. 52.969  z -30.438 .. -29.156
+bld_tower_cups  on (13.5, 51.4375, -30.375)  x 12.995 .. 14.005  y 51.312 .. 51.562  z -30.906 .. -30.031
+bld_tower_vane  on (13.5, 52.625, -29.5)  x 13.375 .. 13.625  y 52.188 .. 53.000  z -29.625 .. -27.500
+
+motion: PASS -- 2 parts and 0 points on 2 chains, 20 function files; 6 commands in the busiest tick (limit 120), 0.8 a tick on average (limit 40)
+  chain of 24 ticks: 6 functions, 14 commands a cycle, starts 1 ticks after start
+  chain of 100 ticks: 8 functions, 17 commands a cycle, starts 2 ticks after start
+  bld_tower_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.09 blocks off the axis
 
 EAST ELEVATION (seen from the court; south on the left):
 

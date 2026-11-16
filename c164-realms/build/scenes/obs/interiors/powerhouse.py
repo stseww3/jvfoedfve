@@ -80,6 +80,8 @@ MOVED_IN = True
 NAME = "interiors/powerhouse"
 PREFIX = "int_power_"
 PX = 1 / 16.0
+VIEW = M.NEAR       # the room's display entities are drawn up to 32 blocks off: the game draws them through
+#                     walls, and nothing in here is to be seen from farther (the assembly applies it)
 
 
 # ---- the other lines' packages ------------------------------------------------------------------------

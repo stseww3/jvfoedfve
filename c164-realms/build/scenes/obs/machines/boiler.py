@@ -43,6 +43,7 @@ y up from the floor, z from the axis (south is positive).
 import functools
 import math
 
+from artkit import models as M
 from artkit import pixelart as PX
 
 from ..common import blocks as B
@@ -51,6 +52,9 @@ from ..common import skeleton as S
 from . import _powerkit as K
 
 PREFIX = "mach_boiler_"
+VIEW = M.NEAR                           # the assembly's view band (s2 #88336): a machine indoors is drawn
+#                                         within 32 blocks. Of the board's twelve views only V6 looks
+#                                         into the power house, from 24 blocks
 
 # --- where they stand (scene coordinates, blocks) -----------------------------------------------------
 FLOOR = float(S.LOWER_GROUND)           # -6.0
