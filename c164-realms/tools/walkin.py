@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Where a visitor walks into a model (plan/roles/INTERFACE.md, the fifth supplement of 11-16).
 
-    walkin.py [<scene>] [--category machines] [--out <folder>] [--start x,y,z | <landmark>] [--plans]
-              [--ask x0,y0,z0,x1,y1,z1 ...]
+    walkin.py [<scene>] [--category machines[,props,...]] [--items] [--brief] [--plans] [--out <folder>]
+              [--start x,y,z | <landmark>] [--ask x0,y0,z0,x1,y1,z1 ...]
         builds the scene (a whole `obs` on a worker node, never on the shared machine), works out
-        with tools/walkreach.py where a person gets to on foot, lays the display entities of one
-        category over that and says, piece by piece: where it stands, whether anybody gets to it,
+        with tools/walkreach.py where a person gets to on foot, lays the display entities a
+        category placed over that and says, piece by piece: where it stands, whether anybody gets to it,
         how much of it a person can stand inside, what barriers are in it and whether they keep
         within its outline, which whole cells its outline fills (where a barrier could stand) and
         where a person still gets a shoulder in beside those.
@@ -17,7 +17,11 @@ two high; a slit left beside it is closed with something that is seen, not with 
 
 How it is measured. The boxes of every display entity are read as the game shows them (the scene's
 resource pack and the game's jar, tools/sightline.py) and sampled into voxels an eighth of a block
-wide. Entities of one package that stand within NEAR of each other are one piece. A piece's
+wide. An entity is its placer's: the package whose build() put it on the canvas (a room's cabinets
+are the room's, whoever drew the cabinet), told as category/package. Entities one package placed
+within NEAR of each other are one piece -- a machine. With --items a piece is a single thing: the
+entities of one model that stand in a row (ROW apart at most), and whatever else is shown on the
+very spot of one of them (a case and its glass). A piece's
 outline is its voxels filled downwards: in every column of voxels everything between its lowest
 and its highest voxel counts as inside (a car's cabin is inside from floor to roof; the room under
 an arch is not, nor what hangs over a head). A person is the game's player, 0.6 wide and 1.8
@@ -43,6 +47,16 @@ A barrier is told as standing out when its plan share is under 95 %.
 Cells that hold a block already are left out. Then the walk is worked out once more with a barrier
 in every such cell of every piece somebody stands in: the places inside a model that a person
 still gets to are `left`, the slits the rule wants closed with something that is seen.
+
+The eye. A person's eye is 1.62 over his feet, and standing "at" a place of the lattice he is
+anywhere within a quarter block of it. Where a fifth or more of that square, at the eye's height,
+is inside a model's outline, the eye gets into the model there: the game shows it from within, the
+worst of what a walk-through finds. Every piece somebody stands in or gets his eye into is listed
+once more at the end, room by room (the main building's rooms as main/shell.room_at() names them,
+the rest by the skeleton's boxes), the pieces the eye gets into first; with several categories
+that list is written for all of them together as walkin-rooms.txt. Of such a piece it is also told
+how full its fullest cell is: under 95 % a barrier in it would stand out of the model.
+--brief leaves the pieces nobody stands in, and that hold no barrier, out of the list before that.
 
 --ask names a box of cells (corners included): what blocks stand in it and where in it a person
 gets to, level by level -- for the question a table leaves open (is the trestle behind the car
@@ -76,12 +90,19 @@ from artkit.gameassets import Assets  # noqa: E402
 RES = 8                     # voxels to the block
 SAMPLE = 12.0               # sample points to the block along each edge of a model's box
 NEAR = 0.75                 # blocks: entities of one package nearer than this are one piece
+ROW = 0.3                   # --items: entities of one model nearer than this are one piece
+SPOT = 0.05                 # --items: entities shown on one spot are one piece, whatever their models
 PAD = 2                     # blocks of empty voxels round a piece
 INSIDE, BRUSH = 0.5, 0.2    # shares of the square a person stands on
 FULL = 0.95                 # share of a cell the model has to take for a barrier to stay inside it
 TOL = 2.0 / 16.0            # blocks a barrier's top may stand over the model's
 BESIDE = 1.0                # blocks: a standing place this near a piece is "beside" it
 BARRIER_HIGH = 2
+EYE = 1.62                  # blocks from the feet to the eye
+EYE_REACH = 0.25            # blocks a person standing "at" a place of the lattice is from it at most
+EYE_BOX = 0.1               # half the height of the slab at the eye that is looked at
+EYE_SHARE = 0.2             # the eye gets into a model where this much of that slab is inside its outline
+LINES = ("materials", "site", "main", "machines", "interiors", "props", "motion", "sky")
 KINDS = ("walk", "hop", "fall", "trap")
 JAR = os.environ.get("MC_JAR") or os.path.join(os.environ.get("MC_ROOT", "/agent/realms-study"), "client26",
                                               "versions", "26.3", "26.3.jar")
@@ -112,6 +133,43 @@ def owners(category):
         for name in f() or {}:
             out[name] = mod.__name__.rpartition(".")[2]
     return out
+
+
+def watch():
+    """Wraps build() of every category of scenes.obs and of every package in it: {id(nbt):
+    "category/package"} of each display entity, the innermost build() that was running when it was
+    put on the canvas. Filled while the scene builds; call before the scene is imported."""
+    from scenes.obs.common import assembly
+    who, keep = {}, []
+
+    def wrap(mod, name):
+        f = getattr(mod, "build", None)
+        if f is None or getattr(f, "_walkin", False):
+            return
+
+        def build(canvas, *a, **k):
+            first = len(canvas.entities)
+            try:
+                return f(canvas, *a, **k)
+            finally:
+                for e in canvas.entities[first:]:
+                    if id(e[3]) not in who:
+                        who[id(e[3])] = name
+                        keep.append(e[3])           # the id stays this entity's
+
+        build._walkin = True
+        mod.build = build
+
+    for line in LINES:
+        try:
+            pkg = importlib.import_module(f"scenes.obs.{line}")
+            parts = assembly.category(f"scenes.obs.{line}").parts()
+        except ImportError:
+            continue
+        wrap(pkg, f"{line}/-")
+        for mod in parts:
+            wrap(mod, f"{line}/{mod.__name__.rpartition('.')[2]}")
+    return who
 
 
 def corners_of(box):
@@ -193,43 +251,82 @@ class Piece:
         return plan, deep, dense
 
 
-def fits(piece, cx, cz, base):
-    """How high a barrier may stand in the cell (cx, base, cz) and keep within the piece: 0, 1 or 2."""
+def fill_of(piece, cx, cz, base, high=1):
+    """The share of the cell (cx, base, cz) over which the model begins under a barrier's top and
+    reaches the top of a barrier `high` cells high."""
     got = piece._columns(cx, cx + 1, cz, cz + 1)
     if got is None:
-        return 0
+        return 0.0
     ix0, ix1, iz0, iz1 = got
     lo = piece.ylo[ix0:ix1, iz0:iz1] / float(RES) + piece.origin[1]
     hi = piece.yhi[ix0:ix1, iz0:iz1] / float(RES) + piece.origin[1]
+    return float(((lo < base + 1 - TOL) & (hi >= base + high - TOL)).mean())
+
+
+def fits(piece, cx, cz, base):
+    """How high a barrier may stand in the cell (cx, base, cz) and keep within the piece: 0, 1 or 2."""
     high = 0
     for h in range(1, BARRIER_HIGH + 1):
-        if float(((lo < base + 1 - TOL) & (hi >= base + h - TOL)).mean()) < FULL:
+        if fill_of(piece, cx, cz, base, h) < FULL:
             break
         high = h
     return high
 
 
-def gather(canvas, shapes, own):
-    """The display entities of the category, by package, with their boxes and the box round them."""
-    by_package, skipped = {}, {}
+def gather(canvas, shapes, categories, who):
+    """The display entities the categories placed, {category: {package: [member]}}: of each its
+    model's name, its boxes, the box round them and the spot it is shown from. An entity no
+    build() was seen placing is its model's maker's."""
+    made = {}
+    for category in categories:
+        for name, package in owners(category).items():
+            made[name] = f"{category}/{package}"
+    out, skipped = {c: {} for c in categories}, {}
     for x, y, z, nbt in canvas.entities:
         ref = model_ref(nbt)
         if not ref:
             continue
-        package = own.get(ref.split(":", 1)[-1])
-        if package is None:
+        name = ref.split(":", 1)[-1]
+        by = who.get(id(nbt)) or made.get(name)
+        if by is None:
+            continue
+        category, _, package = by.partition("/")
+        if category not in out:
             continue
         boxes = SL.entity_boxes(shapes, x, y, z, nbt)
         if not boxes:
-            skipped[ref] = skipped.get(ref, 0) + 1
+            skipped[name] = skipped.get(name, 0) + 1
             continue
         pts = np.concatenate([corners_of(b) for b in boxes])
-        by_package.setdefault(package, []).append(
-            {"ref": ref.split(":", 1)[-1], "boxes": boxes, "lo": pts.min(axis=0), "hi": pts.max(axis=0)})
-    return by_package, skipped
+        out[category].setdefault(package, []).append(
+            {"ref": name, "boxes": boxes, "lo": pts.min(axis=0), "hi": pts.max(axis=0), "at": (x, y, z)})
+    return out, skipped
 
 
-def pieces_of(by_package):
+def pairs_of(members, gap):
+    """The pairs of members whose boxes come within `gap` of each other (through a grid of cells
+    two blocks wide, so that a thousand lamps are not compared each with each)."""
+    grid = {}
+    for i, m in enumerate(members):
+        lo = np.floor((m["lo"] - gap) / 2.0).astype(int)
+        hi = np.floor((m["hi"] + gap) / 2.0).astype(int)
+        for cx in range(lo[0], hi[0] + 1):
+            for cy in range(lo[1], hi[1] + 1):
+                for cz in range(lo[2], hi[2] + 1):
+                    grid.setdefault((cx, cy, cz), []).append(i)
+    seen = set()
+    for ids in grid.values():
+        for n, i in enumerate(ids):
+            for j in ids[:n]:
+                if (j, i) in seen:
+                    continue
+                seen.add((j, i))
+                a, b = members[i], members[j]
+                if np.all(a["lo"] - gap <= b["hi"]) and np.all(b["lo"] - gap <= a["hi"]):
+                    yield i, j
+
+
+def pieces_of(by_package, items=False):
     out = []
     for package in sorted(by_package):
         members = by_package[package]
@@ -241,11 +338,11 @@ def pieces_of(by_package):
                 i = parent[i]
             return i
 
-        for i, a in enumerate(members):
-            for j in range(i):
-                b = members[j]
-                if np.all(a["lo"] - NEAR <= b["hi"]) and np.all(b["lo"] - NEAR <= a["hi"]):
-                    parent[find(i)] = find(j)
+        for i, j in pairs_of(members, ROW if items else NEAR):
+            a, b = members[i], members[j]
+            if items and a["ref"] != b["ref"] and max(abs(u - v) for u, v in zip(a["at"], b["at"])) > SPOT:
+                continue
+            parent[find(i)] = find(j)
         groups = {}
         for i in range(len(members)):
             groups.setdefault(find(i), []).append(members[i])
@@ -297,11 +394,13 @@ def look(piece, pts, kinds, door, mine, cells):
     for k in np.nonzero(near)[0]:
         x, y, z = pts[k]
         plan, deep, dense = piece.within(x - W.HALF, x + W.HALF, z - W.HALF, z + W.HALF, y, y + W.HEIGHT)
-        rows.append((x, y, z, int(kinds[k]), bool(door[k]), plan, deep, dense))
+        eye = piece.within(x - EYE_REACH, x + EYE_REACH, z - EYE_REACH, z + EYE_REACH,
+                           y + EYE - EYE_BOX, y + EYE + EYE_BOX)[1] >= EYE_SHARE
+        rows.append((x, y, z, int(kinds[k]), bool(door[k]), plan, deep, dense, eye))
     inside = [r for r in rows if r[5] >= INSIDE]
     brush = [r for r in rows if BRUSH <= r[5] < INSIDE]
     beside = [r for r in rows if r[5] < BRUSH]
-    out = {"beside": beside, "inside": inside, "brush": brush}
+    out = {"beside": beside, "inside": inside, "brush": brush, "eye": [r for r in rows if r[8]]}
     # the floor most of the inside places stand on, else the one most of the places beside do
     feet = [r[1] for r in (inside or rows)]
     out["floor"] = max(set(feet), key=feet.count) if feet else None
@@ -317,14 +416,16 @@ def look(piece, pts, kinds, door, mine, cells):
     out["levels"] = sorted(levels.items(), key=lambda kv: -kv[1])
     bases = sorted({int(math.floor(y + 1e-6)) for y in levels} or
                    ({int(math.floor(out["floor"] + 1e-6))} if out["floor"] is not None else set()))
-    full = {}
-    for base in bases:
-        for cx in range(clo[0], chi[0] + 1):
-            for cz in range(clo[2], chi[2] + 1):
-                high = fits(piece, cx, cz, base)
-                if high:
-                    full[(cx, base, cz)] = high
-    out["full"] = full
+    full, fullest = {}, 0.0
+    if inside or out["eye"] or mine:                # nobody asks of a piece nobody gets into
+        for base in bases:
+            for cx in range(clo[0], chi[0] + 1):
+                for cz in range(clo[2], chi[2] + 1):
+                    fullest = max(fullest, fill_of(piece, cx, cz, base))
+                    high = fits(piece, cx, cz, base)
+                    if high:
+                        full[(cx, base, cz)] = high
+    out["full"], out["fullest"] = full, fullest
     # the cells a barrier would be put in: those of `full` that hold no block yet, one run to the
     # column, from the lowest floor people stand on (never more than two high)
     put = {}
@@ -408,6 +509,92 @@ def clusters_of(cells):
                             todo.append(n)
         out.append(sorted(group))
     return sorted(out)
+
+
+def where_of(x, y, z):
+    """The room a standing place is in: a name of main/shell.ROOMS, or the skeleton's box it lies in."""
+    from scenes.obs.common import skeleton as S
+    from scenes.obs.main import shell
+    cx, cy, cz = int(math.floor(x)), int(math.floor(y + 1e-6)), int(math.floor(z))
+    try:
+        name = shell.room_at(cx, cy, cz)
+    except Exception:                               # a scene without the main building's shell
+        name = None
+    if name:
+        return name + (", galleries" if name == "star hall" and cy >= S.STAND else "")
+
+    def within(box):
+        return box[0] <= cx <= box[2] and box[1] <= cz <= box[3]
+
+    hut = S.MERIDIAN_HUT
+    half = hut["size"] // 2
+    if within(S.POWER_HOUSE["box"]) and cy < S.GROUND:
+        return "power house"
+    if within(S.CABLE_STATION) and cy < S.GROUND:
+        return "cable station"
+    if abs(cx - hut["centre"][0]) <= half and abs(cz - hut["centre"][1]) <= half and cy < S.STAND:
+        return "meridian hut"
+    if cy >= S.ROOF_STAND:
+        return "roofs and what stands on them"
+    if cy >= S.STAND:
+        return "main floor, outside the rooms shell names"
+    if within(S.LOWER_PLATFORM) and cy < S.GROUND:
+        return "lower platform"
+    return "court and terraces" if cy >= S.GROUND - 1 else "slopes and below"
+
+
+def names_of(piece, most=4):
+    """card_cabinet x2, display_case"""
+    count = {}
+    for m in piece.members:
+        count[m["ref"]] = count.get(m["ref"], 0) + 1
+    names = [f"{k}{f' x{v}' if v > 1 else ''}" for k, v in sorted(count.items(), key=lambda kv: (-kv[1], kv[0]))]
+    return ", ".join(names[:most]) + (f" and {len(names) - most} more models" if len(names) > most else "")
+
+
+def barrier_word(got):
+    """What a barrier does or could do in a piece somebody gets into."""
+    if got["barriers"]:
+        return (f"{len(got['barriers'])} barrier cells in it"
+                + (f", {len(got['barriers_out'])} of them out of the model sideways" if got["barriers_out"] else ""))
+    if got["put"]:
+        return f"a barrier fits in {len(got['put'])} cells ({cells_span(got['put'])})"
+    return f"a barrier fits in no cell (the fullest is {got['fullest']:.0%} model)"
+
+
+def by_room(entries):
+    """The pieces somebody stands in or gets his eye into, room by room, the ones the eye gets into
+    first. entries: [(label, category, piece, got)]."""
+    rows = []
+    for label, category, piece, got in entries:
+        if not got["eye"] and not got["inside"]:
+            continue
+        ref = got["eye"] or got["inside"]
+        rooms = [where_of(r[0], r[1], r[2]) for r in ref]
+        rows.append((max(set(rooms), key=rooms.count), 0 if got["eye"] else 1, -len(got["eye"]),
+                     -len(got["inside"]), label, category, piece, got))
+    rows.sort(key=lambda t: t[:5])
+    lines, room, eyed = [], None, None
+    for where, low, _, _, label, category, piece, got in rows:
+        if where != room:
+            room, eyed = where, None
+            n = sum(1 for r in rows if r[0] == where and r[1] == 0)
+            lines += ["", f"  {room}: the eye gets into {n} pieces, "
+                          f"{sum(1 for r in rows if r[0] == where) - n} more are walked through below the eye"]
+        if low != eyed:
+            eyed = low
+            lines.append("    -- the eye gets in --" if not low else "    -- walked through, the eye stays out --")
+        clo, chi = piece.cells()
+        deep = max(r[6] for r in (got["inside"] + got["eye"]))
+        lines.append(f"    {label}. {names_of(piece)}; placed by {category}/{piece.package}; "
+                     f"cells x {span(clo[0], chi[0])}, y {span(clo[1], chi[1])}, z {span(clo[2], chi[2])}")
+        lines.append("         "
+                     + (f"eye in: {kinds_of(got['eye'])} ({len(got['eye']) * W.GRID * W.GRID:g} m2) at "
+                        f"{place_of(got['eye'])}; " if got["eye"] else "")
+                     + (f"stands in it: {kinds_of(got['inside'])} at {place_of(got['inside'])}; "
+                        if got["inside"] else "")
+                     + f"body up to {deep:.0%} inside; {barrier_word(got)}")
+    return lines
 
 
 def asked(box, cells, pts, kinds, door):
@@ -509,7 +696,10 @@ def plan_of(piece, got, pts, kinds, floor):
 def main():
     ap = argparse.ArgumentParser(description="where a visitor walks into a model")
     ap.add_argument("scene", nargs="?", default="obs")
-    ap.add_argument("--category", default="machines")
+    ap.add_argument("--category", default="machines", help="a category of scenes.obs, or several with commas")
+    ap.add_argument("--items", action="store_true",
+                    help="a piece is one thing: a row of one model, or what is shown on one spot")
+    ap.add_argument("--brief", action="store_true", help="leave out the pieces nobody stands in")
     ap.add_argument("--out", help="folder for walkin-<category>.txt")
     ap.add_argument("--start", help="x,y,z of the feet, or a landmark of walkreach (default: the spawn)")
     ap.add_argument("--jar", default=JAR)
@@ -521,25 +711,20 @@ def main():
     from scenes.obs.common import skeleton as S
 
     t0 = time.time()
+    categories = [c.strip() for c in args.category.split(",") if c.strip()]
+    who = watch()
     scene = importlib.import_module(f"scenes.{args.scene}")
     canvas = scene.build()
     models = makepack.builder_of(scene, args.scene)()
     work = tempfile.mkdtemp(prefix="walkin_")
-    out = []
-
-    def say(text=""):
-        out.append(text)
-        print(text, flush=True)
-
     try:
         pack = os.path.join(work, "resourcepack")
         M.write_pack(pack, list(models.values()))
         if hasattr(scene, "write_pack"):
             scene.write_pack(pack)
         shapes = SL.Shapes(Assets(args.jar, packs=(pack,)))
-        own = owners(args.category)
-        by_package, skipped = gather(canvas, shapes, own)
-        pieces = pieces_of(by_package)
+        by_category, skipped = gather(canvas, shapes, categories, who)
+        pieces = {c: pieces_of(by_category[c], args.items) for c in categories}
     finally:
         shutil.rmtree(work, ignore_errors=True)
     points = W.landmarks()
@@ -549,28 +734,80 @@ def main():
     bounds = (m[0] - 40, m[2] - 40, m[3] + 40, m[5] + 40)
     pts, kinds, door, doors, opened = reach_table(canvas.b, start, bounds)
     barriers = {p for p, s in canvas.b.items() if name_of(s) == B.BARRIER}
-    owned = [{} for _ in pieces]                    # a barrier is the piece's that most of it stands in
+    # a barrier is the piece's that most of it stands in, whichever of the categories the piece is of
+    every = [(c, i, piece, tuple(piece.lo), tuple(piece.hi)) for c in categories for i, piece in enumerate(pieces[c])]
+    owned = {(c, i): {} for c, i, _, _, _ in every}
     stray = []
-    for c in sorted(barriers):
-        shares = [piece.within(c[0], c[0] + 1, c[2], c[2] + 1, c[1], c[1] + 1)[:2] for piece in pieces]
-        best = int(np.argmax([deep for _, deep in shares])) if shares else -1
-        if best >= 0 and shares[best][1] > 0.0:
-            owned[best][c] = shares[best]
+    for cell in sorted(barriers):
+        best, share = None, (0.0, 0.0)
+        for c, i, piece, lo, hi in every:
+            if any(lo[k] >= cell[k] + 1 or hi[k] <= cell[k] for k in range(3)):
+                continue
+            got = piece.within(cell[0], cell[0] + 1, cell[2], cell[2] + 1, cell[1], cell[1] + 1)[:2]
+            if got[1] > share[1]:
+                best, share = (c, i), got
+        if best is None:
+            stray.append(cell)
         else:
-            stray.append(c)
-    looks = [look(piece, pts, kinds, door, owned[i], canvas.b) for i, piece in enumerate(pieces)]
+            owned[best][cell] = share
+    looks = {c: [look(piece, pts, kinds, door, owned[(c, i)], canvas.b) for i, piece in enumerate(pieces[c])]
+             for c in categories}
     closed = dict(opened)
-    for got in looks:
-        for c in got["put"]:
-            closed[c] = B.BARRIER
-    after = reach_keys(closed, start, bounds) if len(closed) != len(opened) or any(g["put"] for g in looks) else None
-    for got in looks:
-        got["left"] = [r for r in got["inside"] if after is None or key_of(r[0], r[1], r[2]) in after]
-    say(f"walkin {args.scene}, category {args.category}: {len(canvas.b)} blocks, {len(canvas.entities)} entities, "
-        f"{sum(len(v) for v in by_package.values())} of them the category's in {len(pieces)} pieces; "
-        f"{len(pts)} standing places reached from {tuple(round(float(v), 2) for v in start)}"
-        f"{f' ({int(door.sum())} only through one of {doors} door blocks)' if doors else ''}; "
-        f"{len(barriers)} barrier cells in the scene ({time.time() - t0:.0f} s)")
+    for c in categories:
+        for got in looks[c]:
+            for cell in got["put"]:
+                closed[cell] = B.BARRIER
+    after = reach_keys(closed, start, bounds) if len(closed) != len(opened) else None
+    for c in categories:
+        for got in looks[c]:
+            got["left"] = [r for r in got["inside"] if after is None or key_of(r[0], r[1], r[2]) in after]
+    head = (f"{len(canvas.b)} blocks, {len(canvas.entities)} entities; {len(pts)} standing places reached from "
+            f"{tuple(round(float(v), 2) for v in start)}"
+            f"{f' ({int(door.sum())} only through one of {doors} door blocks)' if doors else ''}; "
+            f"{len(barriers)} barrier cells in the scene")
+    strays = (f"barriers of the scene in no model of {', '.join(categories)}: {len(stray)} cells -- "
+              + "; ".join(f"{len(g)} at {cells_span(g)}" for g in clusters_of(stray))) if stray else ""
+    entries = []
+    for c in categories:
+        report(args, c, by_category[c], skipped, pieces[c], looks[c], pts, kinds, door, canvas.b, head, strays, t0)
+        entries += [(f"{c} {n}", c, piece, got) for n, (piece, got) in enumerate(zip(pieces[c], looks[c]), 1)]
+    if len(categories) > 1:
+        out = [f"walkin {args.scene}, {', '.join(categories)} together, room by room: {head}", "",
+               "the pieces somebody stands in or gets his eye (1.62 over the feet) into; the number is the piece's "
+               "in walkin-<category>.txt"]
+        out += by_room(entries)
+        if strays:
+            out += ["", strays]
+        eyed = sum(1 for _, _, _, got in entries if got["eye"])
+        low = sum(1 for _, _, _, got in entries if got["inside"] and not got["eye"])
+        out += ["", f"result: the eye gets into {eyed} of {len(entries)} pieces, {low} more are walked through "
+                    f"below the eye"]
+        print("\n".join(out), flush=True)
+        write(args, "rooms", out)
+    return 0
+
+
+def write(args, name, lines):
+    if not args.out:
+        return
+    os.makedirs(args.out, exist_ok=True)
+    path = os.path.join(args.out, f"walkin-{name}.txt")
+    with open(path, "w", encoding="utf-8", newline="\n") as fh:
+        fh.write("\n".join(lines) + "\n")
+    print(f"written: {path}")
+
+
+def report(args, category, by_package, skipped, pieces, looks, pts, kinds, door, cells, head, strays, t0):
+    """The table of one category, said and written."""
+    out = []
+
+    def say(text=""):
+        out.append(text)
+        print(text, flush=True)
+
+    say(f"walkin {args.scene}, what {category} placed: {sum(len(v) for v in by_package.values())} entities in "
+        f"{len(pieces)} pieces{' (single things: --items)' if args.items else ''}; of the scene: {head} "
+        f"({time.time() - t0:.0f} s)")
     if skipped:
         say("  not measured (no boxes to read): " + ", ".join(f"{k} x{v}" for k, v in sorted(skipped.items())))
     walked = 0
@@ -578,9 +815,10 @@ def main():
         clo, chi = piece.cells()
         word = verdict(got)
         walked += word.startswith("WALKED")
+        if args.brief and not got["inside"] and not got["eye"] and not got["barriers"]:
+            continue
         say()
-        say(f"{n:2d}. {piece.package}: {len(piece.members)} entities ({', '.join(piece.names[:3])}"
-            f"{' ...' if len(piece.names) > 3 else ''})")
+        say(f"{n:2d}. {piece.package}: {len(piece.members)} entities ({names_of(piece, 3)})")
         say(f"    cells x {span(clo[0], chi[0])}, y {span(clo[1], chi[1])}, z {span(clo[2], chi[2])}"
             f"   ->  {word}")
         say(f"    body: {piece.footprint:.1f} m2 of ground under it, {piece.hi[1] - piece.lo[1]:.1f} high"
@@ -595,6 +833,8 @@ def main():
                    if len(got["levels"]) > 1 else ""))
         if got["brush"]:
             say(f"    brushed:   {kinds_of(got['brush'])} at {place_of(got['brush'])}")
+        if got["eye"]:
+            say(f"    the eye gets in: {kinds_of(got['eye'])} at {place_of(got['eye'])}")
         if got["barriers"]:
             fill = got["barriers_fill"]
             say(f"    barriers:  {len(got['barriers'])} cells ({cells_span(got['barriers'])}), "
@@ -615,30 +855,28 @@ def main():
             say(f"    with those in: {kinds_of(left)}" + (f" still inside it at {place_of(left)} -- the slits beside"
                                                         if left else " inside it -- that closes it"))
         elif got["inside"]:
-            say("    a barrier fits in no cell: it would stand out of the model everywhere"
-                + (" (the cells it fills hold blocks already)" if got["full"] else ""))
+            say(f"    a barrier fits in no cell: it would stand out of the model everywhere (the fullest cell is "
+                f"{got['fullest']:.0%} model)" + (" (the cells it fills hold blocks already)" if got["full"] else ""))
         if args.plans and (got["inside"] or got["barriers"]):
             floors = [y for y, _ in got["levels"][:2]] or [got["floor"]]
             for floor in floors:
                 for line in plan_of(piece, got, pts, kinds, floor):
                     say(line)
     for box in args.ask:
-        for line in asked(box, canvas.b, pts, kinds, door):
+        for line in asked(box, cells, pts, kinds, door):
             say(line)
     say()
-    if stray:
-        say(f"barriers of the scene in no model of this category: {len(stray)} cells -- "
-            + "; ".join(f"{len(g)} at {cells_span(g)}" for g in clusters_of(stray)))
+    say("room by room -- the pieces somebody stands in or gets his eye (1.62 over the feet) into:")
+    for line in by_room([(f"{n}", category, piece, got) for n, (piece, got) in enumerate(zip(pieces, looks), 1)]):
+        say(line)
+    say()
+    if strays:
+        say(strays)
     if args.plans:
         say(LEGEND.strip())
-    say(f"result: {walked} of {len(pieces)} pieces can be walked into")
-    if args.out:
-        os.makedirs(args.out, exist_ok=True)
-        path = os.path.join(args.out, f"walkin-{args.category}.txt")
-        with open(path, "w", encoding="utf-8", newline="\n") as fh:
-            fh.write("\n".join(out) + "\n")
-        print(f"written: {path}")
-    return 0
+    eyed = sum(1 for got in looks if got["eye"])
+    say(f"result: {walked} of {len(pieces)} pieces can be walked into, the eye gets into {eyed}")
+    write(args, category, out)
 
 
 if __name__ == "__main__":
