@@ -1,0 +1,16 @@
+far_door [A blue]  1280x720
+  luma    mean 0.07   p1 0.02  p5 0.03  median 0.06  p95 0.13  p99 0.24
+  levels  dark  98.1% (below 0.18, mean 0.07)   middle   1.9% (mean 0.25)   bright   0.0% (above 0.60, mean   -  )
+  bright  none
+  white   above 0.97:   0.0%   none
+  dead    below 0.03:   5.1%   224 patches, the largest 0.45% of the picture (as a square, 64 pixels a side)
+  warmth  warm   6.8%   cool  40.3%   neutral  52.9%
+          dark    warm   5.8%   cool  39.5%   neutral  52.8%
+          middle  warm   1.0%   cool   0.8%   neutral   0.0%
+          bright  warm   0.0%   cool   0.0%   neutral   0.0%
+  probe   wall    32712 px  mean 0.08  median 0.08  brightest 1% 0.16  darkest 1% 0.02  #161311  warm 6.2%  cool 0.0%
+  probe   cap     17485 px  mean 0.09  median 0.07  brightest 1% 0.26  darkest 1% 0.02  #141724  warm 0.0%  cool 85.3%
+  probe   floorE  34560 px  mean 0.10  median 0.10  brightest 1% 0.15  darkest 1% 0.03  #19181b  warm 8.5%  cool 27.6%
+  probe   brass   23331 px  mean 0.11  median 0.08  brightest 1% 0.35  darkest 1% 0.02  #1f1a1a  warm 29.8%  cool 46.8%
+  probe   sky     30464 px  mean 0.11  median 0.11  brightest 1% 0.25  darkest 1% 0.03  #151a38  warm 1.7%  cool 95.9%
+  order   wall 0.08 < cap 0.09 < floorE 0.10 < brass 0.11 < sky 0.11   (means)
