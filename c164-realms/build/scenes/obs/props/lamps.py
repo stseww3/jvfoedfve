@@ -69,13 +69,23 @@ BULB_FACE = Sprite("lamp_bulb_face",
 # both alike: it is lit from within, and a street lamp or a bracket is looked at from below, so
 # a foot darker than the crown (the first pictures) dimmed the half that is seen. A globe that
 # hangs is brightest below, where it is looked at from, and goes dim into its gallery.
+#
+# No layer is brighter than GLASS_TOP, the middle step of the opal ramp. What is painted is what
+# is seen, here and under the pack's shaders alike (sky/_shaders, item.vsh: a face that glows is
+# not shaded by the way it looks), and with the belt at the ramp's two top steps the globes were
+# the whitest things of the candidate's V1, V2 and V4, whiter than the comet's head: three street
+# lamps in a corner of the arrival view took the eye off the building (the review, #77369, which
+# asked for a median about 0.75 of white and nothing over 0.89: two steps down, the belt at
+# step 2).
 GLOBE_SIDES = 12        # RL.Globe's two corner models take upright faces a twelfth of a turn apart
+GLASS_TOP = 2           # no glass of a lamp is painted over this step of the opal ramp: a globe's belt, a shade's mouth
 GLOBES = {              # lamp: the middle of the globe (blocks from the anchor, in the lamp's frame), radius, layers
-    "street": dict(at=(0.0, 4.375, 0.0), radius=7.0 / 16.0, tones=(1, 2, 3, 4, 4, 3, 2, 1)),
-    "post": dict(at=(0.0, 6.25 / 16.0, 0.0), radius=2.5 / 16.0, tones=(1, 3, 4, 4, 3, 1)),
-    "bracket_a": dict(at=(0.0, 7.5 / 16.0, 11.0 / 16.0), radius=4.5 / 16.0, tones=(1, 2, 3, 4, 4, 3, 2, 1)),
-    "pendant_a": dict(at=(0.0, -19.25 / 16.0, 0.0), radius=5.0 / 16.0, tones=(4, 4, 3, 3, 3, 2, 2, 1, 1, 0)),
+    "street": dict(at=(0.0, 4.375, 0.0), radius=7.0 / 16.0, tones=(0, 0, 1, 2, 2, 1, 0, 0)),
+    "post": dict(at=(0.0, 6.25 / 16.0, 0.0), radius=2.5 / 16.0, tones=(0, 1, 2, 2, 1, 0)),
+    "bracket_a": dict(at=(0.0, 7.5 / 16.0, 11.0 / 16.0), radius=4.5 / 16.0, tones=(0, 0, 1, 2, 2, 1, 0, 0)),
+    "pendant_a": dict(at=(0.0, -19.25 / 16.0, 0.0), radius=5.0 / 16.0, tones=(2, 2, 1, 1, 1, 0, 0, 0, 0, 0)),
 }
+assert all(max(spec["tones"]) <= GLASS_TOP for spec in GLOBES.values())
 GLOBE_PARTS = ("_globe_side0", "_globe_side1", "_globe_under")      # what RL.Globe calls the three
 GLOBE_SEED = 4001       # of the ledges in the lamp's model: a piece of their own, which nothing turns (_kit.settle)
 
@@ -112,11 +122,14 @@ def _globe_top(m, name):
 
 def _cone_shade(m, c, top, bottom, r_top, r_bottom, steps):
     """An enamel cone shade about the vertical line c = (x, z): blue outside, a pale rolled rim,
-    and the white inside lit by the bulb. Returns the y of the underside."""
+    and the white inside lit by the bulb, its middle at GLASS_TOP like the belt of a globe (at the
+    step above, the mouth of the nearest shade was the whitest thing of the time room's view, three
+    times as bright as the dials the view is of: the review, #78243). Returns the y of the
+    underside."""
     m.taper("y", c, top, bottom, r_top, r_bottom, ENAMEL, steps=steps)
     m.tube("y", c, bottom - 1.0, bottom, r_bottom, RIM)
-    K.glass_prism(m, "y", c, bottom - 1.1, bottom - 1.0, r_bottom - 0.75, OPAL[1])
-    K.glass_prism(m, "y", c, bottom - 1.2, bottom - 1.1, r_bottom * 0.5, OPAL[3])
+    K.glass_prism(m, "y", c, bottom - 1.1, bottom - 1.0, r_bottom - 0.75, OPAL[GLASS_TOP - 1])
+    K.glass_prism(m, "y", c, bottom - 1.2, bottom - 1.1, r_bottom * 0.5, OPAL[GLASS_TOP])
     return bottom - 1.0
 
 
@@ -557,9 +570,17 @@ BRIDGE_CLEAR = 7        # a low lamp of the lip keeps more than this many rows f
 STREET_LEVEL = 13
 STATION_LEVEL = 12      # the pendant of the cable station: the top of a pendant's rank
 AIM_UP = 3.0            # a ground lamp at the armillary's feet looks at its middle, this far above the ground
-FEET_GLOW = 8           # the source under the armillary's light cell: the brass gets one less, what the
-                        # paving beside a ground lamp gets. Under every lit window, so that the rings stay
-                        # an outline before the doorway (A0 #33831 six); 5 to 8 after the pictures
+FEET_GLOW = 10          # the source under the armillary's light cell: the brass gets one less. Under every
+                        # lit window, so that the rings stay an outline before the doorway (A0 #33831
+                        # six); 5 to 8 after the pictures. At 8 the lower half of the rings was as dark
+                        # as the gates behind it for who comes up the axis (0.13 on 0.16 in the real
+                        # client's S.V2; the upper half stands before the gold windows) and the circle
+                        # did not close: 10, the level of a wall wash (review #77381; lights #77794)
+FEET_RANK = 2           # ... which is over the top of an uplight's rank: this one source is registered
+                        # in the second (lights #77794). The four ground lamps keep their own 8
+DOOR_LEVEL = {"hut_door": 5}    # a caged lamp at a door that is not the cage's own 7. The transit hut's:
+                        # at 7 its south gable was the lightest stone of S.V5 and S.V2, seen before the
+                        # clock tower (0.33 by the lamp; the tower 0.17 to 0.24; review #77381)
 
 # What the packages reported in the group (g2 #283 to #295), for a tree in which a package is not
 # merged yet. Once it is, its own table or function is read instead: _told().
@@ -625,8 +646,8 @@ def site_lamps(near_pair=None):
     middle = (S.mid(S.ARMILLARY[0]), S.GROUND + AIM_UP, S.mid(S.ARMILLARY[1]))
     for x, z in _told("machines.armillary", "LAMP_CELLS"):
         out.append(("feet", "uplight", (S.mid(x), float(S.GROUND), S.mid(z)), None, middle))
-    for p in _told("site.outbuildings", "LAMP_POINTS").values():
-        out.append(("doors", "cage", tuple(p), None, None))
+    for name, p in _told("site.outbuildings", "LAMP_POINTS").items():
+        out.append(("doors", "cage", tuple(p), DOOR_LEVEL.get(name), None))
     for p in _told("site.cablecar", "LAMP_POINTS").values():
         out.append(("station", "pendant", tuple(p), STATION_LEVEL, None))
     return out
@@ -728,8 +749,17 @@ def _feet_glow(canvas, origin=(0, 0, 0)):
     sources light the base and leave the brass to the sky. So, when the rings stand there, one
     source in the cell under that one."""
     x, y, z = (c + o for c, o in zip(_told("machines.armillary", "LIGHT_CELL"), origin))
-    if any((math.floor(ex), math.floor(ey), math.floor(ez)) == (x, y, z) for ex, ey, ez, _ in canvas.entities):
+    if not any((math.floor(ex), math.floor(ey), math.floor(ez)) == (x, y, z) for ex, ey, ez, _ in canvas.entities):
+        return
+    try:
+        from ..sky import _lightkit
+        suggest = getattr(_lightkit, "suggest", None)
+    except ImportError:
+        suggest = None
+    if suggest is None:                                 # a tree without the light line: the kit puts it down
         K.offer_lights(canvas, [((x, y - 1, z), FEET_GLOW)], "props/lamps:uplight")
+    else:
+        suggest(canvas, (x, y - 1, z), FEET_GLOW, "props/lamps:uplight", rank=FEET_RANK)
 
 
 def build(canvas, origin=(0, 0, 0), version=VERSION):

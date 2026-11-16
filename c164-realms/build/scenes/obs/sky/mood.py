@@ -67,7 +67,7 @@ LEVEL_FULL, LEVEL_NONE = 8.0, 12.0
 AIR = 1600.0
 MIST = 587.0
 MIST_HEIGHT = 12.0
-REGISTRY_FOG_END = 192.0    # the registry look's own fog end; it leaves with the registry files
+REGISTRY_FOG_END = 192.0    # the fog end of the look as a biome: what the offline pictures are drawn with
 # The clock is stopped where the vanilla moon (the comet's slot) stands at MOON_ANGLE, on a day of
 # the full moon's picture (plan/parts/figs/sky_safe.py finds the hour). GAME_STAR_ANGLE is the
 # vanilla star angle at that hour: the star shader turns the field from it to STAR_ANGLE.
@@ -131,8 +131,9 @@ STEPS = [(0, "blue"), (12300, "glow"), (13400, "blue"), (15500, "deep"), (21500,
 # Trials: a look with a few values changed, held for 200 ticks in the morning, which the map never
 # shows. Changing the time puts a trial next to the look it varies, on the same blocks and without
 # a restart. Noon stays the blue hour: the drivers take a shot without a time at noon.
-#   card  the moon's slot shows a test card (sky/comet.py paints it into the new moon's picture):
-#         which way up the game draws the picture is read off it
+#   card  the moon's slot shows a test card (sky/comet.py paints it into the new moon's picture
+#         of a pack that asks for it, comet.pack(card=True): the test scene obs_sky_comet; the
+#         map's pack has a comet there): which way up the game draws the picture is read off it
 #   pink  the afterglow in the plan's second colour
 #   near, far  the fog ending sooner and later, to read off the row of posts on the light board
 #   mist, veil, fogged  the colour of the vanilla cloud layer drawn towards the horizon colour. The

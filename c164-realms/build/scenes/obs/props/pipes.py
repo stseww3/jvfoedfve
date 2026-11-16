@@ -43,6 +43,14 @@ How a line is put together:
 Directions are names: "east", "west", "south", "north", "up", "down". All functions take scene
 coordinates plus `origin` and return the number of display entities they placed.
 
+What moves (the second round: nothing of the place stands quite still). A main under steam is seen
+to be under steam by two things, and both are registered with the motion line where they are placed:
+
+    gauge(canvas, pos, along, out)      the pressure gauge with its needle, which is a piece of its
+                                        own (gauge_needle) and trembles about where it rests
+    weep(canvas, kind, pos, out)        the gland of a stop valve weeps: a wisp of steam now and then
+                                        from where the stem leaves the bonnet, leaning with the wind
+
 build() places the family in the master scene while the switch DRESS is on (it is, since the
 delivery of 11-16). The test scene obs_props_pipes calls dress() itself.
 """
@@ -54,6 +62,7 @@ from artkit import models as M
 from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
+from ..motion import _kit as MK
 from . import _kit as K
 
 PREFIX = "prop_pipe_"
@@ -163,78 +172,6 @@ def _even(m, axis, c, a0, a1, radius, tones, sides=8, light=ABOVE):
             faces[letter] = bright if d > 0.5 else dark if d < -0.5 else mid
         m.box(lo, hi, mid, rot=(axis, angle, tuple(origin)) if angle else None, skip="".join(M.SIDE[o1]),
               faces=faces, seed=seed, grain=axis)
-    return m
-
-
-LEAN = 0.1              # degrees: how far _settle() turns a face off the plane between two axes
-_EDGE = math.sqrt(2.0) * math.sin(math.radians(LEAN / 2.0))
-
-
-def _between(normal):
-    """The two model axes a face's normal lies between -- within half the lean of the plane that
-    divides them -- or None. Whatever the shape has for sides: any face is asked, by its normal."""
-    order = sorted(range(3), key=lambda i: -abs(normal[i]))
-    if abs(normal[order[0]]) - abs(normal[order[1]]) >= _EDGE:
-        return None
-    return tuple(sorted(order[:2]))
-
-
-def _drawn(part):
-    """(box axis, the normal of its +face) for the sides of a part that have a face drawn."""
-    q = part["rot"][0] if part["rot"] else M.IDENT
-    for k in range(3):
-        if any(letter not in part["skip"] for letter in M.SIDE[k]):
-            yield k, M._qrot(q, M.NORMAL[M.SIDE[k][1]])
-
-
-def unsettled(model):
-    """The drawn faces of a model that stand between two axes: [(part's index, face letters, normal)].
-    Empty for every model of this family (the test scene's fit.py holds them to it)."""
-    return [(i, "".join(M.SIDE[k]), normal) for i, part in enumerate(model.parts)
-            for k, normal in _drawn(part) if _between(normal)]
-
-
-def _settle(m):
-    """Makes the light on a model the same in every copy of the game, and in the offline pictures.
-
-    The game lights a face of an item model not by its own normal but by the model axis nearest to
-    it (the direction the face is filed under when the model is baked), turned as the display turns
-    the model. The slanting flats of an eight-sided tube, ring or ball stand exactly between two
-    axes, and which of the two such a face is given comes out of the last bit of a float: of the two
-    bores of one main, one had its upper flats lit as "up" (x1) and the other as a side (x0.5), and
-    a change anywhere in a model could change it again.
-
-    So every round shape that has such faces is turned LEAN degrees as one piece (the boxes one
-    call of tube(), ring(), ball() or one stretch of a hose() made share a seed; a box of its own
-    is a piece by itself), about its own middle and about the model axis the two axes stand across,
-    always the same way round: right-handed about that axis' positive end. The shape stays what it
-    was and its boxes still meet in the same lines (leaning the slanting boxes alone left hairlines
-    in the joints, which showed in the pictures). Its flats now fall to the four directions two and
-    two, the same in every piece: of a tube along z, the flat at +x and the slanting one below it
-    are lit as +x, the slanting flat between +x and +y and the flat at +y as +y, and so on round.
-    A tenth of a degree moves the rim of the widest flange a hundredth of a texel."""
-    groups = {}
-    for part in m.parts:
-        groups.setdefault(part["seed"], []).append(part)
-    for parts in groups.values():
-        for _ in range(4):
-            pair = next((pair for part in parts for _, normal in _drawn(part)
-                         for pair in [_between(normal)] if pair), None)
-            if pair is None:
-                break
-            turn = M.quat(M.AXES[3 - pair[0] - pair[1]], LEAN)
-            centres = [[(part["lo"][i] + part["hi"][i]) / 2.0 for i in range(3)] for part in parts]
-            pivot = [sum(c[i] for c in centres) / len(centres) for i in range(3)]
-            for part, c in zip(parts, centres):
-                d = M._qrot(turn, [c[i] - pivot[i] for i in range(3)])
-                to = [pivot[i] + d[i] for i in range(3)]
-                half = [(part["hi"][i] - part["lo"][i]) / 2.0 for i in range(3)]
-                q = part["rot"][0] if part["rot"] else M.IDENT
-                part["lo"] = tuple(to[i] - half[i] for i in range(3))
-                part["hi"] = tuple(to[i] + half[i] for i in range(3))
-                part["rot"] = (M._qmul(turn, q), tuple(to))
-        else:
-            raise ValueError(f"{m.name}: faces stay between two axes however the shape is turned")
     return m
 
 
@@ -551,8 +488,8 @@ def _band():
 def _gauge():
     """The pressure gauge. The anchor is the tapping, on the pipe's skin; the stalk stands out along
     +y and the dial looks along +x. From the pipe up: the boss, one turn of small pipe (the siphon
-    that keeps steam out of the works), the brass case, the cream dial with three phosphor marks,
-    the needle."""
+    that keeps steam out of the works), the brass case, the cream dial with three phosphor marks
+    and the pin the needle turns on. The needle is a piece of its own (_needle)."""
     m = M.Model(PREFIX + "gauge")
     m.tube("y", (0, 0), -0.5, 1.5, 1.25, K.IRON_D)
     m.ring("x", (0.0, 3.0, 0.0), 1.0, 1.0, 1.0, K.BRASS_D, sides=8)
@@ -560,14 +497,24 @@ def _gauge():
     yc = GAUGE_DIAL
     m.tube("x", (yc, 0), -1.25, 1.0, 3.0, K.BRASS)
     m.tube("x", (yc, 0), 1.0, 1.25, 2.25, DIAL, cap=DIAL)
-    m.box((1.25, yc - 0.5, -0.5), (1.5, yc + 2.0, 0.5), NEEDLE, rot=("x", -40.0, (1.25, yc, 0.0)))
     for y, z in ((yc + 1.5, 0.0), (yc, 1.5), (yc, -1.5)):
-        m.box((1.25, y - 0.5, z - 0.5), (1.4, y + 0.5, z + 0.5), MARK, emit=10, shade=False)
-    m.box((1.25, yc - 0.5, -0.5), (1.6, yc + 0.5, 0.5), PIN)
+        m.box((GAUGE_FACE, y - 0.5, z - 0.5), (GAUGE_FACE + 0.15, y + 0.5, z + 0.5), MARK, emit=10, shade=False)
+    m.box((GAUGE_FACE, yc - 0.5, -0.5), (GAUGE_FACE + 0.35, yc + 0.5, 0.5), PIN)
+    return m
+
+
+def _needle():
+    """The gauge's needle, a piece of its own so that it can tremble. The anchor is the point of the
+    dial's face it turns on: the display stands on its axis, which is x, the way the dial looks; it
+    lies on the face and points along +y. Whoever places it turns it NEEDLE_REST about x first."""
+    m = M.Model(PREFIX + "gauge_needle")
+    m.box((0.0, -0.5, -0.5), (0.25, 2.0, 0.5), NEEDLE)
     return m
 
 
 GAUGE_DIAL = 8.25       # the middle of the gauge's dial above the tapping, in texels
+GAUGE_FACE = 1.25       # the dial's face, this far along +x from the stalk's axis
+NEEDLE_REST = -40.0     # where the needle rests: degrees about the way the dial looks, from upright
 
 
 def _clip(name, size):
@@ -617,6 +564,7 @@ SPEC = {
     "bonnet": dict(build=_bonnet),
     "band": dict(build=_band),
     "gauge": dict(build=_gauge),
+    "gauge_needle": dict(build=_needle),
     "clip_l": dict(build=lambda: _clip("clip_l", "l")),
     "clip_m": dict(build=lambda: _clip("clip_m", "m")),
 }
@@ -625,7 +573,9 @@ SCALE = {PREFIX + name: 1.0 for name in SPEC}
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    return {PREFIX + name: _settle(spec["build"]()) for name, spec in SPEC.items()}
+    """Every model once over K.settle: the slanting flats of the round shapes stand exactly between
+    two model axes, and the light on such a face would come out of the last bit of a float."""
+    return {PREFIX + name: K.settle(spec["build"]()) for name, spec in SPEC.items()}
 
 
 def models():
@@ -659,6 +609,49 @@ def mount(canvas, kind, pos, out="east", up="up", origin=(0, 0, 0), **opts):
     n = DIRS[out]
     pos = tuple(pos[i] + n[i] * K.NUDGE for i in range(3))
     return K.put(canvas, _models()[PREFIX + kind], pos, yaw=0.0, turns=_turns(out, up), origin=origin, **opts)
+
+
+# ---- what moves -----------------------------------------------------------------------------------
+# A main under steam. The needle of its gauge trembles: so far to either side of where it rests, there
+# and back in so many ticks (the engine's stroke comes through the steam; the switchboard's pointers
+# are slower, 90 to 170 ticks).
+TREMBLE = (2.5, 60)
+# The gland of a stop valve weeps. The wisp is the game's white puff, which motion/smoke has for the
+# boiler's safety valve and the engine's flange (its STEAM_PARTICLE): a quad of 0.4 to 0.75 blocks that
+# lives one to three seconds and comes to rest 25 times its first tick's way off. One BREATH of that
+# module's slow chain holds the wisps of WEEP: the tick, the blocks a tick it leaves the gland with,
+# its lean with the wind in degrees. They rise half a block to a block and are gone.
+STEAM = "cloud"
+BREATH = 160
+WEEP = ((14, 0.030, 14.0), (71, 0.022, 9.0), (118, 0.034, 18.0))
+GLAND = {"valve_l": BORE["l"] + 4.5, "valve_m": BORE["m"] + 4.5,              # the middle of a valve's gland along
+         "valve_angle_l": BORE["l"] + 4.5, "valve_angle_m": BORE["m"] + 4.5,  # its stem, in texels from the anchor
+         "bonnet": 4.0}
+GLAND_R = 1.5
+
+
+def gauge(canvas, pos, along="south", out="up", origin=(0, 0, 0), **opts):
+    """The pressure gauge on a run, as place() takes it, and its needle, which trembles; returns 2."""
+    turns = tuple(_turns(along, out))
+    n = place(canvas, "gauge", pos, along=along, out=out, origin=origin, **opts)
+    face = _cross(DIRS[out], DIRS[along])                       # the way the dial looks: the model's +x
+    pivot = tuple(pos[i] + (GAUGE_FACE * face[i] + GAUGE_DIAL * DIRS[out][i]) / 16.0 for i in range(3))
+    n += K.put(canvas, _models()[PREFIX + "gauge_needle"], pivot, yaw=0.0, turns=(("x", NEEDLE_REST),) + turns,
+               origin=origin, **opts)
+    MK.swing(canvas, "x", TREMBLE[0], TREMBLE[1])
+    return n
+
+
+def weep(canvas, kind, pos, out, origin=(0, 0, 0), phase=0):
+    """The gland of the stop valve `kind` whose anchor is at pos weeps steam; `out` is the way its
+    stem points. Nothing is placed: the wisps are particles of the motion line. Returns 0."""
+    d = DIRS[out]
+    lift = 0.0 if out in ("up", "down") else GLAND_R / 16.0     # a level stem: from the top of the gland
+    start = tuple(pos[i] + d[i] * GLAND[kind] / 16.0 + (lift + 0.03 if i == 1 else 0.0) for i in range(3))
+    for tick, speed, lean in WEEP:
+        MK.puff(canvas, start, STEAM, BREATH, at=(tick,), count=0, spread=MK.downwind(lean), speed=speed,
+                origin=origin, phase=phase)
+    return 0
 
 
 def run(canvas, a, b, kind="main_l", lit=None, origin=(0, 0, 0)):
@@ -834,7 +827,7 @@ def inlet(canvas, origin=(0, 0, 0)):
     and at the middle of its height: the main comes up out of its trench into an angle stop valve
     that stands on the paving, its red handwheel looking east at the court; from the valve a short
     length runs west into a plate on the grating, and carries the pressure gauge, its dial to the
-    south.
+    south. The main is under steam: the gauge's needle trembles and the valve's gland weeps.
 
     Nothing is placed unless the grating is there, the two cells east of it are free and paved.
     Returns the number of display entities."""
@@ -850,10 +843,10 @@ def inlet(canvas, origin=(0, 0, 0)):
     n = mount(canvas, "plate_l", (face, ay, az), out="east", origin=origin)
     n += run(canvas, (face + (PLATE_NECK - 1.0) / 16.0, ay, az), (corner - (ANGLE - 1.0) / 16.0, ay, az), "main_l",
              origin=origin)
-    n += place(canvas, "gauge", (face + INLET_GAUGE / 16.0, ay + BORE["l"] / 16.0, az), along="west", out="up",
+    n += gauge(canvas, (face + INLET_GAUGE / 16.0, ay + BORE["l"] / 16.0, az), along="west", out="up",
                origin=origin)
     n += place(canvas, "valve_angle_l", (corner, ay, az), along="west", out="up", origin=origin)
-    return n
+    return n + weep(canvas, "valve_angle_l", (corner, ay, az), "east", origin=origin)
 
 
 def _backed(canvas, pos, out, up, origin):
@@ -885,6 +878,8 @@ def fittings(canvas, origin=(0, 0, 0)):
     for kind, pos, how in getattr(powerhouse, "FITTINGS", ()):
         if PREFIX + kind in _models() and _backed(canvas, pos, how.get("out", "east"), how.get("up", "up"), origin):
             n += mount(canvas, kind, pos, origin=origin, **how)
+            if kind in GLAND:                                   # the bridge's valve head: out of step with the inlet's
+                weep(canvas, kind, pos, how.get("out", "east"), origin=origin, phase=BREATH // 2)
     for how in getattr(powerhouse, "DRAINS", ()):
         n += drain(canvas, origin=origin, **how)
     return n
