@@ -1,0 +1,11 @@
+delivery machines/engine-dynamo: a676e67 against b1c0d7a (forked at b1c0d7a), 3 commits, 15 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[WARN] scope    14 of 15 files are the card's own
+                not this card's file: M build/scenes/obs/machines/engine.py
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[PASS] pictures 1 test scene, 12 shots with a picture kept; every shot has one, each the file its note describes
+[PASS] merge    merges cleanly; 0 commits behind the base
+result: PASS (0 failed, 1 to look at)
