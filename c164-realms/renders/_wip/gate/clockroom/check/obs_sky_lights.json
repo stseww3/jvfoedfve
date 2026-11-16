@@ -1,0 +1,351 @@
+{
+ "scene": "obs_sky_lights",
+ "commit": "a1fe5e5",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "WARN",
+   "summary": "113945 blocks, 456 entities, 164 models, 1170 resource-pack files, 72 data-pack files, look: 1 biomes, 1 timelines (2.0 s)",
+   "details": [
+    "registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json"
+   ]
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 1169 files, no file written twice, the folders and the prefix of sky are kept (2 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "293 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "857 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "45 kinds of block placed, 36 barrier cells (x -384..16, y 0..1, z -5..5), all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of sky: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "456 display entities, 27 drawn out along one axis, 18 shown through a matrix that is no turn, no face stretched, 122 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "WARN",
+   "summary": "28 shots, most display entities in view: 154 (blue_axis), limit 600; counted without what walls hide; the game draws up to 306 (deep_front): a display entity without width and height is drawn outside the view too",
+   "details": [
+    "blue_front: 2 of the 148 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "blue_axis: 2 of the 154 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "blue_slant: 2 of the 50 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "blue_surround: 2 of the 114 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "blue_v3: 2 of the 114 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "blue_door: 2 of the 106 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "blue_v7: 2 of the 53 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "blue_wash: 2 of the 124 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "blue_stair: 38 of the 55 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "deep_front: 2 of the 148 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "deep_axis: 2 of the 154 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "deep_slant: 2 of the 50 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "deep_surround: 2 of the 114 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "deep_door: 2 of the 106 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "deep_wash: 2 of the 124 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "(the tracking range is read off the game's code, not yet seen on the real machine)"
+   ],
+   "data": {
+    "shots": [
+     {
+      "name": "blue_front",
+      "in_view": 148,
+      "drawn": 154,
+      "beyond_tracking": 2
+     },
+     {
+      "name": "blue_axis",
+      "in_view": 154,
+      "drawn": 154,
+      "beyond_tracking": 2
+     },
+     {
+      "name": "blue_v1",
+      "in_view": 152,
+      "drawn": 152,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "blue_slant",
+      "in_view": 50,
+      "drawn": 154,
+      "beyond_tracking": 2
+     },
+     {
+      "name": "blue_surround",
+      "in_view": 114,
+      "drawn": 154,
+      "beyond_tracking": 2
+     },
+     {
+      "name": "blue_v3",
+      "in_view": 114,
+      "drawn": 154,
+      "beyond_tracking": 2
+     },
+     {
+      "name": "blue_door",
+      "in_view": 106,
+      "drawn": 154,
+      "beyond_tracking": 2
+     },
+     {
+      "name": "blue_v7",
+      "in_view": 53,
+      "drawn": 154,
+      "beyond_tracking": 2
+     },
+     {
+      "name": "blue_wash",
+      "in_view": 124,
+      "drawn": 154,
+      "beyond_tracking": 2
+     },
+     {
+      "name": "blue_west",
+      "in_view": 152,
+      "drawn": 304,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "blue_stair",
+      "in_view": 55,
+      "drawn": 190,
+      "beyond_tracking": 38
+     },
+     {
+      "name": "deep_front",
+      "in_view": 148,
+      "drawn": 306,
+      "beyond_tracking": 2
+     },
+     {
+      "name": "deep_axis",
+      "in_view": 154,
+      "drawn": 306,
+      "beyond_tracking": 2
+     },
+     {
+      "name": "deep_v1",
+      "in_view": 152,
+      "drawn": 304,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "deep_slant",
+      "in_view": 50,
+      "drawn": 287,
+      "beyond_tracking": 2
+     },
+     {
+      "name": "deep_surround",
+      "in_view": 114,
+      "drawn": 196,
+      "beyond_tracking": 2
+     },
+     {
+      "name": "deep_door",
+      "in_view": 106,
+      "drawn": 282,
+      "beyond_tracking": 2
+     },
+     {
+      "name": "deep_wash",
+      "in_view": 124,
+      "drawn": 220,
+      "beyond_tracking": 2
+     },
+     {
+      "name": "glow_front",
+      "in_view": 146,
+      "drawn": 304,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "glow_axis",
+      "in_view": 152,
+      "drawn": 304,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "glow_v1",
+      "in_view": 152,
+      "drawn": 304,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "glow_slant",
+      "in_view": 48,
+      "drawn": 285,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "glow_surround",
+      "in_view": 112,
+      "drawn": 194,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "levels_front",
+      "in_view": 0,
+      "drawn": 152,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "levels_front_deep",
+      "in_view": 0,
+      "drawn": 152,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "levels_9",
+      "in_view": 0,
+      "drawn": 40,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "levels_10",
+      "in_view": 0,
+      "drawn": 42,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "levels_12",
+      "in_view": 0,
+      "drawn": 44,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "PASS",
+   "summary": "V1 at (88.5, -2.38, -32.5): the front from y 4 up 0.4% hidden (base storey 0.0% by blocks and 1.3% more by models, great windows 0.0%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 1.1 s)",
+   "details": [],
+   "data": {
+    "the base storey": {
+     "lines": 1104,
+     "hidden": 14,
+     "seen_through": 0,
+     "hidden_by_blocks": 0,
+     "hidden_by_models": 14
+    },
+    "the great windows": {
+     "lines": 1656,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the cornice": {
+     "lines": 1104,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the clock tower": {
+     "lines": 672,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the time-ball mast": {
+     "lines": 22,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the great dome": {
+     "lines": 1688,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the small dome": {
+     "lines": 290,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "comet": {
+     "elevation": 41.0,
+     "across": 0.6128,
+     "down": 0.2647,
+     "lost": 0,
+     "body": {
+      "lines": 350,
+      "outside_clear": 0,
+      "covered": 0,
+      "from": -7.29,
+      "to": 1.2,
+      "low": 39.99,
+      "up": 54.24
+     }
+    },
+    "clear": {
+     "up": 61.0,
+     "blocks": [
+      {
+       "name": "between the two ends of the main building",
+       "from": -1.24,
+       "to": 44.16,
+       "low": 0.0,
+       "up": 61.0,
+       "lines": 44835,
+       "covered": 0
+      },
+      {
+       "name": "where the comet hangs, north of the main building",
+       "from": -15.0,
+       "to": -1.49,
+       "low": 35.0,
+       "up": 61.0,
+       "lines": 5880,
+       "covered": 0
+      }
+     ]
+    },
+    "left": {
+     "from": 44.66,
+     "to": 70.0,
+     "posts": []
+    }
+   }
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "3 parts and 0 points on 1 chains, 12 function files; 6 commands in the busiest tick (limit 40), 1.1 a tick on average (limit 10)",
+   "details": [
+    "chain of 24 ticks: 6 functions, 26 commands a cycle, starts 1 ticks after start",
+    "bld_tower_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.09 blocks off the axis",
+    "bld_tower_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.09 blocks off the axis",
+    "bld_tower_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.09 blocks off the axis"
+   ]
+  }
+ ]
+}
