@@ -1,0 +1,3 @@
+branch=cursor/c164-smoke-smoke-f3-e07b
+head=8510ff7fe3e49774e4edd2e26a1c8a7a93a5efd6
+args=--no-push --tail 90 r=0\;\ for\ s\ in\ obs_mot_smoke\ obs_mot_smoke_bench\ obs_mot_smoke_room\;\ do\ python\ tools/check.py\ --scene\ \$s\ \|\|\ r=1\;\ echo\ \"==\ \$s\ done\,\ r=\$r\"\;\ done\;\ exit\ \$r 
