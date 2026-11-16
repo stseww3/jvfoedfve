@@ -314,25 +314,27 @@ LAMPS = "b"                 # every lamp of the room is the shaded one (props/la
 # the hood, and 12 at the console, so that its faces stand at 9 to 12 from the cornice down to the shelf, and
 # the floor at the foot of the console at 9 to 11: the lightest floor of the room. The rating bench, in the
 # middle distance, next.
-# The message desk, which V10 stands beside, last: 8 and less, and no lit shade over it. With one lamp of 8 over
-# each desk and 12 only at the console, the wall's faces lay at 6 to 12 and in the picture the wall was darker
-# than the paper on the near desk; the floor before it was hardly lighter than the floor by the door.
-# Where one walks there is light (the finish, A0 11-16; the light line's rule: 5 or more at the foot or at the
-# head, never more than three stations in a row under it, none at 0), and it comes from the lamps that are there
-# for the work: by the door from the lamp over the blueprint, in the middle of the room from the bench's. No
-# more than the rule asks: the floor by the door is V10's foreground, and the dark is what the wall is seen
-# against.
+# The message desk, which V10 stands beside, last: 7 and less on it, and no lit shade over it. With one lamp of
+# 8 over each desk and 12 only at the console, the wall's faces lay at 6 to 12 and in the picture the wall was
+# darker than the paper on the near desk; the floor before it was hardly lighter than the floor by the door.
+# Where one stands there is light (the finish, A0 11-16: every cell of the floor one can stand on has 5 or more
+# at the foot or at the head, a threshold 7), and it comes first from the lamps that are there for the work: by
+# the door from the lamp over the blueprint, in the middle of the room from the bench's and the message desk's.
+# What these leave under 5 (the east side, the foot of the south wall) the light line fills with lamps of its
+# own (sky/lights, placed by c349): on the south wall and the two northern piers of the east wall, where V10
+# has no lit shade beside the near desk.
 CONSOLE_LAMP = (12, 2)      # the two drop lights over the ends of the console: the main light, on the instrument wall
 CONSOLE_POOL = (11, 2)      # what those two throw on the floor before the console, each at its foot (they hang over the shelf's edge)
 HOOD_LAMP = (12, 2)         # under the hood of the instrument wall, along the top row of faces: what the hood throws down
 #                             them. No lamps of its own: the valves at the heads of the piers glow there
 BENCH_LAMP = (12, 2)        # the drop light over the rating bench: 9 to 10 on the bench and what lies on it, 10 to 11 on the floor at
 #                             the sitter's chair; 5 on the long axis, three cells of it short of the middle of the room
-DESK_LAMP = (8, 3)          # the reading lamp on the message desk: 7 at the sitter's chair, 6 on the desk and what lies on it
+DESK_LAMP = (9, 2)          # the reading lamp on the message desk: 8 at the sitter's chair, 7 on the desk and what lies on it,
+#                             5 at the head four cells off: the floor about the desk, out to the long axis
 REGULATOR_LAMP = (9, 2)     # the bracket lamps over the two standard clocks
 CLOCK_LAMP = (10, 2)        # the bracket lamp over the world clocks: 9 on the middle dial, 7 on the end ones
-PLAN_LAMP = (10, 2)         # the bracket lamp over the blueprint and the card cabinets, by the door: the lamp one comes in
-#                             under. 5 to 6 at the head in the doorway, 6 to 7 on the cabinets
+PLAN_LAMP = (11, 2)         # the bracket lamp over the blueprint and the card cabinets, by the door: the lamp one comes in
+#                             under. 6 to 7 at the head in the doorway, 7 to 8 on the cabinets; V10 does not see it
 OVER = 20 * PX              # a bracket's arm above the top of what it hangs over: the shade ends half a block over it, a lamp
 #                             over a clock and not a hat on it (at 12 px the pale inside of the shade sat on the dial's rim)
 CONSOLE_HANG = FEET + 3.5   # 10.5: where the drop lights of the console end and their lamps hang; the shades end at 9.56, a block
