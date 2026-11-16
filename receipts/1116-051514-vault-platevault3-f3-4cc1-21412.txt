@@ -1,0 +1,51 @@
+a0job 1116-051514-vault-platevault3-f3-4cc1-21412: cursor/c164-vault-platevault3-f3-4cc1 @ c55033b4 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.58 0.29 0.30, Python 3.12.3
+  [cloud_setup    1s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/viewbands.py interiors/platevault 2>&1 | tail -48 | cut -c1-150; python tools/viewbands.py 2>&1 | grep -E '^all|^interiors/platevault|^package' | cut -c1-260; python tools/check.py --scene obs_int_platevault 2>&1 | grep -E
+int_vault_bath                               small  x1    
+int_vault_checker                            small  x1    V3 1, V7 1
+int_vault_curtain                            near   x1    V9 1
+int_vault_dark_bench                         near   x2    V9 2
+int_vault_dark_crank                         small  x1    
+int_vault_dark_lift_car                      small  x1    
+int_vault_dark_lift_frame                    small  x2    V9 1
+int_vault_dark_rack                          near   x2    V9 2
+int_vault_dark_rope                          small  x1    
+int_vault_dark_safelight                     near   x1    V9 1
+int_vault_dark_shelf                         near   x1    V9 1
+int_vault_dark_sink                          near   x1    V9 1
+int_vault_dark_timer                         near   x1    V9 1
+int_vault_dark_tray_dev                      small  x1    
+int_vault_dark_tray_fix                      small  x1    
+int_vault_dark_tray_stop                     small  x1    
+int_vault_face_a                             small  x9    V9 7, V3 2, V4 1, V7 1
+int_vault_face_a_up                          small  x9    V9 8, V7 2, V3 3
+int_vault_face_b                             small  x9    V9 7, V7 2, V3 3
+int_vault_face_b_up                          small  x7    V9 7, V3 3, V7 2
+int_vault_face_c                             small  x7    V9 6, V3 3, V7 2
+int_vault_face_c_up                          small  x9    V9 8, V3 3, V7 2, V4 1
+prop_furn_crate                              small  x1    V3 1, V4 1, V7 1
+prop_furn_crate_small                        small  x1    V3 1, V4 1, V7 1
+prop_furn_ladder_rail                        small  x12   V9 12, V7 3
+prop_furn_library_ladder                     small  x1    
+prop_furn_stool                              small  x1    V7 1
+prop_furn_writing_desk                       small  x1    V7 1
+prop_lamp_cage_b                             near   x4    V3 2, V4 3, V7 2, V9 3
+prop_lamp_desk_green                         small  x1    V7 1
+prop_lamp_pendant_b                          small  x9    V9 9, V7 2, V3 3
+prop_paper_logbook                           small  x1    V7 1
+prop_paper_photo_plate                       small  x1    V3 1, V7 1
+prop_paper_photo_plate_b                     small  x1    V3 1, V7 1
+prop_sign_plate_1                            small  x1    V3 1, V7 1
+prop_sign_plate_2                            small  x1    V7 1
+package                               far    mid   near  small0.109375 0.1875      4      8   in the board's views
+interiors/platevault                    0      0     13     92      0      0      0      0   V3 28, V4 7, V7 29, V9 77
+all                                   337    105    711    141      5     10      3     21   V1 277, V2 272, V3 555, V4 578, V5 191, V6 115, V7 426, V8 87, V9 238, V10 254, V11 284, V12 322
+[PASS] views     7 shots, most display entities in view: 91 (int_door), limit 600; counted without what walls hide; the game draws up to 102 (int_door): a display entity without width and height is drawn outside the view too
+result: PASS (0 failed, 2 with warnings)
+==== NODEJOB RESULT ====
+exit=0 secs=12 host=cursor cores=4 head=c55033b4 commit=none pushed=no branch=cursor/c164-vault-platevault3-f3-4cc1 files=0
+a0job: exit=0 secs=12
