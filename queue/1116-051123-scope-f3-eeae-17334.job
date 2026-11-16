@@ -1,0 +1,3 @@
+branch=cursor/c164-scope-f3-eeae
+head=5aee24f2ceff32a5c30e50c5ae1ff597f93950b8
+args=--always --keep c164-realms/build/scenes/obs_mach_refractor/shots.json --tail 60 --limit 600 \(cd\ build\ \&\&\ python\ -m\ scenes.obs_mach_refractor\)\;\ \(cd\ build\ \&\&\ python\ -m\ scenes.obs.machines.scope\)\ \>\ /tmp/scope-report.txt\ 2\>\&1\;\ echo\ \"SELF=\$\?\"\;\ grep\ -n\ \"BROKEN\\\|eyepiece\ shows\\\|Traceback\\\|Error\"\ /tmp/scope-report.txt\ \|\ cut\ -c1-600\;\ tail\ -4\ /tmp/scope-report.txt\ \|\ cut\ -c1-300\;\ python\ tools/check.py\ --scene\ obs_mach_refractor\ \>\ /tmp/scope-check.txt\ 2\>\&1\;\ echo\ \"CHECK=\$\?\"\;\ grep\ -n\ \"FAIL\\\|WARN\\\|result\\\|motion\\\|views\\\|Traceback\\\|Error\"\ /tmp/scope-check.txt\ \|\ cut\ -c1-300 
