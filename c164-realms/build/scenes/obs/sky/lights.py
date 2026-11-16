@@ -668,6 +668,7 @@ BASE_WHY = "sky/lights:base"
 BASE_OUT = int(os.environ.get("C164_TRIAL_OUT", "2"))       # the east wall: cells between a buttress's lower stage and its projector, counting it
 BASE_LEVEL = int(os.environ.get("C164_TRIAL_LEVEL", "8"))   # the projector's own source
 BASE_BEAM = int(os.environ.get("C164_TRIAL_BEAM", "0"))     # a second source where the beam lands, as the fronts' wash has; 0: none
+BASE_SOUTH_LEVEL = int(os.environ.get("C164_TRIAL_SLEVEL", str(BASE_LEVEL)))    # the south wall's projectors
 BASE_EAST = tuple(int(z) for z in os.environ.get("C164_TRIAL_EAST", "-14,-22,-30,-38").split(",") if z)
 BASE_SOUTH = tuple(int(x) for x in os.environ.get("C164_TRIAL_SOUTH", "39,23,19").split(",") if x)
 # the south wall: the rock one cell before a buttress's foot (the survey of the trial tree): x -> the projector's row
@@ -678,7 +679,8 @@ BASE_WASH = (
     [((62 + BASE_OUT, -6, z), "west", BASE_LEVEL, f"the east wall's buttress in row {z}", ((62, -3, z), BASE_BEAM))
      for z in BASE_EAST]
     # the south wall (site/terrain): the projector stands under the face, the light falls by one a row up it
-    + [((x, SOUTH_ROW[x], 40), "north", BASE_LEVEL, f"the south wall's buttress in column {x}", None) for x in BASE_SOUTH]
+    + [((x, SOUTH_ROW[x], 40), "north", BASE_SOUTH_LEVEL, f"the south wall's buttress in column {x}", None)
+       for x in BASE_SOUTH]
 )
 
 
