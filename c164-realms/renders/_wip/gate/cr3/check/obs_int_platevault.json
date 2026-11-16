@@ -1,0 +1,128 @@
+{
+ "scene": "obs_int_platevault",
+ "commit": "e1b8865",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "3819 blocks, 105 entities, 106 models, 1006 resource-pack files, 15 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.2 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 1005 files, no file written twice, the folders and the prefix of interiors are kept (9 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "235 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "741 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "22 kinds of block placed, 12 barrier cells (x 2..12, y 0..1, z 7..25), all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "WARN",
+   "summary": "6 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)",
+   "details": [
+    "smooth_sandstone facing east: flat over 10x10, the square's top corner at (1, 16, 17)",
+    "smooth_sandstone facing north: flat over 8x8, the square's top corner at (8, 14, 6)",
+    "smooth_sandstone facing south: flat over 8x8, the square's top corner at (8, 14, 26)",
+    "smooth_sandstone facing west: flat over 8x8, the square's top corner at (0, 14, 14)",
+    "smooth_sandstone facing north: flat over 7x7, the square's top corner at (8, 13, 26)",
+    "smooth_sandstone facing south: flat over 7x7, the square's top corner at (8, 13, 6)"
+   ],
+   "data": {
+    "largest": 10,
+    "faces": 6
+   }
+  },
+  {
+   "check": "entities",
+   "status": "WARN",
+   "summary": "105 display entities, 1 drawn out along one axis, 70 models never placed",
+   "details": [
+    "int_vault_dark_rope x1: drawn out along z, where the picture of cream~base1 is not even: it smears"
+   ]
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "6 shots, most display entities in view: 105 (ext_base), limit 600; counted without what walls hide; the game draws up to 105 (int_door): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "int_door",
+      "in_view": 94,
+      "drawn": 105,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_stacks",
+      "in_view": 81,
+      "drawn": 105,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_dark",
+      "in_view": 21,
+      "drawn": 105,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_sink",
+      "in_view": 11,
+      "drawn": 105,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_lift",
+      "in_view": 16,
+      "drawn": 105,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "ext_base",
+      "in_view": 105,
+      "drawn": 105,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "0 parts and 1 points on 1 chains, 7 function files; 4 commands in the busiest tick (limit 120), 0.1 a tick on average (limit 40)",
+   "details": [
+    "chain of 50 ticks: 1 functions, 4 commands a cycle, starts 1 ticks after start"
+   ]
+  }
+ ]
+}

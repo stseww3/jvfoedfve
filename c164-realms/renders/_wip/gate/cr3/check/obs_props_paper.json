@@ -1,0 +1,227 @@
+{
+ "scene": "obs_props_paper",
+ "commit": "e1b8865",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "873 blocks, 42 entities, 41 models, 811 resource-pack files, 7 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (0.8 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 810 files, no file written twice, the folders and the prefix of props are kept (10 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "170 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "611 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "5 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of props: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "42 display entities, 5 shown through a matrix that is no turn, no face stretched, 23 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "25 shots, most display entities in view: 42 (far), limit 600; counted without what walls hide",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "far",
+      "in_view": 42,
+      "drawn": 42,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "wall_great",
+      "in_view": 13,
+      "drawn": 42,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "wall_stone",
+      "in_view": 21,
+      "drawn": 42,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "wall_wood",
+      "in_view": 20,
+      "drawn": 42,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "star_charts",
+      "in_view": 10,
+      "drawn": 42,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "blueprints",
+      "in_view": 12,
+      "drawn": 42,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "star_charts_wood",
+      "in_view": 12,
+      "drawn": 42,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "blueprints_wood",
+      "in_view": 9,
+      "drawn": 42,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "star_chart_near",
+      "in_view": 7,
+      "drawn": 42,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "star_chart_b_near",
+      "in_view": 6,
+      "drawn": 42,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "blueprint_near",
+      "in_view": 10,
+      "drawn": 42,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "blueprint_b_near",
+      "in_view": 9,
+      "drawn": 42,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "moon_map_near",
+      "in_view": 10,
+      "drawn": 42,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "moon_map_wood",
+      "in_view": 5,
+      "drawn": 42,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "blackboard_near",
+      "in_view": 7,
+      "drawn": 42,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "blackboard_side",
+      "in_view": 11,
+      "drawn": 42,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "sky_maps",
+      "in_view": 8,
+      "drawn": 42,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "sky_map_near",
+      "in_view": 6,
+      "drawn": 42,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "sky_map_b_near",
+      "in_view": 7,
+      "drawn": 42,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "sky_map_below",
+      "in_view": 6,
+      "drawn": 42,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "desk",
+      "in_view": 14,
+      "drawn": 42,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "logbook_near",
+      "in_view": 9,
+      "drawn": 42,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "blueprint_flat",
+      "in_view": 13,
+      "drawn": 42,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "light_table",
+      "in_view": 17,
+      "drawn": 42,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "plates_near",
+      "in_view": 10,
+      "drawn": 42,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "nothing moves",
+   "details": []
+  }
+ ]
+}

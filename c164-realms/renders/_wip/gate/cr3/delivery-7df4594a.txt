@@ -1,0 +1,11 @@
+delivery interiors/domeroom: 6da22d2 against 1dec58f (forked at 6a08e26), 2 commits, 23 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[PASS] scope    23 of 23 files are the card's own
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[WARN] commits  1 commit messages do not start with "c164-<code>: "
+                9d2dd0a56 interiors/domeroom: the observing ladder stands in V8's empty right half and rolls with the telescope
+[PASS] pictures 1 test scene, 18 shots with a picture kept; every shot has one, each the file its note describes
+[PASS] merge    merges cleanly; 95 commits behind the base
+result: PASS (0 failed, 1 to look at)

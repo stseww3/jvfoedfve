@@ -1,0 +1,12 @@
+delivery interiors/domeroom: c5de541 against e36ca0c (forked at 7d91d06), 2 commits, 2 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[PASS] scope    2 of 2 files are the card's own
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[WARN] commits  1 commit messages do not start with "c164-<code>: "
+                2c22a6c14 interiors/domeroom: round 2, what moves first -- the mean-time dial beats seconds, the switchboard's two hands tremble
+[WARN] pictures 1 test scene, 18 shots with a picture kept
+                obs_int_domeroom: 18 pictures show 83a62f1f; the card's code has changed since (_astrodrive.py, _astroshell.py, _domeboard.py, _starhall_ways.py ...): draw them again
+[PASS] merge    merges cleanly; 24 commits behind the base
+result: PASS (0 failed, 2 to look at)

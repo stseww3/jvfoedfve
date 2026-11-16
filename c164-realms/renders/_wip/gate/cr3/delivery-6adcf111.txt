@@ -1,0 +1,11 @@
+delivery interiors/timeroom: 4cc41ab against b55224c (forked at 157032b), 1 commits, 1 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[PASS] scope    1 of 1 files are the card's own
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[WARN] pictures 1 test scene, 12 shots with a picture kept
+                obs_int_timeroom: 12 pictures show e5791648; the card's code has changed since (_astrodrive.py, _astroshell.py, _darkroom.py, _domeboard.py ...): draw them again
+[PASS] merge    merges cleanly; 84 commits behind the base
+result: PASS (0 failed, 1 to look at)

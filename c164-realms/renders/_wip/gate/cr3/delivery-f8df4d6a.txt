@@ -1,0 +1,13 @@
+delivery machines/switchboard-boiler: 9b12b64 against 594dc1f (forked at 3abd278), 1 commits, 4 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[WARN] scope    1 of 4 files are the card's own
+                not this card's file: M build/scenes/obs/machines/batteryboard.py
+                not this card's file: M build/scenes/obs/machines/board.py
+                not this card's file: M build/scenes/obs/machines/boiler.py
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[PASS] pictures 1 test scene, 14 shots with a picture kept; every shot has one, each the file its note describes
+[PASS] merge    merges cleanly; 52 commits behind the base
+result: PASS (0 failed, 1 to look at)

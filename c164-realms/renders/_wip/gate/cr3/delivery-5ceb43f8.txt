@@ -1,0 +1,12 @@
+delivery interiors/starhall: 41a5c3d against b3cee18 (forked at a14e0cc), 5 commits, 3 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[PASS] scope    3 of 3 files are the card's own
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[WARN] pictures 2 test scenes, 36 shots with a picture kept
+                obs_int_starhall: 18 pictures show 54e923cf; the card's code has changed since (_astrodrive.py, _astroshell.py, _domeboard.py, _doorcase.py ...): draw them again
+                obs_int_starhall_b: 18 pictures show 54e923cf; the card's code has changed since (_astrodrive.py, _astroshell.py, _domeboard.py, _doorcase.py ...): draw them again
+[PASS] merge    merges cleanly; 41 commits behind the base
+result: PASS (0 failed, 1 to look at)

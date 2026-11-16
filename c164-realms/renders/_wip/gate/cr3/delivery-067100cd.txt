@@ -1,0 +1,12 @@
+delivery interiors/batteryroom: d3a02b6 against b97bf1f (forked at ae08058), 7 commits, 3 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[PASS] scope    3 of 3 files are the card's own
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[WARN] pictures 2 test scenes, 8 shots with a picture kept
+                obs_int_batteryroom: 7 pictures show 98949334; the card's code has changed since (_astrodrive.py, _astroshell.py, _domeboard.py, _doorcase.py ...): draw them again
+                obs_int_batteryroom_bare: 1 pictures show 98949334; the card's code has changed since (_astrodrive.py, _astroshell.py, _domeboard.py, _doorcase.py ...): draw them again
+[PASS] merge    merges cleanly; 94 commits behind the base
+result: PASS (0 failed, 1 to look at)

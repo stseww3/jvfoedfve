@@ -1,0 +1,46 @@
+cr3 gate: the head e1b88659, 04:57:48 UTC
+delivery 4ca80807 machines/cablecar-winch b2778f3c: PASS (0 failed, 1 to look at)
+delivery b9b6c9cc machines/armillary c5742a12: PASS (0 failed, 1 to look at)
+delivery b5c51865 machines/recorders 752dbdaf: PASS (0 failed, 2 to look at)
+delivery c6880ffb machines/clocks 7232d1af: PASS (0 failed, 1 to look at)
+delivery a4dfc4f0 interiors/timeroom 157032b1: PASS (0 failed, 1 to look at)
+delivery 052adc47 interiors/starhall 940af03c: PASS (0 failed, 1 to look at)
+delivery 067100cd interiors/batteryroom d3a02b66: PASS (0 failed, 1 to look at)
+delivery e36ca0c2 machines/radiomast 3e864a1a: PASS (0 failed, 2 to look at)
+delivery 50feba62 interiors/domeroom c5de5410: PASS (0 failed, 2 to look at)
+delivery b55224c3 machines/refractor 9e2cb75d: PASS (0 failed, 1 to look at)
+delivery 6adcf111 interiors/timeroom 4cc41ab0: PASS (0 failed, 1 to look at)
+delivery 8d51207d machines/meridian-astrograph 439a660f: PASS (0 failed, 2 to look at)
+delivery bdfc379d interiors/starhall 743429bc: PASS (0 failed, 1 to look at)
+delivery 8e2ed222 interiors/powerhouse d83bda9a: PASS (0 failed, 1 to look at)
+delivery 3e595cac interiors/domeroom 6a08e267: PASS (0 failed, 2 to look at)
+delivery e7ec8dbe interiors/batteryroom b858c67e: PASS (0 failed, 0 to look at)
+delivery ab3d47c2 machines/clocks a36e1207: PASS (0 failed, 2 to look at)
+delivery 2e797d6e interiors/astroroom 2c8adaa9: PASS (0 failed, 1 to look at)
+delivery faeffdf1 machines/refractor f8ca3230: PASS (0 failed, 1 to look at)
+delivery d972a7e7 interiors/starhall 7e193afe: PASS (0 failed, 1 to look at)
+delivery 7df4594a interiors/domeroom 6da22d2f: PASS (0 failed, 1 to look at)
+delivery 594dc1f2 interiors/clockroom 299745d2: PASS (0 failed, 0 to look at)
+delivery f8df4d6a machines/switchboard-boiler 9b12b64c: PASS (0 failed, 1 to look at)
+delivery 5ceb43f8 interiors/starhall 41a5c3d3: PASS (0 failed, 1 to look at)
+delivery b68c7bcb interiors/starhall 73104b4b: PASS (0 failed, 1 to look at)
+delivery 6ef580aa machines/meridian-astrograph 19091040: PASS (0 failed, 2 to look at)
+delivery f763d77f interiors/chartroom 692101eb: PASS (0 failed, 1 to look at)
+delivery a839446a interiors/platevault acf8fbd1: PASS (0 failed, 1 to look at)
+delivery dd3d8f3d machines/domegear 22c5d971: PASS (0 failed, 2 to look at)
+checkall (exit 1): 102 scenes in 148 s: 97 pass (56 with warnings), 5 FAIL: obs_mach_engine_dynamo, obs_mach_switchboard_boiler, obs_mot_small_life, obs_mot_smoke_bench, obs_mot_smoke_room
+    FAIL  obs_mach_engine_dynamo: 1 failed, 0 with warnings, skipped: sight (4 s)
+          [FAIL] entities: 22 display entities, 26 models never placed
+              8 display entities show 'c164:site_power_vent', which the pack does not have
+    FAIL  obs_mach_switchboard_boiler: 1 failed, 0 with warnings, skipped: sight (4 s)
+          [FAIL] entities: 25 display entities, 26 models never placed
+              8 display entities show 'c164:site_power_vent', which the pack does not have
+    FAIL  obs_mot_small_life: 1 failed, 0 with warnings, skipped: flatwall (2 s)
+          [FAIL] entities: 41 display entities, 8 shown through a matrix that is no turn, no face stretched, 22 models never placed
+              8 display entities show 'c164:site_power_vent', which the pack does not have
+    FAIL  obs_mot_smoke_bench: 1 failed, 0 with warnings, skipped: flatwall, sight (2 s)
+          [FAIL] entities: 38 display entities, 26 models never placed
+              8 display entities show 'c164:site_power_vent', which the pack does not have
+    FAIL  obs_mot_smoke_room: 1 failed, 0 with warnings, skipped: flatwall, sight (2 s)
+          [FAIL] entities: 38 display entities, 26 models never placed
+              8 display entities show 'c164:site_power_vent', which the pack does not have
