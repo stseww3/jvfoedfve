@@ -1,0 +1,13 @@
+check obs_props_ironwork at cf306dc
+[PASS] regen     6383 blocks, 34 entities, 24 models, 768 resource-pack files, 9 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.1 s)
+[PASS] conflicts the scene writes 767 files, no file written twice, the folders and the prefix of props are kept (13 packages run alone)
+[PASS] strays    153 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      577 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    23 kinds of block placed, 12 barrier cells (x 39, y 0..1, z -5..5), all in the occupancy table
+[SKIP] flatwall  a test scene of props: its sample walls and backdrops are meant to be flat
+[PASS] entities  34 display entities, 1 shown through a matrix that is no turn, no face stretched, 2 models never placed
+[PASS] views     24 shots, most display entities in view: 33 (railing), limit 600; counted without what walls hide; the game draws up to 34 (front): a display entity without width and height is drawn outside the view too
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    nothing moves
+result: PASS (0 failed, 0 with warnings)

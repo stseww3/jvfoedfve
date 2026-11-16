@@ -1,0 +1,11 @@
+delivery props/signals: 1c190c8 against 4e955c0 (forked at bc105b1), 14 commits, 19 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[PASS] scope    19 of 19 files are the card's own
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[WARN] pictures 1 test scene, 12 shots with a picture kept
+                obs_props_signals: 12 pictures show f5e9c5c3; the card's code has changed since (_kit.py): draw them again
+[PASS] merge    merges cleanly; 19 commits behind the base
+result: PASS (0 failed, 1 to look at)

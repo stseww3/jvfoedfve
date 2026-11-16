@@ -1,0 +1,27 @@
+check obs_int_timeroom at cf306dc
+[PASS] regen     2096 blocks, 104 entities, 192 models, 1272 resource-pack files, 502 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.8 s)
+[PASS] conflicts the scene writes 1271 files, no file written twice, the folders and the prefix of interiors are kept (9 packages run alone)
+[PASS] strays    321 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      913 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    32 kinds of block placed, all in the occupancy table
+[WARN] flatwall  1 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+                 smooth_sandstone facing west: flat over 9x9, the square's top corner at (0, 14, -6)
+[PASS] entities  104 display entities, 4 drawn out along one axis, 135 models never placed
+[PASS] views     12 shots, most display entities in view: 104 (int_door), limit 600; counted without what walls hide; the game draws up to 104 (v10): a display entity without width and height is drawn outside the view too
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    21 parts and 0 points on 7 chains, 494 function files; 7 commands in the busiest tick (limit 120), 1.5 a tick on average (limit 40)
+                 chain of 32 ticks: 4 functions, 10 commands a cycle, starts 2 ticks after start
+                 chain of 40 ticks: 10 functions, 31 commands a cycle, starts 1 ticks after start
+                 chain of 300 ticks: 12 functions, 25 commands a cycle, starts 13 ticks after start
+                 chain of 1200 ticks: 60 functions, 361 commands a cycle, starts 4 ticks after start
+                 chain of 2400 ticks: 12 functions, 25 commands a cycle, starts 8 ticks after start
+                 chain of 6000 ticks: 30 functions, 181 commands a cycle, starts 5 ticks after start
+                 chain of 72000 ticks: 360 functions, 2161 commands a cycle, starts 7 ticks after start
+                 mach_rec_drum: 12 steps in 2400 ticks: its middle lies 0.05 blocks off the axis
+                 int_timeroom_clock_hand_h: 360 steps in 72000 ticks: its middle lies 0.08 blocks off the axis
+                 int_timeroom_clock_hand_m: 30 steps in 6000 ticks: its middle lies 0.12 blocks off the axis
+                 int_timeroom_clock_hand_h: 360 steps in 72000 ticks: its middle lies 0.08 blocks off the axis
+                 int_timeroom_clock_hand_m: 30 steps in 6000 ticks: its middle lies 0.12 blocks off the axis
+                 ... and 6 more
+result: PASS (0 failed, 1 with warnings)

@@ -1,0 +1,134 @@
+{
+ "scene": "obs_int_astroroom",
+ "commit": "cf306dc",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "453 blocks, 33 entities, 76 models, 924 resource-pack files, 26 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.5 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 923 files, no file written twice, the folders and the prefix of interiors are kept (9 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "205 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "681 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "15 kinds of block placed, 5 barrier cells (x 11..13, y 18, z 28..32), all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "PASS",
+   "summary": "no wall face runs flat over more than 5x5",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "33 display entities, 54 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "9 shots, most display entities in view: 33 (ext_door), limit 600; counted without what walls hide; the game draws up to 33 (int_door): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "int_door",
+      "in_view": 23,
+      "drawn": 33,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_right",
+      "in_view": 17,
+      "drawn": 33,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_plate",
+      "in_view": 13,
+      "drawn": 33,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_desk",
+      "in_view": 13,
+      "drawn": 33,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_slit",
+      "in_view": 29,
+      "drawn": 33,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_side",
+      "in_view": 25,
+      "drawn": 33,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_north",
+      "in_view": 18,
+      "drawn": 33,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "ext_door",
+      "in_view": 33,
+      "drawn": 33,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "ext_se",
+      "in_view": 33,
+      "drawn": 33,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "4 parts and 0 points on 2 chains, 18 function files; 5 commands in the busiest tick (limit 120), 0.4 a tick on average (limit 40)",
+   "details": [
+    "chain of 32 ticks: 4 functions, 10 commands a cycle, starts 1 ticks after start",
+    "chain of 400 ticks: 8 functions, 33 commands a cycle, starts 2 ticks after start"
+   ]
+  }
+ ]
+}

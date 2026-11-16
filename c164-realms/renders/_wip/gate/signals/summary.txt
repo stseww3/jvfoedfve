@@ -1,0 +1,7 @@
+gate props/signals 1c190c8c: the merged tree cf306dc3, the assembly as it was 4e955c0a
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] pictures 1 test scene, 12 shots with a picture kept
+                    obs_props_signals: 12 pictures show f5e9c5c3; the card's code has changed since (_kit.py): draw them again
+check.py: 107 scenes in 183 s: 107 pass (59 with warnings)
+pictures: [PASS] selfshots obs_props_signals at cf306dc3: 12 of 12 kept pictures are what the code draws
+result: PASS

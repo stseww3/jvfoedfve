@@ -1,0 +1,159 @@
+{
+ "scene": "obs_props_pneumatic",
+ "commit": "cf306dc",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "2096 blocks, 120 entities, 199 models, 1293 resource-pack files, 506 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.7 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 1292 files, no file written twice, the folders and the prefix of props are kept (13 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "328 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "927 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "32 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of props: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "WARN",
+   "summary": "120 display entities, 4 drawn out along one axis, 135 models never placed",
+   "details": [
+    "prop_pneu_plate_a1 x1: 64/64/64 pixels to the block along x/y/z, not 16"
+   ]
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "10 shots, most display entities in view: 105 (v10), limit 600; counted without what walls hide; the game draws up to 120 (v10): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "v10",
+      "in_view": 105,
+      "drawn": 120,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "room10",
+      "in_view": 78,
+      "drawn": 120,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "pier10",
+      "in_view": 77,
+      "drawn": 120,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "station3",
+      "in_view": 25,
+      "drawn": 120,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "station2",
+      "in_view": 13,
+      "drawn": 120,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "plate2",
+      "in_view": 38,
+      "drawn": 120,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "riser",
+      "in_view": 29,
+      "drawn": 120,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "bend_up",
+      "in_view": 22,
+      "drawn": 120,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "beam_up",
+      "in_view": 23,
+      "drawn": 120,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "east_end",
+      "in_view": 15,
+      "drawn": 120,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "23 parts and 0 points on 8 chains, 498 function files; 7 commands in the busiest tick (limit 120), 1.6 a tick on average (limit 40)",
+   "details": [
+    "chain of 32 ticks: 4 functions, 10 commands a cycle, starts 2 ticks after start",
+    "chain of 40 ticks: 10 functions, 31 commands a cycle, starts 1 ticks after start",
+    "chain of 300 ticks: 12 functions, 25 commands a cycle, starts 13 ticks after start",
+    "chain of 600 ticks: 4 functions, 9 commands a cycle, starts 9 ticks after start",
+    "chain of 1200 ticks: 60 functions, 361 commands a cycle, starts 4 ticks after start",
+    "chain of 2400 ticks: 12 functions, 25 commands a cycle, starts 8 ticks after start",
+    "chain of 6000 ticks: 30 functions, 181 commands a cycle, starts 5 ticks after start",
+    "chain of 72000 ticks: 360 functions, 2161 commands a cycle, starts 7 ticks after start",
+    "mach_rec_drum: 12 steps in 2400 ticks: its middle lies 0.05 blocks off the axis",
+    "int_timeroom_clock_hand_h: 360 steps in 72000 ticks: its middle lies 0.08 blocks off the axis",
+    "int_timeroom_clock_hand_m: 30 steps in 6000 ticks: its middle lies 0.12 blocks off the axis",
+    "int_timeroom_clock_hand_h: 360 steps in 72000 ticks: its middle lies 0.08 blocks off the axis",
+    "int_timeroom_clock_hand_m: 30 steps in 6000 ticks: its middle lies 0.12 blocks off the axis",
+    "int_timeroom_clock_hand_h: 360 steps in 72000 ticks: its middle lies 0.08 blocks off the axis",
+    "int_timeroom_clock_hand_m: 30 steps in 6000 ticks: its middle lies 0.12 blocks off the axis",
+    "int_timeroom_clock_hand_h: 360 steps in 72000 ticks: its middle lies 0.08 blocks off the axis",
+    "int_timeroom_clock_hand_m: 30 steps in 6000 ticks: its middle lies 0.12 blocks off the axis",
+    "int_timeroom_clock_hand_h: 360 steps in 72000 ticks: its middle lies 0.08 blocks off the axis",
+    "int_timeroom_clock_hand_m: 30 steps in 6000 ticks: its middle lies 0.12 blocks off the axis"
+   ]
+  }
+ ]
+}
