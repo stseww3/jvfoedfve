@@ -132,7 +132,8 @@ BROWN = (("old_copper", 0), ("old_copper", 1), ("old_copper", 2), ("dark_wood", 
 BLUE = (("enamel", 0), ("enamel", 1), ("enamel", 2), ("enamel", 1))
 GREY = (("iron", 3), ("iron", 4))
 PALE = (("cream", 0),)
-BINDINGS = (BROWN + BROWN + BLUE + GREY, BLUE + BLUE + GREY + PALE, (), BLUE + BROWN + BROWN + PALE, BROWN + GREY + GREY + BLUE)
+# one vellum set in the whole wall is enough: a run of it is the lightest thing on a shelf
+BINDINGS = (BROWN + BROWN + BLUE + GREY, BLUE + BLUE + GREY + BROWN, (), BLUE + BROWN + BROWN + PALE, BROWN + GREY + GREY + BLUE)
 
 
 class _Spines:
