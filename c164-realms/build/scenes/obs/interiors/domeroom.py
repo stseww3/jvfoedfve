@@ -20,31 +20,33 @@ What the room adds, from the floor up:
     17       the floor's finish: a dark border along the wall; the observing floor east of the pier,
              level with the boards: dark boards from the iron curb of the pier's opening on, an
              iron plate at each corner
-    18..22   the drum's lining: dark boards in front of the stone all the way round, open at the two
-             doors, at the windows the room sees and in the column of the hand gear's shaft
-    23       the ring beam: iron on top of the lining, fixed to the stone; the dome's rail lies on it
-    24       the ledge on the inner leaf and the row over the ring beam, left empty: the track, the
+    18..22   the drum's lining: boards in front of the stone all the way round, open at the two doors
+             and in the column of the hand gear's shaft; in the reveal of every window the room
+             sees a shutter of dark panelling stands shut
+    23       the lining's cornice: a moulding of the same boards
+    24       the ledge on the inner leaf and the row over the cornice, left empty: the track, the
              rollers and the toothed ring (machines/domegear)
     25..26   the dome's ring girder over that ledge: what turns, and what the skeleton stands on
              (under the open slit one row, level with its sill)
-    27..     the vault: dark boards on the inside of every plate; an iron curb under the skin round
-             the slit, carried on as a band of plate over the crown to the far side: the top
-             flanges of the two arch girders, which come down on the ring girder as riveted piers
+    27..     the vault: boards on the inside of every plate, an iron curb round the slit; under the
+             boards the dome's skeleton as display models (interiors/_domeframe): the ring girder
+             in front of its blocks, the two lattice arch girders beside the slit, a lattice rib
+             on every seam, three rings of purlins
 
-and what stands in the room: the switchboard of the dome's drive built into the lining on the east
-axis, the sidereal clock on the south axis, three cabinets on the north axis, the record desk
-south-west of the pier, the observing chair parked beyond it, boxes by the south wall.
+and what stands in the room: the switchboard of the dome's drive on the east axis, the sidereal
+clock on the south axis, three cabinets on the north axis and a chart table beside them, the record
+desk south-west of the pier, the observing chair parked beyond it, plate boxes by the south wall.
 
 Light (plan 3.2): the sky in the slit is the cold base and the brightest thing. The room's own warm
-points are the pilot lamps of the switchboard and the clock's dial, both third rank. The one red
-lamp of the room is the telescope's, by the eyepiece (director, g2 #33812): the desk has none.
+points are the pilot lamps of the switchboard and the clock's dial, both third rank and both under
+the one lamp of the room: the telescope's red one by the eyepiece (director, g2 #33812). The desk
+has none.
 
 The shared pieces come from props/furniture, props/paper and props/instruments (the clock); while
 those are not in the tree they stand in as blocks. The observing chair is the room's own model.
 
-build() is what the master scene calls; it places nothing until MOVED_IN is set (main/shell and
-main/dome in the master scene, the room reviewed). Until then the room lives in its box test scene
-(build/scenes/obs_int_domeroom), which calls dress().
+build() is what the master scene calls; it places nothing unless MOVED_IN is set. The room is
+judged in its box test scene (build/scenes/obs_int_domeroom), which calls dress().
 """
 import functools
 import importlib
@@ -61,7 +63,7 @@ from ..props import _kit as K
 from . import _domeframe as F
 
 ORDER = 80                  # after the shell and the dome (60)
-MOVED_IN = False
+MOVED_IN = True             # the room is in the master scene (COMMON 0.10: switched on with the delivery)
 PREFIX = "int_domeroom_"
 
 CX, CZ = S.DOME_CENTRE
