@@ -8,9 +8,9 @@ here stands against the wall:
 
   a "academy"    the record office. At the west end of the south gallery a run in dark wood: two
                  cabinets of record cards, one of instruments and, nearest the door, a glazed case
-                 with a log book open in it; a table globe, two shut log books and a sextant on
-                 the cabinets' tops. At the east end of the north gallery, beside the great chart,
-                 a cabinet of instruments with the glass ball of a sunshine recorder on it.
+                 with a log book open in it; the glass ball of a sunshine recorder, two shut log
+                 books and a sextant on the cabinets' tops. At the east end of the north gallery,
+                 beside the great chart, a cabinet of instruments with a table globe on it.
   b "workshop"   the store. In the same places one instrument cabinet with its sextant, a packing
                  case with a smaller one on it and a travelling trunk as they came up from the
                  cable car, a log book left on the trunk's lid and a barometer hung on the wall
@@ -19,7 +19,9 @@ here stands against the wall:
 Both runs are looked along more than they are looked at: the hall's two gallery pictures stand at
 the far end of each walk. So the south run steps down toward the door (the low piece first, the
 tall one behind it, the instrument on that turned to face down the walk), and what stands at the
-end of the north walk carries a ball, which is the same outline from every side.
+end of the north walk carries a globe: a ball is the same outline from every side, and its brass
+meridian and green sea hold before the east windows whether those glow or are lined dark, which
+the recorder's dark glass would not.
 
 Kept clear (interiors/starhall, c348): the wing doors and a cell either side of them, the great
 charts, the bridge onto the ring stair and the north walk west of it, the window niches. Nothing
@@ -65,13 +67,13 @@ SETS = {
         ("furniture", "card_cabinet", "south", RUN[1] + 0.5, None, 0.0),
         ("furniture", "instrument_cabinet", "south", RUN[2] + 0.5, None, 0.0),
         ("furniture", "display_case", "south", RUN[3] + 0.5, None, 0.0),
-        ("instruments", "globe", "south", RUN[0] + 0.5, "card_cabinet", 25.0),
+        ("instruments", "sunshine_recorder", "south", RUN[0] + 0.5, "card_cabinet", 0.0),
         ("paper", "logbook_shut", "south", RUN[1] + 0.5, "card_cabinet", 8.0),
         ("paper", "logbook_shut", "south", RUN[1] + 0.5, ("card_cabinet", 2.0 * PX), -14.0),
         ("instruments", "sextant", "south", RUN[2] + 0.5, "instrument_cabinet", DOWN_THE_WALK),
         ("paper", "logbook", "south", RUN[3] + 0.5, "display_case", 6.0),
         ("furniture", "instrument_cabinet", "north", LAST + 0.5, None, 0.0),
-        ("instruments", "sunshine_recorder", "north", LAST + 0.5, "instrument_cabinet", 0.0),
+        ("instruments", "globe", "north", LAST + 0.5, "instrument_cabinet", 25.0),
     ),
     "b": (
         ("furniture", "instrument_cabinet", "south", RUN[0] + 0.5, None, 0.0),
