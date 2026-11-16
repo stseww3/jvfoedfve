@@ -1,0 +1,73 @@
+section x=15  (z -7..7 left to right, y 15..-2 top to bottom)
+  15 SSS.........SSS
+  14 CSSwwwwwwwwwSSC
+  13 ^S...........S^
+  12 .S...........S.
+  11 .S...........S.
+  10 .S...........S.
+   9 .S...........S.
+   8 .S...........S.
+   7 CS.0.......0.SC
+   6 SSSR.......RSSS
+   5 ss^.........^ss
+   4 0s...........s0
+   3 0s...........s0
+   2 ssL.........Lss
+   1 DDd.........dDD
+   0 DDd.........dDD
+  -1 PPPtPPPPPPPtPPP
+  -2 ...............
+section x=16  (z -7..7 left to right, y 15..-2 top to bottom)
+  15 SSSSSSSSSSSSSSS
+  14 .SSSSSSSSSSSSS.
+  13 .SgggSgggSgggS.
+  12 .SgggSgggSgggS.
+  11 .SgggSgggSgggS.
+  10 .SgggSgggSgggS.
+   9 .SgggSgggSgggS.
+   8 .SgggSgggSgggS.
+   7 .SSSSSSSSSSSSS.
+   6 ^SSSSSSESSSSSS^
+   5 .s000s...s000s.
+   4 .s000s...s000s.
+   3 .s000s...s000s.
+   2 .s000s...s000s.
+   1 /D000D...D000D/
+   0 DD000D...D000DD
+  -1 PPDDDPDDDPDDDPP
+  -2 ...............
+plan y=1  (x -9..18 left to right, z -7..7 top to bottom)
+     1234567890123456789012345678
+  -7 //DDD.....D............DD///
+  -6 DDDDDDDDDDDDDDDDDDDDDDDDDDDD
+  -5 /DDDDDDDD^.dGGGddDddDddDd0..
+  -4 /DDDDDDDD^....L..........0..
+  -3 DDDDDDDDD^...............0..
+  -2 DDDDDDDDDDD..............DDD
+  -1 ............DDD.............
+   0 ............DDD.....L.......
+   1 ............DDD.............
+   2 DDDDDDDDDDD..............DDD
+   3 DDDDDDDDD^...............0..
+   4 /DDDDDDDD^....L..........0..
+   5 /DDDDDDDD^.ddddddDddDddDd0..
+   6 DDDDDDDDDDDDDDDDDDDDDDDDDDDD
+   7 //DDD.....D............DD///
+plan y=3  (x -9..18 left to right, z -7..7 top to bottom)
+     1234567890123456789012345678
+  -7 ..sss.....s............g0...
+  -6 ssssssssssssssssssssssssssss
+  -5 .ssssss^....~~~..S..S..S.0..
+  -4 .ssssss^.................0..
+  -3 sssssss^.................0..
+  -2 sssssssssss..............sss
+  -1 ............sss.............
+   0 ............sss.L...........
+   1 ............sss.............
+   2 sssssssssss..............sss
+   3 sssssss^.................0..
+   4 .ssssss^.................0..
+   5 .ssssss^.........S..S..S.0..
+   6 ssssssssssssssssssssssssssss
+   7 ..sss.....s............g0...
+other blocks: {'0': 'oxidized_copper_bars'}
