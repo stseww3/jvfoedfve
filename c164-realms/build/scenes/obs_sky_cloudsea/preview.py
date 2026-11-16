@@ -4,7 +4,7 @@ real client.
 
     cd build && python -m scenes.obs_sky_cloudsea.preview --out ../renders/_wip/pre
         [--scene obs_sky_cloudsea] [--only v12,sunset_west | --only none] [--looks blue,glow]
-        [--laws "a:1600,587,12;b:1600,28.6,8"] [--short 60,150] [--skin 8,12] [--chunks 10]
+        [--laws "a:1600,587,12;b:1600,28.6,8"] [--short 60,150] [--short-by flat|true] [--skin 8,12] [--chunks 10]
         [--size 1280x720] [--plan] [--sheet 2] [--set "REACH=140.0" ...]
 
 build/render.py draws a scene as the registry look showed it: one fog colour for the whole
@@ -23,8 +23,10 @@ shaders take it:
     it), sky_at() what is seen where no block is. The stars and the comet are the offline
     renderer's, above the horizon only.
   - the short law, for what lies on the sea: from --short's first number of blocks to its second
-    a block is taken into what is painted behind it, whole up to --skin's first number of blocks
-    over the sea's top and not at all from its second on. The block clouds end in the painted sea
+    (--short-by flat: counted over the ground, so that a camera high over the sea still sees the
+    sea under it; true: along the line of sight) a block is taken into what is painted behind it,
+    whole up to --skin's first number of blocks over the sea's top and not at all from its second
+    on. The block clouds end in the painted sea
     by it, and nothing that stands over the sea is touched. (A2 writes it into sky/mood.py as
     levelled(); until that has come this is the understanding of it.)
   - blocks: only the chunks the game has loaded round the camera at --chunks (10), and the game's
@@ -61,7 +63,7 @@ from scenes.obs.sky import mood as sky
 SHORT = (60.0, 150.0)       # the short law: none nearer than the first, whole at the second
 SKIN = (8.0, 12.0)          # ... whole on what is no higher than the first over the sea's top, none from the second
 # places in the array of numbers the compiled loop takes
-Q_AIR, Q_MIST, Q_MIST_H, Q_HEIGHT, Q_SEA, Q_SHORT, Q_SKIN, Q_FAR, Q_SIZE = 0, 1, 2, 3, 4, 5, 7, 9, 11
+Q_AIR, Q_MIST, Q_MIST_H, Q_HEIGHT, Q_SEA, Q_SHORT, Q_SKIN, Q_FAR, Q_FLAT, Q_SIZE = 0, 1, 2, 3, 4, 5, 7, 9, 11, 12
 
 
 @njit(cache=True)
@@ -87,8 +89,9 @@ def _behind(q, t, y, dx, dy, dz):
     """The share of what is painted behind it in a block t away, at grid height y: the short law
     for what lies on the sea, and the game's own fog at the rim of the view distance."""
     s = 0.0
-    if q[Q_SHORT + 1] > q[Q_SHORT] and t > q[Q_SHORT]:
-        s = min(1.0, (t - q[Q_SHORT]) / (q[Q_SHORT + 1] - q[Q_SHORT]))
+    across = t * math.sqrt(dx * dx + dz * dz) if q[Q_FLAT] > 0.0 else t
+    if q[Q_SHORT + 1] > q[Q_SHORT] and across > q[Q_SHORT]:
+        s = min(1.0, (across - q[Q_SHORT]) / (q[Q_SHORT + 1] - q[Q_SHORT]))
         s *= min(1.0, max(0.0, (q[Q_SKIN + 1] - (y - q[Q_SEA])) / (q[Q_SKIN + 1] - q[Q_SKIN])))
     c = t * max(math.sqrt(dx * dx + dz * dz), abs(dy))
     e = 0.0
@@ -240,7 +243,7 @@ def rays(cam, width, height):
     return np.ascontiguousarray(d / np.linalg.norm(d, axis=1, keepdims=True))
 
 
-def numbers(look, height, sea_y, short, skin):
+def numbers(look, height, sea_y, short, skin, flat):
     """The numbers the compiled loop takes: the fog's as sky/mood has them now, how high the
     camera is over the sea's top, the sea's top in the grid, the short law, the rim."""
     q = np.zeros(Q_SIZE)
@@ -249,6 +252,7 @@ def numbers(look, height, sea_y, short, skin):
     q[Q_SHORT:Q_SHORT + 2] = short
     q[Q_SKIN:Q_SKIN + 2] = skin
     q[Q_FAR:Q_FAR + 2] = look.far_start, look.far_end
+    q[Q_FLAT] = 1.0 if flat else 0.0
     return q
 
 
@@ -318,6 +322,8 @@ def main():
     ap.add_argument("--short", default=f"{SHORT[0]:g},{SHORT[1]:g}", help="the short law: from, to (0,0: none)")
     ap.add_argument("--skin", default=f"{SKIN[0]:g},{SKIN[1]:g}",
                     help="... whole up to this high over the sea's top, none from this high")
+    ap.add_argument("--short-by", default="flat", choices=("flat", "true"),
+                    help="the short law's distance: over the ground (flat) or along the line of sight (true)")
     ap.add_argument("--chunks", type=int, default=10, help="view distance in chunks")
     ap.add_argument("--size", default="1280x720")
     ap.add_argument("--fov", type=float, default=77.0)
@@ -388,7 +394,7 @@ def main():
                 t1 = time.time()
                 sky.AIR, sky.MIST, sky.MIST_HEIGHT = air, mist, mist_height
                 twin = shaders.Twin(which if which in sky.LOOKS else sky.DEFAULT)
-                q = numbers(look, eye - twin.n["sea_y"], sea_y, short, skin)
+                q = numbers(look, eye - twin.n["sea_y"], sea_y, short, skin, args.short_by == "flat")
                 checked(q)
                 out = np.zeros((size[1], size[0], 3))
                 _draw(w, q, cam, d, np.ascontiguousarray(twin.band(d)), np.ascontiguousarray(twin.behind(d, eye)),
@@ -401,7 +407,7 @@ def main():
                     picture.save(f"{args.out}-{label}.png")
                 print(f"{args.out}-{label} (tick {look.tick}, {args.chunks} chunks, the eye {q[Q_HEIGHT]:g} over the sea; "
                       f"fog: air {air:g}, mist {mist:g} thinning by {mist_height:g}; short law {short[0]:g}..{short[1]:g} "
-                      f"up to {skin[0]:g}..{skin[1]:g} over the sea, {time.time() - t1:.0f} s)")
+                      f"({args.short_by}) up to {skin[0]:g}..{skin[1]:g} over the sea, {time.time() - t1:.0f} s)")
     if tiles:
         w, h = tiles[0][1].size
         rows = -(-len(tiles) // args.sheet)
