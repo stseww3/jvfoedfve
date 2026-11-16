@@ -72,6 +72,7 @@ Sizes inside the models are in sixteenths of a block (px) whatever scale a model
 import functools
 import importlib
 import math
+import os
 
 from artkit import models as M
 
@@ -506,6 +507,17 @@ CURTAIN_CYCLE = 2400                    # ticks: once in two minutes
 CURTAIN_AT = 1700                       # the tick the curtain sets off: for a minute and a half the comet stands in the open slit
 CURTAIN_TICKS = 277                     # from there to shut: the bar goes a block in a little under a second
 CURTAIN_HOLD = 120                      # ticks the slit stays shut
+
+
+def _still():
+    """For a still picture of the curtain drawn (the offline renderer shows every piece where it was
+    placed, so the slit open): the share of its way, 0 to 1, that the environment's C164_CURTAIN
+    names. place() then puts the bar and the curtain's lengths where they are by that time and
+    does not set them going. 0 when it is not set: the map is always built so."""
+    try:
+        return max(0.0, min(1.0, float(os.environ.get("C164_CURTAIN", "0") or 0.0)))
+    except ValueError:
+        return 0.0
 
 
 def off_path(steps=200):
@@ -1179,16 +1191,23 @@ def place(canvas, origin=(0, 0, 0), version=None):
         canvas.set(*cell, B.BARRIER, keep=True)
     n = 0
     deg, period, keys, sign = turning()
-    moves, panel = curtain_moves(), 0
+    moves, panel, still = curtain_moves(), 0, _still()
     for name, (x, y, z), yaw, turns in layout(version):
         d = _piece(name)
-        if name == "bar" or name.startswith("laths"):               # the curtain is out under the sky
+        part = "bar" if name == "bar" else ("laths", panel) if name.startswith("laths") else None
+        if part is not None:                                        # the curtain is out under the sky
             sky = CURTAIN_LIGHT
+            if still:                                               # a still picture of the curtain on its way: where it is by then
+                start, far, ticks = moves[part][0]
+                turns = turns + (("z", -far * max(0.0, min(1.0, (still * CURTAIN_TICKS - (start - CURTAIN_AT)) / ticks))),)
         else:
             sky = night(*(on_rail(yaw) if name == "trucks" else (x, z)))    # a length's light is that of its place on the ledge
         canvas.add_entity(ox + AX + x, oy + y, oz + AZ + z,
                           M.display(d.m, yaw=yaw, scale=d.scale, turns=turns, brightness=(sky, 0)))
         n += 1
+        panel += name.startswith("laths")
+        if part is not None and still:                              # shown on its way, it stays there
+            continue
         # What moves is set going as it is placed (motion/_kit). The ring, its pinion's shaft and the
         # hand wheel swing in one period, so they are one chain and stay in mesh: sixteen turns of
         # the upright shaft to one of the ring, the same way round (the ring's teeth look inwards),
@@ -1205,10 +1224,9 @@ def place(canvas, origin=(0, 0, 0), version=None):
         # curtain's lengths turn about the line through CURTAIN_C, the roll pays the curtain out, the
         # winch winds the hauling chains the other way round and lets the weights down their rails
         elif name == "bar":
-            MK.turn(canvas, CURTAIN_AXIS, moves["bar"], CURTAIN_CYCLE)
+            MK.turn(canvas, CURTAIN_AXIS, moves[part], CURTAIN_CYCLE)
         elif name.startswith("laths"):
-            MK.turn(canvas, CURTAIN_AXIS, moves["laths", panel], CURTAIN_CYCLE, name=f"{PREFIX}curtain.{panel}")
-            panel += 1
+            MK.turn(canvas, CURTAIN_AXIS, moves[part], CURTAIN_CYCLE, name=f"{PREFIX}curtain.{part[1]}")
         elif name == "roll":
             MK.turn(canvas, CURTAIN_AXIS, moves["roll"], CURTAIN_CYCLE)
         elif name == "winch":
