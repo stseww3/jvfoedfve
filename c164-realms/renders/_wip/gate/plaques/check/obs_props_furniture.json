@@ -1,0 +1,277 @@
+{
+ "scene": "obs_props_furniture",
+ "commit": "b97bf1f",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "1331 blocks, 74 entities, 57 models, 859 resource-pack files, 24 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.2 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 858 files, no file written twice, the folders and the prefix of props are kept (8 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "186 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "643 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "5 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of props: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "74 display entities, 10 shown through a matrix that is no turn, no face stretched, 28 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "33 shots, most display entities in view: 74 (far), limit 600; counted without what walls hide",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "far",
+      "in_view": 74,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "terrace",
+      "in_view": 22,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "study",
+      "in_view": 25,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "stores",
+      "in_view": 25,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "workroom",
+      "in_view": 33,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "cases",
+      "in_view": 19,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "bench",
+      "in_view": 7,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "bench_end",
+      "in_view": 11,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "coat_stand",
+      "in_view": 22,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "writing_desk",
+      "in_view": 27,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "swivel_chair",
+      "in_view": 27,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "swivel_chair_front",
+      "in_view": 21,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "card_cabinet",
+      "in_view": 37,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "instrument_cabinet",
+      "in_view": 21,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "luggage",
+      "in_view": 19,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "crates",
+      "in_view": 28,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "drafting_table",
+      "in_view": 39,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "drafting_side",
+      "in_view": 42,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "stool",
+      "in_view": 38,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "library_ladder",
+      "in_view": 43,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "display_case",
+      "in_view": 44,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "case_scope",
+      "in_view": 8,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "case_scope_side",
+      "in_view": 52,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "display_table",
+      "in_view": 17,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "plate_box",
+      "in_view": 7,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "shown",
+      "in_view": 6,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "plates",
+      "in_view": 7,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "plates_over",
+      "in_view": 2,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "lenses",
+      "in_view": 6,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "lenses_over",
+      "in_view": 3,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "scale_terrace",
+      "in_view": 10,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "scale_study",
+      "in_view": 21,
+      "drawn": 74,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "scale_hall",
+      "in_view": 14,
+      "drawn": 74,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "1 parts and 0 points on 1 chains, 14 function files; 4 commands in the busiest tick (limit 40), 0.5 a tick on average (limit 10)",
+   "details": [
+    "chain of 40 ticks: 8 functions, 18 commands a cycle, starts 1 ticks after start"
+   ]
+  }
+ ]
+}

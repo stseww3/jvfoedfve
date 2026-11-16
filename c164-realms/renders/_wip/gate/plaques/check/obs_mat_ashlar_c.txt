@@ -1,0 +1,14 @@
+check obs_mat_ashlar_c at b97bf1f
+[PASS] regen     4909 blocks, 4 entities, 4 models, 561 resource-pack files, 10 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (0.6 s)
+[PASS] conflicts the scene writes 560 files, no file written twice, the folders and the prefix of materials are kept (7 packages run alone)
+[PASS] strays    111 pictures, every colour in the palette
+[PASS] refs      430 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   76 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    18 kinds of block placed, all in the occupancy table
+[SKIP] flatwall  a test scene of materials: its sample walls and backdrops are meant to be flat
+[PASS] entities  4 display entities, 1 shown through a matrix that is no turn, no face stretched
+[WARN] views     19 shots, most display entities in view: 4 (walls_graze), limit 600; counted without what walls hide; the game draws up to 4 (stones_a): a display entity without width and height is drawn outside the view too
+                 the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(materials.pack(d) or []) + list(sky.pack(d) or [])
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    nothing moves
+result: PASS (0 failed, 1 with warnings)

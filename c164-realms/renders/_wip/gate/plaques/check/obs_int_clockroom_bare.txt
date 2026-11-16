@@ -1,0 +1,26 @@
+check obs_int_clockroom_bare at b97bf1f
+[PASS] regen     883 blocks, 16 entities, 56 models, 856 resource-pack files, 424 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.4 s)
+[PASS] conflicts the scene writes 855 files, no file written twice, the folders and the prefix of interiors are kept (9 packages run alone)
+[PASS] strays    185 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      641 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    16 kinds of block placed, all in the occupancy table
+[PASS] flatwall  no wall face runs flat over more than 5x5
+[PASS] entities  16 display entities, 49 models never placed
+[PASS] views     2 shots, most display entities in view: 16 (ext_v5), limit 600; counted without what walls hide
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 0.0% hidden (base storey 0.0% by blocks and 0.0% more by models, great windows 0.0%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 0.6 s)
+[PASS] motion    11 parts and 0 points on 4 chains, 416 function files; 6 commands in the busiest tick (limit 40), 0.8 a tick on average (limit 10)
+                 chain of 24 ticks: 6 functions, 14 commands a cycle, starts 1 ticks after start
+                 chain of 100 ticks: 8 functions, 17 commands a cycle, starts 2 ticks after start
+                 chain of 6000 ticks: 36 functions, 163 commands a cycle, starts 3 ticks after start
+                 chain of 72000 ticks: 360 functions, 1801 commands a cycle, starts 4 ticks after start
+                 bld_tower_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.09 blocks off the axis
+                 mach_clock_hand_h: 360 steps in 72000 ticks: its middle lies 0.30 blocks off the axis
+                 mach_clock_hand_m: 30 steps in 6000 ticks: its middle lies 0.50 blocks off the axis
+                 mach_clock_hand_h: 360 steps in 72000 ticks: its middle lies 0.30 blocks off the axis
+                 mach_clock_hand_m: 30 steps in 6000 ticks: its middle lies 0.50 blocks off the axis
+                 mach_clock_hand_h: 360 steps in 72000 ticks: its middle lies 0.30 blocks off the axis
+                 mach_clock_hand_m: 30 steps in 6000 ticks: its middle lies 0.50 blocks off the axis
+                 mach_clock_hand_h: 360 steps in 72000 ticks: its middle lies 0.30 blocks off the axis
+                 ... and 1 more
+result: PASS (0 failed, 0 with warnings)

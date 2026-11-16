@@ -1,0 +1,42 @@
+check obs_props_lamps_site_nearpair at b97bf1f
+[PASS] regen     191078 blocks, 1251 entities, 577 models, 2420 resource-pack files, 929 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (6.3 s)
+[PASS] conflicts the scene writes 2419 files, no file written twice, the folders and the prefix of props are kept (8 packages run alone)
+[PASS] strays    706 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      1683 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[WARN] blocks    98 kinds of block placed, 551 barrier cells (x -1..91, y -6..20, z -38..47), barriers away from any model
+                 116 barrier cells have no model within 3 blocks (x 0..17, y 19..20, z -34..34): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees (A0 #457, 4)
+[SKIP] flatwall  a test scene of props: its sample walls and backdrops are meant to be flat
+[WARN] entities  1251 display entities, 71 drawn out along one axis, 41 shown through a matrix that is no turn, no face stretched, 166 models never placed
+                 prop_elec_cable x1: 10.67/10.67/11.99 pixels to the block along x/y/z, not 16
+                 prop_elec_cable x2: 10.67/10.67/12 pixels to the block along x/y/z, not 16
+                 prop_elec_cable x1: 10.67/10.67/18.44 pixels to the block along x/y/z, not 16
+                 prop_elec_cable x1: 10.67/10.67/25.75 pixels to the block along x/y/z, not 16
+                 prop_elec_cable x1: 10.67/10.67/32.85 pixels to the block along x/y/z, not 16
+                 prop_paper_star_chart x3: 64/64/64 pixels to the block along x/y/z, not 16
+                 prop_paper_star_chart_b x3: 64/64/64 pixels to the block along x/y/z, not 16
+                 int_vault_dark_rope x1: drawn out along z, where the picture of cream~base1 is not even: it smears
+[WARN] views     6 shots, most display entities in view: 1139 (v12), limit 600; counted without what walls hide; the game draws up to 1196 (v1): a display entity without width and height is drawn outside the view too
+                 v1: 1089 display entities in view, a view may have 600
+                 v2: 979 display entities in view, a view may have 600
+                 v12: 1139 display entities in view, a view may have 600
+                 v1_deep: 1089 display entities in view, a view may have 600
+                 v2_deep: 979 display entities in view, a view may have 600
+                 v12_deep: 1139 display entities in view, a view may have 600
+[WARN] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 17.1% hidden (base storey 43.8% by blocks and 7.3% more by models, great windows 5.8%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 4.7 s)
+                 the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a_equator at x 35, y 4, z 0; 4 more kinds; a lamp post takes less than 25% of a bay
+[PASS] motion    61 parts and 72 points on 32 chains, 799 function files and 38 of the packages' own; 19 commands in the busiest tick (limit 40), 9.7 a tick on average (limit 10)
+                 functions of the packages' own: guide/c1 (4 commands), guide/c2 (4 commands), guide/c3 (4 commands), guide/c4 (4 commands), guide/c5 (4 commands), guide/c6 (4 commands), guide/count (8 commands), guide/lens (3 commands), guide/done (6 commands), guide/glow/01 (3 commands), guide/glow/02 (3 commands), guide/glow/03 (3 commands), guide/glow/04 (3 commands), guide/glow/05 (3 commands), guide/glow/06 (3 commands), guide/glow/07 (3 commands), guide/glow/08 (3 commands), guide/glow/09 (3 commands), guide/glow/10 (3 commands), guide/glow/11 (3 commands), guide/glow/12 (3 commands), guide/glow/13 (3 commands), guide/glow/14 (3 commands), guide/glow/15 (3 commands), guide/glow/16 (3 commands), guide/glow/17 (3 commands), guide/glow/18 (3 commands), guide/glow/19 (3 commands), guide/glow/20 (3 commands), guide/glow/21 (3 commands), guide/glow/22 (3 commands), guide/glow/23 (3 commands), guide/glow/24 (3 commands), guide/glow/25 (3 commands), guide/glow (26 commands), guide/first (2 commands), guide/join (1 commands), guide/title (4 commands)
+                 chain of 8 ticks: 2 functions, 12 commands a cycle, starts 2 ticks after start
+                 chain of 16 ticks: 4 functions, 9 commands a cycle, starts 4 ticks after start
+                 chain of 24 ticks: 8 functions, 25 commands a cycle, starts 5 ticks after start
+                 chain of 28 ticks: 4 functions, 9 commands a cycle, starts 2 ticks after start
+                 chain of 32 ticks: 4 functions, 13 commands a cycle, starts 12 ticks after start
+                 chain of 40 ticks: 15 functions, 82 commands a cycle, starts 1 ticks after start
+                 chain of 48 ticks: 12 functions, 66 commands a cycle, starts 3 ticks after start
+                 chain of 50 ticks: 1 functions, 3 commands a cycle, starts 19 ticks after start
+                 chain of 60 ticks: 8 functions, 17 commands a cycle, starts 2 ticks after start
+                 chain of 64 ticks: 4 functions, 9 commands a cycle, starts 8 ticks after start
+                 chain of 80 ticks: 8 functions, 25 commands a cycle, starts 5 ticks after start
+                 ... and 55 more
+result: PASS (0 failed, 4 with warnings)

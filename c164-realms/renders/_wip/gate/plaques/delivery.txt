@@ -1,0 +1,12 @@
+delivery props/plaques: 60672b3 against cee2469 (forked at 052adc4), 1 commits, 1 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[PASS] scope    1 of 1 files are the card's own
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[WARN] pictures 2 test scenes, 0 shots with a picture kept
+                obs_props_plaques: no pictures kept (drawn on the admin's computer, INTERFACE 5: tools/selfshots.py obs_props_plaques --out, then --take here and commit renders/obs_props_plaques/)
+                obs_props_plaques_site: no pictures kept (drawn on the admin's computer, INTERFACE 5: tools/selfshots.py obs_props_plaques_site --out, then --take here and commit renders/obs_props_plaques_site/)
+[PASS] merge    merges cleanly; 6 commits behind the base
+result: PASS (0 failed, 1 to look at)

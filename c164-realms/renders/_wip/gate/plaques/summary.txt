@@ -1,0 +1,10 @@
+gate props/plaques 60672b3c: the merged tree b97bf1f2, the assembly as it was cee24696
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] pictures 2 test scenes, 0 shots with a picture kept
+                    obs_props_plaques: no pictures kept (drawn on the admin's computer, INTERFACE 5: tools/selfshots.py obs_props_plaques --out, then --take here and commit renders/obs_props_plaques/)
+                    obs_props_plaques_site: no pictures kept (drawn on the admin's computer, INTERFACE 5: tools/selfshots.py obs_props_plaques_site --out, then --take here and commit renders/obs_props_plaques_site/)
+check.py: 96 scenes in 136 s: 96 pass (51 with warnings)
+pictures: obs_props_plaques keeps none
+pictures: obs_props_plaques_site keeps none
+pictures: nothing to verify (no test scene of the delivery keeps pictures)
+result: PASS
