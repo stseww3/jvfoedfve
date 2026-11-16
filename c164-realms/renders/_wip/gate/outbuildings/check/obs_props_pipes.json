@@ -1,0 +1,200 @@
+{
+ "scene": "obs_props_pipes",
+ "commit": "d544a4c",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "4181 blocks, 25 entities, 33 models, 795 resource-pack files, 25 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.0 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 794 files, no file written twice, the folders and the prefix of props are kept (12 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "162 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "595 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "18 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of props: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "25 display entities, 6 drawn out along one axis, 18 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "20 shots, most display entities in view: 25 (front), limit 600; counted without what walls hide",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "front",
+      "in_view": 25,
+      "drawn": 25,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "front_foot",
+      "in_view": 25,
+      "drawn": 25,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "oblique",
+      "in_view": 25,
+      "drawn": 25,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "hopper_up",
+      "in_view": 8,
+      "drawn": 25,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "hopper_near",
+      "in_view": 3,
+      "drawn": 25,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "string_above",
+      "in_view": 22,
+      "drawn": 25,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "string_below",
+      "in_view": 17,
+      "drawn": 25,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "clip_near",
+      "in_view": 16,
+      "drawn": 25,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "foot",
+      "in_view": 18,
+      "drawn": 25,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "inlet",
+      "in_view": 21,
+      "drawn": 25,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "inlet_east",
+      "in_view": 18,
+      "drawn": 25,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "inlet_south",
+      "in_view": 10,
+      "drawn": 25,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "inlet_walk",
+      "in_view": 16,
+      "drawn": 25,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "corner_far",
+      "in_view": 25,
+      "drawn": 25,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "heating_front",
+      "in_view": 25,
+      "drawn": 25,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "heating_oblique",
+      "in_view": 13,
+      "drawn": 25,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "heating_along",
+      "in_view": 9,
+      "drawn": 25,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "heating_valve",
+      "in_view": 17,
+      "drawn": 25,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "heating_bend",
+      "in_view": 12,
+      "drawn": 25,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "heating_pier",
+      "in_view": 16,
+      "drawn": 25,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "1 parts and 3 points on 2 chains, 17 function files; 4 commands in the busiest tick (limit 120), 0.3 a tick on average (limit 40)",
+   "details": [
+    "chain of 60 ticks: 8 functions, 18 commands a cycle, starts 1 ticks after start",
+    "chain of 160 ticks: 3 functions, 7 commands a cycle, starts 3 ticks after start"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,242 @@
+{
+ "scene": "obs_main_dome_a",
+ "commit": "d544a4c",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "190575 blocks, 386 entities, 306 models, 1616 resource-pack files, 179 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (4.5 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 1615 files, no file written twice, the folders and the prefix of main are kept (3 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "435 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "1141 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "WARN",
+   "summary": "81 kinds of block placed, 248 barrier cells (x 0..77, y -6..20, z -34..47), barriers away from any model",
+   "details": [
+    "195 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees (A0 #457, 4)"
+   ]
+  },
+  {
+   "check": "flatwall",
+   "status": "PASS",
+   "summary": "no wall face runs flat over more than 5x5",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "WARN",
+   "summary": "386 display entities, 19 drawn out along one axis, 23 shown through a matrix that is no turn, no face stretched, 198 models never placed",
+   "details": [
+    "prop_nameplate_31 x1: 96/96/96 pixels to the block along x/y/z, not 16",
+    "prop_pneu_plate_a1 x1: 64/64/64 pixels to the block along x/y/z, not 16"
+   ]
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "11 shots, most display entities in view: 244 (west), limit 600; counted without what walls hide; the game draws up to 309 (drum): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "v1",
+      "in_view": 240,
+      "drawn": 265,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v2_axis",
+      "in_view": 169,
+      "drawn": 285,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v11",
+      "in_view": 186,
+      "drawn": 260,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "roof",
+      "in_view": 69,
+      "drawn": 292,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "drum",
+      "in_view": 79,
+      "drawn": 309,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "gallery",
+      "in_view": 105,
+      "drawn": 292,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "ridge",
+      "in_view": 59,
+      "drawn": 285,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "aerial",
+      "in_view": 176,
+      "drawn": 238,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "top",
+      "in_view": 238,
+      "drawn": 250,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "slit",
+      "in_view": 210,
+      "drawn": 250,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "west",
+      "in_view": 244,
+      "drawn": 250,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "PASS",
+   "summary": "V1 at (88.5, -2.38, -32.5): the front from y 4 up 13.9% hidden (base storey 43.8% by blocks and 2.4% more by models, great windows 1.7%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 2.5 s)",
+   "details": [],
+   "data": {
+    "the base storey": {
+     "lines": 1104,
+     "hidden": 509,
+     "seen_through": 327,
+     "hidden_by_blocks": 483,
+     "hidden_by_models": 26
+    },
+    "the great windows": {
+     "lines": 1656,
+     "hidden": 28,
+     "seen_through": 0
+    },
+    "the cornice": {
+     "lines": 1104,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the clock tower": {
+     "lines": 672,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the time-ball mast": {
+     "lines": 22,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the great dome": {
+     "lines": 1688,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the small dome": {
+     "lines": 290,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "comet": {
+     "elevation": 41.0,
+     "across": 0.6128,
+     "down": 0.2647,
+     "lost": 0,
+     "body": {
+      "lines": 350,
+      "outside_clear": 0,
+      "covered": 0,
+      "from": -7.29,
+      "to": 1.2,
+      "low": 39.99,
+      "up": 54.24
+     }
+    },
+    "clear": {
+     "up": 61.0,
+     "blocks": [
+      {
+       "name": "between the two ends of the main building",
+       "from": -1.24,
+       "to": 44.16,
+       "low": 0.0,
+       "up": 61.0,
+       "lines": 44835,
+       "covered": 0
+      },
+      {
+       "name": "where the comet hangs, north of the main building",
+       "from": -15.0,
+       "to": -1.49,
+       "low": 35.0,
+       "up": 61.0,
+       "lines": 5880,
+       "covered": 0
+      }
+     ]
+    },
+    "left": {
+     "from": 44.66,
+     "to": 70.0,
+     "posts": []
+    }
+   }
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "18 parts and 13 points on 9 chains, 89 function files; 7 commands in the busiest tick (limit 120), 2.0 a tick on average (limit 40)",
+   "details": [
+    "chain of 24 ticks: 6 functions, 20 commands a cycle, starts 1 ticks after start",
+    "chain of 60 ticks: 8 functions, 23 commands a cycle, starts 6 ticks after start",
+    "chain of 100 ticks: 8 functions, 17 commands a cycle, starts 2 ticks after start",
+    "chain of 120 ticks: 4 functions, 13 commands a cycle, starts 16 ticks after start",
+    "chain of 128 ticks: 4 functions, 13 commands a cycle, starts 3 ticks after start",
+    "chain of 160 ticks: 19 functions, 40 commands a cycle, starts 4 ticks after start",
+    "chain of 300 ticks: 12 functions, 31 commands a cycle, starts 8 ticks after start",
+    "chain of 600 ticks: 18 functions, 45 commands a cycle, starts 10 ticks after start",
+    "chain of 1200 ticks: 4 functions, 11 commands a cycle, starts 12 ticks after start",
+    "site_weather_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.08 blocks off the axis",
+    "bld_tower_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.09 blocks off the axis"
+   ]
+  }
+ ]
+}
