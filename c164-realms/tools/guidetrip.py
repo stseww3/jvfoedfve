@@ -300,6 +300,10 @@ def main():
     ap.add_argument("--sha256")
     ap.add_argument("--name")
     ap.add_argument("--parts", default=",".join(PARTS))
+    ap.add_argument("--pretend", metavar="FILE",
+                    help="a list in tools/win/shots/ of places taken for watched, {\"watched\": {tag: [[x, y, z, reach], ...]}, "
+                         "\"sparks\": [[x, y, z], ...]}: the walk is tried on a save that has no guide (nothing "
+                         "happens at the stops; the moves, the pictures and the questions are the same)")
     ap.add_argument("--frames", type=int, default=22)
     ap.add_argument("--gap", type=float, default=0.75)
     ap.add_argument("--view", type=int, default=nodetrip.BOARD_VIEW)
@@ -364,6 +368,14 @@ def main():
         found = saveguide.read(zip_path)
         archive = zipfile.ZipFile(zip_path)
         blocks = saveguide.Blocks(archive)
+        if args.pretend:
+            with open(os.path.join(HERE, "win", "shots", os.path.basename(args.pretend)), encoding="utf-8") as fh:
+                pretended = json.load(fh)
+            for tag, near in pretended.get("watched", {}).items():
+                found["watched"][tag] = saveguide.place(blocks, near, "--pretend " + os.path.basename(args.pretend))
+            found["sparks"] = pretended.get("sparks", found["sparks"])
+            tell(f"PRETENDED: {len(pretended.get('watched', {}))} places of {args.pretend} are taken for watched; "
+                 f"the save itself does nothing at them")
         tell(f"in the save's files: {len(found['plaques'])} text displays, {len(found['shown'])} commands that show "
              f"words, {len(found['watched'])} watched places, {found['functions']} functions")
         for plaque in plaques_of(found):
