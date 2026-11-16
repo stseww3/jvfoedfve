@@ -17,12 +17,13 @@ sky.vsh, sky.fsh, stars.vsh and stars.fsh are written whole):
                      fog distances: not under water, in lava, in powder snow, blind, in the menus)
                      the fog is ours. How much: mood.fog_depth(), the air's haze and the mist that
                      lies on the sea, along the line of sight to the pixel. Its colour: the horizon
-                     band in the direction of the pixel (the afterglow stains it in the west). The
-                     game's own fog at the edge of the view distance is kept and fades to what is
-                     painted behind: the band above the horizon, the far cloud sea below it, so
-                     the block clouds end without an edge. The direction comes from the vertex
-                     shaders: each hands its position to fog_spherical_distance(), which passes
-                     it on in one more varying.
+                     band in the direction of the pixel (the afterglow stains it in the west).
+                     What lies on the sea is taken into the far sea painted behind it
+                     (mood.levelled()), and the game's own fog at the edge of the view distance is
+                     kept and fades to what is painted behind as well: the band above the horizon,
+                     the far cloud sea below it. So the block clouds end without an edge. The
+                     direction comes from the vertex shaders: each hands its position to
+                     fog_spherical_distance(), which passes it on in one more varying.
   core/sky.vsh/.fsh  the sky's upper disc is spread over the whole screen and every pixel is
                      painted by its direction: zenith to horizon as the game's fogged plane has
                      it, the afterglow fan in the west, the far cloud sea below the horizon.
@@ -115,6 +116,8 @@ def numbers(look=mood.DEFAULT):
         west=tuple(side * c for c in WEST),
         sea=mood._rgb(v["cloud"]), sea_y=float(mood.GROUND_Y + mood.CLOUD_TOP),
         air=float(mood.AIR), mist=float(mood.MIST), mist_height=float(mood.MIST_HEIGHT),
+        fog_start=float(mood.FOG_START), fog_end=float(mood.FOG_END),
+        level_full=float(mood.LEVEL_FULL), level_none=float(mood.LEVEL_NONE),
         sky_light=mood._rgb(v["sky_light"]), sky_factor=float(v["sky_factor"]),
         ambient=mood._rgb(v["ambient"]), lamp=mood._rgb(mood.LAMP),
         stars=float(v["stars"]), star_angle=float(mood.STAR_ANGLE), game_star_angle=float(mood.GAME_STAR_ANGLE),
@@ -200,6 +203,10 @@ const float C164_SEA_Y = {sea_y};
 const float C164_AIR = {air};          // mood.fog_depth(): the air's haze, the mist on the sea
 const float C164_MIST = {mist};
 const float C164_MIST_HEIGHT = {mist_height};
+const float C164_FOG_START = {fog_start};     // mood.levelled(): what lies on the sea goes into the far sea
+const float C164_FOG_END = {fog_end};
+const float C164_LEVEL_FULL = {level_full};
+const float C164_LEVEL_NONE = {level_none};
 
 float fog_spherical_distance(vec3 pos) {{
     return length(pos);
@@ -242,6 +249,15 @@ float c164_depth(float distance, float rise) {{
 
 float c164_fogged(float distance, float rise) {{
     return 1.0 - exp(-c164_depth(distance, rise));
+}}
+
+// mood.levelled(): the share to which the thing drawn here is taken into the far sea painted
+// behind it, by its distance on the map. In full for what lies on the sea, not at all for what
+// stands above it.
+float c164_levelled() {{
+    float far = clamp((length(c164_ray.xz) - C164_FOG_START) / (C164_FOG_END - C164_FOG_START), 0.0, 1.0);
+    float low = clamp((C164_LEVEL_NONE - (c164_height() + c164_ray.y)) / (C164_LEVEL_NONE - C164_LEVEL_FULL), 0.0, 1.0);
+    return far * low;
 }}
 
 // the horizon band in direction d as the game makes it: the fog colour, stained by the afterglow
@@ -307,7 +323,7 @@ float total_fog_value(float sphericalVertexDistance, float cylindricalVertexDist
     float edge = linear_fog_value(cylindricalVertexDistance, renderDistanceStart, renderDistanceEnd);
 #ifndef GL_VERTEX_SHADER
     if (c164_open_air(environmentalStart, environmantalEnd)) {{
-        return 1.0 - (1.0 - c164_fogged(sphericalVertexDistance, c164_direction().y)) * (1.0 - edge);
+        return 1.0 - (1.0 - c164_fogged(sphericalVertexDistance, c164_direction().y)) * (1.0 - max(edge, c164_levelled()));
     }}
 #endif
     return max(linear_fog_value(sphericalVertexDistance, environmentalStart, environmantalEnd), edge);
@@ -321,8 +337,8 @@ vec4 apply_fog(vec4 inColor, float sphericalVertexDistance, float cylindricalVer
         vec3 d = c164_direction();
         float weight = dot(fogColor.rgb, vec3(1.0)) / max(dot(c164_behind(d), vec3(1.0)), 1.0e-6);
         vec3 hazed = mix(inColor.rgb, c164_band(d) * weight, c164_fogged(sphericalVertexDistance, d.y) * fogColor.a);
-        float edge = linear_fog_value(cylindricalVertexDistance, renderDistanceStart, renderDistanceEnd);
-        return vec4(mix(hazed, fogColor.rgb, edge * fogColor.a), inColor.a);
+        float gone = max(c164_levelled(), linear_fog_value(cylindricalVertexDistance, renderDistanceStart, renderDistanceEnd));
+        return vec4(mix(hazed, fogColor.rgb, gone * fogColor.a), inColor.a);
     }}
 #endif
     float fogValue = total_fog_value(sphericalVertexDistance, cylindricalVertexDistance, environmentalStart, environmantalEnd, renderDistanceStart, renderDistanceEnd);
@@ -682,8 +698,13 @@ class Twin:
         above = self._mix(self._mix(self.sky, self.ring(d), share), self.glow, self.fan(d))
         return np.where((d[:, 1] < 0.0)[:, None], self.sea(d, camera_y), above)
 
+    def levelled(self, distance, d, camera_y):
+        """The share to which a thing `distance` away in direction d is taken into the far sea."""
+        distance = np.asarray(distance, dtype=float)
+        return mood.levelled(distance * np.hypot(d[:, 0], d[:, 2]), camera_y - self.n["sea_y"] + distance * d[:, 1])
+
     def apply(self, colour, distance, d, camera_y, edge=0.0):
         """A thing's colour on the screen: `distance` away in direction d; edge is the share of the
         game's fog at the rim of the view distance."""
         hazed = self._mix(np.asarray(colour, dtype=float), self.band(d), self.fogged(distance, camera_y, d[:, 1]))
-        return self._mix(hazed, self.behind(d, camera_y), edge)
+        return self._mix(hazed, self.behind(d, camera_y), np.maximum(self.levelled(distance, d, camera_y), edge))
