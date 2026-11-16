@@ -1,0 +1,17 @@
+check obs_mot_load at 3669e34
+[WARN] regen     672 blocks, 200 entities, 1 models, 656 resource-pack files, 41 data-pack files, look: 1 biomes, 1 timelines (0.5 s)
+                 registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+[PASS] conflicts the scene writes 655 files, no file written twice, the folders and the prefix of motion are kept (1 package run alone)
+[PASS] strays    125 pictures, every colour in the palette
+[PASS] refs      521 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   86 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    3 kinds of block placed, all in the occupancy table
+[SKIP] flatwall  a test scene of motion: its sample walls and backdrops are meant to be flat
+[PASS] entities  200 display entities
+[WARN] views     4 shots, most display entities in view: 200 (far), limit 600; counted without what walls hide
+                 the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(materials.pack(d) or []) + list(sky.pack(d) or [])
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[WARN] motion    200 parts and 0 points on 1 chains, 30 function files; 36 commands in the busiest tick (limit 60), 34.4 a tick on average (limit 40)
+                 the scene sets its own limits (60 in a tick, 40 on average, not 40 and 10): a load test
+                 chain of 24 ticks: 24 functions, 826 commands a cycle, starts 1 ticks after start
+result: PASS (0 failed, 3 with warnings)

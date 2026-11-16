@@ -1,0 +1,215 @@
+{
+ "scene": "obs_int_clockroom",
+ "commit": "3669e34",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "WARN",
+   "summary": "923 blocks, 51 entities, 43 models, 807 resource-pack files, 37 data-pack files, look: 1 biomes, 1 timelines (1.3 s)",
+   "details": [
+    "registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json"
+   ]
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 806 files, no file written twice, the folders and the prefix of interiors are kept (9 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "172 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "615 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "24 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "PASS",
+   "summary": "no wall face runs flat over more than 5x5",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "51 display entities, 10 drawn out along one axis, 20 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "8 shots, most display entities in view: 51 (ext_v5), limit 600; counted without what walls hide; the game draws up to 51 (int_arrive): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "int_arrive",
+      "in_view": 46,
+      "drawn": 51,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_movement",
+      "in_view": 30,
+      "drawn": 51,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_dial",
+      "in_view": 41,
+      "drawn": 51,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "ext_v5",
+      "in_view": 51,
+      "drawn": 51,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_back",
+      "in_view": 40,
+      "drawn": 51,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "int_up",
+      "in_view": 43,
+      "drawn": 51,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "lobby",
+      "in_view": 40,
+      "drawn": 51,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "ext_v1",
+      "in_view": 51,
+      "drawn": 51,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "PASS",
+   "summary": "V1 at (88.5, -2.38, -32.5): the front from y 4 up 0.0% hidden (base storey 0.0% by blocks and 0.0% more by models, great windows 0.0%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 0.8 s)",
+   "details": [],
+   "data": {
+    "the base storey": {
+     "lines": 1104,
+     "hidden": 0,
+     "seen_through": 0,
+     "hidden_by_blocks": 0,
+     "hidden_by_models": 0
+    },
+    "the great windows": {
+     "lines": 1656,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the cornice": {
+     "lines": 1104,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the clock tower": {
+     "lines": 672,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the time-ball mast": {
+     "lines": 22,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the great dome": {
+     "lines": 1688,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the small dome": {
+     "lines": 290,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "comet": {
+     "elevation": 41.0,
+     "across": 0.6128,
+     "down": 0.2647,
+     "lost": 0,
+     "body": {
+      "lines": 350,
+      "outside_clear": 0,
+      "covered": 0,
+      "from": -7.29,
+      "to": 1.2,
+      "low": 39.99,
+      "up": 54.24
+     }
+    },
+    "clear": {
+     "up": 61.0,
+     "blocks": [
+      {
+       "name": "between the two ends of the main building",
+       "from": -1.24,
+       "to": 44.16,
+       "low": 0.0,
+       "up": 61.0,
+       "lines": 44835,
+       "covered": 0
+      },
+      {
+       "name": "where the comet hangs, north of the main building",
+       "from": -15.0,
+       "to": -1.49,
+       "low": 35.0,
+       "up": 61.0,
+       "lines": 5880,
+       "covered": 0
+      }
+     ]
+    },
+    "left": {
+     "from": 44.66,
+     "to": 70.0,
+     "posts": []
+    }
+   }
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "4 parts and 0 points on 3 chains, 26 function files; 4 commands in the busiest tick (limit 40), 0.9 a tick on average (limit 10)",
+   "details": [
+    "chain of 24 ticks: 6 functions, 14 commands a cycle, starts 1 ticks after start",
+    "chain of 80 ticks: 8 functions, 25 commands a cycle, starts 2 ticks after start",
+    "chain of 1200 ticks: 6 functions, 13 commands a cycle, starts 3 ticks after start",
+    "bld_tower_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.09 blocks off the axis",
+    "int_clockroom_escape: 6 steps in 1200 ticks: its middle lies 0.00 blocks off the axis"
+   ]
+  }
+ ]
+}
