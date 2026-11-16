@@ -33,7 +33,8 @@ FRAME = P.mat("dark_wood", base=2)      # stiles, rails, casings: the wainscot's
 FIELD = P.mat("dark_wood", base=1)      # what lies deeper: a leaf's panels, the boards lining the opening
 EDGE = P.mat("dark_wood", base=3)       # what stands proud and takes the light: beads, the cap
 PLATE = K.BRASS_D                       # hinges and the plates behind the knobs
-KNOB = K.flat("brass", 3)
+KNOB = P.mat("brass", base=2)               # a turned knob, a step under the brass of the room's dials
+KNOB_END = K.flat("brass", 2)
 
 LINING = 1.0                # the boards that line the opening
 CASING = 5.0                # a jamb's casing on the wall: a board this wide,
@@ -125,8 +126,8 @@ def _leaf(name, side, half, top, face, swing):
         for z, out in ((front, 1.0), (back, -1.0)):
             m.box((knob_x - 0.75, foot + KNOB_Y - 2.5, z), (knob_x + 0.75, foot + KNOB_Y + 2.5, z + out * 0.25), PLATE,
                   grain="y", skip="n" if out > 0 else "s")
-            m.tube("z", (knob_x, foot + KNOB_Y), z, z + out * 0.75, 0.4, PLATE, sides=4)
-            m.ball((knob_x, foot + KNOB_Y, z + out * 1.4), 0.9, KNOB, sides=8, layers=4)
+            m.tube("z", (knob_x, foot + KNOB_Y), z, z + out * 0.75, 0.35, PLATE, sides=4)
+            m.tube("z", (knob_x, foot + KNOB_Y), z + out * 0.75, z + out * 1.5, 0.75, KNOB, sides=8, cap=KNOB_END)
         for y in HINGES:
             m.tube("y", (px, pz), foot + y - 1.5, foot + y + 1.5, 0.6, PLATE, sides=8)
     return m
