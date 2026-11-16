@@ -1,0 +1,50 @@
+a0job 1116-031304-chart-windows-f3-3477-24590: cursor/c164-chart-windows-f3-3477 @ fb4a04fc on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.23 0.06 0.02, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    2s] ready. Python: /agent/realms-study/.venv/bin/python
+---- cd build && python -m scenes.obs_mat_windows.brightness ---- exit 0, 0 s, last 40 lines of 64:
+b   frosted         0.489            3  ok
+b   frosted_deep    0.246            3  ok
+b   curtain         0.269            3  ok
+b   curtain_foot    0.268            4  ok
+b   curtain_head    0.267            3  ok
+b   curtain_whole   0.266            4  ok
+
+ver furnace    sill second  third  whole median   head  flag
+a   stack 0   0.382  0.294  0.182  0.286  0.324  0.087  ok
+a   stack 1   0.375  0.296  0.180  0.284  0.271  0.094  ok
+a   stack 2   0.380  0.294  0.182  0.285  0.324  0.087  ok
+a   stack 3   0.379  0.296  0.180  0.285  0.271  0.094  ok
+b   stack 0   0.384  0.288  0.174  0.282  0.271  0.087  ok
+b   stack 1   0.375  0.286  0.174  0.279  0.271  0.091  ok
+b   stack 2   0.384  0.288  0.174  0.282  0.271  0.087  ok
+b   stack 3   0.386  0.286  0.174  0.282  0.271  0.091  ok
+
+ver row      the glass of each picture in Rec.709, as the board is read; the share of each block over 0.5
+a   sill     0.446 0.437 0.443 0.442   0.031 0.000 0.016 0.012
+a   second   0.338 0.341   0.000 0.000
+a   third    0.197 0.194   0.000 0.000
+b   sill     0.448 0.436 0.447 0.450   0.031 0.000 0.016 0.012
+b   second   0.331 0.329   0.000 0.000
+b   third    0.186 0.187   0.000 0.000
+
+ver sill      paler amber     its rows  flag
+a   picture 0           8          4x4  ok
+a   picture 1           0            -  ok
+a   picture 2           4            4  ok
+a   picture 3           3            3  ok
+b   picture 0           8          4x4  ok
+b   picture 1           0            -  ok
+b   picture 2           4            4  ok
+b   picture 3           3            3  ok
+
+ver dither         lights     touching  knots
+a                      32            0      1
+b                      16            0      3
+
+all three lit tiers on c177's ladder, both versions; the linings give no light; the furnace window is one sheet under the curtain's level.
+==== NODEJOB RESULT ====
+exit=0 secs=3 host=cursor cores=4 head=fb4a04fc commit=none pushed=no branch=cursor/c164-chart-windows-f3-3477 files=0
+a0job: exit=0 secs=10
