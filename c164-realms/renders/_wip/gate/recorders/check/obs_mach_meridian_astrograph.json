@@ -1,0 +1,212 @@
+{
+ "scene": "obs_mach_meridian_astrograph",
+ "commit": "d89b842",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "WARN",
+   "summary": "1656 blocks, 20 entities, 8 models, 702 resource-pack files, 14 data-pack files, look: 1 biomes, 1 timelines (0.7 s)",
+   "details": [
+    "registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json"
+   ]
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 701 files, no file written twice, the folders and the prefix of machines are kept (13 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "137 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "545 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "22 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "WARN",
+   "summary": "2 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)",
+   "details": [
+    "smooth_sandstone facing north: flat over 6x6, the square's top corner at (67, 5, -37)",
+    "smooth_sandstone facing south: flat over 6x6, the square's top corner at (67, 5, -37)"
+   ],
+   "data": {
+    "largest": 6,
+    "faces": 2
+   }
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "20 display entities",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "21 shots, most display entities in view: 20 (dome_door), limit 600; counted without what walls hide; the game draws up to 20 (hut_door): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "hut_door",
+      "in_view": 6,
+      "drawn": 20,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "hut_east",
+      "in_view": 6,
+      "drawn": 20,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "hut_west",
+      "in_view": 16,
+      "drawn": 20,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "hut_north",
+      "in_view": 16,
+      "drawn": 20,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "hut_circle",
+      "in_view": 6,
+      "drawn": 20,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "hut_eye",
+      "in_view": 6,
+      "drawn": 20,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "hut_sight",
+      "in_view": 6,
+      "drawn": 20,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "hut_court",
+      "in_view": 6,
+      "drawn": 20,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "dome_door",
+      "in_view": 20,
+      "drawn": 20,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "dome_south",
+      "in_view": 4,
+      "drawn": 20,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "dome_north",
+      "in_view": 4,
+      "drawn": 20,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "dome_plate",
+      "in_view": 4,
+      "drawn": 20,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "dome_up",
+      "in_view": 4,
+      "drawn": 20,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "slit",
+      "in_view": 20,
+      "drawn": 20,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "terrace",
+      "in_view": 14,
+      "drawn": 20,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "west_high",
+      "in_view": 20,
+      "drawn": 20,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "bench_meridian",
+      "in_view": 10,
+      "drawn": 20,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "bench_meridian_side",
+      "in_view": 16,
+      "drawn": 20,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "bench_astro",
+      "in_view": 8,
+      "drawn": 20,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "bench_astro_north",
+      "in_view": 20,
+      "drawn": 20,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "bench",
+      "in_view": 10,
+      "drawn": 20,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "nothing moves",
+   "details": []
+  }
+ ]
+}
