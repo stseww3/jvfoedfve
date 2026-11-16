@@ -21,7 +21,9 @@ It needs neither a server nor the game window and draws nothing: seconds for a t
 
 Each check prints PASS, WARN or FAIL; the exit code is 1 when one fails.
 
-  regen      the scene, its models, resource pack, data pack and look generate from nothing
+  regen      the scene, its models, resource pack, data pack and look generate from nothing; the
+             data pack holds no file of a registry (Realms takes no world with experimental
+             settings; the look's two files are named until they have moved into the shaders)
   conflicts  no resource-pack file is written by two packages; files lie in their category's
              folders and have names the game reads; model names carry their category's prefix
              (plan/roles/INTERFACE.md 4). A package's test scene is held to the same table: the
@@ -204,6 +206,29 @@ def category_of(scene, name):
 
 
 # ---- regen -------------------------------------------------------------------------------------
+# What a data pack may hold: functions, tags, structures, advancements, loot tables, predicates,
+# recipes and item modifiers, the folder of each straight under its namespace. A file of any
+# registry (a biome under worldgen/, a dimension, a timeline, a damage type, an enchantment, a
+# variant ...) makes the game mark the world as one with experimental settings, and Realms takes
+# no such world, a map of the content library no more than an upload (plan/roles/COMMON.md 5, red
+# line 5; A0 11-16 07:53, announcement #1196). The look's two files are let through and named
+# until the sky line has moved them into the resource pack's core shaders (A0 #65808): then
+# DATA_LET is empty.
+DATA_KINDS = ("function", "tags", "structure", "advancement", "loot_table", "predicate", "recipe",
+              "item_modifier")
+DATA_LET = ("data/c164art/worldgen/biome/obs_blue.json", "data/c164art/timeline/obs_looks.json")
+
+
+def registry_files(root):
+    """The files of a data pack that are not of the kinds it may hold: [path under the pack]."""
+    out = []
+    for path in files_under(root):
+        parts = path.split("/")
+        if parts[0] == "data" and len(parts) >= 3 and parts[2] not in DATA_KINDS:
+            out.append(path)
+    return out
+
+
 def regen(rep, name, work):
     """Generate what the drivers generate, from nothing. Returns what the other checks read."""
     t0 = time.time()
@@ -240,9 +265,23 @@ def regen(rep, name, work):
               f"{len(files_under(data))} data-pack files"]
     if look is not None:
         words.append(f"look: {len(look.BIOMES)} biomes, {len(getattr(look, 'TIMELINES', None) or {})} timelines")
-    rep.add("regen", "PASS", ", ".join(words) + f" ({time.time() - t0:.1f} s)")
+    found = registry_files(data)
+    banned = [f for f in found if f not in DATA_LET]
+    status, details = "PASS", []
+    if banned:
+        status = "FAIL"
+        kinds = sorted({f.split("/")[2] for f in banned})
+        words.append(f"{len(banned)} registry files in the data pack ({', '.join(kinds)})")
+        details = [f"the data pack holds files of a registry: Realms takes no world with experimental settings. "
+                   f"A data pack may hold {', '.join(DATA_KINDS)} and nothing else (plan/roles/COMMON.md 5)"]
+        details += clip(banned)
+    elif found:
+        status = "WARN"
+        details = [f"registry files in the data pack, let through until the look has moved into the resource "
+                   f"pack's shaders (A0 11-16): {', '.join(f.partition('/')[2] for f in found)}"]
+    rep.add("regen", status, ", ".join(words) + f" ({time.time() - t0:.1f} s)", details)
     return {"scene": scene, "name": name, "category": category_of(scene, name), "builder": builder,
-            "canvas": canvas, "models": models, "pack": pack}
+            "canvas": canvas, "models": models, "pack": pack, "look": look}
 
 
 # ---- conflicts ---------------------------------------------------------------------------------
@@ -600,11 +639,67 @@ def blocks(rep, got):
     words = f"{len(used)} kinds of block placed"
     if shown:
         words += f", {len(shown)} kinds shown by block displays"
-    if outside:
-        rep.add("blocks", "WARN", f"{words}, {len(outside)} not in the occupancy table "
-                f"(add them to the table through S2, or use a block of the table)", clip(outside))
+    at, tall, alone = _barriers(canvas)
+    if at:
+        words += f", {len(at)} barrier cells ({_span(at)})"
+    more = []
+    if tall:
+        more.append(f"{len(tall)} barrier cells stand more than {BARRIER_HIGH} high ({_span(tall)}): a barrier is "
+                    f"the collision of a closed door or gate made of models, in the plane of its leaf, two high "
+                    f"and no wider than the leaf (A0, 11-16 05:07)")
+    if alone:
+        more.append(f"{len(alone)} barrier cells have no model within {BARRIER_NEAR:g} blocks ({_span(alone)}): "
+                    f"not the leaf of a door or gate; a barrier anywhere else is the wall nobody sees "
+                    f"(A0 #457, 4)")
+    lines = clip(outside) + more
+    if tall:
+        rep.add("blocks", "FAIL", f"{words}: barriers more than {BARRIER_HIGH} high", lines)
+    elif outside or alone:
+        told = []
+        if outside:
+            told.append(f"{len(outside)} not in the occupancy table (add them to the table through S2, or use "
+                        f"a block of the table)")
+        if alone:
+            told.append("barriers away from any model")
+        rep.add("blocks", "WARN", f"{words}, {'; '.join(told)}", lines)
     else:
         rep.add("blocks", "PASS", f"{words}, all in the occupancy table")
+
+
+BARRIER_HIGH = 2            # blocks: the collision of a door leaf is two high
+BARRIER_NEAR = 3.0          # blocks: a leaf three wide, its model set at one jamb, has its far cell 2.5 away
+
+
+def _span(cells):
+    """Where a set of cells lies: x 16, y 0..1, z -5..5."""
+    out = []
+    for name, k in (("x", 0), ("y", 1), ("z", 2)):
+        lo, hi = min(c[k] for c in cells), max(c[k] for c in cells)
+        out.append(f"{name} {lo}" if lo == hi else f"{name} {lo}..{hi}")
+    return ", ".join(out)
+
+
+def _barriers(canvas):
+    """The barrier cells of a scene, those of them in a run more than two high, and those with no
+    model near them. A barrier is the collision of a closed door or gate that is made of models, in
+    the plane of the leaf, two high, no wider than the leaf (A0, 11-16 05:07). The width of the leaf
+    is not known here: what is told apart is a barrier beside a model from one that stands alone."""
+    at = {p for p, s in canvas.b.items() if s.partition("[")[0].split(":", 1)[-1] == B.BARRIER}
+    tall = set()
+    for x, y, z in at:
+        if (x, y - 1, z) in at:
+            continue
+        run = 1
+        while (x, y + run, z) in at:
+            run += 1
+        if run > BARRIER_HIGH:
+            tall |= {(x, y + k, z) for k in range(run)}
+    models = [(mx, my, mz) for mx, my, mz, nbt in canvas.entities
+              if str(nbt.get("id", "")).split(":", 1)[-1] in ("item_display", "block_display")]
+    alone = {(x, y, z) for x, y, z in at
+             if not any(abs(mx - x - 0.5) <= BARRIER_NEAR and abs(my - y - 0.5) <= BARRIER_NEAR
+                        and abs(mz - z - 0.5) <= BARRIER_NEAR for mx, my, mz in models)}
+    return at, tall, alone
 
 
 # ---- flatwall ----------------------------------------------------------------------------------
@@ -806,6 +901,28 @@ def _frame(shot):
     return pos, f, r, np.cross(r, f)
 
 
+SUN = "assets/minecraft/textures/environment/celestial/sun.png"
+
+
+def _own_sun(got):
+    """The line for a scene that takes the map's hour and not the map's sky. The map's hour is after
+    sunset, with the sun's place on the open western horizon; the sky's pack blanks the sun's picture
+    there (sky/comet.py). A test scene whose pack leaves the game's own picture in shows a white and
+    yellow square wherever a shot looks west over an open horizon (c341 #56843)."""
+    look = got.get("look")
+    if look is None or os.path.exists(os.path.join(got["pack"], SUN)):
+        return []
+    try:
+        from scenes.obs.sky import mood
+    except ImportError:
+        return []
+    if getattr(look, "TIMELINES", None) is not mood.TIMELINES:
+        return []
+    return ["the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, "
+            "a white and yellow square on an open western horizon: write_pack adds the sky's pack, "
+            "list(materials.pack(d) or []) + list(sky.pack(d) or [])"]
+
+
 def views(rep, got, shots_path):
     if not shots_path or not os.path.exists(shots_path):
         rep.add("views", "SKIP", "no shot list, so no per-view counts")
@@ -853,6 +970,7 @@ def views(rep, got, shots_path):
                        f"camera, measured level; the server sends those to no player there")
     if far:
         far.append("(the tracking range is read off the game's code, not yet seen on the real machine)")
+    stale += _own_sun(got)
     most = max(rows, key=lambda row: row["in_view"]) if rows else {"name": "-", "in_view": 0}
     summary = (f"{len(shots)} shots, most display entities in view: {most['in_view']} ({most['name']}), "
                f"limit {S.ENTITY_PER_VIEW}; counted without what walls hide")
@@ -891,10 +1009,13 @@ LEFT_STEP = 0.5
 COMET_GRID = 64                 # the comet's sight lines: one to a cell of this grid over the moon's square
 # How much of the front may be out of sight. Posts one block wide stand on the east edge by the
 # skeleton's rule, four apart, and each takes a strip of the base storey: a third of it in all, seen
-# at V1's slant. More than BASE_HIDDEN of it means a wall along the edge. In front of a great window
-# (and of the cornice over it) nothing wider than a lamp post belongs: more than WINDOW_HIDDEN of one
-# bay is named, more than WINDOW_LOST fails.
+# at V1's slant. More than BASE_HIDDEN of it behind blocks means a wall along the edge. The models
+# of display entities are counted apart and make no wall (A0 #64976, 11-16: the armillary's open
+# rings are a small circle of copper on the terrace); blocks and models together may take BASE_LOST.
+# In front of a great window (and of the cornice over it) nothing wider than a lamp post belongs,
+# block or model: more than WINDOW_HIDDEN of one bay is named, more than WINDOW_LOST fails.
 BASE_HIDDEN = 0.5
+BASE_LOST = 0.6
 WINDOW_HIDDEN = 0.25
 WINDOW_LOST = 0.5
 SKYLINE = ("the time-ball mast", "the clock tower", "the great dome", "the small dome")
@@ -1093,10 +1214,18 @@ def sight(rep, got, jar, shots_path):
                 fails.append(f"{name}: {th} of {n} sight lines pass through "
                              f"{_who(bl.labels, out['thru'], out['thru_cell'], pick & veiled & ~hidden)}")
         elif name == "the base storey":
-            if h > BASE_HIDDEN * n:
-                fails.append(f"{name} (y 4..{S.PANEL}): {100.0 * h / n:.0f}% is hidden; the posts of the east edge "
-                             f"alone take a third, more than {100 * BASE_HIDDEN:.0f}% reads as a wall: "
-                             f"{_who(bl.labels, out['what'], out['cell'], pick & hidden)}")
+            wall = bl.cast(eye, dirs[pick], reach[pick], models=False)
+            behind = np.isfinite(wall["t"])
+            walls = int(behind.sum())
+            data[name].update(hidden_by_blocks=walls, hidden_by_models=h - walls)
+            if walls > BASE_HIDDEN * n:
+                fails.append(f"{name} (y 4..{S.PANEL}): blocks hide {100.0 * walls / n:.0f}% of it; the posts of the "
+                             f"east edge alone take a third, more than {100 * BASE_HIDDEN:.0f}% reads as a wall: "
+                             f"{_who(bl.labels, wall['what'], wall['cell'], behind)}")
+            elif h > BASE_LOST * n:
+                fails.append(f"{name} (y 4..{S.PANEL}): {100.0 * h / n:.0f}% is hidden, {100.0 * walls / n:.0f}% by "
+                             f"blocks and the rest by the models of display entities; together they may take "
+                             f"{100 * BASE_LOST:.0f}%: {_who(bl.labels, out['what'], out['cell'], pick & hidden)}")
         elif h:
             # bay by bay, over the three columns between the pilasters; the bays that the same kinds
             # of thing hide are named together
@@ -1121,8 +1250,11 @@ def sight(rep, got, jar, shots_path):
                     warns.append(line + f"; a lamp post takes less than {100 * WINDOW_HIDDEN:.0f}% of a bay")
     front = np.isin(part_of, [names.index(k) for k in FRONT])
     share = {k: 100.0 * data[k]["hidden"] / data[k]["lines"] for k in FRONT}
+    base = data["the base storey"]
     words = [f"the front from y 4 up {100.0 * (front & hidden).sum() / front.sum():.1f}% hidden (base storey "
-             f"{share['the base storey']:.0f}%, great windows {share['the great windows']:.1f}%)"]
+             f"{100.0 * base['hidden_by_blocks'] / base['lines']:.1f}% by blocks and "
+             f"{100.0 * base['hidden_by_models'] / base['lines']:.1f}% more by models, great windows "
+             f"{share['the great windows']:.1f}%)"]
     sky_lines = sum(data[k]["lines"] for k in SKYLINE)
     sky_lost = sum(data[k]["hidden"] + data[k]["seen_through"] for k in SKYLINE)
     words.append(f"skyline {'clear' if not sky_lost else f'{sky_lost} of {sky_lines} sight lines lost'}")

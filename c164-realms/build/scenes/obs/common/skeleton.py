@@ -196,7 +196,8 @@ SMALL_DOME_X = (8, 16)
 SMALL_DOME_Z = (26, 34)
 SMALL_DRUM_BASE = 18
 SMALL_DOME_R = 4.5
-SMALL_DOME_APEX = 25
+SMALL_DOME_APEX = 26            # 25 until 11-16: a flat lid on its iron hoop in V11, V2 and V1; 26 reads as a
+#                                 half sphere, the great dome's kin and a size smaller (A0 #57140, review #13)
 
 # --- site masses ----------------------------------------------------------------------------------
 # Cells. Each is (x0, z0, x1, z1) on the upper terrace unless a y is given. East (+x) is the arrival side.
@@ -298,8 +299,15 @@ V2 = dict(pos=(58.5, 1.7, AXIS_Z), look_at=(17, 19, AXIS_Z))
 # V6, the power house from the grand stair (A0 #55097, 11-16: picked from four candidates on the
 # pictures of site/powerhouse, whose test scenes call it stair_south): a person on the south half of
 # the grand stair, the feet three blocks above the lower platform, looks south-east at the power
-# house, whose saw-tooth roof shows its profile to this side.
-V6 = dict(pos=(66.5, LOWER_GROUND + 3 + EYE, 6.5), look_at=(76.5, 8.0, 32.5))   # the eye at y -1.38
+# house, whose saw-tooth roof shows its profile to this side. Turned four and a half degrees to the
+# right on 11-16 (A0, the desk 06:52; the look was at (76.5, 8.0, 32.5)): the way lamp of the lower
+# platform at (79.5, 10.5) stood half in the left edge, the largest bright thing in the picture. Now
+# its globe and gallery are outside; the chimney is whole, its east face a ninth of the picture's
+# width inside the left edge, and the lamp on the lip's pedestal at (60, 18) is in the right half.
+# The lamp on the stair's south pedestal at (73, 10) is a second one and stays, whole, in the left
+# third before the chimney's foot. No further: at six degrees it touches the left edge and its
+# pedestal is mostly outside (cr2 #64341; it would leave only past sixteen, the chimney cut at twelve).
+V6 = dict(pos=(66.5, LOWER_GROUND + 3 + EYE, 6.5), look_at=(74.4, 8.0, 33.2))   # the eye at y -1.38
 # V7, the star hall from outside the door (A0 #365, 11-15), the entrance arch as its frame: the
 # orrery overhead, the mother clock on the pier straight ahead, the floor underfoot. The camera in
 # the doorway stays as a second one; the test scenes call it v7_in.

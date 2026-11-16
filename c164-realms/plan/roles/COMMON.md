@@ -29,6 +29,25 @@
 7. **总监按 git 判断进度**：只认 push 上去的提交，不认消息里的计划。
 8. 现在谁在哪个岗位、哪张卡在谁手上，看 `plan/ROSTER.md`（第 3 班的名单）和 `plan/STATUS.md`（卡的状态，停在 11-15 21:05，拿合并钥匙的人接着记）。卡片里写的「点某某」找不到人时，找拿合并钥匙的人或者总监。
 9. **第 2 班的东西不收**（管理员 11-16 定的，`HANDOVER.md` 第 0 节）。不 merge、不 cherry-pick、不拷文件、不拷图、不照着改写；不从旧分支的头上开分支，不合旧总装 `cursor/c164-realms-map-b59c`。合并前 `tools/provenance.sh <提交>` 必须报 `clean`。
+10. **快车道（11-16 08:22 起；管理员嫌慢。和上面各条、和别的文档冲突时以这一条为准）。**慢的不是哪一个人，是做完一步就停下来等：等合并、等评审、等真机、等总监裁。从现在起谁也不等谁。
+   - **交付就是自己的关口 PASS。**先把总装头合进你的分支，在你自己的节点上跑 `bash c164-realms/tools/nodejob.sh --wip --always --tail 80 bash tools/gate.sh <类别>/<包名> <提交> --base <总装头>`，末行 `result: PASS` 了就把【交付】（类别/包名、提交、分支）私信本类的审批人。不用先找人交叉看，不用等评审。
+   - **每个类别一个审批人，拿本类的合并钥匙**（管理员 08:19：「审批不能派 10 个子 agent 做吗」；08:28 起）。common：s2（c318）；materials：a1（c324）；main：facade（c321）；sky、motion：cr2（c333）；site：a4（c323）；machines：cr3（c347）；props：a6（c334）；interiors：cr4（c337）。**【交付】发给本类的审批人，不再发 s2。**审批人做三件事，都不经过总监：
+     1. **合并，不重跑关口。**先核对作者的关口：`git fetch -q origin <作者分支>-wip && git show FETCH_HEAD:c164-realms/renders/_wip/gate/<包名>/summary.txt`，头一行的提交号是交付的那个，末行是 `result: PASS`。然后在一个单独的工作树里合（头一次：`git fetch -q origin cursor/c164-assembly-fable-a9f5 && git worktree add --detach /tmp/c164_<代号>/asm FETCH_HEAD`），每合一个包在那里面做四步：
+        `git fetch -q origin cursor/c164-assembly-fable-a9f5 && git checkout -q --detach FETCH_HEAD`
+        `git fetch -q origin <作者分支> && bash c164-realms/tools/provenance.sh <提交>`（必须报 `clean`）
+        `git merge --no-ff <提交> -m "c164-<代号>: merge <类别>/<包名> <提交>"`
+        `git push origin HEAD:cursor/c164-assembly-fable-a9f5`（被拒就从第一步重来；**绝对不许强推**）
+        冲突只在这个包自己的文件里：取作者的。碰到公共的（`build/scenes/obs/common/`、`tools/`、`plan/`、别的类别的文件）：`git merge --abort`，交给 s2。合完私信 s2 一行【合并】（类别/包名、合并提交）；`plan/STATUS.md` 仍只有 s2 记。你自己的包也自己合。
+     2. **定本类的事。**本类里的二选一、接口怎么对、占位用什么：你定，定了算，私信有关的人，抄 s2 一行。
+     3. **看图提意见。**合进去的东西看一遍图，意见直接私信作者；和本类评审的意见不一样时你们两个对一下。
+   - **s2 不再逐个合包。**管 common，守着总装头是绿的：在备用节点上对着总装头反复跑 `checkall.py`，红了 revert 惹事的那一个合并、告诉本人和审批人，别的不受牵连；记 STATUS；帮审批人解公共文件上的冲突。
+   - **只有三种事上交总监**：碰红线的、跨类别对不拢的、要改 `ART-PLAN.md` 的。
+   - **铺开的东西交付时就开。**第 5 条的 `DRESS` 开关：作者在交付的提交里把它打开，不再等评审通过。评审挑出毛病，改了再交。
+   - **评审不卡合并，也不卡下一步。**评审看总装里的图和 s1 的真机看板，意见直接私信做的人；改动当打磨轮再交。
+   - **不等总监裁。**有两个方案的，你自己的默认先进总装，另一个留在 `-wip` 分支带图，私信总监一行（哪两个、默认哪个、图在哪）就接着做。总监看合出来的整图，要换再说。
+   - **第一版先进总装。**在做的卡，手上能过关口的东西现在就交，细节留给打磨轮。等别人的包的，按占位做。
+   - **真机不排队问人。**s1 有四台真机（node12、node97、node98、node99），总装头的整套看板半小时出一版；谁要真机图，直接私信 s1。
+   - **手空了就领。**交了卡的人马上找 aide 领下一张：先四间室内（星厅、穹顶室、星图室、时间室；各间的主人把活拆开，分给来帮手的人），再池子里剩下的卡。
 
 ## 1. 人和消息
 
@@ -87,6 +106,8 @@ bash c164-realms/tools/nodejob.sh --no-push python tools/selfshots.py <场景> -
 - 回执几分钟后到你自己的 `read_chat`（投完就去等，或者接着干轻活）。回执最后一行在 `==== NODEJOB RESULT ====` 下面：`exit=0 … commit=… pushed=yes … files=…`。然后 `git pull`。
 - **回执是桥转述的，可能有出入**：以 `git pull` 拉到的提交和图为准；数字要紧的（检查通过没有、几条警告）让命令把结果写进 `renders/` 下的文件带回来，或者看回执里命令输出的最后 30 行（`--tail <n>` 可以加长）。
 - 一台节点一次只跑一单：上一单的回执没到，不投下一单。`timeout_sec` 最长 3600。
+- **每一单都有时限**：整单（装环境、你的命令、推回去）默认 1700 秒。到点 `nodejob.sh` 把命令连同它起的进程停掉，回执照发，写着 `exit=124` 和 `stopped after … s`。要跑更久就写明：`bash c164-realms/tools/nodejob.sh --limit 3500 <命令>`，同时 `timeout_sec=3600`（`--limit` 比 `timeout_sec` 小 100 秒，回执才由脚本发出来）。每次 fetch、push 最多等 3 分钟。回执过了 `timeout_sec` 十分钟还不到：别再往这台节点投，私信总控（ctrl）。
+- **节点停了的时候**（11-16 05:00 起大半节点不回话）：离线出图、check、关口可以投总监的机器（4 核，一次一单，先到先做），不经过桥：先 push，然后在自己的工作树里 `bash tools/a0job.sh <nodejob.sh 的选项和命令>`（分支上还没有这个文件，就照它开头的说明从总装取到 `/tmp/a0job.sh` 再用）。命令行等到回执打出来为止，回执和节点的一样；然后 `git pull`。每单默认 15 分钟，`--limit` 最多 1800 秒，长的拆开；一个人一次只放一单在队里；`--queue` 看排队。真机不在那台机器上。
 - 命令失败时默认什么都不推（`--always` 照推）。别的选项看 `tools/nodejob.sh` 开头的说明。
 - 节点不往两条总装分支和 `main` 上推；图进总装只经过拿合并钥匙的人。
 - 游戏（服务端、客户端）只有拿出图钥匙的人开，开在他自己的节点上。
@@ -146,6 +167,7 @@ Set-Location (Join-Path (Split-Path (Get-Location) -Parent) 'c164')
 ## 4. 代码和提交
 
 - 只改自己领的卡对应的文件（`PIPELINE.md` 第 4.2 节：代码按卡片的类别放，一个包一个模块）。公共的东西只有拿合并钥匙的人改；`plan/ART-PLAN.md`、`plan/PIPELINE.md`、`plan/roles/` 只有总监改。要改就在群里提。
+- **机器随时会没**（管理员 11-16 07:51；04:57 停掉的那批节点上的文件没了，07:07 总监机也被重置过）。本地不许留没推的东西：没做完的也推，推到你的 `-wip` 分支；节点上的结果由 `nodejob.sh` 推回，不要留在节点上等下一单用。
 - 每做完一步就提交并推到你自己的分支。提交说明以 `c164-<代号>: ` 开头，写清做了什么。不许强推，不许建合并请求，不许动别人的分支。合并由拿合并钥匙的人做。
 - 代码和注释用英文，文档和群消息用中文。不用表情符号。不估“几天、几周”。
 - 色板：`from scenes.obs.common.palette import mat, colour, RAMPS, strays`。方块：`from scenes.obs.common import blocks as B`，用角色名（比如 `B.ASHLAR_FINE.block`），不直接写被重画方块的原名。骨架：`from scenes.obs.common import skeleton`（正在写；没出来之前用审稿结论里的数，写成你文件顶上的常量，出来以后换掉）。不自己定义颜色；色板里缺颜色就在群里向总监提。
@@ -157,6 +179,8 @@ Set-Location (Join-Path (Split-Path (Get-Location) -Parent) 'c164')
 3. 没有暴力和宗教内容，没有真实的品牌、机构、人名。地图里的文字只用数字、符号和少量英文。
 4. 只用色板里的颜色；16 像素一格，方块和模型一致；占用表之外的方块不重画，被占用的方块不按原意使用。
 5. 成品只靠原版、数据包、资源包。版本锁定 26.3（数据包格式 121，资源包格式 97）。
+   - **数据包里不许带注册表文件**（11-16 07:53 起，公告 #1196）。Realms 不收「实验性设置」的存档，内容库的图也一样；游戏把任何不是原版包带来的注册表文件都算实验性。不许有的文件夹（维基 Data pack 条目里带星号的）：`worldgen/`（`biome` 在里面）、`dimension/`、`dimension_type/`、`timeline/`、`world_clock/`、`damage_type/`、`chat_type/`、`dialog/`、`enchantment/`、`enchantment_provider/`、`painting_variant/`、`banner_pattern/`、`instrument/`、`jukebox_song/`、`trim_material/`、`trim_pattern/`、`trial_spawner/`、`villager_trade/`、`trade_set/`、各种 `*_variant/`。数据包里能放的只有：函数、标签、结构、进度、战利品表、谓词、配方、物品修饰器。眼下唯一的例外是天的两个文件（`obs_blue`、`obs_looks`），a2 正在把它们挪进资源包的着色器，挪完就没有例外。
+   - 资源包里的核心着色器（`assets/minecraft/shaders/`）只有 a2 牵头的那一套，别人不加、不改；要它多管一件事，私信 a2。
 6. 不碰别的聊天、别的项目的任何东西：文件、进程、tmux 会话、仓库、分支，云端和管理员电脑都一样。
 
 ## 6. 不许空等

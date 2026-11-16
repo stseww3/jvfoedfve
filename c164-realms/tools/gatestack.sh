@@ -3,7 +3,7 @@
 # is held to tools/gate.sh on the tree it was merged into, not on the tree of those merged after it.
 #
 #   bash c164-realms/tools/nodejob.sh --wip --always --tail 120 \
-#       bash tools/gatestack.sh <base> <category>/<package> <commit> [<category>/<package> <commit> ...]
+#       bash tools/gatestack.sh [--until <commit>] <base> <category>/<package> <commit> [<category>/<package> <commit> ...]
 #
 # <base> is the assembly as it was before the first of them. HEAD holds them all, merged in the order
 # given (git merge --no-ff <commit>), with whatever the merge-key holder committed after a merge on
@@ -16,13 +16,23 @@
 # Two cards delivered in one commit: name the commit twice, once for each card. Both are held to the
 # same tree; the pictures are drawn for the first only.
 #
+#   --until <commit>   before <base>: the last delivery is held to this commit of HEAD's line and not
+#                      to HEAD, when the merge-key holder's own changes that come after it (a change
+#                      to the renderer, say) are not on any delivery's account.
+#
 # Each delivery's report is tools/gate.sh's own, in renders/_wip/gate/<package>/. The closing lines
 # name every delivery with PASS or FAIL; exit 0 when all of them may be merged.
 set -uo pipefail
 
 main() {
+  local until=""
+  if [ "${1:-}" = "--until" ]; then
+    until="${2:-}"
+    if [ -z "$until" ]; then echo "gatestack: --until needs a commit" >&2; return 2; fi
+    shift 2
+  fi
   if [ $# -lt 3 ] || [ $(( ($# - 1) % 2 )) != 0 ]; then
-    sed -n '2,20p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' >&2; return 2
+    sed -n '2,24p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' >&2; return 2
   fi
   local here proj repo base head back
   here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -34,6 +44,15 @@ main() {
   back="$(git -C "$repo" symbolic-ref -q --short HEAD || echo "$head")"
   if [ -n "$(git -C "$repo" status --porcelain --untracked-files=no)" ]; then
     echo "gatestack: the tree has changes that are not committed; it is checked out commit by commit" >&2; return 2
+  fi
+  if [ -n "$until" ]; then
+    local last on=0 one
+    last="$(git -C "$repo" rev-parse -q --verify "$until^{commit}")" || { echo "gatestack: no such commit $until" >&2; return 2; }
+    while read -r one; do [ "$one" = "$last" ] && on=1; done < <(git -C "$repo" rev-list --first-parent "$base..$head")
+    if [ "$on" = 0 ]; then
+      echo "gatestack: ${last:0:8} (--until) is not on the line of first parents from ${base:0:8} to HEAD" >&2; return 2
+    fi
+    head="$last"
   fi
 
   # the commits from the base to HEAD along the first parents, oldest first

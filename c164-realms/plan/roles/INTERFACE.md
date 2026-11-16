@@ -47,6 +47,26 @@ entities、views 多报几样（第 6 节）。
 它登记的循环（`scenes/obs/motion/_kit.py`）。没登记会动的东西的场景这一项报 nothing moves，别的不变，已交付的包不用改。
 S2 一次合几个交付的时候用 `tools/gatestack.sh`：每个交付还是在它自己合进去的那棵树上过关口，后合的包让先合的图变样不算先合的账。
 
+11-16 第三次补充（公共文件的四处改动）：
+- 骨架多了锁定机位 `S.V6`（总监 #55097：大台阶南半边看发电房，`site/powerhouse` 场景里的 `stair_south`）。看板的清单
+  `tools/win/shots/obs-board.json` 跟着重出了，`v06_power`、`v07_hall` 两条现在都是骨架的数（`v07_hall` 以前还留着出图岗的提案）。
+- 骨架 `SMALL_DOME_APEX` 从 25 改成 **26**（总监 #57140：25 读成扣在铁箍上的一顶扁盖，26 读成半球）。`main/smalldome.py`
+  照骨架算，不用改；`check.py` 的天际线、彗星场景里的替身跟着变。拍到小穹顶的图都要重画。
+- **测试场景用地图的时刻（`mood.py` 那一行）的，`write_pack` 要把天空的包也带上**：
+  `return list(materials.pack(d) or []) + list(sky.pack(d) or [])`。只带 `materials.pack` 的，游戏自带的太阳没被涂黑，
+  朝西、地平线敞开的图里天上有一块白心黄边的方块（lamps c341 #56843 查的，总装里 9 个场景的 14 张图有）。
+  `check.py` 的 `views` 一项对这样的场景给 WARN；下一次交付时改这一行、重画。
+- **离线图的星星调暗了，和游戏一样**（comet c330 #56134 查的）：游戏画星星是颜色 (b, b, b)、透明度 b，加到天上的是 b 的平方；
+  `artkit/gamescene.py` 原来加的是 b。真机图量的也是平方：blue（b 0.60）星比天亮 92/255，原来的离线图是 153；glow（b 0.15）
+  真机看不见星，原来的离线图亮 38；deep（b 1.0）不变。**这之前出的带星的离线图，blue 的星亮了约 1.7 倍，glow 的亮了约 6.7 倍**，
+  看图定星星、彗星、天色的时候要算上这一条。留档图不追着重画：各包下一次交付时合了总装重画，急用的走【交付·补图】（第 6 节）。
+
+11-16 第四次补充（占用表多了屏障，总监 05:07，记在 #457 第 4 条下面）：`B.BARRIER`（`barrier`，照原版用，看不见，只给碰撞）。
+**只许一种用法**：用模型做的、关着的门和栅门，在门扇所在的那一层放屏障，高两格，不超出门扇的宽；看得见的关着的门能穿过去，
+比屏障更破坏道理。别处照旧不许（掉下去就出不来的地方先报总监，不用栏杆也不用屏障）。头一处是入口两侧拱的栅门，共 12 格
+（`props/ironwork` 的 `doors()` 放）。`check.py` 的 `blocks` 一项跟着管：屏障竖着超过两格 FAIL；一格屏障三格以内没有展示实体
+（门扇的模型）给 WARN；合规矩的在 PASS 那一行报格数和范围。离线图不画屏障，它也不挡光，不用改。
+
 ---
 
 ## 1. 目录和类别
@@ -127,7 +147,8 @@ def pack(pack_dir) -> list:      # 一行行的说明文字
 ```
 build/scenes/obs_<缩写>_<包名>/
   __init__.py     def build(): 建 Canvas，调本包的 build(c,(0,0,0))（比选就并排调各版本），返回 c；BIOME = "obs_blue"
-                  def write_pack(pack_dir): 调本包的 pack()；要用重画的方块就再调 scenes.obs.materials.pack(pack_dir)
+                  def write_pack(pack_dir): 调本包的 pack()；要用重画的方块就再调 scenes.obs.materials.pack(pack_dir)；
+                                            用地图的时刻（下面的 mood.py）就再调 scenes.obs.sky.pack(pack_dir)，不然天上有游戏自带的太阳
   props.py        def build_models(): return <本包>.models()        # 有模型才写；场景里用到别的包的模型也并进来
   mood.py         from scenes.obs.sky.mood import BIOMES, TIMELINES    # 一行，复用总装的光
   shots.json      [{"name":.., "pos":[x,y,z], "look_at":[x,y,z], "time": 可省}]  视角至少含一远、一近、一和相邻东西同框
@@ -135,7 +156,7 @@ build/scenes/obs_<缩写>_<包名>/
 
 - 场景属于哪个类别，`check.py` 从名字里的缩写读；名字不按这个格式的测试场景在 `__init__.py` 里写一行 `CATEGORY = "props"`。没有模型的场景不用写 `props.py`，`makepack.py`、`render.py`、`check.py` 都当它没有模型。
 - 机位正对着头顶或脚下（`look_at` 和 `pos` 只差 y）可以写：朝下拍时画面上边朝南。要别的朝向改用 `yaw`、`pitch` 写（`pitch` 90 朝下；`yaw` 180 时画面上边朝北、右边朝东）。`pos` 和 `look_at` 是同一点不行，`check.py` 判不过。
-- 骨架锁定的机位（`common/skeleton.py` 里的 `V1`、`V2`、`V7`、`V11`）：测试场景拍这几个机位时，`pos` 和 `look_at` 照骨架现在的数写，不抄旧图、旧场景上的数（A0 #304）。同一个站位换时刻可以写几个机位（`v1_blue`、`v1_deep`）。站在锁定机位上、方向却不是骨架的，`check.py` 给 WARN。星厅门洞里那个副机位叫 `v7_in`（A0 #365）。
+- 骨架锁定的机位（`common/skeleton.py` 里的 `V1`、`V2`、`V6`、`V7`、`V11`）：测试场景拍这几个机位时，`pos` 和 `look_at` 照骨架现在的数写，不抄旧图、旧场景上的数（A0 #304）。同一个站位换时刻可以写几个机位（`v1_blue`、`v1_deep`）。站在锁定机位上、方向却不是骨架的，`check.py` 给 WARN。星厅门洞里那个副机位叫 `v7_in`（A0 #365）。
 - 只想陈列模型、不摆场景：不写 `build()`，在 `props.py` 里再加 `GALLERY`（照 `scenes/skyobs/props.py`）；真机上的陈列由 S1 用 `gallery.py` 摆。`check.py` 对这种场景只查模型和资源包。
 - **自查图在你自己的节点上出，跟着分支进 git**（`COMMON.md` 第 0 节第 2 条、第 2.2 节）。合用机上不出图；管理员的电脑不再用。
   代码先提交、push，然后往自己的节点投（`run_workspace_job`，命令照在 `c164-realms/` 下手敲的样子写）：
@@ -174,7 +195,7 @@ python tools/check.py --scene obs_<缩写>_<包名> --shots build/scenes/obs_<�
 | strays | 生成的每张贴图有没有色板外的颜色（列出颜色、像素数、最近的色板色；天空贴图是加色的，不查） | FAIL |
 | refs | 资源包里的方块状态、物品定义、模型点到的模型和贴图，资源包或游戏里有没有（没有的话游戏里是紫黑格）；没人点到的模型和贴图 | 点到的不存在 FAIL；没人点到 WARN |
 | repaint | 被替换的方块状态是不是都在占用表的重画名单里；替换原版模型/贴图有没有连带改了表外的方块 | FAIL |
-| blocks | 放下的方块、`block_display` 展示的方块是不是都在占用表里 | WARN（找 S2 加表，或换表里的方块） |
+| blocks | 放下的方块、`block_display` 展示的方块是不是都在占用表里；屏障（`B.BARRIER`）只当关着的模型门的碰撞 | WARN（找 S2 加表，或换表里的方块；屏障旁边三格以内没有模型）；FAIL（屏障竖着超过两格） |
 | flatwall | 立面上有没有超过 5×5 的平墙（同一种方块状态、没有凹凸，连成比 5×5 大的实心方块；宽或高不超过 5 的条带不算）。materials、sky、props、motion 的测试场景是样板墙，跳过 | WARN（白模阶段本来就平；立面交付时要清掉） |
 | entities | 每个展示实体的模型资源包里有没有；实体总数和类别预算；是不是 16 像素一格；沿一个方向拉长的件（`M.between`），贴图沿那个方向是不是均匀（不均匀会拉花），有没有被拉歪的斜件；直接展示原版物品的 | 缺模型、超预算 FAIL；其余 WARN |
 | views | 按 `shots.json` 数每个视角里的展示实体（不算墙的遮挡），对照单视角上限；另报两个数：游戏实际要画的（没设宽高的展示实体在画面外也照画）、离机位水平超过 160 格的（服务器不发给玩家，那张图里看不到；这条是读游戏代码得的，真机待证实）。机位没有方向（`pos` 等于 `look_at`）判不过。站在骨架锁定的机位上、方向却不是骨架的也点出来 | WARN；机位没方向 FAIL |
