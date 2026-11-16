@@ -302,6 +302,25 @@ def furnace():
     return rows, bad
 
 
+# The furnace window as the board is read (cr2 #78188, a1 #78449): the rows of the real V6 are
+# measured in Rec.709. A lit picture shows its own colours, so the glass of a picture, the bars
+# left out, is what a reader of the board finds between the bars.
+COEF709 = np.array([0.2126, 0.7152, 0.0722])
+BRIGHT = 0.5                    # cr2 counts the pixels of the window over this
+
+
+def read709():
+    """For every picture of every row of the furnace window: the mean of its glass, and the share
+    of the whole block, bars and all, that is over BRIGHT. [(version, row, [means], [shares])]"""
+    rows = []
+    for v in W.VERSIONS:
+        glass = ~_bars(v)
+        for r, pictures in enumerate(W.furnace_face(v)):
+            lum = [(np.asarray(px)[..., :3].astype(float) @ COEF709) / 255.0 for px in pictures]
+            rows.append((v, r, [float(a[glass].mean()) for a in lum], [float((a > BRIGHT).mean()) for a in lum]))
+    return rows
+
+
 def main():
     print(f"glass glow[2]={P.RAMPS['glow'][2]}  opal[0]={P.RAMPS['opal'][0]}  "
           f"night_glass[3,4]={P.RAMPS['night_glass'][3]},{P.RAMPS['night_glass'][4]}  bar iron[1]={P.RAMPS['iron'][1]}")
@@ -319,6 +338,11 @@ def main():
     for v, k, blocks, whole, median, head, flag in fired:
         print(f"{v:3} {'stack ' + str(k):8} " + " ".join(f"{b:6.3f}" for b in blocks)
               + f" {whole:6.3f} {median:6.3f} {head:6.3f}  {flag}")
+    print(f"\n{'ver':3} {'row':8} the glass of each picture in Rec.709, as the board is read; "
+          f"the share of each block over {BRIGHT}")
+    for v, r, means, shares in read709():
+        print(f"{v:3} {('sill', 'second', 'third')[r]:8} " + " ".join(f"{m:.3f}" for m in means)
+              + "   " + " ".join(f"{s:.3f}" for s in shares))
     print(f"\n{'ver':3} {'sill':8} {'paler amber':>12} {'its rows':>12}  flag")
     glowing, bad_glowing = embers()
     for v, k, count, runs, flag in glowing:
