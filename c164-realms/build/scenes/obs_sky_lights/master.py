@@ -13,7 +13,7 @@ from scenes.obs.sky import lights
 def _kind(why):
     """What throws a source, without the window or bay it belongs to."""
     if why.startswith("sky/lights:"):
-        return why.split(" ")[0] + (", lent" if ", lent to" in why else "")
+        return why.split(" ")[0]
     return why
 
 
