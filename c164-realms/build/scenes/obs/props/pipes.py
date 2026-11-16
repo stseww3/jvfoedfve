@@ -166,18 +166,32 @@ def _even(m, axis, c, a0, a1, radius, tones, sides=8, light=ABOVE):
     return m
 
 
-LEAN = 0.5              # degrees: how far _settle() turns a face off the plane between two axes
+LEAN = 0.1              # degrees: how far _settle() turns a face off the plane between two axes
 _EDGE = math.sqrt(2.0) * math.sin(math.radians(LEAN / 2.0))
-_FIRST = (1, 2, 0)      # of two equal axes the game takes y before z before x
 
 
 def _between(normal):
     """The two model axes a face's normal lies between -- within half the lean of the plane that
-    divides them -- or None; the one the game takes when the two are equal comes first."""
-    order = sorted(range(3), key=lambda i: (-abs(normal[i]), _FIRST.index(i)))
+    divides them -- or None. Whatever the shape has for sides: any face is asked, by its normal."""
+    order = sorted(range(3), key=lambda i: -abs(normal[i]))
     if abs(normal[order[0]]) - abs(normal[order[1]]) >= _EDGE:
         return None
-    return tuple(sorted(order[:2], key=_FIRST.index))
+    return tuple(sorted(order[:2]))
+
+
+def _drawn(part):
+    """(box axis, the normal of its +face) for the sides of a part that have a face drawn."""
+    q = part["rot"][0] if part["rot"] else M.IDENT
+    for k in range(3):
+        if any(letter not in part["skip"] for letter in M.SIDE[k]):
+            yield k, M._qrot(q, M.NORMAL[M.SIDE[k][1]])
+
+
+def unsettled(model):
+    """The drawn faces of a model that stand between two axes: [(part's index, face letters, normal)].
+    Empty for every model of this family (the test scene's fit.py holds them to it)."""
+    return [(i, "".join(M.SIDE[k]), normal) for i, part in enumerate(model.parts)
+            for k, normal in _drawn(part) if _between(normal)]
 
 
 def _settle(m):
@@ -186,61 +200,42 @@ def _settle(m):
     The game lights a face of an item model not by its own normal but by the model axis nearest to
     it (the direction the face is filed under when the model is baked), turned as the display turns
     the model. The slanting flats of an eight-sided tube, ring or ball stand exactly between two
-    axes, and which of the two such a face is given comes out of the last bit of a float: of two
-    lengths of one main, or of the two bores of one fitting, one had its upper flats lit as "up"
-    (x1) and the other as a side (x0.5), and a change anywhere in a model could change it again.
+    axes, and which of the two such a face is given comes out of the last bit of a float: of the two
+    bores of one main, one had its upper flats lit as "up" (x1) and the other as a side (x0.5), and
+    a change anywhere in a model could change it again.
 
-    So every part whose faces stand between two axes is turned LEAN degrees about its own middle,
-    towards the axis the game takes when the two are exactly equal (y before z before x): the three
-    flats on the +y side of a tube along z are lit as up, the three opposite as down. Half a degree
-    moves an edge of the big main a fortieth of a texel. The parts of a round shape then no longer
-    meet in a line, so the faces they keep inside each other are drawn too (a hair of them shows in
-    the joint; left out, one would look through the pipe there)."""
-    leaned = set()
-    for p in m.parts:
-        q = p["rot"][0] if p["rot"] else M.IDENT
-        start = q
-        # the faces that are drawn come first: it is they that go to the axis the game would take
-        sides = sorted(range(3), key=lambda k: all(letter in p["skip"] for letter in M.SIDE[k]))
+    So every round shape that has such faces is turned LEAN degrees as one piece (the boxes one
+    call of tube(), ring(), ball() or one stretch of a hose() made share a seed; a box of its own
+    is a piece by itself), about its own middle and about the model axis the two axes stand across,
+    always the same way round: right-handed about that axis' positive end. The shape stays what it
+    was and its boxes still meet in the same lines (leaning the slanting boxes alone left hairlines
+    in the joints, which showed in the pictures). Its flats now fall to the four directions two and
+    two, the same in every piece: of a tube along z, the flat at +x and the slanting one below it
+    are lit as +x, the slanting flat between +x and +y and the flat at +y as +y, and so on round.
+    A tenth of a degree moves the rim of the widest flange a hundredth of a texel."""
+    groups = {}
+    for part in m.parts:
+        groups.setdefault(part["seed"], []).append(part)
+    for parts in groups.values():
         for _ in range(4):
-            found = None
-            for k in sides:
-                pair = _between(M._qrot(q, M.NORMAL[M.SIDE[k][1]]))
-                if pair:
-                    found = (k, pair)
-                    break
-            if found is None:
+            pair = next((pair for part in parts for _, normal in _drawn(part)
+                         for pair in [_between(normal)] if pair), None)
+            if pair is None:
                 break
-            k, (keep, other) = found
-            axis = M.AXES[3 - keep - other]
-
-            def gain(degrees):
-                n = M._qrot(M._qmul(M.quat(axis, degrees), q), M.NORMAL[M.SIDE[k][1]])
-                return abs(n[keep]) - abs(n[other])
-
-            q = M._qmul(M.quat(axis, max((LEAN, -LEAN), key=gain)), q)
+            turn = M.quat(M.AXES[3 - pair[0] - pair[1]], LEAN)
+            centres = [[(part["lo"][i] + part["hi"][i]) / 2.0 for i in range(3)] for part in parts]
+            pivot = [sum(c[i] for c in centres) / len(centres) for i in range(3)]
+            for part, c in zip(parts, centres):
+                d = M._qrot(turn, [c[i] - pivot[i] for i in range(3)])
+                to = [pivot[i] + d[i] for i in range(3)]
+                half = [(part["hi"][i] - part["lo"][i]) / 2.0 for i in range(3)]
+                q = part["rot"][0] if part["rot"] else M.IDENT
+                part["lo"] = tuple(to[i] - half[i] for i in range(3))
+                part["hi"] = tuple(to[i] + half[i] for i in range(3))
+                part["rot"] = (M._qmul(turn, q), tuple(to))
         else:
-            raise ValueError(f"{m.name}: a part's faces stay between two axes however it is leaned")
-        if q is not start:
-            p["rot"] = (q, tuple((p["lo"][i] + p["hi"][i]) / 2.0 for i in range(3)))
-            leaned.add(p["seed"])
-    for p in m.parts:
-        if p["seed"] in leaned:
-            p["skip"] = set()
+            raise ValueError(f"{m.name}: faces stay between two axes however the shape is turned")
     return m
-
-
-def unsettled(model):
-    """The faces of a model that stand between two axes: [(part's index, face letters, normal)].
-    Empty for every model of this family (the test scene's fit.py holds them to it)."""
-    out = []
-    for i, p in enumerate(model.parts):
-        q = p["rot"][0] if p["rot"] else M.IDENT
-        for k in range(3):
-            normal = M._qrot(q, M.NORMAL[M.SIDE[k][1]])
-            if _between(normal):
-                out.append((i, "".join(M.SIDE[k]), normal))
-    return out
 
 
 def _bolts(m, radius, count, z0, z1, first=0.0):

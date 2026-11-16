@@ -8,7 +8,9 @@ lookout has no bench (furniture.floor_in_tree), and the cameras of a group are o
 its package is in the tree (shots.json is written again when one of them is merged). What was left out is listed by
 python -m scenes.obs_props_furniture_site --report  (a node's job: it builds the master scene).
 Where the lamps of the site and the building's own lights can be asked for they are, so that the
-benches are judged in the light they will stand in.
+benches are judged in the light they will stand in; and so is the telescope that props/instruments
+stands on the axis of the sunset terrace, between the inner pair of benches, so that the benches
+are judged beside what they will stand beside.
 
 What the pictures are for:
   sunset    four benches on the sunset terrace, their backs to the building: do they follow the
@@ -31,6 +33,10 @@ try:
     from scenes.obs.sky import _lightkit as L
 except ImportError:         # the sky line's light tool is not in this tree
     L = None
+try:
+    from scenes.obs.props import instruments
+except ImportError:         # props/instruments is not in this tree
+    instruments = None
 
 BIOME = obs.BIOME
 BIOME_MARGIN = obs.BIOME_MARGIN
@@ -50,6 +56,8 @@ def build():
         lamps.dress(c)
     if L is not None:
         L.dress(c)
+    if instruments is not None and hasattr(instruments, "dress"):
+        instruments.dress(c)
     counts = {}
     for name in obs.LINES:
         line = importlib.import_module(f"scenes.obs.{name}")
