@@ -35,7 +35,7 @@ from artkit import gamescene as G
 from scenes.obs.common import skeleton as S
 from scenes.obs.sky import comet, mood, ridges
 
-from . import ASPECT, CAMERAS, FOV
+from . import ASPECT, CAMERAS, FOV, SKIRT_Y
 
 SIZE = (1280, 720)
 VIEW = 12 * 16.0                 # the view distance the map is shown at, in blocks
@@ -154,16 +154,16 @@ def _slab(pos, d, lo, hi):
 
 
 def site(pos, d):
-    """Distance to the stand-in's blocks."""
+    """Distance to the stand-in's masses (the scene's masses()); of the half-round sunset platform
+    only the floor, which is all that the cameras on it and behind the terrace can see of it."""
     t = np.full(d.shape[:2], np.inf)
     x0, z0, x1, z1 = S.UPPER_TERRACE
-    t = np.minimum(t, _slab(pos, d, (x0, S.PAVING_Y - 40, z0), (x1 + 1, S.GROUND, z1 + 1)))
+    t = np.minimum(t, _slab(pos, d, (x0, SKIRT_Y, z0), (x1 + 1, S.GROUND, z1 + 1)))
     x0, z0, x1, z1 = S.LOWER_PLATFORM
-    t = np.minimum(t, _slab(pos, d, (x0, S.LOWER_PAVING_Y - 40, z0), (x1 + 1, S.LOWER_GROUND, z1 + 1)))
+    t = np.minimum(t, _slab(pos, d, (x0, SKIRT_Y, z0), (x1 + 1, S.LOWER_GROUND, z1 + 1)))
     x0, z0, x1, z1 = S.SOUTH_LOOKOUT["box"]
-    t = np.minimum(t, _slab(pos, d, (x0, S.SOUTH_LOOKOUT["feet"] - 40, z0), (x1 + 1, S.SOUTH_LOOKOUT["feet"], z1 + 1)))
+    t = np.minimum(t, _slab(pos, d, (x0, SKIRT_Y, z0), (x1 + 1, S.SOUTH_LOOKOUT["feet"], z1 + 1)))
     t = np.minimum(t, _slab(pos, d, (S.WALL_W, S.GROUND, S.Z_NORTH), (S.WALL_E + 1, S.CORNICE + 1, S.Z_SOUTH + 1)))
-    # the sunset platform: the ground plane inside its circle
     with np.errstate(divide="ignore", invalid="ignore"):
         tg = (S.GROUND - pos[1]) / d[..., 1]
     cx, cz = S.SUNSET_PLATFORM["centre"]

@@ -34,6 +34,7 @@ The shots (the card's list):
                                edge, north of the terrace; in V2 the outer peaks of both ranges stand
                                low at the picture's edges, on either side of the main building
 """
+import functools
 import json
 import math
 import os
@@ -94,6 +95,32 @@ def shots():
             for name, (pos, at, look) in CAMERAS.items()]
 
 
+def _rect(x0, z0, x1, z1):
+    return {(x, z) for x in range(x0, x1 + 1) for z in range(z0, z1 + 1)}
+
+
+def _upper():
+    """The cells of the upper terrace with the half-round sunset platform at its west end."""
+    x0, z0, x1, z1 = S.UPPER_TERRACE
+    cx, cz = S.SUNSET_PLATFORM["centre"]
+    r = S.SUNSET_PLATFORM["radius"]
+    return _rect(x0, z0, x1, z1) | {(x, z) for x in range(cx - r, x0) for z in range(cz - r, cz + r + 1)
+                                    if math.hypot(x - cx, z - cz) <= r}
+
+
+@functools.lru_cache(maxsize=None)
+def masses():
+    """The stand-in as solid shapes: (cells (x, z), lowest y, the y its top lies at). The pavings
+    stand on walls that go down to SKIRT_Y, so from outside each is a solid mass."""
+    lookout = S.SOUTH_LOOKOUT["box"]
+    return [
+        (_upper(), SKIRT_Y, S.PAVING_Y + 1),
+        (_rect(S.WALL_W, S.Z_NORTH, S.WALL_E, S.Z_SOUTH), S.GROUND, S.CORNICE + 1),       # the main building
+        (_rect(*S.LOWER_PLATFORM), SKIRT_Y, S.LOWER_PAVING_Y + 1),
+        (_rect(*lookout), SKIRT_Y, S.SOUTH_LOOKOUT["feet"]),
+    ]
+
+
 def _skirt(c, cells, top):
     """Walls under the rim of a paving (a set of (x, z)), from under it down to SKIRT_Y: what the
     mountain under a terrace hides stays hidden."""
@@ -104,32 +131,23 @@ def _skirt(c, cells, top):
             c.set(x, y, z, STONE)
 
 
-def _rect(x0, z0, x1, z1):
-    return {(x, z) for x in range(x0, x1 + 1) for z in range(z0, z1 + 1)}
-
-
 def build():
     c = Canvas()
-    x0, z0, x1, z1 = S.UPPER_TERRACE
-    upper = _rect(x0, z0, x1, z1)
-    cx, cz = S.SUNSET_PLATFORM["centre"]
-    r = S.SUNSET_PLATFORM["radius"]
-    upper |= {(x, z) for x in range(cx - r, x0) for z in range(cz - r, cz + r + 1) if math.hypot(x - cx, z - cz) <= r}
+    (upper, _, _), (house, _, _), (lower, _, _), (lookout, _, _) = masses()
     for x, z in upper:
         c.set(x, S.PAVING_Y, z, DARK)
     _skirt(c, upper, S.PAVING_Y)
     # the main building: a plain block as high as the cornice, hollow
-    for y in range(S.GROUND, S.CORNICE + 1):
-        for x in range(S.WALL_W, S.WALL_E + 1):
-            for z in range(S.Z_NORTH, S.Z_SOUTH + 1):
-                if y == S.CORNICE or x in (S.WALL_W, S.WALL_E) or z in (S.Z_NORTH, S.Z_SOUTH):
-                    c.set(x, y, z, STONE)
-    x0, z0, x1, z1 = S.LOWER_PLATFORM
-    c.box(x0, S.LOWER_PAVING_Y, z0, x1, S.LOWER_PAVING_Y, z1, DARK)
-    _skirt(c, _rect(x0, z0, x1, z1), S.LOWER_PAVING_Y)
-    x0, z0, x1, z1 = S.SOUTH_LOOKOUT["box"]
-    c.box(x0, S.SOUTH_LOOKOUT["feet"] - 1, z0, x1, S.SOUTH_LOOKOUT["feet"] - 1, z1, DARK)
-    _skirt(c, _rect(x0, z0, x1, z1), S.SOUTH_LOOKOUT["feet"] - 1)
+    for x, z in house:
+        for y in range(S.GROUND, S.CORNICE + 1):
+            if y == S.CORNICE or x in (S.WALL_W, S.WALL_E) or z in (S.Z_NORTH, S.Z_SOUTH):
+                c.set(x, y, z, STONE)
+    for x, z in lower:
+        c.set(x, S.LOWER_PAVING_Y, z, DARK)
+    _skirt(c, lower, S.LOWER_PAVING_Y)
+    for x, z in lookout:
+        c.set(x, S.SOUTH_LOOKOUT["feet"] - 1, z, DARK)
+    _skirt(c, lookout, S.SOUTH_LOOKOUT["feet"] - 1)
     ridges.build(c)
     return c
 
@@ -171,21 +189,40 @@ def _inside(pos, at, bearing, up):
     return abs(d @ right / along) <= half * ASPECT and abs(d @ top / along) <= half
 
 
+def hidden(pos, bearing, up, reach=160.0, step=0.25):
+    """Whether the stand-in stands in the way of a direction from pos (bearing north of due west,
+    degrees up): the sight line is walked in steps as far as the stand-in reaches."""
+    a, e = math.radians(bearing), math.radians(up)
+    d = np.array([-math.cos(e) * math.cos(a), math.sin(e), -math.cos(e) * math.sin(a)])
+    p = np.array(pos, dtype=float)[None, :] + np.arange(step, reach, step)[:, None] * d[None, :]
+    cells = list(zip(np.floor(p[:, 0]).astype(int).tolist(), np.floor(p[:, 2]).astype(int).tolist()))
+    for mass, low, top in masses():
+        inside = (p[:, 1] >= low) & (p[:, 1] < top)
+        if any(ok and c in mass for ok, c in zip(inside.tolist(), cells)):
+            return True
+    return False
+
+
 def describe():
-    """What the frame of every shot holds of the ridges; the stand-in's blocks in front are not counted."""
+    """What every shot shows of the ridges: the part of each ridge line that lies in the frame and
+    that the stand-in does not hide."""
     lines = list(ridges.report())
     for name, (pos, at, look) in CAMERAS.items():
         alpha = mood.look(look)["glow_alpha"]
         parts = []
+        behind = False
         for sheet in ridges.SHEETS:
             line = [p for p in seen(pos, sheet) if _inside(pos, at, p[0], p[1])]
+            behind = behind or bool(line)
+            line = [p for p in line if not hidden(pos, p[0], p[1])]
             if not line:
                 continue
             top = max(line, key=lambda p: p[1])
             fan = max(ridges.fan(abs(b), max(u, 0.0), alpha) for b, u, _ in line)
             parts.append(f"{sheet} {min(p[0] for p in line):.0f} to {max(p[0] for p in line):.0f}, "
                          f"up to {top[1]:.1f} degrees at {top[0]:.0f} ({top[2]:.0f} blocks), afterglow to {fan:.2f}")
-        lines.append(f"{name:10s} ({look}) " + ("; ".join(parts) if parts else "no ridge in the frame"))
+        none = "no ridge in sight: what the frame holds of them is behind the stand-in" if behind else "no ridge in the frame"
+        lines.append(f"{name:10s} ({look}) " + ("; ".join(parts) if parts else none))
     return lines
 
 
