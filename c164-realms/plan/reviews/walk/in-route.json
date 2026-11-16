@@ -83,7 +83,9 @@
     {"at": [4.5, 18, 8.5], "node": "the dome room, south"},
     {"at": [0.3, 18, 5.2]},
     {"at": [-1.1, 18, 0.5], "node": "the dome room, west (under the slit)"},
-    {"at": [-1.2, 18, -5.2]}
+    {"at": [-1.2, 18, -5.2]},
+    {"at": [10.2, 18, 1.4], "node": "behind the eyepiece, where the observer stands (machines/scope OBSERVER, version a)", "look": [4.5, 23.0, 0.5], "hop": true,
+     "note": "motion/guide ends here: whoever has the six charts stands on this place"}
   ]},
   {"id": "J", "name": "the south roofs: corner terrace, ridge walk, the end terrace, the small dome's door", "points": [
     {"at": [11.5, 18, 6.5], "node": "inside the dome room's south door", "look": [12.5, 19, 10.5], "hop": true},
