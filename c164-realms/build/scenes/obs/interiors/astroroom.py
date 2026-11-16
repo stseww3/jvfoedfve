@@ -59,9 +59,13 @@ ORDER = 80              # a room that moves into the shell (INTERFACE 3)
 MOVED_IN = True         # the master scene dresses the room (fast lane: a card's switch is turned on with its delivery)
 NAME = "interiors/astroroom"
 PREFIX = "int_astroroom_"
+VIEW = M.NEAR           # a room: the master scene draws what stands in it for 32 blocks (artkit.models.band)
 PX = 1 / 16.0
 BUDGET = 70             # display entities of this module (cr4: 120 for the room, 35 the inner shell's, 15 the drive's)
 ROOM_BUDGET = 120       # the card's
+VIEW = M.NEAR           # everything in the room, the drive and the inner shell with it, is drawn up to 32 blocks
+#                         off: the game draws display entities through walls, the room is five blocks across,
+#                         and no board view looks in at a window of it (the assembly applies it)
 
 # ---- the room (cells) ---------------------------------------------------------------------------
 FEET = S.SMALL_DRUM_BASE                # 18

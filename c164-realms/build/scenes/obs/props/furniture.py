@@ -852,6 +852,8 @@ def rail(canvas, pos, blocks, facing="south", origin=(0, 0, 0)):
 #             middle of the lookout and looks north-west: the bench is behind its right edge.
 DRESS = True            # on from the merge on (the fast lane, COMMON 0.10); a test scene may still ask
                         # for the site's furniture with dress(canvas), or call site() for its group
+VIEW = M.MID            # the site's furniture is seen within one terrace: drawn up to 64 blocks away.
+                        # Indoors a room places its pieces itself and gives them its own band
 SUNSET_BENCHES = ((14.5, 3.5), (13.0, 7.5))     # (west of the terrace's middle, off the axis): a pair each
 LOOKOUT_BENCH = (0.6, -1.5)     # in from the face of the east rail's kerb; from the lookout's middle row:
                                 # half way between the rail's north corner and the pier at the prow's knuckle
