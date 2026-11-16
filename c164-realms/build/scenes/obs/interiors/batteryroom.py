@@ -22,7 +22,8 @@ What stands where (plan cells; north is -z, one comes in at the south end and lo
                     and lead straps join each to the next: 208 jars. One model to a block of a
                     row (CELLS), placed 52 times
   gantries          under each of the four beams a timber frame over each bank, its posts the
-                    stand's own; on its lintel porcelain insulators carry the bus bars
+                    stand's own; on its lintel porcelain insulators carry the bus bars. At the
+                    south end of a bank a lead bar rises from the last jar of each row to its bar
   bus bars          a pair of copper bars over each bank at 2.5 blocks, from the last jar at the
                     south end north to the board (machines/batteryboard lays them, in lengths
                     from gantry to gantry)
@@ -128,10 +129,12 @@ LAMPS = (
     # where the lamp is fixed and the way that face looks; the cells its light is offered in, each with its level
     ((AXIS_X, LAMP_Y, BEAM_Z[-1] + 1.0), "south", _pool(BEAM_Z[-1] + 1), "aisle south"),    # on the first beam, over the way in
     ((AXIS_X, LAMP_Y, BEAM_Z[1] + 1.0), "south", _pool(BEAM_Z[1] + 1), "aisle north"),      # on the third beam
-    ((AXIS_X, LAMP_Y, TROUGH_Z + 1.0), "south", tuple(((x, BOARD_LIGHT[1], BOARD_LIGHT[2]), 8) for x in AISLE), "board"),
-)                                                                                           # on the trough's bed, over the board
-FILL = 6                                            # between two lamps the aisle is walked in what both throw: a fill
-FILLS = tuple((x, FEET + 3, z + 1) for z in (BEAM_Z[2], BEAM_Z[0]) for x in AISLE)      # under the second and the fourth beam
+    ((AXIS_X, LAMP_Y, TROUGH_Z + 1.0), "south",                                             # on the trough's bed, over the board:
+     tuple(((x, BOARD_LIGHT[1], BOARD_LIGHT[2]), 8) for x in AISLE)                         # on the board's face
+     + tuple(((x, FEET + 1, TROUGH_Z + 1), 7) for x in AISLE), "board"),                    # and where one stands before it
+)
+FILL = 7                                            # between two lamps the aisle is walked in what both throw: a fill
+FILLS = tuple((x, FEET + 2, z + 1) for z in (BEAM_Z[2], BEAM_Z[0]) for x in AISLE)      # under the second and the fourth beam
 CAGE_RANK = 3
 
 # ---- the cable from the power house and the small pieces
@@ -286,6 +289,19 @@ def _gantry():
     return m
 
 
+def _taps():
+    """Where a bank's battery ends: from the strap of the last jar of each row a lead bar across
+    to under the bank's bus bar and up to it. For the last block of a bank; held as the gantry."""
+    m = M.Model(PREFIX + "taps", anchor=(0.0, HELD * 16.0, 0.0))
+    top = TIERS[1] + JAR[1]
+    for side in (-1.0, 1.0):
+        a, b = sorted((side * BAR_OFF - side * 0.5, side * 8.0))
+        m.box((a, top, 5.0), (b, top + 1.0, 6.0), LEAD)
+        a, b = sorted((side * BAR_OFF - side * 0.5, side * BAR_OFF + side * 0.5))
+        m.box((a, top + 1.0, 5.0), (b, BAR_Y[0], 6.0), LEAD)
+    return m
+
+
 def _cable():
     """The cable from the power house: lead-sheathed, 48 long along +z from its anchor, to be
     stretched from point to point (artkit.models.between)."""
@@ -395,7 +411,7 @@ def _sign():
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    built = (_cells(), _gantry(), _cable(), _cleat(), _entry(), _carboy(), _shelf(), _apron(), _record(), _sign())
+    built = (_cells(), _gantry(), _taps(), _cable(), _cleat(), _entry(), _carboy(), _shelf(), _apron(), _record(), _sign())
     return {m.name: m for m in built}
 
 
@@ -466,6 +482,7 @@ def build_batteryroom(c, origin=(0, 0, 0), roles=B):
         inner = b + (K.NUDGE if b < AXIS_X else -K.NUDGE)
         for z in BEAM_Z:
             n += K.put(c, own[PREFIX + "gantry"], (inner, FEET + HELD, S.mid(z)), origin=origin)
+        n += K.put(c, own[PREFIX + "taps"], (inner, FEET + HELD, S.mid(BANK_Z[1])), origin=origin)
 
     # ---- the switchboard before the north wall, and a pair of bars from each of its wings over a bank to
     # the last jar, laid in lengths from gantry to gantry (machines/batteryboard)
