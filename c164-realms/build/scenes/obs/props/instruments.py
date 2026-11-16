@@ -184,10 +184,12 @@ def _lume(rows):
 GLINT = P.RAMPS["porcelain"][4]         # the glint of a lens or of a glass ball: one pixel
 # Clear glass as the furniture draws it (_kit.sheen_texels): the glass is left out and its reflection
 # says it is there, a glancing stroke two pixels wide that climbs to the right and a shorter one
-# under it, in the tone the roof lights hold the sky in; a white one was the brightest thing on the
-# wall and read as paper. One column further left than the kit puts it: the clock's door is seven
-# pixels wide and its middle column is the pendulum rod's, which a stroke would cut in two.
-SHEEN = getattr(K, "SHEEN", P.RAMPS["night_glass"][4])
+# under it. Its tone is the kit's for a narrow pane with dark wood close behind it, a step under the
+# one the roof lights hold the sky in: that one was the only cold thing on the case and read as a
+# blue ribbon stuck on the door, and a white one as paper. One column further left than the kit
+# puts it: the clock's door is seven pixels wide and its middle column is the pendulum rod's, which
+# a stroke would cut in two.
+SHEEN = K.SHEEN_DIM
 STROKES = ((1, 1), (2, 1), (0, 2), (1, 2), (1, 5), (2, 5))
 
 
@@ -812,7 +814,9 @@ PENDULUM = dict(tag="c164_pendulum", pivot=tuple(v / 16.0 for v in PENDULUM_PIVO
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    return {PREFIX + name: spec["build"]() for name, spec in SPEC.items()}
+    # settled (_kit.settle): the slanting flats of the tubes, rings and balls stand exactly between
+    # two axes, and the game lit them one way on one piece and the other way on its twin
+    return {PREFIX + name: K.settle(spec["build"]()) for name, spec in SPEC.items()}
 
 
 def models():
