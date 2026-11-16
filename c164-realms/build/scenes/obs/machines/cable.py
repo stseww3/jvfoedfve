@@ -26,11 +26,13 @@ How it works, so that it can be read off the pieces:
 
 The models (all "mach_cable_"):
 
-  car      the car: dark-wood boards in a riveted iron frame on four wheels, lit windows, a
-           clerestory roof with a lamp at each end. One piece; it stands still. It is a solid
-           thing and stops the player like one: barriers in the cells its body fills (CAR_CELLS),
-           none outside its outline (A0 11-16 09:11). It fills the track's way out of the
-           platform from one piece of the edge's rail to the other.
+  car      the car, the train's coach (plan/round2.md, card machines/train): dark-wood boards in
+           a riveted iron frame, lit windows, a clerestory roof with a lamp at each end. It is a
+           solid thing and stops the player like one: barriers in the cells its body fills
+           (CAR_CELLS), none outside its outline (A0 11-16 09:11). It fills the track's way out
+           of the platform from one piece of the edge's rail to the other.
+  axle     ROLLS. A wheelset of the car, two of them (CAR_AXLES): an axle and two spoked wheels,
+           anchored on the axle's line (its own z), in the car's axle boxes.
   drum     MOVES. Barrel, rope and the two wheels: turns about its own x axis through the anchor.
   frame    the two bearing pedestals of the drum, and the belt where it lies on the west wheel.
   motor    the motor on its bed, its belt pulley with the belt on it, its conduit into the floor.
@@ -51,8 +53,9 @@ cylinders, a turn would not show, so they are not split.
 
 Scale (A5 1.2: px = scale keeps 16 texels to the block): drum and frame 2, the rest 1 -- the
 car is two blocks long and three wide over its eaves, as much as a model drawn texel for texel
-may span. 26 display entities, one of them the lamp family's wall lamp in the winch house
-(WORK_LAMP).
+may span. 28 display entities, one of them the lamp family's wall lamp in the winch house
+(WORK_LAMP). The car and its wheelsets are seen from across the site; the rest is drawn within 64
+blocks (VIEW, VIEW_KEEP).
 
 Blocks: the models stop nobody, so the package sets what does. Barriers inside the two solid
 things, the car's body (CAR_CELLS) and the drum's barrel (SOLID), two high and nowhere beyond
@@ -86,6 +89,11 @@ from ..site import cablecar as SHELL    # read only: the station's shell, whose 
 
 PREFIX = "mach_cable_"
 PX = 1.0 / 16.0                         # one texel, in blocks
+# How far off the pieces are drawn (artkit.models, the four bands): the winch and the rope's
+# furniture are looked at from the two platforms, the car is the train's coach and is seen from
+# across the whole site.
+VIEW = M.MID
+VIEW_KEEP = (PREFIX + "car", PREFIX + "axle")
 
 # --- materials (palette only) ---------------------------------------------------------------------
 IRON, IRON_D, BRASS, BRASS_D = PK.IRON, PK.IRON_D, PK.BRASS, PK.BRASS_D
@@ -147,6 +155,12 @@ TRACK_END = SHELL.END                                   # 141: the track's last 
 # on the rails. The cell west of it is left for the step to its door; the spawn cell is the next.
 CAR_HALF = (16, 24)                                     # half its length and half its width, in texels
 CAR = (CAR_BOX[2] + 1.0 - CAR_HALF[0] * PX, FEET, TRACK_Z)      # (91.0, -4, -32.5)
+# Its two wheelsets, models of their own that roll: how far along the car from its middle they
+# stand, the wheels' radius over the tyre (they stand on the rails) and the wheels' plane, the
+# middle of a rail, all in texels.
+CAR_AXLES = (-10.0, 10.0)
+CAR_WHEEL = 4.0
+RAIL_MID = 16.0
 CAR_CELLS = [(x, y, z) for x in range(CAR_BOX[2] - 1, CAR_BOX[2] + 1) for y in (int(FEET), int(FEET) + 1)
              for z in range(CAR_BOX[1], CAR_BOX[3] + 1)]        # x 90..91, y -4..-3, z -34..-32: the barriers
 CAR_LIGHT = (CAR_BOX[2], int(FEET) + 2, AXIS)           # a cell, over the barriers: the light of its windows
@@ -313,7 +327,6 @@ def _car():
     end_lights = (-18, -8, 2, 12)
     door_piers = ((6, 7), (12, 14), (19, 20))           # the door end: two narrow windows either side of the door
     door_lights = ((7, 12), (14, 19))
-    G = 16.0                                            # the wheels' plane: the middle of a rail
 
     # the underframe and the running gear
     for s in (-1.0, 1.0):
@@ -324,14 +337,12 @@ def _car():
         for t in (-16.5, -5.5, 5.5, 16.5):
             PK.rivet(m, (L * s, 7.5, t), "x" if s > 0 else "-x")
     m.box((-L + 2, 8, -W + 2), (L - 2, FLOOR, W - 2), IRON_D)                      # the floor, seen from below
-    for wx in (-10.0, 10.0):
-        m.tube("z", (wx, 4.0), -G, G, 1.0, IRON_D)                                 # axle
+    for wx in CAR_AXLES:                    # the axle boxes under the sole bars: the wheelsets (_axle) run in them
         for s in (-1.0, 1.0):
-            m.ring("z", (wx, 4.0, G * s), 3.5, 1.0, 3.0, IRON, sides=8, seed=_WHEEL)           # tyre
-            a, b = sorted(((G - 0.5) * s, (G + 0.5) * s))
-            m.tube("z", (wx, 4.0), a, b, 3.0, IRON_D, seed=_WHEEL + 1)                         # web
-            a, b = sorted(((G + 0.5) * s, (G + 2.5) * s))
-            m.box((wx - 1, 3, a), (wx + 1, 5, b), BRASS_D, seed=_WHEEL + 2)                    # hub cap
+            a, b = sorted((19.0 * s, 21.5 * s))
+            m.box((wx - 2, 2, a), (wx + 2, 6, b), IRON_D, seed=_WHEEL + 4)
+            a, b = sorted((21.5 * s, 22.0 * s))
+            m.box((wx - 1, 3, a), (wx + 1, 5, b), BRASS_D, seed=_WHEEL + 2)        # the box's brass cover
     m.box((-2, 5, -1), (2, 8, 1), IRON_D)                                          # the grip's shank
     m.box((-3, 2, -2), (3, 5, 2), IRON_D, grain="x")                               # its jaws, closed on the rope
 
@@ -411,6 +422,24 @@ def _car():
         a, b = sorted((16 * s, 17 * s))
         m.box((a, 42, -1), (b, 43, 1), GLOW[2], emit=15, shade=False)              # its lens
     m.box((-14, 44, -C - 2), (14, 45, C + 2), IRON, grain="x")
+    return m
+
+
+def _axle():
+    """A wheelset of the car: an axle with a spoked wheel on the middle of either rail, its
+    journals in the car's axle boxes. Anchor: the middle of the axle, the line it rolls about
+    (the model's z)."""
+    m = M.Model(PREFIX + "axle")
+    G = RAIL_MID
+    m.tube("z", (0.0, 0.0), -G - 3.5, G + 3.5, 1.0, IRON_D)
+    for s in (-1.0, 1.0):
+        m.ring("z", (0.0, 0.0, G * s), CAR_WHEEL - 0.5, 1.0, 3.0, IRON, sides=8, seed=_WHEEL)          # tyre
+        a, b = sorted(((G - 0.5) * s, (G + 0.5) * s))
+        for k in range(3):                                                         # six spokes: three bars through the hub
+            m.box((-3.0, -0.5, a), (3.0, 0.5, b), IRON_D, rot=("z", 60.0 * k, (0.0, 0.0, 0.0)) if k else None,
+                  seed=_WHEEL + 1)
+        a, b = sorted(((G - 1.0) * s, (G + 1.5) * s))
+        m.tube("z", (0.0, 0.0), a, b, 1.5, IRON, seed=_WHEEL + 3)                  # hub
     return m
 
 
@@ -587,8 +616,9 @@ def _rope():
     return m
 
 
-BUILDERS = {"car": _car, "drum": _drum, "frame": _frame, "motor": _motor, "belt": _belt, "sheave": _sheave,
-            "stand": _stand, "duct": _duct, "hood": _hood, "turn": _turn, "roller": _roller, "rope": _rope}
+BUILDERS = {"car": _car, "axle": _axle, "drum": _drum, "frame": _frame, "motor": _motor, "belt": _belt,
+            "sheave": _sheave, "stand": _stand, "duct": _duct, "hood": _hood, "turn": _turn, "roller": _roller,
+            "rope": _rope}
 SCALE = {PREFIX + name: 2.0 if name in ("drum", "frame") else 1.0 for name in BUILDERS}
 # What turns: about which axis of its own model (through the anchor), the tag its entities carry,
 # how fast against the drum (the rope runs as fast on both) and the ticks a turn takes. The drum
@@ -642,6 +672,8 @@ def build(canvas, origin=(0, 0, 0)):
     for x, y, z in GUARD_OVER:              # and nobody gets up on it
         canvas.set(x + ox, y + oy, z + oz, B.BARRIER)
     n = put("car", CAR) + put("hood", HOOD)
+    for along in CAR_AXLES:
+        n += put("axle", (CAR[0] + along * PX, CAR[1] + CAR_WHEEL * PX, CAR[2]))
     for row in DUCT_ROWS:
         n += put("duct", (X_ROPE, FEET, row + 0.5))
 
