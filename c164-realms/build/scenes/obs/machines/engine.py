@@ -47,9 +47,12 @@ axis only, so no painted highlight goes round with the wheel.
 What is blocks. The machines are placed before the rooms and a wheel cannot turn in a floor, so
 build() makes the set's own foundation: the pit (PIT: a slot one cell wide for the flywheel and
 the belt's lower run), lined, and the iron base plate the set stands on (BASE), level with the
-floor. The floor round it, the gratings and the rails at the pit are interiors/powerhouse's, which
-reads PIT, BASE, KEEP_CLEAR and LIT_BY: the four cells the thirteen pieces take their light from
-(a display entity is lit by the cell its anchor is in), to be lit alike.
+floor. A model has no collision, so the set brings its own: a barrier in the cells its solid
+castings fill (SOLID) and, for the wheel, the crank and the belt, which turn in the open, a low
+railing along the south of the set and round the cylinder's end (GUARD). The floor round it, the
+gratings and the railing north of the engine are interiors/powerhouse's, which reads PIT, BASE,
+KEEP_CLEAR, GUARD and LIT_BY: the four cells the thirteen pieces take their light from (a display
+entity is lit by the cell its anchor is in), to be lit alike.
 """
 import contextlib
 import functools
@@ -140,6 +143,23 @@ PIT_LINING = B.TUFF_BRICK.block
 BASE = sorted(({(x, z) for x in range(76, 87) for z in range(34, 38)}
                | {(x, z) for x in range(70, 74) for z in range(36, 39)}) - set(PIT))
 BASE_PLATE = B.IRON_RIVETED.block
+# Collision. A display entity has none, so a walker would go through the set. The cells its solid
+# castings fill carry a barrier, two cells high and inside what is seen (plan/roles/INTERFACE.md,
+# the fifth addition on barriers): the bed with the slide bars and the cylinder on it, the dynamo's
+# magnet between its bearings, the outboard bearing of the shaft.
+SOLID = sorted({(x, z) for x in range(80, 86) for z in (34, 35)}        # the bed: x 80.3..86.2, z 34.25..35.75
+               | {(x, z) for x in (71, 72) for z in (37, 38)}           # the dynamo: x 70.9..73.1, z 36.9..38.9
+               | {(77, 37)})                                            # the outboard bearing: x 77.0..78.0
+SOLID_HIGH = 2                          # the cylinder's top and the yoke over the slide bars are 2.0 up
+# What turns in the open cannot be shut like that and gets what such an engine had: a low railing.
+# The room's own stands north of the engine and of the belt (interiors/powerhouse.RAIL); GUARD is
+# the other half, on the south edge of the base plate from the dynamo to the cylinder's end and
+# round that end, where it meets the room's; the outboard bearing stands in its line and is its
+# post there. West of the room's railing three cells more go round the dynamo's pulley as far as
+# the dynamo itself. A cell of it holds one railing block at the floor.
+GUARD = sorted(({(x, 37) for x in range(73, 87)} | {(86, z) for z in (34, 35, 36)}
+                | {(71, 35), (70, 35), (70, 36)}) - set(SOLID))
+GUARD_RAIL = B.IRON_BARS
 LAMP_LEVEL = 6                          # what the pilot lamp on the dynamo hands to the sky line
 
 
@@ -843,7 +863,8 @@ def models():
 
 def foundation(canvas, origin=(0, 0, 0)):
     """The blocks of the set: the base plate in the floor's own course, the pit dug through it and
-    lined with brick below that course."""
+    lined with brick below that course; over the floor the barriers inside the solid castings
+    (SOLID) and the railing (GUARD)."""
     ox, oy, oz = (int(v) for v in origin)
     top = int(FLOOR) - 1
     for x, z in BASE:
@@ -857,6 +878,11 @@ def foundation(canvas, origin=(0, 0, 0)):
                 if y < top:
                     canvas.set(ox + x + dx, oy + y, oz + z + dz, PIT_LINING)
         canvas.set(ox + x, oy + top - depth, oz + z, PIT_LINING)
+    for x, z in SOLID:
+        for y in range(top + 1, top + 1 + SOLID_HIGH):
+            canvas.set(ox + x, oy + y, oz + z, B.BARRIER)
+    for x, z in GUARD:
+        canvas.set(ox + x, oy + top + 1, oz + z, GUARD_RAIL)
 
 
 def build(canvas, origin=(0, 0, 0)):
