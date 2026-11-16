@@ -548,13 +548,18 @@ def asked_after(scene, script, at, budget, send, tag, commit):
     return [] if code == 0 else [f"{scene}: {os.path.basename(path)} ended with {code}"]
 
 
-def pairs(items, what, number=False):
+def pairs(items, what, number=False, names=False):
+    """<scene>=<value> options as a dict. With `names` the value is a list of names, and an option
+    given twice for one scene adds to the list; any other option given twice for one scene is a
+    mistake, not something to take the last of."""
     out = {}
     for item in items:
         if "=" not in item:
             raise SystemExit(f"--{what} wants <scene>=<value>, not {item!r}")
         scene, value = item.split("=", 1)
-        out[scene] = int(value) if number else value
+        if scene in out and not names:
+            raise SystemExit(f"--{what} is given twice for {scene}")
+        out[scene] = int(value) if number else (out[scene] + "," + value if scene in out else value)
     return out
 
 
@@ -595,11 +600,11 @@ def main():
     from artkit import mood as MOOD
 
     lists = pairs(args.shots, "shots")
-    only = {scene: names.split(",") for scene, names in pairs(args.only, "only").items()}
+    only = {scene: names.split(",") for scene, names in pairs(args.only, "only", names=True).items()}
     again, step = {}, {}
     for option, given, into, usual, unit in (("again", args.again, again, 2.5, "seconds"),
                                              ("step", args.step, step, 0.5, "blocks")):
-        for scene, names in pairs(given, option).items():
+        for scene, names in pairs(given, option, names=True).items():
             into[scene] = {}
             for name in names.split(","):
                 shot, _, number = name.partition(":")
