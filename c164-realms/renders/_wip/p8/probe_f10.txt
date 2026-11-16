@@ -1,0 +1,83 @@
+block light y=0
+      1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8
+  -7  # # # # # 0 0 0 0 0 # 0 0 0 0 1 2 1 0 0 0 0 0 # # # # #
+  -6  # # # # # # # # # # # # # # # # 3 # # # # # # # # # # #
+  -5  # # # # # # # # # # 5 4 # # # 5 4 # 5 6 # 4 5 # 6 5 4 3
+  -4  # # # # # # # # # # 6 5 5 6 7 6 5 4 4 5 # 3 4 4 5 4 3 2
+  -3  # # # # # # # # # # 5 4 4 5 6 5 5 4 # # # # # 3 4 3 2 1
+  -2  # # # # # # # # # # # 3 3 4 5 5 6 # # 4 # 4 # # 3 # # #
+  -1  1 2 3 4 3 2 3 4 3 2 1 2 # # # 6 7 # 5 5 # 5 4 # 2 1 0 0
+   0  2 3 4 5 4 3 4 5 4 3 2 1 # # # # 8 # 6 6 # 6 5 # 3 2 1 0
+   1  1 2 3 4 3 2 3 4 3 2 1 2 # # # 6 7 # 5 5 # 5 4 # 2 1 0 0
+   2  # # # # # # # # # # # 3 3 4 5 5 6 # # 4 # 4 # # 3 # # #
+   3  # # # # # # # # # # 5 4 4 5 6 5 5 4 # # # # # 3 4 3 2 1
+   4  # # # # # # # # # # 6 5 5 6 7 6 5 4 4 5 # 3 4 4 5 4 3 2
+   5  # # # # # # # # # # 5 4 4 5 6 5 4 # 5 6 # 4 5 # 6 5 4 3
+   6  # # # # # # # # # # # # # # # # 3 # # # # # # # # # # #
+   7  # # # # # 0 0 0 0 0 # 0 0 0 0 1 2 1 0 0 0 0 0 # # # # #
+block light y=1
+      1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8
+  -7  0 0 # # # 0 0 0 0 0 # 0 0 0 1 2 3 2 1 0 0 0 0 # # 0 0 0
+  -6  # # # # # # # # # # # # # # # # 4 # # # # # # # # # # #
+  -5  0 # # # # # # # # 5 6 5 # # # 6 5 # 6 7 # 5 6 # 7 6 5 4
+  -4  0 # # # # # # # # 6 7 6 6 7 8 7 6 5 5 6 5 4 5 5 6 5 4 3
+  -3  # # # # # # # # # 5 6 5 5 6 7 6 6 5 4 5 5 4 4 4 5 4 3 2
+  -2  # # # # # # # # # # # 4 4 5 6 6 7 6 5 5 6 5 4 3 4 # # #
+  -1  2 3 4 5 4 3 4 5 4 3 2 3 # # # 7 8 7 6 6 7 6 5 4 3 2 1 0
+   0  3 4 5 6 5 4 5 6 5 4 3 2 # # # 8 9 8 7 7 8 7 6 5 4 3 2 1
+   1  2 3 4 5 4 3 4 5 4 3 2 3 # # # 7 8 7 6 6 7 6 5 4 3 2 1 0
+   2  # # # # # # # # # # # 4 4 5 6 6 7 6 5 5 6 5 4 3 4 # # #
+   3  # # # # # # # # # 5 6 5 5 6 7 6 6 5 4 5 5 4 4 4 5 4 3 2
+   4  0 # # # # # # # # 6 7 6 6 7 8 7 6 5 5 6 5 4 5 5 6 5 4 3
+   5  0 # # # # # # # # 5 6 5 5 6 7 6 5 # 6 7 # 5 6 # 7 6 5 4
+   6  # # # # # # # # # # # # # # # # 4 # # # # # # # # # # #
+   7  0 0 # # # 0 0 0 0 0 # 0 0 0 1 2 3 2 1 0 0 0 0 # # 0 0 0
+block light y=4
+      1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8
+  -7  0 0 # # # 0 0 0 0 0 # 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  -6  # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+  -5  0 # # # # # 5 6 7 8 9 8 7 6 5 4 5 # 5 6 # 4 5 # 6 5 4 3
+  -4  0 # # # # # 6 7 8 9 a 9 8 7 6 5 6 5 4 5 5 4 4 4 5 4 3 2
+  -3  # # # # # # 5 6 7 8 9 8 7 6 5 6 7 6 5 5 6 5 4 3 4 3 2 1
+  -2  # # # # # # # # # # # 7 6 5 6 7 8 7 6 6 7 6 5 4 3 # # #
+  -1  # # 3 4 3 2 3 4 3 4 5 6 # # # 8 9 8 7 7 8 7 6 5 4 3 2 3
+   0  # # 4 5 4 3 4 5 4 3 4 5 # # # 9 a 9 8 8 9 8 7 6 5 4 3 2
+   1  # # 3 4 3 2 3 4 3 4 5 6 # # # 8 9 8 7 7 8 7 6 5 4 3 2 3
+   2  # # # # # # # # # # # 7 6 5 6 7 8 7 6 6 7 6 5 4 3 # # #
+   3  # # # # # # 5 6 7 8 9 8 7 6 5 6 7 6 5 5 6 5 4 3 4 3 2 1
+   4  0 # # # # # 6 7 8 9 a 9 8 7 6 5 6 5 4 5 5 4 4 4 5 4 3 2
+   5  0 # # # # # 5 6 7 8 9 8 7 6 5 4 5 # 5 6 # 4 5 # 6 5 4 3
+   6  # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+   7  0 0 # # # 0 0 0 0 0 # 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+['sources placed: 74 (rank 1: 0, rank 2: 40, rank 3: 34); levels 12x1, 11x1, 10x36, 8x12, 7x12, 6x12', 'windows main: dark 68, dim 3, lit 14, bright 1 (79% dark), 33 sources (1 of them behind the glass)', 'windows tower: dark 2, dim 0, lit 2, bright 0 (50% dark), 2 sources', "main's table under blue: dark 68, dim 3, lit 14, bright 1", "main's table under glow: dark 74, dim 3, lit 8, bright 1", "main's table under deep: dark 77, dim 3, lit 5, bright 1", 'dressed: yes; doors: none; behind them: 0 sources; wash: 4 projectors; stair: 1; pools: 0; not placed here: 0; level 15: 0; isolated: 0']
+placed in and around the hall:
+   (-9, 9, 0) 10 sky/lights:window apse 0 main
+   (-9, 12, 0) 10 sky/lights:window apse 0 main
+   (-6, 2, 0) 7 interiors/starhall:way west
+   (-6, 9, -2) 7 props/lamps:cage_a
+   (-6, 9, 2) 7 props/lamps:cage_a
+   (-2, 2, 0) 7 interiors/starhall:way west
+   (1, 4, -4) 10 interiors/starhall:stair foot
+   (1, 4, 4) 10 interiors/starhall:stair foot
+   (4, 10, -5) 7 props/lamps:cage_a
+   (4, 10, 5) 7 props/lamps:cage_a
+   (5, 1, -4) 8 interiors/starhall:aisle lamp
+   (5, 1, 4) 8 interiors/starhall:aisle lamp
+   (5, 9, -4) 8 sky/lights:stair
+   (7, 3, 0) 11 machines/clock:master
+   (8, 10, -5) 6 props/lamps:cage_a
+   (8, 10, 5) 6 props/lamps:cage_a
+   (10, 2, -5) 8 props/lamps:bracket_b
+   (10, 2, 5) 8 props/lamps:bracket_b
+   (11, 1, 0) 8 interiors/starhall:the sun's pool
+   (11, 7, 0) 12 machines/orrery:a
+   (11, 10, -5) 6 props/lamps:cage_a
+   (11, 10, 5) 6 props/lamps:cage_a
+   (13, 2, -5) 7 props/lamps:bracket_b
+   (13, 2, 5) 7 props/lamps:bracket_b
+   (15, 2, -5) 8 props/lamps:bracket_b
+   (15, 2, 5) 8 props/lamps:bracket_b
+   (17, 9, 0) 10 sky/lights:window east 9 main
+   (17, 10, -4) 6 sky/lights:window east 8 main
+   (17, 10, 4) 6 sky/lights:window east 10 main
+   (17, 12, 0) 10 sky/lights:window east 9 main
