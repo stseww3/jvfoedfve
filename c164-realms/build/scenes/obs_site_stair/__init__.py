@@ -67,6 +67,12 @@ VIEWS = [
     ("aerial", (114, 42, -34), (58, 6, 2)),
     ("axis_high", (110, 16, 0.5), (40, -4, 0.5)),
     ("v12_aerial", (66, 72, 58), (8, -2, 0)),
+    ("corner_nw", (68.5, LOW, -33.5), (60.5, -4.6, -40.5)),
+    ("corner_sw", (65.5, LOW, 41.5), (60.5, -4.8, 40.5)),
+    # the wall's arcade, the way the second round looks at detail (plan/fine.md 6): square on from
+    # ten blocks, two bays between two buttresses; and one arch from two blocks
+    ("wall_bay", (70.5, LOW, -17.5), (60, -3.8, -17.5)),
+    ("wall_arch", (62.7, LOW, -18.6), (59.6, -4.1, -20.2)),
 ]
 JUDGED = ("v1", "stair_axis", "look_back", "aerial", "axis_high")
 

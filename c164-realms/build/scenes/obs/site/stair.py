@@ -17,10 +17,17 @@ front's brightness (the card has the numbers).
 
   wall       Column x 60, from under the kerb course of the terrace (y -1, site/court's) down to
              the lower paving: slate brick between a polished plinth course and a polished band
-             under the kerb. A buttress stands under every second pier of the railing above -- the
-             piers are on the building's pilaster lines -- in two stages, each weathered back with
-             a stair block; in the bay between two buttresses, under the pier between them, an iron
-             grating drains the terrace fill onto a splash stone.
+             under the kerb. It is an arcade on the building's own beat (a4, 11-16, for the second
+             round: the wall is the middle of the arrival view). Under every pier of the railing
+             above -- the piers are on the building's pilaster lines -- stands a pier of the wall:
+             under every second one a buttress in two stages, each weathered back with a stair
+             block; under the ones between a lesser buttress, one stage; beside a cheek a pier in
+             the wall's own face. Between two piers the wall's face is set back one block under a
+             stepped head: a blind arch, three wide, from the plinth course up to the band, with
+             an iron weep hole at the foot of its panel that drains the terrace's fill. piers()
+             and bays() tell the numbers: site/eastwall opens some of the arches into rooms and
+             hangs the wall's ironwork; the steam main (props) runs in the band's course, so no
+             buttress reaches into it.
              The lower platform is longer than the terrace, four rows in the north and five in
              the south. There the wall runs on to the platform's corners three courses high --
              the plinth course, one of brick, a polished coping -- over the rock that comes down
@@ -76,8 +83,8 @@ PARAPET = 1.0                                       # the cheek's top above the 
 
 BRICK = B.SLATE_BRICK.block
 SMOOTH = B.SLATE_SMOOTH.block
-SPLASH = B.SLATE_SMOOTH.slab + "[type=bottom]"
 WEATHERING = B.SLATE_BRICK.stairs + "[facing=west,half=bottom]"     # the high side against the wall
+HAUNCH = B.SLATE_BRICK.stairs       # upside down in an arch's two upper corners, its back to the pier
 TREAD = B.SLATE_SMOOTH.block
 TREAD_SLAB = B.SLATE_SMOOTH.slab + "[type=bottom]"
 DRESSING = B.TUFF_SMOOTH            # the middle tone (site/_kit.STRIP is its block): band, coping, pedestals
@@ -95,11 +102,48 @@ GRATE = B.IRON_GRATE
 BAND = True                         # the switch (A0 #28839; kept on the pictures, 11-16): the walk's band lies on the treads
 WALK_Z = (S.pilaster_z(S.CENTRE_BAYS[1] - 1), S.pilaster_z(S.CENTRE_BAYS[1]))       # rows -2..2
 
-# The piers of the terrace railing stand on the pilaster lines (K.beat). The first line clear of a
-# cheek carries a buttress, and from there outwards every second one; the lines between carry a drain.
+# The piers of the terrace railing stand on the pilaster lines (K.beat), and under each the wall has
+# a pier of its own. The first line clear of a cheek carries a buttress, and from there outwards
+# every second one; the lines between carry a lesser buttress; the line beside a cheek a pier that
+# does not stand out.
 _CLEAR = min(z for z in K.beat(0, WZ1) if z > CHEEK_Z[1] + 1)                               # 14
 BUTTRESS_Z = [z for z in K.beat(WZ0, WZ1) if abs(z) >= _CLEAR and (abs(z) - _CLEAR) % (2 * K.BEAT) == 0]
-DRAIN_Z = [z for z in K.beat(WZ0, WZ1) if abs(z) > _CLEAR and (abs(z) - _CLEAR) % (2 * K.BEAT) == K.BEAT]
+MINOR_Z = [z for z in K.beat(WZ0, WZ1) if abs(z) > _CLEAR and (abs(z) - _CLEAR) % (2 * K.BEAT) == K.BEAT]
+FLUSH_Z = [z for z in K.beat(WZ0, WZ1) if CHEEK_Z[1] < abs(z) < _CLEAR]                     # -10 and 10
+DRAIN_Z = MINOR_Z                   # the lines the drains were on until the arcade: for who still reads the name
+# No buttress stands in the band's course: the steam main runs there along the whole wall, its axis
+# a third of a block off the face (props, m3 and a4, 11-16), and passes over every buttress's top.
+BUTTRESS_TOP = TOP - 1              # -3: the course of a buttress's upper weathering
+BUTTRESS_OUT = 2                    # a buttress's foot stands this far out; its upper stage and a lesser buttress, one
+# Between two piers a blind arch. The goods lift's shaft stands against the wall in one bay of the
+# south half (x 61..63, z 23..25; astro and sdome, 11-16): there the wall's face stays whole.
+ARCH_HALF = (K.BEAT - 2) // 2       # 1: an arch fills the bay between two piers, three wide
+ARCH_Y = (FEET + 1, TOP - 1)        # -5..-3: from the plinth course up to the band
+BACK_X = EDGE_X - 1                 # 59: the panel at the back of an arch
+LIFT_BAY = 24
+_LINES = sorted(BUTTRESS_Z + MINOR_Z + FLUSH_Z)
+ARCH_Z = [(a + b) // 2 for a, b in zip(_LINES, _LINES[1:]) if b - a == K.BEAT and (a + b) // 2 != LIFT_BAY]
+
+
+def piers():
+    """Every pier of the wall, north to south: dict(z, kind, out, top). kind is "buttress", "lesser"
+    or "flush"; out is how many blocks it stands out from the wall's face at its foot (x EDGE_X + 1
+    ..EDGE_X + out); top is the highest course it reaches there, the weathering's (TOP for a flush
+    pier: the wall itself). A buttress's upper stage is a lesser buttress."""
+    kinds = ([(z, "buttress", BUTTRESS_OUT, BUTTRESS_TOP) for z in BUTTRESS_Z]
+             + [(z, "lesser", 1, BUTTRESS_TOP) for z in MINOR_Z] + [(z, "flush", 0, TOP) for z in FLUSH_Z])
+    return [dict(z=z, kind=kind, out=out, top=top) for z, kind, out, top in sorted(kinds)]
+
+
+def bays():
+    """Every blind arch of the wall, north to south: dict(z, z0, z1, y0, y1, x, back). z is the
+    middle row, z0..z1 the three rows of the recess, y0..y1 its courses (the two upper corners hold
+    the stepped head), x the wall's column, cut away, and back the column of the panel behind it.
+    Who opens an arch into a room (site/eastwall) overwrites these cells; a door that comes down to
+    the paving also takes the plinth course under it, (x, FEET, z0..z1)."""
+    return [dict(z=z, z0=z - ARCH_HALF, z1=z + ARCH_HALF, y0=ARCH_Y[0], y1=ARCH_Y[1], x=EDGE_X, back=BACK_X)
+            for z in ARCH_Z]
+
 
 HEAD_TOP = S.GROUND + 0.5           # the cap of a head pedestal: its slab alone stands above the terrace floor
 FOOT_TOP = FEET + 3.0               # the socle on a foot pedestal's cap: a block and a half above the cheek's low end
@@ -147,21 +191,41 @@ def _wall(c, o):
             _put(c, o, EDGE_X, y, z, SMOOTH if y in (FEET, WING_TOP) else BRICK)
 
 
-def _buttress(c, o, z):
-    """Two stages against the wall: the lower two blocks out and two high, the upper one block out
-    and up to the band under the kerb. Each ends in a weathering; the plinth course runs round."""
+def _lesser(c, o, z):
+    """One stage against the wall, one block out, up to under the band's course, where it ends in a
+    weathering; the plinth course runs round it."""
     x = EDGE_X + 1
-    for y in range(FEET, TOP):
+    for y in range(FEET, BUTTRESS_TOP):
         _put(c, o, x, y, z, SMOOTH if y == FEET else BRICK)
-    _put(c, o, x, TOP, z, WEATHERING)
+    _put(c, o, x, BUTTRESS_TOP, z, WEATHERING)
+
+
+def _buttress(c, o, z):
+    """Two stages against the wall: the upper one a lesser buttress, the lower one a second block
+    out and two high under a weathering of its own. The two weatherings are one rake."""
+    _lesser(c, o, z)
+    x = EDGE_X + BUTTRESS_OUT
     for y in range(FEET, FEET + 2):
-        _put(c, o, x + 1, y, z, SMOOTH if y == FEET else BRICK)
-    _put(c, o, x + 1, FEET + 2, z, WEATHERING)
+        _put(c, o, x, y, z, SMOOTH if y == FEET else BRICK)
+    _put(c, o, x, FEET + 2, z, WEATHERING)
 
 
-def _drain(c, o, z):
-    _put(c, o, EDGE_X, FEET + 1, z, GRATE)
-    _put(c, o, EDGE_X + 1, FEET, z, SPLASH)
+def _arch(c, o, bay):
+    """A blind arch: the wall's face cut away between the plinth course and the band, a panel of
+    brick one block behind it, and in the two upper corners a stair block upside down with its
+    back to the pier, which steps the head in. At the foot of the panel, in its middle, an iron
+    grating: the weep hole of the terrace's fill, with stone behind it and under it (the hill is
+    hollow there)."""
+    x, back, z0, z1 = bay["x"], bay["back"], bay["z0"], bay["z1"]
+    for z in range(z0, z1 + 1):
+        for y in range(bay["y0"], bay["y1"] + 1):
+            c.clear(o[0] + x, o[1] + y, o[2] + z)
+            _put(c, o, back, y, z, BRICK)
+    _put(c, o, x, bay["y1"], z0, f"{HAUNCH}[facing=north,half=top]")
+    _put(c, o, x, bay["y1"], z1, f"{HAUNCH}[facing=south,half=top]")
+    _put(c, o, back, bay["y0"], bay["z"], GRATE)
+    _put(c, o, back - 1, bay["y0"], bay["z"], SMOOTH)
+    _put(c, o, back, bay["y0"] - 1, bay["z"], BRICK)
 
 
 # --- the stair ------------------------------------------------------------------------------------
@@ -217,10 +281,12 @@ def build(canvas, origin=(0, 0, 0), band=None):
     c, o = canvas, origin
     band = BAND if band is None else band
     _wall(c, o)
+    for bay in bays():
+        _arch(c, o, bay)
     for z in BUTTRESS_Z:
         _buttress(c, o, z)
-    for z in DRAIN_Z:
-        _drain(c, o, z)
+    for z in MINOR_Z:
+        _lesser(c, o, z)
     for x in range(G["x0"], G["x1"] + 1):
         for z in range(G["z0"], G["z1"] + 1):
             _tread(c, o, x, z, band and WALK_Z[0] <= z <= WALK_Z[1])
