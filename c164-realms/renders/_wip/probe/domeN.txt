@@ -1,0 +1,104 @@
+domeN: x 8..16, y 17..22, z -13..-7; a free cell shows its block light, '*n' is a light source of level n (hex)
+
+y 22
+  z\x    8   9  10  11  12  13  14  15  16
+  -13   ss  ss  sa  ss   4   3   2   1   .
+  -12   sa  sa  sa  ss  ss   4   3   2   1
+  -11   cs  cs  sa  sa  ss  ss  ss   3   2
+  -10   sp  cs  cs  sa  sa  sa  ss  ss   1
+   -9    .  sp  cs  cs  cs  sa  sa  ss   .
+   -8    .   .  sp  sp  cs  cs  sa  ss  ss
+   -7    .   .   .   .  sp  cs  sa  sa  ss
+
+y 21
+  z\x    8   9  10  11  12  13  14  15  16
+  -13    3   2  sa   4   5   4   3   2   1
+  -12   sa  sa  sa   5   6   5   4   3   2
+  -11   sa  sa  sa  sa   7   6   5   4   3
+  -10   sp  sa  sa  sa  sa  sa   4   3   2
+   -9    .  sp  sa  sa  sa  sa  sa   2   1
+   -8    .   .  sp  sp  sa  sa  sa   1   .
+   -7    .   .   .   .  sp  sa  sa  sa   .
+
+y 20
+  z\x    8   9  10  11  12  13  14  15  16
+  -13    2   3  sa   5   6   5   4   3   2
+  -12    1  sa  sa   6   7   6   5   4   3
+  -11   gg  sa  sa  sa  *8   7   6   5   4
+  -10   dt  sa  sa  sa   7  sa   5   4   3
+   -9    .  sp  sa  sa  gg  sa  sa   3   2
+   -8    .   .  sp  sp  sa  gg   1   2   1
+   -7    .   .   .   1  sp  sa  sa  sa   .
+
+y 19
+  z\x    8   9  10  11  12  13  14  15  16
+  -13   sa  sa  sa   6   7   6   5   4   3
+  -12   sa  sa  sa   5   6   5   4   3   2
+  -11   cs  sa  sa  sa   7   6   5   4   3
+  -10   sp  sa  sa  sa  od  sa   4  or   2
+   -9    .  sp  sa  sa   5  sa  sa   2   1
+   -8    .   .  sp  sp   4  cs   .   1   .
+   -7    .   .   1   2   3  sa  sa  sa   .
+
+y 18
+  z\x    8   9  10  11  12  13  14  15  16
+  -13   sa  sa  sa   7  *8   7   6   5   4
+  -12   sa  sa  sa   6   7   6   5   4   3
+  -11   cs  sa  sa  sa   6   5   4   3   2
+  -10   sp  sa  sa  sa  od  sa   3  or   1
+   -9    .  sp  sa  sa   4  sa  sa   1   .
+   -8    .   .  sp  sp   3  cs   .   .   .
+   -7    .   .   .   1   2  sa  sa  sa   .
+
+y 17
+  z\x    8   9  10  11  12  13  14  15  16
+  -13   pd  pd  sa  pd  pd  pd  ws  sa   3
+  -12   sa  sa  sa  pd  pd  pd  ws  sa   2
+  -11   sa  sa  sa  sa  oc  pd  ws  sa   1
+  -10   dp  sa  sa  sa  sa  sa  ws  sa   .
+   -9   dp  dp  sa  sa  sa  sa  sa  sa   .
+   -8   dp  dp  dp  dp  sa  sa  sa  sa   .
+   -7   sp  dp  dp  dp  dp  sa  sa  sa   .
+
+blocks:
+  cs  cut_sandstone
+  dp  dark_oak_planks
+  dt  dark_oak_trapdoor   [facing=north,half=bottom,open=true]
+  gg  gray_stained_glass
+  oc  oxidized_cut_copper
+  od  oxidized_copper_door   [facing=north,half=lower,hinge=right,open=false | facing=north,half=upper,hinge=right,open=false]
+  or  oxidized_lightning_rod   [facing=up]
+  pd  polished_deepslate
+  sa  smooth_sandstone
+  sp  spruce_planks
+  ss  smooth_sandstone_stairs   [facing=south,half=top | facing=west,half=top]
+  ws  waxed_exposed_cut_copper_slab   [type=bottom]
+
+light sources within 7 cells of the box (cell, level, who):
+  (3, 20, -10)   5  interiors/domeroom:time_dial
+  (4, 10, -5)   7  props/lamps:cage_a
+  (4, 13, -15)   8  interiors/timeroom:ceiling over the rating bench
+  (4, 13, -9)   7  interiors/timeroom:ceiling over the world clocks
+  (4, 15, -2)   8  sky/lights:way
+  (7, 17, 0)   8  sky/lights:way
+  (8, 10, -5)   6  props/lamps:cage_a
+  (8, 20, -20)   6  main/roof:walk
+  (8, 20, -15)   6  main/roof:walk
+  (9, 20, 0)   4  machines/scope:lamp
+  (11, 10, -5)   6  props/lamps:cage_a
+  (11, 13, -13)   8  interiors/timeroom:ceiling over the message desk
+  (12, 18, -13)   8  sky/lights:way
+  (12, 20, -11)   8  sky/lights:way
+  (14, 19, 0)   6  interiors/domeroom:pilot_lamps
+  (15, 12, -12)  10  sky/lights:window east 6 main
+  (17, 10, -4)   6  sky/lights:window east 8 main
+  (17, 12, 0)  10  sky/lights:window east 9 main
+  (19, 14, 0)   8  props/signs:emblem
+
+display entities in the box and a cell round it (x, y, z, model):
+     7.500  18.000   -8.500  c164:prop_furn_drafting_table
+     9.688  18.000   -7.688  c164:prop_furn_coat_stand
+    12.500  18.500  -12.990  c164:prop_lamp_cage_a
+    12.010  20.500  -10.500  c164:prop_lamp_cage_a
+     9.607  24.000   -9.524  c164:mach_dome_seg
+    12.455  24.000   -7.455  c164:mach_dome_seg

@@ -1,0 +1,107 @@
+domeS: x 8..16, y 17..22, z 7..13; a free cell shows its block light, '*n' is a light source of level n (hex)
+
+y 22
+  z\x    8   9  10  11  12  13  14  15  16
+    7    .   .   .   .  sp  cs  ss  ss  sa
+    8    .   .  sp  sp  cs  cs  ss  sa  sa
+    9    .  sp  cs  cs  cs  ss  ss  sa   .
+   10   sp  cs  cs  ss  ss  ss  sa  sa   1
+   11   cs  cs  ss  ss  sa  sa  sa   3   2
+   12   ss  ss  ss  sa  sa   4   3   2   1
+   13   sa  sa  ss  sa   4   3   2   1   .
+
+y 21
+  z\x    8   9  10  11  12  13  14  15  16
+    7    .   .   .   .  sp  ss  ss  ss   .
+    8    .   .  sp  sp  ss  ss  ss   1   .
+    9    .  sp  ss  ss  ss  ss  ss   2   1
+   10   sp  ss  ss  ss  ss  ss   4   3   2
+   11   ss  ss  ss  ss   7   6   5   4   3
+   12   ss  ss  ss   5   6   5   4   3   2
+   13    3   2  ss   4   5   4   3   2   1
+
+y 20
+  z\x    8   9  10  11  12  13  14  15  16
+    7    .   .   .   1  sp  ss  ss  ss   .
+    8    .   .  sp  sp  ss  gg   1   2   1
+    9    .  sp  ss  ss  gg  ss  ss   3   2
+   10   dt  ss  ss  ss   7  ss   5   4   3
+   11   bg  ss  ss  ss  *8   7   6   5   4
+   12    1  ss  ss   6   7   6   5   4   3
+   13    2   3  ss   5   6   5   4   3   2
+
+y 19
+  z\x    8   9  10  11  12  13  14  15  16
+    7    .   .   1   2   3  ss  ss  ss   .
+    8    .   .  sp  sp   4  cs   .   1   .
+    9    .  sp  ss  ss   5  ss  ss   2   1
+   10   sp  ss  ss  ss  od  ss   4  or   2
+   11   cs  ss  ss  ss   7   6   5   4   3
+   12   ss  ss  ss   5   6   5   4   3   2
+   13   ss  ss  ss   6   7   6   5   4   3
+
+y 18
+  z\x    8   9  10  11  12  13  14  15  16
+    7    1   .   .   1   2  ss  ss  ss   .
+    8    .   .  sp  sp   3  cs   .   .   .
+    9    .  sp  ss  ss   4  ss  ss   1   .
+   10   sp  ss  ss  ss  od  ss   3  or   1
+   11   cs  ss  ss  ss   6   5   4   3   2
+   12   ss  ss  ss   6   7   6   5   4   3
+   13   ss  ss  ss   7  *8   7   6   5   4
+
+y 17
+  z\x    8   9  10  11  12  13  14  15  16
+    7   sp  dp  dp  dp  dp  ss  ss  ss   .
+    8   dp  dp  dp  dp  ss  ss  ss  ss   .
+    9   dp  dp  ss  ss  ss  ss  ss  ss   .
+   10   dp  ss  ss  ss  ss  ss  ws  ss   .
+   11   ss  ss  ss  ss  oc  pd  ws  ss   1
+   12   ss  ss  ss  pd  pd  pd  ws  ss   2
+   13   pd  pd  ss  pd  pd  pd  ws  ss   3
+
+blocks:
+  bg  black_stained_glass
+  cs  cut_sandstone
+  dp  dark_oak_planks
+  dt  dark_oak_trapdoor   [facing=south,half=bottom,open=true]
+  gg  gray_stained_glass
+  oc  oxidized_cut_copper
+  od  oxidized_copper_door   [facing=south,half=lower,hinge=left,open=false | facing=south,half=upper,hinge=left,open=false]
+  or  oxidized_lightning_rod   [facing=up]
+  pd  polished_deepslate
+  sa  smooth_sandstone_stairs   [facing=north,half=top | facing=west,half=top]
+  sp  spruce_planks
+  ss  smooth_sandstone
+  ws  waxed_exposed_cut_copper_slab   [type=bottom]
+
+light sources within 7 cells of the box (cell, level, who):
+  (4, 10, 5)   7  props/lamps:cage_a
+  (4, 10, 8)  10  interiors/chartroom:sky_map
+  (4, 12, 2)   8  sky/lights:way
+  (4, 20, 10)   5  interiors/domeroom:clock_dial
+  (7, 16, 3)   8  sky/lights:way
+  (7, 17, 0)   8  sky/lights:way
+  (8, 10, 5)   6  props/lamps:cage_a
+  (8, 20, 15)   6  main/roof:walk
+  (8, 20, 20)   6  main/roof:walk
+  (9, 20, 0)   4  machines/scope:lamp
+  (11, 10, 5)   6  props/lamps:cage_a
+  (11, 10, 8)  10  interiors/chartroom:sky_map_b
+  (12, 18, 13)   8  sky/lights:way
+  (12, 20, 11)   8  sky/lights:way
+  (14, 19, 0)   6  interiors/domeroom:pilot_lamps
+  (15, 12, 12)  10  sky/lights:window east 12 main
+  (15, 12, 20)  10  sky/lights:window east 14 main
+  (17, 10, 4)   6  sky/lights:window east 10 main
+  (17, 12, 0)  10  sky/lights:window east 9 main
+  (19, 14, 0)   8  props/signs:emblem
+
+display entities in the box and a cell round it (x, y, z, model):
+     7.500  18.000    9.500  c164:prop_furn_plate_box
+     8.500  18.000    9.400  c164:prop_furn_plate_box
+    12.500  18.500   13.990  c164:prop_lamp_cage_a
+     7.560  18.594    9.470  c164:prop_furn_plate_box
+    12.010  20.500   11.500  c164:prop_lamp_cage_a
+     9.607  24.000   10.524  c164:mach_dome_seg
+    12.455  24.000    8.455  c164:mach_dome_seg

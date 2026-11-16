@@ -1,0 +1,188 @@
+battery: x 3..11, y -1..4, z -9..-3; a free cell shows its block light, '*n' is a light source of level n (hex)
+
+y 4
+  z\x    3   4   5   6   7   8   9  10  11
+   -9    5   4   4   5   6   6   5   4   4
+   -8    4   3   3   4   5   5   4   3   3
+   -7    4   4   3   4   5   5   4   3   4
+   -6   sa  sa  sa  sa  sa  sa  sa  sa  sa
+   -5    5   4   4   4   5  cs   5   6  cs
+   -4    6   5   5   5   6   5   4   5   5
+   -3    5   4   5   6   7   6   5   5   6
+
+y 3
+  z\x    3   4   5   6   7   8   9  10  11
+   -9    6   5   5   6  *7  *7   6   5   5
+   -8    5   4   4   5   6   6   5   4   4
+   -7    5   5   4   5   6   6   5   4   5
+   -6   sa  sa  sa  sa  sa  sa  sa  sa  sa
+   -5   os  os  os   5   6  ss   6   7  ss
+   -4    5   5   6   6   7   6   5   6   5
+   -3    4   5   6   7   8   7   6   5   5
+
+y 2
+  z\x    3   4   5   6   7   8   9  10  11
+   -9    7   6   5   6   7   7   6   5   6
+   -8    6   5   4   5   6   6   5   4   5
+   -7    6   6   5   6   7   7   6   5   6
+   -6   sa  sa  sa  sa  sa  sa  sa  sa  sa
+   -5   rt  lt  rt   5   5  ss   7  *8  ss
+   -4    5   6   7   6   6   5   6   7   6
+   -3    4   5   6   6   7   6   5   6   5
+
+y 1
+  z\x    3   4   5   6   7   8   9  10  11
+   -9   *8   7   6   7  *8  *8   7   6   7
+   -8    7   6   5   6  *7  *7   6   5   6
+   -7   *7  *7   6   7  *8  *8   7   6  *7
+   -6   db  db  db  db   7  db  db  db  db
+   -5   ot  wt  ot  dt   6  db  dt  dt  db
+   -4    6   7  *8   7   6   5   5   6   5
+   -3    5   6   7   6   6   5   4   5   5
+
+y 0
+  z\x    3   4   5   6   7   8   9  10  11
+   -9    7   6   5   6   7   7   6   5   6
+   -8    6   5   4   5   6   6   5   4   5
+   -7    6   6   5   6   7   7   6   5   6
+   -6   db  db  db  db   6  db  db  db  db
+   -5   pt  ct  pt  dt   5  db  dt  dt  db
+   -4    5   6   7   6   5   4   4   5  ra
+   -3    4   5   6   5   5   4  ra  ra  ar
+
+y -1
+  z\x    3   4   5   6   7   8   9  10  11
+   -9   pd  pd  pd  pd  pd  pd  pd  pd  pd
+   -8   pd  pd  pd  pd  pd  pd  pd  pd  pd
+   -7   pd  pd  pd  pd  pd  pd  pd  pd  pd
+   -6   pd  pd  pd  pd  db  pd  pd  pd  pd
+   -5   pd  pa  pd  pa  pd  pa  pd  pa  pd
+   -4   pa  pd  pa  pd  pa  pd  pa  pd  pa
+   -3   pd  pd  pd  pd  pd  pd  tb  tb  tb
+
+blocks:
+  ar  activator_rail   [shape=north_south]
+  cs  cut_sandstone
+  ct  cyan_glazed_terracotta   [facing=south]
+  db  deepslate_bricks
+  dt  dark_oak_trapdoor   [facing=south,half=bottom,open=true]
+  lt  light_gray_glazed_terracotta   [facing=south]
+  os  oxidized_cut_copper_slab   [type=bottom]
+  ot  orange_glazed_terracotta   [facing=south]
+  pa  polished_tuff
+  pd  polished_deepslate
+  pt  pink_glazed_terracotta   [facing=south]
+  ra  rail   [shape=east_west | shape=north_south | shape=south_east]
+  rt  red_glazed_terracotta   [facing=south]
+  sa  sandstone
+  ss  smooth_sandstone
+  tb  tuff_bricks
+  wt  white_glazed_terracotta   [facing=south]
+
+light sources within 7 cells of the box (cell, level, who):
+  (-2, 2, 0)   7  interiors/starhall:way west
+  (0, 9, -16)  10  sky/lights:window west 5 main
+  (0, 10, -5)   7  sky/lights:way
+  (1, 4, -4)   8  interiors/starhall:stair foot
+  (1, 4, 4)   8  interiors/starhall:stair foot
+  (2, 1, -15)   7  interiors/batteryroom:west way north
+  (2, 1, -11)   7  interiors/batteryroom:west way south
+  (2, 1, -7)   7  interiors/batteryroom:west way south
+  (2, 2, 0)   8  sky/lights:way
+  (2, 9, 0)   8  sky/lights:way
+  (3, 1, -15)   7  interiors/batteryroom:west way north
+  (3, 1, -11)   7  interiors/batteryroom:west way south
+  (3, 1, -9)   8  interiors/batteryroom:west way south
+  (3, 1, -7)   7  interiors/batteryroom:west way south
+  (3, 7, -16)  10  interiors/timeroom:rating bench
+  (3, 9, -10)  10  interiors/timeroom:world clocks
+  (4, 1, -15)   7  interiors/batteryroom:west way north
+  (4, 1, -11)   7  interiors/batteryroom:west way south
+  (4, 1, -7)   7  interiors/batteryroom:west way south
+  (4, 10, -5)   7  props/lamps:cage_a
+  (5, 1, -4)   8  interiors/starhall:aisle lamp
+  (5, 1, 4)   8  interiors/starhall:aisle lamp
+  (5, 9, -8)  11  interiors/timeroom:card cabinets
+  (5, 9, -4)   8  sky/lights:stair
+  (7, 1, -16)   7  interiors/batteryroom:aisle north
+  (7, 1, -10)   7  interiors/batteryroom:aisle south
+  (7, 1, -9)   8  interiors/batteryroom:aisle south
+  (7, 1, -8)   7  interiors/batteryroom:aisle south
+  (7, 1, -7)   8  interiors/batteryroom:aisle south
+  (7, 2, -13)   7  interiors/batteryroom:fill
+  (7, 3, -9)   7  interiors/batteryroom:aisle south
+  (7, 3, 0)  11  machines/clock:master
+  (8, 1, -16)   7  interiors/batteryroom:aisle north
+  (8, 1, -10)   7  interiors/batteryroom:aisle south
+  (8, 1, -9)   8  interiors/batteryroom:aisle south
+  (8, 1, -8)   7  interiors/batteryroom:aisle south
+  (8, 1, -7)   8  interiors/batteryroom:aisle south
+  (8, 2, -13)   7  interiors/batteryroom:fill
+  (8, 3, -9)   7  interiors/batteryroom:aisle south
+  (8, 10, -5)   6  props/lamps:cage_a
+  (10, 2, -5)   8  props/lamps:bracket_b
+  (11, 1, -15)   7  interiors/batteryroom:east way north
+  (11, 1, -11)   7  interiors/batteryroom:east way south
+  (11, 1, -7)   7  interiors/batteryroom:east way south
+  (11, 1, 0)   8  interiors/starhall:the sun's pool
+  (11, 7, 0)  12  machines/orrery:a
+  (11, 10, -5)   6  props/lamps:cage_a
+  (12, 1, -15)   7  interiors/batteryroom:east way north
+  (12, 1, -11)   7  interiors/batteryroom:east way south
+  (12, 1, -9)   8  interiors/batteryroom:east way south
+  (12, 1, -7)   7  interiors/batteryroom:east way south
+  (12, 7, -12)  10  interiors/timeroom:message desk
+  (13, 1, -15)   7  interiors/batteryroom:east way north
+  (13, 1, -11)   7  interiors/batteryroom:east way south
+  (13, 1, -7)   7  interiors/batteryroom:east way south
+  (13, 2, -5)   7  props/lamps:bracket_b
+  (15, 2, -5)   8  props/lamps:bracket_b
+  (15, 9, -12)  10  sky/lights:window east 6 main
+  (17, 2, -14)  10  sky/lights:wash
+  (17, 2, -10)  10  sky/lights:wash
+  (17, 4, 0)   9  props/ironwork:door_frame
+  (17, 9, 0)  10  sky/lights:window east 9 main
+  (17, 10, -4)   6  sky/lights:window east 8 main
+  (17, 10, 4)   6  sky/lights:window east 10 main
+  (18, 0, -14)   8  props/lamps:uplight
+  (18, 0, -10)   8  props/lamps:uplight
+
+display entities in the box and a cell round it (x, y, z, model):
+     2.550   0.000   -8.450  c164:int_batteryroom_carboy
+     2.550   0.000   -7.500  c164:int_batteryroom_carboy
+     2.550   0.000   -6.550  c164:int_batteryroom_carboy
+     6.010   0.000   -4.500  c164:int_starhall_lead_a_board
+     6.375   0.000   -1.250  c164:int_starhall_lead_a_clock
+    10.000   0.000   -4.360  c164:prop_furn_display_table_plates
+    13.000   0.000   -4.360  c164:prop_furn_display_table_lenses
+    11.500   0.010   -3.500  c164:int_starhall_meridian_a_1
+    11.500   0.010   -2.500  c164:int_starhall_meridian_a_ring
+    11.500   0.010   -1.500  c164:int_starhall_meridian_a_2
+     5.500   1.000   -9.500  c164:int_batteryroom_cells
+     6.010   1.000   -9.500  c164:int_batteryroom_gantry
+     6.010   1.000   -9.500  c164:int_batteryroom_taps
+     6.500   1.000   -9.500  c164:int_batteryroom_cells
+     9.500   1.000   -9.500  c164:int_batteryroom_cells
+     9.990   1.000   -9.500  c164:int_batteryroom_gantry
+     9.990   1.000   -9.500  c164:int_batteryroom_taps
+    10.500   1.000   -9.500  c164:int_batteryroom_cells
+     2.990   1.500   -4.500  c164:int_starhall_board_end_a
+     5.500   1.500   -6.188  c164:int_batteryroom_cable
+     5.500   1.500   -6.010  c164:int_batteryroom_entry
+     6.010   1.500   -4.500  c164:int_starhall_board_end_a
+     9.250   1.750   -6.010  c164:int_batteryroom_record
+     7.000   2.062   -4.990  c164:int_starhall_wire_a_16_16_0
+    10.000   2.062   -4.990  c164:int_starhall_wire_a_16_16_8
+    13.000   2.062   -4.990  c164:int_starhall_wire_a_16_16_8
+     2.010   2.125   -9.500  c164:int_batteryroom_cleat
+     2.188   2.125   -6.188  c164:int_batteryroom_cable
+     3.500   2.125   -6.010  c164:int_batteryroom_cleat
+     5.500   2.125   -6.188  c164:int_batteryroom_cable
+    11.500   2.500   -6.010  c164:int_batteryroom_apron
+    10.000   3.250   -4.990  c164:prop_lamp_bracket_b
+    13.000   3.250   -4.990  c164:prop_lamp_bracket_b
+     4.500   3.812   -4.990  c164:int_starhall_wire_a_0_0_5
+     4.500   4.500   -4.990  c164:prop_lamp_bracket_b
+     3.500   5.312   -8.990  c164:prop_lamp_cage_a
+     8.000   5.312   -8.990  c164:prop_lamp_cage_a
+    12.500   5.312   -8.990  c164:prop_lamp_cage_a
