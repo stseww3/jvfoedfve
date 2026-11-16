@@ -443,9 +443,12 @@ def entrance_pilasters(canvas, origin=(0, 0, 0)):
 #           east, and shows its Y to who comes up the axis; the other pairs stand either side of
 #           a walk that runs north and south, and face north.
 #   lip     the east lip of the upper terrace: a low lamp on the cap of every other pier, a rank
-#           under the street lamps. None on the pier next to the row in which the power house's
-#           pipe bridge crosses the lip: the steam main passes a third of a cell from where the
-#           globe would be (c228, g2 #37847).
+#           under the street lamps. None on the two of those piers by the power house's pipe
+#           bridge (BRIDGE_CLEAR): next to the row in which it crosses the lip the steam main
+#           passes a third of a cell from where the globe would be (c228, g2 #37847), and the
+#           globe of the pier before that one stands on the bridge head for who looks from the
+#           south half of the grand stair, S.V6 (A0, the desk 03:49: where a low lamp covers the
+#           bridge head the lamp goes and the view stays). South of the stair the lip keeps one.
 #   feet    four dim ground lamps at the feet of the armillary, looking up at its rings, and what
 #           they throw on the brass: one source under the cell the rings take their light from.
 #   doors   everything else is dark, but for one caged lamp at the door of a small building.
@@ -467,6 +470,9 @@ NEAR_PAIR = False       # the court's pair midway between the stair head and the
                         # either edge of that picture, its globes on the small dome and on the foot of the
                         # clock tower, the largest bright things in the view. The four low lamps either
                         # side of the stair head light that end. obs_props_lamps_site_nearpair keeps it
+BRIDGE_CLEAR = 7        # a low lamp of the lip keeps more than this many rows from the row of the pipe
+                        # bridge: the pier next to it (a row off) and the pier before the bridge head in
+                        # S.V6 (seven off) carry none; the next lamp is fifteen rows from the bridge
 STREET_LEVEL = 13
 STATION_LEVEL = 12      # the pendant of the cable station: the top of a pendant's rank
 AIM_UP = 3.0            # a ground lamp at the armillary's feet looks at its middle, this far above the ground
@@ -479,12 +485,13 @@ FEET_GLOW = 8           # the source under the armillary's light cell: the brass
 _REPORTED = {
     ("site.lowerplatform", "LAMP_POINTS"): [(79.5, -6, -9.5), (79.5, -6, 10.5), (87.5, -6, -9.5), (87.5, -6, 10.5),
                                             (80.5, -6, -17.5), (86.5, -6, -17.5)],
-    ("site.stair", "LAMP_POINTS"): [(61.5, 0.5, -8.5), (61.5, 0.5, 9.5), (73.0, -3.5, -9.0), (73.0, -3.5, 10.0)],
+    # c337, #57270: the two at the stair's foot stand on the small seat in the middle of the pedestal's cap
+    ("site.stair", "LAMP_POINTS"): [(61.5, 0.5, -8.5), (61.5, 0.5, 9.5), (73.0, -3.0, -9.0), (73.0, -3.0, 10.0)],
     ("site.court", "path_lamps"): [(52, -6), (52, 6), (44, -6), (44, 6), (26, -6), (26, 6)],
     ("site.court", "lip_lamps"): [(60, -18), (60, -26), (60, -34), (60, 18), (60, 26), (60, 34)],
     ("site.powerhouse", "PIPE_Z"): 33,      # c228: the row of the steam main, where its bridge crosses the lip
     ("site._kit", "PIER_TOP"): 1.5,
-    ("site.outbuildings", "LAMP_POINTS"): {"hut_door": (37.5, 2.5, -25.0), "tower_foot": (-14.5, 0.5, -32.0)},
+    ("site.outbuildings", "LAMP_POINTS"): {"hut_door": (37.5, 2.5, -25.0), "tower_foot": (-14.5, 1.5, -32.0)},
     # c226 (37fc9574): the hanging point under the ridge of the cable station's glass roof
     ("site.cablecar", "LAMP_POINTS"): {"car": (89.5, 3.0, -32.5)},
     # c246, g2 #33389: the cells off the corners of the armillary's base, and the cell its brass is lit by
@@ -532,7 +539,7 @@ def site_lamps(near_pair=None):
     top = S.GROUND + _told("site._kit", "PIER_TOP")
     bridge = _told("site.powerhouse", "PIPE_Z")
     for x, z in _told("site.court", "lip_lamps"):
-        if abs(z - bridge) > 1:                         # not on the pier the pipe bridge passes
+        if abs(z - bridge) > BRIDGE_CLEAR:              # not on the piers by the pipe bridge
             out.append(("lip", "post", (x + 0.5, top, z + 0.5), None, None))
     middle = (S.mid(S.ARMILLARY[0]), S.GROUND + AIM_UP, S.mid(S.ARMILLARY[1]))
     for x, z in _told("machines.armillary", "LAMP_CELLS"):

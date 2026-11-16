@@ -27,7 +27,7 @@ stands on.
 from artkit.blocks import st
 from artkit.canvas import Canvas
 
-from scenes.obs import materials
+from scenes.obs import materials, sky
 from scenes.obs.common import blocks as B
 from scenes.obs.materials import _board
 
@@ -127,7 +127,8 @@ def build_models():
 
 
 def write_pack(pack_dir):
-    return materials.pack(pack_dir)
+    # the sky's pack with the blocks': the scene stands in the map's hour, and without it the game's own sun is in the sky
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
 
 
 def shots():
