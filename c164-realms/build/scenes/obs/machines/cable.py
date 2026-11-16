@@ -27,7 +27,10 @@ How it works, so that it can be read off the pieces:
 The models (all "mach_cable_"):
 
   car      the car: dark-wood boards in a riveted iron frame on four wheels, lit windows, a
-           clerestory roof with a lamp at each end. One piece; it stands still.
+           clerestory roof with a lamp at each end. One piece; it stands still. It is a solid
+           thing and stops the player like one: barriers in the cells its body fills (CAR_CELLS),
+           none outside its outline (A0 11-16 09:11). It fills the track's way out of the
+           platform from one piece of the edge's rail to the other.
   drum     MOVES. Barrel, rope and the two wheels: turns about its own x axis through the anchor.
   frame    the two bearing pedestals of the drum, and the belt where it lies on the west wheel.
   motor    the motor on its bed, its belt pulley with the belt on it, its conduit into the floor.
@@ -46,8 +49,9 @@ out (the car goes down). The small rollers are plain cylinders, a turn would not
 are not split.
 
 Scale (A5 1.2: px = scale keeps 16 texels to the block): drum and frame 2, the rest 1 -- the
-car is under three blocks every way, so it is drawn texel for texel. 26 display entities, one of
-them the lamp family's wall lamp in the winch house (WORK_LAMP).
+car is two blocks long and three wide over its eaves, as much as a model drawn texel for texel
+may span. 26 display entities, one of them the lamp family's wall lamp in the winch house
+(WORK_LAMP).
 
 Light: the car is lit within, a source of the second rank in the car that is offered to the sky
 line, which places it. The winch house has no lamp of the site's: the winch brings its own, a
