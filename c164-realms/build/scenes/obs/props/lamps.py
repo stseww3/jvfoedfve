@@ -70,7 +70,7 @@ BULB_FACE = Sprite("lamp_bulb_face",
 # a foot darker than the crown (the first pictures) dimmed the half that is seen. A globe that
 # hangs is brightest below, where it is looked at from, and goes dim into its gallery.
 #
-# No layer is brighter than GLOBE_TOP, the middle step of the opal ramp. What is painted is what
+# No layer is brighter than GLASS_TOP, the middle step of the opal ramp. What is painted is what
 # is seen, here and under the pack's shaders alike (sky/_shaders, item.vsh: a face that glows is
 # not shaded by the way it looks), and with the belt at the ramp's two top steps the globes were
 # the whitest things of the candidate's V1, V2 and V4, whiter than the comet's head: three street
@@ -78,14 +78,14 @@ BULB_FACE = Sprite("lamp_bulb_face",
 # asked for a median about 0.75 of white and nothing over 0.89: two steps down, the belt at
 # step 2).
 GLOBE_SIDES = 12        # RL.Globe's two corner models take upright faces a twelfth of a turn apart
-GLOBE_TOP = 2
+GLASS_TOP = 2           # no glass of a lamp is painted over this step of the opal ramp: a globe's belt, a shade's mouth
 GLOBES = {              # lamp: the middle of the globe (blocks from the anchor, in the lamp's frame), radius, layers
     "street": dict(at=(0.0, 4.375, 0.0), radius=7.0 / 16.0, tones=(0, 0, 1, 2, 2, 1, 0, 0)),
     "post": dict(at=(0.0, 6.25 / 16.0, 0.0), radius=2.5 / 16.0, tones=(0, 1, 2, 2, 1, 0)),
     "bracket_a": dict(at=(0.0, 7.5 / 16.0, 11.0 / 16.0), radius=4.5 / 16.0, tones=(0, 0, 1, 2, 2, 1, 0, 0)),
     "pendant_a": dict(at=(0.0, -19.25 / 16.0, 0.0), radius=5.0 / 16.0, tones=(2, 2, 1, 1, 1, 0, 0, 0, 0, 0)),
 }
-assert all(max(spec["tones"]) <= GLOBE_TOP for spec in GLOBES.values())
+assert all(max(spec["tones"]) <= GLASS_TOP for spec in GLOBES.values())
 GLOBE_PARTS = ("_globe_side0", "_globe_side1", "_globe_under")      # what RL.Globe calls the three
 GLOBE_SEED = 4001       # of the ledges in the lamp's model: a piece of their own, which nothing turns (_kit.settle)
 
@@ -122,11 +122,14 @@ def _globe_top(m, name):
 
 def _cone_shade(m, c, top, bottom, r_top, r_bottom, steps):
     """An enamel cone shade about the vertical line c = (x, z): blue outside, a pale rolled rim,
-    and the white inside lit by the bulb. Returns the y of the underside."""
+    and the white inside lit by the bulb, its middle at GLASS_TOP like the belt of a globe (at the
+    step above, the mouth of the nearest shade was the whitest thing of the time room's view, three
+    times as bright as the dials the view is of: the review, #78243). Returns the y of the
+    underside."""
     m.taper("y", c, top, bottom, r_top, r_bottom, ENAMEL, steps=steps)
     m.tube("y", c, bottom - 1.0, bottom, r_bottom, RIM)
-    K.glass_prism(m, "y", c, bottom - 1.1, bottom - 1.0, r_bottom - 0.75, OPAL[1])
-    K.glass_prism(m, "y", c, bottom - 1.2, bottom - 1.1, r_bottom * 0.5, OPAL[3])
+    K.glass_prism(m, "y", c, bottom - 1.1, bottom - 1.0, r_bottom - 0.75, OPAL[GLASS_TOP - 1])
+    K.glass_prism(m, "y", c, bottom - 1.2, bottom - 1.1, r_bottom * 0.5, OPAL[GLASS_TOP])
     return bottom - 1.0
 
 
