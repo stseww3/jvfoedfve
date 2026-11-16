@@ -1,0 +1,3 @@
+branch=cursor/c164-chart-windows-f3-3477
+head=008cf60bfa7ad69377e35bad3aa9d06294d91835
+args=--limit 880 --tail 12 for\ s\ in\ obs_mat_windows\ obs_mat_windows_b\ obs_mat_windows_in\ obs_mat_windows_in_off\ obs_mat_windows_in_b\;\ do\ python\ tools/selfshots.py\ \$s\ \|\ tail\ -n\ 2\ \|\|\ exit\ 1\;\ done 
