@@ -896,6 +896,19 @@ def dress(canvas, origin=(0, 0, 0)):
     return n + inlet(canvas, origin) + fittings(canvas, origin)
 
 
+# How far off the family is drawn in the master scene (artkit.models' bands). A line -- the pipe, its
+# hopper or head, a bend, the bonnet and the straps of the main laid in blocks -- belongs to the
+# outline of the front it stands on and is drawn as far off as the front is seen: it keeps the far
+# band it is built with (plan/roles/INTERFACE.md, section 7). What is small on a line -- clips,
+# sleeves, plates, flanges, valves, the gauge -- is drawn from near by only.
+VIEW_SMALL = M.NEAR
+LINES = ("down", "drain", "fine", "main_?", "down_hopper_*", "drain_head", "elbow_?", "expansion_?", "tee_?",
+         "bonnet", "band")
+
+
 def build(canvas, origin=(0, 0, 0)):
     """What this package places in the master scene: dress(), once DRESS is on."""
-    return dress(canvas, origin) if DRESS else 0
+    first = len(canvas.entities)
+    n = dress(canvas, origin) if DRESS else 0
+    M.band(canvas, first, VIEW_SMALL, keep=tuple(PREFIX + kind for kind in LINES))
+    return n

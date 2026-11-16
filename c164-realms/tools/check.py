@@ -96,6 +96,7 @@ DISPLAYS = {"minecraft:item_display", "minecraft:block_display", "minecraft:text
 FLAT = 5                     # a wall face may run flat over FLAT x FLAT blocks
 KEPT = ".c164-check"         # marks a --keep folder as this script's, so the next run may empty it
 BOARD = os.path.join(HERE, "win", "shots", "obs-board.json")    # the twelve board views (tools/boardshots.py)
+BOARD_WERE = os.path.join(HERE, "win", "shots", "obs-board-were.json")     # what each had at the last version's head
 
 # The server sends an entity only to the players within its tracking range: 10 chunks for the
 # display entities, measured level. S1 read that off the 26.3 code (EntityType, ChunkMap); it has
@@ -932,12 +933,28 @@ def entities(rep, got):
             if sum(counts.values()) != total:
                 warns.append(f"build() returned {sum(counts.values())} display entities in all, the canvas "
                              f"holds {total}: a package returns the wrong count")
-            if counts.get("machines", 0) > S.BUDGET["machines"]:
-                fails.append(f"machines: {counts['machines']} entities, budget {S.BUDGET['machines']}")
-            if counts.get("props", 0) > S.BUDGET["props_outdoor"]:
-                fails.append(f"props: {counts['props']} entities, budget {S.BUDGET['props_outdoor']}")
-            if counts.get("interiors", 0) > S.BUDGET["props_indoor"]:
-                fails.append(f"interiors: {counts['interiors']} entities, budget {S.BUDGET['props_indoor']}")
+        # a room's line (plan/fine.md 5): what one package of the interiors placed
+        whose = _whose(canvas, shown)
+        if whose is not None:
+            rooms = {}
+            for owner in whose:
+                if owner.startswith("interiors/"):
+                    rooms[owner] = rooms.get(owner, 0) + 1
+            for owner, n in sorted(rooms.items()):
+                if n > S.BUDGET_PER_ROOM:
+                    fails.append(f"{owner}: {n} display entities, a room may have {S.BUDGET_PER_ROOM}")
+            if rooms:
+                most = max(rooms, key=rooms.get)
+                words.append(f"the fullest room {most.split('/')[-1]} {rooms[most]} of {S.BUDGET_PER_ROOM}")
+    if is_master(got["scene"]):     # the four bands of view range (artkit.models: FAR, MID, NEAR, SMALL)
+        bands = {}
+        for _, _, _, nbt in shown:
+            reach = float(nbt.get("view_range", 1.0))
+            key = next((name for name, value in M.BANDS if abs(reach - value) < 1e-6), f"{reach:g}")
+            bands[key] = bands.get(key, 0) + 1
+        order = [name for name, _ in M.BANDS]
+        words.append("by view range: " + ", ".join(
+            f"{k} {bands[k]}" for k in sorted(bands, key=lambda k: (order.index(k) if k in order else len(order), k))))
     stretched = sum(drawn_out.values())
     if stretched:
         words.append(f"{stretched} drawn out along one axis")
@@ -1002,6 +1019,19 @@ def _own_sun(got):
             "list(materials.pack(d) or []) + list(sky.pack(d) or [])"]
 
 
+def _whose(canvas, shown):
+    """For every display entity of `shown` (in the canvas's order) the package that placed it, as the
+    assembly noted it (scenes/obs/common/assembly.py: canvas.entity_owners); None when no note is kept."""
+    owners = getattr(canvas, "entity_owners", None)
+    if not owners:
+        return None
+    of = ["?"] * len(canvas.entities)
+    for first, end, name in owners:
+        of[first:end] = [name] * (end - first)
+    return np.array([of[i] for i, (_, _, _, nbt) in enumerate(canvas.entities) if nbt.get("id") in DISPLAYS],
+                    dtype=object)
+
+
 def views(rep, got, shots_path):
     board = False
     if not shots_path or not os.path.exists(shots_path):
@@ -1036,6 +1066,7 @@ def views(rep, got, shots_path):
                              f"({', '.join(f'{v:g}' for v in locked['look_at'])}); the locked cameras are read "
                              f"from the skeleton, not copied by hand (A0 #304)")
         n = drawn = lost = 0
+        inside = np.zeros(len(pts), dtype=bool)
         if len(pts):
             v = pts - pos
             depth = v @ f
@@ -1046,7 +1077,7 @@ def views(rep, got, shots_path):
             n = int(inside.sum())
             drawn = int((near & (inside | ~sized)).sum())
             lost = int((inside & (np.hypot(v[:, 0], v[:, 2]) > TRACKED)).sum())
-        rows.append({"name": shot["name"], "in_view": n, "drawn": drawn, "beyond_tracking": lost})
+        rows.append({"name": shot["name"], "in_view": n, "drawn": drawn, "beyond_tracking": lost, "mask": inside})
         if n > S.ENTITY_PER_VIEW:
             over.append(f"{shot['name']}: {n} display entities in view, a view may have {S.ENTITY_PER_VIEW}")
         if lost:
@@ -1063,6 +1094,34 @@ def views(rep, got, shots_path):
                          else f"{row['name']} {row['in_view']}" for row in rows)
         summary = (f"the board's {len(shots)} views, display entities in view: {each}; most {most['in_view']} "
                    f"({most['name']}), limit {S.ENTITY_PER_VIEW}; counted without what walls hide")
+        # The line (A0, 11-16 12:25): a view may have ENTITY_PER_VIEW. The views that were over it when
+        # the line was drawn may not grow: BOARD_WERE holds what each view had at the last version's
+        # head (s2 keeps it, and lowers it as the views come down). Without that file, warnings only.
+        were, when = {}, ""
+        if os.path.exists(BOARD_WERE):
+            with open(BOARD_WERE, encoding="utf-8") as fh:
+                kept = json.load(fh)
+            were, when = kept.get("views", {}), kept.get("of", "the last version's head")
+        whose = _whose(got["canvas"], shown)
+        over = []
+        for row in rows:
+            n, was = row["in_view"], were.get(row["name"])
+            if n <= S.ENTITY_PER_VIEW:
+                continue
+            line = f"{row['name']}: {n} display entities in view, a view may have {S.ENTITY_PER_VIEW}"
+            if whose is not None:
+                by = {}
+                for owner in whose[row["mask"]]:
+                    by[owner] = by.get(owner, 0) + 1
+                top = sorted(by.items(), key=lambda kv: (-kv[1], kv[0]))
+                line += " -- " + ", ".join(f"{k} {v}" for k, v in top[:12]) + (", ..." if len(top) > 12 else "")
+            if was is not None and n > max(was, S.ENTITY_PER_VIEW):
+                fails.append(f"{row['name']}: {n} display entities in view, {was} at {when}: " +
+                             ("a view over the line may not grow" if was > S.ENTITY_PER_VIEW
+                              else f"a view may have {S.ENTITY_PER_VIEW}"))
+            over.append(line)
+    for row in rows:
+        row.pop("mask", None)
     busiest = max(rows, key=lambda row: row["drawn"]) if rows else None
     if busiest is not None and busiest["drawn"] > busiest["in_view"]:
         summary += (f"; the game draws up to {busiest['drawn']} ({busiest['name']}): a display entity without "

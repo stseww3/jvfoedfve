@@ -89,7 +89,7 @@ def width(text):
 
 # ---- what the twelve say (the card, plan/packages/motion/guide.md; shorter is allowed, longer is not)
 TEXT = {
-    "cable_station": ("CABLE STATION", "The only way up the mountain."),
+    "cable_station": ("SUMMIT STATION", "The only way up the mountain."),
     "meridian_line": ("THE MERIDIAN LINE", "Brass, laid true north and south."),
     "armillary": ("ARMILLARY SPHERE", "The great circles of the sky, in brass."),
     "orrery": ("THE ORRERY", "Six planets, geared to their true periods."),
@@ -98,7 +98,7 @@ TEXT = {
     "chart_room": ("CHART ROOM", "Each clear night is drawn here by hand."),
     "plate_vault": ("PLATE VAULT", "A glass plate for every clear night."),
     "great_refractor": ("THE GREAT REFRACTOR", "Tonight it is turned on the comet."),
-    "time_ball": ("TIME BALL", "It drops once a day, on the second."),
+    "time_ball": ("TIME BALL", "It drops on the hour, to the second."),
     "power_house": ("POWER HOUSE", "Steam turns the dynamo that lights the lamps."),
     "sunset_terrace": ("SUNSET TERRACE", "The comet sets an hour behind the sun."),
 }
