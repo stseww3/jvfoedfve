@@ -1,0 +1,20 @@
+# pictures of a save opened as it comes (tools/savetrip.py): shot, the save's hour (daytime) when it was taken, commit that holds the zip, first 16 of the picture file's sha256, when it was taken, the distances
+# the save: dist/A5/c164-A5.zip of b6d6c1c7 (cursor/c164-dist-f4b8), 2787250 bytes, sha256 8edc96415f070373cb8bf2e8217098c4bf8846050407d1ab264497c72356bd3f
+# exported from the assembly commit bd2f2874, as the one who asked for the trip says
+# level.dat: world c164-A5, game 26.3, game mode adventure, difficulty peaceful, spawn 88 196 -33, yaw 67.71, pitch -22.69, commands off, data packs vanilla file/c164art
+# the server: the node's test server on this save, game mode adventure (not forced), difficulty peaceful, as a Realm's slot is filled from the world; the camera is no operator
+# resource pack: resourcepacks/resources.zip of the save (1604153 bytes, sha256 41c90793c4408d84, 2174 files, pack.mcmeta { "pack": { "description": "c164 c164-A5 (ada46d9d)", "min_format": 97, "max_format": 97 } }) is the client's pack (whether a Realm hands it to those who join is not shown here)
+# the server, before anybody joined: Timeline minecraft:day is at 20370 tick(s); Game rule advance_time is currently set to false; The difficulty is Peaceful; There are 2 data pack(s) enabled: [vanilla (built-in)], [file/c164art (world)]
+# the game's graphics backend: Vulkan, 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+# as joined: C164Cam has the following entity data: [88.5d, 196.0d, -32.5d]; C164Cam has the following entity data: [67.71f, -22.69f]; C164Cam has the following entity data: 2 (0 survival, 1 creative, 2 adventure, 3 spectator)
+# the save's clock: the day stood at 20370 when the player had joined, at 20370 after the last picture (it stands)
+# distances: client render distance 12, server view distance 10, cloud range 128; pictures: 9 saved by the game itself, 0 taken off the display
+v12_try_a 20370 b6d6c1c7 01e8635fc1980cef 2026-11-16T02:26 view12,server10,clouds128
+v12_try_b 20370 b6d6c1c7 beb0eb3ec5d701bb 2026-11-16T02:26 view12,server10,clouds128
+cloud_terrace_west 20370 b6d6c1c7 5c6156b058981c10 2026-11-16T02:26 view12,server10,clouds128
+cloud_station_east 20370 b6d6c1c7 56fe144eea3bcaa6 2026-11-16T02:26 view12,server10,clouds128
+cable_back 20370 b6d6c1c7 fe9b195f15cccfdf 2026-11-16T02:26 view12,server10,clouds128
+l1_hall_clock 20370 b6d6c1c7 52d3ca4209ad4de3 2026-11-16T02:26 view12,server10,clouds128
+l2_power_room 20370 b6d6c1c7 9abeea0914465c9e 2026-11-16T02:26 view12,server10,clouds128
+l3_power_fires 20370 b6d6c1c7 2641e0e78a261c44 2026-11-16T02:26 view12,server10,clouds128
+l4_time_console 20370 b6d6c1c7 58cecd164b5e9e99 2026-11-16T02:26 view12,server10,clouds128
