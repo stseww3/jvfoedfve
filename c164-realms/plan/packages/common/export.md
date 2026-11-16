@@ -68,3 +68,15 @@
     - 改法（`settle_light`）：摆完、设置跑完以后，区块还都加载着的时候，`save-all flush` 一次、把每个区块的光读一次，隔两秒再来，**连着三次和上一次一样才往下走**（最多等 180 秒）；等了多久、每次有几个区块的光变了记进 `<名字>.json` 的 `light`，没等到就在 `notes` 里写明，`verify` 多一条「light」。在节点上试的两次：第二次读时 346、264 个区块变了，以后三次都是 0，一共多花 10 秒。
     - 证据：修好以后同一个提交（cfa03ef7）导两次，`compare --deep`：**region 2862 个区块全同**，poi 全同；实体 42 个区块里 5 个不同，都是会动的件的 `transformation`（循环走到哪一拍），本来就该不同。「同一提交导两次逐文件比」这一条到这里有了答案：文件的字节永远不会一样（时间戳、随机编号），区块里的方块和光一样。
   - `page` 和每轮的报告多说一句光照等没等到。
+- **节点池 10:56 掉线**（三台母机，node61～106 整段，我的 node83 在内）：10:57 投的那一单（6e6cf542）没有回执，当丢，不重投（总监 #81173）；总控把 node4 给了导出。node4 的头一单（op_805f155b36，11:20）在 6e6cf542 上把没一起跑过的两样跑了：a2 的切换加本包的导出、存盘前等光照。光照 10 秒静下来（四次读数 387、0、0、0），着色器 10 个，验证全过。输出在分支 `cursor/c164-outb-export-hook-f4b8-wip` 的 `renders/_wip/hook/run.txt`。
+- **导览的钩子**（卡 `motion/guide`，总监 #79968、11:13 改稿；和 mast c346 对的口）：
+  - 本包的两个函数各在末尾调一个函数标签：`c164map:first`（头一次进来的人）调 `#c164map:first`，`c164map:join`（每次进服，头一次进来时排在 `first` 的钩子前面）调 `#c164map:join`，都是 `execute at @s run function …`，以进来的那个人的身份、在他站的地方。标签点名 `c164art:guide/first`、`c164art:guide/join`，都写 `required: false`：导览的函数不在包里，存档照常载入。场景没有 `GUIDE` 或者导出时加了 `--no-guide`，两个标签是空的，场景的 `GUIDE` 在摆的时候也被设成 False（牌子、星图不摆）。
+  - 为什么要第二个钩子：标题在进来以后 40 tick 才发（客户端那时还在载入地形），mast 的做法是给人打标签 `c164.new`、排一个 40 tick 以后的函数、到点发标题并摘标签。这两秒里掉线的人标签还在身上，再进来只有 `join` 这个钩子能把他补上。
+  - 地图的名字只写在一处：`scenes/obs/motion/guide_title.py` 的 `MAP_NAME`（一整行）和 `MAP_TITLE`（标题槽只容 106 像素，名字长了分两段：标题发第一段、副标题发第二段；总监 #82702）。主场景自己带这两个常量时先读主场景的。封包时 `MAP_NAME` 成为存档在世界列表里的名字（`level.dat` 的 `LevelName`；文件夹和压缩包仍叫 `c164-A<n>`）和两个包的说明（`<名字> (<编号> <提交>)`）。没有这两个常量的场景照旧。
+  - `verify`：「quiet」只管聊天栏（系统消息和以玩家身份发的两种都数）；包里有 `guide/first` 时多两项：「title」头一次进来的人看到的标题恰好是 `MAP_TITLE` 的第一段一次、副标题恰好是第二段一次；「title, again」再进服的人标题、副标题、动作栏什么都没有。
+  - 试跑（op_dff7ac0b9d，11:29，node4）：导览的函数还没进总装，用两句替身函数（打标签、40 tick 后发标题）顶上，其余都是真的：47 项全过，标题和副标题各一次，再进服什么都没有，聊天栏空，控制台 0 警告（点名而不存在的 `guide/join` 没有引起任何报错），`LevelName` 和两个包的说明都是 `BLUE HOUR OBSERVATORY`。输出在同一分支的 `renders/_wip/hook/run2.txt`、`H2.json`、`H2.verify.json`。
+  - 拿 mast 的真函数再跑（op_e0c4ed4dec，11:42，node4；试跑分支 `cursor/c164-outb-hooktest-f4b8` @ 64acc11a = 钩子 + 总装 1a0f1af9 + 他的 ca2e7516）：47 项全过，新来的人标题 `BLUE HOUR`、副标题 `OBSERVATORY` 各一次，再进服什么都没有，聊天栏空，控制台 0 警告，`LevelName` 是 `BLUE HOUR OBSERVATORY`，`stop.mcfunction` 已不在包里而循环照转。输出在 `cursor/c164-outb-hooktest-f4b8-wip` 的 `renders/_wip/hook/run3.txt`、`H3.json`、`H3.verify.json`。那份存档里 `text_display` 是 0 个：署名牌要等 a6 的 `props/plaques` 进总装。
+  - 封包时去掉循环的 `obs-motion/stop.mcfunction`（a2 #82424：搭建时停机器用的，包里没有任何东西调它；规矩「不留测试工具」）。删之前扫一遍包里有没有函数或标签提到它，有就留下并写进 `notes`。
+- **A7（总装 1a0f1af9，11:35 的头，node4，11:40 回）是头一个存盘前等光照算完的存档**：主包 9.7 秒、plain 10.0 秒静下来，43 项全过。s1 用他自己的 `tools/savelit.py`（数每个发光方块自己那一格存盘的亮度）独立核过（#83517）：339 个光源、35 个区块，0 个暗的；发电房四个区块 20 个光源全亮，A6 是 17 个暗。
+  - A7 的验收图（s1，真的客户端进存档拍的 13 张）：他分支 `cursor/c164-s1-render-f3-fd9c` 提交 954d8eaf，`renders/real-save/c164-A7/`（`sheet.jpg`、`beside.jpg`）。V6 里发电房亮了。
+- **第三版进总装**：026024ff，s2 逐行读过合成 306a855e（11:50，「关口待跑」：池子掉线期间的走法，总监 #81173 第 1 条）。导览甲（mast 的进场标题，主场景的 `GUIDE`、`GUIDE_CHARTS` 两行）在 0e6b941a、丙（六张星图）在 e57f5547 进的总装，所以 12:00 的 A8 起导出来的存档带导览。

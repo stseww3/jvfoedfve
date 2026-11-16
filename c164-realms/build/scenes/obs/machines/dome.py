@@ -72,6 +72,7 @@ from artkit import models as M
 from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
+from ..props import _kit as K
 
 PREFIX = "mach_dome_"
 MOVED_IN = True             # in the master scene since 11-16 (the director's fast lane): the dome stands there, and
@@ -946,7 +947,19 @@ def _piece(name):
     d = _PIECES[name]()
     if d.m.name != PREFIX + name:
         raise ValueError(f"the piece {name} draws the model {d.m.name}")
+    # The shafts, wheels, sheaves and drums are tubes and rings of eight, twelve and sixteen sides,
+    # and a flat of such a piece that stands exactly between two axes is lit by the game as the one
+    # or the other by the last bit of a float: of two wheels of one kind one came out light and one
+    # dark (cr3 counted 96 such faces in the real client, 11-16). K.settle turns each such piece a
+    # tenth of a degree about its own middle, so every copy of the game lights it one way
+    K.settle(d.m)
     return d
+
+
+def unsettled():
+    """The drawn faces that still stand between two axes, of every piece of both versions:
+    [(piece, part's index, face letters)]."""
+    return [(name, i, letters) for name in sorted(_PIECES) for i, letters, _normal in K.unsettled(_piece(name).m)]
 
 
 def models(version=None):

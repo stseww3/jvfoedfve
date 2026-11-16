@@ -98,6 +98,14 @@ IN_TAG = "c164.in"          # on a player who has been here before
 LEFT = "c164j"              # objective: times the player has left since he was last greeted
 FACTS = "c164v"             # objective of a trial save: what the functions found
 BOT = "C164Probe"           # the fake player of verify
+# What other packages hang on a visitor's arrival (plan/packages/motion/guide.md, part one): functions
+# of theirs in the scene's data pack, run as the player and where he stands, the moment a newcomer
+# has been tagged, put on the spot and set up. The map's function calls a function tag of its own
+# that names them; a function that is not in the pack is passed over, so a save without the guide
+# is made of the same lines. Who comes back is told nothing (the card, as of 11:13).
+# what other packages hang on a player's arrival: {our function tag: [their functions]}. `first` is run
+# for who has never been here, `join` for everyone who comes in (for who is new before `first`)
+HOOKS = {"first": [f"{ART}:guide/first"], "join": [f"{ART}:guide/join"]}
 CATCH = -30                 # scene y: feet under it are put back on the spot (agreed with cloud
                             # c329 #62206 and a4 c323 #64103: the cloud layer's top is -28, the
                             # lowest rock a foot finds is -27, the eye is in the cloud by then)
@@ -361,6 +369,28 @@ def _on_term(signum, frame):
 
 # ------------------------------------------------------------------ what the scene says
 
+def map_title(scene):
+    """(the map's name in one line, [what the title shows, what stands under it]) from the one
+    place they are written: MAP_NAME and MAP_TITLE of the guide's module
+    (scenes/<scene>/motion/guide_title.py; card plan/packages/motion/guide.md, mast c346 #82789),
+    or of the scene itself where it carries them. (None, []) for a scene that has neither. The
+    title is a pair where the name is too long for the title's line and is shown in two."""
+    found = {}
+    for module in ("scenes." + scene, f"scenes.{scene}.motion.guide_title"):
+        try:
+            mod = importlib.import_module(module)
+        except ModuleNotFoundError as exc:
+            if exc.name not in (module, module.rsplit(".", 1)[0]):
+                raise
+            continue
+        for key in ("MAP_NAME", "MAP_TITLE"):
+            if getattr(mod, key, None):
+                found.setdefault(key, getattr(mod, key))
+    title = found.get("MAP_TITLE")
+    lines = [title] if isinstance(title, str) else [str(t) for t in title or ()]
+    return found.get("MAP_NAME") or " ".join(lines) or None, lines
+
+
 def scene_spec(args):
     """Where the scene stands, where its spawn is and which way it looks, in world coordinates."""
     sys.path.insert(0, BUILD)
@@ -406,6 +436,11 @@ def scene_spec(args):
                 fail(f"--shaders on, and this tree has no scenes/obs/sky/_shaders.py ({e})")
     return {
         "scene": args.scene, "name": args.name, "at": [ox, oy, oz], "look": look, "shaders": shaders,
+        # the guide (titles, plaques, star charts: plan/packages/motion/guide.md) is the scene's, and in the
+        # save when the scene says GUIDE = True and --no-guide was not asked for
+        "guide": bool(getattr(scene, "GUIDE", False)) and not getattr(args, "no_guide", False),
+        "title": map_title(args.scene)[0],
+        "title_lines": map_title(args.scene)[1],
         "biome": f"{ART}:{scene.BIOME}" if look else None,
         "time": int(when),
         "feet": [round(ox + ex, 4), round(oy + ey - S.EYE, 4), round(oz + ez, 4)],
@@ -473,11 +508,14 @@ def functions(spec):
             # feet under the line: the volume from y to y + dy + 1 is tested against the player's box
             f"execute as {held} at @s if entity @s[y={low},dy={spec['catch'] - low - 1}] run function {NS}:back",
         ],
-        "first": [f"tag @s add {IN_TAG}", f"function {NS}:back", f"function {NS}:join"],
+        # who is new is set up and then handed to what other packages hang on his arrival (HOOKS), as
+        # himself and where he stands; who comes back is set up again and told nothing
+        "first": [f"tag @s add {IN_TAG}", f"function {NS}:back", f"function {NS}:join", f"execute at @s run function #{NS}:first"],
         "join": [
             f"scoreboard players set @s {LEFT} 0",
             "gamemode adventure @s",
             "attribute @s minecraft:block_interaction_range base set 0",
+            f"execute at @s run function #{NS}:join",
         ],
         "back": [f"tp @s {num(x)} {num(y)} {num(z)} {num(spec['yaw'])} {num(spec['pitch'])}"],
     }
@@ -592,6 +630,12 @@ def write_functions(pack_dir, spec):
         with open(path, "w", encoding="utf-8", newline="\n") as fh:
             json.dump({"values": spec["cloud"]}, fh, indent=1)
             fh.write("\n")
+    for hook, names in HOOKS.items():
+        path = os.path.join(folder, "tags", "function", hook + ".json")
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8", newline="\n") as fh:
+            json.dump({"values": [{"id": n, "required": False} for n in names] if spec.get("guide") else []}, fh, indent=1)
+            fh.write("\n")
     tags = os.path.join(pack_dir, "data", "minecraft", "tags", "function")
     _tag(os.path.join(tags, "load.json"), f"{NS}:load")
     _tag(os.path.join(tags, "tick.json"), f"{NS}:tick")
@@ -614,9 +658,12 @@ import importlib, sys
 sys.argv = {argv!r}
 sys.path.insert(0, {build!r})
 import place
+scene = importlib.import_module("scenes." + sys.argv[1])
 if not {look!r}:      # no biome, no timeline: nothing of a dynamic registry goes into the pack
-    importlib.import_module("scenes." + sys.argv[1]).BIOME = None
+    scene.BIOME = None
     place.MOOD.write = lambda *a, **k: []
+if not {guide!r} and hasattr(scene, "GUIDE"):       # --no-guide: the scene is built without that layer
+    scene.GUIDE = False
 place.main()
 """
 
@@ -626,7 +673,7 @@ def place(spec, server, *more):
     out. Returns its output."""
     argv = ["place.py", spec["scene"], "--world", server.world, "--pw-file", server.pw_file,
             "--rcon-port", str(RCON_PORT), "--at", *(str(v) for v in spec["at"]), *more]
-    code = PLACE.format(argv=argv, build=BUILD, look=spec["look"])
+    code = PLACE.format(argv=argv, build=BUILD, look=spec["look"], guide=bool(spec.get("guide")))
     run = subprocess.run([sys.executable, "-c", code], cwd=PROJECT, capture_output=True, text=True,
                          env=dict(os.environ, PYTHONUNBUFFERED="1"))
     text = run.stdout + run.stderr
@@ -1009,12 +1056,44 @@ def seal(world, spec, out_dir, head, when, facts):
     for path in glob.glob(os.path.join(pack_dir, "*.json")):
         os.remove(path)
         removed.append(os.path.relpath(path, stage))
-    pack_meta(pack_dir, f"c164 {name} ({head})", True)
+    # the loop's stop is the builder's (a2 c322 #82424: nothing in the pack runs it; start is run by
+    # watch, rest and halt are parts of the loop), and a finished map keeps no tool of the building.
+    # Left where anything in the pack does name it.
+    stop = os.path.join(pack_dir, "data", ART, "function", f"{spec['scene']}-motion", "stop.mcfunction")
+    if os.path.exists(stop):
+        named = re.compile(re.escape(f"{ART}:{spec['scene']}-motion/stop") + r"(?![\w/.-])")
+        users = []
+        for folder, _dirs, names in os.walk(os.path.join(pack_dir, "data")):
+            for n in names:
+                path = os.path.join(folder, n)
+                if path != stop and n.endswith((".mcfunction", ".json")):
+                    with open(path, encoding="utf-8") as fh:
+                        if named.search(fh.read()):
+                            users.append(os.path.relpath(path, pack_dir))
+        if users:
+            facts.setdefault("notes", []).append(
+                f"{os.path.relpath(stop, pack_dir)} is left in the pack: named by {', '.join(sorted(users))}")
+        else:
+            os.remove(stop)
+            removed.append(os.path.relpath(stop, stage))
+    # the map's name, where a player meets it: the world's name in the list of worlds (the folder
+    # and the archive keep the save's number) and what the two packs say of themselves
+    title = spec.get("title")
+    told = f"{title} ({name} {head})" if title else f"c164 {name} ({head})"
+    if title:
+        import nbtlib
+        level = nbtlib.load(os.path.join(stage, "level.dat"))
+        data = level.get("Data", level.get("", {}).get("Data"))
+        if data is None or "LevelName" not in data:
+            fail("level.dat has no LevelName to write the map's title into")
+        data["LevelName"] = nbtlib.String(title)
+        level.save()
+    pack_meta(pack_dir, told, True)
     registry = registry_files(pack_dir)
     if registry and not spec["look"]:
         fail("the look is off and the data pack still holds registry files: " + ", ".join(registry))
     count, standins, sky = resource_pack(spec["scene"], os.path.join(stage, "resourcepacks", "resources.zip"),
-                                         f"c164 {name} ({head})", when, spec.get("shaders"))
+                                         told, when, spec.get("shaders"))
     kinds = {}
     for folder, _dirs, names in os.walk(os.path.join(pack_dir, "data")):
         part = os.path.relpath(folder, os.path.join(pack_dir, "data")).split(os.sep)
@@ -1106,7 +1185,12 @@ def visit(server, spec, results, tag, came):
               + f"; wanted it to tell: adventure {came['adventure']}, peaceful {came['peaceful']}"
               + (f", biome {came['biome']}" if came["biome"] is not None else ""))
     else:
-        check(results, tag + "quiet", not said, " | ".join(said) or "nothing was said, as it should be")
+        # the chat is what has to stay empty; titles and the line over the hotbar are the guide's
+        # to use (plan/packages/motion/guide.md) and are looked at below
+        spoken = sum(bot.packet_counts.get(n, 0) for n in ("player_chat", "disguised_chat"))
+        check(results, tag + "quiet", not said and not spoken,
+              (" | ".join(said) or "nothing stood in the chat, as it should be")
+              + (f"; {spoken} messages came as a player's chat" if spoken else ""))
     # under the line: put there by hand, the tick function has him back before the next look
     under = (feet[0] + 20, spec["catch"] - 6, feet[2])
     go = f"tp {BOT} {num(under[0])} {num(under[1])} {num(under[2])}"
@@ -1148,6 +1232,18 @@ def visit(server, spec, results, tag, came):
     server.cmd(f"tp {BOT} {num(over[0])} {num(over[1])} {num(over[2])}", quiet=True)
     bot.pump(2.5)
     check(results, tag + "over the line", near(bot.position, over), f"put at y {over[1]}, a moment later at {bot.position}")
+    # the guide greets who is new once, with a title (a moment after he is in), and tells who comes back nothing
+    greets = spec.get("guide") and os.path.exists(os.path.join(
+        server.world, "datapacks", PACK, "data", *HOOKS["first"][0].split(":", 1)[0:1], "function",
+        HOOKS["first"][0].split(":", 1)[1] + ".mcfunction"))
+    if spec.get("guide") and not greets:
+        say(f"  {tag}the save has the guide, but no function {HOOKS['first'][0]}: nothing greets who arrives")
+    if greets:
+        titles, subs, bars = bot.texts("title"), bot.texts("subtitle"), bot.texts("actionbar")
+        lines = spec.get("title_lines") or [spec.get("title")]
+        check(results, tag + "title", titles == lines[:1] and (subs == lines[1:2] if lines[1:] else len(subs) < 2),
+              f"titles shown to who is new: {titles or 'none'}; under them: {subs or 'none'}; "
+              f"lines over the hotbar: {sorted(set(bars)) or 'none'}; wanted once each: {' / '.join(str(t) for t in lines)}")
     before = len(bot.events)
     bot.close()
     time.sleep(2.0)
@@ -1168,6 +1264,11 @@ def visit(server, spec, results, tag, came):
         where = f"where he left: {bot.position} (left at {over})"
     check(results, tag + "rejoin", ok and mode.rstrip().endswith(": 2") and re.search(r"is 0(\.0+)?\s*$", reach) is not None,
           f"{where}; {mode}; {reach}; {before} things shown before he left")
+    if greets:
+        titles, bars = bot.texts("title") + bot.texts("subtitle"), bot.texts("actionbar")
+        check(results, tag + "title, again", not titles and not bars,
+              f"titles shown to who comes back: {titles or 'none'}; lines over the hotbar: {sorted(set(bars)) or 'none'}; "
+              "wanted neither (he is told nothing)")
     bot.close()
     time.sleep(1.0)
 
@@ -1601,8 +1702,21 @@ def page(args):
             if os.path.exists(os.path.join(folder, name + "-plain.verify.json")):
                 with open(os.path.join(folder, name + "-plain.verify.json"), encoding="utf-8") as fh:
                     plain["verified"] = json.load(fh).get("ok")
+    bare = None             # the same head without the guide, where one was asked for
+    if os.path.exists(os.path.join(folder, name + "-noguide.json")):
+        with open(os.path.join(folder, name + "-noguide.json"), encoding="utf-8") as fh:
+            without = json.load(fh)
+        if without.get("ok"):
+            bare = {"file": without["zip"]["file"], "bytes": without["zip"]["bytes"], "sha256": without["zip"]["sha256"],
+                    "verified": None}
+            if os.path.exists(os.path.join(folder, name + "-noguide.verify.json")):
+                with open(os.path.join(folder, name + "-noguide.verify.json"), encoding="utf-8") as fh:
+                    bare["verified"] = json.load(fh).get("ok")
     row = {
         "n": f"A{n}", "assembly": made.get("assembly"), "at": at, "time": made["spec"]["time"], "look": look, "plain": plain,
+        # the guide (the title on arrival, the plaques, the star charts): in this save or not; the
+        # name the world goes by in the list of worlds, where the map has one
+        "guide": bool(made["spec"].get("guide")), "title": made["spec"].get("title"), "bare": bare,
         "zip_bytes": made["zip"]["bytes"], "sha256": made["zip"]["sha256"],
         "pack_bytes": made["resource_pack"].get("bytes"), "pack_files": made["resource_pack"]["files"],
         "standins": len(made["resource_pack"]["standins"]),
@@ -1659,6 +1773,10 @@ def page(args):
            f"sha256 `{plain['sha256']}`）：同一个总装头，资源包里不带着色器，天是原版的夜空，别的都一样。"
            + ("冷启动验证全过。" if plain.get("verified") else "**冷启动验证没过。**" if plain.get("verified") is False else "没验。")]
           if plain and row.get("shaders") else []),
+        *([f"不要导览那一层（进服的标题、牌子、星图）就换这个：`A{n}/{bare['file']}`（{mb(bare['bytes'])}，"
+           f"sha256 `{bare['sha256']}`）：同一个总装头，别的都一样。"
+           + ("冷启动验证全过。" if bare.get("verified") else "**冷启动验证没过。**" if bare.get("verified") is False else "没验。")]
+          if bare else []),
         *([f"同一个总装头、带着我们的天的：`A{n}/{look['file']}`（{mb(look['bytes'])}，sha256 `{look['sha256']}`，钟锁在 {look['time']} 刻）。"
            f"**它带 {look['registry_files']} 个注册表文件（群系、时间线），只给单人打开看样子，不传 Realms。**"] if look else []),
         "总装每半小时跟着 s2 报的绿头重导一次，编号往上加。**编号的文件夹只加不删**：表里编号带链接的都还在这里，"
@@ -1677,7 +1795,9 @@ def page(args):
         + ("" if row["cloud"] else "**这一个没开「站到云海方块上送回」。**")
         + ("存盘前等光照算完了（存一次读一次，连着三次不变才收，等了 {} 秒）。".format(row["light"]) if row.get("light")
            else "**存盘时光照还在变，这一个的光不全。**" if row.get("light") is False
-           else "这一个存盘前没等光照算完（A6 和更早的都没等）。"),
+           else "这一个存盘前没等光照算完（A6 和更早的都没等）。")
+        + ((f"带导览（进服的标题、牌子、星图）" if row.get("guide") else "这一个不带导览（进服的标题、牌子、星图）")
+           + (f"；存档在世界列表里的名字是「{row['title']}」，文件夹和压缩包仍按编号叫。" if row.get("title") else "。")),
         PAGE_CLOSE,
     ]
     readme = os.path.join(dist, "README.md")
@@ -1712,6 +1832,9 @@ def main():
         p.add_argument("--shaders", choices=("auto", "on", "off"), default="auto",
                        help="the look as core shaders in the resource pack (auto: when the save goes without "
                             "the look and the tree has sky/_shaders.py; never with --look on)")
+        p.add_argument("--no-guide", action="store_true",
+                       help="leave the guide out (titles, plaques, star charts: the scene's GUIDE is set to False "
+                            "for the building, and nothing hangs on a visitor's arrival)")
         p.add_argument("--trial", help="label of a trial save (see the text at the top)")
         p.add_argument("--assembly", help="the assembly's commit this is made of, for the note beside the save")
         p.add_argument("--out", help="folder of the archive (make: default dist/<name>)", required=(what == "pack"))
