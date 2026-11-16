@@ -1,0 +1,193 @@
+{
+ "scene": "obs_mat_ashlar",
+ "commit": "34c1224",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "4909 blocks, 4 entities, 4 models, 683 resource-pack files, 10 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (0.9 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 682 files, no file written twice, the folders and the prefix of materials are kept (7 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "128 pictures, every colour in the palette",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "527 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "86 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "18 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of materials: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "4 display entities, 1 shown through a matrix that is no turn, no face stretched",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "WARN",
+   "summary": "19 shots, most display entities in view: 4 (walls_graze), limit 600; counted without what walls hide; the game draws up to 4 (stones_a): a display entity without width and height is drawn outside the view too",
+   "details": [
+    "the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(materials.pack(d) or []) + list(sky.pack(d) or [])"
+   ],
+   "data": {
+    "shots": [
+     {
+      "name": "stones_a",
+      "in_view": 0,
+      "drawn": 4,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "stones_b",
+      "in_view": 0,
+      "drawn": 4,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "wall_rough",
+      "in_view": 0,
+      "drawn": 4,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "wall_fine",
+      "in_view": 0,
+      "drawn": 4,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "wall_panel",
+      "in_view": 0,
+      "drawn": 4,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "wall_emblem",
+      "in_view": 0,
+      "drawn": 4,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "walls_far",
+      "in_view": 0,
+      "drawn": 4,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "walls_v2",
+      "in_view": 0,
+      "drawn": 4,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "walls_graze",
+      "in_view": 4,
+      "drawn": 4,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "coursed",
+      "in_view": 0,
+      "drawn": 4,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "coursed_course",
+      "in_view": 0,
+      "drawn": 4,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "flight_treads",
+      "in_view": 0,
+      "drawn": 4,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "flight_foot",
+      "in_view": 0,
+      "drawn": 4,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "paved",
+      "in_view": 0,
+      "drawn": 4,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "paved_above",
+      "in_view": 0,
+      "drawn": 4,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "coursed_lit",
+      "in_view": 4,
+      "drawn": 4,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "coursed_lit_dusk",
+      "in_view": 4,
+      "drawn": 4,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "lit_front",
+      "in_view": 4,
+      "drawn": 4,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "lit_lamp",
+      "in_view": 4,
+      "drawn": 4,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "nothing moves",
+   "details": []
+  }
+ ]
+}

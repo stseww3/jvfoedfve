@@ -1,0 +1,246 @@
+{
+ "scene": "obs_mach_radiomast_b",
+ "commit": "34c1224",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "3689 blocks, 21 entities, 11 models, 729 resource-pack files, 28 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.0 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 728 files, no file written twice, the folders and the prefix of machines are kept (14 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "140 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "551 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "11 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "PASS",
+   "summary": "no wall face runs flat over more than 5x5",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "21 display entities, 5 drawn out along one axis, 3 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "14 shots, most display entities in view: 21 (v1), limit 600; counted without what walls hide",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "v1",
+      "in_view": 21,
+      "drawn": 21,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v2",
+      "in_view": 19,
+      "drawn": 21,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v5",
+      "in_view": 21,
+      "drawn": 21,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "skyline",
+      "in_view": 21,
+      "drawn": 21,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "aerial",
+      "in_view": 21,
+      "drawn": 21,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "far70",
+      "in_view": 21,
+      "drawn": 21,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "far70_deep",
+      "in_view": 21,
+      "drawn": 21,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "far70_glow",
+      "in_view": 21,
+      "drawn": 21,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "near",
+      "in_view": 4,
+      "drawn": 21,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "below",
+      "in_view": 11,
+      "drawn": 21,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "foot",
+      "in_view": 9,
+      "drawn": 21,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "seat",
+      "in_view": 16,
+      "drawn": 21,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "stay",
+      "in_view": 7,
+      "drawn": 21,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "head",
+      "in_view": 2,
+      "drawn": 21,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "PASS",
+   "summary": "V1 at (88.5, -2.38, -32.5): the front from y 4 up 3.2% hidden (base storey 11.3% by blocks and 0.0% more by models, great windows 0.0%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 0.7 s)",
+   "details": [],
+   "data": {
+    "the base storey": {
+     "lines": 1104,
+     "hidden": 125,
+     "seen_through": 0,
+     "hidden_by_blocks": 125,
+     "hidden_by_models": 0
+    },
+    "the great windows": {
+     "lines": 1656,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the cornice": {
+     "lines": 1104,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the clock tower": {
+     "lines": 672,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the time-ball mast": {
+     "lines": 22,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the great dome": {
+     "lines": 1688,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the small dome": {
+     "lines": 290,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "comet": {
+     "elevation": 41.0,
+     "across": 0.6128,
+     "down": 0.2647,
+     "lost": 0,
+     "body": {
+      "lines": 350,
+      "outside_clear": 0,
+      "covered": 0,
+      "from": -7.29,
+      "to": 1.2,
+      "low": 39.99,
+      "up": 54.24
+     }
+    },
+    "clear": {
+     "up": 61.0,
+     "blocks": [
+      {
+       "name": "between the two ends of the main building",
+       "from": -1.24,
+       "to": 44.16,
+       "low": 0.0,
+       "up": 61.0,
+       "lines": 44835,
+       "covered": 0
+      },
+      {
+       "name": "where the comet hangs, north of the main building",
+       "from": -15.0,
+       "to": -1.49,
+       "low": 35.0,
+       "up": 61.0,
+       "lines": 5880,
+       "covered": 0
+      }
+     ]
+    },
+    "left": {
+     "from": 44.66,
+     "to": 70.0,
+     "posts": []
+    }
+   }
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "1 parts and 1 points on 2 chains, 20 function files; 4 commands in the busiest tick (limit 120), 0.2 a tick on average (limit 40)",
+   "details": [
+    "chain of 80 ticks: 2 functions, 6 commands a cycle, starts 2 ticks after start",
+    "chain of 300 ticks: 12 functions, 25 commands a cycle, starts 1 ticks after start"
+   ]
+  }
+ ]
+}

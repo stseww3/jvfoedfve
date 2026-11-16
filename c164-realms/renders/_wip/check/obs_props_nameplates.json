@@ -1,0 +1,109 @@
+{
+ "scene": "obs_props_nameplates",
+ "commit": "34c1224",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "126 blocks, 7 entities, 45 models, 831 resource-pack files, 7 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (0.9 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 830 files, no file written twice, the folders and the prefix of props are kept (11 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "174 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "619 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "3 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of props: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "WARN",
+   "summary": "7 display entities, 38 models never placed",
+   "details": [
+    "prop_nameplate_01 x1: 96/96/96 pixels to the block along x/y/z, not 16",
+    "prop_nameplate_13 x1: 96/96/96 pixels to the block along x/y/z, not 16",
+    "prop_nameplate_14 x1: 96/96/96 pixels to the block along x/y/z, not 16",
+    "prop_nameplate_31 x1: 96/96/96 pixels to the block along x/y/z, not 16",
+    "prop_nameplate_41 x1: 96/96/96 pixels to the block along x/y/z, not 16",
+    "prop_nameplate_61 x1: 96/96/96 pixels to the block along x/y/z, not 16",
+    "prop_nameplate_73 x1: 96/96/96 pixels to the block along x/y/z, not 16"
+   ]
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "4 shots, most display entities in view: 7 (two), limit 600; counted without what walls hide; the game draws up to 7 (one): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "one",
+      "in_view": 5,
+      "drawn": 7,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "two",
+      "in_view": 7,
+      "drawn": 7,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "three",
+      "in_view": 7,
+      "drawn": 7,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "stone_two",
+      "in_view": 7,
+      "drawn": 7,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "nothing moves",
+   "details": []
+  }
+ ]
+}
