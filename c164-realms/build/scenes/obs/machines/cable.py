@@ -41,7 +41,6 @@ The models (all "mach_cable_"):
   stand    the lead sheave's stand, with the rope where it lies in the groove and goes down.
   duct     the cover plates of the rope duct, one cell of them.
   hood     the cast cover at the head of the track, the step to the car.
-  turn     the level roller that turns the rope on to the trestle's line.
   roller   a track roller on its tie, that carries the rope: at the brow and down the slope.
   rope     the haul rope, drawn out between two points (M.between).
 
@@ -54,8 +53,8 @@ cylinders, a turn would not show, so they are not split.
 Scale (A5 1.2: px = scale keeps 16 texels to the block): drum and frame 2, the rest 1 -- the
 car is two blocks long and three wide over its eaves, as much as a model drawn texel for texel
 may span. 28 display entities, one of them the lamp family's wall lamp in the winch house
-(WORK_LAMP). The car, the drum and the rope with its rollers are seen from across the site; the
-small pieces are drawn within 64 blocks (VIEW, VIEW_KEEP).
+(WORK_LAMP). The rope, its rollers and the lead sheave are seen from across the site; what stands
+in the winch house is drawn within 64 blocks (VIEW, VIEW_KEEP).
 
 Blocks: the models stop nobody, so the package sets what does. Barriers inside the two solid
 things, the car's body (CAR_CELLS) and the drum's barrel (SOLID), two high and nowhere beyond
@@ -84,17 +83,17 @@ from ..common import skeleton as S
 from ..motion import _kit as MK         # read only: the turn of the drum and the sheave is registered there
 from ..props import _kit as PK          # read only: flat tones, rivets, the hand-over of light sources
 from ..props import lamps               # the lamp in the winch house is one of the lamp family
-from ..site import _kit as SK           # read only: the line of the ridge under the trestle
 from ..site import cablecar as SHELL    # read only: the station's shell, whose numbers all of this hangs on
 
 PREFIX = "mach_cable_"
 PX = 1.0 / 16.0                         # one texel, in blocks
 # How far off the pieces are drawn (artkit.models, the four bands; plan/INTERFACE.md 7: what stands
 # out of doors and counts in the outline, the vehicles and the pieces along the line, is drawn from
-# across the whole site). So the car, the drum with its pedestals, and the rope with its rollers
-# keep the far band; the small things one walks up to are drawn within 64 blocks.
+# across the whole site). So the car's models and what lies in the open on the line, the rope, its
+# rollers and the lead sheave, keep the far band; what stands in the winch house is drawn within 64
+# blocks.
 VIEW = M.MID
-VIEW_KEEP = tuple(PREFIX + name for name in ("car", "axle", "drum", "frame", "rope", "roller", "turn"))
+VIEW_KEEP = tuple(PREFIX + name for name in ("car", "axle", "rope", "roller", "sheave"))
 
 # --- materials (palette only) ---------------------------------------------------------------------
 IRON, IRON_D, BRASS, BRASS_D = PK.IRON, PK.IRON_D, PK.BRASS, PK.BRASS_D
@@ -145,7 +144,7 @@ LEVEL = SHELL.LEVEL                                     # 4: cells of level trac
 GRADE = SHELL.GRADE                                     # 0.5: then the rails fall this much with every cell
 track_axis = SHELL.track_axis                           # the row of the track's axis in column x
 rail_top = SHELL.rail_top                               # y of the upper face of the rails in column x
-TRACK_END = SHELL.END                                   # 141: the track's last column, under the cloud
+TRACK_END = SHELL.END                                   # 111: the iron track's last column, at the incline's foot
 
 # The car stands on the last two cells of the platform, as wide as the track is between its kerbs:
 # its ends and its sides lie on cell lines (x 90 and 92, z -34 and -31), its east end flush with
@@ -264,46 +263,36 @@ LEAD_WRAP = _angle(_LEAD)                               # from here to 90 the ro
 _BELT = _runs((AXLE[2], AXLE[1]), WHEEL_BELT_R, (PULLEY[2], PULLEY[1]), PULLEY_BELT_R)
 BELT_UP, BELT_LOW = _angle(_BELT[0]), _angle(_BELT[1])  # the belt is on the pulley between these two
 
-# The rope along the track. In the station it runs level, three texels over the rails. East of
-# the platform it follows the middle line of the trestle (a third of a block north for every block
-# east): it climbs a little to the roller at the brow and then lies on the rollers of the slope,
-# which stand on the middle of every sixth tie, RISE above the line of the steps' noses.
-X_TURN = SK.CABLE_RIDGE_X[0] + 0.5                      # 92.5: where the centre line turns on to the ridge's
+# The rope along the track. The line is straight from the buffers to the incline's foot (site/_rail).
+# In the station the rope runs level, three texels over the rails; it climbs a little to the roller
+# at the brow and then lies on the rollers of the incline, which stand on the middle of every sixth
+# tie, RISE above the line of the steps' noses, and on the last tie, where the iron track ends.
 X_GRADE = X1 + LEVEL + 1.0                              # 96: the nose of the last level cell
-_HX, _HZ = 3.0 / math.sqrt(10.0), -1.0 / math.sqrt(10.0)        # level and along the trestle
-BEND = math.atan2(-_HZ, _HX)                            # the turn at X_TURN, 18 degrees to the north
-THETA = math.atan(GRADE * _HX)                          # how steep the rope lies on the slope
-TRACK_YAW = math.degrees(math.atan2(-_HX, _HZ))         # turns a model's +z down the trestle
-TURN_R = 4 * PX                                         # from the level roller's axis to the middle of the rope
-ROLL_R = 3 * PX                                         # the same for a track roller
+THETA = math.atan(GRADE)                                # how steep the rope lies on the incline
+TRACK_YAW = -90.0                                       # turns a model's +z down the line, east
+ROLL_R = 3 * PX                                         # from a track roller's axis to the middle of the rope
 ROLL_UP = 5 * PX                                        # a track roller's axis above its tie
 RISE = ROLL_UP - GRADE / 2.0 + ROLL_R / math.cos(THETA)
 BROW_TIE = X1 + LEVEL                                   # 95: the last level column
-ROLLER_TIES = [t for t in range(BROW_TIE, TRACK_END - 6, 6) if rail_top(t) == int(rail_top(t))]   # 95, 101 .. 131
-
-
-def _line_z(x):
-    return TRACK_Z - max(0.0, x - X_TURN) / 3.0
+ROLLER_TIES = [t for t in range(BROW_TIE, TRACK_END, 6) if rail_top(t) == int(rail_top(t))] + [TRACK_END]
+#   95, 101, 107 and the last tie, 111
 
 
 def _slope(x):
-    """The point of the rope at x, on the slope."""
-    return (x, FEET - GRADE * (x - X_GRADE) + RISE, _line_z(x))
+    """The point of the rope at x, on the incline."""
+    return (x, FEET - GRADE * (x - X_GRADE) + RISE, TRACK_Z)
 
 
 def _roller_at(tie):
     """The centre of the roller on the tie of column `tie`."""
-    return (tie + 0.5, rail_top(tie) + ROLL_UP, _line_z(tie + 0.5))
+    return (tie + 0.5, rail_top(tie) + ROLL_UP, TRACK_Z)
 
 
-TURN = (X_TURN - TURN_R * math.tan(BEND / 2.0), FEET + 4 * PX, TRACK_Z - TURN_R)
 _Y_BROW = rail_top(BROW_TIE) + ROLL_UP + ROLL_R         # the rope on top of the brow roller
-_X_BROW = X_GRADE - (_Y_BROW - FEET - RISE) / GRADE     # where the slope's line comes up to that
+_X_BROW = X_GRADE - (_Y_BROW - FEET - RISE) / GRADE     # where the incline's line comes up to that
 ROPE_LINE = ([(X_ROPE + 0.25 - 2 * PX, FEET + 3 * PX, TRACK_Z),        # two texels inside the hood
-              (X_TURN, TURN[1], TRACK_Z),
-              (_X_BROW, _Y_BROW, _line_z(_X_BROW))]
-             + [_slope(t + 0.5) for t in ROLLER_TIES[2::2]]             # a new piece at every other roller
-             + [_slope(TRACK_END + 1.0)])                               # the end of the track, under the cloud
+              (_X_BROW, _Y_BROW, TRACK_Z)]
+             + [_slope(t + 0.5) for t in ROLLER_TIES[2:]])              # a piece to the roller of x 107, one to the last
 
 _WHEEL, _POST, _SPOKE, _LEG = 700, 710, 720, 730        # pieces that share one picture
 
@@ -580,20 +569,6 @@ def _hood():
     return m
 
 
-def _turn():
-    """The level roller on the first tie, that turns the rope on to the trestle's line: a
-    grooved wheel ten across on an upright spindle. Anchor: the middle of the groove, on the
-    spindle's axis; the tie's top is 4 below."""
-    m = M.Model(PREFIX + "turn")
-    m.tube("y", (0, 0), -4.0, -3.0, 3.0, IRON_D)                                   # foot
-    m.tube("y", (0, 0), -3.0, 3.0, 1.0, IRON_D)                                    # spindle
-    m.tube("y", (0, 0), -2.0, -1.0, 5.0, IRON, sides=12)                           # lower flange
-    m.tube("y", (0, 0), -1.0, 1.0, TURN_R * 16.0 - 1.0, IRON_D, sides=12)          # the groove's bottom
-    m.tube("y", (0, 0), 1.0, 2.0, 5.0, IRON, sides=12)                             # upper flange
-    m.tube("y", (0, 0), 3.0, 4.0, 1.5, BRASS_D)                                    # grease cap
-    return m
-
-
 def _roller():
     """A track roller: a plain roller between two flanges, in two bearing blocks that stand on
     a tie. The axle is the model's x axis, the rope runs over it along z. Anchor: the middle of
@@ -618,7 +593,7 @@ def _rope():
 
 
 BUILDERS = {"car": _car, "axle": _axle, "drum": _drum, "frame": _frame, "motor": _motor, "belt": _belt,
-            "sheave": _sheave, "stand": _stand, "duct": _duct, "hood": _hood, "turn": _turn, "roller": _roller,
+            "sheave": _sheave, "stand": _stand, "duct": _duct, "hood": _hood, "roller": _roller,
             "rope": _rope}
 SCALE = {PREFIX + name: 2.0 if name in ("drum", "frame") else 1.0 for name in BUILDERS}
 # What turns: about which axis of its own model (through the anchor), the tag its entities carry,
@@ -646,7 +621,8 @@ def models():
 
 # --- placing --------------------------------------------------------------------------------------
 def build(canvas, origin=(0, 0, 0)):
-    """Place the car, the winch and the rope at the station. Returns the display entities placed."""
+    """Place the winch and the rope at the station. Returns the display entities placed. The car
+    is the train's (machines/train), which places it and takes it along the line."""
     built = _models()
     ox, oy, oz = origin
 
@@ -666,15 +642,13 @@ def build(canvas, origin=(0, 0, 0)):
         canvas.add_entity(a[0], a[1], a[2], M.between(built[PREFIX + name], a, b))
         return 1
 
-    for x, y, z in CAR_CELLS + SOLID:       # the car and the barrel are solid: who walks into them is stopped
+    for x, y, z in SOLID:                   # the barrel is solid: who walks into it is stopped
         canvas.set(x + ox, y + oy, z + oz, B.BARRIER)
     for x, z in GUARD:                      # the winch's rail
         canvas.set(x + ox, int(FEET) + oy, z + oz, GUARD_RAIL)
     for x, y, z in GUARD_OVER:              # and nobody gets up on it
         canvas.set(x + ox, y + oy, z + oz, B.BARRIER)
-    n = put("car", CAR) + put("hood", HOOD)
-    for along in CAR_AXLES:
-        n += put("axle", (CAR[0] + along * PX, CAR[1] + CAR_WHEEL * PX, CAR[2]))
+    n = put("hood", HOOD)
     for row in DUCT_ROWS:
         n += put("duct", (X_ROPE, FEET, row + 0.5))
 
@@ -686,17 +660,11 @@ def build(canvas, origin=(0, 0, 0)):
     n += put("sheave", SHEAVE) + put("stand", SHEAVE)
     n += run("rope", _on(SHEAVE, SHEAVE_ROPE_R, _LEAD, X_ROPE), _on(AXLE, DRUM_ROPE_R, _LEAD, X_ROPE))
 
-    n += put("turn", TURN)
     for tie in ROLLER_TIES:
         n += put("roller", _roller_at(tie), yaw=TRACK_YAW)
     for a, b in zip(ROPE_LINE, ROPE_LINE[1:]):
         n += run("rope", a, b)
 
-    # The car is lit within: its source is offered to the sky line, which places it (PK.offer_lights
-    # hands it to sky/_lightkit, and puts it down itself in a tree without that). The winch's lamp
-    # reports its own.
-    x, y, z = CAR_LIGHT
-    PK.offer_lights(canvas, [((x + ox, y + oy, z + oz), CAR_LIGHT_LEVEL)], "machines/cable:car_windows")
-    if WORK_LAMP:
+    if WORK_LAMP:                           # the winch's lamp reports its own light
         n += lamps.place(canvas, LAMP_KIND, LAMP, facing="south", origin=origin, level=LAMP_LEVEL)
     return n

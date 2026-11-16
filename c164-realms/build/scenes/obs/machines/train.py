@@ -52,18 +52,27 @@ Light. A display entity takes the light of the place it stands on, and the train
 cloud, where that place is inside a block and dark: every piece of the train says its own
 brightness. OUTSIDE is for what is seen from without, INSIDE for what stands in the lit room.
 """
+import importlib
 import math
 
-from ..site import _rail as RAIL
+from artkit import models as M
+
+from ..common import blocks as B
+from ..motion import _kit as MK         # read only: travel() moves the train
+from ..site import _rail as RAIL        # read only: the line
+from . import cable as CABLE            # the first coach is the cable car's body, twice (the director, 13:15)
+
+ORDER = 40                              # before the engine's own module, which stands an engine there if nobody has
 
 PX = 1.0 / 16.0                         # one texel, in blocks
 
 # --- the consist ----------------------------------------------------------------------------------------
 NAME = "train"                          # travel's name of it: its functions are <ns>:<scene>-motion/train/...
 COACH_HALF = 40.0                       # half the coach's length
-COACH_BASE = 3.5                        # blocks from bogie to bogie: travel's axles=(-1.75, 1.75)
-COACH_BOGIES = (-28.0, 28.0)            # the bogies' middles
-COACH_AXLES = (-34.0, -22.0, 22.0, 34.0)        # the four wheelsets: 6 either side of a bogie's middle
+COACH_BASE = 3.0                        # blocks from bogie to bogie: travel's axles=(-1.5, 1.5). No longer, or
+#                                         the brow would come up through the frame between them
+COACH_BOGIES = (-24.0, 24.0)            # the bogies' middles
+COACH_AXLES = (-30.0, -18.0, 18.0, 30.0)        # the four wheelsets: 6 either side of a bogie's middle
 COACH_WHEEL = 4.0                       # a coach wheel's radius over the tyre
 ENGINE_AT = 4.25                        # blocks from the coach's middle down the line to the engine's
 ENGINE_BASE = 2.0                       # blocks between the engine's two axles, until machines/locomotive says its own
@@ -76,7 +85,7 @@ INSIDE = (15, 12)                       # ... of what stands in the lit room
 FLOOR, CEILING, WELL = 9.5, 40.5, 46.5
 ROOM = dict(x=(-37.5, 37.5), y=(FLOOR, CEILING), z=(-19.5, 19.5), well=dict(z=(-11.0, 11.0), y=WELL))
 SILL, HEAD = 21.0, 36.0                 # the windows, all round
-BENCH_TOP = 14.5
+BENCH_TOP = 17.5                        # a rider's eyes are 1.02 over it: above the two blocks of the car's barriers
 ROWS = (-22.0, -6.0, 10.0, 26.0)        # the middle of each row's seat; its back is 4 behind (+x)
 ACROSS = (15.0, -14.0, 6.0)             # a row's seats in the order they are taken: left window, right, left aisle
 # The seats, in the order the riders take them: from the front row back (the director: whoever
@@ -141,3 +150,85 @@ def turn(at=None):
 def seats():
     """The seats in the scene, the train at home: what travel's seat() is given."""
     return [spot(p) for p in SEATS]
+
+
+# --- the trip -------------------------------------------------------------------------------------------
+# Ticks of the trip and where the coach's middle is then (s of the line): up out of the cloud, a
+# halt in the station, down again, and a wait under the cloud till the cycle is round.
+ARRIVE, DEPART, BACK, CYCLE = 940, 1340, 2280, 3000
+TABLE = [(0, RAIL.START), (ARRIVE, RAIL.STOP), (DEPART, RAIL.STOP), (BACK, RAIL.START)]
+CALLED = False                          # False: the train keeps its timetable by itself. True: it waits to be sent off
+ENGINE_AXLES = (-0.5625, 0.9375)        # the engine's two axles from its middle, in blocks (machines/locomotive)
+
+# A model stops nobody. While the coach stands in the station the cells of its body hold barriers
+# two high (it stands in the line's mouth, RAIL.MOUTH, and is the mouth's gate); while it is away
+# the mouth's own three columns hold them.
+HOME_CELLS = dict(a=(int(RAIL.DOOR), int(RAIL.FEET), RAIL.ROW - 1),
+                  b=(int(RAIL.DOOR + RAIL.CAR) - 1, int(RAIL.FEET) + 1, RAIL.ROW + 1))     # x 90..94, y -4..-3, z -34..-32
+MOUTH_CELLS = dict(a=(RAIL.MOUTH["cells"][0][0], RAIL.MOUTH["y"][0], RAIL.MOUTH["cells"][0][1]),
+                   b=(RAIL.MOUTH["cells"][-1][0], RAIL.MOUTH["y"][1], RAIL.MOUTH["cells"][-1][1]))
+_BOX = "{a.x} {a.y} {a.z} {b.x} {b.y} {b.z}"
+SHUT = "fill " + _BOX + " minecraft:barrier replace minecraft:air"
+OPEN = "fill " + _BOX + " minecraft:air replace minecraft:barrier"
+
+
+def _engine():
+    """The engine's module, or None in a tree that has none yet."""
+    try:
+        return importlib.import_module(__package__ + ".locomotive")
+    except ImportError:
+        return None
+
+
+def build(canvas, origin=(0, 0, 0)):
+    """Place the train as it stands in the station and hand it to the motion line. Returns the
+    display entities placed. In a tree whose motion kit has no travel() the train stands still."""
+    ox, oy, oz = origin
+    train = coach = loco = None
+    engine = _engine()
+    if hasattr(MK, "travel"):
+        def line(s):
+            p = RAIL.at(s)
+            return (p.x + ox, p.y + oy, p.z + oz)
+
+        train = MK.travel(canvas, NAME, MK.route(line, 0.0, RAIL.LENGTH), table=TABLE, cycle=CYCLE,
+                          home=RAIL.STOP, call=CALLED)
+        coach = train.car("coach", at=0.0, axles=(-COACH_BASE / 2.0, COACH_BASE / 2.0))
+        if engine is not None:
+            loco = train.car("loco", at=ENGINE_AT, axles=ENGINE_AXLES)
+
+    def put(model, p):
+        x, y, z = spot(p)
+        canvas.add_entity(x + ox, y + oy, z + oz, M.display(model, brightness=OUTSIDE, view=M.FAR, **turn()))
+        return 1
+
+    n = 0
+    body, axle = (CABLE.models()[CABLE.PREFIX + name] for name in ("car", "axle"))
+    for x in (-CABLE.CAR_HALF[0], CABLE.CAR_HALF[0]):       # two bodies end to end: four blocks of coach
+        n += put(body, (float(x), 0.0, 0.0))
+        if coach:
+            coach.carry(canvas)
+    for x in COACH_AXLES:
+        n += put(axle, (x, COACH_WHEEL, 0.0))
+        if coach:
+            coach.roll(canvas, "z", COACH_WHEEL * PX)
+    if coach:
+        for x, y, z in seats():
+            coach.seat((x + ox, y + oy, z + oz))
+    if engine is not None:
+        at, yaw, tilt = engine.home()
+        n += engine.place(canvas, at, yaw=yaw, tilt=tilt, origin=origin, car=loco, light=True)
+
+    (ax, ay, az), (bx, by, bz) = HOME_CELLS["a"], HOME_CELLS["b"]
+    for x in range(ax, bx + 1):
+        for y in range(ay, by + 1):
+            for z in range(az, bz + 1):
+                canvas.set(x + ox, y + oy, z + oz, B.BARRIER)
+    if train and not CALLED:
+        gone = train.tick(RAIL.STOP + 4.0, 1)       # going down: the coach's uphill end is 1.5 blocks past the mouth
+        near = train.tick(RAIL.STOP + 8.0, 0)       # coming up: it is still 5.5 blocks short of it
+        MK.run(canvas, HOME_CELLS, OPEN, CYCLE, at=[0, DEPART - 5], origin=origin)
+        MK.run(canvas, HOME_CELLS, SHUT, CYCLE, at=[ARRIVE + 20], origin=origin)
+        MK.run(canvas, MOUTH_CELLS, SHUT, CYCLE, at=[1, gone], origin=origin)
+        MK.run(canvas, MOUTH_CELLS, OPEN, CYCLE, at=[near], origin=origin)
+    return n
