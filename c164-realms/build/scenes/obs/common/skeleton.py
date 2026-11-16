@@ -411,15 +411,18 @@ SITE_SPAN = 110                 # the hilltop is about 110 x 110 blocks (plan 4)
 
 
 # --- entity budget (R1 0.4): placement functions return how many display entities they placed ----
-ENTITY_TOTAL = 3000             # whole map
+# The lines are plan/fine.md 5's (A0, 11-16 12:47), and tools/check.py holds the master scene to them:
+# the whole map, any one of the board's views (counted with the four bands of view range,
+# artkit.models FAR, MID, NEAR, SMALL), and a room (a package of the interiors).
+ENTITY_TOTAL = 6000             # whole map
 ENTITY_PER_VIEW = 600           # any one billboard view
-BUDGET = {                      # by use
-    "props_outdoor": 1100,
-    "props_indoor": 1000,       # five rooms, <= 250 each
+BUDGET_PER_ROOM = 400           # a room: the near and the small band
+BUDGET = {                      # the first round's shares by use (of 3000). No line is drawn by use any
+    "props_outdoor": 1100,      # more; check.py reports the counts by category and fails none on them
+    "props_indoor": 1000,
     "machines": 400,
     "assembly_reserve": 500,
 }
-BUDGET_PER_ROOM = 250
 PROPS_PER_VIEW = 400            # props alone in any one view
 SAMPLE_BAY_BUDGET = 120         # the M2 sample段 (5 bays), ~20 per bay
 

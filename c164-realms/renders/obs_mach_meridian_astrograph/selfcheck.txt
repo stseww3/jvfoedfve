@@ -11,10 +11,11 @@ barriers: [(33, 0, -30), (33, 1, -30), (37, 0, -30), (37, 1, -30)]
 self-check: sizes, the room, the turn over the floor, the circles, the microscopes, the slot -- all good
 tube: looks west, 41.05 degrees up; pivot (12.5, 20.5, 30.5), objective (9.53, 23.09, 30.5), plate (14.08, 19.12, 30.5)
 mount: head (11.91, 19.82, 29.82), foot (11.91, 18.0, 30.18); the saddle -53.0 degrees round the tube
-sweep: centre (12.5, 20.5, 30.5), radius 4.18
+sweep: centre (12.5, 20.5, 30.5), radius 4.23
 4 display entities
+tracking: 2.5 degrees to either side about the polar axis, there and back in 400 ticks; the object glass goes 2.6 texels either way, the plate goes 1.5 texels either way, the outer weight goes 0.8 texels either way
   mach_astro_tube: scale 2, 153 boxes, 27.9 x 29.3 x 95.5 texels
   mach_astro_back: scale 1, 27 boxes, 25.2 x 16.5 x 7.5 texels
   mach_astro_axis: scale 1, 94 boxes, 15.0 x 15.5 x 25.0 texels
   mach_astro_mount: scale 1, 133 boxes, 20.0 x 28.2 x 26.3 texels
-self-check: sizes, the frames, the room, the slit, the plate holder -- all good
+self-check: sizes, the frames, the room, the slit, the plate holder, the tracking -- all good
