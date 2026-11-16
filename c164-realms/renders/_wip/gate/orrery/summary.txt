@@ -1,0 +1,17 @@
+gate machines/orrery a4e1e26f: the merged tree a4e1e26f, the assembly as it was 7ad81e1d
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] pictures 1 test scene, 10 shots with a picture kept
+                    obs_mach_orrery: 10 pictures show acfc2ad9; the card's code has changed since (_powerkit.py, _relit.py, orrery.py): draw them again
+check.py: 73 scenes in 93 s: 73 pass (73 with warnings)
+pictures: obs_mach_orrery: the kept pictures are NOT what the delivered commit a4e1e26f draws (it goes back):
+    [FAIL] selfshots obs_mach_orrery at a4e1e26f: 1 of 10 kept pictures are what the code draws, 9 not
+    v7_a: 32 of 921600 pixels are not what the code draws (off by up to 54 of 255)
+    under_a: 22 of 921600 pixels are not what the code draws (off by up to 54 of 255)
+    gallery_a: 11602 of 921600 pixels are not what the code draws (off by up to 112 of 255)
+    stair_a: 3144 of 921600 pixels are not what the code draws (off by up to 112 of 255)
+    near_a: 41081 of 921600 pixels are not what the code draws (off by up to 112 of 255)
+    v7_b: 31 of 921600 pixels are not what the code draws (off by up to 36 of 255)
+    gallery_b: 11511 of 921600 pixels are not what the code draws (off by up to 67 of 255)
+    stair_b: 3945 of 921600 pixels are not what the code draws (off by up to 106 of 255)
+    near_b: 40718 of 921600 pixels are not what the code draws (off by up to 87 of 255)
+result: FAIL
