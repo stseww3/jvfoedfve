@@ -6,11 +6,12 @@ auto-discovery. It adds lamps and light sources and nothing else (A0, 11-16 10:4
 The line: a place a person stands at has 5 or more, read as tools/darkfloor.py reads it (the
 better of the cell of the feet and the cell of the head; the tops of the galleries' railings are
 such places, reached with a hop). The list of the assembly 9fbb2e0c names sixteen places of the
-hall at 3 and 4:
+hall at 3 and 4, and the hall gave the west end of both galleries with them (c348, 10:58):
 
   the south gallery between its first two lamps     (5..6, 7, 5) and the railing's top (8, 8, 4)
   the north gallery between the wing room's doors   (8, 7, -5)
   the east end of both galleries                    (14..15, 7, -5 and 5), the railing's top beside it
+  the west end of both galleries                    (2..3, 7, -5 and 5), the south railing's top beside it
   the west corners of the two aisles                (2, 0, -5 and 5)
   the floor beside the roundel                      (9, 0, -3 and 3)
 
@@ -45,6 +46,7 @@ LAMP_Y = 10.5                                   # the galleries' caged lamps (in
 END_LAMP_X = 14.5                               # the fourth lamp of a gallery wall
 END_LEVEL = 7                                   # under it: 6 beside it on the walk, 5 on the railing's top at the wall
 RAIL_LEVEL = 7                                  # over the south railing, between the lamps at 4.5 and 8: 5 two cells off
+WEST_LEVEL = 6                                  # beside the first lamp's foot: 5 in the gallery's last cell
 FILL = 5                                        # in the cell of the head of the place it is for, and no further
 
 # (the cell, its level, what it lights): building coordinates
@@ -53,6 +55,9 @@ SOURCES = (
     ((8, DECK + HEAD, Z0), FILL, "north gallery"),
     ((int(END_LAMP_X), DECK + HEAD, Z0), END_LEVEL, "north gallery end"),
     ((int(END_LAMP_X), DECK + HEAD, Z1), END_LEVEL, "south gallery end"),
+    ((X0 + 1, DECK + HEAD, Z0), WEST_LEVEL, "north gallery west"),
+    ((X0 + 1, DECK + HEAD, Z1), WEST_LEVEL, "south gallery west"),
+    ((X0, DECK + HEAD, Z1 - 1), FILL, "south railing west"),
     ((X0, FEET + HEAD, Z0), FILL, "north aisle corner"),
     ((X0, FEET + HEAD, Z1), FILL, "south aisle corner"),
     ((9, FEET + HEAD, -3), FILL, "roundel north"),
