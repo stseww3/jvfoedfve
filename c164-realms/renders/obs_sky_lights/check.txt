@@ -1,13 +1,13 @@
-check obs_sky_lights at 2c87946
-[WARN] regen     121469 blocks, 2085 entities, 431 models, 1971 resource-pack files, 340 data-pack files, look: 1 biomes, 1 timelines (4.6 s)
+check obs_sky_lights at d50eaae
+[WARN] regen     121523 blocks, 2085 entities, 432 models, 1974 resource-pack files, 340 data-pack files, look: 1 biomes, 1 timelines (4.6 s)
                  registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
-[PASS] conflicts the scene writes 1970 files, no file written twice, the folders and the prefix of sky are kept (2 packages run alone)
-[PASS] strays    560 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
-[PASS] refs      1391 block states, item definitions and models read, every model and picture they name is there
+[PASS] conflicts the scene writes 1973 files, no file written twice, the folders and the prefix of sky are kept (2 packages run alone)
+[PASS] strays    561 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      1393 block states, item definitions and models read, every model and picture they name is there
 [PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
-[PASS] blocks    67 kinds of block placed, 156 barrier cells (x -398..16, y 0..7, z -25..25), all in the occupancy table
+[PASS] blocks    67 kinds of block placed, 210 barrier cells (x -398..16, y 0..19, z -25..25), all in the occupancy table
 [SKIP] flatwall  a test scene of sky: its sample walls and backdrops are meant to be flat
-[WARN] entities  2085 display entities, 111 drawn out along one axis, 24 shown through a matrix that is no turn, no face stretched, 185 models never placed
+[WARN] entities  2085 display entities, 111 drawn out along one axis, 24 shown through a matrix that is no turn, no face stretched, 186 models never placed
                  int_vault_dark_rope x3: drawn out along z, where the picture of cream~base1 is not even: it smears
 [WARN] views     32 shots, most display entities in view: 710 (blue_axis), limit 600; counted without what walls hide; the game draws up to 1381 (deep_front): a display entity without width and height is drawn outside the view too
                  blue_front: 703 display entities in view, a view may have 600
@@ -36,7 +36,7 @@ check obs_sky_lights at 2c87946
                  deep_front: 15 of the 703 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
                  deep_axis: 15 of the 710 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
                  ... and 5 more
-[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 0.4% hidden (base storey 0.0% by blocks and 1.3% more by models, great windows 0.0%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 3.2 s)
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 0.4% hidden (base storey 0.0% by blocks and 1.3% more by models, great windows 0.0%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 3.3 s)
 [PASS] motion    57 parts and 3 points on 14 chains, 280 function files; 12 commands in the busiest tick (limit 40), 3.1 a tick on average (limit 10)
                  chain of 24 ticks: 6 functions, 26 commands a cycle, starts 1 ticks after start
                  chain of 40 ticks: 8 functions, 33 commands a cycle, starts 2 ticks after start
