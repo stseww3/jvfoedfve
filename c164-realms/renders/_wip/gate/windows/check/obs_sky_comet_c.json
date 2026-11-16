@@ -1,0 +1,249 @@
+{
+ "scene": "obs_sky_comet_c",
+ "commit": "40362dc",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "18587 blocks, 0 entities, 0 models, 20 resource-pack files, 11 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (0.2 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 19 files, no file written twice, the folders and the prefix of sky are kept (2 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "0 pictures, every colour in the palette; 9 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "0 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "0 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "4 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of sky: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "0 display entities",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "15 shots, most display entities in view: 0 (v1_blue), limit 600; counted without what walls hide",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "v1_blue",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v1_deep",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v1_glow",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v2_blue",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v2_deep",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v2_glow",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "axislow_blue",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "axislow_deep",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "axislow_glow",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "slit_blue",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "slit_deep",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "slit_glow",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "sky_blue",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "sky_deep",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "sky_glow",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "PASS",
+   "summary": "V1 at (88.5, -2.38, -32.5): the front from y 4 up 0.0% hidden (base storey 0.0% by blocks and 0.0% more by models, great windows 0.0%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 0.5 s)",
+   "details": [],
+   "data": {
+    "the base storey": {
+     "lines": 1104,
+     "hidden": 0,
+     "seen_through": 0,
+     "hidden_by_blocks": 0,
+     "hidden_by_models": 0
+    },
+    "the great windows": {
+     "lines": 1656,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the cornice": {
+     "lines": 1104,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the clock tower": {
+     "lines": 672,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the time-ball mast": {
+     "lines": 22,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the great dome": {
+     "lines": 1688,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the small dome": {
+     "lines": 290,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "comet": {
+     "elevation": 41.0,
+     "across": 0.6128,
+     "down": 0.2647,
+     "lost": 0,
+     "body": {
+      "lines": 350,
+      "outside_clear": 0,
+      "covered": 0,
+      "from": -7.29,
+      "to": 1.2,
+      "low": 39.99,
+      "up": 54.24
+     }
+    },
+    "clear": {
+     "up": 61.0,
+     "blocks": [
+      {
+       "name": "between the two ends of the main building",
+       "from": -1.24,
+       "to": 44.16,
+       "low": 0.0,
+       "up": 61.0,
+       "lines": 44835,
+       "covered": 0
+      },
+      {
+       "name": "where the comet hangs, north of the main building",
+       "from": -15.0,
+       "to": -1.49,
+       "low": 35.0,
+       "up": 61.0,
+       "lines": 5880,
+       "covered": 0
+      }
+     ]
+    },
+    "left": {
+     "from": 44.66,
+     "to": 70.0,
+     "posts": []
+    }
+   }
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "nothing moves",
+   "details": []
+  }
+ ]
+}
