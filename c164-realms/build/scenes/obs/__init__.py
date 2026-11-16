@@ -27,6 +27,10 @@ ORIGIN = (0, 0, 0)          # the master scene builds every line at the skeleton
 BIOME = "obs_blue"          # the default light version; one of sky.mood.BIOMES
 BIOME_MARGIN = 80           # the look has to reach the far camera positions, not only the blocks
 BIOME_MARGIN_Y = 160
+# The guide (card motion/guide): the arrival title and the credit plaque, the plaques, the star
+# charts. Their packages and tools/export.py read these two switches from here.
+GUIDE = True                # False: no part of the guide is built (export: --no-guide)
+GUIDE_CHARTS = True         # False: the star charts alone are left out
 
 
 def _line(name):
