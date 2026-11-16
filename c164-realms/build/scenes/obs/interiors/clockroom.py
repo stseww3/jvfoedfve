@@ -542,8 +542,10 @@ def _oilcan():
 @functools.lru_cache(maxsize=None)
 def _models():
     built = [_bed(), _trains(), _motor(), _winch(), _escape(), _pallets(), _pendulum(), _slot(1), _slot(-1),
-             _leads(), _dial(), _rope(), _sheave(), _weight(), _board(), _oilcan()]
-    return {m.name: m for m in built}
+             _leads(), _rope(), _sheave(), _weight(), _board(), _oilcan()]
+    # the round pieces settled (props/_kit: the flats that stand between two axes are lit alike in
+    # every copy of the game); the dial's back is drawn in a frame of its own and stays as it is
+    return {m.name: m for m in [K.settle(m) for m in built] + [_dial()]}
 
 
 def models():
