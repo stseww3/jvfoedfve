@@ -22,8 +22,8 @@ The cameras
                 lean right
     fire        the firing floor, north-west of No. 2's fire door: into the gap of the leaf that
                 stands ajar, where the sparks come out
-    flange      the engine's steam flange from the north-west, over the cylinder: the leak
-    brushes     the dynamo's commutator end from the south-east: the two brushes
+    flange      the engine's steam flange from the north-west, a little over it: the leak
+    brushes     the dynamo's commutator from the east, square to it: the two brushes
     switch      the knife switch that stands open, from the east
 
 The sparks live half a second to two and there are seven in eight seconds; a flash at a brush or
@@ -67,8 +67,10 @@ def _views():
         # south of the boiler's axis: on the axis the pressure gauge stands before the valve
         ("valve_side", (vx - 2.85, vy + 0.9, vz + 1.6), (vx, vy + 0.7, vz + 0.15)),
         ("fire", (dx - 1.85, FY + EYE, dz - 1.6), (dx - 0.05, dy + 0.2, dz - 0.2)),
-        ("flange", (fx - 1.5, fy - 0.3, fz - 2.0), (fx, fy + 0.2, fz - 0.1)),
-        ("brushes", (bx + 1.7, FY + EYE, bz + 1.0), (bx, by, bz)),
+        # over the cylinder: from the floor its top hides all of the flange but the rim
+        ("flange", (fx - 1.6, fy + 0.6, fz - 2.4), (fx, fy + 0.15, fz - 0.05)),
+        # square to the commutator, clear of the bearing south of it
+        ("brushes", (bx + 1.9, FY + EYE, bz + 0.5), (bx, by, bz)),
         ("switch", (sx + 1.95, sy - 0.6, sz + 0.95), (sx, sy, sz)),
     ]
 
