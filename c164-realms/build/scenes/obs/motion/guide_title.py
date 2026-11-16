@@ -2,14 +2,15 @@
 plan/packages/motion/guide.md, part one).
 
 The map's name is written here and nowhere else: MAP_TITLE, a placeholder until the map is named,
-and MAP_CREDIT, the builder's name. tools/export.py reads MAP_TITLE from this module for the
-world's name and for what the two packs say of themselves; importing the module builds nothing.
+and MAP_CREDIT, the builder's name. MAP_NAME is the name in one line; tools/export.py reads it
+from this module for the world's name and for what the two packs say of themselves. Importing the
+module builds nothing.
 
 The title
-    what     MAP_TITLE over SUBTITLE in the middle of the screen, once: the two come up in a
-             second, stand for four and go in a second and a half (FADE_IN, STAY, FADE_OUT). The
-             name is in the cream of the map's plates, the line under it in the amber of its
-             lamps; the letters are the game's own.
+    what     The name in two lines in the middle of the screen, once: MAP_TITLE[0] as the game's
+             title and MAP_TITLE[1] under it at half that size, both in the cream of the map's
+             plates and in the game's own letters. They come up in a second, stand for four and
+             go in a second and a half (FADE_IN, STAY, FADE_OUT). Nothing else is said.
     who      whoever is new, and he alone. Who comes back is told nothing.
     when     WAIT ticks after the map has put him on the platform. At that moment his game still
              shows its "loading terrain" picture over everything and a title sent then is used
@@ -28,13 +29,17 @@ The title
              both. Nothing runs every tick and nothing on a loop; the three run when somebody
              joins and at no other time, seven commands for a first arrival and one for every
              other (agreed with the loop's keeper, a2, 11-16).
-    room     The game draws a title four times the size of its letters and neither breaks nor
-             shrinks a long one: what is wider than the screen is cut off at both ends. At the
-             scale the game picks by itself a screen of 16:9 is 427 wide (720p, 1440p, 4K) or
-             480 (1080p), which leaves a title TITLE_ROOM pixels of the font and a line under it
-             SUB_ROOM. width() measures a text in the default font; fits() says whether the two
-             lines have room. build() goes on either way: a name that is too long is the
-             director's to shorten.
+    room     The game draws a title four times the size of its letters and the line under it
+             twice, and neither breaks nor shrinks a long one: what is wider than the screen is
+             cut off at both ends. At the scale the game picks by itself a screen of 16:9 is
+             427 wide (720p, 1440p, 4K) or 480 (1080p), so a title has room for TITLE_ROOM
+             pixels of the font: seventeen capitals or so, and BLUE HOUR OBSERVATORY in one
+             line had 121. Hence the two lines (the director, 11-16 11:30). The line under it
+             would have room for 213; it is kept to SUB_ROOM, the director's figure, so that it
+             stays the smaller of the two. width() measures a line in the default font, and
+             functions() refuses a name that does not fit: a scene with the guide then does not
+             build, tools/check.py fails, and a new name is never cut off without anybody
+             having seen it.
 
 The switch is the main scene's GUIDE (scenes/obs/__init__.py), read when the scene is built:
 tools/export.py --no-guide turns it off after everything is imported. With the switch off, or in
@@ -47,15 +52,16 @@ import json
 from ..common import palette as P
 from . import _kit as MK
 
-MAP_TITLE = "BLUE HOUR OBSERVATORY"     # a placeholder: when the admin names the map, this line changes
-MAP_CREDIT = "c164"                     # the builder's name on the credit plate: the same
+# A placeholder: when the admin names the map, these two lines change and nothing else does. The
+# name's two lines, the large one and the one under it (the second may be ""), and the builder.
+MAP_TITLE = ("BLUE HOUR", "OBSERVATORY")
+MAP_CREDIT = "c164"
+MAP_NAME = " ".join(part for part in MAP_TITLE if part)     # the name in one line
 
-SUBTITLE = "An evening above the clouds"
 FADE_IN, STAY, FADE_OUT = 20, 80, 30    # ticks
 WAIT = 40                               # ticks from the arrival to the title
 MARK = "c164.new"                       # the tag of who has arrived and has not been shown the title
-TITLE_COLOUR = P.RAMPS["cream"][-1]     # #f2ead6, the letters of the map's plates
-SUBTITLE_COLOUR = P.RAMPS["glow"][3]    # #ffe9a6, lamplight
+COLOUR = P.RAMPS["cream"][-1]           # #f2ead6, the letters of the map's plates
 
 FIRST, JOIN, SHOW = "guide/first", "guide/join", "guide/title"
 
@@ -64,10 +70,8 @@ FIRST, JOIN, SHOW = "guide/first", "guide/join", "guide/title"
 _NARROW = {" ": 4, "!": 2, '"': 4, "'": 2, "(": 4, ")": 4, "*": 4, ",": 2, ".": 2, ":": 2, ";": 2,
            "<": 5, ">": 5, "@": 7, "I": 4, "[": 4, "]": 4, "`": 3, "f": 5, "i": 2, "k": 5, "l": 3,
            "t": 4, "{": 4, "|": 2, "}": 4, "~": 7}
-TITLE_SCALE, SUBTITLE_SCALE = 4, 2      # how many times its letters' size the game draws the two lines
-SCREEN = 427                            # the narrowest screen of 16:9 at the scale the game picks by itself
-TITLE_ROOM = SCREEN // TITLE_SCALE      # 106
-SUB_ROOM = SCREEN // SUBTITLE_SCALE     # 213
+TITLE_ROOM = 106                        # pixels of the font: 427 of the screen, at four times the size
+SUB_ROOM = 149                          # the line under it: the director's figure (the screen holds 213)
 
 
 def width(text):
@@ -77,23 +81,43 @@ def width(text):
     return sum(_NARROW.get(ch, 6) for ch in text) - (1 if text else 0)
 
 
-def fits(title=None, subtitle=None):
-    """(does the title have room, does the line under it), on the narrowest common screen."""
-    return (width(MAP_TITLE if title is None else title) <= TITLE_ROOM,
-            width(SUBTITLE if subtitle is None else subtitle) <= SUB_ROOM)
+def misfits(name=None):
+    """What is wrong with a name of two lines (MAP_TITLE when none is given): a list of sentences,
+    empty when the title can be shown whole on every common screen."""
+    name = MAP_TITLE if name is None else name
+    if isinstance(name, str) or len(name) != 2 or not all(isinstance(part, str) for part in name):
+        return [f"the map's name is two lines, (the large one, the one under it), not {name!r}"]
+    out = []
+    if not name[0].strip():
+        out.append("the map's name has no first line")
+    rooms = ((TITLE_ROOM, f"the title has room for {TITLE_ROOM}: the game would cut it off at both ends of the screen"),
+             (SUB_ROOM, f"the line under the title is kept to {SUB_ROOM}"))
+    for part, (room, why) in zip(name, rooms):
+        try:
+            wide = width(part)
+        except ValueError as e:
+            out.append(str(e))
+            continue
+        if part != part.strip():
+            out.append(f"{part!r} begins or ends with a blank")
+        if wide > room:
+            out.append(f"{part!r} is {wide} pixels of the game's letters wide and {why}")
+    return out
 
 
-def _text(text, colour):
-    """A text of one colour as a command takes it. Plain English only, so what JSON writes is what
-    the game's own notation reads."""
-    width(text)
-    return json.dumps({"text": text, "color": colour}, separators=(",", ":"))
+def _text(text):
+    """A line in the plates' cream, as a command takes it. Plain English only, so what JSON writes
+    is what the game's own notation reads."""
+    return json.dumps({"text": text, "color": COLOUR}, separators=(",", ":"))
 
 
-def functions(title=None, subtitle=None):
-    """{name: [lines]} of the three functions, as MK.function() takes them."""
-    title = MAP_TITLE if title is None else title
-    subtitle = SUBTITLE if subtitle is None else subtitle
+def functions(name=None):
+    """{name: [lines]} of the three functions, as MK.function() takes them, for the name of two
+    lines given (MAP_TITLE). A name that would be cut off is refused."""
+    name = MAP_TITLE if name is None else name
+    wrong = misfits(name)
+    if wrong:
+        raise ValueError("motion/guide-title: " + "; ".join(wrong))
     marked = f"@a[tag={MARK}]"
     later = f"schedule function {{ns}}:{SHOW} {WAIT}t"
     return {
@@ -109,8 +133,8 @@ def functions(title=None, subtitle=None):
         SHOW: [
             "# the map's name, once, to whoever is new and is there",
             f"title {marked} times {FADE_IN} {STAY} {FADE_OUT}",
-            f"title {marked} subtitle {_text(subtitle, SUBTITLE_COLOUR)}",
-            f"title {marked} title {_text(title, TITLE_COLOUR)}",
+            f"title {marked} subtitle {_text(name[1])}",
+            f"title {marked} title {_text(name[0])}",
             f"tag {marked} remove {MARK}",
         ],
     }
@@ -121,10 +145,10 @@ def guide():
     return bool(getattr(importlib.import_module(__package__.rsplit(".", 1)[0]), "GUIDE", False))
 
 
-def title(canvas):
+def title(canvas, name=None):
     """Register the three functions on the canvas."""
-    for name, lines in functions().items():
-        MK.function(canvas, name, lines)
+    for function, lines in functions(name).items():
+        MK.function(canvas, function, lines)
     return 0
 
 
