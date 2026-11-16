@@ -39,7 +39,7 @@ sky.vsh, sky.fsh, stars.vsh and stars.fsh are written whole):
   include/c164_layers.glsl   what other sky packages paint on the sky (the far ridges): see
                      layers().
 
-Read off the 26.3 client (plan/parts/sky-notes.md 6): shaders are compiled to SPIR-V by shaderc for
+Read off the 26.3 client (plan/parts/sky-notes.md 11): shaders are compiled to SPIR-V by shaderc for
 both renderers, the stage macros GL_VERTEX_SHADER / GL_FRAGMENT_SHADER are there, a fragment input
 needs a vertex output at the same location (the pipeline is refused otherwise), and a uniform block
 a shader declares has to be among the pipeline's bind groups (Globals is in every one that has Fog).
@@ -268,7 +268,7 @@ vec3 c164_ring(vec3 d) {{
 }}
 
 // how strongly the game's afterglow fan covers direction d: a shallow cone whose rim is lifted in
-// the west (its closed form: plan/parts/sky-notes.md 6)
+// the west (its closed form: plan/parts/sky-notes.md 11)
 float c164_fan(vec3 d) {{
     float lift = 3.0 * d.y / C164_GLOW_ALPHA;
     float k = dot(d, C164_WEST) - lift;
