@@ -18,7 +18,8 @@ two cameras look at the valve.
 The cameras
     room        a step inside the wicket: does the steam show to somebody who comes in
     valve       from the firing floor, before boiler No. 2: up at its safety valve
-    valve_side  level with the valve, from the west, square to the wind: the wisps lean right
+    valve_side  a little over the valve, from the west and nearly square to the wind: the wisps
+                lean right
 
     python -m scenes.obs_mot_smoke_room      (in build/) writes shots.json
 """
@@ -50,7 +51,8 @@ def _views():
     return [
         ("room", (74.5, FY + EYE, 23.2), (77.5, FY + 1.4, 36.5)),
         ("valve", (vx - 3.55, FY + EYE, vz + 2.1), (vx, vy + 0.6, vz + 0.1)),
-        ("valve_side", (vx - 2.85, vy + 0.6, vz), (vx, vy + 0.8, vz)),
+        # south of the boiler's axis: on the axis the pressure gauge stands before the valve
+        ("valve_side", (vx - 2.85, vy + 0.9, vz + 1.6), (vx, vy + 0.7, vz + 0.15)),
     ]
 
 
