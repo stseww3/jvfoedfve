@@ -42,7 +42,7 @@ VIEWS = [
     ("south_west", (69.7, EYE, 39.6), (80.0, -3.6, 28.0)),              # the whole works from the far corner
     ("v6_wicket", S.V6["pos"], S.V6["look_at"]),                        # the locked view: what the open wicket shows
     ("court_roof", (58.5, S.GROUND + S.EYE, 12.5), (80.0, 5.0, 30.0)),  # from the court's lip: the roof lights stay dark
-    ("cutaway", (78.0, 9.5, 12.0), (78.0, -6.0, 32.5)),                 # over the north wall, for the plan
+    ("from_above", (70.2, 2.6, 23.2), (81.0, -6.0, 34.0)),              # from under the eaves in the north-west corner: the plan
 ]
 
 

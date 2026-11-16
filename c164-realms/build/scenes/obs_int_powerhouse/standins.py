@@ -33,7 +33,7 @@ FACE_X = room.BOARD_X + 0.875
 WOOD = P.mat("dark_wood")
 SLATE = P.mat("slate", base=2)
 LEATHER = K.flat("dark_wood", 1)
-FIRE = K.flat("glow", 3)
+FIRE = K.flat("glow", 1)
 
 
 def _wheel(u):
@@ -55,7 +55,7 @@ def _wheel(u):
 
 
 def _engine(u):
-    """Bed, slide bars, cylinder, valve chest with the inlet flange, governor. Origin: AXIS."""
+    """Bed, slide bars, cylinder, valve chest with the inlet flange. Origin: AXIS."""
     m = M.Model(PREFIX + "engine")
 
     def at(x, y, z):
@@ -74,19 +74,13 @@ def _engine(u):
     m.box(at(84.5, AXIS[1] - 0.35, 35.45), at(86.2, top[1] - 0.0625, 36.25), K.IRON)                # the valve chest
     cx, cz = at(top[0], 0.0, top[2])[0], at(top[0], 0.0, top[2])[2]
     m.tube("y", (cx, cz), (top[1] - 0.0625 - AXIS[1]) * u, (top[1] - AXIS[1]) * u, 0.3 * u, K.IRON_D, sides=8)
-    gx, gz = at(84.2, 0.0, 35.9)[0], at(84.2, 0.0, 35.9)[2]                                         # the governor
-    y0 = (top[1] - 0.0625 - AXIS[1]) * u
-    m.tube("y", (gx, gz), y0, y0 + 1.1 * u, 0.06 * u, K.BRASS_D, sides=4)
-    for side in (-1.0, 1.0):
-        m.ball((gx + side * 0.3 * u, y0 + 0.65 * u, gz), 0.13 * u, K.BRASS, sides=8, layers=3)
-        m.beam((gx, y0 + 1.05 * u, gz), (gx + side * 0.3 * u, y0 + 0.65 * u, gz), 0.05 * u, 0.05 * u, K.BRASS_D)
     return m
 
 
 def _band():
-    """A strand of the belt: along +z, 48 long, 4 px wide (x)."""
+    """A strand of the belt: along +z, 48 long, 7 px wide (x)."""
     m = M.Model(PREFIX + "band")
-    m.box((-2.0, -0.25, 0.0), (2.0, 0.25, 48.0), LEATHER, grain="z")
+    m.box((-3.5, -0.4, 0.0), (3.5, 0.4, 48.0), LEATHER, grain="z")
     return m
 
 

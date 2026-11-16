@@ -521,7 +521,7 @@ def build_powerhouse(c, origin=(0, 0, 0), roles=B, machines=None):
     # valve over the governor with its wheel to the door, the gauge over it. props/pipes' pieces when
     # that package is in the tree, the room's own until then
     top = (STEAM_IN[0], float(MAIN_Y), STEAM_IN[2])
-    valve, gauge = (STEAM_IN[0], VALVE_Y, STEAM_IN[2]), (STEAM_IN[0], GAUGE_Y, STEAM_IN[2] - DROP_R * PX)
+    valve, gauge = (STEAM_IN[0], VALVE_Y, STEAM_IN[2]), (STEAM_IN[0] - DROP_R * PX, GAUGE_Y, STEAM_IN[2])
     pipes = _pipes()
     if "engine" not in there:
         pass
@@ -530,23 +530,25 @@ def build_powerhouse(c, origin=(0, 0, 0), roles=B, machines=None):
         n += pipes.place(c, "flange_l", (top[0], top[1] - 2 * PX, top[2]), along="down", out="north", origin=origin)
         n += pipes.place(c, "flange_l", (STEAM_IN[0], STEAM_IN[1] + PX, STEAM_IN[2]), along="down", out="north", origin=origin)
         n += pipes.place(c, "valve_l", valve, along="down", out="north", origin=origin)
-        n += pipes.place(c, "gauge", gauge, along="east", out="north", origin=origin)
+        n += pipes.place(c, "gauge", gauge, along="down", out="west", origin=origin)
     else:
         n += span(own[PREFIX + "drop"], top, STEAM_IN)
         upright = (("x", -90.0),)                   # the model's z up, its y to the north
         for y in (top[1] - 2 * PX, STEAM_IN[1] + 1.5 * PX):
             n += K.put(c, own[PREFIX + "flange"], (top[0], y, top[2]), yaw=0.0, turns=upright, origin=origin)
         n += K.put(c, own[PREFIX + "valve"], valve, yaw=0.0, turns=upright, origin=origin)
-        n += K.put(c, own[PREFIX + "gauge"], gauge, yaw=0.0, turns=(("x", -90.0), ("y", 180.0)), origin=origin)
+        # the gauge's stalk to the west, its dial to the door
+        n += K.put(c, own[PREFIX + "gauge"], gauge, yaw=0.0, turns=(("z", 90.0), ("x", 180.0)), origin=origin)
 
     # ---- the cables: dynamo, rack by the dynamo, rack by the main, the board's lead-ins. The west
     # terminal takes the lower insulator, so the two never cross
     cable = own[PREFIX + "cable"]
     seat_x = WEST + SEAT
-    for z in RACK_Z:
+    wired = {"engine", "board"} <= there
+    for z in RACK_Z if wired else ():
         n += K.put(c, own[PREFIX + "rack"], (WEST, RACK_Y[0], z), mount="wall", facing="east", origin=origin)
     low, high = sorted(POWER_OUT), sorted(LEAD_IN, key=lambda p: -p[2])
-    for terminal, y, lead in zip(low, RACK_Y, high) if {"engine", "board"} <= there else ():
+    for terminal, y, lead in zip(low, RACK_Y, high) if wired else ():
         way = [terminal] + [(seat_x, y, z) for z in RACK_Z] + [lead]
         for a, b in zip(way, way[1:]):
             n += span(cable, a, b)
