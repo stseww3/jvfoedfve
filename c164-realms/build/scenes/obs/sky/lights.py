@@ -563,7 +563,8 @@ def way_lamps():
     tread = {}
     for x, z, y, _half, _top in shell.ring_stair():
         tread.setdefault((x, z), y)                                 # the first pass of a column: the lower one
-    out = [((x0, S.GROUND + WAY_ROW, cz), "west", L.WAY, "the pier's foot, where the way from the west door ends"),
+    out = [((x0, S.GROUND + WAY_ROW, cz), "west", L.WAY + 1,                 # m1, #79741: at 9 the floor at the pier's
+            "the pier's foot, where the way from the west door ends"),         # corners, (2, 0, 3) and (3, 0, 2), has 5
            ((x0, tread[(ex0, cz)], cz), "west", L.WAY, "the ring stair's west run and the cross gallery under it"),
            ((cx, tread[(cx, ez1)], z1), "south", L.WAY + 1,
             "the ring stair's south run and its south-west corner over the cross gallery"),     # astro, #79627: 9
