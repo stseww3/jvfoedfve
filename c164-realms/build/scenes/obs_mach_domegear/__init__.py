@@ -266,7 +266,9 @@ def shots():
     shot("v8", v8["pos"], v8["look_at"])
     shot("v8_north", (v8["pos"][0], v8["pos"][1], v8["pos"][2] - 2.0), v8["look_at"])
     shot("v8_glow", v8["pos"], v8["look_at"], GLOW)
-    shot("room", (AX + 6.0, eye, AZ - 7.0), (AX - 6.0, STAND + 5.0, AZ + 3.0))
+    # a step in from the north door, on the line the first stand looked along: that one, (AX + 6, AZ - 7),
+    # is where interiors/domeroom has since put its coat stand, and the eye was inside its crown of hooks
+    shot("room", (AX + 5.2, eye, AZ - 6.4), (AX - 6.0, STAND + 5.0, AZ + 3.0))
     shot("ring_far", (AX + 8.0, eye, AZ + 3.0), (AX - 8.0, STAND + 6.5, AZ + 8.0))
     shot("slit_foot_up", (AX - 6.5, eye, AZ + 1.5), foot)
     shot("weights", (AX - 3.0, eye, AZ + 6.5), (weight[0], weight[1], AZ + 1.5) if b else (AX - 9.0, STAND + 10.5, AZ + 3.0))
