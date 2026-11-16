@@ -1,0 +1,88 @@
+sources in and round the power house (cell, level, who asked):
+  (69, -5, 22) 6 interiors/powerhouse:desk lamp
+  (71, -4, 28) 10 machines/board:lamp
+  (71, -4, 31) 10 machines/board:lamp
+  (72, -3, 37) 6 machines/engine: the pilot lamp on the dynamo
+  (73, -5, 37) 12 interiors/powerhouse:engine lamp x 72
+  (74, -2, 20) 7 props/lamps:cage_a
+  (75, -6, 23) 12 interiors/powerhouse:door lamp
+  (76, -6, 25) 8 interiors/powerhouse:stoker's lantern
+  (77, -6, 27) 11 interiors/powerhouse:firing floor lamp
+  (77, -5, 36) 12 interiors/powerhouse:engine lamp x 76
+  (78, -5, 24) 10 machines/boiler:fire
+  (78, -5, 28) 10 machines/boiler:fire
+  (82, -5, 19) 12 site/powerhouse:fire window
+  (82, -5, 36) 12 interiors/powerhouse:engine lamp x 80
+  (82, -2, 20) 10 sky/lights:window power power.north 4 furnace
+  (84, -5, 36) 12 interiors/powerhouse:engine lamp x 84
+  (89, -2, 27) 10 sky/lights:window power power.east 2 furnace
+  (90, -5, 27) 12 site/powerhouse:fire window
+  moved: ((72, -5, 37), (73, -5, 37), 'interiors/powerhouse:engine lamp x 72')
+  moved: ((82, -5, 35), (82, -5, 36), 'interiors/powerhouse:engine lamp x 80')
+  moved: ((84, -5, 35), (84, -5, 36), 'interiors/powerhouse:engine lamp x 84')
+  merged: ((71, -4, 28), 10, 'interiors/powerhouse:switchboard lamp z 28')
+  merged: ((71, -4, 31), 10, 'interiors/powerhouse:switchboard lamp z 31')
+block light in row -6: x 69..87 across, z 22..40 down
+      9012345678901234567
+   22 56789aba9876543####
+   23 6789abcba987654####
+   24 56789aba9987654####
+   25 456789a99876543####
+   26 4#667899a9876543223
+   27 5#76789aba987654334
+   28 6#876789a9876543223
+   29 5#76567898765434322
+   30 5#76556787654545432
+   31 6#87655676545656543
+   32 5#76655676556767654
+   33 4566766787667878765
+   34 4567877898778989876
+   35 56789889a9889a9a987
+   36 6789a99aba99ababa98
+   37 789aba99a9889a9a987
+   38 6789a98898778989876
+   39 5678987787667878765
+   40 4567876676556767654
+block light in row -5: x 69..87 across, z 22..40 down
+      9012345678901234567
+   22 656789a98876554####
+   23 56789aba9987654####
+   24 456789a99a98765####
+   25 456678988987654####
+   26 5676678898765432234
+   27 67876789a9876543345
+   28 789876789a987654334
+   29 6787656789876545433
+   30 6787655678765656543
+   31 7898765677656767654
+   32 6787766787667878765
+   33 5677877898778989876
+   34 56789889a9889a9a987
+   35 6789a99aba99ababa98
+   36 789abaabcbaabcbcba9
+   37 89abcbaaba99ababa98
+   38 789aba99a9889a9a987
+   39 6789a98898778989876
+   40 5678987787667878765
+block light in row -4: x 69..87 across, z 22..40 down
+      9012345678901234567
+   22 545678987765565####
+   23 456789a98876554####
+   24 456678988987654####
+   25 567667877876543####
+   26 6787667787654322345
+   27 7898767898765433456
+   28 89a9876789876543345
+   29 7898765678765434334
+   30 7898765567654545433
+   31 89a9876566545656543
+   32 7898765676556767654
+   33 6787766787667878765
+   34 5677877898778989876
+   35 56789889a9889a9a987
+   36 6789a99aba99ababa98
+   37 789aba99a9889a9a987
+   38 6789a98898778989876
+   39 5678987787667878765
+   40 4567876676556767654
+under the firing floor and at the wall's foot: (78, -7, 24) tuff_bricks, (77, -7, 28) tuff_bricks, (78, -6, 21) tuff_bricks, (78, -5, 21) tuff_bricks, (68, -6, 28) tuff_bricks
