@@ -142,16 +142,13 @@ def linings():
 #     makes three rows one sheet and not three stripes (a light that is dirtier than its height
 #     does not upset it; a block that ran from light to dark by itself would);
 #   - the last row of pixels under the head near a dark window;
-#   - the paler amber only where the fire shows through, see embers().
+#   - the paler amber, the fire's own band, in the sill row and thinning out through the lower
+#     half of the second: none above that;
+#   - the rows at the levels the board asked for, and the fire uneven along the sill: see sill().
 FURNACE_TOP = 0.40
 FURNACE_HEAD = 0.12
 FURNACE_TONES = ([("glow", 0), ("glow", 1), ("iron", 0), W.BAR]
                  + [("dark_wood", i) for i in range(len(P.RAMPS["dark_wood"]))])
-# The paler amber (A0 #574): uneven along the sill, never a row of beads and never a flame.
-PALE_ROWS = 2                   # only in this many rows of glass, the lowest of the window
-PALE_FULLEST = (7, 8)           # pixels of it in the picture that has most: one short bar
-PALE_RUN = 3                    # every row of a bar at least this long: a bar has no point
-PALE_LIGHTS = (2.0, 3.0)        # of the six lights along the sill of a bay, how many show it
 
 
 def _pale(px):
@@ -159,56 +156,49 @@ def _pale(px):
     return [(int(y), int(x)) for y, x in np.argwhere((np.asarray(px)[..., :3] == P.colour("glow", 1)).all(axis=-1))]
 
 
-def _joined(points):
-    """Whether the pixels touch along their edges into one piece."""
-    points = set(points)
-    if not points:
-        return True
-    seen, todo = set(), [next(iter(points))]
-    while todo:
-        y, x = todo.pop()
-        if (y, x) in seen:
-            continue
-        seen.add((y, x))
-        todo += [p for p in ((y - 1, x), (y + 1, x), (y, x - 1), (y, x + 1)) if p in points]
-    return seen == points
+# The levels of the rows (cr2 #78188, a1 #78449: read off the board's V6 in Rec.709, the glass of
+# a picture with its bars left out) and the fire along the sill. Held to:
+#   - the glass of every picture of the sill row at 0.60 to 0.64: the paler amber with the deeper
+#     one in points, not half and half, and nothing of the yellow of a lamp;
+#   - the glass of the second row a quarter lighter than it was before the board asked (x 1.23 of
+#     SECOND_WAS);
+#   - the third row as it was;
+#   - the fire uneven along the sill, as it is strong in one place and low in the next (A0 #574):
+#     no two pictures of the sill row show the same count of pixels that are not the paler amber,
+#     or a bay would have one foot twice.
+SILL_GLASS = (0.60, 0.64)
+SECOND_WAS = {"a": 0.3395, "b": 0.330}                  # the mean of its two pictures, at fb4a04fc
+SECOND_UP, SECOND_WITHIN = 1.23, 0.012
+THIRD_WAS = {"a": (0.194, 0.197), "b": (0.186, 0.187)}  # its two pictures, at fb4a04fc
+THIRD_WITHIN = 0.001
 
 
-def embers():
-    """The pictures of the sill row, one by one: where the fire shows through."""
+def sill():
+    """The rows of the furnace window at the levels the board asked for, and the fire uneven along
+    the sill: ([(version, [pixels of each sill picture's glass that are not the paler amber], flag)], faults)."""
     rows, bad = [], []
-    for v in W.VERSIONS:
-        sill = W.furnace_face(v)[0]
-        glass = ~_bars(v)
-        ys = [y for y in range(W.TILE) if glass[y].any()]           # the rows of glass in a block, head first
-        foot = [light for light in W._LIGHTS[v] if light[3] == ys[-1]]      # the lights that stand on the sill
-        counts, lit = [], 0
-        for k, px in enumerate(sill):
-            points = _pale(px)
-            where = sorted({n for n, (x0, y0, x1, y1) in enumerate(W._LIGHTS[v])
-                            for y, x in points if x0 <= x <= x1 and y0 <= y <= y1})
-            runs = [sum(1 for y, _ in points if y == row) for row in sorted({y for y, _ in points})]
-            faults = []
-            if any(y not in ys[-PALE_ROWS:] for y, _ in points):
-                faults.append(f"above the {PALE_ROWS} lowest rows of glass")
-            if len(where) > 1:
-                faults.append(f"in {len(where)} lights")
-            if not _joined(points):
-                faults.append("not in one piece")
-            if any(run < PALE_RUN for run in runs):
-                faults.append(f"a row of {min(runs)}: a point")
-            counts.append(len(points))
-            lit += len(where)
-            rows.append((v, k, len(points), "x".join(str(run) for run in runs) or "-", "OUT" if faults else "ok"))
-            bad += [f"furnace {v} sill picture {k}: the paler amber {fault}" for fault in faults]
-        share = 6.0 * lit / (len(sill) * len(foot))
-        if not (PALE_FULLEST[0] <= max(counts) <= PALE_FULLEST[1] and min(counts) == 0
-                and len(set(counts)) == len(counts)):
-            bad.append(f"furnace {v}: the sill pictures show {counts} pixels of the paler amber; the fullest is to "
-                       f"have {PALE_FULLEST[0]} to {PALE_FULLEST[1]}, one none, no two the same")
-        if not PALE_LIGHTS[0] <= share <= PALE_LIGHTS[1]:
-            bad.append(f"furnace {v}: {share:.2f} of the six lights along the sill of a bay show the paler amber, "
-                       f"not {PALE_LIGHTS[0]:.0f} to {PALE_LIGHTS[1]:.0f}")
+    pale = np.array(P.colour("glow", 1))
+    for v, r, means, _ in read709():
+        name = ("sill", "second", "third")[r]
+        for k, mean in enumerate(means):
+            if r == 0:
+                lo, hi = SILL_GLASS
+            elif r == 1:
+                lo, hi = (SECOND_UP * SECOND_WAS[v] - SECOND_WITHIN, SECOND_UP * SECOND_WAS[v] + SECOND_WITHIN)
+            else:
+                lo, hi = (min(THIRD_WAS[v]) - THIRD_WITHIN, max(THIRD_WAS[v]) + THIRD_WITHIN)
+            if not lo <= mean <= hi:
+                bad.append(f"furnace {v} {name} row, picture {k}: its glass reads {mean:.3f}, "
+                           f"not {lo:.3f} to {hi:.3f}")
+        if r == 0:
+            glass = ~_bars(v)
+            counts = [int(((np.asarray(px)[..., :3] != pale).any(axis=-1) & glass).sum())
+                      for px in W.furnace_face(v)[0]]
+            even = len(set(counts)) != len(counts)
+            rows.append((v, counts, "OUT" if even else "ok"))
+            if even:
+                bad.append(f"furnace {v}: the sill pictures show {counts} pixels that are not the paler amber; "
+                           f"no two are to show the same")
     return rows, bad
 
 
@@ -290,8 +280,8 @@ def furnace():
             used = {tuple(int(c) for c in rgb) for rgb in np.unique(sheet[..., :3].reshape(-1, 3), axis=0)}
             if used - allowed:
                 faults.append(f"{len(used - allowed)} colours that are not the furnace's")
-            if any(y < sheet.shape[0] - W.TILE for y, _ in _pale(sheet)):
-                faults.append("the paler amber above the sill row")
+            if any(y < sheet.shape[0] - 2 * W.TILE + ys[len(ys) // 2] for y, _ in _pale(sheet)):
+                faults.append("the paler amber above the lower half of the second row")
             if any(a <= b for a, b in zip(bands, bands[1:])):
                 faults.append("bands " + " ".join(f"{g:.3f}" for g in bands) + " do not darken upwards")
             if head > FURNACE_HEAD:
@@ -343,10 +333,10 @@ def main():
     for v, r, means, shares in read709():
         print(f"{v:3} {('sill', 'second', 'third')[r]:8} " + " ".join(f"{m:.3f}" for m in means)
               + "   " + " ".join(f"{s:.3f}" for s in shares))
-    print(f"\n{'ver':3} {'sill':8} {'paler amber':>12} {'its rows':>12}  flag")
-    glowing, bad_glowing = embers()
-    for v, k, count, runs, flag in glowing:
-        print(f"{v:3} {'picture ' + str(k):9} {count:11d} {runs:>12}  {flag}")
+    print(f"\n{'ver':3} {'sill':8} pixels of each picture's glass that are not the paler amber")
+    glowing, bad_glowing = sill()
+    for v, counts, flag in glowing:
+        print(f"{v:3} {'':8} " + " ".join(f"{n:3d}" for n in counts) + f"  {flag}")
     print(f"\n{'ver':3} {'dither':8} {'lights':>12} {'touching':>12} {'knots':>6}")
     scattered, bad_scattered = dither()
     for v, lights, pairs, knots in scattered:
@@ -358,7 +348,7 @@ def main():
             print("  " + line)
         return 1
     print("\nall three lit tiers on c177's ladder, both versions; the linings give no light; "
-          "the furnace window is one sheet under the curtain's level.")
+          "the furnace window is one sheet under the curtain's level, its rows at the board's levels.")
     return 0
 
 

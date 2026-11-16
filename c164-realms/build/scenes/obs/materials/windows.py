@@ -238,18 +238,27 @@ def curtain_face(version="a"):
 
 
 # ---- the furnace window: the fires of the boilers behind dirty glass ---------------------------------
-# From the fire up into the soot: the deepest amber, the dark wood, the darkest iron (A0, g2
+# From the fire up into the soot: the two deepest ambers, the dark wood, the darkest iron (A0, g2
 # #37112: no new colour, no signal red). A pixel stands between two neighbours of this ladder, and
 # the dither decides which of the two it shows.
-_HEAT = (("glow", 0), ("dark_wood", 4), ("dark_wood", 3), ("dark_wood", 2), ("dark_wood", 1),
+_HEAT = (("glow", 1), ("glow", 0), ("dark_wood", 4), ("dark_wood", 3), ("dark_wood", 2), ("dark_wood", 1),
          ("dark_wood", 0), ("iron", 0))
-# Where a row of pixels stands on the ladder, by its height in pixels above the sill, 0 to 47:
-# plain amber in the lights along the sill; brown points in it from the upper half of the first
-# block on, and brown with amber points through the second; brown sinking into soot through the
-# third, whose last row is all but the darkest iron, next to the dark glass that stands over it.
-# The amber gives way to the brown slowly at both ends and quickly between them, where the two
-# are even and a dither is nothing but its own grain (c219, g2 #567).
-_RISE = ((0, 0.0), (7, 0.0), (15, 0.3), (19, 0.7), (31, 1.0), (39, 3.0), (47, 6.0))
+# Where a row of pixels stands on the ladder, by its height in pixels above the sill, 0 to 47.
+# The first block is the fire's own band: the paler amber, plain in the lights that stand on the
+# sill, with points of the deeper amber from its upper half on. Through the lower half of the
+# second block the paler amber thins out into the deeper one; brown points come into that from
+# the middle of the block and have all but taken it at its head. The third block is brown
+# sinking into soot; its last row is all but the darkest iron, next to the dark glass that stands
+# over it. A tone gives way to the next slowly at both ends and quickly between them, where the
+# two are even and a dither is nothing but its own grain (c219, g2 #567).
+# The levels are cr2's and a1's, read off the board's V6 (#78188, #78449). With the deeper amber
+# along the sill and brown from the first block's upper half on, the window was a brown sheet
+# with a dull foot there, 36 pixels of it over 0.5: the glass of the sill row is to stand at 0.60
+# to 0.64 (Rec.709), that of the second row a quarter lighter than it was, the third as it was.
+# The paler amber is all an orange of this hue has; the next step up is the yellow of a lamp, and
+# a fire does not go there.
+_RISE = ((0, 0.0), (7, 0.0), (11, 0.15), (15, 0.4), (19, 0.85), (21, 1.0), (23, 1.15), (27, 1.6), (31, 2.0),
+         (39, 4.0), (47, 7.0))
 # The order in which the pixels of a light turn to the darker of two tones: the sum of a rank for
 # the column and a rank for the row, each a shuffle of 0 to 6 (c235's pre-review, g2 #571; A0
 # #574). A row of a light holds each of the seven ranks once and a column holds them equally
@@ -267,29 +276,21 @@ _TURNING = ((0, 1, 6, 4, 2, 3, 5), (0, 2, 4, 5, 3, 1, 6), (0, 2, 4, 6, 5, 3, 1),
 _BY_THREE = ((0, 3, 6, 2, 5, 1, 4), (0, 4, 1, 5, 2, 6, 3))
 # Dirty glass: a light now and then stands this much further up the ladder than its height says,
 # half of it at its foot and half as much again under its head: the soot hangs from the bar, and
-# a tall light is not one even scatter from foot to head. For each row of blocks from the sill up
-# its pictures, and for each picture its lights in the order of _LIGHTS.
+# a tall light is not one even scatter from foot to head. Along the sill that is where the fire is
+# low: a light with points of the deeper amber among lights of the plain paler one, as a fire is
+# strong in one place and low in the next (A0 #574). No two pictures of the sill row have it in
+# the same lights, so a bay does not show one foot three times; and nothing there has a shape,
+# least of all that of a flame. For each row of blocks from the sill up its pictures, and for each
+# picture its lights in the order of _LIGHTS.
 _SOOT = {
-    "a": (((0.0, 0.3, 0.0, 0.0), (0.2, 0.0, 0.0, 0.15), (0.0, 0.0, 0.25, 0.0), (0.0, 0.2, 0.0, 0.1)),
+    "a": (((0.0, 0.2, 0.0, 0.0), (0.15, 0.0, 0.0, 0.1), (0.0, 0.0, 0.2, 0.0), (0.0, 0.15, 0.0, 0.1)),
           ((0.0, 0.0, 0.35, 0.0), (0.0, 0.4, 0.0, 0.0)),
           ((0.5, 0.0, 0.0, 0.0), (0.0, 0.0, 0.0, 0.5))),
-    "b": (((0.0, 0.2), (0.25, 0.0), (0.15, 0.0), (0.0, 0.1)),
+    "b": (((0.0, 0.15), (0.2, 0.0), (0.1, 0.0), (0.0, 0.1)),
           ((0.3, 0.0), (0.0, 0.35)),
           ((0.0, 0.5), (0.5, 0.0))),
 }
 _GRIME = 1.0                            # the corners of a light, where the soot sits: a whole step further up
-# Where the fire shows through: the paler amber, in the two lowest rows of glass along the sill and
-# nowhere else (A0 #574). Uneven, as a fire is strong in one place and low in the next: of the four
-# pictures of the sill row one has a short bar of it in a light, two have less, one has none, and
-# none has it in two lights. So of the six lights along the sill of a bay two or three show it,
-# the others nothing: not a row of beads. A bar lies level, each of its rows three pixels or more:
-# the glow of a fire door, never the point of a flame.
-# For each picture of the sill row {light: [(rows above the foot of the light, first column, length)]}.
-EMBER = ("glow", 1)
-_EMBERS = {
-    "a": ({2: [(0, 1, 4), (1, 2, 4)]}, {}, {3: [(0, 2, 4)]}, {2: [(1, 3, 3)]}),
-    "b": ({0: [(0, 1, 4), (1, 2, 4)]}, {}, {1: [(0, 2, 4)]}, {0: [(1, 3, 3)]}),
-}
 
 
 def _heat(height, soot=0.0):
@@ -325,9 +326,6 @@ def _furnace(version, row, variant):
                 grime = _GRIME if x in (x0, x1) and y in (y0, y1) else 0.0
                 step, sevenths = _heat(TILE * (row + 1) - 1 - y, hung + grime)
                 px[y, x, :3] = P.colour(*_HEAT[min(step + (rank[y - y0][x - x0] < sevenths), len(_HEAT) - 1)])
-        if row == 0:
-            for up, first, length in _EMBERS[version][variant].get(n, ()):
-                _fill(px, x0 + first, y1 - up, x0 + first + length - 1, y1 - up, EMBER)
     return _bars(px, version)
 
 
@@ -336,13 +334,14 @@ def furnace_face(version="a"):
     has several pictures (the sill row four, the others two), which the game mixes by position so
     that the three columns of a bay are not one stamp.
 
-    The fires are low, behind the glass, and the glass is sooted: amber along the sill, thinning
-    into brown and sinking into soot towards the head, where the third row meets the dark glass of
-    the same bay. The three rows are one sheet (A0, g2 #37112): no block runs from light to dark by
-    itself, which would show as three stripes. The soot is dither between neighbouring tones, a
-    corner pixel in every light, and a light here and there that is dirtier than its height. Along
-    the sill the fire shows through in a light or two of a bay (_EMBERS). The net is that of the
-    other windows. No curtain, no slat, no shape of a flame."""
+    The fires are low, behind the glass, and the glass is sooted: a band of the paler amber along
+    the sill, deepening through the second row, thinning into brown and sinking into soot towards
+    the head, where the third row meets the dark glass of the same bay. The three rows are one
+    sheet (A0, g2 #37112): a tone hangs on the height above the sill, so no row repeats the row
+    under it, which would show as three stripes. The soot is dither between neighbouring tones, a
+    corner pixel in every light, and a light here and there that is dirtier than its height; along
+    the sill such a light is where the fire is low. The net is that of the other windows. No
+    curtain, no slat, no shape of a flame."""
     return [[_furnace(version, row, variant) for variant in range(len(_SOOT[version][row]))]
             for row in range(FURNACE_ROWS)]
 
