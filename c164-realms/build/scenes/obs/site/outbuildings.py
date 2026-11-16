@@ -541,6 +541,13 @@ def _south_lookout(c, o):
     edge = [p for p in K.outline(cells) if not (p[1] == z0 and wx0 <= p[0] <= wx1)]
     piers = {(x0, z1 - cut), (x1, z1 - cut), (x0 + cut, z1), (x1 - cut, z1), (wx1 + 1, z0)}
     K.rail(c, o, edge, piers, y=foot, kerb=True)
+    # That pier's cap is half a block over the high half of the steps' last tread, and the tread
+    # ends half a block short of it: whoever came down along the east side was lifted on to the
+    # cap, into the lamp, and could walk on round the terrace on top of the rail (walk-out, A7).
+    # One barrier in the cell north of the cap, beside the tread and at the lamp's foot, a block
+    # over the tread: on to the cap takes a jump again, as on to any rail. Nothing seen is changed
+    # (A0 #84088); the pier, its cap and the lamp's cell over it stay as the lamps line found them
+    _put(c, o, wx1 + 1, foot + 1, z0 - 1, B.BARRIER)
 
     # the props line's tripod telescope on the stand, turned to the cloud sea. V11 is taken two
     # blocks north of it, looking north-west: the telescope is behind that picture's back
