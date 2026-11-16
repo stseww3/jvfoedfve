@@ -4,6 +4,7 @@ and lamps brightest, nothing dead black; RUBRIC 3).
 
     python scenes/obs/sky/_tones.py <picture> [<picture> ...] [--out <folder>]
                                     [--probe wall=0.42,0.35,0.55,0.60 ...] [--diff <picture>] [--ladder]
+                                    [--mask snow=<picture> ...] [--mask-out <picture>] [--luma 709]
 
 Takes any picture, a screenshot of the game or an offline rendering. It judges nothing: it gives
 the numbers and the pictures a reviewer reads the picture's values from. The lines are the
@@ -15,19 +16,29 @@ Per picture, printed and, with --out, drawn onto one sheet (<name>-tones.jpg):
   warmth   which pixels are warm (redder than blue), which cool, and at which level they sit
   bright   the area brighter than 0.6: its share, its centre of gravity, how gathered it is
   dead     the area darker than 0.03: its share and the largest patch of it
-  probes   named areas (--probe, --probes): how many pixels, mean, median, the brightest and the
-           darkest hundredth, the mean colour; listed from dark to bright, so "sky < wall <
-           window" is read off one line. Four numbers are a rectangle x0,y0,x1,y1; six or more
-           are the corners of a polygon, x,y each (a sloping kerb, a flight of steps)
+  probes   named areas (--probe, --probes, --mask): how many pixels, mean, median, the brightest
+           and the darkest hundredth (to three places: a buttress and its wall are 0.02 apart),
+           the mean colour; listed from dark to bright by their medians (--order mean: by their
+           means), so "sky < wall < window" is read off one line. Four numbers are a rectangle
+           x0,y0,x1,y1; six or more are the corners of a polygon, x,y each (a sloping kerb, a
+           flight of steps). --probes is a table by picture: a picture takes the entry of its
+           own name, or of the name its own ends in after a "-" (the sketches of selfshots.py
+           --out are <scene>-<shot>), and "*"; a table that has nothing for a picture is said so.
+           --mask name=<picture> is an area of any shape: the white of a black-and-white picture
+           of the same view (of another size but the same proportions: it is brought to size)
   differs  with --diff <picture>, a second picture of the same view (a switch on and off, two
            versions): the pixels whose brightness is further apart than 0.02 (--diff-over) are
            the footprint of what changed; their share, and what they hold in this picture and in
            the other. Each probe also says what changed within it. One line more answers "is
            anything changed at all": how many pixels hold another value in red, green or blue,
-           without any threshold (0: the two pictures are the same, pixel for pixel)
+           without any threshold (0: the two pictures are the same, pixel for pixel).
+           --mask-out <picture> keeps the footprint, white on black, to measure a third picture
+           with (--mask): what a switch changes offline, looked up in a screenshot
   stamps   the picture, grey and levels at 96 pixels wide
 
-Brightness is Rec.601 luma of the picture's own values, 0 to 1 (what PIL's "L" gives). Where dark
+Brightness is Rec.601 luma of the picture's own values, 0 to 1 (what PIL's "L" gives); --luma 709
+weighs the three by Rec.709 instead, for numbers kept in that (a grey reads the same, a blue wall
+about 0.01 lower). Where dark
 ends and the middle begins depends on the light version (SPLIT; A blue, B deep, C glow): it is
 taken from --look, else from the shots.txt beside a kept picture or from --shots, else it is A's.
 A probe's numbers are pixels, or fractions of the picture when none of them is above 1; the
@@ -46,7 +57,8 @@ from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
-COEF = np.array([0.299, 0.587, 0.114])
+COEFS = {"601": np.array([0.299, 0.587, 0.114]), "709": np.array([0.2126, 0.7152, 0.0722])}
+COEF = COEFS["601"]    # what luma() weighs red, green and blue by; main() sets it from --luma
 DEAD = 0.03            # darker than this is dead black (card)
 BRIGHT = 0.60          # brighter than this is the bright area (card, rubric)
 WHITE = 0.97           # blown out
@@ -114,6 +126,21 @@ def region(numbers, size):
     return np.asarray(drawn) > 0, corners
 
 
+def mask_of(path, size, crop=None):
+    """An area given as a picture (height x width, True inside): what is brighter than the middle
+    grey of a black-and-white picture of the same view. `size` is the measured picture's before
+    it is cropped; a mask of another size and the same proportions is brought to it."""
+    drawn = Image.open(path).convert("L")
+    if drawn.size != tuple(size):
+        if abs(drawn.size[0] * size[1] - drawn.size[1] * size[0]) > max(drawn.size[0], size[0]):
+            raise SystemExit(f"--mask: {path} is {drawn.size[0]}x{drawn.size[1]}, the picture {size[0]}x{size[1]}: "
+                             "not the same proportions, so not the same view")
+        drawn = drawn.resize(tuple(size), Image.NEAREST)
+    if crop:
+        drawn = drawn.crop(_box(crop, drawn.size))
+    return np.asarray(drawn) > 127
+
+
 def luma(rgb):
     return rgb @ COEF
 
@@ -165,9 +192,9 @@ def stats(pixels):
 
 
 def measure(rgb, split, probes=None, other=None, differ=DIFFER):
-    """The numbers of one picture. probes: {name: numbers as region() takes them}. other: a second
-    picture of the same size; then also what differs between the two, in the whole picture and
-    within each probe."""
+    """The numbers of one picture. probes: {name: numbers as region() takes them, or a mask as
+    mask_of() gives it}. other: a second picture of the same size; then also what differs between
+    the two, in the whole picture and within each probe."""
     y = luma(rgb)
     h, w = y.shape
     dark, bright = y < split, y > BRIGHT
@@ -198,7 +225,16 @@ def measure(rgb, split, probes=None, other=None, differ=DIFFER):
     }
     for level, where in levels.items():
         out[f"{level}_luma"] = float(y[where].mean()) if where.any() else None
-    regions = {name: region(numbers, (w, h)) for name, numbers in (probes or {}).items()}
+    regions = {}
+    for name, numbers in (probes or {}).items():
+        if isinstance(numbers, np.ndarray):         # a mask (mask_of): its corners are its box's
+            if numbers.shape != (h, w):
+                raise ValueError(f"the mask {name} is {numbers.shape[1]}x{numbers.shape[0]}, the picture {w}x{h}")
+            ys, xs = np.nonzero(numbers)
+            box = [] if not len(xs) else [(xs.min(), ys.min()), (xs.max(), ys.min()), (xs.max(), ys.max()), (xs.min(), ys.max())]
+            regions[name] = (numbers, box)
+        else:
+            regions[name] = region(numbers, (w, h))
     out["probes"] = {name: dict(stats(rgb[mask]), corners=[(float(cx), float(cy)) for cx, cy in corners])
                      for name, (mask, corners) in regions.items()}
     if other is not None:
@@ -306,11 +342,12 @@ def lines(name, n):
         return (f"{count} patch{'es' if count > 1 else ''}, the largest {largest * 100.0:.2f}% of the picture "
                 f"(as a square, {int(round((largest * n['width'] * n['height']) ** 0.5))} pixels a side)")
 
-    def held(s):
+    def held(s, places=2):
         if not s["pixels"]:
             return "no pixels"
-        return (f"{s['pixels']} px  mean {s['mean']:.2f}  median {s['median']:.2f}  brightest 1% {s['top']:.2f}  "
-                f"darkest 1% {s['low']:.2f}  {s['colour']}  warm {_pc(s['warm']).strip()}  cool {_pc(s['cool']).strip()}")
+        return (f"{s['pixels']} px  mean {s['mean']:.{places}f}  median {s['median']:.{places}f}  "
+                f"brightest 1% {s['top']:.{places}f}  darkest 1% {s['low']:.{places}f}  {s['colour']}  "
+                f"warm {_pc(s['warm']).strip()}  cool {_pc(s['cool']).strip()}")
 
     out = [
         f"{name}  {n['width']}x{n['height']}",
@@ -339,24 +376,27 @@ def lines(name, n):
         out.append(f"          there  {held(d['there'])}")
         out.append(f"          pixel for pixel: {d['touched']} px hold another value, the furthest apart by {int(round(d['most'] * 255.0))} of 255"
                    if d["touched"] else "          pixel for pixel: the two pictures are the same, not one value differs")
+    if n.get("note"):
+        out.append(f"  probes  {n['note']}")
     if n["probes"]:
-        ordered = sorted(((label, p) for label, p in n["probes"].items() if p["pixels"]), key=lambda item: item[1]["mean"])
+        by = n.get("order", "median")           # what a review sheet quotes; a mullioned window's mean is far below it
+        ordered = sorted(((label, p) for label, p in n["probes"].items() if p["pixels"]), key=lambda item: item[1][by])
         width = max(len(label) for label in n["probes"])
         for label, p in ordered:
-            out.append(f"  probe   {label:<{width}}  {held(p)}")
+            out.append(f"  probe   {label:<{width}}  {held(p, 3)}")
         for label, p in n["probes"].items():
             if not p["pixels"]:
                 out.append(f"  probe   {label:<{width}}  no pixels")
         if len(ordered) > 1:
-            out.append("  order   " + " < ".join(f"{label} {p['mean']:.2f}" for label, p in ordered) + "   (means)")
+            out.append("  order   " + " < ".join(f"{label} {p[by]:.2f}" for label, p in ordered) + f"   ({by}s)")
         if d:
             for label, p in n["probes"].items():
                 c = p["changed"]
                 share = c["here"]["pixels"] / float(p["pixels"]) if p["pixels"] else 0.0
                 out.append(f"  differs within {label}: {_pc(share).strip()} of it")
                 if c["here"]["pixels"]:
-                    out.append(f"          here   {held(c['here'])}")
-                    out.append(f"          there  {held(c['there'])}")
+                    out.append(f"          here   {held(c['here'], 3)}")
+                    out.append(f"          there  {held(c['there'], 3)}")
     return out
 
 
@@ -386,11 +426,27 @@ def sheet(name, rgb, n, other=None):
     first = original.resize((pw, ph), Image.LANCZOS)
     draw = ImageDraw.Draw(first)
     k = pw / float(w)
+    small, named = _font(11), []
     for label, p in n["probes"].items():
         corners = [(cx * k, cy * k) for cx, cy in p["corners"]]
+        if not corners:                             # a mask without a pixel
+            continue
         draw.polygon(corners, outline=MARK)
-        left, top, low = min(c[0] for c in corners), min(c[1] for c in corners), max(c[1] for c in corners)
-        draw.text((left + 2, top + 1 if low - top > line_h else low + 1), label, fill=MARK, font=_font(11))
+        left, right = min(c[0] for c in corners), max(c[0] for c in corners)
+        top, low = min(c[1] for c in corners), max(c[1] for c in corners)
+        # the name: in the area's top left corner when it has the room, else under it, over it,
+        # beside it; the first of these that is clear of the names drawn so far, else further down
+        tw, th = draw.textlength(label, font=small) + 2.0, 13.0
+        spots = [(left + 2, top + 1)] if low - top > line_h and right - left > tw + 2 else []
+        spots += [(left, low + 1), (left, top - th - 1), (right + 2, top), (left - tw - 2, top)]
+        spots += [(left, low + 1 + i * th) for i in range(1, 9)]
+        for x, y in spots:
+            x, y = max(0.0, min(pw - tw, x)), max(0.0, min(ph - th, y))
+            box = (x, y, x + tw, y + th)
+            if not any(box[0] < b[2] and b[0] < box[2] and box[1] < b[3] and b[1] < box[3] for b in named):
+                break
+        named.append(box)
+        draw.text((box[0], box[1]), label, fill=MARK, font=small)
     _ticks(first)
     # (panel, drawn smooth when made smaller, label)
     panels = [
@@ -510,12 +566,23 @@ def _look(text):
 
 
 def _probes(args, stem):
-    """The areas asked for one picture: --probe for every picture, --probes by picture."""
-    out = {}
+    """(the areas asked for one picture, a word for the reader or None): --probe for every picture,
+    --probes by picture. A picture takes the table's entry of its own name, else of the longest
+    name its own ends in after a "-" (selfshots.py --out calls its sketches <scene>-<shot>)."""
+    out, note = {}, None
     if args.probes:
         table = json.loads(Path(args.probes).read_text())
-        for key in ("*", stem):
-            out.update({name: tuple(numbers) for name, numbers in table.get(key, {}).items()})
+        out.update({name: tuple(numbers) for name, numbers in table.get("*", {}).items()})
+        own = stem if stem in table else next((key for key in sorted(table, key=len, reverse=True)
+                                               if key != "*" and stem.endswith("-" + key)), None)
+        if own is not None:
+            out.update({name: tuple(numbers) for name, numbers in table[own].items()})
+            if own != stem:
+                note = f"{Path(args.probes).name} has no {stem}: took its {own}"
+        else:
+            listed = sorted(key for key in table if key != "*")
+            note = (f"no probes for {stem} in {Path(args.probes).name}"
+                    + (f" (it has {', '.join(listed[:8])}{', ...' if len(listed) > 8 else ''})" if listed else ""))
     for spec in args.probe or []:
         name, _, numbers = spec.partition("=")
         try:
@@ -525,7 +592,7 @@ def _probes(args, stem):
     for name, numbers in out.items():
         if not name or len(numbers) < 4 or len(numbers) == 5 or (len(numbers) > 4 and len(numbers) % 2):
             raise SystemExit(f"{PROBE}; got {name}={','.join(str(v) for v in numbers)}")
-    return out
+    return out, note
 
 
 def main(argv=None):
@@ -539,13 +606,24 @@ def main(argv=None):
     ap.add_argument("--split", type=float, help="where dark ends and the middle begins (default: by light version)")
     ap.add_argument("--probe", action="append", metavar="NAME=X0,Y0,X1,Y1", help="measure an area: a rectangle, or with six numbers or more the corners "
                     "of a polygon (pixels, or fractions when no number is above 1); may be given several times")
-    ap.add_argument("--probes", help='areas by picture: {"<picture or *>": {"<name>": [x0, y0, x1, y1]}}; longer lists are polygons')
+    ap.add_argument("--probes", help='areas by picture: {"<picture or *>": {"<name>": [x0, y0, x1, y1]}}; longer lists are polygons. '
+                                     "A picture named <scene>-<shot> takes the entry <shot> when it has none of its own")
+    ap.add_argument("--mask", action="append", metavar="NAME=PICTURE", help="measure an area of any shape: the white of a black-and-white "
+                    "picture of the same view (--mask-out writes one); may be given several times")
+    ap.add_argument("--order", choices=("median", "mean"), default="median", help="what the probes are put in order by (default: median)")
+    ap.add_argument("--luma", choices=sorted(COEFS), default="601", help="the weights of red, green and blue: Rec.601 (default) or Rec.709")
     ap.add_argument("--diff", metavar="PICTURE", help="a second picture of the same view and size: also measure what differs between the two")
     ap.add_argument("--diff-over", type=float, default=DIFFER, metavar="X", help=f"how far apart in brightness counts as different (default {DIFFER})")
+    ap.add_argument("--mask-out", metavar="PICTURE", help="with --diff and one picture: write the footprint of what differs, white on black, "
+                                                          "as large as the picture (to measure another picture with: --mask)")
     ap.add_argument("--crop", type=float, nargs=4, metavar=("X0", "Y0", "X1", "Y1"), help="look at this part of the picture only")
     ap.add_argument("--ladder", action="store_true", help="print what the plan expects of each light version met (run inside build/)")
     ap.add_argument("--json", help="write every number to this file")
     args = ap.parse_args(argv)
+    global COEF
+    COEF = COEFS[args.luma]
+    if args.mask_out and (not args.diff or len(args.pictures) != 1):
+        ap.error("--mask-out goes with --diff and one picture")
     out = Path(args.out) if args.out else None
     if out:
         out.mkdir(parents=True, exist_ok=True)
@@ -562,7 +640,17 @@ def main(argv=None):
         if other is not None and other.shape != rgb.shape:
             raise SystemExit(f"--diff: {args.diff} is {other.shape[1]}x{other.shape[0]} and {path} is {rgb.shape[1]}x{rgb.shape[0]}; "
                              "the two have to be the same size")
-        n = measure(rgb, split, _probes(args, stem), other, args.diff_over)
+        probes, note = _probes(args, stem)
+        size = Image.open(path).size                # before --crop: what a mask is brought to
+        for spec in args.mask or []:
+            label, _, file = spec.partition("=")
+            if not label or not file:
+                raise SystemExit(f"a mask is name=<picture>; got {spec}")
+            probes[label] = mask_of(file, size, args.crop)
+        n = measure(rgb, split, probes, other, args.diff_over)
+        n["order"] = args.order
+        if note:
+            n["note"] = note
         shown = name
         if other is not None:
             against = Path(args.diff)
@@ -571,10 +659,18 @@ def main(argv=None):
                 # two versions of one view are two folders with the same file name in each
                 n["diff"]["against"] = f"{against.resolve().parent.name}/{against.stem}"
                 shown = f"{Path(path).resolve().parent.name}/{stem}"
-        title = f"{shown} [{LETTER[look]} {look}]"
+        title = f"{shown} [{LETTER[look]} {look}{', Rec.709' if args.luma == '709' else ''}]"
         print("\n".join(lines(title, n)))
         rows.append((title, n))
-        everything[name] = dict(n, look=look, picture=str(path))
+        everything[name] = dict(n, look=look, picture=str(path), luma=args.luma)
+        if args.mask_out:
+            # the footprint in the whole picture's frame, also when only a part of it was looked at
+            whole = np.zeros((size[1], size[0]), dtype=np.uint8)
+            x0, y0, x1, y1 = _box(args.crop, size) if args.crop else (0, 0, size[0], size[1])
+            whole[y0:y1, x0:x1] = np.where(np.abs(luma(rgb) - luma(other)) > args.diff_over, 255, 0)
+            Path(args.mask_out).parent.mkdir(parents=True, exist_ok=True)
+            Image.fromarray(whole, "L").save(args.mask_out)
+            print(f"  mask    {args.mask_out}  ({int((whole > 0).sum())} px)")
         if out:
             target = out / f"{name}-tones.jpg"
             sheet(title, rgb, n, other).save(target, quality=85)
