@@ -5,6 +5,8 @@
 
 Reads, beside this file:
     manual.tsv        merges made by s2 before the watch began (same columns as the ledger)
+    words.tsv         merge commit, tab, what it brought (the approver's 【合并】 line in a few words)
+    applied.json      the notes the overrides have put into the rows so far (written here)
     ledger.tsv        what watch.sh has seen come into the assembly: time (UTC), who, what, delivered, merge
     overrides.json    {"<category>/<package>": {"state": ..., "who": ..., "note": ...}}
     status_top.md     the text of the section "快车道以后" above the table of merges
@@ -28,8 +30,18 @@ NAMES = {"c164-s2": "s2", "c164-a1": "a1", "c164-facade": "facade", "c164-cr2": 
          "c164-cr3": "cr3", "c164-a6": "a6", "c164-stair": "cr4", "c164-cr4": "cr4"}
 
 
-COMMON_WORDS = {"49e4e723": "check.py 的 entities 按整个矩阵量、骨架 V5、看板的 V5（3fde3556）",
-                "e41031f6": "**08:47 退回**：总装头上 18 个场景红，s2 revert 2100f2b2"}
+def _words():
+    """words.tsv: the merge commit (8), a tab, what the merge brought in the approver's words."""
+    out, path = {}, os.path.join(HERE, "words.tsv")
+    if os.path.exists(path):
+        for line in open(path, encoding="utf-8").read().split("\n"):
+            if "\t" in line:
+                sha, words = line.split("\t", 1)
+                out[sha.strip()[:8]] = words.strip()
+    return out
+
+
+COMMON_WORDS = _words()
 
 
 ONCE = [
@@ -77,6 +89,8 @@ def main():
     path, now = sys.argv[1], sys.argv[2]
     text = open(path, encoding="utf-8").read()
     over = json.load(open(os.path.join(HERE, "overrides.json"), encoding="utf-8"))
+    record = os.path.join(HERE, "applied.json")     # the note each override put into its row at the last run
+    applied = json.load(open(record, encoding="utf-8")) if os.path.exists(record) else {}
     rows = merges()
     lines = text.split("\n")
 
@@ -120,8 +134,16 @@ def main():
             cells[4] = f" {change['who']} "
         if "commit" in change:
             cells[5] = f" {change['commit']} "
-        if change.get("note") and change["note"] not in cells[7]:
-            cells[7] = " " + change["note"] + cells[7].rstrip() + " "
+        note, earlier = change.get("note") or "", applied.setdefault(key, [])
+        if note and note not in cells[7]:
+            for before in reversed(earlier):
+                if before in cells[7]:
+                    cells[7] = cells[7].replace(before, note, 1)    # the note of an earlier run, said anew
+                    break
+            else:
+                cells[7] = " " + note + cells[7].rstrip() + " "
+        if note and note not in earlier:
+            earlier.append(note)
         lines[i] = "|".join(cells)
 
     # ---- the counts ----------------------------------------------------------------------------
@@ -169,6 +191,7 @@ def main():
         a = text.index("## 排队")
         text = text[:a] + "\n".join(block) + "\n\n" + text[a:]
     open(path, "w", encoding="utf-8").write(text)
+    json.dump(applied, open(record, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print(f"{total} cards: {tally}; {len(rows)} merges in the table" + (f"; no row for: {', '.join(missing)}" if missing else ""))
 
 

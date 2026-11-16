@@ -4,7 +4,7 @@
 
 **s2 现在做的。** 守总装头：在 node61、node100 上对着总装头反复跑 `checkall.py`，红了就把惹事的那一个合并 revert 掉，私信作者和审批人。被退的包再交（a1 的办法，08:55 对定）：作者先把总装头合进自己的分支（带着 s2 那条 revert），在自己分支上 `git revert <那条 revert>` 把文件带回来，再改、再过关口；s2 不在总装里再 revert，总装中间没有红的时候。盯总装的提交记录：来源（`provenance.sh`，每个新头都验，到现在都是 clean）、有没有带进别类的文件。记本表。管 common。合进来的东西图过期不过期不再逐张核，s1 的真机看板半小时一版。
 
-**今天退回的。** `materials/windows` 445733a3（chart c350；a1 08:44 合 e41031f6）：总装头上 74 个场景红了 18 个，都是 entities 同一行，`c164:mat_window_lining_frosted_1x2` 包里没有（作者关口的基是 3845c2fd，之后 tower 进来了，内衬遇到了 1×2 的磨砂窗）。08:47 revert（2100f2b2），总装里是上一版 39bcd249；之后的头 3b8fe174 上 73 个场景全过。chart 再交时在自己分支上 `git revert 2100f2b2`。
+**今天退回的。** `materials/windows` 445733a3（chart c350；a1 08:44 合 e41031f6）：总装头上 74 个场景红了 18 个，都是 entities 同一行，`c164:mat_window_lining_frosted_1x2` 包里没有。08:47 revert（2100f2b2），总装里是上一版 39bcd249；之后的头 3b8fe174 上 73 个场景全过。原因 chart 09:01 查到了：`site/cablecar`（08:40 进总装）在自己的 `build()` 里叫了 `windows.line()`，给绞车房东墙两扇窗挂 4 块内衬，于是带 site 线而包里不带 materials 模型的场景都红；`line()` 的说明写着工作包的 `build()` 不许叫（作者关口的基 3845c2fd 上还没有 cablecar）。cable 改了交 a4，chart 让 `windows.build()` 照 cable 的 `windows()` 表贴这两扇；cable 的修改进总装后 chart 合总装、在自己分支上 `git revert 2100f2b2`、过关口再交 a1。
 
 **公共文件今天的改动（都在总装里）。**
 - 骨架 V6 往右转四度半，look_at (74.4, 8.0, 33.2)（7d1508c0，注释 3b4a2d2b；总监桌面 06:52）。两张 `v6` 重画（5e023391），cr2 核过总监的三条都过。
@@ -13,6 +13,8 @@
 - `ironwork`、`furniture`、`instruments` 的 `DRESS` 08:24 在总装里开了（622f9f44）；`pipes`、`signs`、`cloudsea` 的由作者交付时开了。
 - `check.py` entities（073b058c，总监 #67664）：展示实体的矩阵不是单纯的旋转加缩放时（行星仪画朝下的面用的斜切模型），按整个矩阵逐面量，面内不拉伸、不歪就过，不再读拆出来的 scale 报假警告。
 - 骨架 V5（a06744bd；common 的事 s2 定的，照 tower 从方块算出的结果）：pos (52.5, 1.62, −13.5)，look_at (13.5, 27, −31.5)，前庭里塔顶的尖、整只报时球、彗星都露出来的最近处，离塔 42 格、仰角 30.6°；看板原来提的贴近站位（21 格）檐口挡住球和塔顶。看板的 `v05_tower` 跟着骨架走（3fde3556）。这三样一起进总装 49e4e723。
+- 占用表加 `LADDER = "ladder"`，列在 VANILLA（03a6be57；tower 08:56 问，s2 定）：原版木梯，只用在室内，报时塔井里上钟室的路（井 5×5，楼梯盘不上去；成品没有要用手点的方块，梯子走进去就能爬）。要铁梯是打磨轮里 materials 提重画的事。
+- 总场景的画布带 `master = True`（d9117af8；comet 问）：只在总场景里出现的东西（远山、云海）读 `getattr(canvas, "master", False)`，不再去认调用栈。这两条 09:01 进总装（7ad81e1d），节点上 74 个场景全过。
 - g2 公告：#1248（sight、regen、DRESS），#1258（合用机上不用 `git stash`：各人的目录是同一个仓库的 worktree，stash 的栈全体共用，08:27 撞过一次）。
 
 **今天定的（总监定的，除非写了别人）。**
@@ -27,8 +29,12 @@
 - 08:36 成品的第一个整包：outb 把总装头整座导出成不带注册表文件的存档 `c164-A1.zip`，s1 用它进一次真机拍 V1、V2；以后总装每合进一批重导一次。冒险和和平靠 `load` 函数每次设；出生点留一个常加载区块。
 - 08:41 **雾按高度变薄：同意。** 云海第一版（66f10a24）：盘是平地外 150 格，海面世界 y 172，方块雾真距离 60 到 150，地平线以下由着色器画平海。给 a2 的四条：公式和数写在 `mood.py`，着色器和离线出图用同一条；V12 上楼的雾不超过两成半，V1 正立面不超过一成；人走得到的地方望出去看不见 160 格的渲染边；第一趟真机带 V12。
 - 报时塔的塔顶定甲（四坡弧顶；main 的审批人 facade 08:53 定：轮廓要一横一圆一尖，乙是第三个圆顶；乙的场景和图打磨轮里撤）。
+- 08:58 行星仪定甲（machines 的审批人 cr3 定：六臂共面、三圈同心轨道，总装里就是甲，25c15148），乙不再做。子午仪小屋 `hut_door` 里筒和轴一横一竖不算十字（两头大度环和筒等高，读成轮—轴—轮）。
+- 09:01 路灯（sky、motion 的审批人 cr2 合 50caae6a 时定）：借光拿掉（总监 #66198）；12 盏路灯脚下各一格光池，`_lightkit.POOL = 12`（cr2 看三档对照定的数）；环梯回廊口的矮灯 8 级。
 
-**评审（今天收到的；不卡合并）。** review #20 `props/lamps` 灯链过；#21 `materials/iron` 打磨轮过；#22 `materials/board` 07bf480 加补图 f2491bd 过（两条留给下一轮，8bdab134 已照改）；#23 `materials/panels` 7a66192 过。cr2-#8 `site/outbuildings` 过（4/4/4/—/4）；cr2-#9 `site/mastbase` 过（3/4/4/—/4）；cr2-#10 `sky/comet` 打磨轮过（4/4.5/4.5/4；留给总监一条：V1 里桅杆顶离尘尾 19 像素）。cr3-#4 `machines/clocks` 二次交付过（4/4/4/4/4）；cr3-#5 `site/stair` 过（4/4/4/—/4）；cr3-#6 `sky/tones` 过（工具卡）。cr4-#1 `props/instruments` 过（4/4/3/4/4）。记录在各评审的分支：`cursor/c164-cr2-f3-ccff`、`cursor/c164-cr3-f3-998d`、`cursor/c164-stair-cr4-f3-b330`。
+**走查。** a4 室内第 1 轮（总装 636ad21；表在 `cursor/c164-a4-walkin-f3-6824` 的 `plan/reviews/walk/636ad21/in-findings.md`）。挡人的四处：R1、R2 两翼屋脊近端的坑（`main/roof`，已发 sdome）；F1 正门的占位亮墙（已随 41b6855a 撤，复查中）；T1 报时塔脚没有门洞（等 `main/tower`）。其余是黑、平、空，已分发各包；不卡合并。`tools/walk.py` 和路线表还在 a4 的分支上，第 2 轮走完过了关口交 s2（common）。
+
+**评审（今天收到的；不卡合并）。** review #20 `props/lamps` 灯链过；#21 `materials/iron` 打磨轮过；#22 `materials/board` 07bf480 加补图 f2491bd 过（两条留给下一轮，8bdab134 已照改）；#23 `materials/panels` 7a66192 过。cr2-#8 `site/outbuildings` 过（4/4/4/—/4）；cr2-#9 `site/mastbase` 过（3/4/4/—/4）；cr2-#10 `sky/comet` 打磨轮过（4/4.5/4.5/4；留给总监一条：V1 里桅杆顶离尘尾 19 像素）。cr3-#4 `machines/clocks` 二次交付过（4/4/4/4/4）；cr3-#5 `site/stair` 过（4/4/4/—/4）；cr3-#6 `sky/tones` 过（工具卡）。cr4-#1 `props/instruments` 过（4/4/3/4/4）；cr4-#2 `props/furniture` 1b81b52 过（质感 4、风格 4；待真机：落日平台长椅在余晖里、玻璃的划、东西面 0.50、暗黄铜框挨黄铜方块）。记录在各评审的分支：`cursor/c164-cr2-f3-ccff`、`cursor/c164-cr3-f3-998d`、`cursor/c164-stair-cr4-f3-b330`。
 
 **交叉看（今天收到的，都过；快车道以后不再是合并的前提）。** power→lamps 后续；ashlar→board；cable→stair；shell→dome 乙（留给 a3 一条：穹顶室里铜皮的背面没有内衬）；tower→clocks；a4→lamps 灯链和后续（大台阶的四盏、V12 里铜星旁的落地灯等浑天仪进了再看）；facade→ironwork 打磨轮；chart→powerhouse 三次交付；mast→mastbase；lamps→outbuildings；comet→sky/look；m3→iron 打磨轮；hall→shell；facade→ashlar a494bb19（V2 上墙面平、没有点子，贴近读成琢面）。
 
