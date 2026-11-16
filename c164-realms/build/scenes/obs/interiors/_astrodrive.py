@@ -65,14 +65,14 @@ DRUM = (18.0, 2.9, 1.5)                         # the winding drum on the case's
 PULLEY = (4.15, 30.0, 1.75)                     # the pulley under the head of the wall: x, y, radius
 LINE_Z = 2.0                                    # the plane the wire runs in
 WEIGHT = (7.0, 2.5, 1.5)                        # the weight: its foot, the height of one disc, its radius
-WINDOW = (                                      # the glazed opening in the case's front: the wheels behind the glass
-    "kkkkk",
-    "kgkbk",
-    "kkgkk",
-    "kbkgk",
-    "kkkkk",
+WINDOW = (                                      # the glazed opening in the case's front: a wheel of the train behind the glass
+    "kgggk",
+    "gkgkg",
+    "ggsgg",
+    "gkgkg",
+    "kgggk",
 )
-WINDOW_COLOURS = dict(k=P.RAMPS["iron"][0], g=P.RAMPS["brass"][3], b=P.RAMPS["brass"][1])
+WINDOW_COLOURS = dict(k=P.RAMPS["iron"][0], g=P.RAMPS["brass"][2], s=P.RAMPS["iron"][5])
 
 
 def _works():
