@@ -14,7 +14,7 @@ What stands so far:
                     mirrored on the axis). A riveted sheet-iron shaft on a lead apron dressed over
                     the slates, a storm collar, and on its spindle a head the wind turns: eight
                     slanted vanes between two hoops under a low cone. The inner one of a wing is
-                    the big one, the outer one four fifths of it, and they turn at their own pace.
+                    the big one, the outer one a smaller make, and they turn at their own pace.
                     From the court only the heads stand over the parapet, dark against the sky;
                     from the ridge walk they are three steps away.
 
@@ -45,9 +45,8 @@ from . import roof
 ORDER = 75                      # after the roofs' own package (70): the ventilators stand on its slates
 
 PREFIX = "bld_roof_"
-STACK_MODEL = PREFIX + "cowl"
-HEAD_MODEL = PREFIX + "cowl_head"
-FAR = 4.0                       # view_range: part of the skyline, as the clock tower's mast
+VIEW = M.MID                    # drawn up to 64 blocks away: from the court, the terraces and the roofs (V2, V5, V11),
+#                                 not from the station or the far lookout, whose views are full (the line of 600)
 
 SHEET = K.IRON_D                # the shaft's sheet iron
 BAND = K.IRON                   # its lap bands, the curb and the storm collar: what takes the light
@@ -55,73 +54,123 @@ APRON = K.flat("iron", 1)       # the lead dressed over the slates round its foo
 VANES = (K.IRON, K.IRON_D)      # the head's vanes, light and dark by turns: a turning head is seen to turn
 HOOP = K.IRON
 CAP = K.IRON_D
+OILER = K.BRASS_D               # the oil cup over the head's bearing
 
-# the shaft, in pixels from its foot
-APRON_HALF, APRON_UP = 6.5, 1.0
-CURB_R, CURB_UP = 5.0, 2.5
-SHAFT_R = 3.5
-SHAFT_TOP = 35.0
-BANDS = (12.0, 24.0)            # the lap joints of its three sheets: where a band begins
-BAND_R, BAND_UP = 4.0, 1.5
-COLLAR_R, COLLAR_UP = 5.5, 2.0  # the storm collar: a cone that sheds the rain past the shaft's mouth
+# The two sizes, in pixels (a display entity is never scaled: 16 pixels to the block everywhere).
+#   shaft     its radius (over the flats) and its top, from the foot
+#   bands     where a lap band begins: the joints of the shaft's sheets
+#   hoop      the radius of the head's two hoops
+#   vane      how high a vane is
+#   cap       the cone's radius at its eaves and its height
+SIZES = {
+    "": dict(shaft=3.5, top=35.0, bands=(12.0, 24.0), hoop=6.5, vane=8.5, cap=(7.75, 3.0)),
+    "_small": dict(shaft=3.0, top=27.0, bands=(14.0,), hoop=5.25, vane=6.5, cap=(6.25, 2.5)),
+}
+APRON_OUT, APRON_UP = 3.0, 1.0  # the apron: this far beyond the shaft, this thick
+CURB_OUT, CURB_UP = 1.5, 2.5    # the curb the shaft stands in
+BAND_OUT, BAND_UP = 0.5, 1.5
+COLLAR_OUT, COLLAR_UP = 2.0, 2.0                # the storm collar: a cone that sheds the rain past the shaft's mouth
 SPINDLE_R, SPINDLE_UP = 0.75, 4.0
-HEAD_FOOT = SHAFT_TOP + COLLAR_UP + 1.5        # 38.5: where the head's lower hoop rides on the spindle
-
-# the head, in pixels from its lower face; it turns about y through its anchor
-VANE_N = 8
-VANE = ((1.5, 1.5, 3.1), (6.8, 10.0, 3.9))     # one vane: a plate along a chord, so that it stands slanted to the wind
-HOOP_R, HOOP_THICK = 6.5, 1.5
-HOOP_LOW, HOOP_HIGH = (0.0, 1.5), (9.75, 10.75)
+BEARING = 1.5                   # the gap between the collar and the head: the spindle is seen in it
+HOOP_THICK, HOOP_UP = 1.5, 1.5
 HUB_R = 1.25
-CAP_R, CAP_TOP_R, CAP_Y = 7.75, 2.0, (10.75, 13.75)
-FINIAL_R, FINIAL_TOP = 0.9, 15.5
-HEAD_HIGH = FINIAL_TOP
+VANE_N = 8
+VANE_IN, VANE_THICK, VANE_OFF = 1.5, 0.8, 0.54  # a vane is a plate along a chord, this share of the hoop's radius off the
+#                                                 axis: it stands slanted to the wind, its outer edge trailing
+CAP_TOP_R = 2.0
+OILER_R, OILER_UP = 0.9, 1.75
 
 COLUMN = S.WALL_E - 3           # 12: the column they stand in, the third of the east slope from the parapet
-# (|z| of its row, scale, ticks of one turn, degrees it is placed turned): the wing's inner one and its outer one,
-# on the window axes of two neighbouring bays (c321: never on the edge cell of a window).
-# A turn in 128 and in 120 ticks: neither is a whole number of vanes further after two seconds, so
-# two pictures taken two seconds apart are never the same, and the two of a wing drift out of step.
-SET = ((20, 1.0, 128, 0.0), (24, 0.8, 120, 22.5))
+# (z of its row on the south wing, size, ticks of one turn, degrees it is placed turned): a wing's inner one and its
+# outer one, over the window axes of two neighbouring bays of the east front (c321: on a window's axis or a
+# pilaster's, never over the edge cell of a window). The north wing is the south wing mirrored on the axis.
+# A turn in 128 and in 120 ticks: neither is a whole number of pairs of vanes further after two seconds, so two
+# pictures taken two seconds apart are never the same, and the two of a wing drift out of step.
+SET = ((20, "", 128, 0.0), (24, "_small", 120, 22.5))
+TURN = -1                       # clockwise seen from above: the vanes' outer edges trail, as the wind turns such a head
+
+
+def stack_model(size):
+    return PREFIX + "cowl" + size
+
+
+def head_model(size):
+    return PREFIX + "cowl" + size + "_head"
+
+
+def head_foot(size):
+    """Where the head's lower face rides on the spindle, in pixels over the shaft's foot."""
+    return SIZES[size]["top"] + COLLAR_UP + BEARING
+
+
+def head_high(size):
+    """The head's height, in pixels: hoops, vanes, cone and oil cup."""
+    k = SIZES[size]
+    return HOOP_UP + k["vane"] + 0.75 + k["cap"][1] + OILER_UP
+
+
+def mirror(z):
+    """The row of the north wing that answers row z of the south wing: the building's axis is z 0.5."""
+    return -z
 
 
 def cowls():
     """The ventilators, as [dict]: `at` the foot's middle (x, y, z) in the building's coordinates,
-    `scale`, `period` (ticks of one turn of the head), `yaw` (degrees the head is placed turned),
-    `top` (the y of the finial's tip), `cell` (x, z) of the slate it stands on."""
+    `size` ("" the big one, "_small"), `period` (ticks of one turn of the head, negative: clockwise
+    seen from above), `yaw` (degrees the head is placed turned), `head` (the y its head begins at),
+    `top` (the y of its tip), `cell` (x, z) of the slate it stands on."""
     out = []
     for s in sorted(roof.WINGS.values()):
-        for az, scale, period, yaw in SET:
-            z = s * az
+        for row, size, period, yaw in SET:
+            z = row if s > 0 else mirror(row)
             foot = roof._slate_top(COLUMN, z)
-            out.append({"at": (COLUMN + 0.5, foot, z + 0.5), "scale": scale, "period": period * (1 if s > 0 else -1),
-                        "yaw": yaw, "top": foot + scale * (HEAD_FOOT + HEAD_HIGH) / 16.0, "cell": (COLUMN, z)})
+            head = foot + head_foot(size) / 16.0
+            out.append({"at": (COLUMN + 0.5, foot, z + 0.5), "size": size, "period": TURN * period, "yaw": yaw,
+                        "head": head, "top": head + head_high(size) / 16.0, "cell": (COLUMN, z)})
     return out
+
+
+def _stack(size):
+    k = SIZES[size]
+    on, r, top = (0.0, 0.0), k["shaft"], k["top"]
+    m = M.Model(stack_model(size))
+    m.box((-r - APRON_OUT, 0.0, -r - APRON_OUT), (r + APRON_OUT, APRON_UP, r + APRON_OUT), APRON, skip="d")
+    m.tube("y", on, APRON_UP, CURB_UP, r + CURB_OUT, BAND)
+    m.tube("y", on, CURB_UP, top, r, SHEET)
+    for y in k["bands"]:
+        m.tube("y", on, y, y + BAND_UP, r + BAND_OUT, BAND)
+        for out, p in (("x", (r + BAND_OUT, 0.0)), ("-x", (-r - BAND_OUT, 0.0)), ("z", (0.0, r + BAND_OUT)),
+                       ("-z", (0.0, -r - BAND_OUT))):
+            K.rivet(m, (p[0], y + BAND_UP / 2.0, p[1]), out=out)
+    m.taper("y", on, top, top + COLLAR_UP, r, r + COLLAR_OUT, BAND, steps=2)
+    m.tube("y", on, top + COLLAR_UP, top + COLLAR_UP + SPINDLE_UP, SPINDLE_R, SHEET, sides=4)
+    return K.settle(m)
+
+
+def _head(size):
+    k = SIZES[size]
+    on, hoop, high = (0.0, 0.0), k["hoop"], HOOP_UP + k["vane"]
+    eaves = high + 0.75                                     # the upper hoop's top, the cone's eaves
+    h = M.Model(head_model(size))
+    for y0, y1 in ((0.0, HOOP_UP), (high - 0.25, eaves)):
+        h.ring("y", (0.0, (y0 + y1) / 2.0, 0.0), hoop, HOOP_THICK, y1 - y0, HOOP)
+    h.tube("y", on, 0.0, eaves, HUB_R, CAP, sides=4)
+    off = VANE_OFF * hoop
+    for n in range(VANE_N):
+        h.box((VANE_IN, HOOP_UP, off - VANE_THICK / 2.0), (hoop + 0.3, high, off + VANE_THICK / 2.0), VANES[n % 2],
+              rot=("y", 360.0 * n / VANE_N, (0.0, 0.0, 0.0)), grain="y")
+    h.taper("y", on, eaves, eaves + k["cap"][1], k["cap"][0], CAP_TOP_R, CAP, steps=3)
+    h.tube("y", on, eaves + k["cap"][1], eaves + k["cap"][1] + OILER_UP, OILER_R, OILER, sides=4)
+    return K.settle(h)
 
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    on = (0.0, 0.0)
-    m = M.Model(STACK_MODEL)
-    m.box((-APRON_HALF, 0.0, -APRON_HALF), (APRON_HALF, APRON_UP, APRON_HALF), APRON, skip="d")
-    m.tube("y", on, APRON_UP, CURB_UP, CURB_R, BAND)
-    m.tube("y", on, CURB_UP, SHAFT_TOP, SHAFT_R, SHEET)
-    for y in BANDS:
-        m.tube("y", on, y, y + BAND_UP, BAND_R, BAND)
-        for out, p in (("x", (BAND_R, 0.0)), ("-x", (-BAND_R, 0.0)), ("z", (0.0, BAND_R)), ("-z", (0.0, -BAND_R))):
-            K.rivet(m, (p[0], y + BAND_UP / 2.0, p[1]), out=out)
-    m.taper("y", on, SHAFT_TOP, SHAFT_TOP + COLLAR_UP, SHAFT_R, COLLAR_R, BAND, steps=2)
-    m.tube("y", on, SHAFT_TOP + COLLAR_UP, SHAFT_TOP + COLLAR_UP + SPINDLE_UP, SPINDLE_R, SHEET, sides=4)
-
-    h = M.Model(HEAD_MODEL)
-    for y0, y1 in (HOOP_LOW, HOOP_HIGH):
-        h.ring("y", (0.0, (y0 + y1) / 2.0, 0.0), HOOP_R, HOOP_THICK, y1 - y0, HOOP)
-    h.tube("y", on, HOOP_LOW[0], CAP_Y[0], HUB_R, CAP, sides=4)
-    for k in range(VANE_N):
-        h.box(VANE[0], VANE[1], VANES[k % 2], rot=("y", 360.0 * k / VANE_N, (0.0, 0.0, 0.0)), grain="y")
-    h.taper("y", on, CAP_Y[0], CAP_Y[1], CAP_R, CAP_TOP_R, CAP, steps=3)
-    h.tube("y", on, CAP_Y[1], FINIAL_TOP, FINIAL_R, HOOP, sides=4)
-    return {m.name: K.settle(m), h.name: K.settle(h)}
+    out = {}
+    for size in SIZES:
+        for m in (_stack(size), _head(size)):
+            out[m.name] = m
+    return out
 
 
 def models():
@@ -136,9 +185,8 @@ def build(canvas, origin=(0, 0, 0)):
     n = 0
     for c in cowls():
         x, y, z = c["at"]
-        canvas.add_entity(ox + x, oy + y, oz + z, M.display(kit[STACK_MODEL], scale=c["scale"], view=FAR))
-        canvas.add_entity(ox + x, oy + y + c["scale"] * HEAD_FOOT / 16.0, oz + z,
-                          M.display(kit[HEAD_MODEL], yaw=c["yaw"], scale=c["scale"], view=FAR))
+        canvas.add_entity(ox + x, oy + y, oz + z, M.display(kit[stack_model(c["size"])], view=VIEW))
+        canvas.add_entity(ox + x, oy + c["head"], oz + z, M.display(kit[head_model(c["size"])], yaw=c["yaw"], view=VIEW))
         MK.spin(canvas, "y", c["period"])
         n += 2
     return n
@@ -173,8 +221,7 @@ def check(c=None):
     for name, m in _models().items():
         if K.unsettled(m):
             out.append(f"{name}: {len(K.unsettled(m))} faces lie between two axes")
-    placed = [e for e in c.entities if str(e[3].get("item", {}).get("components", {}).get("minecraft:item_model", ""))
-              .endswith((STACK_MODEL, HEAD_MODEL))]
+    placed = [e for e in c.entities if M.shown_model(e[3]) in _models()]
     if len(placed) != 2 * len(cowls()):
         out.append(f"{len(placed)} display entities of the ventilators stand, not {2 * len(cowls())}")
     return out

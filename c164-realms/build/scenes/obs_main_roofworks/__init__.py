@@ -13,6 +13,7 @@ from artkit.canvas import Canvas
 from scenes.obs import main, materials, sky
 from scenes.obs.common import skeleton as S
 from scenes.obs.main import roof, roofworks
+from scenes.obs.props import lamps
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 80
@@ -30,7 +31,7 @@ def build():
 
 
 def build_models():
-    out = {}
+    out = dict(lamps.models() or {})        # the sky line hangs the props line's lamps on the building's ways
     for line in LINES:
         out.update(line.models() or {})
     return out
@@ -46,8 +47,8 @@ def shots():
     def shot(name, pos, look_at, time=TIME):
         return {"name": name, "pos": [round(v, 2) for v in pos], "look_at": [round(v, 2) for v in look_at], "time": time}
 
-    big = {(k["cell"][1] > 0): k for k in roofworks.cowls() if k["scale"] == 1.0}       # False: north, True: south
-    small = {(k["cell"][1] > 0): k for k in roofworks.cowls() if k["scale"] != 1.0}
+    big = {(k["cell"][1] > 0): k for k in roofworks.cowls() if not k["size"]}           # False: north, True: south
+    small = {(k["cell"][1] > 0): k for k in roofworks.cowls() if k["size"]}
     nx, _ny, nz = big[False]["at"]
     sx, _sy, sz = big[True]["at"]
     head = big[False]["top"] - 0.5
