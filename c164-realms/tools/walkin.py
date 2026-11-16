@@ -48,10 +48,16 @@ Cells that hold a block already are left out. Then the walk is worked out once m
 in every such cell of every piece somebody stands in: the places inside a model that a person
 still gets to are `left`, the slits the rule wants closed with something that is seen.
 
-The eye. A person's eye is 1.62 over his feet, and standing "at" a place of the lattice he is
-anywhere within a quarter block of it. Where a fifth or more of that square, at the eye's height,
-is inside a model's outline, the eye gets into the model there: the game shows it from within, the
-worst of what a walk-through finds. Every piece somebody stands in or gets his eye into is listed
+The eye. The outline is a machine's measure: it fills the air between a street lamp's foot and its
+head. For the eye and for how much of a body is in a model the voxels are asked what encloses
+them: a voxel is `enclosed` when it is model, or has model on five of its six sides somewhere in
+the piece (the inside of a case or a cabin; not the air under a table, a lamp's head or an arch);
+the `core` is what is enclosed together with its six neighbours, an eighth of a block inside (a
+door's leaf, a sheet on the wall and a thin post have none). A person's eye is 1.62 over his feet,
+and standing "at" a place of the lattice he is anywhere within a quarter block of it. Where a
+fifth or more of that square, at the eye's height, is core, the eye gets into the model there: the
+game shows it from within, the worst of what a walk-through finds. `body` is the share of his
+body's box that is enclosed. Every piece somebody stands in or gets his eye into is listed
 once more at the end, room by room (the main building's rooms as main/shell.room_at() names them,
 the rest by the skeleton's boxes), the pieces the eye gets into first; with several categories
 that list is written for all of them together as walkin-rooms.txt. Of such a piece it is also told
@@ -214,6 +220,36 @@ class Piece:
         for m in members:
             names[m["ref"]] = names.get(m["ref"], 0) + 1
         self.names = sorted(names, key=lambda k: (-names[k], k))
+        self._solid = None
+
+    def solid(self):
+        """(enclosed, core) as voxels: enclosed is the model and what has model on five of its six
+        sides somewhere in the piece; the core is enclosed with all six of its neighbours."""
+        if self._solid is None:
+            occ = self.occ
+            sides = np.zeros(occ.shape, dtype=np.int8)
+            for axis in range(3):
+                sides += np.logical_or.accumulate(occ, axis=axis)
+                sides += np.flip(np.logical_or.accumulate(np.flip(occ, axis=axis), axis=axis), axis=axis)
+            enclosed = occ | (sides >= 5)
+            core = enclosed.copy()
+            for axis in range(3):
+                for step in (1, -1):
+                    core &= np.roll(enclosed, step, axis=axis)      # PAD keeps the wrap empty
+            self._solid = (enclosed, core)
+        return self._solid
+
+    def share(self, voxels, x0, x1, z0, z1, y0, y1):
+        """The share of the box (blocks) whose voxels -- those with their middle in it -- are set."""
+        cut = []
+        for axis, (lo, hi) in enumerate(((x0, x1), (y0, y1), (z0, z1))):
+            a = int(math.ceil((lo - self.origin[axis]) * RES - 0.5 - 1e-6))
+            b = int(math.floor((hi - self.origin[axis]) * RES - 0.5 + 1e-6)) + 1
+            a, b = max(a, 0), min(b, voxels.shape[axis])
+            if b <= a:
+                return 0.0
+            cut.append(slice(a, b))
+        return float(voxels[tuple(cut)].mean())
 
     def cells(self):
         """The cells the model's own boxes reach into."""
@@ -394,9 +430,11 @@ def look(piece, pts, kinds, door, mine, cells):
     for k in np.nonzero(near)[0]:
         x, y, z = pts[k]
         plan, deep, dense = piece.within(x - W.HALF, x + W.HALF, z - W.HALF, z + W.HALF, y, y + W.HEIGHT)
-        eye = piece.within(x - EYE_REACH, x + EYE_REACH, z - EYE_REACH, z + EYE_REACH,
-                           y + EYE - EYE_BOX, y + EYE + EYE_BOX)[1] >= EYE_SHARE
-        rows.append((x, y, z, int(kinds[k]), bool(door[k]), plan, deep, dense, eye))
+        enclosed, core = piece.solid()
+        body = piece.share(enclosed, x - W.HALF, x + W.HALF, z - W.HALF, z + W.HALF, y, y + W.HEIGHT)
+        eye = piece.share(core, x - EYE_REACH, x + EYE_REACH, z - EYE_REACH, z + EYE_REACH,
+                          y + EYE - EYE_BOX, y + EYE + EYE_BOX) >= EYE_SHARE
+        rows.append((x, y, z, int(kinds[k]), bool(door[k]), plan, deep, dense, eye, body))
     inside = [r for r in rows if r[5] >= INSIDE]
     brush = [r for r in rows if BRUSH <= r[5] < INSIDE]
     beside = [r for r in rows if r[5] < BRUSH]
@@ -536,8 +574,10 @@ def where_of(x, y, z):
         return "meridian hut"
     if cy >= S.ROOF_STAND:
         return "roofs and what stands on them"
+    if S.WALL_W <= cx <= S.WALL_E and S.Z_NORTH <= cz <= S.Z_SOUTH:
+        return "main building, outside the rooms shell names"
     if cy >= S.STAND:
-        return "main floor, outside the rooms shell names"
+        return "upper levels outside the main building"
     if within(S.LOWER_PLATFORM) and cy < S.GROUND:
         return "lower platform"
     return "court and terraces" if cy >= S.GROUND - 1 else "slopes and below"
@@ -571,8 +611,9 @@ def by_room(entries):
             continue
         ref = got["eye"] or got["inside"]
         rooms = [where_of(r[0], r[1], r[2]) for r in ref]
+        deep = max(r[9] for r in (got["inside"] + got["eye"]))
         rows.append((max(set(rooms), key=rooms.count), 0 if got["eye"] else 1, -len(got["eye"]),
-                     -len(got["inside"]), label, category, piece, got))
+                     -round(deep, 2), label, category, piece, got))
     rows.sort(key=lambda t: t[:5])
     lines, room, eyed = [], None, None
     for where, low, _, _, label, category, piece, got in rows:
@@ -585,7 +626,7 @@ def by_room(entries):
             eyed = low
             lines.append("    -- the eye gets in --" if not low else "    -- walked through, the eye stays out --")
         clo, chi = piece.cells()
-        deep = max(r[6] for r in (got["inside"] + got["eye"]))
+        deep = max(r[9] for r in (got["inside"] + got["eye"]))
         lines.append(f"    {label}. {names_of(piece)}; placed by {category}/{piece.package}; "
                      f"cells x {span(clo[0], chi[0])}, y {span(clo[1], chi[1])}, z {span(clo[2], chi[2])}")
         lines.append("         "
@@ -593,7 +634,7 @@ def by_room(entries):
                         f"{place_of(got['eye'])}; " if got["eye"] else "")
                      + (f"stands in it: {kinds_of(got['inside'])} at {place_of(got['inside'])}; "
                         if got["inside"] else "")
-                     + f"body up to {deep:.0%} inside; {barrier_word(got)}")
+                     + f"body up to {deep:.0%} in the model; {barrier_word(got)}")
     return lines
 
 
@@ -835,6 +876,9 @@ def report(args, category, by_package, skipped, pieces, looks, pts, kinds, door,
             say(f"    brushed:   {kinds_of(got['brush'])} at {place_of(got['brush'])}")
         if got["eye"]:
             say(f"    the eye gets in: {kinds_of(got['eye'])} at {place_of(got['eye'])}")
+        if got["inside"] or got["eye"]:
+            say(f"    body: up to {max(r[9] for r in got['inside'] + got['eye']):.0%} of it in the model "
+                f"(enclosed voxels)")
         if got["barriers"]:
             fill = got["barriers_fill"]
             say(f"    barriers:  {len(got['barriers'])} cells ({cells_span(got['barriers'])}), "
