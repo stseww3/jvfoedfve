@@ -29,9 +29,9 @@ stacks, the register desk, the lift.
 Light. The room is a way like the others (cr2, 11-16): wherever a person can stand the block light
 is 5 or more, on the threshold 7; the lamps of the stacks give 7 to 8, and the darkroom end stays
 the darkest place of the building, 5 to 6. The lamps: a shaded pendant under every beam of the nave
-and of the two side aisles, a bracket lamp over the door, a caged lamp by the lift's winch and one
-on the south end of each island stack (the cross aisle and the arch), the desk lamp, the checking
-table's glass. A lamp's source stands under the lamp in the row of a walker's head: the shade
+and of the two side aisles, a caged lamp over the door, one by the lift's winch and one on the
+south end of each island stack (the cross aisle and the arch), the desk lamp, the checking table's
+glass. A lamp's source stands under the lamp in the row of a walker's head: the shade
 throws the light down, and the ceiling over it stays dark. In the darkroom the safelight's glow is
 a source of 6 in every cell before the benches; the red lamp stays the one bright thing in it.
 build/scenes/obs_int_platevault/ways.py reads the result as tools/darkfloor.py does. Nothing lights
@@ -111,8 +111,8 @@ LAMPS = "b"                         # the versions of props/lamps with a shade o
 LAMP_X = (float(X0 + 2), AXIS_X, X1 - 1.5)      # 4.0, 7.5, 11.5: the pendants of the west aisle, the nave, the east aisle
 LAMP_Z = PIER_Z[:-1]                # 10, 14, 18: one under every beam
 HEAD = FEET + 1                     # the row of a walker's head: where the sources stand
-DOOR_LAMP_Y = 3.0                   # the bracket lamp over the door: its shade hangs clear of the doorway's head
-CAGE_Y = 2.5                        # the caged lamps
+DOOR_LAMP_Y = 3.0                   # the caged lamp over the door: flat on the wall, and above what one sees coming in
+CAGE_Y = 2.5                        # the other caged lamps
 ASK_WAY = 8                         # under a pendant, inside the door, before the south end of an island
 ASK_LIFT = 7                        # by the lift
 ASK_CHECK = 7                       # the checking table's glass
@@ -373,7 +373,7 @@ def build_platevault(canvas, origin=(0, 0, 0)):
         for z in LAMP_Z:
             n += lamps.place(canvas, "pendant", (x, float(TOP), S.mid(z)), origin=origin, version=LAMPS, light=False)
             ways.append((int(x), z))
-    n += lamps.place(canvas, "bracket", (AXIS_X, FEET + DOOR_LAMP_Y, float(Z0)), facing="south", origin=origin,
+    n += lamps.place(canvas, "cage", (AXIS_X, FEET + DOOR_LAMP_Y, float(Z0)), facing="south", origin=origin,
                      version=LAMPS, light=False)                 # over the door: the threshold
     ways.append((HALL_DOOR[0], Z0))
     for x in ISLAND_X:                                          # the cross aisle and the arch
