@@ -280,6 +280,6 @@ def shots():
         north = -dome.HAUL_Z / dome.PX
         shot("chains", (AX + 3.0, eye, AZ + 4.0), spot(dome.on_curve(45.0), north))
         shot("curtain", (AX - 8.5, STAND + 10.0, AZ + 1.0), spot(dome.roll_at()), GLOW)
-        shot("slit_head", (AX - 4.0, STAND + 16.0, AZ), spot(dome.on_curve(dome.HEAD_DEG, dome.GAP / 2.0), north), GLOW)
+        shot("slit_head", (AX - 4.5, STAND + 17.2, AZ + 1.2), spot(dome.on_curve(dome.HEAD_DEG, dome.GAP / 2.0), north), GLOW)
         shot("foot_outside", (AX - 18.0, STAND + 15.0, AZ + 5.0), spot(dome.roll_at()), GLOW)
     return out
