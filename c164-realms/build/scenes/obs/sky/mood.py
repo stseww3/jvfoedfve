@@ -67,7 +67,7 @@ LEVEL_FULL, LEVEL_NONE = 8.0, 12.0
 AIR = 1600.0
 MIST = 587.0
 MIST_HEIGHT = 12.0
-REGISTRY_FOG_END = 192.0    # the registry look's own fog end; it leaves with the registry files
+REGISTRY_FOG_END = 192.0    # the fog end of the look as a biome: what the offline pictures are drawn with
 # The clock is stopped where the vanilla moon (the comet's slot) stands at MOON_ANGLE, on a day of
 # the full moon's picture (plan/parts/figs/sky_safe.py finds the hour). GAME_STAR_ANGLE is the
 # vanilla star angle at that hour: the star shader turns the field from it to STAR_ANGLE.

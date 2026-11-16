@@ -46,6 +46,7 @@ SUN_HALF = math.degrees(math.atan(gamelook.SUN_SIZE / 100.0))
 PHASES = ("full_moon", "waning_gibbous", "third_quarter", "waning_crescent", "new_moon", "waxing_crescent",
           "first_quarter", "waxing_gibbous")
 FACES = (("top", 1.0), ("north or south", 0.8), ("east or west", 0.6))   # the game's shading of a block's faces
+CLOUDS = {"cloud_color": "#00000000", "cloud_height": 192.33}      # the attributes' own defaults, where no file sets them
 
 
 def _hex(c):
@@ -92,6 +93,22 @@ class Vanilla:
                 if key.startswith(gamelook.VISUAL) and name in gamelook.ANGLES:
                     a[name] = gamelook._apply(gamelook.DEFAULTS[name], track.get("modifier"),
                                               gamelook._sample(track, tick, tl.get("period_ticks", DAY), angle=False))
+        # the cloud layer is not part of the offline look (artkit/gamelook.py draws no clouds):
+        # the same layers, dimension, biome, then the timelines, for its two attributes
+        for name, value in CLOUDS.items():
+            key, value = gamelook.VISUAL + name, gamelook._value(value)
+            for layer in (self.dimension.get("attributes", {}), biome.get("attributes", {})):
+                v = layer.get(key)
+                if isinstance(v, dict) and "argument" in v:
+                    value = gamelook._apply(value, v.get("modifier"), gamelook._value(v["argument"]))
+                elif v is not None and not isinstance(v, (dict, list)):
+                    value = gamelook._value(v)
+            for tl in self.lines:
+                track = tl.get("tracks", {}).get(key)
+                if track is not None:
+                    value = gamelook._apply(value, track.get("modifier"),
+                                            gamelook._sample(track, tick, tl.get("period_ticks", DAY)))
+            a[name] = value
         return a
 
     def moon_angle(self, tick):
