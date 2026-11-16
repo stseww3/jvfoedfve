@@ -1,0 +1,52 @@
+[export    26s] light: at rest after 9.9 s; 1120 chunks, chunks whose light had changed at each reading: [346, 0, 0, 0]
+[export    32s] sky: the look "blue" as core shaders, 10 files (core/clouds.vsh, core/item.vsh, core/lightmap.fsh, core/rendertype_beacon_beam.vsh, core/sky.fsh, core/sky.vsh, core/stars.fsh, core/stars.vsh, include/c164_layers.glsl, include/fog.glsl)
+[export    33s] made L1.zip: 2.97 MB, 407 files, 2862 chunks, 997 entities
+[export    25s] light: at rest after 9.8 s; 1120 chunks, chunks whose light had changed at each reading: [264, 0, 0, 0]
+[export    31s] sky: the look "blue" as core shaders, 10 files (core/clouds.vsh, core/item.vsh, core/lightmap.fsh, core/rendertype_beacon_beam.vsh, core/sky.fsh, core/sky.vsh, core/stars.fsh, core/stars.vsh, include/c164_layers.glsl, include/fog.glsl)
+[export    32s] made L2.zip: 2.94 MB, 407 files, 2862 chunks, 997 entities
+407 and 407 files; 388 the same, 19 differ, 0 only in the first, 0 only in the second
+  differs: data/minecraft/scheduled_events.dat (442 and 438 bytes)
+  differs: data/minecraft/world_clocks.dat (106 and 106 bytes)
+  differs: datapacks/c164art/pack.mcmeta (266 and 266 bytes)
+  differs: dimensions/minecraft/overworld/data/minecraft/raids.dat (73 and 73 bytes)
+  differs: dimensions/minecraft/overworld/entities/r.-1.-1.mca (24576 and 24576 bytes)
+  differs: dimensions/minecraft/overworld/entities/r.-1.0.mca (20480 and 20480 bytes)
+  differs: dimensions/minecraft/overworld/entities/r.0.-1.mca (122880 and 122880 bytes)
+  differs: dimensions/minecraft/overworld/entities/r.0.0.mca (110592 and 110592 bytes)
+  differs: dimensions/minecraft/overworld/poi/r.-1.-1.mca (12288 and 12288 bytes)
+  differs: dimensions/minecraft/overworld/poi/r.0.-1.mca (32768 and 32768 bytes)
+  differs: dimensions/minecraft/overworld/poi/r.0.0.mca (28672 and 28672 bytes)
+  differs: dimensions/minecraft/overworld/region/r.-1.-1.mca (2674688 and 2674688 bytes)
+  differs: dimensions/minecraft/overworld/region/r.-1.0.mca (2772992 and 2772992 bytes)
+  differs: dimensions/minecraft/overworld/region/r.0.-1.mca (3108864 and 3108864 bytes)
+  differs: dimensions/minecraft/overworld/region/r.0.0.mca (3223552 and 3223552 bytes)
+  differs: dimensions/minecraft/the_end/data/minecraft/raids.dat (73 and 73 bytes)
+  differs: dimensions/minecraft/the_nether/data/minecraft/raids.dat (73 and 73 bytes)
+  differs: level.dat (431 and 431 bytes)
+  differs: resourcepacks/resources.zip (1743683 and 1743683 bytes)
+entities: 42 and 42 chunks; 37 hold the same, 5 differ, 0 are in one save only
+  differs: r.0.-1.mca chunk 0 29: Entities
+      Entities: 12 and 12; 1 of the first are not in the second, 1 of the second not in the first
+        minecraft:item_display ('m.site_weather_cups', 'c164art'): transformation
+  differs: r.0.-1.mca chunk 0 30: Entities
+      Entities: 141 and 141; 3 of the first are not in the second, 3 of the second not in the first
+        minecraft:item_display ('m.int_clockroom_pendulum', 'c164art'): transformation
+        minecraft:item_display ('m.int_clockroom_pallets', 'c164art'): transformation
+        minecraft:item_display ('m.bld_tower_cups', 'c164art'): transformation
+  differs: r.0.0.mca chunk 0 0: Entities
+      Entities: 210 and 210; 2 of the first are not in the second, 2 of the second not in the first
+        minecraft:item_display ('m.mach_orrery_a_under_mercury', 'c164art'): transformation
+        minecraft:item_display ('m.mach_clock_pendulum', 'c164art'): transformation
+  differs: r.0.0.mca chunk 4 1: Entities
+      Entities: 34 and 34; 1 of the first are not in the second, 1 of the second not in the first
+        minecraft:item_display ('m.needle_north', 'c164art'): interpolation_duration, transformation
+  differs: r.0.0.mca chunk 4 2: Entities
+      Entities: 24 and 24; 1 of the first are not in the second, 1 of the second not in the first
+        minecraft:item_display ('m.mach_engine_armature', 'c164art'): transformation
+poi: 12 and 12 chunks; 12 hold the same, 0 differ, 0 are in one save only
+region: 2862 and 2862 chunks; 2862 hold the same, 0 differ, 0 are in one save only
+the chunks do NOT hold the same
+compare exit 1
+    self.fp = io.open(file, filemode)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'dist/A6/c164-A6.zip'
