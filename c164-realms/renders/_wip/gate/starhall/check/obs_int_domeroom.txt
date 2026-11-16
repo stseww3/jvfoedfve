@@ -1,0 +1,20 @@
+check obs_int_domeroom at 7e193af
+[PASS] regen     6281 blocks, 140 entities, 121 models, 1051 resource-pack files, 110 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.9 s)
+[PASS] conflicts the scene writes 1050 files, no file written twice, the folders and the prefix of interiors are kept (9 packages run alone)
+[PASS] strays    250 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      771 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    28 kinds of block placed, 19 barrier cells (x -1..5, y 18..19, z -9..1), all in the occupancy table
+[PASS] flatwall  no wall face runs flat over more than 5x5
+[PASS] entities  140 display entities, 1 drawn out along one axis, 1 shown through a matrix that is no turn, no face stretched, 53 models never placed
+[PASS] views     18 shots, most display entities in view: 90 (v8_south), limit 600; counted without what walls hide; the game draws up to 140 (v8): a display entity without width and height is drawn outside the view too
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[WARN] motion    8 parts and 0 points on 6 chains, 102 function files; 6 commands in the busiest tick (limit 40), 1.2 a tick on average (limit 10)
+                 int_domeroom_time_dial_seconds: 60 steps in 1200 ticks set by hand (lead -17); its model strays 0.00 pixels from its arc
+                 chain of 32 ticks: 4 functions, 10 commands a cycle, starts 2 ticks after start
+                 chain of 40 ticks: 8 functions, 17 commands a cycle, starts 1 ticks after start
+                 chain of 90 ticks: 8 functions, 17 commands a cycle, starts 9 ticks after start
+                 chain of 130 ticks: 8 functions, 17 commands a cycle, starts 9 ticks after start
+                 chain of 480 ticks: 8 functions, 33 commands a cycle, starts 3 ticks after start
+                 chain of 1200 ticks: 60 functions, 121 commands a cycle, starts 11 ticks after start
+result: PASS (0 failed, 1 with warnings)
