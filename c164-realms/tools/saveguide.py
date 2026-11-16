@@ -303,6 +303,15 @@ class Blocks:
         return best
 
 
+def place(blocks, near, name):
+    """What is known of one watched place: see read()."""
+    near = [tuple(float(v) for v in one) for one in near]
+    spot = blocks.standing(near)
+    return {"at": list(near[0][:3]), "reach": near[0][3], "near": [list(one) for one in near], "function": name,
+            "stand": [round(v, 3) for v in spot[0]] if spot else None, "far": round(spot[1], 2) if spot else None,
+            "on": blocks.at(spot[0][0], spot[0][1] - 0.5, spot[0][2]) if spot else None}
+
+
 def read(path):
     """{"plaques": [...], "shown": [...], "watched": {tag: {"at": the first place watched (the thing),
     "reach", "near": every place the feet must be near, "function", "stand": where a visitor's feet
@@ -310,13 +319,7 @@ def read(path):
     with zipfile.ZipFile(path) as archive:
         found = functions(archive)
         blocks = Blocks(archive)
-        places = {}
-        for tag, (near, name) in sorted(watched(found).items()):
-            spot = blocks.standing(near)
-            places[tag] = {"at": list(near[0][:3]), "reach": near[0][3], "near": [list(place) for place in near],
-                           "function": name, "stand": [round(v, 3) for v in spot[0]] if spot else None,
-                           "far": round(spot[1], 2) if spot else None,
-                           "on": blocks.at(spot[0][0], spot[0][1] - 0.5, spot[0][2]) if spot else None}
+        places = {tag: place(blocks, near, name) for tag, (near, name) in sorted(watched(found).items())}
         return {"plaques": displays(archive), "shown": [list(row) for row in shown(found)], "watched": places,
                 "sparks": [[round(v, 2) for v in point] for point in sparks(found)], "functions": len(found)}
 
