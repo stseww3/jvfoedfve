@@ -62,7 +62,7 @@ if ! "$PY" tools/boardshots.py --check >/dev/null 2>&1; then
 fi
 
 added=$("$PY" - <<'EOF'
-import json, os
+import json, os, re
 path = "tools/win/plots.json"
 table = json.load(open(path, encoding="utf-8"))
 plots = table["plots"]
@@ -72,9 +72,10 @@ new = sorted(name for name in os.listdir("build/scenes")
 for name in new:
     plots[name] = max(plots.values()) + 1
 if new:
+    text = json.dumps(table, indent=2, ensure_ascii=False) + "\n"
+    text = re.sub(r'"base": \[\s*(-?\d+),\s*(-?\d+),\s*(-?\d+)\s*\]', r'"base": [\1, \2, \3]', text)   # as the file has it
     with open(path, "w", encoding="utf-8", newline="\n") as f:
-        json.dump(table, f, indent=2, ensure_ascii=False)
-        f.write("\n")
+        f.write(text)
 print(" ".join(f"{name}={plots[name]}" for name in new))
 EOF
 ) || { echo "boardnext: tools/win/plots.json could not be read"; exit 1; }
