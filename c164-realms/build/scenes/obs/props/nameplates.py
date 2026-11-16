@@ -8,6 +8,10 @@ hangs the plate in one line:
     from scenes.obs.props import nameplates
     n += nameplates.plate(canvas, 31, pos, facing="east", origin=origin)
 
+A number props has given out and not yet written into the table is hung with what the machine is,
+so that nobody waits for the table: nameplates.plate(canvas, 58, pos, what="dome switchboard").
+unlisted(canvas) names such plates; props writes them into the table.
+
 pos is the middle of the plate, on the face it is fixed to; facing is the way that face looks. A
 face that is no wall takes yaw= and turns= as artkit.models.display does (turns=(("x", -90),) lays
 the plate on its back, reading from the south). The plate is WIDE by HIGH texels of a sixth of a
@@ -51,12 +55,13 @@ NUMBERS = {
     31: "wind pump", 32: "hydraulic accumulator", 33: "goods lift", 34: "jib crane",
     41: "master clock", 42: "tower clock", 43: "time ball", 44: "telegraph", 45: "chronograph", 46: "station clock",
     51: "great refractor", 52: "driving clock", 53: "dome gear", 54: "shutter winch", 55: "transit circle",
-    56: "astrograph", 57: "comet seeker",
+    56: "astrograph", 57: "comet seeker", 58: "dome switchboard",
     61: "difference engine", 62: "orrery", 63: "seismograph", 64: "barograph", 65: "sunshine recorder",
-    66: "dispatch blower", 67: "wind recorder",
+    66: "dispatch blower", 67: "wind recorder", 68: "plate measuring machine", 69: "plate lift",
     71: "mast winch", 72: "transmitter", 73: "home signal",
     81: "battery board", 82: "battery",
 }
+ALL = range(1, 100)             # every plate there can be: two figures
 
 
 def words(number):
@@ -86,9 +91,9 @@ def _inside(i, j):
     return (i + 0.5 - x) ** 2 + (y - r) ** 2 <= r * r
 
 
-def picture(number):
-    """The plate's face as rows of characters: '.' off the plate, r the rim, h, f, l the brass from
-    the lit upper edge down, k what is cut in."""
+@functools.lru_cache(maxsize=None)
+def _blank():
+    """The plate without its number: rim, brass and emblem."""
     rows = []
     for j in range(HIGH):
         row = ""
@@ -107,7 +112,13 @@ def picture(number):
         if cells[off + y][off + x] not in "hfl":
             raise ValueError("the emblem does not stand clear of the plate's rim")
         cells[off + y][off + x] = "k"
-    rows = K.inscribe(["".join(row) for row in cells], words(number), WORD, (HIGH - 7) // 2, ink="k")
+    return tuple("".join(row) for row in cells)
+
+
+def picture(number):
+    """The plate's face as rows of characters: '.' off the plate, r the rim, h, f, l the brass from
+    the lit upper edge down, k what is cut in."""
+    rows = K.inscribe(list(_blank()), words(number), WORD, (HIGH - 7) // 2, ink="k")
     for j, row in enumerate(rows):
         for i, ch in enumerate(row):
             if ch == "k" and any(rows[b][a] in ".r" for a, b in ((i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1))):
@@ -128,23 +139,52 @@ def _plate(number):
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    return {f"{PREFIX}{number:02d}": _plate(number) for number in NUMBERS}
+    return {f"{PREFIX}{number:02d}": _plate(number) for number in ALL}
 
 
 def models():
+    """A plate for every two figures: a number given out to-day hangs before the table has it."""
     return dict(_models())
 
 
-SCALE = {f"{PREFIX}{number:02d}": 1.0 for number in NUMBERS}
+SCALE = {f"{PREFIX}{number:02d}": 1.0 for number in ALL}
 
 
-def plate(canvas, number, pos, facing="south", origin=(0, 0, 0), yaw=None, **opts):
+def plate(canvas, number, pos, facing="south", origin=(0, 0, 0), yaw=None, what=None, **opts):
     """Fix the plate of machine No. `number` with its middle at pos, on a face that looks `facing`
-    (or turned by yaw= and turns=). A number that is not in NUMBERS has not been given out: ask
-    props (plan/parts/numbers.md). opts as for props/_kit.put. Returns 1."""
-    if int(number) not in NUMBERS:
-        raise KeyError(f"No. {number} is not in the station's table of machines (props/nameplates.NUMBERS, "
-                       f"plan/parts/numbers.md): ask props for a number")
+    (or turned by yaw= and turns=). The number is one props has given out (plan/parts/numbers.md):
+    one of NUMBERS, or, until the table has it, any other with what="the machine it is". opts as for
+    props/_kit.put. Returns 1."""
+    number = int(number)
+    if number not in ALL:
+        raise ValueError(f"a plate has two figures: No. {number} has no plate")
+    if number not in NUMBERS:
+        if not what:
+            raise KeyError(f"No. {number} is not in the station's table of machines (props/nameplates.NUMBERS, "
+                           f"plan/parts/numbers.md): ask props for a number, and until the table has it say "
+                           f"what=\"the machine it is\"")
+        given = getattr(canvas, "nameplates_given", None)
+        if given is None:
+            given = canvas.nameplates_given = {}
+        given[number] = str(what)
     opts.setdefault("view", VIEW)
-    return K.put(canvas, _models()[f"{PREFIX}{int(number):02d}"], pos, mount="wall", facing=facing, yaw=yaw,
+    return K.put(canvas, _models()[f"{PREFIX}{number:02d}"], pos, mount="wall", facing=facing, yaw=yaw,
                  origin=origin, **opts)
+
+
+def hung(canvas):
+    """The numbers of the plates on the canvas, each with how many plates carry it: {number: count}."""
+    out = {}
+    for _, _, _, nbt in canvas.entities:
+        name = M.shown_model(nbt) if nbt.get("id") in M.DISPLAY_IDS else None
+        if name and name.startswith(PREFIX):
+            number = int(name[len(PREFIX):])
+            out[number] = out.get(number, 0) + 1
+    return dict(sorted(out.items()))
+
+
+def unlisted(canvas):
+    """The plates on the canvas whose numbers the table does not have yet: {number: what its owner
+    called the machine}. Props writes them into NUMBERS and plan/parts/numbers.md."""
+    given = getattr(canvas, "nameplates_given", {})
+    return {number: given.get(number, "?") for number in hung(canvas) if number not in NUMBERS}
