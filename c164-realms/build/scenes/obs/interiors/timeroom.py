@@ -420,7 +420,8 @@ PIECES = (
     piece("furniture", "swivel_chair", (BENCH_X + SEAT, FEET, BENCH_Z), facing="west"),
     piece("furniture", "card_cabinet", (X0 + 2.5, FEET, CABINET_Z), facing="north"),
     piece("furniture", "card_cabinet", (X0 + 3.5, FEET, CABINET_Z), facing="north"),
-    piece("furniture", "coat_stand", (DOOR_X[1] + 1.6, FEET, CABINET_Z), facing="north"),
+    piece("furniture", "coat_stand", (DOOR_X[1] + 2.4, FEET, CABINET_Z), facing="north"),          # 10.4: east of the door's east leaf, which
+    #                                                                                                 stands open against the wall there (c325)
     # props/instruments (c199)
     piece("instruments", "regulator_clock", (REGULATOR_X[0], REGULATOR_FOOT, NICHE), facing="south"),
     piece("instruments", "regulator_clock", (REGULATOR_X[1], REGULATOR_FOOT, NICHE), facing="south"),
@@ -891,11 +892,23 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
         n += module.place(c, p["kind"], (x, y, z), origin=origin, **p["how"])
 
     # ---- the parts of the room written beside it, last: they hang on what stands by now
+    assert not door_faults(), "; ".join(door_faults())
     for name in PARTS:
         module = part(name)
         if module is not None:
             n += module.dress(c, origin)
     return {"entities": n, "lights": lights}
+
+
+def door_faults(reach=0.35):
+    """The pieces that stand where a leaf of the door stands open (the door part's SWEPT, boxes
+    (x0, z0, x1, z1) on the floor), as sentences; `reach` is a piece's foot about its middle."""
+    door = part("door")
+    if door is None:
+        return []
+    return [f"the {p['kind']} at ({p['where'][0]}, {p['where'][2]}) stands in the door's leaf"
+            for p in PIECES for x0, z0, x1, z1 in door.SWEPT
+            if x0 - reach < p["where"][0] < x1 + reach and z0 - reach < p["where"][2] < z1 + reach]
 
 
 def _offer(canvas, cell, level, why, rank):
