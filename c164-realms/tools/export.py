@@ -1333,6 +1333,55 @@ def blocks_of(raw):
     return counts, parts
 
 
+def light_of(pairs):
+    """What differs in the light of pairs of one chunk [(raw of the first save, raw of the second)]:
+    the lines to print. The game saves the light it has at that moment; work its light engine has
+    not come to is not in the file, and is not done again when the chunk is loaded."""
+    import census
+    lone, both, worst = {}, {}, []
+    for raw_a, raw_b in pairs:
+        ta, tb = census.parse_nbt(raw_a), census.parse_nbt(raw_b)
+        x0, z0 = int(ta.get("xPos", 0)) * 16, int(ta.get("zPos", 0)) * 16
+        sa = {int(s.get("Y", 0)): s for s in ta.get("sections", [])}
+        sb = {int(s.get("Y", 0)): s for s in tb.get("sections", [])}
+        for y in sorted(set(sa) | set(sb)):
+            for part in ("SkyLight", "BlockLight"):
+                la, lb = sa.get(y, {}).get(part), sb.get(y, {}).get(part)
+                la, lb = (None if v is None else v.tobytes() for v in (la, lb))
+                if la == lb:
+                    continue
+                if la is None or lb is None:
+                    there = la or lb
+                    same = len(set(there)) == 1 and there[0] >> 4 == there[0] & 15
+                    key = (part, f"all {there[0] & 15}" if same else "mixed")
+                    lone[key] = lone.get(key, 0) + 1
+                    continue
+                n = big = up = 0
+                for p, q in zip(la, lb):
+                    if p != q:
+                        for shift in (0, 4):
+                            d = ((q >> shift) & 15) - ((p >> shift) & 15)
+                            if d:
+                                n, big, up = n + 1, max(big, abs(d)), up + (d > 0)
+                s, k, b, u = both.get(part, (0, 0, 0, 0))
+                both[part] = (s + 1, k + n, max(b, big), u + up)
+                worst.append((n, big, part, x0, y * 16, z0))
+    lines = []
+    for part in ("SkyLight", "BlockLight"):
+        alone = {k[1]: v for k, v in lone.items() if k[0] == part}
+        s, k, b, u = both.get(part, (0, 0, 0, 0))
+        if alone or s:
+            lines.append(f"  {part}: in {s} sections both saves have it and {k} values differ, by up to {b} "
+                         f"({u} are higher in the second, {k - u} lower); in {sum(alone.values())} sections one save has none"
+                         + (" (the other's is " + ", ".join(f"{name} in {v}" for name, v in sorted(alone.items())) + ")" if alone else ""))
+    for n, big, part, x, y, z in sorted(worst, reverse=True)[:12]:
+        lines.append(f"      x {x}..{x + 15} y {y}..{y + 15} z {z}..{z + 15}: {part}, {n} values, by up to {big}")
+    if worst:
+        xs, ys, zs = [w[3] for w in worst], [w[4] for w in worst], [w[5] for w in worst]
+        lines.append(f"      all of them within x {min(xs)}..{max(xs) + 15}, y {min(ys)}..{max(ys) + 15}, z {min(zs)}..{max(zs) + 15}")
+    return lines
+
+
 def compare(args):
     def read(path):
         with zipfile.ZipFile(path) as zf:
@@ -1393,6 +1442,8 @@ def compare(args):
             print(f"  chunks whose blocks, counted by name, are not the same: {other}")
             for name, n in sorted(moved.items(), key=lambda kv: (-abs(kv[1]), kv[0]))[:20]:
                 print(f"      {name}: {n:+d} in the second")
+            for text in light_of([(first[k][1], second[k][1]) for k in changed]):
+                print(text)
         told = 0
         for k in changed:
             x, y = dict(mine[k]), dict(theirs[k])
