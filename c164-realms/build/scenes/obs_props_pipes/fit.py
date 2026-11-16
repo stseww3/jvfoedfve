@@ -1,6 +1,8 @@
 """obs_props_pipes: what the pictures cannot be trusted to show.
 
-    python -m scenes.obs_props_pipes.fit        (in build/)
+    python -m scenes.obs_props_pipes.fit            (in build/)
+    python -m scenes.obs_props_pipes.fit --master   what the family places in the master scene
+                                                    (builds the whole of obs: on a node only)
 
 The game lights a face of an item model by the model axis nearest to its normal, and of two axes
 that are equally near the last bit of a float decides. A picture drawn here and the game may then
@@ -49,7 +51,32 @@ def faces():
     return out, count
 
 
+def master():
+    """What the family places in the master scene (heavy: the whole of obs is built; on a node
+    only): the count of each piece, and where the pieces stand that say a line is there."""
+    import collections
+
+    from scenes import obs
+
+    canvas = obs.build()
+    count = collections.Counter()
+    for x, y, z, nbt in canvas.entities:
+        name = str(nbt.get("item", {}).get("components", {}).get("minecraft:item_model", ""))
+        if pipes.PREFIX not in name:
+            continue
+        kind = name.split(pipes.PREFIX)[1]
+        count[kind] += 1
+        if kind.startswith(("down_hopper", "drain_head", "valve", "bonnet", "gauge")):
+            print(f"  {kind:18s} at ({x:.2f}, {y:.2f}, {z:.2f})")
+    print(f"the master scene: {sum(count.values())} pieces of the family of {len(canvas.entities)} display entities; "
+          + ", ".join(f"{k} {n}" for k, n in sorted(count.items())))
+    print(f"  the lines' counts: {getattr(canvas, 'entity_counts', None)}")
+    return 0
+
+
 def main():
+    if "--master" in sys.argv[1:]:
+        return master()
     found = []
     models = pipes.models()
     for name, model in sorted(models.items()):
