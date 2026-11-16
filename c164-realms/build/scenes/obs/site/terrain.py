@@ -249,8 +249,9 @@ ARC_BAYS = 11                   # the bays of the railing round the sunset terra
 #                                 out through an open bay as wide as the walk from the west door, a pier either side
 
 # --- the first draft's ring of cloud is gone (sky/cloudsea lays the sea) ------------------------------
-# Its two levels stay for the one reader they have left, site/cablecar's test scene, which lays a
-# stand-in sheet of its own by them; they go when that sheet does.
+# Of its two levels the upper one has a reader left: the walk's reach (tools/walkreach.py) takes
+# CLOUD_TOP + 1 for the line below which a visitor is carried home. site/cablecar's test scene, the
+# other reader, lays the sky line's sea since 11-16.
 CLOUD_TOP = -26
 CLOUD_BOTTOM = -28
 
