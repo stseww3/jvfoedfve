@@ -15,7 +15,8 @@ here stands against the wall:
                  its sextant, then packing cases and a travelling trunk as they came up from the
                  cable car, a log book left on the trunk's lid; beside the north chart a case
                  with the globe unpacked on it.
-  both           a barometer on the north wall, between the bridge's lamp and the wing door.
+  both           a barometer on the south wall, between the run and the wing door: it hangs on the
+                 wall of the cell that is kept free beside the door and takes nothing of its floor.
 
 Kept clear (interiors/starhall, c348): the wing doors and a cell either side of them, the great
 charts, the bridge onto the ring stair and the north walk west of it, the window niches. Nothing
@@ -49,6 +50,7 @@ DOORS = tuple(shell.ROOM_DOOR_X)                # 7, 8: a gallery's door into it
 MERIDIAN = int(S.ORRERY_CENTRE[0])              # 11: the great charts hang over this cell and one either side
 RUN = tuple(range(X0, DOORS[0] - 1))            # 2..5: the walk west of the door and of the cell kept free beside it
 LAST = MERIDIAN + 2                             # 13: the walk's last cell, between a great chart and a window niche
+BAROMETER_X = DOORS[0] - 0.5                    # 6.5: on the wall between the run's last cabinet and the door
 BAROMETER_Y = FEET + 0.9                        # its foot: the dial at the eye of who stands before it
 
 # A version's pieces: (package, kind, wall, x, what it stands on or None, turned by degrees).
@@ -66,7 +68,7 @@ SETS = {
         ("instruments", "sextant", "south", RUN[3] + 0.5, "instrument_cabinet", 0.0),
         ("furniture", "display_case", "north", LAST + 0.5, None, 0.0),
         ("paper", "logbook", "north", LAST + 0.5, "display_case", 6.0),
-        ("instruments", "barometer", "north", RUN[3] + 0.5, None, 0.0),
+        ("instruments", "barometer", "south", BAROMETER_X, None, 0.0),
     ),
     "b": (
         ("furniture", "instrument_cabinet", "south", RUN[0] + 0.5, None, 0.0),
@@ -77,7 +79,7 @@ SETS = {
         ("paper", "logbook_shut", "south", RUN[2] + 0.5, ("trunk", 0.5 * PX), 20.0),      # on the straps
         ("furniture", "crate", "north", LAST + 0.5, None, -5.0),
         ("instruments", "globe", "north", LAST + 0.5, "crate", 25.0),
-        ("instruments", "barometer", "north", RUN[3] + 0.5, None, 0.0),
+        ("instruments", "barometer", "south", BAROMETER_X, None, 0.0),
     ),
 }
 
