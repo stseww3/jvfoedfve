@@ -25,7 +25,7 @@ The shot is written from the numbers below:  python -m scenes.obs_mot_sound
 """
 from artkit.canvas import Canvas
 
-from scenes.obs import materials
+from scenes.obs import materials, sky
 from scenes.obs.common import blocks as B
 from scenes.obs.motion import _kit as MK
 from scenes.obs.motion import sound
@@ -72,8 +72,10 @@ def build():
 
 
 def write_pack(pack_dir):
-    """The stone of the stands, and the sounds: the table's and the other choices."""
-    return list(materials.pack(pack_dir) or []) + list(sound.pack(pack_dir, others=True) or [])
+    """The stone of the stands, the map's sky (the scene stands in the map's hour), and the
+    sounds: the table's and the other choices."""
+    return (list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
+            + list(sound.pack(pack_dir, others=True) or []))
 
 
 def shots():
