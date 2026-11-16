@@ -10,7 +10,8 @@ the door of the battery room across the hall), so the room's axis is the middle 
 x 7.5. From north to south:
 
   entry (z 7..8)       the hand lift in the north-west corner (2, 7), under the cased riser of the
-                       chart room (chart, c350), and the register desk beside it
+                       chart room (chart, c350), the register desk beside it, the checking table
+                       with its lit glass east of the door
   the stacks (z 9..20) a nave three wide on the axis (x 6..8) between two island stacks (x 5 and
                        x 9), a side aisle beyond each, and a stack on either long wall (x 2 and
                        x 13). Every stack rises to the ceiling: twelve shelves of plates in their
@@ -56,7 +57,7 @@ from ..props import _kit as K
 from ..props import furniture, lamps, paper, signs
 
 ORDER = 80              # a room that moves into the shell (INTERFACE 3)
-MOVED_IN = False        # the master scene dresses the room; turned on with the delivery
+MOVED_IN = True         # the master scene dresses the room (fast lane: a card's switch is turned on with its delivery)
 NAME = "interiors/platevault"
 PREFIX = "int_vault_"
 PX = 1 / 16.0
@@ -105,9 +106,9 @@ PANEL_T = 3 * PX                    # a panel of the wainscot, off its wall
 
 # ---- the lift -------------------------------------------------------------------------------------
 LIFT_REST = FEET + 1.0              # the car's floor when it stands at the hatch
-LIFT_TRAVEL = float(CEIL_Y - LIFT_REST)     # up into the floor of the chart room
+LIFT_TRAVEL = float(TOP - LIFT_REST)        # up to the hatch in the ceiling
 LIFT_MOVES = ((100, LIFT_TRAVEL, 100), (400, 0.0, 100))    # (tick it sets off, blocks from rest, ticks it takes)
-LIFT_CYCLE = 600                    # half a minute: up, a wait at the top, down, a wait at the hatch
+LIFT_CYCLE = 600                    # half a minute: up, a wait under the hatch, down, a wait at the desk
 DRIP = 50                           # ticks between two drops of the tap
 
 # ---- blocks ---------------------------------------------------------------------------------------
@@ -124,14 +125,13 @@ SHADOW = K.flat("dark_wood", 0)             # the inside of a stack
 PAPER = K.flat("cream", 1)                  # a sleeve's top and side
 LABEL = K.flat("cream", 3)
 KRAFT = K.flat("old_copper", 2)
-ROPE = K.flat("old_copper", 3)
 PORCELAIN = P.mat("porcelain")
 BATH = K.flat("iron", 1)                    # what stands in a tray: dark in this light
 BOTTLE = K.flat("old_copper", 0)            # brown glass
 BRASS, BRASS_D, IRON, IRON_D = K.BRASS, K.BRASS_D, K.IRON, K.IRON_D
 LIT = dict(emit=15, shade=False)
 OPAL = P.mat("opal")                        # lit opal glass, as the chart room's light table has it
-CLOTH = P.mat("enamel_cloth")               # the black-out curtain
+CLOTH = P.mat("enamel_cloth", base=0)       # the black-out curtain: the darkest of the cloth
 RUBY = tuple(K.flat("signal", step) for step in (1, 2, 3))     # the safelight's glass, brighter towards its middle
 
 
@@ -147,8 +147,8 @@ def panel(side):
 
 
 class _Sleeves:
-    """The picture of a shelf of plates seen from the aisle: the edges of their paper sleeves, a
-    texel each, batch by batch in the same paper, here and there a sleeve that stands lower and
+    """The picture of a shelf of plates seen from the aisle: the edges of their paper sleeves, two
+    texels each, batch by batch in the same paper, here and there a sleeve that stands lower and
     the coloured tab of an index card. It stands in for a material on the front of one box
     (artkit.models asks a material only for its name and paint())."""
 
@@ -289,17 +289,6 @@ def _car():
     return m
 
 
-CAR_TOP = 12.5 * PX
-ROPE_L = 48.0 * PX
-
-
-def _rope():
-    """A length of the lift's rope. Anchor: its lower end."""
-    m = M.Model(PREFIX + "lift_rope")
-    m.box((-0.5, 0, -0.5), (0.5, 48, 0.5), ROPE, grain="y")
-    return m
-
-
 def _guides():
     """A length of the two iron rods the car runs between. Anchor: the middle of its foot."""
     m = M.Model(PREFIX + "lift_guides")
@@ -342,7 +331,7 @@ def _models():
         for tag, anchor in (("", LOW), ("_up", HIGH)):
             m = _face(name + tag, seed + (500 if tag else 0), anchor)
             out[m.name] = m
-    for m in (_safelight(), _tray(), _bottles(), _tap(), _car(), _rope(), _guides(), _checker(), _curtain()):
+    for m in (_safelight(), _tray(), _bottles(), _tap(), _car(), _guides(), _checker(), _curtain()):
         out[m.name] = m
     return out
 
@@ -423,9 +412,11 @@ def build_platevault(canvas, origin=(0, 0, 0)):
         for y in range(FEET + 1, TOP + 1):
             put(x, y, BENCH_Z, panel("south"))
 
-    # the lift: its shaft through the chart room's floor, the base the car stands on
-    cut(LIFT[0], CEIL_Y, LIFT[1])
+    # the lift: the base the car stands on, and the iron hatch in the ceiling it rises to. The floor
+    # block of the chart room over it stays shut until the cased riser stands on it up there (chart):
+    # an open cell in that floor would be a pit
     put(LIFT[0], FEET, LIFT[1], B.IRON_CAST)
+    put(LIFT[0], TOP, LIFT[1], st(B.IRON_HATCH, facing="east", half="top", open="false"))
 
     # ---- models: the faces of the stacks, their numbers --------------------------------------------
     for k, (x, run, sides) in enumerate(stacks()):
@@ -469,9 +460,6 @@ def build_platevault(canvas, origin=(0, 0, 0)):
         n += K.put(canvas, own[PREFIX + "lift_guides"], (shaft[0], y, shaft[1]), yaw=90.0, origin=origin)
     n += K.put(canvas, own[PREFIX + "lift_car"], (shaft[0], LIFT_REST, shaft[1]), yaw=-90.0, origin=origin)
     MK.slide(canvas, "y", LIFT_MOVES, LIFT_CYCLE)
-    for k in range(2):
-        n += K.put(canvas, own[PREFIX + "lift_rope"], (shaft[0], LIFT_REST + CAR_TOP + k * ROPE_L, shaft[1]), origin=origin)
-        MK.slide(canvas, "y", LIFT_MOVES, LIFT_CYCLE)
 
     # ---- the register desk beside the lift, the day's cases by the door ------------------------------
     desk = (X0 + 2.5, float(FEET), Z0 + 0.5)
