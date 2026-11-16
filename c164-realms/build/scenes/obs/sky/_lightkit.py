@@ -585,12 +585,14 @@ def levels(canvas, lo, hi):
     game shut it out on their closed sides: here a little more light gets by them)."""
     out, rings = {}, {}
     box = [range(lo[i], hi[i] + 1) for i in range(3)]
+    emits, stops = {}, {}           # by state: the master scene has millions of cells and a few hundred states
     for cell, state in canvas.b.items():
-        if cell[0] in box[0] and cell[1] in box[1] and cell[2] in box[2]:
-            e = F.emission(*AB.parse(state))
-            if e > 0:
-                out[cell] = e
-                rings.setdefault(e, []).append(cell)
+        e = emits.get(state)
+        if e is None:
+            e = emits[state] = F.emission(*AB.parse(state))
+        if e > 0 and cell[0] in box[0] and cell[1] in box[1] and cell[2] in box[2]:
+            out[cell] = e
+            rings.setdefault(e, []).append(cell)
     for level in range(15, 1, -1):
         for x, y, z in rings.get(level, ()):
             if out.get((x, y, z)) != level:
@@ -599,8 +601,12 @@ def levels(canvas, lo, hi):
                 if out.get(n, 0) >= level - 1 or not (n[0] in box[0] and n[1] in box[1] and n[2] in box[2]):
                     continue
                 state = canvas.b.get(n)
-                if state is not None and _stops_light(state):
-                    continue
+                if state is not None:
+                    shut = stops.get(state)
+                    if shut is None:
+                        shut = stops[state] = _stops_light(state)
+                    if shut:
+                        continue
                 out[n] = level - 1
                 rings.setdefault(level - 1, []).append(n)
     return out
