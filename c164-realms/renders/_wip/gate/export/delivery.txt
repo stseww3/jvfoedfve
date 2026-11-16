@@ -1,0 +1,15 @@
+delivery common/export: 6bd5df4 against bd2f287 (forked at bd2f287), 7 commits, 6 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[WARN] scope    1 of 6 files are the card's own
+                common file (merge-key holder's; agreed beforehand?): M tools/export.py
+                common file (merge-key holder's; agreed beforehand?): M tools/exportnext.sh
+                common file (merge-key holder's; agreed beforehand?): A tools/exportround.sh
+                not this card's file: M build/scenes/obs_export_probe/__init__.py
+                not this card's file: M renders/obs_export_probe/shots.txt
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[PASS] pictures 1 test scene, 3 shots with a picture kept; every shot has one, each the file its note describes
+[PASS] merge    merges cleanly; 0 commits behind the base
+result: PASS (0 failed, 1 to look at)

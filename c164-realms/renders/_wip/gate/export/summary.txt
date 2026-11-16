@@ -1,0 +1,11 @@
+gate common/export 6bd5df47: the merged tree 6bd5df47, the assembly as it was bd2f2874
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] scope    1 of 6 files are the card's own
+                    common file (merge-key holder's; agreed beforehand?): M tools/export.py
+                    common file (merge-key holder's; agreed beforehand?): M tools/exportnext.sh
+                    common file (merge-key holder's; agreed beforehand?): A tools/exportround.sh
+                    not this card's file: M build/scenes/obs_export_probe/__init__.py
+                    not this card's file: M renders/obs_export_probe/shots.txt
+check.py: 89 scenes in 119 s: 89 pass (89 with warnings)
+pictures: [PASS] selfshots obs_export_probe at 6bd5df47: 3 of 3 kept pictures are what the code draws
+result: PASS
