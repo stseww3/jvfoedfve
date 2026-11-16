@@ -1,0 +1,3 @@
+branch=cursor/c164-smoke-guide-f3-e07b
+head=d1ed131bf257e7f0ff24843b0c5719b3d9c594ed
+args=--no-push --tail 40 python\ tools/check.py\ --scene\ obs_mot_guide 
