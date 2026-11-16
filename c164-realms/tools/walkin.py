@@ -31,8 +31,14 @@ high, standing on the lattice of half blocks that walkreach uses:
 A barrier `fits` in a cell on the floor a person stands on when, over 95 % of the cell, the model
 begins under the barrier's top and reaches it (TOL short of it at most): one high where the model
 is a block high there, two high where it is two. Under a round belly the barrier's lower edge
-stands in air that nobody can get into; the rule counts cells, and the cell is the model's. A
-barrier cell of the scene that the outline fills less of is told as standing out of the model.
+stands in air that nobody can get into; the rule counts cells, and the cell is the model's.
+
+A barrier of the scene is the piece's that most of it stands in. Of each one two shares are told:
+`plan`, how much of the cell's ground square has the model over it somewhere in the cell's height
+(the rest is where a walker is stopped by nothing he sees: the barrier stands out of the model
+sideways), and `volume`, how much of the cell lies inside the outline (a car that hangs clear of
+the floor leaves its lower cells half empty and is still the director's own example of the rule).
+A barrier is told as standing out when its plan share is under 95 %.
 Cells that hold a block already are left out. Then the walk is worked out once more with a barrier
 in every such cell of every piece somebody stands in: the places inside a model that a person
 still gets to are `left`, the slits the rule wants closed with something that is seen.
@@ -276,7 +282,7 @@ def reach_keys(cells, start, bounds):
 
 
 def look(piece, pts, kinds, door, mine, cells):
-    """Everything the table says of one piece; `mine` {cell: share of it inside the outline} are the
+    """Everything the table says of one piece; `mine` {cell: (plan share, volume share)} are the
     barriers of the scene that stand in this piece."""
     lo, hi = piece.lo, piece.hi
     near = ((pts[:, 0] >= lo[0] - BESIDE - W.HALF) & (pts[:, 0] <= hi[0] + BESIDE + W.HALF)
@@ -296,7 +302,9 @@ def look(piece, pts, kinds, door, mine, cells):
     out["floor"] = max(set(feet), key=feet.count) if feet else None
     clo, chi = piece.cells()
     out["barriers"] = sorted(mine)
-    out["barriers_out"] = sorted(((c, share) for c, share in mine.items() if share < FULL), key=lambda cs: (cs[1], cs[0]))
+    out["barriers_out"] = sorted(((c, plan) for c, (plan, _) in mine.items() if plan < FULL),
+                                 key=lambda cs: (cs[1], cs[0]))
+    out["barriers_fill"] = [deep for _, deep in mine.values()]
     # the floors people stand on inside it (else the one beside it), and where a barrier fits on each
     levels = {}
     for r in inside:
@@ -361,6 +369,20 @@ def runs_of(cells):
             best = max(best, run)
         high = max(high, best)
     return f"{len(columns)} columns, up to {high} high"
+
+
+def shares_of(rows):
+    """[(cell, share)] by share, the cells of one share together: '50%: (83,-5..-4,23) ...'."""
+    by = {}
+    for c, share in rows:
+        by.setdefault(int(round(share * 100)), []).append(c)
+    words = []
+    for share in sorted(by):
+        columns = {}
+        for x, y, z in by[share]:
+            columns.setdefault((x, z), []).append(y)
+        words.append(f"{share}%: " + " ".join(f"({x},{span(min(ys), max(ys))},{z})" for (x, z), ys in sorted(columns.items())))
+    return "; ".join(words)
 
 
 def clusters_of(cells):
@@ -488,9 +510,9 @@ def main():
     owned = [{} for _ in pieces]                    # a barrier is the piece's that most of it stands in
     stray = []
     for c in sorted(barriers):
-        shares = [piece.within(c[0], c[0] + 1, c[2], c[2] + 1, c[1], c[1] + 1)[1] for piece in pieces]
-        best = int(np.argmax(shares)) if shares else -1
-        if best >= 0 and shares[best] > 0.0:
+        shares = [piece.within(c[0], c[0] + 1, c[2], c[2] + 1, c[1], c[1] + 1)[:2] for piece in pieces]
+        best = int(np.argmax([deep for _, deep in shares])) if shares else -1
+        if best >= 0 and shares[best][1] > 0.0:
             owned[best][c] = shares[best]
         else:
             stray.append(c)
@@ -532,12 +554,12 @@ def main():
         if got["brush"]:
             say(f"    brushed:   {kinds_of(got['brush'])} at {place_of(got['brush'])}")
         if got["barriers"]:
+            fill = got["barriers_fill"]
             say(f"    barriers:  {len(got['barriers'])} cells ({cells_span(got['barriers'])}), "
-                f"{runs_of(got['barriers'])}"
-                + (f"; {len(got['barriers_out'])} of them stand out of the outline (the share of the cell inside it): "
-                   + " ".join(f"({c[0]},{c[1]},{c[2]}) {share:.0%}" for c, share in got["barriers_out"][:48])
-                   + (" ..." if len(got["barriers_out"]) > 48 else "")
-                   if got["barriers_out"] else "; all within the outline"))
+                f"{runs_of(got['barriers'])}; the model fills {min(fill):.0%}..{max(fill):.0%} of a cell's volume"
+                + (f"; {len(got['barriers_out'])} of them stand out of the model sideways (the share of the cell's "
+                   f"ground the model is over): " + shares_of(got["barriers_out"])
+                   if got["barriers_out"] else "; none stands out of the model sideways"))
         if got["inside"] and got["put"]:
             put = got["put"]
             columns = {}
