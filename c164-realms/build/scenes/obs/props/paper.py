@@ -4,9 +4,9 @@ What lies on the desks and hangs on the walls of a working observatory: star cha
 a blackboard with tonight's orbit on it, a map of the Moon, log books, glass negatives. One
 vocabulary for all of them: cream paper; the chart blue of the enamel signs with the drawing left
 in cream; brass for whatever holds a sheet (a bead round it, a screw, a pin); an edge that curls
-where a sheet hangs free; and one heading wherever a sheet has one, a strip of the chart blue
-with its stars. The drawings are figures, lines and dots; nothing is written out, and no figure
-is a cross.
+where a sheet hangs free; and one heading wherever a sheet has one, a strip of the chart blue,
+graduated like the edge of a chart where it is two texels high. The drawings are figures, lines
+and dots; nothing is written out, and no figure is a cross.
 
 Every face is drawn here, texel by texel, on the common palette, 16 texels to the block.
 
@@ -31,6 +31,7 @@ from . import _kit as K
 PREFIX = "prop_paper_"
 
 EN, CR, BR, IR, SL, OP = (P.RAMPS[k] for k in ("enamel", "cream", "brass", "iron", "slate", "opal"))
+NG, AS = P.RAMPS["night_glass"], P.RAMPS["ashlar"]
 
 BRASS = K.BRASS
 SCREW = K.flat("brass", 5)                                      # screw heads and pins catch the light
@@ -45,9 +46,11 @@ GLASS = K.flat("opal", 0)                                       # the edge of a 
 PENCIL = K.flat("brass", 3)
 RIBBON = K.flat("enamel", 2)                                    # a book's marker
 
-# the colours of a star chart: ground, Milky Way, graduation, figure lines, ecliptic, stars, faint stars,
-# the pole star
-SKY = {"e": EN[1], "m": EN[2], "g": EN[3], "l": EN[3], "c": BR[3], "s": CR[3], "f": CR[0], "p": BR[4]}
+# the colours of a star chart: ground, the Milky Way and its core, graduation, figure lines, ecliptic,
+# stars, faint stars, the pole star. The figure lines are the one blue lighter than the enamel's own:
+# under a lamp the top of the enamel ramp stands 15 levels off the ground and the figures were lost
+SKY = {"e": EN[1], "m": EN[2], "k": EN[3], "g": EN[3], "l": NG[4], "c": BR[3], "s": CR[3], "f": CR[0],
+       "p": BR[4]}
 
 
 # ---- drawing a face -----------------------------------------------------------------------------------
@@ -153,9 +156,10 @@ def _blocks(corners):
 # ---- the faces ----------------------------------------------------------------------------------------
 def _sky_face(name, band, figures, bright, stars, faint, arch=None, leads=(), pole=None, size=(46, 30)):
     """A piece of the sky on an enamelled plate, a great chart 46 x 30 or a small one 30 x 14: a
-    graduated edge as on a map; the Milky Way as a lighter stream (band: its first and last texel
-    in each row from row 1 down); the figures drawn star to star; stars of three magnitudes, a
-    bright one a block of four texels and a faint one a grey dot. A great chart has the ecliptic
+    graduated edge as on a map; the Milky Way as a lighter stream with a ragged core one step
+    lighter still (band: its first and last texel in each row from row 1 down); the figures drawn
+    star to star; stars of three magnitudes, a bright one a block of four texels and a faint one
+    a grey dot. A great chart has the ecliptic
     as well, a dashed line of brass (arch: its row for a column) that stops short of every star
     and figure it meets, as on an engraved chart. leads are dotted from one star towards another,
     and pole is the one star marked in brass. No star is drawn as a cross, nothing on the plate
@@ -163,6 +167,7 @@ def _sky_face(name, band, figures, bright, stars, faint, arch=None, leads=(), po
     g = _Grid(size[0], size[1], "e")
     for y, (x0, x1) in enumerate(band, 1):
         g.fill(x0, y, x1, y, "m")
+        g.fill(x0 + 1 + (y % 3 == 0), y, x1 - 1 - (y % 4 == 1), y, "k")
     ground = [row[:] for row in g.rows]
     if arch is not None:
         g.dots(_dashed([(x, int(math.floor(arch(x) + 0.5))) for x in range(1, g.w - 1)], (2, 1)), "c")
@@ -380,8 +385,10 @@ MOON = [".....hhhhhh.....",
         "..hhhhhtthhhhh..",
         "...hhhhtthhhh...",
         ".....hhhhhh....."]
-MOON_INK = {"p": CR[3], "e": EN[1], "g": EN[3], "o": CR[0], "i": CR[0],
-            "h": CR[2], "t": CR[3], "s": CR[1], "k": CR[0]}
+# The printer's ink is the warm grey one step under the cream ramp: on the cream ramp alone the
+# seas stood some 25 levels off the disc under a lamp and the Moon was a smudge.
+MOON_INK = {"p": CR[3], "e": EN[1], "g": EN[3], "o": AS[0], "i": AS[0],
+            "h": CR[2], "t": CR[3], "s": CR[0], "k": AS[0]}
 
 
 def _moon_sheet():
