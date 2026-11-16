@@ -1,0 +1,24 @@
+# pictures of a save opened as it comes (tools/savetrip.py): shot, the save's hour (daytime) when it was taken, commit that holds the zip, first 16 of the picture file's sha256, when it was taken, the distances
+# the save: dist/A6/c164-A6.zip of bd7d3330 (cursor/c164-dist-f4b8), 2929945 bytes, sha256 338d15cfe6fefb32e5a37898c882c5997fc2b6c4b516b0b5f58717dc60c0c14c
+# exported from the assembly commit cfa03ef7, as the one who asked for the trip says
+# level.dat: world c164-A6, game 26.3, game mode adventure, difficulty peaceful, spawn 88 196 -33, yaw 67.71, pitch -22.69, commands off, data packs vanilla file/c164art
+# the server: the node's test server on this save, game mode adventure (not forced), difficulty peaceful, as a Realm's slot is filled from the world; the camera is no operator
+# resource pack: resourcepacks/resources.zip of the save (1743686 bytes, sha256 17ddf45a9e49cc45, 2333 files, pack.mcmeta { "pack": { "description": "c164 c164-A6 (037c647e)", "min_format": 97, "max_format": 97 } }) is the client's pack (whether a Realm hands it to those who join is not shown here)
+# the server, before anybody joined: Timeline minecraft:day is at 20370 tick(s); Game rule advance_time is currently set to false; The difficulty is Peaceful; There are 2 data pack(s) enabled: [vanilla (built-in)], [file/c164art (world)]
+# the game's graphics backend: Vulkan, 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+# as joined: C164Cam has the following entity data: [88.5d, 196.0d, -32.5d]; C164Cam has the following entity data: [67.71f, -22.69f]; C164Cam has the following entity data: 2 (0 survival, 1 creative, 2 adventure, 3 spectator)
+# the save's clock: the day stood at 20370 when the player had joined, at 20370 after the last picture (it stands)
+# distances: client render distance 12, server view distance 10, cloud range 128; pictures: 13 saved by the game itself, 0 taken off the display
+as_joined 20370 bd7d3330 c542b332a88daa8c 2026-11-16T02:38 view12,server10,clouds128
+v01_arrival 20370 bd7d3330 bf4a4b8c2e06c85f 2026-11-16T02:38 view12,server10,clouds128
+v02_axis 20370 bd7d3330 822d4e5c6861af01 2026-11-16T02:38 view12,server10,clouds128
+v03_facade 20370 bd7d3330 759015a568433d9a 2026-11-16T02:38 view12,server10,clouds128
+v04_entrance 20370 bd7d3330 7ba4d9e55f9129bd 2026-11-16T02:38 view12,server10,clouds128
+v05_tower 20370 bd7d3330 ceb043b7c6db808f 2026-11-16T02:38 view12,server10,clouds128
+v06_power 20370 bd7d3330 ec98a7ee7bcaa084 2026-11-16T02:38 view12,server10,clouds128
+v07_hall 20370 bd7d3330 fa1b22a3b371a2b1 2026-11-16T02:38 view12,server10,clouds128
+v08_dome_room 20370 bd7d3330 16b7ea9d2c6832fe 2026-11-16T02:38 view12,server10,clouds128
+v09_chart_room 20370 bd7d3330 fba19a9580570aad 2026-11-16T02:38 view12,server10,clouds128
+v10_time_room 20370 bd7d3330 5f9826b2ac41cad4 2026-11-16T02:38 view12,server10,clouds128
+v11_lookout 20370 bd7d3330 4e1f36c482cbdd05 2026-11-16T02:38 view12,server10,clouds128
+v12_aerial 20370 bd7d3330 a04b8513e7d37033 2026-11-16T02:38 view12,server10,clouds128

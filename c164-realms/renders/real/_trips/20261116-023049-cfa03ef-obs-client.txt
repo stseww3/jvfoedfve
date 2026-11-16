@@ -1,0 +1,14 @@
+# what the game said about shaders, pipelines, compiling and resource packs: 5 records of its output, 1 of them speak of a failure or have lines under them
+[02:31:19] [Render thread/INFO]: Backend library: LWJGL version 3.4.3+4
+[02:31:19] [Render thread/ERROR]: Failed to create backend OpenGL
+com.mojang.renderpearl.api.device.BackendCreationException: Failed to create window for OpenGL context: Couldn't find matching GLX visual
+	at com.mojang.renderpearl.backend.opengl.GlDevice.<init>(GlDevice.java:83)
+	at com.mojang.renderpearl.backend.opengl.GlBackend.createDevice(GlBackend.java:68)
+	at net.minecraft.client.Minecraft.<init>(Minecraft.java:533)
+	at net.minecraft.client.main.Main.main(Main.java:278)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source)
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source)
+	at CamHelper.main(CamHelper.java:46)
+[02:31:19] [Render thread/INFO]: Using graphics backend Vulkan, using drivers: 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+[02:31:20] [Render thread/INFO]: Reloading ResourceManager: vanilla, vanilla, file/c164art
+[02:31:22] [Render thread/INFO]: Sound engine started
