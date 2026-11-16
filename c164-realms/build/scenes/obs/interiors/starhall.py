@@ -516,6 +516,13 @@ def _furnish(canvas, origin, style):
     return n
 
 
+def globe_at():
+    """Where the celestial globe stands: ((x, z) of the middle of its foot, the way it faces).
+    Before the two charts of the south aisle, under the aisle's westernmost lamp; facing east its
+    north pole leans to true north."""
+    return (aisle_lamp_xs()[0], Z1 - 0.2), "east"
+
+
 def _charts(canvas, origin):
     """The south aisle's west bay: the pair of star charts on the wall either side of the aisle's
     westernmost lamp, and a celestial globe before them under it. On each gallery wall one of the
@@ -526,7 +533,8 @@ def _charts(canvas, origin):
     n = 0
     for kind, x in (("star_chart", lamp - 1.5), ("star_chart_b", lamp + 1.5)):
         n += paper.place(canvas, kind, (x, FEET + 3.0, Z1 + 1.0), facing="north", origin=origin)
-    n += instruments.place(canvas, "celestial_globe", (lamp, FEET, Z1 - 0.2), facing="east", origin=origin)
+    (gx, gz), facing = globe_at()
+    n += instruments.place(canvas, "celestial_globe", (gx, FEET, gz), facing=facing, origin=origin)
     x = gallery_lamp_xs()[-1]
     for kind, z, facing in (("sky_map", Z0, "south"), ("sky_map_b", Z1 + 1.0, "north")):
         n += paper.place(canvas, kind, (x, GALLERY_MAP_Y, float(z)), facing=facing, origin=origin)
