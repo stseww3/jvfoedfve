@@ -99,6 +99,8 @@ COPPER = P.mat("old_copper", base=1)    # the weights' slabs: the tone of the ol
 SLAT = P.mat("verdigris", bevel="along")             # a slat of the curtain: the dome's plates, its long edges drawn
 SLAT_D = P.mat("verdigris", base=1, bevel="along")   # every third one, the darker copper
 SEAM = P.mat("verdigris", base=0, bevel=0)           # what shows between two slats on the roll
+SLAT_BACK = P.mat("iron_dark", bevel="along")        # a slat's face towards the room: the drawn curtain is dark from inside
+#                                                      (dome #93112: in green it was the brightest thing in the room but the brass)
 BRASS = P.mat("brass")
 BRASS_D = P.mat("brass_dark")
 
@@ -955,7 +957,7 @@ def _bar():
         for i in range(TAIL):
             x1 = -ROD / 2.0 - i * LATH
             d.box((x1 - LATH, -LATH_T / 2.0, -ROLL_HALF), (x1, LATH_T / 2.0, ROLL_HALF), SLAT_D if i % 3 == 1 else SLAT,
-                  grain="z", seed=621 + i % 3)
+                  grain="z", seed=621 + i % 3, faces={"d": SLAT_BACK})
         for side in (-1, 1):
             z0, z1 = sorted((side * (HAUL_Z - 1.0), side * (HAUL_Z + 1.0)))
             d.box((ROD / 2.0, -1.5, z0), (ROD / 2.0 + 2.0, 1.5, z1), IRON_D, seed=624)
@@ -978,7 +980,7 @@ def _laths(phase):
     for j in range(PANEL_LATHS):
         with d.turned(("z", CURTAIN_POLAR + PARK_DEG + (j + 0.5) * LATH_DEG)):      # x out through the dome's skin, y down the path
             d.box((r - LATH_T / 2.0, -LATH / 2.0, -ROLL_HALF), (r + LATH_T / 2.0, LATH / 2.0, ROLL_HALF),
-                  SLAT_D if (phase + j) % 3 == 1 else SLAT, grain="z", seed=681 + (phase + j) % 3)
+                  SLAT_D if (phase + j) % 3 == 1 else SLAT, grain="z", seed=681 + (phase + j) % 3, faces={"w": SLAT_BACK})
     return d
 
 
