@@ -1,0 +1,3 @@
+branch=cursor/c164-m5-domegear-f3-b9c1
+head=8247111b67bb77e8feb28e89d861b45305534974
+args=--no-push --tail 100 t=\$\(mktemp\ -d\)\;\ env\ PYTHONPATH=build\ python\ -m\ scenes.obs_mach_domegear\ \>\$t/s\ 2\>\&1\;\ echo\ \"self-test\ exit=\$\?\"\;\ head\ -n\ 40\ \$t/s\;\ python\ tools/check.py\ --scene\ obs_mach_domegear\ \>\$t/c\ 2\>\&1\;\ code=\$\?\;\ tail\ -n\ 22\ \$t/c\;\ echo\ \"check\ exit=\$code\"\;\ rm\ -rf\ \$t\;\ exit\ \$code 
