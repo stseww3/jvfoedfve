@@ -1204,9 +1204,9 @@ def eye_functions():
             anybody else. Kept apart from look: should a later version of the game read an
             item's parts otherwise and refuse this line, the tag still comes and goes, and with
             it motion/guide's last title
-    away    he has stepped back or turned round: the tag off, the head bare
-    sweep   whoever has a carrier and no tag (he took it off his head and walked away with it,
-            or picked up one that was dropped) loses it
+    away    he has stepped back or turned round: the tag off, and the carrier gone from his head
+            or from wherever he has put it. Nothing else he may wear is touched
+    sweep   whoever has a carrier and no tag (he picked up one that somebody had dropped) loses it
     """
     item = (f'minecraft:spyglass[minecraft:item_model="{NS}:{EYE_ITEM}",minecraft:equippable={{slot:"head",'
             f'camera_overlay:"{NS}:{EYE_PICTURE}",equip_sound:"minecraft:intentionally_empty"}},'
@@ -1215,7 +1215,7 @@ def eye_functions():
     return {
         "look": [f"tag @s add {EYE_TAG}", "function {ns}:scope/wear"],
         "wear": [f"item replace entity @s armor.head with {item}"],
-        "away": [f"tag @s remove {EYE_TAG}", "item replace entity @s armor.head with minecraft:air"],
+        "away": [f"tag @s remove {EYE_TAG}", f"clear @s {mine}"],
         "sweep": [f"clear @a[tag=!{EYE_TAG}] {mine}"],
     }
 
