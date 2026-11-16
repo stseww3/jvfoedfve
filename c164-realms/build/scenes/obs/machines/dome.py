@@ -79,16 +79,22 @@ ROOT_IRON = P.mat("iron_dark", base=1)              # what the teeth stand on: t
 COPPER = P.mat("old_copper", base=1)    # the weights' slabs: the tone of the old-copper blocks' faces
 SLAT = P.mat("verdigris", bevel="along")             # a slat of the curtain: the dome's plates, its long edges drawn
 SLAT_D = P.mat("verdigris", base=1, bevel="along")   # every third one, the darker copper
+SEAM = P.mat("verdigris", base=0, bevel=0)           # what shows between two slats on the roll
 BRASS = P.mat("brass")
 BRASS_D = P.mat("brass_dark")
 
-# (sky, block): the light every piece is shown in, the open sky's and no lamp's: what falls through
-# the slit. Left alone a piece takes the light of the cell its entity stands in, and round the ring
-# that falls off with the distance from the slit: in the pictures of 11-16 the half of the ring
-# away from the slit could not be told from the dark of its slot. The sky's light follows the hour
-# and the light version as the blocks' does; a lamp's does not, and it turns the iron brown
-# ((10, 7), the telescope's light, made a rope of the toothed ring)
-LIGHT = (15, 0)
+# The sky's light a piece is shown in: (far from the slit, beside it); no lamp's. Left alone a piece
+# takes the light of the cell its entity stands in: round the ring that falls off to nothing with
+# the distance from the slit (in the pictures of 11-16 the far half of the ring could not be told
+# from the dark of its slot), and a piece ten blocks long gets the light of one end. So every piece
+# is told its light (night()): the open sky's above the slit less one level for every column away
+# from it, never under the first number, so that the far half of the ring still reads, and never
+# over the second, so that the iron stays under the sky. The numbers and the rule are those
+# interiors/domeroom shows the dome's skeleton by (a3, 11-16): the gear and the girders it hangs on
+# have one light. The sky's light follows the hour and the light version as the blocks' does; a
+# lamp's does not, and it turns the iron brown ((10, 7), the telescope's light, made a rope of the
+# toothed ring)
+IRON_LIGHT = (10, 13)
 
 PX = 16.0                   # px to a block
 LINK = 4.0                  # px: a chain link; links are 3 x 2 px, every other one turned a quarter
@@ -218,12 +224,14 @@ WINCH_X = FACE_X + 0.53                 # the winch's shaft: its drums turn a pi
 WINCH_D = UP_D - ROPE_R                 # px below a run's line: the rope leaves the shaft's far side straight up the
                                         # run, so that hauling the curtain up pays it out and lets the weight down
 WINCH_HALF = RUN + 2.0                  # px: half the shaft
-# a weight's run in version b: the rail ends where interiors/domeroom's arch truss lets it (x -3.6
-# in the scene); the sheave at its top is as far below the rail's end as in version a
-RAIL_B = (RAIL[0], 50.0)
+# a weight's run in version b: the rail ends where the underside of interiors/domeroom's arch
+# girder leaves the line (x -3.66 in the scene); the sheave at its top is as far below the rail's
+# end as in version a
+RAIL_B = (RAIL[0], 47.0)
 FLANGE_B = (FLANGE[0], 32.0)
 KNEE_SB = 41.0
 RUN_HANG_B = RUN_HANG[:2]
+CLEATS = (-28.0, -14.0, 9.0, 22.0)      # where a rail is riveted to the arch girder over it
 WEIGHT_S1 = FLANGE_B[1] - 3.0 - W_WHEEL_R - W_WHEEL    # the weight's middle with the slit open: its upper wheels under the stop
 CORD_R = 0.875                          # px: the cord of a take-up weight on the roller's shaft end
 
@@ -243,6 +251,25 @@ def neighbour(line, name):
 def shell_version():
     """The version of main/dome that stands: its VERSION once that package is in the tree, else "a"."""
     return getattr(neighbour("main", "dome"), "VERSION", "a")
+
+
+def night(x, z):
+    """The sky's light a piece is shown in, by the column its entity is in (x, z from the dome's
+    axis): what falls through the open slit, one level less for every column away from it, kept
+    within IRON_LIGHT."""
+    col = int(math.floor(AX + x)), int(math.floor(AZ + z))
+    half = S.SLIT_W // 2
+    first = (S.DOME_CENTRE[0] - S.DOME_R, S.DOME_CENTRE[1] - half)          # the slit's columns: from the dome's edge
+    last = (S.DOME_CENTRE[0] - half, S.DOME_CENTRE[1] + half)               # to its head
+    away = sum(max(first[i] - col[i], col[i] - last[i], 0) for i in range(2))
+    return max(IRON_LIGHT[0], min(IRON_LIGHT[1], 15 - away))
+
+
+def riveted():
+    """True once interiors/domeroom draws the dome's arch girders (its frame()): the weights' rails
+    of version b are then riveted under their lower chords, whose underside is the rails' line.
+    Until then two straps hang each rail from the curb beside the slit."""
+    return hasattr(neighbour("interiors", "domeroom"), "frame")
 
 
 def seam_angles():
@@ -623,13 +650,17 @@ def _run(side, version="a"):
     foot_s = WINCH_S if b else _eye()[0] + FOOT_R
     knee_d, knee_r = (UP_D + DOWN_D) / 2.0, (DOWN_D - UP_D) / 2.0
     zs = -side * FOOT_R                             # version a: the sheave at the foot stands on the slit's side of the run
+    top = -0.25 if b else 0.0                       # version b: a hair under the line, where the arch girder's chord lies
     with d.turned(("z", RUN_DEG)):                  # x up the run, y towards the vault
-        d.box((rail[0], -WEB_D, -1.0), (rail[1], 0.0, 1.0), IRON_D, grain="x")
+        d.box((rail[0], -WEB_D, -1.0), (rail[1], top, 1.0), IRON_D, grain="x")
         d.box((flange[0], -FLANGE_D[1], -3.0), (flange[1], -FLANGE_D[0], 3.0), IRON, grain="x")
         for s0 in (STOP - 3.0, flange[1] - 3.0):                                # a stop at either end, on both sides of the web
             for z0 in (-3.0, 1.0):
                 d.box((s0, -FLANGE_D[0], z0), (s0 + 3.0, 2.0 - FLANGE_D[0], z0 + 2.0), IRON_D, seed=201)
         if b:
+            for s0 in CLEATS:                                                   # a pair of cleats, riveted to web and chord
+                for z0 in (-2.5, 1.0):
+                    d.box((s0, -2.25, z0), (s0 + 3.0, top, z0 + 1.5), IRON, seed=207)
             d.box((foot_s, -UP_D - ROPE, -ROPE), (knee_s, -UP_D + ROPE, ROPE), IRON_B, grain="x", seed=210)
             d.box((WEIGHT_S1 + W_HALF + 2.0, -DOWN_D - ROPE, -ROPE), (knee_s, -DOWN_D + ROPE, ROPE), IRON_B, grain="x", seed=212)
         else:
@@ -648,6 +679,14 @@ def _run(side, version="a"):
             d.ring("z", (knee_s, -knee_d, 0.0), knee_r, 2.0 * ROPE, 2.0 * ROPE, IRON_B, sides=12, arc=(-90.0, 90.0), seed=204)
         else:
             d.ring("z", (knee_s, -knee_d, 0.0), knee_r, BAND, WRAP, IRON_D, sides=12, arc=(-90.0, 90.0), seed=204)
+    if not b:
+        _hangers(d, side, hangs)
+    return d
+
+
+def _hangers(d, side, hangs):
+    """What hangs a run's rail from the curb: a strap at each of the line's corners and the foot on
+    the ring girder. Drawn from the line's first corner, as the run is."""
     for i, hang in enumerate(hangs):                # a hanger at the line's corners: a strap that
         cx, cy = i * RUN_STEP[0] * PX, i * RUN_STEP[1] * PX         # clasps the web, up to a plate under the curb
         top = cy + hang * PX
@@ -656,6 +695,13 @@ def _run(side, version="a"):
     fx, fy = -RUN_STEP[0] * PX, -RUN_STEP[1] * PX   # where the line starts: the ring girder's corner under the jamb
     z0, z1 = sorted((-side * 4.5, side * 2.0))
     d.box((fx, fy + 1.0, z0), (fx + 4.5, fy + 7.0, z1), IRON)                   # the foot: holds the web's end (and, in a, the sheave's pin)
+
+
+def _hang(side):
+    """The straps and the foot of a rail of version b, for a room that has no arch girders yet."""
+    d = _Draw("hang_s" if side > 0 else "hang_n", 3,
+              anchor=((RUN_ANCHOR[0] - RUN_C1[0]) * PX, (RUN_ANCHOR[1] - RUN_C1[1]) * PX, 0.0))
+    _hangers(d, side, RUN_HANG_B)
     return d
 
 
@@ -689,9 +735,10 @@ def _roll():
     d = _Draw("roll", 3)
     leaves = slope(BAR_DEG) + 90.0                  # where the curtain leaves the roll, from its axis
     out = ROLL_R + LATH_T / 2.0
-    for k in range(LATHS):
-        d.box((out - LATH_T, -LATH / 2.0, -ROLL_HALF), (out, LATH / 2.0, ROLL_HALF), SLAT_D if k % 3 == 2 else SLAT,
+    for k in range(LATHS):                          # the outermost turn: every slat stands a little off the next
+        d.box((out - LATH_T, 0.375 - LATH / 2.0, -ROLL_HALF), (out, LATH / 2.0 - 0.375, ROLL_HALF), SLAT_D if k % 3 == 2 else SLAT,
               rot=("z", leaves + (k + 0.5) * 360.0 / LATHS, (0.0, 0.0, 0.0)), grain="z", seed=601 + k % 3)
+    d.tube("z", (0.0, 0.0), -ROLL_HALF, ROLL_HALF, out - 0.75, SEAM, sides=LATHS, seed=606)     # the turns under it
     for side in (-1, 1):
         z0, z1 = sorted((side * ROLL_HALF, side * (ROLL_HALF + 1.5)))
         d.tube("z", (0.0, 0.0), z0, z1, out + 1.0, IRON_D, sides=LATHS, seed=604)       # a cheek
@@ -863,7 +910,7 @@ _PIECES = {
     "arm_n": lambda: _arm(-1), "arm_s": lambda: _arm(1), "run_n": lambda: _run(-1), "run_s": lambda: _run(1),
     "roll": _roll, "rollseat": _rollseat, "bar": _bar, "winch": _winch, "winchseat": _winchseat, "pull": _pull,
     "haul_n": lambda: _haul(-1), "haul_s": lambda: _haul(1),
-    "runb_n": lambda: _run(-1, "b"), "runb_s": lambda: _run(1, "b"),
+    "runb_n": lambda: _run(-1, "b"), "runb_s": lambda: _run(1, "b"), "hang_n": lambda: _hang(-1), "hang_s": lambda: _hang(1),
 }
 
 
@@ -909,7 +956,8 @@ def layout(version=None):
         wx, wy = on_run(WEIGHT_S1)
         for side, tag in ((-1, "n"), (1, "s")):
             out.append(("haul_" + tag, on_curve(BAR_DEG) + (side * HAUL_Z / PX,), 0.0, ()))
-            out.append(("runb_" + tag, (RUN_ANCHOR[0], RUN_ANCHOR[1], side * RUN_Z), 0.0, ()))
+            for name in ("runb_",) if riveted() else ("runb_", "hang_"):
+                out.append((name + tag, (RUN_ANCHOR[0], RUN_ANCHOR[1], side * RUN_Z), 0.0, ()))
             out.append(("weight", (wx, wy, side * RUN_Z), 0.0, (("z", RUN_DEG),)))
     return out
 
@@ -921,7 +969,7 @@ def place(canvas, origin=(0, 0, 0), version=None):
     for name, (x, y, z), yaw, turns in layout(version):
         d = _piece(name)
         canvas.add_entity(ox + AX + x, oy + y, oz + AZ + z,
-                          M.display(d.m, yaw=yaw, scale=d.scale, turns=turns, brightness=LIGHT))
+                          M.display(d.m, yaw=yaw, scale=d.scale, turns=turns, brightness=(night(x, z), 0)))
         n += 1
     return n
 
@@ -997,12 +1045,13 @@ def _held(version):
             rail = side * (JAMB + 4.0) / PX
             out += [("rollseat: the rail's foot beside the roller", (-(SHELL_A - 0.5), roll_at()[1], rail)),
                     ("winchseat: the arch girder's foot beside a drum", (FACE_X - 0.5, winch_at()[1], side * (HAUL_Z + 6.0) / PX)),
-                    ("haul: the rail beside the head sheave", (hx, hy, rail)),
-                    ("run: the ring girder at its foot", (FACE_X - 0.5, SILL_Y + 0.5, z))]
+                    ("haul: the rail beside the head sheave", (hx, hy, rail))]
             for deg in HANGERS:
                 out.append((f"haul: the rail behind the rollers at {deg:g}", on_curve(deg) + (rail,)))
-            for i, hang in enumerate(RUN_HANG_B):
-                out.append(("run: the curb over a hanger", (RUN_C1[0] + i * RUN_STEP[0] - 0.125, RUN_C1[1] + i * RUN_STEP[1] + hang + 0.5, z)))
+            if not riveted():
+                out.append(("hang: the ring girder at the rail's foot", (FACE_X - 0.5, SILL_Y + 0.5, z)))
+                for i, hang in enumerate(RUN_HANG_B):
+                    out.append(("hang: the curb over a strap", (RUN_C1[0] + i * RUN_STEP[0] - 0.125, RUN_C1[1] + i * RUN_STEP[1] + hang + 0.5, z)))
     return out
 
 
@@ -1016,6 +1065,27 @@ def unheld(canvas, origin=(0, 0, 0), version=None):
         cell = (int(math.floor(ox + AX + x)), int(math.floor(oy + y)), int(math.floor(oz + AZ + z)))
         if canvas.get(*cell) is None:
             out.append((what, cell))
+    if version == "b" and riveted():
+        out += _off_the_girders(origin)
+    return out
+
+
+def _off_the_girders(origin=(0, 0, 0)):
+    """Where a rail of version b leaves the underside of interiors/domeroom's arch girders:
+    [(what, cell)], empty when the rail lies under their straight springing from end to end."""
+    frame = neighbour("interiors", "domeroom").frame()
+    ends = [on_run(s) for s in RAIL_B]
+    cells = [(int(math.floor(origin[0] + AX + x)), int(math.floor(origin[1] + y)), int(math.floor(origin[2] + AZ + RUN_Z))) for x, y in ends]
+    if frame is None:
+        return [("run: the room has no arch girders", cells[0])]
+    (d0, y0), (d1, y1) = frame.run()                # (distance from the axis along the slit, height): at the pier, where the line ends
+    out = []
+    for (x, y), cell in zip(ends, cells):
+        line = y0 + (y1 - y0) * (d0 + x) / (d0 - d1)
+        if not d1 - 1e-6 <= -x <= d0 + 1e-6:
+            out.append(("run: the rail runs past the straight underside of the arch girder", cell))
+        elif abs(line - y) > 0.5 / PX:
+            out.append((f"run: the rail lies {(y - line) * PX:+.2f} px off the arch girder's underside", cell))
     return out
 
 
