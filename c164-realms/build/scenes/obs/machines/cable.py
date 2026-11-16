@@ -57,7 +57,8 @@ Blocks: the models stop nobody, so the package sets what does. Barriers inside t
 things, the car's body (CAR_CELLS) and the drum's barrel (SOLID), two high and nowhere beyond
 what is seen. And the winch's own guard (GUARD): a low rail of iron bars before the winch house's
 opening, from its west pier to the pier of the platform's edge beside the car, so that nobody
-walks in among the wheels, the belt and the motor.
+walks in among the wheels, the belt and the motor. Over the rail barriers two high (GUARD_OVER),
+by the director's ruling: its top was a step to the car's roof.
 
 Light: the car is lit within, a source of the second rank in the car that is offered to the sky
 line, which places it. The winch house has no lamp of the site's: the winch brings its own, a
@@ -189,6 +190,15 @@ SOLID = [(x, y, math.floor(AXLE[2])) for x in (int(AXLE[0]) - 1, int(AXLE[0])) f
 GUARD_Z = ROOM[3] + 2                                   # -35: the row before the opening, the duct's cover in it
 GUARD = [(x, GUARD_Z) for x in range(ROOM[0] - 1, ROOM[2] + 1)]         # x 86..90; (91, -35) is the edge's pier
 GUARD_RAIL = B.IRON_BARS
+# The rail's top proved a step (the outdoor walk of candidate A7, plan/reviews/walk/1a0f1af, the
+# second part, 1): one jump up on to it, then half a block at a time on to the cap of the edge's
+# pier and on to the car's roof, and from there down on to the trestle, with no way back. The
+# director had it shut with barriers and the look left as it is (11-16, 11:50): two high over
+# every cell of the rail. One row would not do: the north buffer stop's top is level with the
+# rail's and beside it, and a single row is jumped on to from there. With two the top is two
+# blocks over the stop's and three over the paving. These are the only barriers of the package
+# that do not stand inside a model.
+GUARD_OVER = [(x, int(FEET) + up, z) for x, z in GUARD for up in (1, 2)]        # (86..90, -3..-2, -35)
 
 # The winch's lamp: one of the lamp family, on the pier between the two windows of the back wall
 # (site/cablecar keeps those two columns of brick for it), its lantern out over the barrel between
@@ -619,6 +629,8 @@ def build(canvas, origin=(0, 0, 0)):
         canvas.set(x + ox, y + oy, z + oz, B.BARRIER)
     for x, z in GUARD:                      # the winch's rail
         canvas.set(x + ox, int(FEET) + oy, z + oz, GUARD_RAIL)
+    for x, y, z in GUARD_OVER:              # and nobody gets up on it
+        canvas.set(x + ox, y + oy, z + oz, B.BARRIER)
     n = put("car", CAR) + put("hood", HOOD)
     for row in DUCT_ROWS:
         n += put("duct", (X_ROPE, FEET, row + 0.5))

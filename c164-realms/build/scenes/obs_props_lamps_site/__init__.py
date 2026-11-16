@@ -56,7 +56,10 @@ UP, LOW = S.GROUND + EYE, S.LOWER_GROUND + EYE          # the eye of somebody on
 # the two main views were raised together (A0, group #304); a skeleton that has V2 has the raised V1
 V1 = S.V1 if hasattr(S, "V2") else dict(pos=S.V1["pos"], look_at=(8, 34, 0.5))
 V2 = getattr(S, "V2", dict(pos=(58.5, 1.7, 0.5), look_at=(17, 19, 0.5)))
-V12 = getattr(S, "V12", dict(pos=(66.0, 72.0, 58.0), look_at=(8.0, -2.0, 0.0)))
+V12 = getattr(S, "V12", dict(pos=(126.0, 44.0, -50.0), look_at=(22.0, 4.0, 0.0)))
+# where V12 stood until 11-16 10:31, high over the south-east: the one view that shows the whole
+# chain as a plan, every pair of the way and the string along the lip (kept as "high", A0 #77190)
+HIGH = dict(pos=(66.0, 72.0, 58.0), look_at=(8.0, -2.0, 0.0))
 AX, AZ = S.ARMILLARY
 STATION_SOUTH = S.CABLE_STATION[3] + 1                  # the first row south of the cable station
 STATION_MID = (S.CABLE_STATION[0] + S.CABLE_STATION[2]) // 2
@@ -77,6 +80,7 @@ VIEWS = {   # name: (eye, looks at)
     "feet": ((AX + 5.5, UP, AZ + 5.5), (AX + 0.5, 1.2, AZ + 0.5)),
     "hut_door": ((41.0, UP, -18.0), (37.5, 2.3, -25.0)),
     "tower_foot": ((-10.0, UP, -26.5), (-14.5, 1.0, -32.0)),
+    "high": (HIGH["pos"], HIGH["look_at"]),
 }
 if hasattr(S, "V6"):
     # the director's view of the power house, from the south half of the grand stair: the street
