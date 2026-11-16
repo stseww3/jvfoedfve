@@ -63,7 +63,8 @@ KINDS = ("floor", "step", "threshold")
 ROOFING = ("_stairs", "_slab", "_trapdoor")     # shapes with a whole face: the sky's light is not let through them
 SKY_NEAR = 13           # the sky's light from which a cell under an overhang counts as lit by the sky
 
-# Who lights which heap, as sky/lights (c331) dealt them out on 11-16 (#74750). The first line
+# Who lights which heap, as sky/lights (c331) dealt them out on 11-16 (#74750) and cr2 after him
+# (the plate vault: floor 5, thresholds 7 as everywhere, its darkroom end at 5 to 6). The first line
 # that fits a cell names its owner: (who, the section's name starts with, the box
 # (x0, y0, z0, x1, y1, z1) in the building's own coordinates or None for the whole section).
 NOBODY = "未分"
@@ -78,6 +79,7 @@ OWNERS = (
     ("hall：下一次交付", "room: stair hall", (-7, 0, -5, 1, 0, 5)),           # the way to the west door
     ("hall：下一次交付", "in-C", None),
     ("m2", "room: time room", None),
+    ("vault", "room: plate vault", None),                                     # cr2, #75753: the vault is a way like the others
     ("power", "in-L", None),
     ("dome", "in-I", None),                                                   # the roof round the dome room (the room itself is not counted)
     ("dome", "in-J", None),
