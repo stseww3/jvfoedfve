@@ -550,12 +550,12 @@ def _ground(canvas, r, x, y, z, drop):
 def _pools(canvas, r):
     """One source at the foot of every street lamp whose own source stands (r["_poles"], the cells
     of their globes). The foot is read off the lamp's model, the display entity under the globe.
-    On level ground the source stands in the foot cell of the post. A lamp on a pedestal (fewer
-    than five of the nine columns round its foot are level with it) gets it on the ground beside
-    the pedestal, POOL_DROP rows down at most: of the lowest cells round the foot the one nearest
-    to the post, then the one nearer to the site's axis, then the one further east, where the
-    visitor comes from. Never further than one column from the post's own: the pool belongs to
-    the globe above it and to nothing else."""
+    On level ground the source stands in the foot cell of the post. A lamp on a pedestal (of the
+    columns round its foot, those whose middle is within a cell and a half of it, not more than
+    half are level with it) gets it on the ground beside the pedestal, POOL_DROP rows down at
+    most: of the lowest cells round the foot the one nearest to the post, then the one nearer to
+    the site's axis, then the one further east, where the visitor comes from. Never further out
+    than those columns: the pool belongs to the globe above it and to nothing else."""
     if not L.POOL:
         return
     feet = {}
@@ -568,10 +568,11 @@ def _pools(canvas, r):
             continue
         ax, ay, az = max(under, key=lambda p: p[1])
         fy = int(math.floor(ay + 1e-6))
-        rows = {(gx + dx, gz + dz): _ground(canvas, r, gx + dx, fy, gz + dz, POOL_DROP)
-                for dx in (-1, 0, 1) for dz in (-1, 0, 1)}
+        rows = {(x, z): _ground(canvas, r, x, fy, z, POOL_DROP)
+                for x in range(int(math.ceil(ax - 2.0)), int(math.floor(ax + 1.0)) + 1)
+                for z in range(int(math.ceil(az - 2.0)), int(math.floor(az + 1.0)) + 1)}
         level = sum(1 for row in rows.values() if row == fy)
-        if rows[gx, gz] == fy and level >= 5:
+        if rows.get((gx, gz)) == fy and 2 * level > len(rows):
             spots = [(gx, fy, gz)]
         else:
             low = min((row for row in rows.values() if row is not None), default=None)
