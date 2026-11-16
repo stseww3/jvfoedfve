@@ -8,7 +8,7 @@ Card: plan/packages/main/smalldome.md. Design: plan/ART-PLAN.md 5.2 and 6.3, pla
 Where it sits (skeleton SMALL_*): the pavilion is bays 16-17 (z 26..34), its east wall face x 16;
 the dome is x 8..16, z 26..34, nine across, centred on cell (12, 30). It stands on the pavilion's
 flat roof (deck y 17, feet y 18). Its east and south sides come out to the pavilion's wall faces,
-so nothing of it may reach past x 16 or z 34, and nothing above the apex row y 25.
+so nothing of it may reach past x 16 or z 34, and nothing above the apex row y 26.
 
 Rows, bottom to top:
     y 18..19  the stone body, seven across and one block thick: it stands one block inside the
@@ -20,13 +20,18 @@ Rows, bottom to top:
     y 21      the iron skirt, the ring the dome turns on: riveted plate with a cast axle box on each
               axis and each diagonal, two plates between every two (the great dome's ring beam has
               one under every seam).
-    y 22..25  the dome: copper plates only, whole blocks and slabs, one block at the apex.
+    y 22..26  the dome: copper plates only, in level courses, one to a ring of the raster circle
+              as on the great dome: two rows upright over the skirt (the edge ring, its top a
+              level line at 24), then 25.5, then the cap at 26.5 and one cast block on the axis.
 
 What a dome nine blocks across can carry (c219 #23263, A0 #23752): no ribs -- eight ribs took half
 its surface and read as patches, four would draw a cross on its top from above; the top row is one
 cast block on the axis, the plates fall away from it by half blocks; a slit one block wide, from
 the skirt up to the apex block, and beside it the shutter leaf slid open to the south, riveted
-iron; three darker plates in the first row over the skirt.
+iron. The skin is plain: the darker copper speaks of structure alone, the great dome's ribs and
+their collar, and this dome has neither (A0 #57905, 11-16; three darker plates lay scattered in
+the first row over the skirt until then). The apex is row 26 (A0 #57140, 11-16): at 25 the
+copper stood less than twice as high as the iron skirt in V11 and the dome read as a flat lid.
 
 The leaf lies in the plates' own face. It lay half a block proud of them until the first pictures
 (11-16): one block wide on a dome of nine it stood there as a black chimney from the terrace and
@@ -61,16 +66,15 @@ WINDOW_Y = BODY_Y[1]                                     # 19
 DOOR_Y = BODY_Y                                          # 18..19: the door onto the terrace
 HEAD_Y = BODY_Y[1] + 1                                   # 20: the corbel
 SKIRT_Y = HEAD_Y + 1                                     # 21: the iron skirt; the dome's curve starts at its foot
-APEX = S.SMALL_DOME_APEX                                 # 25: the last row anything stands in
+APEX = S.SMALL_DOME_APEX                                 # 26: the last row anything stands in
 FOOT = R + 0.25                                          # the half-ellipse the plates follow: this wide at
 RISE = APEX + 0.8 - SKIRT_Y                              # the skirt's foot, this high on the axis -- the
-#                                                          apex block alone reaches the top of row 25
+#                                                          apex block alone reaches the top of row 26
 SLIT_X = (S.SMALL_DOME_X[0], CX - 1)                     # the slit: the west axis row, up to the apex block
 LEAF_Z = CZ + 1                                          # the shutter leaf: the row south of the slit
-RUNS = ((CX + 4, CZ + 1), (CX - 1, CZ + 4), (CX + 3, CZ - 3))   # the darker plates, in the row over the skirt
 BOX_WAYS = O.SIDES + ((1, 1), (-1, 1), (-1, -1), (1, -1))        # where the skirt's axle boxes sit
 
-PLATE, RUN, CAST = B.VERDIGRIS_CUT, B.VERDIGRIS_STREAK, B.VERDIGRIS_CAST
+PLATE, CAST = B.VERDIGRIS_CUT, B.VERDIGRIS_CAST
 STONE, PANEL = B.ASHLAR_FINE, B.ASHLAR_PANEL
 IRON = B.IRON_RIVETED                                    # the skirt's plates and the shutter leaf
 SKIRT = IRON.block
@@ -155,15 +159,26 @@ def _is_leaf(x, z):
     return z == LEAF_Z and SLIT_X[0] <= x <= SLIT_X[1]
 
 
+def _ring(x, z):
+    """The ring of the raster circle a column lies in: its distance from the axis column, rounded.
+    The great dome counts its rings the same way (main/_dome.py); ring 4 is this dome's edge."""
+    return int(math.hypot(x - CX, z - CZ) + 0.5)
+
+
+def course(ring):
+    """The top face of the plates of a ring, in half blocks: a half-ellipse FOOT wide at the
+    skirt's foot and RISE high, taken where the ring's middle is and rounded to the nearer half."""
+    top = SKIRT_Y + RISE * math.sqrt(max(0.0, 1.0 - (ring / FOOT) ** 2))
+    return max(math.floor(2.0 * top + 0.5) / 2.0, SKIRT_Y + 1.5)
+
+
 def _skin():
-    """{column: top face} of the dome in half blocks: a half-ellipse FOOT wide at the skirt's foot
-    and RISE high, rounded to the nearer half. The shutter leaf lies in this face too."""
-    out = {}
-    for x, z in DOME:
-        d = math.hypot(x - CX, z - CZ)
-        top = round(2 * (SKIRT_Y + RISE * math.sqrt(1.0 - (d / FOOT) ** 2))) / 2.0
-        out[(x, z)] = max(top, SKIRT_Y + 1.5)
-    return out
+    """{column: top face} of the dome. The plates lie in courses, one to a ring and level all the
+    way round, the way the great dome's do, so the two read as one make: every course ends in one
+    clean line and the dome's foot is a level one. (Taken column by column from its own distance,
+    as it was until the two domes were looked at side by side, the edge ring had four different
+    heights: a bundle of pipes from the roofs.) The shutter leaf lies in this face too."""
+    return {(x, z): course(_ring(x, z)) for x, z in DOME}
 
 
 def _foot(skin, col):
@@ -182,7 +197,7 @@ def _foot(skin, col):
 
 def dome(canvas, origin=(0, 0, 0)):
     """The dome's shell, one block thick: plates, the cast block at the apex, the slit left open
-    from the skirt to the apex block, the shutter leaf beside it and the three darker plates."""
+    from the skirt to the apex block, and the shutter leaf beside it."""
     ox, oy, oz = origin
     skin = {c: top for c, top in _skin().items() if not _in_slit(*c)}
     for (x, z), top in skin.items():
@@ -194,8 +209,6 @@ def dome(canvas, origin=(0, 0, 0)):
                 state = CAST
             elif y == ytop and not whole:
                 state = f"{metal.slab}[type=bottom]"
-            elif (x, z) in RUNS and y == SKIRT_Y + 1:
-                state = RUN.block
             else:
                 state = metal.block
             canvas.set(ox + x, oy + y, oz + z, state)
@@ -351,7 +364,7 @@ def _drawings():
     print("\nWEST ELEVATION, the slit and the door (north on the left):\n")
     print(O.elevation(c, "west", zs, ys, xs[0], xs[1]))
     print("\nLetters: F dressed ashlar, P sunk panel, D dark window, J iron door, I riveted iron, B axle box,")
-    print("V verdigris plate, A cast block, X darker plate. Small letters are slabs and stairs.")
+    print("V verdigris plate, A cast block. Small letters are slabs and stairs.")
 
 
 if __name__ == "__main__":

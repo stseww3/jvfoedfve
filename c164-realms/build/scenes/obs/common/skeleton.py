@@ -296,11 +296,27 @@ V1_COMET = dict(north=15.0, low=35.0)
 # west at the entrance and the great dome, tilted up like V1. The comet hangs right over the top of
 # the dome: the picture the map is known by. The eye's height is A0's figure.
 V2 = dict(pos=(58.5, 1.7, AXIS_Z), look_at=(17, 19, AXIS_Z))
+# V5, the clock tower from the forecourt (S2 11-16; worked out from the blocks by the tower's line,
+# plan/packages/main/tower.md): the nearest place in the forecourt from which the tip of the tower's
+# top, the whole time ball on its pole and the comet all show, with the track hut whole in the
+# picture and no lamp cut by the frame. 42 blocks from the tower, looking up between the tower and
+# the mast: the entrance, the great dome, the comet, the tower and the mast from left to right, the
+# tower from the ground to the tip of its pole. The place the board first gave it, 21 blocks from
+# the tower, looks up its corner: the top, the ball and the pole stand 62 to 67 degrees up from
+# there, behind the cornice. The test scenes of main/tower call it v5_far.
+V5 = dict(pos=(52.5, GROUND + EYE, -13.5), look_at=(13.5, 27, -31.5))       # the eye at y 1.62
 # V6, the power house from the grand stair (A0 #55097, 11-16: picked from four candidates on the
 # pictures of site/powerhouse, whose test scenes call it stair_south): a person on the south half of
 # the grand stair, the feet three blocks above the lower platform, looks south-east at the power
-# house, whose saw-tooth roof shows its profile to this side.
-V6 = dict(pos=(66.5, LOWER_GROUND + 3 + EYE, 6.5), look_at=(76.5, 8.0, 32.5))   # the eye at y -1.38
+# house, whose saw-tooth roof shows its profile to this side. Turned four and a half degrees to the
+# right on 11-16 (A0, the desk 06:52; the look was at (76.5, 8.0, 32.5)): the way lamp of the lower
+# platform at (79.5, 10.5) stood half in the left edge, the largest bright thing in the picture. Now
+# its globe and gallery are outside; the chimney is whole, its east face a ninth of the picture's
+# width inside the left edge, and the lamp on the lip's pedestal at (60, 18) is in the right half.
+# The lamp on the stair's south pedestal at (73, 10) is a second one and stays, whole, in the left
+# third before the chimney's foot. No further: at six degrees it touches the left edge and its
+# pedestal is mostly outside (cr2 #64341; it would leave only past sixteen, the chimney cut at twelve).
+V6 = dict(pos=(66.5, LOWER_GROUND + 3 + EYE, 6.5), look_at=(74.4, 8.0, 33.2))   # the eye at y -1.38
 # V7, the star hall from outside the door (A0 #365, 11-15), the entrance arch as its frame: the
 # orrery overhead, the mother clock on the pier straight ahead, the floor underfoot. The camera in
 # the doorway stays as a second one; the test scenes call it v7_in.
