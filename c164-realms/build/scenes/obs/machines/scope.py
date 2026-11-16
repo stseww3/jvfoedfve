@@ -28,11 +28,21 @@ What the other lines read (scene coordinates; give the origin to have it added):
     scope.BRIGHTNESS    the light every piece is shown in, whatever cell it hangs in
     scope.solid()       the cells build() fills with a barrier: the inside of the pier's iron
 
+    scope.FOLLOW, FOLLOW_PERIOD     degrees the mount turns to either side of where it was set,
+                        and the ticks one turn there and back takes
+    scope.followed(p, degrees)      where a point the mount carries (the eyepiece, a rung of the
+                        observer's ladder beside it) is when the mount has turned so far
+
 Every function takes version= ("a" or "b"; VERSION, the one that was picked, when left out).
 
-The pieces that move are models of their own, each anchored on the axis it turns about, so the
-motion line can swing them (plan 7.1): the tube about the declination axis, the axis piece (a) or
-the yoke (b) about the polar axis, the governor about its spindle. Here they stand still.
+What moves (plan/round2.md; motion/_kit does the moving). The driving clock turns the polar axis
+after the comet, and the observer brings it back: the axis piece (a) or the yoke (b), the tube and
+the lamp on its tail swing together about the polar axis, FOLLOW degrees to either side of where
+the tube was set, slowly, for ever. The governor on the clock spins about its spindle. The motion
+line turns a display entity about the spot it stands on, so the three that swing stand on the
+crossing of the axes, which is on the polar axis, and hold their models out from there. What is
+placed is the middle of the swing, and every number above is taken there. The tube does not turn
+about the declination axis: nothing here drives that.
 
 Light: the room is kept dark for observing. The one lamp is the small red one beside the
 eyepiece, hooded, its glass turned west on the tailpiece and away from the floor; the light it
@@ -55,6 +65,11 @@ from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
 from ..props import _kit as K
+
+try:
+    from ..motion import _kit as MK
+except ImportError:                     # the motion line is not in the tree: everything stands still
+    MK = None
 
 PREFIX = "mach_scope_"
 VERSION = "a"                   # the version build() places: the director's pick (11-16)
@@ -124,6 +139,14 @@ POLE = (0.0, math.sin(_L), -math.cos(_L))               # the polar axis: north 
 DEC = _unit(_cross(POLE, SIGHT))                        # the declination axis: east, up and south
 NORMAL = _cross(POLE, DEC)                              # square to both axes: east and down
 OVER = (math.sin(_E), math.cos(_E), 0.0)                # square to the tube in the vertical plane, upwards
+DIURNAL = _neg(POLE)                                    # the sky turns about this, right-handed: in the west it sinks, northwards
+
+# The mount follows the comet and comes back (plan/round2.md): it swings about the polar axis, the
+# way the sky goes first. 1.2 degrees take the eyepiece 0.12 blocks to either side and 0.08 up and
+# down; at 1.5 the tail would come down into the face of somebody who stands on the observing floor.
+FOLLOW = 1.2                    # degrees to either side of where the tube was set
+FOLLOW_PERIOD = 400             # ticks there and back: 20 seconds. Slow enough for cast iron, and the tail is
+#                                 seen to creep from the camera of V8: a pixel of the model in two seconds
 
 TUBE_LEN = 15.0
 TUBE_R = 0.75                   # the body; the objective's cell is CELL_R
@@ -190,6 +213,22 @@ def sweep(version=None, origin=(0, 0, 0)):
     spec = _SPEC[_version(version)]
     far = math.hypot(TUBE_LEN - spec["back"], spec["off"] + CELL_R)
     return crossing(version, origin), math.ceil(far * 10.0) / 10.0
+
+
+def _turned(v, axis, degrees):
+    """A direction turned about a unit axis, right-handed."""
+    a = math.radians(degrees)
+    c, s = math.cos(a), math.sin(a)
+    return _add(_add(_mul(v, c), _mul(_cross(axis, v), s)), _mul(axis, _dot(axis, v) * (1.0 - c)))
+
+
+def followed(p, degrees, version=None, origin=(0, 0, 0)):
+    """Where a point that turns with the polar axis is when the mount has turned `degrees` the
+    way the sky goes from where it was set; the other way when negative. p is given as the mount
+    stands when placed, in the coordinates the origin puts it in. The mount swings between
+    FOLLOW and -FOLLOW: FOLLOW * sin(2 pi t / FOLLOW_PERIOD), t ticks after the loop starts."""
+    c = crossing(version, origin)
+    return _add(c, _turned(_sub(p, c), DIURNAL, degrees))
 
 
 def v8(version=None, origin=(0, 0, 0)):
@@ -935,11 +974,30 @@ def _pose(frame):
     return -math.degrees(swing), (("z", math.degrees(roll)), ("x", math.degrees(tilt)))
 
 
-def _put(canvas, model, at, frame, scale, origin):
+def _put(canvas, model, at, frame, scale, origin, stand=None):
+    """Place a model with its anchor at `at`. stand: the spot the entity itself stands on, for a
+    piece that turns about an axis its anchor is not on: the entity is put on the axis and holds
+    its model out from there, so that a turn of the entity is a turn about the axis."""
     yaw, turns = _pose(frame)
+    nbt = M.display(model, yaw=yaw, turns=turns, scale=scale, brightness=BRIGHTNESS)
+    if stand is not None:
+        out = _sub(at, stand)
+        a = math.radians(float(nbt["Rotation"][0]))
+        c, s = math.cos(a), math.sin(a)
+        held = (out[0] * c + out[2] * s, out[1], -out[0] * s + out[2] * c)      # in the entity's own frame
+        tr = nbt["transformation"]
+        tr["translation"] = [M.Float(float(v) + h) for v, h in zip(tr["translation"], held)]
+        at = stand
     x, y, z = _add(at, origin)
-    canvas.add_entity(x, y, z, M.display(model, yaw=yaw, turns=turns, scale=scale, brightness=BRIGHTNESS))
+    canvas.add_entity(x, y, z, nbt)
     return 1
+
+
+def turning(version=None):
+    """The models that turn with the polar axis: the axis piece or the yoke, the tube, and the
+    lamp that is clamped on the tube's tail."""
+    version = _version(version)
+    return tuple(PREFIX + name for name in ("axis_a" if version == "a" else "yoke_b", f"tube_{version}", f"lamp_{version}"))
 
 
 def placed(version=None):
@@ -978,12 +1036,23 @@ def build(canvas, origin=(0, 0, 0), version=None, lamp=True):
 
     lamp=False leaves the red lamp's light source out (the lamp itself stays): a test scene that
     wants the room without it.
+
+    What moves is registered with the motion line as it is placed (the module's head): the pieces
+    the polar axis carries swing about it together, the governor spins. The lamp's light source
+    stays where the lamp hangs in the middle of the swing.
     """
     version = _version(version)
     built = _built()[0]
+    swung = turning(version) if MK is not None else ()
     n = 0
     for name, at, frame, scale in placed(version):
+        if name in swung:
+            n += _put(canvas, built[name], at, frame, scale, origin, stand=crossing(version))
+            MK.swing(canvas, DIURNAL, FOLLOW, FOLLOW_PERIOD)
+            continue
         n += _put(canvas, built[name], at, frame, scale, origin)
+        if MK is not None and name == PREFIX + "governor":
+            MK.spin(canvas, "y", MK.SCOPE_GOVERNOR_REV)
     for x, y, z in solid(version, origin):
         canvas.set(x, y, z, B.BARRIER)
     if lamp:
@@ -1235,6 +1304,14 @@ def report(version=None):
     spec = _SPEC[version]
     points = {name: list(_corners(built[name], at, frame, scale)) for name, at, frame, scale in placed(version)}
     everything = [p for ps in points.values() for p in ps]
+    # the two ends of the swing about the polar axis: the way the sky goes first, then the other
+    swung = turning(version)
+
+    def ends(ps):
+        return [[followed(p, way * FOLLOW, version) for p in ps] for way in (1.0, -1.0)]
+
+    still = [p for name, ps in points.items() if name not in swung for p in ps]
+    swings = [still + ps for ps in ends([p for name in swung for p in points[name]])]
     centre, radius = sweep(version)
     lines = [
         f"version {version}: the axes cross at {_rounded(crossing(version))}, the tube {spec['off']:.3f} off the "
@@ -1282,7 +1359,7 @@ def report(version=None):
     lines.append(f"  furthest corner {far:.2f} from the crossing")
     if far > radius + 0.05:
         problems.append(f"a corner is {far:.2f} from the crossing, outside the sweep of {radius}")
-    low = min(p[1] for p in everything)
+    low = min(p[1] for pose in [everything] + swings for p in pose)
     if low < CAP_Y - 1e-6:
         problems.append(f"a corner is at y {low:.2f}, below the cap")
     x0, z0, x1, z1 = S.PIER_CAP
@@ -1313,9 +1390,11 @@ def report(version=None):
         ps = [p for p in points[PREFIX + "axis_a"] if _dot(_sub(p, crossing("a")), DEC) < -A_WEIGHTS[0] / 16.0 + 0.01]
         lo = [min(p[i] for p in ps) for i in range(3)]
         hi = [max(p[i] for p in ps) for i in range(3)]
-        lines.append(f"  counterweight: x {lo[0]:.2f}..{hi[0]:.2f}, y from {lo[1]:.2f}, z {lo[2]:.2f}..{hi[2]:.2f}")
-        if lo[1] < 21.0:
-            problems.append(f"a: the counterweight comes down to y {lo[1]:.2f}, below 21")
+        down = min(p[1] for end in ends(ps) for p in end)
+        lines.append(f"  counterweight: x {lo[0]:.2f}..{hi[0]:.2f}, y from {lo[1]:.2f} (from {down:.2f} at the low end "
+                     f"of the swing), z {lo[2]:.2f}..{hi[2]:.2f}")
+        if min(lo[1], down) < 21.0:
+            problems.append(f"a: the counterweight comes down to y {min(lo[1], down):.2f}, below 21")
     fouled = fouling(version)
     if fouled:
         problems.append(f"turning about the polar axis the mount fouls what stands still at {len(fouled)} points, "
@@ -1324,14 +1403,15 @@ def report(version=None):
         lines.append("  turning about the polar axis the mount clears all that stands still")
     # where people stand: east of the railing on the observing floor, and the ring stair's exit
     rail = S.PIER_ENVELOPE[2] + 1.5
-    over = [p for p in everything if p[0] > rail]
-    if over:
-        low = min(p[1] for p in over)
-        lines.append(f"  lowest corner east of the railing: y {low:.2f} (a standing eye is at {FLOOR_Y + S.EYE:.2f})")
-        if low < FLOOR_Y + S.EYE - 0.15:
-            problems.append(f"a corner over the observing floor is at y {low:.2f}, in a standing person's face")
+    over = [[p[1] for p in pose if p[0] > rail] for pose in [everything] + swings]
+    if any(over):
+        low, down = min(over[0], default=math.inf), min(y for ys in over for y in ys)
+        lines.append(f"  lowest corner east of the railing: y {low:.2f}, {down:.2f} at the low end of the swing "
+                     f"(a standing eye is at {FLOOR_Y + S.EYE:.2f})")
+        if down < FLOOR_Y + S.EYE - 0.15:
+            problems.append(f"a corner over the observing floor is at y {down:.2f}, in a standing person's face")
     ex, ez = S.DOME_CENTRE[0], S.PIER_ENVELOPE[1] - 1
-    if any(ex <= p[0] <= ex + 1 and ez <= p[2] <= ez + 1 and p[1] < FLOOR_Y + 3 for p in everything):
+    if any(ex <= p[0] <= ex + 1 and ez <= p[2] <= ez + 1 and p[1] < FLOOR_Y + 3 for pose in [everything] + swings for p in pose):
         problems.append("a corner is in the three cells over the ring stair's exit")
     half = S.SLIT_W / 2.0
     stand = V8[version][0]
@@ -1340,9 +1420,23 @@ def report(version=None):
         problems.append(f"the camera of V8 at {stand} is not on the observing floor (x {x0}..{x1 + 1}, z {z0}..{z1 + 1})")
     if abs(stand[2] - AXIS[1]) > half - 0.3:
         problems.append(f"the camera of V8 at z {stand[2]} does not see the comet's head through the slit")
-    wide = [p for p in points[f"{PREFIX}tube_{version}"] if abs(p[2] - AXIS[1]) > half]
+    tube = points[f"{PREFIX}tube_{version}"]
+    wide = [p for pose in [tube] + ends(tube) for p in pose if abs(p[2] - AXIS[1]) > half]
     if wide:
         problems.append(f"the tube is wider than the slit: z {max(abs(p[2] - AXIS[1]) for p in wide):.2f} from the axis")
+    # the swing: how far the eyepiece goes, and that the tube and the lamp stay out of what stands still
+    e = eyepiece(version)
+    go = _sub(followed(e, FOLLOW, version), e)
+    lines.append(f"  the mount swings {FOLLOW} degrees to either side in {FOLLOW_PERIOD} ticks: the eyepiece goes "
+                 f"{math.hypot(go[0], go[2]):.3f} blocks across the floor (east {go[0]:+.3f}, south {go[2]:+.3f}) and "
+                 f"{go[1]:+.3f} up the way the sky goes, and as far the other way; the tube stays "
+                 f"{half - max(abs(p[2] - AXIS[1]) for pose in [tube] + ends(tube) for p in pose):.2f} inside the slit's edge")
+    name, at, frame, scale = placed(version)[0]
+    carried = [p for n in swung[1:] for p in points[n]]
+    for pose in ends(carried):
+        inside = int(_within(built[name], at, frame, scale, np.array(pose)).sum())
+        if inside > int(_within(built[name], at, frame, scale, np.array(carried)).sum()):
+            problems.append(f"at an end of the swing {inside} corners of the tube and the lamp are inside {name}")
     return lines, problems
 
 
