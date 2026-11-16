@@ -132,6 +132,18 @@ SLAT_DEG = 5.0                          # a slat of the curtain, in degrees alon
 RUNS = {"a": (1, 2, 1, 2, 1), "b": None}
 POSTS = 0                               # the gallery's posts: none (2 * GORES would be one over every seam and between)
 
+# The dome turns (round 2, plan/round2.md): a small arc to and fro about its axis, the slit never
+# off the comet. Every display entity that rides with the dome swings about the dome's axis (the
+# world's y through DOME_CENTRE) with motion/_kit's swing(): TURN_DEG to either side of where it
+# was placed, there and back in TURN_PERIOD ticks, in TURN_KEYS poses, phase 0. TURN_SIGN 1 sets
+# off counter-clockwise seen from above, -1 clockwise (swing() takes the period negative for
+# that). machines/dome reads these: its toothed ring and trucks turn by them, the upright shaft
+# and the hand wheel by their gear ratios, on the same chain. The shell's blocks stand still.
+TURN_DEG = 3.0
+TURN_PERIOD = 600
+TURN_KEYS = 8
+TURN_SIGN = 1
+
 
 def _polar(x, z):
     """Distance from the dome's centre column and the angle round it (0 = east, 90 = south)."""
