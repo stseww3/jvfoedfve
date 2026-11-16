@@ -294,10 +294,18 @@ SHEET = (9.8, 3.2, -14.0)                           # the form that is written a
 SPIKE = (13.2, -1.5)                                # the spike the day's slips are on, before the desk's right stationery drawer
 SLIPS = (10.0, -35.0, 50.0, -10.0, 25.0)            # degrees each slip on the spike is turned, the lowest first
 INKWELL = (5.0, -4.5)                               # at the back, between the two stationery drawers
-PAPER_COLOURS = dict(p=P.RAMPS["cream"][2], e=P.RAMPS["enamel"][1], i=P.RAMPS["cream"][0])  # props/paper's page a tone down: the
-#                                                     printed heading in chart blue, what is written a soft line. In the
-#                                                     lightest cream the forms were lighter in V10 than anything on the
-#                                                     instrument wall (cr4)
+PAPER_COLOURS = dict(p=P.RAMPS["old_copper"][1], e=P.RAMPS["enamel"][1], i=P.RAMPS["old_copper"][0])   # buff forms: the printed
+#                                                     heading in chart blue, what is written a soft line. Cream forms were
+#                                                     the lightest thing of V10 after the lamps, at the picture's edge (cr4);
+#                                                     a tone down they still stood at 0.53 in the game's picture, where the
+#                                                     instrument wall's mean is 0.11 (cr3, on the save A7). No cream is dark
+#                                                     enough there: by the window the look's sky and ambient light alone
+#                                                     show a surface at a third of its tone (artkit.gamelook.lightmap)
+FORMS_SHOWN = (10, 6)                               # the light the paper is drawn in (sky, block): its cell's own as the
+#                                                     picture of A7 gives it (10 from the window, 7 from the lamp), less one
+#                                                     of the lamp's: the page at 0.21 by that table, worked out by hand, and
+#                                                     under the 0.25 cr3 asks for with a tenth to spare. Only how this one
+#                                                     model is drawn: no source of the room is changed for it
 # the message desk's reading lamp, on the desk at the sitter's left hand (px on the desk top, as above)
 READING = (-12.0, 0.5, 45.0)                        # where its foot stands (clear of the stationery drawer behind it and of the log
 #                                                     book beside it), and the degrees its arm is turned from the sitter towards the middle of the desk
@@ -347,6 +355,19 @@ COATS_LAMP = (9, 2)         # a bracket lamp east of the door, the fellow of the
 #                             it 5 at the least, in the corner cell. V10 does not see it
 OVER = 20 * PX              # a bracket's arm above the top of what it hangs over: the shade ends half a block over it, a lamp
 #                             over a clock and not a hat on it (at 12 px the pale inside of the shade sat on the dial's rim)
+# Every bracket lamp of the room has an amber glass in the mouth of its shade (the room's own model, hung on the lamp:
+# props/lamps' bracket is not changed). The mouths of their shades are at 10.8, over the eye, and from the room one
+# looks up into them: the lit white inside of the shade over the world clocks stood at 0.81 to 0.91 in V10, among the
+# lightest hundredth of the picture and nowhere near the instrument wall (cr3 on the save A7). The glass is the
+# darkest filament amber, 0.47, the same from every side; the drop lights over the work keep their bare bulbs.
+# px in the frame of props/lamps' bracket B (its anchor on the wall, at the underside of the arm):
+SHADE_AXIS = 10.75          # the axis of its shade, out from the wall
+SHADE_MOUTH = -8.0          # the underside of the shade's rolled rim (7.0 round); the lit inside hangs 0.2 under it, 6.25 round
+GLASS = (6.75, 0.45)        # the dish: its radius, its depth under the rim
+BOSS = (1.5, 0.45)          # the boss in its middle, over the tip of the bulb (which ends 0.75 under the rim): radius, depth under the dish
+assert abs(lamps.SPEC["bracket_" + LAMPS]["light"][0]) * 16.0 < 0.5 and abs(lamps.SPEC["bracket_" + LAMPS]["light"][2] * 16.0 - SHADE_AXIS) < 0.5 \
+    and SHADE_MOUTH < lamps.SPEC["bracket_" + LAMPS]["light"][1] * 16.0 < SHADE_MOUTH + 1.5, \
+    "props/lamps has moved the shade of its bracket lamp: the room's amber glass hangs in its mouth"
 CONSOLE_HANG = FEET + 3.5   # 10.5: where the drop lights of the console end and their lamps hang; the shades end at 9.56, a block
 #                             and a half over the shelf and a block over the eye: from the room one looks at the blue of the shade,
 #                             not into its lit inside
@@ -598,12 +619,13 @@ def _mug():
 def _forms():
     """What lies on the message desk besides the log: a pad of message forms with the pencil across
     it (a message begun), a written form beside it, the spike with the day's slips, an inkwell. The
-    forms are props/paper's page, cream with a heading in chart blue. They are the light things
-    under the desk's lamp: the lamp is seen to light something. Anchor: the middle of the desk top;
-    +x is the sitter's right, +z towards the sitter."""
+    forms are buff paper with a heading in chart blue, the pencil a blue one. They are the light
+    things under the desk's lamp, lighter than the desk and darker than anything lit on the
+    instrument wall. Anchor: the middle of the desk top; +x is the sitter's right, +z towards the
+    sitter."""
     name = PREFIX + "forms"
     wide, deep = FORM[0] / 2.0, FORM[1] / 2.0
-    edge, top = P.mat("cream", base=1), K.flat("cream", 2)
+    edge, top = K.flat("old_copper", 0), K.flat("old_copper", 1)
 
     def face(tag, rows):
         return Sprite(f"{name}_{tag}", rows, PAPER_COLOURS)
@@ -612,7 +634,8 @@ def _forms():
     x, z, turn = PAD
     m.box((x - wide, 0.0, z - deep), (x + wide, 1.0, z + deep), edge, rot=("y", turn, (x, 0.0, z)), skip="d",
           faces={"u": face("pad", ["eeee", "pppp", "iiip", "pppp", "iipp", "pppp"])})
-    m.beam((x - 1.6, 1.25, z + 2.2), (x + 2.6, 1.25, z - 1.2), 0.5, 0.5, K.flat("brass", 3))        # the pencil
+    m.beam((x - 1.6, 1.25, z + 2.2), (x + 2.6, 1.25, z - 1.2), 0.5, 0.5, K.flat("enamel", 3))       # the pencil, a blue one: a
+    #                                                                                                 brass one is lighter than the buff page
     x, z, turn = SHEET
     m.box((x - wide, 0.0, z - deep), (x + wide, 0.15, z + deep), top, rot=("y", turn, (x, 0.0, z)), skip="d",
           faces={"u": face("sheet", ["eeee", "pppp", "iiii", "iiip", "pppp", "ppii"])})
@@ -622,7 +645,7 @@ def _forms():
     for i, turn in enumerate(SLIPS):
         y = 0.6 + 0.45 * i
         last = i == len(SLIPS) - 1
-        m.box((x - 1.5, y, z - 1.0), (x + 1.5, y + 0.2, z + 1.0), K.flat("cream", 2 if i % 2 == 0 else 1),
+        m.box((x - 1.5, y, z - 1.0), (x + 1.5, y + 0.2, z + 1.0), K.flat("old_copper", 1 if i % 2 == 0 else 0),
               rot=("y", turn, (x, y, z)), faces={"u": face("slip", ["eee", "iip"])} if last else None)
     x, z = INKWELL
     m.box((x - 1.0, 0.0, z - 1.0), (x + 1.0, 1.5, z + 1.0), K.flat("enamel", 0), skip="d")
@@ -635,8 +658,11 @@ def _desk_lamp():
     stem and arm, a weighted iron foot. A low lamp: its highest point is READING_TOP over the desk
     top, under the eye of whoever stands in the room, who looks down on the blue of its cone and
     never into its lit inside. The drop light that hung over this desk showed V10 the inside of its
-    shade, the lightest thing in that picture, at the picture's edge (cr4, 11-16). Anchor: the
-    middle of its foot; the arm reaches to +z."""
+    shade, the lightest thing in that picture, at the picture's edge (cr4, 11-16). The cone ends
+    in a lip of its own blue, a pixel deep, and the lit inside sits up in that lip: with the pale
+    rolled rim of the drop lights, and the lit glass hung under it, V10 had a white ring at the
+    mouth of the shade, 0.83 at the edge of the glass (cr3 on the save A7). Anchor: the middle of
+    its foot; the arm reaches to +z."""
     m = M.Model(PREFIX + "desk_lamp")
     c = (0.0, READING_ARM)
     m.tube("y", (0.0, 0.0), 0.0, 1.0, 2.5, K.IRON)                                              # the weighted foot
@@ -645,9 +671,21 @@ def _desk_lamp():
     m.beam((0.0, 9.75, 0.0), (0.0, READING_TOP - 0.5, READING_ARM), 1.0, 1.0, K.BRASS)          # the arm, up to the lampholder
     m.tube("y", c, READING_TOP - 1.5, READING_TOP, 1.0, K.BRASS_D)                              # the lampholder
     m.taper("y", c, READING_TOP - 1.0, 7.5, 1.25, 4.0, K.ENAMEL, steps=4)                       # the cone
-    m.tube("y", c, 6.75, 7.5, 4.0, K.flat("cream", 2))                                          # its rolled rim
-    K.glass_prism(m, "y", c, 6.65, 6.75, 3.25, K.flat("opal", 1))                               # the lit inside, seen from the chair
-    K.glass_prism(m, "y", c, 6.55, 6.65, 2.0, K.flat("opal", 3))
+    m.ring("y", (c[0], 7.0, c[1]), 3.75, 0.5, 1.0, K.flat("enamel", 3), sides=8)                # its lip, 6.5..7.5, hollow: 3.5 inside
+    K.glass_prism(m, "y", c, 7.2, 7.3, 3.25, K.flat("opal", 1))                                 # the lit inside, up in the lip: seen
+    K.glass_prism(m, "y", c, 7.1, 7.2, 2.0, K.flat("opal", 3))                                  # from under the shade and from nowhere else
+    return m
+
+
+def _lamp_glass():
+    """The amber glass in the mouth of a bracket lamp's shade (props/lamps' bracket B): a shallow
+    dish under the rolled rim, a boss in its middle over the tip of the bulb. It takes in the lit
+    white inside of the shade and the bulb's tip, so that from below and from the side one sees
+    amber glass and no white. Anchor: the lamp's own, on the wall at the underside of its arm."""
+    m = M.Model(PREFIX + "lamp_glass")
+    c, amber = (0.0, SHADE_AXIS), K.flat("glow", 0)
+    K.glass_prism(m, "y", c, SHADE_MOUTH - GLASS[1], SHADE_MOUTH, GLASS[0], amber)
+    K.glass_prism(m, "y", c, SHADE_MOUTH - GLASS[1] - BOSS[1], SHADE_MOUTH - GLASS[1], BOSS[0], amber)
     return m
 
 
@@ -712,14 +750,20 @@ def _models():
     out[PREFIX + "forms"] = _forms()
     out[PREFIX + "jacket"] = _jacket()
     out[PREFIX + "desk_lamp"] = _desk_lamp()
+    out[PREFIX + "lamp_glass"] = _lamp_glass()
+    # the flats of an eight-sided piece stand between two axes, and the game lights such a face as the one or
+    # the other by the last bit of a float: K.settle turns each such piece a tenth of a degree, the same way in all
+    out = {name: K.settle(m) for name, m in out.items()}
+    assert not any(K.unsettled(m) for m in out.values()), "a round piece of the room's own still has flats between two axes"
     return out
 
 
 def models():
     """The room's own models: the five world clocks, the patch cords of the two jack fields, the
     boards at the backs of the two recesses, the chronometer of the rating bench, the mug on the
-    console, the paper of the message desk and the jacket over its chair, and what the parts
-    written beside the room (PARTS) bring. Its lamps are props/lamps', its machines machines/recorders', the rest the packages'
+    console, the paper of the message desk, its reading lamp and the jacket over its chair, the
+    amber glass of the bracket lamps, and what the parts written beside the room (PARTS) bring.
+    Its other lamps are props/lamps', its machines machines/recorders', the rest the packages'
     named in PIECES."""
     out = dict(_models())
     for name in PARTS:
@@ -818,12 +862,15 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
 
     def lamp(kind, pos, ask, why, at, **how):
         """A lamp of props/lamps. Its light is offered in the cell `at` (the room's own cells):
-        under its shade, not at its bulb."""
+        under its shade, not at its bulb. A bracket lamp has the room's amber glass in its shade."""
         level, rank = ask
         cell = (ox + at[0], oy + at[1], oz + at[2])
         lights.append((cell, level, f"{NAME}:{why}"))
         _offer(c, cell, level, f"{NAME}:{why}", rank)
-        return lamps.place(c, kind, pos, origin=origin, light=False, version=LAMPS, **how)
+        placed = lamps.place(c, kind, pos, origin=origin, light=False, version=LAMPS, **how)
+        if kind == "bracket":
+            placed += K.put(c, _models()[PREFIX + "lamp_glass"], pos, mount="wall", origin=origin, **how)
+        return placed
 
     def drop(x, z, top, hang, ask, why, at):
         """A drop light: a cord from where it is fixed, at the height `top`, down to `hang`, and a
@@ -926,7 +973,7 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
     for along, out, twist in CHRONOMETERS:
         dx, _, dz = K.turn(bench_yaw, (along * PX, 0.0, out * PX))
         n += K.put(c, own[PREFIX + "chronometer"], (BENCH_X + dx, desk_top, BENCH_Z + dz), yaw=bench_yaw + twist, origin=origin)
-    n += K.put(c, own[PREFIX + "forms"], (DESK_X, desk_top, DESK_Z), facing="west", origin=origin)
+    n += K.put(c, own[PREFIX + "forms"], (DESK_X, desk_top, DESK_Z), facing="west", origin=origin, brightness=FORMS_SHOWN)
     if theirs("furniture") is not None:             # the jacket hangs on the chair, so only where the chair is
         n += K.put(c, own[PREFIX + "jacket"], DESK_CHAIR[0], yaw=DESK_CHAIR[1], origin=origin)
 
