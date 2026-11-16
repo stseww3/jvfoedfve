@@ -128,3 +128,10 @@ def walk_light(full=None):
     the head's}."""
     full = full if full is not None else _levels(True)[0]
     return {(x, z): max(full.get((x, room.FEET, z), 0), full.get((x, room.FEET + 1, z), 0)) for x, z in room.walk()}
+
+
+def way_light(full=None):
+    """The light in every cell of the way up, from inside the door to the hatch: {cell: level}. The
+    door's lamp outside is the light line's and not in this scene: the first cell has more with it."""
+    full = full if full is not None else _levels(True)[0]
+    return {cell: full.get(cell, 0) for cell in room.way()}

@@ -6,7 +6,7 @@ import os
 from scenes import obs_int_clockroom_bare as twin
 from scenes.obs.main import tower
 
-from . import _levels, outside_light, room, shots, walk_light
+from . import _levels, outside_light, room, shots, walk_light, way_light
 
 
 def write(folder, rows):
@@ -33,6 +33,9 @@ def main():
     low = {column: v for column, v in walk.items() if v < room.WALK_LIGHT}
     print(f"light on the walk: {len(walk)} places, the least {min(walk.values())}, the most {max(walk.values())};",
           "under %d: %s" % (room.WALK_LIGHT, " ".join(f"{c}={v}" for c, v in sorted(low.items())) or "none"))
+    way = way_light(full)
+    print(f"light on the way up: {len(way)} cells, the least {min(way.values())};",
+          " ".join(f"{c}={v}" for c, v in way.items()))
     glass = {f.name: [(x, y, z) for y in range(tower.SLIT_Y[0], tower.SLIT_Y[1] + 1)] for f in tower.FACES
              for x, z in [f.cell(tower.MID, 1)]}
     for name, cells in glass.items():
