@@ -69,21 +69,38 @@ def cards():
 
 
 def merges():
-    """{package: [(time, commit, subject)]} of the merges of packages into the assembly, third shift."""
-    out = {}
+    """The merges of packages into the assembly in the third shift, and the merges taken out again.
+
+    ({package: [(time, commit, subject)]}, {package: [(time, the delivered commit)]}); a merge that
+    was reverted is not in the first."""
+    found_merges, reverted = [], {}
     log = git("log", "--format=%H %ct %s", "--since=%d" % SHIFT3, ASM).stdout
     for line in log.split("\n"):
         parts = line.split(" ", 2)
         if len(parts) < 3:
             continue
         h, ct, subject = parts[0], int(parts[1]), parts[2]
+        m = re.match(r"^c164-[a-z0-9]+: revert the merge of (.*)$", subject)
+        if m:
+            found = PKG.search(m.group(1))
+            commit = re.search(r"\b([0-9a-f]{7,40})\b", m.group(1)[found.end():]) if found else None
+            if found and commit:
+                reverted.setdefault("%s/%s" % found.groups(), []).append((ct, commit.group(1)))
+            continue
         m = re.match(r"^c164-[a-z0-9]+: merge (.*)$", subject)
         if not m or re.match(r"(the )?assembly", m.group(1)):
             continue
         found = PKG.search(m.group(1))
         if found:
-            out.setdefault("%s/%s" % found.groups(), []).append((ct, h[:8], subject))
-    return out
+            commit = re.search(r"\b([0-9a-f]{7,40})\b", m.group(1)[found.end():])
+            found_merges.append(("%s/%s" % found.groups(), ct, h[:8], subject, commit.group(1) if commit else ""))
+    out = {}
+    for key, ct, h, subject, commit in found_merges:
+        gone = any(commit and (commit.startswith(c) or c.startswith(commit)) and rt >= ct
+                   for rt, c in reverted.get(key, []))
+        if not gone:
+            out.setdefault(key, []).append((ct, h, subject))
+    return out, reverted
 
 
 def gates():
@@ -132,11 +149,17 @@ def main():
             if r.returncode == 0:
                 break
             time.sleep(3)
-    cs, mg, gt = cards(), merges(), gates()
+    cs, (mg, reverted), gt = cards(), merges(), gates()
     now = int(time.time())
 
+    def returned(c):
+        """Its newest merge was taken out again and nothing of it went in since."""
+        last_revert = max((rt for rt, _ in reverted.get(c["key"], [])), default=0)
+        last_merge = max((ct for ct, _, _ in mg.get(c["key"], [])), default=0)
+        return last_revert > last_merge
+
     def is_in(c):
-        return c["state"] in IN_STATES or c["key"] in mg
+        return not returned(c) and (c["state"] in IN_STATES or c["key"] in mg)
 
     inside = [c for c in cs if is_in(c)]
     unclaimed = [c for c in cs if not is_in(c) and not c["who"]]
@@ -167,12 +190,14 @@ def main():
         n, refs = own_commits(code)
         new.append((code, n, refs))
 
-    missing = {"没跑关口": [], "关口没过": [], "新人刚开": [], "没有关口的卡": []}
+    missing = {"被退回等重交": [], "没跑关口": [], "关口没过": [], "新人刚开": [], "没有关口的卡": []}
     waiting = []
     for c in work:
         runs = gt.get(c["key"], [])
         label = "%s（%s）" % (c["who"], c["key"].split("/", 1)[1])
-        if c["key"] in NO_GATE:
+        if returned(c):
+            missing["被退回等重交"].append(label)
+        elif c["key"] in NO_GATE:
             missing["没有关口的卡"].append(label)
         elif any(r[2] == "PASS" for r in runs):
             waiting.append(label)
@@ -183,9 +208,14 @@ def main():
         else:
             missing["没跑关口"].append(label)
 
-    print("【五行 %s】" % hm(now))
-    print("1. 卡 %d 张（66 加新开 %d）：进总装 %d，在做 %d，没人领 %d。"
-          % (len(cs), len(EXTRA), len(inside), len(work), len(unclaimed)))
+    try:
+        load = open("/proc/loadavg").read().split()[0]
+    except OSError:
+        load = "?"
+    print("【五行 %s｜合用机负载 %s（4 核）】" % (hm(now), load))
+    back = sum(1 for c in work if returned(c))
+    print("1. 卡 %d 张（66 加新开 %d）：进总装 %d，在做 %d%s，没人领 %d。"
+          % (len(cs), len(EXTRA), len(inside), len(work), "（其中退回 %d）" % back if back else "", len(unclaimed)))
     print("2. 08:20 快车道以后：新交付 %d 件（关口 PASS），合进 %d 件。" % (len(passes), len(merged)))
     print("3. 室内：" + "；".join(rooms) + "。")
     print("4. 新人有提交的：%s；还没有：%s。"
