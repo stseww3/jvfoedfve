@@ -24,11 +24,20 @@ What stands where (plan cells; north is -z, one comes in at the south end and lo
   gantries          under each of the four beams a timber frame over each bank, its posts the
                     stand's own; on its lintel porcelain insulators carry the bus bars
   bus bars          a pair of copper bars over each bank at 2.5 blocks, from the last jar at the
-                    south end north to the board (machines-side piece; a plain bar stands in here
-                    until it is in the tree)
-  switchboard       on the north wall at the end of the aisle, three slabs of slate standing off
-                    the wall, the middle one as wide as the aisle with the voltmeter and the
-                    ammeter on it (a stand-in here: the board is c346's piece)
+                    south end north to the board (machines/batteryboard lays them, in lengths
+                    from gantry to gantry)
+  switchboard       before the north wall at the end of the aisle, three slabs of slate on iron
+                    legs, a wing before each bank: meters, knife switches, the change-over switch
+                    for charging and discharging; the battery ammeter's pointer swings
+                    (machines/batteryboard, c346)
+  cable             from the power house: lead-sheathed, out of the south wall behind the star
+                    hall's board, along the top of the dado on the south, west and north walls
+                    on porcelain cleats and in behind the board's west wing. The two feeders to
+                    the time room go up behind the board in conduits (the board's risers)
+  small pieces      three carboys of distilled water in their crates by the west wall; the
+                    hydrometer's shelf under the last east window; a rubber apron and gloves on
+                    pegs and the record board on the south wall by the door; an enamel sign on
+                    the second beam over the aisle: no naked flame, a figure and nothing written
   window cases      the base storey's windows are dark, barred ones and may not show a light
                     outside. A whole block of iron louvre stands inside every window cell (the
                     first cell behind the glass, y 3..4): no light of the room reaches the glass
@@ -39,9 +48,9 @@ What stands where (plan cells; north is -z, one comes in at the south end and lo
                     north wall (z -24), where the two feeders go up at x 6 and x 9
 
 Light: cold ground, warm points. Three caged lamps and nothing else: two over the aisle on the
-south faces of the first and the third beam, one on the north wall over the board. A caged lamp
-throws its light down, so its source is offered under it, in the aisle at the height of the jars
-(LAMPS). The models of the room are held at the height of the upper tier (HELD), so that a jar
+south faces of the first and the third beam, one over the board on the bed of the time room's
+cable trough. A caged lamp throws its light down, so its light is offered under it, in the aisle
+between the jars (LAMPS). The models of the room are held at the height of the upper tier (HELD), so that a jar
 takes the light of the row its glass stands in and not that of the floor.
 
 build() is what the master scene calls: nothing while MOVED_IN is off. The box test scene,
@@ -56,6 +65,7 @@ from artkit.pixelart import Sprite
 from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
+from ..machines import batteryboard as BB
 from ..main import _plan as MP
 from ..main import shell
 from ..props import _kit as K
@@ -95,28 +105,43 @@ POST = (6.0, 8.0)                                   # px from the middle of a ro
 GANTRY_TOP = 37.0                                   # px above the floor: the top of a gantry's lintel
 BAR_Y = (40.0, 44.0)                                # px above the floor: a bus bar, on three pixels of porcelain
 BAR_OFF = 4.0                                       # px either side of the middle of a bank: its two bars
-BAR_Z = (NORTH + 6 * PX, BANK_Z[1] + 1 - 1 * PX)    # from the face of the board to over the last jar
+BAR_SOUTH = BANK_Z[1] + 1 - 1 * PX                  # the bars end over the last jar
 
-# ---- the switchboard (a stand-in: the board is the machines line's)
-BOARD = ((5.0, 7.0), (7.0, 9.0), (9.0, 11.0))       # blocks along the north wall: its three slabs; a wing faces a bank
-BOARD_Y = (1.0, 4.0)                                # blocks above the floor: the foot and the head of a slab
-BOARD_OFF = (6.0, 10.0)                             # px off the wall: the back and the face of a slab (z -24.375)
-BOARD_LIGHT = (8, FEET + 4, Z0 + 1)                 # (8, 4, -24): the cell the board's lamp lights; the board's own
-#                                                     pieces are held one row under it (machines/batteryboard, c346)
-FEEDS = (6, 9)                                      # the columns the two feeders go up in: under the time room's two risers
+# ---- the switchboard and the bars: machines/batteryboard's (c346). It stands before the north wall, x 5..11,
+# y 1..4, a wing before each bank; its pieces take the light of the one cell BB.STAND is in
+BOARD_LIGHT = (8, FEET + 4, Z0 + 1)                 # (8, 4, -24): the cell over that one, where the board's lamp shines
 
 # ---- light: what the room asks of the light line. Caged lamps are third rank (5..8)
 LAMP_VERSION = "a"
 TROUGH_Z = Z0 + 1                                   # -24: the time room's cable trough hangs in the last row along this line
+LAMP_Y = TOP + 5 * PX                               # a caged lamp is as high as a beam: its foot on the beam's lower edge
+
+
+def _pool(z):
+    """What a lamp over the aisle throws down: under it, between the jars, as much as a source
+    beside a machine may give (8); a row either way and at the height of the bars a step less."""
+    return tuple(((x, FEET + y, z + dz), level) for x in AISLE for y, dz, level in ((1, 0, 8), (1, -1, 7), (1, 1, 7), (3, 0, 7)))
+
+
 LAMPS = (
-    # where the lamp is fixed and the way that face looks; the cells its light is offered in; the level
-    ((AXIS_X, TOP + 0.5, BEAM_Z[-1] + 1.0), "south", ((AISLE[0], FEET + 1, BEAM_Z[-1] + 1), (AISLE[1], FEET + 1, BEAM_Z[-1] + 1)), 8,
-     "aisle south"),                                                            # on the first beam, over the way in
-    ((AXIS_X, TOP + 0.5, BEAM_Z[1] + 1.0), "south", ((AISLE[0], FEET + 1, BEAM_Z[1] + 1), (AISLE[1], FEET + 1, BEAM_Z[1] + 1)), 7,
-     "aisle north"),                                                            # on the third beam
-    ((AXIS_X, TOP + 0.5, TROUGH_Z + 1.0), "south", (BOARD_LIGHT,), 8, "board"),  # on the trough's face, over the board
-)
+    # where the lamp is fixed and the way that face looks; the cells its light is offered in, each with its level
+    ((AXIS_X, LAMP_Y, BEAM_Z[-1] + 1.0), "south", _pool(BEAM_Z[-1] + 1), "aisle south"),    # on the first beam, over the way in
+    ((AXIS_X, LAMP_Y, BEAM_Z[1] + 1.0), "south", _pool(BEAM_Z[1] + 1), "aisle north"),      # on the third beam
+    ((AXIS_X, LAMP_Y, TROUGH_Z + 1.0), "south", tuple(((x, BOARD_LIGHT[1], BOARD_LIGHT[2]), 8) for x in AISLE), "board"),
+)                                                                                           # on the trough's bed, over the board
 CAGE_RANK = 3
+
+# ---- the cable from the power house and the small pieces
+CABLE_OUT = (BB.FEED_IN[2] - NORTH) * 16.0          # 3 px off the wall: the cable's middle line, as the board takes it in
+CABLE_R = 1.5                                       # px: its radius, lead sheath and all
+CABLE_Y = BB.FEED_IN[1]                             # 2.125: it runs along the top of the dado
+CABLE_IN = (5.5, FEET + 1.5)                        # where it comes through the south wall, behind the star hall's board
+CABLE_END = BB.FEED_IN[0] + 0.5                     # x: it ends behind the board's west wing, between slab and wall
+SIGN_AT = (AXIS_X, TOP + 0.5, BEAM_Z[2] + 1.0)      # the enamel sign: on the second beam, over the aisle
+CARBOYS = ((WEST + 0.55, Z1 + 0.45), (WEST + 0.55, Z1 - 0.5), (WEST + 0.55, Z1 - 1.45))   # along the blind west wall
+SHELF_AT = (EAST, FEET + 1.5, Z1 - 0.5)             # the hydrometer's shelf: on the east wall, under the last window
+APRON_AT = (EAST - 2.5, FEET + 2.5, SOUTH)          # the pegs with the apron and the gloves: south wall, east of the door
+RECORD_AT = (HALL_DOOR[0] + 2.25, FEET + 1.75, SOUTH)   # the record board: beside the door, where one leaves
 
 # ---- a jar, drawn pixel for pixel. Clear glass is left out (props/_kit.pane): over the acid one looks
 # through the jar, and what says glass is its rim, one lit corner and the line of the acid's level
@@ -166,8 +191,43 @@ assert len(JAR_SIDE) - JAR_SIDE.index("hhhhhh") == LEVEL, "the acid's surface li
 LEAD = K.flat("iron", 5)
 WOOD = P.mat("dark_wood", base=3)
 WOOD_D = P.mat("dark_wood", base=1)
+DEAL = P.mat("dark_wood", base=4)
 CHINA = P.mat("porcelain")
 CHINA_D = P.mat("porcelain", base=2)
+SHEATH = K.flat("iron", 2)                          # the cable's lead sheath
+RUBBER = K.flat("iron", 0)                          # the apron
+RUBBER_R = K.flat("old_copper", 1)                  # the gloves: red rubber
+
+INK = dict(c=P.RAMPS["cream"][3], s=P.RAMPS["cream"][1], b=P.RAMPS["enamel"][2], i=P.RAMPS["iron"][1],
+           e=P.RAMPS["iron"][1], w=P.RAMPS["cream"][3], k=P.RAMPS["iron"][0], r=P.RAMPS["signal"][2])
+RECORD = (                              # the sheet on the record board: a heading strip, rows of figures as strokes
+    "cccccccc",
+    "cbbbbbbc",
+    "cccccccc",
+    "ciiciiic",
+    "cccccccc",
+    "ciciicic",
+    "cccccccc",
+    "ciiicicc",
+    "cccccccc",
+    "cicciiic",
+    "cccccccc",
+    "ssssssss",
+)
+SIGN = (                                # no naked flame: a flame, struck out. A figure, nothing written
+    "eeeeeeeeeeee",
+    "ewwwwwwwwwre",
+    "ewwwwkwwwrre",
+    "ewwwwkkwrrwe",
+    "ewwwkkkrrwwe",
+    "ewwwkkrrkwwe",
+    "ewwkkrrkkwwe",
+    "ewwkrrkkkwwe",
+    "ewwrrkkkkwwe",
+    "ewrrwkkkwwwe",
+    "errwwwwwwwwe",
+    "eeeeeeeeeeee",
+)
 
 
 def _jar(m, name, foot, along):
@@ -222,63 +282,130 @@ def _gantry():
     return m
 
 
-def _bar():
-    """A bus bar: a flat copper bar on edge, 48 long along +z from its anchor, to be stretched from
-    the board to the last jar (artkit.models.between). One flat tone, so stretching smears nothing."""
-    m = M.Model(PREFIX + "bar")
-    m.box((-0.5, 0.0, 0.0), (0.5, BAR_Y[1] - BAR_Y[0], 48.0), K.flat("old_copper", 2))
+def _cable():
+    """The cable from the power house: lead-sheathed, 48 long along +z from its anchor, to be
+    stretched from point to point (artkit.models.between)."""
+    m = M.Model(PREFIX + "cable")
+    m.tube("z", (0.0, 0.0), 0.0, 48.0, CABLE_R, SHEATH, sides=8)
     return m
 
 
-def board_name(i):
-    return f"{PREFIX}board_{i}"
-
-
-def _board(i):
-    """A slab of the switchboard, a stand-in: slate standing off the wall, one meter on it, a cream
-    dial in a brass rim, the middle slab's the largest. Anchor: the point on the wall behind the
-    middle of the slab's foot."""
-    x0, x1 = BOARD[i]
-    half = (x1 - x0) * 8.0
-    high = (BOARD_Y[1] - BOARD_Y[0]) * 16.0
-    m = M.Model(board_name(i))
-    m.box((-half, 0.0, BOARD_OFF[0]), (half, high, BOARD_OFF[1]), P.mat("slate"))
-    if i == 1:
-        m.tube("z", (0.0, high - 12.0), BOARD_OFF[1], BOARD_OFF[1] + 1.5, 5.5, K.BRASS, sides=12, cap=K.flat("cream", 3))
-    else:
-        m.tube("z", (0.0, high - 10.0), BOARD_OFF[1], BOARD_OFF[1] + 1.0, 3.5, K.BRASS_D, sides=12, cap=K.flat("cream", 2))
+def _cleat():
+    """A porcelain cleat that holds the cable to the wall. Anchor: the point of the wall behind
+    the cable's middle line; +z out of the wall."""
+    m = M.Model(PREFIX + "cleat")
+    m.box((-2.0, -3.0, 0.0), (2.0, 3.0, 0.75), K.IRON_D)
+    m.box((-1.5, -2.5, 0.75), (1.5, 2.5, CABLE_OUT + CABLE_R + 0.5), CHINA)
+    m.box((-0.5, -0.5, CABLE_OUT + CABLE_R + 0.5), (0.5, 0.5, CABLE_OUT + CABLE_R + 1.0), K.BRASS)
     return m
 
 
-def _legs():
-    """The iron legs a slab of the stand-in board stands on, from the floor to its foot, with the
-    stays that hold it off the wall. Anchor: the point at the foot of the wall behind the middle
-    of the slab."""
-    high = BOARD_Y[0] * 16.0
-    m = M.Model(PREFIX + "board_legs")
-    for x in (-13.0, 11.0):
-        m.box((x, 0.0, BOARD_OFF[0]), (x + 2.0, high, BOARD_OFF[1]), K.IRON_D, grain="y")
-        m.box((x, high - 2.0, 0.0), (x + 2.0, high, BOARD_OFF[0]), K.IRON_D, grain="z")
+def _entry():
+    """Where the cable comes out of the wall: a flange and the gland it leaves by. Anchor: the
+    point of the wall on its middle line."""
+    m = M.Model(PREFIX + "entry")
+    m.tube("z", (0.0, 0.0), 0.0, 1.0, CABLE_R + 2.0, K.IRON, sides=8)
+    m.tube("z", (0.0, 0.0), 1.0, CABLE_OUT + CABLE_R, CABLE_R + 0.5, K.IRON_D, sides=8)
+    return m
+
+
+def _carboy():
+    """A carboy of distilled water: a glass balloon in a crate of raw deal, a cork in its neck.
+    Anchor: the middle of its foot."""
+    m = M.Model(PREFIX + "carboy")
+    for x in (-6.0, 5.0):
+        for z in (-6.0, 5.0):
+            m.box((x, 0.0, z), (x + 1.0, 9.0, z + 1.0), WOOD_D, grain="y")
+    for y in (1.0, 5.0):
+        m.box((-5.0, y, -6.0), (5.0, y + 3.0, -5.5), DEAL, grain="x")
+        m.box((-5.0, y, 5.5), (5.0, y + 3.0, 6.0), DEAL, grain="x")
+        m.box((-6.0, y, -5.0), (-5.5, y + 3.0, 5.0), DEAL, grain="z")
+        m.box((5.5, y, -5.0), (6.0, y + 3.0, 5.0), DEAL, grain="z")
+    m.box((-5.5, 0.0, -5.5), (5.5, 1.0, 5.5), DEAL, grain="x")
+    K.glass_ball(m, (0.0, 7.0, 0.0), 5.0, [(-1.0, 0.3, 3, K.flat("night_glass", 1)), (0.3, 0.7, 1, K.flat("night_glass", 2)),
+                                           (0.7, 1.0, 1, K.flat("night_glass", 3))], emit=0)
+    m.tube("y", (0.0, 0.0), 11.5, 14.0, 1.25, K.flat("night_glass", 2), sides=8)
+    m.tube("y", (0.0, 0.0), 14.0, 15.0, 1.0, DEAL, sides=8)
+    return m
+
+
+def _shelf():
+    """The shelf of the hydrometer: its tall glass with the float standing in the acid, two
+    measuring jugs, a stoneware bottle. Anchor: the point of the wall behind the middle of the
+    board's top; +z out of the wall."""
+    m = M.Model(PREFIX + "shelf")
+    m.box((-10.0, -1.0, 0.0), (10.0, 0.0, 5.0), WOOD, grain="x")
+    for x in (-8.0, 7.0):
+        m.box((x, -5.0, 0.0), (x + 1.0, -1.0, 1.0), K.IRON_D, grain="y")
+        m.box((x, -2.0, 1.0), (x + 1.0, -1.0, 4.0), K.IRON_D, grain="z")
+    m.tube("y", (-6.0, 2.5), 0.0, 6.0, 1.5, K.flat("night_glass", 1), sides=8)
+    m.tube("y", (-6.0, 2.5), 6.0, 8.0, 1.5, K.flat("night_glass", 3), sides=8, cap=K.flat("night_glass", 0))
+    m.box((-6.5, 8.0, 2.0), (-5.5, 11.0, 3.0), K.flat("cream", 3))
+    m.tube("y", (-1.0, 2.5), 0.0, 4.0, 1.5, CHINA, sides=8, cap=CHINA_D)
+    m.tube("y", (3.0, 2.5), 0.0, 3.0, 1.25, CHINA, sides=8, cap=CHINA_D)
+    m.tube("y", (7.0, 2.5), 0.0, 5.0, 1.5, K.flat("old_copper", 1), sides=8)
+    m.tube("y", (7.0, 2.5), 5.0, 6.5, 0.75, K.flat("old_copper", 0), sides=8)
+    return m
+
+
+def _apron():
+    """Three pegs on a rail: the rubber apron on two of them, the pair of gloves on the third.
+    Anchor: the point of the wall behind the middle of the rail; +z out of the wall."""
+    m = M.Model(PREFIX + "apron")
+    m.box((-9.0, -1.0, 0.0), (9.0, 1.0, 1.0), WOOD_D, grain="x")
+    for x in (-6.0, -1.0, 6.0):
+        m.box((x - 0.5, -0.5, 1.0), (x + 0.5, 0.5, 2.75), K.BRASS)
+    m.box((-6.5, -2.0, 1.0), (-5.5, 0.0, 1.75), RUBBER)                 # the neck band, over two pegs
+    m.box((-1.5, -2.0, 1.0), (-0.5, 0.0, 1.75), RUBBER)
+    m.box((-6.5, -8.0, 1.0), (-0.5, -2.0, 1.75), RUBBER)                # the bib
+    m.box((-8.5, -24.0, 1.0), (1.5, -8.0, 2.0), RUBBER)                 # the skirt
+    m.box((-8.5, -9.0, 2.0), (1.5, -8.0, 2.25), K.flat("iron", 2))      # the fold at the waist catches the light
+    for x in (4.0, 6.5):                                                # the gloves, cuffs up
+        m.box((x, -3.0, 1.0), (x + 2.0, -1.0, 2.0), K.flat("old_copper", 2))
+        m.box((x, -10.0, 1.0), (x + 2.0, -3.0, 2.0), RUBBER_R)
+    return m
+
+
+def _record():
+    """The record board: a sheet of readings under a brass clip, a pencil on a string. Anchor:
+    the point of the wall behind the middle of the board; +z out of the wall."""
+    m = M.Model(PREFIX + "record")
+    w, h = len(RECORD[0]), len(RECORD)
+    m.box((-5.0, -7.5, 0.0), (5.0, 7.5, 1.0), WOOD_D, grain="y")
+    m.box((-w / 2.0, -h / 2.0 - 0.5, 1.0), (w / 2.0, h / 2.0 - 0.5, 1.25), K.flat("cream", 2), skip="n",
+          faces={"s": Sprite(PREFIX + "record_sheet", RECORD, INK)})
+    m.box((-2.0, 5.0, 1.0), (2.0, 6.5, 2.0), K.BRASS)
+    m.box((5.25, -5.0, 0.0), (5.75, 4.0, 0.5), K.flat("cream", 1))      # the string
+    m.box((5.0, -8.0, 0.0), (6.0, -5.0, 1.0), K.flat("old_copper", 2))  # the pencil
+    return m
+
+
+def _sign():
+    """The enamel sign over the aisle: no naked flame. Anchor: the middle of its back."""
+    m = M.Model(PREFIX + "sign")
+    w, h = len(SIGN[0]), len(SIGN)
+    m.box((-w / 2.0, -h / 2.0, 0.0), (w / 2.0, h / 2.0, 0.5), K.flat("cream", 1), skip="n",
+          faces={"s": Sprite(PREFIX + "sign_face", SIGN, INK)})
     return m
 
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    out = {PREFIX + "cells": _cells(), PREFIX + "gantry": _gantry(), PREFIX + "bar": _bar(), PREFIX + "board_legs": _legs()}
-    out.update({board_name(i): _board(i) for i in range(len(BOARD))})
-    return out
+    built = (_cells(), _gantry(), _cable(), _cleat(), _entry(), _carboy(), _shelf(), _apron(), _record(), _sign())
+    return {m.name: m for m in built}
 
 
 def models():
-    """The room's own models: a block of the battery, the gantry over a bank, and the stand-ins of
-    the bus bars and of the switchboard. Its lamps are props/lamps'."""
+    """The room's own models: a block of the battery, the gantry over a bank, the cable and what
+    holds it, the small pieces. The board and the bars are machines/batteryboard's, the lamps
+    props/lamps'."""
     return dict(_models())
 
 
 def their_models():
     """The models of the pieces of other packages the room places: what a test scene packs besides
     the room's own."""
-    return dict(lamps.models())
+    return {**lamps.models(), **BB.models()}
 
 
 def window_cells():
@@ -305,6 +432,10 @@ def build_batteryroom(c, origin=(0, 0, 0), roles=B):
     def put(x, y, z, state):
         c.set(ox + x, oy + y, oz + z, state)
 
+    def hang(name, pos, facing):
+        """One of the room's own pieces on a wall face that looks the way `facing` says."""
+        return K.put(c, own[PREFIX + name], pos, mount="wall", facing=facing, origin=origin)
+
     # ---- the floor: slate; a tray of lead-coloured plate under each bank; a drain across the aisle
     for x in range(X0, X1 + 1):
         for z in range(Z0, Z1 + 1):
@@ -322,28 +453,49 @@ def build_batteryroom(c, origin=(0, 0, 0), roles=B):
     for (x, y, z), inward in window_cells():
         put(x, y, z, st(roles.PANELS["louvre"], facing=inward))
 
-    # ---- the battery: the stand and its jars, block by block; a gantry over each bank under each beam
+    # ---- the battery: the stand and its jars, block by block; a gantry over each bank under each beam,
+    # held in the row next to the aisle, whose light it takes
     for a, b in BANKS:
         for x in (a, b):
             for z in range(BANK_Z[0], BANK_Z[1] + 1):
                 n += K.put(c, own[PREFIX + "cells"], (S.mid(x), FEET + HELD, S.mid(z)), origin=origin)
+        inner = b + (K.NUDGE if b < AXIS_X else -K.NUDGE)
         for z in BEAM_Z:
-            n += K.put(c, own[PREFIX + "gantry"], (b + K.NUDGE, FEET + HELD, S.mid(z)), origin=origin)
-        for off in (-BAR_OFF, BAR_OFF):                                 # the bus bars (a stand-in)
-            p = (ox + b + off * PX, oy + FEET + BAR_Y[0] * PX, oz + BAR_Z[0])
-            q = (p[0], p[1], oz + BAR_Z[1])
-            c.add_entity(*p, M.between(own[PREFIX + "bar"], p, q))
-            n += 1
+            n += K.put(c, own[PREFIX + "gantry"], (inner, FEET + HELD, S.mid(z)), origin=origin)
 
-    # ---- the switchboard on the north wall (a stand-in)
-    for i, (x0, x1) in enumerate(BOARD):
-        n += K.put(c, own[board_name(i)], ((x0 + x1) / 2.0, FEET + BOARD_Y[0], NORTH), mount="wall", facing="south", origin=origin)
-        n += K.put(c, own[PREFIX + "board_legs"], ((x0 + x1) / 2.0, FEET + K.NUDGE, NORTH), mount="wall", facing="south", origin=origin)
+    # ---- the switchboard before the north wall, and a pair of bars from each of its wings over a bank to
+    # the last jar, laid in lengths from gantry to gantry (machines/batteryboard)
+    n += BB.place(c, origin)
+    for side in ("west", "east"):
+        n += BB.run(c, side, BAR_SOUTH, tuple(S.mid(z) for z in BEAM_Z), origin)
 
-    # ---- the caged lamps; the light of each is offered under it, at the height of the jars
-    for pos, facing, cells, level, why in LAMPS:
+    # ---- the cable from the power house: out of the south wall, up to the top of the dado, along the south,
+    # the west and the north wall and in behind the board's west wing
+    out = CABLE_OUT * PX
+    route = ((CABLE_IN[0], CABLE_IN[1], SOUTH - out), (CABLE_IN[0], CABLE_Y, SOUTH - out), (WEST + out, CABLE_Y, SOUTH - out),
+             (WEST + out, CABLE_Y, NORTH + out), (CABLE_END, CABLE_Y, NORTH + out))
+    for p, q in zip(route, route[1:]):
+        p, q = ((v[0] + ox, v[1] + oy, v[2] + oz) for v in (p, q))
+        c.add_entity(*p, M.between(own[PREFIX + "cable"], p, q))
+        n += 1
+    n += hang("entry", (CABLE_IN[0], CABLE_IN[1], SOUTH), "north")
+    n += hang("cleat", (S.mid(X0 + 1), CABLE_Y, SOUTH), "north")
+    n += hang("cleat", (S.mid(X0 + 1), CABLE_Y, NORTH), "south")
+    for z in BEAM_Z:
+        n += hang("cleat", (WEST, CABLE_Y, S.mid(z)), "east")
+
+    # ---- the small pieces
+    for x, z in CARBOYS:
+        n += K.put(c, own[PREFIX + "carboy"], (x, FEET, z), origin=origin)
+    n += hang("shelf", SHELF_AT, "west")
+    n += hang("apron", APRON_AT, "north")
+    n += hang("record", RECORD_AT, "north")
+    n += hang("sign", SIGN_AT, "south")
+
+    # ---- the caged lamps; the light of each is offered under it, between the jars
+    for pos, facing, cells, why in LAMPS:
         n += lamps.place(c, "cage", pos, facing=facing, origin=origin, light=False, version=LAMP_VERSION)
-        for cell in cells:
+        for cell, level in cells:
             at = (ox + cell[0], oy + cell[1], oz + cell[2])
             lights.append((at, level, f"{NAME}:{why}"))
             _offer(c, at, level, f"{NAME}:{why}", CAGE_RANK)
