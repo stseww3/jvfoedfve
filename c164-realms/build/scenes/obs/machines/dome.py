@@ -41,7 +41,8 @@ What is fixed to the building stays below the underside of the dome's ring girde
 above it rides round with the dome (the hand chain is hitched up before the dome is turned). The
 shell and the curtain's rails are main's; the ring beam on the wall, the ring girder, the arch
 girders beside the slit and the room's lining are interiors'; this package places display entities
-and nothing else.
+and one barrier, in the foot of the upright shaft's corner, where the crown wheel and its bearing
+fill the cell (barrier_cells()).
 
 Moving pieces are models of their own, for the motion category (plan 7.1):
   seg          all twenty turn about TURN_AXIS with the dome, and so does every piece of the slit gear
@@ -68,6 +69,7 @@ import math
 
 from artkit import models as M
 
+from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
 
@@ -139,6 +141,15 @@ HAND_TEETH = 6                          # the pinion on the hand shaft
 HAND_R = CROWN_R * HAND_TEETH / CROWN_PEGS      # 3.375 px: the same pitch
 HAND_H = (PEG_Y[0] + PEG_Y[1]) / 2.0 + HAND_R   # 17.375 px over the floor: the hand shaft
 HAND_GEAR = CROWN_PEGS / HAND_TEETH     # turns of the hand wheel to one of the upright shaft
+HAND_PIECES = ("riser", "pedestal", "handwheel", "brackets")
+# A model has no collision, and what one can walk into is given that of what is seen there
+# (INTERFACE, the director's fifth supplement of 11-16: a barrier only inside a solid model that is
+# seen, not a cell past its outline, never more than two high). In the corner of the wall that is
+# kept clear for the upright shaft, the crown wheel, the footstep bearing and the base plate fill
+# the first row and stand out of it to the east and to the south, the two sides one comes from:
+# that one cell. The row over the crown wheel holds only the shaft, and the hand wheel is a thing
+# one stands at (interiors/domeroom GEAR_STAND): no barrier there
+BARRIER_ROWS = 1
 
 # ---- opening the slit (version a): in the dome's frame, x and z from its axis ------------------------
 JAMB_Z = S.SLIT_W / 2.0                 # 2.5: the slit's two edges
@@ -772,6 +783,14 @@ def _rollseat():
         box(-3.0, -3.0, RUN - 3.5, 3.0, 3.0, RUN + 1.5, IRON, seed=613)                 # the bearing
         box(-CORD_R - 0.5, low + 7.0, RUN + 3.5, -CORD_R + 0.5, 0.0, RUN + 4.5, IRON_B, grain="y", seed=614)    # the cord
         box(-3.5, low, RUN + 1.75, 2.0, low + 7.0, RUN + 6.25, IRON, seed=615)          # its weight
+        # the lining of the pocket the weight hangs in: an iron plate on the pocket's outer side,
+        # which is the back of the dome's copper skin and would show green into the room (dome
+        # #70004); three rows high, the plate's own rivets at its corners
+        wall = RUN + PX / 2.0
+        box(face, low - 1.0, wall - 0.5, face + PX, low - 1.0 + 3.0 * PX, wall, IRON_D, seed=616)
+        for x in (face + 1.5, face + PX - 2.5):
+            for y in (low + 0.5, low + PX, low + 2.0 * PX, low + 3.0 * PX - 3.5):
+                box(x, y, wall - 1.0, x + 1.0, y + 1.0, wall - 0.5, IRON_B, seed=617)
     return d
 
 
@@ -946,7 +965,7 @@ def layout(version=None):
         r = math.radians(deg)
         out.append(("seg", (RAIL_R * math.cos(r), LEDGE_Y, RAIL_R * math.sin(r)), deg, ()))
     rx, rz = riser_at()
-    for name in ("riser", "pedestal", "handwheel", "brackets"):
+    for name in HAND_PIECES:
         out.append((name, (rx, FLOOR_Y + HAND_H / PX, rz), 0.0, ()))
     if version == "a":
         for name in ("foot", "drive", "handchain", "arm_n", "arm_s"):
@@ -970,9 +989,18 @@ def layout(version=None):
     return out
 
 
+def barrier_cells(origin=(0, 0, 0)):
+    """The cells that are given a barrier: the foot of the upright shaft's column of the wall."""
+    return tuple((origin[0] + RISER_CELL[0], origin[1] + int(FLOOR_Y) + row, origin[2] + RISER_CELL[1])
+                 for row in range(BARRIER_ROWS))
+
+
 def place(canvas, origin=(0, 0, 0), version=None):
-    """The whole gear round DOME_AXIS. Returns the number of display entities."""
+    """The whole gear round DOME_AXIS, and its barrier where nothing stands yet. Returns the number
+    of display entities."""
     ox, oy, oz = origin
+    for cell in barrier_cells(origin):
+        canvas.set(*cell, B.BARRIER, keep=True)
     n = 0
     for name, (x, y, z), yaw, turns in layout(version):
         d = _piece(name)
@@ -1012,6 +1040,7 @@ def clash(canvas, origin=(0, 0, 0), version=None, ignore=("light",)):
     and one of a piece's points (see _spots). For the test scene, to be read with the plan in
     hand: a stair or a slab that a part only lies against is listed too."""
     ox, oy, oz = origin
+    own = set(barrier_cells(origin))
     out = []
     for name, (x, y, z), yaw, turns in layout(version):
         at = (ox + AX + x, oy + y, oz + AZ + z)
@@ -1022,8 +1051,39 @@ def clash(canvas, origin=(0, 0, 0), version=None, ignore=("light",)):
                 continue
             seen.add(cell)
             block = canvas.get(*cell)
-            if block is not None and block.partition("[")[0].rpartition(":")[2] not in ignore:
-                out.append((name, cell, block))
+            if block is None or _kind(block) in ignore or (cell in own and _kind(block) == B.BARRIER):
+                continue
+            out.append((name, cell, block))
+    return out
+
+
+def _kind(block):
+    return block.partition("[")[0].rpartition(":")[2]
+
+
+def barred(canvas, origin=(0, 0, 0), version=None, ignore=("light",)):
+    """Where the barrier is not inside the gear: [(what, cell)]. A barrier's cell must hold the
+    barrier and a part of the hand gear, and on every side that is open to the room the gear must
+    stand out past the cell's face, so that one meets what is seen before what is not. Empty when
+    the collision is the gear's own. With clash() and unheld(), for the test scene."""
+    ox, oy, oz = origin
+    held = set()                                        # the cells the hand gear has a point in
+    for name, (x, y, z), yaw, turns in layout(version):
+        if name in HAND_PIECES:
+            at = (ox + AX + x, oy + y, oz + AZ + z)
+            held |= {tuple(int(math.floor(at[i] + p[i])) for i in range(3)) for p in _spots(_piece(name), yaw, turns)}
+    out = []
+    for cell in barrier_cells(origin):
+        block = canvas.get(*cell)
+        if block is None or _kind(block) != B.BARRIER:
+            out.append((f"no barrier: the cell holds {block}", cell))
+        if cell not in held:
+            out.append(("no part of the hand gear in the cell", cell))
+        for dx, dz, side in ((1, 0, "east"), (-1, 0, "west"), (0, 1, "south"), (0, -1, "north")):
+            beside = (cell[0] + dx, cell[1], cell[2] + dz)
+            block = canvas.get(*beside)
+            if (block is None or _kind(block) in ignore) and beside not in held:
+                out.append((f"open to the {side}, and the gear does not stand out past that face", cell))
     return out
 
 
