@@ -768,6 +768,7 @@ class Reach:
             fast.append(row)
         fast.sort(key=lambda t: (0 if t["falls in from"] else 1, -t["nodes"]))
         out["stuck (no way back and no way on to where one is sent home)"] = fast
+        out["stuck (no way back and no way down to the line)"] = fast       # its name before the cloud's rule, for who reads it
         # the steps off the scene
         edge = self.pieces_by_kind(self.void)
         out["void"] = [dict(box_of(piece), kinds=sorted({self.kind[n] for n in piece})) for piece in edge
