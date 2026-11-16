@@ -1,0 +1,3 @@
+branch=cursor/c164-chart-chartroom-f3-3477
+head=f5b9a3d998a3c39fa045e961f7bbab91ff345e9a
+args=--no-push --always --tail 40 --limit 400 set\ -o\ pipefail\;\ bash\ tools/provenance.sh\ HEAD\ \|\ tail\ -n\ 1\;\ python\ tools/check.py\ --scene\ obs_int_chartroom\ \|\ tail\ -n\ 22 
