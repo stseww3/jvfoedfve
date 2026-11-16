@@ -27,6 +27,44 @@ by the time it is down there. Two caged lamps are new, the fourth of each galler
 the other three and as far from the third as that is from the second; every other source stands
 within reach of a lamp the hall has hung already.
 
+The first look through the open door (A0 #83714, review #83800 and #85249, cr3 #87129). The board's
+picture from the forecourt (V4) sees into the hall through the half of the doorway its iron gate
+leaves free, x 602..640 of 1280: the north flight behind its side arch, the wall over it, and the
+floor from the door to the arcade. That half is to read 0.22 and warm; on the save of 12:00 it was
+at 0.188, the flight at 0.21 and the floor at 0.156 and grey. What the hall's own picture (V7)
+asks of the same things: the pier's face beside the mother clock at 0.255 to 0.26, the two flights
+alike and under it (0.235 at most), the dark linings of the doorway under 0.12, no new lamp to be
+seen. So:
+
+  the floor       two pairs of sources in the row of a walker's head, either side of the meridian
+                  and clear of the roundel's middle, which keeps the sun's pool and no more (A0:
+                  the floor's middle stays darker than the clock's dial). The east pair is the
+                  lower: it is the nearer to the doorway's linings
+  the stair foot  the hall raises its two lamps by one (starhall.STAIR_FOOT_LEVEL); the corner
+                  sources before the first step go with them, one under the lamp: the first riser
+                  was two levels under the four over it and is now one over them
+  the pier        two sources beside the clock's dial on either side, in the row of the clock's
+                  own lamp and two rows over it: the face's two outer columns go up by one level
+                  and by two at their head, the dial has its own light
+
+What that comes to, read by obs_int_starhall/doorway.py in the hall's test scene (traced without
+the game; the hall of the 12:00 save reads 0.183 there where the game showed 0.188, the pier's
+face 0.231 for 0.232, the flights 0.209 for 0.213, the linings 0.071 for 0.088):
+
+                        the 12:00 save    now
+  V4, the half          0.183 (+0.039)    0.216 (+0.082)
+  V7, the pier's face   0.233, 0.229      0.254, 0.251
+  V7, the two flights   0.211, 0.207      0.232, 0.228
+  V7, the linings       0.071             0.091, 0.087
+
+One level less anywhere is 0.004 to 0.005 less in the half; one more on the pier is 0.267, over
+its line. The half's girder, the crown of the arch under it and the slate before the flight
+(a quarter of the half between them) stay under 0.19 whatever the lamps.
+
+The limits this part kept before (no source over 8, nothing before the door) were the hall's for
+the hall's own picture; the director's order for the board's goes before them, and the three
+sources that are over 8 now are asked for in the second rank.
+
     env PYTHONPATH=build python -m scenes.obs.interiors._starhall_ways [<folder>]     (from c164-realms/, on a worker node)
 
 builds the master scene and tells what sky/lights made of every source asked for here and what
@@ -48,24 +86,58 @@ END_LAMP_X = 14.5                               # the fourth lamp of a gallery w
 END_LEVEL = 7                                   # under it: 6 beside it on the walk, 5 on the railing's top at the wall
 RAIL_LEVEL = 7                                  # over the south railing, between the lamps at 4.5 and 8: 5 two cells off
 WEST_LEVEL = 6                                  # beside the first lamp's foot: 5 in the gallery's last cell
-CORNER_LEVEL = 6                                # an aisle's corner cell holds the dado's panel: the source stands in the
-#                                                 row before it, and leaves 5 at the head of who stands in the corner
+CORNER_UNDER = 1                                # an aisle's corner cell holds the dado's panel: the source stands in the
+#                                                 row before it, which is the cell before the flight's first step. It is
+#                                                 this far under the stair foot's lamp: the first two risers then have one
+#                                                 level more than the lamp gives the three over them (the 6 it had left 5
+#                                                 at the head of who stands in the corner, and the first riser at 6 of 8)
 FILL = 5                                        # in the cell of the head of the place it is for, and no further
 
-# (the cell, its level, what it lights): building coordinates
-SOURCES = (
-    ((6, DECK + HEAD, Z1 - 1), RAIL_LEVEL, "south gallery"),
-    ((8, DECK + HEAD, Z0), FILL, "north gallery"),
-    ((int(END_LAMP_X), DECK + HEAD, Z0), END_LEVEL, "north gallery end"),
-    ((int(END_LAMP_X), DECK + HEAD, Z1), END_LEVEL, "south gallery end"),
-    ((X0 + 1, DECK + HEAD, Z0), WEST_LEVEL, "north gallery west"),
-    ((X0 + 1, DECK + HEAD, Z1), WEST_LEVEL, "south gallery west"),
-    ((X0, DECK + HEAD, Z1 - 1), FILL, "south railing west"),
-    ((X0, FEET + HEAD, Z0 + 1), CORNER_LEVEL, "north aisle corner"),
-    ((X0, FEET + HEAD, Z1 - 1), CORNER_LEVEL, "south aisle corner"),
-    ((9, FEET + HEAD, -3), FILL, "roundel north"),
-    ((9, FEET + HEAD, 3), FILL, "roundel south"),
-)
+# the first look through the door (the head of this file)
+DOOR_EAST = (12, 1)                             # the floor's east pair: x, and the rows off the meridian's cell (z 0)
+DOOR_EAST_LEVEL = 10                            # 9 under it, 8 beside; 6 and 5 by the time it is at the doorway's linings
+DOOR_WEST = (9, 2)                              # the west pair: on the roundel's ring, towards the arcade
+DOOR_WEST_LEVEL = 11
+PIER_SIDE = (7, 3, 1)                           # beside the dial: x (the cell before the pier's face), y, rows off the axis
+PIER_SIDE_LEVEL = 11                            # the clock's lamp between them has 11 too: the outer columns get what the
+#                                                 middle one has
+PIER_UPPER = 5                                  # a second row of the same, two rows higher: the head of the rough courses
+PIER_UPPER_LEVEL = 11
+
+def corner_level():
+    """The level of the two sources before the flights' first steps: it follows the stair foot's lamps."""
+    from . import starhall
+    return max(FILL, starhall.STAIR_FOOT_LEVEL - CORNER_UNDER)
+
+
+def sources():
+    """(the cell, its level, what it lights): building coordinates. Read when the hall is dressed,
+    so that a comparison may set the levels above first."""
+    corner = corner_level()
+    out = [
+        ((6, DECK + HEAD, Z1 - 1), RAIL_LEVEL, "south gallery"),
+        ((8, DECK + HEAD, Z0), FILL, "north gallery"),
+        ((int(END_LAMP_X), DECK + HEAD, Z0), END_LEVEL, "north gallery end"),
+        ((int(END_LAMP_X), DECK + HEAD, Z1), END_LEVEL, "south gallery end"),
+        ((X0 + 1, DECK + HEAD, Z0), WEST_LEVEL, "north gallery west"),
+        ((X0 + 1, DECK + HEAD, Z1), WEST_LEVEL, "south gallery west"),
+        ((X0, DECK + HEAD, Z1 - 1), FILL, "south railing west"),
+        ((X0, FEET + HEAD, Z0 + 1), corner, "north aisle corner"),
+        ((X0, FEET + HEAD, Z1 - 1), corner, "south aisle corner"),
+        ((9, FEET + HEAD, -3), FILL, "roundel north"),
+        ((9, FEET + HEAD, 3), FILL, "roundel south"),
+    ]
+    for side, sign in (("north", -1), ("south", 1)):
+        if DOOR_EAST_LEVEL:
+            out.append(((DOOR_EAST[0], FEET + HEAD, sign * DOOR_EAST[1]), DOOR_EAST_LEVEL, f"door floor east {side}"))
+        if DOOR_WEST_LEVEL:
+            out.append(((DOOR_WEST[0], FEET + HEAD, sign * DOOR_WEST[1]), DOOR_WEST_LEVEL, f"door floor west {side}"))
+        if PIER_SIDE_LEVEL:
+            out.append(((PIER_SIDE[0], FEET + PIER_SIDE[1], sign * PIER_SIDE[2]), PIER_SIDE_LEVEL, f"pier face {side}"))
+        if PIER_UPPER_LEVEL:
+            out.append(((PIER_SIDE[0], FEET + PIER_UPPER, sign * PIER_SIDE[2]), PIER_UPPER_LEVEL, f"pier face upper {side}"))
+    return tuple(out)
+
 
 LINE = 5
 # the places the sources are for, by the cell of the feet: the sixteen of the list and the galleries' west end
@@ -90,8 +162,8 @@ def dress(canvas, origin=(0, 0, 0), version="a"):
     for z, facing in ((float(Z0), "south"), (Z1 + 1.0, "north")):
         n += lamps.place(canvas, "cage", (END_LAMP_X, LAMP_Y, z), facing=facing, origin=origin, version=version,
                          light=False)
-    for (x, y, z), level, what in SOURCES:
-        L.suggest(canvas, (ox + x, oy + y, oz + z), level, f"{WHY}:way {what}", rank=3)
+    for (x, y, z), level, what in sources():
+        L.suggest(canvas, (ox + x, oy + y, oz + z), level, f"{WHY}:way {what}", rank=L.rank(level))
     return n
 
 
@@ -106,7 +178,7 @@ def main(folder=None):
     canvas = build()
     r = lights.report(canvas)
     out, odd = [], 0
-    for cell, level, what in SOURCES:
+    for cell, level, what in sources():
         why = f"{WHY}:way {what}"
         got = r["placed"].get(cell)
         said = f"placed at {got[0]} ({got[1]})" if got else "not placed"
