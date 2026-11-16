@@ -287,21 +287,42 @@ vec3 c164_band(vec3 d) {{
     return mix(c164_ring(d.y < 0.0 ? level : d), C164_GLOW, c164_fan(level) * soft);
 }}
 
-// below the horizon: the cloud sea carried on beyond the block clouds, under the same fog as they
-vec3 c164_sea(vec3 d) {{
-    float reach = max(c164_height(), 0.5) / max(-d.y, 1.0e-5);
-    return mix(C164_SEA, c164_band(d), c164_fogged(reach, d.y));
+{far_sea}
+// the camera on the map
+vec2 c164_eye() {{
+    return vec2(CameraBlockPos.xz) - CameraOffset.xz;
 }}
 
-// what is painted behind everything in direction d, as far as blocks are concerned
+// below the horizon: the cloud sea carried on beyond the block clouds, under the same fog as they.
+// fine: with the tones of its face (sky/cloudsea's far sea); without, level cloud's colour alone.
+vec3 c164_sea(vec3 d, bool fine) {{
+    float height = max(c164_height(), 0.5);
+    float reach = height / max(-d.y, 1.0e-5);
+    vec3 face = fine ? c164_far_sea(C164_SEA, c164_eye() + d.xz * reach, reach, height) : C164_SEA;
+    return mix(face, c164_band(d), c164_fogged(reach, d.y));
+}}
+
+// What is painted behind the thing drawn here, in its direction d, as far as blocks are concerned.
+// Worked out once for a pixel (every caller hands in c164_direction()); the far sea's tones only
+// where the thing is taken into the painting at all (apply_fog's `gone`).
+vec3 c164_painted = vec3(-1.0);
+
 vec3 c164_behind(vec3 d) {{
-    return d.y < 0.0 ? c164_sea(d) : c164_band(d);
+    if (c164_painted.x < 0.0) {{
+        if (d.y < 0.0) {{
+            float rim = linear_fog_value(max(length(c164_ray.xz), abs(c164_ray.y)), FogRenderDistanceStart - 2.0, FogRenderDistanceEnd);
+            c164_painted = c164_sea(d, max(c164_levelled(), rim) > 0.0);
+        }} else {{
+            c164_painted = c164_band(d);
+        }}
+    }}
+    return c164_painted;
 }}
 
 // the sky in direction d: the game's plane 16 blocks overhead, fogged by distance, and the fan on it
 vec3 c164_sky(vec3 d) {{
     if (d.y < 0.0) {{
-        return c164_sea(d);
+        return c164_sea(d, true);
     }}
     float across = 16.0 * length(d.xz) / max(d.y, 1.0e-4);
     float share = min(1.0, (16.0 + 496.25 * across / 512.0) / C164_SKY_END);
@@ -366,7 +387,9 @@ def fog_glsl(n):
     if len(functions) != FOG_FUNCTIONS:
         raise ValueError(f"{name}: the game's file defines {functions}, not the {FOG_FUNCTIONS} functions this was "
                          f"written for (a new game version? read the file again and adjust sky/_shaders.py)")
-    return FOG_GLSL.format(head=HEAD.format(**n), ray=RAY_LOCATION, soft=_f(HORIZON_SOFT), **_glsl(n))
+    from . import cloudsea
+    return FOG_GLSL.format(head=HEAD.format(**n), ray=RAY_LOCATION, soft=_f(HORIZON_SOFT), far_sea=cloudsea.far_glsl(),
+                           **_glsl(n))
 
 
 def _glsl(n):
@@ -685,9 +708,20 @@ class Twin:
         ring = np.where((d[:, 1] < 0.0)[:, None], self.ring(level), self.ring(d))
         return self._mix(ring, self.glow, self.fan(level) * soft)
 
+    eye = (0.0, 0.0)            # where the camera stands on the map (x, z): the far sea's face lies on the map
+    fine = True                 # the far sea with the tones of its face (sky/cloudsea); False: level cloud's colour alone
+
     def sea(self, d, camera_y):
-        reach = max(camera_y - self.n["sea_y"], 0.5) / np.maximum(-d[:, 1], 1e-5)
-        return self._mix(self.sea_colour, self.band(d), self.fogged(reach, camera_y, d[:, 1]))
+        from . import cloudsea
+        height = max(camera_y - self.n["sea_y"], 0.5)
+        reach = height / np.maximum(-d[:, 1], 1e-5)
+        face = np.empty((len(d), 3))
+        face[...] = self.sea_colour
+        down = d[:, 1] < 0.0
+        if self.fine and down.any():
+            face[down] = cloudsea.far_colour(self.sea_colour, self.eye[0] + d[down, 0] * reach[down],
+                                             self.eye[1] + d[down, 2] * reach[down], reach[down], height)
+        return self._mix(face, self.band(d), self.fogged(reach, camera_y, d[:, 1]))
 
     def behind(self, d, camera_y):
         return np.where((d[:, 1] < 0.0)[:, None], self.sea(d, camera_y), self.band(d))

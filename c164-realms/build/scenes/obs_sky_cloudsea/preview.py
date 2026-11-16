@@ -16,8 +16,9 @@ shaders take it:
 
   - every colour is _shaders.Twin's, called for every pixel's direction: band() is what the fog
     takes a thing to, behind() what is painted behind it (the band above the horizon, the far sea
-    below it), sky_at() what is seen where no block is. The stars and the comet are the offline
-    renderer's, above the horizon only.
+    below it, with the tones of its face: sky/cloudsea's far_colour(); --flat leaves those out),
+    sky_at() what is seen where no block is. The stars and the comet are the offline renderer's,
+    above the horizon only.
   - how much of them a block takes is Twin.apply()'s arithmetic: mood.fog_depth(), the air's haze
     and the mist that lies on the sea, towards the band; then mood.levelled(), by which what lies
     on the sea goes into the far sea painted behind it, or the game's own fog over the last tenth
@@ -32,7 +33,8 @@ if wanted, FOG_START,FOG_END,LEVEL_FULL,LEVEL_NONE after them. The pictures are 
 <out>-<shot>-<look>-<law>.png; with --sheet N they are laid side by side, N to a row and half the
 size, in one picture <out>-sheet.png instead. --plan adds <out>-plan.png: the sea from straight
 above in the tones the blue hour gives it, without fog, and prints what it is made of; with --only
-none nothing else is drawn, and no ray is traced. --set NAME=VALUE changes a constant of
+none nothing else is drawn, and no ray is traced. --agree prints how far the painted far sea
+agrees with the blocks of the open face, tone by tone. --set NAME=VALUE changes a constant of
 sky/cloudsea for this run, to try a shape without a commit. They are no evidence: the card is
 settled on the real client's pictures. This only says beforehand what those should show.
 """
@@ -260,23 +262,6 @@ def checked(q, twin, camera_y, n=4000):
         raise SystemExit(f"preview: _hazed() and Twin.apply() differ by up to {np.abs(ours - theirs).max():g}")
 
 
-class Far(shaders.Twin):
-    """The twin with the far sea's face painted on it (cloudsea.far_colour), until sky/_shaders
-    paints it itself. ``at`` is the camera in the world."""
-    at = (0.0, 0.0, 0.0)
-
-    def sea(self, d, camera_y):
-        from scenes.obs.sky import cloudsea
-        height = max(camera_y - self.n["sea_y"], 0.5)
-        reach = height / np.maximum(-d[:, 1], 1e-5)
-        colour = np.empty((len(d), 3))
-        colour[...] = self.sea_colour
-        down = d[:, 1] < 0.0
-        colour[down] = cloudsea.far_colour(self.sea_colour, self.at[0] + d[down, 0] * reach[down],
-                                           self.at[2] + d[down, 2] * reach[down], reach[down], height)
-        return self._mix(colour, self.band(d), self.fogged(reach, camera_y, d[:, 1]))
-
-
 def agreement(cells):
     """How the far sea's painting agrees with the blocks: over the columns of the open face (the
     top block at the face's own levels, no cloud column higher than those within six blocks), the
@@ -367,7 +352,7 @@ def main():
     ap.add_argument("--size", default="1280x720")
     ap.add_argument("--fov", type=float, default=77.0)
     ap.add_argument("--plan", action="store_true", help="also write <out>-plan.png")
-    ap.add_argument("--flat", action="store_true", help="the far sea as sky/_shaders paints it now: one colour")
+    ap.add_argument("--flat", action="store_true", help="the far sea in one colour, without the tones of its face")
     ap.add_argument("--agree", action="store_true", help="print how the far sea's painting agrees with the blocks")
     ap.add_argument("--sheet", type=int, default=0, help="one picture <out>-sheet.png, this many views to a row")
     ap.add_argument("--set", action="append", default=[], metavar="NAME=VALUE",
@@ -441,8 +426,8 @@ def main():
                 t1 = time.time()
                 for key, value in zip(names_of, values):
                     setattr(sky, key, value)
-                twin = (shaders.Twin if args.flat else Far)(which if which in sky.LOOKS else sky.DEFAULT)
-                twin.at = (float(shot["pos"][0]) + place[0], eye, float(shot["pos"][2]) + place[2])
+                twin = shaders.Twin(which if which in sky.LOOKS else sky.DEFAULT)
+                twin.eye, twin.fine = (float(shot["pos"][0]) + place[0], float(shot["pos"][2]) + place[2]), not args.flat
                 q = numbers(look, eye - twin.n["sea_y"])
                 checked(q, twin, eye)
                 out = np.zeros((size[1], size[0], 3))

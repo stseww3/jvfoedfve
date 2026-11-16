@@ -515,15 +515,47 @@ def _field(seed, land, sunk=()):
     return level, height, sea
 
 
+_TURNS = np.array([(1.0, 1.0), (-1.0, 1.0), (1.0, -1.0), (-1.0, -1.0)]) / np.sqrt(2.0)
+_TURNS = np.vstack([_TURNS, [(1.0, 0.0), (-1.0, 0.0), (0.0, 1.0), (0.0, -1.0)]])
+
+
+def _wave(x, z, seed):
+    """Gradient noise, roughly -1..1, one wave to a unit: artkit.noise's, but with the gradient of
+    a lattice point taken from _hash3 and not from a shuffled table, so that the sky's shader can
+    do the same sum (far_glsl(): c164_wave)."""
+    x, z = np.asarray(x, dtype=float), np.asarray(z, dtype=float)
+    xf, zf = np.floor(x), np.floor(z)
+    i, k = xf.astype(np.int64), zf.astype(np.int64)
+    dx, dz = x - xf, z - zf
+    u, v = dx * dx * dx * (dx * (dx * 6.0 - 15.0) + 10.0), dz * dz * dz * (dz * (dz * 6.0 - 15.0) + 10.0)
+
+    def corner(ii, kk, ddx, ddz):
+        g = _TURNS[(8.0 * _hash3(ii, kk, 0 * ii, seed)).astype(np.int64)]
+        return g[..., 0] * ddx + g[..., 1] * ddz
+
+    a = corner(i, k, dx, dz)
+    a = a + u * (corner(i + 1, k, dx - 1.0, dz) - a)
+    b = corner(i, k + 1, dx, dz - 1.0)
+    b = b + u * (corner(i + 1, k + 1, dx - 1.0, dz - 1.0) - b)
+    return (a + v * (b - a)) * 1.6
+
+
+def _waves(x, z, seed):
+    """Two octaves of _wave."""
+    x, z = np.asarray(x, dtype=float), np.asarray(z, dtype=float)
+    return (_wave(x, z, seed) + 0.5 * _wave(2.0 * x, 2.0 * z, seed + 31)) / 1.5
+
+
 def _face(X, Z, seed):
     """The open sea's face at the columns (X, Z): (core, base). ``core`` is 1 in a bank, where the
     cloud piles up, and 0 in the calm lanes that wind between the banks, which are longer
     north-south than they are wide and take about two thirds of the sea. ``base`` is the
     continuous y of a column's top block where no head stands: low heaps lying side by side on
-    long low waves, the banks riding higher."""
-    bend = N.fbm2(X / 90.0, Z / 90.0, seed + 7, octaves=2) * 22.0
-    core = N.smoothstep(-0.20, 0.04, N.fbm2((X + bend) / 44.0, Z / 70.0, seed + 1, octaves=2))
-    roll = N.fbm2((X + bend) / ROLL[0], Z / ROLL[1], seed + 11, octaves=2)
+    long low waves, the banks riding higher. Everything in it is a sum the sky's shader can do as
+    well (far_glsl()), since the far sea is painted from it."""
+    bend = _waves(X / 90.0, Z / 90.0, seed + 7) * 22.0
+    core = N.smoothstep(-0.20, 0.04, _waves((X + bend) / 44.0, Z / 70.0, seed + 1))
+    roll = _waves((X + bend) / ROLL[0], Z / ROLL[1], seed + 11)
     return core, MEAN + SWELL * roll + PILLOW * (_heaps(X + 0.5 * bend, Z, seed + 17) - 0.45) + BANK * (core - 0.5)
 
 
@@ -627,6 +659,115 @@ def far_colour(sea, x, z, reach, height, seed=SEED):
         tone = far_tone(np.floor(x[fine]), np.floor(z[fine]), seed)
         out[fine] = tints[tone] * (1.0 - blur[fine, None]) + tints[-1] * blur[fine, None]
     return out * np.asarray(sea, dtype=float)
+
+
+FAR_GLSL = """// The far sea's face (sky/cloudsea.py: far_colour(), the same sums in numpy). The tone of the
+// column the line of sight meets the sea in, as the blocks of the open sea wear it.
+uint c164_bits(int x, int y, int z, int seed) {
+    uint h = uint(x) * 374761393u + uint(y) * 668265263u + uint(z) * 2147483647u + uint(seed) * 1274126177u;
+    h = (h ^ (h >> 13)) * 1274126177u;
+    return h ^ (h >> 16);
+}
+
+float c164_hash(int x, int y, int z, int seed) {
+    return float(c164_bits(x, y, z, seed) & 0xFFFFFFu) / 16777216.0;
+}
+
+float c164_corner(int i, int k, vec2 d, int seed) {
+    uint g = (c164_bits(i, k, 0, seed) >> 21) & 7u;
+    vec2 turn = g < 4u ? vec2((g & 1u) == 0u ? 0.70710678 : -0.70710678, (g & 2u) == 0u ? 0.70710678 : -0.70710678)
+                       : (g == 4u ? vec2(1.0, 0.0) : g == 5u ? vec2(-1.0, 0.0) : g == 6u ? vec2(0.0, 1.0) : vec2(0.0, -1.0));
+    return dot(turn, d);
+}
+
+float c164_wave(vec2 p, int seed) {
+    vec2 f = floor(p);
+    ivec2 c = ivec2(f);
+    vec2 d = p - f;
+    vec2 u = d * d * d * (d * (d * 6.0 - 15.0) + 10.0);
+    float a = mix(c164_corner(c.x, c.y, d, seed), c164_corner(c.x + 1, c.y, d - vec2(1.0, 0.0), seed), u.x);
+    float b = mix(c164_corner(c.x, c.y + 1, d - vec2(0.0, 1.0), seed), c164_corner(c.x + 1, c.y + 1, d - vec2(1.0, 1.0), seed), u.x);
+    return mix(a, b, u.y) * 1.6;
+}
+
+float c164_waves(vec2 p, int seed) {
+    return (c164_wave(p, seed) + 0.5 * c164_wave(2.0 * p, seed + 31)) / 1.5;
+}
+
+float c164_heaps(vec2 p, int seed) {
+    const vec2 cell = vec2({heaps}, {heaps_long});
+    ivec2 c = ivec2(floor(p / cell));
+    float best = 0.0;
+    for (int di = -1; di <= 1; di++) {
+        for (int dk = -1; dk <= 1; dk++) {
+            int i = c.x + di;
+            int k = c.y + dk;
+            vec2 middle = (vec2(float(i), float(k)) + 0.15 + 0.7 * vec2(c164_hash(i, k, 1, seed), c164_hash(i, k, 2, seed))) * cell;
+            float rad = {heaps} * (0.55 + 0.30 * c164_hash(i, k, 3, seed));
+            vec2 q = (p - middle) / vec2(rad, 1.3 * rad);
+            best = max(best, (0.55 + 0.45 * c164_hash(i, k, 4, seed)) * sqrt(clamp(1.0 - dot(q, q), 0.0, 1.0)));
+        }
+    }
+    return best;
+}
+
+// the open face over its mean level at the column p
+float c164_face(vec2 p) {
+    float bend = c164_waves(p / 90.0, {seed} + 7) * 22.0;
+    float t = clamp((c164_waves(vec2((p.x + bend) / 44.0, p.y / 70.0), {seed} + 1) + 0.20) / 0.24, 0.0, 1.0);
+    float roll = c164_waves(vec2((p.x + bend) / {roll_x}, p.y / {roll_z}), {seed} + 11);
+    float base = {swell} * roll + {pillow} * (c164_heaps(vec2(p.x + 0.5 * bend, p.y), {seed} + 17) - 0.45)
+        + {bank} * (t * t * (3.0 - 2.0 * t) - 0.5);
+    return clamp(base, {trough}, 1.45);
+}
+
+// sea: level cloud's colour; at: where the line of sight meets the sea's top, on the map; reach: how
+// far along it that is; height: the eye over the sea's top
+vec3 c164_far_sea(vec3 sea, vec2 at, float reach, float height) {
+    float spread = reach * reach / (max(height, 0.5) * {pixel});
+    float t = clamp((spread - {fine_0}) / ({fine_1} - {fine_0}), 0.0, 1.0);
+    float blur = t * t * (3.0 - 2.0 * t);
+    vec3 tint = {tint_mean};
+    if (blur < 1.0) {
+        vec2 p = floor(at - {origin});
+        float h = c164_face(p);
+        float west = c164_face(p - vec2(1.0, 0.0));
+        float east = c164_face(p + vec2(1.0, 0.0));
+        float lie = 0.5 * (east - west);
+        float fold = 0.25 * (west + east + c164_face(p - vec2(0.0, 1.0)) + c164_face(p + vec2(0.0, 1.0))) - h;
+        float turn = clamp(0.30 * tanh(1.3 * lie) + 0.16 * clamp(1.6 - h, 0.0, 1.0) * tanh({lie} * lie), -0.34, 0.30);
+        float crease = clamp(({fold} * fold - 0.35) / 0.75, 0.0, 1.0);
+        int tone = int(clamp(floor({last} * (0.75 + turn - 0.22 * crease) + 0.5), 0.0, {last}));
+        vec3 own = {tints};
+        tint = mix(own, tint, blur);
+    }
+    return sea * tint;
+}
+"""
+
+
+def far_glsl(origin=(0.0, 0.0), seed=SEED):
+    """The GLSL of the far sea for sky/_shaders.py: defines
+    vec3 c164_far_sea(vec3 sea, vec2 at, float reach, float height), far_colour() in the shader's
+    words. ``origin`` is where the scene's (0, 0) stands on the map."""
+    def f(x):
+        text = repr(round(float(x), 6))
+        return text if ("." in text or "e" in text) else text + ".0"
+
+    def vec3(c):
+        return "vec3(" + ", ".join(f(v) for v in c) + ")"
+
+    tints = far_tints()
+    last = len(B.CLOUD) - 1
+    own = "".join(f"tone == {i} ? {vec3(tints[i])} : " for i in range(last)) + vec3(tints[last])
+    values = dict(heaps=f(HEAPS), heaps_long=f(1.3 * HEAPS), seed=str(int(seed)), roll_x=f(ROLL[0]), roll_z=f(ROLL[1]),
+                  swell=f(SWELL), pillow=f(PILLOW), bank=f(BANK), trough=f(TROUGH - MEAN), pixel=f(FAR_PIXEL),
+                  fine_0=f(FAR_FINE[0]), fine_1=f(FAR_FINE[1]), tint_mean=vec3(tints[-1]),
+                  origin=f"vec2({f(origin[0])}, {f(origin[1])})", lie=f(LIE), fold=f(FAR_FOLD), last=f(last), tints=own)
+    text = FAR_GLSL
+    for key, value in values.items():
+        text = text.replace("{" + key + "}", value)
+    return text
 
 
 def build(canvas, origin=(0, 0, 0), *, seed=SEED, dress=None):
