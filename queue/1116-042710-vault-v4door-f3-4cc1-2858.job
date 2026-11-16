@@ -1,0 +1,3 @@
+branch=cursor/c164-vault-v4door-f3-4cc1
+head=51002f1e467ae180a3ec6d3d81115ca409867b11
+args=--no-push --tail 60 env PYTHONPATH=build python -m scenes.obs_int_starhall.probe a plan:0 lv:0 lv:1 
