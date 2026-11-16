@@ -1,0 +1,15 @@
+light cell (35, 4, 0) source cell (35, 3, 0) FEET_GLOW 10 rank 2
+placed in the source cell: (10, 'props/lamps:uplight')
+block in the source cell: light[level=10] | in the light cell: None
+sources within 4 cells: [((33, 0, -2), (8, 'props/lamps:uplight')), ((33, 0, 2), (8, 'props/lamps:uplight')), ((35, 3, 0), (10, 'props/lamps:uplight')), ((37, 0, -2), (8, 'props/lamps:uplight')), ((37, 0, 2), (8, 'props/lamps:uplight'))]
+block light, the section through z 0 (west to east; # taken, . none)
+  y  6   3  4  5  6  7  6  5  4  3
+  y  5   4  5  6  7  8  7  6  5  4
+  y  4   5  6  7  8  9  8  7  6  5
+  y  3   6  7  8  9 10  9  8  7  6
+  y  2   5  6  7  8  9  8  7  6  5
+  y  1   4  5  6  7  #  7  6  5  4
+  y  0   4  5  6  6  #  6  6  5  4
+the rings' entities in the light cell: 8
+cage sources: [((-15, 1, -32), (7, 'props/lamps:cage_a')), ((-6, 9, -2), (7, 'props/lamps:cage_a')), ((-6, 9, 2), (7, 'props/lamps:cage_a')), ((4, 10, -5), (7, 'props/lamps:cage_a')), ((4, 10, 5), (7, 'props/lamps:cage_a')), ((8, 10, -5), (6, 'props/lamps:cage_a')), ((8, 10, 5), (6, 'props/lamps:cage_a')), ((11, 10, -5), (6, 'props/lamps:cage_a')), ((11, 10, 5), (6, 'props/lamps:cage_a')), ((13, 35, -30), (7, 'main/tower:cage')), ((14, 25, -28), (7, 'interiors/clockroom:caged lamp')), ((37, 2, -25), (5, 'props/lamps:cage_a')), ((74, -2, 20), (7, 'props/lamps:cage_a'))]
+keys of the report: ['capped', 'doors', 'dressed', 'fifteen', 'foreign', 'gates', 'hall', 'isolated', 'levels', 'merged', 'moved', 'notes', 'placed', 'pools', 'problems', 'ranks', 'rejected', 'stair', 'table', 'wash', 'ways', 'windows']
