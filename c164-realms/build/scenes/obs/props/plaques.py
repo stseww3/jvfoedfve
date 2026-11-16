@@ -89,7 +89,7 @@ def width(text):
 
 # ---- what the twelve say (the card, plan/packages/motion/guide.md; shorter is allowed, longer is not)
 TEXT = {
-    "cable_station": ("CABLE STATION", "The only way up the mountain."),
+    "cable_station": ("SUMMIT STATION", "The only way up the mountain."),
     "meridian_line": ("THE MERIDIAN LINE", "Brass, laid true north and south."),
     "armillary": ("ARMILLARY SPHERE", "The great circles of the sky, in brass."),
     "orrery": ("THE ORRERY", "Six planets, geared to their true periods."),
