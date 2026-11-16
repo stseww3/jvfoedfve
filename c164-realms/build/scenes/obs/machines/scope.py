@@ -522,7 +522,13 @@ def _tube(version):
 
 
 # ---- what both mounts are made of --------------------------------------------------------------------
-def _corner_irons(d, x, z, y0, y1, mat=None, about=(0.0, 0.0)):
+def _east(mat, steps):
+    """The face of a box that looks east, painted `steps` lighter than the rest of it. A model
+    takes no light from a lamp: what a lamp throws on it has to be painted on it."""
+    return {"e": mat.variant(steps)} if steps else {}
+
+
+def _corner_irons(d, x, z, y0, y1, mat=None, about=(0.0, 0.0), east=0):
     """Angle irons riveted up the four corners of a box column of half sizes x and z that stands
     on the point `about` = (x, z)."""
     mat = mat or IRON_STUD
@@ -531,19 +537,22 @@ def _corner_irons(d, x, z, y0, y1, mat=None, about=(0.0, 0.0)):
         for sz in (-1.0, 1.0):
             a, b = sorted((ox + sx * x, ox + sx * (x + 0.5)))
             c, e = sorted((oz + sz * (z - 2.5), oz + sz * (z + 0.5)))
-            d.box((a, y0, c), (b, y1, e), mat, grain="y", seed=STRAP_SEED)
+            d.box((a, y0, c), (b, y1, e), mat, grain="y", seed=STRAP_SEED, faces=_east(mat, east))
             a, b = sorted((ox + sx * (x - 2.5), ox + sx * (x + 0.5)))
             c, e = sorted((oz + sz * z, oz + sz * (z + 0.5)))
-            d.box((a, y0, c), (b, y1, e), mat, grain="y", seed=STRAP_SEED)
+            d.box((a, y0, c), (b, y1, e), mat, grain="y", seed=STRAP_SEED, faces=_east(mat, east))
 
 
-def _section(d, y0, y1, hx, hz, about=(0.0, 0.0), flange=1.5, mat=None):
-    """One cast section of a box column: the shaft with its corner irons, a bolted flange on top."""
+def _section(d, y0, y1, hx, hz, about=(0.0, 0.0), flange=1.5, mat=None, east=0):
+    """One cast section of a box column: the shaft with its corner irons, a bolted flange on top.
+    east: steps of light painted on what looks east."""
     ox, oz = about
-    d.box((ox - hx, y0, oz - hz), (ox + hx, y1, oz + hz), mat or IRON, grain="y")
-    _corner_irons(d, hx, hz, y0, y1, about=about)
+    mat = mat or IRON
+    d.box((ox - hx, y0, oz - hz), (ox + hx, y1, oz + hz), mat, grain="y", faces=_east(mat, east))
+    _corner_irons(d, hx, hz, y0, y1, about=about, east=east)
     if flange:
-        d.box((ox - hx - flange, y1, oz - hz - flange), (ox + hx + flange, y1 + 2.0, oz + hz + flange), IRON_D_STUD)
+        d.box((ox - hx - flange, y1, oz - hz - flange), (ox + hx + flange, y1 + 2.0, oz + hz + flange), IRON_D_STUD,
+              faces=_east(IRON_D_STUD, east))
 
 
 def _clock(d, at):
@@ -593,6 +602,8 @@ A_COLUMN = [                            # the pier's sections: y0, y1, half size
     (38.0, 44.0, 18.0, 17.5),
 ]
 A_SOLID = (1, 2)                        # the barrier in the column: cells either side of the axis' own, and how many high
+A_LAMPLIGHT = (2, 1, 0)                 # steps of light painted on what looks east, section by section (the foot as the lowest):
+#                                         the room's lamp hangs at the east edge of the pier's well, under the cap (sky/lights)
 A_WEIGHTS = (25.0, 38.0, 9.0)           # the counterweights: from, to (texels from the crossing), radius
 A_CLOCK = (24.0, 26.0, 16.25)           # the driving clock on the pier's east face, its shaft under the mitre box
 
@@ -600,21 +611,22 @@ A_CLOCK = (24.0, 26.0, 16.25)           # the driving clock on the pier's east f
 def _pier_a():
     d = _Px(PREFIX + "pier_a", MOUNT_SCALE)
     # the foot: a bed plate bolted to the cap, stepped up to the column
-    d.box((-36.0, 0.0, -38.5), (36.0, 2.0, 38.5), IRON_D)
-    d.box((-32.0, 2.0, -35.0), (32.0, 4.0, 35.0), IRON)
-    d.box((-28.0, 4.0, -31.0), (28.0, 6.0, 31.0), IRON_D)
+    low = A_LAMPLIGHT[0]
+    d.box((-36.0, 0.0, -38.5), (36.0, 2.0, 38.5), IRON_D, faces=_east(IRON_D, low))
+    d.box((-32.0, 2.0, -35.0), (32.0, 4.0, 35.0), IRON, faces=_east(IRON, low))
+    d.box((-28.0, 4.0, -31.0), (28.0, 6.0, 31.0), IRON_D, faces=_east(IRON_D, low))
     for x in (-34.0, -12.0, 12.0, 34.0):
         for zz in (-36.75, -13.0, 13.0, 36.75):
             if abs(x) > 32.0 or abs(zz) > 35.0:
                 d.box((x - 1.0, 2.0, zz - 1.0), (x + 1.0, 3.5, zz + 1.0), STEEL)
     # the column: three cast sections bolted flange to flange, angle irons up the corners
     for i, (y0, y1, hx, hz) in enumerate(A_COLUMN):
-        _section(d, y0, y1, hx, hz, flange=1.5)
+        _section(d, y0, y1, hx, hz, flange=1.5, east=A_LAMPLIGHT[i])
     y_top = A_COLUMN[-1][1] + 2.0
     hx, hz = A_COLUMN[0][2], A_COLUMN[0][3]
     # the door to the clock's weight in the lowest section, and a plate where a maker would sign
-    d.box((hx, 8.0, -8.0), (hx + 0.75, 19.5, 2.0), IRON_D)
-    d.box((hx + 0.75, 8.5, -7.5), (hx + 1.0, 19.0, -6.5), IRON_STUD)
+    d.box((hx, 8.0, -8.0), (hx + 0.75, 19.5, 2.0), IRON_D, faces=_east(IRON_D, low))
+    d.box((hx + 0.75, 8.5, -7.5), (hx + 1.0, 19.0, -6.5), IRON_STUD, faces=_east(IRON_STUD, low))
     d.box((hx + 0.75, 13.0, 0.0), (hx + 1.75, 14.5, 1.0), BRASS)
     d.box((-5.0, 11.0, hz), (5.0, 16.0, hz + 0.5), BRASS_D)
     d.box((-4.0, 12.0, hz + 0.5), (4.0, 15.0, hz + 0.75), BRASS_STUD)

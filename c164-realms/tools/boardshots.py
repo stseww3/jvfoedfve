@@ -12,13 +12,13 @@ skeleton is the one of this checkout, or of the build/ folder named in the envir
 C164_BUILD: the render station shoots other checkouts with its own tools (win/shuttle.py), and
 the board of a checkout is worked out from that checkout's skeleton.
 
-V1, V2, V5, V6, V7, V8 and V11 are the skeleton's own, LOCKED there, and are read from there. The
-other five have no place in the skeleton yet: what stands here for them is the render station's
+V1, V2, V5, V6, V7, V8, V11 and V12 are the skeleton's own, LOCKED there, and are read from there.
+The other four have no place in the skeleton yet: what stands here for them is the render station's
 proposal (PROPOSED below), to be moved on the pictures. A view that gets fixed goes into the skeleton
 as V<n> = dict(pos=, look_at=) and is read from there; what stands here for it then no longer counts
-(V5, V6, V7 and V8 have such an entry each). It is still what a checkout with an older skeleton is
-shot with: A0's ruling where there was one before the skeleton had the view (RULED below), else the
-station's proposal as it stood last.
+(V5, V6, V7, V8 and V12 have such an entry each). It is still what a checkout with an older skeleton
+is shot with: A0's ruling where there was one before the skeleton had the view (RULED below), else
+the station's proposal as it stood last.
 
 All twelve are taken in look A (tick 14000). The picture is the game's: 16:9, 77 degrees high (the
 camera player flies, which widens the game's 70), as build/render.py and tools/check.py take it.
@@ -65,9 +65,11 @@ VIEWS = [
     ("v02_axis", "the entrance and the dome head-on from the court's axis", "V2", V2),
     # PROPOSED. Two bays and the corner between the centre block and the south wing, from the court:
     # rough base, string course, fine main storey, a great window, the pilaster's lamp, the downpipe.
+    # It looks a block above the string course: half a block lower, the picture's lower edge cut the
+    # brass ring of a ground lamp at the wall's foot in two (review, 11-16).
     ("v03_facade", "two bays of wall and a lamp, close", "V3", dict(
         pos=(S.WALL_E + 9.5, S.GROUND + EYE, S.pilaster_z(11) + 2.5),
-        look_at=(S.WALL_E + 1.5, S.STRING + 0.5, S.pilaster_z(10) + 0.5))),
+        look_at=(S.WALL_E + 1.5, S.STRING + 1.0, S.pilaster_z(10) + 0.5))),
     # PROPOSED. Ten blocks out, three off the axis: door, fanlight, canopy, both bracket lamps, plate.
     ("v04_entrance", "the iron door, the canopy, the bracket lamps, the name plate", "V4", dict(
         pos=(S.east_wall_x(9) + 10.5, S.GROUND + EYE, S.AXIS_Z + 3.0),
@@ -109,13 +111,13 @@ VIEWS = [
         pos=(S.ROOM_X[1] - 0.5, MAIN_EYE, 2 * S.AXIS_Z - (S.STAR_HALL_Z[1] + 2.5)),
         look_at=(S.ROOM_X[0] + 2.0, S.STAND + 1.0, 2 * S.AXIS_Z - (S.pilaster_z(15) - 5.0)))),
     ("v11_lookout", "back from the south lookout, three-quarter, the afterglow on the left", "V11", S.V11),
-    # A0's ruling of 11-16 (group #77168), until the skeleton holds V12: from the north-east, low,
-    # across the whole island -- the cable station, the power house and its smoke, the lamps of both
-    # platforms, the grand stair, the front, both domes, the clock tower, the mast, the cliff's edge.
-    # Everything seen is within 146 blocks of it and it is not east of x 128 (the edge of what a
-    # server of view distance 10 sends). The station's own proposal was from the south-east, high,
-    # at (80, 90, 80): roofs, and most of the picture haze.
-    ("v12_aerial", "the whole site from above", "V12", dict(
+    # No longer counts: V12 is in the skeleton. What stands here is A0's ruling of 11-16 (group
+    # #77168) as the skeleton took it, for a checkout whose skeleton is older: from the north-east,
+    # low, across the whole island -- the cable station, the power house and its smoke, the lamps of
+    # both platforms, the grand stair, the front, both domes, the clock tower, the mast, the cliff's
+    # edge. The station's own proposal before it was from the south-east, high, at (80, 90, 80):
+    # roofs, the building small in the picture, and most of it haze.
+    ("v12_aerial", "the whole island, slantwise from the north-east", "V12", dict(
         pos=(126.0, 44.0, -50.0), look_at=(22.0, 4.0, 0.0))),
 ]
 
