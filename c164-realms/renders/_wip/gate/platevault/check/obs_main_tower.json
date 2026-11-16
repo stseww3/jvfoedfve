@@ -1,0 +1,248 @@
+{
+ "scene": "obs_main_tower",
+ "commit": "15b5857",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "WARN",
+   "summary": "187332 blocks, 360 entities, 300 models, 1578 resource-pack files, 379 data-pack files, look: 1 biomes, 1 timelines (4.9 s)",
+   "details": [
+    "registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json"
+   ]
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 1577 files, no file written twice, the folders and the prefix of main are kept (1 package run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "429 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "1129 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "79 kinds of block placed, 58 barrier cells (x 16..91, y -6..1, z -34..38), all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "PASS",
+   "summary": "no wall face runs flat over more than 5x5",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "360 display entities, 25 drawn out along one axis, 8 shown through a matrix that is no turn, no face stretched, 141 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "9 shots, most display entities in view: 312 (north_west), limit 600; counted without what walls hide; the game draws up to 360 (v5): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "v5",
+      "in_view": 199,
+      "drawn": 360,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v1_stamp",
+      "in_view": 301,
+      "drawn": 360,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v2_axis",
+      "in_view": 265,
+      "drawn": 360,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "dial_close",
+      "in_view": 32,
+      "drawn": 360,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "top_close",
+      "in_view": 54,
+      "drawn": 360,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "top_level",
+      "in_view": 73,
+      "drawn": 360,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "junction",
+      "in_view": 134,
+      "drawn": 360,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "west_door",
+      "in_view": 141,
+      "drawn": 356,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "north_west",
+      "in_view": 312,
+      "drawn": 346,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "WARN",
+   "summary": "V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 3.0 s)",
+   "details": [
+    "the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a_equator at x 35, y 4, z 0; 2 more kinds; a lamp post takes less than 25% of a bay"
+   ],
+   "data": {
+    "the base storey": {
+     "lines": 1104,
+     "hidden": 555,
+     "seen_through": 301,
+     "hidden_by_blocks": 483,
+     "hidden_by_models": 72
+    },
+    "the great windows": {
+     "lines": 1656,
+     "hidden": 68,
+     "seen_through": 0
+    },
+    "the cornice": {
+     "lines": 1104,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the clock tower": {
+     "lines": 672,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the time-ball mast": {
+     "lines": 22,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the great dome": {
+     "lines": 1688,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the small dome": {
+     "lines": 290,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "comet": {
+     "elevation": 41.0,
+     "across": 0.6128,
+     "down": 0.2647,
+     "lost": 0,
+     "body": {
+      "lines": 350,
+      "outside_clear": 0,
+      "covered": 0,
+      "from": -7.29,
+      "to": 1.2,
+      "low": 39.99,
+      "up": 54.24
+     }
+    },
+    "clear": {
+     "up": 61.0,
+     "blocks": [
+      {
+       "name": "between the two ends of the main building",
+       "from": -1.24,
+       "to": 44.16,
+       "low": 0.0,
+       "up": 61.0,
+       "lines": 44835,
+       "covered": 0
+      },
+      {
+       "name": "where the comet hangs, north of the main building",
+       "from": -15.0,
+       "to": -1.49,
+       "low": 35.0,
+       "up": 61.0,
+       "lines": 5880,
+       "covered": 0
+      }
+     ]
+    },
+    "left": {
+     "from": 44.66,
+     "to": 70.0,
+     "posts": []
+    }
+   }
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "26 parts and 0 points on 14 chains, 285 function files; 10 commands in the busiest tick (limit 40), 4.1 a tick on average (limit 10)",
+   "details": [
+    "chain of 16 ticks: 4 functions, 10 commands a cycle, starts 3 ticks after start",
+    "chain of 24 ticks: 8 functions, 25 commands a cycle, starts 2 ticks after start",
+    "chain of 40 ticks: 8 functions, 17 commands a cycle, starts 2 ticks after start",
+    "chain of 48 ticks: 12 functions, 65 commands a cycle, starts 1 ticks after start",
+    "chain of 90 ticks: 8 functions, 17 commands a cycle, starts 4 ticks after start",
+    "chain of 130 ticks: 8 functions, 17 commands a cycle, starts 20 ticks after start",
+    "chain of 170 ticks: 8 functions, 17 commands a cycle, starts 5 ticks after start",
+    "chain of 1001 ticks: 25 functions, 52 commands a cycle, starts 13 ticks after start",
+    "chain of 1617 ticks: 31 functions, 64 commands a cycle, starts 9 ticks after start",
+    "chain of 2002 ticks: 11 functions, 34 commands a cycle, starts 8 ticks after start",
+    "chain of 2457 ticks: 39 functions, 80 commands a cycle, starts 3 ticks after start",
+    "chain of 3003 ticks: 21 functions, 43 commands a cycle, starts 8 ticks after start",
+    "chain of 5577 ticks: 33 functions, 100 commands a cycle, starts 4 ticks after start",
+    "chain of 9009 ticks: 63 functions, 190 commands a cycle, starts 6 ticks after start",
+    "site_weather_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.08 blocks off the axis",
+    "bld_tower_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.09 blocks off the axis",
+    "mach_engine_rod: 12 steps in 48 ticks; its model strays 0.34 pixels from its arc (its middle lies 2.06 blocks off the axis), within the half pixel a fast part is let off with",
+    "mach_orrery_a_lay: 21 steps in 3003 ticks: its middle lies 0.01 blocks off the axis",
+    "mach_orrery_a_arm_mercury: 11 steps in 1001 ticks: its middle lies 0.19 blocks off the axis",
+    "mach_orrery_a_under_mercury: 15 steps in 1001 ticks: its middle lies 0.56 blocks off the axis",
+    "mach_orrery_a_arm_venus: 11 steps in 1617 ticks: its middle lies 0.26 blocks off the axis",
+    "mach_orrery_a_under_venus: 21 steps in 1617 ticks: its middle lies 0.80 blocks off the axis",
+    "mach_orrery_a_arm_earth: 11 steps in 2002 ticks: its middle lies 0.01 blocks off the axis",
+    "mach_orrery_a_under_earth: 11 steps in 2002 ticks: its middle lies 0.02 blocks off the axis",
+    "mach_orrery_a_arm_mars: 13 steps in 2457 ticks: its middle lies 0.47 blocks off the axis",
+    "mach_orrery_a_under_mars: 27 steps in 2457 ticks: its middle lies 1.29 blocks off the axis",
+    "mach_orrery_a_arm_jupiter: 33 steps in 5577 ticks: its middle lies 0.01 blocks off the axis",
+    "mach_orrery_a_under_jupiter: 33 steps in 5577 ticks: its middle lies 0.03 blocks off the axis",
+    "mach_orrery_a_arm_saturn: 63 steps in 9009 ticks: its middle lies 0.87 blocks off the axis",
+    "mach_orrery_a_under_saturn: 63 steps in 9009 ticks: its middle lies 2.13 blocks off the axis"
+   ]
+  }
+ ]
+}
