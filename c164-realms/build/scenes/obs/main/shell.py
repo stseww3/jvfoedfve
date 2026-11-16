@@ -35,7 +35,8 @@ and its inner leaf it touches only the floor of the doorways):
     dome-room floor at (4, -4), eleven blocks above. A balustrade of iron panels on both sides:
     the inner one in the steps' own cells so the ring stays empty, the outer one two rows high,
     one unbroken band from the gallery to the trimmer. The west run, which crosses the well,
-    hangs by four rods from the beam over it;
+    hangs by four rods from the beam over it. A brass post on the railing's head marks each
+    mouth; the cell over it stays free (the light line stands a lamp on the gallery's);
   * the wing rooms of the main floor (time-service room north, star-chart room south): floor,
     ceiling, the wall towards the rotunda, the wall towards the end pavilion;
   * the dome-room floor, with the envelope left open, an iron curb and a railing round it.
@@ -103,6 +104,7 @@ GRATING = B.IRON_GRATE
 TREAD = B.IRON_RIVETED
 PANEL = B.IRON_HATCH                            # an iron hatch on edge: the thin balustrade panel
 HANGER = f"{B.IRON_ROD}[facing=up]"             # a thin rod from the trimmer down to the ring stair's balustrade
+POST = B.BRASS_RAIL                             # one brass post on a railing's head: the newel at a mouth of the ring stair
 TRIM = B.IRON_RIVETED.block                     # the iron curb round the stair's opening, ceiling to floor
 HEADROOM = 2                                    # rows that stay free over a deck one walks on
 
@@ -377,6 +379,23 @@ def stair_hangers():
             if y_of[(x0, z)] + 2 <= CEIL_Y - 1]
 
 
+def stair_posts():
+    """The newel at each mouth of the ring stair: [(x, y, z)], a brass post one block high on the
+    head of the railing beside the gap (review 16). Seen from the gallery the foot of the stair
+    is a gap one cell wide in a railing with a stack of iron plates behind it, and the way off in
+    the dome room is a gap in a railing too: the post says where one goes up and where one goes
+    back down. Brass at both mouths, the only brass of the stair: an iron rod is lost before the
+    iron plates at the foot, across the well the brass is a small bright stroke that shows the
+    way, and the two ends of one stair are a pair. It stands on the side of the plate that closes
+    the stair's end -- east of the bridge on the gallery, west of the way off in the dome room --
+    and on the bars, which it does not replace (bars and a post do not join, and the gap between
+    them would let one through). The cell over each post stays free: on the gallery's the light
+    line stands a low lamp (sky/lights, the lamp of the parapet piers); the dome room's stays
+    bare, a newel and no more -- that room keeps its dark."""
+    cells = [(x, z) for x, z, _y, _half, _top in ring_stair()]
+    return [(cells[-2][0], S.STAND + 1, BRIDGE[1]), (cells[1][0], S.ROOF_STAND + 1, EXIT[1])]
+
+
 @contextlib.contextmanager
 def hall_open():
     """Build the main line inside this block to get the hall as it stands once the facade's
@@ -503,6 +522,8 @@ def build(canvas, origin=(0, 0, 0)):
     for x, y0, y1, z in stair_hangers():
         for y in range(y0, y1 + 1):
             put((x, z), y, HANGER)
+    for x, y, z in stair_posts():
+        put((x, z), y, POST)
     return 0
 
 
@@ -518,6 +539,7 @@ LEGEND = [
     ("s", "ring stair"), ("S", "ring stair passing over a deck or its railing"),
     ("P", "ring stair resting on its plinth"), ("n", "window niche of the facade, its floor level with the galleries"),
     ("b", "the bridge onto the ring stair"), ("e", "where the ring stair lets one off"),
+    ("p", "brass post on the railing's head, beside a mouth of the ring stair"),
 ]
 
 
@@ -525,6 +547,7 @@ def drawing(level):
     """One of the three plans as text, north up: "ground" (feet 0), "main" (feet 7), "dome" (feet 18)."""
     L = layout()
     f = facade.shell()
+    foot_post, top_post = [(x, z) for x, _y, z in stair_posts()]
     g = {}
     for c in f.wall:
         g[c] = "#"
@@ -567,6 +590,7 @@ def drawing(level):
         for c in L.niches:
             g[c] = "n"
         g[BRIDGE] = "b"
+        g[foot_post] = "p"
     else:
         d = O.disc(CX, CZ, S.DOME_R)
         g = {c: "#" for c in d}
@@ -580,6 +604,7 @@ def drawing(level):
             if top > ROOF_Y:
                 g[(x, z)] = "s"
         g[EXIT] = "e"
+        g[top_post] = "p"
     if level != "ground":
         for c in (L.cap if level == "dome" else L.shaft):
             g[c] = "T"
@@ -673,6 +698,10 @@ def check():
             out.append(f"ring stair: the hanger at ({x}, {z}) does not hang from a beam")
         if any(c.get(x, y, z) != HANGER for y in range(y0, y1 + 1)):
             out.append(f"ring stair: the hanger at ({x}, {z}) is broken")
+    #    and a post marks each mouth: on the railing beside the gap, the cell over it free for a lamp
+    for (x, y, z), mouth in zip(stair_posts(), (BRIDGE, EXIT)):
+        if (abs(x - mouth[0]), z) != (1, mouth[1]) or c.name(x, y - 1, z) != RAIL or c.get(x, y, z) != POST or solid(x, y + 1, z):
+            out.append(f"ring stair: no post on the railing beside the mouth at ({x}, {y}, {z})")
     # 4. the grand stair: three blocks of air over every step
     for cells in L.flights.values():
         for x, y, z in cells:
