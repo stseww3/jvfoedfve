@@ -35,7 +35,7 @@
 
 ### 做了什么
 - `build/scenes/obs/motion/sound.py`：声音表 `EVENTS`（9 个事件名，7 种声音；嘀嗒是 `tick`/`tock` 一对，电报是 `telegraph`/`telegraph_up` 一对），`pack()` 只写 `assets/c164/sounds.json`，每个事件是一条 `"type": "event"` 指向原版事件。`pack()` 写之前拿客户端 jar 里 `SoundEvents` 的名字核一遍，指向 26.3 里没有的事件当场报错（没有 jar 的机器上跳过并写明）。
-- `build()` 登记的点（主场景，共 12 个点，全走 `MK.sound`）：
+- `build()` 登记的点（主场景，12 处、17 个点：嘀嗒和电报每处是一对事件；全走 `MK.sound`）。现在登记了什么，在节点上跑 `cd build && python -m scenes.obs_mot_sound spots` 列出来（读 `sound.spots(canvas)`）：
 
 | 声音 | 位置（读谁的数） | 周期和时刻 | 发给多远以内 |
 | --- | --- | --- | --- |
@@ -44,7 +44,7 @@
 | 低鸣 | `engine.HUM_AT`（发电机） | 160 tick 重播 | 16 |
 | 炉火 | `boiler.FIRE_DOORS[-1]`（2 号炉，炉门半开那台） | 100 tick 重播 | 12 |
 | 汽嘶 | `boiler.SAFETY_VALVES[-1]`（2 号炉） | 160 tick 一次，第 80 tick（`sound.VALVE`） | 12 |
-| 电报 | `timeroom.SLOTS["telegraph"]`，`machines/rec` 进了树才登记（现在还没进总装，所以没登记） | 300 tick 一组，莫尔斯码敲 TIME，12 下 | 6 |
+| 电报 | `timeroom.SLOTS["telegraph"]`，`machines/rec` 进了树才登记（rec 11-16 09:33 进了总装，从那以后自己登记上了：授时室控制台上 (6.5, 8.5, -23.5)） | 300 tick 一组，莫尔斯码敲 TIME，12 下 | 6 |
 | 山风 | 大台阶顶（前庭东缘）、钟塔敞廊、南观景台（`common/skeleton`、`main/tower`） | 240 tick 重播 | 16、6、16 |
 
 - 测试场景 `build/scenes/obs_mot_sound/`：7 行 3 列的小台子。行从北往南是 tick、engine、hum、fire、hiss、telegraph、wind；列从西往东是三个选择：a（声音表里现用的，台子 1 格高）、b、c（`sound.OTHERS`，台子 2、3 格高）。台子间隔 14 格，每个只发给 6 格以内的人，台子之间是静的。场景的包里除了正式的表还写了候选（事件名加 `_b`、`_c`），正式的包里没有候选。
@@ -71,9 +71,18 @@
 5. 室内的声音按球形距离发，墙挡不住：发电房东南角外、穹顶室南墙外的屋顶上能听到一点。要按房间的盒子发得请 `motion/loop` 给 `MK.sound` 加一个盒子选项，这一版没动。
 
 ### 还差的
-- 电报：`machines/rec` 进总装以后自动登记，不用再改。
-- 真机上跑一次看日志（请 s1）：有没有“找不到声音事件”。
-- 预算：主场景里本包 15 个点，平均每秒约 5.7 条命令（嘀嗒 4 只钟 4 条，蒸汽机 0.4，低鸣加汽嘶 0.5，炉火 0.4，风 0.3，重播的那几条链各自的 `schedule` 算在内）；电报登记以后再加 1.6。卡上的上限是每秒 10 条。
+- 等人听（上面五条），听完把选中的那一组和音量挪进 `EVENTS`、`CARRY`，重过关口再交。
+- 真机：s1 11-16 09:55 在 node12 跑了测试场景（`3fd56da`，日志在提交 `8377bd31` 的 `renders/real/_trips/` 下 015245 两份）：资源包照常加载，客户端日志里没有 `Invalid sounds.json`、`unknown soundEvent`、`cannot add it to event`，摆放 0 失败。**没验到的**：那一趟镜头离声点 30 格，声点只发给 6 格以内的人，客户端没收到过 `playsound`；“有人在场时播得出来”要等候选版进存档那一趟（镜头进星厅、发电房），s1 答应到时把日志行发来。
+- 预算（总装 `0dfcb27a` 上列的，11-16 10:17）：本包 17 个点，每秒 5.9 条 `playsound`（嘀嗒 4 只钟 4.0，电报 0.8，蒸汽机 0.42，炉火 0.2，低鸣 0.12，汽嘶 0.12，风 0.25），加上本包自己那几条链的 `schedule` 约 0.5，共约 6.4。卡上的上限是每秒 10 条。主场景 `check.py` 的 motion 一项：30 个件、29 个点、23 条链，最忙的一刻 11 条命令（上限 40），平均每刻 5.1 条（上限 10）。再有带摆的钟进总装，每只加 1 条。
 
 ### 交付
-- 第一版：提交 `3fd56da4`，关口 PASS（基 `df800e74`，11-16 09:31；`check.py` 主场景 motion 一项：26 个件、15 个点、17 条链，最忙的一刻 10 条命令，平均每刻 4.4 条；测试场景 27 个点、6 条链、25 个函数文件）。09:32 私信 cr2【交付】。
+- 第一版：提交 `3fd56da4`，关口 PASS（基 `df800e74`，11-16 09:31；`check.py` 主场景 motion 一项：26 个件、15 个点、17 条链，最忙的一刻 10 条命令，平均每刻 4.4 条；测试场景 27 个点、6 条链、25 个函数文件）。09:32 私信 cr2【交付】；cr2 合进总装 `0b22315b`。
+- 之后分支上多的（还没交，随下一次交付走）：`sound.spots()` 和 `python -m scenes.obs_mot_sound spots`，只是列表，不动场景和资源包。
+
+### 本卡以外：帮 lights 量「人走的路都有光」（cr2 11-16 派，#73089）
+- 只出清单，不改别人的文件。工具和清单都不进总装：工具在分支 `cursor/c164-sound-lightaudit-f3-cbc6` 的 `tools/darkfloor.py`（用 a4 的 `tools/walkreach.py` 算人走得到的格，lights 的 `sky/_lightkit.levels` 算块光，量法写在文件头）；清单在 `cursor/c164-sound-lightaudit-f3-cbc6-wip` 的 `c164-realms/renders/_wip/light/dark.md`、`dark.json`。
+- 线：地面块光不低于 5，台阶和门槛不低于 7；露天、檐下（天光从旁边照进来 13 级以上）、穹顶室另列不算。新开门的房间一律算路、归房间主人（cr2 #76117）；主人说本来就该黑的才报 cr2。各堆归谁写在工具的 `OWNERS` 表里（lights #74750、#75829、#76033）。
+- 重跑（lights 或谁的灯进了总装就跑一趟，一趟十几秒）：在那个分支上合进最新的总装头，推上去，然后在 node106 上
+  `bash c164-realms/tools/nodejob.sh --wip --always --tail 80 --limit 2300 python tools/darkfloor.py --head <总装头> --before tools/darkfloor_before.json --out renders/_wip/light`；
+  数发 lights（c331）和 cr2（c333）；发完把新的 `dark.json` 存成 `tools/darkfloor_before.json`（下一版拿它比）。
+- 到 11-16 10:17 发过四版：`cda721ae` 856 格（檐下的还算在内），`d7374d32` 338 格，`89943679` 444 格（底片库开了门），`0dfcb27a` 583 格 60 堆（蓄电池室开了门）。lights 的 22 盏在过关口，还没进总装。
