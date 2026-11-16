@@ -7,8 +7,9 @@ that would light them. Never merged anywhere; it only reads the master scene.
         entities in the box
 
     cd build && python astro_stairhall.py try <lamps.json> <stations.json> [--out file]
-        builds the master scene, adds the lamps of the file as sky/lights would (a caged lamp on
-        the wall block, its source in the cell before it) and prints the light before and after
+        builds the master scene, adds the lamps of the file as sky/lights would (a lamp on the
+        wall block [x, y, z, facing, level], its source in the cell before it; or a pendant
+        ["hang", x, y, z, level], its source in that cell) and prints the light before and after
         at the cells of the file and at the walk-through's stations in the hall
 """
 import json
@@ -66,7 +67,22 @@ def attempt(lamps_path, stations_path, out_file=None):
     canvas = obs.build()
     before, tops, placed = ways.survey(canvas)
     text = []
-    for x, y, z, facing, level in plan["lamps"]:
+    for entry in plan["lamps"]:
+        if entry[0] == "hang":                      # a pendant: its source cell, hung from the first block over it
+            _, x, y, z, level = entry
+            cell, up = (x, y, z), y + 1
+            while up <= HI[1] and not canvas.has(x, up, z):
+                up += 1
+            hanger = canvas.b.get((x, up, z))
+            solid = hanger is not None and bool(L._stops_light(hanger))
+            free = not canvas.has(*cell) or cell in placed
+            text.append(f"pendant in {cell}, level {level}: hangs {up - y - 1} cells under {(x, up, z)} "
+                        f"({AB.name_of(hanger) if hanger else 'nothing'}: {'a whole block' if solid else 'NOT A WHOLE BLOCK'}), "
+                        f"its cell {'is free' if free else 'IS TAKEN by ' + str(canvas.b.get(cell))}")
+            if solid and free:
+                canvas.set(cell[0], cell[1], cell[2], L.light(level))
+            continue
+        x, y, z, facing, level = entry
         dx, dz = lights.FACE[facing]
         wall, cell = (x, y, z), (x + dx, y, z + dz)
         state = canvas.b.get(wall)
