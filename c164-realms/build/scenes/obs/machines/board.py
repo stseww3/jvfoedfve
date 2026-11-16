@@ -145,11 +145,12 @@ def dial_picture(letter):
 
 
 def ticks_picture():
-    """The ticks of a meter's scale, which glow: eight, on the upper arc of the dial."""
+    """A meter's scale, which glows: an arc over the upper half of the dial, a bright tick and a
+    faint one by turns, so that it reads as a scale from across the room and not as two dots."""
     p = K.Pix(16, 16)
-    for a in (-56.0, -40.0, -24.0, -8.0, 8.0, 24.0, 40.0, 56.0):
-        r = math.radians(a)
-        p.set(int(math.floor(8.0 + 4.7 * math.sin(r))), int(math.floor(8.0 - 4.7 * math.cos(r))), "j")
+    arc = ((4, 6), (4, 5), (5, 4), (6, 3), (7, 3), (8, 3), (9, 3), (10, 4), (11, 5), (11, 6))
+    for i, (x, y) in enumerate(arc):
+        p.set(x, y, "k" if min(i, len(arc) - 1 - i) % 2 == 0 else "i")       # the same from either end
     return p
 
 

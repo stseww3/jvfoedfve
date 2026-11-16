@@ -7,9 +7,10 @@ What it is. A board of the family of the power house's (machines/board.py): the 
 in an iron frame, the same meters, knife switches and pointers. Three slabs on four iron legs
 before the room's north wall, their faces to the aisle. The middle slab is the battery's: its
 ammeter, whose pointer swings slowly to either side of the middle of its scale, and under it the
-change-over switch for charging and discharging, two blades hinged in the middle and thrown up, the
-lower jaws empty. Each wing is one pole's: a meter (the voltmeter on the west), the clamp where a
-pair of copper bars from the racks lands (BUS_IN), and under it that pole's knife switch. Over the
+change-over switch for charging and discharging, which lies across the slab: two blades hinged in
+the middle and thrown to the west, the jaws to the east empty. Each wing is one pole's: a meter
+(the voltmeter on the west), the clamp where a pair of copper bars from the racks lands (BUS_IN),
+and under it that pole's knife switch, lying across the slab as well. Over the
 head run two bus bars on porcelain posts, and behind them two conduits rise through the ceiling
 to the time room (RISERS).
 
@@ -62,8 +63,7 @@ _METER_Y = 54
 _METERS = {"east": (12, "A", 18.0, 2.0, 110), "main": (40, "A", 6.0, 15.0, 260), "west": (68, "V", -28.0, 1.5, 150)}
 #           middle along the board, letter, where the pointer rests (degrees, negative is to the right of
 #           whoever reads it), how far it swings to either side, in how many ticks there and back
-_KNIFE_Y = (21, 38)                     # a wing's knife switch, foot to head
-_OVER_Y = (17, 29, 45)                  # the change-over switch: foot of the lower pad, of the hinge pad, head
+_SWITCH_Y = 30                          # the middle line of the switches, which lie across the slabs
 _BUS_Y = (40, 44)                       # the bars from the racks: 4 texels high
 _BUS_Z = (-2, 2)                        # ... a pair, their middle lines either side of the wing's middle
 _BUS_X = 6                              # how far their ends stand out of the face
@@ -115,9 +115,9 @@ def _panel(name):
 
     mz, letter = _METERS[name][0], _METERS[name][1]
     if name == "main":
-        labels = [(u(mz + 15), 31, 5), (u(mz - 10), 31, 5)]         # either side of the hinge
+        labels = [(u(mz + 12) - 3, 44, 6), (u(mz - 12) - 3, 44, 6)]     # under either pair of jaws
     else:
-        labels = [(u(mz) - 4, 44, 8)]                               # under the knife switch
+        labels = [(u(mz) - 4, 44, 8)]                                   # under the knife switch
     face = PB.slab_picture("battery " + name, w, labels).sprite(PREFIX + "slab_" + name)
     d.box((-_T, _Y0, z0), (0, _Y1, z1), K.flat("slate", 2), skip="d", seed=0, faces={"e": face})
 
@@ -142,13 +142,16 @@ def _panel(name):
 
     PB.meter(d, _METER_Y, mz, letter)
 
-    if name == "main":                                  # the change-over switch, thrown up
-        y0, ym, y1 = _OVER_Y
-        PB.knife(d, mz, ym, y1, 8, (-5, 5))
-        d.box((0, y0, mz - 8), (1, y0 + 4, mz + 8), PB.PORCELAIN)
-        d.box((1, y0 + 1, mz - 7), (3.5, y0 + 2.5, mz + 7), PB.BRASS)               # the lower jaws, empty
+    # The switches lie across the slabs: a meter over an upright pair of blades reads as a head
+    # on two legs.
+    if name == "main":                                  # the change-over switch, thrown to the west
+        with d.turned(("x", 90.0), about=(0, _SWITCH_Y, mz)):
+            PB.knife(d, mz, _SWITCH_Y - 2, _SWITCH_Y + 14, 8, (-5, 5))
+            d.box((0, _SWITCH_Y - 14, mz - 8), (1, _SWITCH_Y - 10, mz + 8), PB.PORCELAIN)
+            d.box((1, _SWITCH_Y - 12.5, mz - 7), (3.5, _SWITCH_Y - 11, mz + 7), PB.BRASS)       # the other jaws, empty
     else:
-        PB.knife(d, mz, _KNIFE_Y[0], _KNIFE_Y[1], 6, (-3, 3))
+        with d.turned(("x", -90.0 if name == "west" else 90.0), about=(0, _SWITCH_Y, mz)):
+            PB.knife(d, mz, _SWITCH_Y - 9, _SWITCH_Y + 9, 6, (-3, 3))                           # its grip towards the middle
         # where the pair of bars from the racks lands: a brass plate on the slab, the bars' ends, the
         # strap bolted over them
         d.box((0, _BUS_Y[0] - 1.5, mz - 5), (1, _BUS_Y[1] + 1.5, mz + 5), PB.BRASS)
@@ -254,10 +257,10 @@ def hanger(canvas, pos, origin=(0, 0, 0), show=None):
 def run(canvas, side, south, hangers=(), origin=(0, 0, 0)):
     """The pair of bars of one wing ("west" or "east") from the board's clamp straight south to
     z = south, with a hanger at each z of `hangers`. The bars are laid in lengths that end at the
-    hangers, so that each length takes the light of where it hangs. Returns the number of display
-    entities."""
+    hangers, so that each length takes the light of where it hangs; an end of less than a block
+    past the last hanger belongs to the length before it. Returns the number of display entities."""
     pair = BUS_IN[side]
-    stops = sorted({pair[0][2], float(south)} | {float(z) for z in hangers if pair[0][2] < z < south})
+    stops = sorted({pair[0][2], float(south)} | {float(z) for z in hangers if pair[0][2] < z < south - 1.0})
     n = 0
     for x, y, _ in pair:
         for z0, z1 in zip(stops, stops[1:]):
