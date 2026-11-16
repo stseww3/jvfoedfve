@@ -98,7 +98,7 @@ TEXT = {
     "chart_room": ("CHART ROOM", "Each clear night is drawn here by hand."),
     "plate_vault": ("PLATE VAULT", "A glass plate for every clear night."),
     "great_refractor": ("THE GREAT REFRACTOR", "Tonight it is turned on the comet."),
-    "time_ball": ("TIME BALL", "It drops once a day, on the second."),
+    "time_ball": ("TIME BALL", "It drops on the hour, to the second."),
     "power_house": ("POWER HOUSE", "Steam turns the dynamo that lights the lamps."),
     "sunset_terrace": ("SUNSET TERRACE", "The comet sets an hour behind the sun."),
 }
