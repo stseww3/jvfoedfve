@@ -106,10 +106,11 @@ from . import _lightkit as L
 
 ORDER = 90                              # the last of the sky packages
 DRESS = True                            # see above
-# How far off a lamp's body is drawn (artkit.models' bands). Its source lights the way from any
-# distance; what is left out further off is the fitting, which is two pixels of a board picture at
-# 64 blocks. Indoors a lamp is a thing of its room; out of doors it is seen from the court.
-VIEW_IN, VIEW_OUT = M.NEAR, M.MID
+# How far off a lamp's body is drawn (artkit.models' bands). Indoors a lamp is a thing of its room
+# and is left out beyond 32 blocks, where its source goes on lighting the way. Out of doors every
+# fitting stays in the far band: what carries a light is part of the outline at night, however
+# small (the director, 11-16 13:10; plan/roles/INTERFACE.md 7).
+VIEW_IN, VIEW_OUT = M.NEAR, M.FAR
 
 DOOR_BAY = 9
 ENTRANCE_BAYS = (DOOR_BAY, DOOR_BAY - 1, DOOR_BAY + 1)      # the doorway, then the arches an arcade has beside it

@@ -48,8 +48,8 @@ from . import roof
 ORDER = 75                      # after the roofs' own package (70): the ventilators stand on its slates
 
 PREFIX = "bld_roof_"
-VIEW = M.MID                    # drawn up to 64 blocks away: from the court, the terraces and the roofs (V2, V5, V11),
-#                                 not from the station or the far lookout, whose views are full (the line of 600)
+VIEW = M.FAR                    # part of the outline: drawn as far as the domes are seen, from the station too (the
+#                                 director, 11-16 13:10: what stands in the skyline out of doors keeps the far band)
 
 SHEET = K.IRON_D                # the shaft's sheet iron
 BAND = K.IRON                   # its lap bands, the flange, the curb and the storm collar: what takes the light
