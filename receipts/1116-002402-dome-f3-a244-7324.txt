@@ -1,0 +1,40 @@
+a0job 1116-002402-dome-f3-a244-7324: cursor/c164-dome-f3-a244 @ bfc5cfdb on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 2.14 2.30 2.35, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/selfshots.py obs_main_dome obs_main_dome_a obs_main_dome_slit ---- exit 0, 47 s, last 30 lines of 53:
+  obs_main_dome_a: light done (3 s)
+  obs_main_dome_a: v1 (tick 14000, 2 s)
+  obs_main_dome_a: v2_axis (tick 14000, 1 s)
+  obs_main_dome_a: v11 (tick 14000, 1 s)
+  obs_main_dome_a: roof (tick 14000, 1 s)
+  obs_main_dome_a: drum (tick 14000, 1 s)
+  obs_main_dome_a: gallery (tick 14000, 1 s)
+  obs_main_dome_a: ridge (tick 14000, 1 s)
+  obs_main_dome_a: aerial (tick 14000, 1 s)
+  obs_main_dome_a: top (tick 14000, 1 s)
+  obs_main_dome_a: slit (tick 14000, 1 s)
+  obs_main_dome_a: west (tick 14000, 1 s)
+renders/obs_main_dome_a/: 11 pictures of bfc5cfdb drawn, 4.2 MB
+  obs_main_dome_slit: 25928 blocks, 0 entities (0 s)
+  obs_main_dome_slit: resource pack written to /tmp/c164pack-kktdczy8 (1 s)
+  obs_main_dome_slit: water: 0 sources, 0 cells of running water (1 s)
+  obs_main_dome_slit: grid 41 x 26 x 241, 25928 blocks, 0 entity boxes (1 s)
+  obs_main_dome_slit: 48 states -> 233 looks, 469 boxes, 36 pictures (1 s)
+  obs_main_dome_slit: light done (1 s)
+  obs_main_dome_slit: a_closed (tick 14000, 1 s)
+  obs_main_dome_slit: a_half (tick 14000, 1 s)
+  obs_main_dome_slit: a_open (tick 14000, 1 s)
+  obs_main_dome_slit: b_closed (tick 14000, 1 s)
+  obs_main_dome_slit: b_half (tick 14000, 1 s)
+  obs_main_dome_slit: b_open (tick 14000, 1 s)
+  obs_main_dome_slit: a_row (tick 14000, 0 s)
+  obs_main_dome_slit: a_top (tick 14000, 0 s)
+  obs_main_dome_slit: b_row (tick 14000, 0 s)
+  obs_main_dome_slit: b_top (tick 14000, 0 s)
+renders/obs_main_dome_slit/: 10 pictures of bfc5cfdb drawn, 3.8 MB
+==== NODEJOB RESULT ====
+exit=0 secs=51 host=cursor cores=4 head=bfc5cfdb commit=d277fee2 pushed=yes branch=cursor/c164-dome-f3-a244 files=25
+a0job: exit=0 secs=51
