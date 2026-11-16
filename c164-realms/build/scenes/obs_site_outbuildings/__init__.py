@@ -119,6 +119,14 @@ def shots():
     # from the terrace by the west front; the tower shows between two piers of the railing
     shot("tower_near", (cx + 13.4, eye, cz + 6.5), (cx, feet + 7.0, cz))
     shot("tower_mid", (cx - 21.0, feet + 7.0, cz - 25.0), (cx + 9.0, feet + 9.0, cz + 7.0))
+    # the wind engine on the tower (plan/fine.md: a thing is looked at from ten blocks and from two):
+    # the wheel from before it and the tail from its side, eight blocks off; the pump, its rod and
+    # the guides under the deck from ten blocks; the pump from two, standing between the legs
+    hub = outbuildings.WIND_WHEEL                       # (-16.5, 15.25, -31.25)
+    shot("wind_wheel", (hub[0] + 5.0, hub[1] + 1.25, hub[2] - 5.75), (hub[0], hub[1] - 0.25, hub[2] + 0.45))
+    shot("wind_tail", (hub[0] + 7.5, hub[1] + 0.25, hub[2] + 2.25), (hub[0], hub[1] - 0.05, hub[2] + 1.25))
+    shot("wind_ten", (cx + 9.4, feet + 3.2, cz + 4.6), (cx + 0.5, feet + 3.0, cz + 0.2))
+    shot("wind_two", (cx + 1.7, feet + S.EYE, cz - 1.6), (cx + 0.5, feet + 1.3, cz + 0.15))
 
     wx, wz = _middle(S.WEATHER_STATION["box"])          # (3, -46)
     # on the terrace, in the gap of its railing, at the head of the steps
