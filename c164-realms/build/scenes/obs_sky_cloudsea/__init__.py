@@ -6,21 +6,16 @@ building is main's): the upper terrace, the sunset platform, the lower platform 
 deck and the shelves, each a flat rock falling away into the cloud as the real slopes do, a pale
 massing of the main building (a bar, a dome, a tower) so the silhouette over the sea can be judged,
 and the cable trestle running down from the station into the sea. Only enough to answer the card's
-questions: from V1, V11, V12, the sunset rail and close to the cloud face, does the sea lie out to
-the horizon without a rim or a ring anywhere, does the rock rise out of cloud rather than stand in
-a level cut, and is the track lost in the cloud or does it end in a hole?
+questions: from V1, V11, V12, the sunset rail and close to the cloud, does the sea read as rolling
+cloud and not as a table or as floes, does the rock rise out of cloud rather than stand in a level
+cut, and is the track lost in the cloud or does it end in a hole?
 
-The three ways to make the sea are three scenes with the same hilltop and the same shots, compared
-picture by picture: this one is version "c" (the game's cloud layer as the sea's face, blocks for
-what stands out of it; what the master scene builds), obs_sky_cloudsea_a is "a" (the layer alone),
-obs_sky_cloudsea_b is "b" (blocks alone). The offline renderer draws the fog but not the cloud
-layer, the afterglow or the warm fog towards the west, so offline "c" and "b" are one picture --
-the blocks in fog over their deck -- and "a" is the bare hilltop. On the real client S1 renders
-each version, every camera with the cloud setting on fancy, fast and off, and this scene's
-trials.json besides: four of the cameras under the fog laws on trial (mood.LAWS). preview.py lays
-the cloud layer into the offline picture by the game's arithmetic, as a forecast of those.
+The sea is built one way (sky/cloudsea: blocks alone). What the offline renderer shows of it is the
+sea under the registry look, in one fog colour and with nothing under the horizon; the map will be
+shown at ten chunks with the look drawn by A2's shaders, which paint the far sea there. preview.py
+draws that beforehand; the card is judged on the real client's pictures.
 
-    python -m scenes.obs_sky_cloudsea     # rewrites shots.json and trials.json
+    python -m scenes.obs_sky_cloudsea     # rewrites shots.json
 """
 import math
 
@@ -33,13 +28,9 @@ from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
 from scenes.obs.sky import cloudsea, comet
 
-from . import mood
-
 BIOME = "obs_blue"
 BIOME_MARGIN = 240          # the look and the sea reach far past the hilltop
 BIOME_MARGIN_Y = 160
-
-VERSION = "c"
 
 # --- the placeholder mountain ------------------------------------------------------------------------
 SLOPE = 0.72                # blocks of fall per block out from a flat (site/terrain's)
@@ -61,7 +52,7 @@ ROCK_LOW = Mix({B.ROCK_DEEPSLATE: 6, B.ROCK_COBBLED.block: 3, B.TUFF.block: 2}, 
 ROCK_SPLIT = -12            # the high mix above, the low mix below
 TRACK_END = -27             # site/cablecar's SINK: the upper face of the rails in the track's last column
 BARS_FROM = -23             # site/cablecar: a tower is bars from here up and four thin pipes below
-SUNK = cloudsea.BODY_Y - 1  # the legs go down to the rock or to here (-31), into the body of the surf
+SUNK = cloudsea.TROUGH - 1  # the legs go down to the rock or to here (-31), through the sea
 PAVE = B.SLATE_SMOOTH.block
 STONE = B.ASHLAR_FINE.block
 COPPER = B.VERDIGRIS_CUT.block
@@ -183,20 +174,20 @@ def _trestle(c):
                     c.set(x, yy, z + dz, B.IRON_PIPE + "[axis=y]")
 
 
-def build(version=VERSION):
+def build():
     c = Canvas()
     _mountain(c)
     _paving(c)
     _massing(c)
     _trestle(c)
-    cloudsea.build(c, (0, 0, 0), version=version)
+    cloudsea.build(c, (0, 0, 0))
     return c
 
 
-def write_pack(pack_dir, version=VERSION):
+def write_pack(pack_dir):
     out = list(materials.pack(pack_dir) or [])
     out += list(comet.pack(pack_dir) or [])                       # the sun painted out, the comet
-    out += list(cloudsea.pack(pack_dir, version=version) or [])
+    out += list(cloudsea.pack(pack_dir) or [])
     return out
 
 
@@ -225,13 +216,9 @@ VIEWS = {
                   (3.5, -26, -174), 14000),                                       # from the weather station
 }
 
-# The fog laws under trial (mood.LAWS: the blue hour with the block fog and the layer's fading set
-# to one law, each held for 200 ticks in the morning) on the four cameras the director judges the
-# seam on: the whole site from above, the sunset rail towards the west, down the trestle towards
-# the east, down from the roof terrace. They are for the real client, at view distance 12, and kept
-# apart in trials.json: the offline renderer does not draw the vanilla layer, and a scene keeps an
-# offline picture of every shot in shots.json. preview.py draws them beforehand.
-LAW_VIEWS = ("v12", "sunset_west", "station_east", "roof_down")
+# What preview.py draws when it is not told which: the whole site from above, the sunset rail
+# towards the west, down the trestle towards the east, down from the roof terrace.
+MAIN_VIEWS = ("v12", "sunset_west", "station_east", "roof_down")
 
 
 def _shot(name, eye, at, t):
@@ -240,7 +227,3 @@ def _shot(name, eye, at, t):
 
 def shots():
     return [_shot(name, *view) for name, view in VIEWS.items()]
-
-
-def trial_shots():
-    return [_shot(f"{view}_{law}", *VIEWS[view][:2], mood.tick(law)) for law in mood.LAWS for view in LAW_VIEWS]
