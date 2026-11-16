@@ -67,9 +67,10 @@ def build(c, origin=(0, 0, 0)):
                 put(S.GLASS_W, y, z, B.WINDOW_DARK.block)
                 put(S.WALL_W, y, z, B.IRON_BARS)
 
-    # the door, and the piece of the hall beyond it
+    # the door with its threshold, and the piece of the hall beyond it
     for y in range(T.DOOR_Y[0], T.DOOR_Y[1] + 1):
         cut(T.HALL_DOOR[0], y, zn)
+    put(T.HALL_DOOR[0], T.FLOOR_Y, zn, B.TUFF_SMOOTH.block)
     for z in range(HALL_Z[0], HALL_Z[1] + 1):
         for x in range(HALL_X[0], HALL_X[1] + 1):
             for y in range(T.FEET, HALL_TOP + 1):

@@ -7,12 +7,15 @@ scene makes once the room has moved in.
 
 The light sources are the light line's: the room offers them, sky.build() puts them down last.
 
-The shots (shots.json): int_door, the first look from the doorway, towards the desk; int_left, the
-look to the left from the same step: the plate cabinet behind the counterweights, the red lamp at
-its end; int_plate, the desk from where one stands at it; int_slit, from the observing steps up
-along the tube to the slit; int_north, from the stool under the tube to the plate cabinet;
-ext_door, the door and the slit from the terrace; ext_se, the dome from the south-east at the
-height of the roof, the side the boards V2 and V11 see it from: no window is lit.
+The shots (shots.json): int_door, the first look from the doorway, past the mount to the desk and
+the two lamps; int_right, the look to the right from the same step: the whole south niche, from
+the steps and the red lamp to the driving clock and the crank; int_plate, the desk from where one
+stands at it: the open plate box under the red lamp, the log under the desk lamp; int_desk, along
+the desk to the red lamp; int_slit, from the observing steps up along the tube to the slit;
+int_side, from the south-west cell: the tube in profile, pointing out of the slit under the ribs;
+int_north, from under the tube to the plate cabinet; ext_door, the door and the slit from the
+terrace; ext_se, the dome from the south-east at the height of the roof, the side the boards V2
+and V11 see it from: no window is lit.
 """
 from artkit.canvas import Canvas
 
