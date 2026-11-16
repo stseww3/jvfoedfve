@@ -1,4 +1,4 @@
-"""interiors/_starhall_wiring -- the star hall's surface wiring (a part of interiors/starhall, which
+"""interiors/_starhall_wiring -- the star hall's surface wiring (one of starhall.PARTS: the hall
 calls dress() at the end of its own and adds models() to its own; the underscore keeps the
 category's discovery from taking this file for a package).
 
