@@ -7,7 +7,8 @@ The box is the clear inside under the time room (main/shell.ROOMS), six rows hig
 slate brick, rusticated ashlar above, the time room's floor over it, an iron beam under that on
 each of the four pilaster lines. No windows, no door, no racks and no cells: those are the room's.
 From each wing's clamp a pair of bars runs south under the beams, as the room may run them
-(batteryboard.run()). The light stands in for the room's three caged lamps (third grade): one
+(batteryboard.run()); here they hang from the beams on the module's own hangers, the room
+carries them on its gantries. The light stands in for the room's three caged lamps (third grade): one
 over the board, two over the aisle; the sources are handed to the sky line.
 
     python -m scenes.obs_mach_batteryboard        # writes shots.json from the numbers below
@@ -58,7 +59,7 @@ def build():
     n = board.place(c, (0, 0, 0))
     hang = tuple(z + 0.5 for z in BEAMS_Z)
     for side in ("west", "east"):
-        n += board.run(c, side, hang[-1] + 0.5, hang, (0, 0, 0))
+        n += board.run(c, side, hang[-1] + 0.5, hang, (0, 0, 0), hang=True)
     K.light(c, LAMPS, (0, 0, 0), "machines/batteryboard:stand-in", rank=3)
     c.entity_counts = {"machines": n}
     sky.build(c, (0, 0, 0))                         # the sky line's light sources go in last
@@ -90,8 +91,8 @@ def shots():
     shot("mid", (ax, y, (Z0 + Z1) / 2.0), (ax, FY + 2.5, fz))                   # half way down the aisle
     shot("board", (ax, y, fz + 4.4), (ax, FY + 2.6, fz))                        # the board, face on
     shot("main", (ax + 0.5, y, fz + 1.9), (ax, FY + 2.7, fz))                   # the middle slab, near
-    shot("west", (ax + 0.4, y, fz + 2.3), (board.X[0] + 0.8, FY + 2.7, fz))     # a wing and its bars' landing
-    shot("east", (ax + 3.9, y, fz + 2.0), (ax + 0.6, FY + 2.6, fz))             # from the east, along the face
+    shot("west", (ax + 0.4, y, fz + 2.3), (board.X[0] + 1.0, FY + 2.7, fz))     # a wing and its bars' landing
+    shot("east", (ax + 4.4, y, fz + 2.0), (ax + 0.6, FY + 2.6, fz))             # from the east, along the face
     shot("head", (ax, y, fz + 1.6), (ax, FY + 4.7, fz - 0.2))                   # the bus bars and the conduits
-    shot("bars", (ax - 0.8, y, BEAMS_Z[1] + 1.0), (board.X[0] + 0.7, FY + 2.9, BEAMS_Z[0] + 0.5))    # overhead
+    shot("bars", (ax - 0.8, y, BEAMS_Z[1] + 1.0), (board.X[0] + 1.0, FY + 2.9, BEAMS_Z[0] + 0.5))    # overhead
     return out
