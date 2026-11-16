@@ -17,7 +17,7 @@ trap 'rm -rf "$tmp"' EXIT
 export GIT_INDEX_FILE="$tmp/index"
 parent=""
 if git -C "$repo" fetch -q origin "$branch" 2>/dev/null; then parent="$(git -C "$repo" rev-parse -q --verify FETCH_HEAD)"; fi
-for f in "${files[@]}" savenotes.sh; do
+for f in "${files[@]}" savenotes.sh watch.sh; do
   [ -f "$f" ] || continue
   blob="$(git -C "$repo" hash-object -w "/tmp/c164_s2/$f")"
   git -C "$repo" update-index --add --cacheinfo "100644,$blob,notes/$f"
