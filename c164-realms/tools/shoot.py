@@ -153,6 +153,9 @@ def main():
     ap.add_argument("--only", help="comma separated shot names")
     ap.add_argument("--origin", type=float, nargs=3, default=[0.0, 0.0, 0.0], metavar=("X", "Y", "Z"),
                     help="added to every pos/look_at, for shot lists written in scene coordinates")
+    ap.add_argument("--clock", type=int, metavar="TICK",
+                    help="take every shot at this tick, whatever its \"time\" says: a look that the resource pack "
+                         "carries has one hour (build/place.py names it and notes it in <scene>.placed.json)")
     args = ap.parse_args()
 
     with open(args.shots) as fh:
@@ -181,7 +184,7 @@ def main():
             yaw, pitch = angles(pos, [shot["look_at"][k] + args.origin[k] for k in range(3)])
         else:
             yaw, pitch = shot.get("yaw", 0.0), shot.get("pitch", 0.0)
-        when = shot.get("time", DEFAULT_TIME)
+        when = args.clock if args.clock is not None else shot.get("time", DEFAULT_TIME)
         if when != last_time:
             rc.command(f"time set {when}")
             last_time = when

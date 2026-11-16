@@ -48,7 +48,8 @@ The pieces (16 texels to the block, px = scale; a wall piece is hung by the midd
     flag, pole_*    the station's flag (blue, the emblem in cream) on a pole with a ball on top.
 
 The great piece is hung by build() when DRESS is on, on the seat main/facade.emblem() gives,
-version VERSION of it, and the name board on the seat site/cablecar keeps for it (SIGN). For the
+version VERSION of it, the name board on the seat site/cablecar keeps for it (SIGN), and the
+entrance's plate beside the main doorway (doorplate(): the plate "1", the house's number). For the
 other lines:
 
     from scenes.obs.props import signs
@@ -770,21 +771,76 @@ def station(canvas, seat=None, origin=(0, 0, 0)):
     return place(canvas, "station_board", seat["point"], facing=seat["facing"], origin=origin)
 
 
+# ---- the plate beside the entrance ------------------------------------------------------------------------
+# The plan's list for the entrance (V4) is the iron gates, the canopy, the bracket lamps and a
+# nameplate, and the board of 11-16 10:00 had no plate beside the door (review c332; c356 hangs it,
+# 11-16). The name of the place is the emblem over the door, so the plate says what the plate beside
+# a door of that time says, the house's number in white on blue enamel: the main building is 1. It
+# is one of PLATES as it is, 7 by 9 pixels: small beside the lamps' back plates, a plate from ten
+# blocks off, its figure read from three.
+DOOR_PLATE = "1"
+DOOR_PLATE_UP = 0.5             # its middle over the top of the plinth: in the first course of pale stone
+# The light it is shown in, (sky, block), the great piece's over it (GREAT_SHOWN): a front that
+# looks east shows at half, and in the light of its own cell the plate's cream came out the tone
+# of the stone it hangs on (0.30 beside 0.30 in V4): a dark patch with no edge and no figure. In
+# this light, offline: the figure 0.42, the edge line 0.39, the field 0.10, the stone 0.30 -- and
+# the fanlight over the door 0.47, which the plate is to stay under (c332). A block light of 13
+# or more brings the figure to 0.455.
+DOOR_PLATE_SHOWN = (15, 12)
+
+
+def _door_seat():
+    """Where the entrance's plate hangs: dict(point, facing) -- the middle of the plate's back, on
+    the east face of the pier between the main doorway and the arch south of it, in the first
+    course over the plinth -- read off main/facade (doors() for the doorway, emblem() for the plane
+    of the two pilasters the piers are), or None while the front in the tree has no such doorway."""
+    try:
+        from ..main import facade
+    except ImportError:
+        return None
+    doors, tablet = getattr(facade, "doors", None), getattr(facade, "emblem", None)
+    if doors is None or tablet is None:
+        return None
+    ways = [d for d in doors() if d["front"] == "east" and d["kind"] == "door"]
+    if not ways:
+        return None
+    pier = max(z for _, z in ways[0]["cells"]) + 1          # the column of cells south of the doorway
+    return dict(point=(tablet()["face_x"], S.BASE[0] + DOOR_PLATE_UP, pier + 0.5), facing="east")
+
+
+def doorplate(canvas, seat=None, origin=(0, 0, 0), **opts):
+    """Hang the entrance's plate (DOOR_PLATE) on its seat: _door_seat() when none is given, or
+    dict(point, facing) as the station's board has it. Nothing is hung where the stone behind the
+    seat does not stand on the canvas or the cell before it is taken by anything but a light
+    source. It is shown in DOOR_PLATE_SHOWN (brightness=None leaves it to the cell it hangs in);
+    opts as for place(). Returns the number of display entities."""
+    seat = _door_seat() if seat is None else seat
+    if seat is None:
+        return 0
+    out = K.turn(K.FACING[seat["facing"]], (0.0, 0.0, 1.0))
+    wall, air = (tuple(math.floor(seat["point"][i] + origin[i] + side * out[i] + 1e-6) for i in range(3))
+                 for side in (-0.5, 0.5))
+    if not canvas.has(*wall) or canvas.name(*air) not in (None, "light"):
+        return 0
+    opts.setdefault("brightness", DOOR_PLATE_SHOWN)
+    return plate(canvas, DOOR_PLATE, seat["point"], facing=seat["facing"], origin=origin, **opts)
+
+
 def build(canvas, origin=(0, 0, 0), version=None):
     """What signs place in the master scene: nothing while DRESS is off (A0 #211: what is hung over
     the whole building stays off until it has passed on the real wall), and then no other package's
     table is read at all. On: the great piece on its seat over the entrance, version `version` of
     it (VERSION when not given) -- the main line owns the seat and places no models, so the piece
-    is hung from here (c206, g2 11-15) -- and the name board on the cable station, which keeps a
-    seat for it and has no models of its own either. Nothing is hung where the seat's stone does
-    not stand."""
+    is hung from here (c206, g2 11-15) -- the name board on the cable station, which keeps a
+    seat for it and has no models of its own either, and the plate beside the main doorway
+    (doorplate()). Nothing is hung where the seat's stone does not stand."""
     if not DRESS:
         return 0
     n = 0
     seat = _seat()
     if seat is not None and all(canvas.has(x + origin[0], y + origin[1], z + origin[2]) for x, y, z in seat["cells"]):
         n += great(canvas, seat, VERSIONS[VERSION if version is None else version], origin)
-    return n + station(canvas, origin=origin)
+    return n + station(canvas, origin=origin) + doorplate(canvas, origin=origin)
 
 
 if __name__ == "__main__":
