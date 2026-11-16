@@ -1,0 +1,17 @@
+a0job 1116-044922-sdome-astromove-f3-1fe7-24902: cursor/c164-sdome-astromove-f3-1fe7 @ 19091040 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.91 0.75 0.76, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/check.py --scene obs_mach_meridian_astrograph > /tmp/sdome_m.txt 2>&1; A=$?; grep -E "^\[(FAIL|WARN)|motion|^result" /tmp/sdome_m.txt | cut -c1-200; python tools/check.py --scene obs_int_astroroom > /tmp/sdome_r.txt 2>&1; 
+[WARN] flatwall  2 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+[PASS] motion    6 parts and 0 points on 1 chains, 14 function files; 9 commands in the busiest tick (limit 120), 0.1 a tick on average (limit 40)
+result: PASS (0 failed, 1 with warnings)
+[PASS] motion    4 parts and 0 points on 2 chains, 18 function files; 5 commands in the busiest tick (limit 120), 0.4 a tick on average (limit 40)
+result: PASS (0 failed, 0 with warnings)
+self-check: sizes, the frames, the room, the slit, the plate holder, the tracking -- all good
+self-check: sizes, the room, the turn over the floor, the circles, the microscopes, the slot -- all good
+==== NODEJOB RESULT ====
+exit=0 secs=8 host=cursor cores=4 head=19091040 commit=none pushed=no branch=cursor/c164-sdome-astromove-f3-1fe7 files=0
+a0job: exit=0 secs=8
