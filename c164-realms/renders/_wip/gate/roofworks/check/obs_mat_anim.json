@@ -1,0 +1,149 @@
+{
+ "scene": "obs_mat_anim",
+ "commit": "c146ad0",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "357 blocks, 5 entities, 5 models, 715 resource-pack files, 7 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (0.8 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 714 files, no file written twice, the folders and the prefix of materials are kept (7 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "134 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "539 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "4 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of materials: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "5 display entities",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "12 shots, most display entities in view: 5 (proof_0), limit 600; counted without what walls hide",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "proof_0",
+      "in_view": 5,
+      "drawn": 5,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "proof_1",
+      "in_view": 5,
+      "drawn": 5,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "proof_2",
+      "in_view": 5,
+      "drawn": 5,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "proof_3",
+      "in_view": 5,
+      "drawn": 5,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "proof_4",
+      "in_view": 5,
+      "drawn": 5,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "proof_5",
+      "in_view": 5,
+      "drawn": 5,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "near_card",
+      "in_view": 2,
+      "drawn": 5,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "near_still",
+      "in_view": 3,
+      "drawn": 5,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "near_panel",
+      "in_view": 4,
+      "drawn": 5,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "near_oil",
+      "in_view": 4,
+      "drawn": 5,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "near_gas",
+      "in_view": 3,
+      "drawn": 5,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "near_fire",
+      "in_view": 3,
+      "drawn": 5,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "nothing moves",
+   "details": []
+  }
+ ]
+}
