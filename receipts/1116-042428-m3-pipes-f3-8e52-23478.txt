@@ -1,0 +1,25 @@
+a0job 1116-042428-m3-pipes-f3-8e52-23478: cursor/c164-m3-pipes-f3-8e52 @ e7196936 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.21 0.79 1.28, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- (cd build && python -m scenes.obs_props_pipes.fit 2>&1 | tail -6) && python tools/check.py --scene obs_props_pipes 2>&1 | tail -14 ---- exit 0, 3 s, last 40 lines of 15:
+33 models, 997 parts, 4492 drawn faces: nothing found
+[PASS] regen     4181 blocks, 25 entities, 33 models, 787 resource-pack files, 25 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.0 s)
+[PASS] conflicts the scene writes 786 files, no file written twice, the folders and the prefix of props are kept (8 packages run alone)
+[PASS] strays    162 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      595 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    18 kinds of block placed, all in the occupancy table
+[SKIP] flatwall  a test scene of props: its sample walls and backdrops are meant to be flat
+[PASS] entities  25 display entities, 6 drawn out along one axis, 18 models never placed
+[PASS] views     20 shots, most display entities in view: 25 (front), limit 600; counted without what walls hide
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    1 parts and 3 points on 2 chains, 17 function files; 4 commands in the busiest tick (limit 40), 0.3 a tick on average (limit 10)
+                 chain of 60 ticks: 8 functions, 18 commands a cycle, starts 1 ticks after start
+                 chain of 160 ticks: 3 functions, 7 commands a cycle, starts 3 ticks after start
+result: PASS (0 failed, 0 with warnings)
+==== NODEJOB RESULT ====
+exit=0 secs=5 host=cursor cores=4 head=e7196936 commit=none pushed=no branch=cursor/c164-m3-pipes-f3-8e52 files=0
+a0job: exit=0 secs=5
