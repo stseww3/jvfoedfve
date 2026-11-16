@@ -239,6 +239,8 @@ def main():
     size = tuple(int(v) for v in args.size.split("x"))
     marks = []
     for x, y, z, nbt in canvas.entities:
+        if "item" not in nbt:       # a text display, a marker: no model to mark
+            continue
         model = nbt["item"]["components"]["minecraft:item_model"].partition(":")[2]
         scale = float(nbt["transformation"]["scale"][0])
         for key, colour in MARKS:

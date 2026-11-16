@@ -141,6 +141,14 @@ def walk_light(full=None):
     return {(x, z): max(full.get((x, room.FEET, z), 0), full.get((x, room.FEET + 1, z), 0)) for x, z in room.walk()}
 
 
+def lobby_light(full=None):
+    """The light on every place of the lobby's floor: {(x, z): the more of the feet's cell and the
+    head's}."""
+    full = full if full is not None else _levels(True)[0]
+    return {(x, z): max(full.get((x, tower.FOOT, z), 0), full.get((x, tower.FOOT + 1, z), 0))
+            for x in range(room.WELL_X[0], room.WELL_X[1] + 1) for z in range(room.WELL_Z[0], room.WELL_Z[1] + 1)}
+
+
 def way_light(full=None):
     """The light in every cell of the way up, from inside the door to the hatch: {cell: level}. The
     door's lamp outside is the light line's and not in this scene: the first cell has more with it."""
