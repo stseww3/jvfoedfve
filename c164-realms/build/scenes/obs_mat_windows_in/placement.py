@@ -164,7 +164,13 @@ def _master():
         cells = [(x, y, z) for x, z in w["cells"] for y in range(w["y"][0], w["y"][1] + 1)]
         if W.line(c, cells, w["inward"], B.WINDOW_CURTAIN, origin=ORIGIN):
             bad.append(f"the power house asking for its fire window {w['front']} {w['bay']} after build() got a second lining")
-    return bad, f"{len(table)} windows, {len(fire)} of them fire windows of the power house, {n} pieces"
+    station = [w for w in table if w["front"].startswith("station.")]
+    for w in station:
+        cells = [(x, y, z) for x, z in w["cells"] for y in range(w["y"][0], w["y"][1] + 1)]
+        if W.line(c, cells, w["inward"], w["glass"], origin=ORIGIN):
+            bad.append(f"the station asking for its light {w['front']} {w['bay']} after build() got a second lining")
+    return bad, (f"{len(table)} windows, {len(fire)} of them fire windows of the power house, {len(station)} lights "
+                 f"of the cable car's station, {n} pieces")
 
 
 def _report(room, what, pieces, bad, stood):
