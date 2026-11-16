@@ -94,7 +94,9 @@ OWNERS = (
     ("lights：下一轮", "out-E", (-21, -3, -35, -13, -1, -27)),                # under the water tower: a caged lamp on a leg
     ("不补（观测室）", "in-M", None),
 )
-# the rooms' own packages (plan/ROSTER.md), for what sky/lights did not name: shown with a star
+# The rooms' own packages (plan/ROSTER.md), for what nobody named. cr2, #76117: a room whose door is
+# opened counts as a way like the others (floor 5, thresholds 7) and is its owner's; only a room its
+# owner says is meant to be dark goes to him to decide.
 ROOM_OWNERS = {"star hall": "hall", "stair hall": "lights", "time room": "m2", "chart room": "chart",
                "plate vault": "vault", "battery room": "astro"}
 
@@ -104,7 +106,7 @@ def owner_of(section, cell):
         if section.startswith(start) and (b is None or all(b[i] <= cell[i] <= b[i + 3] for i in range(3))):
             return who
     if section.startswith("room: ") and section[6:] in ROOM_OWNERS:
-        return ROOM_OWNERS[section[6:]] + "*"
+        return ROOM_OWNERS[section[6:]]
     return NOBODY
 
 
@@ -516,8 +518,8 @@ def main():
     if lost:
         md.append(f"- 路线上站不住人的点（没有从那里起算）：{len(lost)} 个，如 {'；'.join(lost[:4])}")
     md += ["", "## 按归属", "",
-           "归属照 lights（c331）11-16 的分法（#74750、#75829）和 cr2 的（底片库算路，#75753）；"
-           "带 * 的是没点到、按房间主人填的；「未分」是还没人认的。", "",
+           "归属照 lights（c331）11-16 的分法（#74750、#75829、#76033）；房间里没点到的堆归房间主人，"
+           "新开门的房间一律算路、归主人（cr2 #75753、#76117）；「未分」是还没人认的。", "",
            "| 归谁 | 格数 | 堆数 |", "| --- | --- | --- |"]
     md += [f"| {who} | {v['cells']} | {v['heaps']} |" for who, v in by_owner.items()]
     md += ["", "每堆一行：范围（x，y，z）、格数、最暗的块光、地面/台阶/门槛各几格、归谁、比上一版（上一版这一堆的格数 → 现在的；"
