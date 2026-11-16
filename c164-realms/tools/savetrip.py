@@ -206,27 +206,34 @@ def number(text):
     return int(found[-1]) if found else None
 
 
-def server_said(since, out, secret=""):
-    """The server's warnings and errors since `since`, whole records, written to `out`. Returns
-    (warnings, errors)."""
-    records, record = [], None
-    path = os.path.join(SERVER, "console.log")
+def console_size():
+    """How long the server's output is now: what it says from here on is this trip's."""
     try:
-        if os.path.getmtime(path) >= since:
-            with open(path, encoding="utf-8", errors="replace") as fh:
-                for line in fh:
-                    line = line.rstrip("\n")
-                    if secret:
-                        line = line.replace(secret, "***")
-                    m = re.match(r"\[\d\d:\d\d:\d\d\] \[[^\]]*/(WARN|ERROR|FATAL)\]", line)
-                    if re.match(r"\[\d\d:\d\d:\d\d\]", line):
-                        record = [m.group(1), line[:600]] if m else None
-                        if record:
-                            records.append(record)
-                    elif record is not None and len(record) < 42:
-                        record.append(line[:600])
+        return os.path.getsize(os.path.join(SERVER, "console.log"))
     except OSError:
-        pass
+        return 0
+
+
+def server_said(offset, out, secret=""):
+    """The server's warnings and errors from `offset` of its output on (the file is added to by
+    every start), whole records, written to `out`. Returns (warnings, errors)."""
+    records, record = [], None
+    try:
+        with open(os.path.join(SERVER, "console.log"), "rb") as fh:
+            fh.seek(offset)
+            text = fh.read().decode("utf-8", "replace")
+    except OSError:
+        text = ""
+    for line in text.split("\n"):
+        if secret:
+            line = line.replace(secret, "***")
+        m = re.match(r"\[\d\d:\d\d:\d\d\] \[[^\]]*/(WARN|ERROR|FATAL)\]", line)
+        if re.match(r"\[\d\d:\d\d:\d\d\]", line):
+            record = [m.group(1), line[:600]] if m else None
+            if record:
+                records.append(record)
+        elif record is not None and len(record) < 42 and line.strip():
+            record.append(line[:600])
     warnings = sum(1 for record in records if record[0] == "WARN")
     errors = len(records) - warnings
     os.makedirs(os.path.dirname(out), exist_ok=True)
@@ -312,12 +319,13 @@ def main():
     trip.say(f"trip into the save {args.zip} of {commit[:8]} ({args.branch}): {os.path.getsize(zip_path)} bytes, "
              f"sha256 {sha}" + (", as asked" if args.sha256 else "") + f"; {at}; {os.cpu_count()} cores, "
              f"{args.budget:.0f} s at most")
-    failed, facts, kept_in = [], [], os.path.join(KEPT, name)
+    failed, facts, kept_in, console = [], [], os.path.join(KEPT, name), console_size()
     facts.append(f"# the save: {args.zip} of {commit[:8]} ({args.branch}), {os.path.getsize(zip_path)} bytes, sha256 {sha}")
     if args.board:
         facts.append(f"# exported from the assembly commit {args.board}, as the one who asked for the trip says")
     try:
         trip.stage("clean", station, "down", budget=180)
+        console = console_size()
         world = os.path.join(SERVER, LEVEL)
         os.makedirs(SERVER, exist_ok=True)
         top, count = unpack(zip_path, world)
@@ -393,7 +401,7 @@ def main():
         except Exception as exc:
             trip.say(f"what the game said could not be read ({exc})")
         try:
-            warnings, errors = server_said(started, log_path[:-len(".log")] + "-server.txt", trip.secret())
+            warnings, errors = server_said(console, log_path[:-len(".log")] + "-server.txt", trip.secret())
             trip.say(f"the server on the save: {warnings} warnings, {errors} errors in its log "
                      f"({os.path.basename(log_path)[:-len('.log')]}-server.txt)")
             if errors:
