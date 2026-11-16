@@ -2,8 +2,19 @@
 
 Card plan/packages/sky/ridges.md; plan/parts/sky.md section 5, sky-notes.md sections 4 and 8.
 
+Two carriers, the second on the way out. The ridges are painted on the sky by the sky's own
+shader: shader_layer() below hands sky/_shaders.py the ridge line and the colour (the end of this
+file). What follows here describes the first carrier, four display entities with cut-out
+pictures; it is switched off (DRESS) and goes with the next delivery. Two things ended it. The
+look moved from registry files into the resource pack's shaders (a Realms map takes no registry
+file), and its fog is no longer one that turns everything far away into the fog's colour: a
+sheet 400 blocks out keeps three quarters of its own paint. And the game draws an entity only
+when the chunk section it stands in has been built, which happens once that section has been in
+view: on the real machine the ridges were missing for someone who arrives at the west rail and
+looks west (s1, 11-16, server view distance 10), and stood there after a look back at the site.
+
 The cloud sea needs an end. Blocks cannot give it one: the game draws none beyond the view
-distance (192 blocks at the 12 chunks the map is shown at). So the far shore is painted: four
+distance (160 blocks at the 10 chunks a Realms server sends). So the far shore is painted: four
 upright sheets, each the cut-out picture of a jagged ridge, standing 360 to 446 blocks out in the
 west half of the horizon. Two ranges, one to the north and one to the south of due west; due west
 stays open, a notch between two capes where the afterglow is strongest and over which the comet
@@ -41,17 +52,14 @@ colour with the lower half of the afterglow, and those rows show as the ridge's 
 degree or so under the horizon. The first sheets went down to the vanilla cloud layer, 4.7
 degrees under the horizon; that layer is going (cloud), and their base stood out in the void.
 
-DRESS is the switch for the whole of it: the far ridges change every view to the west, the
-arrival view among them, and whether the game draws them well is only seen in the game. On, the
-master scene carries them; off, nothing does. A test scene asks for them with dress(): the
-sky's build() is also what a test scene of any line calls for its light sources (INTERFACE 4),
-and no ridge is to come with those (the scene's pack would not even have the models). A canvas
-carries no word of the scene it is built for, so build() asks its callers: see _master().
+DRESS is the switch for the sheets: on, the master scene carries them (its canvas says
+canvas.master); off, nothing does. A test scene asks for them with dress(): the sky's build() is
+also what a test scene of any line calls for its light sources (INTERFACE 4), and no ridge is to
+come with those.
 
     python -m scenes.obs.sky.ridges     prints where the sheets stand and how high they reach
 """
 import math
-import sys
 
 import numpy as np
 
@@ -62,7 +70,7 @@ from ..common import skeleton as S
 from . import mood
 
 PREFIX = "sky_ridge_"
-DRESS = True                # the master scene carries the far ridges; False takes them all out again
+DRESS = False               # the sheets are off: the ridges are painted by the sky's shader (shader_layer())
 
 CENTRE = (30.5, 0.5)        # x, z where the entities stand: no place a person can reach is more than
 #                             80 blocks from it, so every player on the site is sent them
@@ -211,22 +219,8 @@ def dress(canvas, on=True):
     canvas.ridge_dress = bool(on)
 
 
-def _master():
-    """Is it the master scene that builds? Told as tools/check.py tells the master scene from a
-    test scene: the module with LINES and _line, looked for among the callers."""
-    frame = sys._getframe(1)
-    while frame is not None:
-        if "LINES" in frame.f_globals and "_line" in frame.f_globals:
-            return True
-        frame = frame.f_back
-    return False
-
-
 def build(canvas, origin=(0, 0, 0)):
-    on = getattr(canvas, "ridge_dress", None)
-    if on is None:
-        on = DRESS and _master()
-    if not on:
+    if not getattr(canvas, "ridge_dress", DRESS and getattr(canvas, "master", False)):
         return 0
     ox, oy, oz = origin
     made = models()
@@ -270,6 +264,117 @@ def fan(bearing, up, alpha):
         if (k >= -1e-9).all() and k.sum() > 1e-12:
             best = max(best, alpha * float(k[0] / k.sum()))
     return best
+
+
+# ---- the ridges on the sky ---------------------------------------------------------------------
+# The sky's shader paints every pixel of the sky by its direction (sky/_shaders.py). The ridges are
+# a layer on it: below the ridge line of its bearing a direction shows the ridge and not the sky.
+# Painted like this a ridge stands at no distance at all: it does not shift when a person walks,
+# as the horizon does not, and RANGES is the ridge line for every eye on the site.
+#
+# The line is baked into a table of columns, STEP degrees of bearing each and whole steps of STEP
+# high: the ridge keeps the stepped outline of a mountain of blocks seen from afar (one block at
+# 230 blocks is a quarter of a degree).
+#
+# Its colour is none of its own. A ridge is so far off that the air has taken all of it: it shows
+# the horizon band of its bearing without the afterglow's fan, and is seen as far as the fan
+# glows behind it; to the north and south, where there is no fan, it is the colour of the sky
+# behind it and fades out by itself. At its foot the mist on the sea hides it: over the lowest
+# VEIL degrees it comes out of the glow on the horizon, so the sea's far edge shows no line.
+STEP = 0.25                 # degrees to a column of the table, and to a step in height
+FROM = -95.0                # the first column's bearing, degrees north of due west
+COLUMNS = int(round(-2.0 * FROM / STEP))
+VEIL = 0.5                  # degrees over the horizon at which a ridge has come out of the sea's mist
+
+
+def baked():
+    """The ridge line as the shader has it: for each column the whole number of steps the ridge
+    stands over the horizon there (0: no ridge)."""
+    out = np.zeros(COLUMNS, dtype=int)
+    for c in range(COLUMNS):
+        bearing = FROM + (c + 0.5) * STEP
+        up = max(line(name, bearing) for name in RANGES)
+        out[c] = max(0, int(math.floor(up / STEP + 0.5)))
+    return out
+
+
+def _crest_y():
+    """For each column the y of the unit direction at the ridge line, -1 where there is none."""
+    rows = baked()
+    return np.where(rows > 0, np.sin(np.radians(rows * STEP)), -1.0)
+
+
+SKYLINE_GLSL = """// sky/ridges.py: the far ridges. The ridge line, one entry to a column of {step} degrees of bearing
+// from {start} degrees north of due west on: the y of the unit direction at the line, -1.0 where
+// no ridge stands.
+const float C164_RIDGE_FROM = {start};
+const float C164_RIDGE_STEP = {step};
+const int C164_RIDGE_COLUMNS = {columns};
+const float C164_RIDGE_TOP = {top};        // no ridge stands higher
+const float C164_RIDGE[{columns}] = float[{columns}](
+{table}
+);
+
+float c164_skyline(vec3 d) {{
+    if (d.y > C164_RIDGE_TOP || abs(d.x) + abs(d.z) < 1.0e-4) {{
+        return -1.0;
+    }}
+    float column = floor((degrees(atan(-d.z, -d.x)) - C164_RIDGE_FROM) / C164_RIDGE_STEP);
+    if (column < 0.0 || column > float(C164_RIDGE_COLUMNS - 1)) {{
+        return -1.0;
+    }}
+    return C164_RIDGE[int(column)];
+}}
+"""
+
+RIDGES_GLSL = """// sky/ridges.py: a far ridge has no colour of its own left: it is the horizon band of its bearing
+// without the afterglow's fan, and at its foot it comes out of the glow that lies on the sea's edge.
+const float C164_RIDGE_VEIL = {veil};
+
+vec3 c164_ridges(vec3 colour, vec3 d) {{
+    if (d.y < 0.0 || d.y >= c164_skyline(d)) {{
+        return colour;
+    }}
+    vec3 level = vec3(d.x, 0.0, d.z) / length(d.xz);
+    return mix(c164_band(level), c164_ring(level), smoothstep(0.0, C164_RIDGE_VEIL, d.y));
+}}
+"""
+
+
+def _f(x):
+    text = repr(round(float(x), 6))
+    return text if ("." in text or "e" in text) else text + ".0"
+
+
+def shader_layer(look=mood.DEFAULT):
+    """What sky/_shaders.py lays on the sky for this package: dict(skyline=, ridges=), GLSL text.
+    The colours are the look's through the functions of include/fog.glsl."""
+    ys = _crest_y()
+    table = ",\n".join("    " + ", ".join(_f(v) for v in ys[i:i + 10]) for i in range(0, COLUMNS, 10))
+    top = math.sin(math.radians(HIGHEST + STEP))
+    return dict(skyline=SKYLINE_GLSL.format(start=_f(FROM), step=_f(STEP), columns=COLUMNS, top=_f(top), table=table),
+                ridges=RIDGES_GLSL.format(veil=_f(math.sin(math.radians(VEIL)))))
+
+
+def skyline(d):
+    """c164_skyline() in numpy: d is (n, 3) unit directions (x east, y up, z south)."""
+    d = np.asarray(d, dtype=float)
+    column = np.floor((np.degrees(np.arctan2(-d[:, 2], -d[:, 0])) - FROM) / STEP)
+    inside = (column >= 0) & (column <= COLUMNS - 1) & (np.abs(d[:, 0]) + np.abs(d[:, 2]) >= 1e-4) \
+        & (d[:, 1] <= math.sin(math.radians(HIGHEST + STEP)))
+    return np.where(inside, _crest_y()[np.clip(column, 0, COLUMNS - 1).astype(int)], -1.0)
+
+
+def painted(colour, d, twin):
+    """c164_ridges() in numpy: colour is (n, 3), what the sky shows in directions d; twin is the
+    look's sky/_shaders.Twin."""
+    d = np.asarray(d, dtype=float)
+    across = np.maximum(np.hypot(d[:, 0], d[:, 2]), 1e-9)
+    level = np.stack([d[:, 0] / across, np.zeros(len(d)), d[:, 2] / across], axis=1)
+    e = np.clip(d[:, 1] / math.sin(math.radians(VEIL)), 0.0, 1.0)
+    out = twin._mix(twin.band(level), twin.ring(level), e * e * (3.0 - 2.0 * e))
+    covered = (d[:, 1] >= 0.0) & (d[:, 1] < skyline(d))
+    return np.where(covered[:, None], out, np.asarray(colour, dtype=float))
 
 
 def report():
