@@ -64,13 +64,20 @@ between polished courses.
             FITTINGS, the valve head and the straps on the main; DRAINS, the gutter's two
             rainwater pipes.
 
-The shell is blocks. The only display entity build() places is the lamp over the wicket, which it
-asks the props line for.
+  vents     Roof "a": a rotary ventilator at each end of the four whole ridges (VENTS), turning.
+
+The shell is blocks. The display entities build() places are the lamp over the wicket, which it
+asks the props line for, and the roof's ventilators, its own model (models()).
 """
+import functools
 import importlib
 
+from artkit import models as M
+
 from ..common import blocks as B
+from ..common import palette as P
 from ..common import skeleton as S
+from ..motion import _kit as MK
 from . import _kit as K
 
 ORDER = 70      # after the lower platform (20), the retaining wall (25) and the court (60)
@@ -170,6 +177,32 @@ FITTINGS = ([("bonnet", (float(HEAD_X), S.GROUND + 1.5, PIPE_Z + 0.5), dict(out=
 # gutter runs on over the glowing window to the chimney's foot, where nothing can hang.
 DRAINS = [dict(at=(x + 0.5, float(Z0)), facing="north", top=EAVES + 1, bottom=FEET)
           for x in (X0, X0 + CORNER + 3 * BAY - 1)]
+
+# --- the ventilators on the saw roof (the shell's own display model; they turn) ----------------------
+# A rotary ventilator at each end of the four whole ridges: a drum of slanted vanes between a
+# throat plate and a crown, on a spigot that stands on the ridge roll, in the middle of the end
+# bay of the light. Whatever wind there is turns it, always the same way. One display entity
+# each, and the whole of it turns: the spigot is round and plain, so that is not seen. From the
+# yard (V6) the three at the north ends of the inner ridges show between the gables' teeth; from
+# the upper terrace the two on the west light. Roof "a" only: the vault has its monitor.
+#
+# How far the shell's display entities are drawn (VIEW, which the assembly applies to all a module
+# places: here the ventilators and the lamp over the wicket): the near band, 32 blocks. Machines
+# out of doors would have the middle one, but the arrival view (V1) looks this way from 58 blocks
+# off and is over its count of entities; from the yard, the stair and the terrace's lip they are
+# all within 32.
+VIEW = M.NEAR
+MODEL_VENT = "site_power_vent"
+VENT_REV = 60                                       # ticks a turn: a vane passes every 7.5 ticks. Eight of them
+#                                                     at four steps a turn are half a command a tick
+VENT_BEHIND = 7                                     # ticks the south row is behind the north one, so that the
+#                                                     eight do not all ask for their step in one tick
+VENT_R = 10.0                                       # pixels: the drum's radius, a block and a quarter across
+VENT_VANES = 8
+VENT_SLANT = 35.0                                   # degrees a vane is turned out of the drum's round
+VENT_TOP = 24.0                                     # pixels from the ridge roll to the nut on the crown: y 9.0
+VENTS = [(x + 0.5, EAVES + 4.5, z)                  # the middle of the ridge roll's top: y 7.5
+         for x in range(RX0, RX0 + 4 * BAY, BAY) for z in (RZ0 + 2.5, RZ1 - 1.5)]
 
 # --- materials (the occupancy table's roles) --------------------------------------------------------
 BODY = B.TUFF_BRICK.block
@@ -684,11 +717,50 @@ def _lamp(canvas, origin):
                      version=LAMP_AT["version"]) or 0)
 
 
+# --- the ventilators ----------------------------------------------------------------------------------
+@functools.lru_cache(maxsize=None)
+def _vent_model():
+    """The rotary ventilator, in pixels from the middle of the ridge roll's top; its axis is y."""
+    dark, iron, zinc = P.mat("iron_dark"), P.mat("iron", base=4), P.mat("iron", base=5)
+    on = (0.0, 0.0)
+    m = M.Model(MODEL_VENT)
+    m.tube("y", on, 0.0, 1.0, 6.0, dark, sides=12)                      # the flashing on the ridge roll
+    m.tube("y", on, 1.0, 6.0, 4.0, dark, sides=12)                      # the spigot
+    m.tube("y", on, 6.0, 7.5, VENT_R, iron, sides=12)                   # the drum's throat plate
+    m.tube("y", on, 7.5, 18.5, 1.0, dark, sides=4)                      # its spindle
+    for k in range(VENT_VANES):                                         # the vanes: sheet zinc
+        with m.turned(("y", k * 360.0 / VENT_VANES)):
+            m.box((8.0, 7.5, -2.5), (8.5, 18.5, 2.5), zinc, grain="y", seed=7100,
+                  rot=("y", VENT_SLANT, (8.25, 13.0, 0.0)))
+    m.tube("y", on, 18.5, 20.0, VENT_R, iron, sides=12)                 # the crown, stepped
+    m.tube("y", on, 20.0, 21.25, 7.0, iron, sides=12)
+    m.tube("y", on, 21.25, 22.25, 3.5, dark)
+    m.tube("y", on, 22.25, VENT_TOP, 1.0, dark, sides=4)                # the spindle's nut
+    return m
+
+
+def models():
+    """The shell's own display models: the roof's ventilator."""
+    return {MODEL_VENT: _vent_model()}
+
+
+def _vents(canvas, origin, version):
+    """The ventilators on the saw roof's ridges (VENTS), each a display entity that turns. Returns
+    their number: none on the vault."""
+    if version != "a":
+        return 0
+    model = _vent_model()
+    for i, (x, y, z) in enumerate(VENTS):
+        canvas.add_entity(origin[0] + x, origin[1] + y, origin[2] + z, M.display(model, view=VIEW))
+        MK.spin(canvas, "y", VENT_REV, phase=VENT_BEHIND * (i % 2))     # the south row steps on other ticks
+    return len(VENTS)
+
+
 def build(canvas, origin=(0, 0, 0), version=None, run=None):
     """Build the shell at `origin`. version: the roof, "a" or "b" (VERSION when not given);
     run: lay the main along the upper terrace (RUN when not given). Returns the number of display
-    entities placed: the lamp over the wicket. (The linings of the fire windows are the materials
-    line's to place, see lining().)"""
+    entities placed: the lamp over the wicket and the saw roof's ventilators. (The linings of the
+    fire windows are the materials line's to place, see lining().)"""
     version = version or VERSION
     if version not in ROOFS:
         raise ValueError(f"no roof version {version!r}; there are {', '.join(sorted(ROOFS))}")
@@ -699,4 +771,4 @@ def build(canvas, origin=(0, 0, 0), version=None, run=None):
     _tower(p)
     _bridge(p, RUN if run is None else run)
     _light(canvas, p.o, version)
-    return _lamp(canvas, p.o)
+    return _lamp(canvas, p.o) + _vents(canvas, p.o, version)

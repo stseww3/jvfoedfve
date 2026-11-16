@@ -1,0 +1,50 @@
+{
+ "prefix": "nw",
+ "step": 4.0,
+ "eye": 1.62,
+ "fov": 77.0,
+ "size": [
+  640,
+  360
+ ],
+ "time": 14000,
+ "floor_from": "tools/walkreach.py",
+ "scene": "obs",
+ "round": "cfa03ef",
+ "route_file": "nw-route.json",
+ "stretches": {
+  "Q": "the clock tower: the door of the roof walk, the lobby, the clock room",
+  "R": "the astrograph room (the small dome)"
+ },
+ "reach_from": "nw-Q01",
+ "reach_bounds": [
+  -4,
+  -44,
+  27,
+  44
+ ],
+ "reach_searches": [
+  "nw-Q01",
+  "nw-Q05",
+  "nw-R01",
+  "nw-R02"
+ ],
+ "stations": [
+  {"id": "nw-Q01", "stretch": "Q", "feet": [9.5, 18.0, -29.5], "yaw": -90.0, "pitch": 6.8, "views": "flrbud", "node": "the roof walk before the tower's door", "hop": true, "reach": "walk"},
+  {"id": "nw-Q02", "stretch": "Q", "feet": [11.5, 18.0, -29.5], "yaw": -90.0, "pitch": 0.0, "views": "flrbud", "node": "inside the tower's door", "reach": "walk"},
+  {"id": "nw-Q03", "stretch": "Q", "feet": [13.5, 18.0, -29.5], "yaw": 116.6, "pitch": 0.0, "views": "flrbud", "node": "the lobby's middle, under the pendulum", "reach": "walk"},
+  {"id": "nw-Q04", "stretch": "Q", "feet": [11.5, 18.0, -30.5], "yaw": -180.0, "pitch": -77.1, "views": "flrbud", "node": "before the foot of the ladder", "reach": "walk"},
+  {"id": "nw-Q05", "stretch": "Q", "feet": [11.5, 24.188, -30.5], "yaw": 0.0, "pitch": 0.0, "views": "flrbud", "node": "the clock room: off the ladder, the west walk", "hop": true, "reach": "no", "from": "nw-Q05", "how": "walk"},
+  {"id": "nw-Q06", "stretch": "Q", "feet": [11.5, 24.0, -27.5], "yaw": -90.0, "pitch": 0.0, "views": "flrbud", "node": "the south-west corner", "reach": "no", "from": "nw-Q05", "how": "walk"},
+  {"id": "nw-Q07", "stretch": "Q", "feet": [15.5, 24.0, -27.5], "yaw": -180.0, "pitch": 0.0, "views": "flrbud", "node": "the south-east corner", "reach": "no", "from": "nw-Q05", "how": "walk"},
+  {"id": "nw-Q08", "stretch": "Q", "feet": [15.5, 24.0, -31.5], "yaw": 90.0, "pitch": 0.0, "views": "flrbud", "node": "the north-east corner", "reach": "no", "from": "nw-Q05", "how": "walk"},
+  {"id": "nw-Q09", "stretch": "Q", "feet": [12.5, 24.188, -31.5], "yaw": 90.0, "pitch": 0.0, "views": "flrbud", "node": "the north walk, by the hatch", "reach": "no", "from": "nw-Q05", "how": "walk"},
+  {"id": "nw-R01", "stretch": "R", "feet": [8.5, 18.0, 30.5], "yaw": -90.0, "pitch": 31.8, "views": "flrbud", "node": "before the small dome's door", "hop": true, "reach": "no", "from": "nw-R01", "how": "walk"},
+  {"id": "nw-R02", "stretch": "R", "feet": [10.5, 18.0, 30.5], "yaw": -180.0, "pitch": 0.0, "views": "flrbud", "node": "inside the small dome's door", "reach": "no", "from": "nw-R02", "how": "walk", "leg": "no"},
+  {"id": "nw-R03", "stretch": "R", "feet": [10.5, 18.0, 29.5], "yaw": -135.0, "pitch": 0.0, "views": "f", "reach": "no", "from": "nw-R02", "how": "walk"},
+  {"id": "nw-R04", "stretch": "R", "feet": [11.5, 19.0, 28.5], "yaw": -90.0, "pitch": 0.0, "views": "flrbud", "node": "the north niche, at the plate cabinet", "reach": "no", "from": "nw-R02", "how": "hop", "leg": "hop"},
+  {"id": "nw-R05", "stretch": "R", "feet": [13.5, 19.0, 28.5], "yaw": -90.0, "pitch": 0.0, "views": "flrbud", "node": "the north niche's east end, by the red lamp", "reach": "no", "from": "nw-R02", "how": "hop"},
+  {"id": "nw-R06", "stretch": "R", "feet": [10.5, 18.0, 31.5], "yaw": -45.0, "pitch": 0.0, "views": "flrbud", "node": "behind the door, the south cell", "hop": true, "reach": "no", "from": "nw-R02", "how": "walk"},
+  {"id": "nw-R07", "stretch": "R", "feet": [11.5, 18.0, 32.5], "yaw": -45.0, "pitch": 0.0, "views": "flrbud", "node": "the south niche, by the governor and the desk", "reach": "no", "from": "nw-R02", "how": "walk"}
+ ]
+}

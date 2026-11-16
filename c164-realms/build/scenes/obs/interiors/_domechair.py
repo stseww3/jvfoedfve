@@ -17,9 +17,15 @@ interiors/domeroom; the auto-discovery skips modules that start with "_").
                  the tube comes down its eyepiece rises and moves outwards, and so does whoever
                  climbs.
 
-The ladder is parked south-west of the pier (PARKED) and may be rolled all the way round: band()
-is what it passes over, and the room keeps that clear of everything that stands. The track is one
-display entity and the ladder another.
+The ladder is parked north-west of the pier (PARKED), between the stair's exit and the hand wheel of
+the dome's gear, and may be rolled all the way round: band() is what it passes over, and the room
+keeps that clear of everything that stands. The track is one display entity and the ladder another.
+
+It does not stand still (round 2: whatever can move does). Its carriage is geared to the drive that
+makes the telescope follow the sky, so that the seat keeps its place by the eyepiece: while the tube
+swings to either side the ladder rolls ROLL blocks along the track and back in the same beat
+(machines/scope.FOLLOW_PERIOD). It is slid along the tangent of the track where it is parked; over
+so short a way it leaves the arc by less than a fifth of a texel.
 
 The telescope. machines/scope.sweep() is the ball that holds every part of the telescope wherever
 it points. Its radius is the reach of the objective, which is never below the level of the
@@ -64,7 +70,12 @@ SCREW = 2                               # a screw this many texels from either e
 RAIL_SCALE = 6                          # both rings are one model: 18 blocks across, 16 texels to the block
 
 # --- the ladder -----------------------------------------------------------------------------------
-PARKED = 144.5                          # where it stands, in degrees round the axis: south-west of the pier
+PARKED = 240.0                          # where it stands, in degrees round the axis: north-west of the pier, on
+#                                         the floor V8 had empty in its right half (review cr3, #86316), clear of
+#                                         the hand wheel of the dome's gear beyond it. Till round 2 it stood at
+#                                         144.5, south-west, where the pier hid it from V8
+ROLL = 0.35                             # blocks it rolls along the track to either side of there
+FOLLOW_PERIOD = 480                     # ticks there and back, while machines/scope is not in the tree
 WHEEL_AT = 8.0                          # the wheels, either side of the ladder's middle along the track
 WHEEL_R, WHEEL_WIDE = 2.5, 1.5          # (to a flat of their eight, across the tread)
 SOLE = (4.5, 6.5)                       # the sole bars: their underside and their top
@@ -244,12 +255,29 @@ def parked():
 
 
 def place(canvas, origin=(0, 0, 0)):
-    """Lay the track and park the ladder on it; returns the number of display entities."""
+    """Lay the track, park the ladder on it and set it rolling; returns the number of display
+    entities."""
     got = models()
     n = K.put(canvas, got[PREFIX + "rail"], (AXIS[0], FLOOR, AXIS[1]), yaw=0.0, scale=RAIL_SCALE, origin=origin,
               brightness=LIGHT)
     pos, yaw = parked()
-    return n + K.put(canvas, got[PREFIX + "chair"], pos, yaw=yaw, origin=origin, brightness=LIGHT)
+    n += K.put(canvas, got[PREFIX + "chair"], pos, yaw=yaw, origin=origin, brightness=LIGHT)
+    _roll(canvas)
+    return n
+
+
+def _roll(canvas):
+    """Register the ladder, the piece placed last, with the motion line: it slides along the track's
+    tangent, ROLL blocks the way the degrees count while the telescope's eyepiece goes that way
+    (the first quarter of the beat), back through where it is parked to as far on the other side,
+    and home. While motion is not in the tree it stands parked, as it does in every offline picture."""
+    MK = _other("motion", "_kit")
+    if MK is None:
+        return
+    period = int(getattr(_other("machines", "scope"), "FOLLOW_PERIOD", FOLLOW_PERIOD))
+    a, quarter = math.radians(PARKED), period // 4
+    MK.slide(canvas, (-math.sin(a), 0.0, math.cos(a)),
+             [(0, ROLL, quarter), (quarter, -ROLL, 2 * quarter), (3 * quarter, 0.0, period - 3 * quarter)], period)
 
 
 # --- what the room is told ------------------------------------------------------------------------
