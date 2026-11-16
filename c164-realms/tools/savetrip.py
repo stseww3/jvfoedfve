@@ -56,6 +56,12 @@ The trip
                              draws (its own count, read once a second for ten seconds), kept in
                              frames.txt -- a node draws in software, so the number is for comparing
                              two saves on the same node, not what a visitor's computer does
+    --clips <a[:seconds],b>  at these views, after the pictures: a short film of each (<name>.mp4, 12
+                             seconds unless said, 30 frames a second, 1280x720). A node draws a few
+                             frames a second, so the game is slowed down while it is filmed (`tick
+                             rate 4`: the world and the client run at a fifth of their pace, and both
+                             still carry everything on between two ticks), the node's display is
+                             recorded, and the film is sped up again: it shows the save at its own pace
     --also <file>            further stops after the twelve, a list in tools/win/shots/ (may be given
                              more than once). save-asked.json: the views somebody asked for in the save.
                              save-listen.json: beside the master clock, in the power house and at the
@@ -96,6 +102,7 @@ ORIGIN = (0, 200, 0)                # where the export puts the scene: the plot 
 STATIONS = os.path.join(HERE, "win", "shots", "obs-board.json")
 JOINED = "as_joined"
 PAIR = "_b"                         # after a view's name: its second picture (--pairs)
+SLOW = 5                            # a film is taken with the game at a fifth of its pace (--clips)
 MODES = {0: "survival", 1: "creative", 2: "adventure", 3: "spectator"}
 DIFFICULTIES = {0: "peaceful", 1: "easy", 2: "normal", 3: "hard"}
 JPEG_QUALITY = 90
@@ -326,6 +333,7 @@ def main():
                          "(<name>_2 .. _4): what comes and goes in a view, a particle every two seconds, is in one of them")
     ap.add_argument("--pairs", type=float, metavar="SECONDS")
     ap.add_argument("--fps", metavar="NAMES")
+    ap.add_argument("--clips", metavar="NAME[:SECONDS],...")
     ap.add_argument("--view", type=int, default=nodetrip.BOARD_VIEW)
     ap.add_argument("--server-view", type=int, default=nodetrip.REALM_VIEW)
     ap.add_argument("--clouds", type=int, default=128)
@@ -373,6 +381,16 @@ def main():
         counted = [s for n in args.fps.split(",") for s in shots if s["name"] == n and "pos" in s]
         if len(counted) != len(args.fps.split(",")):
             sys.exit(f"--fps {args.fps}: views of this trip that have a place, by name")
+
+    filmed = []
+    for asked in (args.clips or "").split(","):
+        if not asked:
+            continue
+        view, _, seconds = asked.partition(":")
+        found = [s for s in shots if s["name"] == view and "pos" in s]
+        if not found or not 2 <= float(seconds or 12) <= 30:
+            sys.exit(f"--clips {asked}: a view of this trip that has a place, and 2 to 30 seconds")
+        filmed.append((found[0], float(seconds or 12)))
 
     commit = clean_commit(args.branch, args.at)
     work = os.path.join(WORK, "save", name)
@@ -501,6 +519,14 @@ def main():
                                          f"{os.cpu_count()} cores, {at}\n" + "".join(line + "\n" for line in drew))
                         for line in told + drew:
                             trip.say(line)
+                    for shot, seconds in filmed:
+                        if trip.left() < CLOSING + seconds * SLOW + 60:
+                            failed.append(f"no time left for the film of {shot['name']}")
+                            break
+                        said = film(trip, cam, shot, seconds, os.path.join(work, "film"), os.path.join(PROJECT, kept_in))
+                        trip.say(said)
+                        if "kept" not in said:
+                            failed.append(said[:160])
     except SystemExit as stop:
         if stop.code not in (0, None):
             trip.say(f"stopped: {stop}")
@@ -538,14 +564,7 @@ def main():
 
 def frames_at(trip, cam, shot, seconds=10.0):
     """The frames a second the game says it draws with the camera at a view: one line for the note."""
-    import shoot
-    eye = [shot["pos"][i] + ORIGIN[i] for i in range(3)]
-    if "look_at" in shot:
-        yaw, pitch = shoot.angles(eye, [shot["look_at"][i] + ORIGIN[i] for i in range(3)])
-    else:
-        yaw, pitch = shot.get("yaw", 0.0), shot.get("pitch", 0.0)
-    ask(trip, f"gamemode spectator {cam}",
-        f"tp {cam} {eye[0]:.3f} {eye[1] - shoot.EYE:.3f} {eye[2]:.3f} {yaw:.2f} {pitch:.2f}")
+    place_camera(trip, cam, shot)
     time.sleep(8.0)                 # what the move brought into view is drawn; the count is of a second each
     asks = os.path.join(GAME, "c164cam")
     key = f"{os.getpid()}-f{shot['name']}"
@@ -567,6 +586,67 @@ def frames_at(trip, cam, shot, seconds=10.0):
                         f"{' '.join(str(n) for n in counts)})")
         time.sleep(0.2)
     return f"frames a second at {shot['name']}: the game did not answer"
+
+
+def place_camera(trip, cam, shot):
+    """The camera, a spectator, at a view of a shot list."""
+    import shoot
+    eye = [shot["pos"][i] + ORIGIN[i] for i in range(3)]
+    if "look_at" in shot:
+        yaw, pitch = shoot.angles(eye, [shot["look_at"][i] + ORIGIN[i] for i in range(3)])
+    else:
+        yaw, pitch = shot.get("yaw", 0.0), shot.get("pitch", 0.0)
+    ask(trip, f"gamemode spectator {cam}",
+        f"tp {cam} {eye[0]:.3f} {eye[1] - shoot.EYE:.3f} {eye[2]:.3f} {yaw:.2f} {pitch:.2f}")
+
+
+def film(trip, cam, shot, seconds, work, folder):
+    """<folder>/<view>.mp4: so many seconds of the save at a view, at the save's own pace. One line
+    for the log; it has the word `kept` when the film is there."""
+    from PIL import Image, ImageStat
+    name = shot["name"]
+    os.makedirs(work, exist_ok=True)
+    os.makedirs(folder, exist_ok=True)
+    raw, out, still = os.path.join(work, name + ".mkv"), os.path.join(folder, name + ".mp4"), os.path.join(work, name + ".png")
+    for path in (raw, out, still):
+        if os.path.exists(path):
+            os.remove(path)
+    place_camera(trip, cam, shot)
+    time.sleep(8.0)
+    size = os.environ.get("MC_SIZE", "1280x720")
+    display = ":" + os.environ.get("MC_DISPLAY", "164")
+    ask(trip, f"tick rate {20 // SLOW}")
+    try:
+        time.sleep(3.0)
+        got = subprocess.run(["ffmpeg", "-nostdin", "-loglevel", "error", "-y", "-f", "x11grab", "-draw_mouse", "0",
+                              "-framerate", "10", "-video_size", size, "-i", display, "-t", f"{seconds * SLOW:.1f}",
+                              "-c:v", "libx264", "-preset", "ultrafast", "-qp", "0", raw],
+                             capture_output=True, text=True, timeout=seconds * SLOW + 60)
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        return f"film of {name}: the display could not be recorded ({type(exc).__name__}: {exc})"
+    finally:
+        ask(trip, "tick rate 20")
+    if got.returncode != 0 or not os.path.exists(raw):
+        return f"film of {name}: the display could not be recorded ({(got.stderr or '').strip()[-200:]})"
+    made = subprocess.run(["ffmpeg", "-nostdin", "-loglevel", "error", "-y", "-i", raw, "-vf",
+                           f"setpts=PTS/{SLOW},fps=30", "-c:v", "libx264", "-preset", "slow", "-crf", "23",
+                           "-pix_fmt", "yuv420p", "-movflags", "+faststart", "-an", out],
+                          capture_output=True, text=True, timeout=600)
+    if made.returncode != 0 or not os.path.exists(out):
+        return f"film of {name}: not made ({(made.stderr or '').strip()[-200:]})"
+    subprocess.run(["ffmpeg", "-nostdin", "-loglevel", "error", "-y", "-ss", f"{seconds / 2:.1f}", "-i", out,
+                    "-frames:v", "1", still], capture_output=True, text=True, timeout=120)
+    light = None
+    if os.path.exists(still):
+        with Image.open(still) as picture:
+            light = ImageStat.Stat(picture.convert("L")).mean[0] / 255
+    big = os.path.getsize(out)
+    if light is not None and light < 0.01:
+        os.remove(out)
+        return f"film of {name}: the node's display shows nothing of the game (a frame of the film is black)"
+    return (f"film of {name}: kept as {name}.mp4, {seconds:g} s at the save's own pace, 30 frames a second, {size}, "
+            f"{big / 1e6:.1f} MB; filmed at a fifth of the pace and sped up; a frame's mean light "
+            f"{'?' if light is None else f'{light:.2f}'}")
 
 
 def what_moved(trip, name, kept_in, paired, seconds, sha):
