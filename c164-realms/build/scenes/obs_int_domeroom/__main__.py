@@ -175,8 +175,11 @@ else:
             if abs(abs(p[2] - S.DOME_AXIS[1]) - skeleton.edge) < 0.1:
                 line = skeleton.arch_line
                 rise.append(p[1] - line.at(line.where(abs(p[0] - S.DOME_AXIS[0])))[1])
+    print("the lines under the boards: the ribs' backs spring from (%.3f, %.3f), the arch girders' from (%.3f, %.3f) "
+          "and reach %.3f at the crown" % (*skeleton.meridian.p[0], *skeleton.arch_line.p[0], skeleton.arch_line.p[-1][1]))
     print("the lining: %d panels, %d boards; where the boards of a gore end at a cover plate they come in %.2f to "
-          "%.2f over the line of the arch girder's back" % (len(skeleton.lined), len(planks), min(rise), max(rise)))
+          "%.2f over the line of the arch girder's back"
+          % (len(skeleton.lined), len(planks), min(rise, default=0.0), max(rise, default=0.0)))
     check("no board of the vault's lining lies in a block or reaches into the open slit", deep + astray)
     check("the room's display entities stay within a room's share (%d)" % S.BUDGET_PER_ROOM,
           [placed] if placed > S.BUDGET_PER_ROOM else [])

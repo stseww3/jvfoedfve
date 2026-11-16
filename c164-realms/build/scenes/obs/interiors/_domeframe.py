@@ -679,10 +679,10 @@ class Frame:
                 self.models[name], self.panels[name] = got[0], got[1:]
             z, y = self.panels[name][0]
             self.lined.append((name, (ax + z * math.cos(a), y, az + z * math.sin(a)), math.degrees(a) - 90.0))
-        # and between the two girders where the slit is not: from the ring girder's top at the far
-        # foot over the crown to the girder across the slit's head (the last board ends on it), the
-        # boards across from cover plate to cover plate, on the line the girders' backs keep to.
-        # Drawn like that girder, z away from the slit's foot, in lengths a model can hold
+        # and between the two girders where the slit is not: from their far feet over the crown to
+        # the girder across the slit's head (the last board ends on it), the boards across from
+        # cover plate to cover plate, on the line the girders' backs keep to. Drawn like that
+        # girder, z away from the slit's foot, in lengths a model can hold
         if self.head is not None:
             at, inner = -sill[0] * self.head[0], min(abs(s) for s in self.sides) - BAND
             whole = list(self.arch_line.p) + [(-z, y) for z, y in reversed(self.arch_line.p) if z > 1e-9]
@@ -691,14 +691,12 @@ class Frame:
                 (z0, y0), (z1, y1) = keep[-1], whole[len(keep)]
                 keep.append((at - BOARD, y0 + (y1 - y0) * (z0 - (at - BOARD)) / (z0 - z1)))
             line = Curve(keep)
-            _foot, (_tz, ty), _along = line._stretch(0.0)
-            start = (rows[1] - line.p[0][1]) / ty
-            count = int(math.ceil((line.length - start) / BAND_MOST))
-            each = math.ceil((line.length - start) / BOARD / count) * BOARD
+            count = int(math.ceil(line.length / BAND_MOST))
+            each = math.ceil(line.length / BOARD / count) * BOARD
             for i in range(count):
                 name = f"{prefix}boards_band_{i}"
-                got = boards(name, line, lambda z: (-inner, inner), start=start + i * each,
-                             stop=start + (i + 1) * each, seed=2000 + 100 * i)
+                got = boards(name, line, lambda z: (-inner, inner), start=i * each, stop=(i + 1) * each,
+                             seed=2000 + 100 * i)
                 if got is not None:
                     self.models[name], self.panels[name] = got[0], got[1:]
                     z, y = got[1]
