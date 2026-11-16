@@ -1,0 +1,40 @@
+a0job 1116-045202-vault-platevault2-f3-4cc1-18985: cursor/c164-vault-platevault2-f3-4cc1 @ acf8fbd1 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.11 0.47 0.64, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/viewbands.py interiors/platevault 2>&1 | tail -30 ---- exit 0, 3 s, last 40 lines of 30:
+int_vault_dark_lift_frame                    near   x2    V3 2, V4 2, V7 2, V9 1
+int_vault_dark_rack                          near   x2    V9 2
+int_vault_dark_rope                          near   x1    V3 1, V4 1, V7 1
+int_vault_dark_safelight                     near   x1    V9 1
+int_vault_dark_shelf                         near   x1    V9 1
+int_vault_dark_sink                          near   x1    V9 1
+int_vault_dark_timer                         near   x1    V9 1
+int_vault_dark_tray_dev                      near   x1    V9 1
+int_vault_dark_tray_fix                      near   x1    V9 1
+int_vault_dark_tray_stop                     near   x1    V9 1
+int_vault_face_a                             near   x9    V3 6, V4 8, V7 5, V9 8
+int_vault_face_a_up                          near   x9    V3 7, V4 8, V7 4, V9 8
+int_vault_face_b                             near   x9    V3 6, V4 7, V7 4, V9 7
+int_vault_face_b_up                          near   x7    V3 6, V4 6, V7 5, V9 7
+int_vault_face_c                             near   x7    V3 6, V4 6, V7 5, V9 6
+int_vault_face_c_up                          near   x9    V3 9, V4 8, V7 7, V9 8
+prop_furn_crate                              near   x1    V3 1, V4 1, V7 1
+prop_furn_crate_small                        near   x1    V3 1, V4 1, V7 1
+prop_furn_ladder_rail                        near   x12   V4 12, V9 12, V3 10, V7 8
+prop_furn_library_ladder                     near   x1    V3 1, V4 1, V7 1
+prop_furn_stool                              near   x1    V3 1, V4 1, V7 1
+prop_furn_writing_desk                       near   x1    V3 1, V4 1, V7 1
+prop_lamp_cage_b                             near   x4    V3 2, V4 3, V7 2, V9 3
+prop_lamp_desk_green                         near   x1    V3 1, V4 1, V7 1
+prop_lamp_pendant_b                          near   x9    V3 9, V4 8, V7 6, V9 9
+prop_paper_logbook                           near   x1    V3 1, V4 1, V7 1
+prop_paper_photo_plate                       near   x1    V3 1, V4 1, V7 1
+prop_paper_photo_plate_b                     near   x1    V3 1, V4 1, V7 1
+prop_sign_plate_1                            near   x1    V3 1, V4 1, V7 1
+prop_sign_plate_2                            near   x1    V3 1, V4 1, V7 1
+==== NODEJOB RESULT ====
+exit=0 secs=4 host=cursor cores=4 head=acf8fbd1 commit=none pushed=no branch=cursor/c164-vault-platevault2-f3-4cc1 files=0
+a0job: exit=0 secs=5
