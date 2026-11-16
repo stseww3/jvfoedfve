@@ -106,7 +106,7 @@ SILL = B.SLATE_BRICK.block                      # the plinth's stone, in the flo
 CASE = B.ASHLAR_PANEL.block                     # the stone case of a door through a cross wall: posts and head
 VAULT = B.ASHLAR_FINE                           # the way to the west door: its vault and the rib across it, dressed stone
 STRIP = B.ASHLAR_PANEL.block                    # the strip of a wall the rib stands on: sunk panels, as a door case's post
-BAND = FLOOR_DARK                               # the band under the rib in the floor: the slate of the lines along the walls
+BAND = FLOOR_DARK                               # the band under the rib in the floor: the slate of the lines the cheeks stand on
 DECK = B.ASHLAR_FINE.block                      # galleries, mezzanine, landings
 GIRDER = B.IRON_RIVETED.block                   # the free edge of a deck, the ceiling's beams
 ROOM_FLOOR = B.FLOOR_WOOD.block                 # wing rooms and the dome room
@@ -199,7 +199,7 @@ def way_rib():
     either side a springer (a stair on its head, under a whole block), a whole block for its
     crown. Each springer stands on a strip of its wall in panelled stone, from the plinth up to
     the springer; in the floor a band of slate crosses the pale stone under the rib, from the
-    line along one wall to the line along the other. Nothing stands in the way: its three cells
+    line of slate one cheek stands on to the other's. Nothing stands in the way: its three cells
     of width and four rows of height are what they were."""
     x, out = layout().rib, []
     for s in (-1, 1):
