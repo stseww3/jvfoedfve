@@ -54,8 +54,8 @@ cylinders, a turn would not show, so they are not split.
 Scale (A5 1.2: px = scale keeps 16 texels to the block): drum and frame 2, the rest 1 -- the
 car is two blocks long and three wide over its eaves, as much as a model drawn texel for texel
 may span. 28 display entities, one of them the lamp family's wall lamp in the winch house
-(WORK_LAMP). The car and its wheelsets are seen from across the site; the rest is drawn within 64
-blocks (VIEW, VIEW_KEEP).
+(WORK_LAMP). The car, the drum and the rope with its rollers are seen from across the site; the
+small pieces are drawn within 64 blocks (VIEW, VIEW_KEEP).
 
 Blocks: the models stop nobody, so the package sets what does. Barriers inside the two solid
 things, the car's body (CAR_CELLS) and the drum's barrel (SOLID), two high and nowhere beyond
@@ -89,11 +89,12 @@ from ..site import cablecar as SHELL    # read only: the station's shell, whose 
 
 PREFIX = "mach_cable_"
 PX = 1.0 / 16.0                         # one texel, in blocks
-# How far off the pieces are drawn (artkit.models, the four bands): the winch and the rope's
-# furniture are looked at from the two platforms, the car is the train's coach and is seen from
-# across the whole site.
+# How far off the pieces are drawn (artkit.models, the four bands; plan/INTERFACE.md 7: what stands
+# out of doors and counts in the outline, the vehicles and the pieces along the line, is drawn from
+# across the whole site). So the car, the drum with its pedestals, and the rope with its rollers
+# keep the far band; the small things one walks up to are drawn within 64 blocks.
 VIEW = M.MID
-VIEW_KEEP = (PREFIX + "car", PREFIX + "axle")
+VIEW_KEEP = tuple(PREFIX + name for name in ("car", "axle", "drum", "frame", "rope", "roller", "turn"))
 
 # --- materials (palette only) ---------------------------------------------------------------------
 IRON, IRON_D, BRASS, BRASS_D = PK.IRON, PK.IRON_D, PK.BRASS, PK.BRASS_D
