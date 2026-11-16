@@ -210,6 +210,10 @@ STAIR = 8
 # rank, as the hall's own lamps beside them. A caged lamp two cells from where one walks leaves 6
 # at the head and 5 at the feet.
 WAY = 8
+# The low lamps on the piers where a way leaves the upper terrace: the top of the second rank, as
+# the pool under a street lamp. The lamp stands a cell and a half over the paving and the steps
+# fall away below it; at 10, the level of the lip's low lamps, the third row of steps is at 3.
+GATE = 12
 
 _PRIORITY, _WAKE, _BLIND = 0, 1, 3      # salts of the hash; 2 was the curtains', handed out by look once
 _TIER_OF = {block: tier for tier, role in ROLE.items() for block in role.all()}
