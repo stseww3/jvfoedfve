@@ -1,0 +1,27 @@
+[ok] 10 files written from the game's own text: every patch found its place (core/clouds.vsh, core/item.vsh, core/lightmap.fsh, core/rendertype_beacon_beam.vsh, core/sky.fsh, core/sky.vsh, core/stars.fsh, core/stars.vsh, include/c164_layers.glsl, include/fog.glsl)
+look blue: sky #070f2a fog #434485 share 0.1867 glow #e97c4c x 0.35, sea #565c8c at y 172
+[ok] afterglow fan, closed form against the mesh: 63 directions, largest difference 0.0017 (the mesh has 16 flat sides)
+[ok] zenith: painted #0d1433, the look states #0d1433
+[ok] horizon away from the west: painted #383a74, the look states #383a74
+[ok] horizon,   0 degrees from west: sky #955c5b | sea #955c5b | things fade to #955c5b above, #955c5b below
+[ok] horizon,  20 degrees from west: sky #88575e | sea #88575e | things fade to #88575e above, #88575e below
+[ok] horizon,  45 degrees from west: sky #755063 | sea #755063 | things fade to #755063 above, #755063 below
+[ok] horizon,  90 degrees from west: sky #383a74 | sea #383a74 | things fade to #383a74 above, #383a74 below
+[ok] horizon, 180 degrees from west: sky #383a74 | sea #383a74 | things fade to #383a74 above, #383a74 below
+[ok] a sea block where the painted sea begins: largest difference 0.00 of 255
+[ok] white and black things on the sea (0, 4, 8 above its top) 150 blocks away on the map: largest difference to the painted sea 0.00 of 255 (the blocks end at 160)
+[ok] V1, the front, mid-height:  79.6 blocks from an eye  25.6 above the sea: fog 0.058 (at most 0.10; the registry look's 0.15)
+[ok] V1, the dome's apex:  98.5 blocks from an eye  25.6 above the sea: fog 0.065 (at most 0.10; the registry look's 0.29)
+[ok] V12, the front, mid-height: 129.8 blocks from an eye 118.0 above the sea: fog 0.079 (at most 0.25; the registry look's 0.53)
+[ok] V12, the dome's apex: 121.8 blocks from an eye 118.0 above the sea: fog 0.073 (at most 0.25; the registry look's 0.47)
+[ok] V12, the sunset platform: 160.8 blocks from an eye 118.0 above the sea: fog 0.099 (at most 0.25; the registry look's 0.76)
+       the far sea from y 202 (30 above it): the share of the horizon band at
+          -30.0 degrees:      59 blocks out, 0.07
+          -11.0 degrees:     155 blocks out, 0.18
+           -5.0 degrees:     340 blocks out, 0.35
+           -2.0 degrees:     849 blocks out, 0.66
+           -1.0 degrees:    1697 blocks out, 0.88
+           -0.3 degrees:    5657 blocks out, 1.00
+[ok] compiled with the game's own shaderc (libshaderc-26.3.so), with the game's options: 316 pipelines' pairs with our 10 files in place (37 of the game's shaders are touched: they include fog.glsl or are replaced)
+[ok] the OpenGL backend's path: 630 shader variants of ours go back to GLSL 330 through the game's SPIRV-Cross (libspirv-cross-26.3.so, the game's options) and that text compiles under OpenGL's rules (the same strict front end, target OpenGL 4.5); extensions the text asks for: ours none, the game's own none
+result: PASS
