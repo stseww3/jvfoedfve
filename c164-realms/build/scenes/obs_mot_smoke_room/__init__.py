@@ -1,0 +1,93 @@
+"""Second test scene of the work package motion/smoke: what breathes inside the power house.
+
+The machines stand where they do in the master scene, in the shell of the power house as
+site/powerhouse builds it: the two boilers and the switchboard (machines/boiler, machines/board)
+and the engine with its dynamo (machines/engine). So motion/smoke finds each machine on the canvas
+and registers its puffs exactly as it does in the master scene; the chimney is the real one too.
+Round the shell there is a slab of the lower platform and nothing else; the floor is a stand-in
+for the room's, and the light is the machines' own (the fire doors, the board's lamps, the pilot
+lamp), placed by the sky line.
+
+Particles are not drawn offline: the offline pictures show the machines at rest, and what they
+breathe is for the real machine to say. Every camera is in the shot list twice, the second time
+as <name>_again. The game must not be frozen while the pictures are taken. The safety valve blows
+for a second and a half of every eight (smoke.VALVE) and its steam is gone two to three seconds
+later: of a pair of pictures taken seven seconds apart one may well show nothing, which is why
+two cameras look at the valve.
+
+The cameras
+    room        a step inside the wicket: does the steam show to somebody who comes in
+    valve       from the firing floor, before boiler No. 2: up at its safety valve
+    valve_side  level with the valve, from the west, square to the wind: the wisps lean right
+
+    python -m scenes.obs_mot_smoke_room      (in build/) writes shots.json
+"""
+from artkit.canvas import Canvas
+
+from scenes.obs import materials, sky
+from scenes.obs.common import blocks as B
+from scenes.obs.common import skeleton as S
+from scenes.obs.machines import board, boiler, engine
+from scenes.obs.motion import smoke
+from scenes.obs.site import powerhouse
+
+BIOME = "obs_blue"
+BIOME_MARGIN = 24
+BIOME_MARGIN_Y = 24
+
+X0, Z0, X1, Z1 = S.POWER_HOUSE["box"]
+SLAB = (X0 - 6, Z0 - 6, X1 + 3, Z1 + 3)         # the piece of the lower platform the house stands on
+PAVING_Y = S.LOWER_PAVING_Y                     # -7
+FLOOR = B.TUFF_SMOOTH.block                     # stands in for the room's floor and the yard's paving
+ROCK = B.TUFF.block                             # under it: what the engine's pit is dug into
+FY = boiler.FLOOR
+EYE = S.EYE
+TIME = 14000
+
+
+def _views():
+    vx, vy, vz = boiler.SAFETY_VALVES[-1]
+    return [
+        ("room", (74.5, FY + EYE, 23.2), (77.5, FY + 1.4, 36.5)),
+        ("valve", (vx - 3.55, FY + EYE, vz + 2.1), (vx, vy + 0.6, vz + 0.1)),
+        ("valve_side", (vx - 2.85, vy + 0.6, vz), (vx, vy + 0.8, vz)),
+    ]
+
+
+def shots():
+    out = []
+    for again in ("", "_again"):
+        for name, pos, look_at in _views():
+            out.append({"name": name + again, "pos": [round(float(v), 2) for v in pos],
+                        "look_at": [round(float(v), 2) for v in look_at], "time": TIME})
+    return out
+
+
+def build():
+    c = Canvas()
+    c.box(SLAB[0], PAVING_Y - 3, SLAB[1], SLAB[2], PAVING_Y - 1, SLAB[3], ROCK)
+    c.box(SLAB[0], PAVING_Y, SLAB[1], SLAB[2], PAVING_Y, SLAB[3], FLOOR)
+    shell = powerhouse.build(c, (0, 0, 0))          # its own entities: the lamp over the wicket
+    n = boiler.build(c, (0, 0, 0)) + board.build(c, (0, 0, 0)) + engine.build(c, (0, 0, 0))
+    smoke.build(c, (0, 0, 0))
+    c.entity_counts = {"machines": n, "site": int(shell or 0), "motion": 0}
+    sky.build(c, (0, 0, 0))                         # the sky line's light sources go in last
+    return c
+
+
+def build_models():
+    out = dict(boiler.models())
+    out.update(board.models())
+    out.update(engine.models())
+    try:
+        from scenes.obs.props import lamps          # the shell hangs the props line's lamp over its wicket
+    except ImportError:
+        lamps = None
+    if lamps is not None:
+        out.update(lamps.models() or {})
+    return out
+
+
+def write_pack(pack_dir):
+    """The repainted tuff, iron, glass and panels of the house the machines stand in, and the sky's sun."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
