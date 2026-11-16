@@ -72,6 +72,11 @@ scenes have in common side by side, one column a scene: renders/real/_beside/<na
                              is kept as after.txt beside the scene's pictures; --after-budget
                              seconds at most (300)
     --no-place               the scenes stand from an earlier trip of the same code
+    --into <name>            the trip's pictures are kept apart, in renders/real-<name>/<scene>/:
+                             views somebody asked for that are not in a scene's own list
+                             (--shots <scene>=<file>, a path from build/), of the master scene
+                             too -- they never stand among the board's twelve, and no compare.jpg
+                             is drawn for them
     --budget <seconds>       the trip stops what it is doing after this long, takes what there is
                              and closes down (1500: nodejob.sh stops a command at 1700 s, and
                              the game must be closed by the trip itself before that, not left
@@ -229,8 +234,9 @@ def other_code(branch, at):
     return project, commit[:8]
 
 
-def sheets(trip, scene, folder, tag, at):
-    """sheet.jpg of a scene's kept pictures; for the master scene compare.jpg beside the offline board."""
+def sheets(trip, scene, folder, tag, at, board=True):
+    """sheet.jpg of a scene's kept pictures; for the master scene compare.jpg beside the offline
+    board, unless these are not the board's pictures (`board` False: views asked for, kept apart)."""
     import boardrender
     import realshots
     kept = realshots.read_kept(os.path.join(folder, realshots.NOTE))
@@ -241,7 +247,7 @@ def sheets(trip, scene, folder, tag, at):
     drawn = f"the game 26.3 on a node, {at}"
     boardrender.sheet(folder, names, f"c164 {scene}, {drawn}, the code of {commits}", ext=".jpg")
     made = ["sheet.jpg"]
-    if scene == MASTER:
+    if scene == MASTER and board:
         # beside the offline board of the same commit, if that is drawn already (else boardrender.py
         # draws the sheet when it comes); never a sheet of an earlier board beside these pictures
         made.append(boardrender.beside_game(tag, folder, drawn, stale_goes=True))
@@ -315,6 +321,7 @@ def main():
     ap.add_argument("--sheet", metavar="NAME")
     ap.add_argument("--across", type=int, default=2)
     ap.add_argument("--no-place", action="store_true")
+    ap.add_argument("--into", metavar="NAME")
     ap.add_argument("--budget", type=float, default=1500.0)
     args = ap.parse_args()
     import boardrender
@@ -338,9 +345,11 @@ def main():
         if args.no_place or args.apart or args.beside or args.sheet:
             sys.exit("--looks places the scenes anew for every light version and draws its own sheet: "
                      "--no-place, --apart, --beside and --sheet cannot go with it")
-    for option, name in (("--beside", args.beside), ("--sheet", args.sheet)):
+    for option, name in (("--beside", args.beside), ("--sheet", args.sheet), ("--into", args.into)):
         if name and not realshots.NAME_OK.match(name):
             sys.exit(f"{option} {name}: a name of letters, digits, - and _")
+    if args.into and args.looks:
+        sys.exit("--into keeps a trip's pictures apart; the light versions of --looks have their own place already")
     if args.sheet and (args.across < 1 or (args.branch and MASTER in args.scenes)):
         sys.exit("--sheet draws test scenes and the assembly's master scene, --across <n> pictures a row (1 or more)")
 
@@ -351,7 +360,7 @@ def main():
     else:
         tag, commit = boardrender.which_commit(args.tag, args.at)
     # pictures at other distances than the board's are kept apart: they never stand in for the board's
-    apart = (f"-view{args.view}" if args.view != BOARD_VIEW else "") \
+    apart = (f"-{args.into}" if args.into else "") + (f"-view{args.view}" if args.view != BOARD_VIEW else "") \
         + (f"-server{args.server_view}" if args.server_view != REALM_VIEW else "")
     kept_in = os.path.join("renders", "real" + apart)
     at = f"view distance {args.view} (the server's {args.server_view}), cloud range {args.clouds}"
@@ -440,7 +449,7 @@ def main():
                     _, _, rows = realshots.read_sent(os.path.join(send, f"{scene}-{tag}-real.txt"))
                     shot.append((scene, os.path.join(PROJECT, into, scene), [row[0] for row in rows]))
                     try:
-                        sheets(trip, scene, os.path.join(PROJECT, into, scene), tag, at)
+                        sheets(trip, scene, os.path.join(PROJECT, into, scene), tag, at, board=not args.into)
                     except Exception as exc:        # the pictures are kept; a sheet is a convenience
                         trip.say(f"{scene}: the sheet could not be drawn ({exc})")
             if args.looks:
