@@ -557,9 +557,17 @@ BRIDGE_CLEAR = 7        # a low lamp of the lip keeps more than this many rows f
 STREET_LEVEL = 13
 STATION_LEVEL = 12      # the pendant of the cable station: the top of a pendant's rank
 AIM_UP = 3.0            # a ground lamp at the armillary's feet looks at its middle, this far above the ground
-FEET_GLOW = 8           # the source under the armillary's light cell: the brass gets one less, what the
-                        # paving beside a ground lamp gets. Under every lit window, so that the rings stay
-                        # an outline before the doorway (A0 #33831 six); 5 to 8 after the pictures
+FEET_GLOW = 10          # the source under the armillary's light cell: the brass gets one less. Under every
+                        # lit window, so that the rings stay an outline before the doorway (A0 #33831
+                        # six); 5 to 8 after the pictures. At 8 the lower half of the rings was as dark
+                        # as the gates behind it for who comes up the axis (0.13 on 0.16 in the real
+                        # client's S.V2; the upper half stands before the gold windows) and the circle
+                        # did not close: 10, the level of a wall wash (review #77381; lights #77794)
+FEET_RANK = 2           # ... which is over the top of an uplight's rank: this one source is registered
+                        # in the second (lights #77794). The four ground lamps keep their own 8
+DOOR_LEVEL = {"hut_door": 5}    # a caged lamp at a door that is not the cage's own 7. The transit hut's:
+                        # at 7 its south gable was the lightest stone of S.V5 and S.V2, seen before the
+                        # clock tower (0.33 by the lamp; the tower 0.17 to 0.24; review #77381)
 
 # What the packages reported in the group (g2 #283 to #295), for a tree in which a package is not
 # merged yet. Once it is, its own table or function is read instead: _told().
@@ -625,8 +633,8 @@ def site_lamps(near_pair=None):
     middle = (S.mid(S.ARMILLARY[0]), S.GROUND + AIM_UP, S.mid(S.ARMILLARY[1]))
     for x, z in _told("machines.armillary", "LAMP_CELLS"):
         out.append(("feet", "uplight", (S.mid(x), float(S.GROUND), S.mid(z)), None, middle))
-    for p in _told("site.outbuildings", "LAMP_POINTS").values():
-        out.append(("doors", "cage", tuple(p), None, None))
+    for name, p in _told("site.outbuildings", "LAMP_POINTS").items():
+        out.append(("doors", "cage", tuple(p), DOOR_LEVEL.get(name), None))
     for p in _told("site.cablecar", "LAMP_POINTS").values():
         out.append(("station", "pendant", tuple(p), STATION_LEVEL, None))
     return out
@@ -728,8 +736,17 @@ def _feet_glow(canvas, origin=(0, 0, 0)):
     sources light the base and leave the brass to the sky. So, when the rings stand there, one
     source in the cell under that one."""
     x, y, z = (c + o for c, o in zip(_told("machines.armillary", "LIGHT_CELL"), origin))
-    if any((math.floor(ex), math.floor(ey), math.floor(ez)) == (x, y, z) for ex, ey, ez, _ in canvas.entities):
+    if not any((math.floor(ex), math.floor(ey), math.floor(ez)) == (x, y, z) for ex, ey, ez, _ in canvas.entities):
+        return
+    try:
+        from ..sky import _lightkit
+        suggest = getattr(_lightkit, "suggest", None)
+    except ImportError:
+        suggest = None
+    if suggest is None:                                 # a tree without the light line: the kit puts it down
         K.offer_lights(canvas, [((x, y - 1, z), FEET_GLOW)], "props/lamps:uplight")
+    else:
+        suggest(canvas, (x, y - 1, z), FEET_GLOW, "props/lamps:uplight", rank=FEET_RANK)
 
 
 def build(canvas, origin=(0, 0, 0), version=VERSION):
