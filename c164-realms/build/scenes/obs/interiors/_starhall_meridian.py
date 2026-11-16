@@ -398,11 +398,12 @@ def _wall_frame():
     return _leant((lo + hi) / 2.0)
 
 
-def _upright(name, rows, tones, centre):
+def _upright(name, rows, tones, centre, lap=RL.LAP):
     """A picture that stands on the pier's face, drawn as the door sees it (its first column the
-    southernmost), a pixel to the pixel: `centre` is its middle, in blocks from its entity."""
+    southernmost), a pixel to the pixel: `centre` is its middle, in blocks from its entity. `lap`
+    is how far it runs past its edges, to close the seam with the next one."""
     part = RL.Faces(name, frame=_wall_frame())
-    part.face(centre, EAST, NORTH, len(rows[0]) / 16.0, len(rows) / 16.0, K.BRASS_D,
+    part.face(centre, EAST, NORTH, len(rows[0]) / 16.0, len(rows) / 16.0, K.BRASS_D, lap=lap,
               faces={"u": Sprite(name, list(rows), tones)})
     return part
 
@@ -444,8 +445,9 @@ def _pier():
         if z - half <= FACE_Z[0] or z + half >= FACE_Z[1]:
             raise ValueError(f"the {side} slab does not lie inside the pier's face")
         at = (x, SLAB_FOOT + SLAB_CELL + 0.5, math.floor(z) + 0.5)
+        # three blocks are as long as an element of a model may be: a slab has no lap, and no neighbour
         part = _upright(PIER + "slab_" + side, rows, STONE,
-                        (lift, SLAB_FOOT + len(rows) / 32.0 - at[1], z - at[2]))
+                        (lift, SLAB_FOOT + len(rows) / 32.0 - at[1], z - at[2]), lap=0.0)
         out.append((part, at))
     ok, line = lit([part for part, _at in out])
     if not ok:
