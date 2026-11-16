@@ -1,0 +1,20 @@
+gate main/roofworks c8c4229e: the merged tree 62db37ce, the assembly as it was a22c75a3
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 101 scenes in 149 s: 96 pass (56 with warnings), 5 FAIL: obs_mach_engine_dynamo, obs_mach_switchboard_boiler, obs_mot_small_life, obs_mot_smoke_bench, obs_mot_smoke_room
+    FAIL  obs_mach_engine_dynamo: 1 failed, 0 with warnings, skipped: sight (4 s)
+          [FAIL] entities: 22 display entities, 26 models never placed
+              8 display entities show 'c164:site_power_vent', which the pack does not have
+    FAIL  obs_mach_switchboard_boiler: 1 failed, 0 with warnings, skipped: sight (4 s)
+          [FAIL] entities: 25 display entities, 26 models never placed
+              8 display entities show 'c164:site_power_vent', which the pack does not have
+    FAIL  obs_mot_small_life: 1 failed, 0 with warnings, skipped: flatwall (2 s)
+          [FAIL] entities: 41 display entities, 8 shown through a matrix that is no turn, no face stretched, 22 models never placed
+              8 display entities show 'c164:site_power_vent', which the pack does not have
+    FAIL  obs_mot_smoke_bench: 1 failed, 0 with warnings, skipped: flatwall, sight (2 s)
+          [FAIL] entities: 38 display entities, 26 models never placed
+              8 display entities show 'c164:site_power_vent', which the pack does not have
+    FAIL  obs_mot_smoke_room: 1 failed, 0 with warnings, skipped: flatwall, sight (2 s)
+          [FAIL] entities: 38 display entities, 26 models never placed
+              8 display entities show 'c164:site_power_vent', which the pack does not have
+pictures: [PASS] selfshots obs_main_roofworks at 62db37ce: 12 of 12 kept pictures are what the code draws
+result: FAIL

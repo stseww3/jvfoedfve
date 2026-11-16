@@ -1,0 +1,157 @@
+{
+ "scene": "obs_mach_engine_dynamo",
+ "commit": "62db37c",
+ "result": "FAIL",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "6887 blocks, 22 entities, 40 models, 808 resource-pack files, 42 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.0 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 807 files, no file written twice, the folders and the prefix of machines are kept (14 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "169 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "609 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "22 kinds of block placed, 34 barrier cells (x 71..85, y -6..-5, z 34..38), all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "PASS",
+   "summary": "no wall face runs flat over more than 5x5",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "FAIL",
+   "summary": "22 display entities, 26 models never placed",
+   "details": [
+    "8 display entities show 'c164:site_power_vent', which the pack does not have"
+   ]
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "12 shots, most display entities in view: 18 (wicket), limit 600; counted without what walls hide; the game draws up to 22 (door): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "door",
+      "in_view": 17,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "whole",
+      "in_view": 13,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "flywheel",
+      "in_view": 13,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "rods",
+      "in_view": 13,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "cylinder",
+      "in_view": 15,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "dynamo",
+      "in_view": 2,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "belt",
+      "in_view": 13,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "south",
+      "in_view": 17,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "valve",
+      "in_view": 10,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "brushes",
+      "in_view": 4,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "above",
+      "in_view": 13,
+      "drawn": 22,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "wicket",
+      "in_view": 18,
+      "drawn": 22,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "15 parts and 0 points on 4 chains, 34 function files; 10 commands in the busiest tick (limit 120), 3.0 a tick on average (limit 40)",
+   "details": [
+    "chain of 16 ticks: 4 functions, 10 commands a cycle, starts 3 ticks after start",
+    "chain of 24 ticks: 4 functions, 9 commands a cycle, starts 4 ticks after start",
+    "chain of 48 ticks: 12 functions, 65 commands a cycle, starts 1 ticks after start",
+    "chain of 60 ticks: 8 functions, 41 commands a cycle, starts 2 ticks after start",
+    "mach_engine_rod: 12 steps in 48 ticks; its model strays 0.34 pixels from its arc (its middle lies 2.06 blocks off the axis), within the half pixel a fast part is let off with"
+   ]
+  }
+ ]
+}

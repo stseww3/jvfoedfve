@@ -1,0 +1,187 @@
+{
+ "scene": "obs_mach_domegear",
+ "commit": "62db37c",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "4589 blocks, 123 entities, 519 models, 2248 resource-pack files, 110 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (4.6 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 2247 files, no file written twice, the folders and the prefix of machines are kept (14 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "648 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "1567 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "21 kinds of block placed, 19 barrier cells (x -1..5, y 18..19, z -9..1), all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "PASS",
+   "summary": "no wall face runs flat over more than 5x5",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "123 display entities, 457 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "17 shots, most display entities in view: 123 (foot_outside), limit 600; counted without what walls hide; the game draws up to 123 (v8): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "v8",
+      "in_view": 84,
+      "drawn": 123,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v8_north",
+      "in_view": 81,
+      "drawn": 123,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v8_glow",
+      "in_view": 84,
+      "drawn": 123,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "room",
+      "in_view": 76,
+      "drawn": 123,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "ring_far",
+      "in_view": 68,
+      "drawn": 123,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "slit_foot_up",
+      "in_view": 37,
+      "drawn": 123,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "weights",
+      "in_view": 61,
+      "drawn": 123,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "hand_gear",
+      "in_view": 9,
+      "drawn": 123,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "hand_gear_up",
+      "in_view": 23,
+      "drawn": 123,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "ring_near",
+      "in_view": 9,
+      "drawn": 123,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "mesh",
+      "in_view": 10,
+      "drawn": 123,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "slit_foot",
+      "in_view": 24,
+      "drawn": 123,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "weight_near",
+      "in_view": 22,
+      "drawn": 123,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "chains",
+      "in_view": 71,
+      "drawn": 123,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "curtain",
+      "in_view": 14,
+      "drawn": 123,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "slit_head",
+      "in_view": 9,
+      "drawn": 123,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "foot_outside",
+      "in_view": 123,
+      "drawn": 123,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "WARN",
+   "summary": "9 parts and 0 points on 6 chains, 102 function files; 7 commands in the busiest tick (limit 120), 1.2 a tick on average (limit 40)",
+   "details": [
+    "int_domeroom_time_dial_seconds: 60 steps in 1200 ticks set by hand (lead -17); its model strays 0.00 pixels from its arc",
+    "chain of 32 ticks: 4 functions, 10 commands a cycle, starts 2 ticks after start",
+    "chain of 40 ticks: 8 functions, 17 commands a cycle, starts 1 ticks after start",
+    "chain of 90 ticks: 8 functions, 17 commands a cycle, starts 9 ticks after start",
+    "chain of 130 ticks: 8 functions, 17 commands a cycle, starts 9 ticks after start",
+    "chain of 480 ticks: 8 functions, 37 commands a cycle, starts 3 ticks after start",
+    "chain of 1200 ticks: 60 functions, 121 commands a cycle, starts 11 ticks after start"
+   ]
+  }
+ ]
+}
