@@ -1,0 +1,14 @@
+check obs_main_shell at ecb9588
+[PASS] regen     103642 blocks, 4 entities, 13 models, 737 resource-pack files, 43 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.5 s)
+[PASS] conflicts the scene writes 736 files, no file written twice, the folders and the prefix of main are kept (3 packages run alone)
+[PASS] strays    142 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      555 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[WARN] blocks    46 kinds of block placed, 784 barrier cells (x 0..17, y 18..20, z -34..596), barriers away from any model
+                 784 barrier cells have no model within 3 blocks (x 0..17, y 18..20, z -34..596): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees (A0 #457, 4)
+[PASS] flatwall  no wall face runs flat over more than 5x5
+[PASS] entities  4 display entities, 1 shown through a matrix that is no turn, no face stretched, 9 models never placed
+[PASS] views     34 shots, most display entities in view: 4 (stair_foot), limit 600; counted without what walls hide; the game draws up to 4 (plan_dome): a display entity without width and height is drawn outside the view too
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    nothing moves
+result: PASS (0 failed, 1 with warnings)
