@@ -12,14 +12,14 @@ Realms 不收带实验性设置的地图，数据包里有一个注册表文件�
 - 钟锁在 `mood.LOCK_TICK`（20370）：原版月亮这时在正西 48 度高，彗星占月亮位；星场由着色器从原版这一刻的转角转到 `STAR_ANGLE`。
 
 ## 交付物
-- `build/scenes/obs/sky/_shaders.py`：`files(look)`、`pack(pack_dir)`（往资源包写 10 个文件）、`Twin(look)`（同一套算式的 numpy 版，离线出图和检查用）。下划线开头：各场景的包里不自动带，成品包由导出脚本加（`_shaders.pack(pack_dir)`）；开发用的场景还带注册表的天，整体切换另做（见记录）。
-- `build/scenes/obs/sky/mood.py`：加 `AIR`、`MIST`、`MIST_HEIGHT`、`LEVEL_FULL`、`LEVEL_NONE`、`fog_depth()`、`levelled()`、`LOCK_TICK`、`GAME_STAR_ANGLE`；`FOG_START, FOG_END` 改成 60、150。
-- 样板场景 `build/scenes/obs_sky_safe/`：整座 obs，不带群系和时间线，群系填 `minecraft:the_void`，资源包加着色器；镜头是看板的 V1、V2、V4、V12 和两张看海的。
-- 检查 `plan/parts/figs/sky_shaders.py`（补丁、算式、用游戏自己的 shaderc 编译每一条管线的两段着色器、阶段之间的接口）和 `sky_shaderc.py`（从 Mojang 取游戏自己的 shaderc，照游戏的参数调）。
+- `build/scenes/obs/sky/_shaders.py`：`files(look)`、`pack(pack_dir)`（往资源包写 10 个文件）、`Twin(look)`（同一套算式的 numpy 版，离线出图和检查用）。下划线开头，场景和别的包都不调它：11-16 整体切换以后由驱动替每个场景调（`mood.py` 的 `BIOMES` 是 `artkit.mood.Carried`，它的 `pack` 就是这个函数），成品包由导出脚本调。
+- `build/scenes/obs/sky/mood.py`：加 `AIR`、`MIST`、`MIST_HEIGHT`、`LEVEL_FULL`、`LEVEL_NONE`、`fog_depth()`、`levelled()`、`LOCK_TICK`、`GAME_STAR_ANGLE`；`FOG_START, FOG_END` 改成 60、150；`BIOMES` 是 `artkit.mood.Carried`（群系 `minecraft:the_void`、钟 `LOCK_TICK`、包 = 着色器）。
+- 样板场景 `build/scenes/obs_sky_safe/`（整座 obs 不带群系和时间线、资源包加着色器）用到整体切换为止，切换进总装后撤了：每个场景自己就是这样的世界，真机图看 `obs` 的看板和存档里拍的那一套。
+- 检查 `plan/parts/figs/sky_shaders.py`（补丁、算式、用游戏自己的 shaderc 编译每一条管线的两段着色器、阶段之间的接口；OpenGL 那条路：用游戏自己的 SPIRV-Cross 反编成 GLSL 330 再按 OpenGL 的规矩编一遍）和 `sky_shaderc.py`（从 Mojang 取游戏自己的 shaderc 和 SPIRV-Cross，照游戏的参数调）。`sky_safe.py`：原版的钟在哪一刻把月亮放到彗星的位置。
 - 发现记在 `plan/parts/sky-notes.md` 第 11 节。
 
 ## 验收
-- 真机（s1）：样板场景的 V1、V2、V4、V12 和看板上现在的并排；着色器全部编译通过，资源包没被退回。
+- 真机（s1）：样板场景的 V1、V2、V4、V12 和看板上现在的并排；着色器全部编译通过，资源包没被退回。切换以后看 `obs` 的看板和存档里拍的十二张。
 - V12 上楼清楚，海没有盘边；V1 正立面的雾不到一成。
 - `sky_shaders.py` 结尾 `result: PASS`。
 - 成品包（outb 导出）的数据包里没有注册表文件，天是着色器画的。
@@ -43,4 +43,5 @@ Realms 不收带实验性设置的地图，数据包里有一个注册表文件�
 - 整体切换的做法（和 s2 对）：不改场景。90 个场景的 `mood.py` 都转出这里的 `BIOMES`，63 个写 `BIOME = "obs_blue"`。`artkit.mood` 加 `Carried`（带 `game_biome`、`clock`、`pack`），`sky/mood.py` 的 `BIOMES` 换成它，内容不变（离线渲染照旧从它算天色，shots.json 的 14000 照旧表示蓝调）；驱动见到它：不写注册表文件、群系填 `minecraft:the_void`、钟停在 20370、场景的包写完后加着色器，`shoot.py --clock` 一律拍这一刻。做成三个提交放在分支 `cursor/c164-a2-lookswitch-f3-695d`（基总装）：7908c104 驱动（`artkit/mood.py`、`place.py`、`makepack.py`、`shoot.py --clock`、`check.py` 的 regen 和 conflicts，`DATA_LET` 清空；`export.py` 一行 `look=False` 和 outb 对过）、57d33074 `tools/win/shuttle.py`（摆渡脚本原来自己写注册表文件、见 `place.py` 说 look files changed 就停，带天的 look 改成不写，并把 `placed.json` 的 `clock` 传给 `shoot.py`；s1 自己那份 @ 6c7a8810 同样改了）、6e19efac `sky/mood.py` 翻转。证据（node65，287c3b93 = 合了总装 cad2232f）：checkall 90 个场景全过；obs 整写数据包 435 个文件、注册表 0，资源包着色器 10；三个场景 58 张离线图带切换和不带逐文件相同。10:41 交 s2，由他合。
 - 成品核对：A5（总装 bd2f2874，dist b6d6c1c7）拆开存档看过，`resources.zip` 里着色器 10 个（雾 60→150、AIR 1600、MIST 587、海面 y172、远山表 760 项），数据包注册表文件 0，钟 20370；A6（cfa03ef7）outb 报同样三个数。s1 进存档拍的真机图 `renders/real-save/c164-A5/`（@ 758036e4，客户端视距 12、服务端 10），审天和远景以它为准。
 - V12 换机位（总监 11-16 10:31）：pos (126, 44, −50)，look_at (22, 4, 0)。楼上的雾和老机位一样（正立面中段 7.8%，穹顶顶 8.0%）。着色器里留着游戏自己的视距雾：按水平距离 144 到 160 格淡进背后画的天和海，160 以外不画；新机位上楼体都在 140 格内，只有屋顶西南角一带 (0, 17, 34) 在 151 格，淡掉 46%。
-- 没做完、接着做的：切换合进总装后撤样板场景 `obs_sky_safe`（各场景自己就是无注册表加着色器了）；远海加明暗（cloud 定稿 @ 0086c50a，cr2 定候选版后再做，到时只取 `_shaders.py` 那几十行）；离线出图的雾不做（总监 11-16 10:32 #77235：离线图只看构图和件在不在）；deep、glow 两版各是一套着色器包，没生成。
+- 11-16 10:45 整体切换进总装 fa0bee9a（s2 合 287c3b93；他在 node100 试合 92 个场景全过）。从这个头起各场景的数据包没有注册表文件，`check.py` 的放行名单是空的。跟进交付：样板场景撤掉，`_shaders.py`、`mood.py` 的说明改成切换后的样子，OpenGL 那条路的离线检查、`sky_safe.py` 读云层两个属性的修正、笔记第 11 节。comet 的 `obs_sky_ridges` 还是自己带空的 `mood.py`、自己调 `_shaders.pack()`，能用，下次交付时改成那一行转出。
+- 没做完、接着做的：远海加明暗（cloud 定稿 @ 0086c50a，cr2 定候选版后再做，到时只取 `_shaders.py` 那几十行）；离线出图的雾不做（总监 11-16 10:32 #77235：离线图只看构图和件在不在）；deep、glow 两版各是一套着色器包，没生成。
