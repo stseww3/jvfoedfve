@@ -56,6 +56,9 @@ VIEWS = [
     ("chimney_up", (82.5, LOW, 1.5), (89.0, 5.5, 22.5)),            # the chimney and the fire window, from the yard
     ("bridge_near", (64.5, LOW, 21.5), (62.5, 0.0, 33.5)),          # under the pipe bridge
     ("bridge_head", (41.5, HIGH, 35.5), (60.0, 1.5, 32.5)),         # along the main on the terrace to the bridge head
+    ("head_west", (53.5, HIGH, 34.5), (58.5, 1.3, 33.4)),           # the bridge head as one walks up to it
+    ("head_walk", (54.5, HIGH, 33.5), (59.5, HIGH, 38.5)),          # the walk-through's station G01, looking right
+    ("head_north", (56.5, HIGH, 28.5), (59.0, 1.2, 33.5)),          # the head from the north: the pipe, the knee, the railing
     ("lookout_east", (48.5, S.SOUTH_LOOKOUT["feet"] + S.EYE, 50.5), (78.0, 3.0, 31.0)),     # the south-west corner
     ("aerial", (58.0, 34.0, 4.0), (78.0, 0.0, 31.0)),
     ("aerial_back", (100.0, 30.0, 56.0), (78.0, 0.0, 31.0)),
