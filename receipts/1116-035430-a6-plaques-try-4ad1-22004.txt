@@ -1,0 +1,40 @@
+a0job 1116-035430-a6-plaques-try-4ad1-22004: cursor/c164-a6-plaques-try-4ad1 @ 127e0dc7 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 3.14 2.86 1.63, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/check.py --scene obs_props_plaques_site 2>&1 | tail -12 && (cd build && python -m scenes.obs_props_plaques_site --report) ---- exit 0, 20 s, last 90 lines of 30:
+                 chain of 16 ticks: 4 functions, 9 commands a cycle, starts 7 ticks after start
+                 chain of 24 ticks: 8 functions, 25 commands a cycle, starts 4 ticks after start
+                 chain of 32 ticks: 4 functions, 9 commands a cycle, starts 5 ticks after start
+                 chain of 40 ticks: 13 functions, 44 commands a cycle, starts 3 ticks after start
+                 chain of 48 ticks: 12 functions, 66 commands a cycle, starts 2 ticks after start
+                 chain of 50 ticks: 1 functions, 3 commands a cycle, starts 5 ticks after start
+                 chain of 80 ticks: 8 functions, 25 commands a cycle, starts 4 ticks after start
+                 chain of 90 ticks: 8 functions, 17 commands a cycle, starts 2 ticks after start
+                 chain of 100 ticks: 1 functions, 3 commands a cycle, starts 15 ticks after start
+                 chain of 110 ticks: 8 functions, 17 commands a cycle, starts 6 ticks after start
+                 ... and 34 more
+result: PASS (0 failed, 3 with warnings)
+12 shots -> /tmp/dais_jobs/c164a0/c164-realms/build/scenes/obs_props_plaques_site/shots.json
+12 of 12 plaques are in the tables; not placed by either half: none
+  orrery hangs 7.5 blocks from V7 and looks its way: the board may show it
+  master_clock hangs 10.6 blocks from V7 and looks its way: the board may show it
+  great_refractor hangs 2.2 blocks from V8 and looks its way: the board may show it
+display entities: {'materials': 28, 'site': 10, 'main': 2, 'machines': 177, 'interiors': 631, 'props': 298, 'motion': 10, 'sky': 8}
+plaques that hang: cable_station, meridian_line, armillary, time_ball, power_house, sunset_terrace, orrery, master_clock, time_room, chart_room, plate_vault, great_refractor
+  armillary: its middle is 1.12 from the eye of who stands before it (feet at y [1])
+  orrery: its middle is 1.12 from the eye of who stands before it (feet at y [1])
+  orrery: who reads it stands where 3 more plaques are drawn and look his way: master_clock, time_room, chart_room
+  master_clock: its middle is 1.12 from the eye of who stands before it (feet at y [0, 1])
+  master_clock: who reads it stands where 3 more plaques are drawn and look his way: orrery, time_room, chart_room
+  time_room: its middle is 1.12 from the eye of who stands before it (feet at y [8])
+  time_room: who reads it stands where 3 more plaques are drawn and look his way: orrery, chart_room, great_refractor
+  chart_room: who reads it stands where 3 more plaques are drawn and look his way: orrery, time_room, great_refractor
+  plate_vault: who reads it stands where 2 more plaques are drawn and look his way: orrery, master_clock
+9 faults in where the plaques hang
+  camera plate_vault is inside a block at (9, 1, 6): deepslate_bricks
+==== NODEJOB RESULT ====
+exit=0 secs=21 host=cursor cores=4 head=127e0dc7 commit=none pushed=no branch=cursor/c164-a6-plaques-try-4ad1 files=0
+a0job: exit=0 secs=21
