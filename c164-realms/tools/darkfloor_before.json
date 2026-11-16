@@ -1,18 +1,18 @@
 {
- "head": "d7374d32",
+ "head": "89943679",
  "floor": 5,
  "step": 7,
  "standing": {
-  "cells": 36598,
-  "walk": 8287,
-  "hop": 28311,
-  "roofed": 1500,
-  "fall_only_nodes": 4442
+  "cells": 36776,
+  "walk": 8420,
+  "hop": 28356,
+  "roofed": 1661,
+  "fall_only_nodes": 4385
  },
  "starts": [
   {
    "start": "spawn",
-   "new": 143513
+   "new": 144084
   },
   {
    "start": "in-J the south roofs: corner terrace, ridge walk, the end terrace, the small dome #66",
@@ -29,17 +29,924 @@
  ],
  "no_standing_at": [],
  "dark": {
+  "cells": 444,
+  "heaps": 57,
+  "floor": 357,
+  "step": 68,
+  "threshold": 19
+ },
+ "before": {
+  "head": "d7374d32",
   "cells": 338,
   "heaps": 52,
-  "floor": 252,
-  "step": 68,
-  "threshold": 18
+  "still_dark": 324,
+  "lit": 10,
+  "no_standing": 4,
+  "apart": 0,
+  "new_dark": 120
+ },
+ "by_owner": {
+  "vault*": {
+   "cells": 115,
+   "heaps": 1
+  },
+  "lights：路灯 7 盏": {
+   "cells": 67,
+   "heaps": 8
+  },
+  "lights：astro 找位置": {
+   "cells": 65,
+   "heaps": 3
+  },
+  "dome": {
+   "cells": 50,
+   "heaps": 16
+  },
+  "m2": {
+   "cells": 27,
+   "heaps": 3
+  },
+  "未分": {
+   "cells": 27,
+   "heaps": 9
+  },
+  "hall：下一次交付": {
+   "cells": 23,
+   "heaps": 5
+  },
+  "power": {
+   "cells": 21,
+   "heaps": 3
+  },
+  "不补（总监 #58129）": {
+   "cells": 19,
+   "heaps": 1
+  },
+  "hall*": {
+   "cells": 16,
+   "heaps": 8
+  },
+  "不补（观测室）": {
+   "cells": 14,
+   "heaps": 2
+  }
  },
  "sections": [
   {
-   "name": "room: stair hall",
-   "cells": 122,
+   "name": "room: plate vault",
+   "cells": 115,
    "darkest": 0,
+   "was": 0,
+   "heaps": [
+    {
+     "lo": [
+      2,
+      0,
+      7
+     ],
+     "hi": [
+      12,
+      1,
+      25
+     ],
+     "cells": 115,
+     "darkest": 0,
+     "kinds": {
+      "floor": 115,
+      "step": 0,
+      "threshold": 0
+     },
+     "hop": 10,
+     "owner": {
+      "vault*": 115
+     },
+     "was": 0,
+     "kept": 0,
+     "nearest": {
+      "steps": 1,
+      "level": 5,
+      "why": "interiors/platevault:safelight",
+      "cell": [
+       7,
+       2,
+       24
+      ]
+     },
+     "list": [
+      [
+       2,
+       0,
+       8,
+       2,
+       "floor"
+      ],
+      [
+       2,
+       0,
+       9,
+       2,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       7,
+       4,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       8,
+       3,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       9,
+       3,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       10,
+       4,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       11,
+       3,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       12,
+       2,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       13,
+       3,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       14,
+       4,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       15,
+       3,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       16,
+       2,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       17,
+       3,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       18,
+       4,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       19,
+       3,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       20,
+       2,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       21,
+       1,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       23,
+       0,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       24,
+       0,
+       "floor"
+      ],
+      [
+       3,
+       1,
+       25,
+       0,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       8,
+       4,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       9,
+       4,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       11,
+       4,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       12,
+       3,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       13,
+       4,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       15,
+       4,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       16,
+       3,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       17,
+       4,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       19,
+       4,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       20,
+       3,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       21,
+       2,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       23,
+       0,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       24,
+       1,
+       "floor"
+      ],
+      [
+       4,
+       1,
+       25,
+       1,
+       "floor"
+      ],
+      [
+       5,
+       0,
+       21,
+       1,
+       "floor"
+      ],
+      [
+       5,
+       0,
+       23,
+       1,
+       "floor"
+      ],
+      [
+       5,
+       0,
+       24,
+       2,
+       "floor"
+      ],
+      [
+       5,
+       1,
+       25,
+       2,
+       "floor"
+      ],
+      [
+       6,
+       0,
+       16,
+       4,
+       "floor"
+      ],
+      [
+       6,
+       0,
+       17,
+       3,
+       "floor"
+      ],
+      [
+       6,
+       0,
+       18,
+       4,
+       "floor"
+      ],
+      [
+       6,
+       0,
+       19,
+       3,
+       "floor"
+      ],
+      [
+       6,
+       0,
+       20,
+       2,
+       "floor"
+      ],
+      [
+       6,
+       0,
+       21,
+       1,
+       "floor"
+      ],
+      [
+       6,
+       0,
+       22,
+       1,
+       "floor"
+      ],
+      [
+       6,
+       0,
+       23,
+       2,
+       "floor"
+      ],
+      [
+       6,
+       0,
+       24,
+       3,
+       "floor"
+      ],
+      [
+       6,
+       1,
+       25,
+       3,
+       "floor"
+      ],
+      [
+       7,
+       0,
+       17,
+       4,
+       "floor"
+      ],
+      [
+       7,
+       0,
+       19,
+       4,
+       "floor"
+      ],
+      [
+       7,
+       0,
+       20,
+       3,
+       "floor"
+      ],
+      [
+       7,
+       0,
+       21,
+       2,
+       "floor"
+      ],
+      [
+       7,
+       0,
+       22,
+       2,
+       "floor"
+      ],
+      [
+       7,
+       0,
+       23,
+       3,
+       "floor"
+      ],
+      [
+       7,
+       0,
+       24,
+       4,
+       "floor"
+      ],
+      [
+       7,
+       1,
+       25,
+       4,
+       "floor"
+      ],
+      [
+       8,
+       0,
+       16,
+       4,
+       "floor"
+      ],
+      [
+       8,
+       0,
+       17,
+       3,
+       "floor"
+      ],
+      [
+       8,
+       0,
+       18,
+       4,
+       "floor"
+      ],
+      [
+       8,
+       0,
+       19,
+       3,
+       "floor"
+      ],
+      [
+       8,
+       0,
+       20,
+       2,
+       "floor"
+      ],
+      [
+       8,
+       0,
+       21,
+       1,
+       "floor"
+      ],
+      [
+       8,
+       0,
+       22,
+       1,
+       "floor"
+      ],
+      [
+       8,
+       0,
+       23,
+       2,
+       "floor"
+      ],
+      [
+       8,
+       0,
+       24,
+       3,
+       "floor"
+      ],
+      [
+       8,
+       1,
+       25,
+       3,
+       "floor"
+      ],
+      [
+       9,
+       0,
+       21,
+       0,
+       "floor"
+      ],
+      [
+       9,
+       0,
+       23,
+       1,
+       "floor"
+      ],
+      [
+       9,
+       0,
+       24,
+       2,
+       "floor"
+      ],
+      [
+       9,
+       1,
+       25,
+       2,
+       "floor"
+      ],
+      [
+       10,
+       0,
+       10,
+       4,
+       "floor"
+      ],
+      [
+       10,
+       0,
+       11,
+       3,
+       "floor"
+      ],
+      [
+       10,
+       0,
+       12,
+       2,
+       "floor"
+      ],
+      [
+       10,
+       0,
+       13,
+       3,
+       "floor"
+      ],
+      [
+       10,
+       0,
+       14,
+       4,
+       "floor"
+      ],
+      [
+       10,
+       0,
+       15,
+       3,
+       "floor"
+      ],
+      [
+       10,
+       0,
+       16,
+       2,
+       "floor"
+      ],
+      [
+       10,
+       0,
+       17,
+       3,
+       "floor"
+      ],
+      [
+       10,
+       0,
+       18,
+       4,
+       "floor"
+      ],
+      [
+       10,
+       0,
+       19,
+       3,
+       "floor"
+      ],
+      [
+       10,
+       0,
+       20,
+       2,
+       "floor"
+      ],
+      [
+       10,
+       0,
+       21,
+       1,
+       "floor"
+      ],
+      [
+       10,
+       0,
+       23,
+       0,
+       "floor"
+      ],
+      [
+       10,
+       0,
+       24,
+       1,
+       "floor"
+      ],
+      [
+       10,
+       1,
+       25,
+       1,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       9,
+       4,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       11,
+       4,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       12,
+       3,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       13,
+       4,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       15,
+       4,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       16,
+       3,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       17,
+       4,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       19,
+       4,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       20,
+       3,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       21,
+       2,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       23,
+       0,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       24,
+       0,
+       "floor"
+      ],
+      [
+       11,
+       1,
+       25,
+       0,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       8,
+       4,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       9,
+       3,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       10,
+       4,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       11,
+       3,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       12,
+       2,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       13,
+       3,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       14,
+       4,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       15,
+       3,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       16,
+       2,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       17,
+       3,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       18,
+       4,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       19,
+       3,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       20,
+       2,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       21,
+       1,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       23,
+       0,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       24,
+       0,
+       "floor"
+      ],
+      [
+       12,
+       1,
+       25,
+       0,
+       "floor"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "name": "room: stair hall",
+   "cells": 112,
+   "darkest": 0,
+   "was": 122,
    "heaps": [
     {
      "lo": [
@@ -60,6 +967,12 @@
       "threshold": 0
      },
      "hop": 14,
+     "owner": {
+      "lights：路灯 7 盏": 30,
+      "lights：astro 找位置": 21
+     },
+     "was": 51,
+     "kept": 51,
      "nearest": {
       "steps": 3,
       "level": 7,
@@ -432,227 +1345,6 @@
     },
     {
      "lo": [
-      -7,
-      0,
-      -1
-     ],
-     "hi": [
-      1,
-      0,
-      1
-     ],
-     "cells": 27,
-     "darkest": 0,
-     "kinds": {
-      "floor": 27,
-      "step": 0,
-      "threshold": 0
-     },
-     "hop": 0,
-     "nearest": {
-      "steps": 6,
-      "level": 8,
-      "why": "interiors/starhall:stair foot",
-      "cell": [
-       1,
-       4,
-       -4
-      ]
-     },
-     "list": [
-      [
-       -7,
-       0,
-       -1,
-       0,
-       "floor"
-      ],
-      [
-       -7,
-       0,
-       0,
-       0,
-       "floor"
-      ],
-      [
-       -7,
-       0,
-       1,
-       0,
-       "floor"
-      ],
-      [
-       -6,
-       0,
-       -1,
-       0,
-       "floor"
-      ],
-      [
-       -6,
-       0,
-       0,
-       0,
-       "floor"
-      ],
-      [
-       -6,
-       0,
-       1,
-       0,
-       "floor"
-      ],
-      [
-       -5,
-       0,
-       -1,
-       0,
-       "floor"
-      ],
-      [
-       -5,
-       0,
-       0,
-       0,
-       "floor"
-      ],
-      [
-       -5,
-       0,
-       1,
-       0,
-       "floor"
-      ],
-      [
-       -4,
-       0,
-       -1,
-       0,
-       "floor"
-      ],
-      [
-       -4,
-       0,
-       0,
-       0,
-       "floor"
-      ],
-      [
-       -4,
-       0,
-       1,
-       0,
-       "floor"
-      ],
-      [
-       -3,
-       0,
-       -1,
-       0,
-       "floor"
-      ],
-      [
-       -3,
-       0,
-       0,
-       0,
-       "floor"
-      ],
-      [
-       -3,
-       0,
-       1,
-       0,
-       "floor"
-      ],
-      [
-       -2,
-       0,
-       -1,
-       0,
-       "floor"
-      ],
-      [
-       -2,
-       0,
-       0,
-       0,
-       "floor"
-      ],
-      [
-       -2,
-       0,
-       1,
-       0,
-       "floor"
-      ],
-      [
-       -1,
-       0,
-       -1,
-       0,
-       "floor"
-      ],
-      [
-       -1,
-       0,
-       0,
-       0,
-       "floor"
-      ],
-      [
-       -1,
-       0,
-       1,
-       0,
-       "floor"
-      ],
-      [
-       0,
-       0,
-       -1,
-       0,
-       "floor"
-      ],
-      [
-       0,
-       0,
-       0,
-       0,
-       "floor"
-      ],
-      [
-       0,
-       0,
-       1,
-       0,
-       "floor"
-      ],
-      [
-       1,
-       0,
-       -1,
-       1,
-       "floor"
-      ],
-      [
-       1,
-       0,
-       0,
-       0,
-       "floor"
-      ],
-      [
-       1,
-       0,
-       1,
-       1,
-       "floor"
-      ]
-     ]
-    },
-    {
-     "lo": [
       -6,
       1,
       -5
@@ -670,6 +1362,11 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "lights：astro 找位置": 22
+     },
+     "was": 22,
+     "kept": 22,
      "nearest": {
       "steps": 2,
       "level": 8,
@@ -856,6 +1553,11 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "lights：astro 找位置": 22
+     },
+     "was": 22,
+     "kept": 22,
      "nearest": {
       "steps": 2,
       "level": 8,
@@ -1022,6 +1724,273 @@
        "step"
       ]
      ]
+    },
+    {
+     "lo": [
+      -1,
+      0,
+      -1
+     ],
+     "hi": [
+      1,
+      0,
+      1
+     ],
+     "cells": 8,
+     "darkest": 2,
+     "kinds": {
+      "floor": 8,
+      "step": 0,
+      "threshold": 0
+     },
+     "hop": 0,
+     "owner": {
+      "hall：下一次交付": 8
+     },
+     "was": 18,
+     "kept": 8,
+     "nearest": {
+      "steps": 3,
+      "level": 7,
+      "why": "interiors/starhall:way west",
+      "cell": [
+       -2,
+       2,
+       0
+      ]
+     },
+     "list": [
+      [
+       -1,
+       0,
+       -1,
+       4,
+       "floor"
+      ],
+      [
+       -1,
+       0,
+       1,
+       4,
+       "floor"
+      ],
+      [
+       0,
+       0,
+       -1,
+       3,
+       "floor"
+      ],
+      [
+       0,
+       0,
+       0,
+       4,
+       "floor"
+      ],
+      [
+       0,
+       0,
+       1,
+       3,
+       "floor"
+      ],
+      [
+       1,
+       0,
+       -1,
+       2,
+       "floor"
+      ],
+      [
+       1,
+       0,
+       0,
+       3,
+       "floor"
+      ],
+      [
+       1,
+       0,
+       1,
+       2,
+       "floor"
+      ]
+     ]
+    },
+    {
+     "lo": [
+      -5,
+      0,
+      -1
+     ],
+     "hi": [
+      -3,
+      0,
+      1
+     ],
+     "cells": 7,
+     "darkest": 3,
+     "kinds": {
+      "floor": 7,
+      "step": 0,
+      "threshold": 0
+     },
+     "hop": 0,
+     "owner": {
+      "hall：下一次交付": 7
+     },
+     "was": 7,
+     "kept": 7,
+     "nearest": {
+      "steps": 3,
+      "level": 7,
+      "why": "interiors/starhall:way west",
+      "cell": [
+       -6,
+       2,
+       0
+      ]
+     },
+     "list": [
+      [
+       -5,
+       0,
+       -1,
+       4,
+       "floor"
+      ],
+      [
+       -5,
+       0,
+       1,
+       4,
+       "floor"
+      ],
+      [
+       -4,
+       0,
+       -1,
+       3,
+       "floor"
+      ],
+      [
+       -4,
+       0,
+       0,
+       4,
+       "floor"
+      ],
+      [
+       -4,
+       0,
+       1,
+       3,
+       "floor"
+      ],
+      [
+       -3,
+       0,
+       -1,
+       4,
+       "floor"
+      ],
+      [
+       -3,
+       0,
+       1,
+       4,
+       "floor"
+      ]
+     ]
+    },
+    {
+     "lo": [
+      -7,
+      0,
+      -1
+     ],
+     "hi": [
+      -7,
+      0,
+      -1
+     ],
+     "cells": 1,
+     "darkest": 4,
+     "kinds": {
+      "floor": 1,
+      "step": 0,
+      "threshold": 0
+     },
+     "hop": 0,
+     "owner": {
+      "hall：下一次交付": 1
+     },
+     "was": 1,
+     "kept": 1,
+     "nearest": {
+      "steps": 3,
+      "level": 7,
+      "why": "interiors/starhall:way west",
+      "cell": [
+       -6,
+       2,
+       0
+      ]
+     },
+     "list": [
+      [
+       -7,
+       0,
+       -1,
+       4,
+       "floor"
+      ]
+     ]
+    },
+    {
+     "lo": [
+      -7,
+      0,
+      1
+     ],
+     "hi": [
+      -7,
+      0,
+      1
+     ],
+     "cells": 1,
+     "darkest": 4,
+     "kinds": {
+      "floor": 1,
+      "step": 0,
+      "threshold": 0
+     },
+     "hop": 0,
+     "owner": {
+      "hall：下一次交付": 1
+     },
+     "was": 1,
+     "kept": 1,
+     "nearest": {
+      "steps": 3,
+      "level": 7,
+      "why": "interiors/starhall:way west",
+      "cell": [
+       -6,
+       2,
+       0
+      ]
+     },
+     "list": [
+      [
+       -7,
+       0,
+       1,
+       4,
+       "floor"
+      ]
+     ]
     }
    ]
   },
@@ -1029,6 +1998,7 @@
    "name": "room: star hall",
    "cells": 62,
    "darkest": 1,
+   "was": 62,
    "heaps": [
     {
      "lo": [
@@ -1049,6 +2019,11 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "不补（总监 #58129）": 19
+     },
+     "was": 19,
+     "kept": 19,
      "nearest": {
       "steps": 3,
       "level": 7,
@@ -1207,13 +2182,18 @@
       3
      ],
      "cells": 9,
-     "darkest": 1,
+     "darkest": 2,
      "kinds": {
       "floor": 9,
       "step": 0,
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "lights：路灯 7 盏": 9
+     },
+     "was": 9,
+     "kept": 9,
      "nearest": {
       "steps": 4,
       "level": 8,
@@ -1250,7 +2230,7 @@
        2,
        0,
        0,
-       1,
+       2,
        "floor"
       ],
       [
@@ -1309,6 +2289,11 @@
       "threshold": 0
      },
      "hop": 4,
+     "owner": {
+      "lights：路灯 7 盏": 6
+     },
+     "was": 6,
+     "kept": 6,
      "nearest": {
       "steps": 3,
       "level": 7,
@@ -1383,6 +2368,12 @@
       "threshold": 0
      },
      "hop": 4,
+     "owner": {
+      "hall*": 3,
+      "lights：路灯 7 盏": 3
+     },
+     "was": 6,
+     "kept": 6,
      "nearest": {
       "steps": 2,
       "level": 6,
@@ -1457,6 +2448,11 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "lights：路灯 7 盏": 4
+     },
+     "was": 4,
+     "kept": 4,
      "nearest": {
       "steps": 6,
       "level": 7,
@@ -1517,6 +2513,11 @@
       "threshold": 0
      },
      "hop": 2,
+     "owner": {
+      "hall*": 4
+     },
+     "was": 4,
+     "kept": 4,
      "nearest": {
       "steps": 3,
       "level": 6,
@@ -1577,6 +2578,11 @@
       "threshold": 0
      },
      "hop": 2,
+     "owner": {
+      "hall*": 4
+     },
+     "was": 4,
+     "kept": 4,
      "nearest": {
       "steps": 3,
       "level": 6,
@@ -1637,6 +2643,11 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "lights：路灯 7 盏": 3
+     },
+     "was": 3,
+     "kept": 3,
      "nearest": {
       "steps": 3,
       "level": 8,
@@ -1690,6 +2701,11 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "lights：路灯 7 盏": 2
+     },
+     "was": 2,
+     "kept": 2,
      "nearest": {
       "steps": 3,
       "level": 7,
@@ -1736,6 +2752,11 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "hall*": 1
+     },
+     "was": 1,
+     "kept": 1,
      "nearest": {
       "steps": 4,
       "level": 8,
@@ -1775,6 +2796,11 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "hall*": 1
+     },
+     "was": 1,
+     "kept": 1,
      "nearest": {
       "steps": 4,
       "level": 8,
@@ -1814,6 +2840,11 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "hall*": 1
+     },
+     "was": 1,
+     "kept": 1,
      "nearest": {
       "steps": 2,
       "level": 6,
@@ -1853,6 +2884,11 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "hall*": 1
+     },
+     "was": 1,
+     "kept": 1,
      "nearest": {
       "steps": 4,
       "level": 8,
@@ -1892,6 +2928,11 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "hall*": 1
+     },
+     "was": 1,
+     "kept": 1,
      "nearest": {
       "steps": 4,
       "level": 8,
@@ -1918,6 +2959,7 @@
    "name": "in-J the south roofs: corner terrace, ridge walk, the end terrace, the small dome",
    "cells": 31,
    "darkest": 0,
+   "was": 31,
    "heaps": [
     {
      "lo": [
@@ -1938,6 +2980,11 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "dome": 9
+     },
+     "was": 9,
+     "kept": 9,
      "nearest": {
       "steps": 8,
       "level": 6,
@@ -2033,6 +3080,11 @@
       "threshold": 1
      },
      "hop": 0,
+     "owner": {
+      "dome": 7
+     },
+     "was": 7,
+     "kept": 7,
      "nearest": {
       "steps": 7,
       "level": 6,
@@ -2114,6 +3166,11 @@
       "threshold": 0
      },
      "hop": 3,
+     "owner": {
+      "dome": 3
+     },
+     "was": 3,
+     "kept": 3,
      "nearest": {
       "steps": 6,
       "level": 6,
@@ -2167,6 +3224,11 @@
       "threshold": 0
      },
      "hop": 3,
+     "owner": {
+      "dome": 3
+     },
+     "was": 3,
+     "kept": 3,
      "nearest": {
       "steps": 11,
       "level": 10,
@@ -2220,9 +3282,14 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "dome": 3
+     },
+     "was": 3,
+     "kept": 3,
      "nearest": {
       "steps": 8,
-      "level": 3,
+      "level": 6,
       "why": "interiors/domeroom:pilot_lamps",
       "cell": [
        14,
@@ -2273,6 +3340,11 @@
       "threshold": 0
      },
      "hop": 3,
+     "owner": {
+      "dome": 3
+     },
+     "was": 3,
+     "kept": 3,
      "nearest": {
       "steps": 11,
       "level": 10,
@@ -2326,6 +3398,11 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "dome": 2
+     },
+     "was": 2,
+     "kept": 2,
      "nearest": {
       "steps": 3,
       "level": 6,
@@ -2372,6 +3449,11 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "dome": 1
+     },
+     "was": 1,
+     "kept": 1,
      "nearest": {
       "steps": 9,
       "level": 10,
@@ -2398,6 +3480,7 @@
    "name": "room: time room",
    "cells": 27,
    "darkest": 3,
+   "was": 27,
    "heaps": [
     {
      "lo": [
@@ -2418,14 +3501,19 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "m2": 24
+     },
+     "was": 24,
+     "kept": 24,
      "nearest": {
       "steps": 5,
-      "level": 9,
-      "why": "interiors/timeroom:clock east",
+      "level": 7,
+      "why": "interiors/batteryroom:aisle north",
       "cell": [
-       13,
        8,
-       -25
+       3,
+       -17
       ]
      },
      "list": [
@@ -2618,6 +3706,11 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "m2": 2
+     },
+     "was": 2,
+     "kept": 2,
      "nearest": {
       "steps": 4,
       "level": 6,
@@ -2664,6 +3757,11 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "m2": 1
+     },
+     "was": 1,
+     "kept": 1,
      "nearest": {
       "steps": 6,
       "level": 6,
@@ -2690,6 +3788,7 @@
    "name": "in-L the power house, inside",
    "cells": 21,
    "darkest": 2,
+   "was": 21,
    "heaps": [
     {
      "lo": [
@@ -2699,7 +3798,7 @@
      ],
      "hi": [
       87,
-      -6,
+      -5,
       31
      ],
      "cells": 18,
@@ -2709,7 +3808,12 @@
       "step": 0,
       "threshold": 0
      },
-     "hop": 0,
+     "hop": 15,
+     "owner": {
+      "power": 18
+     },
+     "was": 18,
+     "kept": 14,
      "nearest": {
       "steps": 6,
       "level": 10,
@@ -2723,9 +3827,9 @@
      "list": [
       [
        83,
-       -6,
+       -5,
        26,
-       4,
+       3,
        "floor"
       ],
       [
@@ -2772,7 +3876,7 @@
       ],
       [
        85,
-       -6,
+       -5,
        29,
        4,
        "floor"
@@ -2801,15 +3905,15 @@
       [
        86,
        -6,
-       29,
-       3,
+       30,
+       4,
        "floor"
       ],
       [
        86,
-       -6,
-       30,
-       4,
+       -5,
+       29,
+       3,
        "floor"
       ],
       [
@@ -2829,13 +3933,6 @@
       [
        87,
        -6,
-       29,
-       3,
-       "floor"
-      ],
-      [
-       87,
-       -6,
        30,
        3,
        "floor"
@@ -2844,6 +3941,13 @@
        87,
        -6,
        31,
+       4,
+       "floor"
+      ],
+      [
+       87,
+       -5,
+       29,
        4,
        "floor"
       ]
@@ -2868,6 +3972,11 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "power": 2
+     },
+     "was": 2,
+     "kept": 2,
      "nearest": {
       "steps": 2,
       "level": 6,
@@ -2914,6 +4023,11 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "power": 1
+     },
+     "was": 1,
+     "kept": 1,
      "nearest": {
       "steps": 6,
       "level": 10,
@@ -2940,6 +4054,7 @@
    "name": "in-M the meridian hut",
    "cells": 14,
    "darkest": 0,
+   "was": 14,
    "heaps": [
     {
      "lo": [
@@ -2960,6 +4075,11 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "不补（观测室）": 7
+     },
+     "was": 7,
+     "kept": 7,
      "nearest": {
       "steps": 1,
       "level": 4,
@@ -3041,6 +4161,11 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "不补（观测室）": 7
+     },
+     "was": 7,
+     "kept": 7,
      "nearest": {
       "steps": 4,
       "level": 7,
@@ -3109,6 +4234,7 @@
    "name": "in-K the north roofs: corner terrace, ridge walk, the end terrace, the clock tower's foot",
    "cells": 13,
    "darkest": 0,
+   "was": 13,
    "heaps": [
     {
      "lo": [
@@ -3129,6 +4255,11 @@
       "threshold": 1
      },
      "hop": 0,
+     "owner": {
+      "dome": 7
+     },
+     "was": 7,
+     "kept": 7,
      "nearest": {
       "steps": 7,
       "level": 6,
@@ -3210,9 +4341,14 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "dome": 3
+     },
+     "was": 3,
+     "kept": 3,
      "nearest": {
       "steps": 8,
-      "level": 3,
+      "level": 6,
       "why": "interiors/domeroom:pilot_lamps",
       "cell": [
        14,
@@ -3263,6 +4399,11 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "dome": 2
+     },
+     "was": 2,
+     "kept": 2,
      "nearest": {
       "steps": 3,
       "level": 6,
@@ -3309,6 +4450,11 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "dome": 1
+     },
+     "was": 1,
+     "kept": 1,
      "nearest": {
       "steps": 9,
       "level": 10,
@@ -3335,6 +4481,7 @@
    "name": "out-E the west side: the water tower, the sunset terrace",
    "cells": 11,
    "darkest": 0,
+   "was": 11,
    "heaps": [
     {
      "lo": [
@@ -3355,6 +4502,11 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "未分": 11
+     },
+     "was": 11,
+     "kept": 11,
      "nearest": {
       "steps": 3,
       "level": 7,
@@ -3451,6 +4603,7 @@
    "name": "in-H the ring stair",
    "cells": 10,
    "darkest": 0,
+   "was": 10,
    "heaps": [
     {
      "lo": [
@@ -3471,6 +4624,11 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "lights：路灯 7 盏": 10
+     },
+     "was": 10,
+     "kept": 10,
      "nearest": {
       "steps": 6,
       "level": 4,
@@ -3560,6 +4718,7 @@
    "name": "in-A the entrance from the court",
    "cells": 9,
    "darkest": 4,
+   "was": 9,
    "heaps": [
     {
      "lo": [
@@ -3580,6 +4739,11 @@
       "threshold": 3
      },
      "hop": 0,
+     "owner": {
+      "未分": 5
+     },
+     "was": 5,
+     "kept": 5,
      "nearest": {
       "steps": 3,
       "level": 9,
@@ -3647,6 +4811,11 @@
       "threshold": 2
      },
      "hop": 0,
+     "owner": {
+      "未分": 2
+     },
+     "was": 2,
+     "kept": 2,
      "nearest": {
       "steps": 4,
       "level": 8,
@@ -3693,6 +4862,11 @@
       "threshold": 2
      },
      "hop": 0,
+     "owner": {
+      "未分": 2
+     },
+     "was": 2,
+     "kept": 2,
      "nearest": {
       "steps": 4,
       "level": 8,
@@ -3725,7 +4899,8 @@
   {
    "name": "in-C the way to the west door",
    "cells": 6,
-   "darkest": 0,
+   "darkest": 2,
+   "was": 6,
    "heaps": [
     {
      "lo": [
@@ -3739,20 +4914,25 @@
       1
      ],
      "cells": 6,
-     "darkest": 0,
+     "darkest": 2,
      "kinds": {
       "floor": 3,
       "step": 0,
       "threshold": 3
      },
      "hop": 0,
+     "owner": {
+      "hall：下一次交付": 6
+     },
+     "was": 6,
+     "kept": 6,
      "nearest": {
-      "steps": 8,
-      "level": 10,
-      "why": "sky/lights:window apse 0 main",
+      "steps": 3,
+      "level": 7,
+      "why": "interiors/starhall:way west",
       "cell": [
-       -9,
-       9,
+       -6,
+       2,
        0
       ]
      },
@@ -3761,42 +4941,42 @@
        -9,
        0,
        -1,
-       0,
+       2,
        "threshold"
       ],
       [
        -9,
        0,
        0,
-       0,
+       3,
        "threshold"
       ],
       [
        -9,
        0,
        1,
-       0,
+       2,
        "threshold"
       ],
       [
        -8,
        0,
        -1,
-       0,
+       3,
        "floor"
       ],
       [
        -8,
        0,
        0,
-       0,
+       4,
        "floor"
       ],
       [
        -8,
        0,
        1,
-       0,
+       3,
        "floor"
       ]
      ]
@@ -3807,6 +4987,7 @@
    "name": "in-I the dome room",
    "cells": 6,
    "darkest": 0,
+   "was": 6,
    "heaps": [
     {
      "lo": [
@@ -3827,14 +5008,19 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "dome": 2
+     },
+     "was": 2,
+     "kept": 2,
      "nearest": {
-      "steps": 10,
-      "level": 10,
-      "why": "sky/lights:window west 5 main",
+      "steps": 7,
+      "level": 5,
+      "why": "interiors/domeroom:time_dial",
       "cell": [
-       0,
-       12,
-       -16
+       4,
+       20,
+       -10
       ]
      },
      "list": [
@@ -3873,13 +5059,18 @@
       "threshold": 0
      },
      "hop": 0,
+     "owner": {
+      "dome": 2
+     },
+     "was": 2,
+     "kept": 2,
      "nearest": {
-      "steps": 6,
-      "level": 3,
+      "steps": 7,
+      "level": 5,
       "why": "interiors/domeroom:clock_dial",
       "cell": [
        4,
-       19,
+       20,
        10
       ]
      },
@@ -3912,21 +5103,26 @@
       -13
      ],
      "cells": 1,
-     "darkest": 0,
+     "darkest": 1,
      "kinds": {
       "floor": 1,
       "step": 0,
       "threshold": 0
      },
      "hop": 1,
+     "owner": {
+      "dome": 1
+     },
+     "was": 1,
+     "kept": 1,
      "nearest": {
-      "steps": 7,
-      "level": 6,
-      "why": "main/roof:walk",
+      "steps": 4,
+      "level": 5,
+      "why": "interiors/domeroom:time_dial",
       "cell": [
-       8,
+       4,
        20,
-       -15
+       -10
       ]
      },
      "list": [
@@ -3934,7 +5130,7 @@
        4,
        18,
        -13,
-       0,
+       1,
        "floor"
       ]
      ]
@@ -3951,20 +5147,25 @@
       13
      ],
      "cells": 1,
-     "darkest": 0,
+     "darkest": 1,
      "kinds": {
       "floor": 1,
       "step": 0,
       "threshold": 0
      },
      "hop": 1,
+     "owner": {
+      "dome": 1
+     },
+     "was": 1,
+     "kept": 1,
      "nearest": {
-      "steps": 3,
-      "level": 3,
+      "steps": 4,
+      "level": 5,
       "why": "interiors/domeroom:clock_dial",
       "cell": [
        4,
-       19,
+       20,
        10
       ]
      },
@@ -3973,7 +5174,7 @@
        4,
        18,
        13,
-       0,
+       1,
        "floor"
       ]
      ]
@@ -3982,9 +5183,54 @@
   },
   {
    "name": "in-B the star hall, ground floor",
-   "cells": 2,
-   "darkest": 6,
+   "cells": 3,
+   "darkest": 4,
+   "was": 2,
    "heaps": [
+    {
+     "lo": [
+      7,
+      0,
+      6
+     ],
+     "hi": [
+      7,
+      0,
+      6
+     ],
+     "cells": 1,
+     "darkest": 4,
+     "kinds": {
+      "floor": 0,
+      "step": 0,
+      "threshold": 1
+     },
+     "hop": 0,
+     "owner": {
+      "未分": 1
+     },
+     "was": 0,
+     "kept": 0,
+     "nearest": {
+      "steps": 3,
+      "level": 6,
+      "why": "props/lamps:desk_green",
+      "cell": [
+       5,
+       1,
+       7
+      ]
+     },
+     "list": [
+      [
+       7,
+       0,
+       6,
+       4,
+       "threshold"
+      ]
+     ]
+    },
     {
      "lo": [
       17,
@@ -4004,6 +5250,11 @@
       "threshold": 1
      },
      "hop": 0,
+     "owner": {
+      "未分": 1
+     },
+     "was": 1,
+     "kept": 1,
      "nearest": {
       "steps": 3,
       "level": 8,
@@ -4043,6 +5294,11 @@
       "threshold": 1
      },
      "hop": 0,
+     "owner": {
+      "未分": 1
+     },
+     "was": 1,
+     "kept": 1,
      "nearest": {
       "steps": 3,
       "level": 8,
@@ -4069,6 +5325,7 @@
    "name": "in-F the time room (north wing)",
    "cells": 2,
    "darkest": 5,
+   "was": 2,
    "heaps": [
     {
      "lo": [
@@ -4089,6 +5346,11 @@
       "threshold": 2
      },
      "hop": 0,
+     "owner": {
+      "未分": 2
+     },
+     "was": 2,
+     "kept": 2,
      "nearest": {
       "steps": 3,
       "level": 6,
@@ -4122,6 +5384,7 @@
    "name": "in-G the chart room (south wing)",
    "cells": 2,
    "darkest": 6,
+   "was": 2,
    "heaps": [
     {
      "lo": [
@@ -4142,6 +5405,11 @@
       "threshold": 2
      },
      "hop": 0,
+     "owner": {
+      "未分": 2
+     },
+     "was": 2,
+     "kept": 2,
      "nearest": {
       "steps": 3,
       "level": 6,
@@ -4172,6 +5440,180 @@
    ]
   }
  ],
+ "thresholds": [
+  [
+   -9,
+   0,
+   -1,
+   2,
+   "外墙 apse 面第 0 开间（door）",
+   "in-C the way to the west door",
+   "hall：下一次交付"
+  ],
+  [
+   -9,
+   0,
+   0,
+   3,
+   "外墙 apse 面第 0 开间（door）",
+   "in-C the way to the west door",
+   "hall：下一次交付"
+  ],
+  [
+   -9,
+   0,
+   1,
+   2,
+   "外墙 apse 面第 0 开间（door）",
+   "in-C the way to the west door",
+   "hall：下一次交付"
+  ],
+  [
+   7,
+   0,
+   6,
+   4,
+   "plate vault 的门",
+   "in-B the star hall, ground floor",
+   "未分"
+  ],
+  [
+   7,
+   7,
+   -6,
+   6,
+   "time room 的门",
+   "in-F the time room (north wing)",
+   "未分"
+  ],
+  [
+   7,
+   7,
+   6,
+   6,
+   "chart room 的门",
+   "in-G the chart room (south wing)",
+   "未分"
+  ],
+  [
+   8,
+   7,
+   -6,
+   5,
+   "time room 的门",
+   "in-F the time room (north wing)",
+   "未分"
+  ],
+  [
+   8,
+   7,
+   6,
+   6,
+   "chart room 的门",
+   "in-G the chart room (south wing)",
+   "未分"
+  ],
+  [
+   12,
+   18,
+   -10,
+   0,
+   "dome room 的门",
+   "in-K the north roofs: corner terrace, ridge walk, the end terrace, the clock tower's foot",
+   "dome"
+  ],
+  [
+   12,
+   18,
+   10,
+   0,
+   "dome room 的门",
+   "in-J the south roofs: corner terrace, ridge walk, the end terrace, the small dome",
+   "dome"
+  ],
+  [
+   17,
+   0,
+   -5,
+   6,
+   "外墙 east 面第 8 开间（gate）",
+   "in-B the star hall, ground floor",
+   "未分"
+  ],
+  [
+   17,
+   0,
+   -4,
+   5,
+   "外墙 east 面第 8 开间（gate）",
+   "in-A the entrance from the court",
+   "未分"
+  ],
+  [
+   17,
+   0,
+   -3,
+   4,
+   "外墙 east 面第 8 开间（gate）",
+   "in-A the entrance from the court",
+   "未分"
+  ],
+  [
+   17,
+   0,
+   -1,
+   5,
+   "外墙 east 面第 9 开间（door）",
+   "in-A the entrance from the court",
+   "未分"
+  ],
+  [
+   17,
+   0,
+   0,
+   6,
+   "外墙 east 面第 9 开间（door）",
+   "in-A the entrance from the court",
+   "未分"
+  ],
+  [
+   17,
+   0,
+   1,
+   5,
+   "外墙 east 面第 9 开间（door）",
+   "in-A the entrance from the court",
+   "未分"
+  ],
+  [
+   17,
+   0,
+   3,
+   4,
+   "外墙 east 面第 10 开间（gate）",
+   "in-A the entrance from the court",
+   "未分"
+  ],
+  [
+   17,
+   0,
+   4,
+   5,
+   "外墙 east 面第 10 开间（gate）",
+   "in-A the entrance from the court",
+   "未分"
+  ],
+  [
+   17,
+   0,
+   5,
+   6,
+   "外墙 east 面第 10 开间（gate）",
+   "in-B the star hall, ground floor",
+   "未分"
+  ]
+ ],
+ "cleared": [],
  "open_sky": {
   "in-A the entrance from the court": {
    "cells": 8,
@@ -4265,7 +5707,7 @@
    ]
   },
   "off the routes": {
-   "cells": 25642,
+   "cells": 25675,
    "lo": [
     -69,
     -29,
@@ -4317,7 +5759,7 @@
    ]
   },
   "out-D the north side: the mast pad, the weather station": {
-   "cells": 795,
+   "cells": 796,
    "lo": [
     -14,
     -11,
@@ -4369,7 +5811,7 @@
    ]
   },
   "out-H the lower platform, south: the way to the works, round the power house": {
-   "cells": 677,
+   "cells": 661,
    "lo": [
     51,
     -13,
@@ -4382,7 +5824,7 @@
    ]
   },
   "out-I the lower platform, north: its edges, the wall's foot, back to the station": {
-   "cells": 929,
+   "cells": 928,
    "lo": [
     41,
     -13,
@@ -4984,7 +6426,7 @@
   ]
  },
  "dome_room": {
-  "cells": 296
+  "cells": 292
  },
- "sources": 172
+ "sources": 203
 }
