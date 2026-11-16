@@ -107,13 +107,31 @@ class _Wound(Mat):
 COIL = _Wound(PREFIX + "coil", P.RAMPS["iron"], kind="flat", bevel=0, base=5)
 
 _G = P.RAMPS["glow"]
-_LIT = {"0": _G[0], "1": _G[1], "2": _G[2]}
-# A lit window of the car, seen from outside: the lamp under the roof is the bright spot at the
-# top, the light falls off towards the seats. The fourth row lies behind the glazing bar.
-WIN6 = Sprite(PREFIX + "win6", ["112211", "122221", "112211", "000000", "111111", "011110", "011110", "001100",
-                                "001100", "000000", "000000"], _LIT)
-WIN5 = Sprite(PREFIX + "win5", ["12221", "12221", "11211", "00000", "11111", "01110", "01110", "00100",
-                                "00100", "00000", "00000"], _LIT)
+_LIT = {"0": _G[0], "1": _G[1], "2": _G[2], "3": _G[3], "4": _G[4],
+        "w": P.RAMPS["dark_wood"][4], "v": P.RAMPS["dark_wood"][2]}
+# The car's lit windows, seen from outside. One lamp hangs under the roof in the middle of the car
+# and the windows show what it lights, each from where it is: the lamp itself in a side's middle
+# window and, along the aisle, in the door's; beside it the lit ceiling and the wall below in
+# bands that darken towards the seats; least where the lamp is farthest, at the corners of the
+# ends. The two rows at the sill are the backs of the benches (none in the door's window: the
+# aisle). Every one is the same left and right, so a face may be drawn either way round. The
+# fourth row lies behind the glazing bar. (cr3 on the real picture from the platform, #75884:
+# the five windows of the door end were one flat orange with the same patch in each.)
+def _window(name, rows, seats=True):
+    width = len(rows[0])
+    foot = [("w" if seats else "0") * width, ("v" if seats else "0") * width]
+    return Sprite(PREFIX + name, rows + foot, _LIT)
+
+
+WIN6_LAMP = _window("win6_lamp", ["234432", "233332", "223322", "122221", "112211", "111111", "111111", "011110",
+                                  "000000"])
+WIN6 = _window("win6", ["222222", "222222", "122221", "111111", "111111", "111111", "011110", "000000", "000000"])
+WIN6_DIM = _window("win6_dim", ["122221", "122221", "111111", "111111", "111111", "011110", "000000", "000000",
+                                "000000"])
+WIN6_AISLE = _window("win6_aisle", ["234432", "233332", "223322", "122221", "112211", "111111", "111111", "011110",
+                                    "000000"], seats=False)
+WIN5 = _window("win5", ["22322", "22222", "12221", "11111", "11111", "11111", "01110", "00000", "00000"])
+WIN5_DIM = _window("win5_dim", ["12221", "12221", "11111", "11111", "11111", "01110", "00000", "00000", "00000"])
 _I = P.RAMPS["iron"]
 # One chequer plate of the duct's cover: a rim, raised lozenges, a slot to lift it by.
 PLATE = Sprite(PREFIX + "plate", ["22222222", "24334332", "23343342", "23433432", "24334332", "23343342",
@@ -340,7 +358,8 @@ def _car():
             m.box((a, SILL, (W - 2) * s), (b, HEAD, (W - 1) * s), WOOD, grain="y")
         m.box((-L + 2, HEAD, (W - 2) * s), (L - 2, EAVE, (W - 1) * s), WOOD, grain="x")        # letter board
         for a in side_lights:
-            m.box((a, SILL, (W - 3) * s), (a + 6, HEAD, (W - 2) * s), GLOW[0], faces={out: WIN6}, emit=15,
+            lit = WIN6_LAMP if a == side_lights[1] else WIN6            # the lamp hangs behind the middle one
+            m.box((a, SILL, (W - 3) * s), (a + 6, HEAD, (W - 2) * s), GLOW[0], faces={out: lit}, emit=15,
                   shade=False)
             m.box((a, BAR, (W - 2) * s), (a + 6, BAR + 1, (W - 1) * s), IRON_D, grain="x")     # glazing bar
         m.box((-3, 13, (W - 1) * s), (3, 17, (W - 0.5) * s), BRASS, grain="x")                 # the maker's plate
@@ -352,7 +371,8 @@ def _car():
         m.box((L - 2, SILL, a), (L - 1, HEAD, b), WOOD, grain="y")
     m.box((L - 2, HEAD, -W + 2), (L - 1, EAVE, W - 2), WOOD, grain="z")
     for a in end_lights:
-        m.box((L - 3, SILL, a), (L - 2, HEAD, a + 6), GLOW[0], faces={"e": WIN6}, emit=15, shade=False)
+        lit = WIN6 if a in end_lights[1:3] else WIN6_DIM                # the inner pair, the pair at the corners
+        m.box((L - 3, SILL, a), (L - 2, HEAD, a + 6), GLOW[0], faces={"e": lit}, emit=15, shade=False)
         m.box((L - 2, BAR, a), (L - 1, BAR + 1, a + 6), IRON_D, grain="z")
 
     # the west end, towards the platform: the door between two pairs of narrow windows
@@ -364,9 +384,9 @@ def _car():
         for a, b in door_piers:
             a, b = sorted((a * s, b * s))
             m.box((-L + 1, SILL, a), (-L + 2, HEAD, b), WOOD, grain="y")
-        for a, b in door_lights:
+        for lit, (a, b) in zip((WIN5, WIN5_DIM), door_lights):          # beside the door, at the corner
             a, b = sorted((a * s, b * s))
-            m.box((-L + 2, SILL, a), (-L + 3, HEAD, b), GLOW[0], faces={"w": WIN5}, emit=15, shade=False)
+            m.box((-L + 2, SILL, a), (-L + 3, HEAD, b), GLOW[0], faces={"w": lit}, emit=15, shade=False)
             m.box((-L + 1, BAR, a), (-L + 2, BAR + 1, b), IRON_D, grain="z")
         a, b = sorted((5 * s, 6 * s))
         m.box((-L, FLOOR, a), (-L + 2, EAVE, b), IRON, grain="y")                  # door jamb
@@ -379,7 +399,7 @@ def _car():
     for a, b in ((FLOOR, 12), (WAIST, SILL), (HEAD, 37)):
         m.box((-L + 1, a, -3), (-L + 3, b, 3), WOOD, grain="z")                    # bottom, lock and top rail
     m.box((-L + 2, 12, -3), (-L + 3, WAIST, 3), WOOD_D, grain="y")                 # the sunk panel
-    m.box((-L + 2, SILL, -3), (-L + 3, HEAD, 3), GLOW[0], faces={"w": WIN6}, emit=15, shade=False)
+    m.box((-L + 2, SILL, -3), (-L + 3, HEAD, 3), GLOW[0], faces={"w": WIN6_AISLE}, emit=15, shade=False)
     m.box((-L + 1, BAR, -3), (-L + 2, BAR + 1, 3), IRON_D, grain="z")
     m.box((-L, 19, 3), (-L + 1, 21, 5), BRASS)                                     # the handle
 
