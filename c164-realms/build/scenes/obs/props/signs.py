@@ -72,7 +72,7 @@ from ..common import skeleton as S
 from . import _kit as K
 
 PREFIX = "prop_sign_"
-DRESS = False                   # build() dresses the master scene only when on (A0 #211)
+DRESS = True                    # build() dresses the master scene: on from the merge (COMMON 0.10)
 VERSION = "a"                   # the great piece over the entrance: the cast emblem (A0, g2 11-15, on the
                                 # pictures of V2). The clock stays in the module as version b.
 VERSIONS = {"a": "emblem", "b": "clock"}
