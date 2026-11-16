@@ -4,7 +4,13 @@
   "assembly": "bd2f2874",
   "at": "11-16 10:09",
   "time": 20370,
-  "look": null,
+  "look": {
+   "file": "c164-A5-look.zip",
+   "bytes": 3281243,
+   "sha256": "1dbe724dab2f67d37e608b558e21a29983307bca6d7c7c2ca73c073c162d9157",
+   "registry_files": 3,
+   "time": 14000
+  },
   "plain": {
    "file": "c164-A5-plain.zip",
    "bytes": 2824773,
@@ -32,7 +38,7 @@
   "verified": true,
   "console": 0,
   "note": "第一个候选版。天由资源包里的 10 个着色器文件画（a2 的 sky/safe-look，Vulkan 真机验过）；旁边的 -plain 不带着色器，资源包加载失败时换它。总装头是 s2 09:57 报的绿头（89 个场景全过）：新 V7 和 V8、底片库的门洞、电池室第一版、时间室第三版、气象站和落日平台的走查修补、大台阶挡土墙",
-  "commit": "dc01363d"
+  "commit": "dac823bc"
  },
  {
   "n": "A4",
