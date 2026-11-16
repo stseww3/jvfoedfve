@@ -51,8 +51,9 @@ merge that changes something else and leaves the pose alone starts the way anew 
 the part is seen to go the last stretch once more: nothing but this module should merge into an
 entity that is registered here, and no step repeats the pose of the step before it.
 
-_kit_test.py plays the written functions back on that understanding. Nothing here has been seen
-in the game yet; plan/parts/motion.md section 10 lists what the real machine has to show.
+_kit_test.py plays the written functions back on that understanding. The real machine has borne
+it out for the parts (plan/parts/motion.md section 10: the loop over a reload, a restart of the
+server, a chunk unloaded and back, another scene's start; section 7: what a command costs).
 """
 import json
 import math
@@ -79,6 +80,8 @@ GOVERNOR_REV = 24               # the engine's governor: twice the shaft
 DYNAMO_REV = 16                 # the dynamo's armature: belted 1 to 3
 SCOPE_GOVERNOR_REV = 32         # the governor of the telescope's driving clock
 DRUM_REV = 2400                 # a recording drum: two minutes
+# the beat board's arms (obs_mot_loop) and the self-test's. The orrery itself turns by its own gear
+# ratios: machines/orrery.py's PERIOD
 ORRERY = {"mercury": 1200, "venus": 1920, "earth": 2640, "mars": 3120, "jupiter": 7200, "saturn": 10800}
 BLINK = (30, 30)                # a lamp that blinks: ticks lit, ticks dark (no part blinks in this version)
 FLAG_SWAY = 120                 # a flag there and back
