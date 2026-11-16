@@ -1,0 +1,45 @@
+a0job 1116-044623-clocks-f3-00d6-11005: cursor/c164-clocks-f3-00d6 @ a36e1207 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.63 0.68 0.74, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- cd build && python ../tools/check.py --scene obs_mach_clocks | grep -E "^\[(FAIL|WARN)|regen|entities|strays|refs|views|motion|^result" | cut -c1-260 ; python ../tools/check.py --scene obs_mach_clocks_b | grep -E "^\[(FAIL|WARN)|^resul
+from collections import Counter
+from scenes.obs_mach_clocks import build
+from scenes.obs.machines import clock
+from scenes.obs.motion import _kit as MK
+c = build()
+rows = Counter((MK._model_name(e[3]), float(e[3].get("view_range", 1.0))) for e in c.entities if str(MK._model_name(e[3]) or "").startswith("mach_clock"))
+for (name, view), n in sorted(rows.items()):
+    print(f"{name:28s} view_range {view:g} x{n}")
+for name in ("mach_clock_face", "mach_clock_face_open"):
+    m = clock.models()[name]
+    print(name, len(m.parts), "elements")
+print("works_sides():", clock.works_sides())
+EOF ---- exit 0, 10 s, last 70 lines of 22:
+[PASS] regen     5766 blocks, 41 entities, 22 models, 754 resource-pack files, 436 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.7 s)
+[PASS] strays    151 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      573 block states, item definitions and models read, every model and picture they name is there
+[PASS] entities  41 display entities, 5 drawn out along one axis, 3 models never placed
+[PASS] views     15 shots, most display entities in view: 40 (balls_pair), limit 600; counted without what walls hide; the game draws up to 41 (master_close): a display entity without width and height is drawn outside the view too
+[PASS] motion    13 parts and 1 points on 5 chains, 424 function files; 7 commands in the busiest tick (limit 40), 0.7 a tick on average (limit 10)
+result: PASS (0 failed, 0 with warnings)
+result: PASS (0 failed, 0 with warnings)
+mach_clock_ball              view_range 3 x2
+mach_clock_ball_red          view_range 3 x1
+mach_clock_face              view_range 3 x3
+mach_clock_face_open         view_range 3 x1
+mach_clock_hand_h            view_range 3 x4
+mach_clock_hand_m            view_range 3 x4
+mach_clock_master            view_range 0.5 x1
+mach_clock_master_dial       view_range 0.5 x1
+mach_clock_master_hand_h     view_range 0.5 x1
+mach_clock_master_hand_m     view_range 0.5 x1
+mach_clock_pendulum          view_range 0.5 x1
+mach_clock_face 37 elements
+mach_clock_face_open 49 elements
+works_sides(): ()
+==== NODEJOB RESULT ====
+exit=0 secs=12 host=cursor cores=4 head=a36e1207 commit=none pushed=no branch=cursor/c164-clocks-f3-00d6 files=0
+a0job: exit=0 secs=12
