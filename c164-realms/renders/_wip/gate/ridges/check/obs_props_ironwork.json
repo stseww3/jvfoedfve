@@ -1,0 +1,223 @@
+{
+ "scene": "obs_props_ironwork",
+ "commit": "f960c7c",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "WARN",
+   "summary": "6383 blocks, 34 entities, 24 models, 750 resource-pack files, 12 data-pack files, look: 1 biomes, 1 timelines (0.8 s)",
+   "details": [
+    "registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json"
+   ]
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 749 files, no file written twice, the folders and the prefix of props are kept (8 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "153 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "577 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "23 kinds of block placed, 12 barrier cells (x 39, y 0..1, z -5..5), all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of props: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "34 display entities, 1 shown through a matrix that is no turn, no face stretched, 2 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "24 shots, most display entities in view: 33 (railing), limit 600; counted without what walls hide; the game draws up to 34 (front): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "front",
+      "in_view": 31,
+      "drawn": 34,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "bays_front",
+      "in_view": 30,
+      "drawn": 34,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "bays_near",
+      "in_view": 3,
+      "drawn": 34,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "bays_oblique",
+      "in_view": 12,
+      "drawn": 34,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "frame_head",
+      "in_view": 3,
+      "drawn": 34,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "frame_foot",
+      "in_view": 10,
+      "drawn": 34,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "frame_dark",
+      "in_view": 4,
+      "drawn": 34,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "narrow",
+      "in_view": 8,
+      "drawn": 34,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "grilles",
+      "in_view": 9,
+      "drawn": 34,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "grille_near",
+      "in_view": 5,
+      "drawn": 34,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "entrance",
+      "in_view": 25,
+      "drawn": 34,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "entrance_oblique",
+      "in_view": 23,
+      "drawn": 34,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "leaf_near",
+      "in_view": 12,
+      "drawn": 34,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "fanlight_near",
+      "in_view": 17,
+      "drawn": 34,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "canopy_below",
+      "in_view": 16,
+      "drawn": 34,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "canopy_side",
+      "in_view": 20,
+      "drawn": 34,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "gate_near",
+      "in_view": 21,
+      "drawn": 34,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "west_door",
+      "in_view": 28,
+      "drawn": 34,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "ladder",
+      "in_view": 7,
+      "drawn": 34,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "ladder_up",
+      "in_view": 11,
+      "drawn": 34,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "ladder_head",
+      "in_view": 28,
+      "drawn": 34,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "railing",
+      "in_view": 33,
+      "drawn": 34,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "vent",
+      "in_view": 31,
+      "drawn": 34,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "grate",
+      "in_view": 14,
+      "drawn": 34,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "nothing moves",
+   "details": []
+  }
+ ]
+}

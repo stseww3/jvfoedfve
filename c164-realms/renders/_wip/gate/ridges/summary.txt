@@ -1,0 +1,7 @@
+gate sky/ridges f960c7c9: the merged tree f960c7c9, the assembly as it was 2c9a095c
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] pictures 1 test scene, 10 shots with a picture kept
+                    obs_sky_ridges: 10 pictures show dc4d8573; the card's code has changed since (_lightkit.py, ridges.py): draw them again
+check.py: 79 scenes in 103 s: 79 pass (79 with warnings)
+pictures: [PASS] selfshots obs_sky_ridges at f960c7c9: 10 of 10 kept pictures are what the code draws
+result: PASS
