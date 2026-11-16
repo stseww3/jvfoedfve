@@ -36,7 +36,7 @@ and its inner leaf it touches only the floor of the doorways):
     the inner one in the steps' own cells so the ring stays empty, the outer one two rows high,
     one unbroken band from the gallery to the trimmer. The west run, which crosses the well,
     hangs by four rods from the beam over it. A brass post on the railing's head marks each
-    mouth, its top free for a lamp;
+    mouth; the cell over it stays free (the light line stands a lamp on the gallery's);
   * the wing rooms of the main floor (time-service room north, star-chart room south): floor,
     ceiling, the wall towards the rotunda, the wall towards the end pavilion;
   * the dome-room floor, with the envelope left open, an iron curb and a railing round it.
@@ -389,8 +389,9 @@ def stair_posts():
     way, and the two ends of one stair are a pair. It stands on the side of the plate that closes
     the stair's end -- east of the bridge on the gallery, west of the way off in the dome room --
     and on the bars, which it does not replace (bars and a post do not join, and the gap between
-    them would let one through). Its top is where a lamp goes: the cell over it stays free for
-    the light line."""
+    them would let one through). The cell over each post stays free: on the gallery's the light
+    line stands a low lamp (sky/lights, the lamp of the parapet piers); the dome room's stays
+    bare, a newel and no more -- that room keeps its dark."""
     cells = [(x, z) for x, z, _y, _half, _top in ring_stair()]
     return [(cells[-2][0], S.STAND + 1, BRIDGE[1]), (cells[1][0], S.ROOF_STAND + 1, EXIT[1])]
 
