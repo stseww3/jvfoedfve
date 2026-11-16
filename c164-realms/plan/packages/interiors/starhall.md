@@ -39,7 +39,7 @@
 | 配电板（盘心 x 4，指示灯面板各一块） | 3 宽 3 高，x 3..5 | 5 宽 3 高，x 2..6 |
 | 家具（`props/furniture`） | 南廊两只长椅、北廊两只卧式展柜（底片／透镜）、门边衣帽架 | 南廊制图桌加高凳、写字台加转椅，北廊卡片柜、仪器柜、木箱、行李箱，门边衣帽架 |
 
-两版共用：圆环（八边、七格宽）加子午线加环内那颗星（台徽的标准画法：星在圆心东一格、北一格，`star_at()`，不是偏了）；顶棚格心的位置；灯位；南廊西段两张星图（`props/paper` 的 `star_chart`、`star_chart_b`）加一只天球仪（`props/instruments` 的 `celestial_globe`，北极朝真北）；回廊层子午线处两墙各一幅天图（`sky_map`、`sky_map_b`）；配电板两头各一块端板（`board_end_a/b`，比盘壳亮一级的铁：盘的侧面原先在 V7 里是一条死黑）；门内上方那块台徽。这几样没进树时用本包的占位（`_chart`、`_globe`）或不摆。
+两版共用：圆环（八边、七格宽）加子午线加环内那颗星（台徽的标准画法：星在圆心东一格、北一格，`star_at()`，不是偏了）；顶棚格心的位置；灯位；南廊西段两张星图（`props/paper` 的 `star_chart`、`star_chart_b`）加一只天球仪（`props/instruments` 的 `celestial_globe`，北极朝真北）；回廊层子午线处两墙各一幅天图（`sky_map`、`sky_map_b`）；配电板两头各一块端板（`board_end_a/b`，比盘壳亮一级的铁：盘的侧面原先在 V7 里是一条死黑）；门内上方那块台徽。
 
 别人替本包做的分件（`starhall.PARTS`）：各自一个文件，和 `starhall.py` 并排，进了树 `dress()` 末尾就调、`models()` 就并：`dress(canvas, origin, version)` 返回实体数，`models()` 返回模型表；不加光源、不出台徽。`_starhall_meridian.py`（子午线镶嵌，orrery c343）、`_starhall_wiring.py`（配电板到各壁灯的明线和授时线，clocks c345）、`_starhall_gallery.py`（回廊层的资料柜和仪器柜，ashlar c353）。
 
@@ -69,7 +69,7 @@
 
 ## 交付物
 - 代码：`build/scenes/obs/interiors/starhall.py`（`build(canvas, origin)` 给总场景；`dress(canvas, origin, version)`；`VERSION` 是评审挑的那一版；`MOVED_IN` 给 `facade.furnished()`）。
-- 测试场景：`build/scenes/obs_int_starhall/`（甲）和 `obs_int_starhall_b/`（乙），同一组机位同名，可以盲比；照总场景的铺法：主楼整条线、两台机器（没进树时用 `standins.py`）、本包、光线最后。`shots.json` 由 `python -m scenes.obs_int_starhall` 写。
+- 测试场景：`build/scenes/obs_int_starhall/`（甲）和 `obs_int_starhall_b/`（乙），同一组机位同名，可以盲比；照总场景的铺法：主楼整条线、两台机器（`machines/orrery`、`machines/clock`）、本包、光线最后。`shots.json` 由 `python -m scenes.obs_int_starhall` 写。
 - 机位 17 个（`arches`、`way` 是第 3 班加的）：`v7`、`v7_in`、`west`、`clock`、`orrery`、`ceiling`、`floor`、`gallery`、`rail`、`gallery_w`、`door`、`aisle_n`、`aisle_s`、`stair_n`、`mezzanine`、`way`（拱顶下望西门）、`arches`（前庭正轴看三个拱）。
 - 场景的探针：在节点上 `cd build && python -m scenes.obs_int_starhall.probe a|b plan:<y> x:<x> z:<z> lv:<y> lz:<z> lights ents`，把方块、光照级数、光源、实体打成文字（合用机上不许建场景）。
 
