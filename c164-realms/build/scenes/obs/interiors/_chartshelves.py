@@ -9,8 +9,9 @@ field of spines:
 
   five bays       four piers between them, a cheek at each end. The middle bay stands on the room's
                   axis, behind the plate viewer and the comet: it holds no books. Below, a cupboard
-                  of two panelled doors; above, a plain sunk field for the room's wall clock
-                  (CLOCK_AT, CLOCK_FIELD), and nothing in it that the eye could take for a light.
+                  of two panelled doors; above, a tall plain board between two narrow sunk panels,
+                  for the room's wall clock (CLOCK_AT, CLOCK_FIELD), and nothing in it that the eye
+                  could take for a light.
   two storeys     The first ends in the board that carries the ladder rail of props/furniture (its
                   middle 44.5 texels over the floor; the ladder's rollers ride on it and reach 46.8)
                   and in a cornice from 47. Below that cornice nothing stands proud of the front,
@@ -25,8 +26,9 @@ field of spines:
                   to a shelf, not confetti. The two outer bays have a plan chest for the flat sheets
                   in their foot; the two bays beside the middle keep the great atlases lying in
                   piles in theirs and the rolled charts in a rack of pigeonholes at the height of
-                  the eye of who stands on the ladder; the plates' pasteboard boxes are brown card,
-                  not white, so that no shelf is lighter than the light table.
+                  the eye of who stands on the ladder, a roll or two to a hole; the plates'
+                  pasteboard boxes are brown card and the rolls grey and brown, not white, so that
+                  no shelf is lighter than the light table.
 
 Drawn in the wall's own frame, texels: U from the east end of the wall (the left hand of who looks
 at it), Y from the floor, Z from the wall into the room. Fifteen display entities: five strips,
@@ -75,8 +77,9 @@ HIGH_BOARDS = (60.0, 72.0, 84.0)                # of the second storey's
 HEAD = (95.0, 96.0)                             # the board that closes the second storey
 CAPITAL = 90.0                                  # where a pier's capital begins
 ARCHITRAVE, FRIEZE, CROWN = (96.0, 98.0), (98.0, 107.0), (107.0, 109.0)
-FIELD_U, FIELD_Y = (82.0, 110.0), (53.0, 91.0)  # the sunk field of the middle bay
+FIELD_U, FIELD_Y = (88.0, 104.0), (53.0, 91.0)  # the clock's board in the middle bay
 FIELD_Z = 5.0                                   # its face
+SIDE = 5.0                                      # the width of the sunk panel on either side of it
 
 # ---- for the room (scene coordinates) ---------------------------------------------------------------
 FRONT_Z = SOUTH - FRONT * PX                    # 25.625: the plane of the case's front, where the rail runs
@@ -84,7 +87,7 @@ PIER_X = tuple(EAST - (a + b) / 32.0 for a, b in PIERS)     # 11.625, 9.3125, 6.
 PIER_FACE_Z = SOUTH - (FRONT + 1.0) * PX        # 25.5625: the face of a pier above the first cornice
 LAMP_Y = (FEET + 4.5, FEET + 5.5)               # a pier's face is bare between these
 CLOCK_AT = (EAST - 96.0 * PX, FEET + 4.5, SOUTH - FIELD_Z * PX)     # (8, 11.5, 25.6875): the middle of the field
-CLOCK_FIELD = ((FIELD_U[1] - FIELD_U[0]) * PX, (FIELD_Y[1] - FIELD_Y[0]) * PX)      # 1.75 by 2.375 blocks, flat
+CLOCK_FIELD = ((FIELD_U[1] - FIELD_U[0]) * PX, (FIELD_Y[1] - FIELD_Y[0]) * PX)      # 1 by 2.375 blocks, flat
 
 # ---- materials ----------------------------------------------------------------------------------------
 WOOD = P.mat("dark_wood")
@@ -129,15 +132,17 @@ BROWN = (("old_copper", 0), ("old_copper", 1), ("old_copper", 2), ("dark_wood", 
 BLUE = (("enamel", 0), ("enamel", 1), ("enamel", 2), ("enamel", 1))
 GREY = (("iron", 3), ("iron", 4))
 PALE = (("cream", 0),)
-BINDINGS = (BROWN + BROWN + BLUE + GREY, BLUE + BLUE + GREY + PALE, (), BLUE + BROWN + BROWN + PALE, BROWN + GREY + GREY + BLUE)
+# one vellum set in the whole wall is enough: a run of it is the lightest thing on a shelf
+BINDINGS = (BROWN + BROWN + BLUE + GREY, BLUE + BLUE + GREY + BROWN, (), BLUE + BROWN + BROWN + PALE, BROWN + GREY + GREY + BLUE)
 
 
 class _Spines:
     """The picture of a shelf of books from the front. The books stand in runs: a set of volumes in
     one binding, as wide and as tall as one another, then the next set. A volume is one to three
     texels wide; its right edge is a step darker, so every spine can be counted. What is tooled on
-    a spine is a title label in the upper third or a band at head and tail in the binding's own
-    lighter tone: nothing that runs across a spine at its middle, so that no two strokes cross.
+    a spine is a title label in the upper third, a band at head and tail in the binding's own
+    lighter tone or one gilt band at the head: nothing that runs across a spine at its middle, so
+    that no two strokes cross.
     It stands in for a material on one face (artkit.models asks a material for its name and paint())."""
 
     def __init__(self, name, bindings, full=0.94):
@@ -153,7 +158,8 @@ class _Spines:
             ramp, step = rnd.choice(self.bindings)
             width = rnd.choice((1, 2, 2, 3, 3))
             top = rnd.choice((0, 1, 1, 2)) if h > 6 else rnd.choice((0, 1))
-            tooling = rnd.choice(("label", "label", "bands", "plain")) if width == 3 else rnd.choice(("dot", "plain", "plain"))
+            tooling = (rnd.choice(("label", "label", "bands", "bands", "gilt", "plain", "plain")) if width == 3
+                       else rnd.choice(("dot", "plain", "plain")))
             for _ in range(rnd.choice((2, 3, 4, 5, 6, 8)) if width > 1 else rnd.choice((2, 3, 4))):
                 if x + width > w:
                     break
@@ -178,6 +184,8 @@ class _Spines:
             tone = P.colour(ramp, min(steps - 1, step + 1))
             out[top + 1, x:x + width - 1, :3] = tone
             out[h - 2, x:x + width - 1, :3] = tone
+        elif tooling == "gilt" and h - top >= 6:
+            out[top + 1, x:x + width - 1, :3] = P.colour("iron", 2) if pale else P.colour("brass", 2)
         elif tooling == "dot" and width == 2 and h - top >= 5:
             out[top + 2, x, :3] = P.colour("iron", 2) if pale else P.colour("brass", 2)
 
@@ -246,6 +254,9 @@ class _Piece:
 
 
 # ---- what stands on the shelves ---------------------------------------------------------------------
+BOOK_FRONTS = (4.0, 4.5, 5.0)                   # where the spines of a length of books stand; a board ends at 5.5
+
+
 def _books(p, u, y, top, bindings, full=0.94):
     """A shelf of books between u[0] and u[1], standing on y, under a board whose underside is top."""
     height = (top - y) - p.rnd.choice((1, 1, 2))
@@ -258,9 +269,17 @@ def _books(p, u, y, top, bindings, full=0.94):
         else:
             _lean(p, (b - short + 1.0, b - short + 3.0), y, height - 1.0, bindings, 1.0)
             b -= short
-    seed = p.seed()
-    spines = _Spines(f"chart_shelf_spines_{p.strip}_{p.tier}_{seed}", bindings, full)
-    p.box((a, b), (y, y + height), (1.0, 4.5), SHADOW, skip="nd", faces={"s": spines}, seed=seed)
+    cuts, x = [a], a                             # the row stands in lengths, one pushed further in than the next
+    while b - x > 20.0:
+        x += float(p.rnd.choice((8, 10, 12, 14)))
+        cuts.append(x)
+    cuts.append(b)
+    front = p.rnd.choice(BOOK_FRONTS)
+    for x0, x1 in zip(cuts, cuts[1:]):
+        front = p.rnd.choice([z for z in BOOK_FRONTS if z != front])
+        seed = p.seed()
+        spines = _Spines(f"chart_shelf_spines_{p.strip}_{p.tier}_{seed}", bindings, full)
+        p.box((x0, x1), (y, y + height), (1.0, front), SHADOW, skip="nd", faces={"s": spines}, seed=seed)
 
 
 def _lean(p, u, y, height, bindings, side):
@@ -298,30 +317,38 @@ def _piles(p, u, y, top, bindings):
     p.box((a + 17.0, a + 18.0), (y, top - 3.0), (1.5, 5.0), CARD, rot=("z", 6.0, (a + 17.0, y, 3.0)), skip="n", grain="y")
 
 
-def _pigeonholes(p, u, y, top):
-    """A rack of pigeonholes for rolled charts: two groups of three columns either side of an upright,
-    four rows; nearly every hole holds a roll, end on, some further out than others. A hole is four
-    texels each way, a roll three."""
+# what a hole of the rack may hold: where its rolls lie on the floor of the hole (texels from the
+# hole's left side), and where a third lies on two. Mostly one roll or two, side by side: a rack
+# with a heap in every hole was the lightest and the busiest thing on the wall.
+HOLES = (((0,), ()), ((3,), ()), ((1,), ()), ((2,), ()), ((0,), ()), ((3,), ()),
+         ((0, 3), ()), ((0, 3), ()), ((0, 3), ()), ((0, 3), (1,)), ((0, 3), (2,)), ((), ()))
+
+
+def _rack(p, u, y, top):
+    """A rack of pigeonholes for rolled charts: two pairs of holes either side of an upright, three
+    rows. A hole is six texels each way, a roll three across: it lies on the floor of its hole, end
+    on, alone or beside another, some further out than others."""
     a, b = u
-    p.box((a, a + 1.0), (y, top), (1.0, 5.5), WOOD, grain="y")
-    p.box((b - 1.0, b), (y, top), (1.0, 5.5), WOOD, grain="y")
-    p.box((a + 15.0, b - 15.0), (y, top), (1.0, 5.5), WOOD, grain="y")
-    floors = [y + 2.0 + 5.0 * i for i in range(4)]
-    p.box((a + 1.0, b - 1.0), (y, y + 2.0), (1.0, 5.5), WOOD, grain="x")
-    p.box((a + 1.0, b - 1.0), (floors[-1] + 4.0, top), (1.0, 5.5), WOOD, grain="x")
-    for f in floors[1:]:
-        p.box((a + 1.0, b - 1.0), (f - 1.0, f), (1.0, 5.25), WOOD, grain="x")
-    columns = [a + 1.0 + 5.0 * i for i in range(3)] + [b - 15.0 + 5.0 * i for i in range(3)]
-    for c in columns:
-        if c not in (a + 1.0, b - 15.0):
-            p.box((c - 1.0, c), (y + 2.0, floors[-1] + 4.0), (1.0, 5.25), WOOD, grain="y")
+    mid = (a + b) / 2.0
+    for x0, x1 in ((a, a + 1.0), (b - 1.0, b), (mid - 1.5, mid + 1.5)):
+        p.box((x0, x1), (y, top), (1.0, 5.5), WOOD, skip="n", grain="y")
+    for x in (a + 7.0, b - 8.0):                # the uprights inside a pair stand behind the boards' edges
+        p.box((x, x + 1.0), (y + 1.0, top - 2.0), (1.0, 5.0), WOOD, skip="n", grain="y")
+    floors = [y + 1.0 + 7.0 * i for i in range(3)]
+    for x0, x1 in ((a + 1.0, mid - 1.5), (mid + 1.5, b - 1.0)):
+        p.box((x0, x1), (y, y + 1.0), (1.0, 5.5), WOOD, skip="n", grain="x")
+        p.box((x0, x1), (top - 2.0, top), (1.0, 5.5), WOOD, skip="n", grain="x")
+        for f in floors[1:]:
+            p.box((x0, x1), (f - 1.0, f), (1.0, 5.25), WOOD, skip="n", grain="x")
     for f in floors:
-        for c in columns:
-            if p.rnd.random() < 0.08:
-                continue
-            out = p.rnd.choice((4.5, 4.5, 5.0, 5.0, 5.0, 5.75))
-            end, body = ROLLS[p.rnd.choice((0, 0, 0, 0, 0, 1, 1, 1, 2))]
-            p.box((c + 0.5, c + 3.5), (f, f + 3.0), (1.0, out), body, skip="n", grain="z", faces={"s": end})
+        for x in (a + 1.0, a + 8.0, b - 14.0, b - 7.0):
+            low, high = p.rnd.choice(HOLES)
+            for row, places in enumerate((low, high)):
+                for dx in places:
+                    end, body = ROLLS[p.rnd.choice((0, 0, 0, 0, 0, 1, 1, 1, 2))]
+                    out = p.rnd.choice((4.0, 4.5, 4.5, 5.0, 5.0, 5.5))
+                    x0, y0 = x + dx, f + 3.0 * row
+                    p.box((x0, x0 + 3.0), (y0, y0 + 3.0), (1.0, out), body, skip="n", grain="z", faces={"s": end})
 
 
 def _chest(p, u):
@@ -365,6 +392,27 @@ def _cupboard(p, u):
     for x in (mid - 2.0, mid + 1.0):
         p.box((x, x + 1.0), (y0 + 19.0, y0 + 21.0), (FRONT - 0.25, FRONT + 0.5), BRASS_D, skip="n")
     p.box((mid + 1.0, mid + 2.0), (y0 + 13.0, y0 + 16.0), (FRONT - 0.25, FRONT), BRASS_D, skip="n", faces={"s": KEYHOLE})
+
+
+def _clock_field(p, u, foot):
+    """The second storey of the middle bay: a frame, a bead of lighter wood inside it, and in that
+    the clock's board between two narrow sunk panels."""
+    a, b = u
+    (fa, fb), (fy0, fy1) = FIELD_U, FIELD_Y
+    left, right = fa - 1.0 - SIDE, fb + 1.0 + SIDE          # the inside of the bead
+    for x0, x1 in ((a, left - 1.0), (right + 1.0, b)):
+        p.box((x0, x1), (foot, HEAD[0]), (1.0, FRONT), WOOD, skip="n", grain="y")
+    for y0, y1 in ((foot, fy0 - 1.0), (fy1 + 1.0, HEAD[0])):
+        p.box((left - 1.0, right + 1.0), (y0, y1), (1.0, FRONT), WOOD, skip="n", grain="x")
+    for x in (left - 1.0, right):
+        p.box((x, x + 1.0), (fy0 - 1.0, fy1 + 1.0), (1.0, FIELD_Z + 0.5), WOOD_L, skip="n", grain="y")
+    for y in (fy0 - 1.0, fy1):
+        p.box((left, right), (y, y + 1.0), (1.0, FIELD_Z + 0.5), WOOD_L, skip="n", grain="x")
+    p.box((fa, fb), (fy0, fy1), (1.0, FIELD_Z), WOOD_D, skip="n", grain="y")
+    for x in (fa - 1.0, fb):                                # a fillet on either side of the board
+        p.box((x, x + 1.0), (fy0, fy1), (1.0, FIELD_Z + 0.5), WOOD, skip="n", grain="y")
+    for x in (left, fb + 1.0):
+        p.box((x, x + SIDE), (fy0, fy1), (1.0, FIELD_Z - 0.5), WOOD_D, skip="n", grain="y")
 
 
 # ---- the three tiers of a strip ---------------------------------------------------------------------
@@ -422,18 +470,13 @@ def _second(strip):
     for a, b in p.cheeks():
         p.box((a, b), (foot, HEAD[0]), (1.0, FRONT), WOOD, skip="n", grain="y")
     for a, b in p.piers():                      # a shaft on a base, under a capital
-        p.box((a, b), (foot, CAPITAL), (1.0, FRONT + 1.0), WOOD, skip="n", grain="y")
-        p.box((a, b), (CAPITAL, HEAD[1]), (1.0, FRONT + 2.0), WOOD_D, skip="n", grain="x")
         p.box((a, b), (foot, foot + 2.0), (1.0, FRONT + 2.0), WOOD_D, skip="n", grain="x")
+        p.box((a, b), (foot + 2.0, CAPITAL), (1.0, FRONT + 1.0), WOOD, skip="nud", grain="y")
+        p.box((a, b), (CAPITAL, HEAD[1]), (1.0, FRONT + 2.0), WOOD_D, skip="n", grain="x")
     bay = p.bay()
     a, b = bay
-    if strip == MIDDLE:                         # the clock's field, a bead of lighter wood round it
-        _panelled(p, bay, (CORNICE[1], HEAD[0]), stile=3.0)
-        (fa, fb), (fy0, fy1) = FIELD_U, FIELD_Y
-        for x in (fa - 1.0, fb):
-            p.box((x, x + 1.0), (fy0 - 1.0, fy1 + 1.0), (1.0, FIELD_Z + 0.5), WOOD_L, skip="n", grain="y")
-        for y in (fy0 - 1.0, fy1):
-            p.box((fa, fb), (y, y + 1.0), (1.0, FIELD_Z + 0.5), WOOD_L, skip="n", grain="x")
+    if strip == MIDDLE:
+        _clock_field(p, bay, foot)
         return p
     outer = strip in (0, len(STRIPS) - 1)
     boards = HIGH_BOARDS[1:] if not outer else HIGH_BOARDS
@@ -442,7 +485,7 @@ def _second(strip):
     floors = ((foot,) if outer else ()) + tuple(y + 1.0 for y in boards)
     tops = tuple(boards[(0 if outer else 1):]) + (HEAD[0],)
     if not outer:
-        _pigeonholes(p, bay, foot, HIGH_BOARDS[1])
+        _rack(p, bay, foot, HIGH_BOARDS[1])
     for i, (y, top) in enumerate(zip(floors, tops)):
         if outer and i == 1:
             split = a + 13.0 if strip == 0 else b - 13.0
