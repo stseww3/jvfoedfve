@@ -2,7 +2,7 @@
 
 **目标**：`plan/round2.md` 乙「全站的蒸汽干管」和 `props/pipe-bridge`（一件事，一起做）。铜的蒸汽干管从锅炉房出来，沿下平台的挡墙、大台阶侧墙、主楼的墙脚通到各楼；看得出管里有汽：阀门的填料函冒汽，低点的疏水阀隔一阵喷一次。
 **审批**：a6。表和安全阀是 a6 的一套件（总监 12:25），干管只留接口。
-**文件**：`build/scenes/obs/props/steam.py`；测试场景 `build/scenes/obs_props_steam/`（真墙：东立面南翼五跨，两个转角里是真的雨水管）；自查 `python -m scenes.obs_props_steam.fit`。
+**文件**：`build/scenes/obs/props/steam_mains.py`；测试场景 `build/scenes/obs_props_steam_mains/`（真墙：东立面南翼五跨，两个转角里是真的雨水管）；自查 `python -m scenes.obs_props_steam_mains.fit`。
 
 **约束**
 - 管是铜的（`old_copper`，室外铜一律暗一档，和雨水管同色）；法兰、弯头、墙板、管卡、截止阀（红手轮）全用 `props/pipes` 的件，不另画。
@@ -16,4 +16,4 @@
 3. **南挡墙上的干管和疏水阀**（cr2 圈的 V11）：待和 a4 对位置。
 
 **记录**
-- 11-16 第三班 m3 开卡。第一段的数都在 `steam.py` 的 `FRONT_*` 里；`east_front()` 认墙、认勒脚、认自己那一格是空的才摆，别处的场景里不出东西。
+- 11-16 第三班 m3 开卡。第一段的数都在 `steam_mains.py` 的 `FRONT_*` 里；`east_front()` 认墙、认勒脚、认自己那一格是空的才摆，别处的场景里不出东西。

@@ -1,4 +1,4 @@
-"""props/steam -- the steam mains of the hill (plan/round2.md, card plan/packages/props/steam-mains.md).
+"""props/steam_mains -- the steam mains of the hill (plan/round2.md, card plan/packages/props/steam-mains.md).
 
 The power house makes the steam and the observatory is heated by it. Until now one main showed: over
 the pipe bridge, into the ground at the bridge head and up again at the foot of the south end

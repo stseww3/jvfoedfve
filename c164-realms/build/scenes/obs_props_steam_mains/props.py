@@ -1,6 +1,7 @@
 """The models of the props/steam-mains test scene, and how gallery.py lays them out one group to a bay.
 The fittings of the main are the pipework family's: its own gallery shows them (obs_props_pipes)."""
-from scenes.obs.props import lamps, pipes, steam
+from scenes.obs.props import lamps, pipes
+from scenes.obs.props import steam_mains as steam
 
 SCALE = {**pipes.SCALE, **{name: 1.0 for name in steam.models()}}
 P = steam.PREFIX

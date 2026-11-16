@@ -7,7 +7,7 @@ of it, between the return of the middle pavilion (row 6) and the return of the s
 steam.dress() and pipes.dress(), the functions that dress the master scene, run here unchanged and
 find the same stones: the rainwater pipes stand in the two corners the main has to keep clear of.
 
-What it shows: the heating main of the south wing (props/steam.east_front) from the pilaster it
+What it shows: the heating main of the south wing (props/steam_mains.east_front) from the pilaster it
 leaves to the bend that takes it into the wall -- plates where it goes through a pilaster,
 brackets, bolted joints, the stop valve, the steam trap on the plinth's step, the bend round the
 last pilaster. What moves is not in a picture: the valve's gland weeps and the trap blows (the
@@ -16,7 +16,7 @@ motion line's particles; check.py counts them).
 The door's bays north of row 6 are not in the scene. gallery.py lays the package's own models out
 (props.GALLERY).
 
-The shots are written from the numbers below:  python -m scenes.obs_props_steam
+The shots are written from the numbers below:  python -m scenes.obs_props_steam_mains
 """
 from artkit.blocks import st
 from artkit.canvas import Canvas
@@ -27,7 +27,8 @@ from scenes.obs.common import skeleton as S
 from scenes.obs.main import _order as O
 from scenes.obs.main import _plan as P
 from scenes.obs.main import facade
-from scenes.obs.props import pipes, steam
+from scenes.obs.props import pipes
+from scenes.obs.props import steam_mains as steam
 from scenes.obs.site import _kit as site
 
 BIOME = "obs_blue"

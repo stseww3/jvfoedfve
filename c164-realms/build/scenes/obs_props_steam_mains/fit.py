@@ -1,6 +1,6 @@
-"""obs_props_steam: what the pictures cannot be trusted to show.
+"""obs_props_steam_mains: what the pictures cannot be trusted to show.
 
-    python -m scenes.obs_props_steam.fit            (in build/)
+    python -m scenes.obs_props_steam_mains.fit            (in build/)
 
 Every model of the package is held to the kit's K.settle (no face stands between two axes: the game
 and the offline pictures then light it alike), and the heating main of the east front is measured
@@ -9,11 +9,12 @@ rainwater pipes stand in, the bend round the pilaster clear of the heads of thos
 """
 import sys
 
-from scenes import obs_props_steam as scene
+from scenes import obs_props_steam_mains as scene
 from scenes.obs.common import skeleton as S
 from scenes.obs.main import _plan as P
 from scenes.obs.props import _kit as K
-from scenes.obs.props import pipes, steam
+from scenes.obs.props import pipes
+from scenes.obs.props import steam_mains as steam
 
 DOOR_Z = (-3.0, 4.0)        # the door's bays (review c332): no pipe between these
 CORNER = 0.5                # a rainwater pipe's corner: no piece of the main nearer to the return wall than this

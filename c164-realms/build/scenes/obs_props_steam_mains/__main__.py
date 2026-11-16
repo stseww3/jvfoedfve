@@ -1,4 +1,4 @@
-"""Writes shots.json of this test scene from the stage's numbers:  python -m scenes.obs_props_steam"""
+"""Writes shots.json of this test scene from the stage's numbers:  python -m scenes.obs_props_steam_mains"""
 import json
 import os
 
