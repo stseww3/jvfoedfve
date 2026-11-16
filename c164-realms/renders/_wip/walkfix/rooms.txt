@@ -1,0 +1,166 @@
+796 entities, 796 display models with a box
+
+== G the chart room: level 7; a column every half block from x 2 to 14 (| marks whole x), rows z 6.5 .. 26. o a walked place on the level, x a walked place where the body stands in a display model, h by a jump only, u/d a place half a block or more over/under the level, . nobody stands
+        | | | | | | | | | | | | |
+        2 3 4 5 6 7 8 9 0 1 2 3 4
+    6.5 ...........ooo...........
+    7.0 ...........ooo...........
+    7.5 ...ooooooooooooooooooxxx.
+    8.0 ...ooooooooooooooooooxxx.
+    8.5 .xxooooooooooooooooooxxx.
+    9.0 .xxooooooooooooooooooooo.
+    9.5 .xxooooooooooooooooooooo.
+   10.0 .xxooooooooooooooooooooo.
+   10.5 .xxoooooooxxxxxooooooooo.
+   11.0 .xxooooooouuuuuooooooooo.
+   11.5 .ooooooooouuuuuoooooooxx.
+   12.0 .xoooooooouuuuuoooooxxxx.
+   12.5 .xoooooooouuuuuoooooxxxx.
+   13.0 .xooooooxxuuuuuoooooxxxx.
+   13.5 .xooooooxxuuuuuoooooooxx.
+   14.0 .xooooooxxuuuuuooooooooo.
+   14.5 .ooooooooouuuuuooooooooo.
+   15.0 .ooooooooouuuuuooooooooo.
+   15.5 .xxooooooouuuuuooooooooo.
+   16.0 .xxxxooooouuuuuooooxxxxo.
+   16.5 .xxxxooooouuuuuooooxxxxo.
+   17.0 .xxxxooooouuuuuooooxxxxo.
+   17.5 .xxooooooouuuuuooooooooo.
+   18.0 .ooooooooouuuuuooooooooo.
+   18.5 .ooooooooooooooooooooooo.
+   19.0 .ooooooooooooooooooooooo.
+   19.5 .xxxxxooooooooooooooooxx.
+   20.0 .xxxxxooooooooooooooooxx.
+   20.5 .xxxxxooooooooooooooooxx.
+   21.0 .xxxxxooooooooooooooooxx.
+   21.5 .xxxxxooooooooooooooooxx.
+   22.0 .ooooooooooooooooooooooo.
+   22.5 .ooooooooooooooooooooooo.
+   23.0 .ooooooooooooooooooooxxx.
+   23.5 .ooooooooooooooooooooxxx.
+   24.0 .ooooooooooooooooooooxxx.
+   24.5 .ooooooooooooooooooooxxx.
+   25.0 .oooooooooooooooxxoooooo.
+   25.5 .xxxxxxxxxxxxxxxxxxxxxxx.
+   26.0 .........................
+-- the display models that reach into a body's height there (feet 7 to 8.8):
+   prop_furn_coat_stand               x  12.55 ..  13.25   z   7.55 ..   8.28   y  7.00 ..  8.86
+   prop_furn_card_cabinet             x   2.19 ..   3.03   z   8.03 ..   8.97   y  7.00 ..  8.88
+   prop_furn_card_cabinet             x   2.19 ..   3.03   z   8.97 ..   9.91   y  7.00 ..  8.88
+   prop_furn_card_cabinet             x   2.19 ..   3.03   z   9.91 ..  10.84   y  7.00 ..  8.88
+   int_chart_table_0                  x   7.05 ..   8.95   z  10.78 ..  12.84   y  7.00 ..  7.94
+   prop_paper_photo_plate             x   7.34 ..   7.91   z  11.28 ..  11.84   y  7.92 ..  7.95
+   prop_furn_writing_desk             x  12.94 ..  13.81   z  11.56 ..  13.44   y  7.00 ..  7.94
+   prop_paper_logbook_shut            x  12.92 ..  13.50   z  11.61 ..  12.08   y  7.75 ..  7.88
+   prop_paper_photo_plate_b           x   8.01 ..   8.62   z  11.70 ..  12.30   y  7.92 ..  7.95
+   prop_paper_blackboard              x   2.20 ..   2.48   z  11.80 ..  13.80   y  8.00 ..  9.50
+   prop_furn_swivel_chair             x  11.96 ..  12.74   z  11.99 ..  12.81   y  7.00 ..  7.88
+   prop_inst_calc_machine             x  13.05 ..  13.73   z  12.12 ..  13.09   y  7.75 ..  8.30
+   prop_paper_photo_plate_c           x   7.43 ..   7.95   z  12.23 ..  12.52   y  7.92 ..  7.95
+   int_chart_table_1                  x   7.05 ..   8.95   z  12.81 ..  14.59   y  7.00 ..  7.94
+   prop_lamp_desk_green               x  13.22 ..  13.90   z  12.86 ..  13.57   y  7.75 ..  8.44
+   prop_paper_photo_plate_b           x   7.22 ..   7.72   z  13.16 ..  13.66   y  7.92 ..  7.95
+   int_chart_bridge                   x   6.66 ..   9.19   z  13.27 ..  13.92   y  7.83 ..  8.77
+   prop_furn_stool                    x   6.16 ..   6.73   z  13.30 ..  13.95   y  7.00 ..  7.75
+   int_chart_table_2                  x   7.05 ..   8.95   z  14.56 ..  16.34   y  7.00 ..  7.94
+   prop_paper_photo_plate             x   8.10 ..   8.65   z  14.79 ..  15.34   y  7.92 ..  7.95
+   prop_paper_photo_plate_c           x   7.36 ..   7.89   z  15.40 ..  15.73   y  7.92 ..  7.95
+   prop_furn_drafting_table           x   2.19 ..   3.18   z  15.56 ..  17.44   y  7.00 ..  8.52
+   prop_inst_tripod_scope_comet       x  11.46 ..  13.13   z  15.99 ..  17.01   y  6.99 ..  9.41
+   prop_furn_stool                    x   3.57 ..   4.14   z  16.17 ..  16.83   y  7.00 ..  7.75
+   int_chart_table_3                  x   7.05 ..   8.95   z  16.31 ..  18.09   y  7.00 ..  7.94
+   int_chart_viewer                   x   6.94 ..   9.06   z  16.84 ..  17.81   y  7.62 ..  9.47
+   prop_furn_bench                    x  12.97 ..  13.81   z  19.56 ..  21.44   y  7.00 ..  8.02
+   prop_inst_celestial_globe          x   2.73 ..   4.48   z  19.62 ..  21.38   y  7.00 ..  8.82
+   prop_furn_trunk                    x  12.64 ..  13.34   z  22.88 ..  24.32   y  7.00 ..  7.72
+   prop_furn_library_ladder           x  10.00 ..  10.50   z  24.86 ..  25.61   y  7.00 ..  9.93
+   int_chart_shelf_a1                 x  11.44 ..  14.00   z  25.55 ..  25.99   y  7.00 .. 10.00
+   int_chart_shelf_b1                 x   9.12 ..  11.44   z  25.55 ..  25.99   y  7.00 .. 10.00
+   int_chart_shelf_c1                 x   6.88 ..   9.12   z  25.55 ..  25.99   y  7.00 .. 10.00
+   int_chart_shelf_d1                 x   4.56 ..   6.88   z  25.55 ..  25.99   y  7.00 .. 10.00
+   int_chart_shelf_e1                 x   2.00 ..   4.56   z  25.55 ..  25.99   y  7.00 .. 10.00
+
+== E the south gallery: level 7; a column every half block from x -4.5 to 16.5 (| marks whole x), rows z 2.5 .. 7. o a walked place on the level, x a walked place where the body stands in a display model, h by a jump only, u/d a place half a block or more over/under the level, . nobody stands
+         | | | | | | | | | | | | | | | | | | | | | 
+         4 3 2 1 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 
+    2.5 oouuuuuuuooouuuh...........................
+    3.0 oooooooouooooouh...........................
+    3.5 odd....ouooooouh...........................
+    4.0 odd....ouooooouhhhhhhhhhhhhhhhhhhhhhhhhhh..
+    4.5 odd....ouooooouuuuuuuuuuuuuuuuuuuuuuuuuuu..
+    5.0 odd....ouooooxxxxxxxxxooooooooooooooooooo..
+    5.5 odd....ouooooxxxxxxxxxooooooooooooooooooo..
+    6.0 ........................ooo................
+    6.5 ........................ooo................
+    7.0 ........................ooo................
+-- the display models that reach into a body's height there (feet 7 to 8.8):
+   mach_orrery_a_under_jupiter        x   7.38 ..  15.25   z  -3.07 ..   4.30   y  5.33 .. 10.04
+   mach_orrery_a_under_earth          x   9.92 ..  12.94   z  -2.48 ..   3.69   y  6.01 ..  9.26
+   mach_orrery_a_band                 x   9.00 ..  14.00   z  -2.00 ..   3.00   y  7.39 ..  9.50
+   mach_orrery_a_arm_jupiter          x   9.11 ..  13.75   z  -1.90 ..   2.75   y  6.82 .. 10.03
+   mach_orrery_a_arm_saturn           x   9.09 ..  12.39   z  -0.39 ..   2.27   y  6.97 ..  9.84
+   prop_furn_display_case             x   5.03 ..   5.97   z   5.02 ..   5.95   y  7.00 ..  8.31
+   prop_furn_card_cabinet             x   2.03 ..   2.97   z   5.11 ..   5.95   y  7.00 ..  8.88
+   prop_furn_card_cabinet             x   3.03 ..   3.97   z   5.11 ..   5.95   y  7.00 ..  8.88
+   prop_furn_instrument_cabinet       x   4.03 ..   4.97   z   5.12 ..   5.95   y  7.00 ..  8.88
+   prop_paper_logbook                 x   5.17 ..   5.84   z   5.22 ..   5.73   y  7.70 ..  7.81
+   prop_paper_sky_map_b               x  10.00 ..  13.00   z   5.83 ..   5.99   y  7.75 ..  9.75
+   prop_iron_window_arch              x  15.01 ..  15.45   z   6.93 ..  10.01   y  8.00 .. 13.54
+   prop_pipe_down_clip                x  16.01 ..  16.32   z   7.01 ..   7.42   y  8.66 ..  8.88
+   prop_pipe_down_sleeve              x  16.01 ..  16.32   z   7.01 ..   7.32   y  7.01 ..  7.10
+   prop_pipe_down                     x  16.07 ..  16.26   z   7.07 ..   7.26   y  7.03 .. 14.19
+
+== the stations of the route whose body stands in a display model (every stretch)
+   in-E05 (4.25, 7, 5.5) walk: prop_furn_card_cabinet, prop_furn_instrument_cabinet
+   in-F06 (3.5, 7, -16) walk: prop_furn_swivel_chair
+   in-F14 (12.5, 7, -12.25) walk: int_timeroom_jacket, prop_furn_swivel_chair
+   in-G06 (3.5, 7, 17) walk: prop_furn_stool
+   in-G07 (3.5, 7, 20.75) walk: prop_inst_celestial_globe
+   in-G11 (12.5, 7, 24.5) walk: prop_furn_trunk
+   in-G13 (12.5, 7, 17) walk: prop_inst_tripod_scope_comet
+   in-G16 (8, 8, 13.5) hop: int_chart_bridge
+   in-G17 (8, 8, 17.5) hop: int_chart_viewer
+   in-I10 (2.4, 18, 6.85) walk: prop_furn_swivel_chair, prop_furn_writing_desk, prop_paper_logbook
+   in-I13 (-1.1, 18, 0.5) walk: mach_scope_tube_a
+   in-J18 (8.5, 18, 30.5) no: mach_astro_tube
+   in-J19 (10.5, 18, 30.5) no: mach_astro_tube
+   in-J20 (12.5, 18, 30.5) no: mach_astro_axis, mach_astro_mount, mach_astro_tube
+   in-L05 (72.5, -6, 27.17) walk: mach_board_panel_north
+   in-L06 (72.5, -6, 30.83) walk: mach_board_panel_main, mach_board_panel_south
+   in-L20 (84.5, -6, 26.5) walk: mach_boiler_flue_turn
+   in-L23 (78.5, -6, 22.5) walk: int_power_coal
+   in-M04 (35.5, 0, -29.5) walk: mach_meridian_tube
+   19 of 184 stations
+
+== the stations of E and G
+   in-E01 [-3.5, 7.0, 0.5] walk  f 
+   in-E02 [0.5, 7.0, 0.5] walk  flrbud the cross gallery on the axis, before the pi
+   in-E03 [0.5, 7.0, 3.0] walk  f 
+   in-E04 [0.5, 7.0, 5.5] walk  flrbud the galleries' south-west corner
+   in-E05 [4.25, 7.0, 5.5] walk  f 
+   in-E06 [8.0, 7.0, 5.5] walk  flrbud before the chart room's door
+   in-E07 [11.25, 7.0, 5.5] walk  f 
+   in-E08 [14.5, 7.0, 5.5] walk  flrbud the south gallery's east end
+   in-E09 [0.5, 7.0, -4.5] walk  flrbud the galleries' north-west corner
+   in-E10 [4.5, 7.0, -4.5] walk  flrbud the north gallery at the bridge onto the rin
+   in-E11 [8.0, 7.0, -4.5] walk  flrbud before the time room's door
+   in-E12 [11.25, 7.0, -4.5] walk  f 
+   in-E13 [14.5, 7.0, -4.5] walk  flrbud the north gallery's east end
+   in-G01 [8.0, 7.0, 6.5] walk  flrbud in the chart room's door
+   in-G02 [8.0, 7.0, 9.5] walk  flrbud inside the chart room's door
+   in-G03 [5.75, 7.0, 9.5] walk  f 
+   in-G04 [3.5, 7.0, 9.5] walk  flrbud the chart room's north-west corner
+   in-G05 [3.5, 7.0, 13.25] walk  f 
+   in-G06 [3.5, 7.0, 17.0] walk  f 
+   in-G07 [3.5, 7.0, 20.75] walk  f 
+   in-G08 [3.5, 7.0, 24.5] walk  flrbud the chart room's south-west corner
+   in-G09 [6.5, 7.0, 24.5] walk  f 
+   in-G10 [9.5, 7.0, 24.5] walk  f 
+   in-G11 [12.5, 7.0, 24.5] walk  flrbud the chart room's south-east corner
+   in-G12 [12.5, 7.0, 20.75] walk  f 
+   in-G13 [12.5, 7.0, 17.0] walk  f 
+   in-G14 [12.5, 7.0, 13.25] walk  f 
+   in-G15 [12.5, 7.0, 9.5] walk  flrbud the chart room's north-east corner
+   in-G16 [8.0, 8.0, 13.5] hop  f 
+   in-G17 [8.0, 8.0, 17.5] hop  f 
+   in-G18 [8.0, 7.0, 21.5] walk {'leg': 'hop'} f 
