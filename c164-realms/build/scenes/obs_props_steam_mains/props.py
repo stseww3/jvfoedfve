@@ -6,9 +6,8 @@ from scenes.obs.props import steam_mains as steam
 SCALE = {**pipes.SCALE, **{name: 1.0 for name in steam.models()}}
 P = steam.PREFIX
 
-LONG = pipes.RUN / 16.0                 # a length's model at scale 1: three blocks, along its +z
-EAST = {"turns": (("y", 90.0),)}        # a model's +z laid to the east
-SOUTH = {}                              # and left as it is built: its +z to the south, towards the camera
+WEST = {"turns": (("y", -90.0),)}       # a piece's +z laid to the west: the side that looks away from its wall
+#                                         then looks south, at the camera
 
 
 def build_models():
@@ -18,22 +17,28 @@ def build_models():
     return {**pipes.models(), **steam.models(), wash: lamps.models()[wash]}
 
 
-def _main():
-    """A length of the copper main beside a length of the iron one, with a bolted joint each."""
-    return ("main", [(P + "main", (-LONG / 2.0, 1.3, 0.0), EAST), (pipes.PREFIX + "flange_l", (0.0, 1.3, 0.0), EAST),
-                     (pipes.PREFIX + "main_l", (-LONG / 2.0, 0.6, 0.0), EAST),
-                     (pipes.PREFIX + "flange_l", (0.0, 0.6, 0.0), EAST)],
-            (0.9, 1.5, 2.6), (0.0, 0.95, 0.0))
+def _bay():
+    """A bay of the main: the plates, the bolted joint with the ring beside it, the two brackets."""
+    return ("bay", [(P + "bay", (0.0, 1.0, 0.0), WEST)], (0.7, 1.5, 2.9), (0.0, 0.95, 0.0))
 
 
-def _trap():
-    """The steam trap on a length of the main that crosses the bay, the pot towards the camera; the
-    main lies as far over the floor as the trap's foot is under it."""
+def _valve():
+    """The bay with the stop valve and the steam trap; the main lies as far over the floor as the
+    trap's foot is under it."""
     y = -steam.TRAP_FOOT / 16.0
-    return ("trap", [(P + "main", (-LONG / 2.0, y, 0.0), EAST), (P + "trap", (0.0, y, 0.0), SOUTH)],
-            (0.9, 1.3, 1.9), (0.0, 0.5, 0.2))
+    return ("valve", [(P + "valve", (-0.3, y, 0.0), WEST)], (0.5, 1.5, 2.3), (0.0, 0.6, 0.2))
+
+
+def _loop():
+    """The expansion bend, seen from above the side that looks away from the wall."""
+    return ("loop", [(P + "loop", (-1.3, 1.0, 0.0), WEST)], (0.9, 2.3, 2.9), (0.0, 0.9, 0.5))
+
+
+def _end():
+    """The end of the stretch: the ring, the bend, the plate on the wall it goes into."""
+    return ("end", [(P + "end", (0.3, 1.0, 0.0), WEST)], (1.0, 1.6, 1.9), (0.0, 0.95, -0.1))
 
 
 # name, [(model, offset from the bay's floor centre or None to stand on it, display options)],
 # camera, look-at; the backdrop wall is 7.5 blocks north of the bay's centre
-GALLERY = [_main(), _trap()]
+GALLERY = [_bay(), _valve(), _loop(), _end()]

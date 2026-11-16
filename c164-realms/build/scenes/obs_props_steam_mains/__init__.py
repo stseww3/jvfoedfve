@@ -9,8 +9,8 @@ find the same stones: the rainwater pipes stand in the two corners the main has 
 
 What it shows: the heating main of the south wing (props/steam_mains.east_front) from the pilaster it
 leaves to the bend that takes it into the wall -- plates where it goes through a pilaster,
-brackets, bolted joints, the stop valve, the steam trap on the plinth's step, the bend round the
-last pilaster. What moves is not in a picture: the valve's gland weeps and the trap blows (the
+brackets, bolted joints, the red rings of its medium, the stop valve, the steam trap on the plinth's
+step, the copper bend round the last pilaster: five pieces in all. What moves is not in a picture: the valve's gland weeps and the trap blows (the
 motion line's particles; check.py counts them).
 
 The door's bays north of row 6 are not in the scene. gallery.py lays the package's own models out
@@ -114,24 +114,28 @@ def shots():
         out.append({"name": name, "pos": [round(float(v), 2) for v in pos],
                     "look_at": [round(float(v), 2) for v in look_at], "time": TIME})
 
-    x, y, bend = steam.front_line()
+    x, y = steam.front_line()
+    places = steam.front_places()
     start = float(S.pilaster_z(steam.FRONT_FROM))
-    last = float(S.pilaster_z(steam.FRONT_THROUGH[-1]))
-    valve, trap = last - steam.FRONT_VALVE, last - steam.FRONT_TRAP
+    last = float(S.pilaster_z(steam.FRONT_BAYS[-1]))
+    valve, trap, end = places["valve"][0], places["trap"][0], places["end"][0]
     turn = S.pilaster_z(steam.FRONT_ROUND) + 0.5        # the middle of the pilaster the bend goes round
-    end = S.pilaster_z(steam.FRONT_ROUND) - steam.FRONT_END
+    bend = x + steam.LOOP_OUT / 16.0                    # the bend's outer length
+    joint = places["bay"][-1]                           # the bolted joint of the bay before the valve
 
     shot("board_v3", (24.5, S.EYE, 12.5), (16.5, 6.5, 6.5))
     shot("board_v4", (27.5, S.EYE, 3.5), (17.5, 4.5, 0.5))
     shot("front", (x + 14.0, S.EYE, (start + end) / 2.0), (x, 3.0, (start + end) / 2.0))
+    shot("ten", (x + 10.0, S.EYE, trap), (x, y, trap))                  # the fine rule's two looks at one
+    shot("two", (x + 2.0, S.EYE, trap + 0.4), (x, y - 0.1, trap + 0.4))     # place: from 10 blocks and from 2
     shot("along_north", (x + 1.6, S.EYE, start + 1.5), (x, y, turn))
     shot("along_south", (x + 1.9, S.EYE, end - 1.8), (x, y, last + 2.0))
     shot("walk", (x + 4.5, S.EYE, valve + 4.0), (x, y, trap))
     shot("valve", (x + 2.1, y + 0.5, valve + 1.5), (x, y, valve - 0.3))
-    shot("trap", (x + 1.9, y + 0.1, trap - 1.3), (x + 0.3, y - 0.35, trap))
-    shot("bend", (bend + 2.6, y + 1.3, turn + 2.4), (bend - 0.4, y, turn))
+    shot("trap", (x + 2.2, y + 0.25, trap - 0.9), (x + 0.35, y - 0.4, trap))
+    shot("bend", (bend + 2.2, y + 1.5, turn + 1.9), (bend - 0.5, y, turn))
     shot("bend_under", (bend + 1.2, S.EYE - 0.5, turn - 2.2), (bend - 0.3, y, turn))
     shot("into_wall", (x + 1.7, y + 0.5, end - 1.6), (x, y, end))
-    shot("pilaster", (x + 2.2, y + 0.6, last - 1.6), (x, y, last + 0.5))
+    shot("joint", (x + 1.8, y + 0.4, joint + 0.9), (x, y, joint - 0.2))
     shot("start", (x + 2.4, y + 0.5, start - 2.6), (x, y, start))
     return out
