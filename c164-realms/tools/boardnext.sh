@@ -3,7 +3,11 @@
 # few seconds of arithmetic; nothing heavy): take the assembly's head into this branch and print the
 # job that draws and shoots its board on a node (tools/boardround.py).
 #
-#   bash tools/boardnext.sh            from c164-realms/ of the render station's work tree
+#   bash tools/boardnext.sh [<commit>]   from c164-realms/ of the render station's work tree
+#
+# Without a commit the board is the assembly's head's; with one it is that commit's, which must be
+# of the assembly (the head the merge station names as its last green one, the one a save is
+# exported from: the board and the save are then of the same code).
 #
 #   1. fetch the assembly and name the commit its build/ is of: the oldest commit down the
 #      assembly's first parents with the same build/ tree. The pictures are named after that one,
@@ -27,6 +31,12 @@ if [ -n "$(git status --porcelain -- . | head -1)" ]; then
 fi
 timeout 180 git fetch -q origin "$ASSEMBLY" || { echo "boardnext: the assembly could not be fetched"; exit 1; }
 A=$(git rev-parse FETCH_HEAD)
+if [ $# -ge 1 ]; then
+    named=$(git rev-parse --verify --quiet "$1^{commit}") || { echo "boardnext: $1 is no commit here"; exit 1; }
+    git merge-base --is-ancestor "$named" "$A" || { echo "boardnext: $1 is not a commit of the assembly (its head is ${A:0:8})"; exit 1; }
+    [ "$named" = "$A" ] || echo "the assembly's head is ${A:0:8}; the board is made of ${named:0:8}, as asked"
+    A=$named
+fi
 T=$(git rev-parse "$A:c164-realms/build")
 B=$A
 for c in $(git rev-list --first-parent "$A" | head -400); do
