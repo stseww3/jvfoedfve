@@ -8,29 +8,31 @@ package makes what stands in front of it and is a machine: it is seen to record 
               the drum with its sheet of paper; a clockwork case at its east end with a seconds
               dial and a fly-ball governor; in front of the drum a rail with the pen carriage.
               Three display entities: the frame, the drum (it turns about its axle, once in
-              MK.DRUM_REV), the pen (it is jerked a pixel along its rail by every second's
-              contact, which is what draws the second marks on the sheet). The trace on the sheet
-              is drawn as it lies on a real one: a line round the drum for every turn, a jog in
-              it for every second, from the west end up to where the pen stands.
+              MK.DRUM_REV), the pen on its rail (a part of its own, so that the motion line can
+              move it). The trace on the sheet is drawn as it lies on a real one: a line round
+              the drum for every turn, a jog in it for every second, from the west end up to
+              where the pen stands.
   telegraph   the register on the console west of the key. A wooden base, the pair of coils and
               the armature lever over them, a reel of paper tape on two brackets, the tape down
-              through the printing head and out over a roller at the front. Two entities: the
-              machine, and the tape that hangs from that roller over the edge of the shelf (left
-              out with tape=False where it stands on something else).
-  tube        the terminal of the pneumatic tube on a wall: the brass tube down the wall, a copper
-              elbow, the mouth, a tray with a carrier in it. The run up to the ceiling is lengths
-              of the same tube with a coupling and a wall clip each (one entity a length).
+              through the printing head and out to the front. Two entities: the machine, and the
+              tape that hangs over the edge of the shelf and curls at its end (left out with
+              tape=False where the register stands on something else). Lying on the shelf the
+              tape would be a line from the door: the eye is little higher than the shelf.
+  tube        the pneumatic tube on a wall, no more than five and a half pixels off it. Two
+              entities: the terminal (a board on the wall, the brass tube down it, its bell mouth
+              at the height of the hand, under the mouth a tray with a carrier in it) and the run
+              above it, which ends in a copper elbow into the wall, just under whatever stands
+              at the head of the pier (HEAD above the foot).
 
 The world clocks of the card (mach_rec_clockwall) are not made here: the room has its own row of
 five stopped slave dials (interiors/timeroom, STATUS "recorders"), and a second set would be the
 same thing twice on one wall.
 
-Placing. place(canvas, kind, pos, facing=, origin=) is for whoever dresses a room; pos is the
-middle of the foot of a standing piece (drum, telegraph) or the point on the wall face behind the
-foot of the terminal (tube), as the props line has it. build() is the master scene's call: it
-reads the table of slots the time room keeps (interiors/timeroom.SLOTS) and places the three
-there, so the entities count against the machines' budget; until that room is in the tree it
-places nothing. A room that would rather call place() itself says PLACES_RECORDERS = True.
+Placing. The room places them: place(canvas, kind, pos, facing=, origin=) is what it calls for
+each of its slots (interiors/timeroom.SLOTS; agreed with that room, 11-16). pos is the middle of
+the foot of a standing piece (drum, telegraph) or the point on the wall face behind the foot of
+the terminal (tube), as the props line has it. The machines line runs before the rooms are
+dressed, so build(), the master scene's call, places nothing.
 
 Nothing here gives light: the console's lamps are the room's.
 """
@@ -87,24 +89,26 @@ SECONDS_DIAL = (                        # the clockwork's seconds dial; the hand
     ".ccc.",
 )
 DIAL_COLOURS = dict(c=P.RAMPS["porcelain"][3], h=P.RAMPS["iron"][0], b=P.RAMPS["brass"][3])
-PEN_JERK = (PX, 3, 4)                   # blocks the pen is thrown along its rail at a second's contact, ticks out, ticks back
 
 # ---- the telegraph register
 T_BASE = (14.0, 12.0, 2.0)
 LANE = (-4.5, -1.5)                     # the tape's lane along x: the reel, the printing head and the hanging tape are in it
-REEL = (11.5, -3.0, 3.0)                # the reel's axis (above the foot, z) and the radius of the roll on it
+REEL = (12.0, -3.0, 3.0)                # the reel's axis (above the foot, z) and the radius of the roll on it
 HEAD = (8.0, 0.0)                       # where the tape turns forward under the printing head: above the foot, z
-EDGE = 8.5                              # z of the roller the tape hangs from: half a pixel beyond the edge of a shelf 16 deep
+SHELF = 8.0                             # z of the front edge of the shelf: a shelf 16 deep, the register in its middle
+EDGE = SHELF + 0.5                      # z of the front of the tape that hangs over that edge
 HANG = 19.0                             # pixels the tape hangs below that roller before it curls
 TAPE_T = 0.25                           # the thickness of the tape
 MARKS = "ii.i.i.ii.i.ii.i.i.i.ii.ii.i.i.ii.i.i.ii.i."    # what the wheel has printed, along the tape
 
-# ---- the pneumatic tube
+# ---- the pneumatic tube (x along the wall, z out of it, 0 the point of the wall behind the foot)
 TUBE_R = 1.5                            # the tube is three pixels thick
-TUBE_OFF = 3.0                          # its axis off the wall
-TERMINAL = 24.0                         # the terminal, foot to top
-LENGTH = 36.0                           # one length of the run above it
-RISE = 6.0                              # blocks from the terminal's foot to the ceiling, unless place() is told
+TUBE_OFF = 2.75                         # its axis off the wall
+BOARD = (5.0, 3.0, 27.0)                # the board on the wall: half its width, its foot and its top above pos
+MOUTH = 11.0                            # the lip of the bell mouth above pos: at the height of the hand
+TRAY = 4.0                              # the floor of the tray under it
+TERMINAL = 36.0                         # where the terminal's model ends and the run's begins
+HEAD = 79.5                             # the top of the run, the flange of its elbow on the wall: just under 5 blocks above pos
 
 
 def _marks(n, start=0):
@@ -120,7 +124,8 @@ def _tape_face(name, n, across=3, start=0):
 
 def _prism(m, a0, a1, c, radius, mat, cap, sides=8, faces=None, seed=None):
     """A prism along x in one tone all round, for a part that turns: Model.tube paints a highlight
-    on the side that looks at the light, and a wheel would carry it round with it."""
+    on the side that looks at the light and the game shades a face by where it looks at rest, and a
+    wheel would carry both round with it."""
     hw = radius * math.tan(math.pi / sides)
     lo, hi = (a0, c[0] - hw, c[1] - radius), (a1, c[0] + hw, c[1] + radius)
     side = mat.variant(0, "ends") if hasattr(mat, "variant") else mat
@@ -130,7 +135,7 @@ def _prism(m, a0, a1, c, radius, mat, cap, sides=8, faces=None, seed=None):
     for i in range(sides // 2):
         angle = 360.0 * i / sides
         m.box(lo, hi, mat, rot=("x", angle, ((a0 + a1) / 2.0, c[0], c[1])) if angle else None, skip="du",
-              faces=look, seed=seed, grain="x")
+              faces=look, seed=seed, grain="x", shade=False)
     return m
 
 
@@ -175,7 +180,8 @@ def _drum():
     reach = STANDARDS[1] + 0.5 - DRUM_X                                 # to the outer face of a standard
     _prism(m, -reach, reach, (0.0, 0.0), 0.75, IRON, K.flat("iron", 4), sides=4)
     # the bar that clamps the sheet: it lies along the drum and shows that the drum turns
-    m.box((-half, DRUM_R, -0.5), (half, DRUM_R + 0.5, 0.5), K.flat("brass", 3), rot=("x", 45.0, (0.0, 0.0, 0.0)))
+    m.box((-half, DRUM_R, -0.5), (half, DRUM_R + 0.5, 0.5), K.flat("brass", 3), rot=("x", 45.0, (0.0, 0.0, 0.0)),
+          shade=False)
     return m
 
 
@@ -209,8 +215,9 @@ def _telegraph():
     # the tape: down from the front of the roll, under the printing head, forward to the roller at the edge
     front = rz + rr
     m.box((x0, hy, front - TAPE_T), (x1, ry, front), PAPER, faces={"s": _tape_face(name + "_down", int(round(ry - hy)))})
-    m.box((x0, hy, front - TAPE_T), (x1, hy + TAPE_T, EDGE), PAPER,
-          faces={"u": _tape_face(name + "_out", int(round(EDGE - front)), start=5)})
+    m.box((x0, hy, front), (x1, hy + TAPE_T, SHELF), PAPER,
+          faces={"u": _tape_face(name + "_out", int(round(SHELF - front)), start=5)})
+    m.box((x0, hy, SHELF), (x1, hy + TAPE_T, EDGE), PAPER)
     m.box((x0 + 0.25, h, hz), (x1 - 0.25, hy - 2.0, hz + 1.5), BRASS_D)                         # the head's pedestal
     m.box((x0 - 0.5, hy - 2.0, hz - 0.5), (x1 + 0.5, hy, hz + 2.0), BRASS)                      # the head: the tape runs over it
     for x in (x0 - 0.75, x1 + 0.25):
@@ -251,38 +258,41 @@ def _terminal():
     foot; the wall is the plane z = 0 and the terminal stands out along +z."""
     m = M.Model(PREFIX + "tube")
     z = TUBE_OFF
-    m.box((-5.0, 0.0, 0.0), (5.0, TERMINAL, 1.0), WOOD_LIGHT, skip="n", grain="y")              # the board on the wall
-    m.tube("y", (0.0, z), 17.0, TERMINAL, TUBE_R, BRASS)
-    m.tube("y", (0.0, z), TERMINAL - 1.5, TERMINAL, TUBE_R + 0.5, BRASS_D)
-    bend = [(0.0, 17.0, z), (0.0, 14.5, z), (0.0, 13.0, z + 0.6), (0.0, 11.6, z + 2.0)]
-    m.hose(bend, TUBE_R + 0.25, COPPER)                                                         # the elbow
-    end = (0.0, 9.8, z + 3.8)
-    with m.aimed(bend[-1], end, "y") as length:                                                 # the mouth
-        m.taper("y", (0.0, 0.0), 0.0, length, TUBE_R + 0.4, TUBE_R + 1.4, BRASS, steps=2)
-    m.box((-4.5, 1.0, 1.0), (4.5, 1.75, 9.0), IRON_D)                                           # the tray under it
-    m.box((-4.5, 1.75, 8.25), (4.5, 3.25, 9.0), IRON, grain="x")
+    half, foot, top = BOARD
+    m.box((-half, foot, 0.0), (half, top, 1.0), WOOD_LIGHT, skip="n", grain="y")                # the board on the wall
+    m.tube("y", (0.0, z), MOUTH + 3.0, TERMINAL, TUBE_R, BRASS)
+    m.taper("y", (0.0, z), MOUTH, MOUTH + 3.0, TUBE_R + 1.0, TUBE_R + 0.25, BRASS_D, steps=2)   # the bell mouth
+    m.box((-2.5, top - 4.0, 1.0), (2.5, top - 3.0, z + TUBE_R + 0.5), IRON_D)                   # the clip that holds it to the board
+    lip = z + TUBE_R + 1.25                                                                     # 5.5: the tray's front
+    m.box((-4.5, TRAY, 1.0), (4.5, TRAY + 0.75, lip), IRON_D)                                   # the tray under the mouth
+    m.box((-4.5, TRAY + 0.75, lip - 0.75), (4.5, TRAY + 2.5, lip), IRON, grain="x")
     for x in (-4.5, 3.75):
-        m.box((x, 1.75, 1.0), (x + 0.75, 4.5, 8.25), IRON, grain="z")
-    m.tube("x", (3.25, 5.0), -3.0, 3.0, 1.5, COPPER)                                            # a carrier in the tray
+        m.box((x, TRAY + 0.75, 1.0), (x + 0.75, TRAY + 3.5, lip - 0.75), IRON, grain="z")
+    m.tube("x", (TRAY + 2.0, z + 0.25), -3.0, 3.0, 1.25, COPPER)                                # a carrier in the tray
     for x in (-3.5, 3.0):
-        m.tube("x", (3.25, 5.0), x, x + 0.5, 1.25, K.flat("cream", 1), sides=8)
+        m.tube("x", (TRAY + 2.0, z + 0.25), x, x + 0.5, 1.0, K.flat("cream", 1), sides=8)       # its two felts
     return m
 
 
-def _length():
-    """One length of the tube's run up the wall: the tube, a coupling at its top, a clip that holds
-    it to the wall. Anchor: the point on the wall behind its foot."""
+def _run():
+    """The run of the tube over the terminal: the tube, a coupling at its foot, a clip, and at its
+    head the copper elbow into the wall with its flange. Anchor: the point on the wall behind its
+    foot (TERMINAL above the terminal's)."""
     m = M.Model(PREFIX + "tube_run")
     z = TUBE_OFF
-    m.tube("y", (0.0, z), 0.0, LENGTH, TUBE_R, BRASS)
-    m.tube("y", (0.0, z), LENGTH - 2.0, LENGTH, TUBE_R + 0.5, BRASS_D)
-    m.box((-2.25, LENGTH / 2.0 - 0.5, 0.0), (2.25, LENGTH / 2.0 + 0.5, z + TUBE_R + 0.5), IRON_D)
+    top = HEAD - TERMINAL                               # the top of the flange
+    turn = top - 2.25                                   # the height of the elbow's leg into the wall
+    m.tube("y", (0.0, z), 0.0, turn - 2.5, TUBE_R, BRASS)
+    m.tube("y", (0.0, z), 0.0, 2.0, TUBE_R + 0.5, BRASS_D)
+    m.box((-2.5, turn - 16.0, 0.0), (2.5, turn - 15.0, z + TUBE_R + 0.5), IRON_D)
+    m.hose([(0.0, turn - 3.0, z), (0.0, turn - 1.0, z), (0.0, turn, z - 1.25), (0.0, turn, 0.5)], TUBE_R + 0.25, COPPER)
+    m.box((-2.25, turn - 2.25, 0.0), (2.25, top, 0.5), BRASS_D, skip="n")
     return m
 
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    made = (_drum_frame(), _drum(), _pen(), _telegraph(), _tape(), _terminal(), _length())
+    made = (_drum_frame(), _drum(), _pen(), _telegraph(), _tape(), _terminal(), _run())
     return {m.name: m for m in made}
 
 
@@ -304,9 +314,6 @@ def _drum_at(canvas, pos, yaw, origin):
     if MK is not None:
         MK.spin(canvas, "x", MK.DRUM_REV)               # the top of the drum comes forward, to the pen
     n += K.put(canvas, own[PREFIX + "pen"], _at(pos, yaw, (PEN_X, RAIL[0], RAIL[1])), yaw=yaw, origin=origin)
-    if MK is not None:
-        throw, out, back = PEN_JERK
-        MK.slide(canvas, "x", [(0, throw, out), (out, 0.0, back)], MK.SECOND)
     return n
 
 
@@ -318,14 +325,11 @@ def _telegraph_at(canvas, pos, yaw, origin, tape=True):
     return n
 
 
-def _tube_at(canvas, pos, facing, origin, rise=RISE):
+def _tube_at(canvas, pos, facing, origin):
     own = _models()
     n = K.put(canvas, own[PREFIX + "tube"], pos, mount="wall", facing=facing, origin=origin)
-    y = TERMINAL
-    while y < rise * 16.0 - 1e-6:
-        n += K.put(canvas, own[PREFIX + "tube_run"], (pos[0], pos[1] + y * PX, pos[2]), mount="wall", facing=facing,
-                   origin=origin)
-        y += LENGTH
+    n += K.put(canvas, own[PREFIX + "tube_run"], (pos[0], pos[1] + TERMINAL * PX, pos[2]), mount="wall", facing=facing,
+               origin=origin)
     return n
 
 
@@ -333,11 +337,12 @@ def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), yaw=None, **how):
     """Place one of KINDS; returns the number of display entities.
 
     drum, telegraph   pos is the middle of the foot; the front looks `facing` (or is turned yaw).
-                      telegraph: tape=False leaves out the tape that hangs over the shelf's edge,
-                      which is 8 pixels in front of pos.
+                      telegraph: the tape hangs over the front edge of the shelf, which is 8 pixels
+                      in front of pos; tape=False leaves it out, where the register stands on
+                      something else.
     tube              pos is the point on the wall face behind the middle of the terminal's foot,
-                      `facing` the way that face looks; rise= is the height from there to the
-                      ceiling in blocks (RISE), the run of tube is made that long.
+                      `facing` the way that face looks. The mouth is 11 pixels above pos, the run
+                      ends just under 5 blocks above it.
     """
     if kind == "tube":
         return _tube_at(canvas, pos, facing, origin, **how)
@@ -349,29 +354,7 @@ def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), yaw=None, **how):
     raise KeyError(f"machines/rec makes {', '.join(KINDS)}; not {kind!r}")
 
 
-def on_console(x, half, east_end):
-    """x of a piece `half` blocks wide to either side of its middle, kept a pixel inside the east end
-    of the shelf it stands on."""
-    return min(x, east_end - half - PX)
-
-
 def build(canvas, origin=(0, 0, 0)):
-    """The master scene's call: the three machines at the slots the time room keeps for them.
-    Nothing while interiors/timeroom is not in the tree, or when that room places them itself."""
-    try:
-        from ..interiors import timeroom
-    except ImportError:
-        return 0
-    slots = getattr(timeroom, "SLOTS", None)
-    if not slots or getattr(timeroom, "PLACES_RECORDERS", False):
-        return 0
-    n = 0
-    for kind in KINDS:
-        slot = slots.get(kind)
-        if slot is None:
-            continue
-        x, y, z = slot["pos"]
-        if kind == "drum" and hasattr(timeroom, "CONSOLE_X"):
-            x = on_console(x, BASE[0] / 2.0 * PX, timeroom.CONSOLE_X[1] + 1.0)
-        n += place(canvas, kind, (x, y, z), facing=slot.get("facing", "south"), origin=origin)
-    return n
+    """The master scene's call. Nothing: the time room places the machines at its slots when it is
+    dressed (interiors/timeroom, PLACES_RECORDERS), which is after the machines line has run."""
+    return 0
