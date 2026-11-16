@@ -772,6 +772,14 @@ def _rollseat():
         box(-3.0, -3.0, RUN - 3.5, 3.0, 3.0, RUN + 1.5, IRON, seed=613)                 # the bearing
         box(-CORD_R - 0.5, low + 7.0, RUN + 3.5, -CORD_R + 0.5, 0.0, RUN + 4.5, IRON_B, grain="y", seed=614)    # the cord
         box(-3.5, low, RUN + 1.75, 2.0, low + 7.0, RUN + 6.25, IRON, seed=615)          # its weight
+        # the lining of the pocket the weight hangs in: an iron plate on the pocket's outer side,
+        # which is the back of the dome's copper skin and would show green into the room (dome
+        # #70004); three rows high, the plate's own rivets at its corners
+        wall = RUN + PX / 2.0
+        box(face, low - 1.0, wall - 0.5, face + PX, low - 1.0 + 3.0 * PX, wall, IRON_D, seed=616)
+        for x in (face + 1.5, face + PX - 2.5):
+            for y in (low + 0.5, low + PX, low + 2.0 * PX, low + 3.0 * PX - 3.5):
+                box(x, y, wall - 1.0, x + 1.0, y + 1.0, wall - 0.5, IRON_B, seed=617)
     return d
 
 
