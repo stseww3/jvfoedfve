@@ -21,7 +21,9 @@ It needs neither a server nor the game window and draws nothing: seconds for a t
 
 Each check prints PASS, WARN or FAIL; the exit code is 1 when one fails.
 
-  regen      the scene, its models, resource pack, data pack and look generate from nothing
+  regen      the scene, its models, resource pack, data pack and look generate from nothing; the
+             data pack holds no file of a registry (Realms takes no world with experimental
+             settings; the look's two files are named until they have moved into the shaders)
   conflicts  no resource-pack file is written by two packages; files lie in their category's
              folders and have names the game reads; model names carry their category's prefix
              (plan/roles/INTERFACE.md 4). A package's test scene is held to the same table: the
@@ -33,14 +35,23 @@ Each check prints PASS, WARN or FAIL; the exit code is 1 when one fails.
   blocks     the blocks placed, and those block displays show, are in the occupancy table
   flatwall   no wall face runs flat (one block state, no relief) over more than 5x5
   entities   every display entity shows a model of the pack; counts against the budget;
-             16 pixels to the block; a piece drawn out along one axis has an even picture along it
+             16 pixels to the block; a piece drawn out along one axis has an even picture along it;
+             a model shown through a matrix that is no plain turn (leant over, sheared) is measured
+             face by face on the whole matrix: no face stretched or skewed
   views      display entities inside each shot's view, against the per-view budget; how many the
-             game draws whatever the view; how many stand too far from the camera to be sent
+             game draws whatever the view; how many stand too far from the camera to be sent;
+             a shot that stands at one of the skeleton's locked cameras and looks elsewhere
   sight      nothing stands between the arrival view (skeleton.V1) and what its picture has to
              show: the skyline (domes, clock tower, time-ball mast), the comet's head, the front
-             from y 4 up; the station's canopy keeps to the top eighth of the picture. Worked out
-             from the blocks and the display entities, without drawing (tools/sightline.py). For
-             the master scene, and for a test scene with a shot at V1
+             from y 4 up; and nothing of the cable station stands in the part of that view it
+             keeps clear (skeleton.V1_CLEAR, V1_COMET), nor a post the full height in the
+             picture's left third. Worked out from the blocks and the display entities, without
+             drawing (tools/sightline.py). For the master scene, and for a test scene with a
+             shot at V1
+  motion     what the scene registers as moving (scenes/obs/motion/_kit.py) makes a loop within
+             the budget: commands in the busiest tick and on average, function files, a chain's
+             length; a blinking lamp's other model and our sound events are in the pack; no two
+             parts of one name stand on one spot. Steps or limits set by hand are a warning
 
 What a script cannot judge (doors a player fits through, storey heights, the wording of signs,
 whether a repainted block is used for what it was repainted as) is read off the pictures and the
@@ -75,6 +86,7 @@ from artkit import mood as MOOD  # noqa: E402
 from scenes.obs.common import blocks as B  # noqa: E402
 from scenes.obs.common import palette as P  # noqa: E402
 from scenes.obs.common import skeleton as S  # noqa: E402
+from scenes.obs.motion import _kit as MOTION  # noqa: E402
 
 MODEL_NS = "c164"            # artkit.models.write_pack's namespace
 SHOWN = 12                   # lines of detail per finding before "... and N more"
@@ -196,6 +208,29 @@ def category_of(scene, name):
 
 
 # ---- regen -------------------------------------------------------------------------------------
+# What a data pack may hold: functions, tags, structures, advancements, loot tables, predicates,
+# recipes and item modifiers, the folder of each straight under its namespace. A file of any
+# registry (a biome under worldgen/, a dimension, a timeline, a damage type, an enchantment, a
+# variant ...) makes the game mark the world as one with experimental settings, and Realms takes
+# no such world, a map of the content library no more than an upload (plan/roles/COMMON.md 5, red
+# line 5; A0 11-16 07:53, announcement #1196). The look's two files are let through and named
+# until the sky line has moved them into the resource pack's core shaders (A0 #65808): then
+# DATA_LET is empty.
+DATA_KINDS = ("function", "tags", "structure", "advancement", "loot_table", "predicate", "recipe",
+              "item_modifier")
+DATA_LET = ("data/c164art/worldgen/biome/obs_blue.json", "data/c164art/timeline/obs_looks.json")
+
+
+def registry_files(root):
+    """The files of a data pack that are not of the kinds it may hold: [path under the pack]."""
+    out = []
+    for path in files_under(root):
+        parts = path.split("/")
+        if parts[0] == "data" and len(parts) >= 3 and parts[2] not in DATA_KINDS:
+            out.append(path)
+    return out
+
+
 def regen(rep, name, work):
     """Generate what the drivers generate, from nothing. Returns what the other checks read."""
     t0 = time.time()
@@ -214,6 +249,7 @@ def regen(rep, name, work):
         words = []
         if canvas is not None:
             manifest = X.export(canvas, data, "check")
+            MOTION.write(canvas, data, "check")
             words += [f"{manifest['blocks']} blocks", f"{manifest['entities']} entities"]
         else:
             words.append("no build(): a model gallery")
@@ -231,9 +267,23 @@ def regen(rep, name, work):
               f"{len(files_under(data))} data-pack files"]
     if look is not None:
         words.append(f"look: {len(look.BIOMES)} biomes, {len(getattr(look, 'TIMELINES', None) or {})} timelines")
-    rep.add("regen", "PASS", ", ".join(words) + f" ({time.time() - t0:.1f} s)")
+    found = registry_files(data)
+    banned = [f for f in found if f not in DATA_LET]
+    status, details = "PASS", []
+    if banned:
+        status = "FAIL"
+        kinds = sorted({f.split("/")[2] for f in banned})
+        words.append(f"{len(banned)} registry files in the data pack ({', '.join(kinds)})")
+        details = [f"the data pack holds files of a registry: Realms takes no world with experimental settings. "
+                   f"A data pack may hold {', '.join(DATA_KINDS)} and nothing else (plan/roles/COMMON.md 5)"]
+        details += clip(banned)
+    elif found:
+        status = "WARN"
+        details = [f"registry files in the data pack, let through until the look has moved into the resource "
+                   f"pack's shaders (A0 11-16): {', '.join(f.partition('/')[2] for f in found)}"]
+    rep.add("regen", status, ", ".join(words) + f" ({time.time() - t0:.1f} s)", details)
     return {"scene": scene, "name": name, "category": category_of(scene, name), "builder": builder,
-            "canvas": canvas, "models": models, "pack": pack}
+            "canvas": canvas, "models": models, "pack": pack, "look": look}
 
 
 # ---- conflicts ---------------------------------------------------------------------------------
@@ -591,11 +641,67 @@ def blocks(rep, got):
     words = f"{len(used)} kinds of block placed"
     if shown:
         words += f", {len(shown)} kinds shown by block displays"
-    if outside:
-        rep.add("blocks", "WARN", f"{words}, {len(outside)} not in the occupancy table "
-                f"(add them to the table through S2, or use a block of the table)", clip(outside))
+    at, tall, alone = _barriers(canvas)
+    if at:
+        words += f", {len(at)} barrier cells ({_span(at)})"
+    more = []
+    if tall:
+        more.append(f"{len(tall)} barrier cells stand more than {BARRIER_HIGH} high ({_span(tall)}): a barrier is "
+                    f"the collision of a closed door or gate made of models, in the plane of its leaf, two high "
+                    f"and no wider than the leaf (A0, 11-16 05:07)")
+    if alone:
+        more.append(f"{len(alone)} barrier cells have no model within {BARRIER_NEAR:g} blocks ({_span(alone)}): "
+                    f"not the leaf of a door or gate; a barrier anywhere else is the wall nobody sees "
+                    f"(A0 #457, 4)")
+    lines = clip(outside) + more
+    if tall:
+        rep.add("blocks", "FAIL", f"{words}: barriers more than {BARRIER_HIGH} high", lines)
+    elif outside or alone:
+        told = []
+        if outside:
+            told.append(f"{len(outside)} not in the occupancy table (add them to the table through S2, or use "
+                        f"a block of the table)")
+        if alone:
+            told.append("barriers away from any model")
+        rep.add("blocks", "WARN", f"{words}, {'; '.join(told)}", lines)
     else:
         rep.add("blocks", "PASS", f"{words}, all in the occupancy table")
+
+
+BARRIER_HIGH = 2            # blocks: the collision of a door leaf is two high
+BARRIER_NEAR = 3.0          # blocks: a leaf three wide, its model set at one jamb, has its far cell 2.5 away
+
+
+def _span(cells):
+    """Where a set of cells lies: x 16, y 0..1, z -5..5."""
+    out = []
+    for name, k in (("x", 0), ("y", 1), ("z", 2)):
+        lo, hi = min(c[k] for c in cells), max(c[k] for c in cells)
+        out.append(f"{name} {lo}" if lo == hi else f"{name} {lo}..{hi}")
+    return ", ".join(out)
+
+
+def _barriers(canvas):
+    """The barrier cells of a scene, those of them in a run more than two high, and those with no
+    model near them. A barrier is the collision of a closed door or gate that is made of models, in
+    the plane of the leaf, two high, no wider than the leaf (A0, 11-16 05:07). The width of the leaf
+    is not known here: what is told apart is a barrier beside a model from one that stands alone."""
+    at = {p for p, s in canvas.b.items() if s.partition("[")[0].split(":", 1)[-1] == B.BARRIER}
+    tall = set()
+    for x, y, z in at:
+        if (x, y - 1, z) in at:
+            continue
+        run = 1
+        while (x, y + run, z) in at:
+            run += 1
+        if run > BARRIER_HIGH:
+            tall |= {(x, y + k, z) for k in range(run)}
+    models = [(mx, my, mz) for mx, my, mz, nbt in canvas.entities
+              if str(nbt.get("id", "")).split(":", 1)[-1] in ("item_display", "block_display")]
+    alone = {(x, y, z) for x, y, z in at
+             if not any(abs(mx - x - 0.5) <= BARRIER_NEAR and abs(my - y - 0.5) <= BARRIER_NEAR
+                        and abs(mz - z - 0.5) <= BARRIER_NEAR for mx, my, mz in models)}
+    return at, tall, alone
 
 
 # ---- flatwall ----------------------------------------------------------------------------------
@@ -693,11 +799,39 @@ def _smear(model, axis):
     return sorted(uneven), len(skewed)
 
 
+HALF_TURN = np.diag([-1.0, 1.0, -1.0])      # the item renderer shows a model turned half a turn about y
+SQUARE = 1e-3                               # the cosine two edges of a face may end up at and still be square
+
+
+def _face_densities(model, nbt):
+    """What the display's whole matrix (left turn, scale, right turn) makes of every face of the
+    model that gets a picture: [(pixels to the block along the face's one edge, along the other,
+    the cosine of the angle the two end up at)]. A scale that is not along the model's own axes
+    says nothing about a face; where its edges go does."""
+    a = SL._shown_matrix(nbt, np.eye(3)) @ HALF_TURN
+    out = []
+    for pi, f, _mat, _w, _h, _grain, _seed in model.faces():
+        part = model.parts[pi]
+        _normal, ua, va = M.FACE_AXES[f]
+        edges = []
+        for axis in (ua, va):
+            e = [0.0, 0.0, 0.0]
+            e[axis] = 1.0
+            if part["rot"]:
+                e = M._qrot(part["rot"][0], e)
+            edges.append(a @ np.asarray(e, dtype=float))
+        lu, lv = (float(np.linalg.norm(e)) for e in edges)
+        cos = float(edges[0] @ edges[1]) / (lu * lv) if lu and lv else 0.0
+        out.append((16.0 * model.px / lu if lu else 0.0, 16.0 * model.px / lv if lv else 0.0, cos))
+    return out
+
+
 def entities(rep, got):
     canvas, models = got["canvas"], got["models"]
     shown = _displays(canvas)
     others = len(canvas.entities) - len(shown)
     fails, warns, used, missing, plain, dense, drawn_out = [], [], set(), {}, {}, {}, {}
+    leant, sheared = {}, {}
     for x, y, z, nbt in shown:
         if nbt["id"] != "minecraft:item_display":
             continue
@@ -711,10 +845,23 @@ def entities(rep, got):
             missing[ref] = missing.get(ref, 0) + 1
             continue
         used.add(name)
-        scale = [float(v) for v in (nbt.get("transformation") or {}).get("scale", (1.0, 1.0, 1.0))]
+        tr = nbt.get("transformation") or {}
+        scale = [float(v) for v in tr.get("scale", (1.0, 1.0, 1.0))]
         density = [16.0 * models[name].px / abs(s) if s else 0.0 for s in scale]
         off = [i for i, d in enumerate(density) if abs(d - 16.0) > 0.05]
-        if len(off) == 1:       # a piece drawn out along one axis (pipes, cables: models.between)
+        second = [float(v) for v in tr.get("right_rotation", (0.0, 0.0, 0.0, 1.0))]
+        if off and abs(second[3]) < 1.0 - 1e-9:
+            # the scale is not along the model's own axes (a model shown leant over, machines/orrery):
+            # the three numbers are those of the matrix taken apart, not of any face
+            faces = _face_densities(models[name], nbt)
+            bad = [(du, dv) for du, dv, cos in faces
+                   if abs(du - 16.0) > 0.05 or abs(dv - 16.0) > 0.05 or abs(cos) > SQUARE]
+            if bad:
+                key = (name, len(bad), len(faces), round(min(min(b) for b in bad), 2), round(max(max(b) for b in bad), 2))
+                sheared[key] = sheared.get(key, 0) + 1
+            else:
+                leant[name] = leant.get(name, 0) + 1
+        elif len(off) == 1:     # a piece drawn out along one axis (pipes, cables: models.between)
             drawn_out[(name, off[0])] = drawn_out.get((name, off[0]), 0) + 1
         elif off:
             key = (name, tuple(round(d, 2) for d in density))
@@ -729,6 +876,9 @@ def entities(rep, got):
                          f"is the game's, outside the palette")
     for (name, d), n in sorted(dense.items()):
         warns.append(f"{name} x{n}: {d[0]:g}/{d[1]:g}/{d[2]:g} pixels to the block along x/y/z, not 16")
+    for (name, nbad, nfaces, lo, hi), n in sorted(sheared.items()):
+        warns.append(f"{name} x{n}: shown through a matrix that is no turn, which stretches or skews {nbad} of its "
+                     f"{nfaces} faces: {lo:g} to {hi:g} pixels to the block along their edges, not 16 and square")
     for (name, axis), n in sorted(drawn_out.items()):
         uneven, skewed = _smear(models[name], axis)
         if uneven:
@@ -760,6 +910,8 @@ def entities(rep, got):
     stretched = sum(drawn_out.values())
     if stretched:
         words.append(f"{stretched} drawn out along one axis")
+    if leant:
+        words.append(f"{sum(leant.values())} shown through a matrix that is no turn, no face stretched")
     if others:
         words.append(f"{others} other entities")
     if idle:
@@ -769,6 +921,13 @@ def entities(rep, got):
 
 
 # ---- views -------------------------------------------------------------------------------------
+# The cameras the skeleton locks (V1, V2, ...). A shot that stands at one of them is that camera, and
+# looks where the skeleton says, to within LOCKED_SAME (the cosine of a tenth of a degree).
+LOCKED = {name: cam for name, cam in vars(S).items()
+          if re.fullmatch(r"V\d+", name) and isinstance(cam, dict) and "pos" in cam and "look_at" in cam}
+LOCKED_SAME = math.cos(math.radians(0.1))
+
+
 def _frame(shot):
     """A shot's camera: eye, forward, right, up. None when the shot gives it no direction."""
     pos = np.array(shot["pos"], dtype=float)
@@ -790,6 +949,28 @@ def _frame(shot):
     return pos, f, r, np.cross(r, f)
 
 
+SUN = "assets/minecraft/textures/environment/celestial/sun.png"
+
+
+def _own_sun(got):
+    """The line for a scene that takes the map's hour and not the map's sky. The map's hour is after
+    sunset, with the sun's place on the open western horizon; the sky's pack blanks the sun's picture
+    there (sky/comet.py). A test scene whose pack leaves the game's own picture in shows a white and
+    yellow square wherever a shot looks west over an open horizon (c341 #56843)."""
+    look = got.get("look")
+    if look is None or os.path.exists(os.path.join(got["pack"], SUN)):
+        return []
+    try:
+        from scenes.obs.sky import mood
+    except ImportError:
+        return []
+    if getattr(look, "TIMELINES", None) is not mood.TIMELINES:
+        return []
+    return ["the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, "
+            "a white and yellow square on an open western horizon: write_pack adds the sky's pack, "
+            "list(materials.pack(d) or []) + list(sky.pack(d) or [])"]
+
+
 def views(rep, got, shots_path):
     if not shots_path or not os.path.exists(shots_path):
         rep.add("views", "SKIP", "no shot list, so no per-view counts")
@@ -804,13 +985,20 @@ def views(rep, got, shots_path):
     sized = np.array([float(nbt.get("width", 0.0)) > 0.0 and float(nbt.get("height", 0.0)) > 0.0
                       for _, _, _, nbt in shown], dtype=bool)
     ty = math.tan(math.radians(FOV) / 2.0)
-    rows, fails, over, far = [], [], [], []
+    rows, fails, over, far, stale = [], [], [], [], []
     for shot in shots:
         frame = _frame(shot)
         if frame is None:
             fails.append(f"{shot['name']}: pos and look_at are the same point, the camera has no direction")
             continue
         pos, f, r, u = frame
+        for cam, locked in LOCKED.items():
+            at = np.array(locked["pos"], dtype=float)
+            want = np.array(locked["look_at"], dtype=float) - at
+            if np.allclose(pos, at, atol=0.01) and float(f @ want) / float(np.linalg.norm(want)) < LOCKED_SAME:
+                stale.append(f"{shot['name']}: stands at skeleton.{cam} and does not look where it looks, at "
+                             f"({', '.join(f'{v:g}' for v in locked['look_at'])}); the locked cameras are read "
+                             f"from the skeleton, not copied by hand (A0 #304)")
         n = drawn = lost = 0
         if len(pts):
             v = pts - pos
@@ -830,6 +1018,7 @@ def views(rep, got, shots_path):
                        f"camera, measured level; the server sends those to no player there")
     if far:
         far.append("(the tracking range is read off the game's code, not yet seen on the real machine)")
+    stale += _own_sun(got)
     most = max(rows, key=lambda row: row["in_view"]) if rows else {"name": "-", "in_view": 0}
     summary = (f"{len(shots)} shots, most display entities in view: {most['in_view']} ({most['name']}), "
                f"limit {S.ENTITY_PER_VIEW}; counted without what walls hide")
@@ -837,28 +1026,44 @@ def views(rep, got, shots_path):
     if busiest is not None and busiest["drawn"] > busiest["in_view"]:
         summary += (f"; the game draws up to {busiest['drawn']} ({busiest['name']}): a display entity without "
                     f"width and height is drawn outside the view too")
-    status = "FAIL" if fails else "WARN" if over or far else "PASS"
-    rep.add("views", status, summary, clip(fails) + clip(over) + clip(far), data={"shots": rows})
+    status = "FAIL" if fails else "WARN" if over or far or stale else "PASS"
+    rep.add("views", status, summary, clip(fails) + clip(stale) + clip(over) + clip(far), data={"shots": rows})
 
 
 # ---- sight -------------------------------------------------------------------------------------
 # The arrival view (skeleton.V1) is the first picture of the map. A0 fixed what it has to show
-# (#171, #19629): everything of the front from about y 4 up, the domes, the clock tower and the
-# time-ball mast with the comet over it; the canopy of the cable station may come into the top of
-# the picture as a frame, by no more than skeleton.V1_FRAME of its height.
+# (#171, #304, #442): everything of the front from about y 4 up, the domes, the clock tower and the
+# time-ball mast with the comet over it. The cable station, under whose canopy the eye stands, keeps
+# out of it: between the two ends of the main building from the level of the eye up to
+# skeleton.V1_CLEAR degrees, and north of that where the comet hangs (skeleton.V1_COMET), nothing
+# of the station may stand, canopy, beam, post and cable alike.
 #
 # A sight line is followed from the eye up to SIGHT_FRONT. From there west it is on the main
 # building's own ground (pilasters, cornice, porch, what hangs on the front): that is the picture
 # itself, not something in front of it.
 SIGHT_FRONT = S.east_wall_x(S.CENTRE_BAYS[0]) + S.DEPTH_CORNICE + 4     # the plane x = 23
-SIGHT_PICTURE = (192, 108)      # the rays of the frame test, 16:9
 STATION_REACH = 6               # eaves, brackets and steps of the station stay within this of its box
+# The view the station keeps clear is tested with one sight line every CLEAR_STEP degrees, each
+# followed until it leaves the station's box and its reach, right up to V1_CLEAR: A0 gave the
+# figure as the picture's own top edge, with nothing let through (#442).
+CLEAR_STEP = 0.25
+# South of the main building's south end the picture's left third runs as far as LEFT_THIRD degrees
+# south of west. A canopy's corner may show there, a post that stands the full height under it
+# should not (A0 #442, his advice to the station): what is seen in one column of cells at every
+# level from the eye's up to where a canopy may begin (skeleton.CANOPY_CLEAR above the platform) is
+# named. A railing, a lamp post shorter than that and the canopy's own edge are not.
+LEFT_THIRD = 70.0
+LEFT_STEP = 0.5
+COMET_GRID = 64                 # the comet's sight lines: one to a cell of this grid over the moon's square
 # How much of the front may be out of sight. Posts one block wide stand on the east edge by the
 # skeleton's rule, four apart, and each takes a strip of the base storey: a third of it in all, seen
-# at V1's slant. More than BASE_HIDDEN of it means a wall along the edge. In front of a great window
-# (and of the cornice over it) nothing wider than a lamp post belongs: more than WINDOW_HIDDEN of one
-# bay is named, more than WINDOW_LOST fails.
+# at V1's slant. More than BASE_HIDDEN of it behind blocks means a wall along the edge. The models
+# of display entities are counted apart and make no wall (A0 #64976, 11-16: the armillary's open
+# rings are a small circle of copper on the terrace); blocks and models together may take BASE_LOST.
+# In front of a great window (and of the cornice over it) nothing wider than a lamp post belongs,
+# block or model: more than WINDOW_HIDDEN of one bay is named, more than WINDOW_LOST fails.
 BASE_HIDDEN = 0.5
+BASE_LOST = 0.6
 WINDOW_HIDDEN = 0.25
 WINDOW_LOST = 0.5
 SKYLINE = ("the time-ball mast", "the clock tower", "the great dome", "the small dome")
@@ -913,12 +1118,51 @@ def _comet_head():
     return np.array([-math.cos(math.radians(up)), math.sin(math.radians(up)), 0.0]), up
 
 
+def _comet_body():
+    """Unit vectors to the whole comet, head and tails, as the sky line paints it: (k, 3), one for
+    every cell of a COMET_GRID x COMET_GRID grid over the moon's square in which the comet of any
+    light adds light the eye makes out. None when the sky line does not say (sky/comet.seen, which
+    comes with the card sky/comet). The square is flat, due west, its centre 90 - moon_angle up;
+    the picture is as the viewer sees it facing west, up is up and right is north."""
+    try:
+        from scenes.obs.sky import comet, mood
+        centre = math.radians(90.0 - float(mood.MOON_ANGLE))
+        half = math.tan(math.radians(float(comet.SPAN) / 2.0))
+        least = float(getattr(comet, "SEEN", 0.03))
+        pictures = comet.seen()
+        lit = np.zeros((COMET_GRID, COMET_GRID), dtype=bool)
+        for look in mood.LOOKS.values():
+            grey = np.asarray(pictures[look["moon_phase"]], dtype=float) @ np.array([0.299, 0.587, 0.114])
+            k = grey.shape[0] // COMET_GRID
+            cells = grey[:k * COMET_GRID, :k * COMET_GRID].reshape(COMET_GRID, k, COMET_GRID, k)
+            lit |= cells.max(axis=(1, 3)) >= least
+    except Exception:
+        return None
+    rows, cols = np.nonzero(lit)
+    if not len(rows):
+        return None
+    mid = np.array([-math.cos(centre), math.sin(centre), 0.0])
+    up = np.array([math.sin(centre), math.cos(centre), 0.0])
+    north = np.array([0.0, 0.0, -1.0])
+    across = ((cols + 0.5) / COMET_GRID * 2.0 - 1.0) * half
+    above = (1.0 - (rows + 0.5) / COMET_GRID * 2.0) * half
+    d = mid[None, :] + across[:, None] * north[None, :] + above[:, None] * up[None, :]
+    return d / np.linalg.norm(d, axis=1, keepdims=True)
+
+
 def _where(cells):
     out = []
     for axis, vals in zip("xyz", zip(*cells)):
         lo, hi = min(vals), max(vals)
         out.append(f"{axis} {lo}" if lo == hi else f"{axis} {lo}..{hi}")
     return ", ".join(out)
+
+
+def _bearing(deg):
+    """A bearing of skeleton.v1_bearing in words."""
+    if abs(deg) < 0.05:
+        return "due west"
+    return f"{abs(deg):.1f} degrees {'south' if deg > 0 else 'north'} of west"
 
 
 def _who(labels, what, cell, pick, most=3):
@@ -970,6 +1214,38 @@ def sight(rep, got, jar, shots_path):
     shapes = SL.Shapes(Assets(jar, packs=(got["pack"],)))
     bl = SL.Blockers(canvas.b, canvas.entities, shapes, lo, hi)
     fails, warns, notes, data = [], [], [], {}
+    north, south = S.v1_clear_span()
+    top = float(S.V1_CLEAR)
+    comet_north, comet_low = -float(S.V1_COMET["north"]), float(S.V1_COMET["low"])
+
+    def kept(bearing, height):
+        """Which directions (arrays of degrees) lie in the view the station keeps clear: between the
+        two ends of the main building, or in the comet's block north of that."""
+        main = (bearing >= north) & (bearing <= south) & (height >= 0.0)
+        comet = (bearing >= comet_north) & (bearing < north) & (height >= comet_low)
+        return (main | comet) & (height <= top)
+
+    def block(az0, az1, el0, el1, step=CLEAR_STEP):
+        """Sight lines one step apart over the bearings az0 .. az1 and the elevations el0 .. el1
+        (degrees): the rays, the bearing of each, the elevation of each."""
+        az = np.linspace(az0, az1, int(math.ceil((az1 - az0) / step)) + 1)
+        el = np.linspace(el0, el1, int(math.ceil((el1 - el0) / step)) + 1)
+        ee, aa = (v.reshape(-1) for v in np.meshgrid(np.radians(el), np.radians(az), indexing="ij"))
+        rays = np.stack([-np.cos(ee) * np.cos(aa), np.sin(ee), np.cos(ee) * np.sin(aa)], axis=1)
+        return rays, np.degrees(aa), np.degrees(ee)
+
+    def leaves(rays):
+        """How far each ray runs before it leaves the station's box and its reach."""
+        safe = np.where(np.abs(rays) < 1e-12, 1e-12, rays)
+        return np.maximum((zone_lo - eye) / safe, (zone_hi - eye) / safe).min(axis=1)
+
+    def first(found):
+        """What each ray meets first, solid or seen through: whether, its number in bl.labels, its
+        cell, how far along the ray (inf where it meets nothing)."""
+        solid = found["t"] <= found["thru_t"]
+        far = np.minimum(found["t"], found["thru_t"])
+        return (np.isfinite(far), np.where(solid, found["what"], found["thru"]),
+                np.where(solid[:, None], found["cell"], found["thru_cell"]), far)
 
     # ---- what the picture has to show
     out = bl.cast(eye, dirs, reach)
@@ -986,10 +1262,18 @@ def sight(rep, got, jar, shots_path):
                 fails.append(f"{name}: {th} of {n} sight lines pass through "
                              f"{_who(bl.labels, out['thru'], out['thru_cell'], pick & veiled & ~hidden)}")
         elif name == "the base storey":
-            if h > BASE_HIDDEN * n:
-                fails.append(f"{name} (y 4..{S.PANEL}): {100.0 * h / n:.0f}% is hidden; the posts of the east edge "
-                             f"alone take a third, more than {100 * BASE_HIDDEN:.0f}% reads as a wall: "
-                             f"{_who(bl.labels, out['what'], out['cell'], pick & hidden)}")
+            wall = bl.cast(eye, dirs[pick], reach[pick], models=False)
+            behind = np.isfinite(wall["t"])
+            walls = int(behind.sum())
+            data[name].update(hidden_by_blocks=walls, hidden_by_models=h - walls)
+            if walls > BASE_HIDDEN * n:
+                fails.append(f"{name} (y 4..{S.PANEL}): blocks hide {100.0 * walls / n:.0f}% of it; the posts of the "
+                             f"east edge alone take a third, more than {100 * BASE_HIDDEN:.0f}% reads as a wall: "
+                             f"{_who(bl.labels, wall['what'], wall['cell'], behind)}")
+            elif h > BASE_LOST * n:
+                fails.append(f"{name} (y 4..{S.PANEL}): {100.0 * h / n:.0f}% is hidden, {100.0 * walls / n:.0f}% by "
+                             f"blocks and the rest by the models of display entities; together they may take "
+                             f"{100 * BASE_LOST:.0f}%: {_who(bl.labels, out['what'], out['cell'], pick & hidden)}")
         elif h:
             # bay by bay, over the three columns between the pilasters; the bays that the same kinds
             # of thing hide are named together
@@ -1014,8 +1298,11 @@ def sight(rep, got, jar, shots_path):
                     warns.append(line + f"; a lamp post takes less than {100 * WINDOW_HIDDEN:.0f}% of a bay")
     front = np.isin(part_of, [names.index(k) for k in FRONT])
     share = {k: 100.0 * data[k]["hidden"] / data[k]["lines"] for k in FRONT}
+    base = data["the base storey"]
     words = [f"the front from y 4 up {100.0 * (front & hidden).sum() / front.sum():.1f}% hidden (base storey "
-             f"{share['the base storey']:.0f}%, great windows {share['the great windows']:.1f}%)"]
+             f"{100.0 * base['hidden_by_blocks'] / base['lines']:.1f}% by blocks and "
+             f"{100.0 * base['hidden_by_models'] / base['lines']:.1f}% more by models, great windows "
+             f"{share['the great windows']:.1f}%)"]
     sky_lines = sum(data[k]["lines"] for k in SKYLINE)
     sky_lost = sum(data[k]["hidden"] + data[k]["seen_through"] for k in SKYLINE)
     words.append(f"skyline {'clear' if not sky_lost else f'{sky_lost} of {sky_lines} sight lines lost'}")
@@ -1047,60 +1334,99 @@ def sight(rep, got, jar, shots_path):
                 fails.append(f"the comet's head ({up:g} degrees up, due west, {100 * at[1]:.0f}% below the "
                              f"picture's top edge) is covered by {_who(bl.labels, both_w, both_c, lost)}")
             words.append(f"comet's head {100 * at[1]:.0f}% below the top edge" + ("" if lost.any() else ", clear"))
-            if at[1] < S.V1_FRAME:
-                notes.append(f"the comet's head lies {100 * at[1]:.1f}% below the top edge, inside the top "
-                             f"{100 * S.V1_FRAME:g}% a canopy may take: over the head (about "
-                             f"{100 * at[0]:.0f}% across the picture) the canopy has to stay out")
+        if not S.in_v1_clear(*(eye + direction)):
+            notes.append(f"the comet's head ({up:g} degrees up, due west) lies outside the view the station "
+                         f"keeps clear: only the sight lines to the head itself guard it")
+        # The whole comet, where the sky line says how it is painted. The view the station keeps
+        # clear is laid out to hold all of it (A0 #442); should the comet be painted wider or higher
+        # one day, the station in front of the part outside is named here and not failed.
+        body = _comet_body()
+        if body is not None:
+            bearing = np.degrees(np.arctan2(body[:, 2], -body[:, 0]))
+            height = np.degrees(np.arcsin(np.clip(body[:, 1], -1.0, 1.0)))
+            beyond = ~kept(bearing, height)
+            data["comet"]["body"] = {"lines": int(len(body)), "outside_clear": int(beyond.sum()), "covered": 0,
+                                     "from": round(float(bearing.min()), 2), "to": round(float(bearing.max()), 2),
+                                     "low": round(float(height.min()), 2), "up": round(float(height.max()), 2)}
+            if not beyond.any():
+                words.append("the whole comet lies in the view the station keeps clear")
+            else:
+                outside = body[beyond]
+                hit, what, cell, _ = first(bl.cast(eye, outside, leaves(outside)))
+                data["comet"]["body"]["covered"] = int(hit.sum())
+                notes.append(f"the comet as the sky line paints it reaches outside the view the station keeps "
+                             f"clear with {len(outside)} of {len(body)} sight lines: it spans "
+                             f"{_bearing(bearing.min())} to {_bearing(bearing.max())}, {height.min():.1f} to "
+                             f"{height.max():.1f} degrees up")
+                if hit.any():
+                    warns.append(f"the comet as the sky line paints it: {int(hit.sum())} of {len(body)} sight lines "
+                                 f"to its head and tails are covered by {_who(bl.labels, what, cell, hit)}; they "
+                                 f"lie outside the view the station keeps clear, so this is named and not failed")
+                    words.append(f"{int(hit.sum())} of {len(body)} sight lines to the whole comet covered by "
+                                 f"the station")
+                else:
+                    words.append("the whole comet clear of the station")
 
-    # ---- the canopy as a frame: what of the station hangs into the picture from above
-    width, height = SIGHT_PICTURE
-    rays = SL.picture_rays(cam, FOV, ASPECT, width, height).reshape(-1, 3)
-    safe = np.where(np.abs(rays) < 1e-12, 1e-12, rays)
-    leave = np.maximum((zone_lo - eye) / safe, (zone_hi - eye) / safe).min(axis=1)
-    got_p = bl.cast(eye, rays, leave)
-    solid = got_p["t"] <= got_p["thru_t"]
-    seen = np.isfinite(np.minimum(got_p["t"], got_p["thru_t"]))
-    what = np.where(solid, got_p["what"], got_p["thru"])
-    cell = np.where(solid[:, None], got_p["cell"], got_p["thru_cell"])
-    box = np.where(solid, got_p["box"], got_p["thru_box"])
-    # What stands on the platform (a post, a wall, a lamp standard) is not the canopy: a block with
-    # blocks under it all the way down to head height, a model that reaches down to there.
-    head = S.STATION_GROUND + 2
-    stands = {}
-
-    def standing(i):
-        if box[i] >= 0:
-            return bl.boxes[int(box[i])]["bottom"] < head
-        key = tuple(int(q) for q in cell[i])
-        if key not in stands:
-            x, y, z = key
-            stands[key] = all((x, below, z) in canvas.b for below in range(head, y))
-        return stands[key]
-
-    hangs = np.array([bool(seen[i]) and not standing(i) for i in range(len(rays))]).reshape(height, width)
-    stood = seen.reshape(height, width) & ~hangs
-    rows = np.nonzero(hangs.any(axis=1))[0]
-    depth = (int(rows[-1]) + 1) / float(height) if len(rows) else 0.0
-    uprights = float(stood[:height // 2].any(axis=0).mean())
-    data["canopy"] = {"depth": round(depth, 4), "allowed": S.V1_FRAME, "uprights": round(uprights, 4)}
-    if not len(rows):
-        words.append("no canopy in the picture")
+    # ---- the view the station keeps clear (skeleton.V1_CLEAR, skeleton.V1_COMET)
+    blocks = (("between the two ends of the main building", north, south, 0.0, top),
+              ("where the comet hangs, north of the main building", comet_north, north - CLEAR_STEP, comet_low, top))
+    data["clear"] = {"up": S.V1_CLEAR, "blocks": []}
+    lines = covered = 0
+    for name, az0, az1, el0, el1 in blocks:
+        rays, deg_a, deg_e = block(az0, az1, el0, el1)
+        hit, what, cell, _ = first(bl.cast(eye, rays, leaves(rays)))
+        lines, covered = lines + len(rays), covered + int(hit.sum())
+        data["clear"]["blocks"].append({"name": name, "from": round(az0, 2), "to": round(az1, 2), "low": el0,
+                                        "up": el1, "lines": int(len(rays)), "covered": int(hit.sum())})
+        kinds = {}
+        for i in np.nonzero(hit)[0]:
+            kinds.setdefault(bl.labels[int(what[i])], []).append(int(i))
+        for label, idx in sorted(kinds.items(), key=lambda kv: (-len(kv[1]), kv[0])):
+            cells = {tuple(int(q) for q in cell[i]) for i in idx}
+            fails.append(f"{label} at {_where(cells)} stands in the view the station keeps clear, {name}: seen "
+                         f"from {_bearing(deg_a[idx].min())} to {_bearing(deg_a[idx].max())}, "
+                         f"{deg_e[idx].min():.1f} to {deg_e[idx].max():.1f} degrees up")
+    if not covered:
+        words.append(f"the station keeps clear of the view up to {top:g} degrees")
     else:
-        row = int(rows[-1])
-        col = int(np.nonzero(hangs[row])[0][0])
-        i = row * width + col
-        words.append(f"canopy down to {100 * depth:.1f}% of the picture's height (allowed {100 * S.V1_FRAME:g}%)")
-        if depth > S.V1_FRAME + 0.5 / height:
-            fails.append(f"the station's canopy hangs down to {100 * depth:.1f}% of the picture's height, "
-                         f"{100 * (col + 0.5) / width:.0f}% across; it may take the top {100 * S.V1_FRAME:g}%: "
-                         f"{bl.labels[int(what[i])]} at {_where([tuple(int(q) for q in cell[i])])}")
-    if uprights:
-        notes.append(f"posts and walls of the station cross {100 * uprights:.0f}% of the picture's width in its "
-                     f"upper half; they are held to the sight lines, not to the canopy's {100 * S.V1_FRAME:g}%")
+        words.append(f"the station stands in {covered} of {lines} sight lines of the view it keeps clear")
+        notes.append(f"the view the station keeps clear (A0 #442), seen from V1's eye: between the two ends of the "
+                     f"main building ({_bearing(north)} to {_bearing(south)}) from the eye's level up to {top:g} "
+                     f"degrees, and north of that as far as {_bearing(comet_north)} from {comet_low:g} degrees up "
+                     f"to {top:g}. One sight line every {CLEAR_STEP:g} degrees, followed as far as "
+                     f"{STATION_REACH} blocks outside the station's box; skeleton.in_v1_clear(x, y, z) tells of a point")
+
+    # ---- the picture's left third, south of the main building: no post the full height (A0 #442)
+    rays, deg_a, deg_e = block(south + LEFT_STEP, LEFT_THIRD, 0.0, top, LEFT_STEP)
+    hit, what, cell, far = first(bl.cast(eye, rays, leaves(rays)))
+    lines += len(rays)
+    level = np.floor(eye[1] + rays[:, 1] * np.where(hit, far, 0.0)).astype(int)     # of the point each line meets
+    full = set(range(int(math.floor(eye[1])), S.STATION_GROUND + S.CANOPY_CLEAR))
+    columns = {}
+    for i in np.nonzero(hit)[0]:
+        columns.setdefault((int(cell[i][0]), int(cell[i][2])), []).append(int(i))
+    posts = []
+    for (x, z), idx in sorted(columns.items()):
+        if not full <= {int(level[i]) for i in idx}:
+            continue
+        kinds = sorted({bl.labels[int(what[i])] for i in idx})
+        posts.append({"x": x, "z": z, "what": kinds, "from": round(float(deg_a[idx].min()), 2),
+                      "to": round(float(deg_a[idx].max()), 2), "top": int(level[idx].max())})
+        warns.append(f"{', '.join(kinds)} in the column x {x}, z {z} stands the full height in the left third of "
+                     f"V1's picture: seen from {_bearing(deg_a[idx].min())} to {_bearing(deg_a[idx].max())}, from "
+                     f"the eye's level up to y {int(level[idx].max()) + 1}")
+    data["left"] = {"from": round(south + LEFT_STEP, 2), "to": LEFT_THIRD, "posts": posts}
+    if posts:
+        words.append(f"{len(posts)} upright{'s' if len(posts) > 1 else ''} the full height in the picture's left third")
+        notes.append(f"the left third of V1's picture (A0 #442): between the main building's south end and "
+                     f"{LEFT_THIRD:g} degrees south of west no post stands the full height under the canopy; set it "
+                     f"east of x 89, behind the eye, and let the canopy reach out, or further south than "
+                     f"{LEFT_THIRD:g} degrees. Named is a column of cells in which something is seen at every "
+                     f"level from y {min(full)} to y {max(full)}, where a canopy may begin")
 
     status = "FAIL" if fails else "WARN" if warns else "PASS"
     summary = (f"V1 at ({eye[0]:g}, {eye[1]:g}, {eye[2]:g}): " + "; ".join(words)
-               + f" ({len(pts) + len(rays)} sight lines, {time.time() - t0:.1f} s)")
+               + f" ({len(pts) + lines} sight lines, {time.time() - t0:.1f} s)")
     rep.add("sight", status, summary, clip(fails) + clip(warns) + clip(notes), data=data)
 
 
@@ -1138,6 +1464,12 @@ def commit():
     except (OSError, IndexError):
         pass
     return "?"
+
+
+def motion(rep, got):
+    """The loop of what the scene registers as moving (plan/parts/motion.md 5 and 7)."""
+    status, summary, details = MOTION.check(got["canvas"], got["models"], got["pack"])
+    rep.add("motion", status, summary, clip(details))
 
 
 def workdir(ap, keep):
@@ -1185,7 +1517,8 @@ def main():
                            lambda: views(rep, got, args.shots or os.path.join(
                                BUILD, "scenes", args.scene, "shots.json")),
                            lambda: sight(rep, got, args.jar, args.shots or os.path.join(
-                               BUILD, "scenes", args.scene, "shots.json"))]
+                               BUILD, "scenes", args.scene, "shots.json")),
+                           lambda: motion(rep, got)]
             for check in checks:
                 try:
                     check()

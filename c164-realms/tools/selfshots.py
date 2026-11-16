@@ -1,23 +1,25 @@
 #!/usr/bin/env python3
 """A scene's own pictures, drawn offline and kept in the repository (plan/roles/INTERFACE.md 5, 6).
 
-Pictures are drawn on the admin's computer, through bin\\job.py, and never on the cloud machine
-(the admin's ruling, 2026-11-14). A round goes:
+Since 2026-11-16 everyone draws on his own worker node (plan/roles/COMMON.md 0 and 2.2): send the
+command there with tools/nodejob.sh, which commits what was drawn under renders/ and pushes it to
+your branch. Nothing is drawn on the machine the sessions share. The usual round:
 
-  on the computer   selfshots.py <scene> [--only a,b] --out @out/shots
-                        draws the shots of build/scenes/<scene>/shots.json with build/render.py
-                        (1280x720, every shot at its own time) into that folder, as
-                        <scene>-<shot>.png beside a note <scene>-shots.txt; bin\\send.py sends them
-  on the cloud      selfshots.py <scene> --take [<folder>] [--prefix m2-]
-                        puts the pictures that came back (default folder: the inbox) into
-                        renders/<scene>/ of this checkout, each checked against the note; commit
-                        and push them. Pictures drawn with plain build/render.py (no note; sent
-                        as <code>-<commit>-<shot>.png) are taken with --prefix <code>-<commit>-
-  on the computer   selfshots.py <scene> [<scene> ...] --verify [--only a,b]
-                        draws again and compares pixel by pixel: are the kept pictures what the
-                        code draws? The merge-key holder runs it on the delivered commit.
+  selfshots.py <scene> [--only a,b]
+        draws the shots of build/scenes/<scene>/shots.json with build/render.py (1280x720, every
+        shot at its own time) straight into renders/<scene>/ of the checkout the tool runs in,
+        beside the note shots.txt
+  selfshots.py <scene> --only a,b --out renders/_wip
+        for a look, not for keeping: into that folder as <scene>-<shot>.png beside a note
+        <scene>-shots.txt (tools/nodejob.sh --wip pushes the folder to a scratch branch)
+  selfshots.py <scene> [<scene> ...] --verify [--only a,b]
+        draws again and compares pixel by pixel: are the kept pictures what the code draws? The
+        merge gate (tools/gate.sh) runs it on the merged tree, tools/keptshots.py on every scene
+        that keeps pictures.
 
-Without --out the pictures go straight into renders/<scene>/ of the checkout the tool runs in.
+The round by way of the admin's computer (drawn there with --out, sent to an inbox, put into
+renders/<scene>/ on the cloud with --take [<folder>] [--prefix m2-], each picture checked against
+the note) is no longer walked; --take still works on any folder of pictures drawn with --out.
 
 The note (renders/<scene>/shots.txt) says for every shot its tick, the commit whose code the picture
 shows and the first 16 digits of the picture file's SHA-256, so that a picture changed or replaced
@@ -222,8 +224,8 @@ def write(project, scene, only, dirty, jar, out):
           + ("" if status is not None else " (no git here: uncommitted changes were not looked for)")
           + (f"; removed (no such shot any more): {', '.join(gone)}" if gone else ""))
     if out:
-        print(f"                next: send {scene}-* from that folder (bin\\send.py), then on the cloud "
-              f"tools/selfshots.py {scene} --take")
+        print(f"                for a look only: nothing went into renders/{scene}/ (tools/nodejob.sh --wip "
+              f"pushes renders/_wip to your scratch branch)")
     else:
         absent = [n for n in names if not os.path.exists(os.path.join(folder, n + ".png"))]
         if absent:

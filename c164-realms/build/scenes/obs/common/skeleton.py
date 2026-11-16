@@ -38,6 +38,27 @@ LOWER_DROP = 6      # LOCKED (A0 #171, 11-14; it was 9). the lower platform is t
 LOWER_GROUND = GROUND - LOWER_DROP      # -6, where feet stand on the lower platform
 LOWER_PAVING_Y = PAVING_Y - LOWER_DROP  # -7, its paving block
 
+# --- where on the earth, and when ---------------------------------------------------------------
+# LOCKED (A0 #442, 11-15). The observatory's latitude, north, in degrees: the polar axes of the great
+# telescope, of the meridian circle and of the armillary sphere rise at this angle towards the north
+# (-z). The three machines read it here.
+LATITUDE = 45.0
+# LOCKED (A0, 11-15 19:10). What every clock of the observatory shows, (hour, minute): five minutes
+# before the eight o'clock signal. The blue hour of the map is 20:00 by the game's clock, and the
+# time ball stands at half mast, where it waits for the last five minutes before it drops: the
+# clocks, the ball and the sky tell the same moment. The tower clock and the mother clock read this;
+# the world clocks of the time room count their differences from it.
+CLOCK = (7, 55)
+# LOCKED (A0, 11-15 20:47). One wind for the whole map, a north wind: it blows from the north to the
+# south, so the power house stands downwind of the great dome and its smoke does not cross the
+# telescope. WIND_FROM is the side the wind comes from and WIND_TO the side it blows to, in the words
+# used for facing; WIND is one block of its way, (dx, dy, dz). The tail of a wind vane points to
+# WIND_TO, flags and wind socks fly to WIND_TO, smoke and steam lean that way. Which way the wind
+# cups turn does not depend on it.
+WIND_FROM = "north"
+WIND_TO = "south"
+WIND = (0, 0, 1)
+
 # --- the bay grid of the main-building family (main building, clock tower, small dome, meridian hut) -
 BAY = 4             # LOCKED. one bay = pilaster (1) + window (3)
 N_BAYS = 17         # LOCKED. 18 pilasters enclose 17 bays
@@ -132,11 +153,15 @@ DOME_AXIS = (mid(DOME_CENTRE[0]), mid(DOME_CENTRE[1]))   # (4.5, 0.5), a point: 
 # The telescope pier is an independent column on the dome centre, from the ground to the dome room.
 # LOCKED by A0 (#20004, 11-14). The shaft is thin, 3 x 3, and runs straight up from y 0; its cap
 # widens to 5 x 5 in the course of the dome-room floor to carry the equatorial foot (PIER_TOP_Y is
-# the cap's top). The ring stair winds round the shaft inside the envelope, clockwise, from the
-# gallery level (STAND, reached by a small bridge) up through the star-hall ceiling to the dome room,
-# and comes out east or south of the cap, never under the tube, which points west. The ground floor
-# of the star hall (y 0..6) carries no stair at all: it is kept for the orrery, the meridian and the
-# mother clock. The dome-room floor leaves the envelope open for the stair and the pier.
+# the cap's top). The ring stair winds round the shaft inside the envelope from the gallery level
+# (STAND, reached by a small bridge) up through the star-hall ceiling to the dome room. It comes out
+# north of the cap (A0 #388, 11-15; south is the fallback, east is not allowed): east of the pier, on
+# the axis, is the place of the eyepiece and of the person who looks along the tube at the comet, the
+# end of the map's one axis, and the south side is kept for those who watch the comet through the
+# slit. So the stair turns counterclockwise (c231 #32862: on at the north bridge, once round, off to
+# the north again). The ground floor of the star hall (y 0..6) carries no stair at all: it is kept
+# for the orrery, the meridian and the mother clock. The dome-room floor leaves the envelope open for
+# the stair and the pier.
 PIER_CENTRE = DOME_CENTRE
 PIER_SHAFT = (DOME_CENTRE[0] - 1, DOME_CENTRE[1] - 1, DOME_CENTRE[0] + 1, DOME_CENTRE[1] + 1)   # x 3..5, z -1..1
 PIER_CAP = (DOME_CENTRE[0] - 2, DOME_CENTRE[1] - 2, DOME_CENTRE[0] + 2, DOME_CENTRE[1] + 2)     # x 2..6, z -2..2
@@ -171,7 +196,8 @@ SMALL_DOME_X = (8, 16)
 SMALL_DOME_Z = (26, 34)
 SMALL_DRUM_BASE = 18
 SMALL_DOME_R = 4.5
-SMALL_DOME_APEX = 25
+SMALL_DOME_APEX = 26            # 25 until 11-16: a flat lid on its iron hoop in V11, V2 and V1; 26 reads as a
+#                                 half sphere, the great dome's kin and a size smaller (A0 #57140, review #13)
 
 # --- site masses ----------------------------------------------------------------------------------
 # Cells. Each is (x0, z0, x1, z1) on the upper terrace unless a y is given. East (+x) is the arrival side.
@@ -211,8 +237,11 @@ GRAND_STAIR = dict(x0=EAST_EDGE_X + 1, x1=EAST_EDGE_X + 2 * LOWER_DROP, z0=-8, z
                    run=2 * LOWER_DROP, drop=LOWER_DROP, rise=0.5)       # x 61..72
 LOWER_PLATFORM = (WALL_E + 46, -42, WALL_E + 76, 43)  # x 61..91; feet at LOWER_GROUND, paving at LOWER_PAVING_Y
 # The cable station fills the north-east corner of the lower platform. Its platform is STATION_RAISE
-# above the lower platform, and the spawn is on it. The canopy faces west and is open to the west and
-# the south-west on thin columns; its underside is at least CANOPY_CLEAR above the station platform.
+# above the lower platform, and the spawn is on it. The canopy covers the east end only, where the
+# car stands; the platform west of it lies open under the sky, with a low railing at most. Its
+# underside is at least CANOPY_CLEAR above the station platform; how far the canopy, its posts and
+# the cable may reach towards the main building is fixed by the arrival view (V1_CLEAR below), which
+# asks for more than CANOPY_CLEAR wherever the canopy comes into that view.
 CABLE_STATION = (WALL_E + 60, -40, WALL_E + 76, -26)  # x 75..91, z -40..-26
 STATION_RAISE = 2
 STATION_GROUND = LOWER_GROUND + STATION_RAISE         # -4, where feet stand on the station platform
@@ -230,21 +259,100 @@ def stair_top(x):
     return GROUND - steps * GRAND_STAIR["rise"]
 
 
-# --- fixed camera positions, LOCKED by A0 (#171, 11-14). Points. -----------------------------------
+# --- fixed camera positions, LOCKED by A0. Points. --------------------------------------------------
+# A test scene's shot of one of these cameras stands and looks as written here (A0 #304, #365: read
+# from the skeleton, not copied by hand): tools/check.py names a shot that stands at one of them
+# and looks elsewhere.
 EYE = 1.62          # the eye of a standing person, above where the feet stand
-# V1, the arrival view: a person on the station platform looks west-south-west and up at the whole
-# observatory in three-quarter view, the clock tower on the right and the great dome in the middle.
-# Everything of the front from about y 4 up is in sight: the string course, the great windows, the
-# cornice, the dome, the tower. Walking to the stair on the lower platform the front sinks behind the
-# terrace edge and rises again on the stair; that is wanted.
-V1 = dict(pos=(88.5, STATION_GROUND + EYE, -32.5), look_at=(8, 14, 0.5))    # the eye at y -2.38
-# What V1 has to show (A0 #19629): the canopy of the cable station may come into the top of the
-# picture as a frame, by no more than V1_FRAME of its height, and must not cut the top of the
-# time-ball mast: the comet stands over it. tools/check.py tests the sight lines.
-V1_FRAME = 1 / 8.0
+# V1, the arrival view (A0 #171): a person on the station platform looks west-south-west and up at
+# the whole observatory in three-quarter view, the clock tower on the right and the great dome in the
+# middle. Everything of the front from about y 4 up is in sight: the string course, the great windows,
+# the cornice, the dome, the tower. Walking to the stair on the lower platform the front sinks behind
+# the terrace edge and rises again on the stair; that is wanted.
+# The camera is tilted up by about 22 degrees (A0 #304, 11-14; look_at was at y 14): the whole comet
+# is in the picture, the building fills the lower half of it and the sky the upper.
+V1 = dict(pos=(88.5, STATION_GROUND + EYE, -32.5), look_at=(8, 34, 0.5))    # the eye at y -2.38
+# What the station leaves free of V1 (A0 #442, 11-15, in place of the 55 degrees of #304; the rule
+# of #19629 that let the canopy take the top eighth of the picture is void). The picture's top edge
+# stands 61.2 degrees up in its middle (22.7 of tilt and 38.5, half the field of view), and the
+# camera looks 22 degrees off the building's axis, so the edge of a canopy would cross the picture
+# askew: nothing of the station comes into this part of the picture at all. Seen from V1's eye,
+# nothing of the cable station may stand, canopy, beam, post and cable alike,
+#   - between the two ends of the main building, from the level of the eye up to V1_CLEAR degrees;
+#   - north of that as far as V1_COMET["north"] degrees north of due west, from V1_COMET["low"]
+#     degrees up to V1_CLEAR: there hangs the comet, its head 41 degrees up due west and its dust
+#     tail leaning north (sky/comet). Below that the waiting room may stand as the picture's right
+#     edge.
+# A thing whose underside is at y may so reach (y + 2.38) / tan 61 from the eye, measured level:
+# 2.98 blocks at y 3, 3.54 at y 4, 4.09 at y 5, 4.65 at y 6. A person who steps out from under the
+# canopy has the building and the comet before him at once. v1_clear_span() gives the bearings of
+# the building's two ends, in_v1_clear() tells whether a point lies in either block; tools/check.py
+# tests both with the other sight lines of V1 (the check "sight"). South of the building's south end
+# as far as 70 degrees south of west (the left third of the picture) no post stands the full height
+# under the canopy: the check names one.
+V1_CLEAR = 61.0
+V1_COMET = dict(north=15.0, low=35.0)
+# V2, the court on its axis (A0 #304): from the head of the grand stair, on the axis of the entrance,
+# west at the entrance and the great dome, tilted up like V1. The comet hangs right over the top of
+# the dome: the picture the map is known by. The eye's height is A0's figure.
+V2 = dict(pos=(58.5, 1.7, AXIS_Z), look_at=(17, 19, AXIS_Z))
+# V5, the clock tower from the forecourt (S2 11-16; worked out from the blocks by the tower's line,
+# plan/packages/main/tower.md): the nearest place in the forecourt from which the tip of the tower's
+# top, the whole time ball on its pole and the comet all show, with the track hut whole in the
+# picture and no lamp cut by the frame. 42 blocks from the tower, looking up between the tower and
+# the mast: the entrance, the great dome, the comet, the tower and the mast from left to right, the
+# tower from the ground to the tip of its pole. The place the board first gave it, 21 blocks from
+# the tower, looks up its corner: the top, the ball and the pole stand 62 to 67 degrees up from
+# there, behind the cornice. The test scenes of main/tower call it v5_far.
+V5 = dict(pos=(52.5, GROUND + EYE, -13.5), look_at=(13.5, 27, -31.5))       # the eye at y 1.62
+# V6, the power house from the grand stair (A0 #55097, 11-16: picked from four candidates on the
+# pictures of site/powerhouse, whose test scenes call it stair_south): a person on the south half of
+# the grand stair, the feet three blocks above the lower platform, looks south-east at the power
+# house, whose saw-tooth roof shows its profile to this side. Turned four and a half degrees to the
+# right on 11-16 (A0, the desk 06:52; the look was at (76.5, 8.0, 32.5)): the way lamp of the lower
+# platform at (79.5, 10.5) stood half in the left edge, the largest bright thing in the picture. Now
+# its globe and gallery are outside; the chimney is whole, its east face a ninth of the picture's
+# width inside the left edge, and the lamp on the lip's pedestal at (60, 18) is in the right half.
+# The lamp on the stair's south pedestal at (73, 10) is a second one and stays, whole, in the left
+# third before the chimney's foot. No further: at six degrees it touches the left edge and its
+# pedestal is mostly outside (cr2 #64341; it would leave only past sixteen, the chimney cut at twelve).
+V6 = dict(pos=(66.5, LOWER_GROUND + 3 + EYE, 6.5), look_at=(74.4, 8.0, 33.2))   # the eye at y -1.38
+# V7, the star hall from outside the door (A0 #365, 11-15), the entrance arch as its frame: the
+# orrery overhead, the mother clock on the pier straight ahead, the floor underfoot. The camera in
+# the doorway stays as a second one; the test scenes call it v7_in.
+V7 = dict(pos=(19.5, GROUND + EYE, AXIS_Z), look_at=(10, 5.5, AXIS_Z))      # the eye at y 1.62
 # V11, the look back from the south lookout (A4's, approved by A0 #19260.6): the main building in
 # three-quarter view fills the middle third, the afterglow is on the left.
 V11 = dict(pos=(45.5, SOUTH_LOOKOUT["feet"] + EYE, 52.5), look_at=(6, 14, 0.5))     # the eye at y -3.38
+
+
+def v1_bearing(x, z):
+    """The bearing of the point (x, z) seen from V1's eye, in degrees south of due west (a point
+    north of west has a negative bearing; due south is 90)."""
+    return math.degrees(math.atan2(z - V1["pos"][2], V1["pos"][0] - x))
+
+
+def v1_clear_span():
+    """(north, south): the bearings from V1's eye of the two ends of the main building, cornice
+    included, in degrees south of due west. Between them the station keeps the view clear."""
+    east = east_wall_x(END_BAYS[0]) + DEPTH_CORNICE + 1     # 19.0, the outer face of the end pavilions' cornice
+    bearings = [v1_bearing(x, z) for x in (WALL_W, east) for z in (Z_NORTH, Z_SOUTH + 1)]
+    return min(bearings), max(bearings)                     # about -1.2 and 44.2
+
+
+def in_v1_clear(x, y, z):
+    """Does the point (x, y, z) lie in the part of V1's view that the cable station keeps clear:
+    between the two ends of the main building from the level of the eye up to V1_CLEAR degrees, or
+    in the comet's block north of that (V1_COMET)?"""
+    ex, ey, ez = V1["pos"]
+    north, south = v1_clear_span()
+    bearing = v1_bearing(x, z)
+    up = math.degrees(math.atan2(y - ey, math.hypot(ex - x, z - ez)))
+    if up > V1_CLEAR:
+        return False
+    if north <= bearing <= south:
+        return up >= 0.0
+    return -V1_COMET["north"] <= bearing < north and up >= V1_COMET["low"]
 
 # PROPOSED by A4 again:
 MERIDIAN_X = WALL_E + 20        # 35. the brass meridian runs north-south through the court in this column
@@ -262,13 +370,17 @@ ORRERY_CENTRE = (mid(11), AXIS_Z)       # (11.5, 0.5). the hung orrery's centre;
 #                                         the floor below is centred on the same cell (11, 0)
 ORRERY_R = 2.5                          # outer radius; outer diameter 5, one clear cell each side of the well
 ORRERY_HANG_Y = float(STAR_HALL_CEIL)   # 14.0, the ceiling block's lower face: beam, hangers, motor seat
-ORRERY_RING_Y = 8.5                     # A0 #97: the ring of planets and the sun lamp sits here, at the
-#                                         eye height of a person on the gallery (8.6); gears/motor above it
-ORRERY_BODY_Y = (8.0, ORRERY_HANG_Y)    # the machine fills this height; the ground below (y 0..8) is walkable
+ORRERY_RING_Y = 7.5                     # A0 #357 (11-15): the ring of planets and the sun lamp sits here, a
+#                                         block below the eye of a person on the gallery (8.6), who looks
+#                                         down on it and sees the orbits as ellipses. At 8.5 (A0 #97) a flat
+#                                         orrery showed from the gallery as a line. Gears and motor above it
+ORRERY_BODY_Y = (6.5, ORRERY_HANG_Y)    # the machine fills this height; the ground below (y 0..6.5) is walkable
 # Telescope: the equatorial foot (diameter <= 5) sits on the pier cap, centred on DOME_AXIS (4.5, 0.5).
 PIER_TOP_Y = float(ROOF_STAND)          # 18.0, the pier cap top; the foot stands on the cap, clear of the
 #                                         joint between the pier and the dome-room floor
-RING_STAIR = dict(y0=STAND, y1=ROOF_STAND, turn="clockwise")   # feet at 7 on the bridge, at 18 in the dome room
+RING_STAIR = dict(y0=STAND, y1=ROOF_STAND, turn="counterclockwise", exit="north")
+#                                         feet at 7 on the bridge, at 18 in the dome room; the cells of the
+#                                         bridge and of the exit are main/shell's (shell.BRIDGE, shell.EXIT)
 # Mother clock: wall-mounted on the pier's east face, on the axis (c193 #95, A0 #86.7, #20004): a box
 # about 1.5 wide x 0.75 thick x 4 high, facing east. Its back is the east face of the shaft.
 MOTHER_CLOCK = dict(back_x=float(PIER_SHAFT[2] + 1), z=AXIS_Z, y=(1.0, 5.0), facing="east")   # x 6.0, z 0.5

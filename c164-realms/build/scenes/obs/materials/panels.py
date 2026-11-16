@@ -30,6 +30,10 @@ units wheel of the register steps once a second, the pilot lamps take turns ever
 runs through a wave in two, the filaments breathe once in four. The game starts every animated
 picture together, so what steps, steps on the same tick. The numbers are this package's until
 motion (A8) sets a beat.
+
+The dial comes in two versions that the game mixes by position (VERSIONS): its needle stands right
+of the middle of the scale or left of it, so a row of dials is a row of readings and not one
+picture stamped along a wall.
 """
 import math
 
@@ -48,6 +52,7 @@ BLOCKS = K.blocks(*B.PANELS.values())
 
 FRAMETIME = {"tubes": 20, "scope": 5, "counter": 20, "pilot_lamps": 20}     # ticks a frame stays; 20 = one second
 SMOOTH = ("tubes",)             # frames the game blends into one another: a glow that swells, no steps
+VERSIONS = {"dial": 2}          # faces drawn in versions the game mixes by position: two readings of the dial
 LIT = 15                        # light_emission of what glows: its picture's own colours in any light
 # the three ranks of the card: mostly dark, a few light, at most four lit
 RANKS = {
@@ -129,16 +134,21 @@ GLOW = {
     "pilot_lamps": [(x + dx, y + dy) for y in LAMP_ROWS for x in TRIO for dx in (0, 1) for dy in (0, 1)],
 }
 
-AMBER = ((GL[4], GL[2], GL[1]), (BR[1], BR[0], BR[0]))      # a lamp lit, and out
-GREEN = ((PH[4], PH[3], PH[2]), (PH[1], PH[0], PH[0]))
-RED = ((SG[3], SG[2], SG[1]), (SG[1], SG[0], SG[0]))
+# A pilot lamp is a jewel with a small bulb behind it, not a bare filament. Lit, its one bright pixel
+# stands three steps under a valve's filament and the rest of it under half; drawn as bright as the
+# filaments, the lamps were the brightest thing on the wall, and in the star hall brighter than the
+# sun of the orrery the hall is built around (0.90 against 0.67, read off the picture).
+AMBER = ((GL[1], GL[0], BR[1]), (BR[1], BR[0], BR[0]))      # a lamp lit, and out
+GREEN = ((PH[2], PH[1], PH[0]), (PH[1], PH[0], PH[0]))
+RED = ((SG[2], SG[1], SG[0]), (SG[1], SG[0], SG[0]))
 
 
 def _lamps(frame):
     """The pilot lamps in a frame, as (x, y, lamp, on); a lamp is two pixels each way from (x, y).
-    The upper row burns steadily (two amber, one green); below it two amber lamps take turns and
-    the red one comes on once in a round."""
-    upper = ((AMBER, True), (AMBER, True), (GREEN, True))
+    In the upper row an amber lamp and the green one burn steadily and the lamp between them is
+    out; below, two amber lamps take turns and the red one comes on once in a round. Three lamps
+    burn at a time, four while the red one is on."""
+    upper = ((AMBER, True), (AMBER, False), (GREEN, True))
     lower = ((AMBER, frame % 4 < 2), (RED, frame >= 6), (AMBER, frame % 4 >= 2))
     return [(x, y, lamp, on) for y, row in zip(LAMP_ROWS, (upper, lower)) for x, (lamp, on) in zip(TRIO, row)]
 
@@ -158,6 +168,13 @@ def glowing(name, frame=0):
 
 
 # ---- what every face shares --------------------------------------------------------------------------
+def _screws(px):
+    """The screw in each corner of a face, and its shadow under it."""
+    for x, y in CORNERS:
+        _put(px, x, y, FE[5])
+        _put(px, x, y + 1, FE[1])
+
+
 def _plate(seed):
     """The module: a dark brushed plate, the raised edge of the riveted plates (light along the top
     and left, dark along the bottom and right) and a screw in each corner."""
@@ -169,9 +186,7 @@ def _plate(seed):
         _put(px, TILE - 1, t, FE[1])
     _put(px, 0, TILE - 1, FE[2])
     _put(px, TILE - 1, 0, FE[2])
-    for x, y in CORNERS:
-        _put(px, x, y, FE[5])
-        _put(px, x, y + 1, FE[1])
+    _screws(px)
     return px
 
 
@@ -192,7 +207,11 @@ def case():
 
 # ---- dark faces --------------------------------------------------------------------------------------
 def knife_switch():
-    """Three knife switches on a slate back: two thrown in, the middle one pulled; a label under each."""
+    """Three knife switches on a slate back: two thrown in, the middle one pulled; a label under each.
+    The pulled blade stands out towards the room and is seen end on: the jaws above it are empty,
+    two pixels of slate show where it lay, and its grip sits on the short of it over the hinge. The
+    pole is drawn straight, as wide as the two beside it: a blade that steps sideways on its way
+    down reads as a figure between two bars."""
     px = _plate(2)
     _sunk(px, 3, 3, 12, 10, FE[1])
     for k, x in enumerate(TRIO):
@@ -205,10 +224,10 @@ def knife_switch():
             _put(px, x, 5, BR[5])
             _box(px, x + 1, 5, x + 1, 8, BR[1])
         else:                                               # pulled: the blade stands out towards the room
-            _box(px, x + 1, 7, x + 1, 9, BR[4])
-            _put(px, x, 6, FE[5])                           # its grip
-            _put(px, x + 1, 6, FE[0])
-            _put(px, x, 4, FE[0])                           # the empty jaws
+            _put(px, x, 7, FE[5])                           # its grip
+            _put(px, x + 1, 7, FE[3])
+            _put(px, x, 8, BR[5])                           # the end of the blade, towards the light
+            _put(px, x + 1, 8, BR[4])
         _put(px, x, 12, CR[1])
         _put(px, x + 1, 12, CR[0])
     return px
@@ -220,16 +239,20 @@ _FIGURES = tuple(tuple(f[i:i + 3] for i in range(0, 15, 3)) for f in _FIGURES)
 
 
 def counter(units=0):
-    """A register: three figure wheels behind a window (white figures on black drums), a maker's plate."""
+    """A register: three figure wheels behind a window (white figures on black drums), a bar of the
+    plate between one wheel and the next, lit like the window's right edge, so that the window
+    reads as three; a maker's plate. The window is as wide as its three wheels and two bars, and a
+    figure's top and bottom rows are a step darker: it is painted on a drum, which turns away."""
     px = _plate(5)
-    _sunk(px, 2, 3, 13, 9, FE[0])
+    _sunk(px, 3, 3, 13, 9, FE[0])
     for k, figure in enumerate((2, 4, units)):
         x = 2 + 4 * k
-        _box(px, x, 3, x, 9, FE[2])                         # the gap between two wheels
+        if k:
+            _box(px, x, 3, x, 9, FE[4])                     # the bar between two wheels
         for dy, row in enumerate(_FIGURES[figure]):
             for dx, on in enumerate(row):
                 if on == "1":
-                    _put(px, x + 1 + dx, 4 + dy, CR[2])
+                    _put(px, x + 1 + dx, 4 + dy, CR[1] if dy in (0, len(_FIGURES[figure]) - 1) else CR[2])
     _box(px, 5, 12, 10, 13, BR[2])
     _box(px, 5, 12, 10, 12, BR[4])
     _put(px, 10, 13, BR[1])
@@ -238,12 +261,16 @@ def counter(units=0):
 
 def patch_panel():
     """A jack field of three by three, one cord plugged across it: from the top left jack it hangs
-    down between the columns and comes up to the middle right one."""
+    down between the columns and runs under the middle row to the right-hand jack of that row.
+    A jack with nothing in it is a hole in a bush of dim brass; the two plugs and the cord are
+    cream, the only light things on the face. The gaps between the jacks are two pixels wide, so
+    the cord cannot keep clear of all of them: it takes the side of each gap where the jack beside
+    it is darkest (its right-hand column, its lower row), and never lies against a lit pixel."""
     px = _plate(6)
     for y in TRIO:
         for x in TRIO:
-            _stud(px, x, y, (BR[4], BR[2], FE[0]))          # a brass bush, its hole in shadow
-    _dots(px, [(5, 5), (5, 6), (5, 7), (5, 8), (6, 9), (7, 10), (8, 10), (9, 10), (10, 9)], CR[0])
+            _stud(px, x, y, (BR[2], BR[1], FE[0]))          # a brass bush out of the light, its hole black
+    _dots(px, [(5, 5), (5, 6), (5, 7), (5, 8), (6, 9), (7, 9), (8, 9), (9, 9), (10, 9)], CR[1])
     for x, y in ((3, 3), (11, 7)):                          # the two plugs
         _stud(px, x, y, (CR[3], CR[1], CR[0]))
     return px
@@ -305,21 +332,54 @@ def drawers():
 
 
 def emblem():
-    """The station emblem at sixteen pixels, as the cast-iron emblem plate first set it down
-    (iron.py): a ring ten across, the meridian down it, a five-pixel star on its upper-right shoulder."""
-    ring = _round(7.5, 7.5, 4.9, inner=4.2 - 1e-9)
-    return ring + [(7, y) for y in range(3, 13)] + [(11, 4), (10, 4), (12, 4), (11, 3), (11, 5)]
+    """The station emblem on a picture that has an edge of its own and a screw in each corner: the
+    standard figure of sixteen pixels with its ring twelve across instead of fourteen (props/signs,
+    emblem_cells(16, framed=True), g2 #33045; the cast-iron emblem plate of iron.py draws the same
+    pixels). The ring is the pixels 5.1 to 5.9 from the middle of the tile; the meridian is column
+    7 from edge to edge, a pixel out of the ring at both ends; the star is a dot of 2 x 2 inside
+    the ring on its upper right, as far right of the middle as above it, a clear pixel off the ring
+    and off the line. The numbers are kept here and not read from props, which is built on the
+    materials. Returns (ring, meridian, star)."""
+    ring = _round(7.5, 7.5, 5.9, inner=5.1 - 1e-9)
+    meridian = [(7, y) for y in range(1, TILE - 1)]
+    star = [(x, y) for y in (5, 6) for x in (9, 10)]
+    return ring, meridian, star
+
+
+def emblem_faults():
+    """What the emblem breaks of the rules of the standard figure (props/signs, emblem_faults):
+    sentences, none when it keeps them."""
+    ring, line, star = (set(part) for part in emblem())
+    mid = (TILE - 1) / 2.0
+    wrong = []
+    if star & (ring | line):
+        wrong.append("the star lies on the ring or on the meridian")
+    elif min(max(abs(a - x), abs(b - y)) for a, b in star for x, y in ring | line) < 2:
+        wrong.append("the star stands less than a clear pixel off the ring or the meridian")
+    inner = min(math.hypot(x - mid, y - mid) for x, y in ring)
+    if any(math.hypot(x - mid, y - mid) >= inner for x, y in star):
+        wrong.append("the star is not inside the ring")
+    right = sum(x for x, _ in star) / len(star) - mid
+    above = mid - sum(y for _, y in star) / len(star)
+    if right <= 0 or above <= 0 or abs(right - above) > 0.01:
+        wrong.append(f"the star is not as far right of the middle as above it ({right:g}, {above:g})")
+    rows, ring_rows = {y for _, y in line}, {y for _, y in ring}
+    if min(rows) >= min(ring_rows) or max(rows) <= max(ring_rows):
+        wrong.append("the meridian does not run out of the ring at both ends")
+    if any(not 1 <= v <= TILE - 2 for cell in ring | line | star for v in cell):
+        wrong.append("the figure lies on the edge of the plate")
+    return wrong
 
 
 def nameplate():
-    """An enamel nameplate: the station emblem in cream on blue."""
+    """An enamel nameplate: the station emblem in cream on blue. The enamel covers the plate inside
+    its raised edge and is held by the plate's four screws; it has no edge of its own, so a clear
+    pixel of blue lies between the ring and the iron."""
     px = _plate(12)
-    _box(px, 2, 2, 13, 13, EN[2])
-    _box(px, 2, 2, 13, 2, EN[3])
-    _box(px, 2, 2, 2, 13, EN[3])
-    _box(px, 2, 13, 13, 13, EN[0])
-    _box(px, 13, 2, 13, 13, EN[0])
-    _dots(px, emblem(), CR[3])
+    _box(px, 1, 1, TILE - 2, TILE - 2, EN[2])
+    _screws(px)
+    for part in emblem():
+        _dots(px, part, CR[3])
     return px
 
 
@@ -353,19 +413,30 @@ def bus_switch():
 
 
 # ---- light faces -------------------------------------------------------------------------------------
-def dial():
-    """An indicating dial: porcelain in a brass bezel, a black scale and needle."""
+HUB = (((7, 7), BR[4]), ((8, 7), BR[2]), ((7, 8), BR[2]), ((8, 8), BR[1]))     # the four pixels round the dial's axis
+
+
+def dial(version=0):
+    """An indicating dial: porcelain in a brass bezel, a black scale and needle. The scale stands
+    on the outermost pixels of the porcelain, against the bezel. The needle is one line through
+    the axis, three pixels of pointer and one of tail, with the brass hub showing on either side
+    of it; it points between two marks of the scale. Version 0 reads right of the middle of the
+    scale, version 1 left of it (the same needle, mirrored)."""
     px = _plate(1)
     _turned(px, _round(7.5, 7.5, 5.9, inner=4.6), 7.5, 7.5, BR[4], BR[3], BR[1])
     face = _round(7.5, 7.5, 4.6)
     _dots(px, face, PC[3])
     _dots(px, [(x, y) for x, y in face if math.hypot(x - 7.5, y - 7.5) > 3.6 and (x - 7.5) + (y - 7.5) < -2.5],
           PC[2])                                            # the bezel's shadow on it
-    # the scale: twelve, nine and three o'clock two pixels each, the two lower marks one; the upper
-    # diagonals stay clear for the needle
-    _dots(px, [(7, 4), (8, 4), (4, 7), (4, 8), (11, 7), (11, 8), (5, 10), (10, 10)], FE[0])
-    _dots(px, [(9, 6), (10, 5)], FE[0])                     # the needle
-    _stud(px, 7, 7, (BR[4], BR[2], BR[1]))                  # its hub
+    # the scale: twelve, nine and three o'clock two pixels each, the two ends of the arc one; the
+    # upper diagonals stay clear for the needle
+    _dots(px, [(7, 3), (8, 3), (3, 7), (3, 8), (12, 7), (12, 8), (4, 10), (11, 10)], FE[0])
+    needle = [(7, 8), (8, 7), (9, 6), (10, 5)]              # from its tail to its tip, leaning right
+    if version % VERSIONS["dial"]:
+        needle = [(TILE - 1 - x, y) for x, y in needle]
+    for cell, tone in HUB:
+        _put(px, *cell, tone)
+    _dots(px, needle, FE[0])
     return px
 
 
@@ -485,6 +556,9 @@ assert set(RANKS["lit"]) == set(GLOW) and len(GLOW) <= 4
 assert set(FRAMES) == set(FRAMETIME) and set(SMOOTH) <= set(FRAMES)
 # a lamp cannot fade out: blended, its pixels would be half empty, and the game draws a pixel or does not
 assert set(OUT) <= set(GLOW) and not set(OUT) & set(SMOOTH)
+# a face in versions is a still one that does not glow: frames and the second front belong to one picture
+assert set(VERSIONS) <= set(FACES) and not set(VERSIONS) & (set(FRAMES) | set(GLOW))
+assert not emblem_faults(), emblem_faults()
 
 
 def frames(name):
@@ -492,8 +566,17 @@ def frames(name):
     return [FACES[name](f) for f in range(FRAMES[name])] if name in FRAMES else [FACES[name]()]
 
 
+def versions(name):
+    """The pictures of one face that the game mixes by position: one, or its versions."""
+    return [FACES[name](v) for v in range(VERSIONS[name])] if name in VERSIONS else [FACES[name]()]
+
+
 def picture(name):
-    """A face as it goes into the pack: (pixels, meta). An animated one is its frames stacked downwards."""
+    """A face as it goes into the pack: (pixels, meta). An animated one is its frames stacked
+    downwards; one drawn in versions is the list of them, which the pack numbers
+    (panel_<name>0, panel_<name>1, ...)."""
+    if name in VERSIONS:
+        return versions(name), None
     if name not in FRAMES:
         return FACES[name](), None
     animation = {"frametime": FRAMETIME[name]}

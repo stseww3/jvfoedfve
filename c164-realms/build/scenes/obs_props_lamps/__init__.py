@@ -5,7 +5,11 @@ version A of the shade-and-bracket motif (three bracket lamps in a row at the sp
 the caged lamp on iron plate, the pendant under an iron canopy), the same in version B, then the
 lamps both versions share (signal lamp lit and dark, desk lamp, wall-washing uplight, a festoon
 under a canopy). One street lamp stands by itself on the paving east of the wall, so its pool of
-light and its outline are seen on their own.
+light and its outline are seen on their own, and beyond it a parapet pier with the low pier lamp on
+its cap. West of the stage stands a short stretch of the main front, in its own courses as far up
+as this wall goes, with two pilasters two bays apart: the bracket lamp of version A hangs on one
+and that of version B on the other, where the pair at the entrance hangs, to be compared from as
+far off as the entrance is looked at (the review, group #33010).
 
 The shots are written from the numbers below:  python -m scenes.obs_props_lamps
 """
@@ -13,6 +17,7 @@ from artkit.canvas import Canvas
 
 from scenes.obs import materials, sky
 from scenes.obs.common import blocks as B
+from scenes.obs.common import skeleton as S
 from scenes.obs.props import lamps
 
 BIOME = "obs_blue"
@@ -25,6 +30,11 @@ SET_X = {"a": 0, "b": 22}       # where the set of each version starts; a set is
 SHARED_X = 44
 WALL_END = SHARED_X + 21
 STREET = (WALL_END + 9.5, 0.0, 8.5)
+PIER = (WALL_END + 13, 0, 3)    # the cell of a parapet pier as site/_kit.rail builds one: wall block, cap slab
+PIER_TOP = 1.5                  # the cap's top above the ground
+FRONT_X = (-30, -10)            # the stretch of the main front west of the stage
+PAIR_X = {"a": -24, "b": -16}   # its two pilasters, and the version of the bracket lamp each carries
+LAMP_Y = 4.0                    # where props/lamps hangs the pair at the entrance
 TIME = 14000                    # light version A, the default (INTERFACE: 18000 is B, 12900 is C)
 
 
@@ -52,23 +62,46 @@ def _shared(c, x0):
     return n
 
 
+def _front(c):
+    """The stretch of the main front: plinth, rusticated base storey, string course and dressed
+    stone as main/facade lays them, the pilasters a block proud of the wall, and on each the
+    bracket lamp of its version."""
+    def course(y):
+        return B.SLATE_BRICK.block if y <= S.PLINTH[1] else B.ASHLAR_ROUGH.block if y <= S.BASE[1] else STONE
+
+    n = 0
+    for y in range(WALL_H):
+        c.box(FRONT_X[0], y, -1, FRONT_X[1], y, -1, course(y))
+        for x in PAIR_X.values():
+            c.set(x, y, 0, course(y))
+    for version, x in PAIR_X.items():
+        n += lamps.place(c, "bracket", (x + 0.5, LAMP_Y, 1.0), version=version)
+    return n
+
+
 def build():
     c = Canvas()
-    c.box(-3, -1, -1, int(STREET[0]) + 6, -1, 24, PAVING)
+    c.box(FRONT_X[0] - 2, -1, -1, int(STREET[0]) + 6, -1, 24, PAVING)
     c.box(-2, 0, -1, WALL_END, WALL_H - 1, -1, STONE)
-    n = 0
+    n = _front(c)
     for version, x0 in SET_X.items():
         n += _set(c, x0, version)
     n += _shared(c, SHARED_X)
     n += lamps.place(c, "street", STREET)
+    px, py, pz = PIER
+    c.set(px, py, pz, B.ASHLAR_ROUGH.wall)
+    c.set(px, py + 1, pz, B.ASHLAR_ROUGH.slab)
+    n += lamps.place(c, "post", (px + 0.5, py + PIER_TOP, pz + 0.5))
     sky.build(c, (0, 0, 0))         # A2's light sources go in last, when every lamp is in place
     c.entity_counts = {"props": n}
     return c
 
 
 def write_pack(pack_dir):
-    """The repainted stone and iron plate the lamps are judged against."""
-    return materials.pack(pack_dir)
+    """The repainted stone and iron plate the lamps are judged against, and the pictures of the
+    map's sky: the stage stands in the map's hour (mood.py), and without them the game's own sun
+    lies on the open western horizon, the brightest thing in every picture that looks that way."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
 
 
 def shots():
@@ -99,4 +132,11 @@ def shots():
     shot("street", (sx + 4.0, 2.6, sz + 6.0), (sx, 3.0, sz))
     shot("street_head", (sx + 1.8, 4.3, sz + 2.1), (sx, 4.45, sz))
     shot("street_far", (sx - 8.5, 2.0, sz + 13.5), (sx - 2.5, 3.0, sz - 2.5))
+    px, pz = PIER[0] + 0.5, PIER[2] + 0.5
+    shot("post", (px + 2.4, 2.1, pz + 3.0), (px, 1.3, pz))
+    shot("post_near", (px + 0.9, 2.15, pz + 1.3), (px, 1.8, pz))
+    pair = sum(PAIR_X.values()) / 2.0 + 0.5                     # from a standing eye, ten and eight cells off
+    shot("pilasters", (pair, S.EYE, 11.0), (pair, LAMP_Y - 0.4, 1.0))
+    for v, x in PAIR_X.items():
+        shot(f"pilaster_{v}", (x + 0.5, S.EYE, 9.0), (x + 0.5, LAMP_Y - 0.2, 1.0))
     return out

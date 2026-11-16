@@ -3,8 +3,11 @@ table: stone, cast iron, windows, the 16 instrument panels, brass, old copper, s
 animated textures and the footstep sounds.
 
 Work packages are modules in this folder (auto-discovered, see common/assembly.py). Each may define:
-  build(canvas, origin) -> int   materials paints blocks, it does not place them: returns 0.
-  models()              -> {}    no display entities (animated panels are blocks).
+  build(canvas, origin) -> int   materials paints blocks, it does not place them: returns 0. The one
+                                  exception is materials/windows, which hangs an unlit lining on
+                                  the room side of the lit windows (A0 #414, 11-15): thin display
+                                  entities, and its build() returns how many.
+  models()              -> {}    no display entities but those linings (animated panels are blocks).
   pack(pack_dir)        -> [str] writes this category's resource-pack files ONLY:
                                    assets/minecraft/blockstates/<block>.json   (redirects)
                                    assets/minecraft/models/block/<block>.json

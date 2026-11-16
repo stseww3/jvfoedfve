@@ -161,7 +161,10 @@ def game_windows(pid):
 
 def grab(hwnd):
     """What the window last drew, without bringing it to the front: (width, height, rows of
-    blue-green-red-unused bytes from the top), or None when the system gave nothing."""
+    blue-green-red-unused bytes from the top), or None when the system gave nothing.
+
+    The picture comes from the desktop's compositor, which stops when the display goes to sleep:
+    the game keeps drawing, but its area then comes back black (win/deskstate.py tells)."""
     width, height = client_size(hwnd)
     if width <= 0 or height <= 0:
         return None
@@ -199,7 +202,9 @@ def settle(hwnd):
     A game window that holds the keyboard grabs the mouse as soon as a world is on screen, so
     it must never be the active one. The game acts on a key only while its window has the
     keyboard, which means that nothing can be pressed in a settled window, the screenshot key
-    included: pictures are taken with grab().
+    included (a key posted to the window's message queue is dropped as well, tried 2026-11-14).
+    Pictures are saved by the game itself through its helper (win/CamHelper.java, see winmc.py),
+    or taken with grab().
     """
     style = user32.GetWindowLongPtrW(hwnd, GWL_EXSTYLE)
     if not style & WS_EX_NOACTIVATE:

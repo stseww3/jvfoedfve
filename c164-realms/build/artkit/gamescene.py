@@ -574,7 +574,11 @@ class Scene:
         env[R.FOG:R.FOG + 3], env[R.SKY:R.SKY + 3] = look.fog, look.sky
         env[R.FOG_START], env[R.FOG_END] = look.fog_start, look.fog_end
         env[R.FAR_START], env[R.FAR_END], env[R.SKY_END] = look.far_start, look.far_end, look.sky_end
-        env[R.STARS], env[R.PIXEL] = look.stars, pixel
+        # The game draws a star in the colour (b, b, b) with the alpha b, b the moment's star
+        # brightness, and blends it source-alpha/one over the sky behind (26.3 SkyRenderer.renderStars,
+        # core/stars.fsh, the STARS pipeline): a star adds b squared, not b. The game's own pictures
+        # say the same: at b 0.60 a star stands 92 of 255 over the sky, at 0.15 it cannot be seen.
+        env[R.STARS], env[R.PIXEL] = look.stars ** 2, pixel
         bodies, pixels, at = [], [], 0
         # Both bodies stand at height 100 under rotateY(-90) rotateX(angle) (26.3 SkyRenderer), which
         # carries the quad's +x to the south and its +z towards the horizon. The sun's quad
