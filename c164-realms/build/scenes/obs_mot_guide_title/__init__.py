@@ -17,7 +17,8 @@ the save with a real client.
 The views (shots(); python -m scenes.obs_mot_guide_title writes them to shots.json, and says where
 the plate falls in the arrival view):
     v1         the arrival view, as the skeleton fixes it
-    from_car   from the spawn, turned to the plate: what who steps out of the car has on his right
+    from_car   a step west of the spawn, turned to the plate: what who has stepped out of the car
+               has on his right
     plate      square on, from two and a half blocks: the pier between the door and the east window,
                the luggage at its foot
     front      the waiting room's whole front from the south-west, as who comes back to the car
@@ -44,7 +45,7 @@ EYE = S.EYE
 PLATE = guide_title.plate_at()[0]           # the middle of the plate, on the wall's face
 VIEWS = [
     ("v1", S.V1["pos"], S.V1["look_at"]),
-    ("from_car", (cablecar.SPAWN[0], cablecar.SPAWN[1] + EYE, cablecar.SPAWN[2]), PLATE),
+    ("from_car", (cablecar.SPAWN[0] - 1.0, cablecar.SPAWN[1] + EYE, cablecar.SPAWN[2]), PLATE),
     ("plate", (PLATE[0], S.STATION_GROUND + EYE, PLATE[2] + 2.5), PLATE),
     ("front", (79.5, S.STATION_GROUND + EYE, -31.5), (84.0, -2.2, -36.5)),
 ]
