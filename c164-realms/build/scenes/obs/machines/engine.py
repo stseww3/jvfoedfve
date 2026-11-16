@@ -10,10 +10,10 @@ belt wheel as well: a flat leather belt runs west from its rim to the small pull
 one turn of the engine to three of the armature. The dynamo is of the two-pole kind with its
 armature low between the pole pieces and two tall wound limbs under a yoke. On the side away from
 the door an eccentric on the shaft works the slide valve in its chest, and a flyball governor
-stands on the throttle over the chest, driven from the shaft by a cord. Steam comes in at the
-flange beside the governor (STEAM_IN), which looks up, and leaves into the floor; the current
-leaves at the two terminals on the dynamo's yoke (POWER_OUT). The pipe and the cables are the
-props line's and the room's.
+stands on the throttle over the chest, driven from the shaft by a cord; the chest carries its
+pressure gauge. Steam comes in at the flange beside the governor (STEAM_IN), which looks up, and
+leaves into the floor; the current leaves at the two terminals on the dynamo's yoke (POWER_OUT).
+The pipe and the cables are the props line's and the room's.
 
 Where it stands. In the south half of the power house (site/powerhouse.ROOM), the engine's line
 east-west: boilers in the north-east, engine in the south-east, dynamo in the south-west, where the
@@ -640,7 +640,7 @@ def _cylinder():
     d.box((ends[1] - 0.03125, BED_TOP, -BED_HALF - 0.0625), (ends[1] + 0.03125, BED_TOP + 0.0625, zp - 0.03125), COPPER)
     d.box((ends[1] - 0.03125, 0.0, -BED_HALF - 0.0625), (ends[1] + 0.03125, BED_TOP, -BED_HALF), COPPER)
     # the oiler on the barrel
-    d.oil_cup(x0 + 0.65, H + CYL_R, 0.0)
+    d.oil_cup(x0 + 1.0, H + CYL_R, 0.0)
     # the valve chest and its cover
     za, zb = CHEST_Z
     cx0, cx1 = CHEST
@@ -650,6 +650,13 @@ def _cylinder():
         for y in (H - 0.3125, H + 0.3125):
             d.stud((x, y, zb), "z", STUD_BRASS)
     d.tube("x", (H, VALVE_Z), cx0 - 0.1875, cx0, 0.125, BRASS, sides=8)               # the valve spindle's gland
+    # the chest's pressure gauge, on a syphon from its top: the dial looks over the barrel at the door
+    gx, gy, gz = cx0 + 0.25, H + 0.9375, 0.84375
+    d.tube("y", (gx, gz), H + 0.3125, gy - 0.125, 0.03125, COPPER, sides=4)
+    d.tube("z", (gx, gy), gz - 0.0625, gz + 0.0625, 0.15625, BRASS, sides=12)
+    d.tube("z", (gx, gy), gz - 0.0625 - PX / 4, gz - 0.0625, 0.125, PORCELAIN, sides=12)
+    d.box((gx - 0.015625, gy - 0.015625, gz - 0.0625 - PX / 2), (gx + 0.015625, gy + 0.09375, gz - 0.0625 - PX / 4), IRON_D,
+          rot=("z", -40.0, (gx, gy, gz)))                                             # the needle
     # the exhaust: down into the floor
     d.tube("y", (GOV_X, GOV_Z), 0.0625, H - 0.3125, 0.1875, IRON_D, sides=8)
     d.tube("y", (GOV_X, GOV_Z), 0.0, 0.0625, 0.28125, IRON, sides=8)
