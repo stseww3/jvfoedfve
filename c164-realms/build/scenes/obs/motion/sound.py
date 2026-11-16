@@ -39,7 +39,11 @@ says itself when it is heard, in one line beside the line that makes it move:
 The kinds for that are in KINDS below the first round's, with what each is meant for; the time a
 kind has there is only what the test scene plays it on. The train's sounds go with the train
 (TRAIN: when its exhaust beats, its whistle blows, its steam is let off and the station's bell
-rings, for motion/smoke as well).
+rings, for motion/smoke as well). Three things play a tune, each in one line:
+
+    sound.chimes(canvas, bells, 2, cycle, at=tick)       # the tower clock chimes the half hour
+    sound.strikes(canvas, bells, 7, cycle, at=tick)      # ... and strikes seven
+    sound.gramophone(canvas, horn, reach=6.0)             # a waltz, once a minute
 
 How far a sound carries. The game fades a sound evenly to nothing over the distance its own event
 is given (16 blocks unless the game says otherwise: a piston 8, a beacon 7), times the volume it is
@@ -96,6 +100,11 @@ EVENTS = {
     "grind": ("block.grindstone.use", 1.00, 0.50),          # gears under load: a winch, the dome's drive
     "water": ("block.water.ambient", 0.50, 1.00),           # running water: a fountain
     "bubble": ("block.bubble_column.upwards_ambient", 0.50, 1.20),  # the cells of the battery gas
+    # the gramophone (gramophone() below): its three voices, each note at its own pitch, and the needle
+    "gram": ("block.note_block.harp", 0.35, 1.00),          # the voice that goes up the chord; F sharp 3 to F sharp 5
+    "gram_hi": ("block.note_block.flute", 0.28, 1.00),      # the voice that answers; F sharp 4 to F sharp 6
+    "gram_low": ("block.note_block.bass", 0.40, 1.00),      # the bass; F sharp 1 to F sharp 3
+    "needle": ("block.campfire.crackle", 0.12, 1.30),       # the needle in the groove
 }
 
 # ---- the other choices: what the test scene obs_mot_sound lets one hear beside the table ------------
@@ -149,6 +158,12 @@ OTHERS = {
     "bell": (
         ({"bell": ("block.note_block.bell", 1.00, 1.40)}, 2.0),
         ({"bell": ("block.anvil.land", 0.60, 1.80)}, 2.0),
+    ),
+    # the tower's quarter bells: two sets that are in tune, tubular bells two octaves up and
+    # metal bars at the pitch of the real ones (keynote E4)
+    "chime": (
+        ({"chime": ("block.note_block.chime", 1.00, 0.75)}, 5.0),
+        ({"chime": ("block.note_block.iron_xylophone", 1.00, 0.891)}, 5.0),
     ),
 }
 LETTERS = "abc"                 # a choice is named by its letter: a is the table's, b and c are OTHERS
@@ -431,6 +446,124 @@ def place(canvas, kind, pos, reach, origin=(0, 0, 0), phase=0, choice=0, cycle=N
                      at=own_at if at is None else at, volume=carry, pitch=pitch, reach=reach,
                      source=SOURCE.get(kind, "block"), origin=origin, phase=phase)
     return 0
+
+
+# ---- the gramophone -----------------------------------------------------------------------------------
+# A short tune of note-block sounds for the gramophone of the cable station's duty room (the
+# director, group message 86565): the opening of the waltz "An der schoenen blauen Donau" (Johann
+# Strauss the younger, 1866: out of copyright everywhere), sixteen bars of it and a close of our own.
+# One voice goes up the chord, a higher one answers twice, in thirds; a bass note on the first beat
+# of a bar and two light notes after it. Then the record runs on in its last groove, the needle
+# crackling, and the tune starts again.
+GRAM_BEAT = 7                   # ticks to a crotchet (171 to the minute), three crotchets to a bar
+GRAM_LEAD = 20                  # ticks the needle is heard before the first note
+GRAM_LOOP = 1200                # one playing and the pause after it: a minute
+NEEDLE_LOOP = 50                # the crackle is 1.7 to 3 s long
+_STEPS = {"C": 0, "D": 2, "E": 4, "F": 5, "G": 7, "A": 9, "B": 11}
+_LOWEST = {"gram": "F#3", "gram_hi": "F#4", "gram_low": "F#1"}     # the note an instrument of the game plays at the pitch 0.5
+_UP = (("D4", "D4", "F#4", "A4", "A4"), ("D4", "D4", "F#4", "A4", "A4"),        # the voice that goes up the chord: four
+       ("C#4", "C#4", "E4", "B4", "B4"), ("C#4", "C#4", "E4", "B4", "B4"))      # phrases, each from the bar's upbeat
+_ANSWER = ((("A5", "F#5"), ("F#5", "D5")), (("A5", "F#5"), ("G5", "E5")),       # what answers each phrase: two pairs
+           (("B5", "G5"), ("G5", "E5")), (("B5", "G5"), ("F#5", "D5")))         # of notes, each pair played twice
+_CLOSE = ("D4", "D4", "F#4", "A4")                                               # the close: up the chord once more
+_LAST = ("D4", "F#4", "A4", "D5")                                               # ... to the chord it ends on
+_CHORD_OF = lambda q: "A" if 21 <= q <= 44 else "D"                             # noqa: E731  the harmony of a crotchet
+_BASS = {"D": "D2", "A": "A2"}
+_AFTER = {"D": ("F#3", "A3"), "A": ("G3", "C#4")}                               # the light notes on the second and third beat
+
+
+def _key(note):
+    """The number of a note's key ("F#4" is 66, middle C 60)."""
+    name, octave = note[:-1], int(note[-1])
+    return 12 * (octave + 1) + _STEPS[name[0]] + (1 if name.endswith("#") else 0)
+
+
+def _pitch(event, note):
+    """The pitch an instrument's event is played at to sound `note`."""
+    steps = _key(note) - _key(_LOWEST[event])
+    if not 0 <= steps <= 24:
+        raise ValueError(f"motion/sound: {note} is outside the two octaves of {event}")
+    return round(0.5 * 2.0 ** (steps / 12.0), 4)
+
+
+def tune():
+    """The gramophone's tune: [(tick of GRAM_LOOP, event, pitch, volume)], in the order of time.
+    Crotchet 0 is the upbeat; a phrase is twelve crotchets, and bar n begins on crotchet 3 n - 2."""
+    notes = []
+    for phrase, (up, answer) in enumerate(zip(_UP, _ANSWER)):
+        q = 12 * phrase
+        notes += [(q + i, "gram", note, 1.0) for i, note in enumerate(up)]
+        for pair, at in zip(answer, ((6, 7), (9, 10))):
+            notes += [(q + i, "gram_hi", note, 1.0) for i in at for note in pair]
+    notes += [(48 + i, "gram", note, 1.0) for i, note in enumerate(_CLOSE)]
+    notes += [(52, "gram", note, 1.0) for note in _LAST]
+    for bar in range(1, 19):
+        q = 3 * bar - 2
+        notes.append((q, "gram_low", _BASS[_CHORD_OF(q)], 1.0))
+        if bar < 18:
+            notes += [(q + i, "gram", _AFTER[_CHORD_OF(q + i)][i - 1], 0.5) for i in (1, 2)]
+    out = [(GRAM_LEAD + q * GRAM_BEAT, event, _pitch(event, note), volume) for q, event, note, volume in notes]
+    out += [(t, "needle", 1.0, 1.0) for t in range(0, GRAM_LOOP, NEEDLE_LOOP)]
+    return sorted(out)
+
+
+def gramophone(canvas, pos, reach=6.0, origin=(0, 0, 0), phase=0):
+    """The gramophone plays at `pos`, its horn (scene coordinates, plus origin), to the players
+    within `reach` blocks: its tune once a minute, the needle's crackle all the time. One line
+    beside the line that turns the record. Returns 0: a sound is no entity."""
+    voices = {}
+    for tick, event, pitch, volume in tune():
+        voices.setdefault((event, pitch, volume), []).append(tick)
+    for (event, pitch, volume), ticks in sorted(voices.items()):
+        MK.sound(canvas, pos, event, GRAM_LOOP, at=ticks, volume=volume, pitch=pitch, reach=reach,
+                 origin=origin, phase=phase)
+    return 0
+
+
+# ---- the tower clock's bells ---------------------------------------------------------------------------
+# The quarters are the Cambridge chimes (St Mary the Great, 1793; the Westminster quarters): five
+# phrases of four notes on four bells, one phrase at the first quarter, two at the half, three at
+# the third, four before the hour is struck. The bells are a major third, a tone and the keynote,
+# and the fourth below it; the hour bell is the kind "strike". The game's bell is a little out of
+# tune from stroke to stroke (its own table plays it 2 % up or down at random), as old bells are.
+CHIME_BEAT = 20                 # ticks from note to note
+CHIME_REST = 2                  # beats the last note of a phrase rings before the next phrase
+STRIKE_BEAT = 60                # ticks from one stroke of the hour to the next
+_BELLS = {"g": 2.0 ** (4 / 12.0), "f": 2.0 ** (2 / 12.0), "e": 1.0, "b": 2.0 ** (-5 / 12.0)}    # times the keynote's pitch
+_PHRASES = ("gfeb", "egfb", "efge", "gefb", "bfge")
+_QUARTERS = {1: (0,), 2: (1, 2), 3: (3, 4, 0), 4: (1, 2, 3, 4)}
+
+
+def chime_ticks(quarter):
+    """How long the chime of a quarter lasts, in ticks, its last note rung out: 100, 200, 300, 400."""
+    return len(_QUARTERS[quarter]) * (4 + CHIME_REST - 1) * CHIME_BEAT
+
+
+def chimes(canvas, pos, quarter, cycle, at=0, reach=None, origin=(0, 0, 0), phase=0, choice=0):
+    """The tower clock chimes a quarter (1, 2, 3, or 4 for the full hour) from tick `at` of every
+    `cycle` ticks, at `pos`, its bells. The hour itself is strikes(), from at + chime_ticks(4) on.
+    reach: the players within so many blocks hear it; None is as far as the bells carry.
+    Returns 0."""
+    if quarter not in _QUARTERS:
+        raise ValueError(f"motion/sound: a clock chimes the quarters 1 to 4, not {quarter}")
+    reach = far("chime", choice) if reach is None else reach
+    ticks = {}
+    for n, phrase in enumerate(_QUARTERS[quarter]):
+        for i, bell in enumerate(_PHRASES[phrase]):
+            ticks.setdefault(bell, []).append(int(at) + (n * (4 + CHIME_REST - 1) + i) * CHIME_BEAT)
+    for bell, when in sorted(ticks.items()):
+        place(canvas, "chime", pos, reach, origin=origin, phase=phase, choice=choice, cycle=cycle, at=when,
+              pitch=round(_BELLS[bell], 4))
+    return 0
+
+
+def strikes(canvas, pos, count, cycle, at=0, reach=None, origin=(0, 0, 0), phase=0, choice=0):
+    """The hour bell strikes `count` times from tick `at` of every `cycle` ticks, at `pos`. Returns 0."""
+    if int(count) < 1:
+        raise ValueError("motion/sound: a clock strikes once or more")
+    reach = far("strike", choice) if reach is None else reach
+    return place(canvas, "strike", pos, reach, origin=origin, phase=phase, choice=choice, cycle=cycle,
+                 at=[int(at) + i * STRIKE_BEAT for i in range(int(count))])
 
 
 # ---- the spots of the master scene ---------------------------------------------------------------------

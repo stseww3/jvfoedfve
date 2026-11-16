@@ -29,8 +29,11 @@ The second round's kinds sound here on the time KINDS gives them, which is only 
 the map the thing that moves says when (the train's exhaust beats with its wheels, the tower's bell
 strikes the hour). The whistle blows long, then short, once in ten seconds; the exhaust beats four
 times a second without an end, as it does on the climb; the station's bell is struck five times.
-What carries far in the map (the whistle 64 blocks, the tower's bells the whole hilltop) is cut
-off at the stand's reach here like everything else.
+The tower's quarter bells play the chime of the half hour (two phrases of the Cambridge quarters),
+its hour bell strikes three; both once in twenty seconds. What carries far in the map (the whistle
+64 blocks, the tower's bells the whole hilltop) is cut off at the stand's reach here like
+everything else. The last stand, south of the last row, is the gramophone: its tune once a
+minute (sound.gramophone), the needle's crackle between.
 
 The shot is written from the numbers below:  python -m scenes.obs_mot_sound
 """
@@ -51,6 +54,7 @@ STEP = 14                       # blocks from stand to stand
 REACH = 6.0                     # how far a stand is heard: two reaches are less than a step
 EDGE = 8                        # the first stand's cell, from the floor's corner
 LAMP_LEVEL = 12                 # the invisible light over each stand
+BELLS = 400                     # ticks from one playing of the tower's bells to the next
 TIME = 14000                    # light version A, the default
 
 
@@ -64,8 +68,18 @@ def stand(row, column):
 
 
 def size():
-    """(x, z) of the floor's far corner."""
-    return 2 * EDGE + STEP * (len(sound.LETTERS) - 1), 2 * EDGE + STEP * (len(ROWS) - 1)
+    """(x, z) of the floor's far corner: a row to a kind, and the gramophone's."""
+    return 2 * EDGE + STEP * (len(sound.LETTERS) - 1), 2 * EDGE + STEP * len(ROWS)
+
+
+def play(c, kind, pos, column):
+    """What a stand plays: the kind on the time the table gives it; the tower's bells what they
+    play in the map, the chime of the half hour and three strokes of the hour, once in BELLS ticks."""
+    if kind == "chime":
+        return sound.chimes(c, pos, 2, BELLS, reach=REACH, choice=column)
+    if kind == "strike":
+        return sound.strikes(c, pos, 3, BELLS, reach=REACH, choice=column)
+    return sound.place(c, kind, pos, REACH, choice=column)
 
 
 def build():
@@ -77,7 +91,11 @@ def build():
             x, z = stand(row, column)
             c.box(x, 0, z, x, column, z, STONE)
             c.set(x, column + 2, z, light(LAMP_LEVEL), keep=True)
-            sound.place(c, kind, (x + 0.5, column + 1.5, z + 0.5), REACH, choice=column)
+            play(c, kind, (x + 0.5, column + 1.5, z + 0.5), column)
+    x, z = stand(len(ROWS), 0)                      # the last stand: the gramophone
+    c.box(x, 0, z, x, 0, z, STONE)
+    c.set(x, 2, z, light(LAMP_LEVEL), keep=True)
+    sound.gramophone(c, (x + 0.5, 1.5, z + 0.5), REACH)
     c.entity_counts = {"motion": 0}
     return c
 
