@@ -1,12 +1,12 @@
 27 shots -> /tmp/dais_jobs/c331/c164-realms/build/scenes/obs_sky_lights/shots.json
 
-sources placed: 158 (rank 1: 9, rank 2: 108, rank 3: 41); levels 14x9, 12x6, 11x6, 10x75, 8x18, 7x18, 6x26
-windows main: dark 219, dim 9, lit 27, bright 3 (85% dark), 69 sources (3 of them behind the glass) and 12 lent by the brightest window to the windows beside it
+sources placed: 158 (rank 1: 12, rank 2: 105, rank 3: 41); levels 14x9, 13x3, 12x12, 11x6, 10x75, 9x3, 8x18, 7x3, 6x26, 5x3
+windows main: dark 219, dim 9, lit 27, bright 3 (85% dark), 69 sources
 windows levels: dark 12, dim 2, lit 6, bright 2 (55% dark), 14 sources
 main's table under blue: dark 68, dim 3, lit 14, bright 1
 main's table under glow: dark 74, dim 3, lit 8, bright 1
 main's table under deep: dark 77, dim 3, lit 5, bright 1
-dressed: yes; doors: none; behind them: 9 sources; wash: 12 projectors; not placed here: 0; level 15: 0; isolated: 0
+dressed: yes; doors: none; behind them: 9 sources; wash: 12 projectors; stair: 0; pools: 6; not placed here: 0; level 15: 0; isolated: 0
 
 blue: dark 68, dim 3, lit 14, bright 1 of 86 (79% dark); lit neighbours: none
         apse main  bays  -1..1   020
@@ -49,26 +49,27 @@ block light on the stone round a great window (highest of its rows, and the leas
   10 behind the glass: jamb  7 (least 6); sill  7 (least 6); pilaster side  6 (least 5); pilaster front  4 (least 3); panel under it  5 (least 4); frieze over it  5 (least 4)
   12 behind the glass: jamb  9 (least 8); sill  9 (least 8); pilaster side  8 (least 7); pilaster front  6 (least 5); panel under it  7 (least 6); frieze over it  7 (least 6)
   blue, bay 14:          jamb  9 (least 8); sill  9 (least 8); pilaster side  8 (least 7); pilaster front  6 (least 5); panel under it  7 (least 6); frieze over it  6 (least 6)
-  blue, over the door:   jamb  9 (least 8); sill  9 (least 8); pilaster side  8 (least 7); pilaster front  6 (least 5); panel under it  7 (least 6); frieze over it  -
-  blue, beside the door (bay 10):  jamb  7 (least 6); sill  6 (least 4); pilaster side  6 (least 5); pilaster front  6 (least 1); panel under it  4 (least 2); frieze over it  4 (least 2)
-  the same, nothing lent:          jamb  5 (least 3); sill  4 (least 3); pilaster side  4 (least 3); pilaster front  6 (least 1); panel under it  2 (least 1); frieze over it  2 (least 0)
+  blue, over the door:   jamb  9 (least 8); sill  9 (least 8); pilaster side  8 (least 7); pilaster front  7 (least 5); panel under it  9 (least 8); frieze over it  -
+  blue, beside the door (bay 10): jamb  5 (least 3); sill  4 (least 3); pilaster side  5 (least 3); pilaster front  7 (least 1); panel under it  6 (least 4); frieze over it  2 (least 0)
 
-blue, on the ground along the axis, x 9..28 (the wall face is x 17): 0 0 0 0 0 0 0 0 0 1 2 1 0 0 1 2 3 4 3 2
+blue, on the ground along the axis, x 9..28 (the wall face is x 17): 0 0 0 0 1 2 3 4 5 6 7 8 7 6 5 4 5 6 5 4
+blue, on the ground through the foot of the street lamp at (26, 0, -6) (a pool of 12 there), x 19..33: 8 7 7 8 9 10 11 12 11 10 9 8 7 6 5
+blue, on the ground through the foot of the street lamp at (26, 0, 6) (a pool of 12 there), x 19..33: 8 7 7 8 9 10 11 12 11 10 9 8 7 6 5
 blue, the door's jambs at the pilaster plane (x 18), rows y 6..0, z -6..6:
-    0  8  0  6  0  4  0  4  0  6  0  8  0
-    0  9  8  7  0  5  4  5  0  7  8  9  0
-    0 10  9  8  0  6  5  6  0  8  9 10  0
-    0  9  8  7  0  5  4  5  0  7  8  9  0
-    0  8  7  6  0  4  3  4  0  6  7  8  0
-    0  7  6  5  0  3  2  3  0  5  6  7  0
-    0  6  5  4  0  2  1  2  0  4  5  6  0
+    0  0  0  0  0  0  0  0  0  0  0  8  0
+    0  0  0  0  0  0  0  0  0  0  0  9  0
+    0  0  0  0  0  0  0  0  0  0  0 10  0
+    0  0  0  0  0  0  0  0  0  0  0  9  0
+    0  0  0  0  0  0  0  0  0  0  0  8  0
+    0  0  0  0  0  0  0  0  0  0  0  7  0
+    0  0  0  0  0  0  0  0  0  0  0  6  0
 blue, five cells behind the wall line (x 12), rows y 6..0, z -6..6:
     0  0  0  0  0  0  0  0  0  0  0  0  0
-    0  3  2  1  0  0  0  0  0  1  2  3  0
-    0  4  3  2  1  0  0  0  1  2  3  4  0
-    0  3  2  1  0  0  0  0  0  1  2  3  0
-    0  2  1  0  0  0  0  0  0  0  1  2  0
-    0  1  0  0  0  0  0  0  0  0  0  1  0
+    0  0  0  0  0  0  0  0  0  0  0  0  0
+    0  0  0  0  0  0  0  0  0  0  0  0  0
+    0  0  0  0  0  0  0  0  0  0  0  0  0
+    0  0  0  0  0  0  0  0  0  0  0  0  0
+    0  0  0  0  0  0  0  0  0  0  0  0  0
     0  0  0  0  0  0  0  0  0  0  0  0  0
 blue, the wall wash of the north wing at 10: the block light on the front's faces (the cell before the outermost block of each line: stone, the bars of a small window, the glass of a great one), rows y 11..0, z -16..-6; pilasters at z -14, -10, -6:
    y 11   1  2  5  8  9  8  5  2  1  0  5
@@ -78,8 +79,8 @@ blue, the wall wash of the north wing at 10: the block light on the front's face
    y  7   2  3  5  6  7  6  5  3  4  5  9
    y  6   4  5  5  5  5  5  5  5  6  8  9
    y  5   4  5  7  5  5  5  7  5  6  7 11
-   y  4   5  6  8  6  5  6  8  6  7  8 12
-   y  3   6  7  9  7  6  7  9  7  6  7 11
+   y  4   4  5  8  5  4  5  8  5  6  7 12
+   y  3   5  6  9  6  5  6  9  6  5  6 11
    y  2   7  8 10  8  7  8 10  8  7  6 10
    y  1   7  8  9  8  7  8  9  8  7  8  9
    y  0   6  7  8  7  6  7  8  7  6  7  8
