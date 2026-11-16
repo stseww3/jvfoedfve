@@ -106,9 +106,9 @@ def _seen(c, eye, point):
 def faults(c):
     """What is wrong with where the plaques hang on the canvas of build(), [(key, words)]: a corner
     of the plate with nothing behind it or inside a block, no place to stand and read it in the
-    three cells before it, its middle far from the reader's eye, more than one other plaque seen
-    from where it is read. A plaque with nothing behind its middle does not hang at all and is not
-    looked at."""
+    three cells before it, its middle far from the reader's eye, more than two plaques that one
+    picture taken from where it is read can hold. A plaque with nothing behind its middle does not
+    hang at all and is not looked at."""
     table = plaques.site_plaques()
     left = set(getattr(c, "plaques_left_out", []))
     inset = 0.02                                            # a corner on the edge of a cell belongs to the plate's side of it
@@ -147,7 +147,10 @@ def faults(c):
                 out.append((key, f"its middle is {off:.2f} from the eye of who stands before it "
                                  f"(feet at y {sorted({feet for _, feet in stands})})"))
             eye = tuple(p + d for p, d in zip(pos, K.turn(yaw, (0.0, feet + S.EYE - pos[1], far))))
-        others = []
+        # one picture holds two plaques at most (motion/guide): the one that is read and one more
+        # in the picture of who reads it, or two that he sees when he turns round
+        look = tuple(p - e for p, e in zip(pos, eye))
+        ahead, others = 0, []
         for other, o in table.items():
             if other == key or other in left:
                 continue
@@ -156,9 +159,12 @@ def faults(c):
             near = math.sqrt(sum(v * v for v in to))
             if near < 64.0 * o.get("view", plaques.VIEW) and sum(a * b for a, b in zip(to, front)) > 0.0 \
                     and _seen(c, eye, tuple(p + 0.05 * f for p, f in zip(o["pos"], front))):
-                others.append(f"{other} ({near:.1f} blocks)")
-        if len(others) > 1:
-            out.append((key, f"who reads it sees {len(others)} more plaques by turning his head: {', '.join(others)}"))
+                # within sixty degrees of the way he looks: in his picture, at the game's widest
+                before = -sum(a * b for a, b in zip(to, look)) > 0.5 * near * math.sqrt(sum(v * v for v in look))
+                ahead += before
+                others.append(f"{other} ({near:.1f} blocks{', beside the one he reads' if before else ''})")
+        if ahead > 1 or len(others) > 2:
+            out.append((key, f"who reads it can have more than two plaques in one picture: he sees {', '.join(others)}"))
     return out
 
 
