@@ -151,6 +151,37 @@ def survey(canvas):
     return L.levels(canvas, tuple(lo), tuple(hi)), tops
 
 
+def let_in(light, cells, places):
+    """The light kit shuts every block that is not on its list of open shapes, the game's ladder among
+    them (a person at the foot of a ladder has feet and head in two cells it calls dark). The game
+    lets light into every block that is not a whole cube, and a cell a person's feet or head are in
+    never holds one. So the cells of `places` that hold a block the kit shuts get what the game gives
+    them: one less than the best cell beside them (repeated, for a run of such cells). Changes
+    `light`; returns {the block's name: how many cells of `places` hold it} and how many got light."""
+    stops, held, got, names = {}, [], set(), {}
+    for c in places:
+        state = cells.get(c)
+        if state is None:
+            continue
+        if state not in stops:
+            stops[state] = L._stops_light(state)
+        if stops[state]:
+            held.append(c)
+            names[AB.name_of(state)] = names.get(AB.name_of(state), 0) + 1
+    for _round in range(15):
+        changed = False
+        for x, y, z in held:
+            v = max(light.get(n, 0) for n in ((x + 1, y, z), (x - 1, y, z), (x, y + 1, z), (x, y - 1, z),
+                                              (x, y, z + 1), (x, y, z - 1))) - 1
+            if v > light.get((x, y, z), 0):
+                light[(x, y, z)] = v
+                got.add((x, y, z))
+                changed = True
+        if not changed:
+            break
+    return names, len(got)
+
+
 def sky_light(cells, least=SKY_NEAR):
     """The sky's light as the game spreads it, where it is `least` or more but not the full 15:
     ({cell: level}, {(x, z): the lowest row of the column that is open to the sky}). Straight down a
@@ -356,6 +387,11 @@ def main():
     starts += [(f"--start {text}", tuple(float(v) for v in text.split(","))) for text in args.start]
     found, fell, used, lost = standing(world, starts)
     print(f"darkfloor: {len(found)} standing places from {len(used)} starts ({time.time() - t0:.0f} s)")
+    feet = {(i // 2, int(math.floor(hq / float(W.Q) + 1e-6)), j // 2) for i, j, hq in found if i % 2 and j % 2}
+    held, got = let_in(light, cells, feet | {(x, y + 1, z) for x, y, z in feet})
+    print(f"darkfloor: {sum(held.values())} cells of feet and heads hold a block the light kit shuts "
+          f"({', '.join(f'{k} {v}' for k, v in sorted(held.items(), key=lambda kv: -kv[1])[:8])}); "
+          f"{got} of them get light from beside them")
 
     doors, room_at, placed = thresholds(), room_of(), placed_sources(canvas)
     names = {}
@@ -538,7 +574,8 @@ def main():
     title = (f"总装 {args.head}" if args.head else "总场景") if master else f"场景 {args.scene}"
     md = [f"# 路上的光：暗格清单（{title}）", "",
           f"量法：`tools/walkreach.py` 算人走得到的地方（从出生点起；再加两条走查路线上出生点走不到的点），"
-          f"`sky/_lightkit.levels` 算块光，取脚格和头格里亮的那个（同 `obs_sky_lights/ways.py`）。"
+          f"`sky/_lightkit.levels` 算块光，取脚格和头格里亮的那个（同 `obs_sky_lights/ways.py`）；"
+          f"灯具包当成挡光、其实人站得进去的格（游戏的梯子之类，这一版 {sum(held.values())} 格）照游戏的算法取旁边最亮的格减一。"
           + (f"地面、台阶、门槛一个线：低于 {args.floor} 算暗（cr2 #77677；11-16 10:39 以前的几版台阶、门槛按 7）。"
              if args.floor == args.step else
              f"地面低于 {args.floor}、台阶和门槛低于 {args.step} 算暗。")
