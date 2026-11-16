@@ -1,0 +1,311 @@
+{
+ "scene": "obs_site_cablecar",
+ "commit": "c8c4229",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "188147 blocks, 525 entities, 396 models, 1876 resource-pack files, 912 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (5.5 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 1875 files, no file written twice, the folders and the prefix of site are kept (2 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "525 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "1321 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "WARN",
+   "summary": "83 kinds of block placed, 404 barrier cells (x -1..91, y -6..20, z -38..47), barriers away from any model",
+   "details": [
+    "195 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees (A0 #457, 4)"
+   ]
+  },
+  {
+   "check": "flatwall",
+   "status": "PASS",
+   "summary": "no wall face runs flat over more than 5x5",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "WARN",
+   "summary": "525 display entities, 25 drawn out along one axis, 31 shown through a matrix that is no turn, no face stretched, 210 models never placed",
+   "details": [
+    "sky_cloudsea_swell_a x6: 4/4/4 pixels to the block along x/y/z, not 16",
+    "sky_cloudsea_swell_b x14: 4/4/4 pixels to the block along x/y/z, not 16",
+    "sky_cloudsea_swell_c x7: 4/4/4 pixels to the block along x/y/z, not 16",
+    "sky_cloudsea_swell_d x9: 4/4/4 pixels to the block along x/y/z, not 16"
+   ]
+  },
+  {
+   "check": "views",
+   "status": "WARN",
+   "summary": "12 shots, most display entities in view: 409 (east), limit 600; counted without what walls hide; the game draws up to 461 (stair_head): a display entity without width and height is drawn outside the view too",
+   "details": [
+    "v1: 2 of the 369 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "axis: 1 of the 47 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "stair_head: 1 of the 92 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "trestle_side: 4 of the 48 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "east: 5 of the 409 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "aerial: 1 of the 163 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there",
+    "(the tracking range is read off the game's code, not yet seen on the real machine)"
+   ],
+   "data": {
+    "shots": [
+     {
+      "name": "v1",
+      "in_view": 369,
+      "drawn": 452,
+      "beyond_tracking": 2
+     },
+     {
+      "name": "platform",
+      "in_view": 55,
+      "drawn": 452,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "axis",
+      "in_view": 47,
+      "drawn": 451,
+      "beyond_tracking": 1
+     },
+     {
+      "name": "lower",
+      "in_view": 60,
+      "drawn": 454,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "stair_head",
+      "in_view": 92,
+      "drawn": 461,
+      "beyond_tracking": 1
+     },
+     {
+      "name": "canopy",
+      "in_view": 17,
+      "drawn": 446,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "girder",
+      "in_view": 40,
+      "drawn": 446,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "trestle",
+      "in_view": 44,
+      "drawn": 449,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "trestle_side",
+      "in_view": 48,
+      "drawn": 454,
+      "beyond_tracking": 4
+     },
+     {
+      "name": "east",
+      "in_view": 409,
+      "drawn": 448,
+      "beyond_tracking": 5
+     },
+     {
+      "name": "aerial",
+      "in_view": 163,
+      "drawn": 450,
+      "beyond_tracking": 1
+     },
+     {
+      "name": "aerial_west",
+      "in_view": 83,
+      "drawn": 461,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "WARN",
+   "summary": "V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 3.3 s)",
+   "details": [
+    "the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a_equator at x 35, y 4, z 0; 4 more kinds; a lamp post takes less than 25% of a bay"
+   ],
+   "data": {
+    "the base storey": {
+     "lines": 1104,
+     "hidden": 555,
+     "seen_through": 301,
+     "hidden_by_blocks": 483,
+     "hidden_by_models": 72
+    },
+    "the great windows": {
+     "lines": 1656,
+     "hidden": 68,
+     "seen_through": 0
+    },
+    "the cornice": {
+     "lines": 1104,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the clock tower": {
+     "lines": 672,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the time-ball mast": {
+     "lines": 22,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the great dome": {
+     "lines": 1688,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "the small dome": {
+     "lines": 290,
+     "hidden": 0,
+     "seen_through": 0
+    },
+    "comet": {
+     "elevation": 41.0,
+     "across": 0.6128,
+     "down": 0.2647,
+     "lost": 0,
+     "body": {
+      "lines": 350,
+      "outside_clear": 0,
+      "covered": 0,
+      "from": -7.29,
+      "to": 1.2,
+      "low": 39.99,
+      "up": 54.24
+     }
+    },
+    "clear": {
+     "up": 61.0,
+     "blocks": [
+      {
+       "name": "between the two ends of the main building",
+       "from": -1.24,
+       "to": 44.16,
+       "low": 0.0,
+       "up": 61.0,
+       "lines": 44835,
+       "covered": 0
+      },
+      {
+       "name": "where the comet hangs, north of the main building",
+       "from": -15.0,
+       "to": -1.49,
+       "low": 35.0,
+       "up": 61.0,
+       "lines": 5880,
+       "covered": 0
+      }
+     ]
+    },
+    "left": {
+     "from": 44.66,
+     "to": 70.0,
+     "posts": []
+    }
+   }
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "95 parts and 7 points on 30 chains, 799 function files; 14 commands in the busiest tick (limit 120), 6.1 a tick on average (limit 40)",
+   "details": [
+    "chain of 16 ticks: 4 functions, 10 commands a cycle, starts 3 ticks after start",
+    "chain of 24 ticks: 8 functions, 25 commands a cycle, starts 2 ticks after start",
+    "chain of 28 ticks: 4 functions, 9 commands a cycle, starts 2 ticks after start",
+    "chain of 32 ticks: 4 functions, 9 commands a cycle, starts 4 ticks after start",
+    "chain of 40 ticks: 8 functions, 17 commands a cycle, starts 2 ticks after start",
+    "chain of 48 ticks: 12 functions, 65 commands a cycle, starts 1 ticks after start",
+    "chain of 60 ticks: 8 functions, 17 commands a cycle, starts 3 ticks after start",
+    "chain of 64 ticks: 4 functions, 9 commands a cycle, starts 7 ticks after start",
+    "chain of 80 ticks: 2 functions, 5 commands a cycle, starts 16 ticks after start",
+    "chain of 90 ticks: 8 functions, 17 commands a cycle, starts 1 ticks after start",
+    "chain of 100 ticks: 8 functions, 17 commands a cycle, starts 10 ticks after start",
+    "chain of 120 ticks: 4 functions, 13 commands a cycle, starts 4 ticks after start",
+    "chain of 128 ticks: 4 functions, 13 commands a cycle, starts 11 ticks after start",
+    "chain of 130 ticks: 8 functions, 17 commands a cycle, starts 9 ticks after start",
+    "chain of 160 ticks: 6 functions, 13 commands a cycle, starts 6 ticks after start",
+    "chain of 170 ticks: 8 functions, 17 commands a cycle, starts 4 ticks after start",
+    "chain of 300 ticks: 12 functions, 25 commands a cycle, starts 6 ticks after start",
+    "chain of 400 ticks: 8 functions, 33 commands a cycle, starts 5 ticks after start",
+    "chain of 480 ticks: 8 functions, 33 commands a cycle, starts 16 ticks after start",
+    "chain of 1001 ticks: 25 functions, 52 commands a cycle, starts 10 ticks after start",
+    "chain of 1200 ticks: 6 functions, 43 commands a cycle, starts 15 ticks after start",
+    "chain of 1600 ticks: 40 functions, 257 commands a cycle, starts 8 ticks after start",
+    "chain of 1617 ticks: 31 functions, 64 commands a cycle, starts 7 ticks after start",
+    "chain of 2002 ticks: 11 functions, 34 commands a cycle, starts 12 ticks after start",
+    "chain of 2457 ticks: 39 functions, 80 commands a cycle, starts 18 ticks after start",
+    "chain of 3003 ticks: 21 functions, 43 commands a cycle, starts 6 ticks after start",
+    "chain of 5577 ticks: 33 functions, 100 commands a cycle, starts 14 ticks after start",
+    "chain of 6000 ticks: 36 functions, 193 commands a cycle, starts 13 ticks after start",
+    "chain of 9009 ticks: 63 functions, 190 commands a cycle, starts 20 ticks after start",
+    "chain of 72000 ticks: 360 functions, 2161 commands a cycle, starts 19 ticks after start",
+    "site_weather_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.08 blocks off the axis",
+    "bld_tower_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.09 blocks off the axis",
+    "mach_armillary_a_axis: 6 steps in 1200 ticks: its middle lies 0.00 blocks off the axis",
+    "mach_armillary_a_equator: 6 steps in 1200 ticks: its middle lies 0.00 blocks off the axis",
+    "mach_armillary_a_tropic: 6 steps in 1200 ticks: its middle lies 0.00 blocks off the axis",
+    "mach_armillary_a_tropic.s: 6 steps in 1200 ticks: its middle lies 0.00 blocks off the axis",
+    "mach_armillary_a_ecliptic: 6 steps in 1200 ticks: its middle lies 0.00 blocks off the axis",
+    "mach_armillary_a_colure: 6 steps in 1200 ticks: its middle lies 0.00 blocks off the axis",
+    "mach_clock_master_hand_h: 360 steps in 72000 ticks: its middle lies 0.14 blocks off the axis",
+    "mach_clock_master_hand_m: 30 steps in 6000 ticks: its middle lies 0.19 blocks off the axis",
+    "mach_clock_hand_h: 360 steps in 72000 ticks: its middle lies 0.30 blocks off the axis",
+    "mach_clock_hand_m: 30 steps in 6000 ticks: its middle lies 0.50 blocks off the axis",
+    "mach_clock_hand_h: 360 steps in 72000 ticks: its middle lies 0.30 blocks off the axis",
+    "mach_clock_hand_m: 30 steps in 6000 ticks: its middle lies 0.50 blocks off the axis",
+    "mach_clock_hand_h: 360 steps in 72000 ticks: its middle lies 0.30 blocks off the axis",
+    "mach_clock_hand_m: 30 steps in 6000 ticks: its middle lies 0.50 blocks off the axis",
+    "mach_clock_hand_h: 360 steps in 72000 ticks: its middle lies 0.30 blocks off the axis",
+    "mach_clock_hand_m: 30 steps in 6000 ticks: its middle lies 0.50 blocks off the axis",
+    "mach_engine_rod: 12 steps in 48 ticks; its model strays 0.34 pixels from its arc (its middle lies 2.06 blocks off the axis), within the half pixel a fast part is let off with",
+    "mach_orrery_a_lay: 21 steps in 3003 ticks: its middle lies 0.01 blocks off the axis",
+    "mach_orrery_a_arm_mercury: 11 steps in 1001 ticks: its middle lies 0.19 blocks off the axis",
+    "mach_orrery_a_under_mercury: 15 steps in 1001 ticks: its middle lies 0.56 blocks off the axis",
+    "mach_orrery_a_arm_venus: 11 steps in 1617 ticks: its middle lies 0.26 blocks off the axis",
+    "mach_orrery_a_under_venus: 21 steps in 1617 ticks: its middle lies 0.80 blocks off the axis",
+    "mach_orrery_a_arm_earth: 11 steps in 2002 ticks: its middle lies 0.01 blocks off the axis",
+    "mach_orrery_a_under_earth: 11 steps in 2002 ticks: its middle lies 0.02 blocks off the axis",
+    "mach_orrery_a_arm_mars: 13 steps in 2457 ticks: its middle lies 0.47 blocks off the axis",
+    "mach_orrery_a_under_mars: 27 steps in 2457 ticks: its middle lies 1.29 blocks off the axis",
+    "mach_orrery_a_arm_jupiter: 33 steps in 5577 ticks: its middle lies 0.01 blocks off the axis",
+    "mach_orrery_a_under_jupiter: 33 steps in 5577 ticks: its middle lies 0.03 blocks off the axis",
+    "mach_orrery_a_arm_saturn: 63 steps in 9009 ticks: its middle lies 0.87 blocks off the axis",
+    "mach_orrery_a_under_saturn: 63 steps in 9009 ticks: its middle lies 2.13 blocks off the axis"
+   ]
+  }
+ ]
+}

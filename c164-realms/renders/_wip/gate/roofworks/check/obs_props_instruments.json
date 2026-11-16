@@ -1,0 +1,229 @@
+{
+ "scene": "obs_props_instruments",
+ "commit": "c8c4229",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "1826 blocks, 46 entities, 57 models, 859 resource-pack files, 24 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.1 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 858 files, no file written twice, the folders and the prefix of props are kept (8 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "186 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "643 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "5 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of props: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "46 display entities, 8 shown through a matrix that is no turn, no face stretched, 40 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "25 shots, most display entities in view: 42 (hall), limit 600; counted without what walls hide; the game draws up to 46 (terrace): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "terrace",
+      "in_view": 4,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "scope",
+      "in_view": 1,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "scope_near",
+      "in_view": 1,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "scope_behind",
+      "in_view": 2,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "scope_comet",
+      "in_view": 1,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "scope_comet_near",
+      "in_view": 1,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "scope_comet_aim",
+      "in_view": 1,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "louvre",
+      "in_view": 2,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "louvre_near",
+      "in_view": 2,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "sunshine",
+      "in_view": 1,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "sunshine_near",
+      "in_view": 1,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "hall",
+      "in_view": 42,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "globe",
+      "in_view": 7,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "globe_near",
+      "in_view": 4,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "globe_top",
+      "in_view": 3,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "globe_edge",
+      "in_view": 38,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "barometer",
+      "in_view": 3,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "barometer_dial",
+      "in_view": 1,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "clock",
+      "in_view": 5,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "clock_dial",
+      "in_view": 4,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "pendulum",
+      "in_view": 3,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "table",
+      "in_view": 6,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "table_globe_near",
+      "in_view": 2,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "sextant_near",
+      "in_view": 3,
+      "drawn": 46,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "calc_near",
+      "in_view": 2,
+      "drawn": 46,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "1 parts and 0 points on 1 chains, 14 function files; 4 commands in the busiest tick (limit 120), 0.5 a tick on average (limit 40)",
+   "details": [
+    "chain of 40 ticks: 8 functions, 18 commands a cycle, starts 1 ticks after start"
+   ]
+  }
+ ]
+}
