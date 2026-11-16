@@ -1,4 +1,4 @@
-sources placed: 124 (rank 1: 14, rank 2: 78, rank 3: 32); levels 14x1, 13x13, 12x18, 11x3, 10x50, 9x4, 8x15, 7x8, 6x9, 5x1, 4x2
+sources placed: 133 (rank 1: 14, rank 2: 84, rank 3: 35); levels 14x1, 13x13, 12x22, 11x5, 10x50, 9x4, 8x15, 7x8, 6x10, 5x1, 4x2, 3x2
 windows main: dark 68, dim 3, lit 14, bright 1 (79% dark), 33 sources
 windows power: dark 18, dim 2, lit 0, bright 0 (90% dark), 2 sources
 windows station: dark 8, dim 0, lit 3, bright 0 (73% dark), 5 sources
@@ -7,8 +7,19 @@ main's table under blue: dark 68, dim 3, lit 14, bright 1
 main's table under glow: dark 74, dim 3, lit 8, bright 1
 main's table under deep: dark 77, dim 3, lit 5, bright 1
 dressed: yes; doors: none; behind them: 3 sources; wash: 4 projectors; stair: 1; pools: 12; not placed here: 0; level 15: 0; isolated: 0
+merged: ((71, -4, 28), 10, 'interiors/powerhouse:switchboard lamp z 28')
+merged: ((71, -4, 31), 10, 'interiors/powerhouse:switchboard lamp z 31')
 
-sources by what throws them (33 kinds):
+sources by what throws them (42 kinds):
+  interiors/domeroom:clock_dial          1: 3x1   at (4, 19, 10)
+  interiors/domeroom:pilot_lamps         1: 3x1   at (14, 19, 0)
+  interiors/powerhouse:desk lamp         1: 6x1   at (69, -5, 22)
+  interiors/powerhouse:door lamp         1: 11x1   at (75, -6, 23)
+  interiors/powerhouse:engine lamp x 72   1: 12x1   at (72, -5, 37)
+  interiors/powerhouse:engine lamp x 76   1: 12x1   at (77, -5, 36)
+  interiors/powerhouse:engine lamp x 80   1: 12x1   at (82, -5, 35)
+  interiors/powerhouse:engine lamp x 84   1: 12x1   at (84, -5, 35)
+  interiors/powerhouse:firing floor lamp   1: 11x1   at (77, -6, 27)
   interiors/timeroom:ceiling over the message desk   1: 8x1   at (11, 13, -13)
   interiors/timeroom:ceiling over the rating bench   1: 8x1   at (4, 13, -15)
   interiors/timeroom:ceiling over the world clocks   1: 7x1   at (4, 13, -9)
@@ -38,7 +49,7 @@ sources by what throws them (33 kinds):
   props/lamps:uplight                    9: 8x9   at (37, 0, 2) (37, 0, -2) (35, 3, 0) (33, 0, 2) (33, 0, -2) (18, 0, 14) (18, 0, 10) (18, 0, -10) ...
   props/signs:emblem                     1: 8x1   at (19, 14, 0)
   sky/lights:hall                        3: 14x1, 11x2   at (6, 4, 0) (1, 4, 4) (1, 4, -4)
-  sky/lights:pool                       12: 12x12   at (87, -6, 10) (87, -6, -10) (86, -6, -18) (80, -6, -18) (79, -6, 10) (79, -6, -10) (74, -6, 9) (73, -6, -8) ...
+  sky/lights:pool                       12: 12x12   at (87, -6, 10) (87, -6, -10) (86, -6, -18) (80, -6, -18) (79, -6, 10) (79, -6, -10) (73, -6, 8) (73, -6, -8) ...
   sky/lights:stair                       1: 8x1   at (5, 9, -4)
   sky/lights:wash                        4: 10x4   at (17, 2, 14) (17, 2, 10) (17, 2, -10) (17, 2, -14)
   sky/lights:window                     42: 10x36, 7x3, 6x2, 5x1   at (92, -1, -37) (92, -1, -39) (92, -2, -37) (92, -2, -39) (89, -2, 27) (82, -2, 20) (17, 12, 0) (17, 9, 0) ...
