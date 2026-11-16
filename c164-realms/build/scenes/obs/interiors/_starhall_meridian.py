@@ -54,10 +54,10 @@ of the hall's east-west axis, so it is no meridian: the hall's meridian is the l
               begins: a round-headed slab one step under the wall's stone, its figures cut in a
               step or two deeper. The two are one winter evening as the sky is seen, east to the
               left looking south and right ascension clockwise round the pole. On the north side
-              the pole star, the Little Bear hanging from it and the Dragon's coil under the
-              Bear; on the south side Orion with the Hare under his feet. A star is a round hole,
-              one pixel, or two by two for those of the second magnitude and brighter (the belt's
-              three are single pixels: blocks would run together). No star has rays.
+              the pole star in the middle of the slab's round head and the Little Bear hanging
+              from it; on the south side Orion with the Hare under his feet. A star is a round
+              hole, one pixel, or two by two for those of the second magnitude and brighter (the
+              belt's three are single pixels: blocks would run together). No star has rays.
 
 What the hall asked of it (hall #75451) and the machines' reviewer (cr3 #78722), and how it is kept:
   - display entities and nothing else: no block may stand against the shaft (main/shell), and
@@ -71,7 +71,8 @@ What the hall asked of it (hall #75451) and the machines' reviewer (cr3 #78722),
     more, its cut lines ashlar 1, its stars ashlar 0
   - an entity takes the light of one cell where the wall is lit smoothly: the strip is one entity
     to a block, so it darkens up the pier as the stone does; a slab is one entity and takes the
-    light of its upper third (SLAB_CELL), which keeps it at or under the stone beside it
+    light of its middle third (SLAB_CELL). From its upper third its stars fell under the hall's
+    floor for a cut line
   - eleven display entities: nine lengths of the strip, two slabs
 """
 import functools
@@ -239,7 +240,7 @@ AXIS = S.AXIS_Z                                         # 0.5: the plumb line ha
 CLOCK_TOP = S.MOTHER_CLOCK["y"][1]                      # 5.0: where machines/clock ends its case
 BOB_CLEAR = 2                                           # pixels between the bob's point and the clock's top
 SLAB_FOOT = S.STRING                                    # 6: the slabs stand where the dressed stone begins
-SLAB_CELL = 2                                           # the cell, counted up from that, a slab takes its light from
+SLAB_CELL = 1                                           # the cell, counted up from that, a slab takes its light from
 STRIP = 14                                              # pixels of bare stone between the slabs, the line in the middle
 WALL_SHADE = 0.6                                        # what the game leaves a block's face that looks east
 EAST, NORTH = (1.0, 0.0, 0.0), (0.0, 0.0, -1.0)
@@ -264,18 +265,20 @@ BOB = (
     "...hd...",
     "...md...",
 )
-# The north slab: the pole star, the Little Bear hanging from it (delta, epsilon, zeta down the
-# handle; eta, gamma and Kochab round the bowl) and under the Bear the Dragon's coil (eta, theta,
-# iota; its lines run on to the slab's edge, towards zeta on the left and Thuban on the right).
-# 1.15 pixels to the degree, the hour circle of 16 h straight down.
+# The north slab: the pole star in the middle of the round head, as the sky turns about it, and the
+# Little Bear hanging from it (delta, epsilon, zeta down the handle; eta, gamma and Kochab round
+# the bowl). 1.5 pixels to the degree, the hour circle of 15 h 36 m straight down.
 DIPPER = (
     "     JJJJJ     ",
     "   JJ.....JJ   ",
     "  J.........J  ",
     " J...........J ",
     " J...........J ",
-    "J....ss.......J",
-    "J....ss.......J",
+    "J.............J",
+    "J.............J",
+    "J.....ss......J",
+    "J.....ss......J",
+    "J.....l.......J",
     "J....l........J",
     "J....l........J",
     "J...l.........J",
@@ -283,17 +286,23 @@ DIPPER = (
     "J...l.........J",
     "J...l.........J",
     "J...l.........J",
+    "J..l..........J",
+    "J..l..........J",
+    "J..l..........J",
+    "J..s..........J",
+    "J..l..........J",
     "J...l.........J",
-    "J...s.........J",
+    "J...l.........J",
     "J....l........J",
     "J....l........J",
     "J.....l.......J",
-    "J.....l.......J",
-    "J......s......J",
-    "J.....l.ll....J",
-    "J.....l...l...J",
-    "J....s.....ss.J",
-    "J.....l....ss.J",
+    "J.....s.......J",
+    "J....l.l......J",
+    "J...l...ll....J",
+    "J..s......l...J",
+    "J...l......ss.J",
+    "J....l.....ss.J",
+    "J.....l....l..J",
     "J......l..l...J",
     "J.......l.l...J",
     "J........s....J",
@@ -304,15 +313,6 @@ DIPPER = (
     "J.............J",
     "J.............J",
     "J.............J",
-    "J.............J",
-    "J.............J",
-    "J.............J",
-    "Jl............J",
-    "J.s...........J",
-    "J..l.........lJ",
-    "J...l.......l.J",
-    "J...l....lls..J",
-    "J....slll.....J",
     "J.............J",
     "J.............J",
     "J.............J",
