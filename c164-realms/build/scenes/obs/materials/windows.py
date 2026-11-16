@@ -62,17 +62,18 @@ from outside. Its room side is therefore covered by a thin model that gives no l
     WINDOW_FURNACE   night glass, as WINDOW_LIT: the fires burn in the room
 
 Only where somebody can stand behind the window: the star hall, the stair hall, the two wing rooms,
-the dome room; main/shell.py's room_at() says which; and the boiler bays of the power house. The
+the dome room; main/shell.py's room_at() says which; the boiler bays of the power house; and the
+lights of the cable car's winch house that site/cablecar.py's windows() marks lined. The
 blocks of a window are not touched, so a front shows what it showed without the linings; LINING
 switches them off, to prove that with two pictures. A lining is lit by the room, and a window's
 lining as one sheet: all its pieces take the light of the room's cell before the middle of the
 window (scenes/obs_mat_windows_in/placement.py holds line() to that, and to covering the glass).
 
     build(canvas, origin)                         the master scene: the lit windows of the main
-                                                  building that have a room behind them and the
-                                                  fire windows of the power house. The linings are
-                                                  this line's entities, and it alone hangs them
-                                                  there
+                                                  building that have a room behind them, the
+                                                  fire windows of the power house and the lined
+                                                  lights of the station. The linings are this
+                                                  line's entities, and it alone hangs them there
     line(canvas, cells, inward, glass, origin)    one window, for the test scene of a room or of
                                                   a house; returns the entities placed. Not for a
                                                   work package's build(): see line(). The box of
@@ -925,10 +926,20 @@ def _fire_windows():
     return [dict(w, glass=FURNACE[0]) for w in table() if w["storey"] == "furnace"]
 
 
+def _station_windows():
+    """The lights of the cable car's station whose room side is seen, as lined() gives a window:
+    those of site/cablecar.py's windows() that it marks lined (the two tall lights of the winch
+    house, seen from the platform through the house's open side)."""
+    table = getattr(_package("site", "cablecar"), "windows", None)
+    if table is None:
+        return []
+    return [w for w in table() if w.get("lined") and lining_of(w["glass"])]
+
+
 def lined():
     """The windows that build() lines, [dict(front, bay, storey, cells, inward, y, glass, room)]:
     those of main/facade.py's windows() that are lit and have a room behind them (room: its name),
-    and the fire windows of the power house (room: "")."""
+    the fire windows of the power house and the lined lights of the cable car's station (room: "")."""
     if not LINING:
         return []
     table = getattr(_main("facade"), "windows", None)
@@ -937,14 +948,16 @@ def lined():
         room = _room(w) if lining_of(w["glass"]) else None
         if room is not None:
             main.append(dict(w, room=room))
-    return main + [dict(w, room="") for w in _fire_windows()]
+    return main + [dict(w, room="") for w in _fire_windows() + _station_windows()]
 
 
 def build(canvas, origin=(0, 0, 0)):
-    """The master scene: line the lit windows that have a room behind them, of the main building
-    and of the power house (lined()). Returns the display entities placed. The materials are the
-    first line to build, before any wall stands, so the windows are read from the houses' tables
-    and not off the canvas. The obscured glass of a room of PANELLED takes its deep lining."""
+    """The master scene: line the lit windows that have a room behind them, of the main building,
+    of the power house and of the cable car's station (lined()). Returns the display entities
+    placed. The materials are the first line to build, before any wall stands, so the windows are
+    read from the houses' tables and not off the canvas: a house of another line gives its windows
+    in a table and does not line them in its own build(), which runs in scenes that have no model
+    of a lining (line()). The obscured glass of a room of PANELLED takes its deep lining."""
     n = 0
     for w in lined():
         y0, y1 = w["y"]

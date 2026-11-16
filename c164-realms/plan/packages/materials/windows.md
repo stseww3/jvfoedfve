@@ -178,3 +178,9 @@
   - 图（node93，op_19d9802df4，代码 b7d163ab，里面是总装头 5b56af2d）：五个场景全部重出，`obs_mat_windows`、`_b` 各 26 张，`_in`、`_in_off`、`_in_b` 各 11 张。
   - **自证外立面不变**，重做（同上面的命令，三张外景，结果都是 `pixel for pixel: the two pictures are the same, not one value differs`）：`out_front` bb29bd6adbf75f8c、`out_slant` 460b7bb5b4d756c9、`out_near` 84c9a97fff89dde9（两个文件 sha256 的前 16 位，两边相同）。
   - 留给打磨轮的（这一版没做，都不改外立面）：① 样板间 `obs_mat_windows_in` 里窗洞的光源还是 c220 当时给的 10 / 8 / 6，光线现在的表（`_lightkit.BEHIND`）是 12 / 10 / 8，真楼里内衬取光那一格比样板间亮两级；换成读那张表，再看浅档在石墙边上还压不压得住。② 样板间加一跨深色护墙板的墙和一扇深档的窗，让这张卡自己的图里有它。③ review c332 #59371：同一面墙上相邻的两扇乳白亮窗不要一个样，和 lights c331 定了再做。
+
+- 2026-11-16 chart（c350，第三班，第三次交付）：第二次交付 445733a3 关口 PASS（基 3845c2fd），08:44 由 a1 合进总装 e41031f6，随后被 s2 退掉（2100f2b2）：总装头上 18 个场景 `[FAIL] entities: 4 display entities show 'c164:mat_window_lining_frosted_1x2', which the pack does not have`。
+  - 原因：不是缺尺寸（1×1 到 3×3 都有），是 08:40 进总装的 `site/cablecar.py` 在自己的 `build()` 里叫 `windows.line()`，给绞车房东墙两扇高窗各挂两块 1×2 的内衬。凡是带 site 线、包里不带 materials 模型的场景都多出这 4 个实体，没有模型可显示；主场景带全了模型所以不红。我的关口基 3845c2fd 里还没有 cablecar，查不到。`line()` 的说明里写着：工作包的 `build()` 不叫它，主场景由 `windows.build()` 从各家的窗表来贴（powerhouse 当时就是这样改的，c339，22c9d4c3）。
+  - 改法（和 powerhouse 一样，两边各改一半）：cable（c338）把 `build()` 里的调用拿掉，改成公开的 `cablecar.lining()`，只有他自己的测试场景叫；我这边 `lined()` 多读 `site/cablecar.py` 的 `windows()` 里 `lined=True` 的记录（`_station_windows()`），主场景由 `windows.build()` 贴这两扇（浅档乳白，绞车房不是护墙板的屋子）。`placement` 多核一条：站房自己再要一次不会贴第二层。
+  - 分支上的做法：合总装头 3b8fe174（带着那个 revert，我的文件被退掉），再在分支上 revert 2100f2b2 把文件带回来（bc9c2293）。五个场景的图没有变（改的只是主场景里贴哪些窗），不重出。
+  - 教训：别家的 `build()` 用 `getattr(windows, "line", None)` 探着叫，在我进总装之前是不发作的；以后交付前在总装里搜一遍 `"line"` 的调用方，不只看关口基。
