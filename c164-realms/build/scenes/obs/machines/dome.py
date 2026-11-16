@@ -72,7 +72,8 @@ from ..common import palette as P
 from ..common import skeleton as S
 
 PREFIX = "mach_dome_"
-MOVED_IN = False            # the master scene gets the gear once the dome and its room stand in the assembly
+MOVED_IN = True             # in the master scene since 11-16 (the director's fast lane): the dome stands there, and
+#                             what the gear takes from interiors/domeroom (the ring girder, the curb) follows with that package
 
 IRON = P.mat("iron")
 IRON_D = P.mat("iron_dark")
