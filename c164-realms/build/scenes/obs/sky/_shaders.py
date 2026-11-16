@@ -251,10 +251,11 @@ float c164_fogged(float distance, float rise) {{
     return 1.0 - exp(-c164_depth(distance, rise));
 }}
 
-// mood.levelled(): the share to which the thing drawn here, `distance` away, is taken into the far
-// sea painted behind it. In full for what lies on the sea, not at all for what stands above it.
-float c164_levelled(float distance) {{
-    float far = clamp((distance - C164_FOG_START) / (C164_FOG_END - C164_FOG_START), 0.0, 1.0);
+// mood.levelled(): the share to which the thing drawn here is taken into the far sea painted
+// behind it, by its distance on the map. In full for what lies on the sea, not at all for what
+// stands above it.
+float c164_levelled() {{
+    float far = clamp((length(c164_ray.xz) - C164_FOG_START) / (C164_FOG_END - C164_FOG_START), 0.0, 1.0);
     float low = clamp((C164_LEVEL_NONE - (c164_height() + c164_ray.y)) / (C164_LEVEL_NONE - C164_LEVEL_FULL), 0.0, 1.0);
     return far * low;
 }}
@@ -322,7 +323,7 @@ float total_fog_value(float sphericalVertexDistance, float cylindricalVertexDist
     float edge = linear_fog_value(cylindricalVertexDistance, renderDistanceStart, renderDistanceEnd);
 #ifndef GL_VERTEX_SHADER
     if (c164_open_air(environmentalStart, environmantalEnd)) {{
-        return 1.0 - (1.0 - c164_fogged(sphericalVertexDistance, c164_direction().y)) * (1.0 - max(edge, c164_levelled(sphericalVertexDistance)));
+        return 1.0 - (1.0 - c164_fogged(sphericalVertexDistance, c164_direction().y)) * (1.0 - max(edge, c164_levelled()));
     }}
 #endif
     return max(linear_fog_value(sphericalVertexDistance, environmentalStart, environmantalEnd), edge);
@@ -336,7 +337,7 @@ vec4 apply_fog(vec4 inColor, float sphericalVertexDistance, float cylindricalVer
         vec3 d = c164_direction();
         float weight = dot(fogColor.rgb, vec3(1.0)) / max(dot(c164_behind(d), vec3(1.0)), 1.0e-6);
         vec3 hazed = mix(inColor.rgb, c164_band(d) * weight, c164_fogged(sphericalVertexDistance, d.y) * fogColor.a);
-        float gone = max(c164_levelled(sphericalVertexDistance), linear_fog_value(cylindricalVertexDistance, renderDistanceStart, renderDistanceEnd));
+        float gone = max(c164_levelled(), linear_fog_value(cylindricalVertexDistance, renderDistanceStart, renderDistanceEnd));
         return vec4(mix(hazed, fogColor.rgb, gone * fogColor.a), inColor.a);
     }}
 #endif
@@ -699,7 +700,8 @@ class Twin:
 
     def levelled(self, distance, d, camera_y):
         """The share to which a thing `distance` away in direction d is taken into the far sea."""
-        return mood.levelled(distance, camera_y - self.n["sea_y"] + np.asarray(distance, dtype=float) * d[:, 1])
+        distance = np.asarray(distance, dtype=float)
+        return mood.levelled(distance * np.hypot(d[:, 0], d[:, 2]), camera_y - self.n["sea_y"] + distance * d[:, 1])
 
     def apply(self, colour, distance, d, camera_y, edge=0.0):
         """A thing's colour on the screen: `distance` away in direction d; edge is the share of the

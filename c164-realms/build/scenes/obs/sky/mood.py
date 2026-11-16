@@ -52,7 +52,8 @@ LAMP = "#ffb45e"            # the one lamp colour (tint of block light)
 # from the cable station (V1) keeps 0.94 of itself, the building in V12 0.92.
 #
 # levelled(): what lies on the sea is taken into the far sea painted behind it, from FOG_START to
-# FOG_END blocks, so that nothing of the block sea is left where the blocks end (160). It holds
+# FOG_END blocks away on the map, so that nothing of the block sea is left where the blocks end
+# (160 on the map; from high above, V12, the sea underneath keeps its shapes). It holds
 # in full up to LEVEL_FULL blocks above the sea top (the tops of the cloud towers, c329) and not at
 # all from LEVEL_NONE on: terrace and platforms stand 22 and more above the sea and take none of
 # it, the foot of the hill goes into the sea with the clouds.
@@ -189,7 +190,8 @@ def fog_depth(distance, height, rise):
 
 def levelled(distance, height):
     """The share to which a thing is taken into the far sea painted behind it. distance: blocks
-    from the eye; height: the thing above the top of the cloud sea. Numbers or numpy arrays."""
+    from the eye on the map (the horizontal distance); height: the thing above the top of the
+    cloud sea. Numbers or numpy arrays."""
     import numpy as np
     far = np.clip((np.asarray(distance, dtype=float) - FOG_START) / (FOG_END - FOG_START), 0.0, 1.0)
     low = np.clip((LEVEL_NONE - np.asarray(height, dtype=float)) / (LEVEL_NONE - LEVEL_FULL), 0.0, 1.0)

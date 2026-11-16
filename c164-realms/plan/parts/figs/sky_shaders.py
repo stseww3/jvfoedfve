@@ -213,13 +213,13 @@ def arithmetic(twin, camera_y):
     for height in (0.0, 4.0, mood.LEVEL_FULL):
         for az in (0, 60, 180):
             drop = eye - height
-            d = np.array([[-math.cos(math.radians(az)) * math.sqrt(max(0.0, 1.0 - (drop / rim) ** 2)), -drop / rim,
-                           -math.sin(math.radians(az)) * math.sqrt(max(0.0, 1.0 - (drop / rim) ** 2))]])
+            away = math.hypot(rim, drop)
+            d = np.array([[-math.cos(math.radians(az)) * rim / away, -drop / away, -math.sin(math.radians(az)) * rim / away]])
             for colour in ((1.0, 1.0, 1.0), (0.0, 0.0, 0.0)):
-                worst = max(worst, float(np.max(np.abs(twin.apply(colour, rim, d, camera_y) - twin.sky_at(d, camera_y)))))
+                worst = max(worst, float(np.max(np.abs(twin.apply(colour, away, d, camera_y) - twin.sky_at(d, camera_y)))))
     good = worst < 0.5 / 255.0
     ok &= good
-    print(f"[{'ok' if good else 'FAIL'}] white and black things on the sea (0, 4, {mood.LEVEL_FULL:.0f} above its top) at {rim:.0f} blocks: "
+    print(f"[{'ok' if good else 'FAIL'}] white and black things on the sea (0, 4, {mood.LEVEL_FULL:.0f} above its top) {rim:.0f} blocks away on the map: "
           f"largest difference to the painted sea {worst * 255.0:.2f} of 255 (the blocks end at 160)")
     # 5. how much fog lies on what (the director's marks, #68701: the front in V1 0.10 at most, the
     #    building in V12 0.25 at most)
@@ -236,7 +236,7 @@ def arithmetic(twin, camera_y):
         dist = float(np.linalg.norm(ray))
         share = float(twin.fogged(dist, pos[1] + mood.GROUND_Y, ray[1] / dist))
         before = min(1.0, max(0.0, (dist - mood.FOG_START) / (mood.REGISTRY_FOG_END - mood.FOG_START)))
-        if float(np.max(mood.levelled(dist, pos[1] + mood.GROUND_Y + ray[1] - n["sea_y"]))) > 0.0:
+        if float(np.max(mood.levelled(math.hypot(ray[0], ray[2]), pos[1] + mood.GROUND_Y + ray[1] - n["sea_y"]))) > 0.0:
             good = False
         good = share <= most
         ok &= good
