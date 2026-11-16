@@ -6,6 +6,8 @@
 The models come from the scene's build_models(), else from scenes/<scene>/props.py; a scene with
 neither has no models of its own (a board of repainted blocks). If the scene package has a
 write_pack(pack_dir) function it is called too, for repainted blocks and replaced vanilla textures.
+A look that the resource pack carries (scenes/<scene>/mood.py, artkit.mood.Carried) is written
+last: the same files for every scene that takes the look.
 """
 import argparse
 import importlib
@@ -15,6 +17,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from artkit import models as M  # noqa: E402
+from artkit import mood as MOOD  # noqa: E402
 
 
 def builder_of(scene_mod, scene_name):
@@ -32,14 +35,37 @@ def builder_of(scene_mod, scene_name):
         return dict
 
 
-def write(scene_name, out):
+def look_of(scene_name):
+    """scenes/<scene>/mood.py, or None when the scene has none."""
+    try:
+        return importlib.import_module(f"scenes.{scene_name}.mood")
+    except ModuleNotFoundError as e:
+        if e.name != f"scenes.{scene_name}.mood":
+            raise               # the look is there and fails to import something: that is not "no look"
+        return None
+
+
+def write_look(scene_mod, scene_name, out):
+    """The files of a look that the resource pack carries, into `out`. Returns the lines to print:
+    none for a scene without a look or with one that the data pack carries."""
+    carried = MOOD.carried(look_of(scene_name))
+    if carried is None:
+        return []
+    return list(carried.pack(out, getattr(scene_mod, "BIOME", None)) or ())
+
+
+def write(scene_name, out, look=True):
     """Write the scene's pack into `out`. Returns (what M.write_pack says of each model, the lines
-    the scene's write_pack() returns)."""
+    the scene's write_pack() returns and those of its look). look=False leaves a carried look out:
+    the pack then shows the game's own sky."""
     scene_mod = importlib.import_module(f"scenes.{scene_name}")
     built = builder_of(scene_mod, scene_name)()
     infos = M.write_pack(out, list(built.values()))
     extra = getattr(scene_mod, "write_pack", None)
-    return infos, list(extra(out) or ()) if extra else []
+    lines = list(extra(out) or ()) if extra else []
+    if look:
+        lines += write_look(scene_mod, scene_name, out)
+    return infos, lines
 
 
 def main():
