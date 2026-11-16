@@ -475,7 +475,8 @@ def _tanks(d):
         out = "s" if s > 0 else "n"
         a, b = _pair(11.5, SIDE, s)
         d.box((TANK[0], PLATE_Y, a), (TANK[1], 30.5, b), PAINT, grain="x", faces={out: side})
-        d.box((TANK[0] - 0.25, 30.25, a), (TANK[1], 30.75, b + 0.25 if s > 0 else b), BRASS, grain="x")  # the beading round the top
+        o, p = _pair(11.5, SIDE + 0.25, s)
+        d.box((TANK[0] - 0.25, 30.25, o), (TANK[1], 30.75, p), BRASS, grain="x")                         # the beading round the top
         d.plate(out, (1.5, 24.0, SIDE * s), 9, 5, _number_plate(), lift=0.3)
         d.tube("y", (-1.0, 16.25 * s), 30.75, 31.75, 2.25, BRASS_D, sides=8)                             # the filler's lid
         d.box((-1.4, 31.75, 16.25 * s - 1.5), (-0.6, 32.25, 16.25 * s + 1.5), BRASS, grain="z")
@@ -524,8 +525,8 @@ def _cab(d):
             d.box((x1 - 2.5, y, a), (x1 + 2.0, y + 0.75, b), STEEL, grain="x", faces={"u": TREAD})
 
     # the back sheet and the bunker: coal heaped over its edge
-    d.box((x1 - 1.0, PLATE_Y, -SIDE), (x1, WAIST + 1.0, SIDE), PAINT, grain="z", faces={"e": _sheet(42, 17, 7).sprite(PREFIX + "back_sheet")
-                                                                                         if False else PAINT})
+    d.box((x1 - 1.0, PLATE_Y, -SIDE), (x1, WAIST + 1.0, SIDE), PAINT, grain="z",
+          faces={"e": _sprite("back_sheet", _sheet(42, 17, 7))})
     d.box((x1 - 5.0, PLATE_Y, -SIDE + 1.0), (x1 - 4.25, WAIST - 2.0, SIDE - 1.0), IRON_D, grain="z")     # the bunker's front
     d.box((x1 - 4.25, WAIST - 4.0, -SIDE + 1.0), (x1 - 1.0, WAIST - 1.0, SIDE - 1.0), COAL, grain="z")
     lumps = ((-15.0, 0.0, 20.0), (-9.5, 0.8, -35.0), (-4.0, 0.2, 10.0), (1.5, 1.0, 50.0), (7.0, 0.3, -15.0),
