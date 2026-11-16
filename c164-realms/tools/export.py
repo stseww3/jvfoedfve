@@ -392,6 +392,27 @@ def map_title(scene):
     return found.get("MAP_NAME") or " ".join(lines) or None, lines
 
 
+def arrival(name, scene, off=False):
+    """The opening (plan/round2.md, card motion/arrival: who is new rides the train up from under
+    the cloud and gets off where the map begins): None where the scene has none (no ARRIVAL, or
+    ARRIVAL = False, or --no-arrival), else {"most": ticks}, the longest it may take from joining
+    to standing on the spot, the wait for the train counted in: RIDE_MOST of the scene or of its
+    guide's module (mast c346 #86008)."""
+    if off or not getattr(scene, "ARRIVAL", False):
+        return None
+    most = getattr(scene, "RIDE_MOST", None)
+    if most is None:
+        try:
+            most = getattr(importlib.import_module(f"scenes.{name}.motion.guide_title"), "RIDE_MOST", None)
+        except ModuleNotFoundError as exc:
+            if exc.name not in (f"scenes.{name}.motion.guide_title", f"scenes.{name}.motion"):
+                raise
+    if not most:
+        fail("the scene has the opening on (ARRIVAL) and tells no RIDE_MOST (ticks from joining to standing "
+             "on the spot, at the most): verify would not know how long to wait. Make it with --no-arrival, or name it")
+    return {"most": int(most)}
+
+
 def scene_spec(args):
     """Where the scene stands, where its spawn is and which way it looks, in world coordinates."""
     sys.path.insert(0, BUILD)
@@ -445,6 +466,8 @@ def scene_spec(args):
         and bool(getattr(scene, "GUIDE_CHARTS", False)),
         "title": map_title(args.scene)[0],
         "title_lines": map_title(args.scene)[1],
+        # the opening: who is new rides in. None without it; --no-arrival leaves it out of the save
+        "arrival": arrival(args.scene, scene, getattr(args, "no_arrival", False)),
         "biome": f"{ART}:{scene.BIOME}" if look else None,
         "time": int(when),
         "feet": [round(ox + ex, 4), round(oy + ey - S.EYE, 4), round(oz + ez, 4)],
@@ -680,6 +703,8 @@ if not {look!r}:      # no biome, no timeline: nothing of a dynamic registry goe
     place.MOOD.write = lambda *a, **k: []
 if not {guide!r} and hasattr(scene, "GUIDE"):       # --no-guide: the scene is built without that layer
     scene.GUIDE = False
+if not {arrival!r} and hasattr(scene, "ARRIVAL"):   # --no-arrival: nobody is set on the train
+    scene.ARRIVAL = False
 place.main()
 """
 
@@ -689,7 +714,8 @@ def place(spec, server, *more):
     out. Returns its output."""
     argv = ["place.py", spec["scene"], "--world", server.world, "--pw-file", server.pw_file,
             "--rcon-port", str(RCON_PORT), "--at", *(str(v) for v in spec["at"]), *more]
-    code = PLACE.format(argv=argv, build=BUILD, look=spec["look"], guide=bool(spec.get("guide")))
+    code = PLACE.format(argv=argv, build=BUILD, look=spec["look"], guide=bool(spec.get("guide")),
+                        arrival=bool(spec.get("arrival")))
     run = subprocess.run([sys.executable, "-c", code], cwd=PROJECT, capture_output=True, text=True,
                          env=dict(os.environ, PYTHONUNBUFFERED="1"))
     text = run.stdout + run.stderr
@@ -1144,6 +1170,108 @@ def told(bot):
     return [s for s in bot.texts("chat") if not s.startswith("multiplayer.player.")]
 
 
+def rider(server, who=BOT):
+    """(does he ride, where the server has him). The game does not tell a rider his own place:
+    the fake player's own idea of it stays where he was last put, so the server is asked."""
+    rides = "passed" in server.cmd(f"execute as {who} if predicate {NS}:{RIDING}", quiet=True)
+    at = re.search(r"\[(-?[\d.]+)d, (-?[\d.]+)d, (-?[\d.]+)d\]", server.cmd(f"data get entity {who} Pos", quiet=True))
+    return rides, tuple(float(v) for v in at.groups()) if at else None
+
+
+def faces(bot, spec):
+    """Does he look the way the map begins with."""
+    yaw, pitch = spec["yaw"] % 360.0, spec["pitch"]
+    return bot.rotation is not None and abs((bot.rotation[0] - yaw + 180.0) % 360.0 - 180.0) < 0.05 \
+        and abs(bot.rotation[1] - pitch) < 0.05
+
+
+def ride_in(server, bot, spec, results, tag):
+    """The opening: who is new is set on the train, rides up and gets off where the map begins.
+    He is looked at once a second from the moment he is in until he stands there. Wanted: on a
+    seat within three seconds; on it without a break and carried along until he is off; off within
+    the time the scene names (RIDE_MOST), on the spot and facing as the map begins; the title
+    shown while he rides (that it comes once and no more is the check 'title', further down)."""
+    feet, most = tuple(spec["feet"]), spec["arrival"]["most"] / 20.0
+    t0, track, shown = time.time(), [], None
+    while time.time() - t0 < most + 15.0:
+        bot.pump(1.0)
+        rides, at = rider(server, bot.name)
+        track.append((round(time.time() - t0, 1), rides, at))
+        if shown is None and bot.texts("title"):
+            shown = track[-1]
+        if len(track) > 3 and not rides and (at is None or near(at, feet, 0.05) or not any(r for _t, r, _a in track)):
+            break       # he is off and on the spot; or, four seconds in, he has not been on a seat at all
+    bot.pump(1.0)
+    on = [(t, at) for t, rides, at in track if rides]
+    took = track[-1][0]
+
+    def spot(at):
+        return "?" if at is None else "({:.1f}, {:.1f}, {:.1f})".format(*at)
+
+    check(results, tag + "arrival, seated", bool(on) and on[0][0] <= 3.5,
+          (f"on a seat {on[0][0]} s after he came, at {spot(on[0][1])}" if on else
+           f"never on a seat in the first {took} s: the server has him at {spot(track[-1][2])}"))
+    if not on:
+        return
+    first, last = track.index(next(x for x in track if x[1])), max(i for i, x in enumerate(track) if x[1])
+    gaps = [track[i][0] for i in range(first, last) if not track[i][1]]
+    way = [at for _t, at in on if at is not None]
+    far = max((math.dist(way[0], at) for at in way), default=0.0)
+    low = min((at[1] for at in way), default=None)
+    check(results, tag + "arrival, rides", not gaps and far >= 8.0,
+          f"on the seat from {on[0][0]} s to {on[-1][0]} s after he came"
+          + (f", off it in between at {gaps} s" if gaps else " without a break")
+          + f"; carried {far:.1f} blocks from where he was set down, {spot(way[0])}, lowest at y {low:.1f}"
+          + (f" (the line that sends walkers back is y {spec['catch']})" if low is not None and low < spec["catch"] else ""))
+    off = track[-1]
+    check(results, tag + "arrival, off", not off[1] and off[2] is not None and near(off[2], feet, 0.05)
+          and near(bot.position, feet) and faces(bot, spec) and took <= most + 2.0,
+          f"{took} s after he came (the scene's longest is {most:.0f} s) the server has him at {spot(off[2])}, "
+          f"{'still riding' if off[1] else 'on his feet'}; he was told he stands at {bot.position} facing {bot.rotation}")
+    check(results, tag + "arrival, title", shown is not None and shown[1],
+          (f"the title came within {shown[0]} s, {'while he rode' if shown[1] else 'when he did not ride'}, at {spot(shown[2])}"
+           if shown else "no title came while he rode in"))
+
+
+def ride_broken(server, spec, results, tag):
+    """Another newcomer leaves while he rides and comes back three seconds later. Wanted: within
+    six seconds of coming back he is off the seat, on the spot and facing as the map begins, and
+    the title has been shown to him once, before he left or after he came back."""
+    import mcbot
+    who, feet = BOT + "2", tuple(spec["feet"])
+    try:
+        bot = mcbot.Bot(who, HOST, PORT).connect(timeout=60.0)
+    except Exception as exc:
+        check(results, tag + "arrival, left on the way", False, f"a second fake player could not join: {type(exc).__name__}: {exc}")
+        return
+    t0, rides, at = time.time(), False, None
+    while time.time() - t0 < 8.0 and not rides:
+        bot.pump(1.0)
+        rides, at = rider(server, who)
+    bot.pump(2.0)
+    rode, left = rider(server, who)
+    early = bot.texts("title")
+    bot.close()
+    time.sleep(3.0)
+    gone = server.cmd(f"execute if entity {who}", quiet=True)
+    try:
+        bot = mcbot.Bot(who, HOST, PORT).connect(timeout=60.0)
+    except Exception as exc:
+        check(results, tag + "arrival, left on the way", False, f"he could not come back: {type(exc).__name__}: {exc}")
+        return
+    bot.pump(6.0)
+    rides, at = rider(server, who)
+    late = bot.texts("title")
+    lines = spec.get("title_lines") or [spec.get("title")]
+    check(results, tag + "arrival, left on the way", rode and "passed" not in gone and not rides and at is not None
+          and near(at, feet, 0.05) and near(bot.position, feet) and faces(bot, spec) and early + late == lines[:1],
+          f"{who} left {'riding' if rode else 'NOT riding'} at {left}; six seconds after he came back the server has him at {at}, "
+          f"{'still riding' if rides else 'on his feet'}; he was told he stands at {bot.position} facing {bot.rotation}; "
+          f"titles before he left {early or 'none'}, after he came back {late or 'none'}")
+    bot.close()
+    time.sleep(1.0)
+
+
 def visit(server, spec, results, tag, came):
     """A fake player joins, is looked at, falls, leaves, comes back. `came` is what this server's
     own settings and this save make of who joins: {"adventure", "peaceful": bool, "biome": bool or
@@ -1166,6 +1294,8 @@ def visit(server, spec, results, tag, came):
         return
     joined = time.time() - t
     first = (bot.position, bot.rotation)
+    if spec.get("arrival"):         # he rides in: what follows begins when he stands where the map begins
+        ride_in(server, bot, spec, results, tag)
     bot.pump(wait)
     check(results, tag + "join", near(bot.position, feet) and turned(bot),
           f"joined in {joined:.1f} s at {first[0]} facing {first[1]}, after the functions at {bot.position} "
@@ -1212,8 +1342,10 @@ def visit(server, spec, results, tag, came):
     go = f"tp {BOT} {num(under[0])} {num(under[1])} {num(under[2])}"
     server.cmd(go, quiet=True)
     bot.pump(1.5)
-    check(results, tag + "fall", near(bot.position, feet) and turned(bot),
-          f"put at y {under[1]}, a moment later at {bot.position} facing {bot.rotation}")
+    again = rider(server)[0] if spec.get("arrival") else False       # the train is for who is new, once
+    check(results, tag + "fall", near(bot.position, feet) and turned(bot) and not again,
+          f"put at y {under[1]}, a moment later at {bot.position} facing {bot.rotation}"
+          + (", and set on a seat again" if again else ""))
     # an operator in spectator mode is left where he flies; back in adventure, the line has him at once
     server.cmd(f"gamemode spectator {BOT}", quiet=True)
     server.cmd(go, quiet=True)
@@ -1296,8 +1428,10 @@ def visit(server, spec, results, tag, came):
     else:
         ok = near(bot.position, over)
         where = f"where he left: {bot.position} (left at {over})"
-    check(results, tag + "rejoin", ok and mode.rstrip().endswith(": 2") and re.search(r"is 0(\.0+)?\s*$", reach) is not None,
-          f"{where}; {mode}; {reach}; {before} things shown before he left")
+    again = rider(server)[0] if spec.get("arrival") else False
+    check(results, tag + "rejoin", ok and mode.rstrip().endswith(": 2") and re.search(r"is 0(\.0+)?\s*$", reach) is not None
+          and not again,
+          f"{where}; {mode}; {reach}; {before} things shown before he left" + ("; set on a seat again" if again else ""))
     if greets:
         titles, bars = bot.texts("title") + bot.texts("subtitle"), bot.texts("actionbar")
         check(results, tag + "title, again", not titles and not bars,
@@ -1565,6 +1699,9 @@ def verify(args):
                 loop_runs(server, pack_dir, spec, results, tag)
                 guide_walk(server, bot, pack_dir, spec, results, tag)
                 bot.close()
+                if spec.get("arrival"):
+                    time.sleep(1.0)
+                    ride_broken(server, spec, results, tag)
             server.stop()
             issues = server.issues()
             report[tag + "issues"] = issues
@@ -2026,6 +2163,9 @@ def main():
         p.add_argument("--no-guide", action="store_true",
                        help="leave the guide out (titles, plaques, star charts: the scene's GUIDE is set to False "
                             "for the building, and nothing hangs on a visitor's arrival)")
+        p.add_argument("--no-arrival", action="store_true",
+                       help="leave the opening out (the scene's ARRIVAL is set to False for the building: who is "
+                            "new stands where the map begins at once, as in A8, and is not set on the train)")
         p.add_argument("--trial", help="label of a trial save (see the text at the top)")
         p.add_argument("--assembly", help="the assembly's commit this is made of, for the note beside the save")
         p.add_argument("--out", help="folder of the archive (make: default dist/<name>)", required=(what == "pack"))
