@@ -11,8 +11,10 @@ V9 stands in it and looks south. On that axis, one behind the other:
                   plates of the night lie on its first pane, a measuring bridge with its microscope
                   stands over the second, and at the far end the plate viewer stands up with the
                   newest plate, the comet, facing the door. From the door the glass is a lit lane
-                  that runs to the viewer and to the books behind it.
-  bookcase        the whole south wall, floor to ceiling, the library ladder on its rail.
+                  that runs to the viewer and to the books behind it. The bridge is at work: its
+                  screw turns and its carriage creeps along the bed and back (MEASURE).
+  bookcase        the whole south wall, floor to ceiling, the library ladder on its rail; on the
+                  board of its middle bay the room's regulator clock, its pendulum swinging.
 
 and along the long walls, each thing at a window or on the blind stretch of the west wall (the
 rotunda is behind it, z 7..13):
