@@ -565,9 +565,10 @@ def _shade(h):
     return 0.75 + turn - 0.22 * crease - 0.18 * walled + 0.10 * crest + 0.12 * crown
 
 
-def build(canvas, origin=(0, 0, 0), *, seed=SEED, dress=None):
+def build(canvas, origin=(0, 0, 0), *, seed=SEED, dress=None, rock=None):
     """Lay the sea of clouds into the canvas: blocks, and the heads of its swell (_swell.py), which
-    are display entities. Returns how many of those."""
+    are display entities. Returns how many of those. ``rock(x, z)`` is for a scene whose mountain is
+    not site/terrain's: the y of its top block in a column, or None (the piers' feet, _line.py)."""
     if not (DRESS if dress is None else dress):
         return 0
     names = list(B.CLOUD)                           # dark..light, as the tone index runs
@@ -587,7 +588,7 @@ def build(canvas, origin=(0, 0, 0), *, seed=SEED, dress=None):
     # sea is laid against it
     line = _line.built(canvas, origin, set(names))
     if line:
-        _line.feet(canvas, origin)
+        _line.feet(canvas, origin, rock)
 
     x0, z0, nx, nz = _grid()
     y0, y1 = FLOOR_Y - 1, PEAK + 2
@@ -613,7 +614,7 @@ def build(canvas, origin=(0, 0, 0), *, seed=SEED, dress=None):
     level, height, sea = _field(seed, land, [(i, k, int(high[i, k])) for i, k in zip(*np.nonzero(sunk))])
     if line:                                        # the bank over the line's end, the track in a cleft through it
         X, Z = np.meshgrid(np.arange(nx) + x0, np.arange(nz) + z0, indexing="ij")
-        heap = np.minimum(_line.bank(X, Z), float(PEAK))
+        heap = np.minimum(_line.bank(X, Z, LOW + 0.4), float(PEAK))
         up = heap > height
         height = np.where(up, heap, height).astype(height.dtype)
         level = np.where(up, np.rint(np.where(up, heap, 0.0)), level).astype(level.dtype)
