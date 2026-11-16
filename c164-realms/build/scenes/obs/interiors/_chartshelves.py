@@ -25,10 +25,10 @@ field of spines:
                   the yearly volumes of a library do: from far that is a few quiet masses of colour
                   to a shelf, not confetti. The two outer bays have a plan chest for the flat sheets
                   in their foot; the two bays beside the middle keep the great atlases lying in
-                  piles in theirs and the rolled charts in a rack at the height of the eye of who
-                  stands on the ladder, a bundle of rolls to a hole; the plates' pasteboard boxes
-                  are brown card and the rolls grey and brown, not white, so that no shelf is
-                  lighter than the light table.
+                  piles in theirs and the rolled charts in a rack of pigeonholes at the height of
+                  the eye of who stands on the ladder, a roll or two to a hole; the plates'
+                  pasteboard boxes are brown card and the rolls grey and brown, not white, so that
+                  no shelf is lighter than the light table.
 
 Drawn in the wall's own frame, texels: U from the east end of the wall (the left hand of who looks
 at it), Y from the floor, Z from the wall into the room. Fifteen display entities: five strips,
@@ -316,35 +316,37 @@ def _piles(p, u, y, top, bindings):
     p.box((a + 17.0, a + 18.0), (y, top - 3.0), (1.5, 5.0), CARD, rot=("z", 6.0, (a + 17.0, y, 3.0)), skip="n", grain="y")
 
 
-# the bundles a hole of the rack may hold: where its rolls lie on the floor of the hole, and where
-# the rolls of the second row lie in the hollows between those (texels from the hole's left side)
-BUNDLES = (((0, 3, 6), (1, 4)), ((0, 3, 6), (2,)), ((0, 3, 6), (4,)), ((0, 3, 6), ()), ((0, 3, 6), (1, 5)),
-           ((0, 3), (1,)), ((3, 6), (4,)), ((0, 3), ()), ((1, 5), ()), ((6,), ()), ((), ()))
+# what a hole of the rack may hold: where its rolls lie on the floor of the hole (texels from the
+# hole's left side), and where a third lies on two. Mostly one roll or two, side by side: a rack
+# with a heap in every hole was the lightest and the busiest thing on the wall.
+HOLES = (((0,), ()), ((3,), ()), ((1,), ()), ((2,), ()), ((0,), ()), ((3,), ()),
+         ((0, 3), ()), ((0, 3), ()), ((0, 3), ()), ((0, 3), (1,)), ((0, 3), (2,)), ((), ()))
 
 
 def _rack(p, u, y, top):
-    """A rack for rolled charts, three holes wide and three high: a bundle of rolls lies in a hole,
-    end on, some further out than others. A hole is nine texels by six, a roll three across."""
+    """A rack of pigeonholes for rolled charts: two pairs of holes either side of an upright, three
+    rows. A hole is six texels each way, a roll three across: it lies on the floor of its hole, end
+    on, alone or beside another, some further out than others."""
     a, b = u
-    wide = (b - a - 4.0) / 3.0
-    for x in (a, b - 1.0):
-        p.box((x, x + 1.0), (y, top), (1.0, 5.5), WOOD, skip="n", grain="y")
-    for i in (1, 2):                            # the uprights between the holes stand behind the boards' edges
-        x = a + i * (wide + 1.0)
+    mid = (a + b) / 2.0
+    for x0, x1 in ((a, a + 1.0), (b - 1.0, b), (mid - 1.5, mid + 1.5)):
+        p.box((x0, x1), (y, top), (1.0, 5.5), WOOD, skip="n", grain="y")
+    for x in (a + 7.0, b - 8.0):                # the uprights inside a pair stand behind the boards' edges
         p.box((x, x + 1.0), (y + 1.0, top - 2.0), (1.0, 5.0), WOOD, skip="n", grain="y")
     floors = [y + 1.0 + 7.0 * i for i in range(3)]
-    p.box((a + 1.0, b - 1.0), (y, y + 1.0), (1.0, 5.5), WOOD, skip="n", grain="x")
-    p.box((a + 1.0, b - 1.0), (top - 2.0, top), (1.0, 5.5), WOOD, skip="n", grain="x")
-    for f in floors[1:]:
-        p.box((a + 1.0, b - 1.0), (f - 1.0, f), (1.0, 5.25), WOOD, skip="n", grain="x")
+    for x0, x1 in ((a + 1.0, mid - 1.5), (mid + 1.5, b - 1.0)):
+        p.box((x0, x1), (y, y + 1.0), (1.0, 5.5), WOOD, skip="n", grain="x")
+        p.box((x0, x1), (top - 2.0, top), (1.0, 5.5), WOOD, skip="n", grain="x")
+        for f in floors[1:]:
+            p.box((x0, x1), (f - 1.0, f), (1.0, 5.25), WOOD, skip="n", grain="x")
     for f in floors:
-        for i in range(3):
-            low, high = p.rnd.choice(BUNDLES)
+        for x in (a + 1.0, a + 8.0, b - 14.0, b - 7.0):
+            low, high = p.rnd.choice(HOLES)
             for row, places in enumerate((low, high)):
                 for dx in places:
                     end, body = ROLLS[p.rnd.choice((0, 0, 0, 0, 0, 1, 1, 1, 2))]
                     out = p.rnd.choice((4.0, 4.5, 4.5, 5.0, 5.0, 5.5))
-                    x0, y0 = a + 1.0 + i * (wide + 1.0) + dx, f + 3.0 * row
+                    x0, y0 = x + dx, f + 3.0 * row
                     p.box((x0, x0 + 3.0), (y0, y0 + 3.0), (1.0, out), body, skip="n", grain="z", faces={"s": end})
 
 
