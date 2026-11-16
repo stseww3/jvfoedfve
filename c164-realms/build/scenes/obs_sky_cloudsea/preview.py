@@ -1,48 +1,40 @@
 """What the real client should show of the sea of clouds, worked out offline: a private aid of the
-card sky/cloudsea for trying shapes and the join with the sky between two trips to the real client.
+card sky/cloudsea for trying shapes and the laws of the join with the sky between two trips to the
+real client.
 
     cd build && python -m scenes.obs_sky_cloudsea.preview --out ../renders/_wip/pre
         [--scene obs_sky_cloudsea] [--only v12,sunset_west | --only none] [--looks blue,glow]
-        [--sea haze,same] [--fog 60,150] [--haze 800] [--chunks 10] [--size 1280x720] [--plan]
-        [--sheet 3] [--set "REACH=140.0" ...]
+        [--laws "a:1600,587,12;b:1600,28.6,8,60,150,8,12"] [--chunks 10] [--size 1280x720]
+        [--plan] [--sheet 2] [--set "REACH=140.0" ...]
 
-build/render.py draws a scene as the registry look shows it at fourteen chunks: one fog colour for
-the whole picture, fog from 60 to 192 blocks, no afterglow, and where no block is, the fog colour
-down to the nadir. The map will not be shown like that (the director's rulings of 11-16): the
-server sends blocks for ten chunks round a player, and the look is drawn by the resource pack's
-shaders (A2's), which paint the sky under the horizon as well. This draws what is agreed with A2
-for that and the one thing that is not, to see beforehand what the sea is then:
+build/render.py draws a scene as the registry look showed it: one fog colour for the whole
+picture, no afterglow, and where no block is, the fog colour down to the nadir. The map is shown
+otherwise (the director's rulings of 11-16): the server sends blocks for ten chunks round a player,
+and the look is drawn by the resource pack's shaders (sky/_shaders.py, A2's), which paint the sky
+under the horizon as well. This draws that, with the shaders' own arithmetic taken from where the
+shaders take it:
 
-  - blocks: only the chunks the game has loaded round the camera at --chunks (10), and the game's
-    wall of fog over the last tenth of that distance. No cloud layer: the shaders take it out.
-  - the sky above the horizon: the game's own with the look's values (26.3: sky.fsh over the sky
-    disc, the afterglow's fan of SkyRenderer, the stars and the comet), the horizon's colour drawn
-    towards the afterglow by how far the direction points west (the game does that for a whole
-    frame by where the camera faces; a shader does it for every pixel).
-  - the fog: every block is drawn towards the fog colour of its own direction by
-    (distance - start) / (end - start), the distance taken from the eye (--fog start,end; 60 and
-    150 are the director's). Above the horizon the fog colour is that of the sky's lowest ring in
-    the direction of the compass, afterglow and all, and not the sky behind the block: a tower in
-    the fog keeps its outline against the darker sky higher up.
-  - under the horizon the far sea is painted: a level sea at the height of the block sea's face,
-    seen from the camera's own height, in the look's "cloud" colour (level cloud as the look
-    lights it), sunk into the colour of the lowest ring above it by how far off the eye meets it.
-    How fast it sinks is what --sea tries:
-      same   by the blocks' own fog, as if the block sea went on for ever: beyond the fog's end
-             the sea is the ring's colour, and the fog colour under the horizon is the ring's too
-      haze   by a haze of its own, 1 - exp(-distance / HAZE), far longer than the blocks' fog:
-             the sea keeps its colour nearly to the horizon, and under the horizon a block is
-             drawn towards the far sea of its own direction, so level cloud does not change
-             colour in the fog at all and a head sinks into the sea's colour
-    No star and no comet under the horizon.
+  - every colour is _shaders.Twin's, called for every pixel's direction: band() is what the fog
+    takes a thing to, behind() what is painted behind it (the band above the horizon, the far sea
+    below it), sky_at() what is seen where no block is. The stars and the comet are the offline
+    renderer's, above the horizon only.
+  - how much of them a block takes is Twin.apply()'s arithmetic: mood.fog_depth(), the air's haze
+    and the mist that lies on the sea, towards the band; then mood.levelled(), by which what lies
+    on the sea goes into the far sea painted behind it, or the game's own fog over the last tenth
+    of the view distance, whichever is more, towards what is painted behind. _hazed() here is that
+    arithmetic for the compiled loop; every run checks it against Twin.apply() on a few thousand
+    made-up hits and stops if the two differ.
+  - blocks: only the chunks the game has loaded round the camera at --chunks (10). No cloud layer:
+    the shaders take it out.
 
-The pictures are named <out>-<shot>-<look>-<sea>.png; with --sheet N they are laid side by side, N
-to a row and half the size, in one picture <out>-sheet.png instead. --plan adds <out>-plan.png:
-the sea from straight above in the tones the blue hour gives it, without fog, and prints what it
-is made of; with --only none nothing else is drawn, and no ray is traced. --set NAME=VALUE changes
-a constant of sky/cloudsea for this run, to try a shape without a commit. They are no evidence: the
-card is settled on the real client's pictures. This only says beforehand what those should show
-once the shaders do what is drawn here.
+--laws tries other numbers than sky/mood's, each set named and given as AIR,MIST,MIST_HEIGHT and,
+if wanted, FOG_START,FOG_END,LEVEL_FULL,LEVEL_NONE after them. The pictures are named
+<out>-<shot>-<look>-<law>.png; with --sheet N they are laid side by side, N to a row and half the
+size, in one picture <out>-sheet.png instead. --plan adds <out>-plan.png: the sea from straight
+above in the tones the blue hour gives it, without fog, and prints what it is made of; with --only
+none nothing else is drawn, and no ray is traced. --set NAME=VALUE changes a constant of
+sky/cloudsea for this run, to try a shape without a commit. They are no evidence: the card is
+settled on the real client's pictures. This only says beforehand what those should show.
 """
 import argparse
 import atexit
@@ -61,104 +53,43 @@ import render as offline
 from artkit import gamelook, gamescene
 from artkit import raytrace as R
 from artkit.gameassets import Assets
+from scenes.obs.sky import _shaders as shaders
 from scenes.obs.sky import mood as sky
 
-FOG = (60.0, 150.0)         # the blocks' fog (the director's): none nearer than the first, whole at the second
-HAZE = 800.0                # --sea haze: the far sea has sunk into the horizon's colour by 1 - 1/e after this many blocks
-SEAS = ("haze", "same")
-# places in the array of numbers the drawing takes
-Q_SKY, Q_FOG, Q_GLOW, Q_GLOW_A, Q_SIDE, Q_MIX, Q_SKY_END, Q_SEA, Q_HEIGHT, Q_HAZE = 0, 3, 6, 9, 10, 11, 12, 13, 16, 17
-Q_START, Q_END, Q_FAR_START, Q_FAR_END, Q_LAW, Q_SIZE = 18, 19, 20, 21, 22, 23
+# places in the array of numbers the compiled loop takes
+Q_AIR, Q_MIST, Q_MIST_H, Q_EYE, Q_NEAR, Q_LOW, Q_FAR, Q_SIZE = 0, 1, 2, 3, 4, 6, 8, 10
 
 
 @njit(cache=True)
-def _afterglow(dx, dy, dz, alpha, side):
-    """The share of the afterglow's alpha that lies over the sky in a direction (SkyRenderer's fan:
-    the tip at (100 side, 0, 0), the rim at (120 side cos, 40 alpha cos, 120 sin))."""
-    cx = 100.0 * side
-    best = 0.0
-    for i in range(16):
-        t0, t1 = i * math.pi / 8.0, (i + 1) * math.pi / 8.0
-        ax, ay, az = 120.0 * side * math.cos(t0) - cx, 40.0 * alpha * math.cos(t0), 120.0 * math.sin(t0)
-        bx, by, bz = 120.0 * side * math.cos(t1) - cx, 40.0 * alpha * math.cos(t1), 120.0 * math.sin(t1)
-        px, py, pz = dy * bz - dz * by, dz * bx - dx * bz, dx * by - dy * bx
-        det = ax * px + ay * py + az * pz
-        if abs(det) < 1e-9:
-            continue
-        u = (-cx * px) / det                        # the ray starts at the camera: minus the tip
-        qx, qy, qz = 0.0, -(-cx) * az, (-cx) * ay   # (-cx, 0, 0) x (ax, ay, az)
-        v = (dx * qx + dy * qy + dz * qz) / det
-        t = (bx * qx + by * qy + bz * qz) / det
-        if u >= 0.0 and v >= 0.0 and u + v <= 1.0 and t > 0.0:
-            best = max(best, 1.0 - u - v)
-    return best
-
-
-@njit(cache=True)
-def _horizon(q, ux):
-    """The horizon's colour in a direction of the compass before the afterglow's fan is laid over
-    it: the fog colour, warmer the further the direction points to the afterglow, a share of the
-    sky colour in it."""
-    tint = max(0.0, ux * q[Q_SIDE]) * q[Q_GLOW_A]
-    r = q[Q_FOG] + (q[Q_GLOW] - q[Q_FOG]) * tint
-    g = q[Q_FOG + 1] + (q[Q_GLOW + 1] - q[Q_FOG + 1]) * tint
-    b = q[Q_FOG + 2] + (q[Q_GLOW + 2] - q[Q_FOG + 2]) * tint
-    return r + (q[Q_SKY] - r) * q[Q_MIX], g + (q[Q_SKY + 1] - g) * q[Q_MIX], b + (q[Q_SKY + 2] - b) * q[Q_MIX]
-
-
-@njit(cache=True)
-def _ring(q, ux, uz):
-    """The colour of the sky's lowest ring in a direction of the compass, afterglow and all."""
-    r, g, b = _horizon(q, ux)
-    a = q[Q_GLOW_A] * _afterglow(ux, 1e-3, uz, q[Q_GLOW_A], q[Q_SIDE])
-    return r + (q[Q_GLOW] - r) * a, g + (q[Q_GLOW + 1] - g) * a, b + (q[Q_GLOW + 2] - b) * a
-
-
-@njit(cache=True)
-def _far_sea(q, ux, uz, dy):
-    """The far sea in a direction under the horizon: the sea's colour, sunk into the ring's by how
-    far off the eye meets the level of the sea's face."""
-    r, g, b = _ring(q, ux, uz)
-    t = q[Q_HEIGHT] / max(-dy, 1e-6)
-    if q[Q_LAW] > 0.5:
-        w = 1.0 - math.exp(-t / q[Q_HAZE])
+def _depth(q, distance, rise):
+    """mood.fog_depth() for one line of sight from the camera: the optical depth of the fog over
+    `distance` blocks along a line that gains `rise` a block."""
+    height = max(q[Q_EYE], 0.0)
+    reach = distance
+    if rise < 0.0:
+        reach = min(distance, height / max(-rise, 1e-5))
+    a = reach * rise / q[Q_MIST_H]
+    start = math.exp(-height / q[Q_MIST_H])
+    if abs(a) < 1e-3:
+        mist = reach * start * (1.0 - 0.5 * a)
     else:
-        w = min(1.0, max(0.0, (t - q[Q_START]) / (q[Q_END] - q[Q_START])))
-    return q[Q_SEA] + (r - q[Q_SEA]) * w, q[Q_SEA + 1] + (g - q[Q_SEA + 1]) * w, q[Q_SEA + 2] + (b - q[Q_SEA + 2]) * w
+        mist = (start - math.exp(-max(height + reach * rise, 0.0) / q[Q_MIST_H])) * q[Q_MIST_H] / rise
+    return distance / q[Q_AIR] + mist / q[Q_MIST]
 
 
 @njit(cache=True)
-def _backdrop(q, dx, dy, dz):
-    """What is seen in a direction where no block is, without the stars and the comet."""
-    hx = math.sqrt(dx * dx + dz * dz)
-    ux, uz = 1.0, 0.0
-    if hx > 1e-9:
-        ux, uz = dx / hx, dz / hx
-    if dy <= 0.0:
-        return _far_sea(q, ux, uz, dy)
-    r, g, b = _horizon(q, ux)
-    f = 1.0
-    if dy > 1e-4:
-        reach = 16.0 * hx / dy
-        if reach < 512.0:
-            f = min(1.0, (16.0 + 496.25 * reach / 512.0) / q[Q_SKY_END])
-    r = q[Q_SKY] + (r - q[Q_SKY]) * f
-    g = q[Q_SKY + 1] + (g - q[Q_SKY + 1]) * f
-    b = q[Q_SKY + 2] + (b - q[Q_SKY + 2]) * f
-    a = q[Q_GLOW_A] * _afterglow(dx, dy, dz, q[Q_GLOW_A], q[Q_SIDE])
-    return r + (q[Q_GLOW] - r) * a, g + (q[Q_GLOW + 1] - g) * a, b + (q[Q_GLOW + 2] - b) * a
-
-
-@njit(cache=True)
-def _fog_colour(q, dx, dy, dz):
-    """The colour the fog takes a block to that is seen in a direction."""
-    hx = math.sqrt(dx * dx + dz * dz)
-    ux, uz = 1.0, 0.0
-    if hx > 1e-9:
-        ux, uz = dx / hx, dz / hx
-    if dy < 0.0 and q[Q_LAW] > 0.5:
-        return _far_sea(q, ux, uz, dy)
-    return _ring(q, ux, uz)
+def _hazed(q, r, g, b, t, dx, dy, dz, band, behind):
+    """Twin.apply() for one hit, t away along the unit direction (dx, dy, dz): the colour (r, g, b)
+    taken towards the band by the fog's depth, then towards what is painted behind it by
+    mood.levelled() or by the game's fog at the rim of the view distance, whichever is more."""
+    f = 1.0 - math.exp(-_depth(q, t, dy))
+    across = t * math.sqrt(dx * dx + dz * dz)
+    far = min(1.0, max(0.0, (across - q[Q_NEAR]) / (q[Q_NEAR + 1] - q[Q_NEAR])))
+    low = min(1.0, max(0.0, (q[Q_LOW + 1] - (q[Q_EYE] + t * dy)) / (q[Q_LOW + 1] - q[Q_LOW])))
+    rim = min(1.0, max(0.0, (max(across, t * abs(dy)) - q[Q_FAR]) / (q[Q_FAR + 1] - q[Q_FAR])))
+    gone = max(far * low, rim)
+    r, g, b = r + (band[0] - r) * f, g + (band[1] - g) * f, b + (band[2] - b) * f
+    return r + (behind[0] - r) * gone, g + (behind[1] - g) * gone, b + (behind[2] - b) * gone
 
 
 @njit(cache=True)
@@ -174,22 +105,10 @@ def _plain_sky(env, dx, dy, dz):
 
 
 @njit(cache=True)
-def _fog(q, t, dx, dy, dz):
-    """The share of the backdrop in a block t away along a direction."""
-    f = 0.0
-    if t > q[Q_START]:
-        f = 1.0 if t >= q[Q_END] else (t - q[Q_START]) / (q[Q_END] - q[Q_START])
-    c = t * max(math.sqrt(dx * dx + dz * dz), abs(dy))
-    if c > q[Q_FAR_START]:
-        f = max(f, 1.0 if c >= q[Q_FAR_END] else (c - q[Q_FAR_START]) / (q[Q_FAR_END] - q[Q_FAR_START]))
-    return f
-
-
-@njit(cache=True)
-def _trace(w, q, px, py, pz, dx, dy, dz):
-    """raytrace.trace with the fog of the proposal: every hit is drawn towards the backdrop of the
-    ray's direction, and where the ray meets nothing the backdrop itself is seen, with the stars
-    and the comet on it above the horizon."""
+def _trace(w, q, px, py, pz, dx, dy, dz, band, behind, beyond):
+    """raytrace.trace with the fog of the shaders: every hit is hazed as Twin.apply() has it, and
+    where the ray meets nothing the painted sky itself is seen, with the stars and the comet on it
+    above the horizon."""
     env = w.env
     nx, ny, nz = w.grid.shape
     t0, t1 = 0.0, R.BIG
@@ -208,9 +127,8 @@ def _trace(w, q, px, py, pz, dx, dy, dz):
         t0, t1 = max(t0, min(a, b)), min(t1, max(a, b))
     elif pz < 0.0 or pz >= nz:
         t1 = -1.0
-    t1 = min(t1, q[Q_FAR_END] / max(math.sqrt(dx * dx + dz * dz), abs(dy), 1e-9))
-    br, bg, bb = _fog_colour(q, dx, dy, dz)
-    sr, sg, sb = _backdrop(q, dx, dy, dz)
+    t1 = min(t1, q[Q_FAR + 1] / max(math.sqrt(dx * dx + dz * dz), abs(dy), 1e-9))
+    sr, sg, sb = beyond[0], beyond[1], beyond[2]
     if dy > 0.0:
         fr, fg, fb = R.sky_colour(w, dx, dy, dz)
         pr, pg, pb = _plain_sky(env, dx, dy, dz)
@@ -256,27 +174,21 @@ def _trace(w, q, px, py, pz, dx, dy, dz):
         if pal != 0 and not (first and w.pal_flags[pal] & R.OPAQUE):
             ht, he, hf, hr, hg, hb, ha, hx, hy, hz = R.cell_hit(w, pal, cx, cy, cz, px, py, pz, dx, dy, dz, tmin, t_exit,
                                                                 env[R.PIXEL])
-        if ent_t < ht and ent_t <= t_exit + 1e-6:
-            f = _fog(q, ent_t, dx, dy, dz)
-            cr += trans * ent_a * (ent_r + (br - ent_r) * f)
-            cg += trans * ent_a * (ent_g + (bg - ent_g) * f)
-            cb += trans * ent_a * (ent_b + (bb - ent_b) * f)
-            trans *= 1.0 - ent_a
+        if (ent_t < ht and ent_t <= t_exit + 1e-6) or he >= 0:
+            if ent_t < ht and ent_t <= t_exit + 1e-6:
+                at, r, g, b, alpha = ent_t, ent_r, ent_g, ent_b, ent_a
+                ent_t, last = R.BIG, -1
+            else:
+                r, g, b = R.block_colour(w, pal, he, hf, cx, cy, cz, hx, hy, hz, hr, hg, hb)
+                at, alpha = ht, ha
+            r, g, b = _hazed(q, r, g, b, at, dx, dy, dz, band, behind)
+            cr += trans * alpha * r
+            cg += trans * alpha * g
+            cb += trans * alpha * b
+            trans *= 1.0 - alpha
             if trans < 0.004:
                 return cr, cg, cb
-            tmin = ent_t + 1e-5
-            ent_t, last = R.BIG, -1
-            continue
-        if he >= 0:
-            r, g, b = R.block_colour(w, pal, he, hf, cx, cy, cz, hx, hy, hz, hr, hg, hb)
-            f = _fog(q, ht, dx, dy, dz)
-            cr += trans * ha * (r + (br - r) * f)
-            cg += trans * ha * (g + (bg - g) * f)
-            cb += trans * ha * (b + (bb - b) * f)
-            trans *= 1.0 - ha
-            if trans < 0.004:
-                return cr, cg, cb
-            tmin = ht + 1e-5
+            tmin = at + 1e-5
             continue
         if t_exit >= t1:
             break
@@ -300,41 +212,52 @@ def _trace(w, q, px, py, pz, dx, dy, dz):
 
 
 @njit(cache=True, parallel=True)
-def _draw(w, q, cam, width, height, out):
-    half = cam[12]
-    aspect = width / height
+def _draw(w, q, cam, rays, band, behind, beyond, out):
+    height, width = out.shape[0], out.shape[1]
     for j in prange(height):
         for i in range(width):
-            x = ((i + 0.5) / width * 2.0 - 1.0) * half * aspect
-            y = (1.0 - (j + 0.5) / height * 2.0) * half
-            dx = cam[3] + x * cam[6] + y * cam[9]
-            dy = cam[4] + x * cam[7] + y * cam[10]
-            dz = cam[5] + x * cam[8] + y * cam[11]
-            n = math.sqrt(dx * dx + dy * dy + dz * dz)
-            r, g, b = _trace(w, q, cam[0], cam[1], cam[2], dx / n, dy / n, dz / n)
+            n = j * width + i
+            r, g, b = _trace(w, q, cam[0], cam[1], cam[2], rays[n, 0], rays[n, 1], rays[n, 2], band[n], behind[n], beyond[n])
             out[j, i, 0] = r
             out[j, i, 1] = g
             out[j, i, 2] = b
 
 
-def numbers(look, name, chunks, fog, haze, sea, height):
-    """The numbers _draw takes: a look's colours, the join's laws, how far the camera is over the sea's face."""
-    a = look.attrs
+def rays(cam, width, height):
+    """The unit direction of every pixel, row by row (x east, y up, z south)."""
+    x = ((np.arange(width) + 0.5) / width * 2.0 - 1.0) * cam[12] * width / height
+    y = (1.0 - (np.arange(height) + 0.5) / height * 2.0) * cam[12]
+    d = cam[3:6][None, None, :] + x[None, :, None] * cam[6:9][None, None, :] + y[:, None, None] * cam[9:12][None, None, :]
+    d = d.reshape(-1, 3)
+    return np.ascontiguousarray(d / np.linalg.norm(d, axis=1, keepdims=True))
+
+
+def numbers(look, eye):
+    """The numbers the compiled loop takes: the fog's as sky/mood has them now, the camera's height
+    over the sea's top, the rim of the view distance."""
     q = np.zeros(Q_SIZE)
-    q[Q_SKY:Q_SKY + 3] = a["sky_color"][:3]
-    q[Q_FOG:Q_FOG + 3] = a["fog_color"][:3]
-    q[Q_SIDE] = -1.0 if math.sin(math.radians(look.sun_angle)) > 0.0 else 1.0
-    if look.sunset is not None and chunks >= 4:
-        q[Q_GLOW:Q_GLOW + 4] = look.sunset
-    e = min(float(a["sky_fog_end_distance"]) / 16.0, float(chunks))
-    q[Q_MIX] = 1.0 - (0.25 + 0.75 * min(1.0, max(0.0, e / 32.0))) ** 0.25
-    q[Q_SKY_END] = look.sky_end
-    q[Q_SEA:Q_SEA + 3] = sky._rgb(sky.look(name)["cloud"])
-    q[Q_HEIGHT], q[Q_HAZE] = max(1.0, height), haze
-    q[Q_START], q[Q_END] = fog
-    q[Q_FAR_START], q[Q_FAR_END] = look.far_start, look.far_end
-    q[Q_LAW] = float(SEAS.index(sea) == 0)
+    q[Q_AIR], q[Q_MIST], q[Q_MIST_H], q[Q_EYE] = sky.AIR, sky.MIST, sky.MIST_HEIGHT, eye
+    q[Q_NEAR:Q_NEAR + 2] = sky.FOG_START, sky.FOG_END
+    q[Q_LOW:Q_LOW + 2] = sky.LEVEL_FULL, sky.LEVEL_NONE
+    q[Q_FAR:Q_FAR + 2] = look.far_start, look.far_end
     return q
+
+
+def checked(q, twin, camera_y, n=4000):
+    """_hazed() against Twin.apply() on made-up hits: colours, distances and directions at random,
+    the nearly level lines among them."""
+    g = np.random.default_rng(1)
+    colour, distance = g.uniform(0.0, 1.0, (n, 3)), g.uniform(0.0, 400.0, n)
+    d = g.normal(size=(n, 3))
+    d[: n // 10, 1] *= 1e-5
+    d /= np.linalg.norm(d, axis=1, keepdims=True)
+    across = distance * np.hypot(d[:, 0], d[:, 2])
+    rim = np.clip((np.maximum(across, distance * np.abs(d[:, 1])) - q[Q_FAR]) / (q[Q_FAR + 1] - q[Q_FAR]), 0.0, 1.0)
+    band, behind = twin.band(d), twin.behind(d, camera_y)
+    ours = np.array([_hazed(q, *colour[i], distance[i], *d[i], band[i], behind[i]) for i in range(n)])
+    theirs = twin.apply(colour, distance, d, camera_y, rim)
+    if not np.allclose(ours, theirs, rtol=0.0, atol=1e-9):
+        raise SystemExit(f"preview: _hazed() and Twin.apply() differ by up to {np.abs(ours - theirs).max():g}")
 
 
 def loaded(pos, lo, shape, chunks):
@@ -387,9 +310,9 @@ def main():
     ap.add_argument("--out", required=True, help="prefix of the pictures: <out>-<shot>-<look>.png")
     ap.add_argument("--only", help="comma separated shot names (default: the test scene's MAIN_VIEWS); none: no shot")
     ap.add_argument("--looks", default="blue", help="comma separated looks or trials of the sky's")
-    ap.add_argument("--sea", default="haze", help="comma separated: how the far sea sinks into the horizon, haze or same")
-    ap.add_argument("--fog", default=f"{FOG[0]:g},{FOG[1]:g}", help="where the blocks' fog begins and where it is whole")
-    ap.add_argument("--haze", type=float, default=HAZE)
+    ap.add_argument("--laws", default="",
+                    help='the fog\'s numbers to try, "name:AIR,MIST,MIST_HEIGHT[,FOG_START,FOG_END,LEVEL_FULL,LEVEL_NONE];..." '
+                         "(default: sky/mood's own)")
     ap.add_argument("--chunks", type=int, default=10, help="view distance in chunks")
     ap.add_argument("--size", default="1280x720")
     ap.add_argument("--fov", type=float, default=77.0)
@@ -432,8 +355,17 @@ def main():
     if not names:
         return
     views = {s["name"]: s for s in base.shots()}
-    fog = tuple(float(v) for v in args.fog.split(","))
-    place = (0, 200, 0)
+    names_of = ("AIR", "MIST", "MIST_HEIGHT", "FOG_START", "FOG_END", "LEVEL_FULL", "LEVEL_NONE")
+    own = tuple(float(getattr(sky, key)) for key in names_of)
+    laws = []
+    for item in (item for item in args.laws.split(";") if item):
+        name, _, values = item.partition(":")
+        values = tuple(float(v) for v in values.split(","))
+        if len(values) not in (3, 7):
+            raise SystemExit(f"--laws {item}: three numbers ({', '.join(names_of[:3])}) or all seven ({', '.join(names_of)})")
+        laws.append((name, values + own[len(values):]))
+    laws = laws or [("mood", own)]
+    place = (0, sky.GROUND_Y, 0)
     world = gamescene.Scene(assets, cells, entities, look_at(6000), place=place,
                             say=lambda s: print(f"{s} ({time.time() - t0:.0f} s)"))
     size = tuple(int(v) for v in args.size.split("x"))
@@ -443,27 +375,32 @@ def main():
         shot = views[name]
         cam = np.ascontiguousarray(world.camera(shot["pos"], shot.get("look_at"), 0.0, 0.0, args.fov), dtype=np.float64)
         there = loaded(shot["pos"], world.lo, world.grid.shape, args.chunks)
-        height = float(shot["pos"][1]) - sea.FACE
+        eye = float(shot["pos"][1]) + sky.GROUND_Y                      # the camera's world height
+        d = rays(cam, size[0], size[1])
         for which in args.looks.split(","):
             look = look_at(sky.tick(which))
             w = world.world(look, pixel)
             near = w.grid.copy()
             near[~there[:, None, :] & np.ones((1, near.shape[1], 1), dtype=bool)] = 0
             w = w._replace(grid=near)
-            for law in args.sea.split(","):
+            for law, values in laws:
                 t1 = time.time()
+                for key, value in zip(names_of, values):
+                    setattr(sky, key, value)
+                twin = shaders.Twin(which if which in sky.LOOKS else sky.DEFAULT)
+                q = numbers(look, eye - twin.n["sea_y"])
+                checked(q, twin, eye)
                 out = np.zeros((size[1], size[0], 3))
-                _draw(w, numbers(look, which, args.chunks, fog, args.haze, law, height), cam, size[0], size[1], out)
+                _draw(w, q, cam, d, np.ascontiguousarray(twin.band(d)), np.ascontiguousarray(twin.behind(d, eye)),
+                      np.ascontiguousarray(twin.sky_at(d, eye)), out)
                 label = f"{name}-{which}-{law}"
                 picture = Image.fromarray((np.clip(out, 0.0, 1.0) * 255.0 + 0.5).astype(np.uint8))
                 if args.sheet:
                     tiles.append((label, picture.resize((size[0] // 2, size[1] // 2), Image.LANCZOS)))
                 else:
                     picture.save(f"{args.out}-{label}.png")
-                print(f"{args.out}-{label} (tick {look.tick}, {args.chunks} chunks, fog {fog[0]:g}..{fog[1]:g}, the far "
-                      f"sea {sky.look(which)['cloud']} from {height:g} over it, "
-                      + (f"hazed over {args.haze:g}" if law == "haze" else "in the blocks' fog")
-                      + f", {time.time() - t1:.0f} s)")
+                print(f"{args.out}-{label} (tick {look.tick}, {args.chunks} chunks, the eye {q[Q_EYE]:g} over the sea; "
+                      + ", ".join(f"{key} {value:g}" for key, value in zip(names_of, values)) + f"; {time.time() - t1:.0f} s)")
     if tiles:
         w, h = tiles[0][1].size
         rows = -(-len(tiles) // args.sheet)
