@@ -144,6 +144,22 @@
     {"at": [38.5, 0, -32.5], "node": "the hut's north-east corner"},
     {"at": [38.5, 0, -26.5], "node": "the hut's south-east corner"},
     {"at": [32.5, 0, -26.5], "node": "the hut's south-west corner"}
+  ]},
+  {"id": "N", "name": "the plate vault and its darkroom (south wing, ground floor)", "points": [
+    {"at": [7.5, 0, 4.5], "node": "the star hall's south aisle, before the plate vault's door", "hop": true},
+    {"at": [7.5, 0, 8.5], "node": "inside the plate vault's door"},
+    {"at": [7.5, 0, 21.5], "node": "the cross aisle before the darkroom"},
+    {"at": [7.5, 0, 24.5], "node": "the darkroom"},
+    {"at": [7.5, 0, 21.5], "views": "f"},
+    {"at": [3.5, 0, 21.5], "node": "the west aisle's south end"},
+    {"at": [3.5, 0, 8.5], "node": "the entry's west end, by the hand lift and the register desk"},
+    {"at": [11.5, 0, 8.5], "node": "the entry's east end, by the checking table"},
+    {"at": [11.5, 0, 21.5], "node": "the east aisle's south end"}
+  ]},
+  {"id": "P", "name": "the battery room (north wing, ground floor)", "points": [
+    {"at": [7.5, 0, -3.5], "node": "the star hall's north aisle, before the battery room's door", "hop": true},
+    {"at": [7.5, 0, -7.5], "node": "inside the battery room's door"},
+    {"at": [8.0, 0, -22.5], "node": "the end of the aisle, before the switchboard"}
   ]}
  ]
 }
