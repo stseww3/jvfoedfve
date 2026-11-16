@@ -55,6 +55,7 @@ print("1. `{branch}`，`c164-realms/dist/{n}/c164-{n}.zip`，sha256 {sha}。".fo
 print("2. 存档 {zip}，其中资源包 {pack}（{pack_files} 个文件，上限 250 兆）；{blocks} 方块、{entities} 个显示实体。".format(**r))
 print("3. 服务端冷启动两次，{checks} 项{ok}，日志警告和报错 {console} 条。导出 {make_s} 秒，验证 {verify_s} 秒。".format(**r))
 print("数据包：函数 {functions}、标签 {tags}、注册表文件 {registry_files}；占位贴图 {standins} 张；资源包里着色器 {shaders} 个。".format(**dict(r, shaders=r.get("shaders") or 0)))
+print("光照：存盘前等到不再变（{} 秒）。".format(r["light"]) if r.get("light") else "光照：存盘时还在变，这一版的光不全！" if r.get("light") is False else "光照：没等。")
 if r.get("plain"):
     print("不带着色器的（资源包加载失败时换这个）：`{}`，{}，sha256 {}，{}。".format(
         r["plain"]["file"], mb(r["plain"]["bytes"]), r["plain"]["sha256"][:8] + "…" + r["plain"]["sha256"][-4:],

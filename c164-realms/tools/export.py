@@ -1408,7 +1408,7 @@ def light_of(pairs):
     the lines to print. The game saves the light it has at that moment; work its light engine has
     not come to is not in the file, and is not done again when the chunk is loaded."""
     import census
-    lone, both, worst = {}, {}, []
+    lone, both, worst, gaps = {}, {}, [], []
     for raw_a, raw_b in pairs:
         ta, tb = census.parse_nbt(raw_a), census.parse_nbt(raw_b)
         x0, z0 = int(ta.get("xPos", 0)) * 16, int(ta.get("zPos", 0)) * 16
@@ -1425,6 +1425,8 @@ def light_of(pairs):
                     same = len(set(there)) == 1 and there[0] >> 4 == there[0] & 15
                     key = (part, f"all {there[0] & 15}" if same else "mixed")
                     lone[key] = lone.get(key, 0) + 1
+                    gaps.append((part, x0, y * 16, z0, "first" if la is None else "second", key[1],
+                                 sum(((b & 15) > 0) + ((b >> 4) > 0) for b in there)))
                     continue
                 n = big = up = 0
                 for p, q in zip(la, lb):
@@ -1444,7 +1446,20 @@ def light_of(pairs):
             lines.append(f"  {part}: in {s} sections both saves have it and {k} values differ, by up to {b} "
                          f"({u} are higher in the second, {k - u} lower); in {sum(alone.values())} sections one save has none"
                          + (" (the other's is " + ", ".join(f"{name} in {v}" for name, v in sorted(alone.items())) + ")" if alone else ""))
-    for n, big, part, x, y, z in sorted(worst, reverse=True)[:12]:
+    for part in ("SkyLight", "BlockLight"):     # by height: what lies under a floor nobody gets under is not seen
+        levels = {}
+        for n, big, p, x, y, z in worst:
+            if p == part:
+                s, k, b = levels.get(y, (0, 0, 0))
+                levels[y] = (s + 1, k + n, max(b, big))
+        if levels:
+            lines.append(f"      {part} by height: " + "; ".join(
+                f"y {y}..{y + 15}: {s} sections, {k} values, by up to {b}" for y, (s, k, b) in sorted(levels.items())))
+    for part, x, y, z, which, kind, lit in sorted(gaps, key=lambda g: (g[0], -g[6]))[:20]:
+        lines.append(f"      x {x}..{x + 15} y {y}..{y + 15} z {z}..{z + 15}: {part}, none in the {which} save; "
+                     f"the other's is {kind}, {lit} values above 0")
+    few = [w for w in worst if w[2] == "BlockLight"]
+    for n, big, part, x, y, z in sorted(few, reverse=True)[:16] + sorted((w for w in worst if w[2] == "SkyLight"), reverse=True)[:8]:
         lines.append(f"      x {x}..{x + 15} y {y}..{y + 15} z {z}..{z + 15}: {part}, {n} values, by up to {big}")
     if worst:
         xs, ys, zs = [w[3] for w in worst], [w[4] for w in worst], [w[5] for w in worst]
@@ -1600,6 +1615,9 @@ def page(args):
         "verified": checks["ok"], "console": len(made.get("issues") or []) + sum(
             len(v) for k, v in checks.items() if k.endswith("issues") and isinstance(v, list)),
         "note": args.note, "commit": args.commit,
+        # the light at rest before the world was saved (seconds waited), False when it never was;
+        # None for the saves made before it was waited for (A1 to A6)
+        "light": None if made.get("light") is None else made["light"]["seconds"] if made["light"].get("settled") else False,
     }
     # what this run does not know stays as the row had it (a note given earlier, the figures of a
     # save made before its note told them)
@@ -1656,7 +1674,10 @@ def page(args):
         "一次按 Realms 槽位会填的冒险、和平）。"
         + f"数据包里函数 {row['functions']} 个、标签 {row['tags']} 个，注册表文件 {row['registry_files']} 个；"
         + (f"资源包里还有 {row['standins']} 张占位贴图（`ph_` 开头，等正式的换下来）。" if row["standins"] else "资源包里没有占位贴图。")
-        + ("" if row["cloud"] else "**这一个没开「站到云海方块上送回」。**"),
+        + ("" if row["cloud"] else "**这一个没开「站到云海方块上送回」。**")
+        + ("存盘前等光照算完了（存一次读一次，连着三次不变才收，等了 {} 秒）。".format(row["light"]) if row.get("light")
+           else "**存盘时光照还在变，这一个的光不全。**" if row.get("light") is False
+           else "这一个存盘前没等光照算完（A6 和更早的都没等）。"),
         PAGE_CLOSE,
     ]
     readme = os.path.join(dist, "README.md")
