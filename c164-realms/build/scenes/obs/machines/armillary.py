@@ -5,20 +5,30 @@ middle of the emblem roundel that site/court lays there, and it is the foregroun
 V2: from the head of the grand stair the lit entrance and the great dome are seen through its rings.
 
     centre cell      skeleton.ARMILLARY = (35, 0); the centre line of the sphere is (35.5, 0.5)
-    stone base       blocks, x 34..36, z -1..1, y 0..1: a square of deepslate stairs (two half-block
-                     steps) round a core, and one block of wall stone on it; 3 wide, 2 high
-    sphere           its middle at y 4.75; the bore of the meridian ring is 4.5 blocks
-    top              y 7.25: the crown of the meridian ring, a plain arc. Nothing stands on it; the
+    stone base       blocks, x 34..36, z -1..1, y 0..2: a square of deepslate stairs (two half-block
+                     steps) round a core, one block of wall stone on it -- the die -- and the die's
+                     cap, half a block of the same stone; 3 wide, 2.5 high
+    sphere           its middle at y 5.25; the bore of the meridian ring is 4.5 blocks
+    top              y 7.75: the crown of the meridian ring, a plain arc. Nothing stands on it; the
                      polar axis ends in a ball, below the crown.
+
+The cap (11-16, machines' approver on tools/walkin.py and two pictures): the brass stops nobody.
+With the die two blocks high a person on the upper step, north or south of it, had his eye in the
+meridian ring, and from that step he hopped onto the die, into the ball of rings. Half a block more
+and the ring passes over his head and the die's top is out of a jump's reach (1.5 from the step);
+the steps stay. The cap is a block, a slab, because only a block stops him; round it lies a band of
+the same stone a pixel proud of the die's faces, a model: a capstone's edge, not half a block laid on.
 
 The brass work is display entities, one model to the ring. Every model has its anchor in the middle
 of the sphere and every entity stands on that one point, so they all take their light from the
-same cell, LIGHT_CELL = (35, 4, 0): no step in brightness from ring to ring. The cell under it,
-(35, 3, 0), stays empty: the props line (props/lamps) puts a hidden light there, with the four
-ground lamps.
+same cell, LIGHT_CELL = (35, 5, 0): no step in brightness from ring to ring. The cell under it,
+(35, 4, 0), stays empty: the props line (props/lamps) puts a hidden light there, with the four
+ground lamps. The cap's band is stone among stone and stands in the cell east of the cap, so that
+it takes the light the cap's east face takes, the one V2 looks at.
 
 One version stands, a, the classic one: many thin rings -- meridian, equator, the two tropics, one
-colure, the ecliptic band with its scale, the polar axis and a small earth. 8 entities. From every
+colure, the ecliptic band with its scale, the polar axis and a small earth. 8 entities and the
+cap's band. From every
 side it is a ball of rings, and the gold windows and the gates show through it (director, 11-16).
 
 From due east (V2) the meridian ring is a full circle; the polar axis and the equator are the two
@@ -77,6 +87,7 @@ from artkit.pixelart import Sprite
 from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
+from ..props import _kit as K
 
 PREFIX = "mach_armillary_"
 VERSION = "a"                       # the one version (director, 11-16); the models keep its letter
@@ -84,8 +95,9 @@ VERSIONS = ("a",)
 
 # --- where it stands (the skeleton's numbers) -----------------------------------------------------
 CX, CZ = S.ARMILLARY                # the cell (35, 0)
-BASE_TOP = S.GROUND + 2             # the top of the stone base
-CENTRE_Y = S.GROUND + 4.75          # the middle of the sphere
+CAP = 0.5                           # the die's cap, a slab
+BASE_TOP = S.GROUND + 2 + CAP       # the top of the stone base
+CENTRE_Y = S.GROUND + 4.75 + CAP    # the middle of the sphere
 LIGHT_CELL = (CX, int(math.floor(CENTRE_Y)), CZ)    # the cell every brass piece takes its light from
 # the four ground lamps: the cells diagonally off the corners of the base, on the court
 LAMP_CELLS = tuple((CX + dx, CZ + dz) for dx in (-2, 2) for dz in (-2, 2))
@@ -132,6 +144,9 @@ MARK = P.RAMPS["brass"][3]                  # the scale marks: two steps over th
 
 STEP = B.SLATE_BRICK                        # the main building's plinth stone
 DIE = B.ASHLAR_PANEL.block                  # wall stone with a sunk panel on each face
+DIE_CAP = f"{B.ASHLAR_PANEL.slab}[type=bottom]"     # its cap: the same stone, half a block
+STONE = P.mat("ashlar")                     # the band round the cap: that stone, as a model
+LIP = 1.0 / PX                              # the band stands a pixel proud of the die
 
 
 # --- rings ----------------------------------------------------------------------------------------
@@ -273,13 +288,31 @@ def _colure(version):
     return m
 
 
+def _cap(version):
+    """The band round the die's cap: four faces of stone a pixel proud of the die, as high as the
+    cap. Drawn about the middle of the cell east of the cap, where its entity stands (cap_at())."""
+    half, high = 8.0 / PX, CAP * 16.0 / PX
+    m = _new(version, "cap")
+    x0 = -16.0 / PX                                     # the middle of the cap, a block west of the anchor
+    for side in (-1.0, 1.0):
+        m.box((x0 + side * half - (LIP if side < 0 else 0.0), -high / 2.0, -half - LIP),
+              (x0 + side * half + (LIP if side > 0 else 0.0), high / 2.0, half + LIP), STONE)
+        m.box((x0 - half, -high / 2.0, side * half - (LIP if side < 0 else 0.0)),
+              (x0 + half, high / 2.0, side * half + (LIP if side > 0 else 0.0)), STONE)
+    return m
+
+
 BUILDERS = {"stand": _stand, "meridian": _meridian, "axis": _axis, "equator": _equator, "tropic": _tropic,
-            "ecliptic": _ecliptic, "colure": _colure}
+            "ecliptic": _ecliptic, "colure": _colure, "cap": _cap}
+FRAME = ("cap",)                    # not brass: placed by build() where it belongs, not on the sphere's middle
 
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    return {_name(version, part): BUILDERS[part](version) for version in SPEC for part in SPEC[version]["parts"]}
+    # settled (props/_kit, 11-16): the flats of the rings and tubes that stand exactly between two
+    # axes are lit the same in every copy of the game
+    return {_name(version, part): K.settle(BUILDERS[part](version))
+            for version in SPEC for part in SPEC[version]["parts"] + FRAME}
 
 
 def models():
@@ -310,9 +343,14 @@ def lamp_feet(origin=(0, 0, 0)):
             for x, z in LAMP_CELLS]
 
 
+def cap_at(origin=(0, 0, 0)):
+    """Where the entity of the cap's band stands: the middle of the cell east of the cap."""
+    return (origin[0] + S.mid(CX) + 1.0, origin[1] + BASE_TOP - CAP / 2.0, origin[2] + S.mid(CZ))
+
+
 def _base(canvas, origin):
     """The stone base: a square of deepslate stairs rising to the middle from all four sides (the
-    game turns the corner ones), a core, and the die of wall stone on top."""
+    game turns the corner ones), a core, the die of wall stone on it and the die's cap."""
     x0, y0, z0 = origin[0] + CX, origin[1] + S.GROUND, origin[2] + CZ
     for dx in (-1, 0, 1):
         for dz in (-1, 0, 1):
@@ -323,6 +361,7 @@ def _base(canvas, origin):
             facing = ("west" if dx > 0 else "east") if dx else ("north" if dz > 0 else "south")
             canvas.set(x0 + dx, y0, z0 + dz, f"{STEP.stairs}[half=bottom,facing={facing}]")
     canvas.set(x0, y0 + 1, z0, DIE)
+    canvas.set(x0, y0 + 2, z0, DIE_CAP)
 
 
 def build(canvas, origin=(0, 0, 0), version=VERSION):
@@ -337,4 +376,7 @@ def build(canvas, origin=(0, 0, 0), version=VERSION):
         nbt["Tags"] += ["c164_armillary", f"c164_armillary_{part}"]
         canvas.add_entity(at[0], at[1], at[2], nbt)
         n += 1
-    return n
+    band = M.display(built[_name(version, "cap")], scale=PX)
+    band["Tags"] += ["c164_armillary", "c164_armillary_cap"]
+    canvas.add_entity(*cap_at(origin), band)
+    return n + 1
