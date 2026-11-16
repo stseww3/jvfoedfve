@@ -84,7 +84,7 @@ SOCKET = 9.5            # the station's socket takes the tube this far above the
 BOARD = (-7.0, -10.0, 7.0, 13.0)        # the station's board: x and y of its lower left and upper right corner
 BOX = (7.0, 8.0, 5.5)   # the station's box: across, its height above the anchor, how far it stands off the wall
 CARRIER = (4.0, 0.9)    # the carrier: its length, its radius
-PLATE_UP = 19.5         # the middle of the number plate over a station's anchor: over the board, by the eye
+PLATE_UP = 18.0         # the middle of the number plate over a station's anchor: over the board, by the eye
 PLATE_OFF = BORE + 0.25  # the back of a number plate off the axis of the tube it is strapped to
 
 # ticks
@@ -95,11 +95,11 @@ HANDOVER = 2            # ticks between one length's carrier going out of sight 
 
 # the light the family is shown in (block light; no sky reaches it): brass under a room's lamps. The
 # tubes run where the rooms are darkest, along the heads of the walls and under the beams, and glass
-# that took its light from there would not be seen at all; the carrier and the number are a step up:
-# the one is what moves, the other is to be read
+# that took its light from there would not be seen at all; the carrier is a step up, it is what
+# moves; the number a little, it is to be read from two blocks and not from across the room
 SHOWN = (0, 9)
 SHOWN_CARRIER = (0, 12)
-SHOWN_PLATE = (0, 12)
+SHOWN_PLATE = (0, 10)
 
 BRASS, BRASS_D = K.BRASS, K.BRASS_D
 BRASS_L = P.mat("brass", base=4)
@@ -236,40 +236,40 @@ def plate_name(number, lying=False):
 
 
 def _plate(number, lying=False):
-    """The number of a line on its plate: cream enamel, dark figures, a fine dark line round the
-    edge with the corners knocked off, two brass studs through it and two straps behind it round
-    the tube. Wall-mounted: the anchor is the middle of its back, PLATE_OFF in front of the tube's
-    axis; the tube stands upright behind it, or lies (lying)."""
+    """The number of a line on its plate: a small tag of cream enamel, dark figures, the corners
+    knocked off, the lowest row a step darker; two brass studs through it and two straps behind it
+    round the tube. No line round its edge and one clear pixel round the figures: at sixteen pixels
+    to the block a plate is as large as its figures make it, and this one hangs on a tube three
+    pixels thick. Wall-mounted: the anchor is the middle of its back, PLATE_OFF in front of the
+    tube's axis; the tube stands upright behind it, or lies (lying)."""
     ink = _figures(number)
-    w, h = len(ink[0]) + 4, len(ink) + 4
+    w, h = len(ink[0]) + 2, len(ink) + 2
     rows = []
     for y in range(h):
         row = ""
         for x in range(w):
             if (x in (0, w - 1)) and (y in (0, h - 1)):
                 row += "."
-            elif x in (0, w - 1) or y in (0, h - 1):
-                row += "e"
-            elif 2 <= y < h - 2 and 2 <= x < w - 2 and ink[y - 2][x - 2] == "1":
+            elif 1 <= y < h - 1 and 1 <= x < w - 1 and ink[y - 1][x - 1] == "1":
                 row += "i"
             else:
-                row += "s" if y == h - 2 else "f"
+                row += "s" if y == h - 1 else "f"
         rows.append(row)
     cream, iron = P.RAMPS["cream"], P.RAMPS["iron"]
     name = PREFIX + plate_name(number, lying)
     m = M.Model(name)
-    face = Sprite(name + "_face", rows, dict(e=iron[2], f=cream[3], s=cream[2], i=iron[0]))
-    m.box((-w / 2.0, -h / 2.0, 0.0), (w / 2.0, h / 2.0, 0.5), K.flat("cream", 1), faces={"s": face}, skip="n")
+    face = Sprite(name + "_face", rows, dict(f=cream[2], s=cream[1], i=iron[0]))
+    m.box((-w / 2.0, -h / 2.0, 0.0), (w / 2.0, h / 2.0, 0.5), K.flat("cream", 0), faces={"s": face}, skip="n")
     reach = PLATE_OFF + BORE + 0.5                  # the straps go round the back of the tube
     for s in (-1.0, 1.0):
         if lying:
-            x = s * (w / 2.0 - 2.0)
+            x = s * (w / 2.0 - 1.0)
             m.box((x - 0.5, -BORE - 0.5, -reach), (x + 0.5, BORE + 0.5, 0.0), BRASS_D)
-            m.box((x - 0.3, -0.3, 0.5), (x + 0.3, 0.3, 0.7), BRASS_L)
+            m.box((x - 0.25, -0.25, 0.5), (x + 0.25, 0.25, 0.7), BRASS_L)
         else:
-            y = s * (h / 2.0 - 1.0)
+            y = s * (h / 2.0 - 0.5)
             m.box((-BORE - 0.5, y - 0.5, -reach), (BORE + 0.5, y + 0.5, 0.0), BRASS_D)
-            m.box((-0.3, y - 0.3, 0.5), (0.3, y + 0.3, 0.7), BRASS_L)
+            m.box((-0.25, y - 0.25, 0.5), (0.25, y + 0.25, 0.7), BRASS_L)
     return m
 
 
