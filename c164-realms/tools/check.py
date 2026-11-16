@@ -647,12 +647,13 @@ def blocks(rep, got):
     more = []
     if tall:
         more.append(f"{len(tall)} barrier cells stand more than {BARRIER_HIGH} high ({_span(tall)}): a barrier is "
-                    f"the collision of a closed door or gate made of models, in the plane of its leaf, two high "
-                    f"and no wider than the leaf (A0, 11-16 05:07)")
+                    f"the collision of a solid model that is seen, inside its outline and two high at most: the "
+                    f"leaf of a closed door or gate made of models, or a large solid model a visitor would "
+                    f"otherwise walk through (INTERFACE, the fifth addition of 11-16)")
     if alone:
         more.append(f"{len(alone)} barrier cells have no model within {BARRIER_NEAR:g} blocks ({_span(alone)}): "
-                    f"not the leaf of a door or gate; a barrier anywhere else is the wall nobody sees "
-                    f"(A0 #457, 4)")
+                    f"not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is "
+                    f"the wall nobody sees (A0 #457, 4)")
     lines = clip(outside) + more
     if tall:
         rep.add("blocks", "FAIL", f"{words}: barriers more than {BARRIER_HIGH} high", lines)
@@ -683,9 +684,12 @@ def _span(cells):
 
 def _barriers(canvas):
     """The barrier cells of a scene, those of them in a run more than two high, and those with no
-    model near them. A barrier is the collision of a closed door or gate that is made of models, in
-    the plane of the leaf, two high, no wider than the leaf (A0, 11-16 05:07). The width of the leaf
-    is not known here: what is told apart is a barrier beside a model from one that stands alone."""
+    model near them. A barrier is the collision of a solid model that is seen and of nothing else
+    (INTERFACE, 11-16): the leaf of a closed door or gate made of models, in the plane of the leaf, two
+    high, no wider than the leaf (A0, 05:07); or a large solid model a visitor would otherwise walk
+    through, as the cable car at the spawn platform (A0, 09:11), not a cell outside its outline and two
+    high at most. The outline is not known here: what is told apart is a barrier beside a model from
+    one that stands alone."""
     at = {p for p, s in canvas.b.items() if s.partition("[")[0].split(":", 1)[-1] == B.BARRIER}
     tall = set()
     for x, y, z in at:
