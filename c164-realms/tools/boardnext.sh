@@ -80,7 +80,10 @@ new = sorted(name for name in os.listdir("build/scenes")
              if not name.startswith("_") and os.path.isdir(os.path.join("build/scenes", name))
              and os.path.exists(os.path.join("build/scenes", name, "__init__.py")) and name not in plots)
 for name in new:
-    plots[name] = max(plots.values()) + 1
+    # 78 to 89 were taken by the stations' own notes before the notes got their own range (shuttle.py LOCAL_FROM)
+    plots[name] = max(max(plots.values()), 89) + 1
+    if plots[name] >= 200:
+        raise SystemExit("the table has reached the plots of the test worlds' own (shuttle.py LOCAL_FROM)")
 if new:
     text = json.dumps(table, indent=2, ensure_ascii=False) + "\n"
     text = re.sub(r'"base": \[\s*(-?\d+),\s*(-?\d+),\s*(-?\d+)\s*\]', r'"base": [\1, \2, \3]', text)   # as the file has it

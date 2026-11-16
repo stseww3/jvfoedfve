@@ -11,8 +11,8 @@ through winmc.py on Windows and through nodemc.py elsewhere; both take the same 
 For the scenes named the trip
   1. writes the look (biomes, timelines) the scenes share into the test world and restarts the
      server when those files changed; a trip holds one look, scenes with another need their own;
-  2. places every scene on its plot (plots.json beside this file; a scene that has none yet gets
-     the next free one, which is noted in the test world and has to be added to the table);
+  2. places every scene on its plot (plots.json beside this file; a scene that has none there gets
+     one of the test world's own, from 200 on, which is noted in the test world);
   3. writes one resource pack that holds what all the scenes need and puts it where the client
      reads it; two scenes that want different files under one name stop the trip;
   4. starts the game once (winmc.py checks the free video memory first and keeps the window in the
@@ -220,10 +220,20 @@ def commit_of(project):
 
 
 # ---- plots -----------------------------------------------------------------------------------------
+# The table (plots.json) holds the scenes of the assembly and gives them the plots below LOCAL_FROM
+# (tools/boardnext.sh adds the new ones). A scene the table does not hold -- a work branch's, shot on
+# request -- gets a plot of the test world's own from LOCAL_FROM on, noted in that test world. The
+# two never meet: a station's note cannot take a number the table gives out later. (Until 11-16
+# 09:35 the notes took the next number after the table's last, and the table then grew into them:
+# "plot 78 is given to ..." on two nodes; the table skipped to 90 once, over those notes.)
+LOCAL_FROM = 200
+
+
 def plots(scenes, given):
     """{scene: plot number}. The table beside this file comes first. A scene it does not hold keeps
     the plot noted in the test world on an earlier trip, or takes the one given with --plot, or
-    the next free one; what is new is noted in the test world, so that the scene stays where it is."""
+    the next free one from LOCAL_FROM on; what is new is noted in the test world, so that the scene
+    stays where it is. A noted scene the table holds by now takes the table's plot."""
     with open(os.path.join(HERE, "plots.json"), encoding="utf-8") as fh:
         table = json.load(fh)
     local_file = os.path.join(world(), "datapacks", NAMESPACE, "plots.local.json")
@@ -232,10 +242,15 @@ def plots(scenes, given):
             local = json.load(fh)
     except (OSError, ValueError):
         local = {}
-    for scene, n in local.items():
+    moved = {}
+    for scene, n in list(local.items()):
         if scene in table["plots"] and table["plots"][scene] != n:
-            raise Stop(f"{scene} stands on plot {n} in the test world, but plots.json gives it "
-                       f"{table['plots'][scene]}: one of the two is wrong")
+            # a scene of a work branch that was shot here before the table held it, and has come into
+            # the assembly since: the table's plot is the scene's from now on. What stands on the old
+            # plot stays there; the table gives no number from LOCAL_FROM on, so nothing is put on it
+            moved[scene] = local.pop(scene)
+            say(f"{scene} stood on plot {moved[scene]} in this test world (a trip before the table held it); "
+                f"the table gives it {table['plots'][scene]} now and it is placed there")
     taken = {**local, **table["plots"]}
     for scene, n in taken.items():
         twice = sorted(s for s, m in taken.items() if m == n)
@@ -248,16 +263,18 @@ def plots(scenes, given):
                 raise Stop(f"{scene} has plot {taken[scene]} already, not {given[scene]}")
             out[scene] = taken[scene]
             continue
-        n = given.get(scene, max(list(taken.values()) + list(new.values())) + 1)
+        # a plot of this test world's own: from LOCAL_FROM on, where the table never comes
+        n = given.get(scene, max([LOCAL_FROM - 1] + list(taken.values()) + list(new.values())) + 1)
         holder = [s for s, m in {**taken, **new}.items() if m == n]
         if holder:
             raise Stop(f"plot {n} is {holder[0]}'s")
         out[scene] = new[scene] = n
-    if new:
+    if new or moved:
         os.makedirs(os.path.dirname(local_file), exist_ok=True)
         with open(local_file, "w", encoding="utf-8") as fh:
             json.dump({**local, **new}, fh, indent=1, sort_keys=True)
-        say("new plots, to be added to tools/win/plots.json: "
+    if new:
+        say("new plots, this test world's own (a scene of the assembly gets its plot in tools/win/plots.json): "
             + ", ".join(f'"{s}": {n}' for s, n in sorted(new.items(), key=lambda kv: kv[1])))
     return {s: [table["base"][0] + n * table["spacing"], table["base"][1], table["base"][2]] for s, n in out.items()}
 
