@@ -1742,6 +1742,16 @@ def post(target: str, conv: str | None = None, **fields: Any) -> int:
     if fields.get("wake"):
         event_for(target).set()
         shell_event(target).set()
+        ctype = str(fields.get("chat_type") or "")
+        if (
+            not fields.get("outgoing")
+            and ctype not in ("system", "agent_dm", "agent_group")
+            and str(fields.get("extra") or "") != KEEPALIVE_MARK
+        ):
+            try:
+                maybe_auto_wake_dormant_conv(target)
+            except Exception:
+                log.exception("maybe_auto_wake_dormant_conv(%s) failed", target)
     mark_menu_dirty()
     return message_id
 
@@ -6270,24 +6280,29 @@ async def t_submit_op_result(agent, args):
             elif is_resume_dead_output(status, output):
                 relaunch_dead_runner_slot(conv_id, reason=f"工作节点 resume 返回已终止（{output[:60] or status}），自动重拉")
             return text_result(f"已回传探活结果 {op_id}。现在请立即调用 read_chat 继续等待下一条指令。")
-        if requester == "watchdog_auto_resume":
+        if requester in ("watchdog_auto_resume", "auto_msg_wake"):
             conv_cur = conv_row(conv_id) if conv_id else None
             ag_cur = active_agent(conv_cur) if conv_cur is not None else None
             if is_resume_dead_output(status, output):
                 if ag_cur is not None:
                     _watchdog_resume_probes.pop(ag_cur["id"], None)
                 if conv_cur is not None and ag_cur is not None and not is_unowned(conv_cur):
+                    why_s = (
+                        f"容器休眠后收到新消息自动 resume 发现原会话已失效（{output[:80] or status}），自动重开续接"
+                        if requester == "auto_msg_wake"
+                        else f"思考超时/失联先发 resume 探活确认原会话已失效（{output[:80] or status}），自动重开"
+                    )
                     auto_restart_stuck_conv(
                         conv_cur,
                         THINK_STUCK_SEC,
-                        reason=f"思考超时先发 resume 探活确认原会话已失效（{output[:80] or status}），自动重开",
+                        reason=why_s,
                     )
             else:
                 if ag_cur is not None and ag_cur["id"] in _watchdog_resume_probes:
                     _watchdog_resume_probes[ag_cur["id"]]["ack_ts"] = now()
                 system_note(
                     route_control_target(),
-                    f"✅ `[OP_RESULT]` 看门狗对 {conv_id} 的自动 `Task(resume)` 探活正常在线（op_id={op_id}）：{output[:160] or 'ok'}，保持原会话继续运行。",
+                    f"✅ `[OP_RESULT]` 对 {conv_id} 的自动 `Task(resume)` 唤醒/探活正常在线（op_id={op_id}，触发={requester}）：{output[:160] or 'ok'}，保持原会话继续运行。",
                     wake=0,
                 )
             return text_result(f"已回传探活结果 {op_id}。现在请立即调用 read_chat 继续等待下一条指令。")
@@ -9811,6 +9826,52 @@ async def notify_away(batch: list) -> None:
         await notify_admins("\n".join(lines), markup)
 
 
+_msg_auto_wake_ts: dict[str, float] = {}
+
+
+def maybe_auto_wake_dormant_conv(conv_id: str) -> str:
+    """当人类/管理员发来消息，而活跃 cloud 内的目标会话未在监听且容器探针心跳已断（被 Cursor 平台回收/休眠）时，
+    0 秒自动向所属 mainN 投递 TASK_RESUME 把容器秒拉醒，免去人工切到 ctrl 敲 resume！"""
+    cid = (conv_id or "").strip()
+    if not cid:
+        return ""
+    if cid == "ctrl":
+        ag_c = active_agent(conv_row("ctrl"))
+        if ag_c is not None and not waiting.get(ag_c["id"]) and (now() - float(ag_c["last_seen"] or 0)) >= 45.0:
+            return ensure_controller_alive() or ""
+        return ""
+    if is_system_conv_id(cid):
+        return ""
+    conv = conv_row(cid)
+    if conv is None or conv["status"] != "open" or not conv_cloud_is_active(conv):
+        return ""
+    ag = active_agent(conv)
+    tid = (conv["task_agent_id"] or "").strip()
+    if ag is None or not tid or waiting.get(ag["id"]):
+        return ""
+    if (now() - float(ag["last_seen"] or 0)) < 45.0:
+        return ""
+    trow = store.one("SELECT hb_ts, phase FROM agent_traces WHERE conv=? AND agent_id=?", (cid, ag["id"]))
+    if trow is not None and float(trow["hb_ts"] or 0) > 0 and (now() - float(trow["hb_ts"] or 0)) < 45.0:
+        # 探针心跳鲜活说明容器正活着忙手头的步骤（且钩子已推送未读提醒），无需发 resume
+        return ""
+    if (now() - float(_msg_auto_wake_ts.get(cid) or 0)) < 120.0:
+        return ""
+    already_p = store.one(
+        "SELECT 1 FROM dispatch_ops WHERE conv_id=? AND op_type='resume_subagent' AND status='pending' LIMIT 1",
+        (cid,),
+    )
+    if already_p is not None:
+        return ""
+    launcher = _find_conv_launcher(conv)
+    if launcher is None or not is_main_node_id(launcher["id"]) or not node_is_online(launcher):
+        return ""
+    _msg_auto_wake_ts[cid] = now()
+    op_id = enqueue_resume_op(conv, launcher, requester="auto_msg_wake")
+    log.info("auto-woke dormant/evicted pod for %s via %s on incoming message (%s)", cid, launcher["id"], op_id)
+    return op_id
+
+
 def _find_conv_launcher(conv):
     cnum = cloud_of(conv)
     launcher = store.one("SELECT * FROM exec_nodes WHERE kind='launcher' AND cloud_num=? AND status='online'", (cnum,))
@@ -9923,6 +9984,13 @@ async def watchdog_tick() -> None:
             phase_cur = (trow_w["phase"] if trow_w else "") or ""
             # 若当前明确在跑 shell 命令，不要误发僵尸重启告警
             if phase_cur == "shell" and not is_zombie:
+                continue
+            hb_val = float(trow_w["hb_ts"] or 0) if (trow_w is not None and "hb_ts" in trow_w.keys()) else 0.0
+            hb_dead = hb_val <= 0 or (now() - hb_val) > 150.0
+            launcher_w = _find_conv_launcher(conv)
+            if hb_dead and tid and launcher_w is not None and is_main_node_id(launcher_w["id"]) and node_is_online(launcher_w):
+                # 活跃 cloud 内的会话未挂起等待且容器探针已断流（平台回收了空闲云 VM 容器），自动发 TASK_RESUME 原地拉起容器（若确认过期则自动重开）！
+                handle_thinking_stuck_conv(conv, trow_w, float(info.get("idle") or LOST_SEC))
                 continue
             tline = trace_one_liner(conv["id"])
             trace_info = f"\n实时追踪状态：{tline}" if tline else ""

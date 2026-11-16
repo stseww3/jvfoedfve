@@ -888,6 +888,23 @@ def run_web_console_tests() -> None:
                     except Exception:
                         pass
 
+            # 12c: Verify 0-second automatic TASK_RESUME wake when Cloud VM pod was evicted and admin sends a message!
+            c1_code_now = bridge.conv_row("c1")["task_code"]
+            asyncio.run(bridge.call_tool("join", {"code": c1_code_now}))
+            c1_ag_ev = bridge.conv_row("c1")["agent"]
+            bridge.store.run("UPDATE convs SET task_agent_id='bc-evicted-pod-99' WHERE id='c1'")
+            bridge.store.run("UPDATE agents SET last_seen=? WHERE id=?", (bridge.now() - 600, c1_ag_ev))
+            bridge.store.run(
+                "UPDATE agent_traces SET hb_ts=?, updated_ts=?, phase='thinking' WHERE conv='c1'",
+                (bridge.now() - 600, bridge.now() - 600),
+            )
+            bridge._msg_auto_wake_ts.clear()
+            bridge.post("c1", chat_id=7001, chat_type="private", user_id=7001, user_name="Alpine", text="自动拉起休眠容器测试", wake=1)
+            auto_wake_op = bridge.store.one(
+                "SELECT * FROM dispatch_ops WHERE conv_id='c1' AND op_type='resume_subagent' AND requester='auto_msg_wake' ORDER BY created_ts DESC LIMIT 1"
+            )
+            assert auto_wake_op is not None and auto_wake_op["target_node"] == "main2"
+
         if log_file.exists():
             log_txt = log_file.read_text(encoding="utf-8", errors="replace")
             assert secret_pw not in log_txt and sub_pw not in log_txt
