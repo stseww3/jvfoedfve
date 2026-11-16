@@ -93,3 +93,8 @@
 - 自查：`astro.check()` 第 2 条（不进圆顶的壳、不到地面以下）现在查 0、±2.5° 三个位置；新加第 5 条（三件都站在柱头；筒和机背自己的轴还过 `pivot()`，也就是摆的位置和改以前一样；转是绕极轴转的；向底件登记的正好是这三件）。`interiors/_astroshell.check()` 第 5 条（离圆顶的齿圈、骨架、摇把 0.05 格以上）也查这三个位置。
 - 跑过的（自己的节点 node42，fd6baccc，合了总装 e36ca0c2）：`check.py --scene obs_mach_meridian_astrograph`：`result: PASS (0 failed, 1 with warnings)`，警告还是试验台的素墙；`motion` 一行：6 件（场景里在位一台、台上一台，各 3 件）、一条 400 拍的链、最忙的一拍 9 条命令。`check.py --scene obs_int_astroroom`：`result: PASS (0 failed, 0 with warnings)`，`motion` 4 件两条链（32 拍的是原有的那一件，400 拍的是这三件）。`astro check`、`_astroshell check`、`meridian check` 三条都是 all good。4d1746d3 在总监机上也跑过头一个场景和这三条，结果一样。
 - 没跑的：没出图（转动离线图画不出来；停在中间的那一张应当和改以前一样，没有重画逐张比）；没进游戏看过它转；关口（合进去以后在 node42 上补跑）；整座山的 check。
+- 关口（node42，439a660f，总装 e36ca0c2 上）：`delivery.py` PASS（2 条要看的：`astro.py`、`_astroshell.py` 不在卡的文件单里，卡写得早，只列了 `meridian.py`；留档图旧了）；`check.py` 96 个场景全过；留档图 FAIL：21 张里 17 张不是当时的代码画的（小屋的 8 张差二十来万像素，是 `_relit.py`、`_powerkit.py` 以后的光；圆顶的差几千到两万多）。
+- 图重画了（node42，总装 ec8c262b 上，d17c8888）：21 张加 `check.txt`（`result: PASS (0 failed, 1 with warnings)`）、`selfcheck.txt`（两件仪器都 all good）、`shots.txt`。
+- 「摆在中间和改以前一样」证过了：同一棵树上把 `astro.py`、`_astroshell.py` 换回改以前的（e36ca0c2），照相仪在画里的 8 张（dome_door、dome_south、dome_north、dome_plate、dome_up、slit、bench_astro、bench_astro_north）再画一遍，和新图逐像素比，8 张都是 0 个像素不同。挪锚点没有挪动任何看得见的东西。
+- 可见距离（s2 的四档，e4de60c4）：`meridian.py`、`astro.py`、`interiors/astroroom.py` 各一行 `VIEW = M.NEAR`，三处都在屋里。
+- 还没做的：进游戏看它转（s1 的 `look.sh`，下一单）。
