@@ -38,6 +38,12 @@ the iron to what the review asked of it (plan/aesthetics/S3-reviews-v4.md, revie
      nothing nearer to the eye than 0.05, so a gate's leaves stand 4 px out of the barriers at
      most and the plate of an open leaf 0.25 block off the reveal (ironwork.EYE, NEAR)
 
+ 11  no drawn face of a model stands on the edge between two of its axes (K.settle; a6 #75961):
+     the game would light it by the last bit of a sum, one way in one copy and another in the
+     next. The pieces in a leaning frame of their own are held to it by 8
+ 12  the globe of the lamp under the canopy is no brighter than OPAL[ironwork.LAMP_TOP] (c332,
+     11-16: the head of the comet is the one white of the map)
+
 A rivet head on the reveal face of a jamb stands a pixel into the light beside it; that is the
 head seen from the side, not a member, and is counted on its own.
 
@@ -469,6 +475,28 @@ def lights(found):
                 found.append(f"{kind}: glass that looks {LOOKS[k]} is lit {lo:.2f}, under {BRIGHT}")
 
 
+def settled(found):
+    """Item 11: the models that went over K.settle keep no drawn face between two axes. Item 12: the
+    tones of the lamp's globe."""
+    models = ironwork.models()
+    over = [kind for kind, spec in ironwork.SPEC.items() if "turns" not in spec]
+    left = {kind: K.unsettled(models[ironwork.PREFIX + kind]) for kind in over}
+    for kind, faces in left.items():
+        if faces:
+            found.append(f"{kind}: {len(faces)} drawn faces stand between two axes of the model "
+                         f"(parts {sorted({i for i, _, _ in faces})[:6]})")
+    print(f"settled: {len(over)} models over K.settle, {sum(map(len, left.values()))} faces left between two axes; "
+          f"{len(ironwork.SPEC) - len(over)} in a leaning frame of their own")
+    allowed = {mat.name for mat in ironwork.OPAL[:ironwork.LAMP_TOP + 1]}
+    for kind in ironwork.LAMP_PIECES:
+        glass = {mat.name for part in models[ironwork.PREFIX + kind].parts if part["emit"]
+                 for mat in [part["mat"], *part["faces"].values()]}
+        if glass - allowed:
+            found.append(f"{kind}: glass brighter than OPAL[{ironwork.LAMP_TOP}] on the globe: {sorted(glass - allowed)}")
+    print(f"the lamp's globe: OPAL[{ironwork.LAMP_TOP}] {ironwork.P.RAMPS['opal'][ironwork.LAMP_TOP]} at the most, "
+          f"in {len(ironwork.LAMP_PIECES)} pieces")
+
+
 def _true(kind):
     """What the frame of a piece does to the faces it draws: (the most an edge is stretched, as a
     part of its length; the most two edges of a face, which are square in the model, lean to each
@@ -644,6 +672,7 @@ def main(args):
     print(f"left bare: {'; '.join(bare) or 'none'}")
     passage(canvas, door_table(), found)
     lights(found)
+    settled(found)
     displays(canvas, found)
     print("\n".join(found) if found else f"fit: {len(rows)} dressed openings, nothing found")
     return 1 if found else 0
