@@ -31,19 +31,25 @@ What the room adds, from the floor up:
     27..     the vault: boards on the inside of every plate, an iron curb round the slit; under the
              boards the dome's skeleton as display models (interiors/_domeframe): the ring girder
              in front of its blocks, the two lattice arch girders beside the slit, a lattice rib
-             on every seam, three rings of purlins
+             on every seam, three rings of purlins; and on the skeleton's back the lining that is
+             seen, as display models too: boards from seam to seam, a flat panel to every gore
 
 and what stands in the room: the switchboard of the dome's drive on the east axis, the sidereal
-clock on the south axis, three cabinets on the north axis and a chart table beside them, the record
-desk south-west of the pier, the observing chair parked beyond it, plate boxes by the south wall.
+clock on the south axis and the record desk under it, three cabinets on the north axis and a chart
+table beside them, plate boxes by the south wall; round the pier the track of the observing ladder,
+and the ladder parked on it south-west of the pier (interiors/_domechair). The ladder rolls all the
+way round, so nothing else stands in the band it passes over.
 
-Light (plan 3.2): the sky in the slit is the cold base and the brightest thing. The room's own warm
-points are the pilot lamps of the switchboard and the clock's dial, both third rank and both under
-the one lamp of the room: the telescope's red one by the eyepiece (director, g2 #33812). The desk
-has none.
+Light (plan 3.2): the sky in the slit is the cold base and the brightest thing. The room has one
+lamp, the telescope's red one by the eyepiece (director, g2 #33812); the desk has none. What else
+is warm in it is the glow of its instruments, third rank and all of it below the cornice: the pilot
+lamps of the switchboard in the east, the dial of the sidereal clock in the south, and in the north,
+facing whoever comes up the stair, the opal face of the mean-time dial on the cabinets. Round the
+room one walks from one of them to the next (sky/lights, c331 #73179).
 
 The shared pieces come from props/furniture, props/paper and props/instruments (the clock); while
-those are not in the tree they stand in as blocks. The observing chair is the room's own model.
+those are not in the tree they stand in as blocks. The switchboard (interiors/_domeboard), the
+observing ladder and its track are the room's own models.
 
 build() is what the master scene calls; it places nothing unless MOVED_IN is set. The room is
 judged in its box test scene (build/scenes/obs_int_domeroom), which calls dress().
@@ -54,12 +60,14 @@ import math
 
 from artkit import models as M
 from artkit.canvas import Canvas
+from artkit.pixelart import Sprite
 
 from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
 from ..main import _order as O
 from ..props import _kit as K
+from . import _domechair
 from . import _domeframe as F
 
 ORDER = 80                  # after the shell and the dome (60)
@@ -127,35 +135,66 @@ BOARD = (("knife_switch", "bus_switch", "knife_switch"),
 # the shared furniture (props/furniture): (kind, the middle of its foot (x, z), the way it looks: a
 # desk or a cabinet its front, a seat the way the one who sits on it looks)
 FURNITURE = (
-    ("writing_desk", (2.5, 6.5), "south"),          # the record desk; the recorder sits south of it
-    ("swivel_chair", (2.5, 7.5), "north"),          # and looks at the telescope
+    # the record desk in the bay of the south axis, its back against the lining, and the recorder's
+    # chair before it: who writes down the time has the sidereal clock over the desk, in front of him
+    ("writing_desk", (4.5, 10.5625), "north"),
+    ("swivel_chair", (4.5, 9.5), "south"),
     ("instrument_cabinet", (3.5, -9.5), "south"),   # on the north axis: three abreast against the
     ("card_cabinet", (4.5, -9.5), "south"),         # lining, below the window
     ("instrument_cabinet", (5.5, -9.5), "south"),
     ("stool", (13.5, 1.5), "east"),                 # at the switchboard
-    ("coat_stand", (10.5, -6.5), "south"),          # inside the north door
+    # inside the north door, its claws against both faces of the corner the lining makes there: a
+    # post with a crown of hooks at the height of the eye has no body to be kept out of (walk-through,
+    # m5 #75476), so it stands where nobody's way goes
+    ("coat_stand", (9.6875, -7.6875), "south"),
     ("drafting_table", (7.5, -8.5), "south"),       # the night's chart, under the window east of the cabinets
 )
 # the boxes the plates are carried in, by the south wall: (x, z, how many boxes it stands on, yaw).
 # props/furniture's plate_box once it has one, else its packing case, which does not stack
 PLATE_BOXES = ((7.5, 9.5, 0, 0.0), (8.5, 9.4, 0, 96.0), (7.56, 9.47, 1, 9.0))
 DESK = FURNITURE[0]
-LOGBOOK = (3.0, 6.5)                            # (x, z) on the desk: the night's record (props/paper)
-CHAIR = (-2.5, 5.5)                             # the observing chair, parked south-west of the pier
-CHAIR_YAW = 180.0                               # the side one climbs looks north, at the slit's foot
-CLOCK_LIFT = 0.5                                # the regulator clock (props/instruments) hangs on the lining
-#                                                 of the south axis, its foot this far above the floor
+LOGBOOK = (4.5, 10.4375)                        # (x, z) on the desk: the night's record (props/paper)
+CLOCK_LIFT = 1.25                               # the regulator clock (props/instruments) hangs on the lining
+#                                                 of the south axis, its foot this far above the floor: a
+#                                                 hand's breadth over the gallery at the back of the desk
+# the mean-time dial (the room's own model) stands on the cabinets of the north axis, before whoever
+# comes out of the stair: on the western one, so that V8 has all of it inside its right edge as it
+# has all of the sidereal clock inside its left one (review cr4, #74681: nothing that glows is cut
+# by the frame). Every clock on the hill is stopped at one time (director, g2 #34140)
+TIME_DIAL = FURNITURE[2]
+CLOCK = getattr(S, "CLOCK", (7, 55))
+DIAL_GLOW = 6                                   # the light its opal face is shown in, whatever the room's
+DIAL_FACE = (                                   # c the lit glass, k the quarters, m the other hours
+    "..mckcm..",
+    ".ccccccc.",
+    "mcccccccm",
+    "ccccccccc",
+    "kccccccck",
+    "ccccccccc",
+    "mcccccccm",
+    ".ccccccc.",
+    "..mckcm..",
+)
 
 # --- light: (level, rank); sky/lights decides where the invisible blocks really go -----------------
-# Both are the glow of something that is seen to glow, not lamps, and both stay under the one lamp
-# of the room, the telescope's red one at level 4 (sky/lights, c331 #66813: the red lamp is the
-# brightest source in the room)
-PILOT_LAMPS = (3, 3)
-CLOCK_DIAL = (3, 3)
+# Each is the glow of an instrument that is seen to glow, which is not a lamp (sky/lights, c331
+# #73179, who set the levels): the room's one lamp stays the telescope's red one. All three sit
+# under row 21, where they reach the floor one walks on and not the vault
+PILOT_LAMPS = (6, 3)
+CLOCK_DIAL = (5, 3)
+TIME_DIAL_GLOW = (5, 3)
 # the sky's light the skeleton's iron is shown in: (far from the slit, beside it). No lamp is added:
 # the pieces are told how much of the night falls on them (_night). The floor keeps the iron out of
 # dead black in the half of the room the slit does not light; the cap keeps it under the sky
 IRON_LIGHT = (10, 13)
+# and the same for the boards of the vault's lining. Every board is shown in the least light a model
+# can have (interiors/_domeframe.boards), so with these the lining stays a step under the iron in
+# front of it everywhere, and both under the sky in the slit. BOARD_WARMTH is the lamp light the
+# boards are shown in besides: no lamp is there, it stands for what the room throws back up at its
+# ceiling. It keeps the wood brown and out of dead black in the deepest hour of the night, when the
+# sky's share is next to nothing; the iron has none of it and stays the colour of the night
+BOARD_LIGHT = (11, 14)
+BOARD_WARMTH = 3
 
 OPPOSITE = {"north": "south", "south": "north", "east": "west", "west": "east"}
 
@@ -317,38 +356,33 @@ class Shell:
 
 
 # --- the room's own models --------------------------------------------------------------------------
-def _chair():
-    """The observing chair: a steep step ladder with a seat, for the nights when the telescope
-    points low and its eyepiece rides high. Cast-iron side frames on four small wheels, wooden
-    treads and seat with a cloth pad, a grab rail on top. Anchor: the middle of its foot on the
-    floor; +z is the side one climbs."""
-    m = M.Model(PREFIX + "chair")
-    wood, cloth = P.mat("dark_wood"), P.mat("enamel_cloth")
-    foot, top, seat = 1.0, 34.0, 21.0
-
-    def front(y):                                   # z of the rail one climbs along, at height y
-        return 9.0 - 12.0 * (y - foot) / (top - foot)
-
-    for x in (-6.25, 6.25):
-        m.beam((x, foot, 9.0), (x, top, -3.0), 1.5, 2.0, K.IRON)                         # the climbing rail
-        m.beam((x, foot, -9.0), (x, top - 3.0, -3.5), 1.5, 1.5, K.IRON_D)                # the strut behind it
-        m.box((x - 0.75, foot, -9.0), (x + 0.75, foot + 1.5, 9.0), K.IRON_D, grain="z")  # the sill
-        for z in (-9.0, 9.0):
-            m.tube("x", (foot, z), x - 0.6, x + 0.6, 1.0, K.IRON_D)                      # a wheel
-    m.box((-5.5, foot, -9.5), (5.5, foot + 1.5, -8.5), K.IRON_D, grain="x")
-    for y in (6.0, 11.0, 16.0):
-        m.box((-5.5, y, front(y) - 1.5), (5.5, y + 1.0, front(y) + 2.5), wood, grain="x")    # the treads
-    m.box((-5.5, seat, -5.5), (5.5, seat + 1.5, front(seat) + 1.0), wood, grain="x")         # the seat
-    m.box((-4.5, seat + 1.5, -4.5), (4.5, seat + 2.25, front(seat)), cloth)                  # and its pad
-    m.box((-7.0, top - 0.75, -3.75), (7.0, top + 0.75, -2.25), wood, grain="x")              # the grab rail
-    for a, b in ((-7.5, -7.0), (7.0, 7.5)):
-        m.box((a, top - 1.0, -4.0), (b, top + 1.0, -2.0), K.BRASS)
+def _time_dial():
+    """The mean-time dial: a slave of the mother clock, a drum of brass in a cradle on a wooden
+    foot. Its face is opal glass with a bulb no bigger than a pea behind it, so the hour is read
+    across the dark room without a lamp; the marks and the hands stand dark against it. Anchor:
+    the middle of the foot's underside; the dial looks +z."""
+    m = M.Model(PREFIX + "time_dial")
+    cy, face = 8.0, 1.5                             # the middle of the dial; the plane of its glass
+    m.box((-5.5, 0.0, -2.5), (5.5, 1.5, 2.5), P.mat("dark_wood", base=1), grain="x")    # the foot
+    m.box((-3.0, 1.5, -2.0), (3.0, cy - 4.5, 2.0), K.BRASS_D)                           # the cradle
+    m.tube("z", (0.0, cy), -2.0, face, 5.5, K.BRASS, sides=16)                          # the drum
+    marks = dict(c=P.RAMPS["opal"][2], k=P.RAMPS["iron"][0], m=P.RAMPS["iron"][2])
+    m.box((-4.5, cy - 4.5, face), (4.5, cy + 4.5, face + 0.25), K.flat("opal", 2), skip="nudew",
+          faces={"s": Sprite(PREFIX + "time_dial_face", list(DIAL_FACE), marks)}, emit=DIAL_GLOW, shade=False)
+    top = face + 0.25
+    hour, minute = CLOCK
+    for lean, length in (((hour % 12 + minute / 60.0) * 30.0, 2.5), (minute * 6.0, 3.75)):
+        m.box((-0.5, cy, top), (0.5, cy + length, top + 0.2), K.flat("iron", 0), grain="y",
+              rot=("z", -lean, (0.0, cy, top + 0.1)))                                   # a hand: one clean strip
+        top += 0.2
+    m.box((-0.5, cy - 0.5, top), (0.5, cy + 0.5, top + 0.15), K.flat("brass", 4))       # the boss on the pivot
+    m.ring("z", (0.0, cy, face + 0.375), 5.0, 1.0, 0.75, K.BRASS, sides=16)             # the bezel
     return m
 
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    return {m.name: m for m in (_chair(),)}
+    return {m.name: m for m in (_time_dial(),)}
 
 
 def models():
@@ -356,6 +390,7 @@ def models():
     skeleton = frame()
     if skeleton is not None:
         out.update(skeleton.models)
+    out.update(_domechair.models())
     board = _other("interiors", "_domeboard")
     if board is not None:
         out.update(board.models())
@@ -475,24 +510,28 @@ def _vault(put, shell):
             put(col[0], y, col[1], IRON.block if col in iron else DEAL.block)
 
 
-def _night(shell, pos):
+def _night(shell, pos, within=IRON_LIGHT):
     """The sky's light a piece of the skeleton is shown in. A display entity takes the light of the
     one cell its origin is in, and a rib is ten blocks long: its origin may sit in the full light
     under the slit or in the dark behind a girder. So every piece is given its light: what comes
-    down through the slit, one level less for every column away from it, within IRON_LIGHT."""
+    down through the slit, one level less for every column away from it, `within` (least, most)."""
     x, z = int(math.floor(pos[0])), int(math.floor(pos[2]))
     away = min((abs(x - gx) + abs(z - gz) for gx, gz in shell.gap), default=15)
-    return max(IRON_LIGHT[0], min(IRON_LIGHT[1], 15 - away))
+    return max(within[0], min(within[1], 15 - away))
 
 
 def _skeleton(c, origin, shell):
-    """The iron skeleton under the boards; returns the number of display entities."""
+    """The iron skeleton under the vault and the boards on its back; returns the number of display
+    entities."""
     skeleton = frame(shell)
     if skeleton is None:
         return 0
-    return sum(K.put(c, skeleton.models[name], pos, yaw=yaw, scale=F.SCALE, origin=origin,
-                     brightness=(_night(shell, pos), 0))
-               for name, pos, yaw in skeleton.placed)
+    n = sum(K.put(c, skeleton.models[name], pos, yaw=yaw, scale=F.SCALE, origin=origin,
+                  brightness=(_night(shell, pos), 0))
+            for name, pos, yaw in skeleton.placed)
+    return n + sum(K.put(c, skeleton.models[name], pos, yaw=yaw, scale=F.SCALE, origin=origin, turns=F.LEAN,
+                         brightness=(_night(shell, pos, BOARD_LIGHT), BOARD_WARMTH))
+                   for name, pos, yaw in skeleton.lined)
 
 
 def _wall(c, origin, put, shell):
@@ -583,8 +622,17 @@ def _furniture(c, origin, put):
     if furniture is not None and paper is not None:
         top = FEET + furniture.TOP[DESK[0]]
         n += paper.place(c, "logbook", (LOGBOOK[0], top, LOGBOOK[1]), facing=DESK[2], origin=origin)
-    n += K.put(c, _models()[PREFIX + "chair"], (CHAIR[0], FEET, CHAIR[1]), yaw=CHAIR_YAW, origin=origin)
-    return n
+    n += K.put(c, _models()[PREFIX + "time_dial"], _time_dial_at(), facing=TIME_DIAL[2], origin=origin)
+    # the track of the observing ladder round the pier, and the ladder parked on it
+    return n + _domechair.place(c, origin)
+
+
+def _time_dial_at():
+    """(x, y, z) of the middle of the mean-time dial's foot: on top of the cabinet it stands on (the
+    cabinet's stand-in is two blocks)."""
+    kind, (x, z), _ = TIME_DIAL
+    furniture = _other("props", "furniture")
+    return x, FEET + (furniture.TOP[kind] if furniture is not None else 2.0), z
 
 
 def _standin(put, kind, cell, facing):
@@ -615,8 +663,12 @@ def lights():
     n = niches()
     bx, bz = n["east"][len(n["east"]) // 2]
     kx, kz = n["south"][len(n["south"]) // 2]
+    instruments = _other("props", "instruments")
+    dial = 1 if instruments is None else int(math.floor(CLOCK_LIFT + getattr(instruments, "CLOCK_DIAL_Y", 24.5) / 16.0))
+    tx, ty, tz = _time_dial_at()
     return [((bx - 1, FEET + 1, bz), *PILOT_LAMPS, "pilot_lamps"),
-            ((kx, FEET + 1, kz - 1), *CLOCK_DIAL, "clock_dial")]
+            ((kx, FEET + dial, kz - 1), *CLOCK_DIAL, "clock_dial"),
+            ((int(math.floor(tx)), int(math.floor(ty + 0.5)), int(math.floor(tz))), *TIME_DIAL_GLOW, "time_dial")]
 
 
 def _offer(c, origin, wanted):
