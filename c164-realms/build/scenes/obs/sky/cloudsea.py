@@ -111,6 +111,7 @@ JOINS = ("_wall", "_fence")
 SUNK = (FACE - 1, FACE + 2)     # the block y of such a top: -29 .. -26 (lower, it is under the face anyway)
 COVERED = 6.5                   # the head over it is this wide
 LOW = FACE + 4                  # -24: no cloud is higher than this block within SHY of what stands in the sea
+LEDGE = LOW - 1                 # a whole block that ends bare beside the sea no higher than this is lapped over
 SHY = 28                        # ... the piles keep this far away from it (site/cablecar's bars begin at -23)
 
 # How far the sea is laid. The server sends blocks for ten chunks round a player (Realms), so
@@ -812,6 +813,15 @@ def build(canvas, origin=(0, 0, 0), *, seed=SEED, dress=None):
     sunk = thin & (high >= SUNK[0]) & (high <= SUNK[1]) & ~dry
     level, height, sea = _field(seed, land, [(i, k, int(high[i, k])) for i, k in zip(*np.nonzero(sunk))])
     here = sea & ~dry
+    # A ledge of somebody's whole blocks that ends low and bare beside the sea -- the foot of the
+    # rock, the head of a pier -- is lapped over: one block of cloud on it at least. Bare, with
+    # heads standing two blocks over it on every side, it is a hole nobody climbs out of (the
+    # walk-out found one at (-19, 30)); under cloud it is the sea, and whoever stands on the sea is
+    # sent back (common/export). No cloud near the land is higher than LOW, so no bare block is
+    # left more than a step under the cloud beside it.
+    ledge = here & (roof == high) & (high >= TROUGH) & (high <= LEDGE)
+    level = np.where(ledge, np.maximum(level, high + 1), level)
+    height = np.where(ledge, np.maximum(height, high + 1.0), height)
 
     # Only empty cells, clear of what would join on. Where the sea's own level is open all the way
     # from outside (the open sea, and under a girder that bridges it) a column is cloud from the
