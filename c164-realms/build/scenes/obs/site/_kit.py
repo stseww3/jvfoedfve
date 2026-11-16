@@ -78,10 +78,17 @@ def rail(c, o, cells, piers, y=S.GROUND, kerb=True):
 # --- the ridge under the cable track --------------------------------------------------------------
 # East of the station the mountain keeps one ridge for the trestle to stand on (site/cablecar): it
 # leaves the lower platform's east edge in row z -33 and runs east by north, one cell north for
-# every three east, falling slowly at first and then fast, and is under the cloud from x 118.
+# every three east, falling slowly at first and then fast, down to the lowest top the rock has
+# (ROCK_LOWEST, at x 120 and 121); beyond it the trestle stands in the sea.
 CABLE_RIDGE_X = (S.LOWER_PLATFORM[2] + 1, S.LOWER_PLATFORM[2] + 30)     # x 92..121
 CABLE_RIDGE_Z = -33
-ROCK_FLOOR = -29                # the mountain is carried down to here everywhere; the cloud's top is y -26
+ROCK_FLOOR = -29                # the top block of level cloud (sky/cloudsea's MEAN): what stands in the sea counts its
+#                                 depths from here (site/cablecar's SINK, CLOUD and the feet of its legs). Not a rock top.
+ROCK_LOWEST = ROCK_FLOOR + 1    # -28: the lowest top the rock has. Under it nobody finds a place to stand: the sea's
+#                                 face is its upper side, and the way home (common/export) takes whoever is on a cloud
+#                                 or lower than feet -30 (agreed with outb, #62548)
+ROCK_SKIRT = ROCK_FLOOR - 5     # -34: the mountain's outermost columns go straight down to here, a wall under the sea
+#                                 with no shelf at its foot: the sea's hollows (-30) and its sunk floor (-32) lie above
 
 
 def cable_ridge(x):
@@ -92,5 +99,5 @@ def cable_ridge(x):
         return None
     d = x - x0 + 1
     z = int(round(CABLE_RIDGE_Z - (x - x0) / 3.0))
-    y = max(ROCK_FLOOR, int(round(S.LOWER_PAVING_Y - 1 - 0.30 * d - 0.014 * d * d)))
+    y = max(ROCK_LOWEST, int(round(S.LOWER_PAVING_Y - 1 - 0.30 * d - 0.014 * d * d)))
     return z, y

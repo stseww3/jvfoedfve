@@ -67,6 +67,12 @@ S2 一次合几个交付的时候用 `tools/gatestack.sh`：每个交付还是�
 （`props/ironwork` 的 `doors()` 放）。`check.py` 的 `blocks` 一项跟着管：屏障竖着超过两格 FAIL；一格屏障三格以内没有展示实体
 （门扇的模型）给 WARN；合规矩的在 PASS 那一行报格数和范围。离线图不画屏障，它也不挡光，不用改。
 
+11-16 第五次补充（屏障的第二种用法，总监 09:11）：**屏障只许放在看得见的实心模型里面**，让碰撞和看见的一致。关着的模型门是一种；
+第二种是人能走进去的、实心的大件模型，头一处是出生点索道站台上停着的车厢（展示模型没有碰撞，人能穿过车厢走上栈桥、下到山坡
+回不来）：车厢占的格子里放屏障，高两格，(90..91, −4..−3, −34..−32) 共 12 格，随 `machines/cablecar-winch` 进总装（cable 放）。
+两条线不变：屏障一格也不出模型的轮廓，竖着不过两格；模型旁边还剩人挤得过去的缝，用看得见的东西堵（挡车的铁杆、链子、栅门），
+不用屏障补。`check.py` 的 `blocks` 一项照旧管（三格以内要有展示实体）。别处照旧不许。
+
 ---
 
 ## 1. 目录和类别
@@ -124,7 +130,7 @@ def pack(pack_dir) -> list:      # 一行行的说明文字
 
 总场景的 `build()` 依次调各类别的 `build(c, ORIGIN=(0,0,0))`；`build_models()` 合并各类别的模型（重名直接报错）；`write_pack()` 依次调各类别的 `pack()`。
 
-光：生物群系只有一个，`obs.BIOME = "obs_blue"`。三个光线版本是同一条时间线上的三个时刻，靠 `shots.json` 里的 `time` 选：`14000`（A，默认，不写就是 A）、`18000`（B）、`12900`（C）。光的实现在 `sky/mood.py`，归 `sky/look` 这张卡（已合并）。
+光：生物群系只有一个，`obs.BIOME = "obs_blue"`（不带冒号的名字要是 `mood.py` 的 BIOMES 里的一个；带命名空间的原样用，比如没有注册表文件的世界里的 `minecraft:the_void`，`place.py` 和 `check.py` 都这样认）。三个光线版本是同一条时间线上的三个时刻，靠 `shots.json` 里的 `time` 选：`14000`（A，默认，不写就是 A）、`18000`（B）、`12900`（C）。光的实现在 `sky/mood.py`，归 `sky/look` 这张卡（已合并）。
 “不写就是 A”两个出图工具都照办：`build/render.py`（离线）和 `tools/shoot.py`（真机）对没有 `time` 的机位都按 14000 拍（11-14 前是正午）。要白天的图就写 `"time": "noon"`。
 
 ## 4. 不撞车（两个包不许写同一个文件；检查脚本会查）
@@ -135,6 +141,7 @@ def pack(pack_dir) -> list:      # 一行行的说明文字
   - `materials`：方块贴图和重定向——`assets/minecraft/*`（除了下面 `sky` 的）、`assets/c164/textures/block/*`、`assets/c164/models/block/*`。**只有它写这些，唯一的例外是云。**
   - `sky`：`assets/minecraft/textures/environment/*`、`assets/c164/textures/environment/*`（彗星、云、星）。光的 biome/timeline 在 `sky/mood.py`（那是数据包，驱动器单独处理，不在 `pack()` 里）。
     **云的五个方块（`B.CLOUD`）由 sky 画**（A0 批的例外：云色要和天光一起调）：它们的方块状态文件、模型文件夹 `assets/c164/models/block/<方块名>/`、名字以 `sky_` 开头的方块图 `assets/c164/textures/block/sky_*` 归 sky；照样走 `materials/_kit.py` 的 `paint` 和 `redirect`。
+    **核心着色器 `assets/minecraft/shaders/*` 也归 sky**（11-16，materials 让出这个文件夹）：Realms 不收注册表文件，天、雾、光色改由资源包的着色器带；着色器只有 a2 那一套，生成器是 `sky/_shaders.py`，数仍只在 `sky/mood.py`。别的类别不写这个文件夹。
   - 占位：没人画的重画方块由 `materials/respack_redirect` 套上占位色（图名 `ph_` 开头）。占位写到别人地盘里不算越界；正式的包开始写同一个文件而占位没让开，判重复。
   - `motion`：`assets/c164/sounds/*`、`assets/c164/sounds.json`、`assets/c164/particles/*`、`assets/c164/textures/particle/*`。
   - 其余类别：`pack()` 一般不写文件，只用 `materials` 的方块和自己的展示实体模型。
