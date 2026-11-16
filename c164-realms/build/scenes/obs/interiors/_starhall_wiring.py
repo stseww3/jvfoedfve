@@ -23,8 +23,10 @@ half thick whose axis is one texel off the wall, and which never just stops.
 No source of light, no emblem. Twelve display entities. Nothing lies on the hall's axis, and the
 tube is a tone under the pier's face in the first look (S.V7).
 
-The battery room's door (starhall.aisle_doors()) opens under the north run between the board and
-the first pilaster: the run passes one texel over a head two blocks high.
+The doors of the battery room and of the plate vault (starhall.aisle_doors(): x 7 in the north and
+in the south wall, two blocks high) open under the runs, between the board's end or the charts and
+the first pilaster: a run passes one texel over their heads, on the wall, and what holds it is
+fixed over the pipe.
 """
 import functools
 
@@ -67,18 +69,20 @@ def _band(m, axis, at, paint, c=(0.0, OFF), long=1.0):
 
 
 def _strap(m, axis, at, paint):
-    """What holds the conduit to the wall every block or so. a: a band. b: a strap, its two ears
-    riveted to the wall."""
+    """What holds the conduit to the wall every block or so. a: a band. b: a strap riveted to the
+    wall: on a riser an ear on either side, on a run one ear, over the pipe. A run passes a texel
+    over the head of a door two blocks high (the plate vault's, the battery room's), and an ear
+    under the pipe hung before the opening with nothing behind it."""
     _band(m, axis, at - 0.5, paint)
     if paint["box"] is None:
         return
+    if axis == "x":
+        m.box((at - 0.5, R + 0.5, 0.0), (at + 0.5, R + 2.0, 0.5), paint["fit"])
+        K.rivet(m, (at, R + 1.25, 0.5))
+        return
     for s in (-1.0, 1.0):
-        if axis == "x":
-            m.box((at - 0.5, s * (R + 0.5), 0.0), (at + 0.5, s * (R + 2.0), 0.5), paint["fit"])
-            K.rivet(m, (at, s * (R + 1.25), 0.5))
-        else:
-            m.box((s * (R + 0.5), at - 0.5, 0.0), (s * (R + 2.0), at + 0.5, 0.5), paint["fit"])
-            K.rivet(m, (s * (R + 1.25), at, 0.5))
+        m.box((s * (R + 0.5), at - 0.5, 0.0), (s * (R + 2.0), at + 0.5, 0.5), paint["fit"])
+        K.rivet(m, (s * (R + 1.25), at, 0.5))
 
 
 def _joint(m, paint, left, right, entry):
