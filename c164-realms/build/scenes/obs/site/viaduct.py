@@ -48,6 +48,7 @@ import functools
 import math
 
 from ..common import blocks as B
+from . import _kit as K
 from . import _rail as R
 from . import terrain
 
@@ -55,8 +56,9 @@ ORDER = 56              # after the cable station and its incline (55), which th
 
 # --- stone, wood and iron ---------------------------------------------------------------------------------
 BRICK = B.TUFF_BRICK.block                  # the body: the station's stone
-DRESSED = B.TUFF_SMOOTH.block               # rings, imposts, keystones, the coping, the caps
+DRESSED = B.TUFF_SMOOTH.block               # rings, bands, keystones, corbels
 DRESSED_SLAB = B.TUFF_SMOOTH.slab
+COPING = K.KERB                             # the coping and the caps: the pale line that every edge of the site ends in
 BALLAST = B.ROCK_COBBLED.block              # the bed under the track
 BALLAST_SLAB = B.ROCK_COBBLED.slab
 SLEEPER = B.DARK_WOOD.block                 # the sleepers that show between the rails
@@ -155,7 +157,7 @@ def _column(x, z, cell):
     if off > HALF:
         # the pilaster: a strip from a corbel at the pier's band up to its cap at the coping
         band, corbel = cope - COLLAR[0], cope - COLLAR[1]
-        out[cope - 1] = DRESSED
+        out[cope - 1] = COPING
         for y in range(cope - 2, max(band, deep - 1), -1):
             out[y] = BRICK
         if band >= deep:
@@ -166,7 +168,7 @@ def _column(x, z, cell):
     if off < TRACK:
         upper = _track(cell, out)
     else:
-        out[cope - 1] = DRESSED
+        out[cope - 1] = COPING
         upper = cope - 2
     # the body: a pier down to the rock or to LOWEST, an arch down to its ring
     rock = low = edge = None
@@ -245,7 +247,7 @@ def piers_cells():
     blocks = plan()
     out = [(k, []) for k in range(R.SPANS + 1)]
     for (x, z), cell in sorted(R.deck(HALF).items()):
-        if x >= int(R.FOOT) and (x, LOWEST, z) in blocks:
+        if x >= int(R.FOOT) and (x, LOWEST, z) in blocks and (x, LOWEST - 1, z) not in blocks:
             k, pier, _, _ = place(cell.s)
             if pier:
                 out[k][1].append((x, z))
@@ -266,7 +268,7 @@ def sketch(right=2.0, step=1.0):
     pilasters, 1 a rail, 0 the row between). # body, = dressed stone, - a dressed slab, o ballast,
     w a sleeper, r a rail, ! a spout, . nothing."""
     blocks = plan()
-    marks = {BRICK: "#", DRESSED: "=", BALLAST: "o", SLEEPER: "w"}
+    marks = {BRICK: "#", DRESSED: "=", COPING: "=", BALLAST: "o", SLEEPER: "w"}
     heads = ((RAIL, "r"), (SLEEPER_SLAB, "w"), (BALLAST_SLAB, "o"), (DRESSED_SLAB, "-"), (SPOUT, "!"))
     cols = []
     s = R.S_FOOT + 0.5
