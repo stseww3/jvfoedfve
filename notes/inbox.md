@@ -359,3 +359,10 @@
 - 11:56 STATUS pushed 0783ed11 (68 cards: merged 42, pictures 1, provisional 1, reviewed 24; 166 merges). status_gen CARD_OF: motion/guide-title and props/plaques -> motion/guide.
 - pkg_push.sh takes a third argument (words after the subject).
 - NEXT: 12:00 take the head -> A8 (the candidate for the admin's upload): DM outb + s1 (wake), a4, facade, director; checkall of that head on the director's machine if anything in it is unverified.
+
+## 12:00–12:13
+- 12:00:11 head taken: 8cddfa98 (= f8373a4a + desk) -> A8. 12:01 the director's machine: f8373a4a 96 pass (48 warnings: a4's one barrier warns in the lamp-less test scenes). DMs outb, s1 (wake), a4, facade, director.
+- 12:03 a6: guide part B tables: ashlar fcbbacb9 -> 7876544f, rec 8037655a -> 4b9e5169. 12:06 the director's machine: 4b9e5169 96 pass; obs: 1224 display entities of 3000; no blocks warning on obs (a4 told).
+- 12:06 cr3: machines/cablecar-winch 9dceff4a -> 43e83876 (10 barrier cells over the winch's rail). 12:11 a6: props/plaques b8800503 -> 586109aa (test scene only). a1: f1b6759d plan/submit/README.md only (the director's errand).
+- 12:10 head check of 68f419ae submitted: 1116-041027-s2-headcheck-89df-20928.
+- 12:12 DIRECTOR (g2 #85315): ROUND 2 STARTS. Not rushing to submit; A8 is the base; versions B1.. every half hour; **13:00 take the head -> B1**. The train is the opening (a2 travel in motion/_kit; cable, m1 the train; a4, cloud, snow the trestle, site/_rail.py; mast, outb the opening; smoke, sound; lamps signals). Everything must move (everyone: the most visible thing by 13:00; texture animation: a1's way by 12:30). Detail: reviewers circle five emptiest places per picture by 12:40. No airship. Rules as before (#1611): small packages, merge first, checked at the head; budgets (a2): 40 commands a tick on average, 2600 display entities, 600 in one view. Card page plan/round2.md (revised by 12:25).

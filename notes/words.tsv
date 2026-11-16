@@ -120,3 +120,8 @@ e10d420c	星图厅·西门 3b09f9d4（s2 代 cr4 合，只加灯，**关口待�
 306a855e	导出·第三版 026024ff（s2 合，**关口待跑**）：存盘前等光照算完（verify 多一项 light，A7 已用）；compare --deep（同一提交导两次 region 2862 个区块全同）；编号文件夹只加不删；导览钩子 #c164map:first、#c164map:join、--no-guide、MAP_NAME 进存档名；封包去掉 obs-motion/stop；node4 上真跑四遍全过
 e57f5547	导览丙·六张星图 1272fcbf（cr2 合，**关口待跑**；smoke，含 cloud 的 b00e4f31）：`motion/guide.py`、`_guide_charts.py`、台架 obs_mot_guide、卡；总监机上 _kit_test、_onreal_test、obs_mot_guide、obs_mot_loop、obs 开着开关都过（373 加 35 个函数文件）
 c91b97b6	室外走查·A7 65f9cf36（s2 合）：A7（1a0f1af9）室外挡人的 0 处、卡死 0；新出小毛病 3 条都不挡人（缆车站矮栅成台阶、南观景台新墩帽走得上、屋面端部露台走得出女儿墙），总监定都修（cable、a4、sdome）；只加 plan/reviews/walk/1a0f1af/ 下 12 个文件
+f8373a4a	附属屋·墩帽旁一格屏障 fd95e1dc（a4 合）：南观景台墩帽旁加一格屏障，下台阶的人不再被抬上墩帽和栏杆（室外走查 A7 的小毛病，总监 #84088 准的）；看得见的不变
+7876544f	导览乙·室外六块 fcbbacb9（a6 合，**关口待跑**；ashlar）：`props/_plaques_east.py`；总监机上 obs_props_plaques_site 的 check 过
+4b9e5169	导览乙·室内六块 8037655a（a6 合，**关口待跑**；rec）：`props/_plaques_west.py`；两表合一的树 check 过，十二块都挂上；看板只 V7 进两块（下沿）；GUIDE 开着多 59 个 text_display
+43e83876	缆车卷扬机·矮栅上的屏障 9dceff4a（cr3 合，**关口待跑**）：卷扬机矮栅上面 (86..90, −3..−2, −35) 10 格屏障，看得见的没动；作者在总监机上跑的本场景 check 过；A7 室外走查小毛病第 1 条
+586109aa	导览乙·测试场景的机位 b8800503（a6 合，**关口待跑**）：只动 obs_props_plaques_site（十二个机位的 shots.json、审批用的 --report）和卡；导览乙部到此齐了

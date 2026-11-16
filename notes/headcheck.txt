@@ -58,3 +58,5 @@
 11:46 404dcc3e 94 个场景全过（警告 38），看板 --check 过（总监机；含 3aa56dc1、f014e4cc、006f0d1a 说明牌的公共一半，多两个场景）
 11:52 e10d420c 95 个场景全过（警告 39），看板 --check 过（总监机；含 34cfec9a、5aae7398、导览甲 b254fe1、39d46055、3b09f9d4）
 11:55 2b7eb71e 96 个场景全过（警告 39），看板 --check 过，export.py 能编译（总监机；含导出第三版 026024ff、导览丙 1272fcbf）；c91b97b6 只多 plan/ 下的文档
+12:01 f8373a4a 96 个场景全过（警告 48：比 2b7eb71e 多 9 个，推断是 a4 fd95e1dc 的一格屏障在不带灯的测试场景里报「屏障旁没有模型」），看板 --check 过（总监机）；12:00:11 取头 8cddfa98（= f8373a4a + desk）→ A8；已告 outb、s1（wake）、a4、facade、总监
+12:06 4b9e5169 96 个场景全过（警告 48：blocks 27、views 26、sight 15、entities 12、flatwall 5、motion 2），看板 --check 过（总监机；含导览乙两张表 fcbbacb9、8037655a）；主场景 obs：1224 个显示实体（上限 3000：machines 177、interiors 631、props 298、motion 10、sky 68、materials 28、site 10、main 2），只有 entities、sight 两条老警告，blocks 没报 a4 的屏障
