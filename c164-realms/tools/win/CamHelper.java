@@ -17,7 +17,8 @@ import java.util.function.Consumer;
  * neither the keyboard nor the display.
  *
  * Asked through files in the folder named by -Dc164.cam=<folder> (relative to the game folder):
- *     <id>.req    one line "shot <file name>.png", written by whoever wants a picture
+ *     <id>.req    one line "shot <file name>.png", written by whoever wants a picture; or
+ *                 "track <file name>.txt <seconds> [<player name>]" (see track())
  *     <id>.done   the picture's full path, written here once the game has saved it
  *     <id>.fail   what went wrong
  *     ready       this process's id, written once at the start
@@ -26,7 +27,8 @@ import java.util.function.Consumer;
  * Nothing of the game is changed. Its jar is used as it is; only public members are used, found by
  * name at run time, so this file compiles without the game: Minecraft.getInstance(), gameDirectory,
  * gameRenderer.mainRenderTarget(), Screenshot.grab(File, String, RenderTarget, int, Consumer) and
- * Minecraft as an Executor (checked against 26.3).
+ * Minecraft as an Executor; for track() gameRenderer.mainCamera().position(), player, level.players(),
+ * Entity.position(), getVehicle(), getScoreboardName() and Vec3's x, y, z (checked against 26.3).
  *
  * Built by build_helper.py on a machine with a JDK; the class is kept in helper/ beside this file.
  */
@@ -82,6 +84,11 @@ public final class CamHelper {
         }
         if (line.startsWith("shot ")) {
             shot(folder, id, line.substring(5).trim());
+        } else if (line.startsWith("track ")) {
+            String[] parts = line.substring(6).trim().split("\\s+");
+            Thread tracker = new Thread(() -> track(folder, id, parts), "c164-track");
+            tracker.setDaemon(true);
+            tracker.start();                           // pictures can be asked for while it runs
         } else {
             answer(folder, id, "fail", "not understood: " + line);
         }
@@ -124,6 +131,109 @@ public final class CamHelper {
         } catch (Throwable t) {
             answer(folder, id, "fail", String.valueOf(t.getCause() != null ? t.getCause() : t));
         }
+    }
+
+    /**
+     * "track <file name>.txt <seconds> [<player name>]": for that many seconds what moves is
+     * written down, with the time in milliseconds since the start: a line "C t x y z" whenever the
+     * game's camera stands somewhere else than a moment before (once a frame while it moves),
+     * "P t x y z vx vy vz" whenever this client's own player does (once a tick; v is what it rides,
+     * NaN when it rides nothing) and "O t x y z vx vy vz" for the player of that name as this
+     * client has it. The file is written into the asking folder and named in the answer.
+     */
+    private static void track(File folder, String id, String[] parts) {
+        try {
+            String fileName = parts[0];
+            if (parts.length < 2 || !fileName.endsWith(".txt") || !new File(fileName).getName().equals(fileName)) {
+                answer(folder, id, "fail", "track <file name>.txt <seconds> [<player name>]");
+                return;
+            }
+            double seconds = Math.min(120.0, Double.parseDouble(parts[1]));
+            String other = parts.length > 2 ? parts[2] : null;
+            Class<?> game = Class.forName("net.minecraft.client.Minecraft");
+            Object minecraft = game.getMethod("getInstance").invoke(null);
+            Object renderer = game.getField("gameRenderer").get(minecraft);
+            Object camera = renderer.getClass().getMethod("mainCamera").invoke(renderer);
+            Method cameraAt = camera.getClass().getMethod("position");
+            StringBuilder out = new StringBuilder();
+            double[] lastCamera = null;
+            double[] lastOwn = null;
+            double[] lastOther = null;
+            long start = System.nanoTime();
+            while (System.nanoTime() - start < (long) (seconds * 1e9)) {
+                double t = (System.nanoTime() - start) / 1e6;
+                try {
+                    double[] now = xyz(cameraAt.invoke(camera));
+                    if (differs(now, lastCamera)) {
+                        note(out, "C", t, now);
+                        lastCamera = now;
+                    }
+                    Object player = game.getField("player").get(minecraft);
+                    if (player != null) {
+                        double[] own = withVehicle(player);
+                        if (differs(own, lastOwn)) {
+                            note(out, "P", t, own);
+                            lastOwn = own;
+                        }
+                    }
+                    Object level = other == null ? null : game.getField("level").get(minecraft);
+                    if (level != null) {
+                        for (Object one : (Iterable<?>) level.getClass().getMethod("players").invoke(level)) {
+                            if (other.equals(one.getClass().getMethod("getScoreboardName").invoke(one))) {
+                                double[] theirs = withVehicle(one);
+                                if (differs(theirs, lastOther)) {
+                                    note(out, "O", t, theirs);
+                                    lastOther = theirs;
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    out.append("# ").append(e).append('\n');   // the game changed a list under our hands: next round
+                }
+                Thread.sleep(2);
+            }
+            File file = new File(folder, fileName);
+            Files.write(file.toPath(), out.toString().getBytes(StandardCharsets.UTF_8));
+            answer(folder, id, "done", file.getAbsolutePath());
+        } catch (Throwable t) {
+            answer(folder, id, "fail", String.valueOf(t.getCause() != null ? t.getCause() : t));
+        }
+    }
+
+    private static double[] xyz(Object vector) throws ReflectiveOperationException {
+        Class<?> kind = vector.getClass();
+        return new double[] {kind.getField("x").getDouble(vector), kind.getField("y").getDouble(vector),
+                             kind.getField("z").getDouble(vector)};
+    }
+
+    /** Where an entity is and where what it rides is (NaN three times when it rides nothing). */
+    private static double[] withVehicle(Object entity) throws ReflectiveOperationException {
+        double[] at = xyz(entity.getClass().getMethod("position").invoke(entity));
+        Object vehicle = entity.getClass().getMethod("getVehicle").invoke(entity);
+        double[] on = vehicle == null ? new double[] {Double.NaN, Double.NaN, Double.NaN}
+                : xyz(vehicle.getClass().getMethod("position").invoke(vehicle));
+        return new double[] {at[0], at[1], at[2], on[0], on[1], on[2]};
+    }
+
+    private static boolean differs(double[] now, double[] before) {
+        if (before == null) {
+            return true;
+        }
+        for (int i = 0; i < now.length; i++) {
+            if (Double.compare(now[i], before[i]) != 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static void note(StringBuilder out, String kind, double t, double[] values) {
+        out.append(kind).append(' ').append(String.format(java.util.Locale.ROOT, "%.1f", t));
+        for (double value : values) {
+            out.append(' ').append(String.format(java.util.Locale.ROOT, "%.4f", value));
+        }
+        out.append('\n');
     }
 
     private static Method grab() throws ClassNotFoundException {
