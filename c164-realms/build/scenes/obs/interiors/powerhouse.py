@@ -376,8 +376,13 @@ def _lantern():
     m.tube("y", (0.0, 0.0), top + 3.0, top + 4.0, 2.0, K.BRASS_D, sides=8)                  # the burner
     # the glass: amber at the burner, the flame's white over it, as in the street lamps' globes (a
     # step darker throughout, too little of it passes 0.5 in V6)
-    for y0, y1, tone in ((4.0, 5.5, 2), (5.5, 8.5, 4), (8.5, 10.0, 3)):
-        K.glass_prism(m, "y", (0.0, 0.0), top + y0, top + y1, 2.5, K.flat("glow", tone))
+    # The flame moves: the two upper bands of the glass are frames (plan/parts/materials.md 2 D), eight
+    # of two ticks; now and then the flame's white dips a step and its tip another. The game runs them
+    # by itself, no command and no entity. The first frame is the lamp as it was, the one a still shows.
+    flame = PX.Frames(PREFIX + "lantern_flame", [K.flat("glow", t) for t in (4, 4, 3, 4, 4, 4, 3, 4)], frametime=2)
+    tip = PX.Frames(PREFIX + "lantern_tip", [K.flat("glow", t) for t in (3, 3, 3, 2, 3, 3, 2, 3)], frametime=2)
+    for y0, y1, glass in ((4.0, 5.5, K.flat("glow", 2)), (5.5, 8.5, flame), (8.5, 10.0, tip)):
+        K.glass_prism(m, "y", (0.0, 0.0), top + y0, top + y1, 2.5, glass)
     for x in (-4.0, 3.0):
         m.box((x, top + 1.0, -0.5), (x + 1.0, top + 11.0, 0.5), K.IRON, grain="y")          # the side tubes
     m.box((-4.0, top + 10.0, -1.0), (4.0, top + 11.0, 1.0), K.IRON_D, grain="x")            # the yoke
