@@ -313,8 +313,9 @@ def read709():
 
 # The fires flicker (W.furnace_frames): every picture is W.FLICKER frames, one under the other. The
 # first is the still picture, which everything above is measured on; the others are the same glass
-# with the fire a little up or down: a flicker, not a flash, and no frame like the one before it.
-FLICKER_SWING = 0.08            # how far the glass of a frame may stand from the still picture's, in Rec.709
+# with the fire up: never darker than the still picture, so the board's lines hold in every frame;
+# a flicker, not a flash, and no frame like the one before it.
+FLICKER_SWING = 0.08            # how far the glass of a frame may stand over the still picture's, in Rec.709
 FLICKER_LEAST = 4               # pixels of a block's glass that change from one frame to the next, at least,
 #                                 in the two rows where the fire is (the third is soot: it may stand still)
 
@@ -342,9 +343,11 @@ def flicker():
                 highs.append(max(at))
                 fewest.append(min(steps))
                 most.append(max(steps))
-                if max(abs(a - at[0]) for a in at) > FLICKER_SWING:
-                    bad.append(f"{label}: a frame's glass stands {max(abs(a - at[0]) for a in at):.3f} from the "
-                               f"still picture's {at[0]:.3f}; a flicker keeps within {FLICKER_SWING}")
+                if min(at) < at[0] - 1e-9:
+                    bad.append(f"{label}: a frame's glass reads {min(at):.3f}, darker than the still picture's {at[0]:.3f}")
+                if max(at) - at[0] > FLICKER_SWING:
+                    bad.append(f"{label}: a frame's glass stands {max(at) - at[0]:.3f} over the still picture's "
+                               f"{at[0]:.3f}; a flicker keeps within {FLICKER_SWING}")
                 if r < 2 and min(steps) < FLICKER_LEAST:
                     bad.append(f"{label}: between two frames only {min(steps)} pixels change; the fire stands still there")
             if lows:

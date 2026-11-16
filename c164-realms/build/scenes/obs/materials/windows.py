@@ -294,29 +294,34 @@ _SOOT = {
 }
 _GRIME = 1.0                            # the corners of a light, where the soot sits: a whole step further up
 # The fires move (A0, g2 #85347: everything is to move; a1's way, parts/materials.md 2 D: frames
-# stacked in one picture, the game plays them, no command is spent). A fire is fed and dies down:
-# the whole sheet stands a little lower or higher on the ladder from frame to frame, and not all of
-# it at once. Three slow turns are laid over one another: one that goes along the sill, a block's
-# width in a round; a quicker one of half that length that goes the other way; and one the whole
-# window breathes in. Each is as long across as a block or half of one, so the round runs through a
-# bay without a seam whichever pictures the game has mixed there, and the rows over one another
-# move as one sheet. A light's ranks stay its own: what changes is how many of its pixels show the
-# darker of two tones, and the points come and go where they are, in the same order every time. So
-# the glass keeps its stains and the fire behind it flickers. The first frame is the still picture:
-# what the offline pictures and the checks see, and what the levels of _RISE were read for.
+# stacked in one picture, the game plays them, no command is spent). The still picture is the fire
+# at rest, and from it the fire flares up and sinks back: in a frame a column of the glass stands
+# further down the ladder than in the still picture, never further up, so the window is in no frame
+# darker than the picture its levels were read for (the board's lines hold whichever frame a
+# picture of V6 catches). Three flares are laid over one another: a slow swell, once in a round,
+# strongest in one half of a block's width, and that half wanders along the sill; three quick
+# flares in a round, half as long, wandering the other way; and two in which the whole window
+# brightens. Each is as long across as a block or half of one, so a round runs through a bay
+# without a seam whichever pictures the game has mixed there, and the rows over one another move
+# as one sheet. A light's ranks stay its own: what changes is how many of its pixels show the
+# darker of two tones, and the points go and come back where they are, in the same order every
+# time. So the glass keeps its stains and the fire behind it flickers. The first frame is the
+# still picture: what the offline pictures and the checks see.
 FLICKER = 16                            # frames in a round
 FLICKER_TIME = 4                        # ticks a frame: a1's pace for a furnace fire; a round takes 3.2 s
-_TURNS = ((0.12, 1, -1.0, 0.0), (0.07, 3, 2.0, 1.0), (0.05, 2, 0.0, 2.0))      # (steps of the ladder to either side,
-#                                         rounds in FLICKER frames, lengths across a block, where it starts)
+_FLARES = ((0.30, 1, 1.0, 1, 0.0), (0.20, 3, 2.0, -1, 1.0), (0.15, 2, 0.0, 0, math.pi / 2.0))
+#                                         (steps down the ladder at its height, how often in a round, lengths
+#                                         across a block, block widths it wanders in a round, where it starts)
 
 
 def _flare(frame, x):
-    """How far up the ladder (the fire low) or down it (the fire up) the column `x` of a block
-    stands in a frame, against the still picture: 0.0 in the first frame."""
-    def at(f):
-        return sum(reach * math.sin(2.0 * math.pi * (rounds * f / float(FLICKER) + lengths * x / float(TILE)) + start)
-                   for reach, rounds, lengths, start in _TURNS)
-    return at(frame % FLICKER) - at(0)
+    """How far down the ladder (the fire up) the column `x` of a block stands in a frame, against
+    the still picture: 0.0 in the first frame, never above it."""
+    turn = 2.0 * math.pi
+    at = (frame % FLICKER) / float(FLICKER)
+    return -sum(reach * (1.0 - math.cos(turn * often * at)) / 2.0
+                * (1.0 + math.sin(turn * (lengths * x / float(TILE) - wander * at) + start)) / 2.0
+                for reach, often, lengths, wander, start in _FLARES)
 
 
 def _heat(height, soot=0.0):
