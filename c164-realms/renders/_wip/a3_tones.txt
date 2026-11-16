@@ -1,0 +1,18 @@
+obs_int_domeroom-v8 [A blue]  1280x720
+  luma    mean 0.07   p1 0.02  p5 0.03  median 0.06  p95 0.13  p99 0.28
+  levels  dark  97.5% (below 0.18, mean 0.07)   middle   2.5% (mean 0.28)   bright   0.0% (above 0.60, mean 0.77)
+  bright  centre x 0.54 y 0.29 (0 0 = top left)   nine tenths of it within x 0.54..0.54, y 0.29..0.30
+          1 patch, the largest 0.01% of the picture (as a square, 7 pixels a side)
+  white   above 0.97:   0.0%   in specks only, none fills a square of 4 pixels
+  dead    below 0.03:   4.9%   242 patches, the largest 0.46% of the picture (as a square, 65 pixels a side)
+  warmth  warm  14.2%   cool  38.5%   neutral  47.3%
+          dark    warm  12.6%   cool  37.7%   neutral  47.2%
+          middle  warm   1.7%   cool   0.8%   neutral   0.0%
+          bright  warm   0.0%   cool   0.0%   neutral   0.0%
+  probe   rail   76788 px  mean 0.06  median 0.05  brightest 1% 0.16  darkest 1% 0.02  #0d0f17  warm 1.2%  cool 71.4%
+  probe   wallR  21838 px  mean 0.07  median 0.07  brightest 1% 0.11  darkest 1% 0.02  #14110f  warm 34.0%  cool 5.3%
+  probe   lower  304640 px  mean 0.07  median 0.06  brightest 1% 0.33  darkest 1% 0.02  #131113  warm 21.8%  cool 29.8%
+  probe   wallL  21838 px  mean 0.08  median 0.08  brightest 1% 0.13  darkest 1% 0.02  #161210  warm 30.0%  cool 1.6%
+  probe   pier   29440 px  mean 0.08  median 0.06  brightest 1% 0.38  darkest 1% 0.02  #141313  warm 11.6%  cool 3.0%
+  probe   sky    9000 px  mean 0.11  median 0.10  brightest 1% 0.32  darkest 1% 0.10  #131a3d  warm 0.0%  cool 100.0%
+  order   rail 0.06 < wallR 0.07 < lower 0.07 < wallL 0.08 < pier 0.08 < sky 0.11   (means)
