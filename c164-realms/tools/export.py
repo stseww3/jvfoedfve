@@ -19,9 +19,10 @@ What a save made here carries
   - datapacks/c164art: the motion loop's functions (build/scenes/obs/motion/_kit.py) and the map's
     own, namespace c164map: who arrives is put on the spot and turned the way the scene's SPAWN
     (for the whole map the skeleton's V1) says, is in adventure mode and reaches no block; who
-    drops under the cloud sea is put back on the spot. The structure files and the place, clear
-    and forceload functions that only served the building are taken out, and the pack's filter
-    hides the game's own advancements and recipes;
+    drops under the cloud sea, or comes to stand on it (its blocks are solid), is put back on the
+    spot -- but for who is in spectator or creative mode, which only an operator can be. The
+    structure files and the place, clear and forceload functions that only served the building
+    are taken out, and the pack's filter hides the game's own advancements and recipes;
   - resourcepacks/resources.zip: the scene's resource pack (build/makepack.py);
   - the settings of the delivery list (plan/STATUS.md): time and weather held, adventure,
     peaceful, the game rules, the spawn with its facing.
@@ -31,6 +32,10 @@ dynamic registries, the game marks a world that holds any as "experimental", and
 does not take such worlds (plan/reviews/export/realms-rules.md). Off, the two files and the
 timeline tag are not written and no biome is filled: the sky is then the game's own, or what the
 resource pack makes of it.
+
+--on-cloud back|ignore (default back, for a trial save ignore): whether standing on one of the
+cloud sea's blocks (the block table's CLOUD) puts a player back on the spot, as dropping under the
+line does. The sea is a skin of solid blocks: without this, who climbs over a parapet walks on it.
 
 --trial <label> makes a save for a trial upload: on every joining it puts the player on the spot
 and says in the chat what it found (the functions run, the biome is there or is not, game mode and
@@ -355,6 +360,7 @@ def scene_spec(args):
     ex, ey, ez = spot["pos"]
     dx, dy, dz = (b - a for a, b in zip(spot["pos"], spot["look_at"]))
     look = bool(args.look == "on" and getattr(scene, "BIOME", None))
+    on_cloud = args.on_cloud or ("ignore" if args.trial else "back")
     when = args.time
     if when is None:
         when = getattr(scene, "TIME", 14000) if look else getattr(scene, "TIME_PLAIN", getattr(scene, "TIME", 14000))
@@ -366,7 +372,7 @@ def scene_spec(args):
         "yaw": round(math.degrees(math.atan2(-dx, dz)), 2),
         "pitch": round(-math.degrees(math.atan2(dy, math.hypot(dx, dz))), 2),
         "catch": oy + args.catch,
-        "cloud": [f"minecraft:{b}" for b in B.CLOUD] if args.on_cloud == "back" else [],
+        "cloud": [f"minecraft:{b}" for b in B.CLOUD] if on_cloud == "back" else [],
         "trial": args.trial,
     }
 
@@ -386,13 +392,16 @@ def functions(spec):
     """The map's own functions, {name: [lines]}, and whether the tick tag is needed."""
     x, y, z = spec["feet"]
     low = -512
+    # who is held to the walks: every visitor (the functions set adventure at every joining). An
+    # operator who has put himself in spectator or creative mode is left to fly where he likes.
+    held = "@a[gamemode=!spectator,gamemode=!creative]"
     out = {
         "load": [f"scoreboard objectives add {LEFT} minecraft.custom:minecraft.leave_game"],
         "tick": [
             f"execute as @a[tag=!{IN_TAG}] run function {NS}:first",
             f"execute as @a[scores={{{LEFT}=1..}}] run function {NS}:join",
             # feet under the line: the volume from y to y + dy + 1 is tested against the player's box
-            f"execute as @a at @s if entity @s[y={low},dy={spec['catch'] - low - 1}] run function {NS}:back",
+            f"execute as {held} at @s if entity @s[y={low},dy={spec['catch'] - low - 1}] run function {NS}:back",
         ],
         "first": [f"tag @s add {IN_TAG}", f"function {NS}:back", f"function {NS}:join"],
         "join": [
@@ -403,7 +412,8 @@ def functions(spec):
         "back": [f"tp @s {num(x)} {num(y)} {num(z)} {num(spec['yaw'])} {num(spec['pitch'])}"],
     }
     if spec["cloud"]:
-        out["tick"].append(f"execute as @a at @s if block ~ ~-0.2 ~ #{NS}:cloud run function {NS}:back")
+        # the block the feet rest on (the cloud sea is a skin of full blocks)
+        out["tick"].append(f"execute as {held} at @s if block ~ ~-0.2 ~ #{NS}:cloud run function {NS}:back")
     if spec["trial"]:
         trial_functions(spec, out)
     else:
@@ -678,6 +688,22 @@ def setting_commands(spec):
     return out
 
 
+def find_cloud(server, spec, reach=320, step=4):
+    """The nearest block of the cloud sea a player could stand on (two blocks of air over it), looked
+    for outwards from the spawn on eight bearings: ([x, y, z] or None, how many blocks were asked for)."""
+    x0, _y, z0 = (math.floor(v) for v in spec["feet"])
+    asked = 0
+    for r in range(step, reach + 1, step):
+        for ax, az in ((1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1)):
+            x, z = x0 + ax * r, z0 + az * r
+            for y in range(spec["catch"] + 14, spec["catch"] - 1, -1):
+                asked += 1
+                if "passed" in server.cmd(f"execute if block {x} {y} {z} #{NS}:cloud if block {x} {y + 1} {z} minecraft:air "
+                                          f"if block {x} {y + 2} {z} minecraft:air", quiet=True):
+                    return [x, y, z], asked
+    return None, asked
+
+
 def make(args):
     node_only()
     if not re.fullmatch(r"[A-Za-z0-9_\-]{1,40}", args.name):
@@ -691,7 +717,8 @@ def make(args):
         os.remove(old)
     say(f"make {args.name}: scene {args.scene} of {head} at {spec['at']}, look {'on' if spec['look'] else 'off'}, "
         f"tick {spec['time']}, spawn feet {spec['feet']} yaw {spec['yaw']} pitch {spec['pitch']}, "
-        f"back to it under y {spec['catch']}" + (f", trial {spec['trial']}" if spec["trial"] else ""))
+        f"back to it under y {spec['catch']}" + (" and from the cloud sea's blocks" if spec["cloud"] else "")
+        + (f", trial {spec['trial']}" if spec["trial"] else ""))
     facts = {"name": args.name, "commit": head, "version": VERSION, "spec": spec, "ok": False}
     work = os.path.join(WORK, args.name)
     if os.path.isdir(work):
@@ -735,6 +762,15 @@ def make(args):
             facts["notes"].append(f"the spawn hangs {top - ground} blocks over what carries it: feet {spec['feet']}, the first "
                                   f"block under them at y {ground}. Who arrives drops that far (no fall damage).")
             say("NOTE: " + facts["notes"][-1])
+        if spec["cloud"]:
+            t = time.time()
+            spec["cloud_at"], asked = find_cloud(server, spec)
+            if spec["cloud_at"] is None:
+                facts["notes"].append(f"no block of the cloud sea was found within 320 blocks of the spawn ({asked} blocks asked "
+                                      "for): the rule that puts back who stands on one is in the pack, but there is nothing to try it on.")
+                say("NOTE: " + facts["notes"][-1])
+            else:
+                say(f"a cloud block to stand on: {spec['cloud_at']} ({asked} blocks asked for in {time.time() - t:.1f} s)")
         facts["settings"] = []
         for command in setting_commands(spec):
             reply = server.cmd(command)
@@ -913,17 +949,46 @@ def visit(server, spec, results, tag, came):
     else:
         check(results, tag + "quiet", not said, " | ".join(said) or "nothing was said, as it should be")
     # under the line: put there by hand, the tick function has him back before the next look
-    server.cmd(f"tp {BOT} {num(feet[0] + 20)} {num(spec['catch'] - 6)} {num(feet[2])}", quiet=True)
+    under = (feet[0] + 20, spec["catch"] - 6, feet[2])
+    go = f"tp {BOT} {num(under[0])} {num(under[1])} {num(under[2])}"
+    server.cmd(go, quiet=True)
     bot.pump(1.5)
     check(results, tag + "fall", near(bot.position, feet) and turned(bot),
-          f"put at y {spec['catch'] - 6}, a moment later at {bot.position} facing {bot.rotation}")
-    # just over the line he is left alone
-    over = (feet[0] + 20, spec["catch"] + 0.5, feet[2])
-    server.cmd(f"tp {BOT} {num(over[0])} {num(over[1])} {num(over[2])}", quiet=True)
-    bot.pump(1.5)
-    check(results, tag + "over the line", near(bot.position, over), f"put at y {over[1]}, a moment later at {bot.position}")
+          f"put at y {under[1]}, a moment later at {bot.position} facing {bot.rotation}")
+    # an operator in spectator mode is left where he flies; back in adventure, the line has him at once
+    server.cmd(f"gamemode spectator {BOT}", quiet=True)
+    server.cmd(go, quiet=True)
+    bot.pump(1.0)
+    stayed = bot.position
+    server.cmd(f"gamemode adventure {BOT}", quiet=True)
+    bot.pump(1.0)
+    check(results, tag + "spectator", near(stayed, under) and near(bot.position, feet),
+          f"as a spectator put at y {under[1]}: a moment later at {stayed}; set to adventure there: a moment later at {bot.position}")
+    # the tick with him where the map begins, over the last hundred ticks
+    bot.pump(4.0)
     one = server.cmd("tick query", quiet=True)
     check(results, tag + "tick, one player", True, one.replace("\n", " | "))
+    if spec.get("cloud"):
+        at = spec.get("cloud_at")
+        if not at:
+            check(results, tag + "on the cloud", False, "the rule is in the pack, but make found no cloud block to try it on")
+        else:
+            what = server.cmd(f"execute if block {at[0]} {at[1]} {at[2]} #{NS}:cloud", quiet=True)
+            server.cmd(f"tp {BOT} {num(at[0] + 0.5)} {num(at[1] + 1)} {num(at[2] + 0.5)}", quiet=True)
+            bot.pump(1.5)
+            check(results, tag + "on the cloud", "passed" in what and near(bot.position, feet) and turned(bot),
+                  f"stood on the cloud block at {at} ({what}), a moment later at {bot.position} facing {bot.rotation}")
+            high = (at[0] + 0.5, at[1] + 4.0, at[2] + 0.5)
+            server.cmd(f"tp {BOT} {num(high[0])} {num(high[1])} {num(high[2])}", quiet=True)
+            bot.pump(1.5)
+            check(results, tag + "over the cloud", near(bot.position, high),
+                  f"put three blocks over it, a moment later at {bot.position}")
+    # just over the line he is left alone. Far out, where nothing stands: over the sea the block
+    # under such feet may be a cloud block, which is the other rule's business
+    over = (feet[0] + 3000, spec["catch"] + 0.5, feet[2])
+    server.cmd(f"tp {BOT} {num(over[0])} {num(over[1])} {num(over[2])}", quiet=True)
+    bot.pump(2.5)
+    check(results, tag + "over the line", near(bot.position, over), f"put at y {over[1]}, a moment later at {bot.position}")
     before = len(bot.events)
     bot.close()
     time.sleep(2.0)
@@ -1070,7 +1135,9 @@ def verify(args):
             if first:
                 import mcbot
                 bot = mcbot.Bot(BOT, HOST, PORT).connect(timeout=60.0)
-                bot.pump(2.0)
+                # he left far out; the parts are read with him where the map begins
+                server.cmd("tp {} {} {} {}".format(BOT, *(num(v) for v in spec["feet"])), quiet=True)
+                bot.pump(3.0)
                 loop_runs(server, pack_dir, spec, results, tag)
                 bot.close()
             server.stop()
@@ -1142,8 +1209,9 @@ def main():
         p.add_argument("--time", type=int, help="the tick the clock is held at (default: the scene's TIME, or TIME_PLAIN "
                                                 "with the look off)")
         p.add_argument("--catch", type=int, default=CATCH, help="scene y: feet under it are put back on the spot")
-        p.add_argument("--on-cloud", choices=("back", "ignore"), default="ignore",
-                       help="back: who stands on a cloud block is put back on the spot too")
+        p.add_argument("--on-cloud", choices=("back", "ignore"),
+                       help="back: who stands on a block of the cloud sea is put back on the spot too "
+                            "(default: back, for a trial save ignore)")
         p.add_argument("--trial", help="label of a trial save (see the text at the top)")
         p.add_argument("--out", help="folder of the archive (make: default dist/<name>)", required=(what == "pack"))
     p = sub.add_parser("verify")
