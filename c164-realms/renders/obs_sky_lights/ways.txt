@@ -1,0 +1,196 @@
+/tmp/in-stations.json: 179 places
+  A: 7 places, 1 under a roof; light 5..9, median 6; lit 7, dim 0, dark 0 (0 under a roof); longest run unlit under a roof 0
+  B: 16 places, 16 under a roof; light 0..9, median 5.5; lit 11, dim 3, dark 2 (2 under a roof); longest run unlit under a roof 1   <-- unlit
+  C: 6 places, 6 under a roof; light 0..7, median 1.5; lit 2, dim 1, dark 3 (3 under a roof); longest run unlit under a roof 4   <-- unlit
+  D: 7 places, 7 under a roof; light 4..6, median 5; lit 5, dim 2, dark 0 (0 under a roof); longest run unlit under a roof 1
+  E: 13 places, 13 under a roof; light 3..7, median 5; lit 7, dim 6, dark 0 (0 under a roof); longest run unlit under a roof 1
+  F: 18 places, 18 under a roof; light 2..11, median 5; lit 11, dim 7, dark 0 (0 under a roof); longest run unlit under a roof 2
+  G: 18 places, 18 under a roof; light 4..9, median 6; lit 17, dim 1, dark 0 (0 under a roof); longest run unlit under a roof 1
+  H: 11 places, 10 under a roof; light 3..7, median 5; lit 6, dim 5, dark 0 (0 under a roof); longest run unlit under a roof 3
+  I: 15 places, 14 under a roof; light 0..2, median 0; lit 0, dim 4, dark 11 (10 under a roof); longest run unlit under a roof 12   <-- unlit
+  J: 20 places, 6 under a roof; light 0..6, median 0; lit 3, dim 4, dark 13 (6 under a roof); longest run unlit under a roof 4   <-- unlit
+  K: 18 places, 5 under a roof; light 0..6, median 0; lit 3, dim 5, dark 10 (4 under a roof); longest run unlit under a roof 4   <-- unlit
+  L: 19 places, 18 under a roof; light 4..9, median 7; lit 17, dim 2, dark 0 (0 under a roof); longest run unlit under a roof 1
+  M: 11 places, 5 under a roof; light 0..3, median 0; lit 0, dim 4, dark 7 (5 under a roof); longest run unlit under a roof 3   <-- unlit
+
+  in-A01       26.50   0.00    0.50  sky   feet  6 head  5  lit 
+  in-A02       23.50   0.00   -1.50  sky   feet  5 head  4  lit 
+  in-A03       20.50   0.00   -3.50  sky   feet  5 head  6  lit 
+  in-A04       20.50   0.00    0.50  sky   feet  8 head  9  lit 
+  in-A05       20.50   0.00    4.50  sky   feet  5 head  6  lit 
+  in-A06       20.50   0.00    0.50  sky   feet  8 head  9  lit 
+  in-A07       16.50   0.00    0.50  roof  feet  4 head  5  lit 
+  in-B01       15.50   0.00    0.50  roof  feet  3 head  4  dim   <--   nearest source 8 interiors/starhall:the sun's pool at (11, 1, 0), 4 cells
+  in-B02       12.50   0.00    0.50  roof  feet  6 head  7  lit 
+  in-B03        9.50   0.00    0.50  roof  feet  6 head  7  lit 
+  in-B04        7.50   0.00    0.50  roof  feet  8 head  9  lit 
+  in-B05        7.50   0.00   -3.50  roof  feet  5 head  6  lit 
+  in-B06       11.00   0.00   -4.00  roof  feet  0 head  5  lit 
+  in-B07       14.50   0.00   -4.50  roof  feet  0 head  0  dark  <--   nearest source 7 props/lamps:bracket_b at (13, 2, -5), 2 cells
+  in-B08       10.50   0.00   -4.50  roof  feet  6 head  7  lit 
+  in-B09        6.50   0.00   -4.50  roof  feet  5 head  6  lit 
+  in-B10        2.50   0.00   -4.50  roof  feet  3 head  4  dim   <--   nearest source 8 interiors/starhall:aisle lamp at (5, 1, -4), 4 cells
+  in-B11        2.50   0.00   -1.17  roof  feet  4 head  5  lit 
+  in-B12        2.50   0.00    2.17  roof  feet  4 head  5  lit 
+  in-B13        2.50   0.00    5.50  roof  feet  3 head  4  dim   <--   nearest source 8 interiors/starhall:aisle lamp at (5, 1, 4), 4 cells
+  in-B14        6.50   0.00    5.50  roof  feet  5 head  6  lit 
+  in-B15       10.50   0.00    5.50  roof  feet  6 head  7  lit 
+  in-B16       14.50   0.00    5.50  roof  feet  0 head  0  dark  <--   nearest source 7 props/lamps:bracket_b at (13, 2, 5), 2 cells
+  in-C01        2.50   0.00    0.50  roof  feet  6 head  7  lit 
+  in-C02        0.50   0.00    0.50  roof  feet  4 head  5  lit 
+  in-C03       -2.00   0.00    0.50  roof  feet  2 head  3  dim   <--   nearest source 8 sky/lights:way at (2, 2, 0), 5 cells
+  in-C04       -4.50   0.00    0.50  roof  feet  0 head  0  dark  <--   nearest source 8 sky/lights:way at (2, 2, 0), 8 cells
+  in-C05       -7.50   0.00    0.50  roof  feet  0 head  0  dark  <--   nearest source 10 sky/lights:window apse 0 main at (-9, 9, 0), 9 cells
+  in-C06      -10.50   0.00    0.50  roof  feet  0 head  0  dark  <--   nearest source 10 sky/lights:window apse 0 main at (-9, 9, 0), 10 cells
+  in-D01        2.50   0.00   -3.50  roof  feet  4 head  5  lit 
+  in-D02       -1.50   4.00   -3.50  roof  feet  5 head  4  lit 
+  in-D03       -5.50   7.00   -3.50  roof  feet  3 head  4  dim   <--   nearest source 7 props/lamps:cage_a at (-6, 9, -2), 3 cells
+  in-D04       -5.50   7.00    0.50  roof  feet  5 head  6  lit 
+  in-D05       -5.50   7.00    4.50  roof  feet  3 head  4  dim   <--   nearest source 7 props/lamps:cage_a at (-6, 9, 2), 3 cells
+  in-D06       -1.50   4.00    4.50  roof  feet  5 head  4  lit 
+  in-D07        2.50   0.00    4.50  roof  feet  4 head  5  lit 
+  in-E01       -3.50   7.00    0.50  roof  feet  3 head  4  dim   <--   nearest source 7 props/lamps:cage_a at (-6, 9, -2), 5 cells
+  in-E02        0.50   7.00    0.50  roof  feet  4 head  5  lit 
+  in-E03        0.50   7.00    3.00  roof  feet  2 head  3  dim   <--   nearest source 7 sky/lights:way at (0, 10, 5), 4 cells
+  in-E04        0.50   7.00    5.50  roof  feet  4 head  5  lit 
+  in-E05        4.25   7.00    5.50  roof  feet  4 head  5  lit 
+  in-E06        8.00   7.00    5.50  roof  feet  4 head  4  dim   <--   nearest source 6 props/lamps:cage_a at (8, 10, 5), 2 cells
+  in-E07       11.25   7.00    5.50  roof  feet  7 head  6  lit 
+  in-E08       14.50   7.00    5.50  roof  feet  4 head  3  dim   <--   nearest source 6 props/lamps:cage_a at (11, 10, 5), 5 cells
+  in-E09        0.50   7.00   -4.50  roof  feet  4 head  5  lit 
+  in-E10        4.50   7.00   -4.50  roof  feet  4 head  5  lit 
+  in-E11        8.00   7.00   -4.50  roof  feet  4 head  4  dim   <--   nearest source 6 props/lamps:cage_a at (8, 10, -5), 2 cells
+  in-E12       11.25   7.00   -4.50  roof  feet  7 head  6  lit 
+  in-E13       14.50   7.00   -4.50  roof  feet  4 head  3  dim   <--   nearest source 6 props/lamps:cage_a at (11, 10, -5), 5 cells
+  in-F01        8.00   7.00   -5.50  roof  feet  3 head  3  dim   <--   nearest source 6 props/lamps:cage_a at (8, 10, -5), 3 cells
+  in-F02        8.00   7.00   -8.50  roof  feet  1 head  2  dim   <--   nearest source 6 props/lamps:cage_a at (8, 10, -5), 6 cells
+  in-F03        5.75   7.00   -8.50  roof  feet  4 head  5  lit 
+  in-F04        3.50   7.00   -8.50  roof  feet  6 head  7  lit 
+  in-F05        3.50   7.00  -12.25  roof  feet  5 head  5  lit 
+  in-F06        3.50   7.00  -16.00  roof  feet  8 head  7  lit 
+  in-F07        3.50   7.00  -19.75  roof  feet  4 head  4  dim   <--   nearest source 8 interiors/timeroom:rating bench at (3, 7, -16), 5 cells
+  in-F08        3.50   7.00  -23.50  roof  feet  7 head  8  lit 
+  in-F09        6.50   7.00  -23.50  roof  feet 10 head 11  lit 
+  in-F10        9.50   7.00  -23.50  roof  feet 10 head 11  lit 
+  in-F11       12.50   7.00  -23.50  roof  feet  7 head  8  lit 
+  in-F12       12.50   7.00  -19.75  roof  feet  3 head  4  dim   <--   nearest source 9 interiors/timeroom:clock east at (13, 8, -25), 6 cells
+  in-F13       12.50   7.00  -16.00  roof  feet  4 head  3  dim   <--   nearest source 8 interiors/timeroom:message desk at (12, 7, -12), 5 cells
+  in-F14       12.50   7.00  -12.25  roof  feet  7 head  6  lit 
+  in-F15       12.50   7.00   -8.50  roof  feet  5 head  4  lit 
+  in-F16        8.00   7.00  -12.50  roof  feet  3 head  2  dim   <--   nearest source 8 interiors/timeroom:message desk at (12, 7, -12), 6 cells
+  in-F17        8.00   7.00  -16.50  roof  feet  2 head  3  dim   <--   nearest source 8 interiors/timeroom:rating bench at (3, 7, -16), 7 cells
+  in-F18        8.00   7.00  -20.50  roof  feet  6 head  7  lit 
+  in-G01        8.00   7.00    6.50  roof  feet  3 head  4  dim   <--   nearest source 6 props/lamps:cage_a at (8, 10, 5), 3 cells
+  in-G02        8.00   7.00    9.50  roof  feet  6 head  7  lit 
+  in-G03        5.75   7.00    9.50  roof  feet  4 head  5  lit 
+  in-G04        3.50   7.00    9.50  roof  feet  4 head  5  lit 
+  in-G05        3.50   7.00   13.25  roof  feet  6 head  7  lit 
+  in-G06        3.50   7.00   17.00  roof  feet  7 head  6  lit 
+  in-G07        3.50   7.00   20.75  roof  feet  5 head  6  lit 
+  in-G08        3.50   7.00   24.50  roof  feet  5 head  6  lit 
+  in-G09        6.50   7.00   24.50  roof  feet  4 head  5  lit 
+  in-G10        9.50   7.00   24.50  roof  feet  4 head  5  lit 
+  in-G11       12.50   7.00   24.50  roof  feet  5 head  6  lit 
+  in-G12       12.50   7.00   20.75  roof  feet  8 head  7  lit 
+  in-G13       12.50   7.00   17.00  roof  feet  5 head  5  lit 
+  in-G14       12.50   7.00   13.25  roof  feet  7 head  6  lit 
+  in-G15       12.50   7.00    9.50  roof  feet  5 head  4  lit 
+  in-G16        8.00   7.00   13.50  roof  feet  8 head  9  lit 
+  in-G17        8.00   7.00   17.50  roof  feet  8 head  9  lit 
+  in-G18        8.00   7.00   21.50  roof  feet  4 head  5  lit 
+  in-H01        4.50   7.00   -3.50  roof  feet  5 head  6  lit 
+  in-H02        4.50   7.50   -2.50  roof  feet  4 head  5  lit 
+  in-H03        1.50   8.50   -2.50  roof  feet  3 head  4  dim   <--   nearest source 7 sky/lights:way at (0, 10, -5), 4 cells
+  in-H04        1.50  10.00    0.50  sky   feet  6 head  5  lit 
+  in-H05        1.50  11.50    3.50  roof  feet  3 head  4  dim   <--   nearest source 8 sky/lights:way at (4, 12, 2), 4 cells
+  in-H06        4.50  13.00    3.50  roof  feet  6 head  5  lit 
+  in-H07        7.50  14.00    3.50  roof  feet  6 head  7  lit 
+  in-H08        7.50  15.50    0.50  roof  feet  4 head  5  lit 
+  in-H09        7.50  16.50   -2.50  roof  feet  3 head  2  dim   <--   nearest source 8 sky/lights:way at (4, 15, -2), 6 cells
+  in-H10        4.50  18.00   -2.50  roof  feet  4 head  3  dim   <--   nearest source 8 sky/lights:way at (4, 15, -2), 5 cells
+  in-H11        4.50  18.00   -3.50  roof  feet  3 head  2  dim   <--   nearest source 8 sky/lights:way at (4, 15, -2), 6 cells
+  in-I01        4.50  18.00   -7.50  roof  feet  0 head  0  dark  <--   nearest source 7 interiors/timeroom:ceiling over the world clocks at (4, 13, -9), 7 cells
+  in-I02        7.35  18.00   -6.35  roof  feet  0 head  0  dark  <--   nearest source 4 machines/scope:lamp at (9, 20, 0), 10 cells
+  in-I03       10.20  18.00   -5.20  roof  feet  0 head  0  dark  <--   nearest source 4 machines/scope:lamp at (9, 20, 0), 8 cells
+  in-I04       11.35  18.00   -2.35  roof  feet  0 head  0  dark  <--   nearest source 3 interiors/domeroom:pilot_lamps at (14, 19, 0), 6 cells
+  in-I05       12.50  18.00    0.50  roof  feet  0 head  1  dim   <--   nearest source 3 interiors/domeroom:pilot_lamps at (14, 19, 0), 2 cells
+  in-I06       11.35  18.00    3.35  roof  feet  2 head  1  dim   <--   nearest source 3 interiors/domeroom:pilot_lamps at (14, 19, 0), 6 cells
+  in-I07       10.20  18.00    6.20  roof  feet  0 head  0  dark  <--   nearest source 4 machines/scope:lamp at (9, 20, 0), 8 cells
+  in-I08        7.35  18.00    7.35  roof  feet  2 head  1  dim   <--   nearest source 3 interiors/domeroom:clock_dial at (4, 19, 10), 6 cells
+  in-I09        4.50  18.00    8.50  roof  feet  0 head  1  dim   <--   nearest source 3 interiors/domeroom:clock_dial at (4, 19, 10), 2 cells
+  in-I10        1.65  18.00    7.35  roof  feet  0 head  0  dark  <--   nearest source 3 interiors/domeroom:clock_dial at (4, 19, 10), 6 cells
+  in-I11       -1.20  18.00    6.20  roof  feet  0 head  0  dark  <--   nearest source 3 interiors/domeroom:clock_dial at (4, 19, 10), 10 cells
+  in-I12       -2.35  18.00    3.35  roof  feet  0 head  0  dark  <--   nearest source 8 sky/lights:way at (7, 16, 3), 13 cells
+  in-I13       -3.50  18.00    0.50  sky   feet  0 head  0  dark  (sky)   nearest source 10 sky/lights:window apse 0 main at (-9, 12, 0), 12 cells
+  in-I14       -2.35  18.00   -2.35  roof  feet  0 head  0  dark  <--   nearest source 8 sky/lights:way at (4, 15, -2), 12 cells
+  in-I15       -1.20  18.00   -5.20  roof  feet  0 head  0  dark  <--   nearest source 7 sky/lights:way at (0, 10, -5), 12 cells
+  in-J01       11.50  18.00    6.50  roof  feet  0 head  0  dark  <--   nearest source 3 interiors/domeroom:pilot_lamps at (14, 19, 0), 9 cells
+  in-J02       12.50  18.00    8.50  roof  feet  0 head  0  dark  <--   nearest source 3 interiors/domeroom:clock_dial at (4, 19, 10), 10 cells
+  in-J03       12.50  18.00   10.50  roof  feet  0 head  0  dark  <--   nearest source 3 interiors/domeroom:clock_dial at (4, 19, 10), 8 cells
+  in-J04       12.50  18.00   12.50  roof  feet  0 head  0  dark  <--   nearest source 6 main/roof:walk at (8, 20, 15), 8 cells
+  in-J05       13.50  18.00   14.50  sky   feet  0 head  0  dark  (sky)   nearest source 6 main/roof:walk at (8, 20, 15), 7 cells
+  in-J06       12.50  18.00   15.50  sky   feet  0 head  1  dim   (sky)   nearest source 6 main/roof:walk at (8, 20, 15), 5 cells
+  in-J07       10.50  19.00   15.50  sky   feet  3 head  4  dim   (sky)   nearest source 6 main/roof:walk at (8, 20, 15), 2 cells
+  in-J08        8.50  20.00   16.50  sky   feet  5 head  4  lit 
+  in-J09        8.33  20.00   19.50  sky   feet  5 head  4  lit 
+  in-J10        8.17  20.00   22.50  sky   feet  4 head  3  dim   (sky)   nearest source 6 main/roof:walk at (8, 20, 20), 3 cells
+  in-J11        8.00  20.00   25.50  sky   feet  6 head  5  lit 
+  in-J12        5.50  19.00   25.50  sky   feet  2 head  3  dim   (sky)   nearest source 6 main/roof:walk at (8, 20, 25), 3 cells
+  in-J13        2.50  18.00   25.50  sky   feet  0 head  0  dark  (sky)   nearest source 6 main/roof:walk at (8, 20, 25), 7 cells
+  in-J14        2.50  18.00   27.50  sky   feet  0 head  0  dark  (sky)   nearest source 6 main/roof:walk at (8, 20, 25), 9 cells
+  in-J15        2.50  18.00   30.00  sky   feet  0 head  0  dark  (sky)   nearest source 10 sky/lights:window west 16 main at (0, 12, 29), 10 cells
+  in-J16        2.50  18.00   32.50  sky   feet  0 head  0  dark  (sky)   nearest source 10 sky/lights:window south 1 main at (3, 12, 34), 10 cells
+  in-J17        5.50  18.00   31.50  sky   feet  0 head  0  dark  (sky)   nearest source 6 main/roof:walk at (8, 20, 25), 10 cells
+  in-J18        8.50  18.00   30.50  roof  feet  0 head  0  dark  <--   nearest source 6 main/roof:walk at (8, 20, 25), 6 cells
+  in-J19       10.50  18.00   30.50  sky   feet  0 head  0  dark  (sky)   nearest source 6 main/roof:walk at (8, 20, 25), 8 cells
+  in-J20       12.50  18.00   30.50  roof  feet  0 head  0  dark  <--   nearest source 6 main/roof:walk at (8, 20, 25), 10 cells
+  in-K01       11.50  18.00   -5.50  roof  feet  0 head  0  dark  <--   nearest source 3 interiors/domeroom:pilot_lamps at (14, 19, 0), 9 cells
+  in-K02       12.50  18.00   -7.50  roof  feet  0 head  0  dark  <--   nearest source 3 interiors/domeroom:pilot_lamps at (14, 19, 0), 10 cells
+  in-K03       12.50  18.00   -9.50  roof  feet  0 head  0  dark  <--   nearest source 6 main/roof:walk at (8, 20, -15), 10 cells
+  in-K04       12.50  18.00  -11.50  roof  feet  0 head  0  dark  <--   nearest source 6 main/roof:walk at (8, 20, -15), 8 cells
+  in-K05       13.50  18.00  -13.50  sky   feet  0 head  0  dark  (sky)   nearest source 6 main/roof:walk at (8, 20, -15), 7 cells
+  in-K06       12.50  18.00  -14.50  sky   feet  0 head  1  dim   (sky)   nearest source 6 main/roof:walk at (8, 20, -15), 5 cells
+  in-K07       10.50  19.00  -14.50  sky   feet  3 head  4  dim   (sky)   nearest source 6 main/roof:walk at (8, 20, -15), 2 cells
+  in-K08        8.50  20.00  -15.50  sky   feet  5 head  4  lit 
+  in-K09        8.33  20.00  -18.50  sky   feet  5 head  4  lit 
+  in-K10        8.17  20.00  -21.50  sky   feet  4 head  3  dim   (sky)   nearest source 6 main/roof:walk at (8, 20, -20), 3 cells
+  in-K11        8.00  20.00  -24.50  sky   feet  6 head  5  lit 
+  in-K12        5.50  19.00  -24.50  sky   feet  2 head  3  dim   (sky)   nearest source 6 main/roof:walk at (8, 20, -25), 3 cells
+  in-K13        2.50  18.00  -24.50  sky   feet  0 head  0  dark  (sky)   nearest source 6 main/roof:walk at (8, 20, -25), 7 cells
+  in-K14        2.50  18.00  -26.50  sky   feet  0 head  0  dark  (sky)   nearest source 6 main/roof:walk at (8, 20, -25), 9 cells
+  in-K15        2.50  18.00  -29.00  sky   feet  0 head  0  dark  (sky)   nearest source 6 main/roof:walk at (8, 20, -25), 11 cells
+  in-K16        2.50  18.00  -31.50  sky   feet  0 head  0  dark  (sky)   nearest source 7 sky/lights:window tower tower 3 shaft at (10, 22, -30), 13 cells
+  in-K17        6.00  18.00  -30.50  sky   feet  0 head  0  dark  (sky)   nearest source 7 sky/lights:window tower tower 3 shaft at (10, 22, -30), 8 cells
+  in-K18        9.50  18.00  -29.50  roof  feet  2 head  3  dim   <--   nearest source 7 sky/lights:window tower tower 3 shaft at (10, 22, -30), 4 cells
+  in-L01       74.50  -6.00   17.50  sky   feet  4 head  3  dim   (sky)   nearest source 7 props/lamps:cage_a at (74, -2, 20), 6 cells
+  in-L02       74.50  -6.00   20.50  roof  feet  7 head  6  lit 
+  in-L03       74.50  -6.00   22.50  roof  feet  9 head  8  lit 
+  in-L04       72.50  -6.00   23.00  roof  feet  8 head  7  lit 
+  in-L05       70.50  -6.00   23.50  roof  feet  6 head  5  lit 
+  in-L06       70.50  -6.00   27.25  roof  feet  0 head  7  lit 
+  in-L07       70.50  -6.00   31.00  roof  feet  0 head  8  lit 
+  in-L08       70.50  -6.00   34.75  roof  feet  6 head  7  lit 
+  in-L09       70.50  -6.00   38.50  roof  feet  8 head  9  lit 
+  in-L10       74.50  -6.00   38.50  roof  feet  8 head  9  lit 
+  in-L11       78.50  -6.00   38.50  roof  feet  8 head  9  lit 
+  in-L12       82.50  -6.00   38.50  roof  feet  8 head  9  lit 
+  in-L13       86.50  -6.00   38.50  roof  feet  6 head  7  lit 
+  in-L14       86.50  -6.00   34.83  roof  feet  8 head  9  lit 
+  in-L15       86.50  -6.00   31.17  roof  feet  5 head  6  lit 
+  in-L16       86.50  -6.00   27.50  roof  feet  3 head  4  dim   <--   nearest source 10 sky/lights:window power power.east 2 furnace at (89, -2, 27), 6 cells
+  in-L17       82.50  -6.00   27.50  roof  feet  6 head  5  lit 
+  in-L18       82.50  -6.00   23.50  roof  feet  4 head  5  lit 
+  in-L19       78.50  -6.00   31.50  roof  feet  6 head  7  lit 
+  in-M01       35.50   0.00  -21.50  sky   feet  0 head  1  dim   (sky)   nearest source 7 props/lamps:cage_a at (37, 2, -25), 6 cells
+  in-M02       35.50   0.00  -25.50  sky   feet  0 head  3  dim   (sky)   nearest source 7 props/lamps:cage_a at (37, 2, -25), 4 cells
+  in-M03       35.50   0.00  -27.50  sky   feet  0 head  1  dim   (sky)   nearest source 4 machines/meridian:lamp at (32, 2, -30), 6 cells
+  in-M04       35.50   0.00  -29.50  sky   feet  0 head  0  dark  (sky)   nearest source 4 machines/meridian:lamp at (32, 2, -30), 4 cells
+  in-M05       32.50   0.00  -32.50  roof  feet  0 head  0  dark  <--   nearest source 4 machines/meridian:lamp at (32, 2, -30), 4 cells
+  in-M06       35.50   0.00  -32.50  sky   feet  0 head  0  dark  (sky)   nearest source 4 machines/meridian:lamp at (32, 2, -30), 7 cells
+  in-M07       38.50   0.00  -32.50  roof  feet  0 head  0  dark  <--   nearest source 4 machines/meridian:lamp at (32, 2, -30), 10 cells
+  in-M08       38.50   0.00  -29.50  roof  feet  0 head  0  dark  <--   nearest source 4 machines/meridian:lamp at (32, 2, -30), 7 cells
+  in-M09       38.50   0.00  -26.50  roof  feet  0 head  0  dark  <--   nearest source 7 props/lamps:cage_a at (37, 2, -25), 4 cells
+  in-M10       35.50   0.00  -26.50  sky   feet  0 head  2  dim   (sky)   nearest source 7 props/lamps:cage_a at (37, 2, -25), 5 cells
+  in-M11       32.50   0.00  -26.50  roof  feet  0 head  0  dark  <--   nearest source 4 machines/meridian:lamp at (32, 2, -30), 4 cells
+
+ways with a dark place under a roof or more than 3 unlit places in a row: 6
