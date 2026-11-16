@@ -117,6 +117,7 @@ LAMP_Z = (-3.5, 1.5)            # ... from its back to its front; the bezel and 
 FRAMES, PACE = 8, 2             # the moving pictures: so many frames, each so many ticks (a flame: A1's 2)
 DROP = 45.0                     # degrees the arm falls from "stop" to "clear"
 ROD = (3.0, 1.0)                # the down rod: x and z of its axis, from the mast's
+ROD_LONG = 40.0                 # the rod's model is this long (with the wire under its eye a model stays within 48)
 REACH = 4.0                     # the balance lever's pin stands this far beyond the rod
 # The crank's pin stands over the spindle's level at "stop" as far as it stands under it at
 # "clear", so the rod only goes up and down; the lever's short arm is so long that its eye does
@@ -381,10 +382,10 @@ def _joint():
 
 def _rod():
     """The down rod: half a pixel square, along +y from the anchor (the eye of the balance
-    lever), 48 long, drawn out; and under the eye, in the lever's plane, the last of the signal
-    wire, which comes up from the wheel."""
+    lever), ROD_LONG long, drawn out; and under the eye, in the lever's plane, the last of the
+    signal wire, which comes up from the wheel."""
     m = M.Model(PREFIX + "rod", px=1.0)
-    m.box((-0.25, 0.0, -0.25), (0.25, 48.0, 0.25), EDGE)
+    m.box((-0.25, 0.0, -0.25), (0.25, ROD_LONG, 0.25), EDGE)
     tail = PIVOT[1] + CRANK[1] - WHEEL[0]
     m.box((-0.2, -tail, -ROD[1] - 0.2), (0.2, 0.0, -ROD[1] + 0.2), SOOT)
     return m
@@ -473,7 +474,8 @@ def _rod_length(height):
 
 def _rod_display(yaw, height, clear, view):
     """The rod's display NBT: drawn out to its length, and at "clear" TRAVEL lower."""
-    nbt = M.display(_models()[PREFIX + "rod"], yaw=yaw, scale=(1.0, _rod_length(height) * 16.0 / 48.0, 1.0), view=view)
+    nbt = M.display(_models()[PREFIX + "rod"], yaw=yaw, scale=(1.0, _rod_length(height) * 16.0 / ROD_LONG, 1.0),
+                    view=view)
     if clear:
         move = nbt["transformation"]["translation"]
         move[1] = type(move[1])(float(move[1]) - TRAVEL / 16.0)
