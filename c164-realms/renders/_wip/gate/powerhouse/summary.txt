@@ -1,0 +1,14 @@
+gate site/powerhouse 0d61b47d: the merged tree 0d61b47d, the assembly as it was 66604cb2
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 103 scenes in 167 s: 103 pass (56 with warnings)
+pictures: obs_site_powerhouse: the kept pictures are NOT what the delivered commit 0d61b47d draws (it goes back):
+    [FAIL] selfshots obs_site_powerhouse at 0d61b47d: 14 of 17 kept pictures are what the code draws, 3 not
+    v1: 191 of 921600 pixels are not what the code draws (off by up to 116 of 255)
+    aerial_back: 423 of 921600 pixels are not what the code draws (off by up to 64 of 255)
+    v12: 135 of 921600 pixels are not what the code draws (off by up to 44 of 255)
+pictures: obs_site_powerhouse_b: the kept pictures are NOT what the delivered commit 0d61b47d draws (it goes back):
+    [FAIL] selfshots obs_site_powerhouse_b at 0d61b47d: 14 of 17 kept pictures are what the code draws, 3 not
+    v1: 191 of 921600 pixels are not what the code draws (off by up to 116 of 255)
+    aerial_back: 423 of 921600 pixels are not what the code draws (off by up to 64 of 255)
+    v12: 135 of 921600 pixels are not what the code draws (off by up to 44 of 255)
+result: FAIL
