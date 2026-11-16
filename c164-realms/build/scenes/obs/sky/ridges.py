@@ -23,9 +23,8 @@ its foot the mist on the sea hides it: over the lowest VEIL degrees it comes out
 lies on the horizon, so the sea's far edge shows no line.
 
 The line is baked into a table of columns, STEP degrees of bearing each and whole steps of STEP
-high: the ridge keeps the stepped outline of a mountain of blocks seen from afar (a block 460
-blocks off is an eighth of a degree, about what a pixel of the sheets was; steps twice that
-size were on the real machine first and showed as steps).
+high: the ridge keeps the stepped outline of a mountain of blocks seen from afar (a block 230
+blocks off is a quarter of a degree).
 
 Nothing is built and the pack gets no model or picture from here: the layer is all there is.
 
@@ -54,14 +53,11 @@ SHORE = -1.6                # where a range's line ends under the horizon, in de
 # up), from the horizon at the notch over peaks and saddles back under the horizon. Towards a peak
 # the line is hollow: flat out of the saddle, steep under the top (FLANK); elsewhere the points are
 # joined by straight lines. Then the line is broken up (JAG). The south range is not the north one
-# mirrored. The north's highest peak stands near the notch, 17.5 degrees north of west: the arrival
-# view (V1) has a strip of horizon between the terrace's end and the station, 14 to 22 degrees
-# north of west, and that is the mountain in it. The south's highest peak stands further out,
-# behind a bold headland next to the notch.
+# mirrored: its bold headland stands next to the notch, its highest peak further out.
 RANGES = {
     "north": dict(seed=3, line=(
-        (9.0, SHORE), (10.5, 0.2), (12.5, 1.1), (14.0, 0.7), (17.5, 3.8), (22.5, 1.5), (28.0, 2.9), (33.5, 1.0),
-        (39.5, 2.3), (45.5, 0.8), (51.5, 1.7), (58.0, 0.5), (64.5, 1.3), (71.5, 0.3), (78.0, 0.9), (87.0, -0.4),
+        (9.0, SHORE), (10.5, 0.2), (15.5, 1.9), (18.5, 0.6), (25.0, 3.6), (30.0, 1.5), (35.5, 2.9), (40.5, 1.0),
+        (46.0, 2.3), (51.5, 0.8), (57.0, 1.7), (63.0, 0.5), (69.0, 1.3), (75.0, 0.3), (80.0, 0.9), (88.0, -0.4),
         (94.0, SHORE))),
     "south": dict(seed=7, line=(
         (-8.5, SHORE), (-9.5, 0.4), (-13.5, 2.7), (-17.5, 0.9), (-23.0, 2.1), (-28.0, 1.2), (-37.0, 3.8),
@@ -113,7 +109,7 @@ def line(name, bearing):
 
 
 # ---- the layer on the sky ------------------------------------------------------------------------
-STEP = 0.125                # degrees to a column of the table, and to a step in height
+STEP = 0.25                 # degrees to a column of the table, and to a step in height
 FROM = -95.0                # the first column's bearing, degrees north of due west
 COLUMNS = int(round(-2.0 * FROM / STEP))
 VEIL = 0.5                  # degrees over the horizon at which a ridge has come out of the sea's mist
