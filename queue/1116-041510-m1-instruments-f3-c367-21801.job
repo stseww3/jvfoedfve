@@ -1,0 +1,3 @@
+branch=cursor/c164-m1-instruments-f3-c367
+head=056a2d8a2fd85424ef14cbda0bbf363f48aedfa6
+args=--no-push --tail 60 rc=0\;\ for\ s\ in\ obs_props_instruments\ obs_int_domeroom\ obs_int_timeroom\;\ do\ python\ tools/check.py\ --scene\ \$s\ \>\ /tmp/m1_\$s.log\ 2\>\&1\ \|\|\ rc=1\;\ echo\ \"==\ \$s\"\;\ grep\ -E\ \"\^\\\[\(FAIL\|WARN\)\\\]\|\^\\\[PASS\\\]\ motion\|pendulum\|\^result:\"\ /tmp/m1_\$s.log\;\ done\;\ exit\ \$rc 
