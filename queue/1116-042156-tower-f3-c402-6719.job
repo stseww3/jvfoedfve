@@ -1,0 +1,3 @@
+branch=cursor/c164-tower-f3-c402
+head=8dc16ae24c81d563781a435a2d474e4ad8fe97ce
+args=--no-push --tail 70 python\ tools/check.py\ --scene\ obs_main_tower\ --shots\ build/scenes/obs_main_tower/shots.json\ \>\ /tmp/tower-check.txt\ 2\>\&1\;\ echo\ \"check\ exit=\$\?\"\;\ grep\ -n\ -i\ -E\ \"motion\|FAIL\|WARN\|result\|entit\"\ /tmp/tower-check.txt\ \|\ cut\ -c1-400\ \|\ head\ -n\ 24\;\ tail\ -n\ 2\ /tmp/tower-check.txt\ \|\ cut\ -c1-300\;\ \(cd\ build\ \&\&\ python\ -m\ scenes.obs.main.tower\ 2\>\&1\ \|\ sed\ -n\ 1\,16p\ \|\ cut\ -c1-400\) 
