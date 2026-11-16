@@ -8,7 +8,7 @@ the clocks, the telegraph and the time ball upstairs, evenly, whatever the engin
 The room is the closed cavity main/shell leaves under the time room: 12 wide (x 2..13), 19 long
 (z -25..-7), six rows high (feet at 0, the last clear row 5; the block over it is the time room's
 floor). Its door is one cell in the south wall, (7, 0..1, -6), from under the star hall's north
-gallery (HALL_DOOR; main/shell cuts it when the room has passed its review, not before).
+gallery (HALL_DOOR; main/shell cuts it once the room is in the master scene).
 
 What stands where (plan cells; north is -z, one comes in at the south end and looks north):
 
@@ -54,7 +54,7 @@ cable trough. A caged lamp throws its light down, so its light is offered under 
 between the jars (LAMPS); half way between two lamps a fill of what both throw (FILLS). The models of the room are held at the height of the upper tier (HELD), so that a jar
 takes the light of the row its glass stands in and not that of the floor.
 
-build() is what the master scene calls: nothing while MOVED_IN is off. The box test scene,
+build() is what the master scene calls; it places nothing while MOVED_IN is off. The box test scene,
 build/scenes/obs_int_batteryroom, dresses a slice of the real building cut out round the cavity.
 """
 import functools
@@ -73,7 +73,8 @@ from ..main import shell
 from ..props import _kit as K
 from ..props import lamps
 
-MOVED_IN = False
+MOVED_IN = True            # the master scene dresses the room (a card's switch is turned on with its delivery); the
+#                            doorway is main/shell's to cut (HALL_DOOR): until then the room stands closed
 NAME = "interiors/batteryroom"
 PREFIX = "int_batteryroom_"
 PX = 1 / 16.0
