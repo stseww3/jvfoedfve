@@ -121,8 +121,17 @@ def shell():
     c = Canvas()
     _shell(c)
     _rotunda(c)
-    c.machines = _scope(c)
+    c.machines = _scope(c) + _gear(c)
     return c
+
+
+def _gear(c):
+    """What turns the dome and opens its slit (machines/dome), once it stands in the master scene:
+    the rail and the trucks on the ledge, the toothed ring, the hand wheel in the north-west corner,
+    the winch at the slit's foot and the weights under the arch girders. V8 has all of it in the
+    picture. Returns the display entities placed."""
+    gear = domeroom._other("machines", "dome")
+    return gear.build(c) if gear is not None else 0
 
 
 def dressed():
@@ -152,9 +161,10 @@ def build_models():
         module = domeroom._other("props", name)
         if module is not None:
             out.update(module.models())
-    scope = domeroom._other("machines", "scope")
-    if scope is not None:
-        out.update(scope.models())
+    for name in ("scope", "dome"):
+        module = domeroom._other("machines", name)
+        if module is not None:
+            out.update(module.models())
     return out
 
 
