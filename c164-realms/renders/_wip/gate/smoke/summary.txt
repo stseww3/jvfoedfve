@@ -1,0 +1,9 @@
+gate motion/smoke 37d41a3c: the merged tree 37d41a3c, the assembly as it was 3b340160
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 89 scenes in 118 s: 89 pass (88 with warnings)
+pictures: [PASS] selfshots obs_mot_smoke at 37d41a3c: 10 of 10 kept pictures are what the code draws
+pictures: obs_mot_smoke_room: the kept pictures are NOT what the delivered commit 37d41a3c draws (it goes back):
+    [FAIL] selfshots obs_mot_smoke_room at 37d41a3c: 12 of 14 kept pictures are what the code draws, 2 not
+    fire: 10151 of 921600 pixels are not what the code draws (off by up to 45 of 255)
+    fire_again: 10151 of 921600 pixels are not what the code draws (off by up to 45 of 255)
+result: FAIL
