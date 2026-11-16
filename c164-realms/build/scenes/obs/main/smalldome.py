@@ -14,7 +14,9 @@ Rows, bottom to top:
     y 18..19  the stone body, seven across and one block thick: it stands one block inside the
               dome's foot, so the dome reads as the larger of the two. A small dark window over a
               sunk panel on the east, south and north axes; an iron door on the west, onto the
-              pavilion's terrace, its leaf set back to the wall's inner face.
+              pavilion's terrace. Its leaf stands open against the south jamb, within the wall's
+              thickness: nothing in the map is clicked (the reach is 0), so a shut leaf would
+              shut the astrograph's room for good (a4's walk of 11-16).
     y 20      the head of the drum: a stone corbel (stairs hung upside down) that widens the body
               to the nine of the dome. Its lip is flush with the pavilion's wall faces.
     y 21      the iron skirt, the ring the dome turns on: riveted plate with a cast axle box on each
@@ -64,6 +66,8 @@ R = S.SMALL_DOME_R                                       # 4.5
 BODY_Y = (S.SMALL_DRUM_BASE, S.SMALL_DRUM_BASE + 1)      # 18..19: the stone body
 WINDOW_Y = BODY_Y[1]                                     # 19
 DOOR_Y = BODY_Y                                          # 18..19: the door onto the terrace
+DOOR_OPEN = True                                         # the leaf stands open: nothing in the map is clicked,
+#                                                          and the astrograph's room is furnished (a4, 11-16)
 HEAD_Y = BODY_Y[1] + 1                                   # 20: the corbel
 SKIRT_Y = HEAD_Y + 1                                     # 21: the iron skirt; the dome's curve starts at its foot
 APEX = S.SMALL_DOME_APEX                                 # 26: the last row anything stands in
@@ -104,6 +108,13 @@ def door_cells():
     return [(x, y, z) for y in range(DOOR_Y[0], DOOR_Y[1] + 1)]
 
 
+def door_state(half):
+    """The leaf's block state. Shut, a door that faces west fills the east 3/16 of its cell, the
+    wall's inner face. Open, hinged on the left, it stands against the south jamb within the
+    wall's thickness and leaves 13/16 of the doorway (the clock tower's door stands the same way)."""
+    return f"{B.IRON_DOOR}[facing=west,half={half},hinge=left,open={'true' if DOOR_OPEN else 'false'}]"
+
+
 def windows():
     """Every window of the drum, in the form _order.build returns them, for whoever lights them.
     The front is "sdome", the bays 0 east, 1 south, 3 north; the glass is dark (an observing room)."""
@@ -141,8 +152,8 @@ def drum(canvas, origin=(0, 0, 0), glass=None):
         (x, z), = w["cells"]
         put(x, WINDOW_Y, z, w["glass"])
         put(x, WINDOW_Y - 1, z, PANEL.block)
-    for (x, y, z), half in zip(door_cells(), ("lower", "upper")):         # on the cell's inner edge
-        put(x, y, z, f"{B.IRON_DOOR}[facing=west,half={half},hinge=left,open=false]")
+    for (x, y, z), half in zip(door_cells(), ("lower", "upper")):
+        put(x, y, z, door_state(half))
     O.Laying(canvas, None, origin, None).mould(BODY, HEAD_Y, STONE.stairs, "top")
     boxes = axle_boxes()
     for x, z in RING:
@@ -301,6 +312,8 @@ def check():
             out.append(f"drum: no window in bay {w['bay']}")
     if any(name(*cell) != B.IRON_DOOR for cell in door_cells()):
         out.append("drum: no door leaf on the west axis")
+    if DOOR_OPEN and any("open=true" not in (c.get(*cell) or "") for cell in door_cells()):
+        out.append("drum: the door's leaf is shut, the room behind it cannot be walked into")
     return out
 
 
