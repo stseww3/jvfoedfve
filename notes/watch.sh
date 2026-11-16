@@ -56,9 +56,10 @@ for c in $(walk "$seen" "$head"); do
         | awk -F'\t' -v m="${c:0:8}" -v d="${second:0:8}" '{ who=$2; sub(/:.*/, "", who); what=$2; sub(/^[^:]*: */, "", what); sub(/ Co-authored-by.*/, "", what); print $1 "\t" who "\t" what "\t" d "\t" m }' >> "$ledger"
     fi
     echo "     merge of ${second:0:8} ($(git log -1 --format='%s' "$second" | filt | cut -c1-80))"
-    git diff --name-only "$c^1" "$c" | sed 's#^c164-realms/##' | python3 -c '
-import sys, collections
+    git diff --name-only "$c^1" "$c" | sed 's#^c164-realms/##' | SUBJ="$(git log -1 --format='%s' "$c")" python3 -c '
+import sys, collections, os, re
 areas = collections.Counter(); odd = []
+subject = os.environ.get("SUBJ", "")
 for p in sys.stdin.read().split("\n"):
     if not p: continue
     s = p.split("/")
@@ -77,6 +78,27 @@ for p in sys.stdin.read().split("\n"):
 print("     " + "; ".join(f"{k} x{v}" for k, v in sorted(areas.items())))
 if odd:
     print("     !! outside a package: " + ", ".join(odd[:14]) + (" ..." if len(odd) > 14 else ""))
+# A merge its owner made himself (the director, 11-16 13:16: "(self)" in the subject) may touch his own
+# package only: code of another category, a second module of his category, anything outside a package
+# is for the approver.
+if "(self)" in subject:
+    m = re.search(r"merge ([a-z]+)/([\w\-]+)", subject)
+    cat = m.group(1) if m else "?"
+    code = sorted(k.split(" ", 1)[1] for k in areas if k.startswith("code "))
+    cards = sorted(k.split(" ", 1)[1] for k in areas if k.startswith("card "))
+    wrong = [c for c in code if not c.startswith(cat + "/")] + [c for c in cards if not c.startswith(cat + "/")]
+    kit = [c for c in code if c.split("/", 1)[1].startswith("_kit")]
+    notes = []
+    if wrong:
+        notes.append("another category: " + ", ".join(wrong))
+    if kit:
+        notes.append("a kit: " + ", ".join(kit))
+    if odd:
+        notes.append(str(len(odd)) + " paths outside a package")
+    if len([c for c in code if c.startswith(cat + "/")]) > 1:
+        notes.append("modules of " + cat + ": " + ", ".join(c for c in code if c.startswith(cat + "/")))
+    print("     (self) " + (m.group(0)[6:] if m else "?") + (": !! NOT HIS ALONE -- " + "; ".join(notes) if (wrong or kit or odd) else
+                                                         (": " + "; ".join(notes) + " (look)" if notes else ": his own package only")))
 '
   else
     git diff --name-only "$c^1" "$c" | sed 's#^c164-realms/##' | head -8 | sed 's/^/     /'

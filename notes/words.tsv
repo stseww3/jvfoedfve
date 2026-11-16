@@ -199,3 +199,18 @@ d9062cc8	材质·痕迹的统一做法 8f0c5223（a1 合；a1）：`plan/parts/m
 87332f88	屋面设备·第二包 e3ed6934（facade 合，关口在 node35；shell）：通风帽的中层、近层（法兰螺栓、箍上铆钉、立缝、风门扳杆、四根拉杆、铜绿锥帽；油迹锈痕粉笔勾）；位置、转速、8 件不变；作者 node39 场景检查过
 4fb893c8	路灯·屋面两盏挂回东面 59afa5ad（cr2 合；lights）：facade 定的，两盏挂回墙墩东面，光源回 (15, 19, ±9)；lights 在 node45 关口全过（delivery PASS，checkall 102 个场景）
 3a5231a5	公共·`INTERFACE.md` 第 7 节补一段 1aa2744f（s2）：室外的件凡是算在轮廓里或者挂着光的一律留远档，只有一格以内的小件才降中档（总监 13:10）；公告 #1854
+58fa4d5d	子午仪和天体照相仪·留图重画 b53b2692（cr3 合；sdome）：只有图和卡，旧了的 21 张在 node42 重画
+14ac27f1	底片库·显影盘里的彗星 217f013d（cr3 合，关口待跑；vault）：今晚的底片慢慢显出彗星（`pixelart.Frames` 贴图动画 32 帧 24 秒，不花命令），多一个实体（小档）；真机 node87 连拍证过在动
+cca91837	窗·炉火窗的火会动 40362dcc（a1 合，关口在 node64；chart）：方块图加帧（8 张各 14 帧、frametime 4），第一帧就是原图，留图不变；只动 `materials/windows.py`、测试场景和卡
+605a2493	铭牌和全站一套字 16c52c60（a6 合，关口待跑；a6）：`props/nameplates`（45 个号，`nameplates.plate(canvas, 号, pos, facing=…)`，小档）、`K.letters`／`K.inscribe`（游戏自带的 5×7 字形，构建时从 jar 读）、号表 `plan/parts/numbers.md`
+45104684	室内走查·B2 b3856017（s2 合；a4）：B2 的头 316941ab 室内、屋顶走一遍，挡人的 0 处，217 站和 B1 逐站一样；屋面两盏灯这一版在眼睛高度，B3 改回东面
+73cf5734	仪器·三脚望远镜留回远档 2075665e（a6 合，关口在 node48；m1）：照总监 13:10 的规矩
+283af20a	家具·长椅留回远档 1005dbc4（a6 合，关口在 node48；a6）：长椅整体远档，箱子中档；V3 605、V4 654 不涨
+0e114894	公共·看板机位的基数调到 B2 5ae29b22（s2）：`tools/win/shots/obs-board-were.json` 记 B2 的头 316941ab 各机位的数；V3 不许过 610、V4 不许过 654，别的机位不许过 600（node74 上带着它查主场景：过）
+40840924	云海·云涌先关 934cb10d（cr2 合；cloud）：`_swell.ON=False` 一行；真机上云头侧面暗成灰石台阶的样子，改好形状再开
+93c98e9a	配电盘和锅炉·贴图动画样板 d319b1ef（cr3 合；a1）：`boiler.py` 炉火用 `pixelart.shimmer`，`powerhouse.py` 手提灯玻璃用 `Frames`；不花命令和实体
+66604cb2	底片库·只改档 c55033b4（cr3 合；vault）：库房的件降小档；本间在 V4 里 78→7，全图 V3 555、V4 578
+c146ad02	屋顶机器·四只通风帽 8 件留远档 735d1c6c（facade 合；shell），图重画
+605a2493	机器铭牌·头一版 b93397c7（a6 合）：`prop_nameplate_NN` 45 个号，小档；取字的函数进 `props/_kit.py`；说明牌报时球那句换了。关口 node48 补跑 PASS（头 283af20a，103 个场景）
+73cf5734	仪器·三脚望远镜回远档 2075665e（a6 合；m1）：模块的 VIEW 一行取掉。关口 node48 补跑 PASS（头 283af20a）
+283af20a	家具·长椅整体留远档 1005dbc4（a6 合）：`VIEW_KEEP`。关口 node48 补跑 PASS（头 283af20a，103 个场景）

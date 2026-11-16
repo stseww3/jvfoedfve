@@ -83,5 +83,10 @@
   "props",
   "pneumatic",
   "| bells（第二轮：正门的电铃和按钮） | P3 | 制作中 | a6 c334 | — | — | 第二轮：评审 #86209 圈的空处（V4 两扇亮窗之间的墙垛），#86514 定先做带锤的电铃和门边的按钮。审批 a6。 |"
+ ],
+ [
+  "props",
+  "bells",
+  "| nameplates（第二轮：机器铭牌、全站的号、全站一套字） | P2 | 制作中 | a6 c334 | — | — | 第二轮（`plan/fine.md` 第 4 节）：椭圆黄铜牌，台徽在左，`No.` 加两位数，一个号一个模型（`prop_nameplate_NN`，小档）；牌子由机器的主人摆（`nameplates.plate(canvas, number, pos, facing)`）；取字的函数在 `props/_kit.py`（`K.letters`、`K.lettered`、`K.inscribe`）。审批 a6。 |"
  ]
 ]

@@ -398,3 +398,27 @@
 - 13:10 director #91951: out of doors, what is part of the outline or carries a light keeps the far band; only what is within a block goes to mid; owners change back by 13:35 (B3's head); V3 and V4 come down by the rooms counted through the front. INTERFACE 7 (3a5231a5), g2 #1854 with the list by owner.
 - 13:12 head 58fa4d5d 102 pass: V1 277 V2 272 V3 605 V4 654 V5 191 V6 115 V7 460 V8 87 V9 242 V10 254 V11 284 V12 322.
 - open: the baseline of the views (B1's numbers in the file; B2's would fail the ordered return of outdoor pieces in V3/V4 -- being measured); rows for bells and roofworks added; B3 at 13:40.
+
+## 11-16 13:13 to 13:21 (B2 settled, the views' line armed, owners merge their own small packages)
+
+- 13:16 director, g2 #92577: an owner merges his own small package himself. Conditions: the files changed are all
+  in his own package (module, card, pictures); his test scene was checked on a node; he runs the gate on his own
+  machine right after the merge, red: mend within ten minutes or revert. Subject as before plus "(self)". Still
+  through an approver: new packages, anything touching another's files or common ones (_kit, common, skeleton,
+  INTERFACE, another's module), vanilla blocks taken, sound events, scoreboards. "s2 一直在查头：点了谁的名谁立刻修
+  或退；同一个人弄红两次，收回自己合的资格". In the five minutes before a head is taken (:05-:10, :35-:40) only
+  what has run a gate is merged. chart (c350) is a second approver of interiors.
+  watch.sh now marks "(self)" merges that touch more than their own package.
+- 13:16 cr2: sky/cloudsea swell switched off (934cb10d -> 40840924). lights 267134bb's gate on node8 green but for
+  27 stale pictures; lights redraws them.
+- 13:16 chart: gate of materials/windows 40362dcc (assembly cca91837) on node64 PASS.
+- 13:17 facade: roofworks 735d1c6c -> c146ad02 (the four cowls keep the far band). His two night-work windows
+  would take V4 to 656 with the cap at 654: told him not to merge until the rooms come down; 13:19 cr3 merged
+  the plate vault's lowering (66604cb2: V3 555, V4 578 by the author's count) and I told facade to go ahead.
+- 13:18 outb delivered common/export v5 00d885bc (arrival checks, the railway's chunks kept loaded, --no-arrival,
+  the pack's note names the assembly's commit). Read; try-merge 83c4fad9 on cursor/c164-s2-try-89df running the
+  whole mountain on node33 before it goes in.
+- 13:19 head 93c98e9a: 103 pass on node73 (103 scenes now). V3 604, V4 642, 1297 entities.
+- 13:19 director: from B3 cr2 names three outdoor close-up stations and cr3 three indoor ones to s1 at each head.
+- 13:20 a6: gate at head 283af20a on node48 PASS (nameplates, instruments, furniture).
+- 13:21 STATUS pushed (d9caad85). New card props/nameplates has a row from the next push on.
