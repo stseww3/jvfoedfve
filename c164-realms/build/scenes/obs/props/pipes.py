@@ -168,16 +168,15 @@ def _even(m, axis, c, a0, a1, radius, tones, sides=8, light=ABOVE):
 
 LEAN = 0.1              # degrees: how far _settle() turns a face off the plane between two axes
 _EDGE = math.sqrt(2.0) * math.sin(math.radians(LEAN / 2.0))
-_FIRST = (1, 2, 0)      # of two equal axes the game takes y before z before x
 
 
 def _between(normal):
     """The two model axes a face's normal lies between -- within half the lean of the plane that
-    divides them -- or None; the one the game takes when the two are equal comes first."""
-    order = sorted(range(3), key=lambda i: (-abs(normal[i]), _FIRST.index(i)))
+    divides them -- or None. Whatever the shape has for sides: any face is asked, by its normal."""
+    order = sorted(range(3), key=lambda i: -abs(normal[i]))
     if abs(normal[order[0]]) - abs(normal[order[1]]) >= _EDGE:
         return None
-    return tuple(sorted(order[:2], key=_FIRST.index))
+    return tuple(sorted(order[:2]))
 
 
 def _drawn(part):
@@ -207,31 +206,23 @@ def _settle(m):
 
     So every round shape that has such faces is turned LEAN degrees as one piece (the boxes one
     call of tube(), ring(), ball() or one stretch of a hose() made share a seed; a box of its own
-    is a piece by itself), about its own middle and about the model axis the two axes stand across.
-    The shape stays what it was, its boxes still meet in the same lines -- leaning the slanting
-    boxes alone left hairlines in the joints, which showed in the pictures -- and its flats now fall
-    to the four directions two and two: of a tube along z, the top and one upper flat are lit as
-    up, the other upper flat and the side below it as that side, and so on round. The turn goes
-    the way that gives the first such face the axis the game takes when two are exactly equal
-    (y before z before x). A tenth of a degree moves the rim of the widest flange a hundredth of a
-    texel."""
+    is a piece by itself), about its own middle and about the model axis the two axes stand across,
+    always the same way round: right-handed about that axis' positive end. The shape stays what it
+    was and its boxes still meet in the same lines (leaning the slanting boxes alone left hairlines
+    in the joints, which showed in the pictures). Its flats now fall to the four directions two and
+    two, the same in every piece: of a tube along z, the flat at +x and the slanting one below it
+    are lit as +x, the slanting flat between +x and +y and the flat at +y as +y, and so on round.
+    A tenth of a degree moves the rim of the widest flange a hundredth of a texel."""
     groups = {}
     for part in m.parts:
         groups.setdefault(part["seed"], []).append(part)
     for parts in groups.values():
         for _ in range(4):
-            found = next(((normal, pair) for part in parts for _, normal in _drawn(part)
-                          for pair in [_between(normal)] if pair), None)
-            if found is None:
+            pair = next((pair for part in parts for _, normal in _drawn(part)
+                         for pair in [_between(normal)] if pair), None)
+            if pair is None:
                 break
-            normal, (keep, other) = found
-            axis = M.AXES[3 - keep - other]
-
-            def gain(degrees):
-                n = M._qrot(M.quat(axis, degrees), normal)
-                return abs(n[keep]) - abs(n[other])
-
-            turn = M.quat(axis, max((LEAN, -LEAN), key=gain))
+            turn = M.quat(M.AXES[3 - pair[0] - pair[1]], LEAN)
             centres = [[(part["lo"][i] + part["hi"][i]) / 2.0 for i in range(3)] for part in parts]
             pivot = [sum(c[i] for c in centres) / len(centres) for i in range(3)]
             for part, c in zip(parts, centres):
