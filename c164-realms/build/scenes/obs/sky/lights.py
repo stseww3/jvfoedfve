@@ -578,7 +578,18 @@ def way_lamps():
     x, row = shell.ARCADE_X[0], shell.DECK_Y + WAY_HIGH
     out += [((x, row, -shell.CROSS_Z), "south", L.WAY - 1, "the north end of the cross gallery"),
             ((x, row, shell.CROSS_Z), "north", L.WAY - 1, "the south end of the cross gallery")]
-    return out + ROOF_WAYS + WEST_DOOR
+    return out + ROOF_WAYS + WEST_DOOR + _more()
+
+
+def _more():
+    """Trial tree only (dome): what the lights line's hook is to do (#79492) -- the rows LAMPS of
+    every sky/_ways_*.py."""
+    import glob
+    import importlib
+    found = []
+    for path in sorted(glob.glob(_os.path.join(_os.path.dirname(__file__), "_ways_*.py"))):
+        found += list(importlib.import_module("." + _os.path.basename(path)[:-3], __package__).LAMPS)
+    return found
 
 
 # ---- trial tree only (dome): a caged lamp at the west door, from outside (#75708) -----------------------
