@@ -9,8 +9,9 @@
    as SkyRenderer builds it; the zenith and the horizon are the look's; sky, far sea and what
    things fade to meet at the horizon; a block of the cloud sea shows the colour of the painted
    sea behind it; how much fog lies on the front in V1 and on the building in V12.
-3. With a glslc (shaderc is the game's own compiler; --glslc or C164_GLSLC, else skipped with a
-   note): every pipeline's pair of shaders under its defines with our files in place. Ours has to
+3. With a glslc or a glslang (shaderc is the game's own compiler and glslang its front end;
+   --glslc or C164_GLSLC, else skipped with a note; plan/parts/figs/sky_glslc.sh finds or fetches
+   one): every pipeline's pair of shaders under its defines with our files in place. Ours has to
    compile wherever the game's own text compiles, and every fragment input needs a vertex output
    of the same type at its location (the game refuses the pipeline otherwise). The pipelines are
    the table read off RenderPipelines of 26.3 (PAIRS); the three passes of the game's transparency
@@ -108,9 +109,9 @@ VALUES = {"ALPHA_CUTOUT": "0.1", "PORTAL_LAYERS": "15", "OIT_WAVELET_RANK": "3",
 OIT = ["OIT", "OIT_WAVELET_RANK", "OIT_COEFF_COUNT", "OIT_COEFF_ATTACHMENT_COUNT"]
 OIT_PASSES = (["OIT_ACCUMULATE"], ["OIT_ALPHA_ONLY", "OIT_DEPTH_BOUNDS"], ["OIT_ALPHA_ONLY", "OIT_TRANSMITTANCE"])
 # what the game's compiler is given (GlslCompiler): Vulkan 1.2, bindings handed out, no optimising
-OPTIONS = ["--target-env=vulkan1.2", "-fauto-bind-uniforms", "-g", "-O0",
-           "-DRENDERPEARL_DEPTH_IS_ZERO_TO_ONE", "-DRENDERPEARL_EXPLICIT_DEPTH_INVARIANCE",
-           "-DRENDERPEARL_INSTANCE_INDEX_INCLUDES_BASE_INSTANCE"]
+OPTIONS = ["--target-env=vulkan1.2", "-fauto-bind-uniforms", "-g", "-O0"]
+MACROS = ("RENDERPEARL_DEPTH_IS_ZERO_TO_ONE", "RENDERPEARL_EXPLICIT_DEPTH_INVARIANCE",
+          "RENDERPEARL_INSTANCE_INDEX_INCLUDES_BASE_INSTANCE")
 INTERFACE = re.compile(r"layout\s*\(\s*location\s*=\s*(\d+)\s*\)\s*((?:flat|smooth|noperspective)\s+)?(in|out)\s+(\w+)\s+(\w+)")
 
 
@@ -267,12 +268,21 @@ class Compiler:
         """(ok, output). shader is core/<name>.vsh or .fsh."""
         key = (root, shader, tuple(defines), preprocess)
         if key not in self.cache:
-            stage = "vertex" if shader.endswith(".vsh") else "fragment"
-            cmd = [self.glslc, *OPTIONS, f"-fshader-stage={stage}", "-I", os.path.join(root, "inc")]
-            cmd += [f"-D{d}={VALUES[d]}" if d in VALUES else f"-D{d}" for d in defines]
-            cmd += ["-E"] if preprocess else ["-o", os.path.join(self.work, "out.spv")]
+            vertex = shader.endswith(".vsh")
+            macros = [f"-D{d}={VALUES[d]}" if d in VALUES else f"-D{d}" for d in list(MACROS) + list(defines)]
+            if os.path.basename(self.glslc).startswith("glslang"):
+                # glslang's own command: the same front end without shaderc around it. It takes
+                # #include only when the extension is asked for, which shaderc does by itself.
+                cmd = [self.glslc, "--target-env", "vulkan1.2", "--auto-map-bindings", "-S", "vert" if vertex else "frag",
+                       "-P#extension GL_GOOGLE_include_directive : enable", f"-I{os.path.join(root, 'inc')}", *macros]
+                cmd += ["-E"] if preprocess else ["-V", "-o", os.path.join(self.work, "out.spv")]
+            else:
+                cmd = [self.glslc, *OPTIONS, f"-fshader-stage={'vertex' if vertex else 'fragment'}",
+                       "-I", os.path.join(root, "inc"), *macros]
+                cmd += ["-E"] if preprocess else ["-o", os.path.join(self.work, "out.spv")]
             done = subprocess.run(cmd + [os.path.join(root, shader)], capture_output=True, text=True)
-            self.cache[key] = (done.returncode == 0, done.stdout if preprocess and done.returncode == 0 else done.stderr)
+            good = done.returncode == 0
+            self.cache[key] = (good, done.stdout if preprocess and good else done.stdout + done.stderr)
         return self.cache[key]
 
     def interface(self, root, shader, defines):
