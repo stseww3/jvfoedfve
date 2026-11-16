@@ -1,0 +1,211 @@
+{
+ "scene": "obs_int_starhall_b",
+ "commit": "b4b4a11",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "WARN",
+   "summary": "20105 blocks, 146 entities, 231 models, 1371 resource-pack files, 258 data-pack files, look: 1 biomes, 1 timelines (2.3 s)",
+   "details": [
+    "registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json"
+   ]
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 1370 files, no file written twice, the folders and the prefix of interiors are kept (9 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "360 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "991 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "59 kinds of block placed, 2 barrier cells (x 6, y 1..2, z 0), all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "PASS",
+   "summary": "no wall face runs flat over more than 5x5",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "146 display entities, 8 shown through a matrix that is no turn, no face stretched, 148 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "18 shots, most display entities in view: 138 (arches), limit 600; counted without what walls hide; the game draws up to 146 (v7): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "v7",
+      "in_view": 120,
+      "drawn": 146,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "door",
+      "in_view": 124,
+      "drawn": 146,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v7_in",
+      "in_view": 108,
+      "drawn": 146,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "west",
+      "in_view": 65,
+      "drawn": 146,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "clock",
+      "in_view": 43,
+      "drawn": 146,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "orrery",
+      "in_view": 82,
+      "drawn": 146,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "ceiling",
+      "in_view": 37,
+      "drawn": 146,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "floor",
+      "in_view": 57,
+      "drawn": 146,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "gallery",
+      "in_view": 97,
+      "drawn": 146,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "rail",
+      "in_view": 68,
+      "drawn": 146,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "gallery_w",
+      "in_view": 88,
+      "drawn": 146,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "emblem",
+      "in_view": 66,
+      "drawn": 146,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "aisle_n",
+      "in_view": 57,
+      "drawn": 146,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "aisle_s",
+      "in_view": 55,
+      "drawn": 146,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "stair_n",
+      "in_view": 12,
+      "drawn": 146,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "mezzanine",
+      "in_view": 6,
+      "drawn": 146,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "way",
+      "in_view": 4,
+      "drawn": 146,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "arches",
+      "in_view": 138,
+      "drawn": 146,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "15 parts and 0 points on 9 chains, 243 function files; 6 commands in the busiest tick (limit 40), 1.2 a tick on average (limit 10)",
+   "details": [
+    "chain of 24 ticks: 6 functions, 14 commands a cycle, starts 1 ticks after start",
+    "chain of 40 ticks: 8 functions, 17 commands a cycle, starts 2 ticks after start",
+    "chain of 1001 ticks: 25 functions, 52 commands a cycle, starts 4 ticks after start",
+    "chain of 1617 ticks: 31 functions, 64 commands a cycle, starts 3 ticks after start",
+    "chain of 2002 ticks: 11 functions, 34 commands a cycle, starts 14 ticks after start",
+    "chain of 2457 ticks: 39 functions, 80 commands a cycle, starts 5 ticks after start",
+    "chain of 3003 ticks: 21 functions, 43 commands a cycle, starts 2 ticks after start",
+    "chain of 5577 ticks: 33 functions, 100 commands a cycle, starts 6 ticks after start",
+    "chain of 9009 ticks: 63 functions, 190 commands a cycle, starts 20 ticks after start",
+    "bld_tower_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.09 blocks off the axis",
+    "mach_orrery_a_lay: 21 steps in 3003 ticks: its middle lies 0.01 blocks off the axis",
+    "mach_orrery_a_arm_mercury: 11 steps in 1001 ticks: its middle lies 0.19 blocks off the axis",
+    "mach_orrery_a_under_mercury: 15 steps in 1001 ticks: its middle lies 0.56 blocks off the axis",
+    "mach_orrery_a_arm_venus: 11 steps in 1617 ticks: its middle lies 0.26 blocks off the axis",
+    "mach_orrery_a_under_venus: 21 steps in 1617 ticks: its middle lies 0.80 blocks off the axis",
+    "mach_orrery_a_arm_earth: 11 steps in 2002 ticks: its middle lies 0.01 blocks off the axis",
+    "mach_orrery_a_under_earth: 11 steps in 2002 ticks: its middle lies 0.02 blocks off the axis",
+    "mach_orrery_a_arm_mars: 13 steps in 2457 ticks: its middle lies 0.47 blocks off the axis",
+    "mach_orrery_a_under_mars: 27 steps in 2457 ticks: its middle lies 1.29 blocks off the axis",
+    "mach_orrery_a_arm_jupiter: 33 steps in 5577 ticks: its middle lies 0.01 blocks off the axis",
+    "mach_orrery_a_under_jupiter: 33 steps in 5577 ticks: its middle lies 0.03 blocks off the axis",
+    "mach_orrery_a_arm_saturn: 63 steps in 9009 ticks: its middle lies 0.87 blocks off the axis",
+    "mach_orrery_a_under_saturn: 63 steps in 9009 ticks: its middle lies 2.13 blocks off the axis"
+   ]
+  }
+ ]
+}
