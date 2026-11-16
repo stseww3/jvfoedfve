@@ -13,7 +13,10 @@ What it builds:
   * the roofs that close it: plain decks over the three pavilions (stand-ins: terraces() names
     them for the package that finishes them), slate between gable walls over the wings;
   * a pale wall behind the entrance, a stand-in for the hall until the hall itself is there to be
-    seen through the arches (screened()).
+    seen through the arches (screened());
+  * what is seen of the rooms through two dark windows of the base storey, where somebody is at
+    work tonight: a lamp that burns and goes out by turns (_nightwork.py; round two). The only
+    display entities of this package.
 
 Every number comes from the skeleton; which column is a pier and which a window comes from
 _plan.py (c178's block-by-block plan). The glass stands one block behind the wall face as whole
@@ -35,6 +38,7 @@ from artkit.canvas import Canvas
 from ..common import blocks as B
 from ..common import skeleton as S
 from . import _dome
+from . import _nightwork
 from . import _order as O
 from . import _plan as P
 
@@ -488,7 +492,12 @@ def build(canvas, origin=(0, 0, 0), entrance=None, screen=None):
         _screen(canvas, origin)
         if not lit():
             _screen_lights(canvas, entrance, origin)
-    return 0
+    return _nightwork.build(canvas, origin, windows(entrance))
+
+
+def models():
+    """The sheets of the windows where somebody is at work (_nightwork.py)."""
+    return _nightwork.models()
 
 
 @functools.lru_cache(maxsize=None)
@@ -594,6 +603,15 @@ def check(entrance=None):
         for z in P.window_rows(bay):
             if any(c.has(x, y, z) for x in range(SCREEN_X + 1, glass_x) for y in range(S.PANEL, S.WINDOW[1] + 1)):
                 out.append(f"east bay {bay}: something stands behind the glass of the great window at z {z}")
+    # 7. the windows where somebody is at work: dark glass, sheets of the window's size, a lamp that is a point
+    out += _nightwork.check(windows(entrance))
+    placed = [e for e in c.entities if str(((e[3].get("item") or {}).get("components") or {})
+                                           .get("minecraft:item_model", "")).split(":")[-1].startswith(_nightwork.MODEL)]
+    if len(placed) != len(_nightwork.WORK):
+        out.append(f"nightwork: {len(placed)} sheets stand, for {len(_nightwork.WORK)} windows")
+    for x, y, z, _ in placed:
+        if name(int(x // 1), int(y), int(z // 1)) != B.IRON_BARS:
+            out.append(f"nightwork: the sheet at ({x:g}, {y:g}, {z:g}) does not stand in the cell of a grille")
     return out
 
 
