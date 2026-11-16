@@ -1,0 +1,28 @@
+(91, -4, -35) was oxidized_copper_bars: now sandstone_wall with sandstone_slab on y -3 (the collision of a wall and a bottom slab; the stone's own name does not matter to who walks)
+(91, -4, -31) was oxidized_copper_bars: now sandstone_wall with sandstone_slab on y -3 (the collision of a wall and a bottom slab; the stone's own name does not matter to who walks)
+the cloud line (feet at or under it: sent home): -25.0
+
+1. on top of the car's barriers or the two new piers (feet -2.5 or higher, x 89.5 .. 92, z -34.5 .. -30.5): 0 points reached from the start by any way at all
+   the level track east of the mouth (x 92 .. 96, z -34 .. -31, feet -4): 48 points reached, by hop 48
+   the nearest of them, (96, -4, -34), is reached by: jump +1.00 (91, -4, -28.5)->(91.5, -3, -28.5); drop -1.00 (91.5, -3, -28.5)->(92, -4, -28.5); drop -3.00 (92, -4, -28.5)->(92.5, -7, -28.5); jump +1.00 (92.5, -7, -28.5)->(93, -6, -28.5); drop -2.00 (94, -6, -28.5)->(94.5, -8, -28.5); drop -3.00 (95, -8, -28.5)->(95.5, -11, -28.5); drop -3.00 (96, -11, -28.5)->(96.5, -14, -28.5); drop -3.00 (97, -14, -28.5)->(97.5, -17, -28.5); drop -2.00 (98, -17, -28.5)->(98.5, -19, -28.5); drop -1.00 (101, -19, -28.5)->(101.5, -20, -28.5); drop -2.00 (102, -20, -28.5)->(102.5, -22, -28.5); drop -2.00 (103, -22, -28.5)->(103.5, -24, -28.5); drop -1.00 (108, -24, -28.5)->(108.5, -25, -28.5); jump +1.00 (108.5, -25, -28.5)->(109, -24, -28.5) ...
+
+2. steps off the east edge (rows z -40 .. -26) by a visitor who has stayed west of x 92.5:
+   z -28.5: (92, -4, -28.5) -> (92.5, -7, -28.5) drop -3.00; by jump +1.00 (91, -4, -28.5)->(91.5, -3, -28.5); drop -1.00 (91.5, -3, -28.5)->(92, -4, -28.5)
+   z -28: (92, -4, -28) -> (92.5, -7, -28) drop -3.00; by jump +1.00 (91, -4, -28.5)->(91.5, -3, -28.5); drop -1.00 (91.5, -3, -28.5)->(92, -4, -28.5)
+   z -27.5: (92, -4, -27.5) -> (92.5, -7, -27.5) drop -3.00; by jump +1.00 (91, -4, -28.5)->(91.5, -3, -28.5); drop -1.00 (91.5, -3, -28.5)->(92, -4, -28.5)
+   z -27: (92, -4, -27) -> (92.5, -7, -27) drop -3.00; by jump +1.00 (91, -4, -28.5)->(91.5, -3, -28.5); drop -1.00 (91.5, -3, -28.5)->(92, -4, -28.5)
+   z -26.5: (92, -4, -26.5) -> (92.5, -7, -26.5) drop -3.00; by jump +1.00 (91, -4, -28.5)->(91.5, -3, -28.5); drop -1.00 (91.5, -3, -28.5)->(92, -4, -28.5)
+   z -26: (92, -2.5, -26) -> (92.5, -7, -26) drop -4.50; by jump +1.00 (91, -4, -28.5)->(91.5, -3, -28.5)
+
+3. where he is then: the 6 landing points (92.5, -7, -28.5) (92.5, -7, -28) (92.5, -7, -27.5) (92.5, -7, -27) (92.5, -7, -26.5) (92.5, -7, -26)
+   from them he gets to 560370 points, feet down to -29.0; kinds as reached from the spawn: fall 2869, hop 527084, trap 10, walk 30407; 3031 points with a step off the scene
+   points at or under the cloud line -25: 412727, the nearest way down: 
+      to (104.5, -25, -24.5) in 27 lattice steps: drop -1.00 (93, -7, -26)->(93.5, -8, -26); drop -2.00 (94, -8, -26)->(94.5, -10, -26); drop -2.00 (95, -10, -26)->(95.5, -12, -26); drop -2.00 (96, -12, -26)->(96.5, -14, -26); drop -3.00 (97, -14, -26)->(97.5, -17, -26); drop -2.00 (98, -17, -26)->(98.5, -19, -26); drop -1.00 (101, -19, -26)->(101.5, -20, -26); drop -2.00 (102, -20, -26)->(102.5, -22, -26); drop -2.00 (103, -22, -26)->(103.5, -24, -26); drop -1.00 (104.5, -24, -25)->(104.5, -25, -24.5)
+   stuck places among them (trapped, no way down to the line nor off the scene): 0
+   of the 560370 points, 560360 have a way back to the spawn point (any jumps of up to 1.2), 10 have none
+   landing (92.5, -7, -28.5): a way back to the spawn exists
+   landing (92.5, -7, -28): a way back to the spawn exists
+   landing (92.5, -7, -27.5): a way back to the spawn exists
+   landing (92.5, -7, -27): a way back to the spawn exists
+   landing (92.5, -7, -26.5): a way back to the spawn exists
+   landing (92.5, -7, -26): a way back to the spawn exists
