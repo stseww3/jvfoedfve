@@ -1,0 +1,33 @@
+a0job 1116-044127-scope-f3-eeae-11289: cursor/c164-scope-f3-eeae @ f8ca3230 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.58 0.56 0.71, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- mkdir -p renders/_wip; python tools/check.py --scene obs_int_domeroom > renders/_wip/dome-check.txt 2>&1; echo "DOMEROOM=$?"; head -n 12 renders/_wip/dome-check.txt | cut -c1-600; sed -n 17,27p renders/_wip/dome-check.txt | cut -c1-400
+DOMEROOM=1
+check obs_int_domeroom at f8ca323
+[PASS] regen     6281 blocks, 140 entities, 121 models, 1051 resource-pack files, 110 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (2.0 s)
+[FAIL] check.py  a check broke; this is a fault of the script or of what the scene hands it
+                     out = super().export(work, ns)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^
+                   File "/tmp/dais_jobs/c164a0c/c164-realms/build/artkit/models.py", line 395, in export
+                     shots = mat.frames(w, h, grain, seed) if hasattr(mat, "frames") else None
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                 TypeError: 'list' object is not callable
+[PASS] strays    250 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      771 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[WARN] motion    8 parts and 0 points on 6 chains, 102 function files; 6 commands in the busiest tick (limit 40), 1.2 a tick on average (limit 10)
+                 int_domeroom_time_dial_seconds: 60 steps in 1200 ticks set by hand (lead -17); its model strays 0.00 pixels from its arc
+                 chain of 32 ticks: 4 functions, 10 commands a cycle, starts 2 ticks after start
+                 chain of 40 ticks: 8 functions, 17 commands a cycle, starts 1 ticks after start
+                 chain of 90 ticks: 8 functions, 17 commands a cycle, starts 9 ticks after start
+                 chain of 130 ticks: 8 functions, 17 commands a cycle, starts 9 ticks after start
+                 chain of 480 ticks: 8 functions, 33 commands a cycle, starts 3 ticks after start
+                 chain of 1200 ticks: 60 functions, 121 commands a cycle, starts 11 ticks after start
+result: FAIL (1 failed, 1 with warnings)
+==== NODEJOB RESULT ====
+exit=0 secs=5 host=cursor cores=4 head=f8ca3230 commit=none pushed=no branch=cursor/c164-scope-f3-eeae files=0
+a0job: exit=0 secs=6
