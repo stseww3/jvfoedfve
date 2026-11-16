@@ -134,16 +134,21 @@ GLOW = {
     "pilot_lamps": [(x + dx, y + dy) for y in LAMP_ROWS for x in TRIO for dx in (0, 1) for dy in (0, 1)],
 }
 
-AMBER = ((GL[4], GL[2], GL[1]), (BR[1], BR[0], BR[0]))      # a lamp lit, and out
-GREEN = ((PH[4], PH[3], PH[2]), (PH[1], PH[0], PH[0]))
-RED = ((SG[3], SG[2], SG[1]), (SG[1], SG[0], SG[0]))
+# A pilot lamp is a jewel with a small bulb behind it, not a bare filament. Lit, its one bright pixel
+# stands three steps under a valve's filament and the rest of it under half; drawn as bright as the
+# filaments, the lamps were the brightest thing on the wall, and in the star hall brighter than the
+# sun of the orrery the hall is built around (0.90 against 0.67, read off the picture).
+AMBER = ((GL[1], GL[0], BR[1]), (BR[1], BR[0], BR[0]))      # a lamp lit, and out
+GREEN = ((PH[2], PH[1], PH[0]), (PH[1], PH[0], PH[0]))
+RED = ((SG[2], SG[1], SG[0]), (SG[1], SG[0], SG[0]))
 
 
 def _lamps(frame):
     """The pilot lamps in a frame, as (x, y, lamp, on); a lamp is two pixels each way from (x, y).
-    The upper row burns steadily (two amber, one green); below it two amber lamps take turns and
-    the red one comes on once in a round."""
-    upper = ((AMBER, True), (AMBER, True), (GREEN, True))
+    In the upper row an amber lamp and the green one burn steadily and the lamp between them is
+    out; below, two amber lamps take turns and the red one comes on once in a round. Three lamps
+    burn at a time, four while the red one is on."""
+    upper = ((AMBER, True), (AMBER, False), (GREEN, True))
     lower = ((AMBER, frame % 4 < 2), (RED, frame >= 6), (AMBER, frame % 4 >= 2))
     return [(x, y, lamp, on) for y, row in zip(LAMP_ROWS, (upper, lower)) for x, (lamp, on) in zip(TRIO, row)]
 
@@ -236,9 +241,10 @@ _FIGURES = tuple(tuple(f[i:i + 3] for i in range(0, 15, 3)) for f in _FIGURES)
 def counter(units=0):
     """A register: three figure wheels behind a window (white figures on black drums), a bar of the
     plate between one wheel and the next, lit like the window's right edge, so that the window
-    reads as three; a maker's plate."""
+    reads as three; a maker's plate. The window is as wide as its three wheels and two bars, and a
+    figure's top and bottom rows are a step darker: it is painted on a drum, which turns away."""
     px = _plate(5)
-    _sunk(px, 2, 3, 13, 9, FE[0])
+    _sunk(px, 3, 3, 13, 9, FE[0])
     for k, figure in enumerate((2, 4, units)):
         x = 2 + 4 * k
         if k:
@@ -246,7 +252,7 @@ def counter(units=0):
         for dy, row in enumerate(_FIGURES[figure]):
             for dx, on in enumerate(row):
                 if on == "1":
-                    _put(px, x + 1 + dx, 4 + dy, CR[2])
+                    _put(px, x + 1 + dx, 4 + dy, CR[1] if dy in (0, len(_FIGURES[figure]) - 1) else CR[2])
     _box(px, 5, 12, 10, 13, BR[2])
     _box(px, 5, 12, 10, 12, BR[4])
     _put(px, 10, 13, BR[1])
