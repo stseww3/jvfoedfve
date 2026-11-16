@@ -108,6 +108,8 @@ BAND = (3, 5)                   # the band across the blade: its pixels, counted
 SHEET = (2.25, 2.75)            # the blade is a sheet this far before the mast's axis
 LENS = (-5.5, 0.5)              # the lamp's axis: left of the spindle and half a pixel over it
 CASE = 2.5                      # the lamp's case reaches this far from its axis: a cube of five
+LAMP_Z = (-3.5, 1.5)            # ... from its back to its front; the bezel and the lens stand before it
+FRAMES, PACE = 8, 2             # the moving pictures: so many frames, each so many ticks (a flame: A1's 2)
 CRANK = (3.0, -1.5)             # the pin on the arm's casting that the down rod hangs on
 ROD = (3.0, 1.5)                # the down rod: x and z of its axis, from the mast's
 PIVOT = (7.0, 4.5)              # the balance lever's pin: x and y from the gear's anchor
@@ -127,7 +129,7 @@ MODEL_STOP, MODEL_CLEAR = PREFIX + "arm", PREFIX + "arm_clear"
 # sees it; the lamp's case, the nearest thing to the track, then lies 2 blocks from the centre
 # line, outside the three rows the train needs). The wire's far end: the middle of the wheel's
 # plate on the east face of the winch house, at its south corner (site/cablecar).
-HOME = dict(s=8.0, out=2.5)
+HOME = dict(s=8.5, out=3.0)
 WIRE_UP = 0.25                  # the wall wheel's plate: its middle over the platform's paving
 
 # The spectacle, as the train sees it: i the cast ring, R the red glass, three pixels square, on
@@ -178,7 +180,7 @@ def _lit(name, grid, ramp, share):
     """A small lit picture that shimmers with the lamp's flame: its pixels go a step up or down
     `ramp` now and then. The first frame is the picture itself."""
     return pixelart.shimmer(name, _picture(name + "_still", grid).paint(len(grid[0]), len(grid)), ramp,
-                            frames=6, frametime=3, share=share)
+                            frames=FRAMES, frametime=PACE, share=share)
 
 
 def _red_light():
@@ -259,7 +261,7 @@ def _head():
     m.box((-0.5, -7.0, MAST_R), (0.5, -2.0, MAST_R + 0.05), SOOT, skip="newud")     # oil from the bearing
     lx, ly = LENS
     x0, x1, y0, y1 = lx - CASE, lx + CASE, ly - CASE, ly + CASE             # the case: x -8..-3, y -2..3
-    z0, z1 = -3.5, 1.5
+    z0, z1 = LAMP_Z
     m.tube("y", (0.0, 0.0), y0 - 2.0, y0, 2.0, IRON_D)                      # the clamp of the shelf
     m.box((x0 - 0.5, y0 - 1.0, z0 - 0.25), (-1.0, y0, z1 + 0.25), IRON)     # the shelf
     m.tube("y", (0.0, 0.0), y0 - 9.5, y0 - 8.0, 2.0, IRON_D)                # the clamp of its strut
@@ -268,16 +270,26 @@ def _head():
     m.box((x0, y0, z0), (x1, y1, z1), IRON_D,
           faces={"w": side, "e": side, "n": _picture("signal_case_back", _case_back()), "u": SOOT})
     m.box((lx - 2.0, ly - 2.0, z1), (lx + 2.0, ly + 2.0, z1 + 0.5), BRASS_D)        # the bezel
-    m.box((lx - 1.5, ly - 1.5, z1 + 0.5), (lx + 1.5, ly + 1.5, z1 + 0.7), K.GLOW_DIM,
-          faces={"s": _lens()}, skip="newud", emit=15, shade=False)
-    flame = pixelart.flame("signal_flame", (GL[0], GL[1], GL[2]), 3, 3, frames=8, frametime=2)
-    m.box((lx - 1.5, ly - 1.5, z0 - 0.05), (lx + 1.5, ly + 1.5, z0), K.GLOW_DIM,
-          faces={"n": flame}, skip="sewud", emit=15, shade=False)
     m.tube("y", (lx, -1.0), y1, y1 + 1.5, 1.0, IRON)                        # the chimney
     m.taper("y", (lx, -1.0), y1 + 1.5, y1 + 2.5, 1.75, 0.75, SOOT, steps=2)         # its cowl
     m.ring("x", (lx, y1 + 3.0, -1.0), 1.0, 0.5, 0.5, IRON, sides=8, arc=(0.0, 180.0))       # the handle
     rx, rz = ROD
     m.box((MAST_R - 0.25, -16.0, rz - 0.75), (rx + 0.75, -15.0, rz + 0.75), IRON_D)         # the rod's guide
+    return m
+
+
+def _light():
+    """What burns in the lamp, a small model of its own (a moving picture redraws its model's
+    whole sheet at every frame): the lens in the bezel, towards the train, and the flame in the
+    back light. Anchor: the spindle, as the head's."""
+    m = M.Model(PREFIX + "light", px=1.0)
+    lx, ly = LENS
+    z0, z1 = LAMP_Z
+    m.box((lx - 1.5, ly - 1.5, z1 + 0.5), (lx + 1.5, ly + 1.5, z1 + 0.7), K.GLOW_DIM,
+          faces={"s": _lens()}, skip="newud", emit=15, shade=False)
+    flame = pixelart.flame("signal_flame", (GL[0], GL[1], GL[2]), 3, 3, frames=FRAMES, frametime=PACE)
+    m.box((lx - 1.5, ly - 1.5, z0 - 0.05), (lx + 1.5, ly + 1.5, z0), K.GLOW_DIM,
+          faces={"n": flame}, skip="sewud", emit=15, shade=False)
     return m
 
 
@@ -387,6 +399,7 @@ SPEC = {
     "mast": dict(build=lambda: _long("mast", MAST_R)),
     "rod": dict(build=_rod),
     "head": dict(build=_head),
+    "light": dict(build=_light),
     "arm": dict(build=lambda: _arm(MODEL_STOP, True)),
     "arm_clear": dict(build=lambda: _arm(MODEL_CLEAR, False)),
     "wire": dict(build=_wire),
@@ -467,6 +480,7 @@ def signal(canvas, at, facing="east", yaw=None, ground=None, height=HEIGHT, wire
     low, high = collar + py / 16.0, spindle + CRANK[1] / 16.0 - 0.5 / 16.0
     n += _drawn(canvas, built[PREFIX + "rod"], (x + dx, low, z + dz), high - low, yaw, VIEW_NEAR)
     n += put(built[PREFIX + "head"], (x, spindle, z), view=VIEW_FAR)
+    n += put(built[PREFIX + "light"], (x, spindle, z), view=VIEW_FAR)
     n += put(built[MODEL_CLEAR if clear else MODEL_STOP], (x, spindle, z), view=VIEW_FAR,
              turns=(("z", -DROP if clear else 0.0),))
     canvas.entities[-1][3]["Tags"].append(TAG_ARM)
