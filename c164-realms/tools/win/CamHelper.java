@@ -18,7 +18,8 @@ import java.util.function.Consumer;
  *
  * Asked through files in the folder named by -Dc164.cam=<folder> (relative to the game folder):
  *     <id>.req    one line "shot <file name>.png", written by whoever wants a picture; or
- *                 "track <file name>.txt <seconds> [<player name>]" (see track())
+ *                 "track <file name>.txt <seconds> [<player name>]" (see track()); or
+ *                 "frames <seconds>" (see frames())
  *     <id>.done   the picture's full path, written here once the game has saved it
  *     <id>.fail   what went wrong
  *     ready       this process's id, written once at the start
@@ -28,7 +29,8 @@ import java.util.function.Consumer;
  * name at run time, so this file compiles without the game: Minecraft.getInstance(), gameDirectory,
  * gameRenderer.mainRenderTarget(), Screenshot.grab(File, String, RenderTarget, int, Consumer) and
  * Minecraft as an Executor; for track() gameRenderer.mainCamera().position(), player, level.players(),
- * Entity.position(), getVehicle(), getScoreboardName() and Vec3's x, y, z (checked against 26.3).
+ * Entity.position(), getVehicle(), getScoreboardName() and Vec3's x, y, z; for frames()
+ * Minecraft.getFps() (checked against 26.3).
  *
  * Built by build_helper.py on a machine with a JDK; the class is kept in helper/ beside this file.
  */
@@ -89,6 +91,11 @@ public final class CamHelper {
             Thread tracker = new Thread(() -> track(folder, id, parts), "c164-track");
             tracker.setDaemon(true);
             tracker.start();                           // pictures can be asked for while it runs
+        } else if (line.startsWith("frames ")) {
+            String seconds = line.substring(7).trim();
+            Thread counter = new Thread(() -> frames(folder, id, seconds), "c164-frames");
+            counter.setDaemon(true);
+            counter.start();
         } else {
             answer(folder, id, "fail", "not understood: " + line);
         }
@@ -196,6 +203,29 @@ public final class CamHelper {
             File file = new File(folder, fileName);
             Files.write(file.toPath(), out.toString().getBytes(StandardCharsets.UTF_8));
             answer(folder, id, "done", file.getAbsolutePath());
+        } catch (Throwable t) {
+            answer(folder, id, "fail", String.valueOf(t.getCause() != null ? t.getCause() : t));
+        }
+    }
+
+    /**
+     * "frames <seconds>": the game's own count of the frames it drew in the second before (the
+     * number F3 shows, Minecraft.getFps()), read once a second for that long; the answer is the
+     * readings, in the order read.
+     */
+    private static void frames(File folder, String id, String asked) {
+        try {
+            double seconds = Math.min(120.0, Double.parseDouble(asked));
+            Class<?> game = Class.forName("net.minecraft.client.Minecraft");
+            Object minecraft = game.getMethod("getInstance").invoke(null);
+            Method count = game.getMethod("getFps");
+            StringBuilder out = new StringBuilder();
+            long start = System.nanoTime();
+            while (System.nanoTime() - start < (long) (seconds * 1e9)) {
+                Thread.sleep(1000);
+                out.append(count.invoke(minecraft)).append(' ');
+            }
+            answer(folder, id, "done", out.toString().trim());
         } catch (Throwable t) {
             answer(folder, id, "fail", String.valueOf(t.getCause() != null ? t.getCause() : t));
         }

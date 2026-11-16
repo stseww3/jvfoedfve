@@ -49,6 +49,13 @@ The trip
     --only <a,b>             only these of as_joined and the twelve views (and the stops of --also)
     --again <a,b>            these views three times more from where the camera stands, half a second
                              apart (<name>_2 .. _4): what comes and goes in a view is in one of them
+    --pairs <seconds>        every view once more from where the camera stands, so many seconds later
+                             (<name>_b), and what moved between the two (tools/moved.py): moved.txt
+                             says how many places moved in each view and where, moved.jpg shows them
+    --fps <a,b>              at these views, after the pictures: the frames a second the game says it
+                             draws (its own count, read once a second for ten seconds), kept in
+                             frames.txt -- a node draws in software, so the number is for comparing
+                             two saves on the same node, not what a visitor's computer does
     --also <file>            further stops after the twelve, a list in tools/win/shots/ (may be given
                              more than once). save-asked.json: the views somebody asked for in the save.
                              save-listen.json: beside the master clock, in the power house and at the
@@ -88,6 +95,7 @@ LEVEL = "save"                      # the folder under server26/ a save is unpac
 ORIGIN = (0, 200, 0)                # where the export puts the scene: the plot origin of obs in the test world too
 STATIONS = os.path.join(HERE, "win", "shots", "obs-board.json")
 JOINED = "as_joined"
+PAIR = "_b"                         # after a view's name: its second picture (--pairs)
 MODES = {0: "survival", 1: "creative", 2: "adventure", 3: "spectator"}
 DIFFICULTIES = {0: "peaceful", 1: "easy", 2: "normal", 3: "hard"}
 JPEG_QUALITY = 90
@@ -316,6 +324,8 @@ def main():
     ap.add_argument("--again", metavar="NAMES",
                     help="views taken three times more from where the camera stands, half a second apart "
                          "(<name>_2 .. _4): what comes and goes in a view, a particle every two seconds, is in one of them")
+    ap.add_argument("--pairs", type=float, metavar="SECONDS")
+    ap.add_argument("--fps", metavar="NAMES")
     ap.add_argument("--view", type=int, default=nodetrip.BOARD_VIEW)
     ap.add_argument("--server-view", type=int, default=nodetrip.REALM_VIEW)
     ap.add_argument("--clouds", type=int, default=128)
@@ -350,6 +360,19 @@ def main():
         shots = [more for s in shots for more in
                  [s] + ([{"name": f"{s['name']}_{k}", "stay": True, "settle": 0.5, "still": 0} for k in (2, 3, 4)]
                         if s["name"] in again else [])]
+    paired = []
+    if args.pairs:
+        if not 0.2 <= args.pairs <= 60:
+            sys.exit("--pairs: 0.2 to 60 seconds between the two pictures of a view")
+        paired = [s["name"] for s in shots if s["name"] != JOINED and "stay" not in s]
+        shots = [more for s in shots for more in
+                 [s] + ([{"name": s["name"] + PAIR, "stay": True, "settle": args.pairs, "still": 0}]
+                        if s["name"] in paired else [])]
+    counted = []
+    if args.fps:
+        counted = [s for n in args.fps.split(",") for s in shots if s["name"] == n and "pos" in s]
+        if len(counted) != len(args.fps.split(",")):
+            sys.exit(f"--fps {args.fps}: views of this trip that have a place, by name")
 
     commit = clean_commit(args.branch, args.at)
     work = os.path.join(WORK, "save", name)
@@ -460,9 +483,24 @@ def main():
                     taken = [s["name"] for s in shots if os.path.exists(os.path.join(out, s["name"] + ".png"))]
                     if code != 0 or len(taken) != len(shots):
                         failed.append(f"{len(taken)} of {len(shots)} pictures")
+                    drew = []
+                    for shot in counted:
+                        if trip.left() < CLOSING + 30:
+                            break
+                        drew.append(frames_at(trip, cam, shot))
+                        facts.append("# " + drew[-1])
                     if taken:
                         keep(trip, name, taken, out, kept_in, commit, tick_before, tick_after, view, facts,
                              at + (f", backend {drawn_by.split(',')[0]}" if drawn_by else ""), sha, whole=not args.only)
+                        told = what_moved(trip, name, kept_in, [n for n in paired if n in taken and n + PAIR in taken],
+                                          args.pairs, sha)
+                        if drew:
+                            with open(os.path.join(PROJECT, kept_in, "frames.txt"), "w", encoding="utf-8",
+                                      newline="\n") as fh:
+                                fh.write(f"# the save {name} (sha256 {sha}), {drawn_by or 'backend not said'}, "
+                                         f"{os.cpu_count()} cores, {at}\n" + "".join(line + "\n" for line in drew))
+                        for line in told + drew:
+                            trip.say(line)
     except SystemExit as stop:
         if stop.code not in (0, None):
             trip.say(f"stopped: {stop}")
@@ -498,6 +536,65 @@ def main():
     return 1 if failed else 0
 
 
+def frames_at(trip, cam, shot, seconds=10.0):
+    """The frames a second the game says it draws with the camera at a view: one line for the note."""
+    import shoot
+    eye = [shot["pos"][i] + ORIGIN[i] for i in range(3)]
+    if "look_at" in shot:
+        yaw, pitch = shoot.angles(eye, [shot["look_at"][i] + ORIGIN[i] for i in range(3)])
+    else:
+        yaw, pitch = shot.get("yaw", 0.0), shot.get("pitch", 0.0)
+    ask(trip, f"gamemode spectator {cam}",
+        f"tp {cam} {eye[0]:.3f} {eye[1] - shoot.EYE:.3f} {eye[2]:.3f} {yaw:.2f} {pitch:.2f}")
+    time.sleep(8.0)                 # what the move brought into view is drawn; the count is of a second each
+    asks = os.path.join(GAME, "c164cam")
+    key = f"{os.getpid()}-f{shot['name']}"
+    with open(os.path.join(asks, key + ".tmp"), "w", encoding="utf-8") as fh:
+        fh.write(f"frames {seconds:.0f}")
+    os.replace(os.path.join(asks, key + ".tmp"), os.path.join(asks, key + ".req"))
+    end_at = time.monotonic() + seconds + 20
+    while time.monotonic() < end_at:
+        for kind in ("done", "fail"):
+            path = os.path.join(asks, f"{key}.{kind}")
+            if os.path.exists(path):
+                with open(path, encoding="utf-8") as fh:
+                    text = fh.read().strip()
+                counts = [int(n) for n in text.split() if n.isdigit()] if kind == "done" else []
+                if not counts:
+                    return f"frames a second at {shot['name']}: not counted ({text[:120]})"
+                return (f"frames a second at {shot['name']}: {sum(counts) / len(counts):.1f} on average "
+                        f"({min(counts)} to {max(counts)}; the game's own count, a second each: "
+                        f"{' '.join(str(n) for n in counts)})")
+        time.sleep(0.2)
+    return f"frames a second at {shot['name']}: the game did not answer"
+
+
+def what_moved(trip, name, kept_in, paired, seconds, sha):
+    """moved.txt and moved.jpg of the views taken twice: the places that moved between the two."""
+    if not paired:
+        return []
+    import boardrender
+    import moved
+    folder = os.path.join(PROJECT, kept_in)
+    marked = os.path.join(WORK, "save", name, "moved")
+    shutil.rmtree(marked, ignore_errors=True)
+    os.makedirs(marked)
+    lines, counts = [], []
+    for shot in paired:
+        found, share = moved.places([os.path.join(folder, shot + ".jpg"), os.path.join(folder, shot + PAIR + ".jpg")])
+        moved.draw(os.path.join(folder, shot + ".jpg"), found, os.path.join(marked, shot + ".jpg"))
+        lines.append(moved.told(shot, found, share))
+        counts.append(len(found))
+    head = (f"what moved in the save {name} (sha256 {sha[:12]}) between two pictures of a view {seconds:g} s apart: "
+            f"{sum(1 for n in counts if n >= 3)} of {len(counts)} views have three places or more; places a view: "
+            + " ".join(f"{shot.split('_')[0]} {n}" for shot, n in zip(paired, counts)))
+    boardrender.sheet(marked, paired, f"c164 the save {name}: the places that moved within {seconds:g} s, framed "
+                      f"(tools/moved.py)", ext=".jpg", out=os.path.join(folder, "moved.jpg"))
+    with open(os.path.join(folder, "moved.txt"), "w", encoding="utf-8", newline="\n") as fh:
+        fh.write(head + "\n" + "".join(line + "\n" for line in lines))
+    return [head] + lines
+
+
 def nodetrip_cam():
     return os.environ.get("MC_CAM", "C164Cam")
 
@@ -523,7 +620,8 @@ def keep(trip, name, taken, out, kept_in, commit, tick_before, tick_after, view,
     with open(note, "w", encoding="utf-8", newline="\n") as fh:
         fh.write(HEAD + "\n" + "".join(line + "\n" for line in facts)
                  + "".join(f"{shot} {' '.join(row)}\n" for shot, row in kept.items()))
-    names = [shot for shot in kept if os.path.exists(os.path.join(folder, shot + ".jpg"))]
+    names = [shot for shot in kept if os.path.exists(os.path.join(folder, shot + ".jpg"))
+             and not (shot.endswith(PAIR) and shot[:-len(PAIR)] in kept)]
     hour = f"the save's own hour {tick}" if tick_before is not None else "the save's own hour"
     title = f"c164 the save {name} (sha256 {sha[:12]}) opened as it comes: the game 26.3 on a node, {at}, {hour}"
     boardrender.sheet(folder, names, title, ext=".jpg")
