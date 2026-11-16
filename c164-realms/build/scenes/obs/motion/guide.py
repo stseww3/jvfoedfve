@@ -119,33 +119,46 @@ def _text(*parts):
     return out[0] if len(out) == 1 else "[" + ",".join(out) + "]"
 
 
+def _num(v):
+    """A number as a command takes it: no exponent, no needless digits."""
+    text = f"{float(v):.4f}".rstrip("0").rstrip(".")
+    return text if text not in ("", "-0") else "0"
+
+
 def _sound(event):
     name, volume, pitch = event
-    return f"playsound {name} {SOURCE} @s ~ ~ ~ {MK._num(volume)} {MK._num(pitch)}"
+    return f"playsound {name} {SOURCE} @s ~ ~ ~ {_num(volume)} {_num(pitch)}"
+
+
+FACING = {"west": (-1, 0), "east": (1, 0), "north": (0, -1), "south": (0, 1)}      # (east, south) a slit looks
 
 
 def slit():
     """The great dome's slit as the skeleton has it: (the middle of the dome at its springing, the
-    radius of its skin, the half of the slit's width that is clear of its edges)."""
+    radius of its skin, the half of the slit's width that is clear of its edges, the way it looks)."""
     cx, cz = S.DOME_AXIS
-    return (cx, float(S.DOME_SPRING), cz), float(S.DOME_R), S.SLIT_W / 2.0 - 0.75
+    return (cx, float(S.DOME_SPRING), cz), float(S.DOME_R), S.SLIT_W / 2.0 - 0.75, S.SLIT_FACING
 
 
-def lights(radius, half, beats=LIGHT_BEATS):
+def lights(radius, half, facing="west", beats=LIGHT_BEATS):
     """The points of light of the finale: [(beat, (east, up, south) of the dome's middle at its
-    springing, (east, up, south) blocks a tick)], the slit looking west."""
+    springing, (east, up, south) blocks a tick)]. A point starts on the arc that climbs from the
+    slit's foot to the dome's top and leaves along it, upwards."""
+    ox, oz = FACING[facing]
     low, high = LIGHT_ARC
     out = []
     for beat in range(beats):
         height = low + (high - low) * beat / float(max(1, beats - 1))
         for across, along in LIGHT_ROWS[beat % len(LIGHT_ROWS)]:
             a = math.radians(min(high, max(low, height + along)))
-            out.append((beat, (-radius * math.cos(a), radius * math.sin(a), max(-half, min(half, across))),
-                        (LIGHT_SPEED * math.sin(a), LIGHT_SPEED * math.cos(a), 0.0)))
+            off, side = radius * math.cos(a), max(-half, min(half, across))
+            back = -LIGHT_SPEED * math.sin(a)
+            out.append((beat, (ox * off - oz * side, radius * math.sin(a), oz * off + ox * side),
+                        (ox * back, LIGHT_SPEED * math.cos(a), oz * back)))
     return out
 
 
-def functions(charts, radius, half):
+def functions(charts, radius, half, facing="west"):
     """The functions of the guide's charts, {name below <namespace>:guide/: [lines]}. {ns} stands for
     the namespace; a position is the one the caller runs the function at."""
     n_charts = len(charts)
@@ -170,9 +183,9 @@ def functions(charts, radius, half):
     # run as a player who is still to see lights, at the middle of the dome at its springing: the
     # score counts down from LIGHT_BEATS, and the beat's points are the ones for what it stands at
     glow = []
-    for beat, (dx, dy, dz), (vx, vy, vz) in lights(radius, half):
+    for beat, (dx, dy, dz), (vx, vy, vz) in lights(radius, half, facing):
         glow.append(f"execute if score @s {GLOW} matches {LIGHT_BEATS - beat} run particle {LIGHT} "
-                    f"~{MK._num(dx)} ~{MK._num(dy)} ~{MK._num(dz)} {MK._num(vx)} {MK._num(vy)} {MK._num(vz)} 1 0 force @s")
+                    f"~{_num(dx)} ~{_num(dy)} ~{_num(dz)} {_num(vx)} {_num(vy)} {_num(vz)} 1 0 force @s")
     out["glow"] = glow + [f"scoreboard players remove @s {GLOW} 1"]
     return out
 
@@ -184,17 +197,17 @@ def quest(canvas, charts, observer, dome, origin=(0, 0, 0)):
                beside it)], chart 1 first: _guide_charts.CHARTS
     observer   where the observer's feet stand behind the eyepiece
     dome       (the middle of the dome at its springing, the radius of its skin, the clear half of
-               its slit's width): slit()
+               its slit's width, the way the slit looks): slit()
     All in scene coordinates, plus origin. Returns 0: no display entity is placed.
     """
-    middle, radius, half = dome
-    for name, lines in functions(charts, radius, half).items():
+    middle, radius, half, facing = dome
+    for name, lines in functions(charts, radius, half, facing).items():
         MK.function(canvas, f"guide/{name}", lines)
     for n, (_name, face, floor) in enumerate(charts, 1):
         MK.run(canvas, (face[0], floor, face[2]),
-               "execute positioned {x} {y} {z} as @a[distance=.." + MK._num(REACH) + ",tag=!" + TAG.format(n=n)
+               "execute positioned {x} {y} {z} as @a[distance=.." + _num(REACH) + ",tag=!" + TAG.format(n=n)
                + "] run function {ns}:guide/c" + str(n), BEAT, at=(0,), origin=origin)
-    MK.run(canvas, observer, "execute positioned {x} {y} {z} as @a[distance=.." + MK._num(LENS_REACH) + ",tag=!" + DONE
+    MK.run(canvas, observer, "execute positioned {x} {y} {z} as @a[distance=.." + _num(LENS_REACH) + ",tag=!" + DONE
            + "] run function {ns}:guide/lens", BEAT, at=(LENS_AT,), origin=origin)
     MK.run(canvas, middle, "execute positioned {x} {y} {z} as @a[scores={" + GLOW + "=1..}] run function {ns}:guide/glow",
            BEAT, at=(LENS_AT,), origin=origin)

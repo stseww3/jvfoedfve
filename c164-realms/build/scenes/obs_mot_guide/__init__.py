@@ -48,7 +48,7 @@ ARC_HALF = 1.75                 # ... and half its width, the dome's slit's
 
 CHARTS = tuple((f"post{k + 1}", (x + 0.5, FLOOR + 1.0, z + 0.5), float(FLOOR)) for k, (x, z) in enumerate(POSTS))
 OBSERVER = (STEP_AT[0] + 0.5, FLOOR + 1.0, STEP_AT[1] + 0.5)
-DOME = ((OBSERVER[0] + ARC_R, FLOOR + 2.0, OBSERVER[2]), ARC_R, ARC_HALF)
+DOME = ((OBSERVER[0] + ARC_R, FLOOR + 2.0, OBSERVER[2]), ARC_R, ARC_HALF, "west")
 
 
 def shots():
