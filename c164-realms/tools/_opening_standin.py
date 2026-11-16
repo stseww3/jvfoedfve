@@ -8,8 +8,9 @@ The stand-in does what mast described (#86008, #88393), on a seat of its own ins
   guide/first   the newcomer gets the tags c164.new and c164.rider and is set on a seat (an item
                 display summoned where he stands)
   guide/train   every tick: his seat is carried up and south for 120 ticks and back for 120 (the
-                air there is free in A8); at tick 160 of his ride the title; at tick 250 he is off
-  guide/arrive  whoever still rides: off the seat, the seat gone, function c164map:back
+                air there is free in A8); at tick 250 he is off
+  guide/arrive  whoever still rides: off the seat, the seat gone, function c164map:back; and the
+                title at that moment (the director's #92375: as he gets off)
   guide/join    who comes back riding: the same; who comes back with c164.new gets the title then
 The note beside the archive is rewritten for the new archive, with spec.arrival = {"most": 300}.
 """
@@ -23,7 +24,7 @@ import zipfile
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import export as E
 
-OUT, BACK, TITLE, OFF, MOST = 120, 240, 160, 250, 300
+OUT, BACK, OFF, MOST = 120, 240, 250, 300
 STEP = (0.0, 0.2, 0.1)
 
 
@@ -41,6 +42,7 @@ def main():
     guide = os.path.join(data, E.ART, "function", "guide")
     os.makedirs(guide, exist_ok=True)
     art, ns = E.ART, E.NS
+    go = E.train_functions(os.path.join(world, "datapacks", E.PACK)).get("go")      # the train leaves with him
     fwd = "~{} ~{} ~{}".format(*STEP)
     rev = "~{} ~{} ~{}".format(*(-v for v in STEP))
     files = {
@@ -52,17 +54,18 @@ def main():
             'summon minecraft:item_display ~ ~ ~ {Tags:["c164.seat","c164.seat.new"]}',
             "ride @s mount @e[tag=c164.seat.new,limit=1,sort=nearest]",
             "tag @e[tag=c164.seat.new] remove c164.seat.new",
+            *([f"function {go}"] if go else []),
         ],
         "train": [
             "execute as @a[tag=c164.rider] run scoreboard players add @s c164ride 1",
             f"execute as @a[tag=c164.rider,scores={{c164ride=1..{OUT}}}] on vehicle at @s run tp @s {fwd}",
             f"execute as @a[tag=c164.rider,scores={{c164ride={OUT + 1}..{BACK}}}] on vehicle at @s run tp @s {rev}",
-            f"execute as @a[tag=c164.new,scores={{c164ride={TITLE}..}}] run function {art}:guide/title2",
             f"execute as @a[tag=c164.rider,scores={{c164ride={OFF}..}}] at @s run function {art}:guide/arrive",
         ],
         "arrive": [
             "tag @s remove c164.rider",
             f"execute if predicate {ns}:{E.RIDING} run function {art}:guide/off",
+            f"execute if entity @s[tag=c164.new] run function {art}:guide/title2",
         ],
         "off": [
             "execute on vehicle run tag @s add c164.seat.done",
