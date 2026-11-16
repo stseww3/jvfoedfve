@@ -1,0 +1,62 @@
+a0job 1115-235117-s2-fable-89df-26445: cursor/c164-s2-fable-89df @ 41b6855a on the director's machine
+(the branch moved after the job was sent: it ran on 41b6855a, not on 95714f60)
+  [cloud_setup    0s] machine: 4 cores, load 2.77 2.60 2.28, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    0s] ready. Python: /agent/realms-study/.venv/bin/python
+---- bash tools/gatestack.sh --until d55813f0 cd87ee52 props/furniture 1b81b52f main/dome ff4e9287 props/paper 73294400 ---- exit 0, 553 s, last 60 lines of 51:
+==== gatestack: props/furniture 1b81b52f on the tree 56469ad0, the assembly as it was cd87ee52 ====
+gate props/furniture 1b81b52f: the merged tree 56469ad0, the assembly as it was cd87ee52
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 53 scenes in 38 s: 53 pass (33 with warnings)
+pictures: [PASS] selfshots obs_props_furniture at 56469ad0: 22 of 22 kept pictures are what the code draws
+pictures: obs_props_furniture_site: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_props_furniture_site at 56469ad0: 5 of 10 kept pictures are what the code draws, 5 not
+    sunset_west: 5207 of 921600 pixels are not what the code draws (off by up to 27 of 255)
+    sunset_row: 1484 of 921600 pixels are not what the code draws (off by up to 8 of 255)
+    sunset_plan: 3243 of 921600 pixels are not what the code draws (off by up to 102 of 255)
+    lookout_bench: 673 of 921600 pixels are not what the code draws (off by up to 9 of 255)
+    lookout_v11: 1089 of 921600 pixels are not what the code draws (off by up to 6 of 255)
+pictures: obs_props_seams: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_props_seams at 56469ad0: 3 of 6 kept pictures are what the code draws, 3 not
+    iron_plate__iron_riveted: 4218 of 921600 pixels are not what the code draws (off by up to 17 of 255)
+    iron_cast__brass_plate: 4401 of 921600 pixels are not what the code draws (off by up to 17 of 255)
+    row: 1168 of 921600 pixels are not what the code draws (off by up to 17 of 255)
+result: PASS
+==== gatestack: main/dome ff4e9287 on the tree 6c9f4c88, the assembly as it was 56469ad0 ====
+gate main/dome ff4e9287: the merged tree 6c9f4c88, the assembly as it was 56469ad0
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 53 scenes in 37 s: 53 pass (33 with warnings)
+pictures: obs_main_dome: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_main_dome at 6c9f4c88: 5 of 11 kept pictures are what the code draws, 6 not
+    v1: 6988 of 921600 pixels are not what the code draws (off by up to 37 of 255)
+    v2_axis: 5712 of 921600 pixels are not what the code draws (off by up to 36 of 255)
+    gallery: 6325 of 921600 pixels are not what the code draws (off by up to 79 of 255)
+    top: 2823 of 921600 pixels are not what the code draws (off by up to 104 of 255)
+    slit: 1091 of 921600 pixels are not what the code draws (off by up to 119 of 255)
+    west: 169 of 921600 pixels are not what the code draws (off by up to 117 of 255)
+pictures: obs_main_dome_a: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_main_dome_a at 6c9f4c88: 5 of 11 kept pictures are what the code draws, 6 not
+    v1: 6988 of 921600 pixels are not what the code draws (off by up to 37 of 255)
+    v2_axis: 5712 of 921600 pixels are not what the code draws (off by up to 36 of 255)
+    gallery: 6325 of 921600 pixels are not what the code draws (off by up to 79 of 255)
+    top: 2823 of 921600 pixels are not what the code draws (off by up to 104 of 255)
+    slit: 1091 of 921600 pixels are not what the code draws (off by up to 119 of 255)
+    west: 169 of 921600 pixels are not what the code draws (off by up to 117 of 255)
+pictures: [PASS] selfshots obs_main_dome_slit at 6c9f4c88: 10 of 10 kept pictures are what the code draws
+result: PASS
+==== gatestack: props/paper 73294400 on the tree d55813f0, the assembly as it was 6c9f4c88 ====
+gate props/paper 73294400: the merged tree d55813f0, the assembly as it was 6c9f4c88
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 54 scenes in 38 s: 54 pass (33 with warnings)
+pictures: [PASS] selfshots obs_props_paper at d55813f0: 25 of 25 kept pictures are what the code draws
+result: PASS
+==== gatestack: 3 deliveries from cd87ee52 to d55813f0 ====
+PASS props/furniture 1b81b52f on 56469ad0
+PASS main/dome ff4e9287 on 6c9f4c88
+PASS props/paper 73294400 on d55813f0
+result: PASS
+==== NODEJOB RESULT ====
+exit=0 secs=558 host=cursor cores=4 head=41b6855a commit=973a8a88 pushed=yes branch=cursor/c164-s2-wip-89df files=343
+a0job: exit=0 secs=559
