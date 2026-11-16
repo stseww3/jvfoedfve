@@ -1,19 +1,28 @@
-check obs_main_tower at 5f64ff0
-[WARN] regen     109211 blocks, 163 entities, 100 models, 967 resource-pack files, 66 data-pack files, look: 1 biomes, 1 timelines (2.4 s)
+check obs_main_tower at 2bc63d9
+[WARN] regen     187253 blocks, 334 entities, 269 models, 1475 resource-pack files, 378 data-pack files, look: 1 biomes, 1 timelines (4.9 s)
                  registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
-[PASS] conflicts the scene writes 966 files, no file written twice, the folders and the prefix of main are kept (1 package run alone)
-[PASS] strays    224 pictures, every colour in the palette; 9 sky pictures not checked (drawn by adding light)
-[PASS] refs      724 block states, item definitions and models read, every model and picture they name is there
+[PASS] conflicts the scene writes 1474 files, no file written twice, the folders and the prefix of main are kept (1 package run alone)
+[PASS] strays    393 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      1062 block states, item definitions and models read, every model and picture they name is there
 [PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
-[PASS] blocks    71 kinds of block placed, 12 barrier cells (x 16, y 0..1, z -5..5), all in the occupancy table
+[PASS] blocks    79 kinds of block placed, 12 barrier cells (x 16, y 0..1, z -5..5), all in the occupancy table
 [PASS] flatwall  no wall face runs flat over more than 5x5
-[WARN] entities  163 display entities, 5 drawn out along one axis, 53 models never placed
-                 prop_iron_canopy_lamp_under x1: 5.79/16/44.19 pixels to the block along x/y/z, not 16
-[PASS] views     10 shots, most display entities in view: 159 (v1_stamp), limit 600; counted without what walls hide; the game draws up to 163 (v5_board): a display entity without width and height is drawn outside the view too
-[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 13.9% hidden (base storey 43.8% by blocks and 2.4% more by models, great windows 1.7%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 1.3 s)
-[PASS] motion    3 parts and 0 points on 2 chains, 20 function files; 7 commands in the busiest tick (limit 40), 1.3 a tick on average (limit 10)
-                 chain of 24 ticks: 6 functions, 20 commands a cycle, starts 1 ticks after start
+[PASS] entities  334 display entities, 16 drawn out along one axis, 8 shown through a matrix that is no turn, no face stretched, 122 models never placed
+[PASS] views     9 shots, most display entities in view: 301 (v1_stamp), limit 600; counted without what walls hide; the game draws up to 334 (v5): a display entity without width and height is drawn outside the view too
+[WARN] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 16.1% hidden (base storey 43.8% by blocks and 6.5% more by models, great windows 4.1%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 2.7 s)
+                 the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a_equator at x 35, y 4, z 0; 2 more kinds; a lamp post takes less than 25% of a bay
+[PASS] motion    26 parts and 0 points on 14 chains, 285 function files; 10 commands in the busiest tick (limit 40), 4.1 a tick on average (limit 10)
+                 chain of 16 ticks: 4 functions, 10 commands a cycle, starts 3 ticks after start
+                 chain of 24 ticks: 8 functions, 25 commands a cycle, starts 2 ticks after start
                  chain of 40 ticks: 8 functions, 17 commands a cycle, starts 2 ticks after start
-                 site_weather_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.08 blocks off the axis
-                 bld_tower_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.09 blocks off the axis
+                 chain of 48 ticks: 12 functions, 65 commands a cycle, starts 1 ticks after start
+                 chain of 90 ticks: 8 functions, 17 commands a cycle, starts 4 ticks after start
+                 chain of 130 ticks: 8 functions, 17 commands a cycle, starts 20 ticks after start
+                 chain of 170 ticks: 8 functions, 17 commands a cycle, starts 5 ticks after start
+                 chain of 1001 ticks: 25 functions, 52 commands a cycle, starts 13 ticks after start
+                 chain of 1617 ticks: 31 functions, 64 commands a cycle, starts 9 ticks after start
+                 chain of 2002 ticks: 11 functions, 34 commands a cycle, starts 8 ticks after start
+                 chain of 2457 ticks: 39 functions, 80 commands a cycle, starts 3 ticks after start
+                 chain of 3003 ticks: 21 functions, 43 commands a cycle, starts 8 ticks after start
+                 ... and 18 more
 result: PASS (0 failed, 2 with warnings)
