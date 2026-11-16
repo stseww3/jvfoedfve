@@ -39,8 +39,9 @@ blocks of a chart's reach along its middle, so a test every 8 ticks does not mis
 walks or runs past a chart on its floor, and one who stops at it has it within 0.4 s.
 
 The switches are the master scene's: GUIDE (the whole guide layer) and GUIDE_CHARTS (this part
-alone), both True when the scene does not say. build() registers nothing while either is off, or
-while motion/_guide_charts.py is not in the tree.
+alone). They come into scenes/obs/__init__.py with motion/guide-title (s2, 11-16 11:22), and until
+they are there they count as off: build() registers nothing while either is off or missing, or
+while motion/_guide_charts.py is not in the tree. A test scene calls quest() itself.
 
 0 display entities and 0 blocks of its own; what _guide_charts.build() places is counted there.
 """
@@ -98,9 +99,10 @@ def _package(line, name):
 
 
 def enabled():
-    """Are the guide layer and its charts switched on? The switches are the master scene's."""
+    """Are the guide layer and its charts switched on? The switches are the master scene's, and
+    one that is not there is off."""
     master = importlib.import_module(__package__.rsplit(".", 1)[0])
-    return bool(getattr(master, "GUIDE", True)) and bool(getattr(master, "GUIDE_CHARTS", True))
+    return bool(getattr(master, "GUIDE", False)) and bool(getattr(master, "GUIDE_CHARTS", False))
 
 
 _HAS = object()                 # in a text: the number of charts the player has
