@@ -43,8 +43,8 @@ How a line is put together:
 Directions are names: "east", "west", "south", "north", "up", "down". All functions take scene
 coordinates plus `origin` and return the number of display entities they placed.
 
-build() places nothing while DRESS is off (A0, 11-14: whatever dresses the whole building carries
-such a switch and is opened after its review). The test scene obs_props_pipes calls dress() itself.
+build() places the family in the master scene while the switch DRESS is on (it is, since the
+delivery of 11-16). The test scene obs_props_pipes calls dress() itself.
 """
 import functools
 import math
@@ -57,7 +57,8 @@ from ..common import skeleton as S
 from . import _kit as K
 
 PREFIX = "prop_pipe_"
-DRESS = False           # the family on the main building: off until the review has passed it
+DRESS = True            # the family in the master scene (A0, 11-16 08:19: the author opens the switch
+                        # in the commit that is delivered)
 
 DIRS = {"east": (1, 0, 0), "west": (-1, 0, 0), "south": (0, 0, 1), "north": (0, 0, -1),
         "up": (0, 1, 0), "down": (0, -1, 0)}
@@ -83,9 +84,9 @@ def _tones(name, base=None):
 # Rainwater copper stands out of doors beside the copper blocks of the gutters, and those went down
 # a step: their plate is the ramp's step 1, its light edge 2, its dark edge and pits 0 (A0, 11-16
 # 03:15, on review 8 of materials/brass). The downpipe, its hopper, sockets and sleeves are painted
-# the same; the small pipe of instrument lines, an indoor thing, keeps the palette's own step.
-# K.COPPER_D once the kit of the assembly has it (a6: the same request of the palette).
-COPPER_D = getattr(K, "COPPER_D", P.mat("old_copper", base=1))
+# the same (the kit's COPPER_D); the small pipe of instrument lines, an indoor thing, keeps the
+# palette's own step.
+COPPER_D = K.COPPER_D
 IRON3 = _tones("iron")
 COPPER3 = _tones("old_copper")
 RAIN3 = _tones("old_copper", COPPER_D.base)
