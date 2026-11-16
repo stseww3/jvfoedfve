@@ -1,0 +1,3 @@
+branch=cursor/c164-rec-recorders-f3-aae1
+head=752dbdaf4fa85116f12f15e948361e2a1fd301c9
+args=--no-push python tools/check.py --scene obs_mach_recorders --shots build/scenes/obs_mach_recorders/shots.json 
