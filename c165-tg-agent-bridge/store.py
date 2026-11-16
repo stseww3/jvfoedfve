@@ -230,7 +230,8 @@ CREATE TABLE IF NOT EXISTS exec_nodes(
     metrics_ts REAL DEFAULT 0,
     last_seen REAL DEFAULT 0,
     created REAL DEFAULT 0,
-    note TEXT DEFAULT ''
+    note TEXT DEFAULT '',
+    env_id TEXT DEFAULT ''
 );
 
 -- 标准化无脑执行指令单与回执队列表
@@ -302,6 +303,7 @@ COLUMNS = (
     ("convs", "model_check", "TEXT DEFAULT ''"),      # '' / 'ok' / 'mismatch_hold' / 'approved'
     ("web_users", "allowed_convs", "TEXT DEFAULT '[]'"),
     ("web_users", "allowed_groups", "TEXT DEFAULT '[]'"),
+    ("exec_nodes", "env_id", "TEXT DEFAULT ''"),
 )
 
 INDEXES = """

@@ -197,6 +197,24 @@ json_mode: contextvars.ContextVar[bool] = contextvars.ContextVar("json_mode", de
 background: set[asyncio.Task] = set()   # 事件循环只弱引用任务，不存着会被回收
 
 
+SHUTDOWN: dict[str, bool] = {"active": False}
+
+
+def trigger_graceful_shutdown() -> None:
+    """平滑停机时立即释放所有挂起的长轮询（/wait、/worker/claim、read_chat、SSE），实现秒级重启不卡 90s 超时。"""
+    SHUTDOWN["active"] = True
+    for ev in list(inbox_events.values()) + list(shell_events.values()) + list(approval_events.values()):
+        try:
+            ev.set()
+        except Exception:
+            pass
+    for ev in list(globals().get("worker_job_events", {}).values()):
+        try:
+            ev.set()
+        except Exception:
+            pass
+
+
 def spawn(coro) -> asyncio.Task:
     task = asyncio.create_task(coro)
     background.add(task)
@@ -362,8 +380,9 @@ def main_join_key() -> str:
 
 def main_prompt_text() -> str:
     return (
-        f"你是 Telegram 桥的主 Agent 单据执行器。请先通过 GetDynamicTools 加载 cursor 命名空间下的 AwaitShell 与 mcp 命名空间工具，"
-        f"然后调用 MCP 的 join(mode=\"main\", main_key=\"{main_join_key()}\")，等我在 Telegram 里点批准后按说明运行：\n"
+        "你是 Telegram 桥的主 Agent 单据执行器。请先通过 GetDynamicTools 加载 cursor 命名空间下的 AwaitShell、cursor-cloud 命名空间下的 environment-info 与 mcp 命名空间工具，"
+        "先调用一次 environment-info 读取本机 environment.environmentPublicId，"
+        f"再调用 MCP 的 join(mode=\"main\", main_key=\"{main_join_key()}\", environment_id=读到的environmentPublicId)，等我在 Telegram 里点批准后按说明运行：\n"
         "1. 你只负责原样处理 [STANDARD_OP] 单据（按给定参数调 Task(..., run_in_background=true) 并调 submit_op_result 回填），全部听总控 ctrl 的；其它非单据消息转给 ctrl，你不要自己思考排查问题，不得查看任何开的 chat 内容，忽略后台子 Task 完成/失败的系统通知。\n"
         f"2. 请保持循环调用 read_chat 等待指令单。没收到消息（【续棒】、报错、超时、断开）就直接进入下一轮等待；"
         f"空等几轮后按提示改用终端长等待（一次 {SHELL_SPAN}；若转入后台必须调 AwaitShell(block_until_ms=7140000) 阻塞等，严禁循环 Read terminals/*.txt），等满后按提示询问是否继续。\n"
@@ -382,8 +401,10 @@ def worker_prompt_text() -> str:
 def worker_host_prompt_text(pool_size: int | None = None) -> str:
     p_arg = f", pool_size={int(pool_size)}" if pool_size is not None else ""
     return (
-        f"你是工作区任务协调会话。调用 MCP 的 join(mode=\"coordinator\", main_key=\"{main_join_key()}\"{p_arg}) 接入，接入后按返回的说明运行：\n"
-        "循环调用 read_chat 等待标准任务单。收到 `[STANDARD_OP ... type=\"TASK_LAUNCH\"]` 单据时，原样按单据给定的参数调用 `Task(..., run_in_background=true)` 启动后台子会话并用 `submit_op_result` 回填 `task_agent_id`，随后回到 `read_chat` 继续等待（空等几轮后按提示运行终端长等待）。重复等待是正常常驻方式，只有工具返回身份已停用时才结束。"
+        "你是工作区任务协调会话。请先通过 GetDynamicTools 加载 cursor 命名空间下的 AwaitShell、cursor-cloud 命名空间下的 environment-info 与 mcp 命名空间工具，"
+        "先调用一次 environment-info 读取本机 environment.environmentPublicId，"
+        f"再调用 MCP 的 join(mode=\"coordinator\", main_key=\"{main_join_key()}\"{p_arg}, environment_id=读到的environmentPublicId) 接入，按返回说明运行：\n"
+        "循环调用 read_chat 等待标准任务单。收到 `[STANDARD_OP ... type=\"TASK_LAUNCH\"]` 单据时，原样按单据给定的参数调用 `Task(..., run_in_background=true)` 启动后台子会话并用 `submit_op_result` 回填 `task_agent_id`，随后回到 `read_chat` 继续等待（空等几轮后按提示运行终端长等待，转后台必须调 AwaitShell(block_until_ms=7140000) 阻塞等，严禁循环 Read terminals/*.txt）。只有工具返回身份已停用时才结束。"
     )
 
 
@@ -1077,7 +1098,7 @@ def task_text(conv) -> str:
     mem_block = ""
     if (conv["memory_note"] or "").strip():
         mem_block = f"\n\n【父 agent 交接的当前记忆与上下文摘要】\n{conv['memory_note']}\n"
-    join_step = f"1. 调用 MCP 的 join 工具：code=\"{conv['task_code']}\"，{naming}。\n"
+    join_step = f"1. 调用 MCP 的 join 工具：code=\"{conv['task_code']}\"，{naming}；首次在当前云端 VM 启动时，在终端运行一次运行时初始化：{trace_install_cmd()}\n"
     return (
         f"你是 Telegram 桥里聊天 {conv['id']} 的子 agent{brief}。{mem_block}\n"
         f"{join_step}"
@@ -1790,9 +1811,7 @@ def shell_command(agent_id: str) -> str:
         f"[ -s ~/.cursor/dais_runtime.pyz ] && python3 ~/.cursor/dais_runtime.pyz wait '{agent_id}' {SHELL_WAIT + 60} "
         f"|| curl -sSN -m {SHELL_WAIT + 120} -H 'X-Agent: {agent_id}' '{PUBLIC_BASE}/wait' | tail -n 1"
     )
-    if agent_id.startswith("m_"):
-        return f"({trace_install_cmd()}); ({wait_part})"
-    return wait_part
+    return f"({trace_install_cmd()}); ({wait_part})"
 
 
 def shell_hint(agent_id: str, rounds: int) -> str:
@@ -1915,6 +1934,9 @@ async def shell_stream(agent):
     try:
         yield "开始等待（这一行不是消息）\n"
         while True:
+            if SHUTDOWN["active"]:
+                yield f"服务平滑热更新中（不是用户消息），请立即重新运行等待命令或调用 read_chat(agent=\"{agent_id}\")。{MUST_WAIT}\n"
+                return
             if shell_gen.get(agent_id) != gen:
                 yield ("这次终端等待被同一个身份新开的等待顶替了（不是用户消息）。新的那次还在跑就等它；"
                        f"没有的话立刻重新运行这条命令。{MUST_WAIT}\n")
@@ -2587,7 +2609,7 @@ def route_control_target() -> str:
 def ctrl_task_text(code: str) -> str:
     return (
         "你是 Telegram 桥全局唯一的【总控协调 Agent（ctrl）】。\n"
-        f"1. 调用 MCP 的 join 工具：code=\"{code}\"，name=\"总控\"。\n"
+        f"1. 调用 MCP 的 join 工具：code=\"{code}\"，name=\"总控\"；首次在当前云端 VM 启动时，在终端运行一次运行时初始化：{trace_install_cmd()}\n"
         "2. 接入后调用 cluster_status 查看全部主 Agent（main1..N）、工作节点（node1..K）的 CPU/内存探针与各业务聊天状态，处理待办请求。\n"
         "3. 保持在线工作循环：通过 dispatch_task_op 向各 main1..N 下发启动/恢复单据，回复管理员用 send_message，操作完回到 read_chat（或按提示运行终端长等待），保持会话在线，不用结束回合或告别。"
     )
@@ -2598,6 +2620,49 @@ def cursor_env_id() -> str:
     if raw:
         return "" if raw.lower() in ("off", "none", "false", "shared") else raw
     return DEFAULT_CURSOR_ENV_ID
+
+
+def clean_env_id(val: Any) -> str:
+    s = re.sub(r"\s+", "", str(val or "")).strip()[:120]
+    if s.lower() in ("none", "null"):
+        return ""
+    return s
+
+
+def bind_node_env_id(node_id: str, raw_env_id: Any) -> str:
+    """将某台 mainN / whostN 自身账号真实的 Cursor environmentPublicId 持久化绑定到节点表。"""
+    nid = (node_id or "").strip().lower()
+    val = clean_env_id(raw_env_id)
+    if not nid or not val:
+        return ""
+    if val.lower() in ("default", "reset", "auto"):
+        store.run("UPDATE exec_nodes SET env_id='' WHERE id=?", (nid,))
+        return ""
+    store.run("UPDATE exec_nodes SET env_id=? WHERE id=?", (val, nid))
+    log.info("bound exec_node %s env_id=%s", nid, val)
+    return "" if val.lower() in ("off", "false", "shared") else val
+
+
+def node_effective_env_id(nrow) -> tuple[str, bool]:
+    """解析某台宿主（mainN / whostN）派发独立新云机时应使用的 (env_id, need_auto_discover)：
+    1) 若全局关闭独立云机（/env off）或该节点显式设为 off/shared -> ('', False)
+    2) 若该节点已绑定自身账号真实的 env_id -> (node_env_id, False)
+    3) 若该节点尚未登记 env_id：
+       - 对 whost 协调器或存在多台 main 跨账号并存的新节点，返回 ('', True) 让宿主首次调 environment-info 自检回传绑定（避免填错其他账号 env_id 报错）！"""
+    global_env = cursor_env_id()
+    if not global_env:
+        return "", False
+    if nrow is None:
+        return global_env, False
+    n_env = clean_env_id(nrow["env_id"] if "env_id" in nrow.keys() else "")
+    if n_env:
+        if n_env.lower() in ("off", "false", "shared"):
+            return "", False
+        return n_env, False
+    if is_worker_host_id(nrow["id"]):
+        return "", True
+    # 若某台新接入的 mainN 尚未上报自身 env_id，且库里已有绑定过不同 env_id 的节点（或处于多账号模式），自动引导首次自检绑定
+    return "", True
 
 
 def set_cursor_env_id(val: str) -> str:
@@ -2611,18 +2676,18 @@ def set_cursor_env_id(val: str) -> str:
     return cursor_env_id()
 
 
-def task_machine_param_line(isolated_vm: bool = True) -> str:
-    env_id = cursor_env_id()
+def task_machine_param_line(isolated_vm: bool = True, env_id_override: str | None = None) -> str:
+    env_id = cursor_env_id() if env_id_override is None else env_id_override
     if not isolated_vm or not env_id:
         return ""
     return (
         f"- machine: {{\"environment_id\": \"{env_id}\"}}"
-        "（默认单独开新云机器：若你当前会话的 Task 工具参数支持 machine 则填入；若当前客户端无 machine 参数则省略该项回退后台运行）\n"
+        "（单独开独立新云机：请直接按此本机绑定的 environment_id 填入 Task 的 machine 参数）\n"
     )
 
 
-def task_machine_inline_hint(isolated_vm: bool = True) -> str:
-    env_id = cursor_env_id()
+def task_machine_inline_hint(isolated_vm: bool = True, env_id_override: str | None = None) -> str:
+    env_id = cursor_env_id() if env_id_override is None else env_id_override
     if not isolated_vm or not env_id:
         return ""
     return f", machine={{\"environment_id\": \"{env_id}\"}}"
@@ -2645,13 +2710,30 @@ def default_resume_prompt(conv) -> str:
     )
 
 
-def format_standard_launch_op(op_id: str, launcher_agent_id: str, conv_id: str, prompt_text: str, model: str = "", isolated_vm: bool = True, requester: str = "ctrl", auto_discover_env: bool = False) -> str:
+def format_standard_launch_op(
+    op_id: str,
+    launcher_agent_id: str,
+    conv_id: str,
+    prompt_text: str,
+    model: str = "",
+    isolated_vm: bool = True,
+    requester: str = "ctrl",
+    auto_discover_env: bool = False,
+    env_id: str = "",
+) -> str:
     m_line = f"- model: \"{model}\"（请在 Task 的 model 参数填入匹配的该模型 ID，保持一致）" if model else "- model: （不填，默认继承当前会话模型）"
-    if auto_discover_env:
+    env_submit_arg = ""
+    if not isolated_vm:
+        mach_line = ""
+    elif env_id:
+        mach_line = task_machine_param_line(isolated_vm=True, env_id_override=env_id)
+    elif auto_discover_env:
         mach_line = (
-            "- machine / repo_url: 请优先选用你当前账号自身有权限的默认云环境（例如当前会话所在仓库/环境对应的 `machine={\"environment_id\": ...}` 或 `repo_url`），"
-            "使每个后台子会话在独立的云工作区中启动（不要填入当前账号无权限的其他环境 ID）\n"
+            "- machine: 请先通过 GetDynamicTools(namespace=\"cursor-cloud\", toolName=\"environment-info\") 调用一次 `environment-info` 获取你当前账号真实的 `environment.environmentPublicId`，"
+            "填入 `machine={\"environment_id\": 本机environmentPublicId}` 在独立的云工作区启动后台子会话（若本会话无 environmentPublicId 则改填 `repo_url`），"
+            "并在下方 `submit_op_result` 中一并带上 `environment_id=本机environmentPublicId` 自动绑定（绑定后后续单据将由桥自动直填，无需再查）！\n"
         )
+        env_submit_arg = ", environment_id=本机environmentPublicId"
     else:
         mach_line = task_machine_param_line(isolated_vm=isolated_vm)
     src_attr = f" source=\"{requester}\"" if requester else ""
@@ -2666,7 +2748,7 @@ def format_standard_launch_op(op_id: str, launcher_agent_id: str, conv_id: str, 
         "<<<PROMPT\n"
         f"{prompt_text}\n"
         "PROMPT>>>\n"
-        f"启动拿到返回的 agent_id（或 cloudAgentBcId）后，立即调用 `submit_op_result(agent=\"{launcher_agent_id}\", op_id=\"{op_id}\", status=\"ok\", task_agent_id=返回的agent_id)`，随后立刻回到 `read_chat` 继续等待（严禁输出总结或结束回合）。"
+        f"启动拿到返回的 agent_id（或 cloudAgentBcId）后，立即调用 `submit_op_result(agent=\"{launcher_agent_id}\", op_id=\"{op_id}\", status=\"ok\", task_agent_id=返回的agent_id{env_submit_arg})`，随后立刻回到 `read_chat` 继续等待（严禁输出总结或结束回合）。"
     )
 
 
@@ -2715,7 +2797,11 @@ def enqueue_launch_op(conv, launcher_node, requester: str = "ctrl", model_overri
     if isolated_vm is None:
         # 默认开启独立新云机；仅当显式标记 dedicated_req == -1（共享模式）时关闭
         isolated_vm = int(conv["dedicated_req"] or 0) != -1 if "dedicated_req" in conv.keys() else True
-    env_id = cursor_env_id() if isolated_vm else ""
+    if isolated_vm:
+        node_env, need_disc = node_effective_env_id(launcher_node)
+    else:
+        node_env, need_disc = "", False
+    use_iso = bool(isolated_vm and (node_env or need_disc))
     if conv["id"] == "ctrl":
         store.run(
             "UPDATE convs SET task_code=?, task_ts=?, alert='', alert_ts=0, cloud=?, model=CASE WHEN ?!='' THEN ? ELSE model END WHERE id='ctrl'",
@@ -2736,14 +2822,24 @@ def enqueue_launch_op(conv, launcher_node, requester: str = "ctrl", model_overri
         "model": eff_model,
         "task_code": code,
         "cloud_num": cloud_num,
-        "isolated_vm": bool(env_id),
-        "environment_id": env_id,
+        "isolated_vm": use_iso,
+        "environment_id": node_env or ("auto_discover" if need_disc else ""),
     }
     store.run(
         "INSERT INTO dispatch_ops(op_id,target_node,op_type,conv_id,requester,payload_json,status,created_ts) VALUES(?,?,?,?,?,?,?,?)",
         (op_id, node_id, "launch_subagent", conv["id"], requester, json.dumps(payload, ensure_ascii=False), "pending", now()),
     )
-    msg_txt = format_standard_launch_op(op_id, launcher_node["agent"], conv["id"], prompt_body, eff_model, isolated_vm=bool(env_id), requester=requester)
+    msg_txt = format_standard_launch_op(
+        op_id,
+        launcher_node["agent"],
+        conv["id"],
+        prompt_body,
+        eff_model,
+        isolated_vm=use_iso,
+        requester=requester,
+        auto_discover_env=need_disc,
+        env_id=node_env,
+    )
     system_note(node_id, msg_txt, wake=1)
     mark_menu_dirty()
     return op_id, node_id
@@ -2915,7 +3011,7 @@ def dispatch_conv_to_cluster(conv, why: str, requester: str = "system") -> str:
     return "main"
 
 
-def make_main_node(replace_node: str = "", custom_name: str = "") -> tuple[str, str]:
+def make_main_node(replace_node: str = "", custom_name: str = "", env_id: str = "") -> tuple[str, str]:
     """创建或重连顶替一台主 Agent 启动器（main1..N），多台主 Agent 同时并存互不踢下线！返回 (node_id, agent_id)。"""
     ensure_main_conv()
     rep = (replace_node or "").strip().lower()
@@ -2932,6 +3028,7 @@ def make_main_node(replace_node: str = "", custom_name: str = "") -> tuple[str, 
         node_id = f"main{num}"
     disp_name = clean_name(custom_name) or f"主Agent-{num}"
     agent_id = new_identity("m_")
+    c_env = clean_env_id(env_id)
     cur_max = int((store.one("SELECT IFNULL(MAX(id),0) AS n FROM messages") or {"n": 0})["n"] or 0)
     store.run(
         "INSERT INTO agents(id,role,conv,status,created,last_seen) VALUES(?,?,?,?,?,?)",
@@ -2945,9 +3042,10 @@ def make_main_node(replace_node: str = "", custom_name: str = "") -> tuple[str, 
     )
     store.run("UPDATE convs SET cloud=? WHERE id='main'", (cloud_num,))
     store.run(
-        "INSERT INTO exec_nodes(id,kind,num,cloud_num,name,agent,status,last_seen,created) VALUES(?,?,?,?,?,?,?,?,?) "
-        "ON CONFLICT(id) DO UPDATE SET name=excluded.name, agent=excluded.agent, status='online', last_seen=excluded.last_seen",
-        (node_id, "launcher", num, cloud_num, disp_name, agent_id, "online", now(), now()),
+        "INSERT INTO exec_nodes(id,kind,num,cloud_num,name,agent,status,last_seen,created,env_id) VALUES(?,?,?,?,?,?,?,?,?,?) "
+        "ON CONFLICT(id) DO UPDATE SET name=excluded.name, agent=excluded.agent, status='online', last_seen=excluded.last_seen, "
+        "env_id=CASE WHEN excluded.env_id!='' THEN excluded.env_id ELSE exec_nodes.env_id END",
+        (node_id, "launcher", num, cloud_num, disp_name, agent_id, "online", now(), now(), c_env),
     )
     _retire_offline_launchers(except_id=node_id)
     mark_menu_dirty()
@@ -3021,13 +3119,14 @@ def welcome_worker(node_id: str, agent_id: str) -> str:
     ])
 
 
-def make_worker_host_node(custom_name: str = "") -> tuple[str, str]:
+def make_worker_host_node(custom_name: str = "", env_id: str = "") -> tuple[str, str]:
     """创建工作区协调宿主会话（whost1..M），对模型完全无感呈现为普通后台任务启动协调器。"""
     ensure_main_conv()
     num = next_worker_host_num()
     node_id = f"whost{num}"
     disp_name = clean_name(custom_name) or f"工作协调器-{num}"
     agent_id = new_identity("m_")
+    c_env = clean_env_id(env_id)
     cur_max = int((store.one("SELECT IFNULL(MAX(id),0) AS n FROM messages") or {"n": 0})["n"] or 0)
     store.run(
         "INSERT INTO agents(id,role,conv,status,created,last_seen) VALUES(?,?,?,?,?,?)",
@@ -3040,9 +3139,10 @@ def make_worker_host_node(custom_name: str = "") -> tuple[str, str]:
         (node_id, disp_name, cur_max, now(), agent_id),
     )
     store.run(
-        "INSERT INTO exec_nodes(id,kind,num,cloud_num,name,agent,status,last_seen,created) VALUES(?,?,?,?,?,?,?,?,?) "
-        "ON CONFLICT(id) DO UPDATE SET name=excluded.name, agent=excluded.agent, status='online', last_seen=excluded.last_seen",
-        (node_id, "worker_host", num, 0, disp_name, agent_id, "online", now(), now()),
+        "INSERT INTO exec_nodes(id,kind,num,cloud_num,name,agent,status,last_seen,created,env_id) VALUES(?,?,?,?,?,?,?,?,?,?) "
+        "ON CONFLICT(id) DO UPDATE SET name=excluded.name, agent=excluded.agent, status='online', last_seen=excluded.last_seen, "
+        "env_id=CASE WHEN excluded.env_id!='' THEN excluded.env_id ELSE exec_nodes.env_id END",
+        (node_id, "worker_host", num, 0, disp_name, agent_id, "online", now(), now(), c_env),
     )
     return node_id, agent_id
 
@@ -3149,7 +3249,9 @@ def spawn_worker_vm_via_host(requester: str = "auto_pool", allow_main_fallback: 
     host = select_best_worker_spawner(allow_main_fallback=allow_main_fallback)
     if host is None:
         return None
-    env_id = cursor_env_id() or DEFAULT_CURSOR_ENV_ID
+    node_env, need_disc = node_effective_env_id(host)
+    if not node_env and not need_disc:
+        need_disc = True
     w_model = worker_pool_model()
     node_id, w_code = precreate_auto_worker_slot()
     op_id = "op_" + secrets.token_hex(5)
@@ -3159,7 +3261,7 @@ def spawn_worker_vm_via_host(requester: str = "auto_pool", allow_main_fallback: 
         "model": w_model,
         "task_code": w_code,
         "isolated_vm": True,
-        "environment_id": env_id,
+        "environment_id": node_env or "auto_discover",
     }
     store.run(
         "INSERT INTO dispatch_ops(op_id,target_node,op_type,conv_id,requester,payload_json,status,created_ts) VALUES(?,?,?,?,?,?,?,?)",
@@ -3173,7 +3275,8 @@ def spawn_worker_vm_via_host(requester: str = "auto_pool", allow_main_fallback: 
         w_model,
         isolated_vm=True,
         requester=requester,
-        auto_discover_env=is_worker_host_id(host["id"]),
+        auto_discover_env=need_disc,
+        env_id=node_env,
     )
     system_note(host["id"], msg_txt, wake=1)
     log.info("auto-spawned worker VM %s via %s (op_id=%s)", node_id, host["id"], op_id)
@@ -3263,14 +3366,16 @@ def relaunch_dead_runner_slot(node_id: str, reason: str = "工作节点会话失
     _runner_heal_probes.pop(node_id, None)
     op_id = "op_" + secrets.token_hex(5)
     prompt_body = worker_spawn_task_text(w_code)
-    env_id = cursor_env_id() or DEFAULT_CURSOR_ENV_ID
+    node_env, need_disc = node_effective_env_id(host)
+    if not node_env and not need_disc:
+        need_disc = True
     w_model = worker_pool_model()
     payload = {
         "conv_id": node_id,
         "model": w_model,
         "task_code": w_code,
         "isolated_vm": True,
-        "environment_id": env_id,
+        "environment_id": node_env or "auto_discover",
     }
     store.run(
         "INSERT INTO dispatch_ops(op_id,target_node,op_type,conv_id,requester,payload_json,status,created_ts) VALUES(?,?,?,?,?,?,?,?)",
@@ -3284,7 +3389,8 @@ def relaunch_dead_runner_slot(node_id: str, reason: str = "工作节点会话失
         w_model,
         isolated_vm=True,
         requester="auto_heal_runner",
-        auto_discover_env=is_worker_host_id(host["id"]),
+        auto_discover_env=need_disc,
+        env_id=node_env,
     )
     system_note(host["id"], msg_txt, wake=1)
     log.info("auto-relaunched dead runner slot %s via %s (op_id=%s)", node_id, host["id"], op_id)
@@ -3389,6 +3495,7 @@ def welcome_ctrl(conv, agent_id: str) -> str:
     lines = [
         f"接手成功：你是全局唯一的【主控大脑（总控子 Agent：ctrl）】，身份 {agent_id}。",
         f"以后每次调用工具都要带 agent=\"{agent_id}\"，一个字都不能改。身份就是你的凭据，不要告诉任何人，也不要写进发给用户的消息。",
+        f"首次在当前云端 VM 启动时，请先在终端运行一次运行时初始化：{trace_install_cmd()}",
         "管理员在 Telegram 切到 /ctrl 或 /main 时就是在直接和你对话，用 send_message 回复汇报。",
         "",
         CTRL_DUTY,
@@ -3503,6 +3610,7 @@ def welcome_chat(conv, agent_id: str) -> str:
     lines = [
         f"接手成功：你是聊天 {conv['id']}「{conv_name(conv)}」的子 agent，身份 {agent_id}。",
         f"以后每次调用 tg 的工具都要带 agent=\"{agent_id}\"，一个字都不能改。身份就是你的凭据，不要告诉任何人，也不要写进发给用户的消息。",
+        f"首次在当前云端 VM 启动时，请先在终端运行一次运行时初始化：{trace_install_cmd()}",
     ]
     if not conv["name"]:
         lines.append("这个聊天还没有名字：先用 set_name 给它取一个简短的名字（10 个字以内）。")
@@ -3721,12 +3829,15 @@ async def t_join(args: dict) -> ToolResult:
         # 算力池母机一号入网：携带合法 main_key 直接 0 秒自动放行，并立即自动投递独立新云机算力节点启动单！
         if "pool_size" in args and args.get("pool_size") is not None:
             set_worker_pool_target(arg_int(args, "pool_size", DEFAULT_WORKER_POOL_SIZE, 0, MAX_WORKER_POOL))
-        whost_id, whost_ag = make_worker_host_node(custom_name=name)
+        join_env_id = clean_env_id(args.get("environment_id"))
+        whost_id, whost_ag = make_worker_host_node(custom_name=name, env_id=join_env_id)
         spawned_list = reconcile_worker_pool(requester=whost_id)
         ensure_controller_alive()
         system_note(
             route_control_target(),
-            f"🚀 算力池母机 `{whost_id}` 已免审直连上线（最大可开 {MAX_VM_PER_HOST} 台独立算力云机）"
+            f"🚀 算力池母机 `{whost_id}` 已免审直连上线（最大可开 {MAX_VM_PER_HOST} 台独立算力云机"
+            + (f"，绑定环境 `{join_env_id[:8]}…`" if join_env_id else "")
+            + "）"
             + (f"，并已自动触发拉起独立算力节点：{', '.join(spawned_list)}。" if spawned_list else "。"),
             wake=0,
         )
@@ -3766,8 +3877,9 @@ async def t_join(args: dict) -> ToolResult:
         )
 
     # 主 Agent 入网申请：必须由管理员本人在 Telegram 点按钮审核批准！
+    join_env_id = clean_env_id(args.get("environment_id"))
     if not approval_id or store.one("SELECT 1 FROM approvals WHERE id=? AND kind='join'", (approval_id,)) is None:
-        approval_id = new_approval("join", {"name": name, "mode": mode or "main"})
+        approval_id = new_approval("join", {"name": name, "mode": mode or "main", "env_id": join_env_id})
         await notify_admins(
             f"🔔 有新的云端会话申请接入 Telegram 桥{('：' + name) if name else ''}。\n"
             "• 主 Agent 执行器必须由你本人在此点击批准（支持多个 main1、main2 并存）；\n"
@@ -4284,6 +4396,7 @@ COMMON_TOOLS = [
             "name": prop("string", "简短名称或备注说明（10 字以内），可省略"),
             "mode": prop("string", "仅顶层会话填写：main | worker | coordinator（子会话不用填）", enum=["main", "worker", "coordinator", "worker_host"]),
             "main_key": prop("string", "仅顶层会话入网口令（来自管理员开场提示词；子会话不用填）"),
+            "environment_id": prop("string", "可选（推荐顶层 main/coordinator 填写）：本机 cursor-cloud environment-info 返回的 environmentPublicId，自动绑定本账号独立云环境"),
             "pool_size": prop("integer", "初始预创建的工作区子会话数量（默认 3，可省略）"),
             "request": prop("string", "等待审批再次轮询时带上的申请编号，可省略"),
         },
@@ -4484,6 +4597,7 @@ COMMON_TOOLS = [
             "status": prop("string", "执行状态：ok | error", enum=["ok", "error"]),
             "task_agent_id": prop("string", "TASK_LAUNCH 时填入 Task 工具返回的 agent_id，其他类型可省略"),
             "output": prop("string", "TASK_RESUME 的原始返回文本或 WORKSPACE_JOB 的命令输出摘要"),
+            "environment_id": prop("string", "可选：顺带上报当前宿主机器的 Cursor environmentPublicId，自动绑定本节点独立云环境"),
         },
         ["op_id", "status"],
     ),
@@ -5761,8 +5875,10 @@ def render_cluster_overview() -> str:
         excl = f" | 🔒独占={m['exclusive_conv']}" if m["exclusive_conv"] else " | 共享池"
         allow = node_allowed_list(m)
         allow_s = f" (额外授权:{','.join(allow)})" if allow else ""
+        m_env = clean_env_id(m["env_id"] if "env_id" in m.keys() else "")
+        env_s = f" | ☁️env={m_env[:8]}…" if m_env else " | ☁️env=首次自动识别"
         lines.append(
-            f"  - {m['id']}「{m['name']}」(cloud{m['cloud_num']})：{st_lbl} | 活跃子agent {active_cnt}/{len(mounted)} 个{excl}{allow_s}\n"
+            f"  - {m['id']}「{m['name']}」(cloud{m['cloud_num']})：{st_lbl} | 活跃子agent {active_cnt}/{len(mounted)} 个{excl}{allow_s}{env_s}\n"
             f"    📊 探针：{format_node_metrics(m)}"
         )
 
@@ -5772,7 +5888,9 @@ def render_cluster_overview() -> str:
         for wh in whosts:
             st_lbl = "🟢 在线" if node_is_online(wh) else f"⚪ {wh['status']}"
             used_vm = host_active_vm_count(wh["id"])
-            lines.append(f"  - {wh['id']}「{wh['name']}」：{st_lbl} | 已开独立云机 {used_vm}/{MAX_VM_PER_HOST} 台")
+            wh_env = clean_env_id(wh["env_id"] if "env_id" in wh.keys() else "")
+            wh_env_s = f" | ☁️env={wh_env[:8]}…" if wh_env else ""
+            lines.append(f"  - {wh['id']}「{wh['name']}」：{st_lbl} | 已开独立云机 {used_vm}/{MAX_VM_PER_HOST} 台{wh_env_s}")
 
     runners = store.q("SELECT * FROM exec_nodes WHERE kind='runner' AND status!='removed' ORDER BY num")
     lines.append(f"\n【云端工作节点池（算力机 node1..K，共 {len(runners)} 台）】")
@@ -5863,10 +5981,20 @@ async def t_manage_node(agent, args):
     if action == "set_environment":
         raw_env = str(args.get("environment_id") or "").strip()
         if not raw_env:
-            raise ToolFail("set_environment 需要填 environment_id（云环境 ID、default 或 off）。")
+            raise ToolFail("set_environment 需要填 environment_id（云环境 ID、default/auto 或 off）。")
+        if nid:
+            nrow_e = node_row(nid)
+            if nrow_e is None or nrow_e["kind"] not in ("launcher", "worker_host"):
+                raise ToolFail(f"节点 {nid!r} 不是主 Agent 或协调母机。")
+            bound = bind_node_env_id(nrow_e["id"], raw_env)
+            return text_result(
+                f"已将节点 {nrow_e['id']} 绑定的独立云环境 ID 设为：{bound}"
+                if bound
+                else f"已将节点 {nrow_e['id']} 的环境策略更新为：{raw_env}"
+            )
         new_env = set_cursor_env_id(raw_env)
         if new_env:
-            return text_result(f"已开启子 agent 默认独立新云机模式，Cursor 环境 ID 设为：{new_env}")
+            return text_result(f"已开启子 agent 默认独立新云机模式，全局默认 Cursor 环境 ID 设为：{new_env}")
         return text_result("已切换为共享机器模式（Task 启动子 agent 时不再默认附加 machine.environment_id）。")
 
     if action == "deny_worker":
@@ -6031,9 +6159,14 @@ async def t_dispatch_task_op(agent, args):
             iso_override = bool(iso_override)
         op_id, nid = enqueue_launch_op(conv, launcher, requester=agent["conv"], model_override=chosen_model, isolated_vm=iso_override)
         ded_actual = (conv_row(conv["id"])["dedicated_node"] or "").strip()
-        cur_env = cursor_env_id()
-        vm_mode_msg = f"，独立新云机 env={cur_env[:8]}…" if (cur_env and (iso_override if iso_override is not None else int(conv["dedicated_req"] or 0) != -1)) else "（共享节点模式）"
-        ded_msg = f"，已分配独占节点 {ded_actual}" if ded_actual else vm_mode_msg
+        node_env_eff, need_disc_eff = node_effective_env_id(launcher)
+        want_iso = iso_override if iso_override is not None else int(conv["dedicated_req"] or 0) != -1
+        if want_iso and (node_env_eff or need_disc_eff):
+            env_lbl = f"{node_env_eff[:8]}…" if node_env_eff else f"{nid}本机自动识别"
+            vm_mode_msg = f"，独立新云机 env={env_lbl}"
+        else:
+            vm_mode_msg = "（共享节点模式）"
+        ded_msg = (f"，已分配独占节点 {ded_actual}" + vm_mode_msg) if ded_actual else vm_mode_msg
         return text_result(
             f"已向 {nid} 下发标准化 `[TASK_LAUNCH]` 指令单（op_id={op_id}，聊天={conv_tag(conv)}，"
             f"模型={chosen_model or '默认继承'}{ded_msg}）。"
@@ -6082,6 +6215,9 @@ async def t_submit_op_result(agent, args):
         status = "ok"
     tid = re.sub(r"\s+", "", str(args.get("task_agent_id") or ""))[:120]
     output = str(args.get("output") or "").strip()[:8000]
+    rep_env = clean_env_id(args.get("environment_id"))
+    if rep_env and (is_main_node_id(agent["conv"]) or is_worker_host_id(agent["conv"])):
+        bind_node_env_id(agent["conv"], rep_env)
 
     op = store.one("SELECT * FROM dispatch_ops WHERE op_id=?", (op_id,))
     if op is None:
@@ -7966,15 +8102,30 @@ async def on_command(message: dict, command: str, rest: str, chat_id: int, chat_
             return
         if not rest.strip():
             cur_env = cursor_env_id()
-            mode_txt = f"开启（默认每个子 agent 单独开独立云机，环境 ID：`{cur_env}`）" if cur_env else "关闭（子 agent 与主 Agent 共享机器）"
+            mode_txt = f"开启（默认每个子 agent 单独开独立云机，全局兜底 ID：`{cur_env}`）" if cur_env else "关闭（子 agent 与主 Agent 共享机器）"
+            node_lines = []
+            for en in store.q("SELECT id, status, env_id FROM exec_nodes WHERE kind IN ('launcher','worker_host') AND status!='removed' ORDER BY kind, num"):
+                ev_s = clean_env_id(en["env_id"] or "") or "首次自动识别"
+                node_lines.append(f"  - `{en['id']}` ({en['status']})：`{ev_s}`")
+            extra_n = ("\n\n当前各宿主节点专属绑定：\n" + "\n".join(node_lines)) if node_lines else ""
             await reply(
                 chat_id,
-                f"🖥 子 agent 独立云机模式：{mode_txt}\n\n"
+                f"🖥 子 agent 独立云机模式：{mode_txt}{extra_n}\n\n"
                 "用法：\n"
-                "• `/env <环境ID>` — 设置子 agent 启动使用的 Cursor 环境 ID\n"
+                "• `/env main14 <环境ID>` — 为指定 `mainN`/`whostN` 绑定专属环境 ID（`auto` 恢复自动识别）\n"
+                "• `/env <环境ID>` — 设置全局默认 Cursor 环境 ID\n"
                 "• `/env default` — 恢复默认环境 ID\n"
                 "• `/env off` — 关闭独立新机，切回共享机器模式",
             )
+            return
+        parts_e = rest.strip().split(None, 1)
+        if len(parts_e) == 2 and (is_main_node_id(parts_e[0]) or is_worker_host_id(parts_e[0])):
+            nrow_e = node_row(parts_e[0])
+            if nrow_e is None:
+                await reply(chat_id, f"未找到节点 `{parts_e[0]}`。")
+                return
+            bound = bind_node_env_id(nrow_e["id"], parts_e[1])
+            await reply(chat_id, f"✅ 已将 `{nrow_e['id']}` 专属环境 ID 设为：`{bound or parts_e[1]}`。")
             return
         new_env = set_cursor_env_id(rest.strip())
         if new_env:
@@ -9049,7 +9200,11 @@ async def on_callback(callback: dict) -> None:
             return
         if choice == "newmain" or choice.startswith("repmain:"):
             rep_target = choice.split(":", 1)[1] if choice.startswith("repmain:") else ""
-            nid, ag_id = make_main_node(replace_node=rep_target, custom_name=str(payload.get("name") or ""))
+            nid, ag_id = make_main_node(
+                replace_node=rep_target,
+                custom_name=str(payload.get("name") or ""),
+                env_id=str(payload.get("env_id") or ""),
+            )
             payload.update({"agent_id": ag_id, "node_id": nid})
             set_approval(approval_id, "done", payload)
             act_lbl = f"重连顶替 {nid}" if rep_target else f"新增主Agent {nid}"
@@ -9852,6 +10007,23 @@ async def watchdog_loop() -> None:
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
+    SHUTDOWN["active"] = False
+    try:
+        import signal as _sig
+        loop = asyncio.get_running_loop()
+        for s_num in (_sig.SIGTERM, _sig.SIGINT):
+            prev_h = _sig.getsignal(s_num)
+
+            def _make_handler(prev):
+                def _on_sig(signum, frame):
+                    loop.call_soon_threadsafe(trigger_graceful_shutdown)
+                    if callable(prev):
+                        prev(signum, frame)
+                return _on_sig
+
+            _sig.signal(s_num, _make_handler(prev_h))
+    except Exception:
+        pass
     notes = migrate_v1(store, DATA / "app.db")
     ensure_main_conv()
     split_notes, tell_main = split_clouds()
@@ -9884,6 +10056,7 @@ async def lifespan(_app: FastAPI):
     else:
         log.warning("bridge %s started without TG_TOKEN: MCP only, Telegram is not connected", VERSION)
     yield
+    trigger_graceful_shutdown()
     for task in tasks:
         task.cancel()
 
@@ -10012,6 +10185,18 @@ async def serve_dais_runtime_pyz() -> Response:
     if not data:
         return PlainTextResponse("runtime missing\n", status_code=404)
     return Response(content=data, media_type="application/octet-stream")
+
+
+@app.get("/trace/runtime-version")
+async def serve_runtime_version() -> JSONResponse:
+    data = build_runtime_pyz()
+    if not data:
+        return JSONResponse({"ok": False, "sha256": "", "size": 0}, status_code=404)
+    return JSONResponse({
+        "ok": True,
+        "sha256": hashlib.sha256(data).hexdigest(),
+        "size": len(data),
+    })
 
 
 @app.get("/trace/agent_trace.py")
@@ -10144,6 +10329,8 @@ async def worker_claim_job(request: Request) -> JSONResponse:
     wait_since[ident] = now_ts
     try:
         while True:
+            if SHUTDOWN["active"]:
+                return JSONResponse({"ok": True, "node_id": node_id, "job": None})
             ev.clear()
             cur_ag = agent_row(ident)
             if cur_ag is None or cur_ag["status"] != "active":

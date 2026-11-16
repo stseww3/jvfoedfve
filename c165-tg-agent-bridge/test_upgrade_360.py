@@ -832,6 +832,62 @@ def run_web_console_tests() -> None:
                 bridge.set_tg_non_admin_muted(False)
                 bridge.tg.try_call = orig_try_call
 
+            # 12. Verify per-mainN automatic environment_id binding & zero-restart hot runtime upgrade!
+            # 12a: Unbound main2 initially instructs auto-discover via environment-info (NOT foreign hardcoded 835bda67)
+            assert bridge.node_row("main2")["env_id"] == ""
+            ctrl_now = bridge.conv_row("ctrl")["agent"]
+            d_unbound = asyncio.run(bridge.call_tool("dispatch_task_op", {"agent": ctrl_now, "chat": "c1", "action": "restart", "target_main": "main2"}))
+            assert not d_unbound.is_error
+            m2_op_txt1 = text_of(asyncio.run(bridge.call_tool("read_chat", {"agent": m2_ag, "wait_sec": 0})))
+            assert "environment-info" in m2_op_txt1 and "835bda67" not in m2_op_txt1
+            assert "dais_runtime.pyz install" in m2_op_txt1  # Subagent task_text includes first-boot hook install!
+            op1_row = bridge.store.one("SELECT op_id FROM dispatch_ops WHERE target_node='main2' ORDER BY created_ts DESC LIMIT 1")
+            # main2 reports its own account's environmentPublicId once via submit_op_result -> auto-bound!
+            asyncio.run(bridge.call_tool("submit_op_result", {
+                "agent": m2_ag,
+                "op_id": op1_row["op_id"],
+                "status": "ok",
+                "task_agent_id": "bc-auto-env-1",
+                "environment_id": "704ce73e-e1d4-11f1-8120-06b44be262b7",
+            }))
+            assert bridge.node_row("main2")["env_id"] == "704ce73e-e1d4-11f1-8120-06b44be262b7"
+            # Next dispatch onto main2 directly injects main2's bound environment_id with zero hesitation!
+            d_bound = asyncio.run(bridge.call_tool("dispatch_task_op", {"agent": ctrl_now, "chat": "c1", "action": "restart", "target_main": "main2"}))
+            assert not d_bound.is_error and "704ce73e" in text_of(d_bound)
+            m2_op_txt2 = text_of(asyncio.run(bridge.call_tool("read_chat", {"agent": m2_ag, "wait_sec": 0})))
+            assert '"environment_id": "704ce73e-e1d4-11f1-8120-06b44be262b7"' in m2_op_txt2
+
+            # 12b: Zero-restart hot runtime upgrade via /trace/runtime-version + maybe_hot_upgrade_runtime!
+            rv = client.get("/trace/runtime-version").json()
+            assert rv["ok"] and len(rv["sha256"]) == 64
+            proxy_srv2 = HTTPServer(("127.0.0.1", 0), _BridgeProxy)
+            proxy_port2 = proxy_srv2.server_address[1]
+            threading.Thread(target=proxy_srv2.serve_forever, daemon=True).start()
+            try:
+                installed_pyz = HOME_DIR / ".cursor" / "dais_runtime.pyz"
+                installed_pyz.write_bytes(b"stale-old-runtime-bytes")
+                (HOME_DIR / ".cursor" / "hooks.json").write_text("{}", encoding="utf-8")
+                os.environ["DAIS_SKIP_RELOAD"] = "1"
+                old_home = _at.CURSOR_DIR
+                _at.CURSOR_DIR = HOME_DIR / ".cursor"
+                try:
+                    upgraded = _at.maybe_hot_upgrade_runtime(f"http://127.0.0.1:{proxy_port2}")
+                finally:
+                    _at.CURSOR_DIR = old_home
+                assert upgraded is True
+                import hashlib as _hl
+                assert _hl.sha256(installed_pyz.read_bytes()).hexdigest() == rv["sha256"]
+                rebuilt_hooks = json.loads((HOME_DIR / ".cursor" / "hooks.json").read_text(encoding="utf-8"))
+                assert "stop" in rebuilt_hooks["hooks"] and rebuilt_hooks["hooks"]["stop"][0]["loop_limit"] is None
+            finally:
+                proxy_srv2.shutdown()
+                pid_f3 = HOME_DIR / ".cursor" / "agent_trace_daemon.pid"
+                if pid_f3.exists():
+                    try:
+                        os.kill(int(pid_f3.read_text().strip()), 9)
+                    except Exception:
+                        pass
+
         if log_file.exists():
             log_txt = log_file.read_text(encoding="utf-8", errors="replace")
             assert secret_pw not in log_txt and sub_pw not in log_txt

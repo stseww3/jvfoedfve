@@ -1688,6 +1688,8 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
             started = _now()
             last_ping = started
             while True:
+                if getattr(bridge, "SHUTDOWN", {}).get("active"):
+                    break
                 snap = _snapshot()
                 cur_key = json.dumps(snap, sort_keys=True, ensure_ascii=False)
                 if cur_key != last_key:

@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import fcntl
 import glob
+import hashlib
 import json
 import os
 import re
@@ -806,18 +807,59 @@ def latest_terminal_activity(since_ts: float) -> tuple[float, str]:
         return best_mtime, ""
 
 
+def maybe_hot_upgrade_runtime(bridge_url: str) -> bool:
+    """不重启云 VM 的静默热升级：比对桥端最新 dais_runtime.pyz 哈希，有新版时原子下载替换并重装热重载 hooks.json。"""
+    pyz_path = CURSOR_DIR / "dais_runtime.pyz"
+    if not pyz_path.exists():
+        return False
+    meta = get_json(f"{bridge_url.rstrip('/')}/trace/runtime-version", timeout=2.0)
+    want_sha = str((meta or {}).get("sha256") or "").strip().lower()
+    if not want_sha or len(want_sha) != 64:
+        return False
+    try:
+        cur_sha = hashlib.sha256(pyz_path.read_bytes()).hexdigest().lower()
+    except Exception:
+        cur_sha = ""
+    if cur_sha == want_sha:
+        return False
+    try:
+        req = urllib.request.Request(f"{bridge_url.rstrip('/')}/trace/dais_runtime.pyz", method="GET")
+        with urllib.request.urlopen(req, timeout=8.0) as resp:
+            raw = resp.read()
+        if hashlib.sha256(raw).hexdigest().lower() != want_sha:
+            return False
+        tmp_p = pyz_path.with_suffix(".pyz.upg")
+        tmp_p.write_bytes(raw)
+        tmp_p.chmod(0o755)
+        tmp_p.replace(pyz_path)
+        cmd = [sys.executable, str(pyz_path), "install"]
+        if bridge_url and bridge_url.rstrip("/") != baked_bridge_url():
+            cmd.append(bridge_url.rstrip("/"))
+        sub_env = dict(os.environ, HOME=str(CURSOR_DIR.parent))
+        subprocess.run(cmd, env=sub_env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=8.0)
+        return True
+    except Exception:
+        return False
+
+
 def run_daemon() -> int:
     CURSOR_DIR.mkdir(parents=True, exist_ok=True)
     if daemon_alive():
         return 0
     PID_PATH.write_text(str(os.getpid()), encoding="utf-8")
     idle_ticks = 0
+    upg_ticks = 0
     try:
         while True:
             time.sleep(8)
             now_ts = time.time()
             cfg = load_config()
             bridge_url = cfg["bridge_url"]
+            upg_ticks += 1
+            if upg_ticks >= 30:
+                upg_ticks = 0
+                if maybe_hot_upgrade_runtime(bridge_url):
+                    break
             healed = ensure_hooks_intact(reload_if_changed=True)
             updates: list[dict[str, Any]] = []
             healed_agent = ""
@@ -1036,6 +1078,9 @@ def install_hooks(bridge_url: str) -> int:
 def wait_loop(agent_id: str, bridge_url: str, max_sec: int = 6660) -> int:
     """第 3 层防断连：断线/平滑重启自愈长等待，收到真正终端通知行或超时才返回。"""
     bridge_url = bridge_url.rstrip("/")
+    maybe_hot_upgrade_runtime(bridge_url)
+    ensure_hooks_intact(reload_if_changed=True)
+    ensure_daemon()
     deadline = time.time() + max_sec
     post_json(
         f"{bridge_url}/trace/event",
