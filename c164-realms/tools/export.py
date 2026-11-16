@@ -1600,6 +1600,9 @@ def page(args):
         "verified": checks["ok"], "console": len(made.get("issues") or []) + sum(
             len(v) for k, v in checks.items() if k.endswith("issues") and isinstance(v, list)),
         "note": args.note, "commit": args.commit,
+        # the light at rest before the world was saved (seconds waited), False when it never was;
+        # None for the saves made before it was waited for (A1 to A6)
+        "light": None if made.get("light") is None else made["light"]["seconds"] if made["light"].get("settled") else False,
     }
     # what this run does not know stays as the row had it (a note given earlier, the figures of a
     # save made before its note told them)
@@ -1656,7 +1659,10 @@ def page(args):
         "一次按 Realms 槽位会填的冒险、和平）。"
         + f"数据包里函数 {row['functions']} 个、标签 {row['tags']} 个，注册表文件 {row['registry_files']} 个；"
         + (f"资源包里还有 {row['standins']} 张占位贴图（`ph_` 开头，等正式的换下来）。" if row["standins"] else "资源包里没有占位贴图。")
-        + ("" if row["cloud"] else "**这一个没开「站到云海方块上送回」。**"),
+        + ("" if row["cloud"] else "**这一个没开「站到云海方块上送回」。**")
+        + ("存盘前等光照算完了（存一次读一次，连着三次不变才收，等了 {} 秒）。".format(row["light"]) if row.get("light")
+           else "**存盘时光照还在变，这一个的光不全。**" if row.get("light") is False
+           else "这一个存盘前没等光照算完（A6 和更早的都没等）。"),
         PAGE_CLOSE,
     ]
     readme = os.path.join(dist, "README.md")
