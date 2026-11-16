@@ -1,0 +1,3 @@
+branch=cursor/c164-clocks-f3-00d6
+head=e4fd53fef31ce7a424b09d16cb7148caed8e5729
+args=--no-push --tail 40 $'cd build && python ../tools/check.py --scene obs_mach_clocks | grep -E "^\\[(FAIL|WARN)|blocks|^result" ; python ../tools/check.py --scene obs_mach_clocks_b | grep -E "^\\[(FAIL|WARN)|blocks|^result" ; python - <<"EOF"\nfrom scenes.obs.machines import clock\nfor name, m in clock.models().items():\n    e = sorted({int(p["emit"]) for p in m.parts if p["emit"]})\n    if e:\n        print(name, "light_emission", e, "on", sum(1 for p in m.parts if p["emit"]), "elements")\nEOF' 
