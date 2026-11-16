@@ -1,0 +1,479 @@
+796 entities, 796 display models with a box
+
+== G the chart room: level 7; a column every half block from x 2 to 14 (| marks whole x), rows z 6.5 .. 26. o a walked place on the level, x a walked place where the body stands in a display model, h by a jump only, u/d a place half a block or more over/under the level, . nobody stands
+        | | | | | | | | | | | | |
+        2 3 4 5 6 7 8 9 0 1 2 3 4
+    6.5 ...........ooo...........
+    7.0 ...........ooo...........
+    7.5 ...ooooooooooooooooooxxx.
+    8.0 ...ooooooooooooooooooxxx.
+    8.5 .xxooooooooooooooooooxxx.
+    9.0 .xxooooooooooooooooooooo.
+    9.5 .xxooooooooooooooooooooo.
+   10.0 .xxooooooooooooooooooooo.
+   10.5 .xxoooooooxxxxxooooooooo.
+   11.0 .xxooooooouuuuuooooooooo.
+   11.5 .ooooooooouuuuuoooooooxx.
+   12.0 .xoooooooouuuuuoooooxxxx.
+   12.5 .xoooooooouuuuuoooooxxxx.
+   13.0 .xooooooxxuuuuuoooooxxxx.
+   13.5 .xooooooxxuuuuuoooooooxx.
+   14.0 .xooooooxxuuuuuooooooooo.
+   14.5 .ooooooooouuuuuooooooooo.
+   15.0 .ooooooooouuuuuooooooooo.
+   15.5 .xxooooooouuuuuooooooooo.
+   16.0 .xxxxooooouuuuuooooxxxxo.
+   16.5 .xxxxooooouuuuuooooxxxxo.
+   17.0 .xxxxooooouuuuuooooxxxxo.
+   17.5 .xxooooooouuuuuooooooooo.
+   18.0 .ooooooooouuuuuooooooooo.
+   18.5 .ooooooooooooooooooooooo.
+   19.0 .ooooooooooooooooooooooo.
+   19.5 .xxxxxooooooooooooooooxx.
+   20.0 .xxxxxooooooooooooooooxx.
+   20.5 .xxxxxooooooooooooooooxx.
+   21.0 .xxxxxooooooooooooooooxx.
+   21.5 .xxxxxooooooooooooooooxx.
+   22.0 .ooooooooooooooooooooooo.
+   22.5 .ooooooooooooooooooooooo.
+   23.0 .ooooooooooooooooooooxxx.
+   23.5 .ooooooooooooooooooooxxx.
+   24.0 .ooooooooooooooooooooxxx.
+   24.5 .ooooooooooooooooooooxxx.
+   25.0 .oooooooooooooooxxoooooo.
+   25.5 .xxxxxxxxxxxxxxxxxxxxxxx.
+   26.0 .........................
+-- the display models that reach into a body's height there (feet 7 to 8.8):
+   prop_furn_coat_stand               x  12.55 ..  13.25   z   7.55 ..   8.28   y  7.00 ..  8.86
+   prop_furn_card_cabinet             x   2.19 ..   3.03   z   8.03 ..   8.97   y  7.00 ..  8.88
+   prop_furn_card_cabinet             x   2.19 ..   3.03   z   8.97 ..   9.91   y  7.00 ..  8.88
+   prop_furn_card_cabinet             x   2.19 ..   3.03   z   9.91 ..  10.84   y  7.00 ..  8.88
+   int_chart_table_0                  x   7.05 ..   8.95   z  10.78 ..  12.84   y  7.00 ..  7.94
+   prop_paper_photo_plate             x   7.34 ..   7.91   z  11.28 ..  11.84   y  7.92 ..  7.95
+   prop_furn_writing_desk             x  12.94 ..  13.81   z  11.56 ..  13.44   y  7.00 ..  7.94
+   prop_paper_logbook_shut            x  12.92 ..  13.50   z  11.61 ..  12.08   y  7.75 ..  7.88
+   prop_paper_photo_plate_b           x   8.01 ..   8.62   z  11.70 ..  12.30   y  7.92 ..  7.95
+   prop_paper_blackboard              x   2.20 ..   2.48   z  11.80 ..  13.80   y  8.00 ..  9.50
+   prop_furn_swivel_chair             x  11.96 ..  12.74   z  11.99 ..  12.81   y  7.00 ..  7.88
+   prop_inst_calc_machine             x  13.05 ..  13.73   z  12.12 ..  13.09   y  7.75 ..  8.30
+   prop_paper_photo_plate_c           x   7.43 ..   7.95   z  12.23 ..  12.52   y  7.92 ..  7.95
+   int_chart_table_1                  x   7.05 ..   8.95   z  12.81 ..  14.59   y  7.00 ..  7.94
+   prop_lamp_desk_green               x  13.22 ..  13.90   z  12.86 ..  13.57   y  7.75 ..  8.44
+   prop_paper_photo_plate_b           x   7.22 ..   7.72   z  13.16 ..  13.66   y  7.92 ..  7.95
+   int_chart_bridge                   x   6.66 ..   9.19   z  13.27 ..  13.92   y  7.83 ..  8.77
+   prop_furn_stool                    x   6.16 ..   6.73   z  13.30 ..  13.95   y  7.00 ..  7.75
+   int_chart_table_2                  x   7.05 ..   8.95   z  14.56 ..  16.34   y  7.00 ..  7.94
+   prop_paper_photo_plate             x   8.10 ..   8.65   z  14.79 ..  15.34   y  7.92 ..  7.95
+   prop_paper_photo_plate_c           x   7.36 ..   7.89   z  15.40 ..  15.73   y  7.92 ..  7.95
+   prop_furn_drafting_table           x   2.19 ..   3.18   z  15.56 ..  17.44   y  7.00 ..  8.52
+   prop_inst_tripod_scope_comet       x  11.46 ..  13.13   z  15.99 ..  17.01   y  6.99 ..  9.41
+   prop_furn_stool                    x   3.57 ..   4.14   z  16.17 ..  16.83   y  7.00 ..  7.75
+   int_chart_table_3                  x   7.05 ..   8.95   z  16.31 ..  18.09   y  7.00 ..  7.94
+   int_chart_viewer                   x   6.94 ..   9.06   z  16.84 ..  17.81   y  7.62 ..  9.47
+   prop_furn_bench                    x  12.97 ..  13.81   z  19.56 ..  21.44   y  7.00 ..  8.02
+   prop_inst_celestial_globe          x   2.73 ..   4.48   z  19.62 ..  21.38   y  7.00 ..  8.82
+   prop_furn_trunk                    x  12.64 ..  13.34   z  22.88 ..  24.32   y  7.00 ..  7.72
+   prop_furn_library_ladder           x  10.00 ..  10.50   z  24.86 ..  25.61   y  7.00 ..  9.93
+   int_chart_shelf_a1                 x  11.44 ..  14.00   z  25.55 ..  25.99   y  7.00 .. 10.00
+   int_chart_shelf_b1                 x   9.12 ..  11.44   z  25.55 ..  25.99   y  7.00 .. 10.00
+   int_chart_shelf_c1                 x   6.88 ..   9.12   z  25.55 ..  25.99   y  7.00 .. 10.00
+   int_chart_shelf_d1                 x   4.56 ..   6.88   z  25.55 ..  25.99   y  7.00 .. 10.00
+   int_chart_shelf_e1                 x   2.00 ..   4.56   z  25.55 ..  25.99   y  7.00 .. 10.00
+
+== E the south gallery: level 7; a column every half block from x -4.5 to 16.5 (| marks whole x), rows z 2.5 .. 7. o a walked place on the level, x a walked place where the body stands in a display model, h by a jump only, u/d a place half a block or more over/under the level, . nobody stands
+         | | | | | | | | | | | | | | | | | | | | | 
+         4 3 2 1 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 
+    2.5 oouuuuuuuooouuuh...........................
+    3.0 oooooooouooooouh...........................
+    3.5 odd....ouooooouh...........................
+    4.0 odd....ouooooouhhhhhhhhhhhhhhhhhhhhhhhhhh..
+    4.5 odd....ouooooouuuuuuuuuuuuuuuuuuuuuuuuuuu..
+    5.0 odd....ouooooxxxxxxxxxooooooooooooooooooo..
+    5.5 odd....ouooooxxxxxxxxxooooooooooooooooooo..
+    6.0 ........................ooo................
+    6.5 ........................ooo................
+    7.0 ........................ooo................
+-- the display models that reach into a body's height there (feet 7 to 8.8):
+   mach_orrery_a_under_jupiter        x   7.38 ..  15.25   z  -3.07 ..   4.30   y  5.33 .. 10.04
+   mach_orrery_a_under_earth          x   9.92 ..  12.94   z  -2.48 ..   3.69   y  6.01 ..  9.26
+   mach_orrery_a_band                 x   9.00 ..  14.00   z  -2.00 ..   3.00   y  7.39 ..  9.50
+   mach_orrery_a_arm_jupiter          x   9.11 ..  13.75   z  -1.90 ..   2.75   y  6.82 .. 10.03
+   mach_orrery_a_arm_saturn           x   9.09 ..  12.39   z  -0.39 ..   2.27   y  6.97 ..  9.84
+   prop_furn_display_case             x   5.03 ..   5.97   z   5.02 ..   5.95   y  7.00 ..  8.31
+   prop_furn_card_cabinet             x   2.03 ..   2.97   z   5.11 ..   5.95   y  7.00 ..  8.88
+   prop_furn_card_cabinet             x   3.03 ..   3.97   z   5.11 ..   5.95   y  7.00 ..  8.88
+   prop_furn_instrument_cabinet       x   4.03 ..   4.97   z   5.12 ..   5.95   y  7.00 ..  8.88
+   prop_paper_logbook                 x   5.17 ..   5.84   z   5.22 ..   5.73   y  7.70 ..  7.81
+   prop_paper_sky_map_b               x  10.00 ..  13.00   z   5.83 ..   5.99   y  7.75 ..  9.75
+   prop_iron_window_arch              x  15.01 ..  15.45   z   6.93 ..  10.01   y  8.00 .. 13.54
+   prop_pipe_down_clip                x  16.01 ..  16.32   z   7.01 ..   7.42   y  8.66 ..  8.88
+   prop_pipe_down_sleeve              x  16.01 ..  16.32   z   7.01 ..   7.32   y  7.01 ..  7.10
+   prop_pipe_down                     x  16.07 ..  16.26   z   7.07 ..   7.26   y  7.03 .. 14.19
+
+== E the north gallery: level 7; a column every half block from x -4.5 to 16.5 (| marks whole x), rows z -6 .. -1.5. o a walked place on the level, x a walked place where the body stands in a display model, h by a jump only, u/d a place half a block or more over/under the level, . nobody stands
+         | | | | | | | | | | | | | | | | | | | | | 
+         4 3 2 1 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 
+   -6.0 ........................ooo................
+   -5.5 ........................ooo................
+   -5.0 ........................ooo................
+   -4.5 odd....ouooooooooooooooooooooooooooxxxooo..
+   -4.0 odd....ouooooooooooooooooooooooooooxxxooo..
+   -3.5 odd....ouooooouuuooo.uuuuuuuuuuuuuuuuuuuu..
+   -3.0 odd....ouoo.......u.hhhhhhhhhhhhhhhhhhhhh..
+   -2.5 odd....ouoo.....uuu........................
+   -2.0 oooooooouoo................................
+   -1.5 oouuuuuuuoo...uf...........................
+-- the display models that reach into a body's height there (feet 7 to 8.8):
+   prop_iron_window_arch              x  15.01 ..  15.45   z  -9.07 ..  -5.99   y  8.00 .. 13.54
+   int_timeroom_door_leaf_l           x   8.88 ..   9.26   z  -7.30 ..  -6.25   y  7.03 ..  9.97
+   int_timeroom_door_leaf_r           x   6.74 ..   7.12   z  -7.30 ..  -6.25   y  7.03 ..  9.97
+   prop_furn_card_cabinet             x   4.03 ..   4.97   z  -7.04 ..  -6.19   y  7.00 ..  8.88
+   prop_furn_card_cabinet             x   5.03 ..   5.97   z  -7.04 ..  -6.19   y  7.00 ..  8.88
+   prop_furn_coat_stand               x  10.05 ..  10.75   z  -6.97 ..  -6.25   y  7.00 ..  8.86
+   prop_pipe_down_clip                x  16.01 ..  16.32   z  -6.42 ..  -6.01   y  8.66 ..  8.88
+   int_timeroom_door_jamb_l           x   8.94 ..   9.34   z  -6.32 ..  -5.01   y  7.00 .. 10.00
+   int_timeroom_door_jamb_r           x   6.66 ..   7.06   z  -6.32 ..  -5.01   y  7.00 .. 10.00
+   prop_pipe_down_sleeve              x  16.01 ..  16.32   z  -6.32 ..  -6.01   y  7.01 ..  7.10
+   prop_pipe_down                     x  16.07 ..  16.26   z  -6.26 ..  -6.07   y  7.03 .. 14.19
+   prop_paper_sky_map                 x  10.00 ..  13.00   z  -4.99 ..  -4.83   y  7.75 ..  9.75
+   prop_furn_instrument_cabinet       x  13.03 ..  13.97   z  -4.95 ..  -4.12   y  7.00 ..  8.88
+   mach_orrery_a_under_jupiter        x   7.38 ..  15.25   z  -3.07 ..   4.30   y  5.33 .. 10.04
+   mach_orrery_a_under_earth          x   9.92 ..  12.94   z  -2.48 ..   3.69   y  6.01 ..  9.26
+   mach_orrery_a_under_mars           x   8.97 ..   9.58   z  -2.13 ..  -1.48   y  8.55 ..  8.96
+   mach_orrery_a_band                 x   9.00 ..  14.00   z  -2.00 ..   3.00   y  7.39 ..  9.50
+   mach_orrery_a_arm_jupiter          x   9.11 ..  13.75   z  -1.90 ..   2.75   y  6.82 .. 10.03
+
+== F the time room: level 7; a column every half block from x 2 to 15 (| marks whole x), rows z -25.5 .. -4.5. o a walked place on the level, x a walked place where the body stands in a display model, h by a jump only, u/d a place half a block or more over/under the level, . nobody stands
+        | | | | | | | | | | | | | |
+        2 3 4 5 6 7 8 9 0 1 2 3 4 5
+  -25.5 ...........................
+  -25.0 ...........................
+  -24.5 .x.....................x...
+  -24.0 .o.....................o...
+  -23.5 .oooooxxuuuuuuuuuxxooooo...
+  -23.0 .ooooooouuuuuuuuuooooooo...
+  -22.5 .oooooooxxxxxooooooooooo...
+  -22.0 .oooooooooxxxooooooooooo...
+  -21.5 .ooooooooooooooooooooooo...
+  -21.0 .ooooooooooooooooooooooo...
+  -20.5 .ooooooooooooooooooooooo...
+  -20.0 .ooooooooooooooooooooooo...
+  -19.5 .ooooooooooooooooooooooo...
+  -19.0 .ooooooooooooooooooooooo...
+  -18.5 .ooooooooooooooooooooooo...
+  -18.0 .ooooooooooooooooooooooo...
+  -17.5 .ooooooooooooooooooooooo...
+  -17.0 .ooooooooooooooooooooooo...
+  -16.5 .xxooooooooooooooooooooo...
+  -16.0 .xxxxooooooooooooooooooo...
+  -15.5 .xxxxooooooooooooooooooo...
+  -15.0 .xxxxooooooooooooooooooo...
+  -14.5 .xxooooooooooooooooooooo...
+  -14.0 .xooooooooooooooooooooxx...
+  -13.5 .xooooooooooooooooooooxx...
+  -13.0 .xooooooooooooooooooooxx...
+  -12.5 .oooooooooooooooooooooxx...
+  -12.0 .uuooooooooooooooooxxxxx...
+  -11.5 .uuooooooooooooooooxxxxx...
+  -11.0 .uuooooooooooooooooxxxxx...
+  -10.5 .uuoooooooooooooooooooxx...
+  -10.0 .uuoooooooooooooooooooox...
+   -9.5 .uuoooooooooooooooooooox...
+   -9.0 .uuoooooooooooooooooooox...
+   -8.5 .uuooooooooooooooooooooo...
+   -8.0 .uuooooooooooooooooooooo...
+   -7.5 .uuooooooxxoooxxoooooooo...
+   -7.0 ...oxxxxxxxoooxxxxxooooo...
+   -6.5 ...oxxxxxxxoooxxxxxooooo...
+   -6.0 ...........ooo.............
+   -5.5 ...........ooo.............
+   -5.0 ...........ooo.............
+   -4.5 ooooooooooooooooooooooxxxoo
+-- the display models that reach into a body's height there (feet 7 to 8.8):
+   prop_iron_window_arch              x  15.01 ..  15.45   z -25.07 .. -21.99   y  8.00 .. 13.54
+   int_timeroom_back_0                x   2.00 ..   3.00   z -24.99 .. -24.90   y  7.00 .. 10.00
+   int_timeroom_back_0                x  13.00 ..  14.00   z -24.99 .. -24.90   y  7.00 .. 10.00
+   prop_inst_regulator_clock          x   2.09 ..   2.91   z -24.90 .. -24.52   y  8.00 .. 10.00
+   prop_inst_regulator_clock          x  13.09 ..  13.91   z -24.90 .. -24.52   y  8.00 .. 10.00
+   prop_inst_regulator_pendulum       x   2.34 ..   2.66   z -24.79 .. -24.69   y  8.25 ..  9.55
+   prop_inst_regulator_pendulum       x  13.34 ..  13.66   z -24.79 .. -24.69   y  8.25 ..  9.55
+   int_timeroom_cords_e               x  10.16 ..  10.81   z -23.99 .. -23.77   y  7.41 ..  8.31
+   int_timeroom_cords_w               x   5.19 ..   5.84   z -23.99 .. -23.77   y  7.16 ..  8.31
+   mach_rec_drum                      x   8.62 ..   9.56   z -23.91 .. -23.21   y  8.21 ..  8.91
+   mach_rec_telegraph                 x   6.06 ..   6.94   z -23.91 .. -22.97   y  8.00 ..  8.97
+   mach_rec_drum_frame                x   8.56 ..   9.94   z -23.88 .. -23.12   y  8.00 ..  8.94
+   prop_elec_telegraph_key            x   7.31 ..   7.69   z -23.65 .. -23.07   y  8.00 ..  8.27
+   int_timeroom_mug                   x   8.08 ..   8.43   z -23.48 .. -23.15   y  8.00 ..  8.19
+   mach_rec_pen                       x   9.12 ..   9.25   z -23.36 .. -23.14   y  8.53 ..  8.79
+   mach_rec_tape                      x   6.22 ..   6.41   z -22.99 .. -22.77   y  7.22 ..  8.52
+   prop_furn_stool                    x   7.17 ..   7.83   z -22.72 .. -22.15   y  7.00 ..  7.75
+   prop_iron_window_arch              x  15.01 ..  15.45   z -21.07 .. -17.99   y  8.00 .. 13.54
+   prop_iron_window_arch              x  15.01 ..  15.45   z -17.07 .. -13.99   y  8.00 .. 13.54
+   prop_furn_writing_desk             x   2.19 ..   3.06   z -16.44 .. -14.56   y  7.00 ..  7.94
+   prop_paper_logbook                 x   2.49 ..   3.03   z -16.04 .. -15.36   y  7.75 ..  7.86
+   prop_furn_swivel_chair             x   3.34 ..   4.11   z -15.91 .. -15.09   y  7.00 ..  7.88
+   int_timeroom_chronometer           x   2.46 ..   2.82   z -15.32 .. -14.99   y  7.75 ..  8.25
+   int_timeroom_chronometer           x   2.46 ..   2.82   z -14.95 .. -14.61   y  7.75 ..  8.25
+   prop_elec_wall_phone               x  13.24 ..  13.80   z -13.98 .. -13.03   y  8.20 ..  9.67
+   prop_inst_barometer                x   2.20 ..   2.42   z -13.88 .. -13.12   y  8.25 .. 10.25
+   int_timeroom_phone_feed            x  13.55 ..  13.80   z -13.69 .. -13.31   y  7.00 ..  8.32
+   prop_iron_window_arch              x  15.01 ..  15.45   z -13.07 ..  -9.99   y  8.00 .. 13.54
+   prop_furn_writing_desk             x  12.94 ..  13.81   z -12.44 .. -10.56   y  7.00 ..  7.94
+   prop_furn_swivel_chair             x  11.75 ..  12.80   z -12.04 .. -10.98   y  7.00 ..  7.88
+   int_timeroom_jacket                x  11.80 ..  12.34   z -11.99 .. -11.20   y  7.30 ..  7.96
+   prop_paper_logbook_shut            x  12.98 ..  13.57   z -11.95 .. -11.45   y  7.75 ..  7.88
+   int_timeroom_forms                 x  12.96 ..  13.72   z -11.36 .. -10.56   y  7.75 ..  8.19
+   mach_rec_tube                      x  13.46 ..  13.80   z  -9.81 ..  -9.19   y  8.19 .. 10.25
+   prop_iron_window_arch              x  15.01 ..  15.45   z  -9.07 ..  -5.99   y  8.00 .. 13.54
+   int_timeroom_door_leaf_l           x   8.88 ..   9.26   z  -7.30 ..  -6.25   y  7.03 ..  9.97
+   int_timeroom_door_leaf_r           x   6.74 ..   7.12   z  -7.30 ..  -6.25   y  7.03 ..  9.97
+   prop_furn_card_cabinet             x   4.03 ..   4.97   z  -7.04 ..  -6.19   y  7.00 ..  8.88
+   prop_furn_card_cabinet             x   5.03 ..   5.97   z  -7.04 ..  -6.19   y  7.00 ..  8.88
+   prop_furn_coat_stand               x  10.05 ..  10.75   z  -6.97 ..  -6.25   y  7.00 ..  8.86
+   int_timeroom_door_jamb_l           x   8.94 ..   9.34   z  -6.32 ..  -5.01   y  7.00 .. 10.00
+   int_timeroom_door_jamb_r           x   6.66 ..   7.06   z  -6.32 ..  -5.01   y  7.00 .. 10.00
+   prop_paper_sky_map                 x  10.00 ..  13.00   z  -4.99 ..  -4.83   y  7.75 ..  9.75
+   prop_furn_instrument_cabinet       x  13.03 ..  13.97   z  -4.95 ..  -4.12   y  7.00 ..  8.88
+
+== L the engine hall: level -6; a column every half block from x 68 to 89.5 (| marks whole x), rows z 16.5 .. 41. o a walked place on the level, x a walked place where the body stands in a display model, h by a jump only, u/d a place half a block or more over/under the level, . nobody stands
+        | | | | | | | | | | | | | | | | | | | | | | 
+        8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 
+   16.5 oooooooooooooooooooooooooooooooooooooooooooo
+   17.0 oooooooooooooooooooooooooooooooooooooooooooo
+   17.5 oooooooooooooooooooooooooooooooooooooooooooo
+   18.0 oooooooooooooooooooooooooooooooooooooooooooo
+   18.5 oooooooooooooooooooooooooooooooooooooooooooo
+   19.0 oooooooooooooooooooooooooooooooooooooooooooo
+   19.5 oooooooooooooooooooooooooxoooooooooooooooooo
+   20.0 ...........ooooo............................
+   20.5 ...........ooooo............................
+   21.0 .............o..............................
+   21.5 .............o..............................
+   22.0 .............o..............................
+   22.5 ...xxxxoxxxoooooooxxxxoooooooooo............
+   23.0 ...xxxxooooooooooxxxxx......................
+   23.5 ...xxxxooooooooooxxxxx......................
+   24.0 ...xxooooooooooooxxxxx......................
+   24.5 ...ooooooooooooooxxxxx......................
+   25.0 ...xoooooooooooooxxxxx......................
+   25.5 ...xoooooooooooooxxxxx......................
+   26.0 ...x...xxxoooooooxxxxx......................
+   26.5 ...x...xxxoooooooooooooooooooooxxxxxoooo....
+   27.0 ...x...xxxoooooooxxxxx...........xxxoooo....
+   27.5 ...x...xxxoooooooxxxxx...........xxxoooo....
+   28.0 ...x...xxxoooooooxxxxx...........xxxoooo....
+   28.5 ...x...xxxoooooooxxxxx...........xxxoooo....
+   29.0 ...x...xxxoooooooxxxxx...........xxxoooo....
+   29.5 ...x...xxxoooooooxxxxx...........ooooooo....
+   30.0 ...x...xxxoooooooxxxxx...........ooooooo....
+   30.5 ...x...xxxoooooooooooooooooooooooooooooo....
+   31.0 ...x...xxxxooooooooooooooooooooooooooooo....
+   31.5 ...x...xxxxooooooooooooooooooooooooooooo....
+   32.0 ...x...xxxxooooooooooooooooooooooooooooo....
+   32.5 ...x...xxxxooooooooooooooooooooooooooooo....
+   33.0 ...x...xxxxooooooooooooooooooooooooooooo....
+   33.5 ...oooooooooooouuuuuuuuuuuuuuuuuuuuuuuoo....
+   34.0 ...oooooooooxxxuhhhhhhhh.............uoo....
+   34.5 ...oooooooooxxxuhhhhhhhh.............uoo....
+   35.0 ...oooooooooooxuhhhhhhhh.............uoo....
+   35.5 ...oouuuuuuuuuuuhhhhhhhh.............uoo....
+   36.0 ...oouhhhhhhhhhhhhhhhhhh.............uoo....
+   36.5 ...oouhhhdddddddd.....ddhhhhhhhhhhhhhuoo....
+   37.0 ...oox.....hhhhhhh...hhhhhhhhhhhhhhhhuoo....
+   37.5 ...oox.....uuuuuuu...uuuuuuuuuuuuuuuuuoo....
+   38.0 ...oox.....xooxxxx...xxxxooooooooooooooo....
+   38.5 ...oox.....xoooooooooooooooooooooooooooo....
+   39.0 ...oox.....xoooooooooooooooooooooooooooo....
+   39.5 ...ooooooooooooooooooooooooooooooooooooo....
+   40.0 ...ooooooooooooooooooooooooooooooooooooo....
+   40.5 ...ooooooooooooooooooooooooooooooooooooo....
+   41.0 ............................................
+-- the display models that reach into a body's height there (feet -6 to -4.2):
+   prop_pipe_drain_clip               x  67.34 ..  67.66   z  19.58 ..  19.99   y -4.59 .. -4.38
+   prop_pipe_drain_clip               x  80.34 ..  80.66   z  19.58 ..  19.99   y -4.59 .. -4.38
+   prop_pipe_drain_sleeve             x  67.34 ..  67.66   z  19.68 ..  19.99   y -5.99 .. -5.90
+   prop_pipe_drain_sleeve             x  80.34 ..  80.66   z  19.68 ..  19.99   y -5.99 .. -5.90
+   prop_pipe_drain                    x  67.41 ..  67.59   z  19.74 ..  19.93   y -5.97 ..  3.44
+   prop_pipe_drain                    x  80.41 ..  80.59   z  19.74 ..  19.93   y -5.97 ..  3.44
+   int_power_coal                     x  76.84 ..  78.54   z  21.91 ..  23.34   y -6.02 .. -4.66
+   int_power_toolboard                x  72.00 ..  73.00   z  22.01 ..  22.26   y -4.69 .. -3.81
+   prop_furn_writing_desk             x  69.00 ..  69.88   z  22.06 ..  23.94   y -6.00 .. -5.06
+   prop_lamp_desk_green               x  69.23 ..  69.67   z  22.22 ..  22.78   y -5.25 .. -4.56
+   prop_furn_swivel_chair             x  70.03 ..  71.04   z  22.49 ..  23.52   y -6.00 .. -5.12
+   mach_boiler_body                   x  79.00 ..  83.52   z  22.91 ..  26.09   y -5.59 .. -2.12
+   prop_paper_logbook                 x  69.28 ..  69.81   z  22.91 ..  23.59   y -5.25 .. -5.14
+   mach_boiler_door_1                 x  76.66 ..  81.40   z  22.94 ..  26.06   y -6.34 .. -1.62
+   mach_boiler_saddle                 x  82.41 ..  83.09   z  23.19 ..  25.81   y -6.00 .. -5.06
+   mach_boiler_flue                   x  83.50 ..  84.00   z  23.91 ..  25.09   y -4.59 .. -3.41
+   prop_elec_wall_phone               x  69.01 ..  69.57   z  25.03 ..  25.98   y -5.12 .. -3.66
+   mach_board_panel_north             x  68.24 ..  72.56   z  26.00 ..  28.00   y -5.25 .. -0.91
+   mach_boiler_flue_turn              x  83.50 ..  85.59   z  26.00 ..  29.09   y -4.59 .. -3.41
+   mach_boiler_body                   x  79.00 ..  83.52   z  26.91 ..  30.09   y -5.59 .. -2.12
+   mach_boiler_door_2                 x  76.66 ..  81.40   z  26.94 ..  30.06   y -6.34 .. -1.62
+   mach_boiler_saddle                 x  82.41 ..  83.09   z  27.19 ..  29.81   y -6.00 .. -5.06
+   mach_board_panel_main              x  68.24 ..  72.56   z  27.91 ..  31.09   y -5.25 .. -0.91
+   mach_board_panel_south             x  68.24 ..  72.79   z  31.00 ..  33.00   y -5.27 .. -0.72
+   int_power_oilcan                   x  74.03 ..  74.77   z  34.11 ..  34.69   y -6.00 .. -5.39
+   mach_engine_cylinder               x  82.94 ..  86.10   z  34.19 ..  36.25   y -6.00 .. -3.43
+   mach_engine_bed                    x  80.30 ..  86.20   z  34.25 ..  36.19   y -6.00 .. -3.44
+   mach_engine_crosshead              x  82.19 ..  85.20   z  34.50 ..  35.50   y -4.88 .. -4.12
+   mach_engine_flywheel               x  75.00 ..  80.00   z  34.75 ..  37.75   y -7.12 .. -2.12
+   mach_engine_rod                    x  78.19 ..  82.69   z  34.88 ..  35.12   y -4.88 .. -4.25
+   mach_engine_frame                  x  76.88 ..  80.37   z  35.41 ..  37.69   y -6.00 .. -3.94
+   mach_engine_eccentric              x  77.11 ..  82.50   z  35.94 ..  36.12   y -4.83 .. -4.05
+   mach_engine_valve                  x  82.31 ..  83.96   z  35.94 ..  36.12   y -4.72 .. -4.53
+   mach_engine_armature               x  71.17 ..  72.83   z  36.19 ..  38.91   y -5.83 .. -4.17
+   mach_engine_belt                   x  71.10 ..  76.91   z  36.31 ..  36.69   y -7.11 .. -2.24
+   mach_engine_lap                    x  76.56 ..  80.07   z  36.31 ..  36.69   y -7.20 .. -2.05
+   mach_engine_dynamo                 x  70.69 ..  73.31   z  36.88 ..  38.88   y -6.00 .. -2.81
+
+== B the star hall: level 0; a column every half block from x 1 to 17 (| marks whole x), rows z -6 .. 6.5. o a walked place on the level, x a walked place where the body stands in a display model, h by a jump only, u/d a place half a block or more over/under the level, . nobody stands
+        | | | | | | | | | | | | | | | | |
+        1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7
+   -6.0 .................................
+   -5.5 .................................
+   -5.0 .................................
+   -4.5 .uuo.......ooo...xxx...xxx...o...
+   -4.0 .uuo.......ooo...xxx...xxx...o...
+   -3.5 .uuooooooooooooooooooooooooooo...
+   -3.0 .uuooooooooooooooooooooooooooo...
+   -2.5 .uuooooooooooooooooooooooooooo...
+   -2.0 ...ooooooooooooooooooooooooooo...
+   -1.5 ...oooooooxxoooooooooooooooooo...
+   -1.0 ...o.......uuooooooooooooooooo...
+   -0.5 oooo.......uuooooooooooooooooooox
+    0.0 oooo.......uuooooooooooooooooooox
+    0.5 oooo.......uuooooooooooooooooooox
+    1.0 oooo.......uuooooooooooooooooooox
+    1.5 oooo.......uuooooooooooooooooooox
+    2.0 ...o.......uuooooooooooooooooo...
+    2.5 ...ooooooooooooooooooooooooooo...
+    3.0 ...ooooooooooooooooooooooooooo...
+    3.5 .uuooooooooooooooooooooooooooo...
+    4.0 .uuooxxxxxoooooooooooooooooooo...
+    4.5 .uuooxxxxxoooooooooooooooooooo...
+    5.0 .uuooxxxxxoooo...xxx...xxx...x...
+    5.5 .uuooxxxxxoooo...xxx...xxx...x...
+    6.0 .............o...................
+    6.5 .............o...................
+-- the display models that reach into a body's height there (feet 0 to 1.8):
+   prop_iron_gate                     x  17.01 ..  17.45   z  -5.01 ..  -1.99   y  0.00 ..  5.51
+   int_starhall_board_end_a           x   2.91 ..   2.99   z  -5.00 ..  -4.00   y  0.00 ..  3.00
+   int_starhall_board_end_a           x   6.01 ..   6.09   z  -5.00 ..  -4.00   y  0.00 ..  3.00
+   prop_furn_display_table_lenses     x  12.06 ..  13.94   z  -4.80 ..  -3.92   y -0.00 ..  1.00
+   prop_furn_display_table_plates     x   9.06 ..  10.94   z  -4.80 ..  -3.92   y -0.00 ..  1.00
+   int_starhall_lead_a_board          x   6.04 ..   6.18   z  -4.59 ..  -4.41   y  0.00 ..  0.88
+   int_starhall_lead_a_clock          x   6.27 ..   6.48   z  -1.39 ..  -0.22   y  0.00 ..  1.06
+   prop_iron_door_leaf                x  17.26 ..  18.94   z  -1.14 ..  -0.58   y  0.00 ..  3.88
+   prop_iron_door_frame               x  17.01 ..  17.45   z  -1.01 ..   2.01   y  0.00 ..  5.51
+   mach_clock_master                  x   6.01 ..   6.78   z  -0.27 ..   1.27   y  1.00 ..  5.00
+   prop_iron_door_leaf                x  17.26 ..  18.94   z   1.58 ..   2.14   y  0.00 ..  3.88
+   prop_iron_gate                     x  17.01 ..  17.45   z   2.99 ..   6.01   y  0.00 ..  5.51
+   prop_inst_celestial_globe          x   3.62 ..   5.38   z   3.92 ..   5.67   y  0.00 ..  1.82
+   prop_furn_coat_stand               x  15.15 ..  15.85   z   4.92 ..   5.65   y -0.00 ..  1.86
+   prop_furn_bench                    x   9.06 ..  10.94   z   4.96 ..   5.80   y -0.00 ..  1.02
+   prop_furn_bench                    x  12.06 ..  13.94   z   4.96 ..   5.80   y -0.00 ..  1.02
+
+== the stations of the route whose body stands in a display model (every stretch)
+   in-E05 (4.25, 7, 5) walk: prop_furn_card_cabinet, prop_furn_instrument_cabinet
+   in-F06 (3.5, 7, -16) walk: prop_furn_swivel_chair
+   in-F14 (12.5, 7, -12.25) walk: int_timeroom_jacket, prop_furn_swivel_chair
+   in-I10 (2.4, 18, 6.85) walk: prop_furn_swivel_chair, prop_furn_writing_desk, prop_paper_logbook
+   in-I13 (-1.1, 18, 0.5) walk: mach_scope_tube_a
+   in-J18 (8.5, 18, 30.5) no: mach_astro_tube
+   in-J19 (10.5, 18, 30.5) no: mach_astro_tube
+   in-J20 (12.5, 18, 30.5) no: mach_astro_axis, mach_astro_mount, mach_astro_tube
+   in-L05 (72.5, -6, 27.17) walk: mach_board_panel_north
+   in-L06 (72.5, -6, 30.83) walk: mach_board_panel_main, mach_board_panel_south
+   in-L20 (84.5, -6, 26.5) walk: mach_boiler_flue_turn
+   in-L23 (78.5, -6, 22.5) walk: int_power_coal
+   in-M04 (35.5, 0, -29.5) walk: mach_meridian_tube
+   13 of 181 stations
+
+== the stations of B, E, F, G, L
+   in-B01 [15.5, 0.0, 0.5] walk  flrbud inside the entrance
+   in-B02 [12.5, 0.0, 0.5] walk  f 
+   in-B03 [9.5, 0.0, 0.5] walk  flrbud under the orrery
+   in-B04 [7.5, 0.0, 0.5] walk  flrbud before the mother clock
+   in-B05 [7.5, 0.0, -2.5] walk  f 
+   in-B06 [11.0, 0.0, -2.5] walk  f 
+   in-B07 [14.5, 0.0, -2.5] walk  flrbud the hall's north-east corner
+   in-B08 [10.5, 0.0, -2.5] walk  f 
+   in-B09 [6.5, 0.0, -2.5] walk  f 
+   in-B10 [2.5, 0.0, -2.5] walk  flrbud the hall's north-west corner, before the nor
+   in-B11 [2.5, 0.0, 0.5] walk  f 
+   in-B12 [2.5, 0.0, 3.5] walk  flrbud the hall's south-west corner, before the sou
+   in-B13 [6.5, 0.0, 3.5] walk  f 
+   in-B14 [10.5, 0.0, 3.5] walk  f 
+   in-B15 [14.5, 0.0, 3.5] walk  flrbud the hall's south-east corner
+   in-E01 [-3.5, 7.0, 0.5] walk  f 
+   in-E02 [0.5, 7.0, 0.5] walk  flrbud the cross gallery on the axis, before the pi
+   in-E03 [0.5, 7.0, 2.75] walk  f 
+   in-E04 [0.5, 7.0, 5.0] walk  flrbud the galleries' south-west corner
+   in-E05 [4.25, 7.0, 5.0] walk  f 
+   in-E06 [8.0, 7.0, 5.0] walk  flrbud before the chart room's door
+   in-E07 [11.25, 7.0, 5.0] walk  f 
+   in-E08 [14.5, 7.0, 5.0] walk  flrbud the south gallery's east end
+   in-E09 [0.5, 7.0, -4.5] walk  flrbud the galleries' north-west corner
+   in-E10 [4.5, 7.0, -4.5] walk  flrbud the north gallery at the bridge onto the rin
+   in-E11 [8.0, 7.0, -4.5] walk  flrbud before the time room's door
+   in-E12 [11.25, 7.0, -4.5] walk  f 
+   in-E13 [14.5, 7.0, -4.5] walk  flrbud the north gallery's east end
+   in-F01 [8.0, 7.0, -5.5] walk  flrbud in the time room's door
+   in-F02 [8.0, 7.0, -8.5] walk  flrbud inside the time room's door
+   in-F03 [5.75, 7.0, -8.5] walk  f 
+   in-F04 [3.5, 7.0, -8.5] walk  flrbud the time room's south-west corner
+   in-F05 [3.5, 7.0, -12.25] walk  f 
+   in-F06 [3.5, 7.0, -16.0] walk  f 
+   in-F07 [3.5, 7.0, -19.75] walk  f 
+   in-F08 [3.5, 7.0, -23.5] walk  flrbud the time room's north-west corner
+   in-F09 [6.5, 7.0, -21.5] walk  fl 
+   in-F10 [9.5, 7.0, -21.5] walk  fl 
+   in-F11 [12.5, 7.0, -23.5] walk  flrbud the time room's north-east corner
+   in-F12 [12.5, 7.0, -19.75] walk  f 
+   in-F13 [12.5, 7.0, -16.0] walk  f 
+   in-F14 [12.5, 7.0, -12.25] walk  f 
+   in-F15 [12.5, 7.0, -8.5] walk  flrbud the time room's south-east corner
+   in-F16 [8.0, 7.0, -12.5] walk  f 
+   in-F17 [8.0, 7.0, -16.5] walk  f 
+   in-F18 [8.0, 7.0, -20.5] walk  f 
+   in-G01 [8.0, 7.0, 6.5] walk  flrbud in the chart room's door
+   in-G02 [8.0, 7.0, 9.5] walk  flrbud inside the chart room's door
+   in-G03 [5.5, 7.0, 9.5] walk  flrbud the chart room's north-west corner
+   in-G04 [5.5, 7.0, 13.0] walk  f 
+   in-G05 [5.5, 7.0, 16.5] walk  f 
+   in-G06 [5.5, 7.0, 20.0] walk  f 
+   in-G07 [5.5, 7.0, 23.5] walk  flrbud the chart room's south-west corner
+   in-G08 [8.0, 7.0, 23.5] walk  f 
+   in-G09 [10.5, 7.0, 23.5] walk  flrbud the chart room's south-east corner
+   in-G10 [10.5, 7.0, 20.0] walk  f 
+   in-G11 [10.5, 7.0, 16.5] walk  f 
+   in-G12 [10.5, 7.0, 13.0] walk  f 
+   in-G13 [10.5, 7.0, 9.5] walk  flrbud the chart room's north-east corner
+   in-G14 [8.0, 7.0, 19.0] walk  fb 
+   in-G15 [8.0, 7.0, 22.0] walk  f 
+   in-L01 [74.5, -6.0, 17.5] walk  flrbud the yard before the power house's wicket
+   in-L02 [74.5, -6.0, 20.5] walk  flrbud in the wicket's recess
+   in-L03 [74.5, -6.0, 22.5] walk  flrbud inside the wicket
+   in-L04 [72.5, -6.0, 23.5] walk  flrbud the engine hall's north-west corner
+   in-L05 [72.5, -6.0, 27.17] walk  f 
+   in-L06 [72.5, -6.0, 30.83] walk  f 
+   in-L07 [72.5, -6.0, 34.5] walk  f 
+   in-L08 [69.5, -6.0, 34.5] walk  f 
+   in-L09 [69.5, -6.0, 37.0] walk  f 
+   in-L10 [69.5, -6.0, 39.5] walk  flrbud the engine hall's south-west corner
+   in-L11 [73.1, -6.0, 39.5] walk  f 
+   in-L12 [76.7, -6.0, 39.5] walk  f 
+   in-L13 [80.3, -6.0, 39.5] walk  f 
+   in-L14 [83.9, -6.0, 39.5] walk  f 
+   in-L15 [87.5, -6.0, 39.5] walk  flrbud the engine hall's south-east corner
+   in-L16 [87.5, -6.0, 36.25] walk  f 
+   in-L17 [87.5, -6.0, 33.0] walk  f 
+   in-L18 [87.5, -6.0, 29.75] walk  f 
+   in-L19 [87.5, -6.0, 26.5] walk  flrbud the engine hall's east side, before the chim
+   in-L20 [84.5, -6.0, 26.5] walk  f 
+   in-L21 [81.5, -6.0, 26.5] walk  f 
+   in-L22 [78.5, -6.0, 26.5] walk  f 
+   in-L23 [78.5, -6.0, 22.5] walk  f 
+   in-L24 [82.5, -6.0, 22.5] walk  flrbud the engine hall's north-east corner, beside 
+   in-L25 [78.5, -6.0, 31.5] walk  flrbud the middle of the engine hall
