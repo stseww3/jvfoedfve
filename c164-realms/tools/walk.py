@@ -26,7 +26,8 @@ sure that every round looks from the same places.
         all of it, on a worker node: build the scene once, take the station table (the one given,
         or a new one of the route), ask the blocks how each station is reached, draw every shot,
         lay out the sheets. What is kept goes to plan/reviews/walk/<round>/: <prefix>-stations.json,
-        <prefix>-reach.json and <prefix>-sheet-<stretch>-<n>.jpg. The single pictures stay in the
+        <prefix>-reach.json, <prefix>-sheet-<stretch>-<n>.jpg and <prefix>-light.json (how light
+        every picture is, and each stretch's views ahead in three figures). The single pictures stay in the
         work folder (--work, default /tmp/c164_walk) and are not kept. --only draws the stretches
         named and no others (a round in several jobs); --no-pictures stops before the drawing;
         --as-kept draws from the table the round has kept already and does not look for the ways
@@ -780,6 +781,35 @@ def write_found(path, found):
         fh.write("\n")
 
 
+def write_light(out, table, light):
+    """Keep how light every picture is beside the sheets, <prefix>-light.json: per stretch the
+    lowest, the middle and the highest of its views ahead, and every shot's own figure. A round
+    drawn in several jobs (--only) adds to the file the earlier jobs left."""
+    path = os.path.join(out, f"{table['prefix']}-light.json")
+    shots = {}
+    if os.path.exists(path):
+        with open(path, encoding="utf-8") as fh:
+            old = json.load(fh)
+        if old.get("round") == table.get("round"):
+            shots = old.get("shots", {})
+    shots.update({name: round(v, 3) for name, v in light.items() if v is not None})
+    ahead = {}
+    for name, v in shots.items():
+        m = re.match(re.escape(table["prefix"]) + r"-(.+?)\d+-f\Z", name)       # in-A01-f: stretch A
+        if m:
+            ahead.setdefault(m.group(1), []).append(v)
+    stretches = {}
+    for sid in sorted(ahead):
+        vs = sorted(ahead[sid])
+        stretches[sid] = {"ahead": len(vs), "lowest": vs[0], "middle": vs[len(vs) // 2], "highest": vs[-1]}
+    lines = ",\n".join(f'  {json.dumps(k)}: {shots[k]:.3f}' for k in sorted(shots))
+    rows = ",\n".join(f"  {json.dumps(k)}: {json.dumps(v)}" for k, v in stretches.items())
+    with open(path, "w", encoding="utf-8", newline="\n") as fh:
+        fh.write(f'{{\n "round": {json.dumps(table.get("round", "?"))},\n "stretches": {{\n{rows}\n }},\n'
+                 f' "shots": {{\n{lines}\n }}\n}}\n')
+    return path
+
+
 def report(table, light=None):
     """A few lines for the job's receipt: how many stations and pictures each stretch has, which
     stations found no floor, which pictures are missing or dark."""
@@ -922,6 +952,7 @@ def main():
     if args.cmd == "sheets":
         table = load_table(args.table)
         written, light = sheets_of(table, args.pictures, args.out)
+        write_light(args.out, table, light)
         print("\n".join(report(table, light)))
         print(f"walk: {len(written)} sheets -> {args.out}")
         return 0
@@ -971,6 +1002,7 @@ def main():
     pictures = os.path.join(work, "p")
     code = draw(args.scene, shot_file, pictures, table.get("size", SIZE), table.get("fov", FOV), canvas)
     written, light = sheets_of(table, pictures, out)
+    write_light(out, table, light)
     print("\n".join(report(table, light)))
     print(f"walk: {len(written)} sheets and {os.path.basename(kept)} -> {os.path.relpath(out, PROJECT)}")
     return 0 if code == 0 else 1
