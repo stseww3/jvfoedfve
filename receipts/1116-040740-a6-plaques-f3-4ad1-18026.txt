@@ -1,0 +1,24 @@
+a0job 1116-040740-a6-plaques-f3-4ad1-18026: cursor/c164-a6-plaques-f3-4ad1 @ 23f49d4f on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.69 1.76 1.62, Python 3.12.3
+  [cloud_setup    1s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/check.py --scene obs_props_plaques_site 2>&1 | tail -4 && (cd build && python -m scenes.obs_props_plaques_site --report 2>&1 | tail -30) ---- exit 0, 15 s, last 60 lines of 14:
+                 chain of 100 ticks: 1 functions, 3 commands a cycle, starts 15 ticks after start
+                 chain of 110 ticks: 8 functions, 17 commands a cycle, starts 6 ticks after start
+                 ... and 34 more
+result: PASS (0 failed, 3 with warnings)
+12 shots -> /tmp/dais_jobs/c164a0/c164-realms/build/scenes/obs_props_plaques_site/shots.json
+12 of 12 plaques are in the tables; not placed by either half: none
+  orrery hangs 7.5 blocks from V7 and looks its way: the board may show it
+  master_clock hangs 10.6 blocks from V7 and looks its way: the board may show it
+  great_refractor hangs 2.2 blocks from V8 and looks its way: the board may show it
+display entities: {'materials': 28, 'site': 10, 'main': 2, 'machines': 177, 'interiors': 631, 'props': 298, 'motion': 10, 'sky': 8}
+plaques that hang: cable_station, meridian_line, armillary, time_ball, power_house, sunset_terrace, orrery, master_clock, time_room, chart_room, plate_vault, great_refractor
+  master_clock: its middle is 1.12 from the eye of who stands before it (feet at y [0])
+  chart_room: who reads it sees 2 more plaques by turning his head: orrery (12.9 blocks), time_room (10.5 blocks)
+2 faults in where the plaques hang
+==== NODEJOB RESULT ====
+exit=0 secs=16 host=cursor cores=4 head=23f49d4f commit=none pushed=no branch=cursor/c164-a6-plaques-f3-4ad1 files=0
+a0job: exit=0 secs=16
