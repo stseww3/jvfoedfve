@@ -1978,17 +1978,19 @@ async def emit(conv, sender: str, chat_id: int, payload: dict, record: str) -> b
     """AI 发消息。管理员或用户的私聊里没选中这个聊天就先存着，返回 False。"""
     payload = dict(payload)
     payload["text"] = conv_prefix(conv) + (payload.get("text") or "")
+    extra_full = json.dumps(payload, ensure_ascii=False)
+    extra_sent = extra_full if payload.get("kind") == "file" else ""
     if is_hub(chat_id):
         async with dm_lock(chat_id):
             if selected(chat_id) != conv["id"]:
-                record_out(conv, sender, chat_id, record, delivered=0, extra=json.dumps(payload, ensure_ascii=False))
+                record_out(conv, sender, chat_id, record, delivered=0, extra=extra_full)
                 mark_menu_dirty()
                 return False
             tg_id = await send_payload(chat_id, conv["id"], payload)
-            record_out(conv, sender, chat_id, record, tg_msg_id=tg_id)
+            record_out(conv, sender, chat_id, record, tg_msg_id=tg_id, extra=extra_sent)
             return True
     tg_id = await send_payload(chat_id, conv["id"], payload)
-    record_out(conv, sender, chat_id, record, tg_msg_id=tg_id)
+    record_out(conv, sender, chat_id, record, tg_msg_id=tg_id, extra=extra_sent)
     return True
 
 

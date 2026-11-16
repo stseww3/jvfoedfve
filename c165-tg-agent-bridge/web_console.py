@@ -12,6 +12,7 @@ Provides:
 
 from __future__ import annotations
 
+import asyncio
 import hashlib
 import hmac
 import json
@@ -25,7 +26,7 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI, Request
-from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, PlainTextResponse, Response
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, PlainTextResponse, Response, StreamingResponse
 
 log = logging.getLogger("bridge.web")
 
@@ -225,45 +226,216 @@ def _group_web_members(store, group_id: str) -> list[str]:
     return names
 
 
-def _serialize_file(store, file_id: str) -> dict[str, Any] | None:
+_IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".bmp", ".ico", ".avif"}
+_OUTBOX_INDEX_CACHE: dict[str, Any] = {"ts": 0.0, "dir": "", "by_suffix": {}}
+
+
+def _detect_mime_and_image(filename: str, raw_mime: str = "") -> tuple[str, bool]:
+    ext = Path(filename or "").suffix.lower()
+    guessed = mimetypes.guess_type(filename or "")[0] or ""
+    if ext == ".svg":
+        guessed = "image/svg+xml"
+    elif ext == ".webp" and not guessed:
+        guessed = "image/webp"
+    mime = (raw_mime or "").strip()
+    if not mime or mime == "application/octet-stream":
+        mime = guessed or "application/octet-stream"
+    if ext == ".svg" and not mime.startswith("image/"):
+        mime = "image/svg+xml"
+    is_img = mime.startswith("image/") or ext in _IMAGE_EXTS
+    return mime, is_img
+
+
+def _web_file_sig(bridge, file_id: str) -> str:
+    if hasattr(bridge, "sign"):
+        return str(bridge.sign(f"webfile:{file_id}"))[:20]
+    return hashlib.sha256(f"webfile:{file_id}".encode("utf-8")).hexdigest()[:20]
+
+
+def _outbox_sig(bridge, disk_name: str) -> str:
+    if hasattr(bridge, "sign"):
+        return str(bridge.sign(f"outbox:{disk_name}"))[:20]
+    cand = (bridge.DATA / "outbox" / disk_name).resolve()
+    return hashlib.sha256(str(cand).encode("utf-8")).hexdigest()[:20]
+
+
+def _resolve_file_disk_path(bridge, frow) -> Path | None:
+    if frow is None:
+        return None
+    raw_p = str(frow["path"] or "").strip()
+    if raw_p:
+        p = Path(raw_p)
+        if p.exists():
+            return p
+        alt = bridge.DATA / "files" / p.name
+        if alt.exists():
+            return alt
+    return None
+
+
+def _build_file_headers(filename: str, fallback_id: str, mime: str, force_download: bool = False) -> dict[str, str]:
+    orig = (filename or fallback_id or "file").replace("\r", "").replace("\n", "")
+    ascii_fn = re.sub(r"[^\x20-\x7e]", "_", orig).replace('"', "_").replace("\\", "_").strip() or fallback_id or "file"
+    if "." not in ascii_fn and "." in orig:
+        ext = Path(orig).suffix[:16]
+        if re.match(r"^\.[A-Za-z0-9_\-]+$", ext):
+            ascii_fn = f"{fallback_id}{ext}"
+    inline_ok = mime.startswith(("image/", "text/", "application/pdf"))
+    disp = "attachment" if force_download else ("inline" if inline_ok else "attachment")
+    quoted = urllib.parse.quote(orig, safe="")
+    return {
+        "Content-Disposition": f"{disp}; filename=\"{ascii_fn}\"; filename*=UTF-8''{quoted}",
+        "Cache-Control": "private, max-age=86400",
+    }
+
+
+def _serialize_file(store, file_id: str, bridge: Any = None) -> dict[str, Any] | None:
     if not file_id:
         return None
     frow = store.one("SELECT * FROM files WHERE id=?", (file_id,))
     if frow is None:
         return None
-    mime = frow["mime"] or "application/octet-stream"
+    if bridge is not None and _resolve_file_disk_path(bridge, frow) is None:
+        return None
+    fname = frow["name"] or frow["id"]
+    mime, is_img = _detect_mime_and_image(fname, frow["mime"] or "")
+    sig_q = f"?sig={_web_file_sig(bridge, frow['id'])}" if bridge is not None else ""
+    dl_sep = "&" if sig_q else "?"
+    base_url = f"/web/api/files/{frow['id']}{sig_q}"
     return {
         "file_id": frow["id"],
-        "name": frow["name"] or frow["id"],
+        "name": fname,
         "size": int(frow["size"] or 0),
         "mime": mime,
-        "is_image": mime.startswith("image/"),
-        "url": f"/web/api/files/{frow['id']}",
+        "is_image": is_img,
+        "url": base_url,
+        "download_url": f"{base_url}{dl_sep}download=1",
     }
 
 
-def _extract_outbox_file(text: str, extra: str) -> dict[str, Any] | None:
-    if not extra:
+def _get_outbox_index(outbox_dir: Path) -> dict[str, list[tuple[float, Path]]]:
+    now_ts = _now()
+    dir_key = str(outbox_dir)
+    if _OUTBOX_INDEX_CACHE["dir"] == dir_key and now_ts - float(_OUTBOX_INDEX_CACHE["ts"]) < 2.0:
+        return _OUTBOX_INDEX_CACHE["by_suffix"]
+    by_suffix: dict[str, list[tuple[float, Path]]] = {}
+    if outbox_dir.exists():
+        try:
+            for entry in outbox_dir.iterdir():
+                if not entry.is_file():
+                    continue
+                nm = entry.name
+                sep = nm.find("_")
+                suf = nm[sep + 1 :].lower() if sep > 0 else nm.lower()
+                try:
+                    mt = entry.stat().st_mtime
+                except OSError:
+                    mt = 0.0
+                by_suffix.setdefault(suf, []).append((mt, entry))
+        except OSError:
+            pass
+    _OUTBOX_INDEX_CACHE["ts"] = now_ts
+    _OUTBOX_INDEX_CACHE["dir"] = dir_key
+    _OUTBOX_INDEX_CACHE["by_suffix"] = by_suffix
+    return by_suffix
+
+
+def _extract_outbox_file(text: str, extra: str, bridge: Any = None, msg_ts: float = 0.0) -> dict[str, Any] | None:
+    cand_path: Path | None = None
+    fname = ""
+    if extra:
+        try:
+            pay = json.loads(extra)
+        except Exception:
+            pay = None
+        if isinstance(pay, dict) and pay.get("kind") == "file" and pay.get("file"):
+            raw_p = Path(str(pay["file"]))
+            fname = str(pay.get("filename") or raw_p.name)
+            if raw_p.exists():
+                cand_path = raw_p
+            elif bridge is not None:
+                alt = bridge.DATA / "outbox" / raw_p.name
+                if alt.exists():
+                    cand_path = alt
+
+    if cand_path is None and bridge is not None and text:
+        m = re.match(r"^\[发送文件\s+([^\]]+)\]", text.strip())
+        if m:
+            fname = m.group(1).strip()
+            safe = (re.sub(r"[^\w.\-]", "_", fname)[:80] or "file").lower()
+            idx = _get_outbox_index(bridge.DATA / "outbox")
+            cands = idx.get(safe) or []
+            if cands:
+                if msg_ts > 0:
+                    cand_path = min(cands, key=lambda item: abs(item[0] - msg_ts))[1]
+                else:
+                    cand_path = max(cands, key=lambda item: item[0])[1]
+
+    if cand_path is None or not cand_path.exists():
         return None
+    if not fname:
+        fname = cand_path.name
+    mime, is_img = _detect_mime_and_image(fname)
+    tok = _outbox_sig(bridge, cand_path.name) if bridge is not None else hashlib.sha256(str(cand_path.resolve()).encode("utf-8")).hexdigest()[:20]
+    q_base = f"path_sig={tok}&p={urllib.parse.quote(cand_path.name)}&fn={urllib.parse.quote(fname)}"
     try:
-        pay = json.loads(extra)
-    except Exception:
-        return None
-    if isinstance(pay, dict) and pay.get("kind") == "file" and pay.get("file"):
-        p = Path(str(pay["file"]))
-        if p.exists():
-            fname = str(pay.get("filename") or p.name)
-            mime = mimetypes.guess_type(fname)[0] or "application/octet-stream"
-            tok = hashlib.sha256(str(p).encode("utf-8")).hexdigest()[:16]
-            return {
-                "file_id": f"out_{tok}",
-                "name": fname,
-                "size": p.stat().st_size,
-                "mime": mime,
-                "is_image": mime.startswith("image/"),
-                "url": f"/web/api/outbox-file?path_sig={tok}&p={urllib.parse.quote(str(p.name))}",
-            }
-    return None
+        fsize = cand_path.stat().st_size
+    except OSError:
+        fsize = 0
+    return {
+        "file_id": f"out_{tok}",
+        "name": fname,
+        "size": fsize,
+        "mime": mime,
+        "is_image": is_img,
+        "url": f"/web/api/outbox-file?{q_base}",
+        "download_url": f"/web/api/outbox-file?{q_base}&download=1",
+    }
+
+
+def _can_user_read_file(bridge, store, user, frow) -> bool:
+    if user is None or frow is None:
+        return False
+    if _is_zwt(user):
+        return True
+    fconv = (frow["conv"] or "").strip()
+    uid_owner = int(user["tg_owner"] or 0)
+    a_convs = _user_allowed_convs(user)
+    a_grps = _user_allowed_groups(user)
+    if fconv == "":
+        return True
+    if fconv.startswith("owner:"):
+        try:
+            fowner = int(fconv.split(":", 1)[1])
+        except ValueError:
+            fowner = -999999999
+        if uid_owner != 0 and fowner == uid_owner:
+            return True
+        if fowner == 0 and (a_convs or a_grps):
+            return True
+    else:
+        fc = bridge.conv_row(fconv)
+        if fc is not None and _can_access_conv(bridge, user, fc):
+            return True
+
+    fid = frow["id"]
+    like_pat = f"%{fid}%"
+    for cid in a_convs:
+        hit = store.one("SELECT 1 AS ok FROM messages WHERE conv=? AND (file_id=? OR text LIKE ?) LIMIT 1", (cid, fid, like_pat))
+        if hit is not None:
+            return True
+    if uid_owner != 0:
+        hit_own = store.one(
+            "SELECT 1 AS ok FROM messages m JOIN convs c ON c.id=m.conv WHERE c.owner=? AND (m.file_id=? OR m.text LIKE ?) LIMIT 1",
+            (uid_owner, fid, like_pat),
+        )
+        if hit_own is not None:
+            return True
+    for gid in a_grps:
+        ghit = store.one("SELECT 1 AS ok FROM agent_group_messages WHERE group_id=? AND text LIKE ? LIMIT 1", (gid, like_pat))
+        if ghit is not None:
+            return True
+    return False
 
 
 def _serialize_conv(bridge, crow) -> dict[str, Any]:
@@ -839,6 +1011,91 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
             "conv": _serialize_conv(bridge, bridge.conv_row(cid)),
         })
 
+    def _serialize_conv_msg_row(conv_disp_name: str, r) -> dict[str, Any]:
+        raw_txt = r["text"] or ""
+        msg_ts = float(r["ts"] or 0)
+        files_list: list[dict[str, Any]] = []
+        seen_fids: set[str] = set()
+        primary_f = _serialize_file(store, r["file_id"] or "", bridge=bridge) or _extract_outbox_file(
+            raw_txt, r["extra"] or "", bridge=bridge, msg_ts=msg_ts
+        )
+        if primary_f:
+            files_list.append(primary_f)
+            seen_fids.add(primary_f["file_id"])
+        if raw_txt:
+            for m_fid in re.findall(r"\b(f_[0-9a-f]{8,20})\b", raw_txt):
+                if m_fid not in seen_fids:
+                    extra_f = _serialize_file(store, m_fid, bridge=bridge)
+                    if extra_f:
+                        files_list.append(extra_f)
+                        seen_fids.add(m_fid)
+        f_meta = files_list[0] if files_list else None
+
+        ctype = r["chat_type"] or "private"
+        ctitle = r["chat_title"] or ""
+        uname = r["user_name"] or ""
+        is_out = bool(int(r["outgoing"] or 0))
+        if ctype in ("private", "group", "supergroup", "channel"):
+            msg_channel = "human"
+            peer_label = ctitle if ctype in ("group", "supergroup") and ctitle else ("Web" if ctitle == "Web控制台" else "Telegram")
+            sender_display = (uname or conv_disp_name) if is_out else (uname or "用户")
+        elif ctype == "agent_dm":
+            msg_channel = "agent_dm"
+            peer_label = (ctitle or "其他Agent") if is_out else (uname or ctitle.removeprefix("来自 ").strip() or "Agent")
+            sender_display = f"我 → {peer_label}" if is_out else f"{peer_label} → 我"
+        elif ctype == "agent_group":
+            msg_channel = "agent_group"
+            peer_label = ctitle.split(" 成员:")[0].strip() if ctitle else "协作群"
+            sender_display = f"{uname or conv_disp_name}" if is_out else (uname or "群成员")
+        else:
+            msg_channel = "system"
+            peer_label = "标准单据" if "[STANDARD_OP" in raw_txt else ("重开档案" if "全量上下文档案" in raw_txt else "系统通知")
+            sender_display = uname or "系统"
+
+        return {
+            "id": r["id"],
+            "ts": msg_ts,
+            "chat_id": int(r["chat_id"] or 0),
+            "chat_type": ctype,
+            "chat_title": ctitle,
+            "channel": msg_channel,
+            "peer_label": peer_label,
+            "sender_display": sender_display,
+            "user_name": uname,
+            "text": raw_txt,
+            "outgoing": is_out,
+            "delivered": bool(int(r["delivered"] if r["delivered"] is not None else 1)),
+            "tg_msg_id": int(r["tg_msg_id"] or 0),
+            "file": f_meta,
+            "files": files_list,
+        }
+
+    def _serialize_group_msg_row(r) -> dict[str, Any]:
+        try:
+            mnt = json.loads(r["mentions"] or "[]")
+        except Exception:
+            mnt = []
+        raw_gtxt = r["text"] or ""
+        g_files: list[dict[str, Any]] = []
+        seen_gf: set[str] = set()
+        for m_fid in re.findall(r"\b(f_[0-9a-f]{8,20})\b", raw_gtxt):
+            if m_fid not in seen_gf:
+                gf = _serialize_file(store, m_fid, bridge=bridge)
+                if gf:
+                    g_files.append(gf)
+                    seen_gf.add(m_fid)
+        f_meta = g_files[0] if g_files else None
+        return {
+            "id": r["id"],
+            "sender_conv": r["sender_conv"] or "",
+            "sender_name": r["sender_name"] or r["sender_conv"] or "",
+            "text": raw_gtxt,
+            "mentions": mnt if isinstance(mnt, list) else [],
+            "ts": float(r["ts"] or 0),
+            "file": f_meta,
+            "files": g_files,
+        }
+
     # ---------------------------------------------------------------- 消息读取、发送、在线编辑与删除
 
     @app.get("/web/api/convs/{conv_id}/messages")
@@ -847,7 +1104,8 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
         request: Request,
         limit: int = 120,
         before_id: int = 0,
-        channel: str = "all",
+        after_id: int = 0,
+        channel: str = "",
     ) -> JSONResponse:
         user = _current_web_user(store, request)
         if user is None:
@@ -859,9 +1117,11 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
 
         lim = max(1, min(int(limit), 300))
         ka_mark = getattr(bridge, "KEEPALIVE_MARK", '{"keepalive": true}')
+        is_super = _is_zwt(user)
+        is_sys_conv = cid in ("ctrl", "main") or bridge.is_main_node_id(cid) or bridge.is_worker_node_id(cid)
 
         # 避免把旧版 main 的历史孤儿告警混进独立总控 ctrl；仅当 ctrl 尚无任何记录时才回退兼容
-        if cid == "ctrl" and _is_zwt(user):
+        if cid == "ctrl" and is_super:
             has_ctrl_own = store.one(
                 "SELECT 1 AS ok FROM messages WHERE conv='ctrl' AND IFNULL(extra,'') != ? LIMIT 1",
                 (ka_mark,),
@@ -895,7 +1155,15 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
         counts["collab"] = counts["agent_dm"] + counts["agent_group"]
         counts["all"] = counts["human"] + counts["collab"] + counts["system"]
 
-        ch = (channel or "all").strip().lower()
+        if not is_super and not is_sys_conv:
+            ch = "human"
+        else:
+            raw_ch = (channel or "").strip().lower()
+            if not raw_ch or raw_ch == "default":
+                ch = "all" if is_sys_conv else "human"
+            else:
+                ch = raw_ch
+
         if ch == "human":
             ch_sql = "AND IFNULL(chat_type,'private') IN ('private','group','supergroup','channel')"
         elif ch == "collab":
@@ -910,86 +1178,49 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
             ch = "all"
             ch_sql = ""
 
-        if before_id > 0:
+        has_more = False
+        if after_id > 0:
+            rows = store.q(
+                f"SELECT * FROM messages WHERE {conv_clause} AND IFNULL(extra,'') != ? {ch_sql} AND id>? "
+                f"ORDER BY id ASC LIMIT ?",
+                (*conv_params, ka_mark, int(after_id), lim),
+            )
+        elif before_id > 0:
             raw_rows = store.q(
                 f"SELECT * FROM messages WHERE {conv_clause} AND IFNULL(extra,'') != ? {ch_sql} AND id<? "
                 f"ORDER BY id DESC LIMIT ?",
                 (*conv_params, ka_mark, int(before_id), lim + 1),
             )
+            has_more = len(raw_rows) > lim
+            rows = list(reversed(raw_rows[:lim]))
         else:
             raw_rows = store.q(
                 f"SELECT * FROM messages WHERE {conv_clause} AND IFNULL(extra,'') != ? {ch_sql} "
                 f"ORDER BY id DESC LIMIT ?",
                 (*conv_params, ka_mark, lim + 1),
             )
-        has_more = len(raw_rows) > lim
-        rows = list(reversed(raw_rows[:lim]))
+            has_more = len(raw_rows) > lim
+            rows = list(reversed(raw_rows[:lim]))
+
+        # 计算该通道最新 120 条摘要签名，供增量轮询秒级感知编辑或删除
+        sig_rows = store.q(
+            f"SELECT id, LENGTH(IFNULL(text,'')) AS tl, IFNULL(delivered,1) AS dl FROM messages "
+            f"WHERE {conv_clause} AND IFNULL(extra,'') != ? {ch_sql} ORDER BY id DESC LIMIT 120",
+            (*conv_params, ka_mark),
+        )
+        win_sig = hashlib.md5(
+            "|".join(f"{sr['id']}:{sr['tl']}:{sr['dl']}" for sr in sig_rows).encode("utf-8")
+        ).hexdigest()[:12]
 
         conv_disp_name = bridge.conv_name(conv)
-        msgs = []
-        for r in rows:
-            if bridge.is_keepalive(r):
-                continue
-            raw_txt = r["text"] or ""
-            files_list: list[dict[str, Any]] = []
-            seen_fids: set[str] = set()
-            primary_f = _serialize_file(store, r["file_id"] or "") or _extract_outbox_file(raw_txt, r["extra"] or "")
-            if primary_f:
-                files_list.append(primary_f)
-                seen_fids.add(primary_f["file_id"])
-            if raw_txt:
-                for m_fid in re.findall(r"\b(f_[0-9a-f]{8,16})\b", raw_txt):
-                    if m_fid not in seen_fids:
-                        extra_f = _serialize_file(store, m_fid)
-                        if extra_f:
-                            files_list.append(extra_f)
-                            seen_fids.add(m_fid)
-            f_meta = files_list[0] if files_list else None
-
-            ctype = r["chat_type"] or "private"
-            ctitle = r["chat_title"] or ""
-            uname = r["user_name"] or ""
-            is_out = bool(int(r["outgoing"] or 0))
-            if ctype in ("private", "group", "supergroup", "channel"):
-                msg_channel = "human"
-                peer_label = ctitle if ctype in ("group", "supergroup") and ctitle else ("Web" if ctitle == "Web控制台" else "Telegram")
-                sender_display = (uname or conv_disp_name) if is_out else (uname or "用户")
-            elif ctype == "agent_dm":
-                msg_channel = "agent_dm"
-                peer_label = (ctitle or "其他Agent") if is_out else (uname or ctitle.removeprefix("来自 ").strip() or "Agent")
-                sender_display = f"我 → {peer_label}" if is_out else f"{peer_label} → 我"
-            elif ctype == "agent_group":
-                msg_channel = "agent_group"
-                peer_label = ctitle.split(" 成员:")[0].strip() if ctitle else "协作群"
-                sender_display = f"{uname or conv_disp_name}" if is_out else (uname or "群成员")
-            else:
-                msg_channel = "system"
-                peer_label = "标准单据" if "[STANDARD_OP" in raw_txt else ("重开档案" if "全量上下文档案" in raw_txt else "系统通知")
-                sender_display = uname or "系统"
-
-            msgs.append({
-                "id": r["id"],
-                "ts": float(r["ts"] or 0),
-                "chat_id": int(r["chat_id"] or 0),
-                "chat_type": ctype,
-                "chat_title": ctitle,
-                "channel": msg_channel,
-                "peer_label": peer_label,
-                "sender_display": sender_display,
-                "user_name": uname,
-                "text": raw_txt,
-                "outgoing": is_out,
-                "delivered": bool(int(r["delivered"] if r["delivered"] is not None else 1)),
-                "tg_msg_id": int(r["tg_msg_id"] or 0),
-                "file": f_meta,
-                "files": files_list,
-            })
+        msgs = [_serialize_conv_msg_row(conv_disp_name, r) for r in rows if not bridge.is_keepalive(r)]
         return JSONResponse({
             "ok": True,
             "conv": _serialize_conv(bridge, conv),
             "channel": ch,
-            "channel_counts": counts,
+            "channel_counts": counts if is_super else {"human": counts["human"], "collab": 0, "system": 0, "all": counts["human"]},
             "has_more": has_more,
+            "window_sig": win_sig,
             "messages": msgs,
         })
 
@@ -1011,10 +1242,19 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
 
         text = str((body or {}).get("text") or "").strip()
         file_ids = [str(x).strip() for x in ((body or {}).get("file_ids") or []) if str(x).strip()]
+        reply_to_id = int((body or {}).get("reply_to_id") or 0)
         if not text and not file_ids:
             return JSONResponse({"ok": False, "error": "消息内容不能为空"}, status_code=400)
 
         target_cid = "ctrl" if (cid == "main" and bridge.ctrl_is_active()) else cid
+        if reply_to_id > 0 and not text.startswith("> [引用 #"):
+            qrow = store.one("SELECT id, user_name, outgoing, text FROM messages WHERE id=? AND conv=?", (reply_to_id, target_cid))
+            if qrow is not None:
+                q_author = (qrow["user_name"] or ("AI" if qrow["outgoing"] else "用户")).strip()[:20]
+                q_clean = re.sub(r"^> \[引用 #[^\n]+\n*", "", qrow["text"] or "").strip()
+                q_snip = re.sub(r"\s+", " ", q_clean)[:64] or "[附件]"
+                text = f"> [引用 #{reply_to_id} {q_author}] {q_snip}\n\n{text}".strip()
+
         admin_dms = bridge.admin_chats()
         chat_id_val = (admin_dms[0] if admin_dms else 0) if _is_zwt(user) else int(user["tg_owner"] or 0)
         sender_name = (user["display_name"] or user["username"]) + " (Web)"
@@ -1056,7 +1296,13 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
 
         if not bridge.is_system_conv_id(target_cid):
             bridge.reset_dm_streaks_for(target_cid)
-        return JSONResponse({"ok": True, "message_ids": inserted_ids})
+        conv_disp = bridge.conv_name(bridge.conv_row(target_cid) or conv)
+        created_msgs = []
+        for mid_i in inserted_ids:
+            mr = store.one("SELECT * FROM messages WHERE id=?", (mid_i,))
+            if mr is not None:
+                created_msgs.append(_serialize_conv_msg_row(conv_disp, mr))
+        return JSONResponse({"ok": True, "message_ids": inserted_ids, "messages": created_msgs})
 
     @app.patch("/web/api/messages/{msg_id}")
     async def web_edit_message(msg_id: int, request: Request) -> JSONResponse:
@@ -1179,7 +1425,13 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
         return JSONResponse({"ok": True, "group_id": gid, "members": valid_convs, "web_users": granted_web})
 
     @app.get("/web/api/groups/{group_id}/messages")
-    async def web_get_group_messages(group_id: str, request: Request, limit: int = 150) -> JSONResponse:
+    async def web_get_group_messages(
+        group_id: str,
+        request: Request,
+        limit: int = 150,
+        before_id: int = 0,
+        after_id: int = 0,
+    ) -> JSONResponse:
         user = _current_web_user(store, request)
         if user is None:
             return JSONResponse({"ok": False, "error": "未登录"}, status_code=401)
@@ -1191,7 +1443,33 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
             return JSONResponse({"ok": False, "error": "无权查看该协作群"}, status_code=403)
 
         lim = max(1, min(int(limit), 300))
-        rows = list(reversed(store.q("SELECT * FROM agent_group_messages WHERE group_id=? ORDER BY id DESC LIMIT ?", (gid, lim))))
+        has_more = False
+        if after_id > 0:
+            rows = store.q(
+                "SELECT * FROM agent_group_messages WHERE group_id=? AND id>? ORDER BY id ASC LIMIT ?",
+                (gid, int(after_id), lim),
+            )
+        elif before_id > 0:
+            raw_rows = store.q(
+                "SELECT * FROM agent_group_messages WHERE group_id=? AND id<? ORDER BY id DESC LIMIT ?",
+                (gid, int(before_id), lim + 1),
+            )
+            has_more = len(raw_rows) > lim
+            rows = list(reversed(raw_rows[:lim]))
+        else:
+            raw_rows = store.q(
+                "SELECT * FROM agent_group_messages WHERE group_id=? ORDER BY id DESC LIMIT ?",
+                (gid, lim + 1),
+            )
+            has_more = len(raw_rows) > lim
+            rows = list(reversed(raw_rows[:lim]))
+
+        sig_rows = store.q(
+            "SELECT id, LENGTH(IFNULL(text,'')) AS tl FROM agent_group_messages WHERE group_id=? ORDER BY id DESC LIMIT 120",
+            (gid,),
+        )
+        win_sig = hashlib.md5("|".join(f"{sr['id']}:{sr['tl']}" for sr in sig_rows).encode("utf-8")).hexdigest()[:12]
+
         mems = bridge.group_members(gid)
         web_mems = _group_web_members(store, gid)
         member_details = []
@@ -1200,32 +1478,7 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
             if mc is not None:
                 st = bridge.conv_state(mc)["state"]
                 member_details.append({"id": m, "name": bridge.conv_name(mc), "state": st})
-        msgs = []
-        for r in rows:
-            try:
-                mnt = json.loads(r["mentions"] or "[]")
-            except Exception:
-                mnt = []
-            raw_gtxt = r["text"] or ""
-            g_files: list[dict[str, Any]] = []
-            seen_gf: set[str] = set()
-            for m_fid in re.findall(r"\b(f_[0-9a-f]{8,16})\b", raw_gtxt):
-                if m_fid not in seen_gf:
-                    gf = _serialize_file(store, m_fid)
-                    if gf:
-                        g_files.append(gf)
-                        seen_gf.add(m_fid)
-            f_meta = g_files[0] if g_files else None
-            msgs.append({
-                "id": r["id"],
-                "sender_conv": r["sender_conv"] or "",
-                "sender_name": r["sender_name"] or r["sender_conv"] or "",
-                "text": raw_gtxt,
-                "mentions": mnt if isinstance(mnt, list) else [],
-                "ts": float(r["ts"] or 0),
-                "file": f_meta,
-                "files": g_files,
-            })
+        msgs = [_serialize_group_msg_row(r) for r in rows]
         return JSONResponse({
             "ok": True,
             "group": {
@@ -1236,6 +1489,8 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
                 "members": member_details,
                 "web_members": web_mems,
             },
+            "has_more": has_more,
+            "window_sig": win_sig,
             "messages": msgs,
         })
 
@@ -1259,6 +1514,15 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
         text = str((body or {}).get("text") or "").strip()
         file_ids = [str(x).strip() for x in ((body or {}).get("file_ids") or []) if str(x).strip()]
         raw_mentions = (body or {}).get("mentions")
+        reply_to_id = int((body or {}).get("reply_to_id") or 0)
+
+        if reply_to_id > 0 and not text.startswith("> [引用 #"):
+            qrow = store.one("SELECT id, sender_name, text FROM agent_group_messages WHERE id=? AND group_id=?", (reply_to_id, gid))
+            if qrow is not None:
+                q_author = (qrow["sender_name"] or "成员").strip()[:20]
+                q_clean = re.sub(r"^> \[引用 #[^\n]+\n*", "", qrow["text"] or "").strip()
+                q_snip = re.sub(r"\s+", " ", q_clean)[:64] or "[附件]"
+                text = f"> [引用 #{reply_to_id} {q_author}] {q_snip}\n\n{text}".strip()
 
         file_notes = []
         for fid in file_ids:
@@ -1323,7 +1587,13 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
                     sender=sender_conv_val,
                     wake=1 if m_cid in wake_set else 0,
                 )
-        return JSONResponse({"ok": True, "id": gm_id, "woke": sorted(wake_set)})
+        gmrow = store.one("SELECT * FROM agent_group_messages WHERE id=?", (gm_id,))
+        return JSONResponse({
+            "ok": True,
+            "id": gm_id,
+            "woke": sorted(wake_set),
+            "message": _serialize_group_msg_row(gmrow) if gmrow else None,
+        })
 
     @app.patch("/web/api/group-messages/{gm_id}")
     async def web_edit_group_message(gm_id: int, request: Request) -> JSONResponse:
@@ -1356,6 +1626,95 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
         store.run("DELETE FROM agent_group_messages WHERE id=?", (gm_id,))
         return JSONResponse({"ok": True, "id": gm_id})
 
+    # ---------------------------------------------------------------- 实时 SSE 增量脉冲（零闪烁推送）
+
+    @app.get("/web/api/events")
+    async def web_sse_events(request: Request, conv: str = "", group: str = "", once: int = 0) -> Response:
+        user = _current_web_user(store, request)
+        if user is None:
+            return PlainTextResponse("unauthorized", status_code=401)
+
+        cid = bridge.parse_conv(conv) if conv else ""
+        if cid:
+            crow = bridge.conv_row(cid)
+            if not _can_access_conv(bridge, user, crow):
+                cid = ""
+        gid = bridge.parse_group(group) if group else ""
+        if gid:
+            grow = bridge.group_row(gid)
+            if not _can_access_group(user, grow):
+                gid = ""
+
+        def _snapshot() -> dict[str, Any]:
+            m_stat = store.one("SELECT IFNULL(MAX(id),0) AS mx, COUNT(*) AS cnt FROM messages") or {"mx": 0, "cnt": 0}
+            g_stat = store.one("SELECT IFNULL(MAX(id),0) AS mx, COUNT(*) AS cnt FROM agent_group_messages") or {"mx": 0, "cnt": 0}
+            t_stat = store.one("SELECT IFNULL(MAX(updated_ts),0) AS ts FROM agent_traces") or {"ts": 0}
+            snap: dict[str, Any] = {
+                "msg_max": int(m_stat["mx"] or 0),
+                "msg_cnt": int(m_stat["cnt"] or 0),
+                "grp_max": int(g_stat["mx"] or 0),
+                "grp_cnt": int(g_stat["cnt"] or 0),
+                "trace_ts": round(float(t_stat["ts"] or 0), 2),
+            }
+            if cid:
+                c_stat = store.one(
+                    "SELECT IFNULL(MAX(id),0) AS mx, COUNT(*) AS cnt, IFNULL(SUM(LENGTH(IFNULL(text,''))),0) AS tlen FROM messages WHERE conv=?",
+                    (cid,),
+                ) or {"mx": 0, "cnt": 0, "tlen": 0}
+                cr = bridge.conv_row(cid)
+                snap["active_conv"] = {
+                    "id": cid,
+                    "max_id": int(c_stat["mx"] or 0),
+                    "cnt": int(c_stat["cnt"] or 0),
+                    "tlen": int(c_stat["tlen"] or 0),
+                    "trace": bridge.trace_one_liner(cid) if cr else "",
+                    "state": bridge.conv_state(cr)["state"] if cr else "",
+                }
+            if gid:
+                gr_stat = store.one(
+                    "SELECT IFNULL(MAX(id),0) AS mx, COUNT(*) AS cnt, IFNULL(SUM(LENGTH(IFNULL(text,''))),0) AS tlen FROM agent_group_messages WHERE group_id=?",
+                    (gid,),
+                ) or {"mx": 0, "cnt": 0, "tlen": 0}
+                snap["active_group"] = {
+                    "id": gid,
+                    "max_id": int(gr_stat["mx"] or 0),
+                    "cnt": int(gr_stat["cnt"] or 0),
+                    "tlen": int(gr_stat["tlen"] or 0),
+                }
+            return snap
+
+        async def _stream():
+            last_key = ""
+            started = _now()
+            last_ping = started
+            while True:
+                snap = _snapshot()
+                cur_key = json.dumps(snap, sort_keys=True, ensure_ascii=False)
+                if cur_key != last_key:
+                    last_key = cur_key
+                    yield f"event: sync\ndata: {cur_key}\n\n"
+                    last_ping = _now()
+                    if once:
+                        break
+                elif _now() - last_ping >= 12.0:
+                    yield ": keepalive\n\n"
+                    last_ping = _now()
+                if once or (_now() - started >= 52.0):
+                    break
+                if await request.is_disconnected():
+                    break
+                await asyncio.sleep(0.6)
+
+        return StreamingResponse(
+            _stream(),
+            media_type="text/event-stream",
+            headers={
+                "Cache-Control": "no-cache, no-transform",
+                "Connection": "keep-alive",
+                "X-Accel-Buffering": "no",
+            },
+        )
+
     # ---------------------------------------------------------------- 零依赖高兼容二进制文件/图片上传与预览（拖拽 / 粘贴 / 手机选图）
 
     @app.post("/web/api/upload")
@@ -1376,45 +1735,60 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
         safe_disk = re.sub(r"[^\w.\-]", "_", clean_fn)[:80] or "file.bin"
         path = bridge.DATA / "files" / f"{file_id}_{safe_disk}"
         path.write_bytes(data)
-        mime = raw_mime if (raw_mime and raw_mime != "application/octet-stream") else (mimetypes.guess_type(clean_fn)[0] or "application/octet-stream")
+        mime, _ = _detect_mime_and_image(clean_fn, raw_mime)
         cid = bridge.parse_conv(conv) if conv else ""
         store.run(
             "INSERT INTO files(id,chat_id,tg_file_id,name,size,mime,path,ts,conv) VALUES(?,?,?,?,?,?,?,?,?)",
             (file_id, 0, "", clean_fn, len(data), mime, str(path), _now(), cid),
         )
-        return JSONResponse({"ok": True, "file": _serialize_file(store, file_id)})
+        return JSONResponse({"ok": True, "file": _serialize_file(store, file_id, bridge=bridge)})
 
     @app.get("/web/api/files/{file_id}")
-    async def web_serve_file(file_id: str, request: Request) -> Response:
+    async def web_serve_file(file_id: str, request: Request, sig: str = "", download: int = 0) -> Response:
         user = _current_web_user(store, request)
-        if user is None:
+        sig_valid = bool(sig and hmac.compare_digest(sig, _web_file_sig(bridge, file_id)))
+        if user is None and not sig_valid:
             return PlainTextResponse("unauthorized", status_code=401)
         frow = store.one("SELECT * FROM files WHERE id=?", (file_id,))
-        if frow is None or not Path(frow["path"]).exists():
+        disk_path = _resolve_file_disk_path(bridge, frow)
+        if frow is None or disk_path is None:
             return PlainTextResponse("not found", status_code=404)
-        if not _is_zwt(user):
-            fconv = (frow["conv"] or "").strip()
-            if fconv:
-                fc = bridge.conv_row(fconv)
-                if fc is None or not _can_access_conv(bridge, user, fc):
-                    return PlainTextResponse("forbidden", status_code=403)
-        mime = frow["mime"] or "application/octet-stream"
-        disp = "inline" if mime.startswith(("image/", "text/", "application/pdf")) else "attachment"
+        if not sig_valid and not _can_user_read_file(bridge, store, user, frow):
+            return PlainTextResponse("forbidden", status_code=403)
+        fname = frow["name"] or file_id
+        mime, _ = _detect_mime_and_image(fname, frow["mime"] or "")
         return FileResponse(
-            frow["path"],
+            disk_path,
             media_type=mime,
-            headers={"Content-Disposition": f"{disp}; filename*=UTF-8''{urllib.parse.quote(frow['name'] or file_id)}"},
+            headers=_build_file_headers(fname, file_id, mime, force_download=bool(download)),
         )
 
     @app.get("/web/api/outbox-file")
-    async def web_serve_outbox_file(request: Request, path_sig: str = "", p: str = "") -> Response:
-        user = _current_web_user(store, request)
-        if user is None:
-            return PlainTextResponse("unauthorized", status_code=401)
+    async def web_serve_outbox_file(
+        request: Request,
+        path_sig: str = "",
+        p: str = "",
+        fn: str = "",
+        download: int = 0,
+    ) -> Response:
         safe_name = Path(p).name
-        cand = bridge.DATA / "outbox" / safe_name
-        expected = hashlib.sha256(str(cand).encode("utf-8")).hexdigest()[:16]
-        if not safe_name or not hmac.compare_digest(path_sig, expected) or not cand.exists():
+        if not safe_name:
             return PlainTextResponse("not found", status_code=404)
-        mime = mimetypes.guess_type(safe_name)[0] or "application/octet-stream"
-        return FileResponse(cand, media_type=mime)
+        cand = bridge.DATA / "outbox" / safe_name
+        sig_new = _outbox_sig(bridge, safe_name)
+        sig_legacy = hashlib.sha256(str(cand).encode("utf-8")).hexdigest()[:16]
+        sig_ok = bool(path_sig) and (
+            hmac.compare_digest(path_sig, sig_new) or hmac.compare_digest(path_sig, sig_legacy)
+        )
+        user = _current_web_user(store, request)
+        if user is None and not sig_ok:
+            return PlainTextResponse("unauthorized", status_code=401)
+        if not sig_ok or not cand.exists():
+            return PlainTextResponse("not found", status_code=404)
+        orig_name = Path(fn).name if fn else (safe_name.split("_", 1)[1] if "_" in safe_name else safe_name)
+        mime, _ = _detect_mime_and_image(orig_name)
+        return FileResponse(
+            cand,
+            media_type=mime,
+            headers=_build_file_headers(orig_name, "outbox_file", mime, force_download=bool(download)),
+        )
