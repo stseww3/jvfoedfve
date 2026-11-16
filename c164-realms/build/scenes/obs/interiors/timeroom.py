@@ -109,9 +109,11 @@ them when they are in the tree (PIECES: the furniture, the regulators and the ba
 and the telephone, the books and the drawing) and is left out, or stood in for by a block, until
 then. SLOTS says where the machines of machines/recorders go.
 
-build() is what the master scene calls; it places nothing until MOVED_IN is set (the shell in the
-master scene and the room past review). Until then the room lives in its box test scene,
-build/scenes/obs_int_timeroom.
+build() is what the master scene calls. The room has moved in (MOVED_IN): the shell is in the
+master scene, the room reads its box and its door from it, and dressed in the real building it
+came out block for block and picture for picture as in its box. The box test scene,
+build/scenes/obs_int_timeroom, stays the room's own scene: the same dressing in a stand-in of the
+shell, with the lamp of the hall and the light of the lit windows the room does not make itself.
 """
 import functools
 import importlib
@@ -125,24 +127,24 @@ from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
 from ..main import _plan as MP
+from ..main import shell
 from ..materials import panels
 from ..props import _kit as K
 from ..props import lamps
 
-MOVED_IN = False
+MOVED_IN = True
 NAME = "interiors/timeroom"
 PREFIX = "int_timeroom_"
 PX = 1 / 16.0
 
-# ---- the room (main/shell.ROOMS["time room"], c231; written from the skeleton until the shell is in the tree)
-X0, X1 = S.ROOM_X                                   # 2..13
-Z0, Z1 = S.pilaster_z(2) + 1, S.STAR_HALL_Z[0] - 1  # -25..-7
-FEET = S.STAND                                      # 7
-TOP = S.STAR_HALL_CEIL - 1                          # 13: the last clear row
+# ---- the room: the clear inside the shell leaves (main/shell.ROOMS["time room"]) and its door
+X0, Z0, X1, Z1 = shell.ROOMS["time room"]["box"]    # 2, -25, 13, -7
+FEET = shell.ROOMS["time room"]["feet"]             # 7
+CEIL_Y = shell.ROOMS["time room"]["ceiling"]        # 14: the ceiling block
+TOP = CEIL_Y - 1                                    # 13: the last clear row
 FLOOR_Y = FEET - 1                                  # 6: the floor block
-CEIL_Y = S.STAR_HALL_CEIL                           # 14: the ceiling block
 SILL = S.WINDOW[0]                                  # 8: the sill line
-DOOR_X = (7, 8)                                     # the door, in the wall on z -6
+DOOR_X = shell.ROOM_DOOR_X                          # (7, 8): the door, in the wall on z -6
 AXIS_X = S.mid(*DOOR_X)                             # 8.0: the long axis, between two cells
 PIER_Z = tuple(z for z in range(Z0, Z1 + 1) if MP.on_pilaster(z))               # -22, -18, -14, -10
 EAST_BAYS = tuple(b for b in range(1, S.N_BAYS + 1) if set(MP.window_rows(b)) <= set(range(Z0, Z1 + 1)))
@@ -185,6 +187,7 @@ MIDDLE = (                                          # the middle bay: what there
 )
 # pier, west flank bay, pier, middle bay, pier, east flank bay, pier
 RACK = [(p,) + w + (p,) + m + (p,) + e + (p,) for p, w, m, e in zip(PIER, FLANK_W, MIDDLE, FLANK_E)]
+assert len(RACK[0]) == RACK_X[1] - RACK_X[0] + 1, "the rack and the recess at each of its ends fill the end wall of the shell's room"
 QUIET = ("louvre", "drawers")                       # faces with nothing to read on them: where the eye rests
 PAIRED = QUIET + ("tubes", "patch_panel")           # what may stand as a pair either side of the middle: the quiet faces, the valves
 #                                                     at the heads of the piers, the two jack fields at the ends of the console
@@ -213,7 +216,7 @@ DESK_BAY, BENCH_BAY = 6, 5                          # the message desk's window 
 WAINSCOT_T = 3 * PX                                 # a panel of the wainscot, off its wall
 PANEL_TOP = TOP                                     # 13: the panelling runs up to the ceiling; at a beam's end its last row is the beam's shoe
 PANEL_E, PANEL_W, PANEL_S = EAST - WAINSCOT_T, WEST + WAINSCOT_T, SOUTH - WAINSCOT_T      # the faces of the panelling: what hangs on a panelled wall hangs on these
-DOOR_TOP = FEET + 2                                 # 9: the last row of the doorway
+DOOR_TOP = shell.ROOM_DOOR_Y[1]                     # 9: the last row of the doorway
 RISER = (X0, Z1)                                    # the south-west corner cell: the cased riser
 CORNER = (X1, Z1)                                   # the south-east corner cell: the south wall's panel, not the east wall's
 DESK_DEEP = 14 * PX                                 # props/furniture's writing desk, back to front
@@ -816,7 +819,8 @@ def _offer(canvas, cell, level, why, rank):
 
 
 def build(canvas, origin=(0, 0, 0)):
-    """The master scene's call: nothing until the room has moved in."""
+    """The master scene's call: the room in the shell the main line has built; nothing while
+    MOVED_IN is off. Returns the number of display entities placed."""
     if not MOVED_IN:
         return 0
     return build_timeroom(canvas, origin)["entities"]
