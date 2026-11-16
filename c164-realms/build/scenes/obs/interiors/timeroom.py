@@ -320,9 +320,11 @@ LAMPS = "b"                 # every lamp of the room is the shaded one (props/la
 # Where one stands there is light (the finish, A0 11-16: every cell of the floor one can stand on has 5 or more
 # at the foot or at the head, a threshold 7), and it comes first from the lamps that are there for the work: by
 # the door from the lamp over the blueprint, in the middle of the room from the bench's and the message desk's.
-# What these leave under 5 (the east side, the foot of the south wall) the light line fills with lamps of its
-# own (sky/lights, placed by c349): on the south wall and the two northern piers of the east wall, where V10
-# has no lit shade beside the near desk.
+# What these leave under 5 (the floor along the east wall north of the telephone, the corner east of the door)
+# two more lamps of the room's own kind fill, hung for the way and not for the work (surveyed by c349): on the
+# pier between the two northern windows of the east wall and on the south wall east of the door, where V10 has
+# no lit shade beside the near desk. They are the room's and not the light line's (sky/lights): a lamp of the
+# ways takes the free cell before its wall for its source, and before these walls that cell holds the panelling.
 CONSOLE_LAMP = (12, 2)      # the two drop lights over the ends of the console: the main light, on the instrument wall
 CONSOLE_POOL = (11, 2)      # what those two throw on the floor before the console, each at its foot (they hang over the shelf's edge)
 HOOD_LAMP = (12, 2)         # under the hood of the instrument wall, along the top row of faces: what the hood throws down
@@ -333,8 +335,16 @@ DESK_LAMP = (9, 2)          # the reading lamp on the message desk: 8 at the sit
 #                             5 at the head four cells off: the floor about the desk, out to the long axis
 REGULATOR_LAMP = (9, 2)     # the bracket lamps over the two standard clocks
 CLOCK_LAMP = (10, 2)        # the bracket lamp over the world clocks: 9 on the middle dial, 7 on the end ones
-PLAN_LAMP = (11, 2)         # the bracket lamp over the blueprint and the card cabinets, by the door: the lamp one comes in
-#                             under. 6 to 7 at the head in the doorway, 7 to 8 on the cabinets; V10 does not see it
+PLAN_LAMP = (12, 2)         # the bracket lamp over the blueprint and the card cabinets, by the door: the lamp one comes in
+#                             under. 7 to 8 at the head in the doorway, 8 to 9 on the cabinets; V10 does not see it. At 11
+#                             one cell of the long axis, (8, -11), four cells from every lamp, was left at 4
+PIER_LAMP = (10, 2)         # a bracket lamp on the east wall, on the pier between its two northern windows: the floor along that
+#                             wall north of the telephone lies between the console's pool and the message desk's and had 2 to 4
+#                             (thirteen cells, x 10..13, z -20..-16); with it 5 at the least, at (10, -16). Two under the
+#                             instrument wall's 12, and far up the room, where V10 has the wall's own light beside it
+COATS_LAMP = (9, 2)         # a bracket lamp east of the door, the fellow of the one over the blueprint, with the coat stand under
+#                             it: the corner behind the stand had 3 to 4 (x 11..13 in the south wall's row, and (13, -8)), with
+#                             it 5 at the least, in the corner cell. V10 does not see it
 OVER = 20 * PX              # a bracket's arm above the top of what it hangs over: the shade ends half a block over it, a lamp
 #                             over a clock and not a hat on it (at 12 px the pale inside of the shade sat on the dial's rim)
 CONSOLE_HANG = FEET + 3.5   # 10.5: where the drop lights of the console end and their lamps hang; the shades end at 9.56, a block
@@ -361,6 +371,10 @@ CLOCK_LIGHT = (X0 + 1, int(math.floor(DIAL_Y)), int(math.floor(S.mid(*CLOCK_Z)))
 BRACKET_Y = DIAL_Y + BOARD[1] * PX + OVER                                           # 11.34: the arm of the world clocks' lamp, and of the lamp by the door:
 #                                                                                     the two hang at one height round the room's south-west corner
 PLAN_LIGHT = (int(math.floor(PLAN[0])), int(math.floor(PLAN[1])), Z1 - 1)           # (5, 9, -8): before the blueprint (the south wall's panels stand in its own row)
+PIER_LAMP_Z = S.pilaster_z(BENCH_BAY - 1)                                           # -18: the pier north of the window that faces the rating bench's
+PIER_LIGHT = (X1 - 1, PLAN_LIGHT[1], PIER_LAMP_Z)                                   # (12, 9, -18): before the pier, at the height of the blueprint's
+COATS_X = 2 * AXIS_X - PLAN[0]                                                      # 11.0: as far east of the room's axis as the blueprint's lamp is west of it
+COATS_LIGHT = (int(math.floor(COATS_X)), PLAN_LIGHT[1], Z1 - 1)                     # (11, 9, -8)
 # What a lit desk and a lit clock board throw back at the ceiling: a weak source in the row under the ceiling, two
 # cells out from the wall the lamp is at. With every source low the boards and the beams over the middle of the
 # room were dead black (under 0.03 on four tenths of the ceiling of V10; review cr3-P4); these leave the ceiling
@@ -925,6 +939,11 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
 
     # ---- the lamp by the door, over the blueprint and the card cabinets: the one one comes in under
     n += lamp("bracket", (PLAN[0], BRACKET_Y, PANEL_S), PLAN_LAMP, "card cabinets", PLAN_LIGHT, facing="north")
+
+    # ---- the two lamps of the way, at the height of that one: on the east wall's northern pier between windows,
+    # and east of the door over the coat stand
+    n += lamp("bracket", (PANEL_E, BRACKET_Y, S.mid(PIER_LAMP_Z)), PIER_LAMP, "east pier", PIER_LIGHT, facing="west")
+    n += lamp("bracket", (COATS_X, BRACKET_Y, PANEL_S), COATS_LAMP, "coat stand", COATS_LIGHT, facing="north")
 
     # ---- the panelling: every solid stretch of wall where no block of the room stands, from the floor
     # to the ceiling; before a window only the course under its sill
