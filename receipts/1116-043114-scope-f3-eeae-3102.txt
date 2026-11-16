@@ -1,0 +1,25 @@
+a0job 1116-043114-scope-f3-eeae-3102: cursor/c164-scope-f3-eeae @ dabc01d6 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.78 0.56 0.98, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- mkdir -p renders/_wip; (cd build && python -m scenes.obs.machines.scope) > renders/_wip/scope-report.txt 2>&1; echo "SELF=$?"; grep -n "swing\|BROKEN\|railing\|counterweight" renders/_wip/scope-report.txt; python tools/check.py --scene
+SELF=0
+11:  counterweight: x 2.78..4.16, y from 21.12 (from 21.09 at the low end of the swing), z -1.38..0.01
+13:  lowest corner east of the railing: y 19.58, 19.48 at the low end of the swing (a standing eye is at 19.62)
+14:  the mount swings 2.0 degrees to either side in 480 ticks: the eyepiece goes 0.150 blocks across the floor (east +0.056, south +0.139) and +0.139 up the way the sky goes, and as far the other way; the tube stays 0.51 inside the slit's e
+25:  lowest corner east of the railing: y 19.70, 19.63 at the low end of the swing (a standing eye is at 19.62)
+26:  the mount swings 2.0 degrees to either side in 480 ticks: the eyepiece goes 0.135 blocks across the floor (east +0.087, south +0.103) and +0.103 up the way the sky goes, and as far the other way; the tube stays 1.26 inside the slit's e
+CHECK=0
+[PASS] flatwall  no wall face runs flat over more than 5x5
+[PASS] entities  10 display entities
+[PASS] views     26 shots, most display entities in view: 10 (north_a), limit 600; counted without what walls hide; the game draws up to 10 (v8_a): a display entity without width and height is drawn outside the view too
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    8 parts and 0 points on 2 chains, 18 function files; 8 commands in the busiest tick (limit 40), 0.6 a tick on average (limit 10)
+                 chain of 32 ticks: 4 functions, 14 commands a cycle, starts 1 ticks after start
+                 chain of 480 ticks: 8 functions, 57 commands a cycle, starts 2 ticks after start
+result: PASS (0 failed, 0 with warnings)
+==== NODEJOB RESULT ====
+exit=0 secs=5 host=cursor cores=4 head=dabc01d6 commit=none pushed=no branch=cursor/c164-scope-f3-eeae files=0
+a0job: exit=0 secs=6
