@@ -68,7 +68,9 @@ What the hall asked of it (hall #75451) and the machines' reviewer (cr3 #78722),
     the palette mean on the slab what they mean on the stone round it. The slab's ground is
     ashlar 2 under the wall's 3, the brass is the ramp's steps 2 and 3
   - a slab reads as a slab with something on it, not as a hole: one step under the wall and no
-    more, its cut lines ashlar 1, its stars ashlar 0
+    more, its cut lines ashlar 1. Its stars are a step under ashlar 0, the lightest slate, so
+    that the door can count Orion's belt and his four corners (cr3 #82177: a step deeper than
+    ashlar 0 was, and not under 0.12 in the first look)
   - an entity takes the light of one cell where the wall is lit smoothly: the strip is one entity
     to a block, so it darkens up the pier as the stone does; a slab is one entity and takes the
     light of its middle third (SLAB_CELL). From its upper third its stars fell under the hall's
@@ -247,22 +249,25 @@ EAST, NORTH = (1.0, 0.0, 0.0), (0.0, 0.0, -1.0)
 
 _A = P.RAMPS["ashlar"]
 # A slab's joint, its ground, a cut line, a star. In a slab's drawing "." is the ground and a blank
-# is where the wall shows; in the strip's "." is the wall.
-STONE = {"J": _A[1], ".": _A[2], "l": _A[1], "s": _A[0]}
+# is where the wall shows; in the strip's "." is the wall. A star is cut deeper than a line: the
+# ashlar has no step under its lowest, so a star is the lightest slate, which is that step.
+STONE = {"J": _A[1], ".": _A[2], "l": _A[1], "s": P.RAMPS["slate"][6]}
 BRASS = {"h": _R[3], "m": _R[2], "d": _R[1]}               # the strip's lit side, its body, the bob's far side
 
 # One length of the strip, a block of it, as the door sees it: the south to the left. The stroke at
 # a whole block lies in the wall's bed joint and points north, the one at half a block points south.
 LENGTH = ("...hm...",) * 7 + (".mmhm...",) + ("...hm...",) * 7 + ("...hmmmm",)
+# The bob: a cap, a shoulder and a long point, turned brass. It is the weight at the end of the line
+# and may be lighter than the line (cr3 #82177: up to the ramp's step 3): more of it is lit.
 BOB = (
-    "..hmmm..",
-    ".hhmmmd.",
-    ".hmmmmd.",
-    ".hmmmdd.",
-    "..hmmd..",
-    "..hmmd..",
-    "...hd...",
-    "...hd...",
+    "..hhmm..",
+    ".hhhhmd.",
+    ".hhhmmd.",
+    ".hhhmmd.",
+    "..hhmd..",
+    "..hhmd..",
+    "...hm...",
+    "...hm...",
     "...md...",
 )
 # The north slab: the pole star in the middle of the round head, as the sky turns about it, and the
