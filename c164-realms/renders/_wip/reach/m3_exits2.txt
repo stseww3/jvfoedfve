@@ -1,0 +1,100 @@
+obs_mach_cablecar_winch: the blocks on the platform's east edge, y -5 .. -1 (columns x 90 .. 93; air left out)
+  z -41: nothing
+  z -40: x90 [y-5:tuff_bricks y-4:polished_tuff y-3:tuff_bricks y-2:gray_stained_glass_pane y-1:gray_stained_glass_pane]  x91 [y-5:tuff_bricks y-4:polished_tuff y-3:polished_tuff y-2:polished_tuff y-1:polished_tuff]
+  z -39: x90 [y-5:tuff_bricks]  x91 [y-5:tuff_bricks y-4:polished_tuff y-3:white_stained_glass y-2:white_stained_glass y-1:white_stained_glass]  x92 [y-2:light[level=10] y-1:light[level=10]]
+  z -38: x90 [y-5:tuff_bricks]  x91 [y-5:tuff_bricks y-4:polished_tuff y-3:tuff_bricks y-2:tuff_bricks y-1:tuff_bricks]
+  z -37: x90 [y-5:tuff_bricks]  x91 [y-5:tuff_bricks y-4:polished_tuff y-3:white_stained_glass y-2:white_stained_glass y-1:white_stained_glass]  x92 [y-2:light[level=10] y-1:light[level=10]]
+  z -36: x90 [y-5:tuff_bricks]  x91 [y-5:tuff_bricks y-4:polished_tuff y-3:polished_tuff y-2:polished_tuff y-1:polished_tuff]
+  z -35: x90 [y-5:polished_tuff]  x91 [y-5:polished_tuff y-4:oxidized_copper_bars]
+  z -34: x90 [y-5:oxidized_cut_copper y-4:barrier y-3:barrier]  x91 [y-5:oxidized_cut_copper y-4:barrier y-3:barrier]  x92 [y-5:oxidized_cut_copper_slab[type=top]]  x93 [y-5:oxidized_cut_copper_slab[type=top]]
+  z -33: x90 [y-5:oxidized_copper_grate y-4:barrier y-3:barrier]  x91 [y-5:oxidized_copper_grate y-4:barrier y-3:barrier y-2:light[level=9]]  x92 [y-5:oxidized_copper_trapdoor[half=top]]  x93 [y-5:oxidized_copper_trapdoor[half=top]]
+  z -32: x90 [y-5:oxidized_cut_copper y-4:barrier y-3:barrier]  x91 [y-5:oxidized_cut_copper y-4:barrier y-3:barrier]  x92 [y-5:oxidized_cut_copper_slab[type=top]]  x93 [y-5:oxidized_cut_copper_slab[type=top]]
+  z -31: x90 [y-5:polished_tuff]  x91 [y-5:polished_tuff y-4:oxidized_copper_bars]
+  z -30: x90 [y-5:tuff_bricks]  x91 [y-5:tuff_bricks y-4:polished_tuff y-3:polished_deepslate_wall y-2:polished_deepslate_wall y-1:polished_deepslate_wall]
+  z -29: x90 [y-5:tuff_bricks]  x91 [y-5:tuff_bricks y-4:oxidized_copper_bars]
+  z -28: x90 [y-5:tuff_bricks]  x91 [y-5:tuff_bricks y-4:oxidized_copper_bars]
+  z -27: x90 [y-5:tuff_bricks]  x91 [y-5:tuff_bricks y-4:oxidized_copper_bars]
+  z -26: x90 [y-5:tuff_bricks y-4:oxidized_copper_bars]  x91 [y-5:tuff_bricks y-4:sandstone_wall y-3:sandstone_slab]
+
+every jump (a rise over 0.6) inside the station, x 75 .. 92.5, z -40 .. -26, with what its foot is reached by:
+  (78.5, -4, -40) -> (78.5, -3, -39.5)  +1.00; foot reached by hop
+  (79, -4, -40) -> (79, -3, -39.5)  +1.00; foot reached by hop
+  (79.5, -4, -40) -> (79.5, -3, -39.5)  +1.00; foot reached by hop
+  (92.5, -8, -39.5) -> (92.5, -7, -39)  +1.00; foot reached by hop
+  (78.5, -4, -39) -> (78.5, -3, -39.5)  +1.00; foot reached by walk
+  (79, -4, -39) -> (79, -3, -39.5)  +1.00; foot reached by walk
+  (79.5, -4, -39) -> (79.5, -3, -39.5)  +1.00; foot reached by walk
+  (79.5, -4, -38.5) -> (80, -3, -38.5)  +1.00; foot reached by walk
+  (79.5, -4, -38) -> (80, -3, -38)  +1.00; foot reached by walk
+  (79.5, -4, -37.5) -> (80, -3, -37.5)  +1.00; foot reached by walk
+  (92.5, -7, -37.5) -> (92.5, -6, -37)  +1.00; foot reached by hop
+  (81.5, -4, -35.5) -> (81.5, -3, -36)  +1.00; foot reached by walk
+  (85.5, -4, -35.5) -> (85.5, -3, -36)  +1.00; foot reached by walk
+  (87.5, -4, -34.5) -> (87.5, -3, -34)  +1.00; foot reached by walk
+  (88, -4, -34.5) -> (88, -3, -34)  +1.00; foot reached by walk
+  (91, -4, -34.5) -> (91.5, -3, -34.5)  +1.00; foot reached by walk
+  (91.5, -3, -34.5) -> (91.5, -2, -34)  +1.00; foot reached by hop
+  (92, -4, -34.5) -> (91.5, -3, -34.5)  +1.00; foot reached by hop
+  (88.5, -4, -34) -> (88, -3, -34)  +1.00; foot reached by walk
+  (88.5, -4, -33.5) -> (88, -3, -33.5)  +1.00; foot reached by walk
+  (88.5, -4, -33) -> (88, -3, -33)  +1.00; foot reached by walk
+  (87.5, -4, -32.5) -> (87.5, -3, -33)  +1.00; foot reached by walk
+  (87.5, -4, -32.5) -> (87.5, -3, -32)  +1.00; foot reached by walk
+  (88, -4, -32.5) -> (88, -3, -33)  +1.00; foot reached by walk
+  (88, -4, -32.5) -> (88, -3, -32)  +1.00; foot reached by walk
+  (88.5, -4, -32) -> (88, -3, -32)  +1.00; foot reached by walk
+  (88.5, -4, -31.5) -> (88, -3, -31.5)  +1.00; foot reached by walk
+  (88.5, -4, -31) -> (88, -3, -31)  +1.00; foot reached by walk
+  (87.5, -4, -30.5) -> (87.5, -3, -31)  +1.00; foot reached by walk
+  (88, -4, -30.5) -> (88, -3, -31)  +1.00; foot reached by walk
+  (91, -4, -30.5) -> (91.5, -3, -30.5)  +1.00; foot reached by walk
+  (91.5, -3, -30.5) -> (91.5, -2, -31)  +1.00; foot reached by hop
+  (92, -4, -30.5) -> (91.5, -3, -30.5)  +1.00; foot reached by hop
+  (91, -4, -28.5) -> (91.5, -3, -28.5)  +1.00; foot reached by walk
+  (92, -4, -28.5) -> (91.5, -3, -28.5)  +1.00; foot reached by hop
+  (91, -4, -28) -> (91.5, -3, -28)  +1.00; foot reached by walk
+  (92, -4, -28) -> (91.5, -3, -28)  +1.00; foot reached by hop
+  (91, -4, -27.5) -> (91.5, -3, -27.5)  +1.00; foot reached by walk
+  (92, -4, -27.5) -> (91.5, -3, -27.5)  +1.00; foot reached by hop
+  (91, -4, -27) -> (91.5, -3, -27)  +1.00; foot reached by walk
+  (92, -4, -27) -> (91.5, -3, -27)  +1.00; foot reached by hop
+  (91, -4, -26.5) -> (91.5, -3, -26.5)  +1.00; foot reached by walk
+  (92, -4, -26.5) -> (91.5, -3, -26.5)  +1.00; foot reached by hop
+  (88.5, -4, -26) -> (88.5, -3, -25.5)  +1.00; foot reached by walk
+  (89, -4, -26) -> (89, -3, -25.5)  +1.00; foot reached by walk
+  (89.5, -4, -26) -> (89.5, -3, -25.5)  +1.00; foot reached by walk
+  (90, -4, -26) -> (90, -3, -25.5)  +1.00; foot reached by walk
+  (90.5, -4, -26) -> (90.5, -3, -25.5)  +1.00; foot reached by walk
+
+every step that takes the middle from x < 92.5 to x >= 92.5, rows z -40 .. -26 (off the platform's east edge), and the gentlest way to its foot:
+  z  -34.5: (92, -4, -34.5) -> (92.5, -6, -34.5)  drop -2.00; foot reached by hop, 11 steps: jump +1.00 (91, -4, -34.5)->(91.5, -3, -34.5); drop -1.00 (91.5, -3, -34.5)->(92, -4, -34.5)
+  z    -34: (92, -2, -34) -> (92.5, -4, -34)  drop -2.00; foot reached by hop, 12 steps: jump +1.00 (91, -4, -34.5)->(91.5, -3, -34.5); jump +1.00 (91.5, -3, -34.5)->(91.5, -2, -34)
+  z  -33.5: (92, -2, -33.5) -> (92.5, -4, -33.5)  drop -2.00; foot reached by hop, 13 steps: jump +1.00 (91, -4, -34.5)->(91.5, -3, -34.5); jump +1.00 (91.5, -3, -34.5)->(91.5, -2, -34)
+  z    -33: (92, -2, -33) -> (92.5, -4, -33)  drop -2.00; foot reached by hop, 14 steps: jump +1.00 (91, -4, -34.5)->(91.5, -3, -34.5); jump +1.00 (91.5, -3, -34.5)->(91.5, -2, -34)
+  z  -32.5: (92, -2, -32.5) -> (92.5, -4, -32.5)  drop -2.00; foot reached by hop, 15 steps: jump +1.00 (91, -4, -30.5)->(91.5, -3, -30.5); jump +1.00 (91.5, -3, -30.5)->(91.5, -2, -31)
+  z    -32: (92, -2, -32) -> (92.5, -4, -32)  drop -2.00; foot reached by hop, 14 steps: jump +1.00 (91, -4, -30.5)->(91.5, -3, -30.5); jump +1.00 (91.5, -3, -30.5)->(91.5, -2, -31)
+  z  -31.5: (92, -2, -31.5) -> (92.5, -4, -31.5)  drop -2.00; foot reached by hop, 13 steps: jump +1.00 (91, -4, -30.5)->(91.5, -3, -30.5); jump +1.00 (91.5, -3, -30.5)->(91.5, -2, -31)
+  z    -31: (92, -2, -31) -> (92.5, -4, -31)  drop -2.00; foot reached by hop, 12 steps: jump +1.00 (91, -4, -30.5)->(91.5, -3, -30.5); jump +1.00 (91.5, -3, -30.5)->(91.5, -2, -31)
+  z  -30.5: (92, -4, -30.5) -> (92.5, -7, -30.5)  drop -3.00; foot reached by hop, 11 steps: jump +1.00 (91, -4, -30.5)->(91.5, -3, -30.5); drop -1.00 (91.5, -3, -30.5)->(92, -4, -30.5)
+  z  -28.5: (92, -4, -28.5) -> (92.5, -7, -28.5)  drop -3.00; foot reached by hop, 15 steps: jump +1.00 (91, -4, -28.5)->(91.5, -3, -28.5); drop -1.00 (91.5, -3, -28.5)->(92, -4, -28.5)
+  z    -28: (92, -4, -28) -> (92.5, -7, -28)  drop -3.00; foot reached by hop, 16 steps: jump +1.00 (91, -4, -28.5)->(91.5, -3, -28.5); drop -1.00 (91.5, -3, -28.5)->(92, -4, -28.5)
+  z  -27.5: (92, -4, -27.5) -> (92.5, -7, -27.5)  drop -3.00; foot reached by hop, 17 steps: jump +1.00 (91, -4, -28.5)->(91.5, -3, -28.5); drop -1.00 (91.5, -3, -28.5)->(92, -4, -28.5)
+  z    -27: (92, -4, -27) -> (92.5, -7, -27)  drop -3.00; foot reached by hop, 18 steps: jump +1.00 (91, -4, -28.5)->(91.5, -3, -28.5); drop -1.00 (91.5, -3, -28.5)->(92, -4, -28.5)
+  z  -26.5: (92, -4, -26.5) -> (92.5, -7, -26.5)  drop -3.00; foot reached by hop, 19 steps: jump +1.00 (91, -4, -28.5)->(91.5, -3, -28.5); drop -1.00 (91.5, -3, -28.5)->(92, -4, -28.5)
+  z    -26: (92, -2.5, -26) -> (92.5, -7, -26)  drop -4.50; foot reached by hop, 20 steps: jump +1.00 (91, -4, -28.5)->(91.5, -3, -28.5)
+
+where the ground east of the platform leads (points with x >= 92.5 reached from the start):
+  195060 points, x up to 248, feet -29 .. -4; fall 282, hop 194769, trap 9; 1276 points have a step off the scene
+    void beside (92.5, -28, -194)
+    void beside (92.5, -27, 202)
+    void beside (93, -28, -195)
+    void beside (93, -28, -194.5)
+    void beside (93, -27, 202)
+    void beside (93.5, -28, -195)
+    void beside (93.5, -27, 202)
+    void beside (94, -28, -196)
+    void beside (94, -28, -195.5)
+    void beside (94, -27, 201.5)
+    void beside (94, -27, 202)
+    void beside (94.5, -28, -196)
+  along the track's rows (z -34.5 .. -31) the furthest point is (246, -28, -33), reached by hop
