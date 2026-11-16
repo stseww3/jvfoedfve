@@ -1,0 +1,15 @@
+check obs_mach_clocks at b857b8c
+[WARN] regen     5764 blocks, 40 entities, 21 models, 741 resource-pack files, 29 data-pack files, look: 1 biomes, 1 timelines (1.0 s)
+                 registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+[PASS] conflicts the scene writes 740 files, no file written twice, the folders and the prefix of machines are kept (13 packages run alone)
+[PASS] strays    150 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      571 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    21 kinds of block placed, all in the occupancy table
+[PASS] flatwall  no wall face runs flat over more than 5x5
+[PASS] entities  40 display entities, 5 drawn out along one axis, 3 models never placed
+[PASS] views     15 shots, most display entities in view: 40 (v1_tower), limit 600; counted without what walls hide; the game draws up to 40 (master_close): a display entity without width and height is drawn outside the view too
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 0.0% hidden (base storey 0.0% by blocks and 0.0% more by models, great windows 0.0%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 0.7 s)
+[PASS] motion    1 parts and 0 points on 1 chains, 14 function files; 4 commands in the busiest tick (limit 40), 0.5 a tick on average (limit 10)
+                 chain of 40 ticks: 8 functions, 18 commands a cycle, starts 1 ticks after start
+result: PASS (0 failed, 1 with warnings)

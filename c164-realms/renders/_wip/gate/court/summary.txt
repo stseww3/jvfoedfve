@@ -1,0 +1,9 @@
+gate site/court b857b8cd: the merged tree b857b8cd, the assembly as it was 17375238
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] scope    29 of 30 files are the card's own
+                    not this card's file: M build/scenes/obs/site/terrain.py
+check.py: 83 scenes in 104 s: 83 pass (83 with warnings)
+pictures: [PASS] selfshots obs_site_court at b857b8cd: 9 of 9 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_site_terrain at b857b8cd: 9 of 9 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_site_terrain_nosnow at b857b8cd: 4 of 4 kept pictures are what the code draws
+result: PASS
