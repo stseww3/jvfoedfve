@@ -194,8 +194,10 @@ BRASS = P.mat("brass")
 BRASS_DARK = P.mat("brass_dark")
 # rims and bosses that look at the viewer: Model.ring and Model.tube paint such a face one step down
 BRASS_LIGHT = P.mat("brass", base=4)
-BRASS_BRIGHT = P.mat("brass", base=5)
 BRASS_LINE = K.flat("brass", 3)              # a line one pixel wide: one tone, or it breaks into dashes
+# the rim of the movement's great wheel, piece by piece: flat tones, the second a step under the first
+WHEEL_TEETH = 12
+BRASS_TOOTH = (K.flat("brass", 5), K.flat("brass", 4))
 IRON_DARK = P.mat("iron_dark")
 STEEL = P.mat("iron", base=5)
 COPPER = P.mat("old_copper")
@@ -403,9 +405,13 @@ def _master():
         tube("y", (x, 4.0), 24, 25, 2.5, IRON_DARK, sides=8)
     box((-6.5, 29, 1.5), (6.5, 30, 5.5), IRON_DARK, grain="x")
     box((-5, 30, 2), (5, 36, 3), BRASS_DARK, skip="n", grain="x")
-    # the great wheel: a light rim round a darker web, the arbor in the middle; the small wheel beside it
+    # the great wheel: a light rim round a darker web, the arbor in the middle; the small wheel beside it.
+    # The rim is its teeth: twelve pieces, light and a step darker by turns. No spokes: the wheel is
+    # six pixels across (cr3, 11-16).
     tube("z", (-1.5, 33.0), 3, 3.5, 2.0, BRASS, sides=12)
-    m.ring("z", (-0.75, 16.5, 1.875), 1.25, 0.5, 0.75, BRASS_BRIGHT, sides=12)
+    for k in range(WHEEL_TEETH):
+        m.ring("z", (-0.75, 16.5, 1.875), 1.25, 0.5, 0.75, BRASS_TOOTH[k % 2], sides=WHEEL_TEETH,
+               arc=(360.0 * k / WHEEL_TEETH, 360.0 * (k + 1) / WHEEL_TEETH))
     tube("z", (2.5, 33.5), 3, 4.5, 1.5, BRASS_LIGHT, sides=8)
     box((-2, 32.5, 3.5), (-1, 33.5, 4.5), IRON_DARK)
     box((2, 33, 4.5), (3, 34, 5), IRON_DARK)
