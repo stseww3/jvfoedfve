@@ -47,6 +47,8 @@ The trip
                              stations are this checkout's either way; the trip says when the test
                              world's board in renders/real/obs/ is of another commit)
     --only <a,b>             only these of as_joined and the twelve views (and the stops of --also)
+    --again <a,b>            these views three times more from where the camera stands, half a second
+                             apart (<name>_2 .. _4): what comes and goes in a view is in one of them
     --also <file>            further stops after the twelve, a list in tools/win/shots/ (may be given
                              more than once). save-asked.json: the views somebody asked for in the save.
                              save-listen.json: beside the master clock, in the power house and at the
@@ -311,6 +313,9 @@ def main():
     ap.add_argument("--board", metavar="COMMIT")
     ap.add_argument("--only")
     ap.add_argument("--also", action="append", default=[], metavar="FILE")
+    ap.add_argument("--again", metavar="NAMES",
+                    help="views taken three times more from where the camera stands, half a second apart "
+                         "(<name>_2 .. _4): what comes and goes in a view, a particle every two seconds, is in one of them")
     ap.add_argument("--view", type=int, default=nodetrip.BOARD_VIEW)
     ap.add_argument("--server-view", type=int, default=nodetrip.REALM_VIEW)
     ap.add_argument("--clouds", type=int, default=128)
@@ -337,6 +342,14 @@ def main():
         if missing:
             sys.exit(f"--only: no view called {', '.join(missing)}")
         shots = [s for s in shots if s["name"] in wanted]
+    if args.again:
+        again = args.again.split(",")
+        missing = [n for n in again if n not in {s["name"] for s in shots}]
+        if missing:
+            sys.exit(f"--again: no view called {', '.join(missing)} among those taken")
+        shots = [more for s in shots for more in
+                 [s] + ([{"name": f"{s['name']}_{k}", "stay": True, "settle": 0.5, "still": 0} for k in (2, 3, 4)]
+                        if s["name"] in again else [])]
 
     commit = clean_commit(args.branch, args.at)
     work = os.path.join(WORK, "save", name)
