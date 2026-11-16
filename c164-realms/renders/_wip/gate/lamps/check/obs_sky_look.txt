@@ -1,0 +1,14 @@
+check obs_sky_look at 3c566bb
+[WARN] regen     8354 blocks, 0 entities, 0 models, 678 resource-pack files, 22 data-pack files, look: 1 biomes, 1 timelines (0.5 s)
+                 registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+[PASS] conflicts the scene writes 677 files, no file written twice, the folders and the prefix of sky are kept (2 packages run alone)
+[PASS] strays    129 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      529 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    16 kinds of block placed, all in the occupancy table
+[SKIP] flatwall  a test scene of sky: its sample walls and backdrops are meant to be flat
+[PASS] entities  0 display entities
+[PASS] views     31 shots, most display entities in view: 0 (blue_wall_near), limit 600; counted without what walls hide
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    nothing moves
+result: PASS (0 failed, 1 with warnings)

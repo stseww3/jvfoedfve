@@ -1,0 +1,16 @@
+gate props/lamps 3c566bbe: the merged tree 3c566bbe, the assembly as it was 9449ecb3
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] scope    53 of 79 files are the card's own
+                    not this card's file: M build/scenes/obs_main_shell/__init__.py
+                    not this card's file: M build/scenes/obs_mat_ashlar/__init__.py
+                    not this card's file: M renders/obs_main_shell/ceiling_hung.png
+                    not this card's file: M renders/obs_main_shell/shots.txt
+                    not this card's file: M renders/obs_main_shell/stair_foot.png
+                    not this card's file: M renders/obs_main_shell/v7.png
+check.py: 89 scenes in 137 s: 89 pass (88 with warnings)
+pictures: [PASS] selfshots obs_main_shell at 3c566bbe: 31 of 31 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_mat_ashlar at 3c566bbe: 19 of 19 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_props_lamps at 3c566bbe: 26 of 26 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_props_lamps_site at 3c566bbe: 16 of 16 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_props_lamps_site_nearpair at 3c566bbe: 6 of 6 kept pictures are what the code draws
+result: PASS

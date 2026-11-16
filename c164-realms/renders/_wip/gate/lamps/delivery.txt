@@ -1,0 +1,27 @@
+delivery props/lamps: 3c566bb against 9449ecb (forked at 9449ecb), 13 commits, 79 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[WARN] scope    53 of 79 files are the card's own
+                not this card's file: M build/scenes/obs_main_shell/__init__.py
+                not this card's file: M build/scenes/obs_mat_ashlar/__init__.py
+                not this card's file: M renders/obs_main_shell/ceiling_hung.png
+                not this card's file: M renders/obs_main_shell/shots.txt
+                not this card's file: M renders/obs_main_shell/stair_foot.png
+                not this card's file: M renders/obs_main_shell/v7.png
+                not this card's file: M renders/obs_mat_ashlar/coursed.png
+                not this card's file: M renders/obs_mat_ashlar/coursed_course.png
+                not this card's file: M renders/obs_mat_ashlar/coursed_lit.png
+                not this card's file: M renders/obs_mat_ashlar/coursed_lit_dusk.png
+                not this card's file: M renders/obs_mat_ashlar/flight_foot.png
+                not this card's file: M renders/obs_mat_ashlar/flight_treads.png
+                not this card's file: M renders/obs_mat_ashlar/lit_front.png
+                not this card's file: M renders/obs_mat_ashlar/lit_lamp.png
+                not this card's file: M renders/obs_mat_ashlar/paved.png
+                not this card's file: M renders/obs_mat_ashlar/paved_above.png
+                ... and 10 more
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[PASS] pictures 5 test scenes, 98 shots with a picture kept; every shot has one, each the file its note describes
+[PASS] merge    merges cleanly; 0 commits behind the base
+result: PASS (0 failed, 1 to look at)
