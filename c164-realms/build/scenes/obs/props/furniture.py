@@ -28,11 +28,15 @@ is looked at and not its frame. Glass is not drawn; its reflection is (_kit.pane
     coat_stand       two blocks tall: a turned post on three claws, a crown of five brass hooks
     trunk            a travelling trunk in brown hide with darker straps and brass corners
     crate            a packing case of raw deal: boards with gaps between them, nailed to a cleat at
-                     every corner, a line of stencilled marks
+                     every corner, bound with two iron hoops
     crate_small      the same, small enough to stand on the trunk's lid
     plate_box        a box glass plates are carried in: planed dark wood, brass corners and catch, a
                      leather strap flat on the lid, so that one stands on another (the dome room)
     display_case     one block square: a glazed brass case on a panelled base
+    display_case_scope   the same with what it shows: the observatory's first telescope, a small
+                     brass refractor on a pillar stand
+
+Whatever is shown in a case has a ticket before it, a small card raised like the plates.
 
 Every piece is one display entity at scale 1 (16 texels to the block), and whatever is square to the
 piece is drawn on that grid. Indoors nothing is placed from here: every room places what it needs
@@ -223,6 +227,11 @@ def _bench():
         m.box((x - 1.0, 10.0, -5.5), (x + 1.0, 11.0, 5.0), IRON, grain="z")          # the arm rest
         _eye(m, x, 5.2, 10.4, 1.0)
         _cast(m, x, [(5.0, 9.8), (4.2, 8.2), (4.8, 6.0)])                             # and what holds it
+        # two bolt heads on the outer face of the casting, which close up was a flat shape and no
+        # more (cr4-#2): where the arm's stay comes down on the rail, and the end of the stretcher
+        out, face = ("x", x + 1.0) if x > 0 else ("-x", x - 1.0)
+        K.rivet(m, (face, 5.5, 4.5), out=out, proud=0.25)
+        K.rivet(m, (face, y, z), out=out, proud=0.25)
     m.tube("x", (y, z), -13.0, 13.0, 0.5, IRON_D, sides=4)                           # the stretcher
     return m
 
@@ -289,8 +298,9 @@ SPECTRUM = Sprite("furn_plate_spectrum", [
     ".WW.Wf.",
     ".......",
 ], _STARS, back=PLATE)
-RULE = Sprite("furn_reading_rule", ["tbtbtbt", "bbbbbbb"],
+RULE = Sprite("furn_reading_rule", ["tbtbt", "bbbbb"],
               {"b": P.RAMPS["brass"][3], "t": P.RAMPS["brass"][0]})
+TICKET = K.flat("cream", 0)                     # the card before an exhibit: the darkest paper
 
 
 def _plate(m, x0, z0, picture, tilt=PLATE_TILT):
@@ -329,25 +339,40 @@ def _eyepiece(m, x, z):
     return m
 
 
+def _ticket(m, x, z=5.75, bed=BED):
+    """The ticket before an exhibit: a card two texels wide, its near edge on the bed at z and its
+    far edge raised like a plate's, so that it is lit as what looks up whichever way the case is
+    turned. One before every pane, in one row: the card cabinet reads from across a room by its
+    row of labels, and a case does by this one (cr4-#2). Not white: in the star hall nothing but
+    the lamps is to be lighter than the face of the mother clock (c348 #71318)."""
+    with m.turned(("x", PLATE_TILT), about=(0.0, bed, z)):
+        m.box((x - 1.0, bed, z - 1.5), (x + 1.0, bed + 0.25, z), TICKET, skip="d")
+    return m
+
+
 def _show_plates(m):
     _plate(m, -13.0, -5.0, STAR_FIELD)
-    m.box((-11.5, BED, 4.5), (-7.5, BED + 0.25, 5.5), MOUNT, skip="d")          # its label
     _plate(m, -3.0, -5.0, COMET)
-    m.box((-3.5, BED, 3.75), (3.5, BED + 0.5, 5.75), BRASS, faces={"u": RULE}, skip="d")   # the reading rule
+    # the reading rule, beside the comet's ticket: five divisions of it
+    m.box((-1.25, BED, 3.75), (3.75, BED + 0.5, 5.75), BRASS, faces={"u": RULE}, skip="d")
     _plate(m, 6.0, -5.0, SPECTRUM)
-    m.tube("y", (8.5, 2.5), BED, BED + 0.75, 2.0, BRASS)                         # the magnifier: its rim,
-    K.glass_prism(m, "y", (8.5, 2.5), BED + 0.75, BED + 1.0, 1.25, LENS, emit=0)   # its glass
-    m.box((10.25, BED, 2.0), (13.25, BED + 0.75, 3.0), WOOD_L, grain="x", skip="d")   # and its handle
+    m.tube("y", (8.5, 2.0), BED, BED + 0.75, 2.0, BRASS)                         # the magnifier: its rim,
+    K.glass_prism(m, "y", (8.5, 2.0), BED + 0.75, BED + 1.0, 1.25, LENS, emit=0)   # its glass
+    m.box((10.25, BED, 1.5), (13.25, BED + 0.75, 2.5), WOOD_L, grain="x", skip="d")   # and its handle
+    for x in (-9.5, -2.75, 9.5):
+        _ticket(m, x)
     return m
 
 
 def _show_lenses(m):
     _lens(m, -9.5, 0.0, 3.5)                    # the object glass, alone in its pane
-    _lens(m, 0.0, -2.75, 2.5)                   # then by size, towards whoever stands before the case
-    _lens(m, 0.0, 2.75, 2.0)
-    _lens(m, 9.5, -3.5, 1.5)
-    _eyepiece(m, 9.5, 0.0)
-    _eyepiece(m, 9.5, 3.5)
+    _lens(m, 0.0, -3.4, 2.5)                    # then by size, towards whoever stands before the case
+    _lens(m, 0.0, 1.9, 2.0)
+    _lens(m, 9.5, -4.25, 1.5)
+    _eyepiece(m, 9.5, -0.75)
+    _eyepiece(m, 9.5, 2.5)
+    for x in (-9.5, 0.0, 9.5):
+        _ticket(m, x)
     return m
 
 
@@ -483,8 +508,10 @@ def _instrument_cabinet():
     m.box((-1.0, 13.0, 5.0), (1.0, 27.0, 6.0), WOOD_D, grain="y")    # where the two glazed doors meet
     m.box((-6.0, 27.0, 5.0), (6.0, 28.0, 6.0), WOOD_D, grain="x")
     _pull(m, 0.0, 20.5, 6.0)
-    for x0, sheen in ((-6.0, 3), (1.0, True)):                       # the two doors' glass: not one stamp twice
-        K.pane(m, (x0, 13.0, 5.5), (x0 + 5.0, 27.0, 5.75), "s", sheen=sheen)
+    # the doors' glass: a short stroke in the left one, a step dimmer than on a case, and none in
+    # the right. The doors are five texels wide with dark wood close behind them: a full stroke in
+    # each was the one cold thing on the cabinet and read as two blue ribbons (cr4-#2).
+    K.pane(m, (-6.0, 13.0, 5.5), (-1.0, 27.0, 5.75), "s", sheen=2, dim=True)
     _boarded(m, (-7.5, 28.0, -6.5), (7.5, 30.0, 6.5), WOOD_D)
     # on the shelves: eyepieces in brass, a cased lens, a porcelain jar
     for x, top in ((-4.5, 16.0), (-2.5, 15.0)):
@@ -565,8 +592,15 @@ CASE_DARK = K.flat("dark_wood", 0)              # what shows between two boards 
 # a nail head in raw wood: iron came out a blue stud, and the darkest wood as dark as the gaps, so
 # that two nails over a gap were two eyes over a mouth
 NAIL = P.RAMPS["dark_wood"][1]
-STENCIL = P.RAMPS["dark_wood"][2]               # marks stencilled on a board: faded paint, not slots
 BOARD = 3.0                                     # texels a board of a packing case is high; one texel between two
+# The hoop iron a packing case is bound with: two cool lines round the brown, which take it out of
+# the floor and the cabinets it stands among (a case was the one piece of the family that was wood
+# and nothing else: cr4-#2). A darker nail where it crosses a board. The step of the ramp is the
+# lightest that still reads as iron: one lighter, and under the lamps the hoops were two blue ribbons.
+HOOP_STEP = 4
+HOOP = P.RAMPS["iron"][HOOP_STEP]
+HOOP_NAIL = P.RAMPS["iron"][HOOP_STEP - 2]
+HOOP_OUT = 0.25                                 # texels the hoop stands proud of what it lies on
 
 
 def _cleat(boards, right):
@@ -578,25 +612,41 @@ def _cleat(boards, right):
     return Sprite(f"furn_cleat_{boards}{'r' if right else 'l'}", rows[:-1], {"n": NAIL}, back=WOOD_L)
 
 
-def _packing_case(name, w, d, boards, marks):
+def _hoop(m, x0, hz, boards, top):
+    """One hoop of a packing case, a texel wide from x0: down the boards of the front, over the
+    lid and down the back. The lid stands a texel over the boards, so the hoop steps out round
+    its edge."""
+    rows = []
+    for _ in range(boards):
+        rows += ["h", "n", "h", "h"]                                 # a board and the gap under it
+    run = Sprite(f"furn_hoop_{boards}", rows[:-1], {"h": HOOP, "n": HOOP_NAIL})
+    flat, x1 = K.flat("iron", HOOP_STEP), x0 + 1.0
+    for s, face, other in ((1.0, "s", "n"), (-1.0, "n", "s")):
+        za, zb = sorted((s * (hz - 1.0), s * (hz - 1.0 + HOOP_OUT)))
+        m.box((x0, 0.0, za), (x1, top, zb), flat, faces={face: run}, skip="d" + other)
+        za, zb = sorted((s * hz, s * (hz + HOOP_OUT)))
+        m.box((x0, top, za), (x1, top + 1.0 + HOOP_OUT, zb), flat, skip=other)
+    m.box((x0, top + 1.0, -hz), (x1, top + 1.0 + HOOP_OUT, hz), flat, skip="d")
+    return m
+
+
+def _packing_case(name, w, d, boards):
     """A packing case w by d texels: `boards` rings of raw boards with a dark gap between them, an
     upright cleat at every corner that the boards are nailed to and that stands a texel proud of
-    them, a boarded lid. A frame round a panel on every side read as a chest of dark wood; boards,
-    gaps and cleats are what a crate is. marks = (board, row): what is stencilled on the front, as
-    one row of texels in the middle of that board (counted from the floor): a line of lettering too
-    small to read, dots more than dashes (a row of dashes is a row of slits). No pasted label (a pale ticket with writing on it read as a socket, and three
-    cases side by side showed it three times) and no arrow (three by five texels of arrow is a
-    cross)."""
+    them, a boarded lid, and two iron hoops round it, a texel of board between each and the cleat
+    beside it. A frame round a panel on every side read as a chest of dark wood; boards, gaps,
+    cleats and hoops are what a crate is. Nothing is written on it: stencilled marks were as dark
+    as the gaps and read as slots, a pasted label as a socket (and three cases side by side
+    showed it three times), an arrow of three by five texels as a cross."""
     m = M.Model(PREFIX + name)
     hx, hz = w / 2.0, d / 2.0
     top = (BOARD + 1.0) * boards - 1.0
     m.box((-hx + 1.25, 0.0, -hz + 1.25), (hx - 1.25, top, hz - 1.25), CASE_DARK, skip="u")
     for i in range(boards):
         y0 = (BOARD + 1.0) * i
-        faces = {}
-        if i == marks[0]:
-            faces["s"] = Sprite(f"furn_stencil_{name}", ["", marks[1], ""], {"i": STENCIL}, back=DEAL)
-        _boarded(m, (-hx + 1.0, y0, -hz + 1.0), (hx - 1.0, y0 + BOARD, hz - 1.0), DEAL, skip="ud", faces=faces)
+        _boarded(m, (-hx + 1.0, y0, -hz + 1.0), (hx - 1.0, y0 + BOARD, hz - 1.0), DEAL, skip="ud")
+    for x0 in (-hx + 3.0, hx - 4.0):
+        _hoop(m, x0, hz, boards, top)
     for sx in (-1.0, 1.0):
         for sz in (-1.0, 1.0):
             (xa, xb), (za, zb) = sorted((sx * hx, sx * (hx - 2.0))), sorted((sz * hz, sz * (hz - 2.0)))
@@ -610,12 +660,12 @@ def _packing_case(name, w, d, boards, marks):
 
 
 def _crate():
-    return _packing_case("crate", 12.0, 12.0, 3, (1, ".i.ii.i."))
+    return _packing_case("crate", 12.0, 12.0, 3)
 
 
 def _crate_small():
     """Small enough for the lid of the trunk, which is ten texels deep."""
-    return _packing_case("crate_small", 10.0, 8.0, 2, (0, ".ii.i."))
+    return _packing_case("crate_small", 10.0, 8.0, 2)
 
 
 def _plate_box():
@@ -638,8 +688,39 @@ def _plate_box():
     return m
 
 
-def _display_case():
-    m = M.Model(PREFIX + "display_case")
+CASE_BED = 11.25                # texels: the top of the standing case's lining (TOP["display_case"])
+SCOPE_RISE = 32.0               # degrees the old telescope in the standing case points up
+SCOPE_TURN = 20.0               # and how far it is turned out of the plane of the case's front
+
+
+def _show_scope(m):
+    """What the standing case shows: the observatory's first telescope, a brass refractor of a
+    hand's length on a pillar stand, pointed up and to the right of whoever stands before the case
+    and turned a little towards him, so that the sides of the case see more than its end. A round
+    foot, a pillar, the tube across the top of it with nothing above: from no side a cross. The
+    object end is the wide one; a draw tube and the eyepiece at the low end."""
+    b = CASE_BED
+    m.tube("y", (0.0, 0.0), b, b + 0.5, 2.5, BRASS_D)               # the foot
+    m.tube("y", (0.0, 0.0), b + 0.5, b + 3.5, 0.6, BRASS)           # the pillar
+    m.tube("y", (0.0, 0.0), b + 3.5, b + 4.25, 1.0, BRASS_D)        # and the joint the tube tips on
+    with m.turned(("y", SCOPE_TURN)), m.turned(("z", SCOPE_RISE), about=(0.0, b + 4.75, 0.0)):
+        y = b + 4.75
+        m.tube("x", (y, 0.0), -3.0, 3.5, 1.0, BRASS)                # the tube
+        m.tube("x", (y, 0.0), 3.5, 4.5, 1.4, BRASS_D, cap=LENS)     # the cell of the object glass
+        m.tube("x", (y, 0.0), -4.5, -3.0, 0.6, BRASS_D)             # the draw tube
+        m.tube("x", (y, 0.0), -5.25, -4.5, 0.9, BRASS, cap=IRON_D)  # the eyepiece
+    _ticket(m, 0.0, z=5.5, bed=b)
+    return m
+
+
+CASE_SHOWS = {"scope": _show_scope}
+
+
+def _display_case(show=None):
+    """One block square: a glazed brass case on a panelled base. What stands in it stands on the
+    lining, TOP["display_case"] up, and is no higher than eight texels. show: a key of CASE_SHOWS,
+    for a case that comes with its exhibit."""
+    m = M.Model(PREFIX + "display_case" + (f"_{show}" if show else ""))
     _feet(m, 6.0, 6.0)
     _boarded(m, (-7.5, 2.0, -7.5), (7.5, 4.0, 7.5), WOOD_D)
     m.box((-5.0, 4.0, -6.5), (5.0, 10.0, 6.5), WOOD_L, grain="x", skip="ewud")       # the base: sunk panels
@@ -648,17 +729,27 @@ def _display_case():
         for z0 in (-7.0, 5.0):
             m.box((x0, 4.0, z0), (x0 + 2.0, 10.0, z0 + 2.0), WOOD_D, grain="y", skip="ud")
     _boarded(m, (-7.5, 10.0, -7.5), (7.5, 11.0, 7.5), WOOD_D)
-    m.box((-6.0, 11.0, -6.0), (6.0, 11.25, 6.0), LINING)             # the lining the exhibit lies on
+    m.box((-6.0, 11.0, -6.0), (6.0, CASE_BED, 6.0), LINING)          # the lining the exhibit lies on
+    if show:
+        CASE_SHOWS[show](m)
     for x0 in (-7.0, 6.0):                                           # the glass case: its edges of dull brass
         for z0 in (-7.0, 6.0):
             m.box((x0, 11.0, z0), (x0 + 1.0, 21.0, z0 + 1.0), BRASS_D, grain="y")
         m.box((x0, 20.0, -6.0), (x0 + 1.0, 21.0, 6.0), BRASS_D, grain="z")
     for z0 in (-7.0, 6.0):
         m.box((-6.0, 20.0, z0), (6.0, 21.0, z0 + 1.0), BRASS_D, grain="x")
-    K.pane(m, (-6.0, 11.0, 6.5), (6.0, 20.0, 6.75), "s")
-    K.pane(m, (-6.0, 11.0, -6.75), (6.0, 20.0, -6.5), "n")
-    K.pane(m, (6.5, 11.0, -6.0), (6.75, 20.0, 6.0), "e")
-    K.pane(m, (-6.75, 11.0, -6.0), (-6.5, 20.0, 6.0), "w")
+    if show:
+        # Before an exhibit the reflection is one short stroke, high in the corner of the front
+        # pane and of the one to its right, where the telescope is not: a stroke across the brass
+        # was read as a part of it. (Only the upper band of the pane is handed over, so that the
+        # second, lower stroke falls away.)
+        K.pane(m, (-6.0, 16.0, 6.5), (6.0, 20.0, 6.75), "s", sheen=2)
+        K.pane(m, (6.5, 16.0, -6.0), (6.75, 20.0, 6.0), "e", sheen=2)
+    else:
+        K.pane(m, (-6.0, 11.0, 6.5), (6.0, 20.0, 6.75), "s")
+        K.pane(m, (-6.0, 11.0, -6.75), (6.0, 20.0, -6.5), "n")
+        K.pane(m, (6.5, 11.0, -6.0), (6.75, 20.0, 6.0), "e")
+        K.pane(m, (-6.75, 11.0, -6.0), (-6.5, 20.0, 6.0), "w")
     # the top is glass as well, and bare: what lies in the case is looked at through it
     K.pane(m, (-6.0, 20.5, -6.0), (6.0, 20.75, 6.0), "u", sheen=False)
     return m
@@ -683,21 +774,24 @@ SPEC = {
     "crate_small": dict(build=_crate_small, mount="floor"),
     "plate_box": dict(build=_plate_box, mount="floor"),
     "display_case": dict(build=_display_case, mount="floor"),
+    "display_case_scope": dict(build=functools.partial(_display_case, "scope"), mount="floor"),
 }
 SCALE = {PREFIX + name: 1.0 for name in SPEC}
 # how high above its foot a piece carries what is put on it (blocks); the trunk's and the plate
-# box's is the lid, of which the straps are STRAP proud. A display table that comes with what it
+# box's is the lid, of which the straps are STRAP proud; a packing case's is the top of its hoops,
+# so that what lies across them lies on them. A display table or case that comes with what it
 # shows carries nothing more.
-TOP = {"writing_desk": 12.0 / 16.0, "display_table": BED / 16.0, "display_case": 11.25 / 16.0,
+TOP = {"writing_desk": 12.0 / 16.0, "display_table": BED / 16.0, "display_case": CASE_BED / 16.0,
        "card_cabinet": 30.0 / 16.0, "instrument_cabinet": 30.0 / 16.0, "trunk": 11.0 / 16.0,
-       "crate": 12.0 / 16.0, "crate_small": 8.0 / 16.0, "plate_box": 9.0 / 16.0, "bench": 7.0 / 16.0,
-       "swivel_chair": 7.0 / 16.0, "stool": 12.0 / 16.0}
+       "crate": (12.0 + HOOP_OUT) / 16.0, "crate_small": (8.0 + HOOP_OUT) / 16.0,
+       "plate_box": 9.0 / 16.0, "bench": 7.0 / 16.0, "swivel_chair": 7.0 / 16.0, "stool": 12.0 / 16.0}
 STRAP = 0.5 / 16.0
 
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    return {PREFIX + name: spec["build"]() for name, spec in SPEC.items()}
+    # settled: the slanting flats of the round pieces are lit the same in every copy (_kit.settle)
+    return {PREFIX + name: K.settle(spec["build"]()) for name, spec in SPEC.items()}
 
 
 def models():
