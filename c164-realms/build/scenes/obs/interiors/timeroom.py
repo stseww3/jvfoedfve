@@ -420,14 +420,19 @@ PIECES = (
 )
 
 # ---- the parts of the room others write, each a module beside this one (interiors/_timeroom_<part>.py),
-# there or not: the room's visible wiring (the line of the slave clocks, the bell over the door)
-PARTS = ("wiring",)
+# there or not: the room's visible wiring (the line of the slave clocks, the bell over the door), and
+# the door case with its two leaves standing open
+PARTS = ("wiring", "door")
 
 # ---- where the machines of machines/recorders go (scene coordinates; facing is the way the thing looks).
 # The console's top is y 8.0, x 6.0..10.0, z -24.0..-23.0, the face of the rack behind it; a drop
-# light hangs over each end of it, at the lip, its shade down to y 9.56
+# light hangs over each end of it, at the lip, its shade down to y 9.56. The room places them itself
+# (PLACES_RECORDERS: the package's own build() then leaves them alone), so that its box scene, which
+# does not run the machines line, has them too
+PLACES_RECORDERS = True
+DRUM_AT = DRUM_X + 0.25                             # 9.25: the drum's base is 22 px wide (c356), 8.56..9.94: clear of the mug
 SLOTS = {
-    "drum": dict(pos=(S.mid(DRUM_X), float(SILL), S.mid(CONSOLE_Z)), facing="south",
+    "drum": dict(pos=(DRUM_AT, float(SILL), S.mid(CONSOLE_Z)), facing="south",
                  note="the drum recorder, on the console's east end; its drum turns"),
     "telegraph": dict(pos=(S.mid(CONSOLE_X[0]), float(SILL), S.mid(CONSOLE_Z)), facing="south",
                       note="sounder and tape reel, on the console west of the key; the tape runs east, to the drum"),
