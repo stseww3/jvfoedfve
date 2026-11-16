@@ -52,6 +52,7 @@ def shots():
     nx, _ny, nz = big[False]["at"]
     sx, _sy, sz = big[True]["at"]
     head = big[False]["top"] - 0.5
+    foot = big[False]["at"][1]
     ridge = roof.RIDGE[1] + 0.5
     eye = roof.RIDGE_TOP + 1.62
     return [
@@ -72,4 +73,11 @@ def shots():
         shot("made", (nx + 3.2, head + 0.4, nz + 2.6), (nx, head - 1.2, nz), NOON),
         shot("made_small", (nx + 3.0, head, small[False]["at"][2] + 2.4), (nx, head - 1.2, small[False]["at"][2]), NOON),
         shot("air_north", (nx + 12.0, head + 7.0, nz + 9.0), (nx - 2.0, head - 2.0, nz - 2.0), NOON),
+        # the near layer (plan/fine.md): from the walk's edge, the nearest a visitor comes (three blocks from
+        # the shaft's west flat with the damper), as the map shows it and by day; and the east flat with the
+        # seam and the rust's run, from over the parapet, two blocks off
+        shot("near_walk", (ridge + 0.45, eye, nz + 0.9), (nx, foot + 1.2, nz)),
+        shot("near_walk_day", (ridge + 0.45, eye, nz + 0.9), (nx, foot + 1.2, nz), NOON),
+        shot("near_east_day", (nx + 2.1, foot + 1.3, nz + 1.1), (nx, foot + 0.7, nz), NOON),
+        shot("near_head_day", (nx - 1.6, head + 1.0, nz + 1.5), (nx, head, nz), NOON),
     ]
