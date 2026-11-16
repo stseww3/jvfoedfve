@@ -73,6 +73,8 @@ VERSION = "a"               # the version build() dresses; the review picks one 
 VERSIONS = ("a", "b")
 PREFIX = "int_starhall_"
 WHY = "interiors/starhall"
+VIEW = M.NEAR               # every piece of the hall, its parts with it, is drawn within 32 blocks (the view
+#                             bands, A0 11-16 12:25; artkit.models): the game draws a display entity through walls
 # Pieces of the hall that stand in files of their own beside this one, each as soon as it is in the
 # tree: dress(canvas, origin, version) -> display entities placed, models() -> {name: model}.
 PARTS = ("_starhall_meridian", "_starhall_wiring", "_starhall_gallery", "_starhall_ways", "_starhall_life")
