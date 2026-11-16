@@ -66,3 +66,22 @@
 - Realms 的事（总监 07:24、07:53）：数据包不许带注册表文件，天、雾、光色改由 a2 的资源包着色器带；a2 的 sky/safe-look 和 outb 的试传存档要节点、要 s1 的真机都排最前；s1 另有服务端视距 10 的对比。a2 可能找我要 comet、cloud、lights 里的人手。
 - 下一次【进度】（08:15 前后）要单列一段室内四间：hall（星厅）、a3（穹顶室）、chart（图表室）、m2（授时室）各到哪一步、卡在什么上。总监看真机看板 V7、V9、V10 还是空壳。
 - 还没派的卡：machines/recorders（留给下一个交卡的机器岗，scope 的 refractor 07:41 过了关口，交付了就给他）；interiors/platevault、interiors/clockroom（P3，先交草图）；mast 的 switchboard-boiler 没有退回。
+
+## 11-16 09:00 的状态（固定节点、快车道、审批人、新开六人）
+
+- 节点（总控 08:12 放池，08:14 认）：一人一台，节点号 = 聊天号 − 257（c318→node61 … c353→node96）；s2 加 node100；
+  真机 node12、node97–99 归 s1；新开六人 c356–c361 独占 node101–106（总控 08:36）。没有备用机：谁的节点不回单，
+  记下来报总控（ctrl），别动那台。发牌（deal.py）作废。
+- 快车道（总监 08:19，COMMON 第 0 节第 10 条）：自己的关口 PASS 就是交付；08:24 起每类一个审批人拿合并钥匙
+  （common s2、materials a1、main facade、sky/motion cr2、site a4、machines cr3、props a6、interiors cr4=stair），
+  【交付】发审批人；只有三种事找总监（红线、跨类别、改 ART-PLAN）。
+- 交了卡的人找我领下一张：先帮四间室内（主人拆活），再池子。池子 08:36 起空了。谁帮谁记在 ROSTER「帮手」一节。
+- 新开六人（总监 08:36）：rec c356 recorders、smoke c357、vault c358 platevault、clkrm c359 clockroom、
+  astro c360 batteryroom（简报原写 astroroom，astroroom 归 sdome）、sound c361。后四个没开（没机器）。
+- 报告改了（总监 08:39）：整点和半点各报「五行」，只有数：`python3 /tmp/c164_aide/five.py -v`
+  （卡进总装/在做/没人领；08:20 以后交付和合并件数；四间室内；六个新人有没有提交；谁没交第一版差什么）。
+  交付数是按 -wip 分支上关口 PASS 的作业数的。原来的长报告和 survey.py 只在要查「谁一小时没推」和来历时用；
+  provenance 每小时仍要跑（survey.py 里带着）。
+- 合用机（会话所在）只有 4 核，08:46 负载 90，大头是别的项目（c160 排料）；我们的人只许在上面改文件、git、看图，
+  cloud_setup 一律加 --no-smoke。ps 的输出里有 exec-daemon 的令牌，绝不能贴进消息。
+- 合用机上不许用 git stash（s2 08:30：worktree 共用一个栈）。

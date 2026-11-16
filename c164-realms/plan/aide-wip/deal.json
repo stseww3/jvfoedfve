@@ -1,39 +1,18 @@
 {
- "seq": 84,
+ "seq": 89,
  "queue": [],
  "holders": {
-  "node12": {
-   "id": 78,
-   "code": "s1",
-   "chat": "c319",
-   "cls": 3,
-   "min": 13,
-   "what": "真机四单连投（独占）：⑨a 新总装看板 12 张服务端视距 10（4.5 分）→ ⑨b 服务端 12 补 V1、V11、V12（2 分）→ ⑪⑫ comet 的 obs_sky_ridges 服务端 10、12 各一单（各 3 分）；a2 的头号单到了插最前",
-   "added": 1794785141.6262293,
-   "lane": "node12",
-   "since": 1794786386.5699022,
-   "asked": null
-  },
-  "node4": {
-   "id": 84,
-   "code": "tower",
-   "chat": "c327",
-   "cls": 0,
-   "min": 2,
-   "what": "main/tower 整套重画加 check（70 秒上下，--limit 700；V5 机位改过）",
-   "added": 1794787067.333705,
-   "since": 1794787067.3337064,
-   "asked": null
-  },
+  "node12": null,
+  "node4": null,
   "node5": {
-   "id": 72,
-   "code": "sdome",
-   "chat": "c328",
-   "cls": 4,
-   "min": 5,
-   "what": "machines/meridian-astrograph 看图草稿 3 单连投，每单 4 张、一两分钟",
-   "added": 1794784335.1068175,
-   "since": 1794786386.8006525,
+   "id": 89,
+   "code": "scope",
+   "chat": "c344",
+   "cls": 0,
+   "min": 8,
+   "what": "refractor 重交付三单连投：存图 4 分、关口 --no-verify 1 分、--only-verify 3 分（红灯罩漏光补了，07:41 的关口作废）",
+   "added": 1794788057.520846,
+   "since": 1794788057.5208461,
    "asked": null
   },
   "node6": null
@@ -528,6 +507,76 @@
    "to": 1794787067.0663464,
    "how": "done",
    "note": "m2: 71 s"
+  },
+  {
+   "lane": "node5",
+   "code": "sdome",
+   "id": 72,
+   "what": "machines/meridian-astrograph 看图草稿 3 单连投，每单 4 张、一两分钟",
+   "from": 1794786386.8006525,
+   "to": 1794787298.696917,
+   "how": "done",
+   "note": "sdome: three drafts, 34-72 s each"
+  },
+  {
+   "lane": "node4",
+   "code": "tower",
+   "id": 84,
+   "what": "main/tower 整套重画加 check（70 秒上下，--limit 700；V5 机位改过）",
+   "from": 1794787067.3337064,
+   "to": 1794787508.4652503,
+   "how": "done",
+   "note": "tower: repaint 53 s; card ~15 min, then asks for the gate"
+  },
+  {
+   "lane": "node12",
+   "code": "s1",
+   "id": 78,
+   "what": "真机四单连投（独占）：⑨a 新总装看板 12 张服务端视距 10（4.5 分）→ ⑨b 服务端 12 补 V1、V11、V12（2 分）→ ⑪⑫ comet 的 obs_sky_ridges 服务端 10、12 各一单（各 3 分）；a2 的头号单到了插最前",
+   "from": 1794786386.5699022,
+   "to": 1794787929.9227548,
+   "how": "done",
+   "note": "s1: ⑨a 246 s, ⑨b 121 s, ⑪ 234 s, ⑫ 231 s; a2's top job not in yet"
+  },
+  {
+   "lane": "node5",
+   "code": "a3",
+   "id": 85,
+   "what": "domeroom：板条草图一单（总监机上排着的那单草图也可以挪过来），各 1~3 分",
+   "from": 1794787508.6787696,
+   "to": 1794788057.2892005,
+   "how": "done",
+   "note": "a3: draft 76 s; slats to be written, will ask again"
+  },
+  {
+   "lane": "node12",
+   "code": "ashlar",
+   "id": 88,
+   "what": "machines/armillary ① 留底图 11 张加 check（4 分）；② 关口补完卡片再要牌",
+   "from": 1794787930.1208487,
+   "to": 1794788129.9327426,
+   "how": "done",
+   "note": "ashlar: ① 11 pictures, check PASS; gate later"
+  },
+  {
+   "lane": "node4",
+   "code": "chart",
+   "id": 87,
+   "what": "chartroom 第二稿头一轮看图一单；之后 windows 补充的重出图和关口两单，连投",
+   "from": 1794787509.053979,
+   "to": 1794788294.16182,
+   "how": "done",
+   "note": "chart: chartroom looks 67 s; windows jobs go to node93"
+  },
+  {
+   "lane": "node6",
+   "code": "hall",
+   "id": 86,
+   "what": "starhall：两版各一单四张看图（各 1~3 分），连投；整套和关口等总监挑版后再要",
+   "from": 1794787508.8213391,
+   "to": 1794788294.281952,
+   "how": "done",
+   "note": "hall: two look jobs back; the rest on node91"
   }
  ],
  "lent": [
