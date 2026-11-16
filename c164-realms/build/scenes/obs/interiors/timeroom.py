@@ -107,7 +107,9 @@ The room dresses the shell main/shell.py (c231) leaves: it lays no wall and no c
 floor only the boards anew, in the shell's own row. What other packages make is placed through
 them when they are in the tree (PIECES: the furniture, the regulators and the barometer, the key
 and the telephone, the books and the drawing) and is left out, or stood in for by a block, until
-then. SLOTS says where the machines of machines/recorders go.
+then. SLOTS says where the machines of machines/recorders go, and the room places them there when
+that package is in the tree. PARTS names the parts of the room written beside it by others
+(interiors/_timeroom_<part>.py), which the room calls last.
 
 build() is what the master scene calls. The room has moved in (MOVED_IN): the shell is in the
 master scene, the room reads its box and its door from it, and dressed in the real building it
@@ -417,14 +419,21 @@ PIECES = (
     piece("paper", "blueprint", (X0 + 3.0, FEET + 2.625, PANEL_S), facing="north"),               # pinned over the card cabinets
 )
 
-# ---- where the machines of machines/recorders go (scene coordinates; facing is the way the thing looks)
+# ---- the parts of the room others write, each a module beside this one (interiors/_timeroom_<part>.py),
+# there or not: the room's visible wiring (the line of the slave clocks, the bell over the door)
+PARTS = ("wiring",)
+
+# ---- where the machines of machines/recorders go (scene coordinates; facing is the way the thing looks).
+# The console's top is y 8.0, x 6.0..10.0, z -24.0..-23.0, the face of the rack behind it; a drop
+# light hangs over each end of it, at the lip, its shade down to y 9.56
 SLOTS = {
     "drum": dict(pos=(S.mid(DRUM_X), float(SILL), S.mid(CONSOLE_Z)), facing="south",
                  note="the drum recorder, on the console's east end; its drum turns"),
     "telegraph": dict(pos=(S.mid(CONSOLE_X[0]), float(SILL), S.mid(CONSOLE_Z)), facing="south",
                       note="sounder and tape reel, on the console west of the key; the tape runs east, to the drum"),
     "tube": dict(pos=(PANEL_E, float(SILL), pier(DESK_BAY, 1)), facing="west",
-                 note="the pneumatic tube: down the pier south of the message desk, from the ceiling to a terminal"),
+                 note="the pneumatic tube, on the pier south of the message desk: a terminal at the height of the hand, "
+                      "its pipe up from the floor or down from the ceiling past the beam's shoe at the head of the pier"),
 }
 
 
@@ -597,22 +606,46 @@ def _models():
 def models():
     """The room's own models: the five world clocks, the patch cords of the two jack fields, the
     boards at the backs of the two recesses, the chronometer of the rating bench, the mug on the
-    console and the paper of the message desk. Its lamps are props/lamps', its machines
-    machines/recorders', the rest the packages' named in PIECES."""
-    return dict(_models())
+    console and the paper of the message desk, and what the parts written beside the room (PARTS)
+    bring. Its lamps are props/lamps', its machines machines/recorders', the rest the packages'
+    named in PIECES."""
+    out = dict(_models())
+    for name in PARTS:
+        module = part(name)
+        if module is not None and hasattr(module, "models"):
+            out.update(module.models())
+    return out
 
 
 # ---- the other lines' pieces --------------------------------------------------------------------------
 @functools.lru_cache(maxsize=None)
-def theirs(package):
-    """The package scenes.obs.props.<package> of another line, or None while it is not in the tree."""
-    full = f"{__package__.rsplit('.', 1)[0]}.props.{package}"
+def _module(full):
+    """A module by its full name, or None while it is not in the tree."""
     try:
         return importlib.import_module(full)
     except ModuleNotFoundError as missing:
         if missing.name != full:
             raise
         return None
+
+
+def theirs(package):
+    """The package scenes.obs.props.<package> of another line, or None while it is not in the tree."""
+    return _module(f"{__package__.rsplit('.', 1)[0]}.props.{package}")
+
+
+def recorders():
+    """machines/recorders (scenes.obs.machines.rec), or None while it is not in the tree. The room
+    asks it for the machines of SLOTS: rec.place(canvas, name, pos, facing=, origin=) returns the
+    display entities placed, rec.models() their models; its own build() leaves SLOTS alone."""
+    return _module(f"{__package__.rsplit('.', 1)[0]}.machines.rec")
+
+
+def part(name):
+    """A part of the room written beside it, scenes.obs.interiors._timeroom_<name>, or None while
+    it is not in the tree: dress(canvas, origin) returns the display entities it placed; models(),
+    when it has any of its own, the models it brings (named PREFIX + ...)."""
+    return _module(f"{__package__}._timeroom_{name}")
 
 
 def their_models():
@@ -623,6 +656,8 @@ def their_models():
         module = theirs(package)
         if module is not None:
             out.update(module.models())
+    if recorders() is not None:
+        out.update(recorders().models())
     return out
 
 
@@ -711,7 +746,11 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
     # things; its two drop lights hang from the lip of the hood
     for x in range(CONSOLE_X[0], CONSOLE_X[1] + 1):
         put(x, FEET, CONSOLE_Z, st(roles.DARK_WOOD.slab, type="top"))
-    put(DRUM_X, SILL, CONSOLE_Z, st(roles.BRASS_PLATE.slab, type="bottom"))                 # the drum
+    if recorders() is None:
+        put(DRUM_X, SILL, CONSOLE_Z, st(roles.BRASS_PLATE.slab, type="bottom"))             # the drum
+    else:
+        for name, slot in SLOTS.items():
+            n += recorders().place(c, name, slot["pos"], facing=slot["facing"], origin=origin)
     if theirs("electrics") is None:
         put(KEY_X, SILL, CONSOLE_Z, st(roles.BRASS_BUTTON, face="floor", facing="north"))   # the key
     for x, side, at in zip(DUCT_X, ("west", "east"), CONSOLE_LIGHT):
@@ -804,6 +843,12 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
                 continue
             y += under.TOP[p["on"][1]]
         n += module.place(c, p["kind"], (x, y, z), origin=origin, **p["how"])
+
+    # ---- the parts of the room written beside it, last: they hang on what stands by now
+    for name in PARTS:
+        module = part(name)
+        if module is not None:
+            n += module.dress(c, origin)
     return {"entities": n, "lights": lights}
 
 
