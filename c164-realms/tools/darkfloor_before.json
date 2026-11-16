@@ -1,18 +1,18 @@
 {
- "head": "89943679",
+ "head": "0dfcb27a",
  "floor": 5,
  "step": 7,
  "standing": {
-  "cells": 36776,
-  "walk": 8420,
+  "cells": 36999,
+  "walk": 8643,
   "hop": 28356,
-  "roofed": 1661,
+  "roofed": 1884,
   "fall_only_nodes": 4385
  },
  "starts": [
   {
    "start": "spawn",
-   "new": 144084
+   "new": 144912
   },
   {
    "start": "in-J the south roofs: corner terrace, ridge walk, the end terrace, the small dome #66",
@@ -29,28 +29,32 @@
  ],
  "no_standing_at": [],
  "dark": {
-  "cells": 444,
-  "heaps": 57,
-  "floor": 357,
+  "cells": 583,
+  "heaps": 60,
+  "floor": 495,
   "step": 68,
-  "threshold": 19
+  "threshold": 20
  },
  "before": {
-  "head": "d7374d32",
-  "cells": 338,
-  "heaps": 52,
-  "still_dark": 324,
-  "lit": 10,
-  "no_standing": 4,
+  "head": "89943679",
+  "cells": 444,
+  "heaps": 57,
+  "still_dark": 444,
+  "lit": 0,
+  "no_standing": 0,
   "apart": 0,
-  "new_dark": 120
+  "new_dark": 139
  },
  "by_owner": {
-  "vault*": {
-   "cells": 115,
-   "heaps": 1
+  "astro*": {
+   "cells": 138,
+   "heaps": 2
   },
-  "lights：路灯 7 盏": {
+  "vault": {
+   "cells": 116,
+   "heaps": 2
+  },
+  "lights：这批 22 盏": {
    "cells": 67,
    "heaps": 8
   },
@@ -58,17 +62,17 @@
    "cells": 65,
    "heaps": 3
   },
-  "dome": {
+  "dome、lights：这批屋面 8 盏": {
    "cells": 50,
    "heaps": 16
   },
-  "m2": {
-   "cells": 27,
-   "heaps": 3
+  "不补（总监 #58129）": {
+   "cells": 30,
+   "heaps": 6
   },
-  "未分": {
-   "cells": 27,
-   "heaps": 9
+  "m2": {
+   "cells": 29,
+   "heaps": 4
   },
   "hall：下一次交付": {
    "cells": 23,
@@ -78,10 +82,6 @@
    "cells": 21,
    "heaps": 3
   },
-  "不补（总监 #58129）": {
-   "cells": 19,
-   "heaps": 1
-  },
   "hall*": {
    "cells": 16,
    "heaps": 8
@@ -89,14 +89,1074 @@
   "不补（观测室）": {
    "cells": 14,
    "heaps": 2
+  },
+  "lights：下一轮": {
+   "cells": 11,
+   "heaps": 1
+  },
+  "chart": {
+   "cells": 2,
+   "heaps": 1
+  },
+  "未分": {
+   "cells": 1,
+   "heaps": 1
   }
  },
  "sections": [
   {
+   "name": "room: battery room",
+   "cells": 138,
+   "darkest": 0,
+   "was": 0,
+   "heaps": [
+    {
+     "lo": [
+      2,
+      0,
+      -25
+     ],
+     "hi": [
+      6,
+      0,
+      -7
+     ],
+     "cells": 69,
+     "darkest": 0,
+     "kinds": {
+      "floor": 69,
+      "step": 0,
+      "threshold": 0
+     },
+     "hop": 0,
+     "owner": {
+      "astro*": 69
+     },
+     "was": 0,
+     "kept": 0,
+     "nearest": {
+      "steps": 3,
+      "level": 7,
+      "why": "interiors/batteryroom:aisle south",
+      "cell": [
+       7,
+       1,
+       -10
+      ]
+     },
+     "list": [
+      [
+       2,
+       0,
+       -25,
+       0,
+       "floor"
+      ],
+      [
+       2,
+       0,
+       -24,
+       1,
+       "floor"
+      ],
+      [
+       2,
+       0,
+       -23,
+       2,
+       "floor"
+      ],
+      [
+       2,
+       0,
+       -22,
+       1,
+       "floor"
+      ],
+      [
+       2,
+       0,
+       -21,
+       1,
+       "floor"
+      ],
+      [
+       2,
+       0,
+       -20,
+       0,
+       "floor"
+      ],
+      [
+       2,
+       0,
+       -19,
+       1,
+       "floor"
+      ],
+      [
+       2,
+       0,
+       -18,
+       2,
+       "floor"
+      ],
+      [
+       2,
+       0,
+       -17,
+       3,
+       "floor"
+      ],
+      [
+       2,
+       0,
+       -16,
+       2,
+       "floor"
+      ],
+      [
+       2,
+       0,
+       -15,
+       1,
+       "floor"
+      ],
+      [
+       2,
+       0,
+       -14,
+       0,
+       "floor"
+      ],
+      [
+       2,
+       0,
+       -13,
+       1,
+       "floor"
+      ],
+      [
+       2,
+       0,
+       -12,
+       0,
+       "floor"
+      ],
+      [
+       2,
+       0,
+       -11,
+       1,
+       "floor"
+      ],
+      [
+       2,
+       0,
+       -10,
+       2,
+       "floor"
+      ],
+      [
+       2,
+       0,
+       -9,
+       3,
+       "floor"
+      ],
+      [
+       2,
+       0,
+       -8,
+       2,
+       "floor"
+      ],
+      [
+       2,
+       0,
+       -7,
+       1,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       -25,
+       1,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       -24,
+       2,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       -23,
+       3,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       -22,
+       2,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       -21,
+       2,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       -20,
+       1,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       -19,
+       2,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       -18,
+       3,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       -17,
+       4,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       -16,
+       3,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       -15,
+       2,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       -14,
+       1,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       -13,
+       2,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       -12,
+       1,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       -11,
+       2,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       -10,
+       3,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       -9,
+       4,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       -8,
+       3,
+       "floor"
+      ],
+      [
+       3,
+       0,
+       -7,
+       2,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       -25,
+       2,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       -24,
+       3,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       -23,
+       4,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       -22,
+       3,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       -21,
+       3,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       -20,
+       2,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       -19,
+       3,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       -18,
+       4,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       -16,
+       4,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       -15,
+       3,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       -14,
+       2,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       -13,
+       3,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       -12,
+       2,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       -11,
+       3,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       -10,
+       4,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       -8,
+       4,
+       "floor"
+      ],
+      [
+       4,
+       0,
+       -7,
+       3,
+       "floor"
+      ],
+      [
+       5,
+       0,
+       -24,
+       4,
+       "floor"
+      ],
+      [
+       5,
+       0,
+       -22,
+       4,
+       "floor"
+      ],
+      [
+       5,
+       0,
+       -21,
+       4,
+       "floor"
+      ],
+      [
+       5,
+       0,
+       -20,
+       3,
+       "floor"
+      ],
+      [
+       5,
+       0,
+       -19,
+       4,
+       "floor"
+      ],
+      [
+       5,
+       0,
+       -15,
+       4,
+       "floor"
+      ],
+      [
+       5,
+       0,
+       -14,
+       3,
+       "floor"
+      ],
+      [
+       5,
+       0,
+       -13,
+       4,
+       "floor"
+      ],
+      [
+       5,
+       0,
+       -12,
+       3,
+       "floor"
+      ],
+      [
+       5,
+       0,
+       -11,
+       4,
+       "floor"
+      ],
+      [
+       5,
+       0,
+       -7,
+       4,
+       "floor"
+      ],
+      [
+       6,
+       0,
+       -20,
+       4,
+       "floor"
+      ],
+      [
+       6,
+       0,
+       -14,
+       4,
+       "floor"
+      ],
+      [
+       6,
+       0,
+       -12,
+       4,
+       "floor"
+      ]
+     ]
+    },
+    {
+     "lo": [
+      9,
+      0,
+      -25
+     ],
+     "hi": [
+      13,
+      0,
+      -7
+     ],
+     "cells": 69,
+     "darkest": 0,
+     "kinds": {
+      "floor": 69,
+      "step": 0,
+      "threshold": 0
+     },
+     "hop": 0,
+     "owner": {
+      "astro*": 69
+     },
+     "was": 0,
+     "kept": 0,
+     "nearest": {
+      "steps": 3,
+      "level": 7,
+      "why": "interiors/batteryroom:aisle south",
+      "cell": [
+       8,
+       1,
+       -10
+      ]
+     },
+     "list": [
+      [
+       9,
+       0,
+       -20,
+       4,
+       "floor"
+      ],
+      [
+       9,
+       0,
+       -14,
+       4,
+       "floor"
+      ],
+      [
+       9,
+       0,
+       -12,
+       4,
+       "floor"
+      ],
+      [
+       10,
+       0,
+       -24,
+       4,
+       "floor"
+      ],
+      [
+       10,
+       0,
+       -22,
+       4,
+       "floor"
+      ],
+      [
+       10,
+       0,
+       -21,
+       4,
+       "floor"
+      ],
+      [
+       10,
+       0,
+       -20,
+       3,
+       "floor"
+      ],
+      [
+       10,
+       0,
+       -19,
+       4,
+       "floor"
+      ],
+      [
+       10,
+       0,
+       -15,
+       4,
+       "floor"
+      ],
+      [
+       10,
+       0,
+       -14,
+       3,
+       "floor"
+      ],
+      [
+       10,
+       0,
+       -13,
+       4,
+       "floor"
+      ],
+      [
+       10,
+       0,
+       -12,
+       3,
+       "floor"
+      ],
+      [
+       10,
+       0,
+       -11,
+       4,
+       "floor"
+      ],
+      [
+       10,
+       0,
+       -7,
+       4,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       -25,
+       2,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       -24,
+       3,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       -23,
+       4,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       -22,
+       3,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       -21,
+       3,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       -20,
+       2,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       -19,
+       3,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       -18,
+       4,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       -16,
+       4,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       -15,
+       3,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       -14,
+       2,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       -13,
+       3,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       -12,
+       2,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       -11,
+       3,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       -10,
+       4,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       -8,
+       4,
+       "floor"
+      ],
+      [
+       11,
+       0,
+       -7,
+       3,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       -25,
+       1,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       -24,
+       2,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       -23,
+       3,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       -22,
+       2,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       -21,
+       2,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       -20,
+       1,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       -19,
+       2,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       -18,
+       3,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       -17,
+       4,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       -16,
+       3,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       -15,
+       2,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       -14,
+       1,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       -13,
+       2,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       -12,
+       1,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       -11,
+       2,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       -10,
+       3,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       -9,
+       4,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       -8,
+       3,
+       "floor"
+      ],
+      [
+       12,
+       0,
+       -7,
+       2,
+       "floor"
+      ],
+      [
+       13,
+       0,
+       -25,
+       0,
+       "floor"
+      ],
+      [
+       13,
+       0,
+       -24,
+       1,
+       "floor"
+      ],
+      [
+       13,
+       0,
+       -23,
+       2,
+       "floor"
+      ],
+      [
+       13,
+       0,
+       -22,
+       1,
+       "floor"
+      ],
+      [
+       13,
+       0,
+       -21,
+       1,
+       "floor"
+      ],
+      [
+       13,
+       0,
+       -20,
+       0,
+       "floor"
+      ],
+      [
+       13,
+       0,
+       -19,
+       1,
+       "floor"
+      ],
+      [
+       13,
+       0,
+       -18,
+       2,
+       "floor"
+      ],
+      [
+       13,
+       0,
+       -17,
+       3,
+       "floor"
+      ],
+      [
+       13,
+       0,
+       -16,
+       2,
+       "floor"
+      ],
+      [
+       13,
+       0,
+       -15,
+       1,
+       "floor"
+      ],
+      [
+       13,
+       0,
+       -14,
+       0,
+       "floor"
+      ],
+      [
+       13,
+       0,
+       -13,
+       1,
+       "floor"
+      ],
+      [
+       13,
+       0,
+       -12,
+       0,
+       "floor"
+      ],
+      [
+       13,
+       0,
+       -11,
+       1,
+       "floor"
+      ],
+      [
+       13,
+       0,
+       -10,
+       2,
+       "floor"
+      ],
+      [
+       13,
+       0,
+       -9,
+       3,
+       "floor"
+      ],
+      [
+       13,
+       0,
+       -8,
+       2,
+       "floor"
+      ],
+      [
+       13,
+       0,
+       -7,
+       1,
+       "floor"
+      ]
+     ]
+    }
+   ]
+  },
+  {
    "name": "room: plate vault",
    "cells": 115,
    "darkest": 0,
-   "was": 0,
+   "was": 115,
    "heaps": [
     {
      "lo": [
@@ -118,10 +1178,10 @@
      },
      "hop": 10,
      "owner": {
-      "vault*": 115
+      "vault": 115
      },
-     "was": 0,
-     "kept": 0,
+     "was": 115,
+     "kept": 115,
      "nearest": {
       "steps": 1,
       "level": 5,
@@ -946,7 +2006,7 @@
    "name": "room: stair hall",
    "cells": 112,
    "darkest": 0,
-   "was": 122,
+   "was": 112,
    "heaps": [
     {
      "lo": [
@@ -968,7 +2028,7 @@
      },
      "hop": 14,
      "owner": {
-      "lights：路灯 7 盏": 30,
+      "lights：这批 22 盏": 30,
       "lights：astro 找位置": 21
      },
      "was": 51,
@@ -1747,7 +2807,7 @@
      "owner": {
       "hall：下一次交付": 8
      },
-     "was": 18,
+     "was": 8,
      "kept": 8,
      "nearest": {
       "steps": 3,
@@ -2190,7 +3250,7 @@
      },
      "hop": 0,
      "owner": {
-      "lights：路灯 7 盏": 9
+      "lights：这批 22 盏": 9
      },
      "was": 9,
      "kept": 9,
@@ -2290,7 +3350,7 @@
      },
      "hop": 4,
      "owner": {
-      "lights：路灯 7 盏": 6
+      "lights：这批 22 盏": 6
      },
      "was": 6,
      "kept": 6,
@@ -2370,7 +3430,7 @@
      "hop": 4,
      "owner": {
       "hall*": 3,
-      "lights：路灯 7 盏": 3
+      "lights：这批 22 盏": 3
      },
      "was": 6,
      "kept": 6,
@@ -2449,7 +3509,7 @@
      },
      "hop": 0,
      "owner": {
-      "lights：路灯 7 盏": 4
+      "lights：这批 22 盏": 4
      },
      "was": 4,
      "kept": 4,
@@ -2644,7 +3704,7 @@
      },
      "hop": 0,
      "owner": {
-      "lights：路灯 7 盏": 3
+      "lights：这批 22 盏": 3
      },
      "was": 3,
      "kept": 3,
@@ -2702,7 +3762,7 @@
      },
      "hop": 0,
      "owner": {
-      "lights：路灯 7 盏": 2
+      "lights：这批 22 盏": 2
      },
      "was": 2,
      "kept": 2,
@@ -2981,7 +4041,7 @@
      },
      "hop": 0,
      "owner": {
-      "dome": 9
+      "dome、lights：这批屋面 8 盏": 9
      },
      "was": 9,
      "kept": 9,
@@ -3081,7 +4141,7 @@
      },
      "hop": 0,
      "owner": {
-      "dome": 7
+      "dome、lights：这批屋面 8 盏": 7
      },
      "was": 7,
      "kept": 7,
@@ -3167,7 +4227,7 @@
      },
      "hop": 3,
      "owner": {
-      "dome": 3
+      "dome、lights：这批屋面 8 盏": 3
      },
      "was": 3,
      "kept": 3,
@@ -3225,7 +4285,7 @@
      },
      "hop": 3,
      "owner": {
-      "dome": 3
+      "dome、lights：这批屋面 8 盏": 3
      },
      "was": 3,
      "kept": 3,
@@ -3283,7 +4343,7 @@
      },
      "hop": 0,
      "owner": {
-      "dome": 3
+      "dome、lights：这批屋面 8 盏": 3
      },
      "was": 3,
      "kept": 3,
@@ -3341,7 +4401,7 @@
      },
      "hop": 3,
      "owner": {
-      "dome": 3
+      "dome、lights：这批屋面 8 盏": 3
      },
      "was": 3,
      "kept": 3,
@@ -3399,7 +4459,7 @@
      },
      "hop": 0,
      "owner": {
-      "dome": 2
+      "dome、lights：这批屋面 8 盏": 2
      },
      "was": 2,
      "kept": 2,
@@ -3450,7 +4510,7 @@
      },
      "hop": 0,
      "owner": {
-      "dome": 1
+      "dome、lights：这批屋面 8 盏": 1
      },
      "was": 1,
      "kept": 1,
@@ -3813,7 +4873,7 @@
       "power": 18
      },
      "was": 18,
-     "kept": 14,
+     "kept": 18,
      "nearest": {
       "steps": 6,
       "level": 10,
@@ -4256,7 +5316,7 @@
      },
      "hop": 0,
      "owner": {
-      "dome": 7
+      "dome、lights：这批屋面 8 盏": 7
      },
      "was": 7,
      "kept": 7,
@@ -4342,7 +5402,7 @@
      },
      "hop": 0,
      "owner": {
-      "dome": 3
+      "dome、lights：这批屋面 8 盏": 3
      },
      "was": 3,
      "kept": 3,
@@ -4400,7 +5460,7 @@
      },
      "hop": 0,
      "owner": {
-      "dome": 2
+      "dome、lights：这批屋面 8 盏": 2
      },
      "was": 2,
      "kept": 2,
@@ -4451,7 +5511,7 @@
      },
      "hop": 0,
      "owner": {
-      "dome": 1
+      "dome、lights：这批屋面 8 盏": 1
      },
      "was": 1,
      "kept": 1,
@@ -4503,7 +5563,7 @@
      },
      "hop": 0,
      "owner": {
-      "未分": 11
+      "lights：下一轮": 11
      },
      "was": 11,
      "kept": 11,
@@ -4625,7 +5685,7 @@
      },
      "hop": 0,
      "owner": {
-      "lights：路灯 7 盏": 10
+      "lights：这批 22 盏": 10
      },
      "was": 10,
      "kept": 10,
@@ -4740,7 +5800,7 @@
      },
      "hop": 0,
      "owner": {
-      "未分": 5
+      "不补（总监 #58129）": 5
      },
      "was": 5,
      "kept": 5,
@@ -4812,7 +5872,7 @@
      },
      "hop": 0,
      "owner": {
-      "未分": 2
+      "不补（总监 #58129）": 2
      },
      "was": 2,
      "kept": 2,
@@ -4863,7 +5923,7 @@
      },
      "hop": 0,
      "owner": {
-      "未分": 2
+      "不补（总监 #58129）": 2
      },
      "was": 2,
      "kept": 2,
@@ -5009,7 +6069,7 @@
      },
      "hop": 0,
      "owner": {
-      "dome": 2
+      "dome、lights：这批屋面 8 盏": 2
      },
      "was": 2,
      "kept": 2,
@@ -5060,7 +6120,7 @@
      },
      "hop": 0,
      "owner": {
-      "dome": 2
+      "dome、lights：这批屋面 8 盏": 2
      },
      "was": 2,
      "kept": 2,
@@ -5111,7 +6171,7 @@
      },
      "hop": 1,
      "owner": {
-      "dome": 1
+      "dome、lights：这批屋面 8 盏": 1
      },
      "was": 1,
      "kept": 1,
@@ -5155,7 +6215,7 @@
      },
      "hop": 1,
      "owner": {
-      "dome": 1
+      "dome、lights：这批屋面 8 盏": 1
      },
      "was": 1,
      "kept": 1,
@@ -5183,10 +6243,54 @@
   },
   {
    "name": "in-B the star hall, ground floor",
-   "cells": 3,
+   "cells": 4,
    "darkest": 4,
-   "was": 2,
+   "was": 3,
    "heaps": [
+    {
+     "lo": [
+      7,
+      0,
+      -6
+     ],
+     "hi": [
+      7,
+      0,
+      -6
+     ],
+     "cells": 1,
+     "darkest": 5,
+     "kinds": {
+      "floor": 0,
+      "step": 0,
+      "threshold": 1
+     },
+     "hop": 0,
+     "owner": {
+      "未分": 1
+     },
+     "was": 0,
+     "kept": 0,
+     "nearest": {
+      "steps": 2,
+      "level": 7,
+      "why": "interiors/batteryroom:aisle south",
+      "cell": [
+       7,
+       1,
+       -8
+      ]
+     },
+     "list": [
+      [
+       7,
+       0,
+       -6,
+       5,
+       "threshold"
+      ]
+     ]
+    },
     {
      "lo": [
       7,
@@ -5207,10 +6311,10 @@
      },
      "hop": 0,
      "owner": {
-      "未分": 1
+      "vault": 1
      },
-     "was": 0,
-     "kept": 0,
+     "was": 1,
+     "kept": 1,
      "nearest": {
       "steps": 3,
       "level": 6,
@@ -5251,7 +6355,7 @@
      },
      "hop": 0,
      "owner": {
-      "未分": 1
+      "不补（总监 #58129）": 1
      },
      "was": 1,
      "kept": 1,
@@ -5295,7 +6399,7 @@
      },
      "hop": 0,
      "owner": {
-      "未分": 1
+      "不补（总监 #58129）": 1
      },
      "was": 1,
      "kept": 1,
@@ -5347,7 +6451,7 @@
      },
      "hop": 0,
      "owner": {
-      "未分": 2
+      "m2": 2
      },
      "was": 2,
      "kept": 2,
@@ -5406,7 +6510,7 @@
      },
      "hop": 0,
      "owner": {
-      "未分": 2
+      "chart": 2
      },
      "was": 2,
      "kept": 2,
@@ -5471,11 +6575,20 @@
   [
    7,
    0,
+   -6,
+   5,
+   "battery room 的门",
+   "in-B the star hall, ground floor",
+   "未分"
+  ],
+  [
+   7,
+   0,
    6,
    4,
    "plate vault 的门",
    "in-B the star hall, ground floor",
-   "未分"
+   "vault"
   ],
   [
    7,
@@ -5484,7 +6597,7 @@
    6,
    "time room 的门",
    "in-F the time room (north wing)",
-   "未分"
+   "m2"
   ],
   [
    7,
@@ -5493,7 +6606,7 @@
    6,
    "chart room 的门",
    "in-G the chart room (south wing)",
-   "未分"
+   "chart"
   ],
   [
    8,
@@ -5502,7 +6615,7 @@
    5,
    "time room 的门",
    "in-F the time room (north wing)",
-   "未分"
+   "m2"
   ],
   [
    8,
@@ -5511,7 +6624,7 @@
    6,
    "chart room 的门",
    "in-G the chart room (south wing)",
-   "未分"
+   "chart"
   ],
   [
    12,
@@ -5520,7 +6633,7 @@
    0,
    "dome room 的门",
    "in-K the north roofs: corner terrace, ridge walk, the end terrace, the clock tower's foot",
-   "dome"
+   "dome、lights：这批屋面 8 盏"
   ],
   [
    12,
@@ -5529,7 +6642,7 @@
    0,
    "dome room 的门",
    "in-J the south roofs: corner terrace, ridge walk, the end terrace, the small dome",
-   "dome"
+   "dome、lights：这批屋面 8 盏"
   ],
   [
    17,
@@ -5538,7 +6651,7 @@
    6,
    "外墙 east 面第 8 开间（gate）",
    "in-B the star hall, ground floor",
-   "未分"
+   "不补（总监 #58129）"
   ],
   [
    17,
@@ -5547,7 +6660,7 @@
    5,
    "外墙 east 面第 8 开间（gate）",
    "in-A the entrance from the court",
-   "未分"
+   "不补（总监 #58129）"
   ],
   [
    17,
@@ -5556,7 +6669,7 @@
    4,
    "外墙 east 面第 8 开间（gate）",
    "in-A the entrance from the court",
-   "未分"
+   "不补（总监 #58129）"
   ],
   [
    17,
@@ -5565,7 +6678,7 @@
    5,
    "外墙 east 面第 9 开间（door）",
    "in-A the entrance from the court",
-   "未分"
+   "不补（总监 #58129）"
   ],
   [
    17,
@@ -5574,7 +6687,7 @@
    6,
    "外墙 east 面第 9 开间（door）",
    "in-A the entrance from the court",
-   "未分"
+   "不补（总监 #58129）"
   ],
   [
    17,
@@ -5583,7 +6696,7 @@
    5,
    "外墙 east 面第 9 开间（door）",
    "in-A the entrance from the court",
-   "未分"
+   "不补（总监 #58129）"
   ],
   [
    17,
@@ -5592,7 +6705,7 @@
    4,
    "外墙 east 面第 10 开间（gate）",
    "in-A the entrance from the court",
-   "未分"
+   "不补（总监 #58129）"
   ],
   [
    17,
@@ -5601,7 +6714,7 @@
    5,
    "外墙 east 面第 10 开间（gate）",
    "in-A the entrance from the court",
-   "未分"
+   "不补（总监 #58129）"
   ],
   [
    17,
@@ -5610,7 +6723,7 @@
    6,
    "外墙 east 面第 10 开间（gate）",
    "in-B the star hall, ground floor",
-   "未分"
+   "不补（总监 #58129）"
   ]
  ],
  "cleared": [],
