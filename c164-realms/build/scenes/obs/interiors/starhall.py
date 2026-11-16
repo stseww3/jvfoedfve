@@ -391,7 +391,8 @@ def aisle_doors():
     battery room's in the north wall beside the switchboard, the plate vault's in the south wall
     across from it. The shell cuts them and tells them in doors(), with the doors of the main
     floor: of those the ones whose foot is the ground (shell, #74028). The hall keeps the cell
-    before a door free."""
+    before a door free, and the cell before each stone of the case the shell sets round it
+    (doors()'s frame, #76463), which panelling would hide: the east one is behind a pilaster."""
     out = set()
     for name in NEIGHBOURS:
         door = getattr(_optional("interiors." + name), "HALL_DOOR", None)
@@ -401,7 +402,7 @@ def aisle_doors():
     for door in shell.doors():
         if door["y"][0] == FEET:
             dx, dz = door["inward"]
-            out |= {(x - dx, z - dz) for x, z in door["cells"]
+            out |= {(x - dx, z - dz) for x, z in tuple(door["cells"]) + tuple(door.get("frame", ()))
                     if X0 <= x - dx <= X1 and z - dz in (Z0, Z1)}
     return out
 
