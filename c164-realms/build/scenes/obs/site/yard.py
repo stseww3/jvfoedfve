@@ -52,8 +52,10 @@ The traces (plan/fine.md, the near layer: oil round the table's pivot and under 
 dust by the heap and along the line, the chalk on the tubs) are the materials line's shapes
 (materials/traces: a1, 11-16 13:05) and are put on with them when they are there; none is drawn here.
 
-The view band is M.MID for all of it (the yard is seen from the lower platform and from the stair,
-not across the site): from above and from far off the blocks alone tell the line.
+The view bands (INTERFACE 7; s2, 11-16 13:12: what stands on a line and the cars keep the far band,
+what is a texel or two from far off goes down): the tubs, the deck and the heap are drawn across the
+site (FAR_MODELS); the rails, the seat's ring, the stops and the sheave within a terrace (M.MID). From
+above and from far off the blocks tell the line and those five stand on it.
 """
 import functools
 import math
@@ -68,8 +70,10 @@ from ..motion import _kit as MK
 from . import _kit as K
 from . import powerhouse
 
-VIEW = M.MID
 PREFIX = "site_yard_"
+VIEW = M.MID
+FAR_MODELS = tuple(PREFIX + name for name in ("rake", "tub", "tub_empty", "deck", "coal"))
+VIEW_KEEP = FAR_MODELS              # the assembly brings every other entity of the package down to VIEW
 PX = 1.0 / 16.0
 
 FEET = S.LOWER_GROUND               # -6: the top of the paving
@@ -527,7 +531,8 @@ def build(canvas, origin=(0, 0, 0)):
     first = len(canvas.entities)
 
     def put(name, x, y, z, yaw=0.0):
-        canvas.add_entity(ox + x, oy + y, oz + z, M.display(kit[PREFIX + name], yaw=yaw, view=VIEW))
+        view = M.FAR if PREFIX + name in FAR_MODELS else VIEW
+        canvas.add_entity(ox + x, oy + y, oz + z, M.display(kit[PREFIX + name], yaw=yaw, view=view))
 
     bed, seat = line_cells()
     for x, z in bed:
