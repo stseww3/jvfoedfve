@@ -24,6 +24,7 @@ with the display: so a glowing piece that must show its tones to one side is dra
 tilted towards that side and turned back by its display (c342 read it off the 26.3 client and
 wrote the frame: ironwork.TILT; between 38.2 and 45 degrees the face that looks out is lit 1.00).
 """
+import functools
 import math
 
 from artkit import models as M
@@ -115,6 +116,75 @@ def east_face(canvas, y, z, x_lo, x_hi, origin=(0, 0, 0)):
         if canvas.has(ox + x, oy + y, oz + z):
             return x + 1.0
     return None
+
+
+# ---- the station's one typeface --------------------------------------------------------------------
+# Whatever is written on a picture -- a nameplate, a dial, a label, the heading of a page -- is written
+# in one typeface: the game's own font, the one the plaques are written in (plan/fine.md, section 4).
+# Nobody draws letters of his own. The glyphs are read from the client jar where the pack is built
+# (as the materials read the game's files): a capital and a figure are five pixels wide and seven
+# high, the tails of g, j, p, q and y hang one row lower, a glyph is followed by one clear column
+# and a space is four columns wide.
+LINE = 8                # the rows of a line of writing: seven of a capital, one for the tails
+SPACE = 4               # the columns a space takes, the clear column after it with them
+
+
+@functools.lru_cache(maxsize=None)
+def _font():
+    from ..materials import _kit as materials       # the client jar, found as the materials find it
+    return materials.game().texture("minecraft:font/ascii")[..., 3] > 0
+
+
+@functools.lru_cache(maxsize=None)
+def _glyph(ch):
+    """The pixels of one glyph: LINE rows of booleans, as wide as its ink."""
+    if not 32 <= ord(ch) < 127:
+        raise ValueError(f"the station writes in the game's ASCII glyphs alone, and {ch!r} is not one")
+    code = ord(ch)
+    cell = _font()[(code // 16) * LINE:(code // 16 + 1) * LINE, (code % 16) * LINE:(code % 16 + 1) * LINE]
+    inked = [i for i in range(LINE) if cell[:, i].any()]
+    width = inked[-1] + 1 if inked else SPACE - 1
+    return tuple(tuple(bool(v) for v in row[:width]) for row in cell)
+
+
+def lettered(text):
+    """How many pixels wide letters(text) is: from the left of the first glyph to the right of the last."""
+    return sum(len(_glyph(ch)[0]) + 1 for ch in text) - 1 if text else 0
+
+
+def letters(text, ink="#", clear="."):
+    """One line of writing in the station's typeface, as rows of characters: LINE rows, the top one
+    first, lettered(text) long; `ink` where a glyph has a pixel, `clear` elsewhere. Rows 0 to 6
+    hold the capitals and figures, row 7 the tails. The rows go into a Sprite as they are, or over
+    a drawing with inscribe().
+
+        K.letters("No. 31")[0]   ->   "#...#.........###....#.."
+
+    A face shows one pixel of this to a texel, so the size of the writing is the model's px: on a
+    model of px 1 a capital is 7/16 of a block high, of px 4 a little over a tenth. What is to
+    carry small writing is a model of its own with a higher px (props/nameplates: 6)."""
+    rows = [[] for _ in range(LINE)]
+    for n, ch in enumerate(text):
+        glyph = _glyph(ch)
+        for j in range(LINE):
+            rows[j] += ([clear] if n else []) + [ink if v else clear for v in glyph[j]]
+    return ["".join(row) for row in rows]
+
+
+def inscribe(rows, text, x, y, ink="#"):
+    """Write a line over a drawing: `rows` are rows of characters as a Sprite takes them, (x, y) the
+    column and row of the drawing where the upper left corner of the line's first capital comes
+    (row 0 is the top). Only the ink is written; what is under the clear pixels stays. Returns the
+    new rows. Writing that does not fit on the drawing raises."""
+    out = [list(row) for row in rows]
+    for j, line in enumerate(letters(text, ink=ink, clear="\0")):
+        for i, ch in enumerate(line):
+            if ch == "\0":
+                continue
+            if not (0 <= y + j < len(out) and 0 <= x + i < len(out[y + j])):
+                raise ValueError(f"{text!r} at ({x}, {y}) runs off a drawing of {len(out[0])} by {len(out)}")
+            out[y + j][x + i] = ch
+    return ["".join(row) for row in out]
 
 
 # ---- shapes that more than one family uses --------------------------------------------------------
