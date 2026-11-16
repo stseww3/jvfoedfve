@@ -120,11 +120,28 @@ def faces(view):
         for z in (-18, -26, -34):
             out.append((f"wall, the bay round z {z}", [(EAST_X + 1, y, zz) for y in (-5, -2) for zz in (z - 2, z + 3)]))
     else:
-        for x in (43, 39, 35, 31, 27, 23, 19):
-            out.append((f"buttress x {x}", [(xx, y, SOUTH_Z + 2) for y in (-4, -2) for xx in (x, x + 1)]))
+        for x in (43, 39, 35, 31, 27, 23, 19, 14, 10):
+            out.append((f"buttress x {x}, rows -4 and -3", [(xx, y, SOUTH_Z + 2) for y in (-4, -2) for xx in (x, x + 1)]))
+        for x in (39, 23, 19):
+            out.append((f"buttress x {x}, row -5", [(xx, y, SOUTH_Z + 2) for y in (-5, -4) for xx in (x, x + 1)]))
         for x in (41, 37, 33, 29, 25, 21):
             out.append((f"wall, the bay round x {x}", [(xx, y, SOUTH_Z + 1) for y in (-4, -2) for xx in (x - 1, x + 2)]))
     return out
+
+
+def crop(view, path, out, scale=3):
+    """The part of a picture the faces of a view lie in, with a margin, `scale` times as large."""
+    from PIL import Image
+    img = Image.open(path).convert("RGB")
+    w, h = img.size
+    pts = [project(view, (w, h), p) for _name, corners in faces(view) for p in corners]
+    pts = [p for p in pts if p is not None]
+    c0, c1 = max(0, int(min(p[0] for p in pts)) - w // 20), min(w, int(max(p[0] for p in pts)) + w // 20)
+    r0, r1 = max(0, int(min(p[1] for p in pts)) - h // 8), min(h, int(max(p[1] for p in pts)) + h // 10)
+    part = img.crop((c0, r0, c1, r1))
+    part = part.resize((part.size[0] * scale, part.size[1] * scale), Image.NEAREST)
+    part.save(out)
+    print(f"{out}: columns {c0}..{c1}, rows {r0}..{r1} of {path}, x{scale}")
 
 
 def project(view, size, p):
@@ -221,6 +238,8 @@ if __name__ == "__main__":
         light()
     elif what == "luma" and len(sys.argv) > 3 and sys.argv[2] in VIEWS:
         luma(sys.argv[2], sys.argv[3:])
+    elif what == "crop" and len(sys.argv) == 5 and sys.argv[2] in VIEWS:
+        crop(sys.argv[2], sys.argv[3], sys.argv[4])
     else:
         print(__doc__)
         sys.exit(2)

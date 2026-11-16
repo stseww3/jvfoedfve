@@ -665,10 +665,20 @@ def _gates(canvas, r, origin):
 # props (lamps "uplight") on the ground before the foot of a buttress, looking at it, with its
 # source in its own cell. [(the projector's cell, the way it looks, the level, what it lights)]
 BASE_WHY = "sky/lights:base"
-BASE_OUT = int(os.environ.get("C164_TRIAL_OUT", "2"))       # cells between a buttress and its projector, counting it
-BASE_LEVEL = int(os.environ.get("C164_TRIAL_LEVEL", "8"))
+BASE_OUT = int(os.environ.get("C164_TRIAL_OUT", "2"))       # the east wall: cells between a buttress's lower stage and its projector, counting it
+BASE_LEVEL = int(os.environ.get("C164_TRIAL_LEVEL", "8"))   # the projector's own source
+BASE_BEAM = int(os.environ.get("C164_TRIAL_BEAM", "0"))     # a second source where the beam lands, as the fronts' wash has; 0: none
+BASE_EAST = tuple(int(z) for z in os.environ.get("C164_TRIAL_EAST", "-14,-22,-30,-38").split(",") if z)
+BASE_SOUTH = tuple(int(x) for x in os.environ.get("C164_TRIAL_SOUTH", "39,23,19").split(",") if x)
+# the south wall: the rock one cell before a buttress's foot (the survey of the trial tree): x -> the projector's row
+SOUTH_ROW = {39: -6, 23: -6, 19: -6, 14: -6, 10: -6, 43: -3}
 BASE_WASH = (
-    [((62 + BASE_OUT, -6, z), "west", BASE_LEVEL, f"the east wall's buttress in row {z}") for z in (-14, -22, -30)]
+    # the east wall (site/stair): the beam of a projector two cells out lands on the upper stage, in the row over the
+    # lower stage's weathering
+    [((62 + BASE_OUT, -6, z), "west", BASE_LEVEL, f"the east wall's buttress in row {z}", ((62, -3, z), BASE_BEAM))
+     for z in BASE_EAST]
+    # the south wall (site/terrain): the projector stands under the face, the light falls by one a row up it
+    + [((x, SOUTH_ROW[x], 40), "north", BASE_LEVEL, f"the south wall's buttress in column {x}", None) for x in BASE_SOUTH]
 )
 
 
@@ -684,7 +694,7 @@ def _base(canvas, r, origin):
         return 0
     ox, oy, oz = origin
     n = 0
-    for (x, y, z), facing, level, what in BASE_WASH:
+    for (x, y, z), facing, level, what, beam in BASE_WASH:
         cell = (x + ox, y + oy, z + oz)
         if cell in r["base"]:
             continue
@@ -694,6 +704,10 @@ def _base(canvas, r, origin):
         n += lamps.place(canvas, "uplight", (x + 0.5, float(y), z + 0.5), facing=facing, origin=origin, light=False)
         _put(canvas, r, cell, level, BASE_WHY)
         r["base"].append(cell)
+        if beam and beam[1]:
+            spot = (beam[0][0] + ox, beam[0][1] + oy, beam[0][2] + oz)
+            if _put(canvas, r, spot, beam[1], BASE_WHY) == "taken":
+                r["notes"].append(f"no second source for the projector of {what}: the cell {spot} is taken")
     return n
 
 # ---- the offers ----------------------------------------------------------------------------------------
