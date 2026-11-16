@@ -1,0 +1,18 @@
+gate common/export 6e801e23: the merged tree 6e801e23, the assembly as it was 29e5f1e7
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] scope    4 of 22 files are the card's own
+                    common file (merge-key holder's; agreed beforehand?): A tools/export.py
+                    common file (merge-key holder's; agreed beforehand?): A tools/exportnext.sh
+                    not this card's file: A build/scenes/obs_export_probe/__init__.py
+                    not this card's file: A build/scenes/obs_export_probe/__main__.py
+                    not this card's file: A build/scenes/obs_export_probe/mood.py
+                    not this card's file: A build/scenes/obs_export_probe/shots.json
+check.py: 80 scenes in 99 s: 79 pass (79 with warnings), 1 FAIL: obs_export_probe_plain
+    FAIL  obs_export_probe_plain: 1 failed, 0 with warnings, skipped: sight (1 s)
+          [FAIL] regen: 101 blocks, 2 entities, 2 models, 684 resource-pack files, 24 data-pack files, look: 1 biomes, 1 timelines, 2 registry files in the data pack (timeline, worldgen) (0.6 s)
+              the data pack holds files of a registry: Realms takes no world with experimental settings. A data pack may hold function, tags, structure, advancement, loot_table, predicate, recipe, item_mo
+              data/c164art/timeline/probe_plain_angles.json
+              data/c164art/worldgen/biome/the_void.json
+pictures: [PASS] selfshots obs_export_probe at 6e801e23: 3 of 3 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_export_probe_plain at 6e801e23: 3 of 3 kept pictures are what the code draws
+result: FAIL

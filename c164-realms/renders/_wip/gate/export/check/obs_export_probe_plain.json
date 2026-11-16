@@ -1,0 +1,102 @@
+{
+ "scene": "obs_export_probe_plain",
+ "commit": "6e801e2",
+ "result": "FAIL",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "FAIL",
+   "summary": "101 blocks, 2 entities, 2 models, 684 resource-pack files, 24 data-pack files, look: 1 biomes, 1 timelines, 2 registry files in the data pack (timeline, worldgen) (0.6 s)",
+   "details": [
+    "the data pack holds files of a registry: Realms takes no world with experimental settings. A data pack may hold function, tags, structure, advancement, loot_table, predicate, recipe, item_modifier and nothing else (plan/roles/COMMON.md 5)",
+    "data/c164art/timeline/probe_plain_angles.json",
+    "data/c164art/worldgen/biome/the_void.json"
+   ]
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 683 files, no file written twice, not a package's test scene (INTERFACE 5), so folders and prefixes are not checked",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "131 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "533 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "7 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "PASS",
+   "summary": "no wall face runs flat over more than 5x5",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "2 display entities",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "3 shots, most display entities in view: 2 (arrive), limit 600; counted without what walls hide",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "arrive",
+      "in_view": 2,
+      "drawn": 2,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "floor",
+      "in_view": 2,
+      "drawn": 2,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "back",
+      "in_view": 2,
+      "drawn": 2,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "1 parts and 0 points on 1 chains, 12 function files; 4 commands in the busiest tick (limit 40), 0.6 a tick on average (limit 10)",
+   "details": [
+    "chain of 24 ticks: 6 functions, 14 commands a cycle, starts 1 ticks after start",
+    "site_weather_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.08 blocks off the axis"
+   ]
+  }
+ ]
+}

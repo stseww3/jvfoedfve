@@ -1,0 +1,27 @@
+delivery common/export: 6e801e2 against 29e5f1e (forked at 29e5f1e), 24 commits, 22 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[WARN] scope    4 of 22 files are the card's own
+                common file (merge-key holder's; agreed beforehand?): A tools/export.py
+                common file (merge-key holder's; agreed beforehand?): A tools/exportnext.sh
+                not this card's file: A build/scenes/obs_export_probe/__init__.py
+                not this card's file: A build/scenes/obs_export_probe/__main__.py
+                not this card's file: A build/scenes/obs_export_probe/mood.py
+                not this card's file: A build/scenes/obs_export_probe/shots.json
+                not this card's file: A build/scenes/obs_export_probe_plain/__init__.py
+                not this card's file: A build/scenes/obs_export_probe_plain/__main__.py
+                not this card's file: A build/scenes/obs_export_probe_plain/mood.py
+                not this card's file: A build/scenes/obs_export_probe_plain/shots.json
+                not this card's file: A renders/obs_export_probe/arrive.png
+                not this card's file: A renders/obs_export_probe/back.png
+                not this card's file: A renders/obs_export_probe/floor.png
+                not this card's file: A renders/obs_export_probe/shots.txt
+                not this card's file: A renders/obs_export_probe_plain/arrive.png
+                not this card's file: A renders/obs_export_probe_plain/back.png
+                ... and 2 more
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[PASS] pictures 2 test scenes, 6 shots with a picture kept; every shot has one, each the file its note describes
+[PASS] merge    merges cleanly; 0 commits behind the base
+result: PASS (0 failed, 1 to look at)
