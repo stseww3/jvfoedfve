@@ -81,6 +81,7 @@ from artkit.blocks import st
 from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
+from ..props import _kit as PK
 
 try:
     from ..site import mastbase as _base        # the stone foot, the guy anchors, the lead-in post
@@ -518,7 +519,16 @@ def _models():
         _insulator(),
         _stay(),
     ]
-    return {m.name: m for m in built}
+    # A flat that stands exactly between two of a model's axes is lit as the one or as the other by
+    # the last bit of a float, in the game and in the offline pictures alike: of two porcelain pots
+    # one would show a slanting flat as north and the next as east. Such flats are on every tube of
+    # eight sides (the pots under the legs, the eggs, the head's socket), on the diagonals of the
+    # foot's square bay, and on the lamp's ledges, which stand between three axes that take the same
+    # light. The props line's settle() turns each such piece a tenth of a degree about its own
+    # middle, always the same way round: a tube or a ledge by itself, the foot's diagonals, which
+    # share one picture, as one set. Nothing moves by more than an eighth of a texel, and the ends
+    # that do lie under the joints' plates.
+    return {m.name: PK.settle(m) for m in built}
 
 
 def models():
