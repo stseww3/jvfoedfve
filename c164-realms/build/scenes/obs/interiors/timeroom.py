@@ -294,25 +294,47 @@ SHEET = (9.8, 3.2, -14.0)                           # the form that is written a
 SPIKE = (13.2, -1.5)                                # the spike the day's slips are on, before the desk's right stationery drawer
 SLIPS = (10.0, -35.0, 50.0, -10.0, 25.0)            # degrees each slip on the spike is turned, the lowest first
 INKWELL = (5.0, -4.5)                               # at the back, between the two stationery drawers
-PAPER_COLOURS = dict(p=P.RAMPS["cream"][3], e=P.RAMPS["enamel"][1], i=P.RAMPS["cream"][0])  # props/paper's page: the printed
-#                                                     heading in chart blue, what is written a soft line
+PAPER_COLOURS = dict(p=P.RAMPS["cream"][2], e=P.RAMPS["enamel"][1], i=P.RAMPS["cream"][0])  # props/paper's page a tone down: the
+#                                                     printed heading in chart blue, what is written a soft line. In the
+#                                                     lightest cream the forms were lighter in V10 than anything on the
+#                                                     instrument wall (cr4)
+# the message desk's reading lamp, on the desk at the sitter's left hand (px on the desk top, as above)
+READING = (-12.0, 0.5, 45.0)                        # where its foot stands (clear of the stationery drawer behind it and of the log
+#                                                     book beside it), and the degrees its arm is turned from the sitter towards the middle of the desk
+READING_ARM = 4.5                                   # from the stem to the axis of the shade
+READING_TOP = 11.5                                  # its highest point over the desk top: under the eye of whoever stands in the room
+EYE = 1.62                                          # blocks: a standing player's eye over the floor
 
 # ---- light: what the room asks of the light line (level, rank); the lamps are props/lamps models
 LAMPS = "b"                 # every lamp of the room is the shaded one (props/lamps' version B, the enamel cone), whatever the
 #                             map's default: a shade keeps a lamp's glow to what is under it, and the opal globe of version A
 #                             is itself the lightest thing in a dark room, six times over
+# The order of the room's lights, as V10 has to show it (review cr4 on the game's picture, 11-16; the levels
+# agreed with the light line, c331: 12 is the top indoors). The instrument wall first: 12 along its head, under
+# the hood, and 12 at the console, so that its faces stand at 9 to 12 from the cornice down to the shelf, and
+# the floor at the foot of the console at 9 to 11: the lightest floor of the room. The rating bench, in the
+# middle distance, next.
+# The message desk, which V10 stands beside, last: 7 and less on it, and no lit shade over it. With one lamp of
+# 8 over each desk and 12 only at the console, the wall's faces lay at 6 to 12 and in the picture the wall was
+# darker than the paper on the near desk; the floor before it was hardly lighter than the floor by the door.
+# Where one stands there is light (the finish, A0 11-16: every cell of the floor one can stand on has 5 or more
+# at the foot or at the head, a threshold 7), and it comes first from the lamps that are there for the work: by
+# the door from the lamp over the blueprint, in the middle of the room from the bench's and the message desk's.
+# What these leave under 5 (the east side, the foot of the south wall) the light line fills with lamps of its
+# own (sky/lights, placed by c349): on the south wall and the two northern piers of the east wall, where V10
+# has no lit shade beside the near desk.
 CONSOLE_LAMP = (12, 2)      # the two drop lights over the ends of the console: the main light, on the instrument wall
-# Where one walks there is light (the finish, A0 11-16; the light line's rule, c331: 5 or more at the foot or at
-# the head, never more than three stations in a row under it, none at 0), and in this room it comes from the lamps
-# that are there for the work. With the desks' lamps at 8 and the clocks' at 9 the long axis lay at 2 to 4 and the
-# doorway at 0 to 2: in the game a floor one does not see. Now the axis is 4 to 6 at the foot from the door to the
-# bench, 9 before the console; the rack, at 12, is still two steps over everything else
-DESK_LAMP = (10, 2)         # the drop lights over the message desk and the rating bench: 10 at the sitter's chair, 9 on the desk
-#                             and what lies on it
+CONSOLE_POOL = (11, 2)      # what those two throw on the floor before the console, each at its foot (they hang over the shelf's edge)
+HOOD_LAMP = (12, 2)         # under the hood of the instrument wall, along the top row of faces: what the hood throws down
+#                             them. No lamps of its own: the valves at the heads of the piers glow there
+BENCH_LAMP = (12, 2)        # the drop light over the rating bench: 9 to 10 on the bench and what lies on it, 10 to 11 on the floor at
+#                             the sitter's chair; 5 on the long axis, three cells of it short of the middle of the room
+DESK_LAMP = (9, 2)          # the reading lamp on the message desk: 8 at the sitter's chair, 7 on the desk and what lies on it,
+#                             5 at the head four cells off: the floor about the desk, out to the long axis
 REGULATOR_LAMP = (9, 2)     # the bracket lamps over the two standard clocks
 CLOCK_LAMP = (10, 2)        # the bracket lamp over the world clocks: 9 on the middle dial, 7 on the end ones
 PLAN_LAMP = (11, 2)         # the bracket lamp over the blueprint and the card cabinets, by the door: the lamp one comes in
-#                             under. 5 to 6 on the floor of the doorway, 7 on the cabinets' fronts
+#                             under. 6 to 7 at the head in the doorway, 7 to 8 on the cabinets; V10 does not see it
 OVER = 20 * PX              # a bracket's arm above the top of what it hangs over: the shade ends half a block over it, a lamp
 #                             over a clock and not a hat on it (at 12 px the pale inside of the shade sat on the dial's rim)
 CONSOLE_HANG = FEET + 3.5   # 10.5: where the drop lights of the console end and their lamps hang; the shades end at 9.56, a block
@@ -325,11 +347,16 @@ CORD = lamps.PREFIX + "wire"                        # the cord of a drop light: 
 # where the source of each lamp is offered (the room's cells): under the shade, at what the lamp is for
 CONSOLE_LIGHT = tuple((x, SILL + 1, CONSOLE_Z) for x in DUCT_X)                     # (6, 9, -24), (9, 9, -24): over the shelf, at the height of the hand
 REGULATOR_LIGHT = tuple((int(math.floor(x)), SILL, Z0) for x in REGULATOR_X)        # (2, 8, -25), (13, 8, -25): the cell the clock hangs in
-DESK_LIGHT = (int(math.floor(DESK_X - SEAT)), FEET, int(math.floor(DESK_Z)))        # (12, 7, -12): the cell the sitter's chair stands in. The desk's own
-BENCH_LIGHT = (int(math.floor(BENCH_X + SEAT)), FEET, int(math.floor(BENCH_Z)))     # (3, 7, -16)     cell, against the wall, holds the panel under the sill,
-#                                                                                     and a source takes a free cell (offered there, the light
-#                                                                                     line moved it here); the cell over it is the one behind
-#                                                                                     the glass, which is the window's
+CONSOLE_POOL_LIGHT = tuple((x, FEET, CONSOLE_Z + 1) for x in DUCT_X)                # (6, 7, -23), (9, 7, -23): on the floor at the foot of the console
+HOOD_LIGHT = tuple((x, CORNICE_Y - 1, CONSOLE_Z) for x in range(RACK_X[0], RACK_X[1] + 1))  # (3..12, 12, -24): before the top row of faces
+assert all(min(abs(x - RACK_X[0] - i) for i, name in enumerate(RACK[0]) if name == "tubes") <= 2 for x, _, _ in HOOD_LIGHT), \
+    "a source under the hood has no glowing valves within the light line's reach"
+DESK_LIGHT = (int(math.floor(DESK_X - SEAT)), FEET + 1, int(math.floor(DESK_Z)))    # (12, 8, -12): over the sitter's chair, at the height of the desk's lamp
+BENCH_LIGHT = (int(math.floor(BENCH_X + SEAT)), FEET + 1, int(math.floor(BENCH_Z + LEFT)))  # (3, 8, -15): beside the bench under its lamp, at the height of
+#                                                                                     the hand. A desk's own cell, against the wall, holds the
+#                                                                                     panel under the sill, and a source takes a free cell
+#                                                                                     (offered there, the light line moved it out); the cell
+#                                                                                     over it is the one behind the glass, which is the window's
 CLOCK_LIGHT = (X0 + 1, int(math.floor(DIAL_Y)), int(math.floor(S.mid(*CLOCK_Z))))   # (3, 9, -10): before the middle dial (a panel stands in the dial's own cell)
 BRACKET_Y = DIAL_Y + BOARD[1] * PX + OVER                                           # 11.34: the arm of the world clocks' lamp, and of the lamp by the door:
 #                                                                                     the two hang at one height round the room's south-west corner
@@ -505,10 +532,12 @@ def cords_name(side):
 def _cords(side):
     """The patch cords of one jack field, for the face of its panel: in the field's lowest row a
     cord looped from one jack to the next, and a cord hanging from the third jack with its free
-    plug at its end, on the side of the console. They are the cream of the cord painted on the
-    panel. Anchor: the middle of the panel's face."""
+    plug at its end, on the side of the console. Cords braided in dull brown, plugs of brass. In
+    the cream of the cord painted on the panel they were the lightest curves beside the telegraph
+    and the drum, and from the front the handles of those two (cr3, c356, 11-16). Anchor: the
+    middle of the panel's face."""
     (xa, xb, sag), (xd, length) = CORDS[side]["loop"], CORDS[side]["drop"]
-    cord, sleeve = K.flat("cream", 1), K.flat("cream", 3)
+    cord, sleeve = K.flat("old_copper", 0), K.BRASS_D
     row, z = JACKS[0], PLUG + CORD_R
     top = row - 1.5                                 # where a cord has turned down out of its plug
     m = M.Model(cords_name(side))
@@ -560,7 +589,7 @@ def _forms():
     +x is the sitter's right, +z towards the sitter."""
     name = PREFIX + "forms"
     wide, deep = FORM[0] / 2.0, FORM[1] / 2.0
-    edge, top = K.CREAM, K.flat("cream", 3)
+    edge, top = P.mat("cream", base=1), K.flat("cream", 2)
 
     def face(tag, rows):
         return Sprite(f"{name}_{tag}", rows, PAPER_COLOURS)
@@ -579,7 +608,7 @@ def _forms():
     for i, turn in enumerate(SLIPS):
         y = 0.6 + 0.45 * i
         last = i == len(SLIPS) - 1
-        m.box((x - 1.5, y, z - 1.0), (x + 1.5, y + 0.2, z + 1.0), K.flat("cream", 3 if i % 2 == 0 else 2),
+        m.box((x - 1.5, y, z - 1.0), (x + 1.5, y + 0.2, z + 1.0), K.flat("cream", 2 if i % 2 == 0 else 1),
               rot=("y", turn, (x, y, z)), faces={"u": face("slip", ["eee", "iip"])} if last else None)
     x, z = INKWELL
     m.box((x - 1.0, 0.0, z - 1.0), (x + 1.0, 1.5, z + 1.0), K.flat("enamel", 0), skip="d")
@@ -587,15 +616,41 @@ def _forms():
     return m
 
 
+def _desk_lamp():
+    """The reading lamp on the message desk: the enamel cone of the room's drop lights on a brass
+    stem and arm, a weighted iron foot. A low lamp: its highest point is READING_TOP over the desk
+    top, under the eye of whoever stands in the room, who looks down on the blue of its cone and
+    never into its lit inside. The drop light that hung over this desk showed V10 the inside of its
+    shade, the lightest thing in that picture, at the picture's edge (cr4, 11-16). Anchor: the
+    middle of its foot; the arm reaches to +z."""
+    m = M.Model(PREFIX + "desk_lamp")
+    c = (0.0, READING_ARM)
+    m.tube("y", (0.0, 0.0), 0.0, 1.0, 2.5, K.IRON)                                              # the weighted foot
+    m.tube("y", (0.0, 0.0), 1.0, 1.75, 1.25, K.BRASS_D)
+    m.tube("y", (0.0, 0.0), 1.75, 9.75, 0.5, K.BRASS, sides=4)                                  # the stem
+    m.beam((0.0, 9.75, 0.0), (0.0, READING_TOP - 0.5, READING_ARM), 1.0, 1.0, K.BRASS)          # the arm, up to the lampholder
+    m.tube("y", c, READING_TOP - 1.5, READING_TOP, 1.0, K.BRASS_D)                              # the lampholder
+    m.taper("y", c, READING_TOP - 1.0, 7.5, 1.25, 4.0, K.ENAMEL, steps=4)                       # the cone
+    m.tube("y", c, 6.75, 7.5, 4.0, K.flat("cream", 2))                                          # its rolled rim
+    K.glass_prism(m, "y", c, 6.65, 6.75, 3.25, K.flat("opal", 1))                               # the lit inside, seen from the chair
+    K.glass_prism(m, "y", c, 6.55, 6.65, 2.0, K.flat("opal", 3))
+    return m
+
+
 def _jacket():
     """The operator's jacket over the back of the message desk's chair: the blue of the lamps'
     shades, hung by its collar over the crest, its back outside the spindles, its two fronts
     inside them, a sleeve down each side. With the mug and the form begun it says the room is
-    manned: who sat here has only gone to the rack. Made for props/furniture's swivel chair (the
-    crest at 12..14 px, 4..5 px out behind the seat) and placed where that stands, turned as it is.
-    Anchor: the chair's, the floor under the middle of its seat; the back is on the -z side."""
-    cloth, fold = P.mat("enamel", kind="plain", noise=0.10, bevel=0, base=1), P.mat("enamel", kind="plain", noise=0.10, bevel=0, base=2)
+    manned: who sat here has only gone to the rack. It is the lighter blue of that enamel, and
+    lighter still where it lies over the crest and the shoulders; on the seat lies a pad of worn
+    leather. The chair was black on a black floor in V10 (cr4): the jacket gives it its back, the
+    pad its seat. Made for props/furniture's swivel chair (the seat 5 px round, its top at 7 px;
+    the crest at 12..14 px, 4..5 px out behind the seat) and placed where that stands, turned as
+    it is. Anchor: the chair's, the floor under the middle of its seat; the back is on the -z
+    side."""
+    cloth, fold = P.mat("enamel", kind="plain", noise=0.10, bevel=0, base=2), P.mat("enamel", kind="plain", noise=0.10, bevel=0, base=3)
     m = M.Model(PREFIX + "jacket")
+    m.tube("y", (0.0, 0.0), 7.0, 7.6, 4.0, P.mat("old_copper", kind="plain", noise=0.10, bevel=0, base=1), sides=12)   # the seat's pad
     m.ring("y", (0.0, 14.35, 0.0), 4.5, 2.0, 0.7, fold, sides=16, arc=(48.0, 132.0))            # the yoke, lying on the crest
     m.ring("y", (0.0, 15.0, 0.0), 4.7, 1.2, 0.8, cloth, sides=16, arc=(68.0, 112.0))            # the collar, turned up
     m.ring("y", (0.0, 10.2, 0.0), 5.5, 0.6, 8.0, cloth, sides=16, arc=(50.0, 130.0))            # the back, outside the spindles
@@ -642,6 +697,7 @@ def _models():
     out[PREFIX + "mug"] = _mug()
     out[PREFIX + "forms"] = _forms()
     out[PREFIX + "jacket"] = _jacket()
+    out[PREFIX + "desk_lamp"] = _desk_lamp()
     return out
 
 
@@ -763,7 +819,8 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
         return 1 + lamp("pendant", (x, hang, z), ask, why, at)
 
     def bounce(at, ask, why):
-        """What a lamp's pool throws back at the ceiling: a source and no lamp."""
+        """A source and no lamp of its own: what a lamp's pool throws back at the ceiling, what the
+        rack's hood throws down its faces, the pool of a lamp that is one of the room's own models."""
         level, rank = ask
         cell = (ox + at[0], oy + at[1], oz + at[2])
         lights.append((cell, level, f"{NAME}:{why}"))
@@ -783,6 +840,8 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
     for x in range(RACK_X[0], RACK_X[1] + 1):
         put(x, CORNICE_Y, RACK_Z, roles.IRON_RIVETED.block)
         put(x, CORNICE_Y, CONSOLE_Z, st(roles.IRON_RIVETED.slab, type="top"))
+    for at in HOOD_LIGHT:
+        bounce(at, HOOD_LAMP, f"hood, x {at[0]}")
 
     # ---- the console, and what stands on it until machines/recorders and props/electrics bring the real
     # things; its two drop lights hang from the lip of the hood
@@ -795,8 +854,9 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
             n += recorders().place(c, name, slot["pos"], facing=slot["facing"], origin=origin)
     if theirs("electrics") is None:
         put(KEY_X, SILL, CONSOLE_Z, st(roles.BRASS_BUTTON, face="floor", facing="north"))   # the key
-    for x, side, at in zip(DUCT_X, ("west", "east"), CONSOLE_LIGHT):
+    for x, side, at, pool in zip(DUCT_X, ("west", "east"), CONSOLE_LIGHT, CONSOLE_POOL_LIGHT):
         n += drop(S.mid(x), CONSOLE_Z + 1.0 - LIP, CORNICE_Y + 0.5, CONSOLE_HANG, CONSOLE_LAMP, f"console {side}", at)
+        bounce(pool, CONSOLE_POOL, f"floor before the console, {side}")
 
     # ---- the patch cords, on the faces of the two jack fields; the operator's mug by the key
     own = _models()
@@ -828,22 +888,27 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
         put(X0, TOP, z, st(roles.IRON_RIVETED.stairs, facing="west", half="top"))
         put(X1, TOP, z, st(roles.IRON_RIVETED.stairs, facing="east", half="top"))
 
-    # ---- the message desk and the rating bench: a drop light from the ceiling over the sitter's left hand
-    # (who sits at the desk looks east, at the bench west); a board under the window stands in for the
-    # desk while props/furniture is not in the tree
+    # ---- the message desk and the rating bench (who sits at the desk looks east, at the bench west); a
+    # board under the window stands in for a desk while props/furniture is not in the tree. Over the bench
+    # a drop light from the ceiling, over the sitter's left hand; on the desk a low reading lamp, at the
+    # sitter's left hand
     if theirs("furniture") is None:
         for x, bay in ((X1, DESK_BAY), (X0, BENCH_BAY)):
             for z in MP.window_rows(bay):
                 put(x, FEET, z, st(roles.DARK_WOOD.slab, type="top"))
-    n += drop(DESK_X, DESK_Z - LEFT, CEIL_Y, DESK_HANG, DESK_LAMP, "message desk", DESK_LIGHT)
-    n += drop(BENCH_X, BENCH_Z + LEFT, CEIL_Y, DESK_HANG, DESK_LAMP, "rating bench", BENCH_LIGHT)
+    desk_yaw, bench_yaw = K.FACING["west"], K.FACING["east"]
+    desk_top = FEET + (BOARD_TOP if theirs("furniture") is None else theirs("furniture").TOP["writing_desk"])
+    assert theirs("furniture") is None or desk_top + READING_TOP * PX < FEET + EYE, \
+        "the reading lamp stands as high as the eye: one looks into its shade"
+    dx, _, dz = K.turn(desk_yaw, (READING[0] * PX, 0.0, READING[1] * PX))
+    n += K.put(c, own[PREFIX + "desk_lamp"], (DESK_X + dx, desk_top, DESK_Z + dz), yaw=desk_yaw - READING[2], origin=origin)
+    bounce(DESK_LIGHT, DESK_LAMP, "message desk")
+    n += drop(BENCH_X, BENCH_Z + LEFT, CEIL_Y, DESK_HANG, BENCH_LAMP, "rating bench", BENCH_LIGHT)
     bounce(DESK_BOUNCE, BOUNCE, "ceiling over the message desk")
     bounce(BENCH_BOUNCE, BOUNCE, "ceiling over the rating bench")
 
     # ---- what lies on the two desks, or on the boards that stand in for them: the chronometers on the
     # rating bench, the paper on the message desk
-    bench_yaw = K.FACING["east"]
-    desk_top = FEET + (BOARD_TOP if theirs("furniture") is None else theirs("furniture").TOP["writing_desk"])
     for along, out, twist in CHRONOMETERS:
         dx, _, dz = K.turn(bench_yaw, (along * PX, 0.0, out * PX))
         n += K.put(c, own[PREFIX + "chronometer"], (BENCH_X + dx, desk_top, BENCH_Z + dz), yaw=bench_yaw + twist, origin=origin)
