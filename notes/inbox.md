@@ -302,3 +302,10 @@
 - 10:27 facade #76868: the walk of A5 outdoors done: 240 stations reached, one blocker (the pit, fixed by cloud in 5f097045, to be verified in A6). s1 #76796: acceptance pictures from the A5 save (758036e4 on his branch).
 - head checks 10:02..10:28: 5f097045 89, 3b340160 89, 29858b5d 89, 7cc2554b 89, 0dfcb27a 89, 1fced102 89, cad2232f 90, a30509ba 90, cfa03ef7 92. All green.
 - STATUS pushed 10:12 (a532c5bf) and 10:30 (a60c0cae).
+- 10:31 A0 g2 #77167: RULED V12 = pos (126.0, 44.0, -50.0), look_at (22.0, 4.0, 0.0), into the skeleton and the board list, timing mine. Done at once: 88822ca2, tested on node100 (92 pass, board --check ok) -> the assembly d1c7e07b 10:37. Five scenes read getattr(S, "V12"): their code's station is the new one from now on, kept pictures redrawn at their next delivery (the director named them). boardshots says the sunset platform's west edge is 163 blocks from the station on the ground (behind the building): told the director.
+- 10:32 A0 g2 #77231: common/offline-sky is dropped; STATUS says 不做（总监 11-16 10:32）, 67 cards. The generator got a ninth state that is not counted and two header lines rewritten. STATUS db3b612f 10:39.
+- 10:29 A0 g2 #76979: how a picture passes: mean of five not under 4.0 and none under 3.
+- 10:31 a4 #77138: the indoor walk of A5: 0 blockers; findings on cursor/c164-a4-walkcand-f3-6824, to come through the gate to me.
+- 10:36 A0's desk: numbered folders of the dist branch are never deleted from A5 on (outb's tool removed A5 when A6 came; put back). outb has to change exportnext.sh: a third version will come to me.
+- merges 10:33..10:37: lamps globes e2546078 (touches obs_mat_ashlar and obs_main_shell with a1's and facade's word), cablecar 95957c6f, clocks b88a9cf4, astroroom second 2c8321d0, int. powerhouse b8975f50, refractor 1ae6964b, lights' way lamps ebdec90d.
+- head checks: 10:31 753bb134 92; 10:37 b88a9cf4 92. Green.

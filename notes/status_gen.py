@@ -27,6 +27,15 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 BEGIN, END = "<!-- s2:fast-lane:begin -->", "<!-- s2:fast-lane:end -->"
 CATEGORIES = ("common", "materials", "sky", "main", "site", "machines", "props", "interiors", "motion")
 STATES = ("待领", "制作中", "已交付", "已合并", "已出图", "暂过", "已过审", "退回")
+DROPPED = "不做"          # a card the director dropped: its row stays, it is not counted
+WHOLE = [               # (how a line of the file starts, the line that takes its place)
+    ("- 待领（5 张，",
+     "- 待领：没有了。67 张卡的第一版都在总装里（11-16 10:24 钟室最后一个进）；`common/offline-sky` 不做（总监 11-16 10:32）。"
+     "手上没卡的人找本类的审批人领打磨的活（总监 09:12），名单在 aide 的 `plan/ROSTER.md`。"),
+    ("状态：待领 → 制作中",
+     "状态：待领 → 制作中 → 已交付 → 已合并 → 已出图 → 已过审；旁路：退回（回到制作中）、暂过（交叉看过了、评审还没评）、"
+     "不做（总监砍掉的卡，行留着，不计数）。第 3 班的“已出图”是代码合并了、自查图也在总装里、关口核过，等评审。"),
+]
 NAMES = {"c164-s2": "s2", "c164-a1": "a1", "c164-facade": "facade", "c164-cr2": "cr2", "c164-a4": "a4",
          "c164-cr3": "cr3", "c164-a6": "a6", "c164-stair": "cr4", "c164-cr4": "cr4"}
 
@@ -152,7 +161,7 @@ def main():
             continue
         cells = lines[i].split("|")
         if "state" in change:
-            assert change["state"] in STATES, change["state"]
+            assert change["state"] in STATES or change["state"] == DROPPED, change["state"]
             cells[3] = f" {change['state']} "
         if "who" in change:
             cells[4] = f" {change['who']} "
@@ -172,8 +181,12 @@ def main():
 
     # ---- the counts ----------------------------------------------------------------------------
     counts = {s: 0 for s in STATES}
+    dropped = []
     for (sec, name), i in where.items():
         state = lines[i].split("|")[3].strip()
+        if state.startswith(DROPPED):
+            dropped.append(f"`{sec}/{name}`")
+            continue
         if state not in counts:
             raise SystemExit(f"{sec}/{name}: the state {state!r} is not one of the eight")
         counts[state] += 1
@@ -181,10 +194,16 @@ def main():
     tally = "，".join(f"{s} {counts[s]}" for s in STATES if counts[s])
     for i, line in enumerate(lines):
         if line.startswith("**汇总（"):
-            lines[i] = f"**汇总（s2 c318 更新，11-16 {now}）：共 {total} 张卡 —— {tally}。**"
+            also = f"另有不做的 {len(dropped)} 张（{"、".join(dropped)}），不计数。" if dropped else ""
+            lines[i] = f"**汇总（s2 c318 更新，11-16 {now}）：共 {total} 张卡 —— {tally}。{also}**"
             break
     else:
         raise SystemExit("no line of counts")
+
+    for i, line in enumerate(lines):
+        for start, whole in WHOLE:
+            if line.startswith(start):
+                lines[i] = whole
 
     # ---- the old sections: what the morning's rulings took away -------------------------------
     text = "\n".join(lines)
