@@ -106,6 +106,13 @@ def lantern(c, block, x, z):
     c.set(x + 1, 1, z, st(block, hanging="true"))
 
 
+def ladder(c, block, x, z, h=4):
+    """A run of it from the floor up, in the left cell of its two. A ladder hangs on the wall behind
+    it: that wall has to stand at z - 1, as high as the run."""
+    for y in range(h):
+        c.set(x, y, z, st(block, facing="south"))
+
+
 def pairs(c, x, z, items):
     """items = [(specimen function, repainted, vanilla twin), ...]: each pair side by side. Returns
     the x after the last."""
