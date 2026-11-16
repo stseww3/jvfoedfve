@@ -101,8 +101,8 @@ MIN_STEP = 3                    # ticks; a part that needs shorter steps is too 
 MAX_STEP = 200                  # ticks; a player who arrives sees a part stand still until its next step
 LEAD = 2                        # ticks a step is aimed beyond the next one, so a late step is not a halt
 MAX_TURN = 150.0                # degrees one step may aim through; at 180 the short way round is the wrong way
-PEAK = 40                       # commands in any one tick
-MEAN = 10.0                     # commands a tick on average
+PEAK = 120                      # commands in any one tick (round 2, plan/round2.md section 2; 40 before)
+MEAN = 40.0                     # commands a tick on average (10 before)
 FILES = 3000                    # function files of one scene
 EVENTS = 720                    # functions of one chain
 
@@ -574,6 +574,96 @@ def slide(canvas, axis, moves, cycle, *, entity=None, model=None, name=None, pha
         raise ValueError(f"{part.name}: the last move has to end at 0.0, where the part was placed")
     part.lead = LEAD
     return _enrol(canvas, part)
+
+
+def _turn_steps(arm, start, here, to, travel, lead, limit):
+    """One move of turn() cut into steps: ([(tick, ticks to get there, degrees)], the widest turn
+    a step aims through, the furthest the model's middle strays from its arc), or None when no
+    cut keeps within MAX_TURN and `limit`. As few steps as do, as even as whole ticks allow; all
+    but the last aim `lead` ticks beyond the next, the last ends on the move's own pose."""
+    least = -(-travel // MAX_STEP)
+    for n in range(least, max(least, travel // MIN_STEP) + 1):
+        cuts = [start + (k * travel + n // 2) // n for k in range(n + 1)]
+        kinds = {(cuts[k + 1] - cuts[k], lead if k < n - 1 else 0) for k in range(n)}
+        turn_ = max(abs(to - here) * (dt + ahead) / float(travel) for dt, ahead in kinds)
+        if turn_ > MAX_TURN + 1e-6:
+            continue
+        stray = max(_stray(arm, (to - here) * dt / float(travel), dt / float(dt + ahead)) for dt, ahead in kinds)
+        if stray > limit + 1e-9:
+            continue
+        steps = []
+        for k in range(n - 1):
+            dt = cuts[k + 1] - cuts[k] + lead
+            steps.append((cuts[k], dt, here + (to - here) * (cuts[k] - start + dt) / float(travel)))
+        steps.append((cuts[n - 1], cuts[n] - cuts[n - 1], to))
+        return steps, turn_, stray
+    return None
+
+
+def turn(canvas, axis, moves, cycle, *, entity=None, model=None, name=None, phase=0, in_step=None):
+    """The part turns about `axis` and stops, as a list of moves tells it: what slide() is to a
+    shift. An escape wheel that jumps half a tooth at every beat, the arm of a signal that drops
+    and comes back, a fly that whirls while the clock strikes.
+
+    axis     as in spin(): "x", "-y", ... the model's own axis, or a direction in the world. The
+             turn is right-handed: counter-clockwise seen from the tip of the axis
+    moves    [(tick it sets off, degrees from the rest pose it turns to, ticks it takes), ...] in
+             order. The degrees count on from move to move: more than the move before turns the
+             part on (360 and beyond for one that goes round), less turns it back. Between two
+             moves it stands still. The last move ends at 0 or at whole turns, the pose the part
+             was placed in: a loop comes back to where it starts.
+    cycle    ticks after which the moves repeat
+    in_step  not written yet: the chain of this cycle is started a few ticks apart from the
+             others (STAGGER), by a difference that stays the same
+
+    A move is cut into steps where it takes longer than MAX_STEP ticks, turns further than
+    MAX_TURN degrees, or would take a model whose middle lies off the axis from its arc (WOBBLE,
+    as in spin()); the steps of one move run into each other, and its last one ends on the pose
+    the move names. A move too fast for that is refused, with the reason.
+    """
+    if in_step is not None:
+        raise ValueError("turn(in_step=) is not written yet: leave it out, the chains then start a few ticks apart")
+    part = _register(canvas, "turn", cycle, entity, model, name, phase)
+    part.axis = part.local(axis)
+    track, at, here = [], 0, 0.0
+    for start, to, travel in moves:
+        start, travel, to = int(start), int(travel), float(to)
+        if start < at:
+            raise ValueError(f"{part.name}: the move at tick {start} sets off before the one before it has ended")
+        if travel < 1:
+            raise ValueError(f"{part.name}: a move takes at least one tick")
+        if abs(to - here) < 1e-6:
+            # the same pose given twice makes the client show the way to it once more, from the start
+            raise ValueError(f"{part.name}: the move at tick {start} goes nowhere (the part is at {here:g} degrees "
+                             f"already); a part stands still between two moves by itself")
+        track.append((start, here, to, travel))
+        at, here = start + travel, to
+    if not track:
+        raise ValueError(f"{part.name}: moves= names no move")
+    if at > part.cycle:
+        raise ValueError(f"{part.name}: the moves end at tick {at}, after the cycle of {part.cycle}")
+    if abs(here - 360.0 * round(here / 360.0)) > 1e-6:
+        raise ValueError(f"{part.name}: the last move has to end at 0 or at whole turns, the pose the part was "
+                         f"placed in; it ends at {here:g} degrees")
+    arm = part.arm()
+    for lead, limit in _TIERS:
+        cut = [_turn_steps(arm, start, a0, a1, travel, lead, limit) for start, a0, a1, travel in track]
+        if None in cut:
+            continue
+        part.steps = [(tick, ticks, degrees, 0.0) for steps, _turn, _stray_ in cut for tick, ticks, degrees in steps]
+        part.lead = lead
+        part.turn = max(turn_ for _steps, turn_, _stray_ in cut)
+        part.stray = max(stray for _steps, _turn, stray in cut)
+        return _enrol(canvas, part)
+    # the last of the tiers is the widest: a move it has no cut for is the one to name
+    start, a0, a1, travel = next(move for move in track if _turn_steps(arm, *move, 0, WOBBLE_MOST) is None)
+    if _turn_steps(0.0, start, a0, a1, travel, 0, WOBBLE_MOST) is None:
+        raise ValueError(f"{part.name}: the move at tick {start} turns it {abs(a1 - a0):g} degrees in {travel} ticks; "
+                         f"a step takes {MIN_STEP} ticks or more and turns {MAX_TURN:g} degrees at most. Give the "
+                         f"move more ticks")
+    raise ValueError(f"{part.name}: the middle of its model lies {arm:.2f} blocks off the axis, and the move at tick "
+                     f"{start} ({abs(a1 - a0):g} degrees in {travel} ticks) would take it off its arc. Centre the "
+                     f"model on the axis, or give the move more ticks")
 
 
 def blink(canvas, other, on, off, *, entity=None, model=None, name=None, phase=0):

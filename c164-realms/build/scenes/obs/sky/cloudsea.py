@@ -63,6 +63,7 @@ from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
 from ..materials import _kit as K
+from . import _swell
 
 # The director's switch for what is laid over the whole site (COMMON 0.5; since 11-16 08:24 the
 # author turns it on in the commit he delivers): off, build() places nothing and takes nothing up,
@@ -565,7 +566,8 @@ def _shade(h):
 
 
 def build(canvas, origin=(0, 0, 0), *, seed=SEED, dress=None):
-    """Lay the sea of clouds into the canvas. Places blocks only, so it returns 0 display entities."""
+    """Lay the sea of clouds into the canvas: blocks, and the heads of its swell (_swell.py), which
+    are display entities. Returns how many of those."""
     if not (DRESS if dress is None else dress):
         return 0
     names = list(B.CLOUD)                           # dark..light, as the tone index runs
@@ -658,7 +660,18 @@ def build(canvas, origin=(0, 0, 0), *, seed=SEED, dress=None):
     ii, jj, kk = np.nonzero(floor)
     for x, y, z in zip((ii + x0 + ox).tolist(), (jj + y0 + oy).tolist(), (kk + z0 + oz).tolist()):
         canvas.set(x, y, z, names[0], keep=True)
-    return 0
+
+    # the swell: heads that rise out of level sea and sink back, well off the land and what is built
+    has = solid.any(axis=1)
+    top = np.where(has, y1 - np.argmax(solid[:, ::-1, :], axis=1), y0 - 1)
+    open_sea = has & here & ~occ.any(axis=1) & ~land
+    X, Z = np.meshgrid(np.arange(nx) + x0, np.arange(nz) + z0, indexing="ij")
+    places = _swell.sites((x0, z0), top, open_sea, _distance(~open_sea, 32), _hull(X, Z), TROUGH, MEAN + 2)
+    return _swell.place(canvas, origin, places, (S.WIND[0], S.WIND[2]))
+
+
+def models():
+    return _swell.models()
 
 
 # --- the resource pack: the five tone pictures, the five blocks, the cloud layer's picture -----------
