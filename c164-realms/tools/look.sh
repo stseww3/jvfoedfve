@@ -8,7 +8,8 @@
 #
 #   <scene>                  a test scene of your build/scenes/, or obs for the whole observatory
 #   --from X Y Z --to X Y Z  where the eye is and the point it looks at, in the scene's own
-#                            coordinates (as in its shots.json; obs: the world's)
+#                            coordinates, as in its shots.json (obs: the scene's too, as the board's
+#                            views have them -- 200 less in y than the exported world)
 #   --only <shot>[,<shot>]   instead: shots of the scene's own shots.json by name (obs: board views,
 #                            v01_arrival ...); neither given: every shot of the scene's list
 #   --shots <n>              pictures a view (6), --every <seconds> apart (2)
