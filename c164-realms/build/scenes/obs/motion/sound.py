@@ -17,6 +17,7 @@ centre.
     sound.place(canvas, "tick", pos, reach=8.0)      # one spot of a kind, for whoever places a clock
     sound.build(canvas, origin)                       # every spot of the master scene
     sound.pack(pack_dir)                              # assets/c164/sounds.json
+    sound.spots(canvas)                               # what is registered: python -m scenes.obs_mot_sound spots
 
 What is heard where (build()):
     tick        the master clock in the star hall, and every regulator clock that stands on the canvas
@@ -44,6 +45,7 @@ volume, wherever he stands.
 """
 import json
 import os
+import re
 import struct
 import zipfile
 
@@ -334,3 +336,18 @@ def build(canvas, origin=(0, 0, 0)):
     _telegraph(canvas, origin)
     _wind(canvas, origin)
     return 0
+
+
+def spots(canvas):
+    """The spots our events are played at as they stand on the canvas, for the card's table and its
+    budget: [(event, (x, y, z), cycle, the ticks of the cycle it sounds on, reach)]. Read off the
+    book motion/_kit keeps on the canvas; nothing that builds or packs depends on this."""
+    book = getattr(canvas, "motion", None)
+    out = []
+    for p in (book.points if book is not None else ()):
+        if p.kind != "sound" or not p.what.startswith(NS + ":"):
+            continue
+        reach = re.search(r"distance=\.\.([0-9.]+)", p.text)
+        out.append((p.what.split(":", 1)[1], tuple(p.pos), p.cycle, tuple(p.ticks),
+                    float(reach.group(1)) if reach else None))
+    return out
