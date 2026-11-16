@@ -1,0 +1,33 @@
+[trip 02:05:43 +0s] trip of obs, obs_sky_safe: the code of febe846a (tag febe846) of cursor/c164-assembly-fable-a9f5, checked out at /tmp/c164_s1/shot/febe846a, view distance 12 (the server's 10), cloud range 128; 4 cores, 600 s at most
+[trip 02:05:43 +0s] clean: nodemc.py down  (up to 180 s)
+[trip 02:05:43 +0s] clean: exit 0, 0 s
+[trip 02:05:43 +0s] setup: nodemc.py setup  (up to 300 s)
+    [nodemc 02:05:43] installing libegl1
+    [nodemc 02:05:45] installed
+    [nodemc 02:05:45] vulkan: apiVersion 1.4.318, deviceName llvmpipe (LLVM 20.1.2, 256 bits), driverInfo Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+    [nodemc 02:05:45] java: /agent/realms-study/jdk/jdk-25.0.5+8-jre/bin/java
+    [nodemc 02:05:45] game files: whole ({"version": "26.3", "system": "linux", "mainClass": "net.minecraft.client.main.Main", "assetIndex": "34", "files": 5124, "downloaded": 5123, "assets_skipped": 9)
+    [nodemc 02:05:45] settings written: nothing, all there; render distance 12, the server's view distance 10, cloud range 128
+[trip 02:05:45 +2s] setup: exit 0, 2 s
+[trip 02:05:45 +2s] station: nodemc.py status  (up to 60 s)
+    server: no answer
+    client: not running
+    display: none
+    distances: client renderDistance 12, server view-distance 10, cloudRange 128
+    machine: 4 cores, load 0.19, 10880 MB of memory available, 239 GB of disk free under /agent/realms-study
+[trip 02:05:45 +2s] station: exit 0, 0 s
+[trip 02:05:45 +2s] shuttle: shuttle.py --tag febe846 --commit febe846a --settle 10.0 --first-settle 60.0 --still 60.0 --after-budget 300.0 --project /tmp/c164_s1/shot/febe846a/c164-realms --out /tmp/c164_s1/real --only obs=v01_arrival --only obs_sky_safe=sea_west obs obs_sky_safe  (up to 478 s)
+    [shuttle 02:05:45] the code that is shot: /tmp/c164_s1/shot/febe846a/c164-realms at febe846a; tag febe846
+    [shuttle 02:05:45] obs_sky_safe stood on plot 200 in this test world (a trip before the table held it); the table gives it 106 now and it is placed there
+        written: /tmp/c164_s1/real/_trip/board-obs.json (12 views; skeleton: /tmp/c164_s1/shot/febe846a/c164-realms/build/scenes/obs/common)
+    [shuttle 02:05:45] stopped: these scenes carry different looks, and a trip holds one: obs; obs_sky_safe. Run them in separate trips.
+    [shuttle 02:05:45] trip done with failures: these scenes carry different looks, and a trip holds one: obs; obs_sky_safe. Run them in separate trips. (0 s)
+[trip 02:05:46 +2s] shuttle: exit 1, 0 s
+[trip 02:05:46 +2s] obs: no note obs-febe846-real.txt in /tmp/c164_s1/real/febe846/send (not sent yet, or another tag)
+[trip 02:05:46 +2s] obs_sky_safe: no note obs_sky_safe-febe846-real.txt in /tmp/c164_s1/real/febe846/send (not sent yet, or another tag)
+[trip 02:05:46 +2s] what the game said: nodemc.py client-said 1794794744 /tmp/dais_jobs/c319/c164-realms/renders/real/_trips/20261116-020543-febe846-obs-client.txt  (up to 30 s)
+    client said: 0 records on shaders, pipelines and packs, 0 of a failure; written to /tmp/dais_jobs/c319/c164-realms/renders/real/_trips/20261116-020543-febe846-obs-client.txt
+[trip 02:05:46 +3s] what the game said: exit 0, 0 s
+[trip 02:05:46 +3s] close: nodemc.py down  (up to 180 s)
+[trip 02:05:46 +3s] close: exit 0, 0 s
+[trip 02:05:46 +3s] trip done with failures: the shuttle ended with 1; obs: no pictures kept; obs_sky_safe: no pictures kept; pictures kept: none; log renders/real/_trips/20261116-020543-febe846-obs.log
