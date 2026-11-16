@@ -105,6 +105,9 @@ def _levels(room_in):
 
     c = build(room_in)
     lo, hi = BOX
+    # the game lets light through a ladder; the light kit's count takes it for a whole block
+    for cell in [cell for cell, state in c.b.items() if AB.parse(state)[0] == tower.LADDER]:
+        del c.b[cell]
     sources = {}
     for cell, state in c.b.items():
         if all(lo[i] <= cell[i] <= hi[i] for i in range(3)) and AB.parse(state)[0] == "light":
@@ -116,10 +119,16 @@ def _outside(cell):
     return not (tower.X0 < cell[0] < tower.X1 and tower.Z0 < cell[2] < tower.Z1)
 
 
+def doorway():
+    """The two cells of the tower's door, in its wall: the way in, which the lobby's lamp lights."""
+    x, z = tower.FACE["west"].cell(tower.MID)
+    return [(x, tower.FOOT, z), (x, tower.FOOT + 1, z)]
+
+
 def outside_light(got=None):
-    """The block light outside the tower's walls (its recesses and two cells beyond its faces) with
-    the room and without it: {cell: (without, with)} for every cell that differs. Empty when the
-    room changes nothing outside."""
+    """The block light outside the tower's walls (its recesses, its door and two cells beyond its
+    faces) with the room and without it: {cell: (without, with)} for every cell that differs.
+    Empty when the room changes nothing outside."""
     bare, full = got or (_levels(False)[0], _levels(True)[0])
     cells = sorted(cell for cell in set(bare) | set(full) if _outside(cell))
     return {cell: (bare.get(cell, 0), full.get(cell, 0)) for cell in cells if bare.get(cell, 0) != full.get(cell, 0)}

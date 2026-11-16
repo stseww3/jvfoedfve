@@ -6,7 +6,7 @@ import os
 from scenes import obs_int_clockroom_bare as twin
 from scenes.obs.main import tower
 
-from . import _levels, outside_light, room, shots, walk_light, way_light
+from . import _levels, doorway, outside_light, room, shots, walk_light, way_light
 
 
 def write(folder, rows):
@@ -24,11 +24,15 @@ def main():
     print("sources the room adds:", " ".join(f"{c}={v}" for c, v in sorted(full_sources.items())
                                              if bare_sources.get(c) != v) or "none")
     changed = outside_light((bare, full))
-    if not changed:
+    door = {c: v for c, v in changed.items() if c in doorway()}
+    rest = {c: v for c, v in changed.items() if c not in door}
+    if not rest:
         print("light outside the tower: the same in every cell with the room and without it")
     else:
-        print(f"light outside the tower: {len(changed)} cells differ (cell without>with):",
-              " ".join(f"{c}{a}>{b}" for c, (a, b) in changed.items()))
+        print(f"light outside the tower: {len(rest)} cells differ (cell without>with):",
+              " ".join(f"{c}{a}>{b}" for c, (a, b) in rest.items()))
+    print("light in the doorway, the way in (cell without>with):",
+          " ".join(f"{c}{a}>{b}" for c, (a, b) in door.items()) or "the same")
     walk = walk_light(full)
     low = {column: v for column, v in walk.items() if v < room.WALK_LIGHT}
     print(f"light on the walk: {len(walk)} places, the least {min(walk.values())}, the most {max(walk.values())};",
