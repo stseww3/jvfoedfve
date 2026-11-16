@@ -80,15 +80,19 @@
  ],
  "main/dome": [],
  "interiors/batteryroom": [
-  "【第一版 4373c72e（cr4 09:48 合 f644005f）：MOVED_IN = False，主场景里还没有东西，外观逐像素不变；实体 107；下一笔打开 MOVED_IN，门洞 (7, 0..1, −6) 请 shell 开。墙上的配电板和铜排是 `machines/batteryboard`（mast）】"
+  "【第一版 4373c72e（cr4 09:48 合 f644005f）：MOVED_IN = False，主场景里还没有东西，外观逐像素不变；实体 107；下一笔打开 MOVED_IN，门洞 (7, 0..1, −6) 请 shell 开。墙上的配电板和铜排是 `machines/batteryboard`（mast）】",
+  "【第一版 4373c72e（cr4 09:48 合 f644005f；实体 107）；9dc42dc7（09:58 合 4f94e98f）打开 MOVED_IN，屋子进主场景；**门洞 (7, 0..1, −6) 10:05 开了**（shell 84db8c59 → 29858b5d，星厅北墙）。墙上的配电板和铜排是 `machines/batteryboard`（mast）】"
  ],
  "interiors/platevault": [
   "【第一版 de1db354（cr4 09:37 合 252fb598）：MOVED_IN 已开，实体 92；门洞 (7, 0..1, 6) 还没开（已请 shell）；升降机停在天花下，楼板不开】",
   "【第一版 de1db354（cr4 09:37 合 252fb598）：MOVED_IN 已开，实体 92；升降机停在天花下，楼板不开。打磨轮 15b5857f（09:50 合 648a0ed1）：暗房件和升降机换成 `interiors/_darkroom.py`（power 写的），侧走道每根梁下一盏灯，实体 101。**门洞 (7, 0..1, 6) 09:53 开了**（shell 602b96f2 → be109b75；星厅 24a44203 → 4a12aa41 让开了堵着的两块墙裙板）】"
  ],
- "interiors/clockroom": [],
+ "interiors/clockroom": [
+  "【第一版 3f97d184（cr4 10:24 合 cfa03ef7）：MOVED_IN = True，build() 先调 `main/tower.py` 的 way_up()（塔门开、井里的梯、钟室的地板），再摆机芯；摆、擒纵叉、擒纵轮在动；两个新场景 obs_int_clockroom / _bare。**至此 interiors 八张卡的第一版都在总装里**】"
+ ],
  "interiors/astroroom": [
-  "【第一版改由 snow c336 做（sdome 同意，cr4 09:38 报），赶 10:30 那版整包】"
+  "【第一版改由 snow c336 做（sdome 同意，cr4 09:38 报），赶 10:30 那版整包】",
+  "【第一版 2d94bf71（cr4 10:17 合 cad2232f）：astroroom.py、rec 的 `_astrodrive.py`、测试场景、7 张图；MOVED_IN 已开，15 个实体，灯两盏，窗和门外面不亮。09:38 起改由 snow 做（sdome 同意）】"
  ],
  "motion/smoke": [
   "【第一版 1d64f141（cr2 09:21 合 ff666b9a）、第二版 49a5644e（09:34 合 6a2a425e）；smoke c357】",
@@ -118,7 +122,8 @@
   "【第二版 0fae16a2：海只铺在有东西站在海里的画布上（别人只搭台面的测试场景不再铺海）；海面是一个挨一个的矮云包；明暗重分；加机位 track_end。第一版 66f10a24：盘是平地外 150 格，海面世界 y 172，方块雾真距离 60 到 150】"
  ],
  "common/walk-out": [
-  "【第 1 回合 59c4d284（总装 5959264 上走的；s2 09:15 合 6a0494e3，delivery.py PASS、来源 clean，合后头上 75 个场景全过）：`plan/reviews/walk/5959264/`（站表、47 张联系表、`out-findings.md`，没有挡人的）、`tools/walkreach.py`、路线 `plan/reviews/walk/out-route.json`。收尾第 2 条：A5 起每版候选在绿头上重走，挡人的直接派作者】"
+  "【第 1 回合 59c4d284（总装 5959264 上走的；s2 09:15 合 6a0494e3，delivery.py PASS、来源 clean，合后头上 75 个场景全过）：`plan/reviews/walk/5959264/`（站表、47 张联系表、`out-findings.md`，没有挡人的）、`tools/walkreach.py`、路线 `plan/reviews/walk/out-route.json`。收尾第 2 条：A5 起每版候选在绿头上重走，挡人的直接派作者】",
+  "【第 1 回合 59c4d284（总装 5959264 上走的；s2 09:15 合 6a0494e3）：`plan/reviews/walk/5959264/`、`tools/walkreach.py`、路线 `out-route.json`。**A5（bd2f2874）重走完**（facade 10:27）：240 站全到（233 走，7 跳是发电房背后栏杆外放的站）；挡人的 1 处：坑 (−19, 30)，cloud df9e2053 已修进总装（5f097045），A6 验；没有断路，没有穿模型出不来的地方；第 1 回合 8 条改好 5、改一半 1（管桥桥头）、不改 2（a4 定）；新的小毛病 2 条不挡人，归 a4（气象站台阶两侧矮台外端敞着；露台东沿路缘从管桥石座走得上去）。清单 `walk/bd2f287/out-findings.md` 在 walk-out 分支 d3b72853，还没交进总装】"
  ],
  "common/walk-in": [
   "【第 1 轮（总装 636ad21）在 a4 的分支 `cursor/c164-a4-walkin-f3-6824`：挡人的四处 R1、R2（两翼屋脊近端的坑，main/roof，sdome）、F1（正门的占位亮墙，已撤，复查）、T1（报时塔脚没有门洞，tower 已进总装，复查）；`tools/walk.py` 已随 walk-out 进总装（6a0494e3）。09:55 前过关口交 s2】",
@@ -126,7 +131,8 @@
  ],
  "common/export": [
   "【整包一版一版在 `cursor/c164-dist-f4b8` 的 `c164-realms/dist/A<n>/`（A3 09:02：不带注册表文件，数据包只有函数 290、标签 3，服务端冷启动 0 警告，天是原版夜空；A4 09:30 起钟锁 20370，彗星在正西；**A5 10:00 是第一个候选版**）。导出工具第一版 09:55 前过关口交 s2】",
-  "【导出工具第一版 d6df8bcf（s2 09:46 合 8f3a0621；关口 PASS 对 29e5f1e7，来源 clean）：`tools/export.py`（make/verify/pack/compare/page）、`tools/exportnext.sh`（一轮的 git 部分）、探针场景 `obs_export_probe`、空跑报告 `plan/reviews/export/451f458.md`、`realms-rules.md`、`questions.md`。着色器的接法在里面（树里有 `sky/_shaders` 才生效；`--shaders auto|on|off`），**还没在节点上跑过，A5 是第一次**；没做：同一提交导两次逐文件比。整包一版一版在 `cursor/c164-dist-f4b8` 的 `c164-realms/dist/A<n>/`，不进总装（A3 09:02：不带注册表文件，数据包只有函数 290、标签 3，服务端冷启动 0 警告，天是原版夜空；A4 09:30 起钟锁 20370，彗星在正西；**A5 10:00 是第一个候选版**，管理员 10:05 拿它传 Realm，旁边另导一个不带着色器的 `c164-A5-plain.zip` 备用）】"
+  "【导出工具第一版 d6df8bcf（s2 09:46 合 8f3a0621；关口 PASS 对 29e5f1e7，来源 clean）：`tools/export.py`（make/verify/pack/compare/page）、`tools/exportnext.sh`（一轮的 git 部分）、探针场景 `obs_export_probe`、空跑报告 `plan/reviews/export/451f458.md`、`realms-rules.md`、`questions.md`。着色器的接法在里面（树里有 `sky/_shaders` 才生效；`--shaders auto|on|off`），**还没在节点上跑过，A5 是第一次**；没做：同一提交导两次逐文件比。整包一版一版在 `cursor/c164-dist-f4b8` 的 `c164-realms/dist/A<n>/`，不进总装（A3 09:02：不带注册表文件，数据包只有函数 290、标签 3，服务端冷启动 0 警告，天是原版夜空；A4 09:30 起钟锁 20370，彗星在正西；**A5 10:00 是第一个候选版**，管理员 10:05 拿它传 Realm，旁边另导一个不带着色器的 `c164-A5-plain.zip` 备用）】",
+  "【导出工具第一版 d6df8bcf（s2 09:46 合 8f3a0621）：`tools/export.py`（make/verify/pack/compare/page）、`tools/exportnext.sh`、探针场景 `obs_export_probe`、`plan/reviews/export/`。第二版 6bd5df47（s2 10:22 合 2204aaa2；两次关口都 PASS，来源 clean）：一轮出两个包（带着色器的和不带的备用 plain），节点那一半收成 `tools/exportround.sh`；a2 切换以后 `--look on` 报错说明。没做：同一提交导两次逐文件比。整包在 `cursor/c164-dist-f4b8` 的 `c164-realms/dist/A<n>/`，不进总装：**A5（第一个候选版，10:13）从绿头 bd2f2874 导**，`c164-A5.zip` 2.8 兆、着色器 10 个、数据包函数 321、标签 3、注册表文件 0、42 项检查全过，另有 `c164-A5-plain.zip`；总监 10:14 把路径给了管理员。**A6 从 10:28 的绿头 cfa03ef7 导**】"
  ],
  "common/interface": [
   "【11-16 09:15：`delivery.py` 的 scope 给 common 的卡开口，`plan/reviews/<卡名到第一个连字符>/` 算卡自己的文件（72c96d29，进总装 c3eedd60）。总监 09:11 的第五次补充：屏障的第二种用法，看得见的实心大件模型里面（出生点站台上的车厢，12 格，随 cablecar-winch 进）】"
@@ -143,7 +149,8 @@
   "【第一版 104b94b6（cr2 09:34 合 16ad2817）：着色器生成器 `sky/_shaders.py`、`sky/mood.py` 的数（雾 60 到 150、按高度变薄两条律、LOCK_TICK）、样板场景 `obs_sky_safe`。成品包由 outb 导出时加着色器、不带注册表文件；开发用的 obs 和各测试场景暂时还是注册表的天，整体切换（obs 的 BIOME、render.py、看板的时刻锁 20370）a2 和 cloud 备好补丁交 s2，10:00 的候选版导完以后动，到时清空 regen 的放行表。`check.py` 已认 sky 写 `assets/minecraft/shaders/`、BIOME 带命名空间的原样用（07fe40e0）】"
  ],
  "sky/ridges": [
-  "【关板 f960c7c9（cr2 09:28 合 b1c0d7ae）：DRESS = False，总场景不再放远山板；远山改进天的着色器（a2 分给 comet）。按 192 格写的说明撤板时一起清】"
+  "【关板 f960c7c9（cr2 09:28 合 b1c0d7ae）：DRESS = False，总场景不再放远山板；远山改进天的着色器（a2 分给 comet）。按 192 格写的说明撤板时一起清】",
+  "【撤板 f5430861（cr2 10:00 合 febe846a）：板的模型、贴图、实体、旧预览全删，只剩给着色器的层（新山脊线画进天里；真机没看过，comet 请 s1 拍）。之前 f960c7c9（09:28 合 b1c0d7ae）先把 DRESS 关了】"
  ],
  "interiors/chartroom": [
   "【第一版 77f2fc84（cr4 09:28 合 df800e74）：MOVED_IN 已开；中轴长灯台占的 14 格里有屏障（看得见的实心模型里）；已知弱处：灯下不亮、台侧百叶、挂钟未挂】"
