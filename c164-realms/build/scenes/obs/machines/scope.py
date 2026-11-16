@@ -1070,16 +1070,25 @@ EYE_SIZE = (640, 360)           # the picture, pixels: the game stretches it ove
 EYE_FIELD = 160.0               # pixels from the middle to the edge of the round field
 EYE_SPAN = 2.6                  # degrees of sky across the field: the comet of the sky (sky/comet) nine times as large
 EYE_HEAD = (-0.10, -0.52)       # the nucleus in the field: degrees north of its middle, degrees above it
-EYE_SKY = 0.8                   # the field's sky against the sky's own colour: a telescope spreads its light too
-EYE_STARS = (                   # the field's stars: across and up from its middle (1 is its edge), light
-    (-0.66, 0.42, 0.95), (0.60, -0.47, 0.60), (-0.34, -0.74, 0.45), (0.82, 0.22, 0.50), (-0.84, -0.12, 0.38),
-    (0.36, 0.84, 0.42), (-0.52, 0.02, 0.30), (0.66, 0.58, 0.34), (-0.20, 0.90, 0.36), (0.14, 0.36, 0.48),
-    (0.90, -0.20, 0.28), (-0.72, -0.52, 0.55), (0.44, -0.80, 0.32),
+EYE_SKY = (0.107, 0.140)        # the grey of the field's sky: at its edge, in its middle (the sky behind the comet
+#                                 lies between the two darkest steps of night_glass; a telescope's field is darker at its edge)
+EYE_STARS = (                   # the field's stars: across and up from its middle (1 is its edge), and how bright (0 to 2)
+    (-0.66, 0.42, 2), (0.60, -0.47, 1), (-0.34, -0.74, 1), (0.82, 0.22, 1), (-0.84, -0.12, 0),
+    (0.36, 0.84, 0), (-0.52, 0.02, 0), (0.66, 0.58, 0), (-0.20, 0.90, 0), (0.14, 0.36, 1),
+    (0.90, -0.20, 0), (-0.72, -0.52, 2), (0.44, -0.80, 0),
 )
-
-
-def _tone(text):
-    return np.array([int(text[i:i + 2], 16) for i in (1, 3, 5)], dtype=float) / 255.0
+# The picture's colours are the palette's and no others. Its light is laid on one of two ladders, each
+# dark to light: the dust's and the head's goes from the sky's blue through the grey-violets of the cloud
+# sea to warm white, the ion tail's stays blue. Between two steps of a ladder the pixels are mixed in an
+# ordered pattern.
+EYE_WARM = (("night_glass", 0), ("night_glass", 1), ("night_glass", 2), ("night_glass", 3), ("cloud", 0), ("cloud", 1),
+            ("cloud", 2), ("cloud", 3), ("cloud", 4), ("glow", 4))
+EYE_COOL = (("night_glass", 0), ("night_glass", 1), ("night_glass", 2), ("night_glass", 3), ("night_glass", 4),
+            ("snow", 4))
+EYE_DARK = ("iron", 0)          # round the field: the inside of the eyepiece
+EYE_STAR = (("night_glass", 4), ("snow", 4), ("porcelain", 3))      # a star's point, by how bright it is
+_LUMA = np.array([0.299, 0.587, 0.114])
+_BAYER = (np.array([[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]], dtype=float) + 0.5) / 16.0
 
 
 def _rise(v, lo, hi):
@@ -1087,18 +1096,37 @@ def _rise(v, lo, hi):
     return s * s * (3.0 - 2.0 * s)
 
 
+def _steps(ladder):
+    """A ladder's colours as bytes and their greys (0 to 1), which have to rise."""
+    tones = np.array([P.hx(P.RAMPS[name][step]) for name, step in ladder], dtype=np.uint8)
+    grey = (tones @ _LUMA) / 255.0
+    if (np.diff(grey) <= 0.0).any():
+        raise ValueError(f"the ladder {ladder} does not rise")
+    return tones, grey
+
+
+def _laid(grey, ladder):
+    """The colours of a field of grey on a ladder: of the two steps a grey lies between, the
+    lighter where the ordered pattern says so, the more often the nearer the grey is to it."""
+    tones, at = _steps(ladder)
+    low = np.clip(np.searchsorted(at, grey, side="right") - 1, 0, len(at) - 2)
+    share = (grey - at[low]) / (at[low + 1] - at[low])
+    rows, cols = np.indices(grey.shape)
+    return tones[np.clip(low + (share > _BAYER[rows % 4, cols % 4]), 0, len(at) - 1)]
+
+
 @functools.lru_cache(maxsize=None)
 def eye_picture():
-    """What the eyepiece shows, (rows, columns, 4) bytes: a round field of the evening's sky on
-    black, in it the comet's head and the roots of its tails, upright as the comet stands in the
-    slit (up is up, right is north).
+    """What the eyepiece shows, (rows, columns, 4) bytes: a round field of the evening's sky in
+    the dark of the eyepiece, in it the comet's head and the roots of its tails, upright as the
+    comet stands in the slit (up is up, right is north).
 
-    The anatomy and the colours are the sky's comet's (sky/comet, version a), seen EYE_SPAN degrees
-    across: the nucleus is a point; round it the hoods, parabolas of light that open away from the
-    sun, which is under the horizon below the head; behind the nucleus the dark lane of its
-    shadow; the dust tail goes up warm and leans north as it does over the dome; the ion tail is
-    a few thin blue streamers that part from it on the south side. A handful of stars, one of them
-    seen through the tail. Nothing in it is a cross (A0 #22487): a star is a square point."""
+    The anatomy is the sky's comet's (sky/comet, version a), seen EYE_SPAN degrees across: the
+    nucleus is a point; round it the hoods, parabolas of light that open away from the sun, which
+    is under the horizon below the head; behind the nucleus the dark lane of its shadow; the dust
+    tail goes up warm and leans north as it does over the dome; the ion tail is a few thin blue
+    streamers that part from it on the south side. A handful of stars, one of them seen through
+    the tail. Nothing in it is a cross (A0 #22487): a star is a square point."""
     w, h = EYE_SIZE
     k = EYE_SPAN / (2.0 * EYE_FIELD)                                    # degrees a pixel
     cols, rows = np.meshgrid(np.arange(w) + 0.5, np.arange(h) + 0.5)
@@ -1106,58 +1134,45 @@ def eye_picture():
     x = (cols - w / 2.0) * k - EYE_HEAD[0]                              # degrees north of the nucleus
     y = (h / 2.0 - rows) * k - EYE_HEAD[1]                              # degrees above it
     up = np.clip(y, 0.0, None)
-    hot, warm, cool = (_tone(P.RAMPS[name][step]) for name, step in (("glow", -1), ("glow", -2), ("night_glass", -1)))
-    luma = np.array([0.299, 0.587, 0.114])
-    warm, cool = warm / (warm @ luma), cool / (cool @ luma)             # scaled to grey 1: the amounts say how much light
 
     # the dust: everything is laid out along its centre line, which leans north and curves
     xd = x - (0.10 * up + 0.07 * up * up)
     rd = np.hypot(xd, y)
     q = (rd - y) / 2.0              # the parabola about the nucleus a point lies on: how far under the nucleus its apex is
-    lane = 1.0 - 0.6 * np.exp(-(xd / 0.016) ** 2) * _rise(y, 0.012, 0.07) * np.exp(-up / 0.45)
-    coma = 0.95 * np.exp(-(np.hypot(xd, np.where(y < 0.0, 1.6 * y, y)) / 0.045) ** 0.85)
-    dust = 0.50 * np.exp(-q / (0.012 + 0.022 * rd)) * np.exp(-rd / 1.5) * _rise(y, -0.06, 0.10)
+    lane = 1.0 - 0.6 * np.exp(-(xd / 0.022) ** 2) * _rise(y, 0.015, 0.08) * np.exp(-up / 0.45)
+    coma = 0.90 * np.exp(-(np.hypot(xd, np.where(y < 0.0, 1.6 * y, y)) / 0.06) ** 0.85)
+    dust = 0.50 * np.exp(-q / (0.02 + 0.03 * rd)) * np.exp(-rd / 1.5) * _rise(y, -0.08, 0.12)
     hoods = np.zeros_like(x)
-    for apex, wide, light in ((0.036, 0.008, 0.42), (0.078, 0.012, 0.26), (0.135, 0.018, 0.15)):
-        hoods += light * np.exp(-((q - apex) / wide) ** 2) * np.exp(-rd / 0.40)
+    for apex, wide, light in ((0.050, 0.016, 0.40), (0.105, 0.022, 0.27), (0.180, 0.030, 0.17)):
+        hoods += light * np.exp(-((q - apex) / wide) ** 2) * np.exp(-rd / 0.45)
     body = (coma + dust + hoods) * lane
     # the ion tail: thin streamers that leave the nucleus a little south of straight up
     ion = np.zeros_like(x)
-    for lean, light in ((-7.5, 0.13), (-3.5, 0.17), (0.0, 0.11)):
+    for lean, light in ((-7.5, 0.20), (-3.5, 0.26), (0.0, 0.16)):
         a = math.radians(lean)
         along, across = x * math.sin(a) + y * math.cos(a), x * math.cos(a) - y * math.sin(a)
         s = np.clip(along, 0.0, None)
-        ion += light * np.exp(-(across / (0.007 + 0.012 * s)) ** 2) * np.exp(-s / 1.8) * _rise(along, 0.03, 0.18)
-    mix = (np.clip(rd / 2.0, 0.0, 1.0) ** 1.2 * 0.5)[..., None]         # the dust cools as it goes: here only a little
-    light = (warm * (1.0 - mix) + cool * mix) * body[..., None] + cool * ion[..., None]
-    grey = light @ luma
-    held = np.where(grey > 0.55, 0.55 + 0.37 * (1.0 - np.exp(-(grey - 0.55) / 0.37)), grey)        # eased under the nucleus's light
-    light = light * (held / np.maximum(grey, 1e-9))[..., None]
+        ion += light * np.exp(-(across / (0.008 + 0.012 * s)) ** 2) * np.exp(-s / 1.8) * _rise(along, 0.04, 0.20)
 
-    try:
-        from ..sky import mood
-        look = mood.LOOKS[mood.DEFAULT]
-        zenith, horizon = look["zenith"], look["horizon"]
-    except (ImportError, AttributeError, KeyError):
-        zenith, horizon = "#0d1433", "#383a74"
-    out = (_tone(zenith) * 0.8 + _tone(horizon) * 0.2) * EYE_SKY + light
-    # the stars: square points, the brighter ones two pixels wide with a faint square round them
+    sky = EYE_SKY[0] + (EYE_SKY[1] - EYE_SKY[0]) * (1.0 - np.clip(rho, 0.0, 1.0) ** 3)
+    top = _steps(EYE_WARM)[1][-2]                                       # all but the nucleus stays under the ladder's last step
+    px = np.empty((h, w, 4), dtype=np.uint8)
+    px[..., 3] = 255
+    px[..., :3] = np.where((ion > 0.4 * body + 0.02)[..., None], _laid(sky + body + ion, EYE_COOL),
+                           _laid(np.minimum(sky + body + ion, top), EYE_WARM))
+    # the stars: square points, the brightest two pixels wide in a faint square
     cx, cy = w / 2.0, h / 2.0
-    white = (_tone(P.RAMPS["glow"][-1]) + cool / max(cool)) / 2.0
     for across, above, shine in EYE_STARS:
         col, row = int(round(cx + across * EYE_FIELD)), int(round(cy - above * EYE_FIELD))
-        size = 2 if shine >= 0.45 else 1
-        out[row - 1:row + size + 1, col - 1:col + size + 1] += white * shine * 0.16
-        out[row:row + size, col:col + size] += white * shine
+        if shine >= 2:
+            px[row - 1:row + 3, col - 1:col + 3, :3] = P.hx(P.RAMPS["night_glass"][3])
+        px[row:row + max(1, shine), col:col + max(1, shine), :3] = P.hx(P.RAMPS[EYE_STAR[shine][0]][EYE_STAR[shine][1]])
     # the nucleus: a point, hottest in its middle
     col, row = int(round(cx + EYE_HEAD[0] / k)), int(round(cy - EYE_HEAD[1] / k))
-    out[row - 2:row + 2, col - 2:col + 2] = np.maximum(out[row - 2:row + 2, col - 2:col + 2], _tone(P.RAMPS["glow"][-2]))
-    out[row - 1:row + 1, col - 1:col + 1] = hot
-    # the field: darker towards its edge, which is the eyepiece's stop; beyond it nothing
-    field = np.clip((1.0 - rho) * EYE_FIELD + 0.5, 0.0, 1.0) * (1.0 - 0.5 * np.clip(rho, 0.0, 1.0) ** 6)
-    px = np.empty((h, w, 4), dtype=np.uint8)
-    px[..., :3] = (np.clip(out * field[..., None], 0.0, 1.0) * 255.0 + 0.5).astype(np.uint8)
-    px[..., 3] = 255
+    px[row - 2:row + 2, col - 2:col + 2, :3] = P.hx(P.RAMPS[EYE_WARM[-2][0]][EYE_WARM[-2][1]])
+    px[row - 1:row + 1, col - 1:col + 1, :3] = P.hx(P.RAMPS[EYE_WARM[-1][0]][EYE_WARM[-1][1]])
+    # beyond the field's edge, which is the eyepiece's stop, its dark inside
+    px[rho > 1.0, :3] = P.hx(P.RAMPS[EYE_DARK[0]][EYE_DARK[1]])
     return px
 
 
@@ -1633,24 +1648,27 @@ def report(version=None):
             problems.append(f"at an end of the swing {inside} corners of the tube and the lamp are inside {name}")
     # what the eyepiece shows: where one stands for it, and the picture
     spot = observer(version)
-    px = eye_picture().astype(int)
-    grey = px[..., :3].sum(axis=2)
+    px = eye_picture()
+    grey = px[..., :3] @ _LUMA / 255.0
     rows, cols = np.indices(grey.shape)
-    out_of_field = np.hypot(cols + 0.5 - EYE_SIZE[0] / 2.0, rows + 0.5 - EYE_SIZE[1] / 2.0) > EYE_FIELD + 1.0
+    beyond = np.hypot(cols + 0.5 - EYE_SIZE[0] / 2.0, rows + 0.5 - EYE_SIZE[1] / 2.0) > EYE_FIELD + 1.0
     top = np.unravel_index(int(grey.argmax()), grey.shape)
     k = EYE_SPAN / (2.0 * EYE_FIELD)
     head = (EYE_SIZE[1] / 2.0 - EYE_HEAD[1] / k, EYE_SIZE[0] / 2.0 + EYE_HEAD[0] / k)
     lines.append(f"  the eyepiece shows the comet to a player whose feet are within {EYE_REACH} of {_rounded(spot)} and who "
                  f"faces west within {EYE_TURN[0]:g} degrees (he keeps it within {EYE_LEAVE} and {EYE_TURN[1]:g}), looked "
                  f"for every {EYE_BEAT} ticks; the picture is {EYE_SIZE[0]} by {EYE_SIZE[1]}, its field "
-                 f"{2 * EYE_FIELD:g} across and {EYE_SPAN} degrees of sky, {int((grey > 3 * 40).sum())} pixels of it "
-                 f"lighter than the field's sky")
+                 f"{2 * EYE_FIELD:g} across and {EYE_SPAN} degrees of sky, {len(np.unique(px[..., :3].reshape(-1, 3), axis=0))} "
+                 f"colours, {int((grey > EYE_SKY[1] + 0.05).sum())} pixels lighter than the field's sky")
     if not (x0 + 0.3 <= spot[0] <= x1 + 0.7 and z0 + 0.3 <= spot[2] <= z1 + 0.7):
         problems.append(f"the spot one looks into the eyepiece from, {_rounded(spot)}, is not on the observing floor")
     if EYE_LEAVE <= EYE_REACH or EYE_TURN[1] <= EYE_TURN[0] or EYE_DOWN[1] <= EYE_DOWN[0]:
         problems.append("the eyepiece's picture is taken away no later than it is given: it would flicker")
-    if grey[out_of_field].max() > 0:
-        problems.append("the eyepiece's picture is lit outside its round field")
+    strays = P.strays(px)
+    if strays:
+        problems.append(f"the eyepiece's picture has {len(strays)} colours that are not the palette's")
+    if len(np.unique(px[beyond][:, :3], axis=0)) != 1:
+        problems.append("the eyepiece's picture is not one dark tone outside its round field")
     if EYE_FIELD * 2.0 > min(EYE_SIZE) or px[..., 3].min() < 255:
         problems.append("the eyepiece's picture: the field does not fit, or the world shows through it")
     if math.hypot(top[0] + 0.5 - head[0], top[1] + 0.5 - head[1]) > 3.0:
