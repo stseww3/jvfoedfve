@@ -29,8 +29,12 @@ How the moon's slots are used:
                        and shorter in the strong afterglow (STRENGTH, TAIL), the other five as in
                        the blue hour. The versions are compared scene by scene (obs_sky_comet,
                        obs_sky_comet_b, obs_sky_comet_c), each under all three lights.
-    moon/new_moon.png  a test card for a few ticks in the morning (mood.TRIALS["card"]): which way
-                       up the game draws the picture is read off it
+    moon/new_moon.png  the blue hour's comet like the other phases no light uses. A pack written
+                       with card=True (the test scene obs_sky_comet) has a test card there
+                       instead, for the moment of mood.TRIALS["card"]: which way up the game
+                       draws the picture is read off it. The map carries no card: its clock
+                       stands in the default look's phase, and whoever sets another day finds
+                       a comet in every one of the eight
     sun.png            black: the textures are added onto the sky, black draws nothing. The hour is
                        after sunset; whatever is ever painted here must not read as a sun's disc.
 
@@ -292,24 +296,26 @@ def test_card(n=SIZE):
     return out
 
 
-def seen(style=DEFAULT_STYLE):
+def seen(style=DEFAULT_STYLE, card=False):
     """{phase: (n, n, 3) floats as seen}: the comet of each light in its phase, the blue hour's in
-    the phases no light uses, the test card in its own."""
+    the phases no light uses. card=True: the test card in its own phase (CARD_PHASE) instead."""
     by_look = {v["moon_phase"]: comet(style, STRENGTH[name], TAIL[name]) for name, v in mood.LOOKS.items()}
     default = by_look[mood.LOOKS[mood.DEFAULT]["moon_phase"]]
-    return {phase: test_card() if phase == CARD_PHASE else by_look.get(phase, default) for phase in PHASES}
+    return {phase: test_card() if card and phase == CARD_PHASE else by_look.get(phase, default) for phase in PHASES}
 
 
-def pictures(style=DEFAULT_STYLE):
+def pictures(style=DEFAULT_STYLE, card=False):
     """{phase: (n, n, 3) uint8 in the file's orientation}."""
-    return {phase: (seen_to_moon_file(px) * 255.0 + 0.5).astype(np.uint8) for phase, px in seen(style).items()}
+    return {phase: (seen_to_moon_file(px) * 255.0 + 0.5).astype(np.uint8) for phase, px in seen(style, card).items()}
 
 
-def pack(pack_dir, style=DEFAULT_STYLE):
-    for phase, px in pictures(style).items():
+def pack(pack_dir, style=DEFAULT_STYLE, card=False):
+    """The eight moon pictures and the blank sun. card=True is for a test scene that looks at the
+    test card; the map and every other scene have a comet in every phase."""
+    for phase, px in pictures(style, card).items():
         respack.texture(pack_dir, "environment/celestial/moon/" + phase, px)
     respack.texture(pack_dir, "environment/celestial/sun", np.zeros((SUN_SIZE, SUN_SIZE, 3), dtype=np.uint8))
-    return [f"comet ({style}) -> {len(PHASES)} moon phase pictures, test card in {CARD_PHASE}",
+    return [f"comet ({style}) -> {len(PHASES)} moon phase pictures" + (f", test card in {CARD_PHASE}" if card else ""),
             "sun picture blanked"]
 
 
