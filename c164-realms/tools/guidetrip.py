@@ -158,7 +158,7 @@ def middle_light(path):
     with Image.open(path) as picture:
         grey = picture.convert("L")
         w, h = grey.size
-        box = sorted(grey.crop((int(w * 0.4), int(h * 0.45), int(w * 0.6), int(h * 0.55))).getdata())
+        box = sorted(grey.crop((int(w * 0.4), int(h * 0.45), int(w * 0.6), int(h * 0.55))).tobytes())
     top = box[-max(1, len(box) // 10):]
     return (f"the middle of the near picture (a fifth wide, a tenth high) is {sum(box) / len(box) / 255:.2f} light "
             f"on average, its lightest tenth {sum(top) / len(top) / 255:.2f}")
@@ -229,7 +229,7 @@ def plaque_shots(found, blocks):
     return shots, listed
 
 
-def walk_shots(found):
+def walk_shots(found, blocks=None):
     """The walk through the watched places, and what each stop is for. Returns (shots, stops,
     charts, close): stops is [(shot, what is expected, tags the player must have after it)]."""
     places = found["watched"]
@@ -276,9 +276,33 @@ def walk_shots(found):
         stop(f"w{n:02d}_step_all", close, "with every chart: the closing title, a bell, the tag " + close, 1.6,
              add=close if charts else None)
         n += 1
-        shots.append({"name": f"w{n:02d}_step_after", "stay": True, "settle": 3.0, "still": 0})
-        stops.append((shots[-1]["name"], "three seconds later, the same place: the title going, the motes rising", list(have)))
-        n += 1
+        # the lights of the close last ten seconds and only this player is shown them: two more
+        # looks inside those seconds, up the slit from the step and from some blocks behind it
+        feet = places[close]["stand"]
+        if lights:
+            top = max(lights, key=lambda p: p[1])
+            shots.append({"name": f"w{n:02d}_step_up", "walk": True, "pos": [feet[0], feet[1] + EYE, feet[2]],
+                          "look_at": [round(v, 2) for v in top], "settle": 1.0, "still": 0})
+            stops.append((shots[-1]["name"], "the same step, the eyes on the highest of the lights", list(have)))
+            n += 1
+            middle = aim(close)
+            away = math.hypot(feet[0] - middle[0], feet[2] - middle[2]) or 1.0
+            back = None
+            for far in (5.0, 4.0, 3.0, 6.0):
+                spot = [feet[0] + (feet[0] - middle[0]) / away * far, feet[1], feet[2] + (feet[2] - middle[2]) / away * far]
+                back = blocks.standing([(spot[0], spot[1], spot[2], 2.6)]) if blocks is not None else None
+                if back:
+                    break
+            if back:
+                shots.append({"name": f"w{n:02d}_step_back", "walk": True,
+                              "pos": [round(back[0][0], 2), back[0][1] + EYE, round(back[0][2], 2)],
+                              "look_at": middle, "settle": 1.0, "still": 0})
+                stops.append((shots[-1]["name"], "some blocks behind the step, the eyes on the middle of the lights", list(have)))
+                n += 1
+        else:
+            shots.append({"name": f"w{n:02d}_step_after", "stay": True, "settle": 3.0, "still": 0})
+            stops.append((shots[-1]["name"], "three seconds later, the same place: the title going", list(have)))
+            n += 1
         if charts:
             away = places[charts[-1]]
             shots.append({"name": f"w{n:02d}_away", "walk": True, "pos": [away["stand"][0], away["stand"][1] + EYE, away["stand"][2]],
@@ -415,8 +439,15 @@ def main():
             tell(f"  {function}: {kind} {words}")
         for tag, place in found["watched"].items():
             tell(f"  {tag}: within reach of {place['near']} ({place['function']}); a visitor's feet at "
-                 f"{place['stand']} on {place['on']}, {place['far']} from the last of them")
-        walk, stops, charts, close = walk_shots(found)
+                 f"{place['stand']} on {place['on']}, {place['far']} from the last of them; the light the save has "
+                 f"stored there (block, sky): at the feet {place.get('light', ['?', '?'])[0]}, at the eyes "
+                 f"{place.get('light', ['?', '?'])[1]}" if place.get("light") else
+                 f"  {tag}: within reach of {place['near']} ({place['function']}); NO PLACE for a visitor's feet found")
+        if found.get("sparks"):
+            ys = [p[1] for p in found["sparks"]]
+            tell(f"  the lights of the close: {len(found['sparks'])} points, y {min(ys)} to {max(ys)}, their middle "
+                 f"{[round(sum(p[k] for p in found['sparks']) / len(found['sparks']), 2) for k in range(3)]}")
+        walk, stops, charts, close = walk_shots(found, blocks)
         plaques, listed = plaque_shots(found, blocks)
         if "walk" in parts and not walk:
             tell("no watched place gives a tag: there is nothing to walk (the walk is left out)")

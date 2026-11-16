@@ -236,12 +236,12 @@ class Blocks:
             m = re.search(r"/region/r\.(-?\d+)\.(-?\d+)\.mca$", name)
             if m and "/entities/" not in name and "/poi/" not in name:
                 self.regions.setdefault((int(m.group(1)), int(m.group(2))), name)
-        self.data, self.chunks = {}, {}
+        self.data, self.chunks, self.lit = {}, {}, {}
 
     def chunk(self, cx, cz):
         if (cx, cz) in self.chunks:
             return self.chunks[cx, cz]
-        sections = {}
+        sections, lit = {}, {}
         region = (cx >> 5, cz >> 5)
         if region in self.regions:
             if region not in self.data:
@@ -257,8 +257,19 @@ class Blocks:
                     states = section.get("block_states") or {}
                     palette = [savelit.state_of(entry)[0] for entry in states.get("palette", [])]
                     sections[section["Y"]] = (palette, states.get("data"))
-        self.chunks[cx, cz] = sections
+                    lit[section["Y"]] = (section.get("BlockLight"), section.get("SkyLight"))
+        self.chunks[cx, cz], self.lit[cx, cz] = sections, lit
         return sections
+
+    def light(self, x, y, z):
+        """(block light, sky light) the save has stored for the cell that holds this point, 0 to 15
+        each; None for one the save does not store there (a section without that array)."""
+        x, y, z = math.floor(x), math.floor(y), math.floor(z)
+        self.chunk(x >> 4, z >> 4)
+        n = ((y & 15) << 8) | ((z & 15) << 4) | (x & 15)
+        return tuple(None if stored is None or len(stored) < 2048 else
+                     (stored[n >> 1] >> 4 if n & 1 else stored[n >> 1]) & 15
+                     for stored in self.lit[x >> 4, z >> 4].get(y >> 4, (None, None)))
 
     def at(self, x, y, z):
         """The name of the block in the cell that holds this point; air where the save has nothing."""
@@ -309,13 +320,15 @@ def place(blocks, near, name):
     spot = blocks.standing(near)
     return {"at": list(near[0][:3]), "reach": near[0][3], "near": [list(one) for one in near], "function": name,
             "stand": [round(v, 3) for v in spot[0]] if spot else None, "far": round(spot[1], 2) if spot else None,
-            "on": blocks.at(spot[0][0], spot[0][1] - 0.5, spot[0][2]) if spot else None}
+            "on": blocks.at(spot[0][0], spot[0][1] - 0.5, spot[0][2]) if spot else None,
+            # the light stored where the feet and where the eyes are: (block, sky) each
+            "light": [list(blocks.light(spot[0][0], spot[0][1] + up, spot[0][2])) for up in (0.1, 1.62)] if spot else None}
 
 
 def read(path):
     """{"plaques": [...], "shown": [...], "watched": {tag: {"at": the first place watched (the thing),
     "reach", "near": every place the feet must be near, "function", "stand": where a visitor's feet
-    can be put or None, "far", "on"}}, "sparks": [...], "greeted": the tags whose lack has the save
+    can be put or None, "far", "on", "light": [(block, sky) stored at the feet, at the eyes]}}, "sparks": [...], "greeted": the tags whose lack has the save
     greet a player, "functions": how many}"""
     with zipfile.ZipFile(path) as archive:
         found = functions(archive)
