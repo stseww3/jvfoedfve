@@ -381,11 +381,12 @@ def crank_box():
 
 
 # ---- self-check ----------------------------------------------------------------------------------------------
-def _astro_points(low):
-    """Points all over the astrograph's boxes that stand higher than `low`, a fifth of a block apart."""
+def _astro_points(low, turn=0.0):
+    """Points all over the astrograph's boxes that stand higher than `low`, a fifth of a block apart;
+    with `turn`, of the instrument that many degrees along its tracking."""
     out = []
     built = astro._built()
-    for name, at, axes, scale in astro.placed():
+    for name, at, axes, scale in (astro.placed(turn) if turn else astro.placed()):
         m, k = built[name], scale / 16.0
         for part in m.parts:
             c = [(part["lo"][j] + part["hi"][j]) / 2.0 for j in range(3)]
@@ -464,21 +465,24 @@ def check():
         out.append("crank: the pinion does not stand in the rack")
     if CASE_OUT + 2.0 * TEXEL + GRIP > CRANK_REACH:
         out.append(f"crank: the grip ends {CASE_OUT + 2.0 * TEXEL + GRIP:g} out of the wall, more than {CRANK_REACH:g}")
-    # 5. the astrograph keeps clear of all of it
+    # 5. the astrograph keeps clear of all of it, as it stands and at either end of its tracking
     if astro is not None:
         (bx0, by0, bz0), (bx1, by1, bz1) = crank_box()
         bars = lines()
         hits = set()
-        for p in _astro_points(by0 - CLEAR):
-            # the ring with its rollers fills a band from the head of the wall to the girder's top;
-            # every bar of the frame stands on the girder
-            if (LEDGE - CLEAR < p[1] < RING_ROWS[1] + CLEAR
-                    and math.hypot(p[0] - AX, p[2] - AZ) > RACK_R - RACK[0] / 2.0 - CLEAR):
-                hits.add("the ring")
-            if p[1] > RING_ROWS[1] - CLEAR and any(_gap(p, a, b) < half + CLEAR for a, b, half in bars):
-                hits.add("a bar of the frame")
-            if bx0 - CLEAR < p[0] < bx1 + CLEAR and p[1] < by1 + CLEAR and bz0 - CLEAR < p[2] < bz1 + CLEAR:
-                hits.add("the crank")
+        track = float(getattr(astro, "TRACK", 0.0))
+        for turn in ((0.0, -track, track) if track else (0.0,)):
+            when = f", turned {turn:g} degrees" if turn else ""
+            for p in _astro_points(by0 - CLEAR, turn):
+                # the ring with its rollers fills a band from the head of the wall to the girder's top;
+                # every bar of the frame stands on the girder
+                if (LEDGE - CLEAR < p[1] < RING_ROWS[1] + CLEAR
+                        and math.hypot(p[0] - AX, p[2] - AZ) > RACK_R - RACK[0] / 2.0 - CLEAR):
+                    hits.add("the ring" + when)
+                if p[1] > RING_ROWS[1] - CLEAR and any(_gap(p, a, b) < half + CLEAR for a, b, half in bars):
+                    hits.add("a bar of the frame" + when)
+                if bx0 - CLEAR < p[0] < bx1 + CLEAR and p[1] < by1 + CLEAR and bz0 - CLEAR < p[2] < bz1 + CLEAR:
+                    hits.add("the crank" + when)
         out += [f"astrograph: it comes within {CLEAR:g} of {what}" for what in sorted(hits)]
     return out
 

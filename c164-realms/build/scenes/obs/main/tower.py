@@ -36,9 +36,10 @@ carries no bracket or hook for one: its four faces are flush alike. The clock ro
 dials is interiors/clockroom; what it reads of the well is WELL_X/Z/Y, ROOM_FLOOR, backs() and
 DIAL_BACKS, and way_up() opens the door, stands the ladder and lays the room's floor for it.
 
-The mast is two display models, the only ones of the main line: bld_tower_mast, the pole with all
-that is fixed to it, and bld_tower_cups, the cup wheel, a piece of its own so that the motion line
-can turn it about its spindle. build() returns 2.
+The mast is three display models, the only ones of the main line: bld_tower_mast, the pole with all
+that is fixed to it, and two pieces of their own that the motion line moves: bld_tower_cups, the
+cup wheel, which turns about its spindle, and bld_tower_vane, the wind vane, which hunts to either
+side of the wind about the rod it is sleeved on. build() returns 3.
 
     python -m scenes.obs.main.tower            # as text: elevation, sections, plans, the way up
 """
@@ -84,6 +85,7 @@ APEX = S.CLOCK_TOP                  # 41: the finial block
 # --- the mast (points, in blocks) ---------------------------------------------------------------------
 MAST_MODEL = "bld_tower_mast"       # machines/clock looks for a display of this model: the mast stands
 CUPS_MODEL = "bld_tower_cups"       # the cup wheel: the motion line turns it (its tag is the kit's, m.<model>)
+VANE_MODEL = "bld_tower_vane"       # the wind vane: the motion line swings it (m.<model> likewise)
 MAST_FOOT = APEX + 1.0              # 42.0: the top of the finial
 MAST_STOP = S.CLOCK_BALL_MAST - 1.0  # 51.0: up to here the pole is plain and the ball's to travel on
 MAST_TOP = S.CLOCK_BALL_MAST + 1.0  # 53.0: the tip, the top of the skeleton's last row
@@ -96,6 +98,12 @@ CUPS_AT = (AXIS[0] - CUPS_OUT * WIND[0], MAST_STOP + 0.4375, AXIS[1] - CUPS_OUT 
 VANE_LONG = 2.0                     # the pennant of the wind vane: from the axis to the ends of its two tails,
 VANE_TAIL = 0.75                    # how long the tails are,
 VANE_HIGH = 0.75                    # and how high it is; its upper edge is the tip of the mast
+VANE_AT = (AXIS[0], MAST_TOP - VANE_HIGH / 2.0, AXIS[1])    # (13.5, 52.625, -29.5): where the vane's entity
+#                                     stands, on the axis at half the pennant's height
+VANE_SWING = 16.0                   # degrees the vane hunts to either side of the wind: the ends of its
+#                                     tails travel half a block each way
+VANE_PERIOD = 5 * MK.SECOND         # ticks there and back; a flag takes six seconds, so the two drift in
+#                                     and out of step
 FAR = 4.0                           # view_range, as machines/clock gives the dials and the ball
 
 # --- light --------------------------------------------------------------------------------------------
@@ -417,37 +425,41 @@ def _models():
     on = (0.0, 0.0)                                     # the axis
     long, tail, high = VANE_LONG * u, VANE_TAIL * u, VANE_HIGH * u      # 8.0, 3.0, 3.0
 
-    # Units from the foot upwards. Between the boot and the stop collar the pole is plain: the time
-    # ball of machines/clock and its sleeves (6 px in radius) travel there.
-    m = M.Model(MAST_MODEL, px=MAST_SCALE, anchor=(0.0, MAST_HOLD * u, 0.0))
-
-    def plate(a0, a1, y0, y1):
+    def plate(model, a0, a1, y0, y1):
         """An iron plate half a unit thick in the plane of the wind: from a0 to a1 downwind of the
         axis (upwind where negative), from y0 to y1."""
         wx, wz = WIND
         lo, hi = (a0, a1) if wx + wz > 0 else (-a1, -a0)
         if wx:
-            m.box((lo, y0, -0.25), (hi, y1, 0.25), iron)
+            model.box((lo, y0, -0.25), (hi, y1, 0.25), iron)
         else:
-            m.box((-0.25, y0, lo), (0.25, y1, hi), iron)
+            model.box((-0.25, y0, lo), (0.25, y1, hi), iron)
 
+    # Units from the foot upwards. Between the boot and the stop collar the pole is plain: the time
+    # ball of machines/clock and its sleeves (6 px in radius) travel there.
+    m = M.Model(MAST_MODEL, px=MAST_SCALE, anchor=(0.0, MAST_HOLD * u, 0.0))
     m.tube("y", on, 0.0, 0.5, 1.375, iron)                                  # the flange on the finial, 11 px across
     m.taper("y", on, 0.5, 2.5, 1.25, 0.875, dark, steps=2)                  # the boot
     m.tube("y", on, 2.5, stop, MAST_THICK * u / 2.0, dark)                  # the pole, 7 px
     m.tube("y", on, stop, stop + 0.75, 1.375, iron)                         # the stop collar
     m.taper("y", on, stop + 0.75, stop + 3.0, 0.875, 0.375, dark, steps=3)  # the neck
-    m.tube("y", on, stop + 3.0, top, 0.375, dark, sides=4)                  # the rod, 3 px, to the tip
+    # the rod, 3 px: it ends within the vane's sleeve, an eighth of a unit under the tip
+    m.tube("y", on, stop + 3.0, top - 0.125, 0.375, dark, sides=4)
     # the cup wheel's bracket, upwind: an arm out of the stop collar, the spindle upright on its end
-    plate(-out - 0.25, -1.0, stop + 0.125, stop + 0.625)
-    plate(-out - 0.25, -out + 0.25, stop + 0.125, stop + 1.5)
-    # the wind vane, downwind: a sleeve on the rod and a swallow-tailed pennant whose upper edge is
-    # the mast's tip. Nothing stands above it, and the cups hang three quarters of a block below
-    # it on the other side and reach less far: a flag on its pole from wherever it is seen, never
-    # a cross
-    m.tube("y", on, top - high - 0.25, top, 0.5, iron)
-    plate(0.375, long - tail, top - high, top)
-    plate(long - tail, long, top - 0.875, top)
-    plate(long - tail, long, top - high, top - high + 0.875)
+    plate(m, -out - 0.25, -1.0, stop + 0.125, stop + 0.625)
+    plate(m, -out - 0.25, -out + 0.25, stop + 0.125, stop + 1.5)
+
+    # The wind vane, in the mast's units about the point of the axis at half its height (VANE_AT):
+    # a sleeve on the rod and a swallow-tailed pennant, downwind, whose upper edge is the mast's
+    # tip. Nothing stands above it, and the cups hang three quarters of a block below it on the
+    # other side and reach less far: a flag on its pole from wherever it is seen and however it
+    # has swung, never a cross. It turns about y through the anchor, sleeve and pennant as one.
+    v = M.Model(VANE_MODEL, px=MAST_SCALE)
+    half = high / 2.0
+    v.tube("y", on, -half - 0.25, half, 0.5, iron)
+    plate(v, 0.375, long - tail, -half, half)
+    plate(v, long - tail, long, half - 0.875, half)
+    plate(v, long - tail, long, -half, -half + 0.875)
 
     # The cup wheel, in pixels about its hub: three arms, never four. It turns about y through the
     # anchor; the box round the three cups has its middle 1.5 px north of that axis.
@@ -458,7 +470,7 @@ def _models():
         ux, uz = math.cos(a), -math.sin(a)
         w.beam((ux, 0.0, uz), (5.0 * ux, 0.0, 5.0 * uz), 2.0, 2.0, iron)
         w.tube("y", (6.0 * ux, 6.0 * uz), -2.0, 2.0, 2.5, iron, sides=6)
-    return {m.name: m, w.name: w}
+    return {m.name: m, w.name: w, v.name: v}
 
 
 def models():
@@ -466,20 +478,25 @@ def models():
 
 
 def _mast(c, o):
-    """Stand the mast on the finial and the cup wheel on its spindle, and register the wheel with the
-    motion line: it turns about its spindle. Returns the entities placed."""
+    """Stand the mast on the finial, the cup wheel on its spindle and the vane on the rod, and
+    register the two that move with the motion line: the wheel turns about its spindle, the vane
+    swings about the mast's axis, to either side of the wind it is placed in. Returns the entities
+    placed."""
     kit = _models()
     c.add_entity(o[0] + AXIS[0], o[1] + MAST_FOOT + MAST_HOLD, o[2] + AXIS[1],
                  M.display(kit[MAST_MODEL], scale=MAST_SCALE, view=FAR))
     c.add_entity(o[0] + CUPS_AT[0], o[1] + CUPS_AT[1], o[2] + CUPS_AT[2], M.display(kit[CUPS_MODEL], view=FAR))
     MK.spin(c, "y", MK.ANEMOMETER_REV)
-    return 2
+    c.add_entity(o[0] + VANE_AT[0], o[1] + VANE_AT[1], o[2] + VANE_AT[2],
+                 M.display(kit[VANE_MODEL], scale=MAST_SCALE, view=FAR))
+    MK.swing(c, "y", VANE_SWING, VANE_PERIOD)
+    return 3
 
 
 # --- the package ----------------------------------------------------------------------------------------------
 def build(canvas, origin=(0, 0, 0)):
     """Place the clock tower on the north pavilion's deck: the shaft, the lookout under its
-    four-sided roof, the mast. Returns the display entities placed: 2."""
+    four-sided roof, the mast. Returns the display entities placed: 3."""
     s = O.Laying(canvas, O.Plan(BODY), origin, None)
     _shaft(canvas, origin, s)
     head = _top(canvas, origin, s)
@@ -497,10 +514,29 @@ def _plan_row(c, y):
     return "\n".join(lines)
 
 
+def _mast_lines(c):
+    """The mast as text: the box each of its three models fills where it stands, in blocks, and
+    what the motion line makes of the two that move."""
+    kit = _models()
+    stands = ((MAST_MODEL, (AXIS[0], MAST_FOOT + MAST_HOLD, AXIS[1]), MAST_SCALE),
+              (CUPS_MODEL, CUPS_AT, 1.0), (VANE_MODEL, VANE_AT, MAST_SCALE))
+    lines = []
+    for name, at, scale in stands:
+        lo, hi = kit[name].reach()
+        box = [(at[i] + (lo[i] - kit[name].anchor[i]) * scale / 16.0,
+                at[i] + (hi[i] - kit[name].anchor[i]) * scale / 16.0) for i in range(3)]
+        lines.append("%-15s on (%g, %g, %g)  x %.3f .. %.3f  y %.3f .. %.3f  z %.3f .. %.3f"
+                     % (name, at[0], at[1], at[2], box[0][0], box[0][1], box[1][0], box[1][1], box[2][0], box[2][1]))
+    status, summary, details = MK.check(c)
+    return "\n".join(lines + ["", f"motion: {status} -- {summary}"] + ["  " + d for d in details])
+
+
 def _drawings():
     c = Canvas()
     n = build(c)
     print(f"\n=== clock tower: {len(c.b)} blocks, {n} display entities ===")
+    print("\nTHE MAST (its models at rest, and what moves):\n")
+    print(_mast_lines(c))
     print("\nEAST ELEVATION (seen from the court; south on the left):\n")
     print(O.elevation(c, "east", (Z0 - 2, Z1 + 2), (FOOT, APEX), X1 + 4, X0 - 1))
     print(f"\nSECTION through the middle (z = {CZ}; west on the left):\n")

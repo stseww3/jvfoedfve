@@ -20,7 +20,8 @@ What stands where (plan cells; north is -z, one comes in at the south end and lo
                     edge on to the aisle, grey and brown by turns. The jars stand on a timber
                     stand of two tiers on porcelain feet, two jars to a block of a row and tier,
                     and lead straps join each to the next: 208 jars. One model to a block of a
-                    row (CELLS), placed 52 times
+                    row (CELLS, in three sorts), placed 52 times. The battery is on charge and
+                    gasses: bubbles climb the acid of every jar (a texture animation)
   gantries          under each of the four beams a timber frame over each bank, its posts the
                     stand's own; on its lintel porcelain insulators carry the bus bars. At the
                     south end of a bank a lead bar rises from the last jar of each row to its bar
@@ -57,6 +58,10 @@ of whoever walks there (LAMPS); half way between two lamps of the aisle a fill o
 (FILLS). The models of the room are held at the height of the upper tier (HELD), so that a jar
 takes the light of the row its glass stands in and not that of the floor.
 
+The door: a leaf of sheet iron, which keeps the acid's air in the room, stands open, folded back
+flat against the south wall west of the opening (the door kit's iron leaf, interiors/_doorcase;
+cr4 and shell, 11-16). The cable comes through the wall clear of it, at x 5.5.
+
 What stops whoever walks into the battery: a model has no collision, so a barrier stands in
 every cell a bank fills, two high (SOLID; plan/roles/INTERFACE.md, the fifth supplement of 11-16).
 
@@ -64,6 +69,13 @@ build() is what the master scene calls; it places nothing while MOVED_IN is off.
 build/scenes/obs_int_batteryroom, dresses a slice of the real building cut out round the cavity.
 """
 import functools
+import json
+import os
+import tempfile
+import zlib
+
+import numpy as np
+from PIL import Image
 
 from artkit import models as M
 from artkit.blocks import st
@@ -78,6 +90,7 @@ from ..main import _plan as MP
 from ..main import shell
 from ..props import _kit as K
 from ..props import lamps
+from . import _doorcase
 
 MOVED_IN = True            # the master scene dresses the room (a card's switch is turned on with its delivery); the
 #                            doorway is main/shell's to cut (HALL_DOOR): until then the room stands closed
@@ -95,6 +108,9 @@ NORTH, SOUTH, WEST, EAST = float(Z0), Z1 + 1.0, float(X0), X1 + 1.0     # the fo
 HALL_DOOR = (7, Z1 + 1)                             # (7, -6): the cell of the south wall the door stands in. The star
 #                                                     hall reads this name (aisle_doors); x 8 is a pilaster of the hall
 DOOR_Y = (FEET, FEET + 1)                           # the doorway is two rows high
+DOOR = next(d for d in shell.doors() if d["room"] == "battery room")
+HINGE = "west"                                      # the iron leaf folds back against the south wall west of the
+#                                                     opening (_doorcase.IRON_REACH of it, two rows high, is kept bare)
 BEAM_Z = tuple(z for z in range(Z0, Z1 + 1) if MP.on_pilaster(z))               # -22, -18, -14, -10
 EAST_BAYS = tuple(b for b in range(1, S.N_BAYS + 1) if set(MP.window_rows(b)) <= set(range(Z0, Z1 + 1)))
 WEST_BAYS = tuple(b for b in EAST_BAYS if all(abs(z - S.DOME_CENTRE[1]) > MP.WEST_BLIND_Z for z in MP.window_rows(b)))
@@ -182,6 +198,7 @@ GLASS = dict(
     q=P.RAMPS["iron"][3],               # a plate seen flat on, at the end of a row
     m=P.RAMPS["iron"][4],               # the grid of its paste
     p=P.RAMPS["old_copper"][1],         # a positive plate: brown
+    o=P.RAMPS["iron"][6],               # a bubble of gas
 )
 JAR_SIDE = (                            # the face a jar turns to the aisle: its plates edge on
     "gggggg",
@@ -217,6 +234,107 @@ JAR_TOP = (                             # looked into from above: the acid and t
 )
 assert (len(JAR_SIDE[0]), len(JAR_SIDE), len(JAR_END[0])) == JAR, "the faces of a jar are drawn pixel for pixel"
 assert len(JAR_SIDE) - JAR_SIDE.index("hhhhhh") == LEVEL, "the acid's surface lies at the line drawn on the glass"
+
+# ---- the gassing. On charge every cell gives off gas: bubbles climb the acid and break at its surface. The faces
+# of a jar are drawn in frames and the game plays them: a texture animation, on which no command is spent
+# (plan/round2.md, section 2). The blocks of the battery come in SORTS sorts that differ in nothing but where and
+# when their bubbles rise, so that jars side by side do not gas in step
+FRAMES = 16                                         # the frames of the loop: four seconds
+FRAMETIME = 5                                       # ticks a frame stays: a bubble climbs the acid's four pixels in a second
+SORTS = 3
+CELLS = tuple(PREFIX + "cells" + tail for tail in ("", "_b", "_c"))     # the model of a block of the battery, sort by sort
+BUBBLES = {"side": 5, "end": 8, "top": 6}           # how many rise in one loop on a face of a jar, and break on its surface
+_FRAME = [0]                                        # the frame the sheet of a model is being painted for (_Alive.export)
+
+
+def _dice(*key):
+    """A number from 0 to 1 that hangs on nothing but `key`."""
+    return zlib.crc32(":".join(str(k) for k in key).encode()) / 4294967296.0
+
+
+def _tracks(width, count, *key):
+    """`count` bubbles on a face `width` pixels wide, in one loop: [(the frame it is born on, its column,
+    how many rows under the line of the level it is born)]. They are born all through the loop, a little
+    unevenly, three in four at the foot of the acid and the rest a pixel up the plate, and no two
+    running in one column."""
+    out, last, deep = [], None, int(LEVEL) - 2
+    for i in range(count):
+        born = (i * FRAMES) // count + int(_dice(*key, i, "born") * 2.0)
+        col = int(_dice(*key, i, "col") * width)
+        if col == last:
+            col = (col + 1 + int(_dice(*key, i, "aside") * (width - 1))) % width
+        last = col
+        out.append((born % FRAMES, col, deep if _dice(*key, i, "deep") < 0.75 else deep - 1))
+    return out
+
+
+def _gassing(rows, tracks):
+    """The frames of a face of a jar: its drawing with the bubbles of `tracks` in it. A bubble climbs a
+    pixel a frame; on the line of the acid's level it shows once more, fainter, and is gone."""
+    line = next(j for j, row in enumerate(rows) if set(row) == {"h"})
+    frames = []
+    for f in range(FRAMES):
+        grid = [list(row) for row in rows]
+        for born, col, deep in tracks:
+            j = line + deep - (f - born) % FRAMES
+            if j >= line:
+                grid[j][col] = "o" if j > line else "g"
+        frames.append(tuple("".join(row) for row in grid))
+    return frames
+
+
+def _breaking(rows, count, *key):
+    """The frames of the acid's surface looked at from above: `count` bubbles break on it in one loop,
+    each for a frame."""
+    frames = [[list(row) for row in rows] for _ in range(FRAMES)]
+    for i in range(count):
+        f = ((i * FRAMES) // count + int(_dice(*key, i, "born") * 2.0)) % FRAMES
+        frames[f][int(_dice(*key, i, "row") * len(rows))][int(_dice(*key, i, "col") * len(rows[0]))] = "o"
+    return [tuple("".join(row) for row in grid) for grid in frames]
+
+
+class _Moving(Sprite):
+    """A drawing in frames. It paints the frame its model's sheet is being laid out for; anywhere
+    else (a check that reads a model's faces) the first."""
+
+    def __init__(self, name, frames, colours):
+        super().__init__(name, frames[0], colours)
+        self.frames = frames
+
+    def paint(self, w, h, grain="u", seed=0):
+        self.rows = self.frames[_FRAME[0] % len(self.frames)]
+        return super().paint(w, h, grain, seed)
+
+
+class _Alive(M.Model):
+    """A model some of whose pictures move (_Moving). Its sheet is laid out once for every frame, the
+    same way each time, and the frames go one under the other into one picture, with a .mcmeta beside
+    it that tells the game how long a frame stays. The model's faces name places on one frame, as
+    the game wants it of an animated picture; the offline renderer shows the first frame."""
+
+    def export(self, pack_dir, ns="c164"):
+        sheets = []
+        with tempfile.TemporaryDirectory() as work:
+            for frame in range(FRAMES):
+                _FRAME[0] = frame
+                try:
+                    out = super().export(work, ns)
+                finally:
+                    _FRAME[0] = 0
+                sheets.append(np.array(Image.open(os.path.join(work, "assets", ns, "textures", "item", self.name + ".png"))
+                                       .convert("RGBA")))
+            for folder in (("models", "item"), ("items",)):
+                d = os.path.join(pack_dir, "assets", ns, *folder)
+                os.makedirs(d, exist_ok=True)
+                with open(os.path.join(work, "assets", ns, *folder, self.name + ".json")) as src:
+                    with open(os.path.join(d, self.name + ".json"), "w") as dst:
+                        dst.write(src.read())
+        d = os.path.join(pack_dir, "assets", ns, "textures", "item")
+        os.makedirs(d, exist_ok=True)
+        Image.fromarray(np.concatenate(sheets, axis=0), "RGBA").save(os.path.join(d, self.name + ".png"))
+        with open(os.path.join(d, self.name + ".png.mcmeta"), "w") as fh:
+            json.dump({"animation": {"frametime": FRAMETIME}}, fh, separators=(",", ":"))
+        return dict(out, frames=FRAMES)
 LEAD = K.flat("iron", 5)
 WOOD = P.mat("dark_wood", base=3)
 WOOD_D = P.mat("dark_wood", base=1)
@@ -259,25 +377,27 @@ SIGN = (                                # no naked flame: a flame, struck out. A
 )
 
 
-def _jar(m, name, foot, along):
+def _jar(m, name, foot, along, *key):
     """One cell: a glass jar with its foot at `foot` px above the floor, its middle `along` px along
     the row from the middle of the block. The glass is one box whose faces are drawn; the acid's
-    surface lies inside it."""
+    surface lies inside it. Its bubbles rise where and when `key` has it."""
     wide, high, deep = JAR
     lo, hi = (-deep / 2.0, foot, along - wide / 2.0), (deep / 2.0, foot + high, along + wide / 2.0)
-    side, end = Sprite(name + "_side", JAR_SIDE, GLASS), Sprite(name + "_end", JAR_END, GLASS)
+    side = _Moving(name + "_side", _gassing(JAR_SIDE, _tracks(len(JAR_SIDE[0]), BUBBLES["side"], *key, "side")), GLASS)
+    end = _Moving(name + "_end", _gassing(JAR_END, _tracks(len(JAR_END[0]), BUBBLES["end"], *key, "end")), GLASS)
     m.box(lo, hi, K.flat("night_glass", 1), skip="ud", faces={"e": side, "w": side, "n": end, "s": end})
     m.box((lo[0], foot + LEVEL - 1.0, lo[2]), (hi[0], foot + LEVEL - 0.5, hi[2]), K.flat("night_glass", 1), skip="nsewd",
-          faces={"u": Sprite(name + "_top", JAR_TOP, GLASS)})
+          faces={"u": _Moving(name + "_top", _breaking(JAR_TOP, BUBBLES["top"], *key, "top"), GLASS)})
 
 
-def _cells():
+def _cells(sort=0):
     """One block of a row of the battery: four jars, two to a tier, on the timber stand. The sole
     plates stand on porcelain feet; the bearers run on from block to block; a post stands at each
     face of the row before the gap between the two jars; lead straps join jar to jar along the
-    row. Held HELD above the middle of the block's floor; the row runs along z."""
-    name = PREFIX + "cells"
-    m = M.Model(name, anchor=(0.0, HELD * 16.0, 0.0))
+    row. Held HELD above the middle of the block's floor; the row runs along z. The sorts differ
+    in their bubbles alone."""
+    name = CELLS[sort]
+    m = _Alive(name, anchor=(0.0, HELD * 16.0, 0.0))
     for x in (-4.0, 4.0):
         for z in (-6.0, 6.0):
             m.box((x - 1.0, 0.0, z - 1.0), (x + 1.0, 2.0, z + 1.0), CHINA)                          # the feet
@@ -289,7 +409,7 @@ def _cells():
     m.box((-POST[0], TIERS[1] - 4.0, -1.0), (POST[0], TIERS[1] - 2.0, 1.0), WOOD_D, grain="x")      # the tie under the upper tier
     for foot in TIERS:
         for along in JAR_AT:
-            _jar(m, name, foot, along)
+            _jar(m, name, foot, along, sort, foot, along)
         top = foot + JAR[1]
         m.box((-1.0, top, JAR_AT[0] + 1.0), (1.0, top + 1.0, JAR_AT[1] - 1.0), LEAD)                # the strap between the block's two jars
         for z0, z1 in ((-8.0, JAR_AT[0] - 1.0), (JAR_AT[1] + 1.0, 8.0)):
@@ -433,7 +553,8 @@ def _sign():
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    built = (_cells(), _gantry(), _taps(), _cable(), _cleat(), _entry(), _carboy(), _shelf(), _apron(), _record(), _sign())
+    built = tuple(_cells(sort) for sort in range(SORTS)) + (_gantry(), _taps(), _cable(), _cleat(), _entry(), _carboy(),
+                                                            _shelf(), _apron(), _record(), _sign())
     return {m.name: m for m in built}
 
 
@@ -441,7 +562,7 @@ def models():
     """The room's own models: a block of the battery, the gantry over a bank, the cable and what
     holds it, the small pieces. The board and the bars are machines/batteryboard's, the lamps
     props/lamps'."""
-    return dict(_models())
+    return dict(_models(), **_doorcase.iron_models(PREFIX, DOOR, HINGE))
 
 
 def their_models():
@@ -502,7 +623,8 @@ def build_batteryroom(c, origin=(0, 0, 0), roles=B):
     for a, b in BANKS:
         for x in (a, b):
             for z in range(BANK_Z[0], BANK_Z[1] + 1):
-                n += K.put(c, own[PREFIX + "cells"], (S.mid(x), FEET + HELD, S.mid(z)), origin=origin)
+                sort = int(_dice(x, z, "sort") * SORTS)
+                n += K.put(c, own[CELLS[sort]], (S.mid(x), FEET + HELD, S.mid(z)), origin=origin)
         inner = b + (K.NUDGE if b < AXIS_X else -K.NUDGE)
         for z in BEAM_Z:
             n += K.put(c, own[PREFIX + "gantry"], (inner, FEET + HELD, S.mid(z)), origin=origin)
@@ -548,6 +670,9 @@ def build_batteryroom(c, origin=(0, 0, 0), roles=B):
         at = (ox + cell[0], oy + cell[1], oz + cell[2])
         lights.append((at, FILL, f"{NAME}:fill"))
         _offer(c, at, FILL, f"{NAME}:fill", CAGE_RANK)
+
+    # ---- the door's iron leaf, open, flat against the south wall (interiors/_doorcase, main/shell's kit)
+    n += _doorcase.iron_place(c, PREFIX, DOOR, HINGE, origin=origin)
     return {"entities": n, "lights": lights}
 
 
