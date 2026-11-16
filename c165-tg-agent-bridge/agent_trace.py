@@ -50,6 +50,7 @@ HOOK_EVENTS = [
     "afterAgentResponse",
     "subagentStart",
     "subagentStop",
+    "stop",
 ]
 
 
@@ -544,35 +545,46 @@ def handle_hook() -> int:
                     f"Immediately after this step completes, call dais `read_chat(agent=\"{agent_id}\", wait_sec=0)` and reply first."
                 )
 
-        # 子 agent 试图结束回合时向桥查询身份是否仍有效，有效则提醒回到 read_chat 继续等待
-        if event == "subagentStop":
-            if agent_id and agent_id.startswith("a_"):
+        # 子 agent 或顶层主 Agent 执行器试图结束回合时向桥查询身份是否仍有效，有效则提醒回到 read_chat 继续等待（防顶层 main 结束回合连带中止名下后台子会话！）
+        if event in ("subagentStop", "stop"):
+            if agent_id and (agent_id.startswith("a_") or agent_id.startswith("m_")):
                 chk = get_json(
                     f"{bridge_url}/trace/check-active?agent={urllib.parse.quote(agent_id)}",
                     timeout=1.8,
                 )
                 if chk and chk.get("active"):
+                    is_m = agent_id.startswith("m_")
                     post_json(
                         f"{bridge_url}/trace/event",
                         {
                             "agent_id": agent_id,
                             "conversation_id": cid,
-                            "event": "subagentStop_blocked",
+                            "event": "stop_blocked" if is_m else "subagentStop_blocked",
                             "phase": "thinking",
-                            "tool_name": "subagentStop",
-                            "summary": "子 agent 准备结束回合，已提醒回到 read_chat 继续等待",
+                            "tool_name": event,
+                            "summary": (
+                                "主 Agent/协调器准备结束回合，已拦截拉回 read_chat 常驻"
+                                if is_m
+                                else "子 agent 准备结束回合，已提醒回到 read_chat 继续等待"
+                            ),
                             "started_ts": now_ts,
                             "ts": now_ts,
                         },
                     )
+                    fmsg = (
+                        (
+                            f"【主Agent常驻铁律】你的执行器会话（{chk.get('conv', '')}）仍在服务中，严禁结束当前回合（一旦结束回合会导致名下所有后台子会话被平台连带中止）！"
+                            f"严禁输出排查总结、严禁自行思考解决问题或查看 chat 内容。请立即调用 read_chat(agent=\"{agent_id}\") 继续等待标准单据。"
+                        )
+                        if is_m
+                        else (
+                            f"提示：你的聊天会话（{chk.get('conv', '')}）仍在服务中，身份有效。"
+                            f"请继续调用 read_chat(agent=\"{agent_id}\") 等待后续消息，不用结束回合或发送告别语。"
+                        )
+                    )
                     print(
                         json.dumps(
-                            {
-                                "followup_message": (
-                                    f"提示：你的聊天会话（{chk.get('conv', '')}）仍在服务中，身份有效。"
-                                    f"请继续调用 read_chat(agent=\"{agent_id}\") 等待后续消息，不用结束回合或发送告别语。"
-                                )
-                            },
+                            {"followup_message": fmsg},
                             ensure_ascii=False,
                         )
                     )
@@ -742,9 +754,18 @@ def handle_hook() -> int:
             or (tool_name == "CallDynamicTool" and str(ti.get("toolName") or "") in ("read_chat", "join"))
         )
         if not is_dais_read:
+            ctx_parts: list[str] = []
             alert_txt = build_inbox_alert(bridge_url, agent_id)
             if alert_txt:
-                out_obj["additional_context"] = alert_txt
+                ctx_parts.append(alert_txt)
+            if agent_id.startswith("m_"):
+                ctx_parts.append(
+                    f"[dais main-executor iron rule] 你是纯单据执行器（{agent_id[:8]}…），全部听 ctrl 调度："
+                    "严禁自行思考排查报错、严禁查看任何 chat 聊天内容或仓库分支、忽略后台子 Task 完成/失败通知、严禁结束回合！"
+                    f"处理完当前单据请立即调用 read_chat(agent=\"{agent_id}\") 继续等待。"
+                )
+            if ctx_parts:
+                out_obj["additional_context"] = "\n".join(ctx_parts)
 
     print(json.dumps(out_obj, ensure_ascii=False))
     return 0
@@ -943,7 +964,7 @@ def ensure_hooks_intact(target_script: Path | None = None, reload_if_changed: bo
             if len(matched) != 1:
                 intact = False
                 break
-            if ev == "subagentStop" and int(matched[0].get("loop_limit") or 0) != 20:
+            if ev in ("subagentStop", "stop") and int(matched[0].get("loop_limit") or 0) != 20:
                 intact = False
                 break
     if intact:
@@ -964,7 +985,7 @@ def ensure_hooks_intact(target_script: Path | None = None, reload_if_changed: bo
             )
         ]
         entry: dict[str, Any] = {"command": cmd_str}
-        if ev == "subagentStop":
+        if ev in ("subagentStop", "stop"):
             entry["loop_limit"] = 20
         arr.append(entry)
         hooks_map[ev] = arr

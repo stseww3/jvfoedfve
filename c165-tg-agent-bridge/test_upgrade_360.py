@@ -122,7 +122,8 @@ async def run_cluster_and_device_tests() -> dict[str, str]:
         check=True,
     )
     healed_cfg = json.loads(hooks_path.read_text(encoding="utf-8"))
-    assert "subagentStop" in healed_cfg["hooks"] and "preToolUse" in healed_cfg["hooks"]
+    assert "subagentStop" in healed_cfg["hooks"] and "stop" in healed_cfg["hooks"] and "preToolUse" in healed_cfg["hooks"]
+    assert healed_cfg["hooks"]["stop"][0].get("loop_limit") == 20
     pid_f = HOME_DIR / ".cursor" / "agent_trace_daemon.pid"
     if pid_f.exists():
         try:
@@ -685,6 +686,151 @@ def run_web_console_tests() -> None:
             assert comp_res["ok"] and comp_res["delivered_to"] == "c3"
             c3_got = text_of(asyncio.run(bridge.call_tool("read_chat", {"agent": c3_ag_now, "wait_sec": 0})))
             assert "DIRECT_PY_DAEMON_99" in c3_got and "node2" in c3_got
+
+            # 11. Verify mainN iron rules on every response + permission hard-lock + top-level stop hook + old-main watchdog silence + non-admin TG mute!
+            m2_ag = bridge.node_row("main2")["agent"]
+            # 11a: mainN forbidden from reading chat_history("c1") & calling stop_agent / restart_agent while ctrl active; EVERY response carries EXECUTOR_FIXED_FOOTER!
+            ch_deny = asyncio.run(bridge.call_tool("chat_history", {"agent": m2_ag, "chat": "c1"}))
+            assert ch_deny.is_error and "严禁查看任何开的 chat" in text_of(ch_deny) and "【主Agent铁律·每次必遵】" in text_of(ch_deny)
+            st_deny = asyncio.run(bridge.call_tool("stop_agent", {"agent": m2_ag, "chat": "c1"}))
+            assert st_deny.is_error and "严禁自行调用 stop_agent" in text_of(st_deny) and "【主Agent铁律·每次必遵】" in text_of(st_deny)
+            rs_deny = asyncio.run(bridge.call_tool("restart_agent", {"agent": m2_ag, "chat": "c1"}))
+            assert rs_deny.is_error and "严禁自行调用 restart_agent" in text_of(rs_deny) and "【主Agent铁律·每次必遵】" in text_of(rs_deny)
+            rc_peek = text_of(asyncio.run(bridge.call_tool("read_chat", {"agent": m2_ag, "wait_sec": 0})))
+            assert "【主Agent铁律·每次必遵】" in rc_peek
+            rc_renew = text_of(asyncio.run(bridge.call_tool("read_chat", {"agent": m2_ag, "wait_sec": 1})))
+            assert "【续棒" in rc_renew and "【主Agent铁律·每次必遵】" in rc_renew
+            std_op_sample = bridge.format_standard_launch_op("op_t1", m2_ag, "c1", "prompt", "deepseek max")
+            assert "可先暂缓并询问管理员" not in std_op_sample and "【执行铁律" in std_op_sample
+
+            # 11b: Top-level Cursor `stop` hook blocks active m_... executor from ending its turn!
+            chk_m2 = client.get(f"/trace/check-active?agent={m2_ag}").json()
+            assert chk_m2["active"] is True and chk_m2["conv"] == "main2"
+            from http.server import BaseHTTPRequestHandler, HTTPServer
+            import threading
+
+            class _BridgeProxy(BaseHTTPRequestHandler):
+                def do_GET(self):
+                    r = client.get(self.path)
+                    self.send_response(r.status_code)
+                    self.send_header("Content-Type", "application/json")
+                    self.end_headers()
+                    self.wfile.write(r.content)
+
+                def do_POST(self):
+                    ln = int(self.headers.get("Content-Length") or 0)
+                    body = self.rfile.read(ln) if ln else b"{}"
+                    r = client.post(self.path, content=body, headers={"Content-Type": "application/json"})
+                    self.send_response(r.status_code)
+                    self.send_header("Content-Type", "application/json")
+                    self.end_headers()
+                    self.wfile.write(r.content)
+
+                def log_message(self, *args):
+                    pass
+
+            proxy_srv = HTTPServer(("127.0.0.1", 0), _BridgeProxy)
+            proxy_port = proxy_srv.server_address[1]
+            threading.Thread(target=proxy_srv.serve_forever, daemon=True).start()
+            try:
+                hook_env = dict(os.environ, HOME=str(HOME_DIR), BRIDGE_URL=f"http://127.0.0.1:{proxy_port}", DAIS_SKIP_RELOAD="1")
+                post_tool_out = subprocess.run(
+                    [sys.executable, str(HOME_DIR / ".cursor" / "dais_runtime.pyz"), "hook"],
+                    input=json.dumps({
+                        "hook_event_name": "postToolUse",
+                        "conversation_id": "main2-top-conv",
+                        "tool_name": "CallDynamicTool",
+                        "tool_input": {"toolName": "submit_op_result", "arguments": {"agent": m2_ag}},
+                    }),
+                    env=hook_env, capture_output=True, text=True, check=True,
+                )
+                post_tool_json = json.loads(post_tool_out.stdout.strip() or "{}")
+                assert "纯单据执行器" in post_tool_json.get("additional_context", "")
+                stop_hook_out = subprocess.run(
+                    [sys.executable, str(HOME_DIR / ".cursor" / "dais_runtime.pyz"), "hook"],
+                    input=json.dumps({
+                        "hook_event_name": "stop",
+                        "conversation_id": "main2-top-conv",
+                    }),
+                    env=hook_env, capture_output=True, text=True, check=True,
+                )
+                stop_json = json.loads(stop_hook_out.stdout.strip() or "{}")
+                assert "followup_message" in stop_json and "严禁结束当前回合" in stop_json["followup_message"]
+            finally:
+                proxy_srv.shutdown()
+                pid_f2 = HOME_DIR / ".cursor" / "agent_trace_daemon.pid"
+                if pid_f2.exists():
+                    try:
+                        os.kill(int(pid_f2.read_text().strip()), 9)
+                    except Exception:
+                        pass
+
+            # 11c: Old offline main1 (cloud 1) retirement & zero watchdog harassment (neither hijacked to cloud 2 nor alerting ctrl)!
+            m1_old_ag = bridge.node_row("main1")["agent"]
+            bridge.store.run("UPDATE exec_nodes SET last_seen=? WHERE id='main1'", (bridge.now() - 99999,))
+            bridge.store.run("UPDATE agents SET last_seen=? WHERE id=?", (bridge.now() - 99999, m1_old_ag))
+            bridge.STARTED = bridge.now() - 99999
+            bridge.reap_offline_exec_nodes()
+            assert bridge.node_row("main1")["status"] == "offline"
+            assert bridge.agent_row(m1_old_ag)["status"] == "stopped"
+            assert int(bridge.conv_row("main1")["in_tg"] or 0) == 0
+
+            # Put an unclaimed chat & a thinking-stuck chat in dead cloud 1 -> watchdog_tick MUST ignore them completely!
+            bridge.store.run(
+                "INSERT INTO convs(id,num,name,status,read_cursor,created,cloud,task_code,task_ts,in_tg) VALUES('c99',99,'旧主遗留','open',0,?,1,'t-olddead99',?,1)",
+                (bridge.now() - 7200, bridge.now() - 7200),
+            )
+            ctrl_max_before = bridge.store.one("SELECT IFNULL(MAX(id),0) AS n FROM messages WHERE target='ctrl'")["n"]
+            asyncio.run(bridge.watchdog_tick())
+            assert bridge.conv_row("c99")["cloud"] == 1, "Dead old main's unclaimed chat was hijacked into new cloud!"
+            ctrl_new_wd = bridge.store.q(
+                "SELECT text FROM messages WHERE target='ctrl' AND id>? AND text LIKE '%c99%'",
+                (ctrl_max_before,),
+            )
+            assert ctrl_new_wd == [], f"Dead cloud chat c99 triggered watchdog harassment: {ctrl_new_wd}"
+
+            # 11d: Non-admin Telegram silence (/muteusers on)
+            tg_sent_calls: list[tuple[str, dict]] = []
+            orig_try_call = bridge.tg.try_call
+
+            async def _spy_try_call(method: str, **kw):
+                tg_sent_calls.append((method, kw))
+                return {"message_id": 88001}
+
+            bridge.tg.try_call = _spy_try_call
+            try:
+                asyncio.run(bridge.on_message({
+                    "message_id": 501,
+                    "from": {"id": 7001, "first_name": "Admin", "is_bot": False},
+                    "chat": {"id": 7001, "type": "private"},
+                    "text": "/muteusers on",
+                }))
+                assert bridge.tg_non_admin_muted() is True
+                tg_sent_calls.clear()
+
+                # Non-admin granted user 8002 sends DM, command, and group @bot mention -> ZERO TG calls!
+                asyncio.run(bridge.on_message({
+                    "message_id": 502,
+                    "from": {"id": 8002, "first_name": "Member", "is_bot": False},
+                    "chat": {"id": 8002, "type": "private"},
+                    "text": "Hello are you there?",
+                }))
+                asyncio.run(bridge.on_message({
+                    "message_id": 503,
+                    "from": {"id": 8099, "first_name": "Stranger", "is_bot": False},
+                    "chat": {"id": 8099, "type": "private"},
+                    "text": "/start",
+                }))
+                asyncio.run(bridge.on_message({
+                    "message_id": 504,
+                    "from": {"id": 8002, "first_name": "Member", "is_bot": False},
+                    "chat": {"id": -50099, "type": "group", "title": "UserGroup"},
+                    "text": "@test360_bot wake up",
+                }))
+                assert tg_sent_calls == [], f"Muted non-admin TG user triggered bot output: {tg_sent_calls}"
+            finally:
+                bridge.set_tg_non_admin_muted(False)
+                bridge.tg.try_call = orig_try_call
 
         if log_file.exists():
             log_txt = log_file.read_text(encoding="utf-8", errors="replace")
