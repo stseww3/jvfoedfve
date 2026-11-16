@@ -439,6 +439,9 @@ def scene_spec(args):
         # the guide (titles, plaques, star charts: plan/packages/motion/guide.md) is the scene's, and in the
         # save when the scene says GUIDE = True and --no-guide was not asked for
         "guide": bool(getattr(scene, "GUIDE", False)) and not getattr(args, "no_guide", False),
+        # its star charts: verify walks them in the save, and misses them where they are switched on
+        "guide_charts": bool(getattr(scene, "GUIDE", False)) and not getattr(args, "no_guide", False)
+        and bool(getattr(scene, "GUIDE_CHARTS", False)),
         "title": map_title(args.scene)[0],
         "title_lines": map_title(args.scene)[1],
         "biome": f"{ART}:{scene.BIOME}" if look else None,
@@ -1305,6 +1308,122 @@ def loop_runs(server, pack_dir, spec, results, tag):
           f"{len(moved)} of them changed within 3 s" + (f" (e.g. {', '.join(moved[:4])})" if moved else "") + f"; {run}")
 
 
+def guide_spots(pack_dir):
+    """Where the save's own functions look for a player, read off the commands that run the guide's
+    functions (plan/packages/motion/guide.md, part C): ({n: [(spot, reach), ...]} of the star charts,
+    [(spot, reach)] of the lens or None). A command finds the player whose feet are within every reach
+    it names: `execute positioned <x y z> as @a[..distance=..r] [positioned <x y z> if entity
+    @s[distance=..r]] run function <ART>:guide/c<n>` (or .../lens)."""
+    number = r"-?\d+(?:\.\d+)?"
+    charts, lens = {}, None
+    for path in sorted(glob.glob(os.path.join(pack_dir, "data", "*", "function", "**", "*.mcfunction"), recursive=True)):
+        with open(path, encoding="utf-8") as fh:
+            for line in fh:
+                m = re.search(rf"\brun function {ART}:guide/(?:c(\d+)|lens)\s*$", line)
+                if not m or line.lstrip().startswith("#"):
+                    continue
+                spots = [((float(x), float(y), float(z)), float(r)) for x, y, z, r in re.findall(
+                    rf"positioned ({number}) ({number}) ({number}) (?:as|if entity) @[as]\[[^\]]*?distance=\.\.({number})", line)]
+                if not spots:
+                    continue
+                if m.group(1):
+                    charts[int(m.group(1))] = spots
+                else:
+                    lens = spots
+    return charts, lens
+
+
+def stand_within(spots, margin=0.1):
+    """A place for the feet within every reach of a command, or None: the last spot it names (for a
+    chart: where one stands to read it) where that does, else the nearest to it on the way to the first."""
+    first, last = spots[0][0], spots[-1][0]
+    for step in range(11):
+        place = tuple(b + (a - b) * step / 10.0 for a, b in zip(first, last))
+        if all(math.dist(place, spot) <= reach - margin for spot, reach in spots):
+            return place
+    return None
+
+
+def guide_walk(server, bot, pack_dir, spec, results, tag):
+    """The star charts and the lens, as a visitor meets them in this save: the fake player is put
+    before every chart in turn (half of them, then behind the eyepiece, then the rest) and behind the
+    eyepiece again. What is held: a chart is had once, by coming near, and the line over the hotbar
+    counts right; short of all the charts the lens only tells how many he has; with all of them it
+    shows its title once and never again; and nothing of it stands in the chat. The words are told,
+    not held: they are the card's to change."""
+    charts, lens = guide_spots(pack_dir)
+    if not charts:
+        if spec.get("guide_charts"):
+            check(results, tag + "charts", False,
+                  f"the scene has its star charts switched on, and no command of the pack runs {ART}:guide/c<n>")
+        return
+    total, order = len(charts), sorted(charts)
+
+    def put(place, wait):
+        mark = len(bot.events)
+        server.cmd(f"tp {BOT} {num(place[0])} {num(place[1])} {num(place[2])}", quiet=True)
+        bot.pump(wait)
+        new = bot.events[mark:]
+        return [t for k, t in new if k == "actionbar"], [t for k, t in new if k in ("title", "subtitle")]
+
+    def counts(text, has):
+        return re.findall(r"\d+", text) == [str(has), str(total)]
+
+    def tags():
+        return set(re.findall(r"c164\.[a-z0-9]+", server.cmd(f"tag {BOT} list", quiet=True)))
+
+    had = sorted(t for t in tags() if re.fullmatch(r"c164\.(c\d+|done)", t))
+    places = {n: stand_within(charts[n]) for n in order}
+    nowhere = [n for n in order if places[n] is None]
+    at_lens = stand_within(lens) if lens else None
+    half = total // 2
+    lines, wrong, some = [], [], None
+
+    def take(n, has):
+        bars, titles = put(places[n], 1.2)
+        lines.append(bars[0] if len(bars) == 1 else f"{len(bars)} lines {bars}")
+        if len(bars) != 1 or not counts(bars[0], has) or titles or f"c164.c{n}" not in tags():
+            wrong.append(f"chart {n}: {len(bars)} lines over the hotbar {bars}, titles {titles}, wanted one line "
+                         f"counting {has} of {total} and the tag c164.c{n}")
+
+    if not had and not nowhere:
+        for has, n in enumerate(order[:half], 1):
+            take(n, has)
+        if at_lens and half:
+            some = put(at_lens, 1.2)
+        for has, n in enumerate(order[half:], half + 1):
+            take(n, has)
+        again = put(places[order[0]], 1.0)
+        if again[0] or again[1]:
+            wrong.append(f"before chart {order[0]} once more: {again[0] or 'no line'}, titles {again[1] or 'none'}; wanted nothing")
+    check(results, tag + "charts", not had and not nowhere and not wrong,
+          (f"the fake player had {had} before he came near a chart" if had else
+           f"no place to stand within every reach of chart {nowhere}" if nowhere else
+           f"{total} charts, each had by standing before it; over the hotbar in turn: {lines}"
+           + ("; " + "; ".join(wrong) if wrong else "")))
+    if had or nowhere or not lens:
+        return
+    if at_lens is None:
+        check(results, tag + "lens", False, f"no place to stand within the reach of the lens: {lens}")
+        return
+    sparks = bot.packet_counts.get("level_particles", 0)
+    bars, titles = put(at_lens, 2.5)
+    done = "c164.done" in tags()
+    later = put(at_lens, 2.5)
+    sparks = bot.packet_counts.get("level_particles", 0) - sparks
+    said = told(bot)
+    spoken = sum(bot.packet_counts.get(n, 0) for n in ("player_chat", "disguised_chat"))
+    short = some is None or (bool(some[0]) and all(counts(t, half) for t in some[0]) and not some[1])
+    check(results, tag + "lens", short and len(titles) == 1 and not bars and done and not later[0] and not later[1]
+          and not said and not spoken,
+          ("" if some is None else f"behind the eyepiece with {half} of {total}: over the hotbar {sorted(set(some[0])) or 'nothing'}"
+           f" ({len(some[0])} times), titles {some[1] or 'none'}; ")
+          + f"with all {total}: titles {titles or 'none'}, over the hotbar {bars or 'nothing'}, the tag c164.done "
+          f"{'set' if done else 'NOT set'}; standing on: titles {later[1] or 'none'}, over the hotbar {later[0] or 'nothing'}; "
+          f"{sparks} packets of particles in those five seconds; in the chat: {' | '.join(said) or 'nothing'}"
+          + (f", {spoken} messages as a player's" if spoken else ""))
+
+
 def verify(args):
     node_only()
     signal.signal(signal.SIGTERM, _on_term)
@@ -1413,6 +1532,7 @@ def verify(args):
                 server.cmd("tp {} {} {} {}".format(BOT, *(num(v) for v in spec["feet"])), quiet=True)
                 bot.pump(3.0)
                 loop_runs(server, pack_dir, spec, results, tag)
+                guide_walk(server, bot, pack_dir, spec, results, tag)
                 bot.close()
             server.stop()
             issues = server.issues()
