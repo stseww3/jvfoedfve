@@ -2,6 +2,7 @@
 """Where a visitor walks into a model (plan/roles/INTERFACE.md, the fifth supplement of 11-16).
 
     walkin.py [<scene>] [--category machines] [--out <folder>] [--start x,y,z | <landmark>] [--plans]
+              [--ask x0,y0,z0,x1,y1,z1 ...]
         builds the scene (a whole `obs` on a worker node, never on the shared machine), works out
         with tools/walkreach.py where a person gets to on foot, lays the display entities of one
         category over that and says, piece by piece: where it stands, whether anybody gets to it,
@@ -42,6 +43,10 @@ A barrier is told as standing out when its plan share is under 95 %.
 Cells that hold a block already are left out. Then the walk is worked out once more with a barrier
 in every such cell of every piece somebody stands in: the places inside a model that a person
 still gets to are `left`, the slits the rule wants closed with something that is seen.
+
+--ask names a box of cells (corners included): what blocks stand in it and where in it a person
+gets to, level by level -- for the question a table leaves open (is the trestle behind the car
+reached; what closes the gap beside it).
 
 Doors of blocks are shut to walkreach; a visitor opens them. When the scene has any, a second
 reach is worked out with every door block taken away, and a place reached only so is marked `door`.
@@ -405,6 +410,41 @@ def clusters_of(cells):
     return sorted(out)
 
 
+def asked(box, cells, pts, kinds, door):
+    """What stands in a box of cells and where in it a person gets to."""
+    x0, y0, z0, x1, y1, z1 = (int(v) for v in box.replace(" ", "").split(","))
+    x0, x1, y0, y1, z0, z1 = min(x0, x1), max(x0, x1), min(y0, y1), max(y0, y1), min(z0, z1), max(z0, z1)
+    lines = ["", f"asked: x {span(x0, x1)}, y {span(y0, y1)}, z {span(z0, z1)}"]
+    names = {}
+    for x in range(x0, x1 + 1):
+        for y in range(y0, y1 + 1):
+            for z in range(z0, z1 + 1):
+                state = cells.get((x, y, z))
+                if state is not None and name_of(state) not in ("air", "cave_air", "void_air"):
+                    names.setdefault(name_of(state), []).append((x, y, z))
+    for name in sorted(names, key=lambda k: (-len(names[k]), k)):
+        got = names[name]
+        lines.append(f"    {name}: {len(got)} cells ({cells_span(got)})"
+                     + (": " + " ".join(f"({x},{y},{z})" for x, y, z in got) if len(got) <= 12 else ""))
+    if not names:
+        lines.append("    no blocks")
+    inside = ((pts[:, 0] >= x0) & (pts[:, 0] <= x1 + 1) & (pts[:, 1] >= y0) & (pts[:, 1] <= y1 + 1)
+              & (pts[:, 2] >= z0) & (pts[:, 2] <= z1 + 1))
+    idx = np.nonzero(inside)[0]
+    if not len(idx):
+        lines.append("    nobody gets to a standing place in it")
+        return lines
+    levels = {}
+    for k in idx:
+        levels.setdefault(float(pts[k, 1]), []).append(k)
+    for feet in sorted(levels):
+        ks = levels[feet]
+        rows = [(pts[k, 0], pts[k, 1], pts[k, 2], int(kinds[k]), bool(door[k])) for k in ks]
+        lines.append(f"    feet {feet:g}: {kinds_of(rows)} at x {min(r[0] for r in rows):g}..{max(r[0] for r in rows):g}, "
+                     f"z {min(r[2] for r in rows):g}..{max(r[2] for r in rows):g}")
+    return lines
+
+
 def verdict(got):
     inside, mine = got["inside"], got["barriers"]
     easy = [r for r in inside if r[3] in (0, 1)]
@@ -474,6 +514,8 @@ def main():
     ap.add_argument("--start", help="x,y,z of the feet, or a landmark of walkreach (default: the spawn)")
     ap.add_argument("--jar", default=JAR)
     ap.add_argument("--plans", action="store_true", help="draw the floor of every piece somebody can stand in")
+    ap.add_argument("--ask", action="append", default=[], metavar="x0,y0,z0,x1,y1,z1",
+                    help="a box of cells: the blocks in it and the standing places reached in it")
     args = ap.parse_args()
     from scenes.obs.common import blocks as B
     from scenes.obs.common import skeleton as S
@@ -580,6 +622,9 @@ def main():
             for floor in floors:
                 for line in plan_of(piece, got, pts, kinds, floor):
                     say(line)
+    for box in args.ask:
+        for line in asked(box, canvas.b, pts, kinds, door):
+            say(line)
     say()
     if stray:
         say(f"barriers of the scene in no model of this category: {len(stray)} cells -- "
