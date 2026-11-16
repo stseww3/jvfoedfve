@@ -1,0 +1,16 @@
+check obs_props_lamps_site at 41b6855
+[PASS] regen     109253 blocks, 75 entities, 98 models, 961 resource-pack files, 65 data-pack files, look: 1 biomes, 1 timelines (2.4 s)
+[PASS] conflicts the scene writes 960 files, no file written twice, the folders and the prefix of props are kept (5 packages run alone)
+[PASS] strays    222 pictures, every colour in the palette; 9 sky pictures not checked (drawn by adding light)
+[PASS] refs      720 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    69 kinds of block placed, all in the occupancy table
+[SKIP] flatwall  a test scene of props: its sample walls and backdrops are meant to be flat
+[PASS] entities  75 display entities, 5 drawn out along one axis, 70 models never placed
+[PASS] views     16 shots, most display entities in view: 75 (v12), limit 600; counted without what walls hide; the game draws up to 75 (v1): a display entity without width and height is drawn outside the view too
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 13.9% hidden (base storey 43.8% by blocks and 2.4% more by models, great windows 1.7%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 1.1 s)
+[PASS] motion    2 parts and 0 points on 2 chains, 20 function files; 6 commands in the busiest tick (limit 40), 1.0 a tick on average (limit 10)
+                 chain of 24 ticks: 6 functions, 14 commands a cycle, starts 1 ticks after start
+                 chain of 40 ticks: 8 functions, 17 commands a cycle, starts 2 ticks after start
+                 site_weather_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.08 blocks off the axis
+result: PASS (0 failed, 0 with warnings)
