@@ -1,10 +1,14 @@
-"""python -m scenes.obs_int_timeroom: the block light where one walks in the room, by numbers.
+"""python -m scenes.obs_int_timeroom: the block light of the room by numbers.
 
-The light line's rule for a way (c331, 11-16): at a station the cell of the foot or the cell of
-the head has 5 or more; no more than three stations in a row have less; none has 0. A station
-here is a cell of the floor one steps on. The ways are the room's own: from the door up the long
-axis to the stool before the console, in both files of cells, and from the axis to each place
-where somebody works.
+Where one walks. The light line's rule for a way (c331, 11-16): at a station the cell of the foot
+or the cell of the head has 5 or more; no more than three stations in a row have less; none has
+0. A station here is a cell of the floor one steps on. The ways are the room's own: from the door
+up the long axis to the stool before the console, in both files of cells, and from the axis to
+each place where somebody works.
+
+The order of the lights (review cr4, 11-16): the instrument wall is the lightest thing of the
+room, the rating bench comes next, the message desk beside V10's camera last; the floor at the
+foot of the console is lighter than the floor by the door, which is V10's foreground.
 """
 import sys
 
@@ -15,6 +19,9 @@ from . import build
 
 ENOUGH = 5
 RUN = 3                 # stations in a row that may have less
+WALL_LEAST = 8          # the least a face of the instrument wall has, from the shelf up to the cornice
+DESK_MOST = 8           # the most the message desk has, and what lies on it
+FLOOR_STEP = 4          # levels the floor at the foot of the console has over the floor by the door
 
 
 def ways():
@@ -43,6 +50,39 @@ def faults(levels):
     return wrong
 
 
+def mean(values):
+    return sum(values) / float(len(values))
+
+
+def order(light):
+    """The order of the lights: (the lines to print, what is out of order). The faces of the
+    instrument wall take the light of the cells before them; a floor that of the cells over it;
+    what lies on a desk that of the desk's own cell."""
+    def at(x, y, z):
+        return light.get((x, y, z), 0)
+
+    xs = range(T.RACK_X[0], T.RACK_X[1] + 1)
+    rows = {y: [at(x, y, T.CONSOLE_Z) for x in xs] for y in range(T.CORNICE_Y - 1, T.SILL - 1, -1)}
+    lines = [f"wall, row {y}: " + " ".join(f"{v:2d}" for v in row) for y, row in rows.items()]
+    wall = [v for row in rows.values() for v in row]
+    foot = [at(x, T.FEET, z) for z in (T.CONSOLE_Z + 1, T.CONSOLE_Z + 2) for x in range(T.CONSOLE_X[0] - 1, T.CONSOLE_X[1] + 2)]
+    door = [at(x, T.FEET, z) for z in range(T.Z1 - 3, T.Z1) for x in range(T.DOOR_X[0], T.DOOR_X[1] + 2)]     # V10's lower left
+    bench = max(at(T.X0, T.FEET, int(T.BENCH_Z // 1) + dz) for dz in (0, 1))
+    desk = max(at(T.X1, T.FEET, int(T.DESK_Z // 1) + dz) for dz in (-1, 0, 1))
+    lines.append(f"wall {mean(wall):.1f} (least {min(wall)}), rating bench {bench}, message desk {desk}; "
+                 f"floor at the console {mean(foot):.1f}, by the door {mean(door):.1f}")
+    wrong = []
+    if min(wall) < WALL_LEAST:
+        wrong.append(f"a face of the instrument wall has {min(wall)}, under {WALL_LEAST}")
+    if not mean(wall) > bench > desk:
+        wrong.append(f"the wall ({mean(wall):.1f}), the rating bench ({bench}) and the message desk ({desk}) are not in that order")
+    if desk > DESK_MOST:
+        wrong.append(f"the message desk has {desk}, over {DESK_MOST}")
+    if mean(foot) - mean(door) < FLOOR_STEP:
+        wrong.append(f"the floor at the console ({mean(foot):.1f}) is not {FLOOR_STEP} over the floor by the door ({mean(door):.1f})")
+    return lines, wrong
+
+
 def main():
     c = build()
     light = _lightkit.levels(c, (T.X0 - 2, T.FEET - 2, T.Z0 - 2), (T.X1 + 2, T.TOP + 2, T.Z1 + 4))
@@ -54,9 +94,16 @@ def main():
         print(f"{name}: " + " ".join(f"{foot}/{head}" for foot, head in levels))
         for line in wrong:
             print(f"    FAIL {line}")
+    lines, wrong = order(light)
+    for line in lines:
+        print(line)
+    for line in wrong:
+        print(f"    FAIL {line}")
     print(f"ways: {'PASS' if not bad else 'FAIL'} (foot/head at each cell; {ENOUGH} or more at one of them, "
           f"at most {RUN} in a row under it, none at 0)")
-    return 1 if bad else 0
+    print(f"order: {'PASS' if not wrong else 'FAIL'} (the wall, the rating bench, the message desk; the floor at the "
+          f"console {FLOOR_STEP} over the floor by the door)")
+    return 1 if bad or wrong else 0
 
 
 if __name__ == "__main__":
