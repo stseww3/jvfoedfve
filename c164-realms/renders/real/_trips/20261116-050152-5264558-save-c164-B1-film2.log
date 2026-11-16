@@ -1,0 +1,75 @@
+[trip 05:01:52 +0s] trip into the save dist/B1/c164-B1.zip of 52645584 (cursor/c164-dist-f4b8): 3365125 bytes, sha256 8c0dc254f99158c9f38c9f56dc94a2f565a9fb1befee6e0dd385643b2ade976b, as asked; view distance 12 (the server's 10), cloud range 128; 4 cores, 720 s at most
+[trip 05:01:52 +0s] clean: nodemc.py down  (up to 180 s)
+[trip 05:01:52 +0s] clean: exit 0, 0 s
+[trip 05:01:52 +0s] the save: the world folder c164-B1 (961 entries) is unpacked as server26/save/; level.dat: name BLUE HOUR OBSERVATORY, mode adventure, difficulty peaceful, spawn 88 196 -33, yaw 67.71, pitch -22.69, version 26.3, commands False, packs ['vanilla', 'file/c164art']
+[trip 05:01:52 +1s] the save's stored light: 336 light sources in 35 chunks, each lit in its own cell
+[trip 05:01:52 +1s] setup: nodemc.py setup  (up to 419 s)
+    [nodemc 05:01:53] vulkan: apiVersion 1.4.318, deviceName llvmpipe (LLVM 20.1.2, 256 bits), driverInfo Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+    [nodemc 05:01:53] java: /agent/realms-study/jdk/jdk-25.0.5+8-jre/bin/java
+    [nodemc 05:01:53] game files: whole ({"version": "26.3", "system": "linux", "mainClass": "net.minecraft.client.main.Main", "assetIndex": "34", "files": 5124, "downloaded": 5123, "assets_skipped": 9)
+    [nodemc 05:01:53] settings written: server26/server.properties (level-name, gamemode, force-gamemode, difficulty); render distance 12, the server's view distance 10, cloud range 128; the world save, joined in adventure mode, difficulty peaceful
+[trip 05:01:53 +1s] setup: exit 0, 0 s
+[trip 05:01:53 +1s] resource pack: resourcepacks/resources.zip of the save (1839375 bytes, sha256 2959705167e5020b, 2453 files, pack.mcmeta { "pack": { "description": "BLUE HOUR OBSERVATORY (c164-B1 c1ee784e)", "min_format": 97, "max_format": 97 } }) is the client's pack
+[trip 05:01:53 +1s] server: nodemc.py server-up  (up to 400 s)
+    [nodemc 05:02:01] server is up (8 s)
+[trip 05:02:01 +9s] server: exit 0, 8 s
+[trip 05:02:01 +9s] server, asked `time query minecraft:day`: Timeline minecraft:day is at 20370 tick(s)
+[trip 05:02:01 +9s] server, asked `time query gametime`: The game time is 362 tick(s)
+[trip 05:02:01 +9s] server, asked `gamerule advance_time`: Game rule advance_time is currently set to false
+[trip 05:02:01 +9s] server, asked `difficulty`: The difficulty is Peaceful
+[trip 05:02:01 +9s] server, asked `datapack list enabled`: There are 2 data pack(s) enabled: [vanilla (built-in)], [file/c164art (world)]
+[trip 05:02:01 +9s] game: nodemc.py client-up  (up to 591 s)
+    [nodemc 05:02:13] C164Cam is online (12 s)
+    [nodemc 05:02:13] game: [05:02:06] [Render thread/INFO]: Backend library: LWJGL version 3.4.3+4
+    [nodemc 05:02:13] game: [05:02:07] [Render thread/ERROR]: Failed to create backend OpenGL
+    [nodemc 05:02:13] game: com.mojang.renderpearl.api.device.BackendCreationException: Failed to create window for OpenGL context: Couldn't find matching GLX visual
+    [nodemc 05:02:13] game: [05:02:07] [Render thread/INFO]: Using graphics backend Vulkan, using drivers: 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+    [nodemc 05:02:13] game: [05:02:07] [Render thread/INFO]: Using graphics device: llvmpipe (LLVM 20.1.2, 256 bits) (0x10005)
+    [nodemc 05:02:13] pictures: saved by the game itself (helper)
+[trip 05:02:13 +21s] game: exit 0, 12 s
+[trip 05:02:13 +21s] the game draws with: Vulkan, 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+[trip 05:02:13 +21s] server, asked `data get entity C164Cam Pos`: C164Cam has the following entity data: [88.5d, 196.0d, -32.5d]
+[trip 05:02:13 +21s] server, asked `data get entity C164Cam Rotation`: C164Cam has the following entity data: [67.71f, -22.69f]
+[trip 05:02:13 +21s] server, asked `data get entity C164Cam playerGameType`: C164Cam has the following entity data: 2
+[trip 05:02:13 +21s] server, asked `time query minecraft:day`: Timeline minecraft:day is at 20370 tick(s)
+[trip 05:02:13 +21s] pictures: shoot.py /tmp/c164_s1/real/save/c164-B1-film2/shots.json --pw-file /agent/realms-study/server26/.rcon_pw --out /tmp/c164_s1/real/save/c164-B1-film2/shots --origin 0 200 0 --keep-clock --settle 10.0 --first-settle 60.0 --still 60.0  (up to 579 s)
+    /tmp/c164_s1/real/save/c164-B1-film2/shots/v08_dome_room.png (still after 21 s more, 0.54% of it moved between the last two)
+    /tmp/c164_s1/real/save/c164-B1-film2/shots/v10_time_room.png (still after 4 s more, 0.10% of it moved between the last two)
+    /tmp/c164_s1/real/save/c164-B1-film2/shots/l2_power_room.png (still after 3 s more, 0.40% of it moved between the last two)
+    pictures: 3 saved by the game itself, 0 taken off the display
+[trip 05:04:04 +133s] pictures: exit 0, 111 s
+[trip 05:04:04 +133s] server, asked `time query minecraft:day`: Timeline minecraft:day is at 20370 tick(s)
+[trip 05:04:04 +133s] server, asked `data get entity C164Cam playerGameType`: C164Cam has the following entity data: 3
+[trip 05:04:05 +133s] 3 pictures kept in renders/real-save/c164-B1-film2/: v08_dome_room, v10_time_room, l2_power_room; sheet.jpg, beside.jpg (beside the board of 01c7ab6e)
+[trip 05:04:05 +133s] server, asked `gamemode spectator C164Cam`: 
+[trip 05:04:05 +133s] server, asked `tp C164Cam 12.700 218.000 -0.700 82.82 -23.55`: Teleported C164Cam to 12.700000, 218.000000, -0.700000
+[trip 05:04:13 +141s] server, asked `tick rate 4`: Set the target tick rate to 4.0 per second
+[trip 05:05:16 +204s] server, asked `tick rate 20`: Set the target tick rate to 20.0 per second
+[trip 05:05:20 +208s] film of v08_dome_room: kept as v08_dome_room.mp4, 12 s at the save's own pace, 30 frames a second, 1280x720, 0.7 MB; filmed at a fifth of the pace and sped up; a frame's mean light 0.07
+[trip 05:05:20 +208s] server, asked `gamemode spectator C164Cam`: 
+[trip 05:05:20 +208s] server, asked `tp C164Cam 74.500 194.000 22.700 -20.25 -0.42`: Teleported C164Cam to 74.500000, 194.000000, 22.700000
+[trip 05:05:28 +216s] server, asked `tick rate 4`: Set the target tick rate to 4.0 per second
+[trip 05:06:31 +279s] server, asked `tick rate 20`: Set the target tick rate to 20.0 per second
+[trip 05:06:34 +282s] film of l2_power_room: kept as l2_power_room.mp4, 12 s at the save's own pace, 30 frames a second, 1280x720, 0.7 MB; filmed at a fifth of the pace and sped up; a frame's mean light 0.17
+[trip 05:06:34 +282s] server, asked `gamemode spectator C164Cam`: 
+[trip 05:06:34 +282s] server, asked `tp C164Cam 12.500 207.000 -7.500 145.78 2.35`: Teleported C164Cam to 12.500000, 207.000000, -7.500000
+[trip 05:06:42 +290s] server, asked `tick rate 4`: Set the target tick rate to 4.0 per second
+[trip 05:07:35 +344s] server, asked `tick rate 20`: Set the target tick rate to 20.0 per second
+[trip 05:07:38 +347s] film of v10_time_room: kept as v10_time_room.mp4, 10 s at the save's own pace, 30 frames a second, 1280x720, 0.4 MB; filmed at a fifth of the pace and sped up; a frame's mean light 0.08
+[trip 05:07:38 +347s] what the game said: nodemc.py client-said 1794805312 /tmp/dais_jobs/c319/c164-realms/renders/real/_trips/20261116-050152-5264558-save-c164-B1-film2-client.txt  (up to 30 s)
+    client said: 5 records on shaders, pipelines and packs, 1 of a failure; written to /tmp/dais_jobs/c319/c164-realms/renders/real/_trips/20261116-050152-5264558-save-c164-B1-film2-client.txt
+[trip 05:07:39 +347s] what the game said: exit 0, 0 s
+[trip 05:07:39 +347s] the game on sounds: 0 lines of an unknown or empty sound event or a bad sounds.json
+[trip 05:07:39 +347s] the packs the game loaded: [05:02:07] [Render thread/INFO]: Reloading ResourceManager: vanilla, vanilla, file/c164art
+[trip 05:07:39 +347s] the server on the save: 0 warnings, 0 errors in its log (20261116-050152-5264558-save-c164-B1-film2-server.txt)
+[trip 05:07:39 +347s] close: nodemc.py down  (up to 180 s)
+    [nodemc 05:07:39] client stopped
+    [nodemc 05:07:40] server stopped
+[trip 05:07:41 +349s] close: exit 0, 2 s
+[trip 05:07:41 +349s] back to the test world: nodemc.py setup  (up to 120 s)
+    [nodemc 05:07:41] vulkan: apiVersion 1.4.318, deviceName llvmpipe (LLVM 20.1.2, 256 bits), driverInfo Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+    [nodemc 05:07:41] java: /agent/realms-study/jdk/jdk-25.0.5+8-jre/bin/java
+    [nodemc 05:07:41] game files: whole ({"version": "26.3", "system": "linux", "mainClass": "net.minecraft.client.main.Main", "assetIndex": "34", "files": 5124, "downloaded": 5123, "assets_skipped": 9)
+    [nodemc 05:07:41] settings written: server26/server.properties (level-name, gamemode, force-gamemode, difficulty); render distance 12, the server's view distance 10, cloud range 128
+[trip 05:07:41 +349s] back to the test world: exit 0, 0 s
+[trip 05:07:41 +349s] trip done; pictures kept: renders/real-save/c164-B1-film2/; log renders/real/_trips/20261116-050152-5264558-save-c164-B1-film2.log

@@ -1,0 +1,15 @@
+# pictures of a save opened as it comes (tools/savetrip.py): shot, the save's hour (daytime) when it was taken, commit that holds the zip, first 16 of the picture file's sha256, when it was taken, the distances
+# the save: dist/B1/c164-B1.zip of 52645584 (cursor/c164-dist-f4b8), 3365125 bytes, sha256 8c0dc254f99158c9f38c9f56dc94a2f565a9fb1befee6e0dd385643b2ade976b
+# exported from the assembly commit 3abd2789, as the one who asked for the trip says
+# level.dat: world BLUE HOUR OBSERVATORY, game 26.3, game mode adventure, difficulty peaceful, spawn 88 196 -33, yaw 67.71, pitch -22.69, commands off, data packs vanilla file/c164art
+# the save's stored light: 336 light sources in 35 chunks, each lit in its own cell
+# the server: the node's test server on this save, game mode adventure (not forced), difficulty peaceful, as a Realm's slot is filled from the world; the camera is no operator
+# resource pack: resourcepacks/resources.zip of the save (1839375 bytes, sha256 2959705167e5020b, 2453 files, pack.mcmeta { "pack": { "description": "BLUE HOUR OBSERVATORY (c164-B1 c1ee784e)", "min_format": 97, "max_format": 97 } }) is the client's pack (whether a Realm hands it to those who join is not shown here)
+# the server, before anybody joined: Timeline minecraft:day is at 20370 tick(s); Game rule advance_time is currently set to false; The difficulty is Peaceful; There are 2 data pack(s) enabled: [vanilla (built-in)], [file/c164art (world)]
+# the game's graphics backend: Vulkan, 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+# as joined: C164Cam has the following entity data: [88.5d, 196.0d, -32.5d]; C164Cam has the following entity data: [67.71f, -22.69f]; C164Cam has the following entity data: 2 (0 survival, 1 creative, 2 adventure, 3 spectator)
+# the save's clock: the day stood at 20370 when the player had joined, at 20370 after the last picture (it stands)
+# distances: client render distance 12, server view distance 10, cloud range 128; pictures: 3 saved by the game itself, 0 taken off the display
+v08_dome_room 20370 52645584 afeca445cd907c64 2026-11-16T05:04 view12,server10,clouds128
+v10_time_room 20370 52645584 3a98aaae7f2c40f1 2026-11-16T05:04 view12,server10,clouds128
+l2_power_room 20370 52645584 f46c46cb4dbe042c 2026-11-16T05:04 view12,server10,clouds128
