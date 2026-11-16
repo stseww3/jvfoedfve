@@ -1,0 +1,11 @@
+delivery common/walk: 4d94d26 against 6a0494e (forked at 6a0494e), 16 commits, 65 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[WARN] scope    64 of 65 files are the card's own
+                common file (merge-key holder's; agreed beforehand?): M tools/walk.py
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[PASS] pictures no test scene with a shot list is touched
+[PASS] merge    merges cleanly; 0 commits behind the base
+result: PASS (0 failed, 1 to look at)
