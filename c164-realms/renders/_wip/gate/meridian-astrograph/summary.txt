@@ -1,0 +1,23 @@
+gate machines/meridian-astrograph 439a660f: the merged tree 439a660f, the assembly as it was e36ca0c2
+delivery.py: PASS (0 failed, 2 to look at)
+    [WARN] scope    1 of 3 files are the card's own
+                    not this card's file: M build/scenes/obs/interiors/_astroshell.py
+                    not this card's file: M build/scenes/obs/machines/astro.py
+    [WARN] pictures 1 test scene, 21 shots with a picture kept
+                    obs_mach_meridian_astrograph: 21 pictures show 9f606c07; the card's code has changed since (_powerkit.py, _relit.py): draw them again
+check.py: 96 scenes in 137 s: 96 pass (51 with warnings)
+pictures: obs_mach_meridian_astrograph: the kept pictures are NOT what the delivered commit 439a660f draws (it goes back):
+    [FAIL] selfshots obs_mach_meridian_astrograph at 439a660f: 4 of 21 kept pictures are what the code draws, 17 not
+    hut_door: 204027 of 921600 pixels are not what the code draws (off by up to 73 of 255)
+    hut_east: 244943 of 921600 pixels are not what the code draws (off by up to 73 of 255)
+    hut_west: 235879 of 921600 pixels are not what the code draws (off by up to 73 of 255)
+    hut_north: 245372 of 921600 pixels are not what the code draws (off by up to 73 of 255)
+    hut_circle: 210624 of 921600 pixels are not what the code draws (off by up to 73 of 255)
+    hut_eye: 101983 of 921600 pixels are not what the code draws (off by up to 61 of 255)
+    hut_sight: 106709 of 921600 pixels are not what the code draws (off by up to 91 of 255)
+    hut_court: 45190 of 921600 pixels are not what the code draws (off by up to 79 of 255)
+    dome_south: 27849 of 921600 pixels are not what the code draws (off by up to 108 of 255)
+    dome_north: 4967 of 921600 pixels are not what the code draws (off by up to 105 of 255)
+    dome_plate: 3871 of 921600 pixels are not what the code draws (off by up to 92 of 255)
+    dome_up: 10237 of 921600 pixels are not what the code draws (off by up to 108 of 255)
+result: FAIL

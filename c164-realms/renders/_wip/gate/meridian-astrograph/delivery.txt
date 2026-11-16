@@ -1,0 +1,13 @@
+delivery machines/meridian-astrograph: 439a660 against e36ca0c (forked at e36ca0c), 3 commits, 3 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[WARN] scope    1 of 3 files are the card's own
+                not this card's file: M build/scenes/obs/interiors/_astroshell.py
+                not this card's file: M build/scenes/obs/machines/astro.py
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[WARN] pictures 1 test scene, 21 shots with a picture kept
+                obs_mach_meridian_astrograph: 21 pictures show 9f606c07; the card's code has changed since (_powerkit.py, _relit.py): draw them again
+[PASS] merge    merges cleanly; 0 commits behind the base
+result: PASS (0 failed, 2 to look at)
