@@ -31,15 +31,19 @@ A range is given as it is seen from the site: elevations over bearings (RANGES).
 HIGHEST degrees at most for an eye above CENTRE; nearer to it, at the west rail of the sunset
 platform, the same peak stands a sixth higher (the card allows 6 degrees).
 
-Where a ridge meets the sea. The sea is the face of the vanilla cloud layer (mood.CLOUD_TOP).
-With fancy clouds that face is what a sheet stands in; with fast clouds the game draws the layer's
-underside instead, CLOUD_THICKNESS lower. A sheet may go down to that underside (BELOW): then it
-stands in the sea either way, and with fancy clouds its lowest rows show through the far, thin
-layer as a darker line along the shore. Under the sea's face a ridge goes down no further than it
-stands out of it, so a cape that runs out into the sea thins out below as it does above. Deeper
-than the underside a sheet may not go: its dark shape would show through the far layer.
-(Trial for the first pictures from the game: the north range goes down to the underside, the
-south range ends at the face.)
+Where a ridge ends below. A ridge rises from the horizon: its shore lies behind the sea's far
+edge. A sheet goes down to FOOT, a little under the lowest place a person can stand, so that for
+every eye on the site it goes down under the horizon and no sky shows under it. What lies under
+the horizon is the sea's business. The sky's shader (a2 and cloud, 11-16, group #67329) paints
+a flat sea there and gives everything under the horizon the far sea's colour for its fog: the
+sheet's lowest rows melt into the sea. Until that shader is in, the sky's lower half is the fog's
+colour with the lower half of the afterglow, and those rows show as the ridge's flat base, a
+degree or so under the horizon. The first sheets went down to the vanilla cloud layer, 4.7
+degrees under the horizon; that layer is going (cloud), and their base stood out in the void.
+
+DRESS is the switch for the whole of it: the far ridges change every view to the west, the
+arrival view among them, and whether the game draws them well is only seen in the game. Off,
+build() places nothing; a test scene asks for them with dress().
 
     python -m scenes.obs.sky.ridges     prints where the sheets stand and how high they reach
 """
@@ -50,9 +54,11 @@ import numpy as np
 from artkit import models as M
 
 from ..common import palette as P
+from ..common import skeleton as S
 from . import mood
 
 PREFIX = "sky_ridge_"
+DRESS = True                # the master scene carries the far ridges; False takes them all out again
 
 CENTRE = (30.5, 0.5)        # x, z where the entities stand: no place a person can reach is more than
 #                             80 blocks from it, so every player on the site is sent them
@@ -60,28 +66,28 @@ ENTITY_Y = -2.5             # in the rock under the court's paving
 VIEW = 6.0                  # view_range: shown to within 384 blocks of the entities at the default setting
 SCALE = 128.0               # the display's scale
 PX = 8                      # pixels to the model's unit: 16 * PX / SCALE pixels to the block, one
-WIDTH, HEIGHT = 384, 72     # a sheet's picture in pixels, which is its size out there in blocks
-SEA = float(mood.CLOUD_TOP)                 # the face of the cloud layer: where a ridge meets the sea
-EYE_Y = 1.62                # the eye the elevations are given for: a person on the upper terrace
+WIDTH, HEIGHT = 384, 48     # a sheet's picture in pixels, which is its size out there in blocks
+FOOT = float(S.LOWER_PAVING_Y) - 1.0        # scene y of a sheet's lower edge: under the lowest eye on the site
+EYE_Y = S.GROUND + S.EYE    # the eye the elevations are given for: a person on the upper terrace
 HIGHEST = 4.0               # no ridge line stands higher than this, in degrees for that eye
-SHORE = -5.0                # just under where the sea's face lies out there for that eye, in degrees
+SHORE = -1.6                # just under where a sheet's lower edge lies for that eye, in degrees
 TONE = P.colour("night_glass", 0)
 
 # The two ranges as the site sees them: the ridge line as points (degrees north of due west, degrees
-# up for an eye at EYE_Y above CENTRE), from the sea at the notch over peaks and saddles back into
-# the sea. Towards a peak the line is hollow: flat out of the saddle, steep under the top (FLANK);
+# up for an eye at EYE_Y above CENTRE), from the horizon at the notch over peaks and saddles back
+# under the horizon. Towards a peak the line is hollow: flat out of the saddle, steep under the top (FLANK);
 # elsewhere the points are joined by straight lines. Then the line is broken up (JAG). The south
 # range is not the north one mirrored: its bold headland stands next to the notch, its highest
 # peak further out.
 RANGES = {
     "north": dict(seed=3, line=(
-        (9.0, SHORE), (12.0, -1.8), (15.5, 1.9), (18.5, 0.6), (25.0, 3.6), (30.0, 1.5), (35.5, 2.9), (40.5, 1.0),
-        (46.0, 2.3), (51.5, 0.8), (57.0, 1.7), (63.0, 0.5), (69.0, 1.3), (75.0, 0.3), (80.0, 0.9), (87.0, -1.0),
+        (9.0, SHORE), (10.5, 0.2), (15.5, 1.9), (18.5, 0.6), (25.0, 3.6), (30.0, 1.5), (35.5, 2.9), (40.5, 1.0),
+        (46.0, 2.3), (51.5, 0.8), (57.0, 1.7), (63.0, 0.5), (69.0, 1.3), (75.0, 0.3), (80.0, 0.9), (88.0, -0.4),
         (94.0, SHORE))),
     "south": dict(seed=7, line=(
-        (-8.5, SHORE), (-10.5, -1.5), (-13.5, 2.7), (-17.5, 0.9), (-23.0, 2.1), (-28.0, 1.2), (-37.0, 3.8),
+        (-8.5, SHORE), (-9.5, 0.4), (-13.5, 2.7), (-17.5, 0.9), (-23.0, 2.1), (-28.0, 1.2), (-37.0, 3.8),
         (-43.0, 1.4), (-48.5, 2.5), (-54.0, 0.7), (-59.5, 1.8), (-66.0, 0.4), (-71.0, 1.2), (-77.0, 0.2),
-        (-82.0, 1.0), (-88.0, -1.2), (-94.0, SHORE))),
+        (-82.0, 1.0), (-89.0, -0.4), (-94.0, SHORE))),
 }
 FLANK = 1.6
 # the breaking up of a ridge line: (how many degrees one tooth is wide, how many degrees it stands high)
@@ -98,8 +104,6 @@ SHEETS = {
     "south": dict(range="south", bearing=-34.0, distance=360.0),
     "south_far": dict(range="south", bearing=-72.0, distance=402.0),
 }
-# how many blocks under the sea's face a range's sheets go down
-BELOW = {"north": float(mood.CLOUD_THICKNESS), "south": 0.0}
 
 
 def _hash(i, seed):
@@ -121,7 +125,7 @@ def _teeth(bearing, seed):
 
 def line(name, bearing):
     """A range's ridge line at a bearing: degrees up for an eye at EYE_Y above CENTRE; SHORE and
-    below where the range has gone into the sea."""
+    below where there is no ridge."""
     r = RANGES[name]
     pts = sorted(r["line"])
     if not pts[0][0] < bearing < pts[-1][0]:
@@ -139,12 +143,12 @@ def line(name, bearing):
     if up <= SHORE:
         return up
     # the teeth grow with the height: a low cape is calm, the peaks are broken
-    return min(HIGHEST, up + _teeth(bearing, r["seed"]) * min(1.0, max(0.2, (up - SHORE) / 5.0)))
+    return min(HIGHEST, up + _teeth(bearing, r["seed"]) * min(1.0, max(0.2, up / 3.5)))
 
 
 def crest(name):
     """The ridge line of a sheet: for each of its WIDTH columns, from the left as the site sees
-    it, the scene y where the ridge ends (whole blocks; SEA and below where there is none)."""
+    it, the scene y where the ridge ends (whole blocks; FOOT and below where there is none)."""
     sheet = SHEETS[name]
     out = np.empty(WIDTH)
     for c in range(WIDTH):
@@ -155,18 +159,10 @@ def crest(name):
     return np.floor(out)
 
 
-def foot(name):
-    """Scene y of a sheet's lower edge."""
-    return SEA - BELOW[SHEETS[name]["range"]]
-
-
 def picture(name):
     """A sheet's picture, HEIGHT by WIDTH, as the site sees it: the ridge in one tone, the sky clear."""
-    top = foot(name) + HEIGHT                                   # the scene y of the picture's upper edge
-    rows = top - 1 - np.arange(HEIGHT)[:, None]                 # the block each row of pixels shows
-    ridge = crest(name)[None, :]
-    # under the sea's face a ridge goes down as far as it stands out of it, and no further than the foot
-    solid = (rows < ridge) & (rows >= np.maximum(foot(name), 2.0 * SEA - ridge))
+    rows = FOOT + HEIGHT - 1 - np.arange(HEIGHT)[:, None]       # the block each row of pixels shows
+    solid = rows < crest(name)[None, :]
     out = np.zeros((HEIGHT, WIDTH, 4), dtype=np.uint8)
     out[solid, :3] = TONE
     out[solid, 3] = 255
@@ -191,7 +187,7 @@ def models():
     for name, sheet in SHEETS.items():
         # the sheet stands upright across x, its face to +z; the anchor lies before it, where the
         # entity stands once the display's scale has carried the sheet out
-        anchor = (0.0, (ENTITY_Y - foot(name)) / SCALE * 16.0, sheet["distance"] / SCALE * 16.0)
+        anchor = (0.0, (ENTITY_Y - FOOT) / SCALE * 16.0, sheet["distance"] / SCALE * 16.0)
         m = M.Model(PREFIX + name, px=PX, anchor=anchor)
         m.box((-WIDTH / PX / 2.0, 0.0, -0.05), (WIDTH / PX / 2.0, HEIGHT / PX, 0.0), _Picture(name),
               skip="newud", shade=False)
@@ -205,7 +201,15 @@ def _yaw(bearing):
     return math.degrees(math.atan2(-math.cos(a), math.sin(a)))
 
 
+def dress(canvas, on=True):
+    """Put the far ridges on this canvas (or leave them off it), whatever the switch DRESS says:
+    for a test scene. Call it before build()."""
+    canvas.ridge_dress = bool(on)
+
+
 def build(canvas, origin=(0, 0, 0)):
+    if not getattr(canvas, "ridge_dress", DRESS):
+        return 0
     ox, oy, oz = origin
     made = models()
     for name, sheet in SHEETS.items():
@@ -223,7 +227,7 @@ def corners(name, origin=(0, 0, 0)):
     a = math.radians(sheet["bearing"])
     away = np.array([-math.cos(a), 0.0, -math.sin(a)])          # from CENTRE to the sheet's middle
     right = np.array([math.sin(a), 0.0, -math.cos(a)])          # to the right of someone who looks that way
-    mid = np.array([CENTRE[0] + origin[0], foot(name) + origin[1], CENTRE[1] + origin[2]]) + away * sheet["distance"]
+    mid = np.array([CENTRE[0] + origin[0], FOOT + origin[1], CENTRE[1] + origin[2]]) + away * sheet["distance"]
     half, up = right * (WIDTH / 2.0), np.array([0.0, float(HEIGHT), 0.0])
     return [mid - half, mid + half, mid - half + up, mid + half + up]
 
@@ -252,14 +256,14 @@ def fan(bearing, up, alpha):
 
 def report():
     alpha = mood.LOOKS[mood.DEFAULT]["glow_alpha"]
-    lines = [f"{len(SHEETS)} sheets, {WIDTH} x {HEIGHT} blocks each; the sea's face at y {SEA:g}; "
+    lines = [f"{len(SHEETS)} sheets, {WIDTH} x {HEIGHT} blocks each, their lower edge at y {FOOT:g}; "
              f"elevations for an eye at y {EYE_Y} above the entities; afterglow opacity {alpha:g} (look {mood.DEFAULT})"]
     for name, sheet in SHEETS.items():
         ridge = crest(name)
         half = math.degrees(math.atan2(WIDTH / 2.0, sheet["distance"]))
         ups, fans = [], []
         for c in range(WIDTH):
-            if ridge[c] <= SEA:
+            if ridge[c] <= FOOT:
                 continue
             u = c + 0.5 - WIDTH / 2.0
             bearing = sheet["bearing"] + math.degrees(math.atan2(u, sheet["distance"]))
@@ -267,8 +271,8 @@ def report():
             fans.append(fan(abs(bearing), max(ups[-1], 0.0), alpha))
         lines.append(f"{name:10s} {sheet['bearing'] - half:6.1f} to {sheet['bearing'] + half:6.1f} north of west, "
                      f"{sheet['distance']:.0f} to {math.hypot(WIDTH / 2.0, sheet['distance']):.0f} blocks out, "
-                     f"foot at y {foot(name):g}; ridge line up to {max(ups):.1f} degrees (y {ridge.max():.0f}), "
-                     f"out of the sea along {len(ups) / WIDTH * 100:.0f}% of the sheet; "
+                     f"ridge line up to {max(ups):.1f} degrees (y {ridge.max():.0f}), "
+                     f"a ridge along {len(ups) / WIDTH * 100:.0f}% of the sheet; "
                      f"afterglow behind the ridge line {min(fans):.2f} to {max(fans):.2f}")
     return lines
 

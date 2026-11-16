@@ -15,7 +15,8 @@ plan/parts/sky-notes.md has of the game's sky, for the cameras of shots.json at 
                end is drawn in it
   the clouds   the vanilla layer as a flat face at mood.CLOUD_TOP in one colour, its opacity
                CLOUD_ALPHA x (1 - distance / CLOUD_FOG_END); where a sheet stands nearer, the
-               sheet hides the layer behind it
+               sheet hides the layer behind it. (The layer is to go and the sky's shader is to
+               paint a sea in its place, group #67329: then this part is out of date.)
   the site     the scene's stand-in blocks as flat dark shapes, so that the eye stands somewhere
 
 Each shot is drawn twice, with the ridges (<shot>.png) and without (<shot>_bare.png); --zoom adds

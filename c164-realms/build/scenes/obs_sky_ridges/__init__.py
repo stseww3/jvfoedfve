@@ -148,6 +148,7 @@ def build():
     for x, z in lookout:
         c.set(x, S.SOUTH_LOOKOUT["feet"] - 1, z, DARK)
     _skirt(c, lookout, S.SOUTH_LOOKOUT["feet"] - 1)
+    ridges.dress(c)
     ridges.build(c)
     return c
 
@@ -155,13 +156,13 @@ def build():
 # ---- what a camera holds -------------------------------------------------------------------------
 def seen(pos, name):
     """A sheet's ridge line as a camera sees it: for each of its columns (bearing north of due west,
-    degrees up, distance), only where the ridge stands out of the cloud layer."""
+    degrees up, distance), only where the sheet has a ridge."""
     ridge = ridges.crest(name)
     low_left, low_right = ridges.corners(name)[:2]
     out = []
     for i in range(ridges.WIDTH):
         p = low_left + (low_right - low_left) * ((i + 0.5) / ridges.WIDTH)
-        if ridge[i] <= ridges.SEA:
+        if ridge[i] <= ridges.FOOT:
             continue
         dx, dz = p[0] - pos[0], p[2] - pos[2]
         reach = math.hypot(dx, dz)
