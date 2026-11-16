@@ -1,0 +1,25 @@
+axis (35.5, 2.0, -29.5), piers [(33.5, 0.0, -29.5), (37.5, 0.0, -29.5)]
+tube: looks north, 45 degrees up; objective (35.5, 3.33, -30.83), eyepiece (35.5, 0.67, -28.17)
+sweep: centre (35.5, 2.0, -29.5), radius 1.94
+lamp: cell (32, 2, -30), level 4
+barriers: [(33, 0, -30), (33, 1, -30), (37, 0, -30), (37, 1, -30)]
+railing: 14 cells of oxidized_copper_bars, [(33, 0, -32), (33, 0, -31), (33, 0, -29), (33, 0, -28), (34, 0, -32), (34, 0, -28), (35, 0, -32), (35, 0, -28), (36, 0, -32), (36, 0, -28), (37, 0, -32), (37, 0, -31), (37, 0, -29), (37, 0, -28)]
+6 display entities
+  mach_meridian_tube: scale 2, 279 boxes, 62.0 x 16.0 x 60.0 texels
+  mach_meridian_circle: scale 2, 62 boxes, 4.5 x 44.0 x 47.3 texels
+  mach_meridian_pier: scale 2, 64 boxes, 17.0 x 49.7 x 32.5 texels
+  mach_meridian_lamp: scale 1, 30 boxes, 5.6 x 11.8 x 5.5 texels
+self-check: sizes, the room, the turn over the floor, the circles, the microscopes, the slot, the barriers and the railing -- all good
+meridian exit 0
+tube: looks west, 41.05 degrees up; pivot (12.5, 20.5, 30.5), objective (9.53, 23.09, 30.5), plate (14.08, 19.12, 30.5)
+mount: head (11.91, 19.82, 29.82), foot (11.91, 18.0, 30.18); the saddle -53.0 degrees round the tube
+sweep: centre (12.5, 20.5, 30.5), radius 4.18
+guard: [(10, 18, 29), (10, 18, 30), (10, 18, 31)], oxidized_copper_trapdoor[facing=west,half=bottom,open=true]
+4 display entities
+  mach_astro_tube: scale 2, 153 boxes, 27.9 x 29.3 x 95.5 texels
+  mach_astro_back: scale 1, 27 boxes, 25.2 x 16.5 x 7.5 texels
+  mach_astro_axis: scale 1, 94 boxes, 15.0 x 15.5 x 25.0 texels
+  mach_astro_mount: scale 1, 133 boxes, 20.0 x 28.2 x 26.3 texels
+self-check: sizes, the frames, the room, the slit, the plate holder, the guard -- all good
+astro exit 0
+23 shots -> /tmp/dais_jobs/c328/c164-realms/build/scenes/obs_mach_meridian_astrograph/shots.json
