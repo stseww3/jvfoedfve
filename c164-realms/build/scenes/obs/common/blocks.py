@@ -169,9 +169,17 @@ FLOOR_WOOD = _family("spruce_planks", "stairs slab", stem="spruce")             
 PALE_WOOD = _family("pale_oak_planks", "stairs slab", stem="pale_oak")                  # light wood where one is needed
 VANILLA_BARS = "iron_bars"
 VANILLA_CHAIN = "iron_chain"
+# the way up a shaft too narrow for a stair (the clock room in the tower's shaft, main/tower way_up();
+# S2 11-16): the finished map leaves no block to be worked with the hand, and a ladder is climbed by
+# walking into it. The game's own wooden ladder, as a clock tower has one: ladder[facing=...] on the
+# wall behind it. Indoors only; an iron one would be a repaint for the materials line to ask for
+LADDER = "ladder"
 LIGHT = "light"                                                 # the invisible light source: light[level=N]
-# the collision of a closed door or gate that is made of models, and of nothing else (A0, 11-16 05:07,
-# under #457's fourth): in the plane of the leaf, two high, no wider than the leaf. Anywhere else a
+# the collision of a solid model that is seen, and of nothing else (A0, 11-16, under #457's fourth). A
+# closed door or gate made of models (05:07): in the plane of the leaf, two high, no wider than the
+# leaf. A large solid model a visitor would otherwise walk through (09:11; the first is the cable car
+# at the spawn platform): the cells the model fills, not one outside its outline, two high at most; a
+# gap a person could still squeeze through is closed with something that is seen. Anywhere else a
 # barrier is the wall nobody sees, which the map does not have; tools/check.py, blocks, holds it to this
 BARRIER = "barrier"
 
@@ -183,7 +191,7 @@ REPAINTED = [ASHLAR_ROUGH, ASHLAR_FINE, ASHLAR_PANEL, ASHLAR_EMBLEM, IRON_PLATE,
              BRASS_INLAY, BRASS_LINE, BRASS_CROSS, BRASS_STAR, *ENAMEL_SIGN, SNOW, SNOW_LAYER, *CLOUD]
 VANILLA = [VERDIGRIS, VERDIGRIS_CUT, VERDIGRIS_CAST, VERDIGRIS_STREAK, SLATE_BRICK, SLATE_TILE, SLATE_SMOOTH,
            TUFF_BRICK, TUFF_SMOOTH, TUFF, ROCK_STONE, ROCK_ANDESITE, ROCK_DEEPSLATE, ROCK_COBBLED,
-           DARK_WOOD, FLOOR_WOOD, PALE_WOOD, VANILLA_BARS, VANILLA_CHAIN, LIGHT, BARRIER]
+           DARK_WOOD, FLOOR_WOOD, PALE_WOOD, VANILLA_BARS, VANILLA_CHAIN, LADDER, LIGHT, BARRIER]
 
 
 def ids(entries):
