@@ -71,6 +71,16 @@ LEVELS = 3.0            # a block up or down counts as this many along, when the
 KINDS = ("floor", "step", "threshold")
 ROOFING = ("_stairs", "_slab", "_trapdoor")     # shapes with a whole face: the sky's light is not let through them
 SKY_NEAR = 13           # the sky's light from which a cell under an overhang counts as lit by the sky
+# cr2, 11-16 11:26: the top of a railing, of a barrier block or of a glass pane is not a way a person
+# walks, though a hop gets him onto it. A dark cell whose feet rest on one is listed apart, not counted.
+PERCH_ENDS = ("_bars", "_pane", "_fence", "_fence_gate", "_wall")
+PERCH_NAMES = ("barrier",)
+
+
+def perch(under):
+    """Whether the block under the feet (its name) is one of those nobody walks on."""
+    name = under.replace("minecraft:", "")
+    return name in PERCH_NAMES or name.endswith(PERCH_ENDS)
 
 # Who lights which heap, as sky/lights (c331) dealt them out on 11-16 (#74750, #75829, #76033, #77817)
 # and cr2 after him (a room whose door is opened is a way like the others). The first line that fits a
@@ -446,7 +456,7 @@ def main():
                 best = (d, label)
         return best[1] if best is not None and best[0] <= NEAR else "off the routes"
 
-    dark, open_sky, eaves, dome, spared = {}, {}, {}, [], {}
+    dark, open_sky, eaves, dome, spared, perched = {}, {}, {}, [], {}, []
     for cell, row in rows.items():
         if row["light"] >= row["need"]:
             continue
@@ -456,6 +466,8 @@ def main():
             open_sky.setdefault(section(cell, row), []).append(cell)
         elif row["place"] == "eaves":
             eaves.setdefault(section(cell, row), []).append(cell)
+        elif perch(row["under"]):
+            perched.append(cell)
         elif (who := owner_of(section(cell, row), cell)).startswith(SPARED):
             spared.setdefault((who, section(cell, row)), []).append(cell)
         else:
@@ -566,13 +578,15 @@ def main():
                          for (who, name), v in spared.items() for hp in heaps(v)),
                         key=lambda hp: (hp["why"], -hp["cells"], hp["lo"]))
     n_spared = sum(hp["cells"] for hp in spared_heaps)
+    perches = sorted(list(c) + [rows[c]["light"], rows[c]["under"].replace("minecraft:", ""), section(c, rows[c]),
+                                owner_of(section(c, rows[c]), c)] for c in perched)
     report = dict(
         head=args.head, floor=args.floor, step=args.step,
         standing=dict(cells=len(rows), walk=sum(r["how"] == "walk" for r in rows.values()),
                       hop=sum(r["how"] == "hop" for r in rows.values()), roofed=roofed, fall_only_nodes=fell),
         starts=[dict(start=name, new=new) for name, new in used], no_standing_at=lost,
         dark=dict(cells=n_dark, heaps=n_heaps, **by_kind), before=before, by_owner=by_owner, sections=sections,
-        thresholds=sills, cleared=cleared, spared=spared_heaps,
+        thresholds=sills, cleared=cleared, spared=spared_heaps, perched=perches,
         open_sky={name: dict(cells=len(v), lo=box(v)[0], hi=box(v)[1]) for name, v in sorted(open_sky.items())},
         eaves={name: [dict(cells=len(hp), lo=box(hp)[0], hi=box(hp)[1], darkest=min(rows[c]["light"] for c in hp))
                       for hp in sorted(heaps(v), key=lambda hp: -len(hp))] for name, v in sorted(eaves.items())},
@@ -606,7 +620,8 @@ def main():
           f"- 站得住的格：{len(rows)}（走得到 {report['standing']['walk']}，要跳一下 {report['standing']['hop']}），"
           f"其中屋顶下 {roofed}。只能掉下去才到的地方不算（{fell} 个落脚点）。",
           f"- **暗：{n_dark} 格，{n_heaps} 堆**（地面 {by_kind['floor']}，台阶 {by_kind['step']}，门槛 {by_kind['threshold']}）。",
-          f"- 不算进总数：定了不补的 {n_spared} 格（{len(spared_heaps)} 堆，见后面），露天 {n_sky} 格，檐下 {n_eaves} 格，"
+          f"- 不算进总数：定了不补的 {n_spared} 格（{len(spared_heaps)} 堆，见后面），栏杆、屏障、玻璃板顶上的 {len(perches)} 格"
+          f"（栏杆、屏障、玻璃板的顶不算路，cr2 11:26 定；逐格见后面），露天 {n_sky} 格，檐下 {n_eaves} 格，"
           f"穹顶室 {len(dome)} 格。sky/lights 现在放了 {len(placed)} 个光源。"]
     if before:
         then = before["then"]
@@ -615,7 +630,7 @@ def main():
             f"（台阶、门槛里已经够 {args.step} 级的 {then['rule']} 格不再算暗，不补的 {then['spared']} 格另列），拿这个数比：")
         md.append(f"- 比上一版（{('总装 ' + before['head']) if before['head'] else '没写总装号'}，当时算暗 {then['cells']} 格 {then['heaps']} 堆）：{same}"
                   f"还暗着 {before['still_dark']} 格，新暗 {before['new_dark']} 格；亮了 {before['lit']} 格，"
-                  f"现在站不了人的 {before['no_standing']} 格，改算露天、檐下的 {before['apart']} 格；"
+                  f"现在站不了人的 {before['no_standing']} 格，改成另列的（露天、檐下、栏杆顶）{before['apart']} 格；"
                   f"整堆清掉的 {len(cleared)} 堆（见后面）。")
     if lost:
         md.append(f"- 路线上站不住人的点（没有从那里起算）：{len(lost)} 个，如 {'；'.join(lost[:4])}")
@@ -670,11 +685,16 @@ def main():
     md += [f"| {hp['why']} | {hp['name']} | {span(hp['lo'], hp['hi'], 0)} | {span(hp['lo'], hp['hi'], 1)} | "
            f"{span(hp['lo'], hp['hi'], 2)} | {hp['cells']} | {hp['darkest']} |" for hp in spared_heaps]
     md.append("")
+    md += [f"## 栏杆、屏障、玻璃板的顶（不算路，cr2 11:26 定；{len(perches)} 格，不进总数）", "",
+           "跳一下站得上去，可不是人走的路：脚下是栏杆（`_bars`）、屏障块（`barrier`）、玻璃板（`_pane`）的暗格，逐格。", "",
+           "| x | y | z | 块光 | 脚下的块 | 地段 | 本来归谁 |", "| --- | --- | --- | --- | --- | --- | --- |"]
+    md += [f"| {x} | {y} | {z} | {level} | {on} | {name} | {who} |" for x, y, z, level, on, name, who in perches]
+    md.append("")
     hops = [(s["name"], hp) for s in sections for hp in s["heaps"] if hp["hop"]]
     n_hop = sum(hp["hop"] for _name, hp in hops)
     md += [f"## 暗格里要跳一下才站得上的（{n_hop} 格，算在上面的总数里）", "",
-           "走不上去、跳一格才站得上的地方：一级没有台阶块的坎，也可能是箱子、机座、台面的顶。脚下是什么块列在这里，"
-           "是不是「人走的路」由 cr2、lights 看。", "",
+           "走不上去、跳一格才站得上的地方，脚下是整块的：一级没有台阶块的坎，也可能是箱子、机座、台面的顶。照算（cr2 11:26）；"
+           "脚下是什么块列在这里。", "",
            "| 地段 | x | y | z | 跳的格数 / 全堆 | 脚下的块 | 归谁 |", "| --- | --- | --- | --- | --- | --- | --- |"]
     md += [f"| {name} | {span(hp['lo'], hp['hi'], 0)} | {span(hp['lo'], hp['hi'], 1)} | {span(hp['lo'], hp['hi'], 2)} | "
            f"{hp['hop']} / {hp['cells']} | {'，'.join(f'{k} {v}' for k, v in hp['hop_on'].items())} | {said_owners(hp['owner'])} |"
@@ -700,7 +720,8 @@ def main():
         fh.write("\n")
     print(f"darkfloor: {len(rows)} standing cells, {roofed} under a roof; dark {n_dark} in {n_heaps} heaps "
           f"(floor {by_kind['floor']}, step {by_kind['step']}, threshold {by_kind['threshold']}); "
-          f"not to be lit {n_spared} in {len(spared_heaps)} heaps, open sky {n_sky}, under eaves {n_eaves}, "
+          f"not to be lit {n_spared} in {len(spared_heaps)} heaps, on railings, barriers and panes {len(perches)}, "
+          f"open sky {n_sky}, under eaves {n_eaves}, "
           f"dome room {len(dome)}; {time.time() - t0:.0f} s")
     if before:
         then = before["then"]
