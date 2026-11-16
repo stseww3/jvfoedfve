@@ -68,6 +68,7 @@ import random
 
 from artkit import models as M
 from artkit.blocks import st
+from artkit.pixelart import Frames
 
 from ..common import blocks as B
 from ..common import palette as P
@@ -379,8 +380,8 @@ def _lantern():
     # The flame moves: the two upper bands of the glass are frames (plan/parts/materials.md 2 D), eight
     # of two ticks; now and then the flame's white dips a step and its tip another. The game runs them
     # by itself, no command and no entity. The first frame is the lamp as it was, the one a still shows.
-    flame = PX.Frames(PREFIX + "lantern_flame", [K.flat("glow", t) for t in (4, 4, 3, 4, 4, 4, 3, 4)], frametime=2)
-    tip = PX.Frames(PREFIX + "lantern_tip", [K.flat("glow", t) for t in (3, 3, 3, 2, 3, 3, 2, 3)], frametime=2)
+    flame = Frames(PREFIX + "lantern_flame", [K.flat("glow", t) for t in (4, 4, 3, 4, 4, 4, 3, 4)], frametime=2)
+    tip = Frames(PREFIX + "lantern_tip", [K.flat("glow", t) for t in (3, 3, 3, 2, 3, 3, 2, 3)], frametime=2)
     for y0, y1, glass in ((4.0, 5.5, K.flat("glow", 2)), (5.5, 8.5, flame), (8.5, 10.0, tip)):
         K.glass_prism(m, "y", (0.0, 0.0), top + y0, top + y1, 2.5, glass)
     for x in (-4.0, 3.0):
