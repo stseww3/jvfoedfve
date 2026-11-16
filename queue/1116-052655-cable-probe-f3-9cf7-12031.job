@@ -1,0 +1,3 @@
+branch=cursor/c164-cable-probe-f3-9cf7
+head=77400e08fe4d4ddb71fa0aa001817de32cf324fb
+args=--no-push --limit 780 --tail 60 set\ -o\ pipefail\;\ python\ tools/check.py\ --scene\ obs_mach_cablecar_winch\ --shots\ build/scenes/obs_mach_cablecar_winch/shots.json\ 2\>\&1\ \|\ grep\ -v\ -E\ \'\^\ +chain\ of\|more\ than\ 160\ blocks\'\ \|\ tail\ -24 
