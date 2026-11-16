@@ -123,6 +123,7 @@ import math
 
 from artkit import models as M
 from artkit.blocks import st
+from artkit.nbtw import Float
 from artkit.pixelart import Sprite
 
 from ..common import blocks as B
@@ -131,6 +132,7 @@ from ..common import skeleton as S
 from ..main import _plan as MP
 from ..main import shell
 from ..materials import panels
+from ..motion import _kit as MK
 from ..props import _kit as K
 from ..props import lamps
 
@@ -263,6 +265,12 @@ DIAL = (                                            # nine pixels across: twelve
 DIAL_COLOURS = dict(c=P.RAMPS["porcelain"][3], d=P.RAMPS["porcelain"][2], k=MARK, b=P.RAMPS["brass"][3])
 DIAL_FACE = Sprite(PREFIX + "clock_dial", DIAL, DIAL_COLOURS)       # one face for the five: the hands are not painted on it
 HAND = K.flat("iron", 0)                            # a hand: as dark as ink, as on props/instruments' dials
+SECONDS = dict(tip=4.0, tail=1.25, wide=0.5, off=4.15, thick=0.15)      # px: a dial's seconds hand, from the pivot to its tip and
+#                                                     to the end of its tail, its width, how far off the wall it turns (over the
+#                                                     boss of the two hands), its thickness
+SECONDS_TURN = 60 * MK.SECOND                       # ticks: once round the dial in a minute, the five in step (slaves of one clock)
+VIEW = 0.5                                          # how far off a piece of the room is drawn, in 64 blocks: the "near" class of
+#                                                     plan/round2 2 (nothing of the room is looked at from further than the door)
 
 # ---- the patch cords: at the jack fields of the rack, which are the panels beside the two ends of the console
 JACK_FIELDS = tuple((RACK_X[0] + i, CORNICE_Y - 1 - j)                              # (5, 8) and (10, 8): the cells, x and y
@@ -560,6 +568,18 @@ def _world_clock(offset):
     return m
 
 
+def _seconds_hand():
+    """The seconds hand of a world clock: a piece by itself, so that motion/_kit can turn it. A thin
+    strip of blued steel over the two hands and their boss, a short tail beyond the pivot. Anchor:
+    the clock's, the point on the wall behind the middle of the dial; the hand turns about the line
+    out of the wall through it. Placed upright, at the sixtieth second."""
+    m = M.Model(PREFIX + "clock_seconds")
+    half = SECONDS["wide"] / 2.0
+    m.box((-half, -SECONDS["tail"], SECONDS["off"]), (half, SECONDS["tip"], SECONDS["off"] + SECONDS["thick"]),
+          K.flat("enamel", 2), grain="y")
+    return m
+
+
 def cords_name(side):
     return PREFIX + "cords_" + side
 
@@ -743,6 +763,7 @@ def _back(i):
 @functools.lru_cache(maxsize=None)
 def _models():
     out = {clock_name(offset): _world_clock(offset) for offset in WORLD}
+    out[PREFIX + "clock_seconds"] = _seconds_hand()
     out.update({cords_name(side): _cords(side) for side in CORDS})
     out.update({back_name(i): _back(i) for i in range(len(BACK))})
     out[PREFIX + "chronometer"] = _chronometer()
@@ -856,6 +877,7 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
     lights=[((x, y, z), level, why)]): the light sources it has offered to the light line."""
     ox, oy, oz = origin
     lights, n = [], 0
+    first = len(c.entities)
 
     def put(x, y, z, state):
         c.set(ox + x, oy + y, oz + z, state)
@@ -981,6 +1003,8 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
     for z, offset in zip(range(CLOCK_Z[0], CLOCK_Z[1] + 1), WORLD):
         put(X0, FEET, z, st(roles.PANELS["drawers"], facing="east"))
         n += K.put(c, own[clock_name(offset)], (PANEL_W, DIAL_Y, S.mid(z)), mount="wall", facing="east", origin=origin)
+        n += K.put(c, own[PREFIX + "clock_seconds"], (PANEL_W, DIAL_Y, S.mid(z)), mount="wall", facing="east", origin=origin)
+        n += MK.spin(c, "-z", SECONDS_TURN)         # about the line into the wall: clockwise for who looks at the dial
     n += lamp("bracket", (PANEL_W, BRACKET_Y, S.mid(*CLOCK_Z)), CLOCK_LAMP, "world clocks", CLOCK_LIGHT, facing="east")
     bounce(CLOCKS_BOUNCE, CLOCK_BOUNCE, "ceiling over the world clocks")
 
@@ -1028,6 +1052,12 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
         module = part(name)
         if module is not None:
             n += module.dress(c, origin)
+
+    # ---- how far off the room's pieces are drawn, whoever made them: the game draws a display entity through
+    # walls, so one that is drawn from across the site costs every picture taken out of doors
+    for entity in c.entities[first:]:
+        if "view_range" in entity[3]:
+            entity[3]["view_range"] = Float(VIEW)
     return {"entities": n, "lights": lights}
 
 
