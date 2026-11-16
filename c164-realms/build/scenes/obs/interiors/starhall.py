@@ -8,13 +8,15 @@ clock (machines). The hall dresses the room they leave, and reads it from them: 
 shell.ROOMS, the beams from shell.layout().beams, the clock's seat from shell.layout().seat, the
 doorway from facade.doors().
 
-The first look (S.V7, from outside the door through the middle arch): the orrery overhead, the
-mother clock on the pier straight ahead, the floor underfoot. The hall keeps that picture clear,
-and in the order the director set (A0, 11-16): the clock's dial and the pier's east face first,
-the orrery's sun the warmest point, the floor third. Nothing of the hall's own stands on the
-axis; no stone of the floor is pale, since a floor is drawn at full light and a wall that looks
-east at six tenths, and a pale one under the same lamp outshines the pier; and no lamp of the
-hall shows its glass to the door.
+The first look (S.V7, from inside the main doorway): the whole orrery under the star ceiling, the
+mother clock on the pier straight ahead, the galleries' lamps, the two flights of the stair, the
+floor underfoot. The hall keeps that picture clear, and in the order the director set (A0,
+11-16): the clock's dial and the pier's east face first, the orrery's sun the warmest point, the
+floor third. Nothing of the hall's own stands on the axis; no stone of the floor is pale, since
+a floor is drawn at full light and a wall that looks east at six tenths, and a pale one under
+the same lamp outshines the pier; no lamp of the hall shows its glass to the door; and the
+doorway's two reveals, which close the picture left and right, are dark panelling: one looks out
+of a dark frame into the hall.
 
   floor     The hall lays its own from wall to wall round the pier's foot (the shell's shows in
             the stair hall only). The station's emblem under the orrery, in thin brass line: an
