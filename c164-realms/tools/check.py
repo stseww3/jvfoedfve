@@ -35,7 +35,9 @@ Each check prints PASS, WARN or FAIL; the exit code is 1 when one fails.
   blocks     the blocks placed, and those block displays show, are in the occupancy table
   flatwall   no wall face runs flat (one block state, no relief) over more than 5x5
   entities   every display entity shows a model of the pack; counts against the budget;
-             16 pixels to the block; a piece drawn out along one axis has an even picture along it
+             16 pixels to the block; a piece drawn out along one axis has an even picture along it;
+             a model shown through a matrix that is no plain turn (leant over, sheared) is measured
+             face by face on the whole matrix: no face stretched or skewed
   views      display entities inside each shot's view, against the per-view budget; how many the
              game draws whatever the view; how many stand too far from the camera to be sent;
              a shot that stands at one of the skeleton's locked cameras and looks elsewhere
@@ -797,11 +799,39 @@ def _smear(model, axis):
     return sorted(uneven), len(skewed)
 
 
+HALF_TURN = np.diag([-1.0, 1.0, -1.0])      # the item renderer shows a model turned half a turn about y
+SQUARE = 1e-3                               # the cosine two edges of a face may end up at and still be square
+
+
+def _face_densities(model, nbt):
+    """What the display's whole matrix (left turn, scale, right turn) makes of every face of the
+    model that gets a picture: [(pixels to the block along the face's one edge, along the other,
+    the cosine of the angle the two end up at)]. A scale that is not along the model's own axes
+    says nothing about a face; where its edges go does."""
+    a = SL._shown_matrix(nbt, np.eye(3)) @ HALF_TURN
+    out = []
+    for pi, f, _mat, _w, _h, _grain, _seed in model.faces():
+        part = model.parts[pi]
+        _normal, ua, va = M.FACE_AXES[f]
+        edges = []
+        for axis in (ua, va):
+            e = [0.0, 0.0, 0.0]
+            e[axis] = 1.0
+            if part["rot"]:
+                e = M._qrot(part["rot"][0], e)
+            edges.append(a @ np.asarray(e, dtype=float))
+        lu, lv = (float(np.linalg.norm(e)) for e in edges)
+        cos = float(edges[0] @ edges[1]) / (lu * lv) if lu and lv else 0.0
+        out.append((16.0 * model.px / lu if lu else 0.0, 16.0 * model.px / lv if lv else 0.0, cos))
+    return out
+
+
 def entities(rep, got):
     canvas, models = got["canvas"], got["models"]
     shown = _displays(canvas)
     others = len(canvas.entities) - len(shown)
     fails, warns, used, missing, plain, dense, drawn_out = [], [], set(), {}, {}, {}, {}
+    leant, sheared = {}, {}
     for x, y, z, nbt in shown:
         if nbt["id"] != "minecraft:item_display":
             continue
@@ -815,10 +845,23 @@ def entities(rep, got):
             missing[ref] = missing.get(ref, 0) + 1
             continue
         used.add(name)
-        scale = [float(v) for v in (nbt.get("transformation") or {}).get("scale", (1.0, 1.0, 1.0))]
+        tr = nbt.get("transformation") or {}
+        scale = [float(v) for v in tr.get("scale", (1.0, 1.0, 1.0))]
         density = [16.0 * models[name].px / abs(s) if s else 0.0 for s in scale]
         off = [i for i, d in enumerate(density) if abs(d - 16.0) > 0.05]
-        if len(off) == 1:       # a piece drawn out along one axis (pipes, cables: models.between)
+        second = [float(v) for v in tr.get("right_rotation", (0.0, 0.0, 0.0, 1.0))]
+        if off and abs(second[3]) < 1.0 - 1e-9:
+            # the scale is not along the model's own axes (a model shown leant over, machines/orrery):
+            # the three numbers are those of the matrix taken apart, not of any face
+            faces = _face_densities(models[name], nbt)
+            bad = [(du, dv) for du, dv, cos in faces
+                   if abs(du - 16.0) > 0.05 or abs(dv - 16.0) > 0.05 or abs(cos) > SQUARE]
+            if bad:
+                key = (name, len(bad), len(faces), round(min(min(b) for b in bad), 2), round(max(max(b) for b in bad), 2))
+                sheared[key] = sheared.get(key, 0) + 1
+            else:
+                leant[name] = leant.get(name, 0) + 1
+        elif len(off) == 1:     # a piece drawn out along one axis (pipes, cables: models.between)
             drawn_out[(name, off[0])] = drawn_out.get((name, off[0]), 0) + 1
         elif off:
             key = (name, tuple(round(d, 2) for d in density))
@@ -833,6 +876,9 @@ def entities(rep, got):
                          f"is the game's, outside the palette")
     for (name, d), n in sorted(dense.items()):
         warns.append(f"{name} x{n}: {d[0]:g}/{d[1]:g}/{d[2]:g} pixels to the block along x/y/z, not 16")
+    for (name, nbad, nfaces, lo, hi), n in sorted(sheared.items()):
+        warns.append(f"{name} x{n}: shown through a matrix that is no turn, which stretches or skews {nbad} of its "
+                     f"{nfaces} faces: {lo:g} to {hi:g} pixels to the block along their edges, not 16 and square")
     for (name, axis), n in sorted(drawn_out.items()):
         uneven, skewed = _smear(models[name], axis)
         if uneven:
@@ -864,6 +910,8 @@ def entities(rep, got):
     stretched = sum(drawn_out.values())
     if stretched:
         words.append(f"{stretched} drawn out along one axis")
+    if leant:
+        words.append(f"{sum(leant.values())} shown through a matrix that is no turn, no face stretched")
     if others:
         words.append(f"{others} other entities")
     if idle:
