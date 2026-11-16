@@ -215,8 +215,9 @@ GAP = 7.0                               # px: a hauling chain's way back lies th
 HANGERS = (22.0, 31.0, 40.0, 49.0, 58.0, 67.0, 76.0)       # where a rail carries rollers for its chain
 LEAVE_DEG = HANGERS[1]                  # down to here the way back keeps to the rail; from here it drops to the winch
 DRUM_R = 6.25                           # px: the chain on a drum of the winch
+DRUM_W = 20.0                           # px: a drum's length: the six turns it takes up lie side by side
 WHEEL_RB = 5.5                          # px: the hand chain on the winch's wheel
-SHAFT = 1.25                            # px: the winch's shaft
+SHAFT = 1.5                             # px: the winch's shaft
 ROPE = 0.5                              # px: half a weight's wire rope
 ROPE_R = 1.125                          # px: the rope on the shaft's end, which is turned down to carry it
 WINCH_X = FACE_X + 0.53                 # the winch's shaft: its drums turn a pixel off the ring girder's face, and its
@@ -790,8 +791,8 @@ def _bar():
 # ---- the winch (version b): these pieces share the origin winch_at() on the dome's meridian ----------------
 def _winch():
     """The winch: a shaft across the slit's foot with the hand-chain wheel in its middle, a ratchet
-    wheel beside that, a drum for each hauling chain and, on its turned-down ends, the weights'
-    ropes. Turns about the shaft, which runs along z."""
+    wheel beside that, a grooved drum for each hauling chain and, on its turned-down ends, the
+    weights' ropes. Turns about the shaft, which runs along z."""
     d = _Draw("winch", 3)
     d.tube("z", (0.0, 0.0), -RUN + 3.0, RUN - 3.0, SHAFT, IRON_D, sides=8)
     d.ring("z", (0.0, 0.0, 0.0), WHEEL_RB - 1.25, 2.0, 2.0, IRON_B, sides=16)           # the wheel's rim, under the hand chain
@@ -803,13 +804,15 @@ def _winch():
     for i in range(8):
         d.box((2.5, -0.75, 9.5), (4.5, 0.75, 11.5), IRON_B, rot=("z", 45.0 * i + 22.5, (0.0, 0.0, 10.5)), seed=632)
     for side in (-1, 1):
-        z0, z1 = sorted((side * (HAUL_Z - 3.0), side * (HAUL_Z + 3.0)))
+        z0, z1 = sorted((side * (HAUL_Z + 3.0 - DRUM_W), side * (HAUL_Z + 3.0)))
         d.tube("z", (0.0, 0.0), z0, z1, DRUM_R - 1.0, IRON, sides=12, seed=633)         # a drum's barrel,
-        for z in (HAUL_Z - 3.5, HAUL_Z + 3.0):
+        for z in (HAUL_Z + 2.5 - DRUM_W, HAUL_Z + 3.0):
             f0, f1 = sorted((side * z, side * (z + 0.5)))
-            d.tube("z", (0.0, 0.0), f0, f1, DRUM_R + 1.25, IRON_D, sides=12, seed=634)  # its flanges
-        for z in (HAUL_Z - 1.5, HAUL_Z + 1.5):                                  # and two turns of chain on it
-            d.ring("z", (0.0, 0.0, side * z), DRUM_R, BAND, WRAP, IRON_B, sides=12, seed=635)
+            d.tube("z", (0.0, 0.0), f0, f1, DRUM_R + 1.25, IRON_D, sides=12, seed=634)  # its flanges,
+        for k in range(1, int(DRUM_W / 3.0) - 1):                               # the groove the chain beds in
+            d.ring("z", (0.0, 0.0, side * (HAUL_Z + 3.0 - DRUM_W + 3.0 * k)), DRUM_R - 0.875, 0.5, 0.75, IRON_D, sides=12, seed=638)
+        for z in (HAUL_Z - 1.5, HAUL_Z + 1.5):                                  # and the two turns that stay on it: the chain
+            d.ring("z", (0.0, 0.0, side * z), DRUM_R, BAND, WRAP, IRON_B, sides=12, seed=635)   # winds on from the rail's end
         e0, e1 = sorted((side * (RUN - 3.0), side * (RUN + 2.0)))
         d.tube("z", (0.0, 0.0), e0, e1, ROPE_R - ROPE, IRON_D, sides=8, seed=636)       # the end, turned down
         d.ring("z", (0.0, 0.0, side * RUN), ROPE_R, 2.0 * ROPE, 3.0, IRON_B, sides=8, seed=637)        # the rope on it
