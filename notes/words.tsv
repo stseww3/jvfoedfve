@@ -1,0 +1,14 @@
+49e4e723	check.py 的 entities 按整个矩阵量、骨架 V5、看板的 V5（3fde3556）
+e41031f6	**08:47 退回**：总装头上 18 个场景红，s2 revert 2100f2b2
+7ad81e1d	占用表的 LADDER（03a6be57）、总场景画布的 master 记号（d9117af8）
+21d7172c	借光拿掉，12 盏路灯脚下各一格光池，回廊口矮灯 8 级；`_nolend` 对照场景撤了
+ecac536e	第二版：海只铺在有东西站在海里的画布上，海面是挨着的矮云包，明暗重分；加机位 track_end
+e3ee3b4a	星厅第一版：默认甲，乙留在同一模块；MOVED_IN 已开；东墙三扇亮窗从屋里看是亮的，等 chart 的窗衬
+653556da	补交：只动 pipes.py、卡和 21 张图
+6ed4218b	屋里那一面（a3 要的）：环梁补铆接铁，立轴角换铁板
+97db356d	补一刀：绞车房亮窗的内衬不再自己叫 windows.line()，改由 materials/windows 贴
+b3a71e9d	第 2 轮：新增 plate_box、display_table_plates、display_table_lenses；带 `plan/parts/props-glow.md`（发光面清单，总监 #64193 要的）
+0f5ba2a0	打磨轮：占位云圈撤了（海由 sky/cloudsea 铺），云下山石顶最低 −28、最外一圈直落到 −34，缆索脊 x 121 抬到 −28，雪补回 716 柱；测试场景和总场景一样建天和机器
+af411545	云换成 sky/cloudsea 的真图后四个场景重出；占用表新加的梯子上板；板上还是占位的只剩炉火窗三块
+c3eedd60	delivery.py 的 scope：common 的卡自己的文件加上 `plan/reviews/<卡名到第一个连字符>/`（走查和导出的交付物照卡放在那里）
+6a0494e3	室外走查第 1 回合（总装 5959264）：站表、47 张联系表、out-findings.md（没有挡人的）；`tools/walk.py`（a4 的）、`tools/walkreach.py`（人走得到哪里，从方块算）

@@ -8,7 +8,7 @@ set -uo pipefail
 repo=/agent/repos/c164-s2-fable
 branch=cursor/c164-s2-notes-89df
 cd /tmp/c164_s2 || exit 1
-files=(inbox.md status_edit*.py values*.py base_stack*.txt status_top.md overrides.json applied.json manual.tsv ledger.tsv headcheck.txt)
+files=(inbox.md status_edit*.py values*.py base_stack*.txt status_top.md overrides.json applied.json new_rows.json words.tsv manual.tsv ledger.tsv headcheck.txt)
 scripts=(savenotes.sh watch.sh status_gen.py status_push.sh common_push.sh)
 if grep -l -E 'a_[0-9a-f]{16}|X-Agent|https?://|ghp_|github_pat' "${files[@]}" 2>/dev/null | grep -q .; then
   echo "savenotes: something that must not be pushed is in the notes" >&2; exit 1

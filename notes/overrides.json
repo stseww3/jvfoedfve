@@ -21,7 +21,8 @@
   "note": "【评审 cr3-#6 过（40e2746，工具卡；三处小改已私信 a2）】"
  },
  "sky/lights": {
-  "note": "【50caae6a（cr2 09:00 合 21d7172c）：借光拿掉（总监 #66198），`_nolend` 对照场景撤了；12 盏路灯脚下各一格光池（`_lightkit.POOL = 12`）；环梯回廊口矮灯 8 级。此前的洗墙轮 a5068e7e：DRESS 开；两翼亮窗后 12 级（总监 #58003）；洗墙 10、上限 10（#62755）；门洞的光源是星厅里三个占位光源，等 hall 的灯接过去】"
+  "note": "【50caae6a（cr2 09:00 合 21d7172c）：借光拿掉（总监 #66198），`_nolend` 对照场景撤了；12 盏路灯脚下各一格光池（`_lightkit.POOL = 12`）；环梯回廊口矮灯 8 级。此前的洗墙轮 a5068e7e：DRESS 开；两翼亮窗后 12 级（总监 #58003）；洗墙 10、上限 10（#62755）；门洞的光源是星厅里三个占位光源，等 hall 的灯接过去】",
+  "state": "已过审"
  },
  "site/stair": {
   "state": "已过审",
@@ -36,10 +37,12 @@
   "note": "【评审 cr2-#9 过（3/4/4/—/4）；交叉看 mast 过】"
  },
  "site/powerhouse": {
-  "note": "【三次交付 b8156301：交叉看 chart 过（炉火窗 12 级的源正在内衬取光那一格，锅炉房室内做好后从里面看一眼）】"
+  "note": "【三次交付 b8156301：交叉看 chart 过（炉火窗 12 级的源正在内衬取光那一格，锅炉房室内做好后从里面看一眼）】",
+  "state": "已过审"
  },
  "machines/clocks": {
-  "note": "【二次交付 b026dd95 评审 cr3-#4 过（4/4/4/4/4），交叉看 tower 过；三次交付 e1e09bc 删反光、改大轮轮缘，还没评】"
+  "note": "【二次交付 b026dd95 评审 cr3-#4 过（4/4/4/4/4），交叉看 tower 过；三次交付 e1e09bc 删反光、改大轮轮缘，还没评】",
+  "state": "已过审"
  },
  "machines/orrery": {
   "note": "【定甲（cr3 08:58：六臂共面、三圈同心轨道，25c15148），乙不再做；朝下的面画进斜切矩阵的模型，引擎当它朝上】"
@@ -69,7 +72,7 @@
   "note": "【评审 cr4-#1 过（94b79e2，4/4/3/4/4；三处打磨）；DRESS 08:24 开（622f9f44）】"
  },
  "props/furniture": {
-  "note": "【评审 cr4-#2 过（1b81b52，质感 4、风格 4；三处打磨：仪器柜玻璃门的蓝划、货箱和地板一个棕、展柜是空的）；DRESS 08:24 开（622f9f44）；`props/_kit.py` 随它进：K.pane、K.SHEEN、K.sheen_texels、K.rivet(proud=)、K.COPPER_D 新加，K.GLINT 去掉】",
+  "note": "【第 2 轮 5d16c6fd（a6 09:12 合 b3a71e9d）：新增 plate_box、display_table_plates、display_table_lenses；`plan/parts/props-glow.md` 是发光面清单（总监 #64193 要的）。评审 cr4-#2 过（1b81b52，质感 4、风格 4；三处打磨留第 3 轮：仪器柜玻璃门的蓝划、货箱和地板一个棕、展柜是空的）；DRESS 08:24 开（622f9f44）；`props/_kit.py`：K.pane、K.SHEEN、K.sheen_texels、K.rivet(proud=)、K.COPPER_D 新加，K.GLINT 去掉】",
   "state": "已过审"
  },
  "props/pipes": {
@@ -124,5 +127,28 @@
  },
  "sky/cloudsea": {
   "note": "【第二版 0fae16a2：海只铺在有东西站在海里的画布上（别人只搭台面的测试场景不再铺海）；海面是一个挨一个的矮云包；明暗重分；加机位 track_end。第一版 66f10a24：盘是平地外 150 格，海面世界 y 172，方块雾真距离 60 到 150】"
+ },
+ "common/walk-out": {
+  "who": "facade c321",
+  "note": "【第 1 回合 59c4d284（总装 5959264 上走的；s2 09:15 合 6a0494e3，delivery.py PASS、来源 clean，合后头上 75 个场景全过）：`plan/reviews/walk/5959264/`（站表、47 张联系表、`out-findings.md`，没有挡人的）、`tools/walkreach.py`、路线 `plan/reviews/walk/out-route.json`。收尾第 2 条：A5 起每版候选在绿头上重走，挡人的直接派作者】"
+ },
+ "common/walk-in": {
+  "note": "【第 1 轮（总装 636ad21）在 a4 的分支 `cursor/c164-a4-walkin-f3-6824`：挡人的四处 R1、R2（两翼屋脊近端的坑，main/roof，sdome）、F1（正门的占位亮墙，已撤，复查）、T1（报时塔脚没有门洞，tower 已进总装，复查）；`tools/walk.py` 已随 walk-out 进总装（6a0494e3）。09:55 前过关口交 s2】"
+ },
+ "common/export": {
+  "note": "【整包一版一版在 `cursor/c164-dist-f4b8` 的 `c164-realms/dist/A<n>/`（A3 09:02：不带注册表文件，数据包只有函数 290、标签 3，服务端冷启动 0 警告，天是原版夜空；A4 09:30 起钟锁 20370，彗星在正西；**A5 10:00 是第一个候选版**）。导出工具第一版 09:55 前过关口交 s2】"
+ },
+ "common/interface": {
+  "commit": "c3eedd60",
+  "note": "【11-16 09:15：`delivery.py` 的 scope 给 common 的卡开口，`plan/reviews/<卡名到第一个连字符>/` 算卡自己的文件（72c96d29，进总装 c3eedd60）。总监 09:11 的第五次补充：屏障的第二种用法，看得见的实心大件模型里面（出生点站台上的车厢，12 格，随 cablecar-winch 进）】"
+ },
+ "main/facade": {
+  "state": "已过审"
+ },
+ "main/shell": {
+  "state": "已过审"
+ },
+ "main/smalldome": {
+  "state": "已过审"
  }
 }

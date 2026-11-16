@@ -7,6 +7,7 @@ Reads, beside this file:
     manual.tsv        merges made by s2 before the watch began (same columns as the ledger)
     words.tsv         merge commit, tab, what it brought (the approver's 【合并】 line in a few words)
     applied.json      the notes the overrides have put into the rows so far (written here)
+    new_rows.json     rows for cards the tables do not have yet: [[category, after which package, row]]
     ledger.tsv        what watch.sh has seen come into the assembly: time (UTC), who, what, delivered, merge
     overrides.json    {"<category>/<package>": {"state": ..., "who": ..., "note": ...}}
     status_top.md     the text of the section "快车道以后" above the table of merges
@@ -72,16 +73,19 @@ def merges():
             if len(cells) < 5:
                 continue
             stamp, who, what, delivered, merge = cells[:5]
-            m = re.match(r"merge ([a-z]+)/([a-z0-9_-]+)(.*)", what)
-            if not m:
-                m = re.match(r"merge (common)()(.*)", what)
+            m = re.match(r"merge ((?:[a-z]+/[a-z0-9_-]+(?:, | and |、)?)+)(.*)", what)
+            if m:       # one merge may bring two cards of a line ("merge site/terrain, site/court <commit>")
+                cards, rest = re.findall(r"([a-z]+)/([a-z0-9_-]+)", m.group(1)), m.group(2)
+            else:
+                m = re.match(r"merge (common)(.*)", what)
                 if not m:
                     continue
-            words = m.group(3).strip()
-            words = re.sub(r"^[0-9a-f]{7,10}\b:? ?", "", words)
+                cards, rest = [("common", "")], m.group(2)
+            words = re.sub(r"^[0-9a-f]{7,10}\b:? ?", "", rest.strip())
             words = COMMON_WORDS.get(merge[:8], words)
-            out.append((beijing(stamp), NAMES.get(who, who.replace("c164-", "")), m.group(1), m.group(2),
-                        words, delivered[:8], merge[:8]))
+            for cat, pkg in cards:
+                out.append((beijing(stamp), NAMES.get(who, who.replace("c164-", "")), cat, pkg,
+                            words, delivered[:8], merge[:8]))
     return out
 
 
@@ -93,6 +97,25 @@ def main():
     applied = json.load(open(record, encoding="utf-8")) if os.path.exists(record) else {}
     rows = merges()
     lines = text.split("\n")
+
+    # ---- rows the table does not have yet (new_rows.json: [[category, after which package, the row]]) ----
+    path_new = os.path.join(HERE, "new_rows.json")
+    for cat, after, row in (json.load(open(path_new, encoding="utf-8")) if os.path.exists(path_new) else []):
+        name = re.split(r"[（(]", row.split("|")[1].strip().strip("`"))[0].strip()
+        sec, at, there = None, None, False
+        for i, line in enumerate(lines):
+            m = re.match(r"^## (\w+)", line)
+            if m:
+                sec = m.group(1)
+            if sec == cat and line.startswith("| ") and not line.startswith(("| ---", "| 包")):
+                this = re.split(r"[（(]", line.split("|")[1].strip().strip("`"))[0].strip()
+                there = there or this == name
+                if this == after:
+                    at = i
+        if not there:
+            if at is None:
+                raise SystemExit(f"new row {cat}/{name}: no row {after!r} to put it after")
+            lines.insert(at + 1, row)
 
     # ---- the rows of the packages --------------------------------------------------------------
     where, sec = {}, None
@@ -117,7 +140,8 @@ def main():
             continue
         note = f"【{when} {who} 合 {delivered}→{merge}" + (f"，{words}" if words else "") + "】"
         cells[7] = " " + note + cells[7].rstrip() + " "
-        cells[3] = " 已合并 "
+        if cells[3].strip() in ("待领", "制作中", "已交付", "退回"):
+            cells[3] = " 已合并 "       # a later round of a card that has passed a review leaves it passed
         cells[5] = f" {merge} "
         lines[i] = "|".join(cells)
     for key, change in over.items():
@@ -181,7 +205,7 @@ def main():
         table.append(f"| {when} | {what} | {delivered} | {merge} | {who} | {words} |")
     block = [BEGIN, "## 快车道以后（11-16 08:22 起；和下面各节冲突时以本节为准）", "",
              f"s2 c318 记，11-16 {now}。" + (f"总装头最近一次检查：{checks[-1]}。" if checks else ""), "", top, "",
-             f"### 合并流水（11-16 06:40 以后进总装的，共 {len(rows)} 次；08:28 以前是 s2 过关口合的，以后是各类审批人合的）", ""]
+             f"### 合并流水（11-16 06:40 以后进总装的，共 {len({r[6] for r in rows})} 次；08:28 以前是 s2 过关口合的，以后是各类审批人合的）", ""]
     block += table + ["", END]
     text = "\n".join(lines)
     if BEGIN in text:
