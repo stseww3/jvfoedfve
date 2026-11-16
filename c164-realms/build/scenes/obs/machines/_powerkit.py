@@ -155,6 +155,16 @@ def light(canvas, lights, origin, why, rank=2):
             canvas.set(cell[0], cell[1], cell[2], f"{B.LIGHT}[level={int(level)}]", keep=True)
 
 
+def solid(canvas, cells, origin):
+    """The collision of a solid piece that stands on the floor, which a model has not: a barrier in
+    each of `cells` [(x, y, z)]. They are cells the piece itself fills and stand no more than two
+    high (plan/roles/INTERFACE.md, the fifth supplement of 11-16). Never over another block."""
+    from ..common import blocks as B
+    ox, oy, oz = (int(v) for v in origin)
+    for x, y, z in cells:
+        canvas.set(ox + x, oy + y, oz + z, B.BARRIER, keep=True)
+
+
 # ---- painting a face pixel by pixel ----------------------------------------------------------------------
 # One letter for every tone of the ramps the set uses; "." is see-through.
 LETTERS = {"iron": "0123456", "brass": "abcdef", "slate": "ABCDEFG", "cream": "pqrs", "porcelain": "PQRST",
