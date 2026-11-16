@@ -186,12 +186,9 @@ DRAINS = [dict(at=(x + 0.5, float(Z0)), facing="north", top=EAVES + 1, bottom=FE
 # yard (V6) the three at the north ends of the inner ridges show between the gables' teeth; from
 # the upper terrace the two on the west light. Roof "a" only: the vault has its monitor.
 #
-# How far the shell's display entities are drawn (VIEW, which the assembly applies to all a module
-# places: here the ventilators and the lamp over the wicket): the near band, 32 blocks. Machines
-# out of doors would have the middle one, but the arrival view (V1) looks this way from 58 blocks
-# off and is over its count of entities; from the yard, the stair and the terrace's lip they are
-# all within 32.
-VIEW = M.NEAR
+# How far they are drawn: the far band, as everything out of doors that counts in a silhouette
+# (INTERFACE 7; A0, 11-16 13:10). So the module sets no VIEW, and the lamp over the wicket, which
+# carries light, keeps the far band too.
 # Where the shell's own display models are placed (DRESS; build(dress=) overrides it): None, in
 # the master scene only (canvas.master). Several test scenes of other packages borrow this shell
 # with build() and pack their own models, not the shell's: a ventilator there would show a model
@@ -757,7 +754,7 @@ def _vents(canvas, origin, version):
         return 0
     model = _vent_model()
     for i, (x, y, z) in enumerate(VENTS):
-        canvas.add_entity(origin[0] + x, origin[1] + y, origin[2] + z, M.display(model, view=VIEW))
+        canvas.add_entity(origin[0] + x, origin[1] + y, origin[2] + z, M.display(model, view=M.FAR))
         MK.spin(canvas, "y", VENT_REV, phase=VENT_BEHIND * (i % 2))     # the south row steps on other ticks
     return len(VENTS)
 
