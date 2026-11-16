@@ -1,0 +1,3 @@
+branch=cursor/c164-chart-chartroom-f3-3477
+head=d26174b9374595c3b6a76d9cf9a5a81911d69cad
+args=--limit 900 --tail 14 python\ tools/check.py\ --scene\ obs_int_chartroom\ \&\&\ python\ tools/selfshots.py\ obs_int_chartroom 
