@@ -63,16 +63,13 @@ import numpy as np
 from artkit import models as M
 from artkit.pixelart import Mat, Sprite
 
+from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
 from ..props import _kit as PK          # read only: flat tones, rivets, the hand-over of light sources
 from ..props import lamps               # the lamp in the winch house is one of the lamp family
 from ..site import _kit as SK           # read only: the line of the ridge under the trestle
-
-try:                                    # the station's shell, once site/cablecar is in the tree
-    from ..site import cablecar as SHELL
-except ImportError:                     # until then its numbers as the group has them (c226, 37fc9574)
-    SHELL = None
+from ..site import cablecar as SHELL    # read only: the station's shell, whose numbers all of this hangs on
 
 PREFIX = "mach_cable_"
 PX = 1.0 / 16.0                         # one texel, in blocks
@@ -116,45 +113,36 @@ PLATE = Sprite(PREFIX + "plate", ["22222222", "24334332", "23343342", "23433432"
 # --- where it stands ------------------------------------------------------------------------------
 # Everything hangs on the station's shell (site/cablecar): the car's cells, the winch room, the
 # rule of the track. Points are in blocks, x east, y up, z south.
-def _shell(name, default):
-    return getattr(SHELL, name, default)
-
-
 X0, Z0, X1, Z1 = S.CABLE_STATION                        # x 75..91, z -40..-26
 FEET = float(S.STATION_GROUND)                          # -4: the platform's floor, and the rails' top in it
-AXIS = _shell("AXIS", SK.CABLE_RIDGE_Z)                 # -33: the row of the track's axis
+AXIS = SHELL.AXIS                                       # -33: the row of the track's axis
 TRACK_Z = AXIS + 0.5                                    # the track's centre line in the station
-CAR_BOX = _shell("CAR", {"box": (int(S.V1["pos"][0]) + 1, AXIS - 1, X1, AXIS + 1)})["box"]     # x 89..91, z -34..-32
-ROOM = _shell("WINCH_ROOM", {"box": (X1 - 4, Z0 + 1, X1 - 1, Z0 + 3)})["box"]                  # x 87..90, z -39..-37
-LEVEL = _shell("LEVEL", 4)                              # cells of level track east of the platform
-GRADE = _shell("GRADE", 0.5)                            # then the rails fall this much with every cell
+CAR_BOX = SHELL.CAR["box"]                              # x 89..91, z -34..-32: the cells the shell keeps for the car
+ROOM = SHELL.WINCH_ROOM["box"]                          # x 87..90, z -39..-37
+LEVEL = SHELL.LEVEL                                     # 4: cells of level track east of the platform
+GRADE = SHELL.GRADE                                     # 0.5: then the rails fall this much with every cell
+track_axis = SHELL.track_axis                           # the row of the track's axis in column x
+rail_top = SHELL.rail_top                               # y of the upper face of the rails in column x
+TRACK_END = SHELL.END                                   # 141: the track's last column, under the cloud
 
-
-def track_axis(x):
-    """The row of the track's axis in column x: the station's row, then the ridge's own line."""
-    if SHELL is not None:
-        return SHELL.track_axis(x)
-    return AXIS if x <= X1 else int(round(AXIS - (x - SK.CABLE_RIDGE_X[0]) / 3.0))
-
-
-def rail_top(x):
-    """y of the upper face of the rails in column x."""
-    if SHELL is not None:
-        return SHELL.rail_top(x)
-    return FEET - GRADE * max(0, x - X1 - LEVEL)
-
-
-TRACK_END = _shell("END", next(x for x in range(X1 + 1, X1 + 200) if rail_top(x) <= SK.ROCK_FLOOR + 2))  # 141
-
-# The car: its body is two blocks square on the three cells the shell keeps for it, its west end
-# (the door) half a block east of the spawn cell. Anchor: the middle of its foot on the rails.
-CAR = (S.mid(CAR_BOX[0], CAR_BOX[2]), FEET, TRACK_Z)
-CAR_LIGHT = (int(math.floor(CAR[0])), int(FEET) + 1, AXIS)      # a cell: the light of its windows
+# The car stands on the last two cells of the platform, as wide as the track is between its kerbs:
+# its ends and its sides lie on cell lines (x 90 and 92, z -34 and -31), its east end flush with
+# the platform's edge, so that it fills the gap the railing leaves for the track. A model stops
+# nobody; the cells of the car's body hold barriers two high, so that the car is as solid as it
+# looks and nobody walks through it and out on to the trestle (A0, 11-16 09:11: barriers stand
+# inside a solid model one sees, and nowhere beyond its outline). Anchor: the middle of its foot
+# on the rails. The cell west of it is left for the step to its door; the spawn cell is the next.
+CAR_HALF = (16, 24)                                     # half its length and half its width, in texels
+CAR = (CAR_BOX[2] + 1.0 - CAR_HALF[0] * PX, FEET, TRACK_Z)      # (91.0, -4, -32.5)
+CAR_CELLS = [(x, y, z) for x in range(CAR_BOX[2] - 1, CAR_BOX[2] + 1) for y in (int(FEET), int(FEET) + 1)
+             for z in range(CAR_BOX[1], CAR_BOX[3] + 1)]        # x 90..91, y -4..-3, z -34..-32: the barriers
+CAR_LIGHT = (CAR_BOX[2], int(FEET) + 2, AXIS)           # a cell, over the barriers: the light of its windows
 CAR_LIGHT_LEVEL = 9                                     # a lit window is a second-rank light (A5 1.3)
 
-# The cast cover at the head of the track fills the west half of the car's first cell between the
-# rails, right under the door. The rope's duct lies in that same strip of x all the way north.
-X_ROPE = CAR_BOX[0] + 0.25
+# The cast cover at the head of the track lies between the rails right under the car's door, in
+# the east half of the cell before the car. The rope's duct lies in that same strip of x all the
+# way north.
+X_ROPE = CAR[0] - CAR_HALF[0] * PX - 0.25               # 89.75
 HOOD = (X_ROPE, FEET, TRACK_Z)
 DUCT_ROWS = list(range(ROOM[3] + 2, AXIS - 1))          # the paving between the house and the north rail: z -35
 
@@ -257,7 +245,7 @@ def _roller_at(tie):
 TURN = (X_TURN - TURN_R * math.tan(BEND / 2.0), FEET + 4 * PX, TRACK_Z - TURN_R)
 _Y_BROW = rail_top(BROW_TIE) + ROLL_UP + ROLL_R         # the rope on top of the brow roller
 _X_BROW = X_GRADE - (_Y_BROW - FEET - RISE) / GRADE     # where the slope's line comes up to that
-ROPE_LINE = ([(CAR_BOX[0] + 0.5 - 2 * PX, FEET + 3 * PX, TRACK_Z),     # two texels inside the hood
+ROPE_LINE = ([(X_ROPE + 0.25 - 2 * PX, FEET + 3 * PX, TRACK_Z),        # two texels inside the hood
               (X_TURN, TURN[1], TRACK_Z),
               (_X_BROW, _Y_BROW, _line_z(_X_BROW))]
              + [_slope(t + 0.5) for t in ROLLER_TIES[2::2]]             # a new piece at every other roller
@@ -271,31 +259,39 @@ def _car():
     """The car, drawn texel for texel (scale 1). x is the way of the track, the door at -x (west).
     Anchor: the middle of its foot, on the top of the rails.
 
-    From the rails up: wheels 8 across under an iron frame (y 6..9), the floor at 9, boards to
-    the waist rail (22..24), windows 24..35, the letter board to the eaves at 38, then the roof
-    with its clerestory to 45. The walls lie in three planes: the iron frame, the boards one
-    texel behind it, the glass one behind that."""
+    A broad car for a broad track: two blocks long and, over its eaves, three wide, its wheels on
+    the middle of the rails. From the rails up: wheels 8 across under an iron frame (y 6..9), the
+    floor at 9, boards to the waist rail (22..24), windows 24..35, the letter board to the eaves
+    at 38, then the roof with its clerestory to 45. The walls lie in three planes: the iron
+    frame, the boards one texel behind it, the glass one behind that."""
     m = M.Model(PREFIX + "car")
+    L, W = CAR_HALF[0], CAR_HALF[1] - 2                 # half the body: 16 along the track, 22 across it
     FLOOR, WAIST, SILL, HEAD, EAVE = 9, 22, 24, 35, 38
     BAR = 31                                            # the glazing bar, before the windows' fourth row
-    piers = ((-14, -12), (-6, -3), (3, 6), (12, 14))    # between three windows six wide
-    lights = (-12, -3, 6)
+    side_piers = ((-14, -12), (-6, -3), (3, 6), (12, 14))               # a long side: three windows six wide
+    side_lights = (-12, -3, 6)
+    end_piers = ((-20, -18), (-12, -8), (-2, 2), (8, 12), (18, 20))     # the valley end: four
+    end_lights = (-18, -8, 2, 12)
+    door_piers = ((6, 7), (12, 14), (19, 20))           # the door end: two narrow windows either side of the door
+    door_lights = ((7, 12), (14, 19))
+    G = 16.0                                            # the wheels' plane: the middle of a rail
 
     # the underframe and the running gear
     for s in (-1.0, 1.0):
-        m.box((-14, 6, 14 * s), (14, FLOOR, 16 * s), IRON, grain="x")              # sole bar
-        m.box((14 * s, 6, -16), (16 * s, FLOOR, 16), IRON, grain="z")              # head stock
+        m.box((-L + 2, 6, (W - 2) * s), (L - 2, FLOOR, W * s), IRON, grain="x")    # sole bar
+        m.box(((L - 2) * s, 6, -W), (L * s, FLOOR, W), IRON, grain="z")            # head stock
         for t in (-10.5, -3.5, 3.5, 10.5):
-            PK.rivet(m, (t, 7.5, 16 * s), "z" if s > 0 else "-z")
-            PK.rivet(m, (16 * s, 7.5, t), "x" if s > 0 else "-x")
-    m.box((-14, 8, -14), (14, FLOOR, 14), IRON_D)                                  # the floor, seen from below
+            PK.rivet(m, (t, 7.5, W * s), "z" if s > 0 else "-z")
+        for t in (-16.5, -5.5, 5.5, 16.5):
+            PK.rivet(m, (L * s, 7.5, t), "x" if s > 0 else "-x")
+    m.box((-L + 2, 8, -W + 2), (L - 2, FLOOR, W - 2), IRON_D)                      # the floor, seen from below
     for wx in (-10.0, 10.0):
-        m.tube("z", (wx, 4.0), -12.0, 12.0, 1.0, IRON_D)                           # axle
+        m.tube("z", (wx, 4.0), -G, G, 1.0, IRON_D)                                 # axle
         for s in (-1.0, 1.0):
-            m.ring("z", (wx, 4.0, 12.5 * s), 3.5, 1.0, 3.0, IRON, sides=8, seed=_WHEEL)        # tyre
-            a, b = sorted((12.0 * s, 13.0 * s))
+            m.ring("z", (wx, 4.0, G * s), 3.5, 1.0, 3.0, IRON, sides=8, seed=_WHEEL)           # tyre
+            a, b = sorted(((G - 0.5) * s, (G + 0.5) * s))
             m.tube("z", (wx, 4.0), a, b, 3.0, IRON_D, seed=_WHEEL + 1)                         # web
-            a, b = sorted((13.0 * s, 15.0 * s))
+            a, b = sorted(((G + 0.5) * s, (G + 2.5) * s))
             m.box((wx - 1, 3, a), (wx + 1, 5, b), BRASS_D, seed=_WHEEL + 2)                    # hub cap
     m.box((-2, 5, -1), (2, 8, 1), IRON_D)                                          # the grip's shank
     m.box((-3, 2, -2), (3, 5, 2), IRON_D, grain="x")                               # its jaws, closed on the rope
@@ -303,76 +299,79 @@ def _car():
     # the body: four iron corner posts
     for sx in (-1.0, 1.0):
         for sz in (-1.0, 1.0):
-            m.box((14 * sx, FLOOR, 14 * sz), (16 * sx, EAVE, 16 * sz), IRON, grain="y", seed=_POST)
+            m.box(((L - 2) * sx, FLOOR, (W - 2) * sz), (L * sx, EAVE, W * sz), IRON, grain="y", seed=_POST)
             for y in (12.5, 19.5, 27.5, 33.5):
-                PK.rivet(m, (14.5 * sx, y, 16 * sz), "z" if sz > 0 else "-z")
-                PK.rivet(m, (16 * sx, y, 14.5 * sz), "x" if sx > 0 else "-x")
+                PK.rivet(m, ((L - 1.5) * sx, y, W * sz), "z" if sz > 0 else "-z")
+                PK.rivet(m, (L * sx, y, (W - 1.5) * sz), "x" if sx > 0 else "-x")
 
     # the two long sides
     for s in (-1.0, 1.0):
         out = "s" if s > 0 else "n"
-        m.box((-14, FLOOR, 14 * s), (14, WAIST, 15 * s), WOOD, grain="y")          # boards
-        m.box((-14, WAIST, 14 * s), (14, SILL, 16 * s), IRON, grain="x")           # waist rail
-        for a, b in piers:
-            m.box((a, SILL, 14 * s), (b, HEAD, 15 * s), WOOD, grain="y")
-        m.box((-14, HEAD, 14 * s), (14, EAVE, 15 * s), WOOD, grain="x")            # letter board
-        for a in lights:
-            m.box((a, SILL, 13 * s), (a + 6, HEAD, 14 * s), GLOW[0], faces={out: WIN6}, emit=15, shade=False)
-            m.box((a, BAR, 14 * s), (a + 6, BAR + 1, 15 * s), IRON_D, grain="x")   # glazing bar
-        m.box((-3, 13, 15 * s), (3, 17, 15.5 * s), BRASS, grain="x")               # the maker's plate
+        m.box((-L + 2, FLOOR, (W - 2) * s), (L - 2, WAIST, (W - 1) * s), WOOD, grain="y")      # boards
+        m.box((-L + 2, WAIST, (W - 2) * s), (L - 2, SILL, W * s), IRON, grain="x")             # waist rail
+        for a, b in side_piers:
+            m.box((a, SILL, (W - 2) * s), (b, HEAD, (W - 1) * s), WOOD, grain="y")
+        m.box((-L + 2, HEAD, (W - 2) * s), (L - 2, EAVE, (W - 1) * s), WOOD, grain="x")        # letter board
+        for a in side_lights:
+            m.box((a, SILL, (W - 3) * s), (a + 6, HEAD, (W - 2) * s), GLOW[0], faces={out: WIN6}, emit=15,
+                  shade=False)
+            m.box((a, BAR, (W - 2) * s), (a + 6, BAR + 1, (W - 1) * s), IRON_D, grain="x")     # glazing bar
+        m.box((-3, 13, (W - 1) * s), (3, 17, (W - 0.5) * s), BRASS, grain="x")                 # the maker's plate
 
-    # the east end, towards the valley: three windows like the sides
-    m.box((14, FLOOR, -14), (15, WAIST, 14), WOOD, grain="y")
-    m.box((14, WAIST, -14), (16, SILL, 14), IRON, grain="z")
-    for a, b in piers:
-        m.box((14, SILL, a), (15, HEAD, b), WOOD, grain="y")
-    m.box((14, HEAD, -14), (15, EAVE, 14), WOOD, grain="z")
-    for a in lights:
-        m.box((13, SILL, a), (14, HEAD, a + 6), GLOW[0], faces={"e": WIN6}, emit=15, shade=False)
-        m.box((14, BAR, a), (15, BAR + 1, a + 6), IRON_D, grain="z")
+    # the east end, towards the valley: four windows like the sides'
+    m.box((L - 2, FLOOR, -W + 2), (L - 1, WAIST, W - 2), WOOD, grain="y")
+    m.box((L - 2, WAIST, -W + 2), (L, SILL, W - 2), IRON, grain="z")
+    for a, b in end_piers:
+        m.box((L - 2, SILL, a), (L - 1, HEAD, b), WOOD, grain="y")
+    m.box((L - 2, HEAD, -W + 2), (L - 1, EAVE, W - 2), WOOD, grain="z")
+    for a in end_lights:
+        m.box((L - 3, SILL, a), (L - 2, HEAD, a + 6), GLOW[0], faces={"e": WIN6}, emit=15, shade=False)
+        m.box((L - 2, BAR, a), (L - 1, BAR + 1, a + 6), IRON_D, grain="z")
 
-    # the west end, towards the platform: the door between two narrow windows
+    # the west end, towards the platform: the door between two pairs of narrow windows
     for s in (-1.0, 1.0):
-        a, b = sorted((6 * s, 14 * s))
-        m.box((-15, FLOOR, a), (-14, WAIST, b), WOOD, grain="y")
-        m.box((-16, WAIST, a), (-14, SILL, b), IRON, grain="z")
-        m.box((-15, HEAD, a), (-14, EAVE, b), WOOD, grain="z")
-        for a, b in ((6, 7), (12, 14)):
+        a, b = sorted((6 * s, (W - 2) * s))
+        m.box((-L + 1, FLOOR, a), (-L + 2, WAIST, b), WOOD, grain="y")
+        m.box((-L, WAIST, a), (-L + 2, SILL, b), IRON, grain="z")
+        m.box((-L + 1, HEAD, a), (-L + 2, EAVE, b), WOOD, grain="z")
+        for a, b in door_piers:
             a, b = sorted((a * s, b * s))
-            m.box((-15, SILL, a), (-14, HEAD, b), WOOD, grain="y")
-        a, b = sorted((7 * s, 12 * s))
-        m.box((-14, SILL, a), (-13, HEAD, b), GLOW[0], faces={"w": WIN5}, emit=15, shade=False)
-        m.box((-15, BAR, a), (-14, BAR + 1, b), IRON_D, grain="z")
+            m.box((-L + 1, SILL, a), (-L + 2, HEAD, b), WOOD, grain="y")
+        for a, b in door_lights:
+            a, b = sorted((a * s, b * s))
+            m.box((-L + 2, SILL, a), (-L + 3, HEAD, b), GLOW[0], faces={"w": WIN5}, emit=15, shade=False)
+            m.box((-L + 1, BAR, a), (-L + 2, BAR + 1, b), IRON_D, grain="z")
         a, b = sorted((5 * s, 6 * s))
-        m.box((-16, FLOOR, a), (-14, EAVE, b), IRON, grain="y")                    # door jamb
-        m.box((-18, 15, a), (-17, 31, b), BRASS, grain="y")                        # grab rail, a texel off the jamb
+        m.box((-L, FLOOR, a), (-L + 2, EAVE, b), IRON, grain="y")                  # door jamb
+        m.box((-L - 2, 15, a), (-L - 1, 31, b), BRASS, grain="y")                  # grab rail, a texel off the jamb
         for y in (15, 30):
-            m.box((-17, y, a), (-16, y + 1, b), BRASS)
+            m.box((-L - 1, y, a), (-L, y + 1, b), BRASS)
         a, b = sorted((3 * s, 5 * s))
-        m.box((-15, FLOOR, a), (-13, 37, b), WOOD, grain="y")                      # the door's stiles
-    m.box((-16, 37, -5), (-14, EAVE, 5), IRON, grain="z")                          # door head
+        m.box((-L + 1, FLOOR, a), (-L + 3, 37, b), WOOD, grain="y")                # the door's stiles
+    m.box((-L, 37, -5), (-L + 2, EAVE, 5), IRON, grain="z")                        # door head
     for a, b in ((FLOOR, 12), (WAIST, SILL), (HEAD, 37)):
-        m.box((-15, a, -3), (-13, b, 3), WOOD, grain="z")                          # bottom, lock and top rail
-    m.box((-14, 12, -3), (-13, WAIST, 3), WOOD_D, grain="y")                       # the sunk panel
-    m.box((-14, SILL, -3), (-13, HEAD, 3), GLOW[0], faces={"w": WIN6}, emit=15, shade=False)
-    m.box((-15, BAR, -3), (-14, BAR + 1, 3), IRON_D, grain="z")
-    m.box((-16, 19, 3), (-15, 21, 5), BRASS)                                       # the handle
+        m.box((-L + 1, a, -3), (-L + 3, b, 3), WOOD, grain="z")                    # bottom, lock and top rail
+    m.box((-L + 2, 12, -3), (-L + 3, WAIST, 3), WOOD_D, grain="y")                 # the sunk panel
+    m.box((-L + 2, SILL, -3), (-L + 3, HEAD, 3), GLOW[0], faces={"w": WIN6}, emit=15, shade=False)
+    m.box((-L + 1, BAR, -3), (-L + 2, BAR + 1, 3), IRON_D, grain="z")
+    m.box((-L, 19, 3), (-L + 1, 21, 5), BRASS)                                     # the handle
 
     # the roof: eaves board, deck, a clerestory with a row of small lights, a lamp at each end
-    m.box((-18, EAVE, -18), (18, EAVE + 1, 18), IRON, grain="x")
-    m.box((-17, 39, -17), (17, 41, 17), IRON_D, grain="x")
-    m.box((-13, 41, -7), (13, 44, 7), IRON_D, grain="x")
+    C = W - 9                                           # half the clerestory's width
+    m.box((-L - 2, EAVE, -W - 2), (L + 2, EAVE + 1, W + 2), IRON, grain="x")
+    m.box((-L - 1, 39, -W - 1), (L + 1, 41, W + 1), IRON_D, grain="x")
+    m.box((-13, 41, -C), (13, 44, C), IRON_D, grain="x")
     for s in (-1.0, 1.0):
-        m.box((-13, 41, 7 * s), (13, 42, 8 * s), IRON, grain="x")                  # the lights' sill
+        m.box((-13, 41, C * s), (13, 42, (C + 1) * s), IRON, grain="x")            # the lights' sill
         for a in (-13, -8, -3, 2, 7, 12):
-            m.box((a, 42, 7 * s), (a + 1, 44, 8 * s), IRON, seed=_POST + 1)        # the bars between them
+            m.box((a, 42, C * s), (a + 1, 44, (C + 1) * s), IRON, seed=_POST + 1)  # the bars between them
         for a in (-12, -7, -2, 3, 8):
-            m.box((a, 42, 7 * s), (a + 4, 44, 8 * s), GLOW[1], emit=15, shade=False, seed=_POST + 2)
+            m.box((a, 42, C * s), (a + 4, 44, (C + 1) * s), GLOW[1], emit=15, shade=False, seed=_POST + 2)
         a, b = sorted((13 * s, 16 * s))                                            # s is the end from here on
         m.box((a, 41, -2), (b, 44, 2), BRASS_D)                                    # lamp housing
         a, b = sorted((16 * s, 17 * s))
         m.box((a, 42, -1), (b, 43, 1), GLOW[2], emit=15, shade=False)              # its lens
-    m.box((-14, 44, -9), (14, 45, 9), IRON, grain="x")
+    m.box((-14, 44, -C - 2), (14, 45, C + 2), IRON, grain="x")
     return m
 
 
@@ -589,6 +588,8 @@ def build(canvas, origin=(0, 0, 0)):
         canvas.add_entity(a[0], a[1], a[2], M.between(built[PREFIX + name], a, b))
         return 1
 
+    for x, y, z in CAR_CELLS:               # the car is solid: who walks into it is stopped
+        canvas.set(x + ox, y + oy, z + oz, B.BARRIER)
     n = put("car", CAR) + put("hood", HOOD)
     for row in DUCT_ROWS:
         n += put("duct", (X_ROPE, FEET, row + 0.5))
