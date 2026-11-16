@@ -11,8 +11,10 @@
     export.py pack --scene obs --name x --out /tmp/x
         anywhere, no server: only what the tool itself adds, for reading: the data pack's own
         functions and the resource pack
-    export.py compare a.zip b.zip
-        do two exports hold the same files
+    export.py compare a.zip b.zip [--deep]
+        do two exports hold the same files; --deep: do their chunks hold the same blocks and
+        entities (the files themselves never are the same bytes: every chunk carries the hour it
+        was written, every entity an id drawn by chance)
     export.py page dist [--commit <c>] [--note <text>]
         anywhere: the newest whole save (dist/A<n>/) is written into dist/history.json and the
         table of dist/README.md; tools/exportnext.sh runs it after every round
@@ -96,6 +98,14 @@ IN_TAG = "c164.in"          # on a player who has been here before
 LEFT = "c164j"              # objective: times the player has left since he was last greeted
 FACTS = "c164v"             # objective of a trial save: what the functions found
 BOT = "C164Probe"           # the fake player of verify
+# What other packages hang on a visitor's arrival (plan/packages/motion/guide.md, part one): functions
+# of theirs in the scene's data pack, run as the player and where he stands, the moment a newcomer
+# has been tagged, put on the spot and set up. The map's function calls a function tag of its own
+# that names them; a function that is not in the pack is passed over, so a save without the guide
+# is made of the same lines. Who comes back is told nothing (the card, as of 11:13).
+# what other packages hang on a player's arrival: {our function tag: [their functions]}. `first` is run
+# for who has never been here, `join` for everyone who comes in (for who is new before `first`)
+HOOKS = {"first": [f"{ART}:guide/first"], "join": [f"{ART}:guide/join"]}
 CATCH = -30                 # scene y: feet under it are put back on the spot (agreed with cloud
                             # c329 #62206 and a4 c323 #64103: the cloud layer's top is -28, the
                             # lowest rock a foot finds is -27, the eye is in the cloud by then)
@@ -359,6 +369,28 @@ def _on_term(signum, frame):
 
 # ------------------------------------------------------------------ what the scene says
 
+def map_title(scene):
+    """(the map's name in one line, [what the title shows, what stands under it]) from the one
+    place they are written: MAP_NAME and MAP_TITLE of the guide's module
+    (scenes/<scene>/motion/guide_title.py; card plan/packages/motion/guide.md, mast c346 #82789),
+    or of the scene itself where it carries them. (None, []) for a scene that has neither. The
+    title is a pair where the name is too long for the title's line and is shown in two."""
+    found = {}
+    for module in ("scenes." + scene, f"scenes.{scene}.motion.guide_title"):
+        try:
+            mod = importlib.import_module(module)
+        except ModuleNotFoundError as exc:
+            if exc.name not in (module, module.rsplit(".", 1)[0]):
+                raise
+            continue
+        for key in ("MAP_NAME", "MAP_TITLE"):
+            if getattr(mod, key, None):
+                found.setdefault(key, getattr(mod, key))
+    title = found.get("MAP_TITLE")
+    lines = [title] if isinstance(title, str) else [str(t) for t in title or ()]
+    return found.get("MAP_NAME") or " ".join(lines) or None, lines
+
+
 def scene_spec(args):
     """Where the scene stands, where its spawn is and which way it looks, in world coordinates."""
     sys.path.insert(0, BUILD)
@@ -370,6 +402,16 @@ def scene_spec(args):
     ex, ey, ez = spot["pos"]
     dx, dy, dz = (b - a for a, b in zip(spot["pos"], spot["look_at"]))
     look = bool(args.look == "on" and getattr(scene, "BIOME", None))
+    if look:
+        from artkit import mood as MOOD
+        try:
+            module = importlib.import_module(f"scenes.{args.scene}.mood")
+        except ModuleNotFoundError:
+            module = None
+        if getattr(MOOD, "carried", None) is not None and MOOD.carried(module) is not None:
+            fail("--look on: this scene's look is carried by the resource pack (artkit.mood.Carried), and the "
+                 "drivers write no biome and no timeline for it any more. The save with the biome is gone; "
+                 "the look is in the save made without --look (its resource pack's shaders)")
     on_cloud = args.on_cloud or ("ignore" if args.trial else "back")
     when = args.time
     if when is None and (look or not getattr(scene, "BIOME", None)):
@@ -394,6 +436,11 @@ def scene_spec(args):
                 fail(f"--shaders on, and this tree has no scenes/obs/sky/_shaders.py ({e})")
     return {
         "scene": args.scene, "name": args.name, "at": [ox, oy, oz], "look": look, "shaders": shaders,
+        # the guide (titles, plaques, star charts: plan/packages/motion/guide.md) is the scene's, and in the
+        # save when the scene says GUIDE = True and --no-guide was not asked for
+        "guide": bool(getattr(scene, "GUIDE", False)) and not getattr(args, "no_guide", False),
+        "title": map_title(args.scene)[0],
+        "title_lines": map_title(args.scene)[1],
         "biome": f"{ART}:{scene.BIOME}" if look else None,
         "time": int(when),
         "feet": [round(ox + ex, 4), round(oy + ey - S.EYE, 4), round(oz + ez, 4)],
@@ -461,11 +508,14 @@ def functions(spec):
             # feet under the line: the volume from y to y + dy + 1 is tested against the player's box
             f"execute as {held} at @s if entity @s[y={low},dy={spec['catch'] - low - 1}] run function {NS}:back",
         ],
-        "first": [f"tag @s add {IN_TAG}", f"function {NS}:back", f"function {NS}:join"],
+        # who is new is set up and then handed to what other packages hang on his arrival (HOOKS), as
+        # himself and where he stands; who comes back is set up again and told nothing
+        "first": [f"tag @s add {IN_TAG}", f"function {NS}:back", f"function {NS}:join", f"execute at @s run function #{NS}:first"],
         "join": [
             f"scoreboard players set @s {LEFT} 0",
             "gamemode adventure @s",
             "attribute @s minecraft:block_interaction_range base set 0",
+            f"execute at @s run function #{NS}:join",
         ],
         "back": [f"tp @s {num(x)} {num(y)} {num(z)} {num(spec['yaw'])} {num(spec['pitch'])}"],
     }
@@ -580,6 +630,12 @@ def write_functions(pack_dir, spec):
         with open(path, "w", encoding="utf-8", newline="\n") as fh:
             json.dump({"values": spec["cloud"]}, fh, indent=1)
             fh.write("\n")
+    for hook, names in HOOKS.items():
+        path = os.path.join(folder, "tags", "function", hook + ".json")
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8", newline="\n") as fh:
+            json.dump({"values": [{"id": n, "required": False} for n in names] if spec.get("guide") else []}, fh, indent=1)
+            fh.write("\n")
     tags = os.path.join(pack_dir, "data", "minecraft", "tags", "function")
     _tag(os.path.join(tags, "load.json"), f"{NS}:load")
     _tag(os.path.join(tags, "tick.json"), f"{NS}:tick")
@@ -602,9 +658,12 @@ import importlib, sys
 sys.argv = {argv!r}
 sys.path.insert(0, {build!r})
 import place
+scene = importlib.import_module("scenes." + sys.argv[1])
 if not {look!r}:      # no biome, no timeline: nothing of a dynamic registry goes into the pack
-    importlib.import_module("scenes." + sys.argv[1]).BIOME = None
+    scene.BIOME = None
     place.MOOD.write = lambda *a, **k: []
+if not {guide!r} and hasattr(scene, "GUIDE"):       # --no-guide: the scene is built without that layer
+    scene.GUIDE = False
 place.main()
 """
 
@@ -614,7 +673,7 @@ def place(spec, server, *more):
     out. Returns its output."""
     argv = ["place.py", spec["scene"], "--world", server.world, "--pw-file", server.pw_file,
             "--rcon-port", str(RCON_PORT), "--at", *(str(v) for v in spec["at"]), *more]
-    code = PLACE.format(argv=argv, build=BUILD, look=spec["look"])
+    code = PLACE.format(argv=argv, build=BUILD, look=spec["look"], guide=bool(spec.get("guide")))
     run = subprocess.run([sys.executable, "-c", code], cwd=PROJECT, capture_output=True, text=True,
                          env=dict(os.environ, PYTHONUNBUFFERED="1"))
     text = run.stdout + run.stderr
@@ -635,7 +694,7 @@ def resource_pack(scene, path, description, when, shaders=False):
     tmp = os.path.join(WORK, "respack-" + os.path.basename(os.path.dirname(path)) + f"-{os.getpid()}")
     if os.path.isdir(tmp):
         shutil.rmtree(tmp)
-    makepack.write(scene, tmp)
+    makepack.write(scene, tmp, look=False)      # the look goes in below or not at all (--shaders)
     if shaders:
         from scenes.obs.sky import _shaders
         for line in _shaders.pack(tmp) or []:
@@ -774,6 +833,64 @@ def find_cloud(server, spec, reach=320, step=4):
     return None, asked
 
 
+def light_state(world, before=None):
+    """{(folder, region file, cx, cz): (digest of the chunk as saved, digest of its light)} of every
+    chunk of the world's region files. A chunk saved as it was at the reading before is not opened again."""
+    sys.path.insert(0, HERE)
+    import census
+    out = {}
+    for base, dirs, files in os.walk(world):
+        dirs.sort()
+        if os.path.basename(base) != "region":
+            continue
+        for name in sorted(f for f in files if f.endswith(".mca")):
+            for cx, cz, raw in census.read_chunks(os.path.join(base, name)):
+                key = (os.path.relpath(base, world), name, cx, cz)
+                saved = hashlib.blake2b(raw, digest_size=16).digest()
+                old = (before or {}).get(key)
+                if old is not None and old[0] == saved:
+                    out[key] = old
+                    continue
+                light = hashlib.blake2b(digest_size=16)
+                for section in sorted(census.parse_nbt(raw).get("sections", []), key=lambda s: int(s.get("Y", 0))):
+                    for part in ("SkyLight", "BlockLight"):
+                        value = section.get(part)
+                        light.update(f"{int(section.get('Y', 0))} {part} ".encode())
+                        light.update(b"-" if value is None else value.tobytes())
+                out[key] = (saved, light.digest())
+    return out
+
+
+def settle_light(server, limit=180.0, pause=2.0, quiet=3):
+    """Waits for the game's light engine to come to rest, with the chunks still loaded. The engine
+    works behind the game: after the last block is set it still has light to take away and to
+    spread, a chunk is saved with the light it has at that moment, and what was not done by then
+    is not done when the chunk is loaded again (two saves of one commit held different light in
+    274 of 2862 chunks, by up to 15). So the world is saved and the light of every chunk read,
+    over and over, until `quiet` readings in a row are the same as the one before each."""
+    t = time.time()
+    state, changed, still = None, [], 0
+    while True:
+        server.cmd("save-all flush", quiet=True)
+        try:
+            new = light_state(server.world, state)
+        except Exception as exc:    # noqa: BLE001 -- a file met half written; the reading is taken again
+            say(f"  light: a reading failed ({type(exc).__name__}: {exc}); again")
+            new = None
+        if new is not None:
+            if state is not None:
+                changed.append(sum(1 for k, v in new.items() if state.get(k, (None, None))[1] != v[1]))
+                still = still + 1 if changed[-1] == 0 else 0
+            state = new
+        if still >= quiet or time.time() - t > limit:
+            break
+        time.sleep(pause)
+    out = {"settled": still >= quiet, "seconds": round(time.time() - t, 1), "chunks": len(state or {}), "changed": changed}
+    say(f"light: {'at rest' if out['settled'] else 'NOT at rest'} after {out['seconds']} s; {out['chunks']} chunks, "
+        f"chunks whose light had changed at each reading: {changed}")
+    return out
+
+
 def make(args):
     node_only()
     if not re.fullmatch(r"[A-Za-z0-9_\-]{1,40}", args.name):
@@ -866,6 +983,13 @@ def make(args):
                 fail(f"the save's name was not hung up: {reply}")
         server.cmd(f"gamerule max_block_modifications {default.group(1)}")
         facts["loop"] = server.cmd("scoreboard players get #run c164m")
+        # last of all, with every chunk still loaded: the light is waited for
+        facts["light"] = settle_light(server)
+        if not facts["light"]["settled"]:
+            facts["notes"].append(f"the light was still changing {facts['light']['seconds']} s after the last block was set "
+                                  f"(chunks whose light changed at each reading: {facts['light']['changed']}): the save holds "
+                                  "the light of that moment, and two saves of this commit will not hold the same.")
+            say("NOTE: " + facts["notes"][-1])
         server.cmd("forceload remove all")
         # the spawn's own chunk stays loaded. Where the default game mode is adventure the game sets
         # who is new on the world spawn and lets him sink to the first thing that carries him; in
@@ -932,12 +1056,44 @@ def seal(world, spec, out_dir, head, when, facts):
     for path in glob.glob(os.path.join(pack_dir, "*.json")):
         os.remove(path)
         removed.append(os.path.relpath(path, stage))
-    pack_meta(pack_dir, f"c164 {name} ({head})", True)
+    # the loop's stop is the builder's (a2 c322 #82424: nothing in the pack runs it; start is run by
+    # watch, rest and halt are parts of the loop), and a finished map keeps no tool of the building.
+    # Left where anything in the pack does name it.
+    stop = os.path.join(pack_dir, "data", ART, "function", f"{spec['scene']}-motion", "stop.mcfunction")
+    if os.path.exists(stop):
+        named = re.compile(re.escape(f"{ART}:{spec['scene']}-motion/stop") + r"(?![\w/.-])")
+        users = []
+        for folder, _dirs, names in os.walk(os.path.join(pack_dir, "data")):
+            for n in names:
+                path = os.path.join(folder, n)
+                if path != stop and n.endswith((".mcfunction", ".json")):
+                    with open(path, encoding="utf-8") as fh:
+                        if named.search(fh.read()):
+                            users.append(os.path.relpath(path, pack_dir))
+        if users:
+            facts.setdefault("notes", []).append(
+                f"{os.path.relpath(stop, pack_dir)} is left in the pack: named by {', '.join(sorted(users))}")
+        else:
+            os.remove(stop)
+            removed.append(os.path.relpath(stop, stage))
+    # the map's name, where a player meets it: the world's name in the list of worlds (the folder
+    # and the archive keep the save's number) and what the two packs say of themselves
+    title = spec.get("title")
+    told = f"{title} ({name} {head})" if title else f"c164 {name} ({head})"
+    if title:
+        import nbtlib
+        level = nbtlib.load(os.path.join(stage, "level.dat"))
+        data = level.get("Data", level.get("", {}).get("Data"))
+        if data is None or "LevelName" not in data:
+            fail("level.dat has no LevelName to write the map's title into")
+        data["LevelName"] = nbtlib.String(title)
+        level.save()
+    pack_meta(pack_dir, told, True)
     registry = registry_files(pack_dir)
     if registry and not spec["look"]:
         fail("the look is off and the data pack still holds registry files: " + ", ".join(registry))
     count, standins, sky = resource_pack(spec["scene"], os.path.join(stage, "resourcepacks", "resources.zip"),
-                                         f"c164 {name} ({head})", when, spec.get("shaders"))
+                                         told, when, spec.get("shaders"))
     kinds = {}
     for folder, _dirs, names in os.walk(os.path.join(pack_dir, "data")):
         part = os.path.relpath(folder, os.path.join(pack_dir, "data")).split(os.sep)
@@ -1029,7 +1185,12 @@ def visit(server, spec, results, tag, came):
               + f"; wanted it to tell: adventure {came['adventure']}, peaceful {came['peaceful']}"
               + (f", biome {came['biome']}" if came["biome"] is not None else ""))
     else:
-        check(results, tag + "quiet", not said, " | ".join(said) or "nothing was said, as it should be")
+        # the chat is what has to stay empty; titles and the line over the hotbar are the guide's
+        # to use (plan/packages/motion/guide.md) and are looked at below
+        spoken = sum(bot.packet_counts.get(n, 0) for n in ("player_chat", "disguised_chat"))
+        check(results, tag + "quiet", not said and not spoken,
+              (" | ".join(said) or "nothing stood in the chat, as it should be")
+              + (f"; {spoken} messages came as a player's chat" if spoken else ""))
     # under the line: put there by hand, the tick function has him back before the next look
     under = (feet[0] + 20, spec["catch"] - 6, feet[2])
     go = f"tp {BOT} {num(under[0])} {num(under[1])} {num(under[2])}"
@@ -1071,6 +1232,18 @@ def visit(server, spec, results, tag, came):
     server.cmd(f"tp {BOT} {num(over[0])} {num(over[1])} {num(over[2])}", quiet=True)
     bot.pump(2.5)
     check(results, tag + "over the line", near(bot.position, over), f"put at y {over[1]}, a moment later at {bot.position}")
+    # the guide greets who is new once, with a title (a moment after he is in), and tells who comes back nothing
+    greets = spec.get("guide") and os.path.exists(os.path.join(
+        server.world, "datapacks", PACK, "data", *HOOKS["first"][0].split(":", 1)[0:1], "function",
+        HOOKS["first"][0].split(":", 1)[1] + ".mcfunction"))
+    if spec.get("guide") and not greets:
+        say(f"  {tag}the save has the guide, but no function {HOOKS['first'][0]}: nothing greets who arrives")
+    if greets:
+        titles, subs, bars = bot.texts("title"), bot.texts("subtitle"), bot.texts("actionbar")
+        lines = spec.get("title_lines") or [spec.get("title")]
+        check(results, tag + "title", titles == lines[:1] and (subs == lines[1:2] if lines[1:] else len(subs) < 2),
+              f"titles shown to who is new: {titles or 'none'}; under them: {subs or 'none'}; "
+              f"lines over the hotbar: {sorted(set(bars)) or 'none'}; wanted once each: {' / '.join(str(t) for t in lines)}")
     before = len(bot.events)
     bot.close()
     time.sleep(2.0)
@@ -1091,6 +1264,11 @@ def visit(server, spec, results, tag, came):
         where = f"where he left: {bot.position} (left at {over})"
     check(results, tag + "rejoin", ok and mode.rstrip().endswith(": 2") and re.search(r"is 0(\.0+)?\s*$", reach) is not None,
           f"{where}; {mode}; {reach}; {before} things shown before he left")
+    if greets:
+        titles, bars = bot.texts("title") + bot.texts("subtitle"), bot.texts("actionbar")
+        check(results, tag + "title, again", not titles and not bars,
+              f"titles shown to who comes back: {titles or 'none'}; lines over the hotbar: {sorted(set(bars)) or 'none'}; "
+              "wanted neither (he is told nothing)")
     bot.close()
     time.sleep(1.0)
 
@@ -1188,6 +1366,11 @@ def verify(args):
                       (f"{len(sky)} shader files in the resource pack" if sky else "no shader file in the resource pack")
                       + f"; the save was made {'to carry' if spec.get('shaders') else 'without'} the look as shaders"
                       + f", {'with' if spec['look'] else 'without'} the biome")
+                light = made.get("light")       # saves made before the light was waited for say nothing of it
+                if light is not None:
+                    check(results, "light", bool(light.get("settled")),
+                          f"the light was {'at rest' if light.get('settled') else 'NOT at rest'} when the world was saved: waited "
+                          f"{light.get('seconds')} s, chunks whose light had changed at each reading {light.get('changed')}")
             elif strip:
                 gone = registry_files(pack_dir)
                 for rel in gone:
@@ -1270,6 +1453,121 @@ def pack(args):
         say("  would run: " + command)
 
 
+# What two saves of one world never share, left out when their chunks are compared: the game's clock
+# at the moment a chunk was written and how long players have been near it, and the ids the game
+# draws by chance for every entity.
+VOLATILE = ("LastUpdate", "InhabitedTime", "UUID")
+UNORDERED = ("Entities", "block_entities", "Records")       # lists the game writes in no fixed order
+
+
+def steady(value, key=None):
+    """An NBT value as plain data that can be compared and sorted, without the VOLATILE keys."""
+    if isinstance(value, dict):
+        return tuple(sorted((str(k), steady(v, str(k))) for k, v in value.items() if k not in VOLATILE))
+    if hasattr(value, "tobytes"):       # the arrays
+        return value.tobytes()
+    if isinstance(value, (list, tuple)):
+        items = [steady(v) for v in value]
+        return tuple(sorted(items, key=repr)) if key in UNORDERED else tuple(items)
+    if isinstance(value, float):
+        return float(value)
+    if isinstance(value, int):
+        return int(value)
+    return str(value)
+
+
+def chunks_of(world):
+    """{(kind, region file, cx, cz): the chunk's steady value} of every .mca under a world."""
+    sys.path.insert(0, HERE)
+    import census
+    out = {}
+    for base, dirs, files in os.walk(world):
+        dirs.sort()
+        for name in sorted(f for f in files if f.endswith(".mca")):
+            for cx, cz, raw in census.read_chunks(os.path.join(base, name)):
+                out[(os.path.basename(base), name, cx, cz)] = (steady(census.parse_nbt(raw)), raw)
+    return out
+
+
+def blocks_of(raw):
+    """{block name: how many} of a region chunk, and per section what it holds besides."""
+    import census
+    counts, parts = {}, {}
+    for section in census.parse_nbt(raw).get("sections", []):
+        names, n = census.section_counts(section)
+        for name, k in zip(names or (), n if n is not None else ()):
+            counts[str(name)] = counts.get(str(name), 0) + int(k)
+        y = int(section.get("Y", 0))
+        for key in section:
+            if key != "Y":
+                parts[(y, str(key))] = steady(section[key], str(key))
+    return counts, parts
+
+
+def light_of(pairs):
+    """What differs in the light of pairs of one chunk [(raw of the first save, raw of the second)]:
+    the lines to print. The game saves the light it has at that moment; work its light engine has
+    not come to is not in the file, and is not done again when the chunk is loaded."""
+    import census
+    lone, both, worst, gaps = {}, {}, [], []
+    for raw_a, raw_b in pairs:
+        ta, tb = census.parse_nbt(raw_a), census.parse_nbt(raw_b)
+        x0, z0 = int(ta.get("xPos", 0)) * 16, int(ta.get("zPos", 0)) * 16
+        sa = {int(s.get("Y", 0)): s for s in ta.get("sections", [])}
+        sb = {int(s.get("Y", 0)): s for s in tb.get("sections", [])}
+        for y in sorted(set(sa) | set(sb)):
+            for part in ("SkyLight", "BlockLight"):
+                la, lb = sa.get(y, {}).get(part), sb.get(y, {}).get(part)
+                la, lb = (None if v is None else v.tobytes() for v in (la, lb))
+                if la == lb:
+                    continue
+                if la is None or lb is None:
+                    there = la or lb
+                    same = len(set(there)) == 1 and there[0] >> 4 == there[0] & 15
+                    key = (part, f"all {there[0] & 15}" if same else "mixed")
+                    lone[key] = lone.get(key, 0) + 1
+                    gaps.append((part, x0, y * 16, z0, "first" if la is None else "second", key[1],
+                                 sum(((b & 15) > 0) + ((b >> 4) > 0) for b in there)))
+                    continue
+                n = big = up = 0
+                for p, q in zip(la, lb):
+                    if p != q:
+                        for shift in (0, 4):
+                            d = ((q >> shift) & 15) - ((p >> shift) & 15)
+                            if d:
+                                n, big, up = n + 1, max(big, abs(d)), up + (d > 0)
+                s, k, b, u = both.get(part, (0, 0, 0, 0))
+                both[part] = (s + 1, k + n, max(b, big), u + up)
+                worst.append((n, big, part, x0, y * 16, z0))
+    lines = []
+    for part in ("SkyLight", "BlockLight"):
+        alone = {k[1]: v for k, v in lone.items() if k[0] == part}
+        s, k, b, u = both.get(part, (0, 0, 0, 0))
+        if alone or s:
+            lines.append(f"  {part}: in {s} sections both saves have it and {k} values differ, by up to {b} "
+                         f"({u} are higher in the second, {k - u} lower); in {sum(alone.values())} sections one save has none"
+                         + (" (the other's is " + ", ".join(f"{name} in {v}" for name, v in sorted(alone.items())) + ")" if alone else ""))
+    for part in ("SkyLight", "BlockLight"):     # by height: what lies under a floor nobody gets under is not seen
+        levels = {}
+        for n, big, p, x, y, z in worst:
+            if p == part:
+                s, k, b = levels.get(y, (0, 0, 0))
+                levels[y] = (s + 1, k + n, max(b, big))
+        if levels:
+            lines.append(f"      {part} by height: " + "; ".join(
+                f"y {y}..{y + 15}: {s} sections, {k} values, by up to {b}" for y, (s, k, b) in sorted(levels.items())))
+    for part, x, y, z, which, kind, lit in sorted(gaps, key=lambda g: (g[0], -g[6]))[:20]:
+        lines.append(f"      x {x}..{x + 15} y {y}..{y + 15} z {z}..{z + 15}: {part}, none in the {which} save; "
+                     f"the other's is {kind}, {lit} values above 0")
+    few = [w for w in worst if w[2] == "BlockLight"]
+    for n, big, part, x, y, z in sorted(few, reverse=True)[:16] + sorted((w for w in worst if w[2] == "SkyLight"), reverse=True)[:8]:
+        lines.append(f"      x {x}..{x + 15} y {y}..{y + 15} z {z}..{z + 15}: {part}, {n} values, by up to {big}")
+    if worst:
+        xs, ys, zs = [w[3] for w in worst], [w[4] for w in worst], [w[5] for w in worst]
+        lines.append(f"      all of them within x {min(xs)}..{max(xs) + 15}, y {min(ys)}..{max(ys) + 15}, z {min(zs)}..{max(zs) + 15}")
+    return lines
+
+
 def compare(args):
     def read(path):
         with zipfile.ZipFile(path) as zf:
@@ -1285,7 +1583,77 @@ def compare(args):
         print("  only in the second: " + n)
     for n in differ:
         print(f"  differs: {n} ({a[n][0]} and {b[n][0]} bytes)")
-    raise SystemExit(1 if only_a or only_b or differ else 0)
+    if not args.deep:
+        raise SystemExit(1 if only_a or only_b or differ else 0)
+
+    # The region files of two saves never are the same bytes (every chunk carries the hour it was
+    # written, every entity an id drawn by chance). What has to be the same is what is in the
+    # chunks: so they are opened and compared without those.
+    work = os.path.join(WORK, f"compare-{os.getpid()}")
+    worlds = []
+    try:
+        for i, path in enumerate((args.a, args.b)):
+            folder = os.path.join(work, str(i))
+            with zipfile.ZipFile(path) as zf:
+                zf.extractall(folder)
+            worlds.append(chunks_of(folder))
+    finally:
+        shutil.rmtree(work, ignore_errors=True)
+    first, second = worlds
+    bad = False
+    for kind in sorted({k[0] for k in list(first) + list(second)}):
+        mine = {k: v[0] for k, v in first.items() if k[0] == kind}
+        theirs = {k: v[0] for k, v in second.items() if k[0] == kind}
+        lone = sorted(set(mine) ^ set(theirs))
+        changed = sorted(k for k in set(mine) & set(theirs) if mine[k] != theirs[k])
+        print(f"{kind}: {len(mine)} and {len(theirs)} chunks; {len(set(mine) & set(theirs)) - len(changed)} hold the same, "
+              f"{len(changed)} differ, {len(lone)} are in one save only")
+        bad = bad or bool(lone) or bool(changed)
+        for k in lone[:10]:
+            print(f"  in one save only: {k[1]} chunk {k[2]} {k[3]}")
+        if kind == "region" and changed:
+            # what of a section differs, and whether the blocks themselves do: counted by name
+            where, moved, other = {}, {}, 0
+            for k in changed:
+                (ca, pa), (cb, pb) = blocks_of(first[k][1]), blocks_of(second[k][1])
+                for part in sorted({p[1] for p in set(pa) | set(pb) if pa.get(p) != pb.get(p)}):
+                    where[part] = where.get(part, 0) + 1
+                if ca != cb:
+                    other += 1
+                    for name in set(ca) | set(cb):
+                        if ca.get(name, 0) != cb.get(name, 0):
+                            moved[name] = moved.get(name, 0) + cb.get(name, 0) - ca.get(name, 0)
+            print("  in the sections of the chunks that differ: "
+                  + (", ".join(f"{part} in {n} chunks" for part, n in sorted(where.items())) or "nothing (another key of the chunk)"))
+            print(f"  chunks whose blocks, counted by name, are not the same: {other}")
+            for name, n in sorted(moved.items(), key=lambda kv: (-abs(kv[1]), kv[0]))[:20]:
+                print(f"      {name}: {n:+d} in the second")
+            for text in light_of([(first[k][1], second[k][1]) for k in changed]):
+                print(text)
+        told = 0
+        for k in changed:
+            x, y = dict(mine[k]), dict(theirs[k])
+            keys = sorted(n for n in set(x) | set(y) if x.get(n) != y.get(n))
+            if told < 12:
+                told += 1
+                print(f"  differs: {k[1]} chunk {k[2]} {k[3]}: {', '.join(keys)}")
+                for n in keys:
+                    if n in UNORDERED and isinstance(x.get(n), tuple) and isinstance(y.get(n), tuple):
+                        gone = [e for e in x[n] if e not in y[n]]
+                        come = [e for e in y[n] if e not in x[n]]
+                        print(f"      {n}: {len(x[n])} and {len(y[n])}; {len(gone)} of the first are not in the second, "
+                              f"{len(come)} of the second not in the first")
+                        for e in gone[:3]:
+                            d = dict(e) if e and isinstance(e[0], tuple) else {}
+                            e2 = next((dict(c) for c in come if dict(c).get("id") == d.get("id")
+                                       and dict(c).get("Tags") == d.get("Tags")), {})
+                            print(f"        {d.get('id', '?')} {d.get('Tags', '')}: "
+                                  + (", ".join(sorted(f for f in set(d) | set(e2) if d.get(f) != e2.get(f))) if e2
+                                     else "no entity of that id and those tags in the second"))
+        if len(changed) > told:
+            print(f"  ... and {len(changed) - told} more")
+    print("the chunks hold the same in both saves" if not bad else "the chunks do NOT hold the same")
+    raise SystemExit(1 if bad or only_a or only_b else 0)
 
 
 PAGE_OPEN = "<!-- 下面到「到这里」为止由 tools/export.py page 写，手改会被下一轮盖掉 -->"
@@ -1324,8 +1692,31 @@ def page(args):
         if with_look.get("ok"):
             look = {"file": with_look["zip"]["file"], "bytes": with_look["zip"]["bytes"], "sha256": with_look["zip"]["sha256"],
                     "registry_files": len(with_look["registry_files"]), "time": with_look["spec"]["time"]}
+    plain = None
+    if os.path.exists(os.path.join(folder, name + "-plain.json")):
+        with open(os.path.join(folder, name + "-plain.json"), encoding="utf-8") as fh:
+            without = json.load(fh)
+        if without.get("ok"):
+            plain = {"file": without["zip"]["file"], "bytes": without["zip"]["bytes"], "sha256": without["zip"]["sha256"],
+                     "shaders": len(without["resource_pack"].get("shaders") or []), "verified": None}
+            if os.path.exists(os.path.join(folder, name + "-plain.verify.json")):
+                with open(os.path.join(folder, name + "-plain.verify.json"), encoding="utf-8") as fh:
+                    plain["verified"] = json.load(fh).get("ok")
+    bare = None             # the same head without the guide, where one was asked for
+    if os.path.exists(os.path.join(folder, name + "-noguide.json")):
+        with open(os.path.join(folder, name + "-noguide.json"), encoding="utf-8") as fh:
+            without = json.load(fh)
+        if without.get("ok"):
+            bare = {"file": without["zip"]["file"], "bytes": without["zip"]["bytes"], "sha256": without["zip"]["sha256"],
+                    "verified": None}
+            if os.path.exists(os.path.join(folder, name + "-noguide.verify.json")):
+                with open(os.path.join(folder, name + "-noguide.verify.json"), encoding="utf-8") as fh:
+                    bare["verified"] = json.load(fh).get("ok")
     row = {
-        "n": f"A{n}", "assembly": made.get("assembly"), "at": at, "time": made["spec"]["time"], "look": look,
+        "n": f"A{n}", "assembly": made.get("assembly"), "at": at, "time": made["spec"]["time"], "look": look, "plain": plain,
+        # the guide (the title on arrival, the plaques, the star charts): in this save or not; the
+        # name the world goes by in the list of worlds, where the map has one
+        "guide": bool(made["spec"].get("guide")), "title": made["spec"].get("title"), "bare": bare,
         "zip_bytes": made["zip"]["bytes"], "sha256": made["zip"]["sha256"],
         "pack_bytes": made["resource_pack"].get("bytes"), "pack_files": made["resource_pack"]["files"],
         "standins": len(made["resource_pack"]["standins"]),
@@ -1338,6 +1729,9 @@ def page(args):
         "verified": checks["ok"], "console": len(made.get("issues") or []) + sum(
             len(v) for k, v in checks.items() if k.endswith("issues") and isinstance(v, list)),
         "note": args.note, "commit": args.commit,
+        # the light at rest before the world was saved (seconds waited), False when it never was;
+        # None for the saves made before it was waited for (A1 to A6)
+        "light": None if made.get("light") is None else made["light"]["seconds"] if made["light"].get("settled") else False,
     }
     # what this run does not know stays as the row had it (a note given earlier, the figures of a
     # save made before its note told them)
@@ -1361,20 +1755,33 @@ def page(args):
             checked = f"{r['checks']} 项全过" if r.get("checks") else "全过"
         else:
             checked = "没过：" + "、".join(r.get("failed") or ["?"])
-        gone = "" if r["n"] == row["n"] else "已从这里拿掉。"
-        return (f"| {r['n']} | {r['assembly'] or '?'} | {r['at'] or '?'} | {mb(r['zip_bytes'])} | {mb(r['pack_bytes'])}，{r['pack_files']} 个文件 | "
+        here = os.path.isdir(os.path.join(dist, r["n"]))
+        gone = "" if here else "已从这里拿掉。"
+        return (f"| {'[' + r['n'] + '](' + r['n'] + '/)' if here else r['n']} | {r['assembly'] or '?'} | {r['at'] or '?'} | "
+                f"{mb(r['zip_bytes'])} | {mb(r['pack_bytes'])}，{r['pack_files']} 个文件 | "
                 f"{r['blocks'] if r['blocks'] is not None else '?'} / {r['entities']} / {r['moving'] if r['moving'] is not None else '?'} | "
                 f"{r.get('time') or '?'} | {checked} | {r['note'] or ''}{gone} | {r['commit'] or '?'} |")
 
+    kept = [f"A{k}" for k, _ in folders]        # no numbered folder is taken out again: its path may have been given out
     text = [
         PAGE_OPEN,
         f"**最新，传 Realms 用这个：`A{n}/{name}.zip`**（总装 {row['assembly']}，{row['at']} 导出，{mb(row['zip_bytes'])}，"
         f"sha256 `{row['sha256']}`）。不带注册表文件，钟锁在 {row['time']} 刻；"
         + (f"我们的天由资源包里的 {row['shaders']} 个着色器文件带着（sky/safe-look）。" if row.get("shaders")
            else "**资源包里没有着色器，天是原版的夜空。**"),
+        *([f"**资源包在你的机器上加载失败（楼成了原版的方块）就换这个：`A{n}/{plain['file']}`**（{mb(plain['bytes'])}，"
+           f"sha256 `{plain['sha256']}`）：同一个总装头，资源包里不带着色器，天是原版的夜空，别的都一样。"
+           + ("冷启动验证全过。" if plain.get("verified") else "**冷启动验证没过。**" if plain.get("verified") is False else "没验。")]
+          if plain and row.get("shaders") else []),
+        *([f"不要导览那一层（进服的标题、牌子、星图）就换这个：`A{n}/{bare['file']}`（{mb(bare['bytes'])}，"
+           f"sha256 `{bare['sha256']}`）：同一个总装头，别的都一样。"
+           + ("冷启动验证全过。" if bare.get("verified") else "**冷启动验证没过。**" if bare.get("verified") is False else "没验。")]
+          if bare else []),
         *([f"同一个总装头、带着我们的天的：`A{n}/{look['file']}`（{mb(look['bytes'])}，sha256 `{look['sha256']}`，钟锁在 {look['time']} 刻）。"
            f"**它带 {look['registry_files']} 个注册表文件（群系、时间线），只给单人打开看样子，不传 Realms。**"] if look else []),
-        "总装每半小时跟着 s1 的看板重导一次，编号往上加；这里只留最新的一个，旧的在分支历史里，表的最后一列是它所在的提交。",
+        "总装每半小时跟着 s2 报的绿头重导一次，编号往上加。**编号的文件夹只加不删**：表里编号带链接的都还在这里，"
+        f"路径是 `{kept[-1]}/c164-{kept[-1]}.zip` 这个样子，给出去的路径一直有效（现在有 {'、'.join(kept)}）。"
+        "更早的几个不在这里了，在分支历史里，表的最后一列是它所在的提交。",
         "",
         "| 编号 | 总装头 | 导出时间 | 存档 zip | 其中资源包 | 方块 / 显示实体 / 会动的件 | 钟 | 冷启动验证 | 说明 | 在提交 |",
         "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
@@ -1385,7 +1792,12 @@ def page(args):
         "一次按 Realms 槽位会填的冒险、和平）。"
         + f"数据包里函数 {row['functions']} 个、标签 {row['tags']} 个，注册表文件 {row['registry_files']} 个；"
         + (f"资源包里还有 {row['standins']} 张占位贴图（`ph_` 开头，等正式的换下来）。" if row["standins"] else "资源包里没有占位贴图。")
-        + ("" if row["cloud"] else "**这一个没开「站到云海方块上送回」。**"),
+        + ("" if row["cloud"] else "**这一个没开「站到云海方块上送回」。**")
+        + ("存盘前等光照算完了（存一次读一次，连着三次不变才收，等了 {} 秒）。".format(row["light"]) if row.get("light")
+           else "**存盘时光照还在变，这一个的光不全。**" if row.get("light") is False
+           else "这一个存盘前没等光照算完（A6 和更早的都没等）。")
+        + ((f"带导览（进服的标题、牌子、星图）" if row.get("guide") else "这一个不带导览（进服的标题、牌子、星图）")
+           + (f"；存档在世界列表里的名字是「{row['title']}」，文件夹和压缩包仍按编号叫。" if row.get("title") else "。")),
         PAGE_CLOSE,
     ]
     readme = os.path.join(dist, "README.md")
@@ -1420,6 +1832,9 @@ def main():
         p.add_argument("--shaders", choices=("auto", "on", "off"), default="auto",
                        help="the look as core shaders in the resource pack (auto: when the save goes without "
                             "the look and the tree has sky/_shaders.py; never with --look on)")
+        p.add_argument("--no-guide", action="store_true",
+                       help="leave the guide out (titles, plaques, star charts: the scene's GUIDE is set to False "
+                            "for the building, and nothing hangs on a visitor's arrival)")
         p.add_argument("--trial", help="label of a trial save (see the text at the top)")
         p.add_argument("--assembly", help="the assembly's commit this is made of, for the note beside the save")
         p.add_argument("--out", help="folder of the archive (make: default dist/<name>)", required=(what == "pack"))
@@ -1430,6 +1845,9 @@ def main():
     p = sub.add_parser("compare")
     p.add_argument("a")
     p.add_argument("b")
+    p.add_argument("--deep", action="store_true",
+                   help="open the region files and compare what the chunks hold, without the hour they were "
+                        "written and the entities' ids (on a node: it reads every chunk)")
     p = sub.add_parser("page")
     p.add_argument("dist", help="the folder of the saves (c164-realms/dist on the dist branch)")
     p.add_argument("--commit", help="the commit that holds the newest save's files")

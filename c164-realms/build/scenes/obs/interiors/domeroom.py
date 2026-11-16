@@ -382,7 +382,10 @@ def _time_dial():
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    return {m.name: m for m in (_time_dial(),)}
+    # the dial's drum and its bezel are round: settled, their slanting flats are lit the same way
+    # in every copy of the game (props/_kit, a6 #75968)
+    settle = getattr(K, "settle", lambda m: m)
+    return {m.name: m for m in (settle(_time_dial()),)}
 
 
 def models():

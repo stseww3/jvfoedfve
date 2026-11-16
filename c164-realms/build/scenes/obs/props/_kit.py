@@ -316,12 +316,14 @@ GLOW_DIM, GLOW_MID, GLOW_HOT = flat("glow", 1), flat("glow", 2), flat("glow", 3)
 
 
 def bulb(m, top, glass=3.0, cap=1.5):
-    """A bare incandescent bulb hanging from `top`: a brass cap and a small pear of amber glass, the
-    hot spot in the middle of it. The glass is the only thing that glows."""
+    """A bare incandescent bulb hanging from `top`: a brass cap and a small pear of amber glass.
+    The glass is the only thing that glows, and none of it is brighter than the middle of the glow
+    ramp: under the pack's shaders a glowing face shows its whole tone, and a lamp's glass is not
+    to be the whitest thing in a room (the review, #78243: nothing of it over 0.89 of white)."""
     x, y, z = top
     m.tube("y", (x, z), y - cap, y, 1.0, BRASS_D, sides=4)
     y -= cap
     glass_prism(m, "y", (x, z), y - 1.0, y, 1.0, GLOW_DIM, cap=GLOW_DIM)
-    glass_prism(m, "y", (x, z), y - glass, y - 1.0, 1.5, GLOW_HOT, cap=GLOW_MID)
+    glass_prism(m, "y", (x, z), y - glass, y - 1.0, 1.5, GLOW_MID, cap=GLOW_MID)
     glass_prism(m, "y", (x, z), y - glass - 0.75, y - glass, 0.75, GLOW_MID, sides=4, cap=GLOW_MID)
     return y - glass - 0.75
