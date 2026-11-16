@@ -1,38 +1,38 @@
-[trip 02:01:08 +0s] trip of obs: the code of bd2f2874 (tag bd2f287), view distance 12 (the server's 10), cloud range 128; 4 cores, 500 s at most
+[trip 02:01:08 +0s] trip of obs: the code of bd2f2874 (tag bd2f287), view distance 12 (the server's 10), cloud range 128; 4 cores, 600 s at most
 [trip 02:01:08 +0s] clean: nodemc.py down  (up to 180 s)
-[trip 02:01:08 +0s] clean: exit 0, 0 s
-[trip 02:01:08 +0s] setup: nodemc.py setup  (up to 200 s)
-    [nodemc 02:01:08] vulkan: apiVersion 1.4.318, deviceName llvmpipe (LLVM 20.1.2, 256 bits), driverInfo Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
-    [nodemc 02:01:08] java: /agent/realms-study/jdk/jdk-25.0.5+8-jre/bin/java
-    [nodemc 02:01:08] game files: whole ({"version": "26.3", "system": "linux", "mainClass": "net.minecraft.client.main.Main", "assetIndex": "34", "files": 5124, "downloaded": 5123, "assets_skipped": 9)
-    [nodemc 02:01:08] settings written: nothing, all there; render distance 12, the server's view distance 10, cloud range 128
-[trip 02:01:08 +0s] setup: exit 0, 0 s
-[trip 02:01:08 +0s] station: nodemc.py status  (up to 60 s)
+[trip 02:01:09 +0s] clean: exit 0, 0 s
+[trip 02:01:09 +0s] setup: nodemc.py setup  (up to 300 s)
+    [nodemc 02:01:09] installing libegl1
+    [nodemc 02:01:11] installed
+    [nodemc 02:01:11] vulkan: apiVersion 1.4.318, deviceName llvmpipe (LLVM 20.1.2, 256 bits), driverInfo Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+    [nodemc 02:01:11] java: /agent/realms-study/jdk/jdk-25.0.5+8-jre/bin/java
+    [nodemc 02:01:11] game files: whole ({"version": "26.3", "system": "linux", "mainClass": "net.minecraft.client.main.Main", "assetIndex": "34", "files": 5124, "downloaded": 5123, "assets_skipped": 9)
+    [nodemc 02:01:11] settings written: nothing, all there; render distance 12, the server's view distance 10, cloud range 128
+[trip 02:01:11 +2s] setup: exit 0, 2 s
+[trip 02:01:11 +2s] station: nodemc.py status  (up to 60 s)
     server: no answer
     client: not running
     display: none
     distances: client renderDistance 12, server view-distance 10, cloudRange 128
-    machine: 4 cores, load 0.27, 6920 MB of memory available, 239 GB of disk free under /agent/realms-study
-[trip 02:01:08 +0s] station: exit 0, 0 s
-[trip 02:01:08 +0s] shuttle: shuttle.py --tag bd2f287 --commit bd2f2874 --settle 10.0 --first-settle 60.0 --still 60.0 --after-budget 300.0 --out /tmp/c164_s1/real obs  (up to 380 s)
-    [shuttle 02:01:08] the code that is shot: /tmp/dais_jobs/c319/c164-realms at bd2f2874; tag bd2f287
-    [shuttle 02:01:08] obs_sky_safe stood on plot 78 in this test world (a trip before the table held it); the table gives it 106 now and it is placed there
-        written: /tmp/c164_s1/real/_trip/board-obs.json (12 views; skeleton: /tmp/dais_jobs/c319/c164-realms/build/scenes/obs/common)
-    [shuttle 02:01:08] look files changed (biome obs_blue, timeline obs_looks, timeline tag): the server is restarted
+    machine: 4 cores, load 0.22, 11017 MB of memory available, 240 GB of disk free under /agent/realms-study
+[trip 02:01:11 +2s] station: exit 0, 0 s
+[trip 02:01:11 +2s] shuttle: shuttle.py --tag bd2f287 --commit bd2f2874 --settle 10.0 --first-settle 60.0 --still 60.0 --after-budget 300.0 --out /tmp/c164_s1/real --shots obs=../tools/win/shots/asked-obs.json obs  (up to 478 s)
+    [shuttle 02:01:11] the code that is shot: /tmp/dais_jobs/c319/c164-realms at bd2f2874; tag bd2f287
+    [shuttle 02:01:11] obs_mot_smoke stood on plot 78 in this test world (a trip before the table held it); the table gives it 103 now and it is placed there
         server: no answer
         client: not running
         display: none
         distances: client renderDistance 12, server view-distance 10, cloudRange 128
-        machine: 4 cores, load 0.27, 6950 MB of memory available, 239 GB of disk free under /agent/realms-study
-        [nodemc 02:01:16] server is up (8 s)
-    [shuttle 02:01:16] placing obs at 0 200 0
-        built 189907 blocks, 796 entities in 2.7s
+        machine: 4 cores, load 0.22, 11029 MB of memory available, 240 GB of disk free under /agent/realms-study
+        [nodemc 02:01:20] server is up (8 s)
+    [shuttle 02:01:20] placing obs at 0 200 0
+        built 189907 blocks, 796 entities in 2.8s
         exported 74 tiles (189029 + 878 blocks) in 0.4s
         motion: 27 parts and 29 points registered, the loop is started once the scene stands
         Reloading!
         cleared previous placement (196 fills)
         placed in 0.9s, 0 failed
-        biome c164art:obs_blue: 1695340 cells set in 16 boxes, x -262..327 y 6..319 z -284..292
+        biome c164art:obs_blue: 0 cells set in 16 boxes, x -262..327 y 6..319 z -284..292
         function c164art:obs-motion/start -> Running function c164art:obs-motion/start
         mat_window_lining_lit_1x1   1 elements,   3 texture patches, sheet 32px
         mat_window_lining_lit_1x2   1 elements,   3 texture patches, sheet 64px
@@ -627,38 +627,28 @@
         clouds.png: blanked (the game draws no cloud layer; the sea is blocks)
         comet (a) -> 8 moon phase pictures, test card in new_moon
         sun picture blanked
-    [shuttle 02:01:31] resource pack: 2164 files written to client26/game/resourcepacks/c164art
-        [nodemc 02:01:42] C164Cam is online (10 s)
-        [nodemc 02:01:42] game: [02:01:37] [Render thread/INFO]: Backend library: LWJGL version 3.4.3+4
-        [nodemc 02:01:42] game: [02:01:37] [Render thread/ERROR]: Failed to create backend OpenGL
-        [nodemc 02:01:42] game: com.mojang.renderpearl.api.device.BackendCreationException: Failed to create window for OpenGL context: Couldn't find matching GLX visual
-        [nodemc 02:01:42] game: [02:01:37] [Render thread/INFO]: Using graphics backend Vulkan, using drivers: 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
-        [nodemc 02:01:42] game: [02:01:37] [Render thread/INFO]: Using graphics device: llvmpipe (LLVM 20.1.2, 256 bits) (0x10005)
-        [nodemc 02:01:42] pictures: saved by the game itself (helper)
-    [shuttle 02:01:42] shooting obs: 12 shots of board-obs.json
-        /tmp/c164_s1/real/bd2f287/obs/v01_arrival.png (still after 3 s more, 0.01% of it moved between the last two)
-        /tmp/c164_s1/real/bd2f287/obs/v02_axis.png (still after 4 s more, 0.00% of it moved between the last two)
-        /tmp/c164_s1/real/bd2f287/obs/v03_facade.png (still after 4 s more, 0.00% of it moved between the last two)
-        /tmp/c164_s1/real/bd2f287/obs/v04_entrance.png (still after 4 s more, 0.00% of it moved between the last two)
-        /tmp/c164_s1/real/bd2f287/obs/v05_tower.png (still after 3 s more, 0.00% of it moved between the last two)
-        /tmp/c164_s1/real/bd2f287/obs/v06_power.png (still after 3 s more, 0.13% of it moved between the last two)
-        /tmp/c164_s1/real/bd2f287/obs/v07_hall.png (still after 3 s more, 0.77% of it moved between the last two)
-        /tmp/c164_s1/real/bd2f287/obs/v08_dome_room.png (still after 3 s more, 0.00% of it moved between the last two)
-        /tmp/c164_s1/real/bd2f287/obs/v09_chart_room.png (still after 3 s more, 0.00% of it moved between the last two)
-        /tmp/c164_s1/real/bd2f287/obs/v10_time_room.png (still after 3 s more, 0.07% of it moved between the last two)
-        /tmp/c164_s1/real/bd2f287/obs/v11_lookout.png (still after 3 s more, 0.00% of it moved between the last two)
-        /tmp/c164_s1/real/bd2f287/obs/v12_aerial.png (still after 3 s more, 0.01% of it moved between the last two)
-        pictures: 12 saved by the game itself, 0 taken off the display
-        [nodemc 02:05:19] client stopped
-    [shuttle 02:05:19] obs: 12 of 12 pictures in /tmp/c164_s1/real/bd2f287/obs
-    [shuttle 02:05:19] trip done (251 s, the game was opened once and is closed again)
-[trip 02:05:20 +252s] shuttle: exit 0, 252 s
-[trip 02:05:20 +252s] obs: 12 pictures of bd2f2874 in renders/real/obs/
-[trip 02:05:20 +252s] obs: sheet.jpg, no compare.jpg (renders/board/bd2f287/ is not drawn yet; the sheet of an earlier board is removed) in renders/real/obs/
-[trip 02:05:20 +252s] what the game said: nodemc.py client-said 1794794468 /tmp/dais_jobs/c319/c164-realms/renders/real/_trips/20261116-020108-bd2f287-obs-client.txt  (up to 30 s)
+    [shuttle 02:01:35] resource pack: 2164 files written to client26/game/resourcepacks/c164art
+        [nodemc 02:01:46] C164Cam is online (10 s)
+        [nodemc 02:01:46] game: [02:01:40] [Render thread/INFO]: Backend library: LWJGL version 3.4.3+4
+        [nodemc 02:01:46] game: [02:01:41] [Render thread/ERROR]: Failed to create backend OpenGL
+        [nodemc 02:01:46] game: com.mojang.renderpearl.api.device.BackendCreationException: Failed to create window for OpenGL context: Couldn't find matching GLX visual
+        [nodemc 02:01:46] game: [02:01:41] [Render thread/INFO]: Using graphics backend Vulkan, using drivers: 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+        [nodemc 02:01:46] game: [02:01:41] [Render thread/INFO]: Using graphics device: llvmpipe (LLVM 20.1.2, 256 bits) (0x10005)
+        [nodemc 02:01:46] pictures: saved by the game itself (helper)
+    [shuttle 02:01:46] shooting obs: 2 shots of ../tools/win/shots/asked-obs.json
+        /tmp/c164_s1/real/bd2f287/obs/m2_door_axis.png (still after 3 s more, 0.06% of it moved between the last two)
+        /tmp/c164_s1/real/bd2f287/obs/m1_domeclock_south.png (still after 3 s more, 0.00% of it moved between the last two)
+        pictures: 2 saved by the game itself, 0 taken off the display
+        [nodemc 02:03:04] client stopped
+    [shuttle 02:03:04] obs: 2 of 2 pictures in /tmp/c164_s1/real/bd2f287/obs
+    [shuttle 02:03:04] trip done (113 s, the game was opened once and is closed again)
+[trip 02:03:04 +115s] shuttle: exit 0, 113 s
+[trip 02:03:04 +115s] obs: 2 pictures of bd2f2874 in renders/real-asked/obs/
+[trip 02:03:04 +115s] obs: sheet.jpg in renders/real-asked/obs/
+[trip 02:03:04 +115s] what the game said: nodemc.py client-said 1794794469 /tmp/dais_jobs/c319/c164-realms/renders/real/_trips/20261116-020108-bd2f287-obs-client.txt  (up to 30 s)
     client said: 5 records on shaders, pipelines and packs, 1 of a failure; written to /tmp/dais_jobs/c319/c164-realms/renders/real/_trips/20261116-020108-bd2f287-obs-client.txt
-[trip 02:05:20 +252s] what the game said: exit 0, 0 s
-[trip 02:05:20 +252s] close: nodemc.py down  (up to 180 s)
-    [nodemc 02:05:21] server stopped
-[trip 02:05:21 +254s] close: exit 0, 2 s
-[trip 02:05:21 +254s] trip done; pictures kept: renders/real/obs/; log renders/real/_trips/20261116-020108-bd2f287-obs.log
+[trip 02:03:04 +115s] what the game said: exit 0, 0 s
+[trip 02:03:04 +115s] close: nodemc.py down  (up to 180 s)
+    [nodemc 02:03:05] server stopped
+[trip 02:03:06 +117s] close: exit 0, 2 s
+[trip 02:03:06 +117s] trip done; pictures kept: renders/real-asked/obs/; log renders/real/_trips/20261116-020108-bd2f287-obs.log

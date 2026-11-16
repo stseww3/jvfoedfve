@@ -46,7 +46,11 @@ The trip
     --board <commit>         the assembly commit the save was exported from, for the note (the
                              stations are this checkout's either way; the trip says when the test
                              world's board in renders/real/obs/ is of another commit)
-    --only <a,b>             only these of as_joined and the twelve views
+    --only <a,b>             only these of as_joined and the twelve views (and the stops of --also)
+    --also <file>            further stops after the twelve, a list in tools/win/shots/: save-listen.json
+                             stands beside the master clock, in the power house and at the telegraph,
+                             inside the reach of the sounds played there, long enough for each to come
+                             round; the trip's log then says what the game complained of about sounds
     --view, --server-view, --clouds, --settle, --first-settle, --still   as nodetrip.py has them
     --budget <seconds>       the trip stops what it is doing after this long and closes down (600)
 
@@ -270,6 +274,18 @@ def backend():
     return found
 
 
+def sound_said(said_path):
+    """The game's complaints about sounds among the lines kept of its output: a sound event the
+    packs do not hold ("Unable to play unknown soundEvent"), one with no sound in it ("Unable to
+    play empty soundEvent"), a sounds.json it could not read, a file an event names and no pack has."""
+    try:
+        with open(said_path, encoding="utf-8", errors="replace") as fh:
+            return [line.rstrip("\n") for line in fh
+                    if re.search(r"soundEvent|sounds\.json|cannot add it to event|Unable to play", line)]
+    except OSError:
+        return []
+
+
 def pack_loaded(said_path):
     """The game's line that names the packs it loaded last, and whether the save's is among them."""
     last = None
@@ -292,6 +308,7 @@ def main():
     ap.add_argument("--name")
     ap.add_argument("--board", metavar="COMMIT")
     ap.add_argument("--only")
+    ap.add_argument("--also", metavar="FILE")
     ap.add_argument("--view", type=int, default=nodetrip.BOARD_VIEW)
     ap.add_argument("--server-view", type=int, default=nodetrip.REALM_VIEW)
     ap.add_argument("--clouds", type=int, default=128)
@@ -307,6 +324,11 @@ def main():
         sys.exit(f"--name {name}: a name of letters, digits, - and _")
     with open(STATIONS, encoding="utf-8") as fh:
         shots = [{"name": JOINED, "stay": True}] + json.load(fh)
+    if args.also:
+        with open(os.path.join(os.path.dirname(STATIONS), os.path.basename(args.also)), encoding="utf-8") as fh:
+            shots += json.load(fh)
+        if len({s["name"] for s in shots}) != len(shots):
+            sys.exit(f"--also {args.also}: a stop of it has the name of a view of the board")
     if args.only:
         wanted = args.only.split(",")
         missing = [n for n in wanted if n not in {s["name"] for s in shots}]
@@ -426,6 +448,9 @@ def main():
         said_path = log_path[:-len(".log")] + "-client.txt"
         try:
             trip.stage("what the game said", station, "client-said", f"{started:.0f}", said_path, budget=30)
+            heard = sound_said(said_path)
+            trip.say(f"the game on sounds: {len(heard)} lines of an unknown or empty sound event or a bad sounds.json"
+                     + "".join(f"\n    {line[:300]}" for line in heard[:12]))
             line, loaded = pack_loaded(said_path)
             trip.say(f"the packs the game loaded: {line or 'no line of the game says'}")
             if os.path.isdir(PACK) and not loaded:
