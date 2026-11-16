@@ -36,7 +36,8 @@
     {"at": [-3.5, 7, 0.5], "hop": true},
     {"at": [0.5, 7, 0.5], "node": "the cross gallery on the axis, before the pier"},
     {"at": [0.5, 7, 5.0], "node": "the galleries' south-west corner"},
-    {"at": [6.5, 7, 5.0], "hop": true, "note": "the way does run here from the corner, past the four cabinets of finding X1 (x 2 .. 6): between them and the railing a body does not fit, so no station is set there until they are moved; then this point goes"},
+    {"at": [6.5, 7, 5.0], "hop": true,
+     "note": "the way does run here from the corner, past the four cabinets of finding X1 (x 2 .. 6): between them and the railing a body does not fit, so no station is set there until they are moved; then this point goes"},
     {"at": [8.0, 7, 5.0], "node": "before the chart room's door"},
     {"at": [14.5, 7, 5.0], "node": "the south gallery's east end"},
     {"at": [0.5, 7, -4.5], "node": "the galleries' north-west corner", "hop": true},
@@ -83,7 +84,9 @@
     {"at": [4.5, 18, 8.5], "node": "the dome room, south"},
     {"at": [0.3, 18, 5.2]},
     {"at": [-1.1, 18, 0.5], "node": "the dome room, west (under the slit)"},
-    {"at": [-1.2, 18, -5.2]}
+    {"at": [-1.2, 18, -5.2]},
+    {"at": [10.2, 18, 1.4], "node": "behind the eyepiece, where the observer stands (machines/scope OBSERVER, version a)", "look": [4.5, 23.0, 0.5], "hop": true,
+     "note": "motion/guide ends here: whoever has the six charts stands on this place"}
   ]},
   {"id": "J", "name": "the south roofs: corner terrace, ridge walk, the end terrace, the small dome's door", "points": [
     {"at": [11.5, 18, 6.5], "node": "inside the dome room's south door", "look": [12.5, 19, 10.5], "hop": true},
@@ -102,10 +105,10 @@
     {"at": [8.5, 18, 30.5], "node": "before the small dome's door", "look": [9.5, 19, 30.5]}
   ]},
   {"id": "R", "name": "the astrograph room (the small dome)", "points": [
-    {"at": [10.5, 18, 30.5], "node": "inside the small dome's door"},
-    {"at": [10.5, 18, 31.5], "node": "the south cell, behind the door"}
+    {"at": [10.5, 18, 30.5], "node": "inside the small dome's door", "look": [12.5, 20.0, 30.5]},
+    {"at": [10.5, 18, 31.5], "node": "behind the door, the south cell", "look": [13.0, 19.0, 32.5]}
   ]},
-  {"id": "K", "name": "the north roofs: corner terrace, ridge walk, the end terrace, the clock tower's door", "points": [
+  {"id": "K", "name": "the north roofs: corner terrace, ridge walk, the end terrace, the clock tower's foot", "points": [
     {"at": [11.5, 18, -5.5], "node": "inside the dome room's north door", "look": [12.5, 19, -9.5], "hop": true},
     {"at": [12.5, 18, -7.5]},
     {"at": [12.5, 18, -9.5], "node": "in the dome room's north door"},
@@ -119,17 +122,18 @@
     {"at": [2.5, 18, -24.5], "node": "the foot of the north way down"},
     {"at": [2.5, 18, -26.5], "node": "the north end terrace's near corner"},
     {"at": [2.5, 18, -31.5], "node": "the north end terrace's far corner"},
-    {"at": [9.5, 18, -29.5], "node": "the roof walk before the tower's door", "look": [10.5, 19.5, -29.5]}
+    {"at": [9.5, 18, -29.5], "node": "at the clock tower's foot, before its door", "look": [10.5, 19.5, -29.5]}
   ]},
-  {"id": "Q", "name": "the clock tower: the lobby, the clock room", "points": [
+  {"id": "Q", "name": "the clock tower: the lobby, the ladder, the clock room", "points": [
     {"at": [11.5, 18, -29.5], "node": "inside the tower's door"},
     {"at": [13.5, 18, -29.5], "node": "the lobby's middle, under the pendulum"},
     {"at": [11.5, 18, -30.5], "node": "before the foot of the ladder", "look": [11.5, 24, -31.5]},
-    {"at": [11.5, 24, -30.5], "node": "the clock room: off the ladder, the west walk", "hop": true},
+    {"at": [11.5, 24, -30.5], "node": "the clock room: off the ladder, the west walk", "hop": true,
+     "note": "the ladder (11, 18..24, -32) is climbed by walking into it; the search does not climb, so the room is searched from here"},
     {"at": [11.5, 24, -28.0], "node": "the south-west corner"},
-    {"at": [15.5, 24, -28.0], "node": "the south-east corner", "hop": true},
+    {"at": [15.5, 24, -28.0], "node": "the south-east corner"},
     {"at": [15.5, 24, -31.0], "node": "the north-east corner"},
-    {"at": [12.5, 24, -31.5], "node": "the north walk, by the hatch", "hop": true}
+    {"at": [12.5, 24, -31.5], "node": "the north walk, by the hatch"}
   ]},
   {"id": "L", "name": "the power house, inside", "points": [
     {"at": [74.5, -6, 17.5], "node": "the yard before the power house's wicket", "look": [74.5, -4.5, 21.5], "hop": true},
@@ -147,7 +151,8 @@
     {"at": [78.5, -6, 31.5], "node": "the middle of the engine hall, between the boilers and the engine"},
     {"at": [78.5, -6, 26.5], "node": "the mouth of the alley between the two boilers", "hop": true},
     {"at": [82.5, -6, 26.5], "node": "that alley's blind end, at the guard rail"},
-    {"at": [79.5, -6, 22.5], "node": "the alley north of No. 1, behind the coal heap", "hop": true, "note": "the way into this alley is through the coal heap (a model without a collision box, x 76.8 .. 78.5): no station is set in it"},
+    {"at": [79.5, -6, 22.5], "node": "the alley north of No. 1, behind the coal heap", "hop": true,
+     "note": "the way into this alley is through the coal heap (a model without a collision box, x 76.8 .. 78.5): no station is set in it"},
     {"at": [83.0, -6, 22.5], "node": "that alley's blind end, at the chimney's foot"}
   ]},
   {"id": "M", "name": "the meridian hut", "points": [
