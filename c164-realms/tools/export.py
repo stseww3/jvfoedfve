@@ -13,6 +13,9 @@
         functions and the resource pack
     export.py compare a.zip b.zip
         do two exports hold the same files
+    export.py page dist [--commit <c>] [--note <text>]
+        anywhere: the newest whole save (dist/A<n>/) is written into dist/history.json and the
+        table of dist/README.md; tools/exportnext.sh runs it after every round
 
 What a save made here carries
   - the world: one void dimension with the scene, placed by build/place.py as for the pictures;
@@ -719,7 +722,8 @@ def make(args):
         f"tick {spec['time']}, spawn feet {spec['feet']} yaw {spec['yaw']} pitch {spec['pitch']}, "
         f"back to it under y {spec['catch']}" + (" and from the cloud sea's blocks" if spec["cloud"] else "")
         + (f", trial {spec['trial']}" if spec["trial"] else ""))
-    facts = {"name": args.name, "commit": head, "version": VERSION, "spec": spec, "ok": False}
+    facts = {"name": args.name, "commit": head, "assembly": args.assembly, "version": VERSION, "spec": spec, "ok": False,
+             "made_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
     work = os.path.join(WORK, args.name)
     if os.path.isdir(work):
         shutil.rmtree(work)
@@ -748,6 +752,9 @@ def make(args):
         placed = re.search(r"placed in [0-9.]+s, (\d+) failed", text)
         if not placed or int(placed.group(1)) or "!!" in text:
             fail("build/place.py did not place everything (see its lines above)")
+        built, moving = re.search(r"built (\d+) blocks, (\d+) entities", text), re.search(r"motion: (\d+) parts", text)
+        facts["built"] = {"blocks": int(built.group(1)) if built else None, "entities": int(built.group(2)) if built else None,
+                          "moving": int(moving.group(1)) if moving else 0}
         x, y, z = spec["feet"]
         # what carries who arrives: the first block under the spawn's feet
         top = math.floor(y - 0.01)
@@ -864,7 +871,14 @@ def seal(world, spec, out_dir, head, when, facts):
         fail("the look is off and the data pack still holds registry files: " + ", ".join(registry))
     count, standins = resource_pack(spec["scene"], os.path.join(stage, "resourcepacks", "resources.zip"),
                                     f"c164 {name} ({head})", when)
-    facts.update(removed=sorted(removed), registry_files=registry, resource_pack={"files": count, "standins": standins},
+    kinds = {}
+    for folder, _dirs, names in os.walk(os.path.join(pack_dir, "data")):
+        part = os.path.relpath(folder, os.path.join(pack_dir, "data")).split(os.sep)
+        if len(part) > 1 and names:
+            kinds[part[1]] = kinds.get(part[1], 0) + len(names)
+    facts.update(removed=sorted(removed), registry_files=registry, data_pack=kinds,
+                 resource_pack={"files": count, "standins": standins,
+                                "bytes": os.path.getsize(os.path.join(stage, "resourcepacks", "resources.zip"))},
                  numbers=numbers(stage), level=level_facts(stage), files=listing(stage))
     path = os.path.join(out_dir, name + ".zip")
     files = zip_tree(stage, path, name, when)
@@ -1196,6 +1210,98 @@ def compare(args):
     raise SystemExit(1 if only_a or only_b or differ else 0)
 
 
+PAGE_OPEN = "<!-- 下面到「到这里」为止由 tools/export.py page 写，手改会被下一轮盖掉 -->"
+PAGE_CLOSE = "<!-- 到这里 -->"
+
+
+def page(args):
+    """dist/history.json gets the newest whole save's row, dist/README.md its table."""
+    dist = os.path.abspath(args.dist)
+    path = os.path.join(dist, "history.json")
+    rows = []
+    if os.path.exists(path):
+        with open(path, encoding="utf-8") as fh:
+            rows = json.load(fh)
+    folders = sorted((int(os.path.basename(f)[1:]), f) for f in glob.glob(os.path.join(dist, "A[0-9]*")) if os.path.isdir(f))
+    if not folders:
+        fail(f"no whole save (A<n>/) under {dist}")
+    n, folder = folders[-1]
+    name = f"c164-A{n}"
+    with open(os.path.join(folder, name + ".json"), encoding="utf-8") as fh:
+        made = json.load(fh)
+    checks = {"ok": None, "seconds": None, "checks": [], "issues": None}
+    if os.path.exists(os.path.join(folder, name + ".verify.json")):
+        with open(os.path.join(folder, name + ".verify.json"), encoding="utf-8") as fh:
+            checks = json.load(fh)
+    if not made.get("ok"):
+        fail(f"{name}.json says the save was not made whole; the page is left as it is")
+    at = time.strptime(made["made_at"], "%Y-%m-%dT%H:%M:%SZ") if made.get("made_at") else time.gmtime(os.path.getmtime(folder))
+    at = time.gmtime(time.mktime(at) - time.timezone + 8 * 3600)        # the project's clock is UTC+8
+    failed = [c["check"] for c in checks["checks"] if not c["ok"]]
+    row = {
+        "n": f"A{n}", "assembly": made.get("assembly") or "?", "at": time.strftime("%m-%d %H:%M", at),
+        "zip_bytes": made["zip"]["bytes"], "sha256": made["zip"]["sha256"],
+        "pack_bytes": made["resource_pack"].get("bytes"), "pack_files": made["resource_pack"]["files"],
+        "standins": len(made["resource_pack"]["standins"]),
+        "blocks": (made.get("built") or {}).get("blocks"), "entities": sum(made["numbers"]["entities"].values()),
+        "moving": (made.get("built") or {}).get("moving"),
+        "functions": (made.get("data_pack") or {}).get("function"), "tags": (made.get("data_pack") or {}).get("tags"),
+        "registry_files": len(made["registry_files"]), "cloud": bool(made["spec"].get("cloud")),
+        "make_s": made["seconds"], "verify_s": checks["seconds"], "checks": len(checks["checks"]), "failed": failed,
+        "verified": checks["ok"], "console": len(made.get("issues") or []) + sum(
+            len(v) for k, v in checks.items() if k.endswith("issues") and isinstance(v, list)),
+        "note": args.note or "", "commit": args.commit or "",
+    }
+    rows = [r for r in rows if r["n"] != row["n"]] + [row]
+    rows.sort(key=lambda r: -int(r["n"][1:]))
+    with open(path, "w", encoding="utf-8", newline="\n") as fh:
+        json.dump(rows, fh, indent=1, ensure_ascii=False)
+        fh.write("\n")
+
+    def mb(v):
+        return "?" if v is None else f"{v:,} 字节（{v / 1048576:.1f} 兆）".replace(",", " ")
+
+    def line(r):
+        if r.get("verified") is None:
+            checked = "没验"
+        elif r["verified"]:
+            checked = f"{r['checks']} 项全过" if r.get("checks") else "全过"
+        else:
+            checked = "没过：" + "、".join(r.get("failed") or ["?"])
+        gone = "" if r["n"] == row["n"] else "已从这里拿掉。"
+        return (f"| {r['n']} | {r['assembly']} | {r['at']} | {mb(r['zip_bytes'])} | {mb(r['pack_bytes'])}，{r['pack_files']} 个文件 | "
+                f"{r['blocks'] if r['blocks'] is not None else '?'} / {r['entities']} / {r['moving'] if r['moving'] is not None else '?'} | "
+                f"{checked} | {r['note']}{gone} | {r['commit'] or '?'} |")
+
+    text = [
+        PAGE_OPEN,
+        f"**最新：`A{n}/{name}.zip`**（总装 {row['assembly']}，{row['at']} 导出，sha256 `{row['sha256']}`）。",
+        "总装每半小时跟着 s1 的看板重导一次，编号往上加；这里只留最新的一个，旧的在分支历史里，表的最后一列是它所在的提交。",
+        "",
+        "| 编号 | 总装头 | 导出时间 | 存档 zip | 其中资源包 | 方块 / 显示实体 / 会动的件 | 冷启动验证 | 说明 | 在提交 |",
+        "| --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+        *[line(r) for r in rows],
+        "",
+        f"最新这一个：建世界到封包 {row['make_s']} 秒" + (f"，验证 {row['verify_s']} 秒" if row["verify_s"] is not None else "，没验")
+        + f"；服务端日志里的警告和报错一共 {row['console']} 条（做的那次，加上验的两次冷启动：一次按最不利的服务端设置生存、简单，"
+        "一次按 Realms 槽位会填的冒险、和平）。"
+        + f"数据包里函数 {row['functions']} 个、标签 {row['tags']} 个，注册表文件 {row['registry_files']} 个；"
+        + (f"资源包里还有 {row['standins']} 张占位贴图（`ph_` 开头，等正式的换下来）。" if row["standins"] else "资源包里没有占位贴图。")
+        + ("" if row["cloud"] else "**这一个没开「站到云海方块上送回」。**"),
+        PAGE_CLOSE,
+    ]
+    readme = os.path.join(dist, "README.md")
+    with open(readme, encoding="utf-8") as fh:
+        old = fh.read()
+    if PAGE_OPEN not in old or PAGE_CLOSE not in old:
+        fail(f"{readme} has no place for the table (the two marker lines)")
+    new = old[:old.index(PAGE_OPEN)] + "\n".join(text) + old[old.index(PAGE_CLOSE) + len(PAGE_CLOSE):]
+    with open(readme, "w", encoding="utf-8", newline="\n") as fh:
+        fh.write(new)
+    say(f"page: {row['n']} of assembly {row['assembly']} written into {os.path.relpath(readme, PROJECT)} and history.json")
+    print("REPORT " + json.dumps(row, ensure_ascii=False))
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0], formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="what", required=True)
@@ -1213,6 +1319,7 @@ def main():
                        help="back: who stands on a block of the cloud sea is put back on the spot too "
                             "(default: back, for a trial save ignore)")
         p.add_argument("--trial", help="label of a trial save (see the text at the top)")
+        p.add_argument("--assembly", help="the assembly's commit this is made of, for the note beside the save")
         p.add_argument("--out", help="folder of the archive (make: default dist/<name>)", required=(what == "pack"))
     p = sub.add_parser("verify")
     p.add_argument("archive")
@@ -1221,8 +1328,12 @@ def main():
     p = sub.add_parser("compare")
     p.add_argument("a")
     p.add_argument("b")
+    p = sub.add_parser("page")
+    p.add_argument("dist", help="the folder of the saves (c164-realms/dist on the dist branch)")
+    p.add_argument("--commit", help="the commit that holds the newest save's files")
+    p.add_argument("--note", help="a line for the table: what is new in this one")
     args = ap.parse_args()
-    {"make": make, "pack": pack, "verify": verify, "compare": compare}[args.what](args)
+    {"make": make, "pack": pack, "verify": verify, "compare": compare, "page": page}[args.what](args)
 
 
 if __name__ == "__main__":
