@@ -1,0 +1,18 @@
+check obs_sky_ridges at b0449c2
+[WARN] regen     29711 blocks, 4 entities, 4 models, 38 resource-pack files, 16 data-pack files, look: 1 biomes, 1 timelines (0.3 s)
+                 registry files in the data pack, let through until the look has moved into the resource pack's shaders (A0 11-16): c164art/timeline/obs_looks.json, c164art/worldgen/biome/obs_blue.json
+[PASS] conflicts the scene writes 37 files, no file written twice, the folders and the prefix of sky are kept (3 packages run alone)
+[PASS] strays    9 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      18 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   5 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    2 kinds of block placed, all in the occupancy table
+[SKIP] flatwall  a test scene of sky: its sample walls and backdrops are meant to be flat
+[WARN] entities  4 display entities
+                 sky_ridge_north x1: 1/1/1 pixels to the block along x/y/z, not 16
+                 sky_ridge_north_far x1: 1/1/1 pixels to the block along x/y/z, not 16
+                 sky_ridge_south x1: 1/1/1 pixels to the block along x/y/z, not 16
+                 sky_ridge_south_far x1: 1/1/1 pixels to the block along x/y/z, not 16
+[PASS] views     10 shots, most display entities in view: 4 (back_west), limit 600; counted without what walls hide; the game draws up to 4 (west): a display entity without width and height is drawn outside the view too
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 0.0% hidden (base storey 0.0% by blocks and 0.0% more by models, great windows 0.0%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 0.5 s)
+[PASS] motion    nothing moves
+result: PASS (0 failed, 2 with warnings)

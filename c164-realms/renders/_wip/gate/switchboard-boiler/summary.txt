@@ -1,0 +1,8 @@
+gate machines/switchboard-boiler b0449c20: the merged tree b0449c20, the assembly as it was be109b75
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] scope    17 of 18 files are the card's own
+                    not this card's file: M build/scenes/obs/machines/boiler.py
+check.py: 89 scenes in 122 s: 89 pass (89 with warnings)
+pictures: [PASS] selfshots obs_mach_batteryboard at b0449c20: 8 of 8 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_mach_switchboard_boiler at b0449c20: 14 of 14 kept pictures are what the code draws
+result: PASS
