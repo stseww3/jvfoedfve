@@ -40,7 +40,8 @@ GALLERY = [
     _tall("door_frame"), _wall("door_leaf", 0.5), _tall("gate"), _wall("glazed_leaf", 0.5),
     _wall("canopy", 4.0), _lamp(3.5),
     _floor("railing_panel"),
-    _wall("ladder", 0.5), _wall("ladder_cage", 0.5),
+    _wall("ladder", 0.5), _wall("ladder_cage", 0.5), _wall("ladder_cage_foot", 0.5),
+    _wall("ladder_cage_top", 0.5), _wall("ladder_cage_only", 0.5), _wall("ladder_head", 3.5),
     _floor("vent_cowl"),
     _floor("grate_hatch"),
 ]
