@@ -411,7 +411,7 @@ def _tower_dial(hole=0.0):
     _squares(px, TOWER_MARK)
     if not hole:
         return _Picture("clock_tower_dial", px)
-    brass = P.RAMPS["brass"]
+    brass = [P.colour("brass", i) for i in range(len(P.RAMPS["brass"]))]       # dark to light
     for j in range(size):
         for i in range(size):
             x, y = i + 0.5 - c, c - (j + 0.5)
