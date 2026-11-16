@@ -26,12 +26,15 @@ hall shows its glass to the door.
             flat round boss packs the gap between the boards and the beam's lower face. Panels in
             the boards of every bay, so that the dark boards are not one black field.
   walls     A pilaster under every beam along both aisles, a dado between them (a), the
-            switchboard in the north aisle, charts and a globe across from it in the south one.
+            switchboard in the north aisle, charts and a globe across from it in the south one,
+            a great chart of half the sky on each gallery wall.
   emblem    Twice and no more: in the floor, and one carved block over the doorway on the inside.
   light     Every source is offered to the light line (sky/_lightkit); no light block is set here.
             The sun and the clock offer their own (machines). Lamps of the third rank: a shaded
             bracket in the middle of every bay of the aisles, over what stands there; caged lamps
-            along the gallery walls, at the two stair feet and on the mezzanine.
+            along the gallery walls, at the two stair feet and on the mezzanine. A shade throws
+            its light down: the pair of brackets beside the pier, fixed high over the board and
+            the charts, has its sources a cell over the floor.
 
 Two versions to choose between; the plan is locked, so they differ in dress:
   a  "academy"   a nave of polished slate with the roundel a grey disc on it, the plan's chequer
@@ -88,17 +91,23 @@ PANEL_LIGHTS = (9, 8, 7)    # the level a panel is shown at: beside the boss, at
 AISLE_LAMP = ("bracket", "b")   # the enamel cone in both versions: its bulb is inside the shade. A caged lamp's
 #                                 glass is drawn at full light where it looks up and was brighter in the picture
 #                                 than the orrery's sun, which the door sees from below (cr3, #58794)
-AISLE_LEVELS = (7, 8, 7, 8)     # the four lamps of an aisle wall, from the pier to the door. The last is in the
+AISLE_LEVELS = (8, 8, 7, 8)     # the four lamps of an aisle wall, from the pier to the door. The last is in the
 #                                 bay behind the entrance's side arch: what the forecourt sees first through that
-#                                 arch is to stand at 7 or more, and the lamps for it are the hall's (A0 #526)
+#                                 arch is to stand at 7 or more, and the lamps for it are the hall's (A0 #526).
+#                                 The first lights dark iron and dark wood from a row away: under 6 their seams
+#                                 are dead black
 AISLE_LAMP_Y = 3.25             # where the bracket is fixed: its shade clears a cabinet two blocks tall, and its
 #                                 source is in the third cell over the floor, one nearer the dado than before
 BOARD_LAMP_Y = 4.5              # the same over the switchboard, whose top is at three and a half, and across
-#                                 from it over the charts: the first look sees these two, and sees them as a pair
-BOARD_GLOW = 6                  # what the board's own dials and pilot lamps throw before it. The bracket over its
-#                                 top leaves the lower panels at 1 to 3, dark iron in dead black
+#                                 from it over the charts: the first look sees these two, and sees them as a pair.
+#                                 A cone throws its light down, and that high up the lamp's own source lit the wall
+#                                 round it, lighter in the first look than the pier's face, and left the dado, the
+#                                 board's foot and the globe in the dark. The pair's sources are set apart from
+#                                 the lamps: a cell over the floor in the row before the wall's, under the shade
 GALLERY_LEVELS = (7, 6, 6)  # the three lamps of a gallery wall, from its west end to the meridian
 GALLERY_LAMP_Y = 10.5
+GALLERY_MAP_Y = shell.DECK_Y + 2.75     # the middle of a great chart, two blocks tall: at the eye of who stands
+#                                         on the gallery, its head under the lamp
 SUN_POOL = 8                # where the sun's light lands: a source a cell over the roundel's middle. The sun's
 #                             own 12 is 5 by the time it is down there. A0, 11-16: it may stay as long as the
 #                             floor's middle is darker than the mother clock's dial, which with 10 it was not
@@ -149,6 +158,8 @@ STYLE = {
 WOOD = P.mat("dark_wood")
 WOOD_D = P.mat("dark_wood", base=1)
 NIGHT = P.mat("night_glass", base=2)
+PLATE = P.mat("iron", base=4)       # a step over the kit's iron: a display entity's face that looks east or west is
+#                                     drawn at half its light, and the kit's iron went dead black in its seams there
 
 
 # ---- what the shell tells -----------------------------------------------------------------------------
@@ -390,10 +401,11 @@ def _door_emblem(canvas, origin):
         canvas.set(origin[0] + x, origin[1] + top + 1, origin[2] + z, B.ASHLAR_EMBLEM)
 
 
-def _switchboard(canvas, origin, style):
+def _switchboard(canvas, origin, version, style):
     """The hall's switchboard against the north wall: instrument panels under an iron top. The
-    aisle's westernmost lamp is fixed over its middle; the board's own glow is a source before its
-    middle row."""
+    aisle's westernmost lamp is fixed over its middle and throws its light down its face. An end
+    that stands free is closed with a plate: the casing's own side is the darkest iron there is,
+    and the end that looks to the door was one dead black slab in the first look."""
     ox, oy, oz = origin
     rows = style["board"]
     x0 = BOARD_MID_X - len(rows[0]) // 2
@@ -402,7 +414,12 @@ def _switchboard(canvas, origin, style):
             canvas.set(ox + x0 + dx, oy + FEET + dy, oz + Z0, st(B.PANELS[name], facing="south"))
     for dx in range(len(rows[0])):
         canvas.set(ox + x0 + dx, oy + FEET + len(rows), oz + Z0, st(B.IRON_RIVETED.slab, type="bottom"))
-    L.suggest(canvas, (ox + BOARD_MID_X, oy + FEET + 1, oz + Z0 + 1), BOARD_GLOW, f"{WHY}:switchboard", rank=3)
+    n = 0
+    for x, beside, facing in ((x0 + len(rows[0]), x0 + len(rows[0]), "east"), (x0, x0 - 1, "west")):
+        if not canvas.has(ox + beside, oy + FEET + 1, oz + Z0):
+            n += K.put(canvas, _models()[PREFIX + "board_end_" + version], (float(x), FEET + len(rows) / 2.0, Z0 + 0.5),
+                       mount="wall", facing=facing, origin=origin)
+    return n
 
 
 # ---- the ceiling --------------------------------------------------------------------------------------------
@@ -481,16 +498,29 @@ def _furnish(canvas, origin, style):
 
 
 def _charts(canvas, origin):
-    """The south aisle's west bay: two star charts on the wall either side of the aisle's
-    westernmost lamp, and a celestial globe before them under it. Stand-ins of this package until
-    props/paper and props/instruments bring theirs."""
+    """The south aisle's west bay: the pair of star charts on the wall either side of the aisle's
+    westernmost lamp, and a celestial globe before them under it. On each gallery wall one of the
+    pair of great charts, a half of the sky, at the height of the eye under the lamp on the
+    meridian. The charts are props/paper's and the globe is props/instruments': until they are in
+    the tree the aisle has stand-ins of this package and the galleries' walls are bare."""
     models = _models()
+    paper, instruments = _optional("props.paper"), _optional("props.instruments")
     lamp = aisle_lamp_xs()[0]
     n = 0
-    for x in (lamp - 1.5, lamp + 1.5):
-        n += K.put(canvas, models[PREFIX + "chart"], (x, FEET + 3.0, Z1 + 1.0), mount="wall", facing="north",
-                   origin=origin)
-    n += K.put(canvas, models[PREFIX + "globe"], (lamp, FEET, Z1 - 0.2), origin=origin)
+    for kind, x in (("star_chart", lamp - 1.5), ("star_chart_b", lamp + 1.5)):
+        if paper is not None and kind in paper.SPEC:
+            n += paper.place(canvas, kind, (x, FEET + 3.0, Z1 + 1.0), facing="north", origin=origin)
+        else:
+            n += K.put(canvas, models[PREFIX + "chart"], (x, FEET + 3.0, Z1 + 1.0), mount="wall", facing="north",
+                       origin=origin)
+    if instruments is not None and "celestial_globe" in instruments.SPEC:
+        n += instruments.place(canvas, "celestial_globe", (lamp, FEET, Z1 - 0.2), facing="east", origin=origin)
+    else:
+        n += K.put(canvas, models[PREFIX + "globe"], (lamp, FEET, Z1 - 0.2), origin=origin)
+    x = gallery_lamp_xs()[-1]
+    for kind, z, facing in (("sky_map", Z0, "south"), ("sky_map_b", Z1 + 1.0, "north")):
+        if paper is not None and kind in paper.SPEC:
+            n += paper.place(canvas, kind, (x, GALLERY_MAP_Y, float(z)), facing=facing, origin=origin)
     return n
 
 
@@ -518,16 +548,20 @@ def gallery_lamp_xs():
 def _lamps(canvas, origin, version):
     """A shaded bracket in every bay of both aisles, on the wall over what stands in the bay, and
     three caged lamps along each gallery wall. The westernmost pair is fixed higher, over the
-    switchboard's top and between the heads of the two charts.
+    switchboard's top and between the heads of the two charts, and its light lands where a cone
+    throws it: before the board's face and the dado, on the door's side of the lamp.
     The westernmost of a gallery is a level over the others: it shows the far end of the gallery,
     which from the door is the top of the picture."""
     ox, oy, oz = origin
     kind, model = AISLE_LAMP
     n = 0
     for i, (x, level) in enumerate(zip(aisle_lamp_xs(), AISLE_LEVELS)):
-        for face, facing in ((Z0, "south"), (Z1 + 1, "north")):
-            n += lamps.place(canvas, kind, (x, AISLE_LAMP_Y if i else BOARD_LAMP_Y, float(face)), facing=facing,
-                             origin=origin, version=model, level=level)
+        for face, facing, row in ((Z0, "south", Z0 + 1), (Z1 + 1, "north", Z1 - 1)):
+            high = i == 0
+            n += lamps.place(canvas, kind, (x, BOARD_LAMP_Y if high else AISLE_LAMP_Y, float(face)), facing=facing,
+                             origin=origin, version=model, level=level, light=not high)
+            if high:
+                L.suggest(canvas, (ox + int(math.ceil(x)), oy + FEET + 1, oz + row), level, f"{WHY}:aisle lamp", rank=3)
     for x, level in zip(gallery_lamp_xs(), GALLERY_LEVELS):
         n += lamps.place(canvas, "cage", (x, GALLERY_LAMP_Y, Z0), facing="south", origin=origin, version=version,
                          level=level)
@@ -627,6 +661,24 @@ def _panel(name, kind):
     return m
 
 
+def _board_end(version):
+    """The plate that closes a free end of the switchboard, three blocks tall and one deep: an
+    angle down each edge and a flat across each joint of the board's rows. a: a brass bead inside
+    each angle. b: the angles riveted. Anchor: the middle of its back, on the casing's side."""
+    m = M.Model(PREFIX + "board_end_" + version)
+    m.box((-8, -24, 0), (8, 24, 0.5), PLATE, grain="y", skip="n")
+    for s in (-1.0, 1.0):
+        m.box((s * 7 - 1, -24, 0.5), (s * 7 + 1, 24, 1.0), PLATE, grain="y")
+        if version == "a":
+            m.box((s * 5.5 - 0.5, -24, 0.5), (s * 5.5 + 0.5, 24, 1.25), K.BRASS_D, grain="y")
+        else:
+            for y in range(-21, 24, 6):
+                K.rivet(m, (s * 7, y, 1.0))
+    for y in (-8.0, 8.0):
+        m.box((-5, y - 0.5, 0.5), (5, y + 0.5, 0.75), PLATE, grain="x")
+    return m
+
+
 def _chart():
     """A stand-in star chart, two blocks square: the two hemispheres side by side on a cream sheet
     in a dark frame. Anchor: the middle of its back, on the wall."""
@@ -659,7 +711,7 @@ def _globe():
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    made = [_star(), _boss("a"), _boss("b"), _chart(), _globe()]
+    made = [_star(), _boss("a"), _boss("b"), _board_end("a"), _board_end("b"), _chart(), _globe()]
     made += [_panel(name, kind) for name in ("sky", "plate") for kind in ("panel", "strip")]
     return {m.name: m for m in made}
 
@@ -678,7 +730,7 @@ def dress(canvas, origin=(0, 0, 0), version=None):
     _cove(canvas, origin)
     _pilasters(canvas, origin, style)
     _corbels(canvas, origin, style)
-    _switchboard(canvas, origin, style)
+    n += _switchboard(canvas, origin, version, style)
     n += _furnish(canvas, origin, style)
     if style["dado"]:
         _dado(canvas, origin)
