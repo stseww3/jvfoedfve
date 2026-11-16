@@ -1,0 +1,3 @@
+branch=cursor/c164-sdome-f3-1fe7
+head=839cc7dc9cc53bd0e4c178fb599c6f57b87eca20
+args=--wip --always --tail 80 bash tools/gate.sh main/smalldome 839cc7dc9 --base 7818b0d6 
