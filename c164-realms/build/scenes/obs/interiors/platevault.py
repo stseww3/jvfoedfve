@@ -98,6 +98,7 @@ SINK_X = ARCH_X                     # 6..8: the stone sink, on the axis
 LAMPS = "b"                         # the shaded lamp of props/lamps: its glow stays under it
 NAVE_LAMPS = ((PIER_Z[0], 11), (PIER_Z[1], 10), (PIER_Z[2], 8))     # (the beam's row, level): dimmer towards the darkroom
 AISLE_LAMPS = ((float(X0 + 2), PIER_Z[1], 9), (X1 - 1.5, PIER_Z[1], 9))     # (x, the beam's row, level)
+ASK_CHECK = 7                       # the checking table's glass
 ASK_DARK = 5                        # the safelight: the lowest step of the third rank (the card)
 SAFELIGHT_Y = FEET + 2.3            # its middle: under the head of the arch as the door of the hall sees it
 PANEL_T = 3 * PX                    # a panel of the wainscot, off its wall
@@ -129,6 +130,8 @@ BATH = K.flat("iron", 1)                    # what stands in a tray: dark in thi
 BOTTLE = K.flat("old_copper", 0)            # brown glass
 BRASS, BRASS_D, IRON, IRON_D = K.BRASS, K.BRASS_D, K.IRON, K.IRON_D
 LIT = dict(emit=15, shade=False)
+OPAL = P.mat("opal")                        # lit opal glass, as the chart room's light table has it
+CLOTH = P.mat("enamel_cloth")               # the black-out curtain
 RUBY = tuple(K.flat("signal", step) for step in (1, 2, 3))     # the safelight's glass, brighter towards its middle
 
 
@@ -149,8 +152,8 @@ class _Sleeves:
     the coloured tab of an index card. It stands in for a material on the front of one box
     (artkit.models asks a material only for its name and paint())."""
 
-    PAPERS = (("cream", (1, 2)), ("cream", (2, 3)), ("cream", (1, 2, 3)), ("old_copper", (2, 3)), ("old_copper", (3, 4)))
-    TABS = (("enamel", 3), ("signal", 1), ("brass", 4), ("cream", 3))
+    PAPERS = (("cream", 3, 1), ("cream", 2, 0), ("cream", 3, 1), ("old_copper", 4, 2), ("old_copper", 3, 1))
+    TABS = (("enamel", 3), ("signal", 1), ("brass", 4), ("verdigris", 2))
 
     def __init__(self, name):
         self.name = name
@@ -162,14 +165,13 @@ class _Sleeves:
         out[..., 3] = 255
         x = 0
         while x < w:
-            batch = rnd.randint(3, 7)
-            ramp, steps = rnd.choice(self.PAPERS)
+            batch = 2 * rnd.randint(2, 5)               # sleeves of one batch: the same paper
+            ramp, light, dark = rnd.choice(self.PAPERS)
             for i in range(x, min(w, x + batch)):
-                step = rnd.choice(steps)
-                top = 0 if rnd.random() < 0.75 else 1
-                out[top:, i, :3] = P.colour(ramp, step)
-                out[h - 1, i, :3] = P.colour(ramp, max(0, step - 1))
-            if rnd.random() < 0.5:
+                edge = (i - x) % 2 == 0                 # a sleeve is two texels: its edge, and the side in shadow
+                top = 0 if edge and rnd.random() < 0.85 else 1
+                out[top:, i, :3] = P.colour(ramp, light if edge else dark)
+            if rnd.random() < 0.45:                     # the batch's index card, its tab over the sleeves
                 out[:, x, :3] = P.colour(*rnd.choice(self.TABS))
             x += batch
         return out
@@ -306,6 +308,33 @@ def _guides():
     return m
 
 
+CHECK_TOP = 13.25 * PX
+
+
+def _checker():
+    """The checking table: a lamp box of dark wood on four legs with a pane of lit opal glass in its
+    top, the small sister of the chart room's light table. Anchor: the middle of its foot."""
+    m = M.Model(PREFIX + "checker")
+    for x in (-11.0, 10.0):
+        for z in (-6.0, 5.0):
+            m.box((x, 0, z), (x + 1, 9, z + 1), WOOD_D, grain="y")
+    m.box((-12, 9, -7), (12, 13, 7), WOOD, grain="x")
+    m.box((-10, 12.5, -5), (10, 13.25, 5), OPAL, skip="d", **LIT)
+    return m
+
+
+def _curtain():
+    """The darkroom's black-out curtain, drawn aside to one jamb of the arch, on its brass rail.
+    Anchor: on the wall, under the middle of the rail at floor level."""
+    m = M.Model(PREFIX + "curtain")
+    m.box((-24, 46.5, 1), (24, 47.5, 2), BRASS, grain="x")
+    for x in (-24.0, 23.0):
+        m.box((x, 46, 0), (x + 1, 48, 2.5), BRASS_D)
+    for x, deep in ((-23.0, 3.0), (-21.0, 4.0), (-19.0, 3.0), (-17.0, 4.0), (-15.0, 2.5)):
+        m.box((x, 1, 0.5), (x + 2, 46.5, 0.5 + deep), CLOTH, grain="y")
+    return m
+
+
 @functools.lru_cache(maxsize=None)
 def _models():
     out = {}
@@ -313,7 +342,7 @@ def _models():
         for tag, anchor in (("", LOW), ("_up", HIGH)):
             m = _face(name + tag, seed + (500 if tag else 0), anchor)
             out[m.name] = m
-    for m in (_safelight(), _tray(), _bottles(), _tap(), _car(), _rope(), _guides()):
+    for m in (_safelight(), _tray(), _bottles(), _tap(), _car(), _rope(), _guides(), _checker(), _curtain()):
         out[m.name] = m
     return out
 
@@ -402,8 +431,17 @@ def build_platevault(canvas, origin=(0, 0, 0)):
     for k, (x, run, sides) in enumerate(stacks()):
         for side in sides:
             n += _faces(canvas, own, x, run, side, origin, k + (side == "east"))
-    for label, x in zip(("1", "2"), ISLAND_X):
+    for label, x in zip(("2", "1"), ISLAND_X):                    # 1 on the left as one comes in
         n += signs.plate(canvas, label, (S.mid(x), FEET + 1.75, float(ISLAND_Z[0])), facing="north", origin=origin)
+
+    # the rolling ladder on the nave face of the west island (props/furniture: the rail's pieces run to
+    # the right as one looks at the face, so from its south end)
+    front = (ISLAND_X[0] + 1 + (DEPTH + 0.25) * PX, float(FEET))
+    n += furniture.rail(canvas, (front[0], front[1], S.mid(ISLAND_Z[1])), ISLAND_Z[1] - ISLAND_Z[0] + 1,
+                        facing="east", origin=origin)
+    n += furniture.place(canvas, "library_ladder", (front[0], front[1], S.mid(PIER_Z[0] + 2)), facing="east", origin=origin)
+    n += K.put(canvas, own[PREFIX + "curtain"], (AXIS_X, float(FEET), float(WALL_Z)), mount="wall", facing="north",
+               origin=origin)
 
     # ---- the lamps -----------------------------------------------------------------------------------
     for z, level in NAVE_LAMPS:
@@ -442,9 +480,14 @@ def build_platevault(canvas, origin=(0, 0, 0)):
     n += furniture.place(canvas, "stool", (desk[0] + 0.1, float(FEET), desk[2] + 1.0), origin=origin)
     n += lamps.place(canvas, "desk_green", (desk[0] + 0.55, top, desk[2] - 0.1), origin=origin)
     n += paper.place(canvas, "logbook", (desk[0] - 0.15, top, desk[2] + 0.05), facing="south", origin=origin)
-    n += furniture.place(canvas, "crate", (X1 - 2.5, float(FEET), Z0 + 0.6), yaw=8.0, origin=origin)
-    n += furniture.place(canvas, "crate", (X1 - 1.4, float(FEET), Z0 + 0.7), yaw=-5.0, origin=origin)
-    n += furniture.place(canvas, "crate_small", (X1 - 1.45, FEET + furniture.TOP["crate"], Z0 + 0.7), yaw=20.0, origin=origin)
+    check = (X1 - 2.5, float(FEET), Z0 + 0.6)           # the checking table, east of the door
+    glass = FEET + CHECK_TOP
+    n += K.put(canvas, own[PREFIX + "checker"], check, origin=origin)
+    K.offer_lights(canvas, [((ox + int(check[0]), oy + FEET + 1, oz + Z0), ASK_CHECK)], f"{NAME}:checker")
+    n += paper.place(canvas, "photo_plate", (check[0] - 0.3, glass, check[2]), yaw=8.0, origin=origin)
+    n += paper.place(canvas, "photo_plate_b", (check[0] + 0.3, glass, check[2] - 0.05), yaw=-12.0, origin=origin)
+    n += furniture.place(canvas, "crate", (X1 - 0.75, float(FEET), Z0 + 0.6), yaw=4.0, origin=origin)
+    n += furniture.place(canvas, "crate_small", (X1 - 0.8, FEET + furniture.TOP["crate"], Z0 + 0.6), yaw=20.0, origin=origin)
     return n
 
 
