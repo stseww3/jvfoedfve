@@ -69,13 +69,23 @@ BULB_FACE = Sprite("lamp_bulb_face",
 # both alike: it is lit from within, and a street lamp or a bracket is looked at from below, so
 # a foot darker than the crown (the first pictures) dimmed the half that is seen. A globe that
 # hangs is brightest below, where it is looked at from, and goes dim into its gallery.
+#
+# No layer is brighter than GLOBE_TOP, the middle step of the opal ramp. What is painted is what
+# is seen, here and under the pack's shaders alike (sky/_shaders, item.vsh: a face that glows is
+# not shaded by the way it looks), and with the belt at the ramp's two top steps the globes were
+# the whitest things of the candidate's V1, V2 and V4, whiter than the comet's head: three street
+# lamps in a corner of the arrival view took the eye off the building (the review, #77369, which
+# asked for a median about 0.75 of white and nothing over 0.89: two steps down, the belt at
+# step 2).
 GLOBE_SIDES = 12        # RL.Globe's two corner models take upright faces a twelfth of a turn apart
+GLOBE_TOP = 2
 GLOBES = {              # lamp: the middle of the globe (blocks from the anchor, in the lamp's frame), radius, layers
-    "street": dict(at=(0.0, 4.375, 0.0), radius=7.0 / 16.0, tones=(1, 2, 3, 4, 4, 3, 2, 1)),
-    "post": dict(at=(0.0, 6.25 / 16.0, 0.0), radius=2.5 / 16.0, tones=(1, 3, 4, 4, 3, 1)),
-    "bracket_a": dict(at=(0.0, 7.5 / 16.0, 11.0 / 16.0), radius=4.5 / 16.0, tones=(1, 2, 3, 4, 4, 3, 2, 1)),
-    "pendant_a": dict(at=(0.0, -19.25 / 16.0, 0.0), radius=5.0 / 16.0, tones=(4, 4, 3, 3, 3, 2, 2, 1, 1, 0)),
+    "street": dict(at=(0.0, 4.375, 0.0), radius=7.0 / 16.0, tones=(0, 0, 1, 2, 2, 1, 0, 0)),
+    "post": dict(at=(0.0, 6.25 / 16.0, 0.0), radius=2.5 / 16.0, tones=(0, 1, 2, 2, 1, 0)),
+    "bracket_a": dict(at=(0.0, 7.5 / 16.0, 11.0 / 16.0), radius=4.5 / 16.0, tones=(0, 0, 1, 2, 2, 1, 0, 0)),
+    "pendant_a": dict(at=(0.0, -19.25 / 16.0, 0.0), radius=5.0 / 16.0, tones=(2, 2, 1, 1, 1, 0, 0, 0, 0, 0)),
 }
+assert all(max(spec["tones"]) <= GLOBE_TOP for spec in GLOBES.values())
 GLOBE_PARTS = ("_globe_side0", "_globe_side1", "_globe_under")      # what RL.Globe calls the three
 GLOBE_SEED = 4001       # of the ledges in the lamp's model: a piece of their own, which nothing turns (_kit.settle)
 
