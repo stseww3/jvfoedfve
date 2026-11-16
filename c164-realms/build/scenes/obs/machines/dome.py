@@ -21,9 +21,12 @@ Two trains, each to be read from the hand to the load.
   in front of the ring girder. Hauling the hand chain on the winch's wheel winds both chains and
   draws the bar up the rails; a pawl holds it. Two weights balance the curtain: each hangs on a
   wire rope from an end of the winch's shaft, over a sheave at the top of a rail under the arch
-  girder beside the slit, and runs down that rail as the curtain goes up. Let go, the curtain
-  comes down by its own weight and the roller takes it up again, turned by two small weights on
-  cords round its shaft ends, in the wells beside the slit's foot.
+  girder beside the slit, and runs down that rail as the curtain goes up (the rope leaves the
+  shaft on the side that pays it out while the chains wind on). Let go, the curtain comes down
+  by its own weight and the roller takes it up again, turned by two small weights on cords round
+  its shaft ends, in the pockets behind the rails' feet. A weight's rail is riveted under the
+  lower chord of its arch girder, whose underside is the rail's line (riveted()); in a room that
+  has no such girders yet, two straps hang it from the curb.
 
   Version a of the shell (two leaves that part sideways) keeps its gear. Each leaf has an arm at
   its foot, bent over the sill into the room. An endless chain runs across the slit's foot over
