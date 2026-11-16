@@ -3,21 +3,14 @@ hall in version a, "academy". Its twin obs_int_starhall_b shows version b, "work
 same cameras under the same names, so the two can be compared blind.
 
 The scene is laid the way the master scene lays it: the main line whole (walls, shell, dome), the
-two machines of the hall, the hall's own dress, and the light line last, which settles the sources
-everybody offered and lights the doorway as it does in the master scene. No light is set by hand.
-
-The orrery and the mother clock are the real ones as soon as machines/orrery and machines/clock
-are in the tree; until then standins.py shows their envelope and offers their two lights.
+two machines of the hall (machines/orrery, machines/clock), the hall's own dress, and the light
+line last, which settles the sources everybody offered. No light is set by hand: with the hall
+moved in (starhall.MOVED_IN) the light line keeps no source of its own in the hall or in its
+doorway (A0, #58129).
 
 shots.json is written by  python -m scenes.obs_int_starhall  (both scenes read the same file).
 
-The doorway. A0 ruled (11-16) that the doorway's own source, which the light line sets while the
-hall stands empty, goes when the hall moves in. sky/lights does that itself from its commit
-d78e4151 on (_entrance asks facade.furnished()); until that is in the tree this scene takes the
-source away after the light line has run, which comes to the same. The two pictures the ruling
-was made on can still be drawn:
-  C164_HALL_DOOR=<level>   the doorway's source back, at this level (the light line's is 14)
-  C164_HALL_POOL=<level>   starhall.SUN_POOL at another level; 0: none
+  C164_HALL_POOL=<level>   starhall.SUN_POOL at another level, to compare; 0: none
 """
 import os
 
@@ -27,42 +20,21 @@ from scenes.obs import main, materials, sky
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
 from scenes.obs.interiors import starhall
+from scenes.obs.machines import clock, orrery
 from scenes.obs.main import shell
-from scenes.obs.props import lamps
-from scenes.obs.sky import _lightkit as L
-from scenes.obs.sky import lights
-
-from . import standins
+from scenes.obs.props import furniture, instruments, lamps, paper
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 60
 VERSION = "a"
 GROUND = (S.WALL_W - 14, S.Z_NORTH - 6, S.WALL_E + 15, S.Z_SOUTH + 6)  # paving under and before the building
 ORIGIN = (0, 0, 0)
-OPTIONAL = ("machines.orrery", "machines.clock", "props.furniture", "props.instruments", "props.paper")
-#          packages whose models the hall shows, each as soon as it is in the tree
-DOOR_ENV, POOL_ENV = "C164_HALL_DOOR", "C164_HALL_POOL"
+POOL_ENV = "C164_HALL_POOL"
 
 
-def _machines(c, version):
-    """The orrery and the mother clock: machines' own when they are in the tree."""
-    n = 0
-    orrery = starhall._optional("machines.orrery")
-    n += orrery.build(c, ORIGIN) if orrery is not None else standins.orrery(c, ORIGIN)
-    clock = starhall._optional("machines.clock")
-    n += clock.master(c, ORIGIN) if clock is not None else standins.clock(c, ORIGIN)
-    return n
-
-
-def _door(c):
-    """The doorway's source goes with the hall moved in (the docstring); the environment puts it
-    back at a level of its choosing."""
-    level = int(os.environ.get(DOOR_ENV, "0"))
-    for cell in lights.report(c)["doors"]:
-        if level > 0:
-            c.set(*cell, L.light(level))
-        else:
-            c.clear(*cell)
+def _machines(c):
+    """The two machines the hall is the room of."""
+    return orrery.build(c, ORIGIN) + clock.master(c, ORIGIN)
 
 
 def build(version=VERSION):
@@ -71,7 +43,7 @@ def build(version=VERSION):
     c.box(x0, S.PAVING_Y, z0, x1, S.PAVING_Y, z1, B.SLATE_SMOOTH.block)
     counts = {"materials": materials.build(c, ORIGIN)}
     counts["main"] = main.build(c, ORIGIN)       # the hall has moved in (starhall.MOVED_IN): no stand-in wall
-    counts["machines"] = _machines(c, version)
+    counts["machines"] = _machines(c)
     pool = starhall.SUN_POOL
     if os.environ.get(POOL_ENV) is not None:
         starhall.SUN_POOL = int(os.environ[POOL_ENV]) or None
@@ -80,20 +52,14 @@ def build(version=VERSION):
     finally:
         starhall.SUN_POOL = pool
     counts["sky"] = sky.build(c, ORIGIN)
-    _door(c)
     c.entity_counts = {k: int(v or 0) for k, v in counts.items()}
     return c
 
 
 def build_models():
     out = {}
-    parts = [main.models(), materials.models(), sky.models(), lamps.models(), starhall.models(), standins.models()]
-    for name in OPTIONAL:
-        module = starhall._optional(name)
-        if module is not None:
-            parts.append(module.models())
-    for part in parts:
-        out.update(part or {})
+    for package in (main, materials, sky, lamps, furniture, instruments, paper, orrery, clock, starhall):
+        out.update(package.models() or {})
     return out
 
 
@@ -126,7 +92,7 @@ def shots():
     shot("ceiling", (cx, gallery, 5.3), (cx, starhall.CEIL + 0.25, cz))  # from the south gallery up to the boss
     shot("floor", (cx, shell.DECK_Y + 0.4, cz), yaw=90.0, pitch=90.0)   # the plan of the floor, west at the top
     shot("gallery", (15.3, gallery, 5.4), (3.0, 7.2, -1.6))             # along the hall from the south gallery's east end
-    shot("rail", (cx, gallery, 4.9), (cx, 0.0, -1.2))                   # over the south railing: the orrery over its roundel
+    shot("rail", (cx, gallery, 4.9), (cx, 5.5, cz))                     # over the south railing: the orrery over its roundel
     shot("gallery_w", (2.6, gallery, -4.6), (13.0, 6.5, 2.5))           # from the gallery's west end to the entrance wall
     shot("door", (8.4, eye, cz), (16.0, 4.6, cz))                       # back to the doorway: the second emblem
     shot("aisle_n", (14.6, eye, -2.4), (4.0, 2.2, -4.4))
