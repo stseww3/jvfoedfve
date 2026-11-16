@@ -1,9 +1,10 @@
 """motion/smoke: what the place breathes out (plan/packages/motion/smoke.md; plan/parts/motion.md 9).
 
 The power house's chimney smokes: the one sign in the whole picture that somebody is on watch
-tonight. Inside, the safety valve of the boiler that has just been fired lifts every few seconds.
-Later rounds add the sparks at the furnace mouth and at the dynamo's brushes. Each is registered
-only where its chimney or its machine stands on the canvas.
+tonight. Inside, the safety valve of the boiler that has just been fired lifts every few seconds
+and the engine's steam flange leaks a little; a spark leaves the fire door that stands ajar now
+and then; the dynamo's brushes and the open knife switch flash. Each is registered only where its
+chimney or its machine stands on the canvas.
 
 Nothing is placed here, no block and no entity. Every puff is a particle of the game's own, sent
 by the loop of motion/_kit.py (MK.puff). With the loop stopped, or without the data pack, there
@@ -50,6 +51,27 @@ The safety valve
              ticks, from tick VALVE["at"], for VALVE["blow"] ticks. The numbers are sound.VALVE's
              when that module is in the tree (agreed with c361, 11-16); the ones here are the
              same, for a tree without it.
+
+The rest of the room rides on one slow chain of BREATH ticks, the length of the valve's cycle, so
+that nothing in it comes round sooner than every eight seconds.
+
+The steam flange   one wisp of the same cloud in a BREATH from the rim of the engine's steam
+             flange (machines/engine.STEAM_IN), slow: it rises half a block.
+The fire door   small_flame, the game's small flame: a bright quad of 0.1 to 0.2 blocks that
+             lives half a second to two, slows as the cloud does, shrinks to half and does not
+             collide. Seven in a BREATH, one at a time, from the gap of the door that stands ajar
+             (machines/boiler.FIRE_DOORS[-1]): out, up and away, half a block to a block.
+The brushes and the open switch   electric_spark, which lives two or three ticks: a flicker.
+             Two to the flash, scattered a few hundredths of a block; six flashes in a BREATH
+             where the dynamo's two brushes touch the commutator, two at the jaws of the switch
+             that stands open (machines/board.OPEN_SWITCH). Bright particles: never more than
+             two of them in a tick at one place.
+
+A flash lives a tenth of a second: a still of the real machine all but never has one. sparks(),
+flashes() and leak() therefore take a table and a cycle of the caller's, and the bench scene
+obs_mot_smoke_bench has them come every few ticks, from the same spots and the same way, for a
+picture that shows where one is and how bright. build() gives them none: the room has the tables
+here.
 """
 import importlib
 import math
@@ -88,6 +110,42 @@ STEAM_STEP = 8                  # ticks from one wisp to the next
 STEAM = ((0.09, 10.0, -4.0), (0.075, 7.0, 5.0), (0.06, 13.0, 0.0))
 STEAM_ABOVE = 0.05              # blocks over the valve's top a wisp starts
 NEAR = 4.0                      # blocks: a machine stands at a spot when one of its pieces is this near it
+
+BREATH = 160                    # ticks: the chain the rest of the room rides on
+# The leak of the engine's steam flange: (east, up, south) of engine.STEAM_IN where the wisp starts
+# (the rim on the door's side: the pipe stands on the middle), then per wisp the tick of the
+# BREATH, blocks a tick, the lean and the drift in degrees.
+LEAK_AT = (0.0, 0.03, -0.18)
+LEAK = ((20, 0.035, 10.0, 3.0),)
+
+SPARK_PARTICLE = "small_flame"
+# The leaf of the last boiler's fire door hangs on the south jamb and stands a third open: the gap
+# between its free edge and the frame looks north-west, at whoever comes in by the wicket. A spark
+# starts in that gap, (east, up, south) of boiler.FIRE_DOORS[-1].
+FIRE_GAP = (-0.05, 0.0, -0.30)
+# The sparks of a BREATH: the tick, the way it leaves by (east, up, south), blocks a tick along
+# that way's upright. Out of the door is west; two of them come as a pair, a tick apart.
+SPARKS = (
+    (12, (-0.6, 1.0, -0.6), 0.040),
+    (13, (-1.6, 1.0, -0.4), 0.022),
+    (47, (-0.5, 1.0, -0.8), 0.045),
+    (71, (-1.3, 1.0, -0.7), 0.030),
+    (109, (-0.4, 1.0, -0.6), 0.040),
+    (110, (-1.0, 1.0, -0.1), 0.035),
+    (139, (-1.0, 1.0, -1.3), 0.027),
+)
+
+FLASH_PARTICLE = "electric_spark"
+FLASH = 2                       # sparks to a flash
+FLASH_SPEED = 0.2               # the game quarters it: a spark strays 0.05 blocks a tick or so
+BRUSH_R = 0.25                  # the commutator's radius, where a brush touches it (machines/engine draws it so)
+# The flashes of a BREATH at the brushes: the tick and the brush (1 the upper, -1 the lower). They
+# fall on ticks the chain runs on anyway (the leak's, the sparks', the valve's): what happens at
+# the same moment ten blocks apart is not seen to, and a tick of its own costs the loop a command.
+BRUSH_FLASHES = ((20, 1), (71, -1), (88, 1), (109, -1), (110, -1), (139, 1))
+BRUSH_SCATTER = (0.03, 0.01, 0.06)          # blocks: along the commutator more than across it
+SWITCH_FLASHES = (13, 110)                  # ... and at the jaws of the open switch
+SWITCH_SCATTER = (0.01, 0.03, 0.02)
 
 
 def _package(line, name):
@@ -208,7 +266,105 @@ def safety_valve(canvas, origin=(0, 0, 0), puffs=None):
     return n
 
 
+def steam_flange(canvas, origin=(0, 0, 0)):
+    """The engine's steam flange in scene coordinates, or None when the engine does not stand on
+    the canvas."""
+    engine = _package("machines", "engine")
+    spot = getattr(engine, "STEAM_IN", None)
+    if not spot or not _stands(canvas, getattr(engine, "PREFIX", ""), spot, origin):
+        return None
+    return tuple(float(v) for v in spot)
+
+
+def leak(canvas, origin=(0, 0, 0), wisps=None, cycle=None):
+    """Register the leak of the engine's steam flange. Returns the number of wisps in a cycle:
+    LEAK in a BREATH, unless a bench gives `wisps` (as LEAK) and a `cycle` of its own."""
+    flange = steam_flange(canvas, origin)
+    if flange is None:
+        return 0
+    wisps = LEAK if wisps is None else tuple(wisps)
+    start = tuple(flange[i] + LEAK_AT[i] for i in range(3))
+    for tick, speed, lean, drift in wisps:
+        MK.puff(canvas, start, STEAM_PARTICLE, BREATH if cycle is None else cycle, at=(tick,), count=0,
+                spread=way(lean, drift), speed=speed, origin=origin)
+    return len(wisps)
+
+
+def open_fire_door(canvas, origin=(0, 0, 0)):
+    """The middle of the fire door that stands ajar, in scene coordinates, or None when its boiler
+    does not stand on the canvas."""
+    boiler = _package("machines", "boiler")
+    doors = getattr(boiler, "FIRE_DOORS", None)
+    if not doors or not _stands(canvas, getattr(boiler, "PREFIX", ""), doors[-1], origin):
+        return None
+    return tuple(float(v) for v in doors[-1])
+
+
+def sparks(canvas, origin=(0, 0, 0), table=None, cycle=None):
+    """Register the sparks of the fire door that stands ajar. Returns their number in a cycle:
+    SPARKS in a BREATH, unless a bench gives a `table` (as SPARKS) and a `cycle` of its own."""
+    door = open_fire_door(canvas, origin)
+    if door is None:
+        return 0
+    table = SPARKS if table is None else tuple(table)
+    start = tuple(door[i] + FIRE_GAP[i] for i in range(3))
+    for tick, out, speed in table:
+        MK.puff(canvas, start, SPARK_PARTICLE, BREATH if cycle is None else cycle, at=(tick,), count=0, spread=out,
+                speed=speed, origin=origin)
+    return len(table)
+
+
+def brush_tips(canvas, origin=(0, 0, 0)):
+    """Where the dynamo's two brushes touch the commutator, the upper first, in scene coordinates;
+    None when the engine and its dynamo do not stand on the canvas."""
+    engine = _package("machines", "engine")
+    try:
+        x = engine.SHAFT_X + engine.DYN_X
+        y = engine.FLOOR + engine.DYN_H
+        z = engine.LINE_Z + (engine.COMM[0] + engine.COMM[1]) / 2.0
+    except AttributeError:
+        return None
+    if not _stands(canvas, getattr(engine, "PREFIX", ""), (x, y, z), origin):
+        return None
+    return (x, y + BRUSH_R, z), (x, y - BRUSH_R, z)
+
+
+def open_switch(canvas, origin=(0, 0, 0)):
+    """The jaws of the knife switch that stands open, in scene coordinates, or None when the
+    switchboard does not stand on the canvas."""
+    board = _package("machines", "board")
+    spot = getattr(board, "OPEN_SWITCH", None)
+    if not spot or not _stands(canvas, getattr(board, "PREFIX", ""), spot, origin):
+        return None
+    return tuple(float(v) for v in spot)
+
+
+def flashes(canvas, origin=(0, 0, 0), brush=None, switch=None, cycle=None):
+    """Register the flashes at the dynamo's brushes and at the open switch. Returns their number in
+    a cycle: BRUSH_FLASHES and SWITCH_FLASHES in a BREATH, unless a bench gives `brush` and `switch`
+    (as those two) and a `cycle` of its own."""
+    brush = BRUSH_FLASHES if brush is None else tuple(brush)
+    switch = SWITCH_FLASHES if switch is None else tuple(switch)
+    cycle = BREATH if cycle is None else cycle
+    n = 0
+    tips = brush_tips(canvas, origin)
+    if tips is not None:
+        for tick, which in brush:
+            MK.puff(canvas, tips[0 if which > 0 else 1], FLASH_PARTICLE, cycle, at=(tick,), count=FLASH,
+                    spread=BRUSH_SCATTER, speed=FLASH_SPEED, origin=origin)
+        n += len(brush)
+    jaws = open_switch(canvas, origin)
+    if jaws is not None and switch:
+        MK.puff(canvas, jaws, FLASH_PARTICLE, cycle, at=switch, count=FLASH, spread=SWITCH_SCATTER,
+                speed=FLASH_SPEED, origin=origin)
+        n += len(switch)
+    return n
+
+
 def build(canvas, origin=(0, 0, 0)):
     chimney(canvas, origin)
     safety_valve(canvas, origin)
+    leak(canvas, origin)
+    sparks(canvas, origin)
+    flashes(canvas, origin)
     return 0

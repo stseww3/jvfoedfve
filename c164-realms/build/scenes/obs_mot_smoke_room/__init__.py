@@ -20,6 +20,16 @@ The cameras
     valve       from the firing floor, before boiler No. 2: up at its safety valve
     valve_side  a little over the valve, from the west and nearly square to the wind: the wisps
                 lean right
+    fire        the firing floor, north-west of No. 2's fire door: into the gap of the leaf that
+                stands ajar, where the sparks come out
+    flange      the engine's steam flange from the north-west, a little over it: the leak
+    brushes     the dynamo's commutator from the east, square to it: the two brushes
+    switch      the knife switch that stands open, from the east
+
+The sparks live half a second to two and there are seven in eight seconds; a flash at a brush or
+at the switch lives a tenth of a second and there are eight in eight seconds: a single picture
+seldom has one. This scene shows how many there are; where one sits and how bright it is, the
+bench shows (obs_mot_smoke_bench: the same room, the same particles, every few ticks).
 
     python -m scenes.obs_mot_smoke_room      (in build/) writes shots.json
 """
@@ -48,11 +58,21 @@ TIME = 14000
 
 def _views():
     vx, vy, vz = boiler.SAFETY_VALVES[-1]
+    dx, dy, dz = boiler.FIRE_DOORS[-1]
+    fx, fy, fz = engine.STEAM_IN
+    bx, by, bz = engine.SHAFT_X + engine.DYN_X, FY + engine.DYN_H, engine.LINE_Z + sum(engine.COMM) / 2.0
+    sx, sy, sz = board.OPEN_SWITCH
     return [
         ("room", (74.5, FY + EYE, 23.2), (77.5, FY + 1.4, 36.5)),
         ("valve", (vx - 3.55, FY + EYE, vz + 2.1), (vx, vy + 0.6, vz + 0.1)),
         # south of the boiler's axis: on the axis the pressure gauge stands before the valve
         ("valve_side", (vx - 2.85, vy + 0.9, vz + 1.6), (vx, vy + 0.7, vz + 0.15)),
+        ("fire", (dx - 1.85, FY + EYE, dz - 1.6), (dx - 0.05, dy + 0.2, dz - 0.2)),
+        # over the cylinder: from the floor its top hides all of the flange but the rim
+        ("flange", (fx - 1.6, fy + 0.6, fz - 2.4), (fx, fy + 0.15, fz - 0.05)),
+        # square to the commutator, clear of the bearing south of it
+        ("brushes", (bx + 1.9, FY + EYE, bz + 0.5), (bx, by, bz)),
+        ("switch", (sx + 1.95, sy - 0.6, sz + 0.95), (sx, sy, sz)),
     ]
 
 
@@ -65,14 +85,21 @@ def shots():
     return out
 
 
-def build():
+def stage():
+    """The house on its slab and the machines in it: the canvas before motion/smoke and the sky
+    line come to it (obs_mot_smoke_bench stands on the same)."""
     c = Canvas()
     c.box(SLAB[0], PAVING_Y - 3, SLAB[1], SLAB[2], PAVING_Y - 1, SLAB[3], ROCK)
     c.box(SLAB[0], PAVING_Y, SLAB[1], SLAB[2], PAVING_Y, SLAB[3], FLOOR)
     shell = powerhouse.build(c, (0, 0, 0))          # its own entities: the lamp over the wicket
     n = boiler.build(c, (0, 0, 0)) + board.build(c, (0, 0, 0)) + engine.build(c, (0, 0, 0))
-    smoke.build(c, (0, 0, 0))
     c.entity_counts = {"machines": n, "site": int(shell or 0), "motion": 0}
+    return c
+
+
+def build():
+    c = stage()
+    smoke.build(c, (0, 0, 0))
     sky.build(c, (0, 0, 0))                         # the sky line's light sources go in last
     return c
 

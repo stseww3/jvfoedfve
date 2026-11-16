@@ -15,8 +15,11 @@ cube on the pole.
     T1, with the look:      this scene, at tick 14000 (look A): the timeline holds the comet due west.
     T2, without the look:   the same blocks under the vanilla sky. The game's own moon stands where
                             our look keeps it (48 degrees up, due west) at tick 20370, and it wears
-                            the comet's picture from the pack; scenes/obs_export_probe_plain is that
-                            scene, for its pictures.
+                            the comet's picture from the pack. (T2's reference pictures were drawn
+                            from a scene of its own, which gave the offline renderer the vanilla
+                            sky as a biome and a timeline: registry files, which no scene's data
+                            pack may hold, so that scene went. The pictures are kept on the dist
+                            branch, dist/trial/.)
 
 SPAWN is where the export puts the world's spawn (tools/export.py reads it, as it reads the
 skeleton's V1 for the whole map): the eye and what it looks at, in scene coordinates.
