@@ -9,6 +9,7 @@ attitude. Everything here builds on that: `tube()`, `ring()` and `ball()` make r
 many sides as wanted, `rod()`, `beam()` and `hose()` run between points, and whatever is drawn inside
 `with m.turned(...)` or `with m.aimed(a, b)` is moved as one piece.
 """
+import fnmatch
 import json
 import math
 import os
@@ -519,6 +520,52 @@ def display(model, yaw=0.0, scale=1.0, turns=(), brightness=None, ns="c164", vie
         sky, block = brightness if isinstance(brightness, (tuple, list)) else (brightness, brightness)
         nbt["brightness"] = {"sky": int(sky), "block": int(block)}
     return nbt
+
+
+# ---- how far a display entity is drawn -----------------------------------------------------------
+# view_range: the game draws a display entity up to 64 blocks times this number away, and it draws it
+# whatever walls stand between. With the 3.0 that display() gives by default a thing in a room is
+# drawn for a person who stands on the far side of the site. Four bands (A0, 11-16 12:25):
+FAR = 3.0       # 192 blocks: only what is seen across the whole site -- the train, what moves on the
+#                 domes and the tower, the wind engine, the gas holder, the globe lamps, and the few
+#                 things a board view sees through a window
+MID = 1.0       # 64 blocks: furniture and machines out of doors, seen within one terrace
+NEAR = 0.5      # 32 blocks: everything indoors, and the small detail out of doors (valves, rivets, tools)
+SMALL = 0.25    # 16 blocks: what lies on a desk, and the plaques
+BANDS = (("far", FAR), ("mid", MID), ("near", NEAR), ("small", SMALL))
+DISPLAY_IDS = ("minecraft:item_display", "minecraft:block_display", "minecraft:text_display")
+
+
+def shown_model(nbt):
+    """The name of the model an item display shows, without its namespace; '' when it shows none."""
+    ref = ((nbt.get("item") or {}).get("components") or {}).get("minecraft:item_model") or ""
+    return str(ref).split(":", 1)[-1]
+
+
+def band(canvas, first, view, keep=()):
+    """Give the display entities placed on the canvas since `first` the view range `view`.
+
+        first = len(canvas.entities)            # before the part is built
+        ...                                     # the part builds as before, with whatever kit it uses
+        M.band(canvas, first, M.NEAR, keep=("int_hall_orrery*",))
+
+    It only ever lowers: an entity that was given less already (a plaque's 0.25) keeps that. `keep`
+    names the models that stay as they were built, the ones a board view sees through a window, by
+    their names without the namespace; * and ? match as in file names. Returns how many entities
+    were changed. A package module that is all of one band needs no call: it sets VIEW (and
+    VIEW_KEEP) at its top and the assembly does this after its build (scenes/obs/common/assembly.py).
+    """
+    changed = 0
+    for _, _, _, nbt in canvas.entities[first:]:
+        if nbt.get("id") not in DISPLAY_IDS:
+            continue
+        name = shown_model(nbt)
+        if any(fnmatch.fnmatchcase(name, pattern) for pattern in keep):
+            continue
+        if float(nbt.get("view_range", 1.0)) > view:
+            nbt["view_range"] = Float(view)
+            changed += 1
+    return changed
 
 
 def between(model, a, b, thick=1.0, length=48.0, **kw):
