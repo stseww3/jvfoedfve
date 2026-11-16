@@ -167,7 +167,7 @@ def main():
         n, refs = own_commits(code)
         new.append((code, n, refs))
 
-    missing = {"没跑关口": [], "关口没过": [], "没有关口的卡": []}
+    missing = {"没跑关口": [], "关口没过": [], "新人刚开": [], "没有关口的卡": []}
     waiting = []
     for c in work:
         runs = gt.get(c["key"], [])
@@ -178,6 +178,8 @@ def main():
             waiting.append(label)
         elif runs:
             missing["关口没过"].append(label)
+        elif c["who"] in NEW:
+            missing["新人刚开"].append(c["who"])
         else:
             missing["没跑关口"].append(label)
 
