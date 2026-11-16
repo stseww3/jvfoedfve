@@ -26,9 +26,10 @@ What is asked of the numbers:
               than the slate step under the clock by 0.05 or more: the plinth is drawn in front of
               the dark foot of the pier (cr3, 11-16)
   case        the darkest hundredth of the master clock's case is not under 0.03: no black hole
-  foot        from V7, the pale floor in front of the clock's step against the same stone four
-              blocks out; a number to look at, no limit (a pool of light with no lamp to be seen
-              is what it would show)
+  foot        from the door's axis (master_door), the pale floor in front of the clock's step
+              against the same stone four blocks out; a number to look at, no limit (a pool of
+              light with no lamp to be seen is what it would show). V7 looks up since it moved
+              two blocks in (A0, 11-16) and holds no floor farther out than the clock's step
 Exit 1 when a number is out or a picture is missing.
 """
 import argparse
@@ -273,7 +274,8 @@ def time_ball(r):
 
 
 def master_clock(r):
-    """The master dial from V7, the case's darkest hundredth, the floor at its foot."""
+    """The master dial and the plinth from V7, the case's darkest hundredth, the floor at its foot
+    from the door's axis."""
     x, y, z = clock.MASTER_AT
     dial_at = np.array(clock._out(clock.MASTER_AT, clock.MASTER_FACING, clock.MASTER_DIAL))
     dial = disc(dial_at + (1.0 / 16.0, 0, 0), (0, 0, -1), (0, 1, 0), 0.0, 7.5 / 16.0)
@@ -316,8 +318,8 @@ def master_clock(r):
     if low is not None:
         r.ask(low >= CASE_FLOOR, f"master_close: the darkest hundredth of the case reads {low:.3f} "
                                  f"({CASE_FLOOR:.2f} or more)")
-    a = r.read("v7", "foot of the clock", foot)
-    b = r.read("v7", "floor on the axis", floor)
+    a = r.read("master_door", "foot of the clock", foot)
+    b = r.read("master_door", "floor on the axis", floor)
     if None not in (a, b):
         print(f"  note the floor in front of the clock's step {a:.3f}, four blocks out {b:.3f}")
 
