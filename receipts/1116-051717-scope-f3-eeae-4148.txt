@@ -1,0 +1,30 @@
+a0job 1116-051717-scope-f3-eeae-4148: cursor/c164-scope-f3-eeae @ e8551689 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.16 0.24 0.28, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- (cd build && python -m scenes.obs.machines.scope) > /tmp/scope-report.txt 2>&1; echo "SELF=$?"; grep -n "BROKEN\|eyepiece shows\|Traceback\|Error" /tmp/scope-report.txt | head -6 | cut -c1-700; python tools/check.py --scene obs_mach_re
+SELF=0
+15:  the eyepiece shows the comet to a player whose feet are within 0.5 of (10.198, 18.0, 1.4) and who faces west within 60 degrees (he keeps it within 0.7 and 75), looked for every 8 ticks; the picture is 640 by 360, its field 320 across a
+28:  the eyepiece shows the comet to a player whose feet are within 0.5 of (8.841, 18.0, 0.5) and who faces west within 60 degrees (he keeps it within 0.7 and 75), looked for every 8 ticks; the picture is 640 by 360, its field 320 across an
+CHECK=0
+3:[WARN] conflicts the scene writes 716 files, no file written twice; the folders and the prefix of machines are kept (14 packages run alone)
+4-                 machines/scope: assets/c164/items/scope_eye.json is outside the category's folders; tell S2 so the table of areas can name it
+5-                 machines/scope: assets/c164/textures/misc/scope_eye.png is outside the category's folders; tell S2 so the table of areas can name it
+6:[PASS] strays    139 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+7-[PASS] refs      548 block states, item definitions and models read, every model and picture they name is there
+8-[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+9-[PASS] blocks    21 kinds of block placed, 18 barrier cells (x 3..5, y 18..19, z -1..1), all in the occupancy table
+--
+12:[PASS] views     28 shots, most display entities in view: 6 (north_a), limit 600; counted without what walls hide; the game draws up to 10 (south_a): a display entity without width and height is drawn outside the view too
+13-[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+14:[PASS] motion    8 parts and 3 points on 4 chains, 20 function files and 4 of the packages' own; 8 commands in the busiest tick (limit 120), 1.2 a tick on average (limit 40)
+15-                 functions of the packages' own: scope/look (2 commands), scope/wear (1 commands), scope/away (2 commands), scope/sweep (1 commands)
+16-                 chain of 8 ticks: 1 functions, 5 commands a cycle, starts 1 ticks after start
+17-                 chain of 32 ticks: 4 functions, 13 commands a cycle, starts 2 ticks after start
+--
+20:result: PASS (0 failed, 1 with warnings)
+==== NODEJOB RESULT ====
+exit=0 secs=7 host=cursor cores=4 head=e8551689 commit=none pushed=no branch=cursor/c164-scope-f3-eeae files=0
+a0job: exit=0 secs=8
