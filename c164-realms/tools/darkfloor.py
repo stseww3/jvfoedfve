@@ -100,7 +100,7 @@ OWNERS = (
     ("vault", "room: plate vault", None),                                     # cr2, #75753: the vault is a way like the others
     ("astro", "room: battery room", None),                                    # lights, #76033: the vault's twin, counted the same way
     ("power", "in-L", None),
-    ("tower、clkrm：钟塔底厅", "", (11, 18, -32, 15, 23, -28)),               # the well of the clock tower at the roof walk's level
+    ("clkrm：钟塔底厅", "", (11, 18, -32, 15, 23, -28)),                      # the well of the clock tower at the roof walk's level (tower, #79484: clkrm lights it)
     ("dome：小穹顶里", "in-J", (10, 17, 26, 16, 23, 34)),                     # inside the small dome (lights, #74750)
     ("dome、lights：屋面", "in-I", None),                                     # the roof round the dome room (the room itself is not counted)
     ("dome、lights：屋面", "in-J", None),
