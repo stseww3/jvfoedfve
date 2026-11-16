@@ -106,7 +106,6 @@ BOT = "C164Probe"           # the fake player of verify
 # what other packages hang on a player's arrival: {our function tag: [their functions]}. `first` is run
 # for who has never been here, `join` for everyone who comes in (for who is new before `first`)
 HOOKS = {"first": [f"{ART}:guide/first"], "join": [f"{ART}:guide/join"]}
-GUIDE_SUB = "An evening above the clouds"       # under the title, which is the scene's MAP_TITLE
 CATCH = -30                 # scene y: feet under it are put back on the spot (agreed with cloud
                             # c329 #62206 and a4 c323 #64103: the cloud layer's top is -28, the
                             # lowest rock a foot finds is -27, the eye is in the cloud by then)
@@ -371,18 +370,25 @@ def _on_term(signum, frame):
 # ------------------------------------------------------------------ what the scene says
 
 def map_title(scene):
-    """The map's name, from the one place it is written: the scene's MAP_TITLE (the guide's card,
-    plan/packages/motion/guide.md; mast c346 #81557), or the guide's own module where the scene
-    does not carry it, or None for a scene that has none."""
-    title = getattr(importlib.import_module("scenes." + scene), "MAP_TITLE", None)
-    if title:
-        return title
-    try:
-        return getattr(importlib.import_module(f"scenes.{scene}.motion.guide_title"), "MAP_TITLE", None)
-    except ModuleNotFoundError as exc:
-        if exc.name not in (f"scenes.{scene}.motion.guide_title", f"scenes.{scene}.motion"):
-            raise
-        return None
+    """(the map's name in one line, [what the title shows, what stands under it]) from the one
+    place they are written: MAP_NAME and MAP_TITLE of the guide's module
+    (scenes/<scene>/motion/guide_title.py; card plan/packages/motion/guide.md, mast c346 #82789),
+    or of the scene itself where it carries them. (None, []) for a scene that has neither. The
+    title is a pair where the name is too long for the title's line and is shown in two."""
+    found = {}
+    for module in ("scenes." + scene, f"scenes.{scene}.motion.guide_title"):
+        try:
+            mod = importlib.import_module(module)
+        except ModuleNotFoundError as exc:
+            if exc.name not in (module, module.rsplit(".", 1)[0]):
+                raise
+            continue
+        for key in ("MAP_NAME", "MAP_TITLE"):
+            if getattr(mod, key, None):
+                found.setdefault(key, getattr(mod, key))
+    title = found.get("MAP_TITLE")
+    lines = [title] if isinstance(title, str) else [str(t) for t in title or ()]
+    return found.get("MAP_NAME") or " ".join(lines) or None, lines
 
 
 def scene_spec(args):
@@ -433,7 +439,8 @@ def scene_spec(args):
         # the guide (titles, plaques, star charts: plan/packages/motion/guide.md) is the scene's, and in the
         # save when the scene says GUIDE = True and --no-guide was not asked for
         "guide": bool(getattr(scene, "GUIDE", False)) and not getattr(args, "no_guide", False),
-        "title": map_title(args.scene),
+        "title": map_title(args.scene)[0],
+        "title_lines": map_title(args.scene)[1],
         "biome": f"{ART}:{scene.BIOME}" if look else None,
         "time": int(when),
         "feet": [round(ox + ex, 4), round(oy + ey - S.EYE, 4), round(oz + ez, 4)],
@@ -1233,9 +1240,10 @@ def visit(server, spec, results, tag, came):
         say(f"  {tag}the save has the guide, but no function {HOOKS['first'][0]}: nothing greets who arrives")
     if greets:
         titles, subs, bars = bot.texts("title"), bot.texts("subtitle"), bot.texts("actionbar")
-        check(results, tag + "title", titles == [spec.get("title")] and subs == [GUIDE_SUB],
+        lines = spec.get("title_lines") or [spec.get("title")]
+        check(results, tag + "title", titles == lines[:1] and (subs == lines[1:2] if lines[1:] else len(subs) < 2),
               f"titles shown to who is new: {titles or 'none'}; under them: {subs or 'none'}; "
-              f"lines over the hotbar: {sorted(set(bars)) or 'none'}; wanted once each: {spec.get('title')} / {GUIDE_SUB}")
+              f"lines over the hotbar: {sorted(set(bars)) or 'none'}; wanted once each: {' / '.join(str(t) for t in lines)}")
     before = len(bot.events)
     bot.close()
     time.sleep(2.0)
