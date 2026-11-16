@@ -2,21 +2,27 @@
 Card: plan/packages/motion/guide.md.
 
 Six small star charts lie about the observatory, one to a place, where somebody would have left
-one: on the engineer's desk in the power house, on the rating bench of the time room, on the glass
-of the chart room's light table, on the register desk of the plate vault, by the door of the
-battery room, on a bench of the sunset terrace beside the tripod telescope. They are an easter egg
-and not a task: nothing says they are there. A small glint over each, once in two seconds, is all
-that asks one to come nearer; what happens when one does is motion/guide's (c357), which reads
-CHARTS and calls build() here once.
+one: on the engineer's desk in the power house, by the door of the time room, on the glass of the
+chart room's light table behind the plate viewer, on the register desk of the plate vault, by the
+door of the battery room, on a bench of the sunset terrace beside the tripod telescope. They are
+an easter egg and not a task: nothing says they are there. A small glint over each, once in two
+seconds, is all that asks one to come nearer; what happens when one does is motion/guide's (c357),
+which reads CHARTS and STAND and calls build() here once.
 
 The chart is the enamel star chart of props/paper, not a new model: its two kinds by turns (the
 sky round the pole, the Hunter). It is shown at a quarter of its size (SCALE), a card of half a
 block by a quarter: the plate itself is two blocks long and no desk of the map, dressed as they
-are, has that much free top. Five lie flat, face up; the one of the battery room, where nothing
-has a free top, hangs on the wall as the plate was made to.
+are, has that much free top. Four lie flat, face up; the two of the time room and the battery
+room hang on the wall, as the plate was made to.
 
 Where each lies is worked out from its room's own constants, so that a card follows its desk; what
-else lies on that desk is written beside each row, with the room that left the place free.
+else lies on that desk is written beside each row, with the place the room left free.
+
+No board view may gain a bright dot (cr2). The two views that stand in a room with a card do not
+see its glint: V9 looks down the chart room at the light table, and the card lies behind the
+plate viewer, which is as wide as the glass and a block and a half high; V10 stands in the
+south-east corner of the time room with its back to the card. The other cards are behind walls
+from every board view, or further off than the game shows a particle (32 blocks).
 
 The glint: one wax_off particle, GLINT_UP over the middle of the card's face, no spread and no
 speed, every GLINT_EVERY ticks; the six on six different ticks of the cycle. Six commands in 40
@@ -24,8 +30,10 @@ ticks: 0.15 a tick on average, one in any one tick (budget agreed with a2 and c3
 
 Interface (agreed with c357): CHARTS, in the order of the tags c164.c1 .. c164.c6, one row
 (name, (x, y, z), feet_y) to a chart: the middle of the card's face in scene coordinates, and the
-y of the floor one stands on beside it. One is "at" a chart within REACH of (x, feet_y, z), feet
-to point; STAND gives, for each, a point of that floor where one can stand and read it.
+y of the floor one stands on beside it; STAND, for each, a point of that floor from which one
+reads it. motion/guide takes somebody to be at a chart whose feet are within REACH both of
+(x, feet_y, z) and of the chart's STAND: the second keeps out whoever walks past on the other
+side of a wall.
 """
 import math
 
@@ -53,37 +61,42 @@ DESK_LONG, DESK_DEEP = 30.0 * PX, 14.0 * PX             # a writing desk's top
 def _power():
     """The engineer's desk in the north-west corner, its back to the west wall (the room places it
     at WEST + 0.4375, DESK_Z[1]): the green lamp at its north end, the log before the chair. The
-    card on the south end, clear of the log by a texel."""
+    card on the south end, before the stationery drawer of that end and clear of the log by a
+    texel."""
     desk = (powerhouse.WEST + DESK_DEEP / 2.0, powerhouse.DESK_Z[1] + 0.0)
-    at = (desk[0], powerhouse.FEET + DESK_TOP, desk[1] + DESK_LONG / 2.0 - SHORT / 2.0 - 0.5 * PX)
+    at = (desk[0] + 1.0 * PX, powerhouse.FEET + DESK_TOP, desk[1] + DESK_LONG / 2.0 - SHORT / 2.0 - 0.5 * PX)
     stand = (desk[0] + DESK_DEEP / 2.0 + 0.5, powerhouse.FEET, at[2])
     return dict(name="power", at=at, lie=True, yaw=K.FACING["south"] + 3.0, feet=powerhouse.FEET, stand=stand)
 
 
 def _time():
-    """The rating bench under the west windows, the sitter on its east: the two chronometers on its
-    south half, the open log before the chair. The card on the north end."""
-    at = (timeroom.BENCH_X + 1.5 * PX, timeroom.FEET + DESK_TOP,
-          timeroom.BENCH_Z - DESK_LONG / 2.0 + SHORT / 2.0 + 1.25 * PX)
-    stand = (timeroom.BENCH_X + DESK_DEEP / 2.0 + 0.5, timeroom.FEET, at[2])
-    return dict(name="time", at=at, lie=True, yaw=K.FACING["north"] - 4.0, feet=timeroom.FEET, stand=stand)
+    """The time room: on the panelling of the south wall, in the last panel but one before the
+    south-east corner, at the height of the hand. East of the door only the coat stand has its
+    back to that wall (at 10.4), and V10 stands in this corner and looks away from it. Every desk
+    top of the room is in V10's picture: the rating bench a fifth left of its middle, the message
+    desk in its right foreground."""
+    at = (S.mid(timeroom.X1 - 1), timeroom.FEET + 1.5, timeroom.PANEL_S)
+    stand = (at[0], timeroom.FEET, timeroom.PANEL_S - 0.7)
+    return dict(name="time", at=at, lie=False, facing="north", feet=timeroom.FEET, stand=stand)
 
 
 def _chart():
-    """The light table: on its third pane from the door, in the south-east corner of the glass,
-    which the two loose plates of that pane leave free; the viewer stands on the fourth."""
-    x, z = 7.5, 22.5                # texels from the middle of the table's foot, as the room's PLATES
+    """The light table: on the last pane, behind the plate viewer, in the middle of the glass that
+    is left south of its lamp house; one reads it from the south end of the table. Seen from the
+    door and from V9 the viewer stands before it."""
+    x, z = 0.0, chartroom.TABLE_L / 2.0 - chartroom.BAR - 4.0       # texels from the middle of the table's foot, as the room's PLATES
     table = chartroom.TABLE_AT
     at = (table[0] + x * PX, table[1] + chartroom.GLASS * PX, table[2] + z * PX)
-    stand = (table[0] + chartroom.TABLE_W / 2.0 * PX + 0.5, chartroom.FEET, at[2])
-    return dict(name="chart", at=at, lie=True, yaw=K.FACING["east"] + 5.0, feet=chartroom.FEET, stand=stand)
+    stand = (at[0], chartroom.FEET, table[2] + chartroom.TABLE_L / 2.0 * PX + 0.5)
+    return dict(name="chart", at=at, lie=True, yaw=K.FACING["south"] + 5.0, feet=chartroom.FEET, stand=stand)
 
 
 def _vault():
     """The register desk beside the lift, the clerk on its south (the room places it at X0 + 2.5,
-    Z0 + 0.5): the log in the middle, the green lamp to the east. The card on the west end."""
+    Z0 + 0.5): the log in the middle, the green lamp to the east. The card on the west end,
+    before the stationery drawer of that end."""
     desk = (platevault.X0 + 2.5, platevault.Z0 + 0.5)
-    at = (desk[0] - DESK_LONG / 2.0 + SHORT / 2.0 + 1.5 * PX, platevault.FEET + DESK_TOP, desk[1] + 0.5 * PX)
+    at = (desk[0] - DESK_LONG / 2.0 + SHORT / 2.0 + 1.5 * PX, platevault.FEET + DESK_TOP, desk[1] + 1.5 * PX)
     stand = (at[0], platevault.FEET, desk[1] + DESK_DEEP / 2.0 + 0.5)
     return dict(name="vault", at=at, lie=True, yaw=K.FACING["west"] - 4.0, feet=platevault.FEET, stand=stand)
 
