@@ -174,14 +174,29 @@ def plots(scenes, given):
 
 # ---- the look and the pack ---------------------------------------------------------------------------
 def look_of(scene):
-    """(biomes, timelines) of a scene's mood module, or None when it has none."""
+    """(biomes, timelines) of a scene's mood module as the data pack holds them, or None when it
+    has none. A look that the resource pack carries (artkit.mood.Carried) leaves nothing in the
+    data pack: writing ({}, {}) removes what an earlier trip wrote."""
     try:
         look = importlib.import_module(f"scenes.{scene}.mood")
     except ModuleNotFoundError as e:
         if e.name != f"scenes.{scene}.mood":
             raise
         return None
+    from artkit import mood as MOOD
+    if MOOD.carried(look) is not None:
+        return {}, {}
     return look.BIOMES, getattr(look, "TIMELINES", None) or {}
+
+
+def clock_of(scene):
+    """The tick at which a placed scene's look holds the clock (build/place.py notes it for a
+    look that the resource pack carries), or None: every shot is then taken at its own time."""
+    try:
+        with open(os.path.join(world(), "datapacks", NAMESPACE, f"{scene}.placed.json"), encoding="utf-8") as fh:
+            return json.load(fh).get("clock")
+    except (OSError, ValueError):
+        return None
 
 
 def one_look(scenes):
@@ -262,7 +277,7 @@ def shot_list(scene, lists, only, work):
     return path, shots
 
 
-def to_send(scene, tag, commit, at, shots, target, send, some):
+def to_send(scene, tag, commit, at, shots, target, send, some, clock=None):
     """Turn a scene's pictures into the files that go back to the cloud machine: JPEGs under the
     names the pipeline gives real-machine pictures, and the note that goes with them. When only
     some of the scene's shots were taken, what an earlier trip under this tag left stays."""
@@ -295,7 +310,8 @@ def to_send(scene, tag, commit, at, shots, target, send, some):
             picture.convert("RGB").save(jpg, "JPEG", quality=JPEG_QUALITY, subsampling=0)
         with open(jpg, "rb") as fh:
             digest = hashlib.sha256(fh.read()).hexdigest()[:16]
-        rows[shot["name"]] = f"{shot['name']} {shot.get('time', shoot.DEFAULT_TIME)} {commit} {digest}"
+        tick = clock if clock is not None else shot.get("time", shoot.DEFAULT_TIME)
+        rows[shot["name"]] = f"{shot['name']} {tick} {commit} {digest}"
     head = ["# real-machine pictures (tools/win/shuttle.py): shot, tick, commit of the code the picture shows, "
             "first 16 of the picture file's sha256",
             f"# scene {scene}, tag {tag}, plot {at[0]} {at[1]} {at[2]}, taken "
@@ -430,18 +446,21 @@ def main():
             target = os.path.join(out, scene)
             if scene not in only:
                 shutil.rmtree(target, ignore_errors=True)
-            say(f"shooting {scene}: {len(shots)} shots of {os.path.relpath(shots_file, BUILD)}")
+            clock = clock_of(scene)
+            say(f"shooting {scene}: {len(shots)} shots of {os.path.relpath(shots_file, BUILD)}"
+                + (f", all at tick {clock} (the look is carried by the resource pack)" if clock is not None else ""))
             code, _ = run(os.path.join(TOOLS, "shoot.py"), shots_file, "--pw-file", os.path.join(SERVER, ".rcon_pw"),
                           "--out", target, "--origin", *at, "--settle", args.settle,
                           "--first-settle", args.first_settle,
-                          *(["--only", ",".join(only[scene])] if scene in only else []), check=False)
+                          *(["--only", ",".join(only[scene])] if scene in only else []),
+                          *(["--clock", clock] if clock is not None else []), check=False)
             got = len([s for s in shots if os.path.exists(os.path.join(target, s["name"] + ".png"))])
             taken[scene] = (got, len(shots))
             if code != 0 or got != len(shots):
                 failed.append(f"{scene}: {got} of {len(shots)} pictures")
             # ---- 5. ready to be sent ----
             if got:
-                to_send(scene, args.tag, commit, at, shots, target, send, scene in only)
+                to_send(scene, args.tag, commit, at, shots, target, send, scene in only, clock)
     except Stop as stop:
         say(f"stopped: {stop}")
         failed.append(str(stop))
