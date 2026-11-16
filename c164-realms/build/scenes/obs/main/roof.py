@@ -49,7 +49,13 @@ the shell, the tower and the domes. The flags stay as the facade lays them; what
                         block high, which nobody gets into, and their top is at 21, out of a
                         jump's reach from every step of the gables. Rows 18 and 19 would have their
                         top at 20, one block up and two columns away from the gables' steps at
-                        x 3 and 12: an ordinary jump.
+                        x 3 and 12: an ordinary jump. Two columns are laid otherwise: on the pier
+                        east of either door of the dome room the lights line hangs a caged lamp,
+                        and its source belongs in row 19 over the parapet beside it. There the
+                        barriers are rows 18 and 20 and the cell between them is the lamp's: one
+                        block high like the row under the others, and the top is at 21 as it is
+                        all the way round (facade #90287; the lamps were out in the first version
+                        that had the guard).
 
 Light: the caged lamps are blocks of this package (their own light is 4); over each the light kit
 is asked for a walkway's level (sky.md 6; agreed with the lights line, c220 #34654), where the kit
@@ -128,6 +134,11 @@ LEAF = B.IRON_DOOR
 DOORS_OPEN = True                                       # the dome room's two leaves stand open (doors())
 GUARD = B.BARRIER                                       # over the parapets, and not seen (guard())
 GUARD_Y = (S.PARAPET[1] + 2, S.PARAPET[1] + 3)          # 19, 20: one row clear of the coping (the header says why)
+# the two columns of the parapet beside the piers that carry the lights line's lamps of the corner
+# terraces (sky/_ways_roofs.py and _ways_roofsouth.py: fixed to (14, 19, -9) and (14, 19, 9), looking
+# east): the lamp's source stands in row 19, between a barrier on the coping and one in the upper row
+GUARD_LAMPS = ((15, -9), (15, 9))                       # (x, z)
+GUARD_LAMP_Y = (S.PARAPET[1] + 1, S.PARAPET[1] + 3)     # 18, 20
 
 SHAFT = frozenset(O.box(S.CLOCK_SHAFT_X[0], S.CLOCK_SHAFT_Z[0], S.CLOCK_SHAFT_X[1], S.CLOCK_SHAFT_Z[1]))
 
@@ -226,11 +237,24 @@ def doors():
 
 
 def guard():
-    """The cells of the guard over the parapets, sorted: both rows over every column that carries
-    the parapet (the wall line, but where the great drum stands on it: main/facade.py's order).
-    build() lays a barrier in each that is empty. A lightning rod, the clock tower's wall and the
-    small drum's stand on the wall line as well and shut their cells themselves."""
-    return sorted((x, y, z) for x, z in facade.shell().wall if (x, z) not in facade.ROTUNDA for y in GUARD_Y)
+    """The cells of the guard over the parapets, sorted: two over every column that carries the
+    parapet (the wall line, but where the great drum stands on it: main/facade.py's order), rows
+    GUARD_Y, and rows GUARD_LAMP_Y in the two columns of GUARD_LAMPS. build() lays a barrier in each
+    that is empty. A lightning rod, the clock tower's wall and the small drum's stand on the wall
+    line as well and shut their cells themselves."""
+    return sorted((x, y, z) for x, z in guard_columns()
+                  for y in (GUARD_LAMP_Y if (x, z) in GUARD_LAMPS else GUARD_Y))
+
+
+def guard_columns():
+    """The columns (x, z) that carry the parapet, and so the guard."""
+    return sorted((x, z) for x, z in facade.shell().wall if (x, z) not in facade.ROTUNDA)
+
+
+def guard_lamp_cells():
+    """The cells the guard leaves to the lights line's two lamps: one in each column of GUARD_LAMPS,
+    between its two barriers."""
+    return sorted((x, GUARD_LAMP_Y[0] + 1, z) for x, z in GUARD_LAMPS)
 
 
 def guard_tally(c):
@@ -427,14 +451,26 @@ def check(c=None):
                 out.append(f"{where} pocket: ({x}, {s * az}) is not closed up to {POCKET_TOP}")
     # 9. the guard: two rows, the lower one a row clear of the coping and no more; over every
     #    column of the parapet the coping stands and both rows are shut, by a barrier or by what
-    #    stood there before it. That nobody gets past it is scenes/obs_main_smalldome/kept.py's
-    #    to show, on foot
+    #    stood there before it. In the two columns beside the lamps of the corner terraces the
+    #    barriers are the row on the coping and the upper row, and the one cell between them is
+    #    left empty by this package: the lamp's source goes there. That nobody gets past any of it
+    #    is scenes/obs_main_smalldome/kept.py's to show, on foot
     if len(GUARD_Y) != 2 or GUARD_Y != (S.PARAPET[1] + 2, S.PARAPET[1] + 3):
         out.append(f"guard: rows {GUARD_Y}, not the two over the row above the coping")
+    if GUARD_LAMP_Y != (S.PARAPET[1] + 1, GUARD_Y[1]):
+        out.append(f"guard: rows {GUARD_LAMP_Y} beside the lamps, not the row on the coping and the upper row")
+    columns = set(guard_columns())
+    for x, z in GUARD_LAMPS:
+        if (x, z) not in columns:
+            out.append(f"guard: the lamp's column ({x}, {z}) carries no parapet")
+    for x, y, z in guard_lamp_cells():
+        if (x, y, z) in scratch.b:
+            out.append(f"guard: ({x}, {y}, {z}) is the lamp's cell, and this package has laid {scratch.b[(x, y, z)]} in it")
     for x, y, z in guard():
         if not c.has(x, y, z):
             out.append(f"guard: ({x}, {y}, {z}) is open")
-        if y == GUARD_Y[0] and not c.has(x, S.PARAPET[1], z):
+    for x, z in sorted(columns):
+        if not c.has(x, S.PARAPET[1], z):
             out.append(f"guard: no coping under ({x}, {z}), the way under the barriers is open")
     return out
 
@@ -479,7 +515,8 @@ def _drawings(c):
     print("\nLetters: M slate flags, c copper channel, Y roof light, D its ceiling light, i iron kerb")
     print("and treads, I iron plate and block, % grating, @ caged lamp, J door leaf, T t slates, F stone,")
     print("x the guard's barriers (in the sections; nobody sees them). Small letters are slabs and stairs.")
-    print(f"\nthe guard over the parapets, rows {GUARD_Y[0]} and {GUARD_Y[1]}: "
+    print(f"\nthe guard over the parapets, rows {GUARD_Y[0]} and {GUARD_Y[1]} "
+          f"({GUARD_LAMP_Y[0]} and {GUARD_LAMP_Y[1]} in the {len(GUARD_LAMPS)} columns beside the lamps): "
           + ", ".join(f"{n} {kind}" for kind, n in sorted(guard_tally(c).items())))
     for where, s in WINGS.items():
         way = route(s)
