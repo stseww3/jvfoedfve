@@ -241,13 +241,17 @@ def _leads(version):
 
 @functools.lru_cache(maxsize=None)
 def _models():
+    # A conduit is an eight-sided tube: its slanting flats stand exactly between two axes, and the
+    # game lit such a flat as the one or the other by the last bit of a float, so that of two lengths
+    # of one run one could show a light flat and the next a dark one. K.settle (the kit's, 11-16)
+    # turns every tube a tenth of a degree: every length is lit the same way.
     out = {}
     for version in VERSIONS:
         for key, _at, _wall in _runs(version):
-            m = _piece(*key)
+            m = K.settle(_piece(*key))
             out[m.name] = m
         for m in (_lead_clock(version), _lead_board(version)):
-            out[m.name] = m
+            out[m.name] = K.settle(m)
     return out
 
 
