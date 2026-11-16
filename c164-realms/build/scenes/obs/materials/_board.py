@@ -56,6 +56,12 @@ def door(c, block, x, z):
             c.set(x + dx, y, z, st(block, facing="north", half=half, hinge=hinge))
 
 
+def leaf(c, block, x, z):
+    """One leaf of a door, shut, in the right-hand cell of its two: a door that is used single."""
+    for y, half in ((0, "lower"), (1, "upper")):
+        c.set(x + 1, y, z, st(block, facing="north", half=half, hinge="left"))
+
+
 def hatch(c, block, x, z):
     """One shut on a base, one open and upright."""
     c.box(x, 0, z, x + 1, 0, z, BASE)
@@ -184,9 +190,11 @@ def panels(c, x, z):
     return x + 14
 
 
-def brass(c, x, z, staged=True):
+def brass(c, x, z, staged=True, plate="run"):
     """The brass family (bamboo) and the small pieces. staged=False leaves floor, backdrop and lamps
-    to the caller."""
+    to the caller. The whole cell of plate in the floor lies as a run of twelve before the pieces,
+    to see it repeat, or (plate="threshold") as the building has it: the two cells a brass door
+    opens onto. As a run it reads as a carpet (review #22)."""
     start = x
     family(c, B.BRASS_PLATE, x, z)
     family(c, B.BRASS_PATTERN, x + 2, z)
@@ -212,7 +220,10 @@ def brass(c, x, z, staged=True):
     c.box(x + 28, 2, z, x + 29, 2, z, BASE)
     c.set(x + 28, 1, z, st(B.BRASS_SIGN[2], rotation="0"))
     c.set(x + 29, 1, z, st(B.ENAMEL_SIGN[2], rotation="0"))
-    c.box(x + 5, 0, z + 2, x + 16, 0, z + 2, B.BRASS_INLAY)
+    if plate == "threshold":
+        c.box(x + 12, 0, z + 1, x + 13, 0, z + 1, B.BRASS_INLAY)
+    else:
+        c.box(x + 5, 0, z + 2, x + 16, 0, z + 2, B.BRASS_INLAY)
     if staged:
         stage(c, start, x + 29, z)
     return x + 32
