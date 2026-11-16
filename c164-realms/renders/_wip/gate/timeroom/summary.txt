@@ -1,0 +1,7 @@
+gate interiors/timeroom b1f86c8f: the merged tree b1f86c8f, the assembly as it was 5b56af2d
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] pictures 1 test scene, 11 shots with a picture kept
+                    obs_int_timeroom: 11 pictures show 87f07156; the card's code has changed since (box.py): draw them again
+check.py: 56 scenes in 40 s: 56 pass (56 with warnings)
+pictures: [PASS] selfshots obs_int_timeroom at b1f86c8f: 11 of 11 kept pictures are what the code draws
+result: PASS
