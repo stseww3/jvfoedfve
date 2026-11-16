@@ -1,0 +1,50 @@
+gate site/powerhouse e12e2109: the merged tree 73a2f0b0, the assembly as it was f763d77f
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] pictures 2 test scenes, 32 shots with a picture kept
+                    obs_site_powerhouse: 16 pictures show 34fd7491; the card's code has changed since (_rail.py, powerhouse.py): draw them again
+                    obs_site_powerhouse_b: 16 pictures show 34fd7491; the card's code has changed since (_rail.py, powerhouse.py): draw them again
+check.py: 100 scenes in 143 s: 95 pass (55 with warnings), 5 FAIL: obs_mach_engine_dynamo, obs_mach_switchboard_boiler, obs_mot_small_life, obs_mot_smoke_bench, obs_mot_smoke_room
+    FAIL  obs_mach_engine_dynamo: 1 failed, 0 with warnings, skipped: sight (4 s)
+          [FAIL] entities: 22 display entities, 26 models never placed
+              8 display entities show 'c164:site_power_vent', which the pack does not have
+    FAIL  obs_mach_switchboard_boiler: 1 failed, 0 with warnings, skipped: sight (4 s)
+          [FAIL] entities: 25 display entities, 26 models never placed
+              8 display entities show 'c164:site_power_vent', which the pack does not have
+    FAIL  obs_mot_small_life: 1 failed, 0 with warnings, skipped: flatwall (2 s)
+          [FAIL] entities: 41 display entities, 8 shown through a matrix that is no turn, no face stretched, 22 models never placed
+              8 display entities show 'c164:site_power_vent', which the pack does not have
+    FAIL  obs_mot_smoke_bench: 1 failed, 0 with warnings, skipped: flatwall, sight (2 s)
+          [FAIL] entities: 38 display entities, 26 models never placed
+              8 display entities show 'c164:site_power_vent', which the pack does not have
+    FAIL  obs_mot_smoke_room: 1 failed, 0 with warnings, skipped: flatwall, sight (2 s)
+          [FAIL] entities: 38 display entities, 26 models never placed
+              8 display entities show 'c164:site_power_vent', which the pack does not have
+pictures: obs_site_powerhouse: the kept pictures are NOT what the delivered commit e12e2109 draws (it goes back):
+    [FAIL] selfshots obs_site_powerhouse at 73a2f0b0: 0 of 16 kept pictures are what the code draws, 16 not
+    door_axis: 204352 of 921600 pixels are not what the code draws (off by up to 199 of 255)
+    yard_west: 12866 of 921600 pixels are not what the code draws (off by up to 149 of 255)
+    stair_south: 146579 of 921600 pixels are not what the code draws (off by up to 202 of 255)
+    stair_axis: 95524 of 921600 pixels are not what the code draws (off by up to 191 of 255)
+    v1: 39894 of 921600 pixels are not what the code draws (off by up to 213 of 255)
+    court_back: 1192 of 921600 pixels are not what the code draws (off by up to 215 of 255)
+    lip_south: 21722 of 921600 pixels are not what the code draws (off by up to 214 of 255)
+    chimney_up: 16472 of 921600 pixels are not what the code draws (off by up to 187 of 255)
+    bridge_near: 120 of 921600 pixels are not what the code draws (off by up to 52 of 255)
+    bridge_head: 1556 of 921600 pixels are not what the code draws (off by up to 149 of 255)
+    head_west: 4756 of 921600 pixels are not what the code draws (off by up to 174 of 255)
+    head_walk: 1746 of 921600 pixels are not what the code draws (off by up to 60 of 255)
+pictures: obs_site_powerhouse_b: the kept pictures are NOT what the delivered commit e12e2109 draws (it goes back):
+    [FAIL] selfshots obs_site_powerhouse_b at 73a2f0b0: 4 of 16 kept pictures are what the code draws, 12 not
+    door_axis: 203819 of 921600 pixels are not what the code draws (off by up to 199 of 255)
+    yard_west: 11866 of 921600 pixels are not what the code draws (off by up to 91 of 255)
+    stair_south: 144881 of 921600 pixels are not what the code draws (off by up to 202 of 255)
+    stair_axis: 94347 of 921600 pixels are not what the code draws (off by up to 191 of 255)
+    v1: 39023 of 921600 pixels are not what the code draws (off by up to 213 of 255)
+    court_back: 266 of 921600 pixels are not what the code draws (off by up to 215 of 255)
+    lip_south: 19623 of 921600 pixels are not what the code draws (off by up to 214 of 255)
+    chimney_up: 14971 of 921600 pixels are not what the code draws (off by up to 187 of 255)
+    bridge_head: 521 of 921600 pixels are not what the code draws (off by up to 149 of 255)
+    head_west: 1202 of 921600 pixels are not what the code draws (off by up to 174 of 255)
+    aerial: 28272 of 921600 pixels are not what the code draws (off by up to 138 of 255)
+    aerial_back: 3876 of 921600 pixels are not what the code draws (off by up to 151 of 255)
+result: FAIL
