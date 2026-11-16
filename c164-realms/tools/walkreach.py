@@ -1024,6 +1024,10 @@ def landmarks():
         box = part["box"]
         return S.mid(box[0], box[2]), part["feet"], S.mid(box[1], box[3])
 
+    # A landmark is a place the visitor stands, so none is put where the thing itself stands: the
+    # mast's base fills the middle of its pad, the tower's column the middle of its shelf, and the
+    # power house's corner the platform's south-east one.
+    pad, tower = S.MAST_PAD["box"], S.WATER_TOWER["box"]
     return {
         "spawn": (S.V1["pos"][0], S.STATION_GROUND, S.V1["pos"][2]),
         "lower platform, before the stair": (S.GRAND_STAIR["x1"] + 3.5, S.LOWER_GROUND, S.AXIS_Z),
@@ -1035,16 +1039,16 @@ def landmarks():
         "court, north-west corner": (S.WALL_E + 4.5, S.GROUND, S.FRONT_COURT[1] + 2.5),
         "court, north end of the meridian": (S.MERIDIAN_X + 0.5, S.GROUND, hut["door"][1] + 2.5),
         "meridian hut, before its door": (hut["door"][0] + 0.5, S.GROUND, hut["door"][1] + 1.5),
-        "mast pad": (S.mid(S.MAST_PAD["box"][0], S.MAST_PAD["box"][2]), S.MAST_PAD["feet"], S.MAST_PAD["box"][3] - 0.5),
+        "mast pad": (S.mid(pad[0], pad[2]), S.MAST_PAD["feet"], pad[1] + 1.5),
         "weather station": shelf(S.WEATHER_STATION),
-        "water tower": shelf(S.WATER_TOWER),
+        "water tower": (tower[2] - 2.5, S.WATER_TOWER["feet"], S.mid(tower[1], tower[3])),
         "west side, north": (S.WALL_W - 4.5, S.GROUND, S.Z_NORTH + 10.5),
         "sunset platform, west edge": (sunset["centre"][0] - sunset["radius"] + 2.5, S.GROUND, S.AXIS_Z),
         "west side, south": (S.WALL_W - 4.5, S.GROUND, S.Z_SOUTH - 9.5),
         "south lookout": (S.V11["pos"][0], S.SOUTH_LOOKOUT["feet"], S.V11["pos"][2]),
         "power house, west side": (house[0] - 2.5, S.LOWER_GROUND, S.mid(house[1], house[3])),
         "power house, north side": (S.mid(house[0], house[2]), S.LOWER_GROUND, house[1] - 2.5),
-        "lower platform, south-east": (S.LOWER_PLATFORM[2] - 1.5, S.LOWER_GROUND, S.LOWER_PLATFORM[3] - 0.5),
+        "lower platform, south-east": (S.LOWER_PLATFORM[2] - 0.5, S.LOWER_GROUND, S.LOWER_PLATFORM[3] - 1.5),
         "back at the spawn": (S.V1["pos"][0], S.STATION_GROUND, S.V1["pos"][2]),
     }
 
