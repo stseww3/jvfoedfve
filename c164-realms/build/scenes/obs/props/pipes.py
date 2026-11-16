@@ -165,6 +165,83 @@ def _even(m, axis, c, a0, a1, radius, tones, sides=8, light=ABOVE):
     return m
 
 
+LEAN = 0.5              # degrees: how far _settle() turns a face off the plane between two axes
+_EDGE = math.sqrt(2.0) * math.sin(math.radians(LEAN / 2.0))
+_FIRST = (1, 2, 0)      # of two equal axes the game takes y before z before x
+
+
+def _between(normal):
+    """The two model axes a face's normal lies between -- within half the lean of the plane that
+    divides them -- or None; the one the game takes when the two are equal comes first."""
+    order = sorted(range(3), key=lambda i: (-abs(normal[i]), _FIRST.index(i)))
+    if abs(normal[order[0]]) - abs(normal[order[1]]) >= _EDGE:
+        return None
+    return tuple(sorted(order[:2], key=_FIRST.index))
+
+
+def _settle(m):
+    """Makes the light on a model the same in every copy of the game, and in the offline pictures.
+
+    The game lights a face of an item model not by its own normal but by the model axis nearest to
+    it (the direction the face is filed under when the model is baked), turned as the display turns
+    the model. The slanting flats of an eight-sided tube, ring or ball stand exactly between two
+    axes, and which of the two such a face is given comes out of the last bit of a float: of two
+    lengths of one main, or of the two bores of one fitting, one had its upper flats lit as "up"
+    (x1) and the other as a side (x0.5), and a change anywhere in a model could change it again.
+
+    So every part whose faces stand between two axes is turned LEAN degrees about its own middle,
+    towards the axis the game takes when the two are exactly equal (y before z before x): the three
+    flats on the +y side of a tube along z are lit as up, the three opposite as down. Half a degree
+    moves an edge of the big main a fortieth of a texel. The parts of a round shape then no longer
+    meet in a line, so the faces they keep inside each other are drawn too (a hair of them shows in
+    the joint; left out, one would look through the pipe there)."""
+    leaned = set()
+    for p in m.parts:
+        q = p["rot"][0] if p["rot"] else M.IDENT
+        start = q
+        # the faces that are drawn come first: it is they that go to the axis the game would take
+        sides = sorted(range(3), key=lambda k: all(letter in p["skip"] for letter in M.SIDE[k]))
+        for _ in range(4):
+            found = None
+            for k in sides:
+                pair = _between(M._qrot(q, M.NORMAL[M.SIDE[k][1]]))
+                if pair:
+                    found = (k, pair)
+                    break
+            if found is None:
+                break
+            k, (keep, other) = found
+            axis = M.AXES[3 - keep - other]
+
+            def gain(degrees):
+                n = M._qrot(M._qmul(M.quat(axis, degrees), q), M.NORMAL[M.SIDE[k][1]])
+                return abs(n[keep]) - abs(n[other])
+
+            q = M._qmul(M.quat(axis, max((LEAN, -LEAN), key=gain)), q)
+        else:
+            raise ValueError(f"{m.name}: a part's faces stay between two axes however it is leaned")
+        if q is not start:
+            p["rot"] = (q, tuple((p["lo"][i] + p["hi"][i]) / 2.0 for i in range(3)))
+            leaned.add(p["seed"])
+    for p in m.parts:
+        if p["seed"] in leaned:
+            p["skip"] = set()
+    return m
+
+
+def unsettled(model):
+    """The faces of a model that stand between two axes: [(part's index, face letters, normal)].
+    Empty for every model of this family (the test scene's fit.py holds them to it)."""
+    out = []
+    for i, p in enumerate(model.parts):
+        q = p["rot"][0] if p["rot"] else M.IDENT
+        for k in range(3):
+            normal = M._qrot(q, M.NORMAL[M.SIDE[k][1]])
+            if _between(normal):
+                out.append((i, "".join(M.SIDE[k]), normal))
+    return out
+
+
 def _bolts(m, radius, count, z0, z1, first=0.0):
     """Bolts round the axis z: `count` of them on a circle, each one texel square, from z0 to z1."""
     for i in range(count):
@@ -552,7 +629,7 @@ SCALE = {PREFIX + name: 1.0 for name in SPEC}
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    return {PREFIX + name: spec["build"]() for name, spec in SPEC.items()}
+    return {PREFIX + name: _settle(spec["build"]()) for name, spec in SPEC.items()}
 
 
 def models():
