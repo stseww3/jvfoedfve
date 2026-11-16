@@ -48,6 +48,12 @@ def main(argv):
     hi = tuple(max(b[2][i] for b in boxes) + REACH for i in range(3))
     light = L.levels(canvas, lo, hi)
     placed = lights.report(canvas)["placed"]
+    print(f"ways: {len(lights.report(canvas)['ways'])} lamps; way_lamps() has {len(lights.way_lamps())} rows")
+    for row in lights.way_lamps():
+        if "door" in row[3]:
+            print("  row:", row)
+    for note in lights.report(canvas)["notes"] + [f"PROBLEM: {p}" for p in lights.report(canvas)["problems"]]:
+        print("  note:", str(note)[:200])
     if out_dir:
         os.makedirs(out_dir, exist_ok=True)
     for name, (x0, y0, z0), (x1, y1, z1) in boxes:

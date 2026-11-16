@@ -566,7 +566,20 @@ def way_lamps():
     x, row = shell.ARCADE_X[0], shell.DECK_Y + WAY_HIGH
     out += [((x, row, -shell.CROSS_Z), "south", L.WAY - 1, "the north end of the cross gallery"),
             ((x, row, shell.CROSS_Z), "north", L.WAY - 1, "the south end of the cross gallery")]
-    return out + ROOF_WAYS
+    return out + ROOF_WAYS + _stretches()
+
+
+def _stretches():
+    """The rows of the same kind that are kept a stretch to a file: sky/_ways_<stretch>.py, with
+    LAMPS = [(the block of the wall, the way its face looks, the level, what it lights)]. Who
+    surveys a stretch writes its file and no other. The rows, in the order of the files' names."""
+    import importlib
+    import pkgutil
+    here = importlib.import_module(__package__)
+    out = []
+    for name in sorted(m.name for m in pkgutil.iter_modules(here.__path__) if m.name.startswith("_ways_")):
+        out += list(importlib.import_module(f"{__package__}.{name}").LAMPS)
+    return out
 
 
 # Over the roofs, as dome (c326) measured them on the walk-through's stations (#74898, #75042): the
