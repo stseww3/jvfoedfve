@@ -1,0 +1,3 @@
+branch=cursor/c164-lamps-chain-f3-0dde
+head=5671b378fc967350fe37db131b439c8f2c756c6a
+args=--limit 1800 --wip --to cursor/c164-lamps-chain-f3-wip-0dde --always --tail 80 bash tools/gate.sh props/lamps 5671b378 --base 95b6e2af 
