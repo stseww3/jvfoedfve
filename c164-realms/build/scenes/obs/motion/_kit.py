@@ -95,7 +95,8 @@ DRUM_REV = 2400                 # a recording drum: two minutes
 ORRERY = {"mercury": 1200, "venus": 1920, "earth": 2640, "mars": 3120, "jupiter": 7200, "saturn": 10800}
 BLINK = (30, 30)                # a lamp that blinks: ticks lit, ticks dark (no part blinks in this version)
 FLAG_SWAY = 120                 # a flag there and back
-ANEMOMETER_REV = 24             # the wind cups
+ANEMOMETER_REV = 28             # the wind cups (not 24: three cups look the same every 8 ticks, and two
+                                # pictures 2 seconds apart showed them standing)
 
 # ---- the wind -----------------------------------------------------------------------------------
 # One wind for the whole place, from the north (the director, group message 39156): vanes point
@@ -874,20 +875,29 @@ def function(canvas, name, lines, *, pos=None, origin=(0, 0, 0)):
 # an entity of his own that is teleported with the car.
 #
 # What the real machine showed (s1, 11-16, two clients, one of them riding): teleported every tick
-# the rider's camera jumps from tick to tick; teleported every N ticks with a teleport_duration of
-# N + 1 it glides and does not halt where two stretches meet. So a car is sent, every `step` ticks,
-# to where the timetable has it step + 1 ticks on. The places are absolute; a selector looks for a
-# car where the step before sent it, and once a trip for all of it by its tag alone.
-TRAVEL_STEP = 20                # ticks from one teleport to the next
-TRAVEL_LEAD = 1                 # ticks the teleport_duration is longer than that
+# the rider's camera jumps from tick to tick; teleported every 20 ticks with a teleport_duration of
+# 20 it halts for a tick at some of the seams, with 21 it does not, and with 23 it runs more evenly
+# still but is late. The client takes an entity from where it shows it to where it was sent in a
+# straight line, in teleport_duration ticks, and a teleport on the way starts anew from where the
+# entity is shown then. So a car is not sent to a place on its line. It is sent beyond the pose it
+# is to be shown in when the next teleport comes, so far that it is in that pose on that tick: the
+# way to it, times teleport_duration over the ticks until then. The teleports are as far apart as
+# the line lets them be, TRAVEL_STEP ticks on a straight run at an even speed and fewer where the
+# car turns, tilts, sets off or stops: a car is never shown further than TRAVEL_FIT from where the
+# timetable has it. The places are absolute; a selector looks for a car where the teleport before
+# sent it, and once a trip for all of it by its tag alone.
+TRAVEL_STEP = 20                # ticks from one teleport to the next, at the most
+TRAVEL_LEAD = 3                 # ticks the teleport_duration is longer than that
+TRAVEL_FIT = 0.03               # blocks a car's ends may be shown off its line between two teleports
+TRAVEL_OFF = 0.12               # blocks off its line (a kink taken too fast) from which check() warns
+TRAVEL_ROUND = 170.0            # degrees a heading is sent ahead at the most: the client turns the short way round
 TRAVEL_NEAR = 0.25              # blocks: the selector's reach round the spot the last teleport sent a car to
-BEND = 2.0                      # degrees the way of a car's middle turns in one tick: a teleport ends there
 ROLL_STEP = 5                   # ticks from one pose of a wheel that rolls to the next
 ROLL_MOST = MAX_TURN / (ROLL_STEP + LEAD)       # degrees a tick a wheel is shown to turn at the most
 SEAT = "minecraft:block_display"                # what a rider sits on: a display that shows nothing
 SEAT_EYES = 1.02                # blocks a rider's eyes are above the point of his seat
 _RESERVED = re.compile(r"(c[0-9]+|halt|rest|start|stop|load|watch)\Z")
-
+_TRAIN = re.compile(r"[a-z0-9_\-]+(\.[a-z0-9_\-]+)*\Z")
 
 class _Route:
     """A line in the scene: at(s) is the point (x, y, z) at the distance s along it."""
@@ -1046,10 +1056,14 @@ class _Car:
         if self.axles is not None and not self.axles[1] - self.axles[0] > 1e-3:
             raise ValueError(f"{train.name}: the car {name}'s axles=(a, b) are two places along the car, a before b")
         self.tag = f"{train.tag}.{name}"
+        self.reach = 0.5 if self.axles is None else max(abs(self.axles[0]), abs(self.axles[1])) + 1.0
         self.count = 0          # display entities that go with it
+        self.off = 0.0          # blocks its ends are shown off the line at the worst (once sends() has run)
         self._poses = {}
+        self._true = {}
         self._far = None
-        self._steps = None
+        self._sends = None
+        self._ticks = None
 
     def frame(self, s):
         """(middle, yaw, pitch, turn) of the car with the train's reference point at the distance s:
@@ -1079,55 +1093,78 @@ class _Car:
             self._far = out
         return self._far
 
-    def bends(self, t0, t1):
-        """The ticks between t0 and t1 at which the way of the car's middle turns a corner."""
-        out, run = [], []
-        for t in range(t0 + 1, t1):
-            a, b, c = self.pose(t - 1)[0], self.pose(t)[0], self.pose(t + 1)[0]
-            u, v = [b[i] - a[i] for i in range(3)], [c[i] - b[i] for i in range(3)]
-            nu, nv = math.sqrt(sum(x * x for x in u)), math.sqrt(sum(x * x for x in v))
-            turned = 0.0
-            if nu > 1e-6 and nv > 1e-6:
-                turned = math.degrees(math.acos(max(-1.0, min(1.0, sum(u[i] * v[i] for i in range(3)) / (nu * nv)))))
-            if turned > BEND:
-                run.append(t)
-            elif run:
-                out.append(run[len(run) // 2])
-                run = []
-        if run:
-            out.append(run[len(run) // 2])
-        return out
+    def _ends(self, mid, yaw, pitch):
+        """Two points of the car's long axis, `reach` either side of its middle: a fit is measured there."""
+        y, p = math.radians(yaw), math.radians(pitch)
+        w = (-math.sin(y) * math.cos(p) * self.reach, -math.sin(p) * self.reach, math.cos(y) * math.cos(p) * self.reach)
+        return (mid[0] - w[0], mid[1] - w[1], mid[2] - w[2]), (mid[0] + w[0], mid[1] + w[1], mid[2] + w[2])
 
-    def steps(self):
-        """[(tick of a teleport, the tick whose pose it is sent to)]. Every `step` ticks the car is
-        sent to where it is to be one teleport_duration on; a stretch ends exactly on a corner of
-        its way and at the end of a move, so that the car is there on the tick and does not cut
-        the corner."""
-        if self._steps is None:
+    def _aim(self, a, b, turn, tilt):
+        """Where the car, shown at the tick a in its place with the heading (turn, tilt), is sent then
+        to be shown in its pose of the tick b when that tick comes; and how far off the line its ends
+        are shown on the way at the worst. Returns ((place, yaw, pitch), blocks)."""
+        takes = float(self.train.duration)
+        k = takes / (b - a)
+        m0, (m1, y1, p1, _q) = self.pose(a)[0], self.pose(b)
+        place = tuple(m0[i] + (m1[i] - m0[i]) * k for i in range(3))
+        # the client turns the short way round, and the game takes no pitch beyond 90
+        yaw = turn + max(-TRAVEL_ROUND, min(TRAVEL_ROUND, ((y1 - turn + 180.0) % 360.0 - 180.0) * k))
+        pitch = max(-90.0, min(90.0, tilt + (p1 - tilt) * k))
+        off = 0.0
+        for t in range(a + 1, b + 1):
+            u = (t - a) / takes
+            shown = self._ends(tuple(m0[i] + (place[i] - m0[i]) * u for i in range(3)),
+                               turn + (yaw - turn) * u, tilt + (pitch - tilt) * u)
+            if t not in self._true:
+                self._true[t] = self._ends(*self.pose(t)[:3])
+            true = self._true[t]
+            off = max(off, math.dist(shown[0], true[0]), math.dist(shown[1], true[1]))
+        return (place, yaw, pitch), off
+
+    def sends(self):
+        """[(tick, the tick it is aimed at, place, yaw, pitch)]: the car's teleports. At `tick` it is
+        sent to a place and a heading beyond its pose of the later tick, so that the client shows it
+        in that pose when that tick comes, and the next teleport is then. From each teleport the
+        next is as late as keeps the car within TRAVEL_FIT of its line (or, where nothing does, as
+        near to it as can be). The last of a move sends it to where it stands."""
+        if self._sends is None:
             train, out = self.train, []
-            reach = train.duration
+            takes = float(train.duration)
             for t0, t1 in train.moves:
-                first = t0
-                for goal in self.bends(t0, t1) + [t1]:
-                    if goal - reach < first:        # too near to be met: the corner is cut, the end is late
-                        if goal == t1:
-                            out.append((first, t1))
-                        continue
-                    t = first
-                    while t <= goal - reach:
-                        out.append((t, t + reach))
-                        t += train.step
-                    if out[-1][0] != goal - reach:
-                        out.append((goal - reach, goal))
-                    first = goal - 1
-            self._steps = out
-        return self._steps
+                a, turn, tilt = t0, self.pose(t0)[1], self.pose(t0)[2]
+                while a < t1:
+                    best = None
+                    for b in range(min(a + train.step, t1), a, -1):
+                        aim, off = self._aim(a, b, turn, tilt)
+                        if best is None or off < best[0]:
+                            best = (off, b, aim)
+                        if off <= TRAVEL_FIT:
+                            break
+                    off, b, (place, yaw, pitch) = best
+                    out.append((a, b, place, yaw, pitch))
+                    turn += (yaw - turn) * (b - a) / takes
+                    tilt += (pitch - tilt) * (b - a) / takes
+                    self.off = max(self.off, off)
+                    a = b
+                mid, yaw, pitch, _q = self.pose(t1)
+                out.append((t1, t1, mid, yaw, pitch))
+            self._sends, self._ticks = out, [send[0] for send in out]
+        return self._sends
 
-    def server(self, tick):
-        """The tick whose pose the game has the car in at `tick`, once that tick's teleport is done."""
-        steps = self.steps()
-        k = bisect.bisect_right([t for t, _aim in steps], tick) - 1
-        return steps[k][1] if k >= 0 else 0
+    def held(self, tick):
+        """Where the game has the car's entities at a tick of the trip, once that tick's teleport is done."""
+        sends = self.sends()
+        k = bisect.bisect_right(self._ticks, tick) - 1
+        return sends[k][2] if k >= 0 else self.pose(0)[0]
+
+    def sent(self, offset, tick, goal):
+        """Where a point of the car's own frame is sent at `tick` to be shown in its place of the
+        tick `goal` when that tick comes (a seat: it has no heading to be sent)."""
+        a, b = self.spot(offset, tick), self.spot(offset, goal)
+        if goal <= tick:
+            return a
+        k = self.train.duration / float(goal - tick)
+        return tuple(a[i] + (b[i] - a[i]) * k for i in range(3))
 
     def _offset(self, pos):
         """A point given as it lies with the train at home, in the car's own frame."""
@@ -1141,8 +1178,8 @@ class _Car:
         return tuple(mid[i] + p[i] for i in range(3))
 
     def _take(self, canvas, entity, model):
-        """Make a placed display entity one of the car's: move it to the car's middle where the trip
-        starts, with the car's heading, and put where it was into its transformation."""
+        """Make a placed display entity one of the car's: move it to the car's middle, with the
+        car's heading, and put where it was into its transformation. It is shown where it was."""
         train = self.train
         if canvas is not train.canvas:
             raise ValueError(f"{train.name}: the car {self.name} is of another canvas")
@@ -1156,6 +1193,9 @@ class _Car:
                              f"is moved by travel() alone (roll() for a wheel)")
         if id(nbt) in train.taken:
             raise ValueError(f"{train.name}: this display entity goes with the car {train.taken[id(nbt)]} already")
+        if nbt.get("billboard", "fixed") != "fixed":
+            raise ValueError(f"{train.name}: a billboard turns to the player about the point it stands on, and "
+                             f"that point is the car's middle; what travels is fixed")
         tr = nbt.get("transformation") or {}
         if not isinstance(tr, dict):
             raise ValueError(f"{train.name}: a transformation given as a matrix; give rotations, scale and translation")
@@ -1168,14 +1208,13 @@ class _Car:
         pivot = _qrot(back, tuple(float(e[i]) - mid[i] for i in range(3)))
         arm = _qrot(into, shift)
         left = _qmul(into, left)
-        start, yaw, pitch, _q = self.pose(0)
         nbt["transformation"] = {
             "left_rotation": _nbt_floats(left),
             "right_rotation": tr.get("right_rotation", _nbt_floats(_IDENT)),
             "scale": tr.get("scale", _nbt_floats((1.0, 1.0, 1.0))),
             "translation": _nbt_floats(tuple(pivot[i] + arm[i] for i in range(3))),
         }
-        nbt["Rotation"] = _nbt_floats((yaw % 360.0, pitch))
+        nbt["Rotation"] = _nbt_floats((_yaw % 360.0, _pitch))
         nbt["teleport_duration"] = train.duration
         tags = nbt.setdefault("Tags", [])
         for tag in (train.tag, self.tag):
@@ -1183,7 +1222,7 @@ class _Car:
                 tags.append(tag)
         for i, other in enumerate(canvas.entities):
             if other is e:
-                canvas.entities[i] = (start[0], start[1], start[2], nbt)
+                canvas.entities[i] = (mid[0], mid[1], mid[2], nbt)
                 break
         train.taken[id(nbt)] = self.name
         self.count += 1
@@ -1191,8 +1230,8 @@ class _Car:
 
     def carry(self, canvas, *, entity=None, model=None):
         """The display entity placed last goes with this car (entity=, model= as in spin()). It is
-        placed as it stands with the train at home; the kit moves it to where the trip starts.
-        Returns 0."""
+        placed as it stands with the train at home, and stays there on the canvas: the loop takes
+        it to where the trip starts. Returns 0."""
         self._take(canvas, entity, model)
         return 0
 
@@ -1234,7 +1273,7 @@ class _Car:
         k = len(train.seats)
         offset = self._offset(pos)
         train.seats.append((self, offset))
-        p = self.spot(offset, 0)
+        p = tuple(float(v) for v in pos)
         train.canvas.add_entity(p[0], p[1], p[2], {
             "id": SEAT, "view_range": Float(0.0), "teleport_duration": train.duration,
             "Tags": ["c164art", train.tag, f"{train.tag}.seat", f"{train.tag}.s{k}"]})
@@ -1301,9 +1340,16 @@ class _Train:
         """The distance along the line of the reference point at a tick of the trip."""
         return self.s[int(tick) % self.cycle]
 
+    def heading(self, tick, car=None):
+        """(yaw, pitch) of a car at a tick of the trip, in the game's degrees, as the clients see it
+        then: one who looks along the car the way the line's distance grows."""
+        _mid, yaw, pitch, _q = self._car(car).pose(int(tick) % self.cycle)
+        return yaw, pitch
+
     def where(self, tick, pos=None, car=None):
-        """Where a point of a car is at a tick of the trip, in scene coordinates. pos is the point
-        as it lies with the train at home; left out, the car's middle on the rails."""
+        """Where a point of a car is at a tick of the trip as the clients see it then, in scene
+        coordinates. pos is the point as it lies with the train at home; left out, the car's
+        middle on the rails."""
         car = self._car(car)
         offset = (0.0, 0.0, 0.0) if pos is None else car._offset(pos)
         return car.spot(offset, int(tick) % self.cycle)
@@ -1393,8 +1439,8 @@ class _Train:
             x, y, z = (_num(p[i] + at[i]) for i in range(3))
             return f"x={x},y={y},z={z},distance=..{TRAVEL_NEAR}"
 
-        def heading(pose):
-            return f"{_num(pose[1], 3)} {_num(pose[2], 3)}"
+        def heading(yaw, pitch):
+            return f"{_num((yaw + 180.0) % 360.0 - 180.0, 3)} {_num(pitch, 3)}"
 
         cars = [car for car in self.cars.values() if car.count or any(c is car for c, _off in self.seats)]
         seats = {id(car): [(k, off) for k, (c, off) in enumerate(self.seats) if c is car] for car in cars}
@@ -1405,7 +1451,7 @@ class _Train:
         for car in cars:
             pose = car.pose(0)
             if car.count:
-                gather.append(f"tp @e[tag={car.tag}] {spot(pose[0])} {heading(pose)}")
+                gather.append(f"tp @e[tag={car.tag}] {spot(pose[0])} {heading(pose[1], pose[2])}")
             for k, off in seats[id(car)]:
                 tag = f"{self.tag}.s{k}"
                 tags = ",".join(f'"{t}"' for t in ("c164art", self.tag, f"{self.tag}.seat", tag))
@@ -1421,14 +1467,17 @@ class _Train:
                 chain.add(t1, f"scoreboard players set {self.holder} {OBJECTIVE} "
                               f"{2 * i + 2 if i + 1 < len(self.moves) else 0}")
         for car in cars:
-            was = 0
-            for tick, aim in car.steps():
-                pose = car.pose(aim)
+            was = car.pose(0)[0]
+            for tick, _goal, place, yaw, pitch in car.sends():
                 if car.count:
-                    chain.add(tick, f"tp @e[tag={car.tag},{near(car.pose(was)[0])}] {spot(pose[0])} {heading(pose)}")
-                for k, off in seats[id(car)]:
-                    chain.add(tick, f"tp @e[tag={self.tag}.s{k},{near(car.spot(off, was))}] {spot(car.spot(off, aim))}")
-                was = aim
+                    chain.add(tick, f"tp @e[tag={car.tag},{near(was)}] {spot(place)} {heading(yaw, pitch)}")
+                was = place
+            for k, off in seats[id(car)]:
+                was = car.spot(off, 0)
+                for tick, goal, _place, _yaw, _pitch in car.sends():
+                    aim = car.sent(off, tick, goal)
+                    chain.add(tick, f"tp @e[tag={self.tag}.s{k},{near(was)}] {spot(aim)}")
+                    was = aim
         rest = list(gather)
         for roll in self.rolls:
             turns = self._turns(roll)
@@ -1451,7 +1500,7 @@ class _Train:
                     if shown is not None and abs(aim - shown) < 1e-6:
                         continue        # the same pose again would be shown as the way to it once more
                     shown = aim
-                    sel = f"@e[tag={roll.tag},{near(roll.car.pose(roll.car.server(t))[0])},limit=1]"
+                    sel = f"@e[tag={roll.tag},{near(roll.car.held(t))},limit=1]"
                     chain.add(t, merge(sel, ticks, aim))
             rest.append(merge(f"@e[tag={roll.tag},limit=1]", 0, 0.0))
         for ticks, text, car, offset, weight in self.points:
@@ -1467,22 +1516,28 @@ class _Train:
                 tag = f"{self.tag}.s{k}"
                 board.append(f"execute if entity @e[tag={tag},tag={free}] run return run "
                              f"ride @s mount @e[tag={tag},limit=1]")
-            own[f"{self.name}/board"] = board
+            own["board"] = board
         if self.call:
             rest.append(f"scoreboard players set {self.holder} {OBJECTIVE} 0")
-            own[f"{self.name}/go"] = [
+            own["go"] = [
                 f"execute unless score {self.holder} {OBJECTIVE} matches 0 run return 0",
                 f"schedule clear {plan.base}/{chain.folder}/0",
                 f"function {plan.base}/{chain.folder}/0"]
         return rest, own
 
+    def off(self):
+        """Blocks a car's end is shown off the line at the worst."""
+        for car in self.cars.values():
+            car.sends()
+        return max([car.off for car in self.cars.values()] or [0.0])
+
     def notes(self):
         """What check() says of it."""
         parts = sum(car.count for car in self.cars.values())
-        steps = sum(len(car.steps()) for car in self.cars.values())
+        sends = sum(len(car.sends()) for car in self.cars.values())
         out = [f"{self.name}: {len(self.cars)} cars of {parts} parts, {len(self.seats)} seats, {len(self.rolls)} wheels; "
-               f"{len(self.moves)} moves in {self.cycle} ticks, {steps} teleports of {self.duration} ticks"
-               + (", sent off by its go" if self.call else "")]
+               f"{len(self.moves)} moves in {self.cycle} ticks, {sends} teleports of {self.duration} ticks, shown within "
+               f"{self.off():.3f} blocks of the line" + (", sent off by its go" if self.call else "")]
         for roll in self.rolls:
             far = roll.car.far()
             k = abs(180.0 / (math.pi * roll.radius))
@@ -1498,7 +1553,7 @@ def travel(canvas, name, line, table, cycle, *, home=None, step=TRAVEL_STEP, cal
     in its tube (plan/packages/motion/travel.md). Returns the train; its cars are made with
     train.car(), and a car's carry(), roll() and seat() say what goes with it.
 
-    name     the train's entities are tagged "t.<name>"; its functions are <scene>-motion/<name>/...
+    name     the train's entities are tagged "t.<name>"; its functions are <namespace>:<name>/board, ...
     line     a route(), or what route() takes
     table    the timetable: [(tick, distance along the line of the train's reference point), ...].
              The first row is tick 0; two rows with one distance are a halt; the last row is back
@@ -1507,21 +1562,27 @@ def travel(canvas, name, line, table, cycle, *, home=None, step=TRAVEL_STEP, cal
     cycle    ticks from one trip to the next
     home     the distance of the reference point as the cars are placed on the canvas (as the train
              stands in its station, say). Left out: where the trip starts.
-    step     ticks from one teleport to the next; the entities' teleport_duration is one more
+    step     ticks from one teleport to the next at the most; the entities' teleport_duration is
+             TRAVEL_LEAD more
     call     False: the trip is on the chain of its cycle with whatever else has that cycle.
-             True: the train has a chain of its own and the function <scene>-motion/<name>/go,
-             which sends it off at once while it stands at the start of its trip (its score
-             "#t.<name>" on the loop's objective is 0 then; 1 on its first move, 2 at its first
-             halt, 3 on its second move, ...).
+             True: the train has a chain of its own, and two functions more. <namespace>:<name>/go
+             sends it off at once while it stands at the start of its trip (its score "#t.<name>"
+             on the loop's objective is 0 then; 1 on its first move, 2 at its first halt, 3 on its
+             second move, ...) and does nothing otherwise; from then on it runs every cycle.
+             <namespace>:<name>/park takes it back to the start of its trip wherever it is, and
+             there it stands until go is called: for when nobody rides and nobody looks, before
+             the map is saved (it clears every function of the trip, a few thousand commands
+             once). <namespace>:<name>/restart is park and then off at once.
 
-    A rider gets on with <scene>-motion/<name>/board, called as the player: he is put on the first
-    seat that is free. What the real machine has to say about riding is in the card.
+    A rider gets on with <namespace>:<name>/board, called as the player: he is put on the first
+    seat that is free, in the order the seats were given. What the real machine has to say about
+    riding is in the card.
     """
-    if not isinstance(name, str) or not _NAME.match(name) or _RESERVED.match(name):
-        raise ValueError(f"{name!r}: a train's name is made of letters, digits and _ . + -, and is not one of the "
-                         f"loop's own (start, stop, c<cycle>, ...)")
-    if name != name.lower():
-        raise ValueError(f"{name!r}: a train's name is in small letters (it names a folder of functions)")
+    if not isinstance(name, str) or not _TRAIN.match(name) or _RESERVED.match(name):
+        raise ValueError(f"{name!r}: a train's name is made of small letters, digits and _ . - (it names a folder "
+                         f"of functions), and is not one of the loop's own (start, stop, c<cycle>, ...)")
+    if name.endswith("-motion") or os.path.isdir(os.path.join(_SCENES, name)):
+        raise ValueError(f"{name!r}: a scene's name or a loop's; the train's functions are <namespace>:<name>/board, ...")
     cycle, step = int(cycle), int(step)
     if cycle < 1:
         raise ValueError(f"a cycle of {cycle} ticks")
@@ -1615,16 +1676,24 @@ class _Plan:
             chain = chains.setdefault(point.cycle, _Chain(point.cycle))
             for tick in point.ticks:
                 chain.add(tick + point.phase, text, point.weight)
-        self.extra = {}         # the trains' own functions, by their path below the scene's folder
+        self.own = {own: [_fill(line, spots, self.at, namespace) for line in lines]
+                    for own, (lines, spots) in book.own.items()}
+        called = []             # (train, its chain, its rest): those with a chain of their own
         for train in book.trains:
             key = ("train", train.name) if train.call else train.cycle
             if key not in chains:
                 chains[key] = _Chain(train.cycle, train.name if train.call else None)
             rest, own = train.emit(self, chains[key], namespace)
             self.rest += rest
-            self.extra.update(own)
-        self.own = {own: [_fill(line, spots, self.at, namespace) for line in lines]
-                    for own, (lines, spots) in book.own.items()}
+            for what, lines in own.items():
+                if f"{train.name}/{what}" in self.own:
+                    raise ValueError(f"{train.name}/{what}: a package's own function has the name of the train's")
+                self.own[f"{train.name}/{what}"] = lines
+            if train.call:
+                for what in ("park", "restart"):
+                    if f"{train.name}/{what}" in self.own:
+                        raise ValueError(f"{train.name}/{what}: a package's own function has the name of the train's")
+                called.append((train, chains[key], rest))
         for part in book.parts:
             if part.in_step is None:
                 continue
@@ -1654,6 +1723,11 @@ class _Plan:
                     if i == 0:      # the quickest chain says once a cycle that the loop is alive
                         lines.append(f"scoreboard players set {holder} {OBJECTIVE} 1")
                 chain.files.append((tick, lines + chain.events[tick]))
+        for train, chain, rest in called:
+            self.own[f"{train.name}/park"] = (
+                [f"schedule clear {self.base}/{chain.folder}/{k}" for k in range(len(chain.files))] + rest)
+            self.own[f"{train.name}/restart"] = [f"function {namespace}:{train.name}/park",
+                                                 f"function {self.base}/{chain.folder}/0"]
         self.peak = self._stagger()
         self.mean = sum(chain.count() / float(chain.cycle) for chain in self.chains)
         self.watch = self.chains[0].cycle + GRACE
@@ -1721,7 +1795,8 @@ class _Plan:
         def weight(chain):
             return sum(member.count() / float(member.cycle) for member, _off in team(chain, 0))
 
-        for chain in sorted((c for c in self.chains if c.follows is None), key=lambda c: (-weight(c), c.cycle)):
+        for chain in sorted((c for c in self.chains if c.follows is None and c.shared),
+                            key=lambda c: (-weight(c), c.cycle)):
             best = None
             for off in range(min(chain.cycle, STAGGER)):
                 marks = due(chain, off)
@@ -1732,7 +1807,9 @@ class _Plan:
                 member.offset = off
             for t, n in best[2].items():
                 load[t] += n
-        return max(load)
+        # a train with a chain of its own sets off when it is sent: its busiest tick may fall on anyone's
+        return max(load) + sum(max(chain.load(tick, lines) for tick, lines in chain.files)
+                               for chain in self.chains if not chain.shared)
 
     def _files(self, holder):
         """{path below the scene's function folder: [lines]}"""
@@ -1757,7 +1834,6 @@ class _Plan:
                        f"schedule function {self.base}/watch {self.watch}t replace"]
         out["watch"] = [f"execute if score {RUN} {OBJECTIVE} matches {self.number} unless score {holder} "
                         f"{OBJECTIVE} matches 1 run function {self.base}/start"]
-        out.update(self.extra)
         return out
 
 
@@ -1893,6 +1969,9 @@ def check(canvas, models=None, pack=None):
                      f"functions, {chain.count()} commands a cycle, starts {1 + chain.offset} ticks after start")
     for train in book.trains:
         notes += train.notes()
+        if train.off() > TRAVEL_OFF:
+            warns.append(f"{train.name}: a car is shown up to {train.off():.2f} blocks off its line: it turns or "
+                         f"tilts quicker than a teleport of {train.duration} ticks can be aimed (a kink taken fast)")
     names = None if models is None else {getattr(m, "name", k) for k, m in dict(models).items()}
     for part in book.parts:
         for _tick, ref in part.swaps:
