@@ -365,6 +365,7 @@ def main():
                             + (f"-server{args.server_view}" if args.server_view != REALM_VIEW else "")
                             + ("-looks" if args.looks else "") + ".log")
     trip = Trip(log_path, args.budget)
+    started = time.time()
 
     def cut_short(*_):
         # The job is being ended from outside (nodejob.sh at its limit kills what it asked to stop
@@ -467,6 +468,13 @@ def main():
                 except (Exception, SystemExit) as exc:
                     trip.say(f"--sheet {args.sheet}: the sheet could not be drawn ({exc})")
     finally:
+        # the game's own words on shaders and packs, beside the log: a pack whose shaders do not
+        # compile is thrown out by the game, and the pictures then show the vanilla ones
+        said_path = log_path[:-len(".log")] + "-client.txt"
+        try:
+            trip.stage("what the game said", station, "client-said", f"{started:.0f}", said_path, budget=30)
+        except Exception as exc:
+            trip.say(f"what the game said could not be read ({exc})")
         trip.stage("close", station, "down", budget=180)
         where = ", ".join(kept) or "none"
         trip.say(("trip done" if not failed else "trip done with failures: " + "; ".join(failed))

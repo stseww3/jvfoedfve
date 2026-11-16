@@ -9,6 +9,8 @@
     nodemc.py up              server, then client; returns when the camera player has joined
     nodemc.py down            client, then server, then the display; also what an earlier job left
     nodemc.py restart         down + up (needed after biome or timeline files change)
+    nodemc.py client-said [<since> [<file>]]
+                              what the game said about shaders, pipelines and resource packs
     nodemc.py status
     nodemc.py server-up | server-down | client-up | client-down
 
@@ -670,6 +672,49 @@ def client_log():
     return tail(os.path.join(CLIENT, "client.log"), 40)
 
 
+SAID = re.compile(r"shader|pipeline|compil|glsl|resource ?pack|reload|uniform|sampler|backend|vulkan|opengl", re.I)
+FAILS = re.compile(r"fail|couldn't|could not|error|exception|invalid|missing|rolled? back|removing", re.I)
+
+
+def client_said(since=0.0, out=None):
+    """What the game said about shaders, pipelines, compiling and resource packs since `since`
+    (seconds of the epoch): whole records of its output, a record being a line that begins with the
+    game's clock and the lines under it (a compiler's complaint, a stack trace; 60 of them at most).
+    Written to `out`, or printed. A resource pack whose shaders do not compile is thrown out by the
+    game and the pictures then show the vanilla ones, without a word in the pictures: so every trip
+    keeps these lines beside its log. Returns (records, records that speak of a failure)."""
+    records, record = [], None
+    for name in ("client.log.1", "client.log"):         # a trip may have started the game twice
+        path = os.path.join(CLIENT, name)
+        try:
+            if os.path.getmtime(path) < since:
+                continue
+            with open(path, encoding="utf-8", errors="replace") as fh:
+                for line in fh:
+                    line = line.rstrip("\n")
+                    if re.match(r"\[\d\d:\d\d:\d\d\]", line):
+                        record = [line[:600]] if SAID.search(line) else None
+                        if record is not None:
+                            records.append(record)
+                    elif record is not None and len(record) < 60:
+                        record.append(line[:600])
+        except OSError:
+            continue
+    failing = sum(1 for record in records if FAILS.search(record[0]) or len(record) > 1)
+    text = "\n".join(line for record in records[:1500] for line in record)
+    if out:
+        os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
+        with open(out, "w", encoding="utf-8", newline="\n") as fh:
+            fh.write(f"# what the game said about shaders, pipelines, compiling and resource packs: {len(records)} "
+                     f"records of its output, {failing} of them speak of a failure or have lines under them\n")
+            fh.write(text + ("\n" if text else ""))
+    else:
+        print(text)
+    print(f"client said: {len(records)} records on shaders, pipelines and packs, {failing} of a failure"
+          + (f"; written to {out}" if out else ""))
+    return len(records), failing
+
+
 def graphics():
     """What the game says it draws with, from its output: the backend it chose and why."""
     found = []
@@ -766,8 +811,11 @@ def main():
         "server-up": [server_up], "server-down": [server_down],
         "client-up": [client_up], "client-down": [client_down],
     }
+    if what == "client-said":       # client-said [<since, seconds of the epoch> [<file to write>]]
+        client_said(float(sys.argv[2]) if len(sys.argv) > 2 else 0.0, sys.argv[3] if len(sys.argv) > 3 else None)
+        return
     if what not in steps:
-        raise SystemExit("usage: nodemc.py " + "|".join(steps))
+        raise SystemExit("usage: nodemc.py " + "|".join(steps) + "|client-said")
     for step in steps[what]:
         step()
 
