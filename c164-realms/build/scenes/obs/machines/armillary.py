@@ -70,6 +70,7 @@ four places as points, with the yaw towards the sphere.
 """
 import functools
 import math
+import os
 
 from artkit import models as M
 from artkit.pixelart import Sprite
@@ -84,8 +85,11 @@ VERSIONS = ("a",)
 
 # --- where it stands (the skeleton's numbers) -----------------------------------------------------
 CX, CZ = S.ARMILLARY                # the cell (35, 0)
-BASE_TOP = S.GROUND + 2             # the top of the stone base
-CENTRE_Y = S.GROUND + 4.75          # the middle of the sphere
+# DRAFT ONLY (this scratch branch): the base to look at, by the environment
+_BASE = os.environ.get("C164_ARM_BASE", "steps")        # steps | plate | wall | rail | cap
+_RAISE = 0.5 if _BASE == "cap" else 0.0
+BASE_TOP = S.GROUND + 2 + _RAISE    # the top of the stone base
+CENTRE_Y = S.GROUND + 4.75 + _RAISE # the middle of the sphere
 LIGHT_CELL = (CX, int(math.floor(CENTRE_Y)), CZ)    # the cell every brass piece takes its light from
 # the four ground lamps: the cells diagonally off the corners of the base, on the court
 LAMP_CELLS = tuple((CX + dx, CZ + dz) for dx in (-2, 2) for dz in (-2, 2))
@@ -319,10 +323,23 @@ def _base(canvas, origin):
             if dx == 0 and dz == 0:
                 canvas.set(x0, y0, z0, STEP.block)
                 continue
+            if _BASE == "plate":
+                canvas.set(x0 + dx, y0, z0 + dz, f"{STEP.slab}[type=bottom]")
+                continue
+            if _BASE == "wall":
+                canvas.set(x0 + dx, y0, z0 + dz, STEP.wall)
+                continue
             # a stair faces the way it rises: towards the middle
             facing = ("west" if dx > 0 else "east") if dx else ("north" if dz > 0 else "south")
             canvas.set(x0 + dx, y0, z0 + dz, f"{STEP.stairs}[half=bottom,facing={facing}]")
     canvas.set(x0, y0 + 1, z0, DIE)
+    if _BASE == "cap":
+        canvas.set(x0, y0 + 2, z0, f"{B.ASHLAR_FINE.slab}[type=bottom]")
+    if _BASE == "rail":
+        for dx in range(-2, 3):
+            for dz in range(-2, 3):
+                if max(abs(dx), abs(dz)) == 2 and (CX + dx, CZ + dz) not in LAMP_CELLS:
+                    canvas.set(x0 + dx, y0, z0 + dz, B.IRON_BARS)
 
 
 def build(canvas, origin=(0, 0, 0), version=VERSION):
