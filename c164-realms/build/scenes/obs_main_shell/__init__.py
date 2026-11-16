@@ -14,8 +14,9 @@ The main line built whole (walls, drum and dome, the shell inside them) seven ti
   at z 400    whole and lit like the first, with what other lines bring: plain blocks standing in
               for the two things the hall is the background of, the orrery hung from the ceiling
               and the mother clock on the pier, and the lamp the light line stands on the ring
-              stair's post at the gallery. The board's view of the star hall (V7, from outside the
-              door) is taken here, and the view of the stair's foot (stair_foot);
+              stair's post at the gallery. The board's view of the star hall (V7, from its
+              doorway: the skeleton's station) is taken here, and the view of the stair's foot
+              (stair_foot);
   at z 500    cut off east of x 2, between the pier and the arcade: the cross section, looking
               west -- the three arches side by side as no one standing in the hall sees them (the
               pier stands before the middle one), a flight in each of the outer two, the cross
