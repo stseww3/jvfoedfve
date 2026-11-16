@@ -1,0 +1,3 @@
+branch=cursor/c164-a4-site-f3-6824
+head=fd95e1dc66d9b71fb5110cb7d32104a9eedccff6
+args=--no-push --tail 25 --limit 600 python tools/check.py --scene obs_site_outbuildings 
