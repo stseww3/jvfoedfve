@@ -33,7 +33,9 @@ What is whose: the shell, the slit and the door are main/smalldome's; the astrog
 desk, stool and the shut plate boxes are props/furniture's, the lamp props/lamps', the log
 props/paper's. The room's own models (names "int_astroroom_...") are the cabinet, the open plate
 box (props/furniture's plate box with its lid up, the same wood and brass), the plate holder, the
-red lamp and the steps.
+red lamp and the steps. Two parts of the room are written by others, a file each, and called from
+here: the driving clock on the south wall (_astrodrive, c356) and, from the head of the wall up,
+the iron inside the shell with the crank that turns the dome (_astroshell, c328).
 
 Coordinates are the skeleton's. build_astroroom() dresses the room where it stands in the building;
 the test scene (build/scenes/obs_int_astroroom) stands the small dome on a stand-in of the roof.
@@ -50,7 +52,7 @@ from ..common import skeleton as S
 from ..main import smalldome
 from ..props import _kit as K
 from ..props import furniture, lamps, paper
-from . import _astrodrive
+from . import _astrodrive, _astroshell
 
 ORDER = 80              # a room that moves into the shell (INTERFACE 3)
 MOVED_IN = True         # the master scene dresses the room (fast lane: a card's switch is turned on with its delivery)
@@ -58,6 +60,7 @@ NAME = "interiors/astroroom"
 PREFIX = "int_astroroom_"
 PX = 1 / 16.0
 BUDGET = 70             # display entities of this module (cr4: 120 for the room, 35 the inner shell's, 15 the drive's)
+ROOM_BUDGET = 120       # the card's
 
 # ---- the room (cells) ---------------------------------------------------------------------------
 FEET = S.SMALL_DRUM_BASE                # 18
@@ -206,7 +209,7 @@ def _models():
 
 
 def models():
-    return {**_models(), **_astrodrive.models()}
+    return {**_models(), **_astrodrive.models(), **_astroshell.models()}
 
 
 # ---- building -----------------------------------------------------------------------------------
@@ -255,6 +258,9 @@ def build_astroroom(canvas, origin=(0, 0, 0)):
     n += paper.place(canvas, "logbook", on_desk(3.75, 3.4), yaw=DESK_YAW - 4.0, origin=origin)
     n += _astrodrive.place(canvas, origin)
 
+    # ---- overhead: the ring the dome turns on, its rack and crank, the ribs under the plates --------
+    n += _astroshell.place(canvas, origin)
+
     # ---- the observing steps by the camera, the boxes that go down in the morning -------------------
     n += piece("steps", (STEPS[0], float(FEET), STEPS[1]), facing="west")
     n += furniture.place(canvas, "plate_box", (BOXES[0], float(FEET), BOXES[1]), yaw=96.0, origin=origin)
@@ -274,9 +280,12 @@ def check():
             out.append(f"{name}: wider than three blocks")
     c = Canvas()
     smalldome.build(c)
-    n = build_astroroom(c) - _astrodrive.place(Canvas())
+    whole = build_astroroom(c)
+    n = whole - _astrodrive.place(Canvas()) - _astroshell.place(Canvas())
     if n > BUDGET:
         out.append(f"{n} display entities, the budget is {BUDGET}")
+    if whole > ROOM_BUDGET:
+        out.append(f"{whole} display entities in the room, the card allows {ROOM_BUDGET}")
     for x, z in ROOM:
         if not c.has(x, FLOOR_Y, z):
             out.append(f"floor: nothing at ({x}, {z})")
