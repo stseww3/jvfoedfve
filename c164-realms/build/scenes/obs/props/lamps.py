@@ -387,7 +387,9 @@ HANG = 3.0 / 16.0       # a festoon under a ceiling runs this far below it: the 
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    built = {PREFIX + name: spec["build"]() for name, spec in SPEC.items()}
+    # settled: the slanting flats of shafts, galleries and rings are lit the same in every lamp
+    # (_kit.settle). Not the glass: its faces lie in frames of their own
+    built = {PREFIX + name: K.settle(spec["build"]()) for name, spec in SPEC.items()}
     for name in GLOBES:
         built.update({part.m.name: part.m for part in _glass(name)})
     return built
