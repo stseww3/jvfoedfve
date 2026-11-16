@@ -92,6 +92,8 @@ OWNERS = (
     ("astro", "room: battery room", None),                                    # lights, #76033: the vault's twin, counted the same way
     ("astro", "", (7, 0, -6, 7, 1, -6)),                                      # its threshold
     ("power", "in-L", None),
+    ("tower、clkrm：钟塔底厅", "", (11, 18, -32, 15, 23, -28)),               # the well of the clock tower at the roof walk's level
+    ("dome：小穹顶里", "in-J", (10, 17, 26, 16, 23, 34)),                     # inside the small dome (lights, #74750)
     ("dome、lights：这批屋面 8 盏", "in-I", None),                            # the roof round the dome room (the room itself is not counted)
     ("dome、lights：这批屋面 8 盏", "in-J", None),
     ("dome、lights：这批屋面 8 盏", "in-K", None),
