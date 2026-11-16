@@ -25,7 +25,7 @@ from scenes.obs.props import lamps
 
 HALL_Z = (T.Z0 - 5, T.Z0 - 2)       # 2..5: the piece of the hall's aisle
 HALL_X = (T.HALL_DOOR[0] - 4, T.HALL_DOOR[0] + 4)
-HALL_TOP = T.FEET + 3               # the aisle is four high under the gallery
+HALL_TOP = T.FEET + 4               # the aisle is clear up to y 4 under the gallery (shell)
 PIER = (T.HALL_DOOR[0] + 1, T.Z0 - 2)       # (8, 5): a pier of the gallery (hall, c348)
 HALL_LAMP = (T.HALL_DOOR[0] - 2.5, T.FEET + 2.5, 7)     # on the hall's side of the cross wall: x, y, level
 
