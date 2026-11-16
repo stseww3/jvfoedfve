@@ -233,8 +233,116 @@ def _models():
     return {m.name: m, w.name: w, g.name: g}
 
 
+# --- the wind engine on the water tower (the card's own display models; the wheel turns) -----------
+# A sail wheel on a short lattice mast on the point of the tank's cone, where the finial rod stood:
+# the wind fills the tank. The wheel stands before the mast, into the wind, its tail down the wind
+# (S.WIND, as the vane of the weather station); its shaft works a pump rod that goes down through the
+# tank and comes out under the deck, beside the riser, into the pump on the valve box. The wheel is
+# four blocks across: it has to clear the cone under it, and its top stays under the roof terrace's
+# floor (S.ROOF_FLOOR); from the court the main building hides it, from the roofs, the west terrace
+# and the north slope it is the thing that turns.
+MODEL_WIND_MAST = "site_windpump_mast"      # the lattice mast on the cone's point
+MODEL_WIND_HEAD = "site_windpump_head"      # turntable, gear case and shaft
+MODEL_WIND_TAIL = "site_windpump_tail"      # the tail on its hinge, a piece of its own: it hunts in the wind
+MODEL_WIND_WHEEL = "site_windpump_wheel"    # the sail wheel, a piece of its own: it turns
+MODEL_WIND_ROD = "site_windpump_rod"        # the pump rod under the deck, a piece of its own: it rises and falls
+MODEL_WIND_PUMP = "site_windpump_pump"      # the pump barrel on the valve box, which the rod works in
+WHEEL_R = 2.0                           # blocks: the wheel's radius
+WHEEL_SAILS = 18
+WHEEL_PITCH = 28.0                      # degrees a sail is turned out of the wheel's plane
+WHEEL_REV = 60                          # ticks a turn: twenty turns a minute, a light wind
+WHEEL_OUT = 14.0                        # pixels the wheel's middle stands before the mast's axis, into the wind
+MAST_UP = 36.0                          # pixels from the cone's point to the wheel's shaft
+TAIL_HINGE = 4.0                        # pixels the tail's hinge pin stands behind the mast's axis, down the wind
+TAIL_HUNT = (6.0, 160)                  # degrees to either side, ticks there and back
+ROD_STROKE = 2.0                        # pixels the pump rod rises and falls, once a turn
+ROD_OFF = 4.5                           # pixels the rod stands off the riser's axis, into the wind
+_TANK_POINT = S.WATER_TOWER["feet"] + 15.0                          # 13.0: the top of the cone's last copper block
+_TANK_AXIS = tuple(v + 0.5 for v in _middle(S.WATER_TOWER["box"]))  # (-16.5, -30.5)
+_WIND = (float(S.WIND[0]), float(S.WIND[2]))
+_WIND = tuple(v / math.hypot(*_WIND) for v in _WIND)                # the way the wind blows to, one block of it
+# the wheel's middle, on its shaft: (-16.5, 15.25, -31.375). For the lines that add sound or steam.
+WIND_WHEEL = (_TANK_AXIS[0] - _WIND[0] * WHEEL_OUT / 16.0, _TANK_POINT + MAST_UP / 16.0,
+              _TANK_AXIS[1] - _WIND[1] * WHEEL_OUT / 16.0)
+
+
+@functools.lru_cache(maxsize=None)
+def _wind_models():
+    dark, iron, light = P.mat("iron_dark"), P.mat("iron"), P.mat("iron", base=4)
+    copper = P.mat("old_copper")
+    on = (0.0, 0.0)
+
+    # The mast, in pixels from the cone's point: four legs that stand on the corners of the cone's
+    # last block and lean in to the turntable, two rounds of girts, the pump rod's pipe up the middle.
+    t = M.Model(MODEL_WIND_MAST)
+    foot, head, top = 7.0, 2.5, MAST_UP - 3.0
+    for sx in (-1.0, 1.0):
+        for sz in (-1.0, 1.0):
+            t.beam((sx * foot, 0.0, sz * foot), (sx * head, top, sz * head), 1.5, 1.5, iron)
+    for y in (top * 0.36, top * 0.70):
+        d = foot + (head - foot) * y / top
+        for a, b in (((-d, -d), (d, -d)), ((d, -d), (d, d)), ((d, d), (-d, d)), ((-d, d), (-d, -d))):
+            t.beam((a[0], y, a[1]), (b[0], y, b[1]), 1.0, 1.0, dark)
+    t.tube("y", on, 0.0, top, 0.75, dark, sides=4)
+    t.tube("y", on, top - 1.0, top, head + 1.5, iron)                   # the cap plate the turntable rides on
+
+    # The head, in pixels about the point where the wheel's shaft crosses the mast's axis; +z is
+    # down the wind. A turntable, the gear case over it, the shaft to the wheel.
+    h = M.Model(MODEL_WIND_HEAD)
+    h.tube("y", on, -3.0, -1.5, 3.5, dark)                              # the turntable
+    h.box((-2.0, -1.5, -4.0), (2.0, 2.5, TAIL_HINGE - 1.0), iron, grain="z")        # the gear case
+    h.box((-1.25, 2.5, -3.0), (1.25, 3.5, TAIL_HINGE - 2.0), dark, grain="z")       # ... its lid
+    h.tube("z", on, -WHEEL_OUT, -4.0, 0.9, light)                       # the shaft
+
+    # The tail, in pixels about its hinge pin behind the gear case; +z is down the wind. It is
+    # hinged, as such a tail is to be folded out of a gale, and hunts a little from side to side.
+    # A boom with a stay from the pin's head, and the vane: a sheet of old copper, cut like a
+    # swallow's tail as the weather vane's is.
+    v = M.Model(MODEL_WIND_TAIL)
+    v.tube("y", on, -1.5, 4.0, 0.75, dark, sides=4)                     # the hinge pin
+    v.box((-0.5, -0.5, 0.0), (0.5, 0.5, 18.0), dark, grain="z")         # the boom
+    v.beam((0.0, 4.0, 0.0), (0.0, 0.5, 13.0), 0.5, 0.5, dark)           # its stay
+    v.box((-0.25, -5.0, 16.0), (0.25, 5.0, 25.0), copper, grain="z")    # the vane
+    v.box((-0.25, 1.5, 25.0), (0.25, 5.0, 29.5), copper, grain="z")     # two tongues
+    v.box((-0.25, -5.0, 25.0), (0.25, -1.5, 29.5), copper, grain="z")
+
+    # The wheel, in eighths of a block about its middle (shown at scale 2: 16 pixels to the block);
+    # its axis is z, the wind comes from -z. Two rims on six arms; the sails lie between the rims,
+    # each in two lengths, the outer one the wider, and are turned out of the wheel's plane the way
+    # that makes the wind drive the wheel right-handed about +z.
+    w = M.Model(MODEL_WIND_WHEEL, px=2.0)
+    r_out, r_in = WHEEL_R * 8.0, 5.5
+    w.tube("z", on, -1.5, 1.5, 2.0, dark)                               # the hub
+    w.tube("z", on, -2.5, -1.5, 1.0, iron)                              # ... and the nut before it
+    w.ring("z", (0.0, 0.0, 0.0), r_in, 0.5, 0.75, iron, sides=16)
+    w.ring("z", (0.0, 0.0, 0.0), r_out - 0.25, 0.5, 0.75, iron, sides=24)
+    for k in range(6):                                                  # the arms, each between two sails
+        w.box((1.5, -0.3, -0.3), (r_out - 0.5, 0.3, 0.3), dark, rot=("z", 60.0 * k, (0.0, 0.0, 0.0)), grain="x")
+    mid = (r_in + r_out) / 2.0
+    for k in range(WHEEL_SAILS):
+        with w.turned(("z", (k + 0.5) * 360.0 / WHEEL_SAILS)):
+            w.box((r_in + 0.5, -1.0, -0.25), (mid, 1.0, 0.25), light, grain="x", seed=7001,
+                  rot=("x", -WHEEL_PITCH, ((r_in + 0.5 + mid) / 2.0, 0.0, 0.0)))
+            w.box((mid, -1.9, -0.25), (r_out - 0.75, 1.9, 0.25), light, grain="x", seed=7002,
+                  rot=("x", -WHEEL_PITCH, ((mid + r_out - 0.75) / 2.0, 0.0, 0.0)))
+
+    # The pump rod, in eighths of a block from its foot (scale 2): six blocks of bright rod, from
+    # inside the pump barrel up into the deck.
+    rod = M.Model(MODEL_WIND_ROD, px=2.0)
+    rod.tube("y", on, 0.0, 48.0, 0.5, light, sides=4)
+
+    # The pump, in pixels from the top of the valve box: a flanged barrel with a gland on top, in
+    # which the rod's foot is never seen to end.
+    pump = M.Model(MODEL_WIND_PUMP)
+    pump.tube("y", on, 0.0, 1.5, 3.5, dark)
+    pump.tube("y", on, 1.5, 17.0, 2.5, iron)
+    pump.tube("y", on, 17.0, 18.5, 3.25, dark)
+    pump.tube("y", on, 18.5, 21.0, 1.5, copper)
+    return {x.name: x for x in (t, h, v, w, rod, pump)}
+
+
 def models():
-    return dict(_models())
+    return {**_models(), **_wind_models()}
 
 
 # --- small helpers --------------------------------------------------------------------------------
@@ -437,7 +545,6 @@ def _water_tower(c, o):
             else:                                       # a step that rises towards the middle
                 facing = ("south" if ddz < 0 else "north") if abs(ddz) == r else ("east" if ddx < 0 else "west")
                 _put(c, o, x, y, z, COPPER_STAIR + f"[facing={facing},half=bottom]")
-    _put(c, o, cx, tank_hi + 3, cz, ROD + "[facing=up]")
 
     # the riser from its valve box on the ground (a pair of gauges on the side the steps arrive at)
     # up into the tank, and a ladder up the north-east leg, where the way down from the terrace
@@ -449,6 +556,28 @@ def _water_tower(c, o):
     for y in range(foot, deck_y):
         _put(c, o, lx + 1, y, lz, BARS)
     _put(c, o, lx + 1, deck_y, lz, HATCH + "[facing=west,half=top,open=true]")
+
+    # The wind engine on the cone's point, where a finial rod stood (see _wind_models): the mast,
+    # the head with its tail down the wind, the wheel before it, turning. Under the deck the pump
+    # on the valve box and the rod that works in it, once up and down to a turn of the wheel: the
+    # rod stands beside the riser, in the riser's own cell, and ends in the deck.
+    kit = _wind_models()
+    yaw = math.degrees(math.atan2(-_WIND[0], _WIND[1]))                 # a model's +z goes down the wind
+    ax, az = _TANK_AXIS
+    c.add_entity(o[0] + ax, o[1] + _TANK_POINT, o[2] + az, M.display(kit[MODEL_WIND_MAST]))
+    c.add_entity(o[0] + ax, o[1] + WIND_WHEEL[1], o[2] + az, M.display(kit[MODEL_WIND_HEAD], yaw=yaw))
+    c.add_entity(o[0] + ax + _WIND[0] * TAIL_HINGE / 16.0, o[1] + WIND_WHEEL[1], o[2] + az + _WIND[1] * TAIL_HINGE / 16.0,
+                 M.display(kit[MODEL_WIND_TAIL], yaw=yaw))
+    MK.swing(c, "y", *TAIL_HUNT)
+    c.add_entity(o[0] + WIND_WHEEL[0], o[1] + WIND_WHEEL[1], o[2] + WIND_WHEEL[2],
+                 M.display(kit[MODEL_WIND_WHEEL], yaw=yaw, scale=2.0))
+    MK.spin(c, "z", WHEEL_REV)
+    rx, rz = ax - _WIND[0] * ROD_OFF / 16.0, az - _WIND[1] * ROD_OFF / 16.0
+    c.add_entity(o[0] + rx, o[1] + foot + 1.0, o[2] + rz, M.display(kit[MODEL_WIND_PUMP]))
+    c.add_entity(o[0] + rx, o[1] + foot + 2.0, o[2] + rz, M.display(kit[MODEL_WIND_ROD], scale=2.0))
+    half = WHEEL_REV // 2
+    MK.slide(c, "y", [(0, ROD_STROKE / 16.0, half), (half, 0.0, half)], WHEEL_REV)
+    return 6
 
 
 # --- the weather station (S.WEATHER_STATION, north slope) -----------------------------------------
@@ -556,11 +685,12 @@ def _south_lookout(c, o):
 
 def build(canvas, origin=(0, 0, 0)):
     """Places the four shells and the ways down; returns the number of display entities: this
-    card's three on the weather platform (mast head, cup wheel, rain gauge) and the props line's
-    three instruments when that package is in the tree."""
+    card's three on the weather platform (mast head, cup wheel, rain gauge), the six of the wind
+    engine on the water tower, and the props line's three instruments when that package is in the
+    tree."""
     _meridian_hut(canvas, origin)
-    _water_tower(canvas, origin)
-    n = _weather_station(canvas, origin)
+    n = _water_tower(canvas, origin)
+    n += _weather_station(canvas, origin)
     n += _south_lookout(canvas, origin)
     _ways_down(canvas, origin)
     return n
