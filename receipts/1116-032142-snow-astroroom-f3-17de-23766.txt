@@ -1,0 +1,24 @@
+a0job 1116-032142-snow-astroroom-f3-17de-23766: cursor/c164-snow-astroroom-f3-17de @ f1ad2592 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.17 0.36 0.17, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    0s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/check.py --scene obs_int_astroroom ---- exit 0, 4 s, last 30 lines of 14:
+check obs_int_astroroom at f1ad259
+[PASS] regen     453 blocks, 33 entities, 76 models, 916 resource-pack files, 18 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.4 s)
+[PASS] conflicts the scene writes 915 files, no file written twice, the folders and the prefix of interiors are kept (9 packages run alone)
+[PASS] strays    205 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      681 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    15 kinds of block placed, 5 barrier cells (x 11..13, y 18, z 28..32), all in the occupancy table
+[PASS] flatwall  no wall face runs flat over more than 5x5
+[PASS] entities  33 display entities, 54 models never placed
+[PASS] views     9 shots, most display entities in view: 33 (ext_door), limit 600; counted without what walls hide; the game draws up to 33 (int_door): a display entity without width and height is drawn outside the view too
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    1 parts and 0 points on 1 chains, 10 function files; 4 commands in the busiest tick (limit 40), 0.3 a tick on average (limit 10)
+                 chain of 32 ticks: 4 functions, 10 commands a cycle, starts 1 ticks after start
+result: PASS (0 failed, 0 with warnings)
+==== NODEJOB RESULT ====
+exit=0 secs=5 host=cursor cores=4 head=f1ad2592 commit=none pushed=no branch=cursor/c164-snow-astroroom-f3-17de files=0
+a0job: exit=0 secs=5
