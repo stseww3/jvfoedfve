@@ -32,6 +32,22 @@ def _parts(package_name):
     return sorted(mods, key=lambda m: (getattr(m, "ORDER", DEFAULT_ORDER), m.__name__))
 
 
+def _built(canvas, module, first):
+    """What the assembly does once a package has built. The package's view band: a module that sets
+    VIEW (artkit.models.NEAR, MID, ...) has every display entity it placed brought down to that
+    range, but for the models named in VIEW_KEEP (artkit.models.band). And a note of which
+    entities are the package's own, canvas.entity_owners = [(first, end, 'interiors/chartroom'), ...],
+    from which tools/check.py tells whose entities a board view counts."""
+    view = getattr(module, "VIEW", None)
+    if view is not None:
+        from artkit import models as M
+        M.band(canvas, first, float(view), keep=tuple(getattr(module, "VIEW_KEEP", ())))
+    owners = getattr(canvas, "entity_owners", None)
+    if owners is None:
+        owners = canvas.entity_owners = []
+    owners.append((first, len(canvas.entities), "/".join(module.__name__.split(".")[-2:])))
+
+
 class Category:
     def __init__(self, package_name):
         self.package_name = package_name
@@ -44,7 +60,9 @@ class Category:
         for m in self.parts():
             f = getattr(m, "build", None)
             if f is not None:
+                first = len(canvas.entities)
                 n += int(f(canvas, origin) or 0)
+                _built(canvas, m, first)
         return n
 
     def models(self):
