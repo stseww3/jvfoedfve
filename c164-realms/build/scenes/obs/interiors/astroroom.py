@@ -24,10 +24,11 @@ and the two niches, north and south, each three cells wide and one deep. So:
 
 The floor is relaid in boards, with the head of the instrument's pier flush in it under the column.
 
-Light. Two lamps and no more (the card): the desk lamp, whose source is offered a cell north of the
-desk so that it dies before it reaches a window or the door, and the red lamp, which is lit glass
-and offers no source of its own. The red lamp's glass looks west along the niche and stands behind
-the south window's jamb. Nothing shows from outside.
+Light. Two lamps and no more (the card): the desk lamp and the red lamp, whose glass looks west
+along the niche and stands behind the south window's jamb. Each offers a source of its own, and two
+low ones without a fixture fill what the lamps leave: the north niche and the east wall (LIGHTS).
+They are no brighter than it takes for a visitor to see where he puts his feet (5 where one can
+stand), and at most 4 of it passes a window.
 
 What is whose: the shell, the slit and the door are main/smalldome's; the astrograph is machines';
 desk, stool and the shut plate boxes are props/furniture's, the lamp props/lamps', the log
@@ -79,13 +80,21 @@ CABINET = (S.mid(CX), NORTH)                            # (12.5, 28.0): the midd
 DESK = (float(NICHE_X[1]), SOUTH - 0.5)                 # (13.0, 32.5): the middle of the desk's foot
 DESK_YAW = K.FACING["north"]                            # one sits on its north side
 DESK_CELLS = (NICHE_X[1] - 1, NICHE_X[1])               # 12, 13
-STOOL = (DESK[0] - 0.05, DESK[1] - 0.9)
+STOOL = (DESK[0] - 0.5, DESK[1] - 0.78)                  # pushed in at the desk's west end, clear of the hour circle
 STEPS = (EAST - 0.5, CZ + 1.56)                         # (14.5, 31.56): against the east wall, south of the camera
 BOXES = (CX - 1.58, CZ - 0.6)                           # (10.42, 29.4): the shut boxes, left of the door
-LAMP_CELL = (NICHE_X[1], FEET, CZ + 1)                  # (13, 18, 31): where the desk lamp's source is offered
-ASK_LAMP = 5                                            # the lowest step of the third rank
 BOX_ON_DESK = (-8.5, 1.5)                               # the open plate box, in the desk's frame (on_desk)
 RED = (NICHE_EAST, FEET + 1.62, SOUTH - 0.5 - 3.0 / 16.0)       # the red lamp: on the niche's end wall, over the box
+
+# ---- light: what the room offers sky/lights. Every place one can get to wants 5 at the feet or the
+#      head (the closing list of 11-16: the floor, the tops of desk and cabinet, the head of the wall);
+#      each level is the lowest that does it. (what, the cell, the level)
+LIGHTS = (
+    ("desk lamp", (NICHE_X[1], FEET, CZ + 1), 7),           # (13, 18, 31): a cell north of the desk
+    ("red lamp", (NICHE_X[1], FEET + 2, CZ + 2), 8),        # (13, 20, 32): the cell over the lamp's flue
+    ("fill north", (CX, FEET + 2, CZ - 2), 7),              # (12, 20, 28): over the cabinet; no fixture
+    ("fill east", (CX + 2, FEET + 2, CZ), 7),               # (14, 20, 30): over the camera's back; no fixture
+)
 
 # ---- materials: props/furniture's wood and brass, so the pieces are of one make -------------------
 WOOD = P.mat("dark_wood")
@@ -254,7 +263,8 @@ def build_astroroom(canvas, origin=(0, 0, 0)):
     n += piece("plate_box_open", on_desk(*BOX_ON_DESK), yaw=DESK_YAW)
     n += piece("safelight", RED, mount="wall", facing="west")
     n += lamps.place(canvas, "desk_green", on_desk(4.5, -3.25), yaw=DESK_YAW + 20.0, origin=origin, light=False)
-    K.offer_lights(canvas, [((ox + LAMP_CELL[0], oy + LAMP_CELL[1], oz + LAMP_CELL[2]), ASK_LAMP)], f"{NAME}:desk lamp")
+    for what, (x, y, z), level in LIGHTS:
+        K.offer_lights(canvas, [((ox + x, oy + y, oz + z), level)], f"{NAME}:{what}")
     n += paper.place(canvas, "logbook", on_desk(3.75, 3.4), yaw=DESK_YAW - 4.0, origin=origin)
     n += _astrodrive.place(canvas, origin)
 
