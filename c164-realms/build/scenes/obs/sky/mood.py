@@ -131,8 +131,9 @@ STEPS = [(0, "blue"), (12300, "glow"), (13400, "blue"), (15500, "deep"), (21500,
 # Trials: a look with a few values changed, held for 200 ticks in the morning, which the map never
 # shows. Changing the time puts a trial next to the look it varies, on the same blocks and without
 # a restart. Noon stays the blue hour: the drivers take a shot without a time at noon.
-#   card  the moon's slot shows a test card (sky/comet.py paints it into the new moon's picture):
-#         which way up the game draws the picture is read off it
+#   card  the moon's slot shows a test card (sky/comet.py paints it into the new moon's picture
+#         of a pack that asks for it, comet.pack(card=True): the test scene obs_sky_comet; the
+#         map's pack has a comet there): which way up the game draws the picture is read off it
 #   pink  the afterglow in the plan's second colour
 #   near, far  the fog ending sooner and later, to read off the row of posts on the light board
 #   mist, veil, fogged  the colour of the vanilla cloud layer drawn towards the horizon colour. The
