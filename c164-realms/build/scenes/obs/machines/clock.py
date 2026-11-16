@@ -628,8 +628,13 @@ def _models():
     made = [(_master(), 2.0), (_master_dial_model(), 1.0), (_master_hand("h"), 1.0), (_master_hand("m"), 1.0),
             (_pendulum(), 1.0), (_face(), 2.0), (_hand("h"), 1.0), (_hand("m"), 1.0)]
     made += [(_ball(name, paint), 1.0) for name, paint in BALL_TONES.values()]
+    # The tubes and rings of eight, sixteen and twenty-four sides (weights, arbors, bezels, the drum
+    # behind a dial, the plate under the ball) have flats exactly between two axes, and the game lights
+    # such a flat as the one or the other by the last bit of a float: K.settle turns each such piece a
+    # tenth of a degree, so that every copy of the game and the offline pictures light it one way. The
+    # ball's own facets stand 11.25 degrees off the fence and are not touched.
     for model, scale in made:
-        out[model.name] = model
+        out[model.name] = K.settle(model)
         SCALE[model.name] = scale
     return out
 
