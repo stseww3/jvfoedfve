@@ -43,10 +43,11 @@ The models (all "mach_cable_"):
   roller   a track roller on its tie, that carries the rope: at the brow and down the slope.
   rope     the haul rope, drawn out between two points (M.between).
 
-For the motion line (MOVING below): the drum and the sheave are models of their own, anchored on
-their axes, and their entities carry a tag. Turning them the positive way about x pays the rope
-out (the car goes down). The small rollers are plain cylinders, a turn would not show, so they
-are not split.
+What moves (MOVING below): the drum and the sheave are models of their own, anchored on their
+axes; build() registers their turn with the motion line (motion/_kit), a turn of the drum in
+DRUM_REV ticks and the sheave as fast as the rope makes it. Turning them the positive way about x
+pays the rope out (the car goes down); as placed, the winch hauls. The small rollers are plain
+cylinders, a turn would not show, so they are not split.
 
 Scale (A5 1.2: px = scale keeps 16 texels to the block): drum and frame 2, the rest 1 -- the
 car is two blocks long and three wide over its eaves, as much as a model drawn texel for texel
@@ -77,6 +78,7 @@ from artkit.pixelart import Mat, Sprite
 from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
+from ..motion import _kit as MK         # read only: the turn of the drum and the sheave is registered there
 from ..props import _kit as PK          # read only: flat tones, rivets, the hand-over of light sources
 from ..props import lamps               # the lamp in the winch house is one of the lamp family
 from ..site import _kit as SK           # read only: the line of the ridge under the trestle
@@ -588,11 +590,17 @@ def _rope():
 BUILDERS = {"car": _car, "drum": _drum, "frame": _frame, "motor": _motor, "belt": _belt, "sheave": _sheave,
             "stand": _stand, "duct": _duct, "hood": _hood, "turn": _turn, "roller": _roller, "rope": _rope}
 SCALE = {PREFIX + name: 2.0 if name in ("drum", "frame") else 1.0 for name in BUILDERS}
-# For the motion line: what turns, about which axis of its own model (through the anchor), the tag
-# its entities carry, and how fast against the drum (the rope runs as fast on both). Positive pays out.
+# What turns: about which axis of its own model (through the anchor), the tag its entities carry,
+# how fast against the drum (the rope runs as fast on both) and the ticks a turn takes. The drum
+# sets the pace: a turn in DRUM_REV ticks is two blocks of rope a second, the pace of a car on the
+# track. A positive time pays the rope out; the winch is placed hauling.
+DRUM_REV = 64
+SHEAVE_REV = DRUM_REV * 7 // 16                         # 28: by the two radii, a whole number of ticks
+if SHEAVE_REV * DRUM_ROPE_R != DRUM_REV * SHEAVE_ROPE_R:
+    raise ValueError("the sheave's turn is not a whole number of ticks")
 MOVING = {
-    PREFIX + "drum": dict(tag="c164_cable_drum", axis="x", ratio=1.0),
-    PREFIX + "sheave": dict(tag="c164_cable_sheave", axis="x", ratio=DRUM_ROPE_R / SHEAVE_ROPE_R),
+    PREFIX + "drum": dict(tag="c164_cable_drum", axis="x", ratio=1.0, ticks=-DRUM_REV),
+    PREFIX + "sheave": dict(tag="c164_cable_sheave", axis="x", ratio=DRUM_ROPE_R / SHEAVE_ROPE_R, ticks=-SHEAVE_REV),
 }
 
 
@@ -617,6 +625,8 @@ def build(canvas, origin=(0, 0, 0)):
         if name in MOVING:
             nbt["Tags"].append(MOVING[name]["tag"])
         canvas.add_entity(p[0] + ox, p[1] + oy, p[2] + oz, nbt)
+        if name in MOVING:
+            MK.spin(canvas, MOVING[name]["axis"], MOVING[name]["ticks"])
         return 1
 
     def run(name, a, b):
