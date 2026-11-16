@@ -1,0 +1,29 @@
+a0job 1116-044842-vault-v4door-f3-4cc1-17729: cursor/c164-vault-v4door-f3-4cc1 @ 41a5c3d3 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.37 0.65 0.73, Python 3.12.3
+  [cloud_setup    1s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- env PYTHONPATH=build python -m scenes.obs_int_starhall.doorway now && python tools/check.py --scene obs_int_starhall 2>&1 | grep -E '^\[|^result' ---- exit 0, 42 s, last 60 lines of 19:
+== foot 12 corner 11 east 10 west 11 pier 11 upper 11 pool 8  (33 s)
+V4 half 0.216 (+0.082)  over 0.200 (+0.076)  flight 0.231 (+0.094)  floor 0.191 (+0.078)  paving 0.136 (-0.078)
+V7 pier N 0.254  pier S 0.251  over clock 0.245  dial 0.455  arch N 0.232  arch S 0.228  lining L 0.091  lining R 0.087  foot 0.075  globe 0.046  board 0.083
+V4 rows 394-406 0.069  406-416 0.187  416-425 0.227  425-447 0.231  447-478 0.228  478-496 0.237  496-510 0.224  510-524 0.152  524-540 0.227  540-545 0.225
+light pier N y2..5 9 10 9 10 | pier S 9 10 9 10 | lining 6 5 6 5 | risers N 0..4 10 10 9 9 9 | risers S 10 10 9 9 9 | floor x14..7 0 8 9 8 9 8 8 | middle 8 8
+lines: the half of the doorway 0.216 (+0.082); the line is 0.22 and +0.03; pier N 0.254, not 0.255 to 0.26; pier S 0.251, not 0.255 to 0.26
+doorway: 1 read, the lines hold in 0
+[PASS] regen     20381 blocks, 162 entities, 243 models, 1417 resource-pack files, 659 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (2.3 s)
+[PASS] conflicts the scene writes 1416 files, no file written twice, the folders and the prefix of interiors are kept (9 packages run alone)
+[PASS] strays    372 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      1015 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[WARN] blocks    55 kinds of block placed, 234 barrier cells (x 0..17, y 1..20, z -34..34), barriers away from any model
+[PASS] flatwall  no wall face runs flat over more than 5x5
+[PASS] entities  162 display entities, 8 shown through a matrix that is no turn, no face stretched, 156 models never placed
+[PASS] views     18 shots, most display entities in view: 153 (arches), limit 600; counted without what walls hide; the game draws up to 162 (v7): a display entity without width and height is drawn outside the view too
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    21 parts and 0 points on 15 chains, 647 function files; 6 commands in the busiest tick (limit 120), 1.4 a tick on average (limit 40)
+result: PASS (0 failed, 1 with warnings)
+==== NODEJOB RESULT ====
+exit=0 secs=43 host=cursor cores=4 head=41a5c3d3 commit=none pushed=no branch=cursor/c164-vault-v4door-f3-4cc1 files=0
+a0job: exit=0 secs=43
