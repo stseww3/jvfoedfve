@@ -37,6 +37,12 @@ and the chains  c<period>/<n>. One loop runs in a world at a time: a chain of an
 itself at the start of its next cycle, so two scenes placed on the same spot one after the other
 do not both pull at the same entities.
 
+What is not a part: a command of a package's own on some ticks of a cycle (run), and functions of
+a package's own under a name of their own, <namespace>:<folder>/<name> (function): the guide's
+walk-up checks and what they set off (card motion/guide). They are registered like a sound or a
+puff and written by write() with the loop, so that the data pack still holds nothing that this
+module did not write.
+
 What the client does with a pose was read off the game's classes (26.3, world/entity/Display and
 com/mojang/math/Transformation): every merge that changes the entity starts the way anew, from
 what the client shows at that moment to the pose the entity now has; the two turns go along their
@@ -105,6 +111,10 @@ GRACE = 20                      # ticks load waits beyond one cycle before it ca
 
 _TIERS = ((LEAD, WOBBLE), (LEAD, WOBBLE_MOST), (0, WOBBLE), (0, WOBBLE_MOST))
 _NAME = re.compile(r"[A-Za-z0-9_.+\-]+\Z")
+_OWN = re.compile(r"[a-z0-9_.\-]+(/[a-z0-9_.\-]+)+\Z")      # a function of a package's own: folder/name
+_SPOT = re.compile(r"\{(?:([a-z][a-z0-9_]*)\.)?([xyz])\}")   # {x}, {door.x}: a place in a command's text
+_CALLS = re.compile(r"\b(?:function|clear) ([a-z0-9_.\-]+):([a-z0-9_.\-/]+)")
+_SCENES = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
 _IDENT = (0.0, 0.0, 0.0, 1.0)
 
 
@@ -192,6 +202,7 @@ class _Book:
     def __init__(self):
         self.parts = []
         self.points = []
+        self.own = {}           # name -> (lines, places): the packages' own functions
         self.peak = PEAK
         self.mean = MEAN
 
@@ -279,9 +290,11 @@ class _Part:
 class _Point:
     """A spot where a command is run on some ticks of a cycle: a sound, a puff of particles."""
 
-    def __init__(self, kind, what, pos, cycle, ticks, phase, text):
+    def __init__(self, kind, what, pos, cycle, ticks, phase, text, *, spots=None, weight=1):
         self.kind, self.what, self.pos = kind, what, tuple(float(v) for v in pos)
         self.cycle, self.ticks, self.phase, self.text = cycle, ticks, int(phase) % cycle, text
+        self.spots = {"": self.pos} if spots is None else spots     # the places its text names
+        self.weight = int(weight)                                   # commands it counts as
 
 
 def _pick(canvas, entity, model):
@@ -644,6 +657,101 @@ def puff(canvas, pos, particle, cycle, at=(0,), *, count=1, spread=(0.0, 0.0, 0.
     return 0
 
 
+def _spots(pos, origin):
+    """The places a text may name, {"": (x, y, z)} or {name: (x, y, z)}: scene coordinates plus origin."""
+    if pos is None:
+        return {}
+    if not isinstance(pos, dict):
+        pos = {"": pos}
+    out = {}
+    for key, p in pos.items():
+        if key and not re.match(r"[a-z][a-z0-9_]*\Z", key):
+            raise ValueError(f"{key!r}: a place is named in small letters, digits and _")
+        if len(p) != 3:
+            raise ValueError(f"a place has three numbers, not {len(p)}")
+        out[key] = tuple(float(p[i]) + float(origin[i]) for i in range(3))
+    return out
+
+
+def _command(text, spots, comment=False):
+    """One line of a function as a package gives it: one command, without the slash of the chat."""
+    if not isinstance(text, str) or "\n" in text or "\r" in text:
+        raise ValueError(f"a command is one line of text, not {text!r}")
+    text = text.strip()
+    if not text or text.startswith("/") or (text.startswith("#") and not comment):
+        raise ValueError(f"{text!r} is not a command (a function's line has no slash)")
+    for m in _SPOT.finditer(text):
+        if (m.group(1) or "") not in spots:
+            raise ValueError(f"{m.group(0)} in {text!r}: pos= gives no such place")
+    return text
+
+
+def _fill(text, spots, at, namespace):
+    """The text with its places written out for the scene placed at `at`, and {ns} as the namespace."""
+    for key, p in spots.items():
+        for i, axis in enumerate("xyz"):
+            text = text.replace("{" + (key + "." if key else "") + axis + "}", _num(p[i] + at[i]))
+    return text.replace("{ns}", namespace)
+
+
+def run(canvas, pos, command, cycle, at=(0,), *, origin=(0, 0, 0), phase=0, weight=1):
+    """A command of a package's own on the ticks `at` of every `cycle` ticks: the guide's look for
+    a player who has walked up to something.
+
+    pos      the place the command is about (scene coordinates, plus origin): {x} {y} {z} in the
+             command are written out as its coordinates in the world. A dict of places, {"door":
+             (x, y, z), ...}, is written {door.x} {door.y} {door.z}; None when it names no place.
+             Other braces stay as they are; {ns} is the data pack's namespace.
+    weight   the commands it counts as in the budget. 1 for a command that finds nobody most of
+             the time (execute as @a[x=..,distance=..2,tag=!seen] run function ...); what runs for
+             every player every time is counted in full: 1 plus the lines of the function it calls.
+
+    A selector measures to the player's feet. Like a sound, a command that shares a part's period
+    is on that part's chain; commands of one cycle on one tick cost one function between them.
+    """
+    cycle = int(cycle)
+    if cycle < 1:
+        raise ValueError(f"a cycle of {cycle} ticks")
+    if int(weight) < 1:
+        raise ValueError("weight is 1 or more")
+    spots = _spots(pos, origin)
+    text = _command(command, spots)
+    _book(canvas).points.append(_Point("run", text.split()[0], spots.get("", (0.0, 0.0, 0.0)), cycle,
+                                       _at(at, cycle), phase, text, spots=spots, weight=weight))
+    return 0
+
+
+def function(canvas, name, lines, *, pos=None, origin=(0, 0, 0)):
+    """A function of a package's own, <namespace>:<name>, written by write() with the loop's.
+
+    name     folder/name ("guide/first"), in the small letters, digits and _ . - of the game's
+             names. The folder is the package's: not a scene's name (build/place.py keeps its
+             functions there) and not one that ends in -motion (the loops').
+    lines    its commands, one a line, without the slash; a line that starts with # is a comment.
+             {x} {y} {z}, {door.x} ... and {ns} as in run().
+
+    It runs when something calls it: a command registered with run(), another function, a
+    function tag of the map (tools/export.py), an operator. What it schedules itself is not in
+    the budget check() counts: agree it with the loop's keeper and write it into the card.
+    """
+    if not isinstance(name, str) or not _OWN.match(name) or any(set(part) <= {"."} for part in name.split("/")):
+        raise ValueError(f"{name!r}: a function of a package's own is named folder/name, in the game's letters")
+    folder = name.split("/", 1)[0]
+    if folder.endswith("-motion") or os.path.isdir(os.path.join(_SCENES, folder)):
+        raise ValueError(f"{name!r}: the folder {folder!r} is a scene's or a loop's; take one of the package's own")
+    book = _book(canvas)
+    if name in book.own:
+        raise ValueError(f"{name}: this function is registered already")
+    if isinstance(lines, str):
+        raise ValueError(f"{name}: lines= is a list of commands")
+    spots = _spots(pos, origin)
+    out = [_command(line, spots, comment=True) for line in lines]
+    if not any(not line.startswith("#") for line in out):
+        raise ValueError(f"{name}: a function without a command")
+    book.own[name] = (out, spots)
+    return 0
+
+
 def limits(canvas, peak=None, mean=None):
     """Other limits for this canvas than PEAK and MEAN. For a load test only: check() says so."""
     book = _book(canvas)
@@ -667,14 +775,22 @@ class _Chain:
     def __init__(self, cycle):
         self.cycle = cycle
         self.events = {}        # tick -> [command]
+        self.more = {}          # tick -> commands its lines count as beyond one each (run(weight=))
         self.files = []         # (tick, [lines]) in order, once the plan is drawn up
         self.offset = 0         # ticks after start() the chain's first function runs (plus one)
 
-    def add(self, tick, command):
-        self.events.setdefault(tick % self.cycle, []).append(command)
+    def add(self, tick, command, weight=1):
+        tick %= self.cycle
+        self.events.setdefault(tick, []).append(command)
+        if weight != 1:
+            self.more[tick] = self.more.get(tick, 0) + weight - 1
+
+    def load(self, tick, lines):
+        """Commands the function of this tick counts as."""
+        return len(lines) + self.more.get(tick, 0)
 
     def count(self):
-        return sum(len(lines) for _tick, lines in self.files)
+        return sum(self.load(tick, lines) for tick, lines in self.files)
 
 
 class _Plan:
@@ -701,11 +817,16 @@ class _Plan:
             else:
                 self.rest.append(self._pose(sel, part, 0, 0.0, 0.0))
         for point in book.points:
-            x, y, z = (_num(point.pos[i] + self.at[i]) for i in range(3))
+            text = _fill(point.text, point.spots, self.at, namespace)
             chain = chains.setdefault(point.cycle, _Chain(point.cycle))
             for tick in point.ticks:
-                chain.add(tick + point.phase, point.text.format(x=x, y=y, z=z))
+                chain.add(tick + point.phase, text, point.weight)
+        self.own = {own: [_fill(line, spots, self.at, namespace) for line in lines]
+                    for own, (lines, spots) in book.own.items()}
         self.chains = [chains[c] for c in sorted(chains)]
+        if not self.chains:     # functions of the packages' own and nothing that loops
+            self.peak, self.mean, self.watch, self.files = 0, 0.0, 0, {}
+            return
         holder = f"#{name}"
         guard = (f"execute unless score {RUN} {OBJECTIVE} matches {self.number} run "
                  f"return run function {self.base}/halt")
@@ -761,7 +882,7 @@ class _Plan:
         load = [0] * HORIZON
         for chain in sorted(self.chains, key=lambda c: (-c.count() / float(c.cycle), c.cycle)):
             first = chain.files[0][0]
-            marks = [(tick - first, len(lines)) for tick, lines in chain.files]
+            marks = [(tick - first, chain.load(tick, lines)) for tick, lines in chain.files]
             best = None
             for off in range(min(chain.cycle, STAGGER)):
                 peak = 0
@@ -804,7 +925,7 @@ class _Plan:
 
 def _plan(canvas, name, at, namespace):
     book = getattr(canvas, "motion", None) if canvas is not None else None
-    if book is None or not (book.parts or book.points):
+    if book is None or not (book.parts or book.points or book.own):
         return None
     return _Plan(canvas, name, at, namespace)
 
@@ -832,20 +953,59 @@ def _load_tag(pack_dir, entry, wanted):
         fh.write("\n")
 
 
+def _write_own(pack_dir, scene, namespace, own):
+    """Write the packages' own functions ({name: [lines]}) and remove those this scene wrote the
+    last time and has no more. What it wrote is noted in <pack>/<scene>.motion.json, a driver's
+    note like build/place.py's <scene>.placed.json (tools/export.py takes both out of the map)."""
+    root = os.path.join(pack_dir, "data", namespace, "function")
+    note = os.path.join(pack_dir, f"{scene}.motion.json")
+    before = []
+    if os.path.exists(note):
+        try:
+            with open(note, encoding="utf-8") as fh:
+                before = [n for n in json.load(fh).get("own", []) if isinstance(n, str) and _OWN.match(n)
+                          and not any(set(part) <= {"."} for part in n.split("/"))]
+        except (OSError, ValueError, AttributeError):
+            before = []
+    for name in before:
+        if name in own:
+            continue
+        path = os.path.join(root, *name.split("/")) + ".mcfunction"
+        if os.path.exists(path):
+            os.remove(path)
+        folder = os.path.dirname(path)
+        while folder != root and os.path.isdir(folder) and not os.listdir(folder):
+            os.rmdir(folder)
+            folder = os.path.dirname(folder)
+    for name, lines in own.items():
+        path = os.path.join(root, *name.split("/")) + ".mcfunction"
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8", newline="\n") as fh:
+            fh.write("\n".join(lines) + "\n")
+    if own:
+        with open(note, "w", encoding="utf-8", newline="\n") as fh:
+            json.dump({"own": sorted(own)}, fh, indent=1)
+            fh.write("\n")
+    elif os.path.exists(note):
+        os.remove(note)
+
+
 def write(canvas, pack_dir, name, at=(0, 200, 0), namespace="c164art"):
     """Write the scene's motion functions into the data pack, for the scene placed at `at` (the
-    selectors and positions are in world coordinates, so a scene that is moved is written anew).
+    selectors and positions are in world coordinates, so a scene that is moved is written anew),
+    and with them the functions of the packages' own (function()).
 
     Returns the commands the driver runs once the scene stands: ["function <ns>:<name>-motion/start"],
-    or [] when nothing is registered on the canvas. In that case the scene's motion folder and its
-    entry in #minecraft:load are removed.
+    or [] when nothing on the canvas loops. In that case the scene's motion folder and its entry
+    in #minecraft:load are removed.
     """
     folder = os.path.join(pack_dir, "data", namespace, "function", f"{name}-motion")
     plan = _plan(canvas, name, at, namespace)
     if os.path.isdir(folder):
         shutil.rmtree(folder)
-    _load_tag(pack_dir, f"{namespace}:{name}-motion/load", plan is not None)
-    if plan is None:
+    _load_tag(pack_dir, f"{namespace}:{name}-motion/load", plan is not None and bool(plan.files))
+    _write_own(pack_dir, name, namespace, plan.own if plan is not None else {})
+    if plan is None or not plan.files:
         return []
     for rel, lines in plan.files.items():
         path = os.path.join(folder, *rel.split("/")) + ".mcfunction"
@@ -873,8 +1033,20 @@ def check(canvas, models=None, pack=None):
         fails.append(f"{plan.peak} commands in the busiest tick, the limit is {book.peak}")
     if plan.mean > book.mean:
         fails.append(f"{plan.mean:.1f} commands a tick on average, the limit is {book.mean:g}")
-    if len(plan.files) > FILES:
-        fails.append(f"{len(plan.files)} function files, the limit is {FILES}")
+    if len(plan.files) + len(plan.own) > FILES:
+        fails.append(f"{len(plan.files) + len(plan.own)} function files, the limit is {FILES}")
+    # a function of our namespace that a package's command names is one that is registered (the
+    # loops' own folders aside: start and stop are there for whoever wants them)
+    theirs = [(f"the command on the chain of {p.cycle} ticks", [p.text]) for p in book.points if p.kind == "run"]
+    theirs += [(f"the function {own}", lines) for own, lines in plan.own.items()]
+    for where, lines in theirs:
+        for line in lines:
+            for space, path in _CALLS.findall(line.replace("{ns}", "c164art")):
+                if space == "c164art" and not path.split("/", 1)[0].endswith("-motion") and path not in plan.own:
+                    fails.append(f"{where} names the function c164art:{path}, which nobody has registered")
+    if plan.own:
+        notes.append("functions of the packages' own: " + ", ".join(
+            f"{own} ({sum(1 for ln in lines if not ln.startswith('#'))} commands)" for own, lines in plan.own.items()))
     for chain in plan.chains:
         if len(chain.files) > EVENTS:
             fails.append(f"the chain of {chain.cycle} ticks has {len(chain.files)} functions, the limit is {EVENTS}")
@@ -915,7 +1087,8 @@ def check(canvas, models=None, pack=None):
     if (book.peak, book.mean) != (PEAK, MEAN):
         warns.append(f"the scene sets its own limits ({book.peak} in a tick, {book.mean:g} on average, not "
                      f"{PEAK} and {MEAN:g}): a load test")
+    own = f" and {len(plan.own)} of the packages' own" if plan.own else ""
     summary = (f"{len(book.parts)} parts and {len(book.points)} points on {len(plan.chains)} chains, "
-               f"{len(plan.files)} function files; {plan.peak} commands in the busiest tick (limit {book.peak}), "
+               f"{len(plan.files)} function files{own}; {plan.peak} commands in the busiest tick (limit {book.peak}), "
                f"{plan.mean:.1f} a tick on average (limit {book.mean:g})")
     return ("FAIL" if fails else "WARN" if warns else "PASS"), summary, fails + warns + notes
