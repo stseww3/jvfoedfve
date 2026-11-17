@@ -405,13 +405,56 @@ let activeClanTag = "APEX";`;
 if (!sqNorm.includes(sqOldClanPool)) throw new Error('sqOldClanPool not found');
 sqNorm = sqNorm.replace(sqOldClanPool, sqNewClanPool);
 
-// 5. Keep tag on in lobby while accounts are in "Player XX" mode (only custom-name accounts hide until commit window)
+// 5. Initialize bots with [APEX] tag and stop infinite 4.5s retag loop on stripped/null names
+const sqOldBotInitName = `  bot.baseName = candidateBase;
+  bot.name = candidateBase;`;
+const sqNewBotInitName = `  bot.baseName = candidateBase;
+  bot.name = ('[' + activeClanTag + '] ' + candidateBase).slice(0, 20);`;
+if (!sqNorm.includes(sqOldBotInitName)) throw new Error('sqOldBotInitName not found');
+sqNorm = sqNorm.replace(sqOldBotInitName, sqNewBotInitName);
+
 const sqOldWantTag = `      const wantTag = allowReady && targetRoomId > 0 && !waitMode;`;
 const sqNewWantTag = `      const curLobbyStr0 = String(states[idx]?.myLobbyUsername || '');
       const hasCustomNameUnlocked = curLobbyStr0.length > 0 && !curLobbyStr0.includes('Player ') && !curLobbyStr0.includes('Redacted');
       const wantTag = !isStandby && !waitMode && (hasCustomNameUnlocked ? (allowReady && targetRoomId > 0) : true);`;
 if (!sqNorm.includes(sqOldWantTag)) throw new Error('sqOldWantTag not found');
 sqNorm = sqNorm.replace(sqOldWantTag, sqNewWantTag);
+
+const sqOldRetag = `      let triggerRetag = false;
+      if (states[idx]?.lobby?.inLobby && states[idx]?.lobby?.room === 0 && now > (c.retaggingUntil || 0)) {
+        if (wantTag) globalThis.__holdUntagUntil = now + 8000;
+        if (wantTag && !hasRightTag) {
+          triggerRetag = true;
+          c.retaggingUntil = now + 4500;
+          c.retagTargetRoomId = targetRoomId;
+        } else if (!wantTag && hasAnyTag && now > (globalThis.__holdUntagUntil || 0)) {
+          triggerRetag = true;
+          c.retaggingUntil = now + 4500;
+          c.retagTargetRoomId = 0;
+        }
+      }`;
+const sqNewRetag = `      let triggerRetag = false;
+      if (hasRightTag) c.retagFailStreak = 0;
+      if (states[idx]?.lobby?.inLobby && states[idx]?.lobby?.room === 0 && curLobbyUser && now > (c.retaggingUntil || 0)) {
+        if (wantTag) globalThis.__holdUntagUntil = now + 8000;
+        if (wantTag && !hasRightTag) {
+          c.retagFailStreak = (c.retagFailStreak || 0) + 1;
+          if (c.retagFailStreak <= 2) {
+            triggerRetag = true;
+            c.retaggingUntil = now + 7000;
+            c.retagTargetRoomId = targetRoomId;
+          } else {
+            c.retaggingUntil = now + 120000;
+            c.retagFailStreak = 0;
+          }
+        } else if (!wantTag && hasAnyTag && now > (globalThis.__holdUntagUntil || 0)) {
+          triggerRetag = true;
+          c.retaggingUntil = now + 5000;
+          c.retagTargetRoomId = 0;
+        }
+      }`;
+if (!sqNorm.includes(sqOldRetag)) throw new Error('sqOldRetag not found');
+sqNorm = sqNorm.replace(sqOldRetag, sqNewRetag);
 
 // 6. Do not burn Turnstile tokens on 4563 lobby bounces (only invalidate after 24 consecutive failures)
 const sqOldFailCnt = `      c.lobbyFailCount = (c.lobbyFailCount || 0) + 1;
