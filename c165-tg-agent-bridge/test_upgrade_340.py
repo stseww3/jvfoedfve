@@ -57,6 +57,18 @@ def text_of(res) -> str:
     return "\n".join(c.get("text", "") for c in res.content)
 
 
+async def finish_onboard(agent_id: str, to_parent: str = "") -> tuple[str, str]:
+    """Walk a freshly joined chat subagent through the 2-step conversational onboarding."""
+    step1 = text_of(await bridge.call_tool("read_chat", {"agent": agent_id, "wait_sec": 0}))
+    if to_parent:
+        ack = await bridge.call_tool("send_agent_message", {"agent": agent_id, "to": to_parent, "text": "收到，随时可以开始"})
+    else:
+        ack = await bridge.call_tool("send_message", {"agent": agent_id, "text": "在的，随时可以开始"})
+    assert not ack.is_error, text_of(ack)
+    step2 = text_of(await bridge.call_tool("read_chat", {"agent": agent_id, "wait_sec": 0}))
+    return step1, step2
+
+
 async def run_core_tests() -> dict[str, str]:
     now = bridge.now()
     bridge.ensure_main_conv()
@@ -84,16 +96,19 @@ async def run_core_tests() -> dict[str, str]:
     assert not res_join1.is_error
     a1 = bridge.conv_row("c1")["agent"]
     assert a1.startswith("a_")
+    await finish_onboard(a1)
 
     res_c2 = await bridge.call_tool("create_chat", {"agent": main_id, "brief": "负责数据库迁移", "name": "存储组"})
     c2_row = bridge.conv_row("c2")
     await bridge.call_tool("join", {"code": c2_row["task_code"], "name": "存储组"})
     a2 = bridge.conv_row("c2")["agent"]
+    await finish_onboard(a2)
 
     # External user chat c3
     c3_ext = bridge.create_conv("外部用户私有任务", 8002, name="外部助手", owner=8002)
     await bridge.call_tool("join", {"code": c3_ext["task_code"]})
     a3_ext = bridge.conv_row("c3")["agent"]
+    await finish_onboard(a3_ext)
 
     # Record git repo on c1 so spawned child memory inheritance can verify git propagation
     res_repo = await bridge.call_tool(
@@ -172,25 +187,30 @@ async def run_core_tests() -> dict[str, str]:
     assert not spawn_res.is_error, text_of(spawn_res)
     assert "c4" in text_of(spawn_res)
 
-    # Verify Main received calm spawn instruction + admin-override clause + [主控] 三句 in read_chat!
+    # Verify Main received calm spawn instruction + admin-override clause + [主控] 三句 in read_chat (WITHOUT memory dump in cold prompt)!
     main_inbox = text_of(await bridge.call_tool("read_chat", {"agent": main_id, "wait_sec": 0}))
     assert "【派生请求】" in main_inbox
     assert "以管理员指令为准" in main_inbox
     assert "claude-4.5-opus" in main_inbox
-    assert "已完成网关鉴权改造" in main_inbox
+    assert "已完成网关鉴权改造" not in main_inbox
     assert "[主控] 三句：" in main_inbox
 
-    # Child c4 joins -> verify child receives memory_summary + shared c1 history + inherited git repo + g1 membership!
+    # Child c4 joins with clean minimal welcome -> 2-step conversational handoff delivers memory_summary + shared c1 history + git repo + g1!
     c4_row = bridge.conv_row("c4")
     join_c4 = await bridge.call_tool("join", {"code": c4_row["task_code"], "actual_model": "Claude 4.5 Opus", "model_match": True})
     welcome_c4 = text_of(join_c4)
     a4 = bridge.conv_row("c4")["agent"]
-    assert "已完成网关鉴权改造" in welcome_c4
-    assert "stseww3/jvfoedfve" in welcome_c4
-    assert "已授权你读取聊天 c1「网关组」" in welcome_c4
-    assert "g1「架构联调群」" in welcome_c4
+    assert "已完成网关鉴权改造" not in welcome_c4, "Cold join should stay minimal without memory dump"
+    # Parent c1 should NOT be prematurely woken during icebreak
+    assert "c4「压测专员」 已上线接手" not in text_of(await bridge.call_tool("read_chat", {"agent": a1, "wait_sec": 0}))
+    step1_c4, step2_c4 = await finish_onboard(a4, to_parent="c1")
+    assert "c1「网关组」" in step1_c4
+    assert "已完成网关鉴权改造" in step2_c4
+    assert "stseww3/jvfoedfve" in step2_c4
+    assert "已授权你读取聊天 c1「网关组」" in step2_c4
+    assert "g1「架构联调群」" in step2_c4
 
-    # Verify parent c1 was automatically woken & notified when c4 joined!
+    # Verify parent c1 was automatically woken & notified once c4 finished Step 2 onboarding!
     c1_wake = text_of(await bridge.call_tool("read_chat", {"agent": a1, "wait_sec": 0}))
     assert "c4「压测专员」 已上线接手" in c1_wake
 
@@ -207,10 +227,11 @@ async def run_core_tests() -> dict[str, str]:
     )
     assert not spawn_clean.is_error
     c5_row = bridge.conv_row("c5")
-    welcome_c5 = text_of(await bridge.call_tool("join", {"code": c5_row["task_code"]}))
+    await bridge.call_tool("join", {"code": c5_row["task_code"]})
     a5 = bridge.conv_row("c5")["agent"]
-    assert "已授权你读取聊天 c1" not in welcome_c5
-    assert "stseww3/jvfoedfve" not in welcome_c5
+    _, step2_c5 = await finish_onboard(a5, to_parent="c1")
+    assert "已授权你读取聊天 c1" not in step2_c5
+    assert "stseww3/jvfoedfve" not in step2_c5
 
     # Verify c2 CANNOT stop c5 (only parent c1 can!), and c1 CAN stop_spawned_agent c5
     bad_stop = await bridge.call_tool("stop_spawned_agent", {"agent": a2, "chat": "c5"})
@@ -471,7 +492,7 @@ def run_http_and_hook_tests(ids: dict[str, str]) -> None:
             "tool_name": "Shell",
             "tool_input": {"command": "sleep 10"},
         })
-        assert human_gate.get("permission") == "deny" and "priority gate" in human_gate.get("user_message", "")
+        assert human_gate.get("permission") == "deny" and "read_chat" in human_gate.get("user_message", "")
 
         # Verify Main's list_agents directly embeds c1 & c2 trace lines!
         main_list_txt = text_of(asyncio.run(bridge.call_tool("list_agents", {"agent": ids["main"]})))
@@ -551,9 +572,10 @@ async def run_cloud_350_tests() -> None:
         assert bridge.cloud_of(c1_after) == 2
         assert c1_after["model"] == "claude-fable-5-2-max"
 
-        # Verify new subagent joining c1 gets full context: git branch, trace snapshot, and group history!
+        # Verify new subagent joining c1 gets full context in Step 2: git branch, trace snapshot, and group history!
         res_j1 = await bridge.call_tool("join", {"code": c1_after["task_code"], "actual_model": "claude-fable-5-2-max", "model_match": True})
-        txt_j1 = text_of(res_j1)
+        assert not res_j1.is_error
+        _, txt_j1 = await finish_onboard(bridge.conv_row("c1")["agent"])
         assert "cursor/test-branch" in txt_j1
         assert "前任会话最后工作现场快照" in txt_j1 and "/opt/gw/config.py" in txt_j1
         assert "架构联调群" in txt_j1 and "store.py 已对齐字段" in txt_j1

@@ -304,6 +304,9 @@ COLUMNS = (
     ("web_users", "allowed_convs", "TEXT DEFAULT '[]'"),
     ("web_users", "allowed_groups", "TEXT DEFAULT '[]'"),
     ("exec_nodes", "env_id", "TEXT DEFAULT ''"),
+    ("convs", "onboard_stage", "TEXT DEFAULT ''"),    # 接入进度：'' | awaiting_join | icebreak_pending | icebreak_waiting_reply | memory_pending | ready
+    ("convs", "onboard_ts", "REAL DEFAULT 0"),        # 当前接入阶段更新时间戳
+    ("convs", "isolated_vm", "INTEGER DEFAULT -1"),   # -1=沿用默认策略(共享宿主机) | 0=共享宿主机 | 1=单独开独立云机
 )
 
 INDEXES = """

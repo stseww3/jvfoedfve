@@ -472,6 +472,8 @@ def _serialize_conv(bridge, crow) -> dict[str, Any]:
         "dedicated_req": bool(int(crow["dedicated_req"] or 0)),
         "dedicated_node": crow["dedicated_node"] or "",
         "task_agent_id": crow["task_agent_id"] or "",
+        "onboard_stage": bridge.conv_onboard_stage(crow),
+        "onboard_label": bridge.onboard_status_text(crow),
         "git": bridge.git_info(crow),
         "pending": info["pending"],
         "unread": info["unread"],

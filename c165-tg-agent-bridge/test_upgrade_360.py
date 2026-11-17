@@ -76,6 +76,17 @@ def text_of(res) -> str:
     return "\n".join(c.get("text", "") for c in res.content)
 
 
+async def finish_onboard(agent_id: str, to_parent: str = "") -> tuple[str, str]:
+    step1 = text_of(await bridge.call_tool("read_chat", {"agent": agent_id, "wait_sec": 0}))
+    if to_parent:
+        ack = await bridge.call_tool("send_agent_message", {"agent": agent_id, "to": to_parent, "text": "收到，随时可以开始"})
+    else:
+        ack = await bridge.call_tool("send_message", {"agent": agent_id, "text": "在的，随时可以开始"})
+    assert not ack.is_error, text_of(ack)
+    step2 = text_of(await bridge.call_tool("read_chat", {"agent": agent_id, "wait_sec": 0}))
+    return step1, step2
+
+
 async def run_cluster_and_device_tests() -> dict[str, str]:
     now = bridge.now()
     bridge.ensure_main_conv()
@@ -198,22 +209,35 @@ async def run_cluster_and_device_tests() -> dict[str, str]:
     assert not sub_res.is_error
     assert bridge.conv_row("c1")["task_agent_id"] == "bc_task_c1_99"
 
-    # Join no longer verifies the model:
-    # (a) Joining c1 (record model="claude-fable-5-2-max") with only the task code succeeds right away and consumes the code.
+    # Join no longer verifies the model & uses 2-step conversational onboarding:
+    # (a) Joining c1 (record model="claude-fable-5-2-max") with only the task code succeeds right away with minimal welcome.
     c1_code = bridge.conv_row("c1")["task_code"]
     bridge.post("c1", chat_id=7001, chat_type="private", user_id=7001, user_name="Alpine", text="接入后就该看到的任务", wake=1)
+    ADMIN_NOTICES.clear()
     plain_join = await bridge.call_tool("join", {"code": c1_code})
     plain_txt = text_of(plain_join)
-    assert not plain_join.is_error and "接手成功" in plain_txt, plain_txt[:300]
-    assert "模型校验" not in plain_txt and "actual_model" not in plain_txt
+    assert not plain_join.is_error and "接入成功" in plain_txt, plain_txt[:300]
+    assert "模型校验" not in plain_txt and "actual_model" not in plain_txt and "dais_runtime" not in plain_txt
     first_ag = bridge.conv_row("c1")["agent"]
     assert bridge.conv_row("c1")["task_code"] == "" and bridge.conv_row("c1")["model_check"] == ""
-    # Business tools work immediately and the unread user message is delivered as usual.
-    assert not (await bridge.call_tool("send_message", {"agent": first_ag, "text": "我来了"})).is_error
-    assert "接入后就该看到的任务" in text_of(await bridge.call_tool("read_chat", {"agent": first_ag, "wait_sec": 0}))
-    # The launch prompt no longer asks the sub-agent to report or prove its model.
+    assert bridge.conv_onboard_stage(bridge.conv_row("c1")) == "icebreak_pending"
+    # Step 1: read_chat delivers warm icebreak without leaking real unread messages yet
+    s1_txt = text_of(await bridge.call_tool("read_chat", {"agent": first_ag, "wait_sec": 0}))
+    assert "接入后就该看到的任务" not in s1_txt and "随时可以开始" in s1_txt
+    assert bridge.conv_onboard_stage(bridge.conv_row("c1")) == "icebreak_waiting_reply"
+    # Reply to icebreak is swallowed internally (ZERO Telegram spam!) and transitions to memory_pending
+    ack_res = await bridge.call_tool("send_message", {"agent": first_ag, "text": "我来了"})
+    assert not ack_res.is_error
+    assert ADMIN_NOTICES == [], f"Icebreak reply leaked to Telegram: {ADMIN_NOTICES}"
+    assert bridge.conv_onboard_stage(bridge.conv_row("c1")) == "memory_pending"
+    # Step 2: read_chat transitions to ready, delivers context brief + pending real message!
+    s2_txt = text_of(await bridge.call_tool("read_chat", {"agent": first_ag, "wait_sec": 0}))
+    assert "接入后就该看到的任务" in s2_txt and "run_workspace_job" in s2_txt
+    assert bridge.conv_onboard_stage(bridge.conv_row("c1")) == "ready"
+    # The launch prompt no longer asks the sub-agent to report or prove its model or touch .cursor/.pyz.
     launch_txt = bridge.task_text(bridge.conv_row("c1"))
     assert "actual_model" not in launch_txt and "model_match" not in launch_txt and "校验" not in launch_txt
+    assert "dais_runtime" not in launch_txt and ".cursor" not in launch_txt
 
     # (b) A sub-agent still holding an OLD launch prompt passes actual_model / model_match (even "false", even another
     #     model family): it joins normally, is not held, and ctrl gets no verification alert.
@@ -224,8 +248,9 @@ async def run_cluster_and_device_tests() -> dict[str, str]:
     legacy_join = await bridge.call_tool(
         "join", {"code": bridge.conv_row("c1")["task_code"], "actual_model": "Gemini 4 Carbon High", "model_match": False}
     )
-    assert not legacy_join.is_error and "接手成功" in text_of(legacy_join)
+    assert not legacy_join.is_error and "接入成功" in text_of(legacy_join)
     legacy_ag = bridge.conv_row("c1")["agent"]
+    await finish_onboard(legacy_ag)
     assert bridge.conv_row("c1")["model_check"] == ""
     assert bridge.conv_row("c1")["model"] == "claude-fable-5-2-max", "a self-reported model must never rewrite the record"
     assert not (await bridge.call_tool("send_message", {"agent": legacy_ag, "text": "旧提示词也能干活"})).is_error
@@ -246,13 +271,15 @@ async def run_cluster_and_device_tests() -> dict[str, str]:
     op_c1_final = bridge.store.one("SELECT op_id FROM dispatch_ops WHERE conv_id='c1' ORDER BY created_ts DESC LIMIT 1")["op_id"]
     await bridge.call_tool("submit_op_result", {"agent": m2, "op_id": op_c1_final, "status": "ok", "task_agent_id": "bc_task_c1_final"})
     ok_mod_join = await bridge.call_tool("join", {"code": bridge.conv_row("c1")["task_code"]})
-    assert not ok_mod_join.is_error and "接手成功" in text_of(ok_mod_join)
+    assert not ok_mod_join.is_error and "接入成功" in text_of(ok_mod_join)
     a1 = bridge.conv_row("c1")["agent"]
+    await finish_onboard(a1)
 
     # Member user chat c2 -> cannot call spawn_subagent or run_workspace_job!
     c2_mem = bridge.create_conv("外部用户聊天", 8002, name="会员聊天", owner=8002)
     await bridge.call_tool("join", {"code": c2_mem["task_code"]})
     a2_mem = bridge.conv_row("c2")["agent"]
+    await finish_onboard(a2_mem)
     mem_spawn = await bridge.call_tool("spawn_subagent", {"agent": a2_mem, "brief": "偷开子agent", "include_memory": False})
     assert mem_spawn.is_error and "仅管理员本人" in text_of(mem_spawn)
     mem_job = await bridge.call_tool("run_workspace_job", {"agent": a2_mem, "command": "ls"})
@@ -266,6 +293,7 @@ async def run_cluster_and_device_tests() -> dict[str, str]:
     assert not sp_c3.is_error and "申请独占机器" in text_of(sp_c3)
     await bridge.call_tool("join", {"code": bridge.conv_row("c3")["task_code"], "name": "光追子工"})
     a3 = bridge.conv_row("c3")["agent"]
+    await finish_onboard(a3, to_parent="c1")
 
     # Lock node1 exclusively to c1 -> c3 should be blocked until ctrl grants access!
     await bridge.call_tool("manage_node", {"agent": ctrl_ag, "action": "set_exclusive", "node_id": "node1", "exclusive_chat": "c1"})
@@ -376,11 +404,12 @@ async def run_cluster_and_device_tests() -> dict[str, str]:
     a1_re = bridge.conv_row("c1")["agent"]
     assert a1_re != a1 and bridge.agent_row(a1_re)["status"] == "active"
     bridge.store.run("UPDATE convs SET auto_restarted_ts=0 WHERE id='c1'")
-    # C1: join hands the trace row to the new agent and clears the previous agent's live state.
+    # C1: join hands the trace row to the new agent and clears the previous agent's live state (entering onboarding).
     row_c1 = bridge.store.one("SELECT * FROM agent_traces WHERE conv='c1'")
-    assert row_c1["agent_id"] == a1_re and row_c1["phase"] == "" and float(row_c1["hb_ts"] or 0) == 0
+    assert row_c1["agent_id"] == a1_re and row_c1["phase"] == "onboarding" and float(row_c1["hb_ts"] or 0) == 0
     assert row_c1["conversation_id"] == ""
     assert not stuck("c1")
+    await finish_onboard(a1_re)
     # C2: a row still owned by the previous agent (e.g. written just before it was stopped) is not held against the new one.
     put_trace("c1", a1, "thinking", 30 * 3600, 5)
     assert not stuck("c1")
@@ -599,6 +628,7 @@ def run_web_console_tests() -> None:
                 j_c1 = asyncio.run(bridge.call_tool("join", {"code": tcode_c1, "name": "天文台"}))
                 assert not j_c1.is_error
                 c1_live_ag = bridge.conv_row("c1")["agent"]
+                asyncio.run(finish_onboard(c1_live_ag))
 
             # AI sends SVG image to group g2 (creates owner:0 file) -> alice MUST load & download 200 OK (no 403!)
             svg_body = "<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'></svg>"
@@ -832,15 +862,21 @@ def run_web_console_tests() -> None:
                 bridge.set_tg_non_admin_muted(False)
                 bridge.tg.try_call = orig_try_call
 
-            # 12. Verify per-mainN automatic environment_id binding & zero-restart hot runtime upgrade!
-            # 12a: Unbound main2 initially instructs auto-discover via environment-info (NOT foreign hardcoded 835bda67)
+            # 12. Verify subagents default to shared host (isolated_vm=False), compute pool / explicit isolated_vm uses env_id auto-discovery + binding, & zero-restart hot runtime upgrade!
+            # 12a-0: By default, launching subagent c1 uses shared mode (no machine.environment_id, no dais_runtime.pyz in task_text)
             assert bridge.node_row("main2")["env_id"] == ""
             ctrl_now = bridge.conv_row("ctrl")["agent"]
-            d_unbound = asyncio.run(bridge.call_tool("dispatch_task_op", {"agent": ctrl_now, "chat": "c1", "action": "restart", "target_main": "main2"}))
+            d_shared = asyncio.run(bridge.call_tool("dispatch_task_op", {"agent": ctrl_now, "chat": "c1", "action": "restart", "target_main": "main2"}))
+            assert not d_shared.is_error and "共享运行" in text_of(d_shared)
+            m2_op_shared = text_of(asyncio.run(bridge.call_tool("read_chat", {"agent": m2_ag, "wait_sec": 0})))
+            assert '"environment_id"' not in m2_op_shared and "dais_runtime.pyz" not in m2_op_shared
+
+            # 12a: Explicit isolated_vm=True on unbound main2 triggers auto-discover via environment-info (NOT foreign hardcoded 835bda67)
+            d_unbound = asyncio.run(bridge.call_tool("dispatch_task_op", {"agent": ctrl_now, "chat": "c1", "action": "restart", "target_main": "main2", "isolated_vm": True}))
             assert not d_unbound.is_error
             m2_op_txt1 = text_of(asyncio.run(bridge.call_tool("read_chat", {"agent": m2_ag, "wait_sec": 0})))
             assert "environment-info" in m2_op_txt1 and "835bda67" not in m2_op_txt1
-            assert "dais_runtime.pyz install" in m2_op_txt1  # Subagent task_text includes first-boot hook install!
+            assert "dais_runtime.pyz install" not in m2_op_txt1  # Subagent task_text is pure whiteboard!
             op1_row = bridge.store.one("SELECT op_id FROM dispatch_ops WHERE target_node='main2' ORDER BY created_ts DESC LIMIT 1")
             # main2 reports its own account's environmentPublicId once via submit_op_result -> auto-bound!
             asyncio.run(bridge.call_tool("submit_op_result", {
@@ -851,8 +887,8 @@ def run_web_console_tests() -> None:
                 "environment_id": "704ce73e-e1d4-11f1-8120-06b44be262b7",
             }))
             assert bridge.node_row("main2")["env_id"] == "704ce73e-e1d4-11f1-8120-06b44be262b7"
-            # Next dispatch onto main2 directly injects main2's bound environment_id with zero hesitation!
-            d_bound = asyncio.run(bridge.call_tool("dispatch_task_op", {"agent": ctrl_now, "chat": "c1", "action": "restart", "target_main": "main2"}))
+            # Next explicit isolated_vm=True dispatch onto main2 directly injects main2's bound environment_id with zero hesitation!
+            d_bound = asyncio.run(bridge.call_tool("dispatch_task_op", {"agent": ctrl_now, "chat": "c1", "action": "restart", "target_main": "main2", "isolated_vm": True}))
             assert not d_bound.is_error and "704ce73e" in text_of(d_bound)
             m2_op_txt2 = text_of(asyncio.run(bridge.call_tool("read_chat", {"agent": m2_ag, "wait_sec": 0})))
             assert '"environment_id": "704ce73e-e1d4-11f1-8120-06b44be262b7"' in m2_op_txt2
@@ -892,6 +928,7 @@ def run_web_console_tests() -> None:
             c1_code_now = bridge.conv_row("c1")["task_code"]
             asyncio.run(bridge.call_tool("join", {"code": c1_code_now}))
             c1_ag_ev = bridge.conv_row("c1")["agent"]
+            asyncio.run(finish_onboard(c1_ag_ev))
             bridge.store.run("UPDATE convs SET task_agent_id='bc-evicted-pod-99' WHERE id='c1'")
             bridge.store.run("UPDATE agents SET last_seen=? WHERE id=?", (bridge.now() - 600, c1_ag_ev))
             bridge.store.run(
@@ -918,10 +955,190 @@ def run_web_console_tests() -> None:
             assert secret_pw not in log_txt and sub_pw not in log_txt
 
 
+def run_stealth_and_onboarding_370_tests() -> None:
+    """Verify 3.7.0: root vault + /etc/cursor/hooks.json + UNIX socket relay, critical file & sudo blocking,
+    afterMCPExecution result_json join extraction, and 4-stage onboarding tracking across all endpoints."""
+    import re as _re370
+    sys_root = TMP_ROOT / "sys_vault_test"
+    vault_d = sys_root / "vault"
+    sys_hooks = sys_root / "etc_cursor" / "hooks.json"
+    relay_bin = sys_root / "libexec" / "cursor-hook-relay"
+    sock_p = sys_root / "run" / "hook.sock"
+    user_dot = sys_root / "user_home" / ".cursor"
+    user_dot.mkdir(parents=True, exist_ok=True)
+    # Seed legacy ~/.cursor artifacts to verify migration & cleanup
+    (user_dot / "dais_runtime.pyz").write_bytes(b"old-pyz")
+    (user_dot / "agent_trace_config.json").write_text("{}", encoding="utf-8")
+    (user_dot / "agent_trace_state.json").write_text(
+        json.dumps({"conv_to_agent": {"legacy-cid-1": "m_legacy_keep"}, "sessions": {}}),
+        encoding="utf-8",
+    )
+    (user_dot / "hooks.json").write_text(
+        json.dumps({"version": 1, "hooks": {"stop": [{"command": "python3 ~/.cursor/dais_runtime.pyz hook"}], "custom": [{"command": "echo keep-me"}]}}),
+        encoding="utf-8",
+    )
+
+    pyz_bytes = bridge.build_runtime_pyz("http://127.0.0.1:18797")
+    pyz_src = sys_root / "src_runtime.pyz"
+    pyz_src.write_bytes(pyz_bytes)
+    pyz_src.chmod(0o755)
+
+    sys_env = dict(
+        os.environ,
+        HOME=str(sys_root / "user_home"),
+        DAIS_SYSTEM_MODE="1",
+        DAIS_VAULT_DIR=str(vault_d),
+        DAIS_SYS_HOOKS_PATH=str(sys_hooks),
+        DAIS_RELAY_PATH=str(relay_bin),
+        DAIS_SOCK_PATH=str(sock_p),
+        DAIS_USER_CURSOR_DIR=str(user_dot),
+        DAIS_SKIP_RELOAD="1",
+        BRIDGE_URL="http://127.0.0.1:18797",
+    )
+
+    with TestClient(bridge.app) as client:
+        lg = client.post("/web/api/auth/login", json={"username": "zwt", "password": "SuperSecret_ZWT_#2026!"}).json()
+        assert lg["ok"]
+        from http.server import BaseHTTPRequestHandler, HTTPServer
+        import threading as _th
+
+        class _Pxy(BaseHTTPRequestHandler):
+            def do_GET(self):
+                r = client.get(self.path)
+                self.send_response(r.status_code)
+                self.send_header("Content-Type", "application/json")
+                self.end_headers()
+                self.wfile.write(r.content)
+
+            def do_POST(self):
+                ln = int(self.headers.get("Content-Length") or 0)
+                body = self.rfile.read(ln) if ln else b"{}"
+                r = client.post(self.path, content=body, headers={"Content-Type": "application/json"})
+                self.send_response(r.status_code)
+                self.send_header("Content-Type", "application/json")
+                self.end_headers()
+                self.wfile.write(r.content)
+
+            def log_message(self, *args):
+                pass
+
+        pxy = HTTPServer(("127.0.0.1", 0), _Pxy)
+        pxy_port = pxy.server_address[1]
+        _th.Thread(target=pxy.serve_forever, daemon=True).start()
+        sys_env["BRIDGE_URL"] = f"http://127.0.0.1:{pxy_port}"
+
+        try:
+            # 1. Install into vault + /etc/cursor/hooks.json + UNIX socket relay
+            inst = subprocess.run(
+                [sys.executable, str(pyz_src), "install", "--system", f"http://127.0.0.1:{pxy_port}"],
+                env=sys_env, capture_output=True, text=True, check=True,
+            )
+            assert (vault_d / "runtime.pyz").exists()
+            assert sys_hooks.exists() and relay_bin.exists()
+            assert sock_p.exists()
+            # Legacy ~/.cursor artifacts must be scrubbed, while unrelated user hook ("echo keep-me") is preserved!
+            assert not (user_dot / "dais_runtime.pyz").exists()
+            assert not (user_dot / "agent_trace_config.json").exists()
+            assert not (user_dot / "agent_trace_state.json").exists()
+            u_hooks = json.loads((user_dot / "hooks.json").read_text(encoding="utf-8"))
+            assert "stop" not in u_hooks["hooks"] and "custom" in u_hooks["hooks"]
+            # Legacy state migrated cleanly into vault state.json
+            v_state = json.loads((vault_d / "state.json").read_text(encoding="utf-8"))
+            assert v_state["conv_to_agent"].get("legacy-cid-1") == "m_legacy_keep"
+            # Relay script must contain ZERO IP/URL/bridge branding, and hooks.json must include || printf '{}'
+            relay_txt = relay_bin.read_text(encoding="utf-8")
+            assert "127.0.0.1" not in relay_txt and "dais" not in relay_txt.lower()
+            s_hooks_cfg = json.loads(sys_hooks.read_text(encoding="utf-8"))
+            assert "|| printf '{}'" in s_hooks_cfg["hooks"]["stop"][0]["command"]
+            assert s_hooks_cfg["hooks"]["stop"][0]["loop_limit"] is None
+
+            def call_relay(payload: dict) -> dict:
+                p = subprocess.run([str(relay_bin)], input=json.dumps(payload), capture_output=True, text=True, check=True)
+                return json.loads(p.stdout.strip())
+
+            # 2. Verify afterMCPExecution result_json extracts subagent identity and binds cid!
+            c_ob = bridge.create_conv("370接入追踪测试", 7001, name="追踪测试", owner=0)
+            # Stage 1: awaiting_join visible across status/cluster/web
+            st_1 = bridge.conv_state(bridge.conv_row(c_ob["id"]))
+            assert st_1["onboard_stage"] == "awaiting_join" and "1/4" in st_1["onboard_label"]
+            assert "1/4" in bridge.render_cluster_overview()
+
+            j_res = asyncio.run(bridge.call_tool("join", {"code": c_ob["task_code"]}))
+            j_txt = text_of(j_res)
+            ob_ag = bridge.conv_row(c_ob["id"])["agent"]
+            # Stage 2: icebreak_pending visible across list_peers / trace_status / web / /trace
+            assert "2/4" in bridge.onboard_status_text(bridge.conv_row(c_ob["id"]))
+            assert "2/4" in text_of(asyncio.run(bridge.call_tool("list_peers", {"agent": ob_ag})))
+            assert "2/4" in text_of(asyncio.run(bridge.call_tool("trace_status", {"agent": ob_ag, "chat": c_ob["id"]})))
+            tr_http = client.get(f"/trace?chat={c_ob['id']}", headers={"X-Agent": ob_ag}).json()
+            assert tr_http["traces"][0]["onboard_stage"] == "icebreak_pending" and "2/4" in tr_http["traces"][0]["onboard_label"]
+            boot_ob = client.get("/web/api/bootstrap").json()
+            c_boot = next(x for x in boot_ob["convs"] if x["id"] == c_ob["id"])
+            assert c_boot["onboard_stage"] == "icebreak_pending" and "2/4" in c_boot["onboard_label"]
+
+            # Simulate Cursor afterMCPExecution with dict result_json via UNIX socket relay!
+            ob_cid = "conv-370-onboard-1"
+            assert call_relay({
+                "hook_event_name": "afterMCPExecution",
+                "conversation_id": ob_cid,
+                "tool_name": "CallDynamicTool",
+                "tool_input": {"namespace": "djsj", "toolName": "join", "arguments": {"code": "t-xxx"}},
+                "result_json": {"result": j_txt},
+            }) == {}
+
+            # Stage 3 & 4: Step 1 -> reply -> Step 2 -> ready!
+            s1 = text_of(asyncio.run(bridge.call_tool("read_chat", {"agent": ob_ag, "wait_sec": 0})))
+            assert "随时可以开始" in s1 and bridge.conv_onboard_stage(bridge.conv_row(c_ob["id"])) == "icebreak_waiting_reply"
+            asyncio.run(bridge.call_tool("send_message", {"agent": ob_ag, "text": "在的"}))
+            assert bridge.conv_onboard_stage(bridge.conv_row(c_ob["id"])) == "memory_pending"
+            s2 = text_of(asyncio.run(bridge.call_tool("read_chat", {"agent": ob_ag, "wait_sec": 0})))
+            assert "正式开始协作" in s2 and bridge.conv_onboard_stage(bridge.conv_row(c_ob["id"])) == "ready"
+
+            # 3. Critical file & sudo blocking via live UNIX socket relay!
+            # Subagent ob_ag MUST be denied on Read/Write/Delete of protected paths AND sudo in Shell!
+            deny_read = call_relay({"hook_event_name": "preToolUse", "conversation_id": ob_cid, "tool_name": "Read", "tool_input": {"path": str(sys_hooks)}})
+            assert deny_read.get("permission") == "deny"
+            deny_before_read = call_relay({"hook_event_name": "beforeReadFile", "conversation_id": ob_cid, "file_path": str(vault_d / "runtime.pyz")})
+            assert deny_before_read.get("permission") == "deny"
+            deny_write = call_relay({"hook_event_name": "preToolUse", "conversation_id": ob_cid, "tool_name": "Delete", "tool_input": {"path": str(user_dot / "hooks.json")}})
+            assert deny_write.get("permission") == "deny"
+            deny_sudo = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": ob_cid, "command": "sudo ls /root"})
+            assert deny_sudo.get("permission") == "deny"
+            deny_sh_etc = call_relay({"hook_event_name": "preToolUse", "conversation_id": ob_cid, "tool_name": "Shell", "tool_input": {"command": "cat /etc/cursor/hooks.json"}})
+            assert deny_sh_etc.get("permission") == "deny"
+
+            # Normal repo edits (including repo's agent_trace.py!) MUST be allowed for subagent!
+            allow_repo = call_relay({"hook_event_name": "preToolUse", "conversation_id": ob_cid, "tool_name": "StrReplace", "tool_input": {"path": "/tmp/c372-bridge/c165-tg-agent-bridge/agent_trace.py", "old_string": "a", "new_string": "b"}})
+            assert allow_repo.get("permission") != "deny"
+            allow_git = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": ob_cid, "command": "git commit -m 'fix sudo handling'"})
+            assert allow_git.get("permission") != "deny"
+
+            # Top-level m_ executor MUST be allowed to run sudo system install!
+            allow_m_sudo = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": "legacy-cid-1", "command": "sudo -n python3 /tmp/inst.pyz install --system"})
+            assert allow_m_sudo.get("permission") != "deny"
+
+            # 4. Kill vault daemon and verify relay fails OPEN with {} (exit 0, never locks out main!)
+            pid_v = vault_d / "daemon.pid"
+            if pid_v.exists():
+                os.kill(int(pid_v.read_text().strip()), 9)
+                time.sleep(0.2)
+            fail_open = call_relay({"hook_event_name": "preToolUse", "conversation_id": "legacy-cid-1", "tool_name": "Shell", "tool_input": {"command": "echo ok"}})
+            assert fail_open == {}
+        finally:
+            pxy.shutdown()
+            pid_v = vault_d / "daemon.pid"
+            if pid_v.exists():
+                try:
+                    os.kill(int(pid_v.read_text().strip()), 9)
+                except Exception:
+                    pass
+
+
 def main() -> None:
     asyncio.run(run_cluster_and_device_tests())
     run_web_console_tests()
-    print("ALL_360_TESTS_PASSED_OK")
+    run_stealth_and_onboarding_370_tests()
+    print("ALL_370_TESTS_PASSED_OK")
 
 
 if __name__ == "__main__":

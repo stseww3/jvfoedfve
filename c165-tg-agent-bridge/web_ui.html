@@ -1291,7 +1291,7 @@ function renderSidebarItemConv(c, iconPrefix = '') {
     <div class="sb-avatar ${avCls}">${esc(avTxt)}<span class="status-dot ${esc(c.state)}"></span></div>
     <div class="sb-item-body">
       <div class="sb-item-title">${iconPrefix}${esc(c.name)} <span style="color:var(--text-muted);font-size:11.5px;font-weight:400">${esc(c.id)}</span> ${mTag}</div>
-      <div class="sb-item-sub">${esc(c.trace_line || c.brief || c.state_label)}</div>
+      <div class="sb-item-sub">${esc(c.onboard_label || c.trace_line || c.brief || c.state_label)}</div>
     </div>
     ${unreadBadge}
   </div>`;
@@ -1430,9 +1430,9 @@ function updateTopbarForConv(c) {
   const mBadge = c.model ? `<span class="pill accent">${esc(c.model)}</span>` : '';
   const cBadge = c.cloud > 0 ? `<span class="pill">cloud${c.cloud}</span>` : '';
   document.getElementById('headTitle').innerHTML = `${esc(c.name)} <span style="color:var(--text-muted);font-weight:400;font-size:13px">(${esc(c.id)})</span> ${mBadge} ${cBadge}`;
-  const tline = c.trace_line || `${c.state_label}${c.brief ? ' · ' + c.brief : ''}`;
+  const tline = c.onboard_label || c.trace_line || `${c.state_label}${c.brief ? ' · ' + c.brief : ''}`;
   document.getElementById('headTrace').textContent = tline;
-  const busy = c.phase === 'thinking' || c.phase === 'shell' || c.phase === 'edit' || c.state === 'busy';
+  const busy = c.phase === 'thinking' || c.phase === 'shell' || c.phase === 'edit' || c.phase === 'onboarding' || c.state === 'busy';
   document.getElementById('livePulse').classList.toggle('on', busy);
   const canRestart = c.kind === 'chat' || c.id === 'ctrl';
   document.getElementById('restartBtn').style.display = canRestart ? 'inline-flex' : 'none';

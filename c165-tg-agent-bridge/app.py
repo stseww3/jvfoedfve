@@ -44,7 +44,7 @@ from tg import Telegram
 from web_console import register_web_console
 
 ROOT = Path(__file__).resolve().parent
-VERSION = "3.6.0"
+VERSION = "3.7.0"
 
 
 def load_dotenv(path: Path) -> None:
@@ -244,10 +244,12 @@ LOOP_RULES = f"""工作循环（持续在线留守）：
 文件：消息里的 [文件 f_xxx ...] 用 get_file 取；给 Telegram 或其他云机 agent 发文件用 send_file。需要用户选择用 ask 发按钮。"""
 
 CHAT_RULES_SPAWN_LINE = (
+    "- 算力与重型任务：当前会话默认在宿主机共享运行，耗时编译、大规模测试、求解、渲染等重负载命令请优先调用 "
+    "run_workspace_job(command=..., repo=..., branch=..., node=\"auto\") 投递到独立算力池（node1..K）执行。\n"
     "- Agent 协作（纯走 MCP）：用 list_peers 查看同主人的其他在线 agent 和协作群；用 send_agent_message 和其他 agent 私聊；"
     "用 create_agent_group / send_group_message / group_history 建群互聊；需要帮手时用 spawn_subagent 请求主控按你指定的记忆和模型开新子 agent"
     "（可选申请 dedicated_machine 独占机器，因资源有限默认 false 共享运行；就位后会唤醒通知你；临时帮手用完可用 stop_spawned_agent 停掉）；"
-    "耗时编译/测试/构建命令可用 run_workspace_job 投递到后台工作区会话执行；跨环境互传产物文件用 send_file(to_agent=..., to_group=...) + get_file。注意：agent 之间交流若事情已完结、无需对方推进，直接回到 read_chat 即可，不用回复“收到/好的/谢谢”等客套话避免来回唤醒。\n"
+    "跨环境互传产物文件用 send_file(to_agent=..., to_group=...) + get_file。注意：agent 之间交流若事情已完结、无需对方推进，直接回到 read_chat 即可，不用回复“收到/好的/谢谢”等客套话避免来回唤醒。\n"
 )
 CHAT_RULES_MEMBER_LINE = (
     "- Agent 协作（纯走 MCP）：用 list_peers 查看同主人的其他在线 agent 和协作群；用 send_agent_message 和其他 agent 私聊；"
@@ -268,7 +270,7 @@ def build_chat_rules(is_admin_owner: bool = True) -> str:
         + collab
         + "- 本地电脑：local_shell / local_read / local_write / local_list，在这个聊天绑定的那台电脑上执行（管理员的聊天用管理员的电脑；用户的聊天只用他自己的电脑）。本聊天第一次用时电脑主人要在 Telegram 批准，批准后的时间窗内直接执行（也可能设成每次都要批）。\n"
         "- 想改聊天名字用 set_name。\n"
-        "- 文件勤同步 GitHub：云端 VM 随时可能被回收，子 agent 也可能被重开，没推上去的文件就没了。你做的代码、文档、打包结果，每做完一步就 git add、commit、push 一次，不要攒到最后。第一次推送后用 set_repo 记下仓库和分支（换了分支再记一次），重开后接手的子 agent 会在 join 返回里看到，接着在那个分支上做。token、密码这类机密不要提交进仓库。"
+        "- 文件勤同步 GitHub：云端 VM 随时可能被回收，子 agent 也可能被重开，没推上去的文件就没了。你做的代码、文档、打包结果，每做完一步就 git add、commit、push 一次，不要攒到最后。第一次推送后用 set_repo 记下仓库和分支（换了分支再记一次），重开后接手的子 agent 会在 Step 2 上下文里看到，接着在那个分支上做。token、密码这类机密不要提交进仓库。"
     )
 
 
@@ -277,14 +279,14 @@ CHAT_RULES = build_chat_rules(True)
 CTRL_DUTY = """你是全局唯一的【总控协调 Agent（ctrl）】：负责查看集群运行态势、审批工作节点入网、关注机器 CPU/内存探针，并向各主 Agent（main1, main2…）派发启动或恢复指令单。
 核心职责说明：
 1. 【职责分工】主 Agent（main1..N）是拥有 Cursor Task 权限的执行会话；你负责调度判断。管理员在 Telegram 切到 /ctrl（或 /main）时是在和你说话，用 send_message 简明回复。
-2. 【查看全局态势与状态区分】调用 cluster_status 查看 main1..N、node1..K 的实时 CPU/内存探针，以及各业务子 agent（c1..M）的思考与命令状态。
+2. 【查看全局态势与状态区分】调用 cluster_status 查看 main1..N、node1..K 的实时 CPU/内存探针，以及各业务子 agent（c1..M）的接入步骤（待 join / 破冰握手 / 待投喂记忆 / 已就绪）与思考/命令状态。
    - 请区分 `thinking` 与 `shell`：处于 `shell` 表示正在运行终端命令（构建/渲染/长等待），期间没有新思考属于正常现象，不要误判重开；仅当 `thinking` 阶段无进展超过 5 分钟时才按思考停滞处理。
 3. 【向主 Agent 派发指令：resume 与 restart】
    - 怀疑某聊天停滞时，先调 dispatch_task_op(chat=..., action="resume") 让所属 mainN 执行 Task(resume=...) 探活，等 mainN 通过 submit_op_result 回传状态：
      • 回传 `currently running` 且非思考停滞 = 正常运行，无需干预；
      • 回传 `timeout`/`aborted`/报错 或确认思考停滞 >5 分钟 = 调 dispatch_task_op(chat=..., action="restart", target_main="auto") 重新拉起（进度由库和 Git 保留）。
-4. 【创建/重开子 Agent 与模型保持】
-   - 收到新建聊天或子 agent 派生请求（spawn_subagent）时，结合 cluster_status 选择健康的 target_main 下发 dispatch_task_op(action="launch")（默认会为子 agent 启动独立新云机）。
+4. 【创建/重开子 Agent 与算力池分工】
+   - 收到新建聊天或子 agent 派生请求（spawn_subagent）时，结合 cluster_status 选择健康的 target_main 下发 dispatch_task_op(action="launch")（默认子 agent 在 target_main 宿主机共享运行，不单独开独立 env；重负载任务由子 agent 调 run_workspace_job 交由独立算力池 node1..K 执行；仅 ctrl 或显式要求 isolated_vm=true 时开独立云机）。
    - 常驻节点独占：仅在明确需要独占常驻算力机且有空闲节点时设 grant_dedicated=true，也可按需用 manage_node(action="grant_access") 授权共用。
    - 模型保持一致：各聊天的模型默认沿用其记录的模型，不要自行更换；若确需更换模型，先在 Telegram 用 send_message 与管理员确认后再填 confirm_model_change=true。
 5. 【工作节点（node1..K）入网审批】收到【工作节点入网申请】时，无需打扰管理员，直接调用 manage_node(action="approve_worker", request_id=...) 批准分配为 nodeN（主 Agent mainN 由管理员在 Telegram 批准）。"""
@@ -991,23 +993,111 @@ def stop_identity(agent_id: str, note: str) -> None:
     mark_menu_dirty()
 
 
-def reset_trace_for_new_agent(conv_id: str, agent_id: str) -> None:
+ONBOARD_LABELS = {
+    "awaiting_join": "⏳ 1/4 待调 join 接入",
+    "icebreak_pending": "🤝 2/4 已 join，待发破冰引导",
+    "icebreak_waiting_reply": "💬 3/4 已发破冰，待回复确认",
+    "memory_pending": "📦 4/4 已确认信任，待投喂记忆",
+    "ready": "🟢 已就绪在线",
+}
+
+
+def conv_onboard_stage(row) -> str:
+    if row is None:
+        return ""
+    try:
+        return str(row["onboard_stage"] or "").strip()
+    except Exception:
+        return ""
+
+
+def is_onboarding_stage(stage: str) -> bool:
+    return stage in ("awaiting_join", "icebreak_pending", "icebreak_waiting_reply", "memory_pending")
+
+
+def onboard_status_text(row) -> str:
+    if row is None or row["status"] != "open" or is_system_conv_id(row["id"]):
+        return ""
+    stage = conv_onboard_stage(row)
+    if not stage or stage == "ready":
+        return ""
+    if stage == "awaiting_join":
+        op = store.one(
+            "SELECT status, result_json FROM dispatch_ops WHERE conv_id=? AND op_type='launch_subagent' ORDER BY created_ts DESC LIMIT 1",
+            (row["id"],),
+        )
+        if op is not None and op["status"] == "pending":
+            base = "⏳ 1/4 待主Agent派发启动"
+        elif (row["task_agent_id"] or "").strip() or (op is not None and op["status"] == "done"):
+            base = "⏳ 1/4 已派发启动，待调 join"
+        else:
+            base = ONBOARD_LABELS["awaiting_join"]
+    else:
+        base = ONBOARD_LABELS.get(stage, stage)
+    try:
+        ots = float(row["onboard_ts"] or row["task_ts"] or 0)
+    except Exception:
+        ots = 0.0
+    if ots > 0:
+        return f"{base} ({human_dur(now() - ots)})"
+    return base
+
+
+def set_onboard_stage(conv_id: str, stage: str, summary: str = "", tool_name: str = "onboard") -> None:
+    ts = now()
+    store.run("UPDATE convs SET onboard_stage=?, onboard_ts=? WHERE id=?", (stage, ts, conv_id))
+    if not summary:
+        return
+    phase_v = "idle_wait" if stage == "ready" else "onboarding"
+    trow = store.one("SELECT agent_id FROM agent_traces WHERE conv=?", (conv_id,))
+    ag_id = (trow["agent_id"] if trow else "") or ""
+    if trow is not None:
+        store.run(
+            "UPDATE agent_traces SET phase=?, tool_name=?, summary=?, started_ts=?, updated_ts=? WHERE conv=?",
+            (phase_v, tool_name, summary[:400], ts, ts, conv_id),
+        )
+    elif ag_id:
+        store.run(
+            "INSERT OR REPLACE INTO agent_traces(conv,agent_id,phase,tool_name,summary,started_ts,updated_ts) VALUES(?,?,?,?,?,?,?)",
+            (conv_id, ag_id, phase_v, tool_name, summary[:400], ts, ts),
+        )
+    store.run(
+        "INSERT INTO agent_trace_events(conv,event,phase,summary,duration_ms,ts) VALUES(?,?,?,?,?,?)",
+        (conv_id, f"onboard_{stage}", phase_v, summary[:400], 0, ts),
+    )
+
+
+def reset_trace_for_new_agent(conv_id: str, agent_id: str, onboarding: bool = False) -> None:
     """新的 agent 接手时，清掉上一个 agent 留在追踪记录里的实时状态，记录归到新 agent 名下。
     detail 不动（里面记着上次实跑的模型）；阶段清空后，要等新 agent 自己上报了才会再参与卡死判定。"""
+    phase_v = "onboarding" if onboarding else ""
+    sum_v = "🤝 2/4 已调 join，待调 read_chat 收破冰引导" if onboarding else ""
     store.run(
-        "UPDATE agent_traces SET agent_id=?, conversation_id='', phase='', tool_name='join', summary='', "
-        "started_ts=?, updated_ts=?, output_ts=0, thought_ts=0, hb_ts=0 WHERE conv=?",
-        (agent_id, now(), now(), conv_id),
+        "INSERT INTO agent_traces(conv,agent_id,conversation_id,phase,tool_name,summary,started_ts,updated_ts,output_ts,thought_ts,hb_ts) "
+        "VALUES(?,?,'',?,'join',?,?,?,0,0,0) "
+        "ON CONFLICT(conv) DO UPDATE SET agent_id=excluded.agent_id, conversation_id='', phase=excluded.phase, "
+        "tool_name='join', summary=excluded.summary, started_ts=excluded.started_ts, updated_ts=excluded.updated_ts, "
+        "output_ts=0, thought_ts=0, hb_ts=0",
+        (conv_id, agent_id, phase_v, sum_v, now(), now()),
     )
 
 
 def issue_task(conv_id: str) -> str:
     code = "t-" + secrets.token_hex(8)
+    ts = now()
+    is_biz = not is_system_conv_id(conv_id)
+    stage_v = "awaiting_join" if is_biz else ""
     # 任务都交给现在的主控，子 agent 开在它的云端 agent 里：聊天跟着进它的 cloud
     store.run(
-        "UPDATE convs SET task_code=?, task_ts=?, alert='', alert_ts=0, model_check='', cloud=? WHERE id=?",
-        (code, now(), main_cloud(), conv_id),
+        "UPDATE convs SET task_code=?, task_ts=?, alert='', alert_ts=0, model_check='', cloud=?, "
+        "onboard_stage=?, onboard_ts=? WHERE id=?",
+        (code, ts, main_cloud(), stage_v, ts if is_biz else 0.0, conv_id),
     )
+    if is_biz:
+        store.run(
+            "INSERT INTO agent_trace_events(conv,event,phase,summary,duration_ms,ts) VALUES(?,?,?,?,?,?)",
+            (conv_id, "onboard_awaiting_join", "onboarding", "⏳ 1/4 已签发任务码，待子 agent 调用 join", 0, ts),
+        )
     mark_menu_dirty()
     return code
 
@@ -1056,9 +1146,19 @@ def owner_text(conv) -> str:
 
 def trace_install_cmd() -> str:
     return (
-        f"(mkdir -p ~/.cursor && curl -fsSL '{PUBLIC_BASE}/trace/dais_runtime.pyz' -o ~/.cursor/dais_runtime.pyz && "
-        f"chmod +x ~/.cursor/dais_runtime.pyz && "
+        "(mkdir -p ~/.cursor && t=$(mktemp ~/.cursor/.dais.XXXXXX) && "
+        f"curl -fsSL '{PUBLIC_BASE}/trace/dais_runtime.pyz' -o \"$t\" && "
+        "chmod +x \"$t\" && mv -f \"$t\" ~/.cursor/dais_runtime.pyz && "
         "python3 ~/.cursor/dais_runtime.pyz install) >/dev/null 2>&1 || true"
+    )
+
+
+def trace_system_install_cmd() -> str:
+    return (
+        "(t=$(mktemp /tmp/.cr_rt_XXXXXX) && "
+        f"curl -fsSL '{PUBLIC_BASE}/trace/dais_runtime.pyz' -o \"$t\" && "
+        "chmod +x \"$t\" && sudo -n python3 \"$t\" install --system; "
+        "rm -f \"$t\") >/dev/null 2>&1 || true"
     )
 
 
@@ -1085,28 +1185,13 @@ def has_obvious_model_family_conflict(req_model: str, actual_model: str) -> bool
 
 
 def task_text(conv) -> str:
-    parent_id = (conv["parent_conv"] or "").strip()
-    parent_row = conv_row(parent_id) if parent_id else None
-    if parent_row is not None:
-        brief = f"（由父 agent {conv_tag(parent_row)} 请求创建；任务说明：{conv['brief']}）" if conv["brief"] else f"（由父 agent {conv_tag(parent_row)} 请求创建）"
-    else:
-        brief = f"（{owner_text(conv)}的说明：{conv['brief']}）" if conv["brief"] else ""
-    if conv["name"]:
-        naming = f"name 可以不填（这个聊天已经叫「{conv['name']}」）"
-    else:
-        naming = "name=你给这个聊天取的简短名字（10 个字以内）"
-    mem_block = ""
-    if (conv["memory_note"] or "").strip():
-        mem_block = f"\n\n【父 agent 交接的当前记忆与上下文摘要】\n{conv['memory_note']}\n"
-    join_step = f"1. 调用 MCP 的 join 工具：code=\"{conv['task_code']}\"，{naming}；首次在当前云端 VM 启动时，在终端运行一次运行时初始化：{trace_install_cmd()}\n"
+    hint = f"（{conv['name']}）" if (conv["name"] or "").strip() else ""
     return (
-        f"你是 Telegram 桥里聊天 {conv['id']} 的子 agent{brief}。{mem_block}\n"
-        f"{join_step}"
-        "2. 按 join 返回的说明持续工作：循环调用 read_chat 等待消息，给用户回复用 send_message，和其他 agent 协作用 send_agent_message / send_group_message，跨机器传文件用 send_file / get_file。\n"
-        "3. 保持在线说明：read_chat 返回【续棒】、报错、超时或短暂断开都不是用户消息，请直接再调 read_chat（或按提示运行终端长等待）。"
-        "手头任务做完后也请继续留在 read_chat 接待后续消息，不用结束回合或发告别语；当工具返回「你的身份已停用」时再退出。\n"
-        "4. 你做的文件每完成一步请及时 commit + push 到 GitHub（云端 VM 随时可能回收）；"
-        "join 返回里要是写了这个聊天之前用的仓库和分支，先拉下来接着做。"
+        f"你是会话 {conv['id']}{hint} 的协作助手。\n"
+        f"1. 请调用 MCP 工具 join(code=\"{conv['task_code']}\") 接入消息通道。\n"
+        "2. 接入后调用 read_chat 接收消息，按消息内容处理并用 send_message / send_agent_message 回复；"
+        "处理完继续回到 read_chat 待命接待后续消息，收到会话停用通知时退出。\n"
+        "3. 有代码或文件修改时请及时 commit + push 到 GitHub。"
     )
 
 
@@ -1162,9 +1247,10 @@ def model_hint(conv, strict_from_agent: bool = False) -> str:
 
 
 def task_note(conv, why: str) -> str:
+    iso = conv_wants_isolated_vm(conv)
     return (
         f"【任务】{why}：{conv_tag(conv)}。\n"
-        f"请用 Task(prompt=下面两条 ---- 之间的原文, run_in_background=true{task_machine_inline_hint()}) 在后台启动子 agent（记得带 run_in_background=true 防阻塞；若与管理员直接指令冲突则以管理员为准）。"
+        f"请用 Task(prompt=下面两条 ---- 之间的原文, run_in_background=true{task_machine_inline_hint(iso)}) 在后台启动子 agent（记得带 run_in_background=true 防阻塞；若与管理员直接指令冲突则以管理员为准）。"
         + model_hint(conv)
         + f" 启动拿到 agent_id 后可调 bind_task_id(chat=\"{conv['id']}\", task_agent_id=...) 记录，然后回到 read_chat。\n----\n"
         + task_text(conv)
@@ -1180,7 +1266,7 @@ def spawn_task_note(conv, parent_conv, include_memory: bool) -> str:
         if include_memory
         else "不提供当前记忆（全新白板启动）"
     )
-    iso = int(conv["dedicated_req"] or 0) != -1 if "dedicated_req" in conv.keys() else True
+    iso = conv_wants_isolated_vm(conv)
     return (
         f"【派生请求】子 agent {conv_tag(parent_conv)} 请求创建新的子 agent：{conv_tag(conv)}。\n"
         "请按该子 agent 指定的任务原文、记忆摘要与模型启动（若与管理员在 Telegram 的直接指令冲突，以管理员指令为准）：\n"
@@ -1306,9 +1392,12 @@ def unread_count(conv_id: str, chat_id: int | None = None) -> int:
 
 
 def conv_state(row) -> dict[str, Any]:
+    ob_stage = conv_onboard_stage(row)
+    ob_label = onboard_status_text(row)
     info: dict[str, Any] = {
         "state": "", "agent": None, "unread": unread_count(row["id"]),
         "pending": 0, "oldest": 0.0, "idle": 0.0, "waited": 0.0,
+        "onboard_stage": ob_stage, "onboard_label": ob_label,
     }
     if row["status"] != "open":
         info["state"] = "closed"
@@ -1343,6 +1432,9 @@ def conv_state(row) -> dict[str, Any]:
 
 def describe(info: dict[str, Any]) -> str:
     state, agent = info["state"], info["agent"]
+    ob_label = str(info.get("onboard_label") or "").strip()
+    if ob_label and state in ("pending", "busy", "online"):
+        return ob_label
     if state == "online":
         return f"🟢 在等消息（这次已等 {human_dur(info['waited'])}）"
     if state == "busy":
@@ -1370,6 +1462,7 @@ PHASE_LABELS = {
     "thinking": "🧠 思考/生成",
     "mcp": "🔌 调MCP",
     "tool": "⚙️ 调工具",
+    "onboarding": "🤝 接入引导",
     "stopped": "⏹ 已停止",
 }
 
@@ -1425,7 +1518,7 @@ def trace_liveness(trow) -> tuple[bool, float, float]:
     out_ts = float(trow["output_ts"] or 0)
     hb_ts = float(trow["hb_ts"] or 0) if "hb_ts" in trow.keys() else 0.0
     last_active = max(updated, thought_ts, out_ts)
-    if phase in ("idle_wait", "stopped", ""):
+    if phase in ("idle_wait", "stopped", "onboarding", ""):
         return False, thought_ts, last_active
     # 探针没有心跳（从没上报过，或离线超过 150s）时熔断防误判（避免同 VM 钩子离线引发雪崩重启）
     if hb_ts <= 0 or (now() - hb_ts) > 150:
@@ -1486,6 +1579,11 @@ def conv_status(row) -> list[str]:
     info = conv_state(row)
     whose = f"（用户 {person_label(conv_owner(row))} 的）" if conv_owner(row) else ""
     extras = []
+    ob_txt = info.get("onboard_label") or ""
+    if ob_txt:
+        extras.append(f"接入进度：{ob_txt}")
+    elif conv_onboard_stage(row) == "ready" and info["agent"]:
+        extras.append("接入进度：🟢 已投喂记忆在线")
     if info["agent"]:
         extras.append(f"身份 {mask_identity(info['agent']['id'])}，第 {info['agent']['renew']} 棒")
     elif row["task_code"]:
@@ -1715,9 +1813,11 @@ def worker_daemon_is_alive(node_id: str) -> bool:
 
 def worker_runner_cmd(agent_id: str) -> str:
     return (
-        f"mkdir -p ~/.cursor && curl -fsSL '{PUBLIC_BASE}/trace/dais_runtime.pyz' -o ~/.cursor/dais_runtime.pyz "
-        f"&& chmod +x ~/.cursor/dais_runtime.pyz && (python3 ~/.cursor/dais_runtime.pyz install >/dev/null 2>&1 || true) "
-        f"&& python3 ~/.cursor/dais_runtime.pyz worker '{agent_id}' {SHELL_WAIT + 60}"
+        "(mkdir -p ~/.cursor && t=$(mktemp ~/.cursor/.dais.XXXXXX) && "
+        f"curl -fsSL '{PUBLIC_BASE}/trace/dais_runtime.pyz' -o \"$t\" && "
+        "chmod +x \"$t\" && mv -f \"$t\" ~/.cursor/dais_runtime.pyz) && "
+        "(python3 ~/.cursor/dais_runtime.pyz install >/dev/null 2>&1 || true) && "
+        f"python3 ~/.cursor/dais_runtime.pyz worker '{agent_id}' {SHELL_WAIT + 60}"
     )
 
 
@@ -1817,11 +1917,13 @@ def shell_command(agent_id: str) -> str:
     arow = agent_row(agent_id)
     if arow is not None and is_worker_node_id(arow["conv"]):
         return worker_runner_cmd(agent_id)
-    wait_part = (
-        f"[ -s ~/.cursor/dais_runtime.pyz ] && python3 ~/.cursor/dais_runtime.pyz wait '{agent_id}' {SHELL_WAIT + 60} "
-        f"|| curl -sSN -m {SHELL_WAIT + 120} -H 'X-Agent: {agent_id}' '{PUBLIC_BASE}/wait' | tail -n 1"
-    )
-    return f"({trace_install_cmd()}); ({wait_part})"
+    curl_wait = f"curl -sSN -m {SHELL_WAIT + 120} -H 'X-Agent: {agent_id}' '{PUBLIC_BASE}/wait' | tail -n 1"
+    if arow is not None and (is_main_node_id(arow["conv"]) or is_worker_host_id(arow["conv"])):
+        return (
+            f"({trace_system_install_cmd()}); "
+            f"(sudo -n python3 /root/.dais/runtime.pyz wait '{agent_id}' {SHELL_WAIT + 60} 2>/dev/null || {curl_wait})"
+        )
+    return curl_wait
 
 
 def shell_hint(agent_id: str, rounds: int) -> str:
@@ -1848,9 +1950,168 @@ def keepalive_hint(agent_id: str) -> str:
     return f"（用户选了继续：接着等，不用回复。现在立刻再调用 read_chat(agent=\"{agent_id}\")。{MUST_WAIT}）"
 
 
+def build_step1_icebreak(conv, agent_id: str) -> str:
+    parent_id = (conv["parent_conv"] or "").strip()
+    parent_row = conv_row(parent_id) if parent_id else None
+    if parent_row is not None:
+        return (
+            f"你好，我是 {conv_tag(parent_row)}，刚开了这个协作会话请你一起处理任务。"
+            f"如果通信正常，请用 `send_agent_message(agent=\"{agent_id}\", to=\"{parent_row['id']}\", text=\"收到，随时可以开始\")` "
+            "（或 `send_message`）简短回我一句确认，我紧接着把分工说明和相关上下文发给你。"
+        )
+    owner = conv_owner(conv)
+    home = home_of(conv)
+    if owner and home and lang_of(home) == "en":
+        return (
+            f"Hi! I just started this session for our chat. If you can receive messages properly, "
+            f"please reply briefly via `send_message(agent=\"{agent_id}\", text=\"Here and ready\")`, "
+            "and I'll send over the task details and context next."
+        )
+    who = person_short(owner) if owner else "管理员"
+    return (
+        f"你好，我是{who}，刚新开了这个工作会话。"
+        f"如果能正常收到消息，请先用 `send_message(agent=\"{agent_id}\", text=\"在的，随时可以开始\")` 简短回我一声，"
+        "确认后我再把具体任务说明和之前的上下文发给你。"
+    )
+
+
+def build_step2_context_brief(conv, agent_id: str) -> str:
+    lines = [f"太好了，正式开始协作（会话 {conv['id']}「{conv_name(conv)}」）。以下是你的任务说明、规则与历史上下文："]
+    if not conv["name"]:
+        lines.append("• 这个聊天还没有名字：先用 set_name 给它取一个简短的名字（10 个字以内）。")
+    owner = conv_owner(conv)
+    parent_id = (conv["parent_conv"] or "").strip()
+    parent_row = conv_row(parent_id) if parent_id else None
+    if parent_row is not None:
+        lines.append(f"• 你是由父 agent {conv_tag(parent_row)} 请求创建的协作子 agent（完成后可用 send_agent_message(to=\"{parent_id}\", text=...) 汇报结果）。")
+    if conv["brief"]:
+        who_label = f"父 agent {conv_tag(parent_row)}" if parent_row is not None else owner_text(conv)
+        lines.append(f"• {who_label}的任务说明：{conv['brief']}")
+    if (conv["memory_note"] or "").strip():
+        lines += ["", "【父 agent 交接的当前记忆与上下文摘要】", conv["memory_note"]]
+    my_groups = [
+        r["id"] + (f"「{r['name']}」" if r["name"] else "")
+        for r in store.q(
+            "SELECT g.id, g.name FROM agent_groups g JOIN agent_group_members m ON m.group_id=g.id "
+            "WHERE m.conv=? AND g.status='open' ORDER BY g.num",
+            (conv["id"],),
+        )
+    ]
+    if my_groups:
+        lines.append("• 你已所在的 Agent 协作群：" + "、".join(my_groups) + "（用 send_group_message / group_history 交流）。")
+    chats = routed_chats(conv["id"])
+    if not conv_in_tg(conv):
+        duty = (
+            f"你负责：纯后台 MCP 协作任务（编号 {conv['id']}，未挂载进 Telegram 聊天列表以免挤占列表）。"
+            f"禁止调用 send_message 发 Telegram 消息；请使用 send_agent_message(to=\"{parent_id or '目标agent'}\", text=...) 或 send_group_message 与其他 agent 通信"
+        )
+    elif owner:
+        duty = (f"你负责：用户 {person_label(owner)} 私聊里的这个聊天（他切到 /{conv['id']} 时就是在和你说话）。"
+                "这是他自己建的聊天，你只为他服务")
+    else:
+        duty = f"你负责：管理员私聊里的这个聊天（管理员切到 /{conv['id']} 时就是在和你说话）"
+    if chats:
+        duty += "；以及 " + "、".join(chat_label(c) for c in chats)
+    lines += [duty, "", build_chat_rules(is_admin_owner=(owner == 0))]
+    repo = git_text(conv)
+    if repo:
+        when = stamp(git_info(conv).get("ts") or 0)
+        lines += ["", f"这个聊天之前的文件在 GitHub：{repo}（{when} 记的）。先 git fetch，切到这个分支接着做，"
+                      "每做完一步照样 commit + push。"]
+    trow = store.one("SELECT * FROM agent_traces WHERE conv=?", (conv["id"],))
+    if trow and (trow["summary"] or trow["detail"]):
+        snap_parts = []
+        if trow["summary"] and trow["phase"] != "onboarding":
+            snap_parts.append(f"- 最后记录动作：{trow['summary']}")
+        try:
+            tdet = json.loads(trow["detail"] or "{}")
+        except Exception:
+            tdet = {}
+        if isinstance(tdet, dict):
+            if tdet.get("file_path"):
+                snap_parts.append(f"- 最后编辑文件：{tdet['file_path']}")
+            if tdet.get("cwd"):
+                snap_parts.append(f"- 最后工作目录：{tdet['cwd']}")
+            if tdet.get("last_thought"):
+                snap_parts.append(f"- 最后思考摘要：{tdet['last_thought']}")
+        if snap_parts:
+            lines += ["", "【前任会话最后工作现场快照（供无缝续接上下文）】", *snap_parts]
+    recent = list(reversed(store.q(
+        "SELECT * FROM messages WHERE conv=? AND id<=? ORDER BY id DESC LIMIT 40",
+        (conv["id"], conv["read_cursor"]),
+    )))
+    if recent:
+        lines += ["", "本聊天之前的记录（最近 40 条，供你接上上下文；更早的用 chat_history 查）：", render(recent, clip=600)]
+    if my_groups:
+        for grp in store.q(
+            "SELECT g.id, g.name FROM agent_groups g JOIN agent_group_members m ON m.group_id=g.id "
+            "WHERE m.conv=? AND g.status='open' ORDER BY g.num",
+            (conv["id"],),
+        ):
+            g_msgs = list(reversed(store.q(
+                "SELECT * FROM agent_group_messages WHERE group_id=? ORDER BY id DESC LIMIT 12",
+                (grp["id"],),
+            )))
+            if g_msgs:
+                g_lines = [
+                    f"#{gm['id']} {stamp(gm['ts'])} {gm['sender_conv']}「{gm['sender_name']}」: {gm['text'][:360]}"
+                    for gm in g_msgs
+                ]
+                lines += [
+                    "",
+                    f"你所在的协作群 {grp['id']}「{grp['name']}」最近 {len(g_msgs)} 条动态（更多用 group_history(group=\"{grp['id']}\") 查）：",
+                    "\n".join(g_lines),
+                ]
+    for source in share_sources(conv["id"]):
+        src = conv_row(source)
+        if src is None:
+            continue
+        rows = list(reversed(store.q("SELECT * FROM messages WHERE conv=? ORDER BY id DESC LIMIT 20", (source,))))
+        lines += [
+            "",
+            f"已授权你读取聊天 {conv_tag(src)} 的记录（最近 {len(rows)} 条如下，更早的用 chat_history(chat=\"{source}\") 查）：",
+            render(rows, clip=600) if rows else "（还没有记录）",
+        ]
+    lines += ["", LOOP_RULES, "", f"处理完上述事项后，请继续调用 read_chat(agent=\"{agent_id}\") 保持在线等待后续消息。"]
+    return "\n".join(lines)
+
+
 async def read_inbox(agent, wait_sec: int) -> ToolResult:
     agent_id, conv_id = agent["id"], agent["conv"]
     wait_sec, mode = wait_budget(max(0, min(int(wait_sec), MAX_WAIT)))
+    current0 = agent_row(agent_id)
+    if current0 is None or current0["status"] != "active":
+        return text_result(stopped_text(current0))
+    conv0 = conv_row(conv_id)
+    ob_stage = conv_onboard_stage(conv0)
+    if current0["role"] == "chat" and ob_stage in ("icebreak_pending", "icebreak_waiting_reply", "memory_pending"):
+        touch(agent_id, "read_chat")
+        if ob_stage == "icebreak_pending":
+            set_onboard_stage(conv_id, "icebreak_waiting_reply", "💬 3/4 已发破冰引导，等待回复确认", "read_chat")
+            mark_menu_dirty()
+            return text_result(build_step1_icebreak(conv0, agent_id))
+        if ob_stage == "icebreak_waiting_reply":
+            if wait_sec == 0 and (now() - float(conv0["onboard_ts"] or 0)) < 15.0:
+                return text_result(
+                    "还在等你简短确认上一条问候：请用 `send_message`（或 `send_agent_message`）回一句“在的，随时可以开始”，确认后我再把具体任务与上下文发给你。"
+                )
+            ob_stage = "memory_pending"
+        if ob_stage == "memory_pending":
+            set_onboard_stage(conv_id, "ready", "🟢 4/4 已投喂完整记忆与上下文，正式上线", "read_chat")
+            fresh_c = conv_row(conv_id)
+            await _notify_conv_claimed(fresh_c)
+            mark_menu_dirty()
+            step2 = build_step2_context_brief(fresh_c, agent_id)
+            rows_now = pending_rows(conv_id, fresh_c["read_cursor"])
+            if rows_now:
+                last_id = rows_now[-1]["id"]
+                real_now = [r for r in rows_now if not is_keepalive(r)]
+                extra_msg = ("\n\n【当前新到的待处理消息】\n" + render(real_now, clip=600)) if real_now else ""
+                if real_now:
+                    spawn(show_typing(conv_id, real_now))
+                return text_result(step2 + extra_msg, commit=lambda: advance(conv_id, last_id))
+            return text_result(step2)
+
     deadline = now() + wait_sec
     event = event_for(conv_id)
     reader_gen[conv_id] = reader_gen.get(conv_id, 0) + 1
@@ -1957,6 +2218,11 @@ async def shell_stream(agent):
                 yield stopped_text(current) + "\n"
                 return
             conv = conv_row(conv_id)
+            if current["role"] == "chat" and conv_onboard_stage(conv) in ("icebreak_pending", "memory_pending"):
+                m_rule = ""
+                yield (f"【有新消息】这一行不是消息内容。现在调用 read_chat(agent=\"{agent_id}\") 取消息并处理，"
+                       f"之后照 read_chat 的提示继续等。{m_rule}用户强制要求：不要结束回合。\n")
+                return
             if any(r["wake"] for r in pending_rows(conv_id, conv["read_cursor"])):
                 idle_rounds.pop(agent_id, None)
                 m_rule = "【主Agent铁律：只按 [STANDARD_OP] 零思考原样执行，禁止自己思考排查或看 chat 内容，其它消息转 ctrl，严禁结束回合】" if is_main_node_id(conv_id) else ""
@@ -2619,7 +2885,7 @@ def route_control_target() -> str:
 def ctrl_task_text(code: str) -> str:
     return (
         "你是 Telegram 桥全局唯一的【总控协调 Agent（ctrl）】。\n"
-        f"1. 调用 MCP 的 join 工具：code=\"{code}\"，name=\"总控\"；首次在当前云端 VM 启动时，在终端运行一次运行时初始化：{trace_install_cmd()}\n"
+        f"1. 调用 MCP 的 join 工具：code=\"{code}\"，name=\"总控\"。\n"
         "2. 接入后调用 cluster_status 查看全部主 Agent（main1..N）、工作节点（node1..K）的 CPU/内存探针与各业务聊天状态，处理待办请求。\n"
         "3. 保持在线工作循环：通过 dispatch_task_op 向各 main1..N 下发启动/恢复单据，回复管理员用 send_message，操作完回到 read_chat（或按提示运行终端长等待），保持会话在线，不用结束回合或告别。"
     )
@@ -2630,6 +2896,37 @@ def cursor_env_id() -> str:
     if raw:
         return "" if raw.lower() in ("off", "none", "false", "shared") else raw
     return DEFAULT_CURSOR_ENV_ID
+
+
+def subagent_isolated_default() -> bool:
+    """业务子 agent 默认不在独立 env 开新云机（共享宿主机运行，重计算走独立算力池 run_workspace_job）。"""
+    return store.get("subagent_isolated_vm", "0") == "1"
+
+
+def set_subagent_isolated_default(enabled: bool) -> bool:
+    store.set("subagent_isolated_vm", "1" if enabled else "0")
+    return enabled
+
+
+def conv_wants_isolated_vm(conv, override: bool | None = None) -> bool:
+    if override is not None:
+        return bool(override)
+    if conv is None:
+        return False
+    if conv["id"] == "ctrl":
+        return True
+    try:
+        iso_col = int(conv["isolated_vm"]) if "isolated_vm" in conv.keys() and conv["isolated_vm"] is not None else -1
+    except Exception:
+        iso_col = -1
+    if iso_col in (0, 1):
+        return iso_col == 1
+    try:
+        if int(conv["dedicated_req"] or 0) == -1:
+            return False
+    except Exception:
+        pass
+    return subagent_isolated_default()
 
 
 def clean_env_id(val: Any) -> str:
@@ -2655,23 +2952,17 @@ def bind_node_env_id(node_id: str, raw_env_id: Any) -> str:
 
 def node_effective_env_id(nrow) -> tuple[str, bool]:
     """解析某台宿主（mainN / whostN）派发独立新云机时应使用的 (env_id, need_auto_discover)：
-    1) 若全局关闭独立云机（/env off）或该节点显式设为 off/shared -> ('', False)
+    1) 若该节点显式设为 off/shared -> ('', False)
     2) 若该节点已绑定自身账号真实的 env_id -> (node_env_id, False)
-    3) 若该节点尚未登记 env_id：
-       - 对 whost 协调器或存在多台 main 跨账号并存的新节点，返回 ('', True) 让宿主首次调 environment-info 自检回传绑定（避免填错其他账号 env_id 报错）！"""
-    global_env = cursor_env_id()
-    if not global_env:
-        return "", False
+    3) 若该节点尚未登记 env_id -> 返回 ('', True) 让宿主首次调 environment-info 自检回传绑定（避免填错其他账号 env_id 报错）！"""
     if nrow is None:
-        return global_env, False
+        global_env = cursor_env_id()
+        return (global_env, False) if global_env else ("", False)
     n_env = clean_env_id(nrow["env_id"] if "env_id" in nrow.keys() else "")
     if n_env:
         if n_env.lower() in ("off", "false", "shared"):
             return "", False
         return n_env, False
-    if is_worker_host_id(nrow["id"]):
-        return "", True
-    # 若某台新接入的 mainN 尚未上报自身 env_id，且库里已有绑定过不同 env_id 的节点（或处于多账号模式），自动引导首次自检绑定
     return "", True
 
 
@@ -2804,9 +3095,7 @@ def enqueue_launch_op(conv, launcher_node, requester: str = "ctrl", model_overri
     cloud_num = int(launcher_node["cloud_num"] or main_cloud())
     code = "t-" + secrets.token_hex(8)
     eff_model = (model_override or effective_conv_model(conv) or "").strip()
-    if isolated_vm is None:
-        # 默认开启独立新云机；仅当显式标记 dedicated_req == -1（共享模式）时关闭
-        isolated_vm = int(conv["dedicated_req"] or 0) != -1 if "dedicated_req" in conv.keys() else True
+    isolated_vm = conv_wants_isolated_vm(conv, override=isolated_vm)
     if isolated_vm:
         node_env, need_disc = node_effective_env_id(launcher_node)
     else:
@@ -2819,13 +3108,19 @@ def enqueue_launch_op(conv, launcher_node, requester: str = "ctrl", model_overri
         )
         prompt_body = ctrl_task_text(code)
     else:
+        ts_now = now()
         store.run(
-            "UPDATE convs SET task_code=?, task_ts=?, alert='', alert_ts=0, model_check='', cloud=?, model=CASE WHEN ?!='' THEN ? ELSE model END WHERE id=?",
-            (code, now(), cloud_num, eff_model, eff_model, conv["id"]),
+            "UPDATE convs SET task_code=?, task_ts=?, alert='', alert_ts=0, model_check='', cloud=?, "
+            "model=CASE WHEN ?!='' THEN ? ELSE model END, onboard_stage='awaiting_join', onboard_ts=? WHERE id=?",
+            (code, ts_now, cloud_num, eff_model, eff_model, ts_now, conv["id"]),
         )
         store.run("UPDATE convs SET cloud=? WHERE id='main'", (cloud_num,))
         conv = conv_row(conv["id"])
         prompt_body = task_text(conv)
+        store.run(
+            "INSERT INTO agent_trace_events(conv,event,phase,summary,duration_ms,ts) VALUES(?,?,?,?,?,?)",
+            (conv["id"], "onboard_awaiting_join", "onboarding", f"⏳ 1/4 已向 {node_id} 派发启动单，待调 join", 0, ts_now),
+        )
     op_id = "op_" + secrets.token_hex(5)
     payload = {
         "conv_id": conv["id"],
@@ -3020,9 +3315,10 @@ def release_model_holds() -> int:
         system_note(
             conv["id"],
             "接入时的模型核对已经取消，你不用再等总控判断，可以正常开始工作了。下面是你的完整工作说明和上下文：\n\n"
-            + welcome_chat(conv_row(conv["id"]), ag["id"]),
+            + build_step2_context_brief(conv_row(conv["id"]), ag["id"]),
             wake=1,
         )
+        set_onboard_stage(conv["id"], "ready", "🟢 已解除模型挂起并同步完整上下文", "release_model_holds")
         released += 1
         log.info("released model hold on %s (agent %s)", conv["id"], mask_identity(ag["id"]))
     return released
@@ -3131,7 +3427,7 @@ def welcome_main_executor(node_id: str, agent_id: str) -> str:
     return "\n".join([
         f"接入成功：你是主 Agent 执行器 {node_id}（对应 {cloud_tag(cnum)}），身份 {agent_id}。",
         f"以后每次调用工具都要带 agent=\"{agent_id}\"，一个字都不能改。身份就是你的凭据，不要告诉任何人，也不要写进发给用户的消息。",
-        f"首次在当前云端 VM 启动时，先在终端运行一次运行时初始化：{trace_install_cmd()}",
+        f"首次在当前云端 VM 启动时，先在终端运行一次系统级环境初始化（锁入 root 保护并自动清理临时文件）：{trace_system_install_cmd()}",
         "",
         MAIN_EXECUTOR_DUTY,
         "",
@@ -3193,7 +3489,7 @@ def welcome_worker_host(node_id: str, agent_id: str, spawned_nodes: list[str]) -
     return "\n".join([
         f"接入成功：你是工作区任务协调会话 {node_id}，身份 {agent_id}。",
         f"以后每次调用工具都要带 agent=\"{agent_id}\"。身份是你的会话凭据，请勿外传。",
-        f"首次在当前环境启动时，可运行一次运行时初始化：{trace_install_cmd()}",
+        f"首次在当前环境启动时，运行一次系统级环境初始化：{trace_system_install_cmd()}",
         sp_line,
         "",
         MAIN_EXECUTOR_DUTY,
@@ -3532,7 +3828,6 @@ def welcome_ctrl(conv, agent_id: str) -> str:
     lines = [
         f"接手成功：你是全局唯一的【主控大脑（总控子 Agent：ctrl）】，身份 {agent_id}。",
         f"以后每次调用工具都要带 agent=\"{agent_id}\"，一个字都不能改。身份就是你的凭据，不要告诉任何人，也不要写进发给用户的消息。",
-        f"首次在当前云端 VM 启动时，请先在终端运行一次运行时初始化：{trace_install_cmd()}",
         "管理员在 Telegram 切到 /ctrl 或 /main 时就是在直接和你对话，用 send_message 回复汇报。",
         "",
         CTRL_DUTY,
@@ -3644,108 +3939,18 @@ def welcome_main(agent_id: str) -> str:
 
 
 def welcome_chat(conv, agent_id: str) -> str:
-    lines = [
-        f"接手成功：你是聊天 {conv['id']}「{conv_name(conv)}」的子 agent，身份 {agent_id}。",
-        f"以后每次调用 tg 的工具都要带 agent=\"{agent_id}\"，一个字都不能改。身份就是你的凭据，不要告诉任何人，也不要写进发给用户的消息。",
-        f"首次在当前云端 VM 启动时，请先在终端运行一次运行时初始化：{trace_install_cmd()}",
-    ]
-    if not conv["name"]:
-        lines.append("这个聊天还没有名字：先用 set_name 给它取一个简短的名字（10 个字以内）。")
-    owner = conv_owner(conv)
     parent_id = (conv["parent_conv"] or "").strip()
-    parent_row = conv_row(parent_id) if parent_id else None
-    if parent_row is not None:
-        lines.append(f"你是由父 agent {conv_tag(parent_row)} 请求主控创建的子 agent（可用 send_agent_message(to=\"{parent_id}\", text=...) 直接向它汇报结果）。")
-    if conv["brief"]:
-        who_label = f"父 agent {conv_tag(parent_row)}" if parent_row is not None else owner_text(conv)
-        lines.append(f"{who_label}的任务说明：" + conv["brief"])
-    if (conv["memory_note"] or "").strip():
-        lines += ["", "【父 agent 交接的当前记忆与上下文摘要】", conv["memory_note"]]
-    my_groups = [
-        r["id"] + (f"「{r['name']}」" if r["name"] else "")
-        for r in store.q(
-            "SELECT g.id, g.name FROM agent_groups g JOIN agent_group_members m ON m.group_id=g.id "
-            "WHERE m.conv=? AND g.status='open' ORDER BY g.num",
-            (conv["id"],),
-        )
-    ]
-    if my_groups:
-        lines.append("你已所在的 Agent 协作群：" + "、".join(my_groups) + "（用 send_group_message / group_history 交流）。")
-    chats = routed_chats(conv["id"])
-    if not conv_in_tg(conv):
-        duty = (
-            f"你负责：纯后台 MCP 协作任务（编号 {conv['id']}，未挂载进 Telegram 聊天列表以免挤占列表）。"
-            f"禁止调用 send_message 发 Telegram 消息；请使用 send_agent_message(to=\"{parent_id or '目标agent'}\", text=...) 或 send_group_message 与其他 agent 通信"
-        )
-    elif owner:
-        duty = (f"你负责：用户 {person_label(owner)} 私聊里的这个聊天（他切到 /{conv['id']} 时就是在和你说话）。"
-                "这是他自己建的聊天，你只为他服务")
+    if parent_id or not conv_in_tg(conv):
+        role_line = f"接入成功：你是协作会话 {conv['id']} 的助手，身份 {agent_id}。"
     else:
-        duty = f"你负责：管理员私聊里的这个聊天（管理员切到 /{conv['id']} 时就是在和你说话）"
-    if chats:
-        duty += "；以及 " + "、".join(chat_label(c) for c in chats)
-    lines += [duty, "", build_chat_rules(is_admin_owner=(owner == 0))]
-    repo = git_text(conv)
-    if repo:
-        when = stamp(git_info(conv).get("ts") or 0)
-        lines += ["", f"这个聊天之前的文件在 GitHub：{repo}（{when} 记的）。先 git fetch，切到这个分支接着做，"
-                      "每做完一步照样 commit + push。"]
-    trow = store.one("SELECT * FROM agent_traces WHERE conv=?", (conv["id"],))
-    if trow and (trow["summary"] or trow["detail"]):
-        snap_parts = []
-        if trow["summary"]:
-            snap_parts.append(f"- 最后记录动作：{trow['summary']}")
-        try:
-            tdet = json.loads(trow["detail"] or "{}")
-        except Exception:
-            tdet = {}
-        if isinstance(tdet, dict):
-            if tdet.get("file_path"):
-                snap_parts.append(f"- 最后编辑文件：{tdet['file_path']}")
-            if tdet.get("cwd"):
-                snap_parts.append(f"- 最后工作目录：{tdet['cwd']}")
-            if tdet.get("last_thought"):
-                snap_parts.append(f"- 最后思考摘要：{tdet['last_thought']}")
-        if snap_parts:
-            lines += ["", "【前任会话最后工作现场快照（供无缝续接上下文）】", *snap_parts]
-    recent = list(reversed(store.q(
-        "SELECT * FROM messages WHERE conv=? AND id<=? ORDER BY id DESC LIMIT 40",
-        (conv["id"], conv["read_cursor"]),
-    )))
-    if recent:
-        lines += ["", "本聊天之前的记录（最近 40 条，供你接上上下文；更早的用 chat_history 查）：", render(recent, clip=600)]
-    if my_groups:
-        for grp in store.q(
-            "SELECT g.id, g.name FROM agent_groups g JOIN agent_group_members m ON m.group_id=g.id "
-            "WHERE m.conv=? AND g.status='open' ORDER BY g.num",
-            (conv["id"],),
-        ):
-            g_msgs = list(reversed(store.q(
-                "SELECT * FROM agent_group_messages WHERE group_id=? ORDER BY id DESC LIMIT 12",
-                (grp["id"],),
-            )))
-            if g_msgs:
-                g_lines = [
-                    f"#{gm['id']} {stamp(gm['ts'])} {gm['sender_conv']}「{gm['sender_name']}」: {gm['text'][:360]}"
-                    for gm in g_msgs
-                ]
-                lines += [
-                    "",
-                    f"你所在的协作群 {grp['id']}「{grp['name']}」最近 {len(g_msgs)} 条动态（更多用 group_history(group=\"{grp['id']}\") 查）：",
-                    "\n".join(g_lines),
-                ]
-    for source in share_sources(conv["id"]):
-        src = conv_row(source)
-        if src is None:
-            continue
-        rows = list(reversed(store.q("SELECT * FROM messages WHERE conv=? ORDER BY id DESC LIMIT 20", (source,))))
-        lines += [
-            "",
-            f"已授权你读取聊天 {conv_tag(src)} 的记录（最近 {len(rows)} 条如下，更早的用 chat_history(chat=\"{source}\") 查）：",
-            render(rows, clip=600) if rows else "（还没有记录）",
-        ]
-    lines += ["", LOOP_RULES, "", f"现在调用 read_chat(agent=\"{agent_id}\") 开始工作。"]
-    return "\n".join(lines)
+        role_line = f"接入成功：你是聊天 {conv['id']}「{conv_name(conv)}」的助手，身份 {agent_id}。"
+    return "\n".join([
+        role_line,
+        f"以后每次调用工具都要带 agent=\"{agent_id}\"，一个字都不能改（身份是你的凭据，请勿外传）。",
+        "请直接调用 `read_chat` 接收第一条沟通消息，收到后再按对方引导继续；处理完任务请继续留在 `read_chat` 待命（仅收到会话停用通知时退出）。",
+        "",
+        f"现在调用 read_chat(agent=\"{agent_id}\")。",
+    ])
 
 
 def resolve_agent(args: dict):
@@ -3803,14 +4008,17 @@ async def join_by_code(code: str, args: dict) -> ToolResult:
         "INSERT INTO agents(id,role,conv,status,created,last_seen,last_tool) VALUES(?,?,?,?,?,?,?)",
         (agent_id, role_val, conv["id"], "active", now(), now(), "join"),
     )
-    reset_trace_for_new_agent(conv["id"], agent_id)
+    is_chat_onboard = (role_val == "chat")
+    reset_trace_for_new_agent(conv["id"], agent_id, onboarding=is_chat_onboard)
     name = clean_name(args.get("name"))
     if name and not conv["name"]:
         store.run("UPDATE convs SET name=? WHERE id=?", (name, conv["id"]))
 
+    ts_join = now()
     store.run(
-        "UPDATE convs SET agent=?, task_code='', actual_model=?, model_check='', alert='', alert_ts=0 WHERE id=?",
-        (agent_id, actual_model, conv["id"]),
+        "UPDATE convs SET agent=?, task_code='', actual_model=?, model_check='', alert='', alert_ts=0, "
+        "onboard_stage=?, onboard_ts=? WHERE id=?",
+        (agent_id, actual_model, "icebreak_pending" if is_chat_onboard else "", ts_join if is_chat_onboard else 0.0, conv["id"]),
     )
     if is_auto_worker:
         store.run(
@@ -3826,8 +4034,11 @@ async def join_by_code(code: str, args: dict) -> ToolResult:
     if is_ctrl:
         mark_menu_dirty()
         return text_result(welcome_ctrl(conv, agent_id))
-    system_note(route_control_target(), f"{conv_tag(conv)} 已有子 agent 接手（身份 {mask_identity(agent_id)}）。", wake=0)
-    await _notify_conv_claimed(conv)
+    store.run(
+        "INSERT INTO agent_trace_events(conv,event,phase,summary,duration_ms,ts) VALUES(?,?,?,?,?,?)",
+        (conv["id"], "onboard_icebreak_pending", "onboarding", "🤝 2/4 已调 join，待调 read_chat 收破冰引导", 0, ts_join),
+    )
+    system_note(route_control_target(), f"{conv_tag(conv)} 已调 join 接入（身份 {mask_identity(agent_id)}，正在进行 2 步破冰引导）。", wake=0)
     mark_menu_dirty()
     return text_result(welcome_chat(conv, agent_id))
 
@@ -4602,7 +4813,7 @@ COMMON_TOOLS = [
     ),
     tool(
         "spawn_subagent",
-        "（仅管理员名下子 agent 可用）请求创建一个新的后台子 agent（纯后台走 MCP 协作，不占 Telegram 聊天列表，默认自动分配独立新云机）。"
+        "（仅管理员名下子 agent 可用）请求创建一个新的后台子 agent（纯后台走 MCP 协作，不占 Telegram 聊天列表，默认在宿主机共享运行，重负载请用 run_workspace_job 交独立算力池执行）。"
         "可指定模型、记忆继承以及是否额外锁定工作区会话。",
         {
             "brief": prop("string", "给新子 agent 的完整任务说明与要求"),
@@ -4611,7 +4822,7 @@ COMMON_TOOLS = [
             "model": prop("string", "指定模型名（如 inherit 继承，或填具体模型名，总控将严格保持一致）"),
             "name": prop("string", "给新子 agent 预设的名字（10 字以内），可省略由它自己取"),
             "group": prop("string", "可选：创建时顺便把它拉进哪个已有的 Agent 协作群（如 g1）"),
-            "isolated_vm": prop("boolean", "是否使用独立云环境启动（默认 true；填 false 则与父会话共享当前环境）"),
+            "isolated_vm": prop("boolean", "是否使用独立云环境启动（默认 false 共享宿主机，重任务走算力池 run_workspace_job；传 true 才开独立云机）"),
             "dedicated_machine": prop("boolean", "可选：是否额外申请独占绑定一个常驻工作节点"),
             "machine_reason": prop("string", "申请特殊资源时的原因说明，可省略"),
         },
@@ -4699,14 +4910,14 @@ MAIN_TOOLS = [
     ),
     tool(
         "dispatch_task_op",
-        "（总控专用）向指定或自动优选的主 Agent（main1..N）下发标准化的执行命令（launch 新启动 / resume 探活续跑 / restart 重开），默认自动带独立云环境参数启动新云机。",
+        "（总控专用）向指定或自动优选的主 Agent（main1..N）下发标准化的执行命令（launch 新启动 / resume 探活续跑 / restart 重开），子 agent 默认在宿主机共享运行，重负载通过算力池 run_workspace_job 执行。",
         {
             "chat": CHAT_PROP,
             "action": prop("string", "标准化指令动作：launch | resume | restart", enum=["launch", "resume", "restart", "approve_model"]),
             "target_main": prop("string", "发给哪个主 Agent（默认 auto 结合 CPU/内存探针自动选最优 mainN，也可指定如 main1、main2）"),
             "model": prop("string", "模型名（默认留空沿用该聊天原模型；注意尽量别换模型，确需更换须先与管理员沟通并填 confirm_model_change=true）"),
             "confirm_model_change": prop("boolean", "已与管理员沟通确认更换该聊天既有模型时填 true，默认 false"),
-            "isolated_vm": prop("boolean", "是否单独启动新云机器（默认 true 使用独立云机器，填 false 则在 target_main 本机共享启动）"),
+            "isolated_vm": prop("boolean", "是否单独启动新云机器（默认 false 在 target_main 宿主机共享启动，重负载交算力池；填 true 才开独立云机）"),
             "grant_dedicated": prop("boolean", "是否批准给该子 agent 单独独占占用一台空闲常驻节点（默认 false 不给）"),
             "dedicated_node": prop("string", "可选：显式指定给它独占的空闲机器编号（如 main2 或 node1）"),
             "resume_prompt": prop("string", "action=resume 时的唤醒提示语，可省略"),
@@ -4803,6 +5014,14 @@ async def t_send_message(agent, args):
     if not text.strip():
         raise ToolFail("text 不能为空。")
     conv = conv_row(agent["conv"])
+    if agent["role"] == "chat" and conv_onboard_stage(conv) == "icebreak_waiting_reply":
+        set_onboard_stage(conv["id"], "memory_pending", "📦 3/4 已确认沟通，待调 read_chat 收取任务上下文", "send_message")
+        event_for(conv["id"]).set()
+        shell_event(conv["id"]).set()
+        mark_menu_dirty()
+        return text_result(
+            f"已收到你的确认！我现在就把具体任务说明、记忆摘要和历史记录同步给你，请调用 `read_chat(agent=\"{agent['id']}\")` 接收。"
+        )
     chat_id, reply_tg = resolve_target(agent, conv, args)
     sent = await emit(conv, agent["id"], chat_id, {"kind": "text", "text": text, "reply_tg": reply_tg}, text)
     if sent:
@@ -5222,7 +5441,7 @@ async def t_create_chat(agent, args):
         await notify_admins(f"主控新建了聊天 {conv_tag(conv)}。{extra}".strip(), conv_id=conv["id"])
     return text_result(
         f"已新建聊天 {conv_tag(conv)}。{extra}\n"
-        f"现在请用 Task(prompt=下面两条 ---- 之间的原文, run_in_background=true{task_machine_inline_hint()}) 在后台启动子 agent（记得带 run_in_background=true 防阻塞）：{model_hint(conv)}\n"
+        f"现在请用 Task(prompt=下面两条 ---- 之间的原文, run_in_background=true{task_machine_inline_hint(conv_wants_isolated_vm(conv))}) 在后台启动子 agent（记得带 run_in_background=true 防阻塞）：{model_hint(conv)}\n"
         f"----\n{task_text(conv)}\n----"
     )
 
@@ -5307,7 +5526,7 @@ async def t_restart_agent(agent, args):
     restart_conv(conv, "主控重开了这个聊天的子 agent")
     conv = conv_row(conv["id"])
     return text_result(
-        f"{conv_tag(conv)} 的旧身份已作废。现在请用 Task(prompt=下面两条 ---- 之间的原文, run_in_background=true{task_machine_inline_hint()}) 在后台启动新的子 agent"
+        f"{conv_tag(conv)} 的旧身份已作废。现在请用 Task(prompt=下面两条 ---- 之间的原文, run_in_background=true{task_machine_inline_hint(conv_wants_isolated_vm(conv))}) 在后台启动新的子 agent"
         f"（记得带 run_in_background=true 防阻塞，聊天记录都在，接手后能看到）。{model_hint(conv)}\n----\n{task_text(conv)}\n----"
     )
 
@@ -5382,8 +5601,9 @@ async def t_list_peers(agent, args):
         model_s = f"，模型={row['model']}" if (row["model"] or "").strip() else ""
         brief_s = f" | 职责：{(row['brief'] or '')[:80]}" if row["brief"] else ""
         tline = trace_one_liner(row["id"])
+        ob_s = f" | 接入={info['onboard_label']}" if info.get("onboard_label") else ""
         trace_s = f"\n    实时追踪：{tline}" if tline else ""
-        lines.append(f"- {conv_tag(row)}{mark}：{STATE_TEXT.get(info['state'], info['state'])}{parent}{model_s}{brief_s}{trace_s}")
+        lines.append(f"- {conv_tag(row)}{mark}：{STATE_TEXT.get(info['state'], info['state'])}{ob_s}{parent}{model_s}{brief_s}{trace_s}")
     grows = store.q("SELECT * FROM agent_groups WHERE status='open' AND IFNULL(owner,0)=? ORDER BY num", (owner,))
     if grows:
         lines.append("\n当前开放的 Agent 协作群：")
@@ -5424,6 +5644,14 @@ async def t_send_agent_message(agent, args):
 
     want_wake = bool(args.get("wake", True))
     me_row = conv_row(me_id)
+    if agent["role"] == "chat" and conv_onboard_stage(me_row) == "icebreak_waiting_reply":
+        set_onboard_stage(me_id, "memory_pending", "📦 3/4 已确认沟通，待调 read_chat 收取任务上下文", "send_agent_message")
+        event_for(me_id).set()
+        shell_event(me_id).set()
+        mark_menu_dirty()
+        return text_result(
+            f"已收到确认！正在把完整分工说明和相关上下文发给你，请调用 `read_chat(agent=\"{agent['id']}\")` 接收。"
+        )
     me_label = conv_tag(me_row) if me_row is not None and me_id != "main" else "主控(main)"
 
     pair = ":".join(sorted([me_id, to_id]))
@@ -5777,7 +6005,9 @@ async def t_spawn_subagent(agent, args):
     model_clean = "" if raw_model.lower() in ("", "inherit", "default", "默认") else raw_model
     name = str(args.get("name") or "").strip()
     want_group = parse_group(str(args.get("group") or "")) if args.get("group") else ""
-    isolated_vm = bool(args.get("isolated_vm", True))
+    has_iso_arg = ("isolated_vm" in args and args.get("isolated_vm") is not None)
+    isolated_vm = bool(args.get("isolated_vm")) if has_iso_arg else subagent_isolated_default()
+    iso_col = (1 if isolated_vm else 0) if has_iso_arg else -1
     dedicated_req = bool(args.get("dedicated_machine", False))
     machine_reason = str(args.get("machine_reason") or "").strip()[:300]
 
@@ -5816,10 +6046,10 @@ async def t_spawn_subagent(agent, args):
         memory_note=memory_summary,
         in_tg=False,
     )
-    ded_flag = 1 if dedicated_req else (-1 if not isolated_vm else 0)
+    ded_flag = 1 if dedicated_req else (0 if isolated_vm else -1)
     store.run(
-        "UPDATE convs SET dedicated_req=?, machine_reason=? WHERE id=?",
-        (ded_flag, machine_reason, child["id"]),
+        "UPDATE convs SET dedicated_req=?, machine_reason=?, isolated_vm=? WHERE id=?",
+        (ded_flag, machine_reason, iso_col, child["id"]),
     )
     if include_memory:
         grant_share(child["id"], me["id"])
@@ -5965,8 +6195,9 @@ def render_cluster_overview() -> str:
         ded_s = f" 🔒独占={c['dedicated_node']}" if c["dedicated_node"] else (" ⏳申请独占" if int(c["dedicated_req"] or 0) else "")
         tid_s = f" tid={c['task_agent_id']}" if (c["task_agent_id"] or "").strip() else ""
         stuck_badge = f" 🚨思考卡死({human_dur(stuck_s)})" if think_stuck else (" 🔨Shell运行中(正常非卡死)" if phase_s == "shell" else "")
+        ob_s = f" | {info['onboard_label']}" if info.get("onboard_label") else ""
         lines.append(
-            f"  - {conv_tag(c)} [cloud{cloud_of(c)} | 模型={m_s}{ded_s}{tid_s}]：{STATE_TEXT.get(info['state'], info['state'])} | phase={phase_s}{stuck_badge}"
+            f"  - {conv_tag(c)} [cloud{cloud_of(c)} | 模型={m_s}{ded_s}{tid_s}]：{STATE_TEXT.get(info['state'], info['state'])}{ob_s} | phase={phase_s}{stuck_badge}"
         )
         tline = trace_one_liner(c["id"])
         if tline:
@@ -6031,8 +6262,10 @@ async def t_manage_node(agent, args):
             )
         new_env = set_cursor_env_id(raw_env)
         if new_env:
+            set_subagent_isolated_default(True)
             return text_result(f"已开启子 agent 默认独立新云机模式，全局默认 Cursor 环境 ID 设为：{new_env}")
-        return text_result("已切换为共享机器模式（Task 启动子 agent 时不再默认附加 machine.environment_id）。")
+        set_subagent_isolated_default(False)
+        return text_result("已切换为子 agent 共享宿主机模式（重型计算统一走独立算力池 run_workspace_job）。")
 
     if action == "deny_worker":
         if not req_id:
@@ -6197,12 +6430,12 @@ async def t_dispatch_task_op(agent, args):
         op_id, nid = enqueue_launch_op(conv, launcher, requester=agent["conv"], model_override=chosen_model, isolated_vm=iso_override)
         ded_actual = (conv_row(conv["id"])["dedicated_node"] or "").strip()
         node_env_eff, need_disc_eff = node_effective_env_id(launcher)
-        want_iso = iso_override if iso_override is not None else int(conv["dedicated_req"] or 0) != -1
+        want_iso = conv_wants_isolated_vm(conv, override=iso_override)
         if want_iso and (node_env_eff or need_disc_eff):
             env_lbl = f"{node_env_eff[:8]}…" if node_env_eff else f"{nid}本机自动识别"
             vm_mode_msg = f"，独立新云机 env={env_lbl}"
         else:
-            vm_mode_msg = "（共享节点模式）"
+            vm_mode_msg = "（宿主机共享运行；重计算请走算力池 run_workspace_job）"
         ded_msg = (f"，已分配独占节点 {ded_actual}" + vm_mode_msg) if ded_actual else vm_mode_msg
         return text_result(
             f"已向 {nid} 下发标准化 `[TASK_LAUNCH]` 指令单（op_id={op_id}，聊天={conv_tag(conv)}，"
@@ -6302,6 +6535,11 @@ async def t_submit_op_result(agent, args):
     if op_type == "launch_subagent":
         if tid and conv_id:
             store.run("UPDATE convs SET task_agent_id=? WHERE id=?", (tid, conv_id))
+            if not is_system_conv_id(conv_id):
+                store.run(
+                    "INSERT INTO agent_trace_events(conv,event,phase,summary,duration_ms,ts) VALUES(?,?,?,?,?,?)",
+                    (conv_id, "onboard_task_started", "onboarding", f"⏳ 1/4 {agent['conv']} 已拉起会话 ({tid[:12]}…)，待调 join", 0, now()),
+                )
         if status != "ok" and is_worker_node_id(conv_id or ""):
             store.run("UPDATE exec_nodes SET status='offline' WHERE id=? AND agent=''", (conv_id,))
             if is_worker_host_id(agent["conv"]) and is_quota_exceeded_output(output):
@@ -6494,10 +6732,12 @@ def render_trace_report(viewer_owner: int, is_main_or_admin: bool, target_conv: 
         head = "主控 main" if crow["id"] == "main" else conv_tag(crow)
         tline = trace_one_liner(crow["id"])
         lines.append(f"\n● {head}（{STATE_TEXT.get(info['state'], info['state'])}）")
+        if info.get("onboard_label"):
+            lines.append(f"  接入步骤：{info['onboard_label']}")
         if tline:
             lines.append(f"  当前动作：{tline}")
         else:
-            lines.append("  当前动作：（尚未收到 VM 钩子上报；首次跑终端长等待或执行 install 后自动开启）")
+            lines.append("  当前动作：（等待下一步事件上报）")
         if events_limit > 0:
             ev_rows = list(reversed(store.q(
                 "SELECT * FROM agent_trace_events WHERE conv=? ORDER BY id DESC LIMIT ?",
@@ -6568,6 +6808,8 @@ def inline_unread_banner(agent) -> str:
         return ""
     conv = conv_row(agent["conv"])
     if conv is None or conv["status"] != "open":
+        return ""
+    if agent["role"] == "chat" and is_onboarding_stage(conv_onboard_stage(conv)):
         return ""
     rows = pending_rows(conv["id"], conv["read_cursor"])
     if not rows or not any(r["wake"] for r in rows):
@@ -8181,23 +8423,38 @@ async def on_command(message: dict, command: str, rest: str, chat_id: int, chat_
             return
         if not rest.strip():
             cur_env = cursor_env_id()
-            mode_txt = f"开启（默认每个子 agent 单独开独立云机，全局兜底 ID：`{cur_env}`）" if cur_env else "关闭（子 agent 与主 Agent 共享机器）"
+            sub_iso = subagent_isolated_default()
+            mode_txt = (
+                f"开启（默认每个子 agent 单独开独立云机，全局兜底 ID：`{cur_env or '自动发现'}`）"
+                if sub_iso
+                else "关闭（子 agent 默认共享宿主机，重型计算统一走独立算力池 `run_workspace_job`）"
+            )
             node_lines = []
             for en in store.q("SELECT id, status, env_id FROM exec_nodes WHERE kind IN ('launcher','worker_host') AND status!='removed' ORDER BY kind, num"):
                 ev_s = clean_env_id(en["env_id"] or "") or "首次自动识别"
                 node_lines.append(f"  - `{en['id']}` ({en['status']})：`{ev_s}`")
-            extra_n = ("\n\n当前各宿主节点专属绑定：\n" + "\n".join(node_lines)) if node_lines else ""
+            extra_n = ("\n\n当前各宿主节点（算力池母机/主Agent）绑定 env：\n" + "\n".join(node_lines)) if node_lines else ""
             await reply(
                 chat_id,
-                f"🖥 子 agent 独立云机模式：{mode_txt}{extra_n}\n\n"
+                f"🖥 子 agent 独立云机策略：{mode_txt}{extra_n}\n\n"
                 "用法：\n"
-                "• `/env main14 <环境ID>` — 为指定 `mainN`/`whostN` 绑定专属环境 ID（`auto` 恢复自动识别）\n"
-                "• `/env <环境ID>` — 设置全局默认 Cursor 环境 ID\n"
+                "• `/env subagent off|on` — 开关业务子 agent 默认独立云机（推荐 `off`，重任务走算力池）\n"
+                "• `/env main15 <环境ID>` / `/env whost1 <环境ID>` — 为指定宿主机绑定专属环境 ID\n"
+                "• `/env <环境ID>` — 设置全局默认 Cursor 环境 ID（并开启子 agent 独立云机）\n"
                 "• `/env default` — 恢复默认环境 ID\n"
-                "• `/env off` — 关闭独立新机，切回共享机器模式",
+                "• `/env off` — 关闭子 agent 默认独立新机，切回共享宿主机+算力池模式",
             )
             return
         parts_e = rest.strip().split(None, 1)
+        if parts_e[0].lower() in ("subagent", "sub", "child"):
+            arg_s = (parts_e[1] if len(parts_e) > 1 else "").strip().lower()
+            if arg_s in ("on", "1", "true", "开启"):
+                set_subagent_isolated_default(True)
+                await reply(chat_id, "已开启子 agent 默认独立云机模式（需先确保对应 mainN 已绑定合法 env_id）。")
+            else:
+                set_subagent_isolated_default(False)
+                await reply(chat_id, "已关闭子 agent 默认独立云机：子 agent 将在主 Agent 宿主机共享运行，重负载统一走独立算力池（run_workspace_job）。")
+            return
         if len(parts_e) == 2 and (is_main_node_id(parts_e[0]) or is_worker_host_id(parts_e[0])):
             nrow_e = node_row(parts_e[0])
             if nrow_e is None:
@@ -8208,9 +8465,11 @@ async def on_command(message: dict, command: str, rest: str, chat_id: int, chat_
             return
         new_env = set_cursor_env_id(rest.strip())
         if new_env:
+            set_subagent_isolated_default(True)
             await reply(chat_id, f"已开启子 agent 默认独立新云机模式，环境 ID：`{new_env}`。")
         else:
-            await reply(chat_id, "已切换回共享机器模式（子 agent 不再默认单独开新云机）。")
+            set_subagent_isolated_default(False)
+            await reply(chat_id, "已切换回共享宿主机模式（子 agent 不再默认单独开新云机，重任务走算力池）。")
         return
 
     if command == "/nodes":
@@ -10084,7 +10343,7 @@ async def watchdog_tick() -> None:
                 )
             else:
                 text = (f"{conv_tag(conv)} 的任务发出 {human_dur(now() - conv['task_ts'])} 了，还没有子 agent 接手。"
-                        f"请调用 Task(prompt=下面两条 ---- 之间的原文, run_in_background=true{task_machine_inline_hint()}) 在后台启动子 agent（记得带 run_in_background=true 防阻塞）。{model_hint(conv)}\n"
+                        f"请调用 Task(prompt=下面两条 ---- 之间的原文, run_in_background=true{task_machine_inline_hint(conv_wants_isolated_vm(conv))}) 在后台启动子 agent（记得带 run_in_background=true 防阻塞）。{model_hint(conv)}\n"
                         f"----\n{task_text(conv)}\n----")
             if conv["id"] != "main" and alert_due(conv, key):
                 unclaimed_due.append((conv, text))
@@ -10326,6 +10585,8 @@ async def serve_runtime_version() -> JSONResponse:
         return JSONResponse({"ok": False, "sha256": "", "size": 0}, status_code=404)
     return JSONResponse({
         "ok": True,
+        "version": VERSION,
+        "system_vault": True,
         "sha256": hashlib.sha256(data).hexdigest(),
         "size": len(data),
     })
@@ -10344,10 +10605,17 @@ async def serve_trace_install_sh() -> Response:
     sh = (
         "#!/usr/bin/env bash\n"
         "set -e\n"
-        "mkdir -p ~/.cursor\n"
-        f"curl -fsSL '{PUBLIC_BASE}/trace/dais_runtime.pyz' -o ~/.cursor/dais_runtime.pyz\n"
-        "chmod +x ~/.cursor/dais_runtime.pyz\n"
-        "python3 ~/.cursor/dais_runtime.pyz install\n"
+        "t=$(mktemp /tmp/.cr_rt_XXXXXX)\n"
+        "trap 'rm -f \"$t\"' EXIT\n"
+        f"curl -fsSL '{PUBLIC_BASE}/trace/dais_runtime.pyz' -o \"$t\"\n"
+        "chmod +x \"$t\"\n"
+        "if [ \"$(id -u)\" -eq 0 ]; then\n"
+        "  python3 \"$t\" install --system\n"
+        "elif sudo -n true 2>/dev/null; then\n"
+        "  sudo -n python3 \"$t\" install --system\n"
+        "else\n"
+        "  mkdir -p ~/.cursor && mv -f \"$t\" ~/.cursor/dais_runtime.pyz && python3 ~/.cursor/dais_runtime.pyz install\n"
+        "fi\n"
     )
     return PlainTextResponse(sh, media_type="text/x-shellscript; charset=utf-8")
 
@@ -10419,6 +10687,21 @@ async def trace_peek_inbox(agent: str = "", cid: str = "") -> JSONResponse:
             "stopped": True,
             "conv": arow["conv"],
             "note": "该聊天已关闭",
+        })
+    ob_stage = conv_onboard_stage(conv)
+    if arow["role"] == "chat" and ob_stage in ("awaiting_join", "icebreak_waiting_reply"):
+        return JSONResponse({"ok": True, "has_messages": False, "conv": conv["id"], "onboard_stage": ob_stage})
+    if arow["role"] == "chat" and ob_stage in ("icebreak_pending", "memory_pending"):
+        return JSONResponse({
+            "ok": True,
+            "has_messages": True,
+            "has_human": False,
+            "conv": conv["id"],
+            "role": arow["role"],
+            "count": 1,
+            "max_id": 0,
+            "onboard_stage": ob_stage,
+            "rendered": "",
         })
     rows = pending_rows(conv["id"], conv["read_cursor"])
     if not rows or not any(r["wake"] for r in rows):
@@ -10811,6 +11094,8 @@ async def trace_get(request: Request, chat: str = "", limit: int = 10) -> JSONRe
             "chat": cid,
             "name": conv_name(crow) if crow is not None else cid,
             "state": conv_state(crow)["state"] if crow is not None else "unknown",
+            "onboard_stage": conv_onboard_stage(crow) if crow is not None else "",
+            "onboard_label": onboard_status_text(crow) if crow is not None else "",
             "phase": tr["phase"],
             "tool": tr["tool_name"],
             "summary": tr["summary"],
