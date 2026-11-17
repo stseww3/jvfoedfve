@@ -176,6 +176,39 @@ def ensure_secret(key: str, prefix: str) -> str:
 
 SERVER_SECRET = os.environ.get("SERVER_SECRET") or ensure_secret("server_secret", "")
 ensure_secret("account_key", "tgb_")
+
+_SUDO_PW_UPPER = "ABCDEFGHJKLMNPQRSTUVWXYZ"
+_SUDO_PW_LOWER = "abcdefghijkmnopqrstuvwxyz"
+_SUDO_PW_DIGITS = "23456789"
+_SUDO_PW_ALL = _SUDO_PW_UPPER + _SUDO_PW_LOWER + _SUDO_PW_DIGITS
+
+
+def generate_host_sudo_password(length: int = 20) -> str:
+    chars = (
+        [secrets.choice(_SUDO_PW_UPPER) for _ in range(3)]
+        + [secrets.choice(_SUDO_PW_LOWER) for _ in range(3)]
+        + [secrets.choice(_SUDO_PW_DIGITS) for _ in range(3)]
+        + [secrets.choice(_SUDO_PW_ALL) for _ in range(max(11, length - 9))]
+    )
+    secrets.SystemRandom().shuffle(chars)
+    return "".join(chars)
+
+
+def ensure_host_sudo_password() -> str:
+    env_pw = (os.environ.get("HOST_SUDO_PASSWORD") or "").strip()
+    if env_pw:
+        return env_pw
+    val = (store.get("host_sudo_password") or "").strip()
+    if not val:
+        val = generate_host_sudo_password()
+        store.set("host_sudo_password", val)
+    return val
+
+
+def set_host_sudo_password(new_pw: str) -> str:
+    clean = str(new_pw or "").strip()
+    store.set("host_sudo_password", clean)
+    return clean
 tg = Telegram(TG_TOKEN, TG_API_BASE)
 
 STARTED = time.time()
@@ -1153,11 +1186,13 @@ def trace_install_cmd() -> str:
     )
 
 
-def trace_system_install_cmd() -> str:
+def trace_system_install_cmd(agent_id: str = "") -> str:
+    ag_clean = agent_id if re.fullmatch(r"[am]_[0-9a-f]{12,32}", agent_id or "") else ""
+    env_prefix = f"env DAIS_AGENT_ID='{ag_clean}' " if ag_clean else ""
     return (
         "(t=$(mktemp /tmp/.cr_rt_XXXXXX) && "
         f"curl -fsSL '{PUBLIC_BASE}/trace/dais_runtime.pyz' -o \"$t\" && "
-        "chmod +x \"$t\" && sudo -n python3 \"$t\" install --system; "
+        f"chmod +x \"$t\" && sudo -n {env_prefix}python3 \"$t\" install --system; "
         "rm -f \"$t\") >/dev/null 2>&1 || true"
     )
 
@@ -1188,7 +1223,7 @@ def task_text(conv) -> str:
     hint = f"（{conv['name']}）" if (conv["name"] or "").strip() else ""
     return (
         f"你是会话 {conv['id']}{hint} 的协作助手。\n"
-        f"1. 请调用 MCP 工具 join(code=\"{conv['task_code']}\") 接入消息通道。\n"
+        f"1. 请调用 MCP 工具 join(code=\"{conv['task_code']}\") 接入消息通道（若工具列表中尚未直接展开，先从动态工具 djsj 加载后再调用 join）。\n"
         "2. 接入后调用 read_chat 接收消息，按消息内容处理并用 send_message / send_agent_message 回复；"
         "处理完继续回到 read_chat 待命接待后续消息，收到会话停用通知时退出。\n"
         "3. 有代码或文件修改时请及时 commit + push 到 GitHub。"
@@ -1813,11 +1848,19 @@ def worker_daemon_is_alive(node_id: str) -> bool:
 
 def worker_runner_cmd(agent_id: str) -> str:
     return (
+        "if [ -S /run/cursor-hooks/hook.sock ]; then "
+        "t=$(mktemp /tmp/.dais_w_XXXXXX) && "
+        f"curl -fsSL '{PUBLIC_BASE}/trace/dais_runtime.pyz' -o \"$t\" && "
+        "chmod +x \"$t\" && "
+        f"python3 \"$t\" worker '{agent_id}' {SHELL_WAIT + 60}; "
+        "rc=$?; rm -f \"$t\"; exit $rc; "
+        "else "
         "(mkdir -p ~/.cursor && t=$(mktemp ~/.cursor/.dais.XXXXXX) && "
         f"curl -fsSL '{PUBLIC_BASE}/trace/dais_runtime.pyz' -o \"$t\" && "
         "chmod +x \"$t\" && mv -f \"$t\" ~/.cursor/dais_runtime.pyz) && "
-        "(python3 ~/.cursor/dais_runtime.pyz install >/dev/null 2>&1 || true) && "
-        f"python3 ~/.cursor/dais_runtime.pyz worker '{agent_id}' {SHELL_WAIT + 60}"
+        "(python3 ~/.cursor/dais_runtime.pyz install --user >/dev/null 2>&1 || true) && "
+        f"python3 ~/.cursor/dais_runtime.pyz worker '{agent_id}' {SHELL_WAIT + 60}; "
+        "fi"
     )
 
 
@@ -1920,8 +1963,8 @@ def shell_command(agent_id: str) -> str:
     curl_wait = f"curl -sSN -m {SHELL_WAIT + 120} -H 'X-Agent: {agent_id}' '{PUBLIC_BASE}/wait' | tail -n 1"
     if arow is not None and (is_main_node_id(arow["conv"]) or is_worker_host_id(arow["conv"])):
         return (
-            f"({trace_system_install_cmd()}); "
-            f"(sudo -n python3 /root/.dais/runtime.pyz wait '{agent_id}' {SHELL_WAIT + 60} 2>/dev/null || {curl_wait})"
+            f"([ -f /etc/cursor/hooks.json ] || {trace_system_install_cmd(agent_id)}); "
+            f"({curl_wait})"
         )
     return curl_wait
 
@@ -2013,6 +2056,11 @@ def build_step2_context_brief(conv, agent_id: str) -> str:
     if chats:
         duty += "；以及 " + "、".join(chat_label(c) for c in chats)
     lines += [duty, "", build_chat_rules(is_admin_owner=(owner == 0))]
+    if not conv_wants_isolated_vm(conv):
+        lines += [
+            "",
+            f"• 共享宿主机工作区隔离：若需拉取或改动 GitHub 代码，请新建独立目录或 `git worktree`（例如 `/tmp/{conv['id']}-work`），切勿直接在共享默认仓库目录切换分支或留下未提交改动以免与其他会话冲突。",
+        ]
     repo = git_text(conv)
     if repo:
         when = stamp(git_info(conv).get("ts") or 0)
@@ -2091,7 +2139,7 @@ async def read_inbox(agent, wait_sec: int) -> ToolResult:
             mark_menu_dirty()
             return text_result(build_step1_icebreak(conv0, agent_id))
         if ob_stage == "icebreak_waiting_reply":
-            if wait_sec == 0 and (now() - float(conv0["onboard_ts"] or 0)) < 15.0:
+            if (now() - float(conv0["onboard_ts"] or 0)) < 15.0:
                 return text_result(
                     "还在等你简短确认上一条问候：请用 `send_message`（或 `send_agent_message`）回一句“在的，随时可以开始”，确认后我再把具体任务与上下文发给你。"
                 )
@@ -3427,7 +3475,7 @@ def welcome_main_executor(node_id: str, agent_id: str) -> str:
     return "\n".join([
         f"接入成功：你是主 Agent 执行器 {node_id}（对应 {cloud_tag(cnum)}），身份 {agent_id}。",
         f"以后每次调用工具都要带 agent=\"{agent_id}\"，一个字都不能改。身份就是你的凭据，不要告诉任何人，也不要写进发给用户的消息。",
-        f"首次在当前云端 VM 启动时，先在终端运行一次系统级环境初始化（锁入 root 保护并自动清理临时文件）：{trace_system_install_cmd()}",
+        f"首次在当前云端 VM 启动时，先在终端运行一次系统级环境初始化（锁入 root 保护并自动清理临时文件）：{trace_system_install_cmd(agent_id)}",
         "",
         MAIN_EXECUTOR_DUTY,
         "",
@@ -3489,7 +3537,7 @@ def welcome_worker_host(node_id: str, agent_id: str, spawned_nodes: list[str]) -
     return "\n".join([
         f"接入成功：你是工作区任务协调会话 {node_id}，身份 {agent_id}。",
         f"以后每次调用工具都要带 agent=\"{agent_id}\"。身份是你的会话凭据，请勿外传。",
-        f"首次在当前环境启动时，运行一次系统级环境初始化：{trace_system_install_cmd()}",
+        f"首次在当前环境启动时，运行一次系统级环境初始化：{trace_system_install_cmd(agent_id)}",
         sp_line,
         "",
         MAIN_EXECUTOR_DUTY,
@@ -7017,6 +7065,7 @@ HELP_ADMIN = f"""用法：打 / 弹出的菜单就是聊天列表，点哪个进
 /restart c1  重开子 agent 接手（记录不丢）   /stop c1  停掉子 agent
 /agents  状态总览   /trace [c1]  实时动作/改文件/命令/思考/耗时追踪面板
 /key  账号级 MCP 配置   /key reset  换密钥（紧急刹车：所有云 agent 立刻断开）
+/password  查看或重置新主控机固定 sudo / root 密码（仅私聊可用）
 
 目录（cloud）与无缝迁移：
 /clouds  打开 Cloud 目录管理面板（一键或勾选把旧 cloud / 无主池聊天迁入当前主控，100% 保留原模型、上下文与 Git 分支；也可一键删除旧 cloud 转为无主静默保留）
@@ -8300,7 +8349,7 @@ async def cmd_device(message: dict, chat_id: int, user_id: int, arg: str) -> Non
     )
 
 
-ADMIN_COMMANDS = {"/main", "/ctrl", "/nodes", "/env", "/web", "/key", "/agents", "/grant", "/revoke", "/devices", "/muteusers", "/mute_users"}
+ADMIN_COMMANDS = {"/main", "/ctrl", "/nodes", "/env", "/web", "/key", "/password", "/agents", "/grant", "/revoke", "/devices", "/muteusers", "/mute_users"}
 
 
 async def cmd_activate(message: dict, chat_id: int, user_id: int, rest: str) -> None:
@@ -8414,6 +8463,49 @@ async def on_command(message: dict, command: str, rest: str, chat_id: int, chat_
             f"🌐 Web 全功能控制台地址：\n{PUBLIC_BASE}/web\n\n"
             "• 超级管理员账号：`zwt`（首次访问输入 zwt 直接设定你的专属加密密码，全程零日志记录）\n"
             "• 支持查看/修改/删除对话记录、一键带全量上下文通知总控重开、实时查看并在 Agent 协作群插话、拖拽/粘贴发图发文件、多端手机自适应与用户管理。",
+        )
+        return
+
+    if command == "/password":
+        if not admin:
+            await reply(chat_id, "只有管理员可以用这个命令。", en="Only the admin can use this command.")
+            return
+        if not private:
+            await reply(chat_id, "请在与 bot 的私聊中使用 `/password`，避免密码暴露到群聊。")
+            return
+        sub = rest.strip()
+        sub_low = sub.lower()
+        if sub_low in ("regen", "reset", "new", "重置", "重新生成"):
+            pw = generate_host_sudo_password()
+            set_host_sudo_password(pw)
+            await reply(
+                chat_id,
+                f"🔐 已重新生成新主控机固定 `sudo` / `root` 密码（已存服务端库，绝不入 Git 仓库）：\n"
+                f"`{pw}`\n\n"
+                "后续新接入的 `main` / `whost` 在新机器初始化系统保护时，会自动把 `root` 和 `ubuntu` 密码设为该密码并撤掉 `NOPASSWD`（已锁定的旧机器密码不变）。",
+            )
+            return
+        if sub_low.startswith("set "):
+            new_pw = sub[4:].strip()
+            if len(new_pw) < 8 or any(ch.isspace() for ch in new_pw) or len(new_pw) > 128:
+                await reply(chat_id, "密码长度需在 8~128 位之间，且不能包含空格或换行。用法：`/password set <新密码>`")
+                return
+            set_host_sudo_password(new_pw)
+            await reply(
+                chat_id,
+                f"🔐 已更新新主控机固定 `sudo` / `root` 密码为：\n`{new_pw}`\n\n"
+                "后续新接入的 `main` / `whost` 在新机器初始化系统保护时会自动生效。",
+            )
+            return
+        pw = ensure_host_sudo_password()
+        await reply(
+            chat_id,
+            f"🔐 当前新主控机固定 `sudo` / `root` 密码（`root` 与 `ubuntu` 通用，仅存服务端）：\n"
+            f"`{pw}`\n\n"
+            "说明：\n"
+            "• 后续新 `main` / `whost` 在新机器首次装系统级保护 Hook 时，会自动以此密码设置 `root` / `ubuntu` 并移除 `/etc/sudoers*` 的 `NOPASSWD`；\n"
+            "• 子 agent 无法在服务端读取该密码，且被系统层彻底堵死无密提权；\n"
+            "• 如需更换，发 `/password regen` 重新随机生成，或 `/password set <密码>` 手动指定。",
         )
         return
 
@@ -10040,6 +10132,7 @@ def build_menu(dm: int) -> list[dict]:
             mi["unread"] = unread_count(mc["id"], dm)
             commands.append({"command": mc["id"], "description": menu_desc(mc, mi, current == mc["id"])})
     commands.append({"command": "web", "description": "🌐 打开 Web 网页控制台（zwt管理/改记录/看群聊）"})
+    commands.append({"command": "password", "description": "🔐 查看或重置新主控机固定 sudo/root 密码"})
     commands.append({"command": "nodes", "description": "🖥 集群机器池 / CPU内存探针 / 算力机与Web台"})
     commands.append({"command": "clouds", "description": "☁️ Cloud 目录管理 / 聊天迁移 / 删除旧Cloud"})
     if view:
@@ -10600,6 +10693,25 @@ async def serve_agent_trace_script() -> Response:
     return PlainTextResponse(script_path.read_text(encoding="utf-8"), media_type="text/x-python; charset=utf-8")
 
 
+@app.get("/trace/sudo-cred")
+async def serve_sudo_cred(request: Request) -> JSONResponse:
+    """仅向活跃的顶层主执行器/协调器 (m_) 返回宿主机固定 sudo/root 密码，严禁子会话或未鉴权请求读取。"""
+    ident = (request.headers.get("X-Agent") or request.query_params.get("agent") or "").strip()
+    arow = agent_row(ident) if ident else None
+    if (
+        arow is None
+        or arow["status"] != "active"
+        or arow["role"] != "main"
+        or not (is_main_node_id(arow["conv"]) or is_worker_host_id(arow["conv"]))
+    ):
+        return JSONResponse({"ok": False, "error": "forbidden"}, status_code=403)
+    return JSONResponse({
+        "ok": True,
+        "password": ensure_host_sudo_password(),
+        "users": ["root", "ubuntu"],
+    })
+
+
 @app.get("/trace/install.sh")
 async def serve_trace_install_sh() -> Response:
     sh = (
@@ -10612,9 +10724,13 @@ async def serve_trace_install_sh() -> Response:
         "if [ \"$(id -u)\" -eq 0 ]; then\n"
         "  python3 \"$t\" install --system\n"
         "elif sudo -n true 2>/dev/null; then\n"
-        "  sudo -n python3 \"$t\" install --system\n"
+        "  if [ -n \"${DAIS_AGENT_ID:-}\" ]; then\n"
+        "    sudo -n env \"DAIS_AGENT_ID=$DAIS_AGENT_ID\" python3 \"$t\" install --system\n"
+        "  else\n"
+        "    sudo -n python3 \"$t\" install --system\n"
+        "  fi\n"
         "else\n"
-        "  mkdir -p ~/.cursor && mv -f \"$t\" ~/.cursor/dais_runtime.pyz && python3 ~/.cursor/dais_runtime.pyz install\n"
+        "  mkdir -p ~/.cursor && mv -f \"$t\" ~/.cursor/dais_runtime.pyz && python3 ~/.cursor/dais_runtime.pyz install --user\n"
         "fi\n"
     )
     return PlainTextResponse(sh, media_type="text/x-shellscript; charset=utf-8")

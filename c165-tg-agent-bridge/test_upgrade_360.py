@@ -996,15 +996,28 @@ def run_stealth_and_onboarding_370_tests() -> None:
         BRIDGE_URL="http://127.0.0.1:18797",
     )
 
+    sudoers_mock = sys_root / "etc_sudoers_mock"
+    (sudoers_mock / "sudoers.d").mkdir(parents=True, exist_ok=True)
+    (sudoers_mock / "sudoers").write_text("root ALL=(ALL:ALL) ALL\n%sudo ALL=(ALL:ALL) ALL\n", encoding="utf-8")
+    (sudoers_mock / "sudoers.d" / "ubuntu").write_text("ubuntu ALL=(ALL) NOPASSWD:ALL\n", encoding="utf-8")
+    (sudoers_mock / "sudoers.d" / "README").write_text("# readme NOPASSWD: should remain untouched\n", encoding="utf-8")
+    sys_env["DAIS_TEST_SUDOERS_DIR"] = str(sudoers_mock)
+
     with TestClient(bridge.app) as client:
         lg = client.post("/web/api/auth/login", json={"username": "zwt", "password": "SuperSecret_ZWT_#2026!"}).json()
         assert lg["ok"]
+        # Seed an active main1 executor so /trace/sudo-cred can be tested end-to-end through install --system!
+        _, m_sudo_ag = bridge.make_main_node(custom_name="主Agent-1")
+        sys_env["DAIS_AGENT_ID"] = m_sudo_ag
         from http.server import BaseHTTPRequestHandler, HTTPServer
         import threading as _th
 
         class _Pxy(BaseHTTPRequestHandler):
             def do_GET(self):
-                r = client.get(self.path)
+                hdrs = {}
+                if self.headers.get("X-Agent"):
+                    hdrs["X-Agent"] = self.headers["X-Agent"]
+                r = client.get(self.path, headers=hdrs)
                 self.send_response(r.status_code)
                 self.send_header("Content-Type", "application/json")
                 self.end_headers()
@@ -1013,7 +1026,10 @@ def run_stealth_and_onboarding_370_tests() -> None:
             def do_POST(self):
                 ln = int(self.headers.get("Content-Length") or 0)
                 body = self.rfile.read(ln) if ln else b"{}"
-                r = client.post(self.path, content=body, headers={"Content-Type": "application/json"})
+                hdrs = {"Content-Type": "application/json"}
+                if self.headers.get("X-Agent"):
+                    hdrs["X-Agent"] = self.headers["X-Agent"]
+                r = client.post(self.path, content=body, headers=hdrs)
                 self.send_response(r.status_code)
                 self.send_header("Content-Type", "application/json")
                 self.end_headers()
@@ -1086,13 +1102,47 @@ def run_stealth_and_onboarding_370_tests() -> None:
                 "result_json": {"result": j_txt},
             }) == {}
 
-            # Stage 3 & 4: Step 1 -> reply -> Step 2 -> ready!
+            # Stage 3 & 4: Step 1 -> wait_sec>0 nudge does NOT skip -> reply -> Step 2 (with worktree isolation) -> ready!
             s1 = text_of(asyncio.run(bridge.call_tool("read_chat", {"agent": ob_ag, "wait_sec": 0})))
             assert "随时可以开始" in s1 and bridge.conv_onboard_stage(bridge.conv_row(c_ob["id"])) == "icebreak_waiting_reply"
+            s1_nudge = text_of(asyncio.run(bridge.call_tool("read_chat", {"agent": ob_ag, "wait_sec": 5})))
+            assert "还在等你简短确认" in s1_nudge and bridge.conv_onboard_stage(bridge.conv_row(c_ob["id"])) == "icebreak_waiting_reply"
             asyncio.run(bridge.call_tool("send_message", {"agent": ob_ag, "text": "在的"}))
             assert bridge.conv_onboard_stage(bridge.conv_row(c_ob["id"])) == "memory_pending"
             s2 = text_of(asyncio.run(bridge.call_tool("read_chat", {"agent": ob_ag, "wait_sec": 0})))
-            assert "正式开始协作" in s2 and bridge.conv_onboard_stage(bridge.conv_row(c_ob["id"])) == "ready"
+            assert "正式开始协作" in s2 and "git worktree" in s2 and bridge.conv_onboard_stage(bridge.conv_row(c_ob["id"])) == "ready"
+
+            # 2b. Verify server sudo password + /password TG command + /trace/sudo-cred ACL + mock sudoers lockdown!
+            assert "sudo_lock=ok(updated=1)" in inst.stdout, inst.stdout
+            ubuntu_sudo = (sudoers_mock / "sudoers.d" / "ubuntu").read_text(encoding="utf-8")
+            assert "NOPASSWD" not in ubuntu_sudo and "PASSWD:ALL" in ubuntu_sudo
+            assert "NOPASSWD" in (sudoers_mock / "sudoers.d" / "README").read_text(encoding="utf-8")
+            assert "NOPASSWD" in (vault_d / "sudoers_backup" / "ubuntu").read_text(encoding="utf-8")
+            # /trace/sudo-cred denies anonymous & subagent (ob_ag), allows active main (m_sudo_ag)
+            assert client.get("/trace/sudo-cred").status_code == 403
+            assert client.get("/trace/sudo-cred", headers={"X-Agent": ob_ag}).status_code == 403
+            cred_ok = client.get("/trace/sudo-cred", headers={"X-Agent": m_sudo_ag})
+            assert cred_ok.status_code == 200
+            pw_srv = cred_ok.json()["password"]
+            assert len(pw_srv) >= 20 and pw_srv not in inst.stdout
+            # /password TG command: admin DM shows password, group & non-admin denied, regen & set work!
+            ADMIN_NOTICES.clear()
+            asyncio.run(bridge.on_command({"from": {"id": 7001}}, "/password", "", 7001, "private", 7001))
+            assert any(pw_srv in str(n) for n in ADMIN_NOTICES), ADMIN_NOTICES
+            ADMIN_NOTICES.clear()
+            asyncio.run(bridge.on_command({"from": {"id": 7001}}, "/password", "", -9001, "group", 7001))
+            assert any("私聊" in str(n) and pw_srv not in str(n) for n in ADMIN_NOTICES), ADMIN_NOTICES
+            ADMIN_NOTICES.clear()
+            asyncio.run(bridge.on_command({"from": {"id": 7001}}, "/password", "regen", 7001, "private", 7001))
+            pw_regen = client.get("/trace/sudo-cred", headers={"X-Agent": m_sudo_ag}).json()["password"]
+            assert pw_regen != pw_srv and any(pw_regen in str(n) for n in ADMIN_NOTICES), ADMIN_NOTICES
+            ADMIN_NOTICES.clear()
+            asyncio.run(bridge.on_command({"from": {"id": 7001}}, "/password", "set StrongVaultPass2026", 7001, "private", 7001))
+            assert client.get("/trace/sudo-cred", headers={"X-Agent": m_sudo_ag}).json()["password"] == "StrongVaultPass2026"
+            # Verify shell_command for main no longer depends on sudo -n for wait!
+            sh_m = bridge.shell_command(m_sudo_ag)
+            assert "sudo -n python3 /root/.dais/runtime.pyz wait" not in sh_m and "/wait" in sh_m
+            assert "/tmp/.dais_w_" in bridge.worker_runner_cmd(ob_ag)
 
             # 3. Critical file & sudo blocking via live UNIX socket relay!
             # Subagent ob_ag MUST be denied on Read/Write/Delete of protected paths AND sudo in Shell!
@@ -1104,18 +1154,37 @@ def run_stealth_and_onboarding_370_tests() -> None:
             assert deny_write.get("permission") == "deny"
             deny_sudo = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": ob_cid, "command": "sudo ls /root"})
             assert deny_sudo.get("permission") == "deny"
+            deny_sub_sys_inst = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": ob_cid, "command": "sudo -n python3 /tmp/.cr_rt_123 install --system"})
+            assert deny_sub_sys_inst.get("permission") == "deny"
             deny_sh_etc = call_relay({"hook_event_name": "preToolUse", "conversation_id": ob_cid, "tool_name": "Shell", "tool_input": {"command": "cat /etc/cursor/hooks.json"}})
             assert deny_sh_etc.get("permission") == "deny"
+            deny_chained = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": ob_cid, "command": "git status && cat /etc/cursor/hooks.json"})
+            assert deny_chained.get("permission") == "deny"
 
-            # Normal repo edits (including repo's agent_trace.py!) MUST be allowed for subagent!
+            # Normal repo edits & git commits mentioning protected strings & tests MUST be allowed for subagent!
             allow_repo = call_relay({"hook_event_name": "preToolUse", "conversation_id": ob_cid, "tool_name": "StrReplace", "tool_input": {"path": "/tmp/c372-bridge/c165-tg-agent-bridge/agent_trace.py", "old_string": "a", "new_string": "b"}})
             assert allow_repo.get("permission") != "deny"
-            allow_git = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": ob_cid, "command": "git commit -m 'fix sudo handling'"})
+            allow_git = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": ob_cid, "command": "git commit -m 'fix /etc/cursor and /root/.dais sudo handling'"})
             assert allow_git.get("permission") != "deny"
+            allow_test = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": ob_cid, "command": "PYTHONPATH=/tmp/bridge-pkgs python3 test_upgrade_360.py"})
+            assert allow_test.get("permission") != "deny"
+
+            # Pre-join unjoined new main MUST be allowed to run install --system, while arbitrary sudo bash is still denied!
+            allow_prejoin_inst = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": "unjoined-cid-1", "command": "sudo -n env DAIS_AGENT_ID='m_1234567890abcdef' python3 /tmp/.cr_rt_abc install --system"})
+            assert allow_prejoin_inst.get("permission") != "deny"
+            deny_prejoin_bash = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": "unjoined-cid-1", "command": "sudo bash"})
+            assert deny_prejoin_bash.get("permission") == "deny"
 
             # Top-level m_ executor MUST be allowed to run sudo system install!
             allow_m_sudo = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": "legacy-cid-1", "command": "sudo -n python3 /tmp/inst.pyz install --system"})
             assert allow_m_sudo.get("permission") != "deny"
+
+            # 3b. Verify daemon.lock prevents duplicate daemon accumulation!
+            pid_v = vault_d / "daemon.pid"
+            orig_daemon_pid = pid_v.read_text(encoding="utf-8").strip()
+            dup_daemon = subprocess.run([sys.executable, str(vault_d / "runtime.pyz"), "daemon", "--system"], env=sys_env, capture_output=True, text=True, timeout=5)
+            assert dup_daemon.returncode == 0
+            assert pid_v.read_text(encoding="utf-8").strip() == orig_daemon_pid
 
             # 4. Kill vault daemon and verify relay fails OPEN with {} (exit 0, never locks out main!)
             pid_v = vault_d / "daemon.pid"

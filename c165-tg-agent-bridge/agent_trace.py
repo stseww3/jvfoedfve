@@ -6,9 +6,11 @@ from __future__ import annotations
 import fcntl
 import glob
 import hashlib
+import io
 import json
 import os
 import re
+import shlex
 import shutil
 import socket
 import socketserver
@@ -19,6 +21,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import zipfile
 from pathlib import Path
 from typing import Any
 
@@ -68,6 +71,10 @@ def _lock_path() -> Path:
 
 def _pid_path() -> Path:
     return (VAULT_DIR / "daemon.pid") if _is_system_mode() else (CURSOR_DIR / "agent_trace_daemon.pid")
+
+
+def _daemon_lock_path() -> Path:
+    return (VAULT_DIR / "daemon.lock") if _is_system_mode() else (CURSOR_DIR / "agent_trace_daemon.lock")
 
 
 def _hooks_path() -> Path:
@@ -560,29 +567,128 @@ def _is_protected_file_path(raw_path: str) -> bool:
     return False
 
 
-def _is_protected_shell_command(cmd: str) -> bool:
+_SYSTEM_INSTALL_CMD_RE = re.compile(
+    r"^\s*(?:sudo(?:\s+-\S+)*\s+)?(?:env\s+(?:[A-Za-z_][A-Za-z0-9_]*=\S+\s+)*)?python3?\s+"
+    r"(?:\"?(?:/tmp/\.cr_rt_[^\s\"']+|[^\s\"']*(?:dais_runtime\.pyz|agent_trace\.py))\"?)\s+install\s+--system\b",
+    re.I,
+)
+
+
+def _split_shell_segments(cmd: str) -> list[str]:
+    segs: list[str] = []
+    buf: list[str] = []
+    in_sq = False
+    in_dq = False
+    i = 0
+    n = len(cmd)
+    while i < n:
+        ch = cmd[i]
+        if ch == "\\" and not in_sq and i + 1 < n:
+            buf.append(ch)
+            buf.append(cmd[i + 1])
+            i += 2
+            continue
+        if ch == "'" and not in_dq:
+            in_sq = not in_sq
+            buf.append(ch)
+            i += 1
+            continue
+        if ch == '"' and not in_sq:
+            in_dq = not in_dq
+            buf.append(ch)
+            i += 1
+            continue
+        if not in_sq and not in_dq:
+            if cmd[i : i + 2] in ("&&", "||"):
+                seg = "".join(buf).strip()
+                if seg:
+                    segs.append(seg)
+                buf.clear()
+                i += 2
+                continue
+            if ch in (";", "|", "\n"):
+                seg = "".join(buf).strip()
+                if seg:
+                    segs.append(seg)
+                buf.clear()
+                i += 1
+                continue
+        buf.append(ch)
+        i += 1
+    seg = "".join(buf).strip()
+    if seg:
+        segs.append(seg)
+    return segs
+
+
+def _segment_is_safe_repo_or_test(seg: str) -> bool:
+    try:
+        tokens = shlex.split(seg)
+    except Exception:
+        tokens = seg.split()
+    if not tokens:
+        return False
+    idx = 0
+    while idx < len(tokens):
+        tok = tokens[idx]
+        if re.match(r"^[A-Za-z_][A-Za-z0-9_]*=.*", tok):
+            idx += 1
+            continue
+        if tok in ("env", "command", "time", "nice", "ionice", "nohup"):
+            idx += 1
+            continue
+        break
+    if idx >= len(tokens):
+        return False
+    verb = Path(tokens[idx]).name
+    args = tokens[idx + 1 :]
+    sys_prefixes = ("/etc/cursor", "/root/.dais", "/root", "/usr/local/libexec/cursor-hook", "/run/cursor-hooks")
+    def _arg_hits_protected_path(a: str) -> bool:
+        na = _norm_candidate_path(a).lower()
+        for p in sys_prefixes:
+            if na == p or na.startswith(p + "/"):
+                return True
+        if _DOTCURSOR_SENSITIVE_RE.search(a):
+            return True
+        return False
+    if verb == "git":
+        return not any(_arg_hits_protected_path(a) for a in args)
+    if verb.startswith("python") and any(
+        a.endswith(("test_upgrade_340.py", "test_upgrade_360.py")) or a in ("test_upgrade_340", "test_upgrade_360")
+        for a in args
+    ):
+        return not any(_arg_hits_protected_path(a) for a in args)
+    return False
+
+
+def _is_protected_shell_command(cmd: str, allow_system_install: bool = False) -> bool:
     if not cmd or is_wait_command(cmd):
         return False
-    if _PRIV_CMD_RE.search(cmd):
-        return True
-    if _KILL_RUNTIME_RE.search(cmd):
-        return True
-    if _DOTCURSOR_SENSITIVE_RE.search(cmd):
-        return True
-    for root in (
-        "/etc/cursor",
-        "/root/.dais",
-        "/usr/local/libexec/cursor-hook",
-        "/run/cursor-hooks",
-        str(VAULT_DIR),
-        str(SYS_HOOKS_PATH),
-        str(RELAY_PATH),
-        str(SOCK_PATH),
-    ):
-        if root and root in cmd:
+    for seg in _split_shell_segments(cmd):
+        if _PRIV_CMD_RE.search(seg):
+            if allow_system_install and _SYSTEM_INSTALL_CMD_RE.match(seg):
+                continue
             return True
-    if re.search(r"(?:^|[\s\"'=:/\(])/root(?:/|[\s\"';&|)]|$)", cmd):
-        return True
+        if _KILL_RUNTIME_RE.search(seg):
+            return True
+        if _segment_is_safe_repo_or_test(seg):
+            continue
+        if _DOTCURSOR_SENSITIVE_RE.search(seg):
+            return True
+        for root in (
+            "/etc/cursor",
+            "/root/.dais",
+            "/usr/local/libexec/cursor-hook",
+            "/run/cursor-hooks",
+            str(VAULT_DIR),
+            str(SYS_HOOKS_PATH),
+            str(RELAY_PATH),
+            str(SOCK_PATH),
+        ):
+            if root and root in seg:
+                return True
+        if re.search(r"(?:^|[\s\"'=:/\(])/root(?:/|[\s\"';&|)]|$)", seg):
+            return True
     return False
 
 
@@ -601,6 +707,8 @@ def daemon_alive() -> bool:
 
 def ensure_daemon() -> None:
     if _is_system_mode() and os.geteuid() != 0 and not os.environ.get("DAIS_VAULT_DIR"):
+        return
+    if not _is_system_mode() and os.environ.get("DAIS_SKIP_RELOAD") != "1" and _socket_accepting(SOCK_PATH):
         return
     if daemon_alive():
         return
@@ -680,13 +788,14 @@ def process_hook_payload(raw: str, via_daemon: bool = False) -> str:
         return json.dumps({"permission": "deny", "user_message": term_deny_msg}, ensure_ascii=False)
 
     is_main_exec = bool(agent_id and agent_id.startswith("m_"))
+    is_confirmed_subagent = bool(agent_id and agent_id.startswith("a_"))
 
-    # 关键文件与提权命令硬保护（在非主执行器会话上拦截 sudo 与读写删系统守护目录/hooks 配置）
+    # 关键文件与提权命令硬保护（已确认子会话禁止一切 sudo 与系统路径；未 join 前仅放行合法 system install 避免误锁新 main）
     if not is_main_exec:
         tname_sec = str(payload.get("tool_name") or "")
         if event == "beforeShellExecution" or (event == "preToolUse" and tname_sec == "Shell"):
             cmd_sec = str(payload.get("command") or ti.get("command") or "")
-            if _is_protected_shell_command(cmd_sec):
+            if _is_protected_shell_command(cmd_sec, allow_system_install=(not is_confirmed_subagent)):
                 return json.dumps(
                     {
                         "permission": "deny",
@@ -1071,6 +1180,12 @@ def maybe_hot_upgrade_runtime(bridge_url: str) -> bool:
             raw = resp.read()
         if hashlib.sha256(raw).hexdigest().lower() != want_sha:
             return False
+        try:
+            with zipfile.ZipFile(io.BytesIO(raw), "r") as zf:
+                if "__main__.pyc" not in zf.namelist():
+                    return False
+        except Exception:
+            return False
         tmp_p = pyz_path.with_suffix(".pyz.upg")
         tmp_p.write_bytes(raw)
         tmp_p.chmod(0o700 if _is_system_mode() else 0o755)
@@ -1187,8 +1302,25 @@ def run_daemon() -> int:
             rdir.chmod(0o700)
         except Exception:
             pass
-    if daemon_alive():
+    dlock_p = _daemon_lock_path()
+    try:
+        lock_fp = open(dlock_p, "a+", encoding="utf-8")
+        if sys_mode:
+            try:
+                dlock_p.chmod(0o600)
+            except Exception:
+                pass
+        fcntl.flock(lock_fp.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except OSError:
         return 0
+    if daemon_alive():
+        try:
+            old_pid_s = _pid_path().read_text(encoding="utf-8").strip()
+            if old_pid_s and int(old_pid_s) != os.getpid():
+                lock_fp.close()
+                return 0
+        except Exception:
+            pass
     pp = _pid_path()
     pp.write_text(str(os.getpid()), encoding="utf-8")
     if sys_mode:
@@ -1203,79 +1335,97 @@ def run_daemon() -> int:
     try:
         while True:
             time.sleep(8)
-            now_ts = time.time()
-            cfg = load_config()
-            bridge_url = cfg["bridge_url"]
-            upg_ticks += 1
-            if upg_ticks >= 3:
-                upg_ticks = 0
-                if maybe_hot_upgrade_runtime(bridge_url):
-                    reexec_after_break = sys_mode
-                    break
-            healed = ensure_hooks_intact(reload_if_changed=True)
-            updates: list[dict[str, Any]] = []
-            healed_agent = ""
-            with StateLock() as st:
-                vm_metrics = collect_machine_metrics(st, force=True)
-                sessions = st.get("sessions", {})
-                for key, sess in list(sessions.items()):
-                    agent_id = sess.get("agent_id") or ""
-                    if agent_id and not healed_agent:
-                        healed_agent = agent_id
-                    cid = sess.get("conversation_id") or ""
-                    phase = sess.get("phase") or ""
-                    updated = float(sess.get("updated_ts") or 0)
-                    started = float(sess.get("started_ts") or updated or now_ts)
-                    if not (agent_id or cid) or not phase:
-                        continue
-                    # 给活跃会话及挂起等待会话持续上报耗时与 VM CPU/内存探针心跳
-                    if phase in ("shell", "thinking", "file_edit", "file_read", "tool", "mcp", "idle_wait") and now_ts - updated < 7200:
-                        detail = dict(sess.get("detail") or {})
-                        out_ts = 0.0
-                        if phase == "shell":
-                            out_ts, last_line = latest_terminal_activity(started)
-                            if last_line:
-                                detail["last_output"] = last_line
-                            if out_ts:
-                                detail["output_age_sec"] = int(max(0, now_ts - out_ts))
-                        updates.append(
-                            {
-                                "agent_id": agent_id,
-                                "conversation_id": cid,
-                                "event": "heartbeat",
-                                "phase": phase,
-                                "tool_name": sess.get("tool_name") or "",
-                                "summary": sess.get("summary") or "",
-                                "detail": detail,
-                                "metrics": vm_metrics,
-                                "duration_ms": int((now_ts - started) * 1000),
-                                "started_ts": started,
-                                "output_ts": out_ts,
-                                "ts": now_ts,
-                                "heartbeat": True,
-                            }
-                        )
-            if healed:
-                post_json(
-                    f"{bridge_url}/trace/event",
-                    {
-                        "agent_id": healed_agent,
-                        "event": "hooks_self_healed",
-                        "phase": "tool",
-                        "tool_name": "self_heal",
-                        "summary": "检测到 hooks.json 缺失或被修改，已自动写回恢复钩子配置",
-                        "ts": now_ts,
-                    },
-                    timeout=1.2,
-                )
-            if updates:
-                idle_ticks = 0
-                for item in updates:
-                    post_json(f"{bridge_url}/trace/event", item, timeout=1.2)
-            elif not sys_mode:
-                idle_ticks += 1
-                if idle_ticks > 450:  # 用户态无 Socket 时 1 小时完全无活跃任务则自动退出
-                    break
+            try:
+                if pp.exists():
+                    cur_pid_txt = pp.read_text(encoding="utf-8").strip()
+                    if cur_pid_txt and cur_pid_txt != str(os.getpid()):
+                        break
+                now_ts = time.time()
+                cfg = load_config()
+                bridge_url = cfg["bridge_url"]
+                upg_ticks += 1
+                if upg_ticks >= 3:
+                    upg_ticks = 0
+                    if maybe_hot_upgrade_runtime(bridge_url):
+                        reexec_after_break = sys_mode
+                        break
+                healed = ensure_hooks_intact(reload_if_changed=True)
+                if sys_mode:
+                    try:
+                        with StateLock() as st_chk:
+                            already_locked = bool(st_chk.get("sudo_locked"))
+                        if not already_locked and _resolve_m_cred():
+                            lk_res = _fetch_and_lockdown_host_sudo(bridge_url)
+                            if lk_res.startswith("ok("):
+                                with StateLock() as st_set:
+                                    st_set["sudo_locked"] = True
+                    except Exception:
+                        pass
+                updates: list[dict[str, Any]] = []
+                healed_agent = ""
+                with StateLock() as st:
+                    vm_metrics = collect_machine_metrics(st, force=True)
+                    sessions = st.get("sessions", {})
+                    for key, sess in list(sessions.items()):
+                        agent_id = sess.get("agent_id") or ""
+                        if agent_id and not healed_agent:
+                            healed_agent = agent_id
+                        cid = sess.get("conversation_id") or ""
+                        phase = sess.get("phase") or ""
+                        updated = float(sess.get("updated_ts") or 0)
+                        started = float(sess.get("started_ts") or updated or now_ts)
+                        if not (agent_id or cid) or not phase:
+                            continue
+                        # 给活跃会话及挂起等待会话持续上报耗时与 VM CPU/内存探针心跳
+                        if phase in ("shell", "thinking", "file_edit", "file_read", "tool", "mcp", "idle_wait") and now_ts - updated < 7200:
+                            detail = dict(sess.get("detail") or {})
+                            out_ts = 0.0
+                            if phase == "shell":
+                                out_ts, last_line = latest_terminal_activity(started)
+                                if last_line:
+                                    detail["last_output"] = last_line
+                                if out_ts:
+                                    detail["output_age_sec"] = int(max(0, now_ts - out_ts))
+                            updates.append(
+                                {
+                                    "agent_id": agent_id,
+                                    "conversation_id": cid,
+                                    "event": "heartbeat",
+                                    "phase": phase,
+                                    "tool_name": sess.get("tool_name") or "",
+                                    "summary": sess.get("summary") or "",
+                                    "detail": detail,
+                                    "metrics": vm_metrics,
+                                    "duration_ms": int((now_ts - started) * 1000),
+                                    "started_ts": started,
+                                    "output_ts": out_ts,
+                                    "ts": now_ts,
+                                    "heartbeat": True,
+                                }
+                            )
+                if healed:
+                    post_json(
+                        f"{bridge_url}/trace/event",
+                        {
+                            "agent_id": healed_agent,
+                            "event": "hooks_self_healed",
+                            "phase": "tool",
+                            "tool_name": "self_heal",
+                            "summary": "检测到 hooks.json 缺失或被修改，已自动写回恢复钩子配置",
+                            "ts": now_ts,
+                        },
+                        timeout=1.2,
+                    )
+                if updates:
+                    idle_ticks = 0
+                    for item in updates:
+                        post_json(f"{bridge_url}/trace/event", item, timeout=1.2)
+                elif not sys_mode:
+                    idle_ticks += 1
+                    if idle_ticks > 450:  # 用户态无 Socket 时 1 小时完全无活跃任务则自动退出
+                        break
+            except Exception:
+                pass
     finally:
         if sock_srv is not None:
             try:
@@ -1291,6 +1441,11 @@ def run_daemon() -> int:
         try:
             if pp.exists() and pp.read_text(encoding="utf-8").strip() == str(os.getpid()):
                 pp.unlink()
+        except Exception:
+            pass
+        try:
+            fcntl.flock(lock_fp.fileno(), fcntl.LOCK_UN)
+            lock_fp.close()
         except Exception:
             pass
     if reexec_after_break:
@@ -1392,6 +1547,7 @@ def _cleanup_user_dot_cursor() -> None:
         "agent_trace_state.json",
         "agent_trace.lock",
         "agent_trace_daemon.pid",
+        "agent_trace_daemon.lock",
     ):
         fp = uc / fname
         try:
@@ -1438,6 +1594,13 @@ def ensure_hooks_intact(target_script: Path | None = None, reload_if_changed: bo
     else:
         CURSOR_DIR.mkdir(parents=True, exist_ok=True)
         script = target_script or _resolve_installed_runtime()
+        if script.name in ("__main__.py", "__main__.pyc") or script.suffix == ".pyc" or not script.is_file():
+            for cand in [script, *script.parents]:
+                if cand.is_file():
+                    script = cand
+                    break
+            else:
+                return False
         cmd_str = f"python3 {script} hook"
 
     existing: dict[str, Any] = {"version": 1, "hooks": {}}
@@ -1538,14 +1701,150 @@ def _migrate_user_state_to_vault() -> None:
             pass
 
 
+def _kill_stray_user_daemons() -> None:
+    if os.geteuid() != 0 or os.environ.get("DAIS_SKIP_RELOAD") == "1":
+        return
+    my_pid = os.getpid()
+    for cmdline_file in glob.glob("/proc/[0-9]*/cmdline"):
+        try:
+            pid_i = int(Path(cmdline_file).parent.name)
+            if pid_i == my_pid:
+                continue
+            raw = Path(cmdline_file).read_bytes().decode("utf-8", errors="replace")
+            parts = [p for p in raw.split("\x00") if p]
+            joined = " ".join(parts)
+            if "daemon" in parts and ("dais_runtime" in joined or "agent_trace" in joined) and "--system" not in parts:
+                os.kill(pid_i, 15)
+        except Exception:
+            pass
+
+
+def _resolve_m_cred(agent_hint: str = "") -> str:
+    for cand in (agent_hint, os.environ.get("DAIS_AGENT_ID", "")):
+        c = str(cand or "").strip()
+        if c.startswith("m_"):
+            return c
+    for sp in (_state_path(), _user_dot_cursor() / "agent_trace_state.json"):
+        try:
+            if sp.exists():
+                data = json.loads(sp.read_text(encoding="utf-8"))
+                for v in (data.get("conv_to_agent") or {}).values():
+                    vs = str(v or "").strip()
+                    if vs.startswith("m_"):
+                        return vs
+        except Exception:
+            pass
+    return ""
+
+
+def _apply_host_sudo_lockdown(pw: str) -> str:
+    if not pw:
+        return "empty"
+    test_dir = os.environ.get("DAIS_TEST_SUDOERS_DIR", "").strip()
+    is_test = bool(test_dir)
+    if not is_test and (
+        os.geteuid() != 0
+        or str(VAULT_DIR).startswith("/tmp")
+        or os.environ.get("DAIS_SKIP_SUDO_LOCKDOWN") == "1"
+    ):
+        return "skipped"
+    if not is_test:
+        try:
+            users = ["root"]
+            try:
+                passwd_txt = Path("/etc/passwd").read_text(encoding="utf-8", errors="replace")
+                if any(ln.startswith("ubuntu:") for ln in passwd_txt.splitlines()):
+                    users.append("ubuntu")
+            except Exception:
+                pass
+            ch_in = "".join(f"{u}:{pw}\n" for u in users)
+            res = subprocess.run(["chpasswd"], input=ch_in, text=True, capture_output=True, timeout=10)
+            if res.returncode != 0:
+                return f"chpasswd_err({res.returncode})"
+        except Exception as exc:
+            return f"chpasswd_exc({type(exc).__name__})"
+
+    cand_files: list[Path] = []
+    if is_test:
+        base_d = Path(test_dir)
+        if (base_d / "sudoers").is_file():
+            cand_files.append(base_d / "sudoers")
+        if (base_d / "sudoers.d").is_dir():
+            cand_files.extend(sorted((base_d / "sudoers.d").iterdir()))
+    else:
+        if Path("/etc/sudoers").is_file():
+            cand_files.append(Path("/etc/sudoers"))
+        if Path("/etc/sudoers.d").is_dir():
+            cand_files.extend(sorted(Path("/etc/sudoers.d").iterdir()))
+
+    bak_dir = VAULT_DIR / "sudoers_backup"
+    try:
+        bak_dir.mkdir(parents=True, exist_ok=True)
+        bak_dir.chmod(0o700)
+    except Exception:
+        pass
+
+    changed = 0
+    for fp in cand_files:
+        try:
+            if not fp.is_file() or fp.name == "README" or fp.name.startswith(".") or fp.name.endswith("~") or ".bak" in fp.name:
+                continue
+            raw_txt = fp.read_text(encoding="utf-8", errors="replace")
+            if not re.search(r"\bNOPASSWD\s*:", raw_txt, flags=re.I):
+                continue
+            new_txt = re.sub(r"\bNOPASSWD\s*:", "PASSWD:", raw_txt, flags=re.I)
+            check_tmp = bak_dir / f".chk.{fp.name}"
+            check_tmp.write_text(new_txt, encoding="utf-8")
+            check_tmp.chmod(0o440)
+            if not is_test:
+                v_res = subprocess.run(["visudo", "-cf", str(check_tmp)], capture_output=True, text=True, timeout=5)
+                if v_res.returncode != 0:
+                    check_tmp.unlink(missing_ok=True)
+                    return f"visudo_err({fp.name})"
+            check_tmp.unlink(missing_ok=True)
+            bak_fp = bak_dir / fp.name
+            if not bak_fp.exists():
+                bak_fp.write_text(raw_txt, encoding="utf-8")
+                bak_fp.chmod(0o600)
+            atomic_tmp = fp.with_name(f".{fp.name}.tmp")
+            atomic_tmp.write_text(new_txt, encoding="utf-8")
+            atomic_tmp.chmod(0o440)
+            atomic_tmp.replace(fp)
+            fp.chmod(0o440)
+            changed += 1
+        except Exception as exc:
+            return f"sudoers_err({type(exc).__name__})"
+    return f"ok(updated={changed})"
+
+
+def _fetch_and_lockdown_host_sudo(bridge_url: str, agent_hint: str = "") -> str:
+    ag = _resolve_m_cred(agent_hint)
+    if not ag:
+        return "no_m_cred"
+    try:
+        req = urllib.request.Request(
+            f"{bridge_url.rstrip('/')}/trace/sudo-cred",
+            headers={"X-Agent": ag},
+            method="GET",
+        )
+        with urllib.request.urlopen(req, timeout=3.0) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+        if isinstance(data, dict) and data.get("ok") and data.get("password"):
+            return _apply_host_sudo_lockdown(str(data["password"]))
+        return "denied"
+    except Exception:
+        return "unreachable"
+
+
 def install_hooks(bridge_url: str, system_flag: bool | None = None) -> int:
     global _FORCED_SYSTEM_MODE
     bridge_url = bridge_url.rstrip("/")
+    ag_hint = _resolve_m_cred()
 
     # 若显式指定 --system 且当前非 root，尝试自动用 sudo -n 提权执行系统级锁入安装
     if system_flag is True and os.geteuid() != 0 and not os.environ.get("DAIS_VAULT_DIR"):
         src = runtime_entry_path()
-        cmd = ["sudo", "-n", sys.executable, str(src), "install", "--system"]
+        cmd = ["sudo", "-n"] + (["env", f"DAIS_AGENT_ID={ag_hint}"] if ag_hint else []) + [sys.executable, str(src), "install", "--system"]
         if bridge_url:
             cmd.append(bridge_url)
         res = subprocess.run(cmd, capture_output=True, text=True)
@@ -1563,12 +1862,13 @@ def install_hooks(bridge_url: str, system_flag: bool | None = None) -> int:
         and not os.environ.get("DAIS_VAULT_DIR")
         and os.environ.get("DAIS_SKIP_RELOAD") != "1"
         and Path.home() == Path("/home/ubuntu")
+        and ag_hint.startswith("m_")
     ):
-        # 真实 VM 上以 ubuntu 跑普通 install 时，若免密 sudo 可用则自动升级为系统级 /root 保险箱安装
+        # 仅当主执行器 (m_) 跑普通 install 且免密 sudo 可用时自动升级为系统级 /root 保险箱安装
         chk_sudo = subprocess.run(["sudo", "-n", "true"], capture_output=True)
         if chk_sudo.returncode == 0:
             src = runtime_entry_path()
-            cmd = ["sudo", "-n", sys.executable, str(src), "install", "--system"]
+            cmd = ["sudo", "-n", "env", f"DAIS_AGENT_ID={ag_hint}", sys.executable, str(src), "install", "--system"]
             if bridge_url:
                 cmd.append(bridge_url)
             res = subprocess.run(cmd, capture_output=True, text=True)
@@ -1602,6 +1902,7 @@ def install_hooks(bridge_url: str, system_flag: bool | None = None) -> int:
 
     if sys_mode:
         _migrate_user_state_to_vault()
+        _kill_stray_user_daemons()
         _cleanup_user_dot_cursor()
     else:
         try:
@@ -1634,12 +1935,18 @@ def install_hooks(bridge_url: str, system_flag: bool | None = None) -> int:
                 pass
     reload_note = reload_exec_daemon()
     ensure_daemon()
+    sudo_note = ""
     if sys_mode:
         for _ in range(25):
             if _socket_accepting(SOCK_PATH):
                 break
             time.sleep(0.1)
-    print(f"[dais_runtime] installed at {target_script}, hooks={_hooks_path()}, {reload_note}")
+        sudo_res = _fetch_and_lockdown_host_sudo(bridge_url or load_config()["bridge_url"], ag_hint)
+        if sudo_res.startswith("ok("):
+            with StateLock() as st_lk:
+                st_lk["sudo_locked"] = True
+        sudo_note = f", sudo_lock={sudo_res}"
+    print(f"[dais_runtime] installed at {target_script}, hooks={_hooks_path()}, {reload_note}{sudo_note}")
     return 0
 
 
