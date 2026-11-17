@@ -90,6 +90,18 @@ CAP_SLAB = DRESSING.slab + "[type=bottom]"
 CAP_STAIRS = DRESSING.stairs
 GRATE = B.IRON_GRATE
 
+# --- the fine pass (round 2, plan/fine.md 2-3): parts read at ten blocks, traces at two ----------
+# The arrival view (S.V1) keeps the wall and the stair a shade below the front (the card, and A0
+# #268), so the fine work here is dark cast iron and dark stone, read by the shadow it throws and
+# not by a paler stone. Each piece is a switch, so the review can turn it off on the pictures.
+COPING_DRIP = True                  # a drip course oversails the retaining wall, a shadow line under its coping
+WEAR = True                         # the walk's band is worn matte at its two edges, so its middle reads as the runner
+DRIP = B.SLATE_SMOOTH.slab + "[type=bottom]"            # the coping's drip, oversailing the lower platform
+DRAIN_HOOD = B.SLATE_SMOOTH.slab + "[type=top]"         # a stone hood over the weep, its throat open below
+DRAIN_COVER = B.IRON_HATCH + "[facing=north,half=bottom,open=false]"     # the iron cover over the gully at the foot
+BAND_EDGE = B.TUFF.block                                # the band's two outer rows, matte beside the worn runner
+BAND_EDGE_SLAB = B.TUFF.slab + "[type=bottom]"
+
 # The court's walk (site/court) is the door bay with its two pilasters. The band on the treads and
 # the walk across the lower platform (site/lowerplatform) keep its rows.
 BAND = True                         # the switch (A0 #28839; kept on the pictures, 11-16): the walk's band lies on the treads
@@ -160,8 +172,27 @@ def _buttress(c, o, z):
 
 
 def _drain(c, o, z):
+    """A weep in the wall drains the terrace fill: an iron grating in the plinth course, a stone hood
+    that throws the water clear and keeps the drip off the wall, and an iron cover over the gully it
+    falls into at the wall's foot (plan/fine.md 3: a drain cover at the foot, open ironwork over the
+    stone the water stains). The hood's throat is the open half below it."""
     _put(c, o, EDGE_X, FEET + 1, z, GRATE)
-    _put(c, o, EDGE_X + 1, FEET, z, SPLASH)
+    _put(c, o, EDGE_X + 1, FEET + 1, z, DRAIN_HOOD)
+    _put(c, o, EDGE_X + 1, FEET, z, DRAIN_COVER)
+
+
+def _coping_drip(c, o):
+    """A drip course oversails the east face of the retaining wall, one wall bay at a time, so the
+    wall's top throws a shadow line over the lower platform and the dark band reads at night
+    (plan/fine.md 3, the outside wall: a cornice with its drip; the card: the wall is a shade below
+    the front, so this is relief, not a paler stone). It keeps clear of the buttresses, whose
+    weathering already stands in that cell, and of the stair's mouth and cheeks (CHEEK_Z spans both),
+    where the wall is the back of the stair."""
+    skip = set(BUTTRESS_Z)
+    for z in range(WZ0, WZ1 + 1):
+        if z in skip or CHEEK_Z[0] <= z <= CHEEK_Z[1]:
+            continue
+        _put(c, o, EDGE_X + 1, TOP, z, DRIP)
 
 
 # --- the stair ------------------------------------------------------------------------------------
@@ -172,14 +203,25 @@ def _levels(top):
     return k, top > k
 
 
+def _tread_stone(z, walk, slab):
+    """The stone of a tread's surface in row z: the stair's slate, or the walk's band -- worn matte
+    on its two outer rows (WEAR) so the three middle rows read as the runner trodden pale, the strip
+    the card calls 'a strip trodden pale down the middle of the steps' (plan/fine.md 3)."""
+    if not walk:
+        return TREAD_SLAB if slab else TREAD
+    if WEAR and z in WALK_Z:
+        return BAND_EDGE_SLAB if slab else BAND_EDGE
+    return BAND_SLAB if slab else BAND_TREAD
+
+
 def _tread(c, o, x, z, walk):
     """Slate brick under one course of tread: the top whole block, or the slab alone where the
     height ends in a half. `walk`: the tread is of the walk's stone."""
     k, half = _levels(S.stair_top(x))
     for y in range(FEET, k):
-        _put(c, o, x, y, z, BRICK if half or y < k - 1 else BAND_TREAD if walk else TREAD)
+        _put(c, o, x, y, z, BRICK if half or y < k - 1 else _tread_stone(z, walk, False))
     if half:
-        _put(c, o, x, k, z, BAND_SLAB if walk else TREAD_SLAB)
+        _put(c, o, x, k, z, _tread_stone(z, walk, True))
 
 
 def _cheek(c, o, x, z):
@@ -221,6 +263,8 @@ def build(canvas, origin=(0, 0, 0), band=None):
         _buttress(c, o, z)
     for z in DRAIN_Z:
         _drain(c, o, z)
+    if COPING_DRIP:
+        _coping_drip(c, o)
     for x in range(G["x0"], G["x1"] + 1):
         for z in range(G["z0"], G["z1"] + 1):
             _tread(c, o, x, z, band and WALK_Z[0] <= z <= WALK_Z[1])
