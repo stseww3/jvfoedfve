@@ -18,6 +18,10 @@
 2. **Firefox BiDi concurrency race & window flashing**:
    - `doOneTimed` (`92s` `Promise.race`) previously released `donorMintInflight` while the underlying `doOne()` was still executing `killFirefoxOnPort` / `spawn(firefox)` / `session.new`, causing two coroutines to fight over the same `:9228..:9231` profile and loop `BiDi session locked` + `execSync('powershell ...')`.
    - Fix: removed racing `Promise.race` in favor of serialized `donorMintChains` with an internal `hardDeadline`, async `killFirefoxOnPort` (`execFile`), `about:blank` initial launch + `browser.sessionstore.resume_from_crash=false` + `sessionstore-backups` cleanup, and `130s` outer guard in `headless-bot.mjs`.
+3. **Live verification & clean shutdown (`2026-11-17 20:34 -> 21:04`, d3 clock)**:
+   - `mint ok: 55`, `BW-SOLVE: 11`, **`error 4591: 0`**, **`BiDi session failed/locked: 0`**, zero window flashing.
+   - Completed Match 1 (`Room 5045`, `3T`, 64 humans, `squad=15`, `Qin` 21st `peak=32,289`) -> auto-transitioned (`[APEX]`) -> Completed Match 2 (`Room 5074`, `4T`, 93 humans, `map=28`, `squad=11`, `Senna` **9th/93 `peak=109,220 (24.6%)`**, `TokyoGhoul` 10th/93 `peak=27,613`) -> auto-transitioned (`[APEX]`) -> Launched Match 3 (`Room 5101`, `3T`, 111 humans, `squad=25`).
+   - Per admin request (`#98067`), cleanly stopped `node_apex.exe` and all donor `firefox.exe` processes (`CPU` back to ~`9%`). Note for future large `K>=25` rooms: `tsb-apex-squad.mjs` `stalledPolls` currently only triggers when `s.tick > 0`, so 22 bots that stalled at `tick=0` during a `25`-bot Server 3 spawn burst stayed un-reaped until `TokyoGhoul` played solo.
 
 ## Root causes of `2026-11-17 09:06 -> 15:55` 0-match deadlock (`Player XX` + `bw.show` + CF burn)
 
