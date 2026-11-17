@@ -69,6 +69,7 @@ from ..common import skeleton as S
 from ..main import _order as O
 from ..props import _kit as K
 from . import _domechair
+from . import _domefittings
 from . import _domeframe as F
 
 ORDER = 80                  # after the shell and the dome (60)
@@ -116,6 +117,7 @@ GEAR_SLIT = (
 
 IRON = B.IRON_RIVETED
 SHUTTER = B.WAINSCOT                            # a framed panel of dark wood, three texels thick
+DADO = 1                                        # rows of the same panelling at the lining's foot
 WOOD = B.DARK_WOOD                              # the floor's border, what stands in for furniture
 DEAL = B.FLOOR_WOOD                             # the boards of the vault and of the drum's lining: dark oak
 #                                                 is dead black where no lamp is (0.02 from below, the sky's
@@ -182,14 +184,14 @@ DIAL_FACE = (                                   # c the lit glass, k the quarter
     "..mckcm..",
 )
 # What goes in the room (round 2: whatever can move does). The dial is a slave that beats seconds, as
-# the dials of an observing room do: who has his eye at the telescope counts the beats. Its seconds
-# hand is a piece of its own and jumps once a second; the hour and the minute stay where every clock
-# on the hill stands
+# the dials of an observing room do: who has his eye at the telescope counts the beats. It keeps the
+# station's time as every dial of the hill does (machines/clock, clocks #92119): its three hands are
+# pieces of their own, placed at CLOCK with the seconds hand at twelve, and clock.drive() runs them
+# from there: the seconds hand jumps once a second, the other two creep
 DIAL_MIDDLE = 8.0                               # the middle of the dial over the foot's underside, model units
-SECONDS_PIVOT = (0.0, DIAL_MIDDLE, 2.3)         # the seconds hand's anchor in the dial's frame: on its boss
-SECONDS_REST = 20                               # the second it stands at while nothing drives it: clear of the
-#                                                 two other hands at five to eight
-SECONDS_BEAT = 3                                # ticks one beat takes: the hand jumps, and stands till the next
+# the hands: (name, what clock.drive calls it, length, half width, the plane it turns in: model units
+# in front of the foot's middle). The pivot of each is on the dial's axis in its plane
+HANDS = (("hour", "h", 2.5, 0.5, 1.75), ("minute", "m", 3.75, 0.5, 1.95), ("seconds", "s", 4.5, 0.25, 2.3))
 
 # --- light: (level, rank); sky/lights decides where the invisible blocks really go -----------------
 # Each is the glow of an instrument that is seen to glow, which is not a lamp (sky/lights, c331
@@ -384,28 +386,30 @@ def _time_dial():
     marks = dict(c=P.RAMPS["opal"][2], k=P.RAMPS["iron"][0], m=P.RAMPS["iron"][2])
     m.box((-4.5, cy - 4.5, face), (4.5, cy + 4.5, face + 0.25), K.flat("opal", 2), skip="nudew",
           faces={"s": Sprite(PREFIX + "time_dial_face", list(DIAL_FACE), marks)}, emit=DIAL_GLOW, shade=False)
-    top = face + 0.25
-    hour, minute = CLOCK
-    for lean, length in (((hour % 12 + minute / 60.0) * 30.0, 2.5), (minute * 6.0, 3.75)):
-        m.box((-0.5, cy, top), (0.5, cy + length, top + 0.2), K.flat("iron", 0), grain="y",
-              rot=("z", -lean, (0.0, cy, top + 0.1)))                                   # a hand: one clean strip
-        top += 0.2
-    m.box((-0.5, cy - 0.5, top), (0.5, cy + 0.5, top + 0.15), K.flat("brass", 4))       # the boss on the pivot
     m.ring("z", (0.0, cy, face + 0.375), 5.0, 1.0, 0.75, K.BRASS, sides=16)             # the bezel
     return m
 
 
-def _seconds_hand():
-    """The seconds hand of the mean-time dial: a strip half as wide as the two other hands and as
-    dark, from the pivot to the rim; behind the pivot a short tail with its counterpoise, on the
-    pivot its own boss. It stands at SECONDS_REST. Anchor: the pivot, in the plane the hand turns
-    in; it turns about the model's z, which looks out of the dial."""
-    m = M.Model(PREFIX + "time_dial_seconds")
-    rot = ("z", -6.0 * SECONDS_REST, (0.0, 0.0, 0.075))
-    m.box((-0.25, -1.0, 0.0), (0.25, 4.5, 0.15), K.flat("iron", 0), grain="y", rot=rot)
-    m.box((-0.5, -2.0, 0.0), (0.5, -1.0, 0.15), K.flat("iron", 0), rot=rot)             # the counterpoise
-    m.box((-0.5, -0.5, 0.15), (0.5, 0.5, 0.3), K.flat("brass", 4))                      # the boss
+def _hand(name, length, half, lean):
+    """A hand of the mean-time dial: one clean dark strip from the pivot, standing `lean` degrees
+    past twelve. The seconds hand is half as wide as the two others and has behind the pivot a
+    short tail with its counterpoise and on the pivot the boss that covers all three. Anchor: the
+    pivot, in the plane the hand turns in; it turns about the model's z, which looks out of the
+    dial."""
+    m = M.Model(PREFIX + "time_dial_" + name)
+    rot = ("z", -lean, (0.0, 0.0, 0.075))
+    m.box((-half, 0.0 if name != "seconds" else -1.0, 0.0), (half, length, 0.15), K.flat("iron", 0), grain="y", rot=rot)
+    if name == "seconds":
+        m.box((-0.5, -2.0, 0.0), (0.5, -1.0, 0.15), K.flat("iron", 0), rot=rot)         # the counterpoise
+        m.box((-0.5, -0.5, 0.15), (0.5, 0.5, 0.3), K.flat("brass", 4))                  # the boss
     return m
+
+
+def _hand_leans():
+    """{name: degrees past twelve} where the three hands are placed: the station's time, the
+    seconds hand at twelve (machines/clock's rule)."""
+    hour, minute = CLOCK
+    return {"hour": (hour % 12 + minute / 60.0) * 30.0, "minute": minute * 6.0, "seconds": 0.0}
 
 
 @functools.lru_cache(maxsize=None)
@@ -413,7 +417,9 @@ def _models():
     # the dial's drum and its bezel are round: settled, their slanting flats are lit the same way
     # in every copy of the game (props/_kit, a6 #75968)
     settle = getattr(K, "settle", lambda m: m)
-    return {m.name: m for m in (settle(_time_dial()), settle(_seconds_hand()))}
+    leans = _hand_leans()
+    hands = [_hand(name, length, half, leans[name]) for name, _, length, half, _ in HANDS]
+    return {m.name: m for m in [settle(_time_dial())] + [settle(m) for m in hands]}
 
 
 def models():
@@ -422,6 +428,7 @@ def models():
     if skeleton is not None:
         out.update(skeleton.models)
     out.update(_domechair.models())
+    out.update(_domefittings.models())
     board = _other("interiors", "_domeboard")
     if board is not None:
         out.update(board.models())
@@ -572,7 +579,12 @@ def _wall(c, origin, put, shell):
     column of the lining has stone on two sides the moulding's hollow would open onto the second,
     so that column is a whole block. A window the room sees keeps its reveal, the depth of the
     lining, and in it a shutter of dark panelling stands shut, flush with the boards: the drum's
-    windows are dark at night from both sides."""
+    windows are dark at night from both sides.
+
+    The foot of the lining is a dado of the same dark panelling, a panel to a column, flush with
+    the boards above it. A column that shows the room two faces (where the lining steps round the
+    circle, a door's jamb, the cheek of a bay) stays whole boards from the floor up: it is the
+    post the panels are framed between, and what hangs on the wall hangs on a post."""
     lay = O.Laying(c, None, origin, None)
     cols = shell.wall - set(GEAR_SHAFT)
     lay.mould(shell.ledge, WALL_TOP, DEAL.stairs, "top", only=cols)
@@ -581,11 +593,15 @@ def _wall(c, origin, put, shell):
             put(col[0], WALL_TOP, col[1], DEAL.block)
     doors = set(doorways())
     y0, y1 = S.DOME_ROOM_DOORS["y"]
+    seen_from = (shell.inside - shell.wall) | doors
     for col in cols:
+        faces = [d for d in O.SIDES if O.step(col, d) in seen_from]
         for y in range(FEET, WALL_TOP):
             if col in doors and y0 <= y <= y1:
                 continue
             out = shell.window(col, y)
+            if out is None and y < FEET + DADO and len(faces) == 1 and col not in doors:
+                out = (-faces[0][0], -faces[0][1])
             if out is None:
                 put(col[0], y, col[1], DEAL.block)
             else:
@@ -653,25 +669,24 @@ def _furniture(c, origin, put):
     if furniture is not None and paper is not None:
         top = FEET + furniture.TOP[DESK[0]]
         n += paper.place(c, "logbook", (LOGBOOK[0], top, LOGBOOK[1]), facing=DESK[2], origin=origin)
+    # the small things of the night's work: on the walls, on the coat stand, on the desk
+    stand = next((at for kind, at, _ in FURNITURE if kind == "coat_stand"), None)
+    n += _domefittings.place(c, origin, stand=stand if furniture is not None else None,
+                             desk_top=furniture.TOP[DESK[0]] if furniture is not None else None)
     at, looks = _time_dial_at(), TIME_DIAL[2]
     n += K.put(c, _models()[PREFIX + "time_dial"], at, facing=looks, origin=origin)
-    dx, dy, dz = K.turn(K.FACING[looks], tuple(v / 16.0 for v in SECONDS_PIVOT))
-    n += K.put(c, _models()[PREFIX + "time_dial_seconds"], (at[0] + dx, at[1] + dy, at[2] + dz), facing=looks,
-               origin=origin)
-    _beat(c)
+    # its hands, each placed at the station's time and then handed to the station's clock, which
+    # turns it clockwise for whoever reads the dial. Without machines/clock in the tree the hands
+    # stand where they are placed, as they do in every offline picture
+    drive = getattr(_other("machines", "clock"), "drive", None)
+    for name, kind, _, _, plane in HANDS:
+        dx, dy, dz = K.turn(K.FACING[looks], (0.0, DIAL_MIDDLE / 16.0, plane / 16.0))
+        n += K.put(c, _models()[PREFIX + "time_dial_" + name], (at[0] + dx, at[1] + dy, at[2] + dz), facing=looks,
+                   origin=origin)
+        if drive is not None:
+            drive(c, kind, "z")
     # the track of the observing ladder round the pier, and the ladder parked on it
     return n + _domechair.place(c, origin)
-
-
-def _beat(c):
-    """Register the seconds hand, the piece placed last, with the motion line: once round in a
-    minute, clockwise for whoever reads the dial, in sixty beats. A beat is a jump of SECONDS_BEAT
-    ticks, after which the hand stands till the next second: the steps and the lead are set by hand
-    for that (the kit's own would sweep it round, and a slave dial does not sweep). While motion is
-    not in the tree the hand stands where it was placed, as it does in every offline picture."""
-    MK = _other("motion", "_kit")
-    if MK is not None:
-        MK.spin(c, "z", -60 * MK.SECOND, keys=60, lead=SECONDS_BEAT - MK.SECOND)
 
 
 def _time_dial_at():
