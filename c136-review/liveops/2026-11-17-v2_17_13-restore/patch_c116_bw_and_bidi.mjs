@@ -815,5 +815,120 @@ const sqNewFailCnt = `      c.lobbyFailCount = (c.lobbyFailCount || 0) + 1;
 if (!sqNorm.includes(sqOldFailCnt)) throw new Error('sqOldFailCnt not found');
 sqNorm = sqNorm.replace(sqOldFailCnt, sqNewFailCnt);
 
+// 7. DYNAMIC-POOL full-team fill (+25% late-join buffer, 3T priority, cap K<=22 to prevent Server 3 PoW/4540 burst),
+// faster selection jitter & 1.5s poll loop, throttled spawnCoordinator (850ms), and tick=0 stall guard
+const sqOldSpawnFreq = `  if (!spawnCoordinator.lastPlan || spawnCoordinator.lastPlan.matchKey !== key || now - spawnCoordinator.lastSolvedAt >= 320) {`;
+const sqNewSpawnFreq = `  if (!spawnCoordinator.lastPlan || spawnCoordinator.lastPlan.matchKey !== key || now - spawnCoordinator.lastSolvedAt >= 850) {`;
+if (!sqNorm.includes(sqOldSpawnFreq)) throw new Error('sqOldSpawnFreq not found');
+sqNorm = sqNorm.replace(sqOldSpawnFreq, sqNewSpawnFreq);
+
+const sqOldStall = `    if (s.tick > 0 && s.tick === prevTick) {
+      clients[idx].stalledPolls = (clients[idx].stalledPolls || 0) + 1;
+    } else {
+      clients[idx].stalledPolls = 0;
+    }
+    // Only clean up a genuinely dead socket freeze (>= 36 polls = ~90s frozen), NEVER kick an active lagging game!
+    if ((clients[idx].stalledPolls || 0) >= 36) {
+      clients[idx].stalledPolls = 0;
+      clients[idx].evalJs(\`(() => {
+        const activeSockOpen = typeof b1 === "object" && b1?.z?.ef && (b1.z.ef(2) || b1.z.ef(3));
+        const d = window.dictionary, g = d && window[d.game];
+        if (!activeSockOpen && g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true);
+      })()\`);
+      return false;
+    }
+    return s.spawnPhase || s.tick < 200 || now - clients[idx].enteredGameAt < 45000 || (s.alive && (s.terr || 0) > 0);`;
+const sqNewStall = `    if ((s.tick > 0 && s.tick === prevTick) || (s.tick === 0 && now - (clients[idx].enteredGameAt || now) > 30000)) {
+      clients[idx].stalledPolls = (clients[idx].stalledPolls || 0) + 1;
+    } else {
+      clients[idx].stalledPolls = 0;
+    }
+    // Clean up frozen or tick=0 stuck sockets without kicking active matches
+    if ((clients[idx].stalledPolls || 0) >= 24) {
+      clients[idx].stalledPolls = 0;
+      clients[idx].evalJs(\`(() => {
+        const activeSockOpen = typeof b1 === "object" && b1?.z?.ef && (b1.z.ef(2) || b1.z.ef(3));
+        const d = window.dictionary, g = d && window[d.game];
+        if (!activeSockOpen && g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true);
+      })()\`);
+      return false;
+    }
+    return ((s.spawnPhase || s.tick < 200) && now - (clients[idx].enteredGameAt || now) < 45000) || (s.alive && (s.terr || 0) > 0);`;
+if (!sqNorm.includes(sqOldStall)) throw new Error('sqOldStall not found');
+sqNorm = sqNorm.replace(sqOldStall, sqNewStall);
+
+const sqOldScoreCard = `    const scoreCard = (r) => {
+      let sc = 0;
+      if (r.nS >= 60 || r.nS === 0) sc += 500;
+      if (r.vz === 1 || r.vz === 2) sc += 340;
+      else if (r.vz === 3) sc += 230;
+      else if (r.vz === 0) sc += 170;
+      else if (r.vz >= 4 && r.vz <= 6) sc += 90;
+      sc += Math.min(140, r.h2 * 3);
+      if (r.wK >= 5 && r.wK <= 45) sc += 100;
+      else sc -= Math.min(90, Math.floor(r.wK / 2));
+      return sc;
+    };`;
+const sqNewScoreCard = `    const scoreCard = (r) => {
+      let sc = 0;
+      if (r.nS >= 60 || r.nS === 0) sc += 500;
+      if (r.vz === 1) sc += 420;
+      else if (r.vz === 2) sc += 300;
+      else if (r.vz === 3) sc += 230;
+      else if (r.vz === 0) sc += 170;
+      else if (r.vz >= 4 && r.vz <= 6) sc += 90;
+      if (r.h2 <= 48) sc += 110;
+      sc += Math.min(120, r.h2 * 3);
+      if (r.wK >= 5 && r.wK <= 45) sc += 100;
+      else sc -= Math.min(90, Math.floor(r.wK / 2));
+      return sc;
+    };`;
+if (!sqNorm.includes(sqOldScoreCard)) throw new Error('sqOldScoreCard not found');
+sqNorm = sqNorm.replace(sqOldScoreCard, sqNewScoreCard);
+
+const sqOldDynK = `  const alreadyCommitted = ourAlreadySelectedOnTarget > 0;
+  const inCommitWindow = alreadyCommitted || (minStartsIn >= 5 && minStartsIn <= 20);
+
+  let desiredK = 0;
+  if (targetRoomId > 0 && inCommitWindow && verifiedApexIndices.length >= 10) {
+    const idealFullTeamK = outsidersE > 0 ? Math.floor(outsidersE / Math.max(1, roomTeamsT - 1)) : 12;
+    const roomSpaceLeft = Math.max(0, roomCapNs - outsidersE);
+    desiredK = Math.max(10, Math.min(40, verifiedApexIndices.length, roomSpaceLeft, Math.max(10, idealFullTeamK)));
+    if (minStartsIn <= 6 && ourAlreadySelectedOnTarget >= 10) {
+      desiredK = Math.max(desiredK, Math.min(verifiedApexIndices.length, ourAlreadySelectedOnTarget));
+    }
+  }`;
+const sqNewDynK = `  const alreadyCommitted = ourAlreadySelectedOnTarget > 0;
+  const inCommitWindow = alreadyCommitted || (minStartsIn >= 3 && minStartsIn <= 22);
+
+  let desiredK = 0;
+  if (targetRoomId > 0 && inCommitWindow && verifiedApexIndices.length >= 10) {
+    const growthMult = minStartsIn > 8 ? 1.25 : 1.12;
+    const idealFullTeamK = outsidersE > 0 ? Math.ceil((outsidersE * growthMult) / Math.max(1, roomTeamsT - 1)) : 14;
+    const roomSpaceLeft = Math.max(0, roomCapNs - outsidersE);
+    desiredK = Math.max(10, Math.min(22, verifiedApexIndices.length, roomSpaceLeft, Math.max(10, idealFullTeamK)));
+    if (minStartsIn <= 6 && ourAlreadySelectedOnTarget >= 10) {
+      desiredK = Math.max(desiredK, Math.min(22, verifiedApexIndices.length, ourAlreadySelectedOnTarget));
+    }
+  }`;
+if (!sqNorm.includes(sqOldDynK)) throw new Error('sqOldDynK not found');
+sqNorm = sqNorm.replace(sqOldDynK, sqNewDynK);
+
+const sqOldReadyJitter = `              const delayMs = 40 + ((\${c.slot} * 35) % 950) + Math.floor(Math.random() * 120);`;
+const sqNewReadyJitter = `              const delayMs = (\${minStartsIn <= 8 ? 10 : 30}) + ((\${c.slot} * (\${minStartsIn <= 8 ? 7 : 18})) % (\${minStartsIn <= 8 ? 110 : 300})) + Math.floor(Math.random() * 40);`;
+if (!sqNorm.includes(sqOldReadyJitter)) throw new Error('sqOldReadyJitter not found');
+sqNorm = sqNorm.replace(sqOldReadyJitter, sqNewReadyJitter);
+
+const sqOldSyncInt = `  } finally {
+    __syncTickBusy = false;
+  }
+}, 2500);`;
+const sqNewSyncInt = `  } finally {
+    __syncTickBusy = false;
+  }
+}, 1500);`;
+if (!sqNorm.includes(sqOldSyncInt)) throw new Error('sqOldSyncInt not found');
+sqNorm = sqNorm.replace(sqOldSyncInt, sqNewSyncInt);
+
 fs.writeFileSync(sqPath, sqNorm, 'utf8');
 console.log('Patched', sqPath, 'len=', sqNorm.length);
