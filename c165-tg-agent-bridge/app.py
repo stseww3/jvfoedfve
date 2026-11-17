@@ -5420,7 +5420,13 @@ async def t_local_list(agent, args):
     return text_result(await local_job(agent, "list", {"path": str(args.get("path") or ".")}, 60))
 
 
+def _is_blind_executor(agent) -> bool:
+    return bool(agent is not None and (is_main_node_id(agent["conv"]) or is_worker_host_id(agent["conv"])))
+
+
 async def t_list_agents(agent, args):
+    if _is_blind_executor(agent) and ctrl_is_active():
+        raise ToolFail("权限禁止：主执行器 / 协调器严禁查看业务子会话状态详情！请只处理总控 ctrl 下发的 [STANDARD_OP] 单据并回到 read_chat。")
     return text_result(status_overview(main_cloud()))
 
 
@@ -5638,6 +5644,8 @@ def reset_dm_streaks_for(conv_id: str) -> None:
 
 
 async def t_list_peers(agent, args):
+    if _is_blind_executor(agent) and ctrl_is_active():
+        return text_result("主执行器仅可与总控 ctrl 通信（send_agent_message(to=\"ctrl\", ...)）；已屏蔽业务子会话职责、模型、追踪与协作群详情。")
     owner = agent_owner_scope(agent)
     me_id = agent["conv"]
     rows = store.q("SELECT * FROM convs WHERE status='open' AND id!='main' AND IFNULL(owner,0)=? ORDER BY num", (owner,))
@@ -5981,6 +5989,8 @@ async def t_send_group_message(agent, args):
 
 
 async def t_group_history(agent, args):
+    if _is_blind_executor(agent):
+        raise ToolFail("权限禁止：主执行器 / 协调器严禁查看任何 Agent 协作群聊天记录！请只处理 [STANDARD_OP] 单据并回到 read_chat。")
     gid = parse_group(str(args.get("group") or ""))
     grow = group_row(gid) if gid else None
     if grow is None:
@@ -6254,6 +6264,8 @@ def render_cluster_overview() -> str:
 
 
 async def t_cluster_status(agent, args):
+    if _is_blind_executor(agent) and ctrl_is_active():
+        raise ToolFail("权限禁止：主执行器 / 协调器严禁查看集群业务子会话明细！请只处理总控 ctrl 下发的 [STANDARD_OP] 单据并回到 read_chat。")
     return text_result(render_cluster_overview())
 
 
@@ -6803,6 +6815,8 @@ def render_trace_report(viewer_owner: int, is_main_or_admin: bool, target_conv: 
 
 
 async def t_trace_status(agent, args):
+    if _is_blind_executor(agent):
+        raise ToolFail("权限禁止：主执行器 / 协调器严禁查看实时追踪详情（命令、改文件、思考摘要）！请只处理 [STANDARD_OP] 单据并回到 read_chat。")
     owner = agent_owner_scope(agent)
     is_priv = agent["role"] in ("main", "ctrl")
     target_conv = str(args.get("chat") or "").strip()
@@ -11160,8 +11174,8 @@ async def trace_get(request: Request, chat: str = "", limit: int = 10) -> JSONRe
     tok = bearer(request)
     is_full_admin = bool(tok and hmac.compare_digest(tok, store.get("account_key")))
     arow = agent_row(agent_hdr) if agent_hdr else None
-    if not is_full_admin and (arow is None or arow["status"] != "active"):
-        return JSONResponse({"ok": False, "error": "unauthorized: provide X-Agent header or use Telegram /trace / MCP trace_status"}, status_code=403)
+    if not is_full_admin and (arow is None or arow["status"] != "active" or _is_blind_executor(arow)):
+        return JSONResponse({"ok": False, "error": "unauthorized or forbidden for blind executor"}, status_code=403)
     viewer_owner = 0 if is_full_admin else agent_owner_scope(arow)
     allow_main = is_full_admin or (arow is not None and arow["role"] == "main")
 

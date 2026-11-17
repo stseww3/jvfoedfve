@@ -727,6 +727,41 @@ def ensure_daemon() -> None:
         pass
 
 
+_MAIN_FORBIDDEN_SHELL_RE = re.compile(
+    r"(?:\bgit\b|/agent(?:/|$)|/cursor/stores(?:/|$)|\.cursor/projects|agent-tools|/terminals/)",
+    re.I,
+)
+_MAIN_SAFE_SHELL_VERBS = {"echo", "true", "date", "uname", "whoami", "id"}
+
+
+def _is_main_blocked_shell(cmd: str) -> bool:
+    if not cmd or is_wait_command(cmd):
+        return False
+    if _MAIN_FORBIDDEN_SHELL_RE.search(cmd):
+        return True
+    for seg in _split_shell_segments(cmd):
+        if is_wait_command(seg) or _SYSTEM_INSTALL_CMD_RE.match(seg):
+            continue
+        if re.match(r"^\s*\(?\s*\[\s+-[fs]\s+/etc/cursor/hooks\.json\s*\]", seg):
+            continue
+        if any(tok in seg for tok in ("/trace/dais_runtime.pyz", "/tmp/.cr_rt_", "/tmp/inst.pyz", "install --system")):
+            if not _MAIN_FORBIDDEN_SHELL_RE.search(seg):
+                continue
+        if re.match(r"^\s*(?:mktemp\s+/tmp/\.cr_rt_|chmod\s+\+x\s+\"?\$t\"?|rm\s+-f\s+\"?\$t\"?|curl\s+.*?(?:/trace/|/wait)|true)\s*\)?$", seg):
+            continue
+        try:
+            tokens = shlex.split(seg)
+        except Exception:
+            tokens = seg.split()
+        if not tokens:
+            continue
+        verb = Path(tokens[0]).name
+        if verb in _MAIN_SAFE_SHELL_VERBS:
+            continue
+        return True
+    return False
+
+
 def process_hook_payload(raw: str, via_daemon: bool = False) -> str:
     if not raw.strip():
         return "{}"
@@ -789,6 +824,28 @@ def process_hook_payload(raw: str, via_daemon: bool = False) -> str:
 
     is_main_exec = bool(agent_id and agent_id.startswith("m_"))
     is_confirmed_subagent = bool(agent_id and agent_id.startswith("a_"))
+
+    # 主执行器 (m_) 物理级盲区隔离：严禁查看、搜索或改写任何业务仓库/本地文件/子会话日志，仅放行初始化与 /wait
+    if is_main_exec:
+        tname_m = str(payload.get("tool_name") or "")
+        if event == "beforeReadFile" or (event == "preToolUse" and tname_m in ("Read", "Grep", "Glob", "Write", "StrReplace", "Delete")):
+            return json.dumps(
+                {
+                    "permission": "deny",
+                    "user_message": "权限禁止：主 Agent 执行器严禁查看、检索或修改任何业务代码仓库与本地文件，请只原样执行 [STANDARD_OP] 单据并回到 read_chat。",
+                },
+                ensure_ascii=False,
+            )
+        if event == "beforeShellExecution" or (event == "preToolUse" and tname_m == "Shell"):
+            cmd_m = str(payload.get("command") or ti.get("command") or "")
+            if _is_main_blocked_shell(cmd_m):
+                return json.dumps(
+                    {
+                        "permission": "deny",
+                        "user_message": "权限禁止：主 Agent 执行器严禁在终端运行 git 或查看业务仓库/子会话目录，请只运行初始化、/wait 或回到 read_chat。",
+                    },
+                    ensure_ascii=False,
+                )
 
     # 关键文件与提权命令硬保护（已确认子会话禁止一切 sudo 与系统路径；未 join 前仅放行合法 system install 避免误锁新 main）
     if not is_main_exec:

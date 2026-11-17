@@ -1175,9 +1175,38 @@ def run_stealth_and_onboarding_370_tests() -> None:
             deny_prejoin_bash = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": "unjoined-cid-1", "command": "sudo bash"})
             assert deny_prejoin_bash.get("permission") == "deny"
 
-            # Top-level m_ executor MUST be allowed to run sudo system install!
+            # Top-level m_ executor MUST be allowed to run sudo system install, /wait & echo ok,
+            # while blocked from reading/editing business repos, git commands & subagent details!
             allow_m_sudo = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": "legacy-cid-1", "command": "sudo -n python3 /tmp/inst.pyz install --system"})
             assert allow_m_sudo.get("permission") != "deny"
+            allow_m_wait = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": "legacy-cid-1", "command": sh_m})
+            assert allow_m_wait.get("permission") != "deny"
+            allow_m_echo = call_relay({"hook_event_name": "preToolUse", "conversation_id": "legacy-cid-1", "tool_name": "Shell", "tool_input": {"command": "echo ok"}})
+            assert allow_m_echo.get("permission") != "deny"
+            deny_m_read = call_relay({"hook_event_name": "preToolUse", "conversation_id": "legacy-cid-1", "tool_name": "Read", "tool_input": {"path": "/agent/repos/fdvg/app.js"}})
+            assert deny_m_read.get("permission") == "deny"
+            deny_m_edit = call_relay({"hook_event_name": "preToolUse", "conversation_id": "legacy-cid-1", "tool_name": "StrReplace", "tool_input": {"path": "/agent/repos/fdvg/LEDGER.md", "old_string": "a", "new_string": "b"}})
+            assert deny_m_edit.get("permission") == "deny"
+            deny_m_git = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": "legacy-cid-1", "command": "git -C /agent/repos/fdvg status && git log -n 3"})
+            assert deny_m_git.get("permission") == "deny"
+            deny_m_cat = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": "legacy-cid-1", "command": "cat /tmp/c372-bridge/c165-tg-agent-bridge/app.py"})
+            assert deny_m_cat.get("permission") == "deny"
+
+            # Bridge-side blind-executor ACL: m_sudo_ag cannot inspect subagent trace_status, /trace, group_history, or cluster details!
+            assert asyncio.run(bridge.call_tool("trace_status", {"agent": m_sudo_ag})).is_error
+            assert client.get("/trace", headers={"X-Agent": m_sudo_ag}).status_code == 403
+            g_blk = asyncio.run(bridge.call_tool("create_agent_group", {"agent": ob_ag, "name": "秘密讨论", "members": []}))
+            assert not g_blk.is_error
+            assert asyncio.run(bridge.call_tool("group_history", {"agent": m_sudo_ag, "group": "g1"})).is_error
+            ctrl_c = bridge.conv_row("ctrl")
+            if ctrl_c is None:
+                bridge.ensure_ctrl_conv()
+            ctrl_join = asyncio.run(bridge.call_tool("join", {"code": bridge.issue_task("ctrl")}))
+            assert not ctrl_join.is_error
+            assert asyncio.run(bridge.call_tool("cluster_status", {"agent": m_sudo_ag})).is_error
+            assert asyncio.run(bridge.call_tool("list_agents", {"agent": m_sudo_ag})).is_error
+            m_peers = text_of(asyncio.run(bridge.call_tool("list_peers", {"agent": m_sudo_ag})))
+            assert "370接入追踪测试" not in m_peers and "已屏蔽" in m_peers
 
             # 3b. Verify daemon.lock prevents duplicate daemon accumulation!
             pid_v = vault_d / "daemon.pid"
