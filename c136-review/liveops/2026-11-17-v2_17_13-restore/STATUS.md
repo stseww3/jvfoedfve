@@ -9,6 +9,16 @@
    - Total maps expanded from `25` (`13` realistic) to **`37` (`25` realistic)**, adding 12 new realistic maps (`25: Denmark`, `26: Iberia`, `27: Japan`, `28: India`, `29: Black Sea`, `30: Italy`, `31: Iceland`, `32: Anatolia`, `33: Falklands`, `34: Antarctica`, `35: Hong Kong`, `36: Singapore`).
    - Realistic map storage moved from the old 102 KB inline path-string (`aOt`) to arithmetic range-coded contour binaries (`/maps/0-1.bin` .. `/maps/24-1.bin`, 69,945 bytes total across all 25 maps).
 
+## Post-16:15 deadlock + BiDi flash/CPU spike fix (`2026-11-17 20:34`, d3 clock)
+
+1. **`rotateClanTag('match-finished')` `V7K` fallback**:
+   - After Match 1 (`Room 4225`) ended at `16:15:41`, `rotateClanTag()` filtered out `"APEX"` from single-element `CLAN_TAG_POOL = ["APEX"]` and fell back to `|| 'V7K'`, switching `activeClanTag` to unregistered `[V7K]`.
+   - Server 1 stripped `[V7K]` to `"Player XX"`, while existing slots still held `"[APEX] Player XX"`; `verifiedApexIndices` counted `[APEX]` bots while `hasRightTag` (`line 2077`) required `[V7K]`, blocking all bots from readying for 4 hours and triggering `triggerRetag` reconnect/captcha storms.
+   - Fix: `rotateClanTag` stays on `CLAN_TAG_POOL[0]` (`"APEX"`) when `choices` is empty, post-match reset retains `[${activeClanTag}]`, `verifiedApexIndices` enforces `startsWith('[' + activeClanTag + ']')`, and `"Player XX"` slots stop spamming Server 1 retags (`300s` cooldown).
+2. **Firefox BiDi concurrency race & window flashing**:
+   - `doOneTimed` (`92s` `Promise.race`) previously released `donorMintInflight` while the underlying `doOne()` was still executing `killFirefoxOnPort` / `spawn(firefox)` / `session.new`, causing two coroutines to fight over the same `:9228..:9231` profile and loop `BiDi session locked` + `execSync('powershell ...')`.
+   - Fix: removed racing `Promise.race` in favor of serialized `donorMintChains` with an internal `hardDeadline`, async `killFirefoxOnPort` (`execFile`), `about:blank` initial launch + `browser.sessionstore.resume_from_crash=false` + `sessionstore-backups` cleanup, and `130s` outer guard in `headless-bot.mjs`.
+
 ## Root causes of `2026-11-17 09:06 -> 15:55` 0-match deadlock (`Player XX` + `bw.show` + CF burn)
 
 1. **`2.17.13` `"Player XX"` rule + unregistered tag stripping**:

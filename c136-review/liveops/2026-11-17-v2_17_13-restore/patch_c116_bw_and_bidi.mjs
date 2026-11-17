@@ -307,7 +307,7 @@ const BW_AUTO_SOLVER_SNIPPET = `    if (typeof bw === "object" && bw && typeof b
             window.__hlLog("[BW-SOLVE] oN=" + oN + " mask=0x" + finalMask.toString(16) + " count=" + finalCnt + " top=" + res.top + " gap=" + res.bestGap + (res.reload ? " (fallback)" : "") + " (" + ms + "ms)");
           }
           const delay = 1100 + Math.floor(Math.random() * 600);
-          setTimeout(() => { try { sendCaptchaAns.call(holder, finalMask, pA, oN, pow); } catch {} }, delay);
+          setTimeout(() => { try { if (!b1?.z?.ef || b1.z.ef(oN)) sendCaptchaAns.call(holder, finalMask, pA, oN, pow); } catch {} }, delay);
         }
       };
     }`;
@@ -326,13 +326,124 @@ const hbNorm = hb.replace(/\r\n/g, '\n');
 if (!hbNorm.includes(hbOldNameAssign)) throw new Error('hbOldNameAssign not found');
 hb = hbNorm.replace(hbOldNameAssign, hbNewNameAssign);
 
+// Match mint guard timeout to serialized donor budget (130s) and widen 4563 reconnect stagger
+const hbOldMintGuard = `      if (this.minting && now - (this.mintStartedAt || 0) < 95000) return;
+      this.minting = true;
+      this.mintStartedAt = now;
+      console.log(\`[\${this.name}] (Worker) Requesting Turnstile token from Chrome :\${donorChromePort}...\`);
+      Promise.race([
+        mintTurnstileToken(donorChromePort),
+        new Promise((_, rej) => setTimeout(() => rej(new Error('mintTurnstileToken hard timeout 90s')), 90000))
+      ])`;
+const hbNewMintGuard = `      if (this.minting && now - (this.mintStartedAt || 0) < 135000) return;
+      this.minting = true;
+      this.mintStartedAt = now;
+      console.log(\`[\${this.name}] (Worker) Requesting Turnstile token from Chrome :\${donorChromePort}...\`);
+      Promise.race([
+        mintTurnstileToken(donorChromePort),
+        new Promise((_, rej) => setTimeout(() => rej(new Error('mintTurnstileToken hard timeout 130s')), 130000))
+      ])`;
+if (!hb.includes(hbOldMintGuard)) throw new Error('hbOldMintGuard not found');
+hb = hb.replace(hbOldMintGuard, hbNewMintGuard);
+
+const hbOld4563 = `        if (msg.text.includes('error 4563') || msg.text.includes('error 4530')) {
+          // Stagger re-entry after 4563/4530 lobby disconnect to prevent reconnect stampede
+          client.enteredLobbyAt = Date.now() - 12000 + (slot * 300);
+        }`;
+const hbNew4563 = `        if (msg.text.includes('error 4563') || msg.text.includes('error 4530')) {
+          // Stagger re-entry after 4563/4530 lobby disconnect to prevent reconnect stampede
+          client.enteredLobbyAt = Date.now() - 9500 + (slot * 380);
+        }`;
+if (!hb.includes(hbOld4563)) throw new Error('hbOld4563 not found');
+hb = hb.replace(hbOld4563, hbNew4563);
+
 fs.writeFileSync(hbPath, hb, 'utf8');
 console.log('Patched', hbPath, 'len=', hb.length);
 
 // Patch tsb-apex-squad.mjs
 let sqNorm = sq.replace(/\r\n/g, '\n');
 
-// 1. BiDi timeout 12000 -> 18000, wait: 'complete' -> 'interactive', relaunchDepth >= 3 + session.end
+// 1. Async killFirefoxOnPort (no event-loop freeze), clean profile sessionstore prefs, about:blank launch,
+// serialized per-donor queue with internal deadline (eliminates overlapping relaunch/BiDi lock races)
+const sqOldKillBlock = `import { execSync } from 'node:child_process';
+function killFirefoxOnPort(port) {
+  try {
+    execSync(\`powershell -NoProfile -Command "$pids = @(Get-NetTCPConnection -LocalPort \${port} -State Listen -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess); $pids += @(Get-CimInstance Win32_Process -Filter \\"Name='firefox.exe'\\" | Where-Object { $_.CommandLine -match 'firefox_donor_\${port}' -or $_.CommandLine -match '--remote-debugging-port \${port}' } | Select-Object -ExpandProperty ProcessId); foreach ($p in ($pids | Select-Object -Unique)) { if ($p -gt 0) { taskkill /F /T /PID $p 2>$null | Out-Null; Stop-Process -Id $p -Force -ErrorAction SilentlyContinue } }; for ($i=0; $i -lt 12; $i++) { if (-not (Get-NetTCPConnection -LocalPort \${port} -State Listen -ErrorAction SilentlyContinue)) { break }; Start-Sleep -Milliseconds 250 }"\`, { stdio: 'ignore' });
+  } catch {}
+}`;
+const sqNewKillBlock = `import { execSync, execFile } from 'node:child_process';
+function killFirefoxOnPort(port) {
+  return new Promise((resolve) => {
+    const cmd = \`$pids = @(Get-NetTCPConnection -LocalPort \${port} -State Listen -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess); $pids += @(Get-CimInstance Win32_Process -Filter "Name='firefox.exe'" | Where-Object { $_.CommandLine -match 'firefox_donor_\${port}' -or $_.CommandLine -match '--remote-debugging-port \${port}' } | Select-Object -ExpandProperty ProcessId); foreach ($p in ($pids | Select-Object -Unique)) { if ($p -gt 0) { taskkill /F /T /PID $p 2>$null | Out-Null; Stop-Process -Id $p -Force -ErrorAction SilentlyContinue } }; for ($i=0; $i -lt 12; $i++) { if (-not (Get-NetTCPConnection -LocalPort \${port} -State Listen -ErrorAction SilentlyContinue)) { break }; Start-Sleep -Milliseconds 200 }\`;
+    try {
+      execFile('powershell', ['-NoProfile', '-Command', cmd], { timeout: 7000, windowsHide: true }, () => resolve());
+    } catch {
+      resolve();
+    }
+  });
+}`;
+if (!sqNorm.includes(sqOldKillBlock)) throw new Error('sqOldKillBlock not found');
+sqNorm = sqNorm.replace(sqOldKillBlock, sqNewKillBlock);
+
+const sqOldProfTail = `user_pref("focusmanager.testmode", true);
+\${proxyPrefs}\`;
+  fs.writeFileSync(path.join(profDir, 'user.js'), prefs, 'utf8');`;
+const sqNewProfTail = `user_pref("focusmanager.testmode", true);
+user_pref("browser.sessionstore.resume_from_crash", false);
+user_pref("browser.sessionstore.max_tabs_undo", 0);
+user_pref("browser.startup.page", 0);
+user_pref("browser.startup.homepage", "about:blank");
+\${proxyPrefs}\`;
+  fs.writeFileSync(path.join(profDir, 'user.js'), prefs, 'utf8');
+  try { fs.rmSync(path.join(profDir, 'sessionstore-backups'), { recursive: true, force: true }); } catch {}
+  for (const sf of ['sessionstore.jsonlz4', 'recovery.jsonlz4', 'recovery.baklz4']) {
+    try { fs.unlinkSync(path.join(profDir, sf)); } catch {}
+  }`;
+if (!sqNorm.includes(sqOldProfTail)) throw new Error('sqOldProfTail not found');
+sqNorm = sqNorm.replace(sqOldProfTail, sqNewProfTail);
+
+const sqOldInitLaunch = `  let ws = await tryConnectBidi();
+    if (!ws && fs.existsSync(ffExe)) {
+      killFirefoxOnPort(port);
+      await new Promise((r) => setTimeout(r, 600));
+      try { fs.unlinkSync(path.join(profDir, 'parent.lock')); } catch {}
+      try { fs.unlinkSync(path.join(profDir, '.startup-incomplete')); } catch {}
+      if (typeof ensureFirefoxProfile === 'function') ensureFirefoxProfile(profDir, (typeof portToSocks === 'object' && portToSocks[port]) || 0);
+      console.log(\`[FIREFOX-DONOR] Launching Mozilla Firefox on port \${port}...\`);
+      const child = spawn(ffExe, ['-no-remote', '-profile', profDir, '--remote-debugging-port', String(port), 'https://territorial.io/'], {
+        detached: true,
+        stdio: 'ignore'
+      });
+      child.unref();
+      for (let retry = 0; retry < 18; retry++) {
+        await new Promise((r) => setTimeout(r, 1000));
+        ws = await tryConnectBidi();
+        if (ws) break;
+      }
+    }`;
+const sqNewInitLaunch = `  let ws = await tryConnectBidi();
+    if (!ws && fs.existsSync(ffExe)) {
+      await killFirefoxOnPort(port);
+      await new Promise((r) => setTimeout(r, 600));
+      try { fs.unlinkSync(path.join(profDir, 'parent.lock')); } catch {}
+      try { fs.unlinkSync(path.join(profDir, '.startup-incomplete')); } catch {}
+      if (typeof ensureFirefoxProfile === 'function') ensureFirefoxProfile(profDir, (typeof portToSocks === 'object' && portToSocks[port]) || 0);
+      console.log(\`[FIREFOX-DONOR] Launching Mozilla Firefox on port \${port}...\`);
+      const child = spawn(ffExe, ['-no-remote', '-profile', profDir, '--remote-debugging-port', String(port), 'about:blank'], {
+        detached: true,
+        stdio: 'ignore'
+      });
+      child.unref();
+      await new Promise((r) => setTimeout(r, 1500));
+      for (let retry = 0; retry < 20; retry++) {
+        await new Promise((r) => setTimeout(r, 900));
+        ws = await tryConnectBidi();
+        if (ws) break;
+      }
+    }`;
+if (!sqNorm.includes(sqOldInitLaunch)) throw new Error('sqOldInitLaunch not found');
+sqNorm = sqNorm.replace(sqOldInitLaunch, sqNewInitLaunch);
+
 const sqOldBidiTimer = `      pending.delete(id);
       resolve(null);
     }, 12000);`;
@@ -342,7 +453,14 @@ const sqNewBidiTimer = `      pending.delete(id);
 if (!sqNorm.includes(sqOldBidiTimer)) throw new Error('sqOldBidiTimer not found');
 sqNorm = sqNorm.replace(sqOldBidiTimer, sqNewBidiTimer);
 
-const sqOldSessionLock = `  if (!sess?.result?.sessionId) {
+const sqOldSessionLock = `  let sess = null;
+  for (let sTry = 0; sTry < 3; sTry++) {
+    sess = await callBidi('session.new', { capabilities: {} });
+    if (sess?.result?.sessionId) break;
+    if (sess?.error && String(sess.error).includes('session not created') && String(sess.message || '').includes('already')) break;
+    await new Promise((r) => setTimeout(r, 900));
+  }
+  if (!sess?.result?.sessionId) {
     console.log(\`[FIREFOX-DONOR] BiDi session locked by previous process -> recycling Firefox donor on :\${port}...\`);
     try { ws.close(); } catch {}
     killFirefoxOnPort(port);
@@ -350,22 +468,185 @@ const sqOldSessionLock = `  if (!sess?.result?.sessionId) {
     if (relaunchDepth >= 2) throw new Error(\`Firefox BiDi session.new keeps failing on port \${port}\`);
     return _initFirefoxDonor(port, relaunchDepth + 1);
   }`;
-const sqNewSessionLock = `  if (!sess?.result?.sessionId) {
-    console.log(\`[FIREFOX-DONOR] BiDi session locked by previous process -> recycling Firefox donor on :\${port}...\`);
+const sqNewSessionLock = `  await new Promise((r) => setTimeout(r, 350));
+  let sess = null;
+  for (let sTry = 0; sTry < 3; sTry++) {
+    sess = await callBidi('session.new', { capabilities: {} });
+    if (sess?.result?.sessionId) break;
+    if (sess?.error && String(sess.error).includes('session not created') && String(sess.message || '').includes('already')) break;
+    await new Promise((r) => setTimeout(r, 1200));
+  }
+  if (!sess?.result?.sessionId) {
+    console.log(\`[FIREFOX-DONOR] BiDi session.new failed on :\${port} (reply=\${JSON.stringify(sess).slice(0, 180)}) -> recycling Firefox donor...\`);
     try { await callBidi('session.end', {}); } catch {}
     try { ws.close(); } catch {}
-    killFirefoxOnPort(port);
-    await new Promise((r) => setTimeout(r, 1200));
-    if (relaunchDepth >= 3) throw new Error(\`Firefox BiDi session.new keeps failing on port \${port}\`);
+    await killFirefoxOnPort(port);
+    await new Promise((r) => setTimeout(r, 2500));
+    if (relaunchDepth >= 2) throw new Error(\`Firefox BiDi session.new keeps failing on port \${port}\`);
     return _initFirefoxDonor(port, relaunchDepth + 1);
   }`;
 if (!sqNorm.includes(sqOldSessionLock)) throw new Error('sqOldSessionLock not found');
 sqNorm = sqNorm.replace(sqOldSessionLock, sqNewSessionLock);
 
-sqNorm = sqNorm.replaceAll(
-  `await callBidi('browsingContext.navigate', { context: ctx, url: 'https://territorial.io/', wait: 'complete' });`,
-  `await callBidi('browsingContext.navigate', { context: ctx, url: 'https://territorial.io/', wait: 'interactive' });`
-);
+const sqOldMintChain = `async function mintViaDonorChrome(requestedDonorPort = 9228) {
+  if (mintsLastHour() >= mintKnobs().cap) throw new Error('hourly Cloudflare budget used up');
+  const donorPort = pickMintDonor();
+  if (!donorPort) throw new Error('no donor free (all busy or paused)');
+  const mintStartDelay = mintInflightTotal() * 2500;
+  mintStamps.push(Date.now());
+  if (donorPort === 9228) mihomoMintStamps.push(Date.now());
+  try { fs.writeFileSync(mintStampFile, JSON.stringify(mintStamps)); } catch {}
+  donorLastUsedAt.set(donorPort, Date.now());
+  donorMintInflight.set(donorPort, (donorMintInflight.get(donorPort) || 0) + 1);
+  const doOne = async () => {
+    const stepStartedAt = Date.now();
+    if (mintStartDelay) await new Promise((r) => setTimeout(r, mintStartDelay));
+    const donor = await ensureFirefoxDonor(donorPort);
+  const runMint = async () => {
+    const { callBidi, ctx } = donor;
+    let tsReady = false;
+    for (let w = 0; w < 15; w++) {
+      const tsChk = await callBidi('script.evaluate', {
+        expression: 'typeof window.turnstile?.render',
+        target: { context: ctx },
+        awaitPromise: false
+      });
+      if (tsChk?.result?.result?.value === 'function') { tsReady = true; break; }
+      await new Promise((r) => setTimeout(r, 600));
+    }
+    if (!tsReady) {
+      await callBidi('browsingContext.navigate', { context: ctx, url: 'https://territorial.io/', wait: 'complete' });
+      for (let w = 0; w < 12; w++) {
+        await new Promise((r) => setTimeout(r, 600));
+        const tsChk = await callBidi('script.evaluate', {
+          expression: 'typeof window.turnstile?.render',
+          target: { context: ctx },
+          awaitPromise: false
+        });
+        if (tsChk?.result?.result?.value === 'function') { tsReady = true; break; }
+      }
+    }
+    if (!tsReady) {
+      try { donor.ws.close(); } catch {}
+      firefoxDonors.delete(donor.port);
+      killFirefoxOnPort(donor.port);
+      throw new Error('Turnstile API not loaded on :' + donor.port);
+    }`;
+const sqNewMintChain = `async function mintViaDonorChrome(requestedDonorPort = 9228) {
+  if (mintsLastHour() >= mintKnobs().cap) throw new Error('hourly Cloudflare budget used up');
+  const donorPort = pickMintDonor();
+  if (!donorPort) throw new Error('no donor free (all busy or paused)');
+  const mintStartDelay = mintInflightTotal() * 2000;
+  donorLastUsedAt.set(donorPort, Date.now());
+  donorMintInflight.set(donorPort, (donorMintInflight.get(donorPort) || 0) + 1);
+  const doOne = async () => {
+    const stepStartedAt = Date.now();
+    const hardDeadline = stepStartedAt + 115000;
+    if (mintStartDelay) await new Promise((r) => setTimeout(r, mintStartDelay));
+    const donor = await ensureFirefoxDonor(donorPort);
+  const runMint = async () => {
+    const { callBidi, ctx } = donor;
+    const spMap = { 9229: 10824, 9230: 10827, 9231: 10830 };
+    const isDirectDonor = fs.existsSync(path.join(__dirname, 'tsb-donor-direct.flag'));
+    let tsReady = false;
+    for (let w = 0; w < 12 && Date.now() < hardDeadline - 25000; w++) {
+      const tsChk = await callBidi('script.evaluate', {
+        expression: 'typeof window.turnstile?.render',
+        target: { context: ctx },
+        awaitPromise: false
+      });
+      if (tsChk?.result?.result?.value === 'function') { tsReady = true; break; }
+      await new Promise((r) => setTimeout(r, 700));
+    }
+    if (!tsReady && Date.now() < hardDeadline - 20000) {
+      if (!isDirectDonor && spMap[donor.port]) {
+        try { await rotateSocksSession(spMap[donor.port]); } catch {}
+      }
+      await callBidi('browsingContext.navigate', { context: ctx, url: 'https://territorial.io/', wait: 'complete' });
+      for (let w = 0; w < 18 && Date.now() < hardDeadline - 12000; w++) {
+        await new Promise((r) => setTimeout(r, 750));
+        const tsChk = await callBidi('script.evaluate', {
+          expression: 'typeof window.turnstile?.render',
+          target: { context: ctx },
+          awaitPromise: false
+        });
+        if (tsChk?.result?.result?.value === 'function') { tsReady = true; break; }
+      }
+    }
+    if (!tsReady) {
+      donor._navFailCount = (donor._navFailCount || 0) + 1;
+      if (donor._navFailCount >= 2) {
+        donor._navFailCount = 0;
+        try { donor.ws.close(); } catch {}
+        firefoxDonors.delete(donor.port);
+        await killFirefoxOnPort(donor.port);
+      }
+      throw new Error('Turnstile API not loaded on :' + donor.port);
+    }
+    donor._navFailCount = 0;
+    mintStamps.push(Date.now());
+    if (donorPort === 9228) mihomoMintStamps.push(Date.now());
+    try { fs.writeFileSync(mintStampFile, JSON.stringify(mintStamps)); } catch {}`;
+if (!sqNorm.includes(sqOldMintChain)) throw new Error('sqOldMintChain not found');
+sqNorm = sqNorm.replace(sqOldMintChain, sqNewMintChain);
+
+const sqOldDoOneRace = `    console.log(\`[FIREFOX-DONOR] mint gave no token on :\${donor.port} after \${Math.round((Date.now() - stepStartedAt) / 1000)}s (clicks=\${mintClicks}\${mintErrNote ? ', cf_error=' + mintErrNote : ', no answer from the widget'})\`);
+    const spMap = { 9229: 10824, 9230: 10827, 9231: 10830 };
+    const isDirectDonor = fs.existsSync(path.join(__dirname, 'tsb-donor-direct.flag'));
+    if (!isDirectDonor && spMap[donor.port]) {
+      try {
+        await rotateSocksSession(spMap[donor.port]);
+        console.log(\`[FIREFOX-DONOR] Rotated proxy on :\${donor.port} (:\${spMap[donor.port]})\`);
+      } catch {}
+    }
+    donor._mintFailCount = (donor._mintFailCount || 0) + 1;
+    if (donor._mintFailCount >= 4) {
+      donor._mintFailCount = 0;
+      console.warn(\`[FIREFOX-DONOR] 4 consecutive mint failures on :\${donor.port} -> recycling Firefox donor!\`);
+      try { donor.ws.close(); } catch {}
+      firefoxDonors.delete(donor.port);
+      killFirefoxOnPort(donor.port);
+    }
+    throw new Error(mintErrNote ? 'Turnstile error ' + mintErrNote : 'Firefox BiDi mint timeout');
+  };
+
+  return await runMint();
+  };
+  const doOneTimed = () => Promise.race([
+    doOne(),
+    new Promise((_, rej) => setTimeout(() => rej(new Error('donor chain step 92s timeout')), 92000))
+  ]);
+  const prev = donorMintChains.get(donorPort) || Promise.resolve();
+  const next = prev.then(doOneTimed, doOneTimed);`;
+const sqNewDoOneRace = `    console.log(\`[FIREFOX-DONOR] mint gave no token on :\${donor.port} after \${Math.round((Date.now() - stepStartedAt) / 1000)}s (clicks=\${mintClicks}\${mintErrNote ? ', cf_error=' + mintErrNote : ', no answer from the widget'})\`);
+    if (!isDirectDonor && spMap[donor.port]) {
+      try {
+        await rotateSocksSession(spMap[donor.port]);
+        console.log(\`[FIREFOX-DONOR] Rotated proxy on :\${donor.port} (:\${spMap[donor.port]})\`);
+      } catch {}
+    }
+    donor._mintFailCount = (donor._mintFailCount || 0) + 1;
+    if (donor._mintFailCount >= 4) {
+      donor._mintFailCount = 0;
+      console.warn(\`[FIREFOX-DONOR] 4 consecutive mint failures on :\${donor.port} -> recycling Firefox donor!\`);
+      try { donor.ws.close(); } catch {}
+      firefoxDonors.delete(donor.port);
+      await killFirefoxOnPort(donor.port);
+    }
+    throw new Error(mintErrNote ? 'Turnstile error ' + mintErrNote : 'Firefox BiDi mint timeout');
+  };
+
+  return await runMint();
+  };
+  const prev = donorMintChains.get(donorPort) || Promise.resolve();
+  const next = prev.then(doOne, doOne);`;
+if (!sqNorm.includes(sqOldDoOneRace)) throw new Error('sqOldDoOneRace not found');
+sqNorm = sqNorm.replace(sqOldDoOneRace, sqNewDoOneRace);
+
+const sqOldMintDeadline = `    const mintDeadline = Math.min(Date.now() + 75000, stepStartedAt + 86000);`;
+const sqNewMintDeadline = `    const mintDeadline = Math.min(Date.now() + 68000, hardDeadline - 4000);`;
+if (!sqNorm.includes(sqOldMintDeadline)) throw new Error('sqOldMintDeadline not found');
+sqNorm = sqNorm.replace(sqOldMintDeadline, sqNewMintDeadline);
 
 // 2. Remove eh(5) Propaganda spam completely and track myLobbyRealName
 const sqOldEh5 = `        const myLobbyObj = typeof bq === "object" ? (bq?.aFv || bq?.aF0) : null;
@@ -393,25 +674,65 @@ const sqNewRedactedChk = `      if (s.myLobbyUsername.includes('Redacted') || (t
 if (!sqNorm.includes(sqOldRedactedChk)) throw new Error('sqOldRedactedChk not found');
 sqNorm = sqNorm.replace(sqOldRedactedChk, sqNewRedactedChk);
 
-// 4. Use recognized clan tag [APEX] (random 3-letter tags are stripped by 2.17.13 in "Player XX" mode)
+// 4. Use recognized clan tag [APEX] and NEVER fall back to unrecognized 'V7K' on rotateClanTag!
 const sqOldClanPool = `const CLAN_TAG_POOL = [
   "V7K", "R4P", "N2X", "Q8M", "Z3L", "K9T", "M5J", "T2W", "H6C", "B4F",
   "X9D", "P3V", "J7R", "C2N", "L8G", "W4S", "F6Y", "D5H", "G3K", "S8P",
   "A4Z", "E9M", "U2C", "Y5B", "V3N", "R8X", "K4D", "M9W", "T7L", "H2Q"
 ];
-let activeClanTag = CLAN_TAG_POOL[Math.floor(Math.random() * CLAN_TAG_POOL.length)];`;
+let activeClanTag = CLAN_TAG_POOL[Math.floor(Math.random() * CLAN_TAG_POOL.length)];
+let recentRedactedAtList = [];
+function rotateClanTag(reason = 'match-end') {
+  const choices = CLAN_TAG_POOL.filter((t) => t !== activeClanTag);
+  activeClanTag = choices[Math.floor(Math.random() * choices.length)] || 'V7K';
+  console.log(\`[STEALTH] Active match clan tag rotated (\${reason}) -> [\${activeClanTag}]\`);
+  return activeClanTag;
+}`;
 const sqNewClanPool = `const CLAN_TAG_POOL = ["APEX"];
-let activeClanTag = "APEX";`;
+let activeClanTag = "APEX";
+let recentRedactedAtList = [];
+function rotateClanTag(reason = 'match-end') {
+  const choices = CLAN_TAG_POOL.filter((t) => t !== activeClanTag);
+  activeClanTag = choices.length > 0 ? choices[Math.floor(Math.random() * choices.length)] : (CLAN_TAG_POOL[0] || 'APEX');
+  console.log(\`[STEALTH] Active match clan tag rotated (\${reason}) -> [\${activeClanTag}]\`);
+  return activeClanTag;
+}`;
 if (!sqNorm.includes(sqOldClanPool)) throw new Error('sqOldClanPool not found');
 sqNorm = sqNorm.replace(sqOldClanPool, sqNewClanPool);
 
-// 5. Initialize bots with [APEX] tag and stop infinite 4.5s retag loop on stripped/null names
+// 5. Initialize & reset bots with [APEX] tag, align verifiedApexIndices with hasRightTag,
+// and stop retag storm when Server 1 stripped tag on a "Player XX" slot
 const sqOldBotInitName = `  bot.baseName = candidateBase;
   bot.name = candidateBase;`;
 const sqNewBotInitName = `  bot.baseName = candidateBase;
   bot.name = ('[' + activeClanTag + '] ' + candidateBase).slice(0, 20);`;
 if (!sqNorm.includes(sqOldBotInitName)) throw new Error('sqOldBotInitName not found');
 sqNorm = sqNorm.replace(sqOldBotInitName, sqNewBotInitName);
+
+const sqOldPostMatchReset = `    for (const c of clients) {
+      if (c.isHeadless) {
+        c.name = c.baseName;
+        c.retaggingUntil = 0;
+        c.retagTargetRoomId = 0;
+      }
+    }`;
+const sqNewPostMatchReset = `    for (const c of clients) {
+      if (c.isHeadless) {
+        c.name = ('[' + activeClanTag + '] ' + c.baseName).slice(0, 20);
+        c.retaggingUntil = 0;
+        c.retagTargetRoomId = 0;
+      }
+    }`;
+if (!sqNorm.includes(sqOldPostMatchReset)) throw new Error('sqOldPostMatchReset not found');
+sqNorm = sqNorm.replace(sqOldPostMatchReset, sqNewPostMatchReset);
+
+const sqOldVerified = `      !s.myLobbyUsername.includes('Redacted') &&
+      !s.myLobbyUsername.startsWith('Player ');`;
+const sqNewVerified = `      !s.myLobbyUsername.includes('Redacted') &&
+      !s.myLobbyUsername.startsWith('Player ') &&
+      s.myLobbyUsername.startsWith(\`[\${activeClanTag}]\`);`;
+if (!sqNorm.includes(sqOldVerified)) throw new Error('sqOldVerified not found');
+sqNorm = sqNorm.replace(sqOldVerified, sqNewVerified);
 
 const sqOldWantTag = `      const wantTag = allowReady && targetRoomId > 0 && !waitMode;`;
 const sqNewWantTag = `      const curLobbyStr0 = String(states[idx]?.myLobbyUsername || '');
@@ -438,14 +759,19 @@ const sqNewRetag = `      let triggerRetag = false;
       if (states[idx]?.lobby?.inLobby && states[idx]?.lobby?.room === 0 && curLobbyUser && now > (c.retaggingUntil || 0)) {
         if (wantTag) globalThis.__holdUntagUntil = now + 8000;
         if (wantTag && !hasRightTag) {
-          c.retagFailStreak = (c.retagFailStreak || 0) + 1;
-          if (c.retagFailStreak <= 2) {
-            triggerRetag = true;
-            c.retaggingUntil = now + 7000;
-            c.retagTargetRoomId = targetRoomId;
-          } else {
-            c.retaggingUntil = now + 120000;
+          if (curLobbyUser.startsWith('Player ')) {
+            c.retaggingUntil = now + 300000;
             c.retagFailStreak = 0;
+          } else {
+            c.retagFailStreak = (c.retagFailStreak || 0) + 1;
+            if (c.retagFailStreak <= 1) {
+              triggerRetag = true;
+              c.retaggingUntil = now + 7000;
+              c.retagTargetRoomId = targetRoomId;
+            } else {
+              c.retaggingUntil = now + 180000;
+              c.retagFailStreak = 0;
+            }
           }
         } else if (!wantTag && hasAnyTag && now > (globalThis.__holdUntagUntil || 0)) {
           triggerRetag = true;
@@ -456,7 +782,8 @@ const sqNewRetag = `      let triggerRetag = false;
 if (!sqNorm.includes(sqOldRetag)) throw new Error('sqOldRetag not found');
 sqNorm = sqNorm.replace(sqOldRetag, sqNewRetag);
 
-// 6. Do not burn Turnstile tokens on 4563 lobby bounces (only invalidate after 24 consecutive failures)
+// 6. Do not burn Turnstile tokens on 4563 lobby bounces (only invalidate after 24 consecutive failures),
+// widen entry jitter to prevent 4563 bursts, and sync d122 + bm.qq.qr before openMultiplayer(0)
 const sqOldFailCnt = `      c.lobbyFailCount = (c.lobbyFailCount || 0) + 1;
       if (c.lobbyFailCount >= 4) {
         c.freshToken = false;
@@ -476,13 +803,14 @@ const sqNewFailCnt = `      c.lobbyFailCount = (c.lobbyFailCount || 0) + 1;
         continue;
       }
       c.enteredLobbyAt = now;
-      const enterJitterMs = i * 65 + Math.floor(Math.random() * 80);
+      const enterJitterMs = i * 180 + Math.floor(Math.random() * 180);
       setTimeout(() => {
         c.evalJs(\`(() => {
           try {
             localStorage.setItem("d122", \${JSON.stringify(c.name)});
             localStorage.setItem("v122", "0");
             if (typeof bm === "object" && bm?.buffer?.data?.[122]) bm.buffer.data[122].value = \${JSON.stringify(c.name)};
+            if (typeof bm === "object" && typeof bm?.qq?.qr === "function") bm.qq.qr(122, \${JSON.stringify(c.name)});
           } catch {}`;
 if (!sqNorm.includes(sqOldFailCnt)) throw new Error('sqOldFailCnt not found');
 sqNorm = sqNorm.replace(sqOldFailCnt, sqNewFailCnt);
