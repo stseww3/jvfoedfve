@@ -247,7 +247,7 @@ const BW_AUTO_SOLVER_SNIPPET = `    if (typeof bw === "object" && bw && typeof b
         try {
           res = window.__solveBwChallenge(pB);
         } catch (err) {
-          if (window.__hlLog) window.__hlLog(\`[BW-ERR] \${err?.message || err}\`);
+          if (window.__hlLog) window.__hlLog("[BW-ERR] " + (err?.message || err));
           return;
         }
         const ms = (performance.now() - t0).toFixed(1);
@@ -259,7 +259,7 @@ const BW_AUTO_SOLVER_SNIPPET = `    if (typeof bw === "object" && bw && typeof b
           if (window.__bwReloadStreak > 6) {
             window.__bwReloadStreak = 0;
             window.__bwCooldownUntil = Date.now() + 30000;
-            if (window.__hlLog) window.__hlLog(\`[BW-SOLVE] oN=\${oN} reload streak > 6 (top=\${res.top} gap=\${res.bestGap}) -> cooldown 30s\`);
+            if (window.__hlLog) window.__hlLog("[BW-SOLVE] oN=" + oN + " reload streak > 6 (top=" + res.top + " gap=" + res.bestGap + ") -> cooldown 30s");
             return;
           }
           const delay = 450 + Math.floor(Math.random() * 260);
@@ -267,7 +267,7 @@ const BW_AUTO_SOLVER_SNIPPET = `    if (typeof bw === "object" && bw && typeof b
         } else {
           window.__bwReloadStreak = 0;
           if (window.__hlLog) {
-            window.__hlLog(\`[BW-SOLVE] oN=\${oN} mask=0x\${res.mask.toString(16)} count=\${res.count} top=\${res.top} gap=\${res.bestGap} (\${ms}ms)\`);
+            window.__hlLog("[BW-SOLVE] oN=" + oN + " mask=0x" + res.mask.toString(16) + " count=" + res.count + " top=" + res.top + " gap=" + res.bestGap + " (" + ms + "ms)");
           }
           const delay = 480 + Math.floor(Math.random() * 320);
           setTimeout(() => { try { sendCaptchaAns.call(holder, res.mask, pA, oN, pow); } catch {} }, delay);
