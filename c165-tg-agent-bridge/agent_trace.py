@@ -486,24 +486,29 @@ def handle_hook() -> int:
             elif tname_r and tname_r != "Read":
                 sess["term_read_streak"] = 0
 
-        # 若该子 agent 已被停用，或在准备跑耗时工具前收件箱已有未读人类消息 -> 直接前置提醒/拦截！
+        # 若该会话身份已被停用（或子会话误拿了顶层 m_ 身份），或在准备跑耗时工具前收件箱已有未读人类消息 -> 直接前置拦截！
         pre_alert_ctx = ""
-        if event == "preToolUse" and agent_id and agent_id.startswith("a_"):
+        if event == "preToolUse" and agent_id and (agent_id.startswith("a_") or agent_id.startswith("m_")):
             peek_pre = get_json(
-                f"{bridge_url}/trace/peek?agent={urllib.parse.quote(agent_id)}",
+                f"{bridge_url}/trace/peek?agent={urllib.parse.quote(agent_id)}&cid={urllib.parse.quote(cid)}",
                 timeout=0.9,
             )
             if peek_pre and peek_pre.get("stopped"):
+                if cid:
+                    st["conv_to_agent"].pop(cid, None)
+                    st["sessions"].pop(cid, None)
+                stop_reason = str(peek_pre.get("note") or "当前会话身份已停用（该聊天已有新会话接手或已被回收）")
                 print(
                     json.dumps(
                         {
                             "permission": "deny",
-                            "user_message": "当前会话身份已停用（该聊天已有新会话接手或已被回收），无需再启动新命令或工具，直接结束当前回合即可。",
+                            "user_message": f"{stop_reason}。严禁再调用 read_chat、send_message、wait 等任何工具，请直接结束当前回合退出即可。",
                         },
                         ensure_ascii=False,
                     )
                 )
                 return 0
+        if event == "preToolUse" and agent_id and agent_id.startswith("a_"):
             tname_cur = str(payload.get("tool_name") or "")
             mcp_subtool = str(ti.get("toolName") or "")
             bridge_tools = (
@@ -561,7 +566,7 @@ def handle_hook() -> int:
                 return 0
             if agent_id and (agent_id.startswith("a_") or agent_id.startswith("m_")):
                 chk = get_json(
-                    f"{bridge_url}/trace/check-active?agent={urllib.parse.quote(agent_id)}",
+                    f"{bridge_url}/trace/check-active?agent={urllib.parse.quote(agent_id)}&cid={urllib.parse.quote(cid)}",
                     timeout=1.8,
                 )
                 if chk and chk.get("active"):
@@ -863,7 +868,7 @@ def run_daemon() -> int:
             cfg = load_config()
             bridge_url = cfg["bridge_url"]
             upg_ticks += 1
-            if upg_ticks >= 30:
+            if upg_ticks >= 3:
                 upg_ticks = 0
                 if maybe_hot_upgrade_runtime(bridge_url):
                     break

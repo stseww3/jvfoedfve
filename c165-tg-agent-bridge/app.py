@@ -2770,7 +2770,7 @@ def format_standard_resume_op(op_id: str, launcher_agent_id: str, conv_id: str, 
         "请直接按以下给定参数零修改原样调用 Cursor 的 `Task` 工具：\n"
         f"- resume: \"{task_agent_id}\"\n"
         "- run_in_background: true\n"
-        f"- prompt: {json.dumps(resume_prompt, ensure_ascii=False)}\n"
+        f"- prompt: {json.dumps(resume_prompt, ensure_ascii=False)}（严禁把本单据下方的 m_ 身份或 submit_op_result 说明混入子会话 prompt！）\n"
         f"调用后，将 Task 工具返回的原始文本原样填入 `submit_op_result(agent=\"{launcher_agent_id}\", op_id=\"{op_id}\", status=\"ok\", output=返回文本)`，随后立刻回到 `read_chat` 继续等待（严禁输出总结或结束回合）。"
     )
 
@@ -10317,9 +10317,30 @@ async def serve_trace_install_sh() -> Response:
     return PlainTextResponse(sh, media_type="text/x-shellscript; charset=utf-8")
 
 
+def is_spawned_subagent_cid(cid: str) -> bool:
+    """判断某个 Cursor conversation_id (bc-...) 是否是由 Task 工具派生出来的子会话：
+    真正的顶层 mainN / whostN 绝不可能是任何 convs.task_agent_id 或 dispatch_ops 派生出的子会话。
+    一旦子会话误拿了父会话的 m_ 凭据，通过此校验精准剥离停用李鬼，同时 100% 保护真正的顶层 mainN！"""
+    clean_c = (cid or "").strip()
+    if not clean_c or len(clean_c) < 8:
+        return False
+    if store.one("SELECT 1 FROM convs WHERE task_agent_id=? LIMIT 1", (clean_c,)) is not None:
+        return True
+    pat = f'%"{clean_c}"%'
+    if store.one(
+        "SELECT 1 FROM dispatch_ops WHERE op_type IN ('launch_subagent','resume_subagent') "
+        "AND (result_json LIKE ? OR payload_json LIKE ?) LIMIT 1",
+        (pat, pat),
+    ) is not None:
+        return True
+    return False
+
+
 @app.get("/trace/check-active")
-async def trace_check_active(agent: str = "") -> JSONResponse:
+async def trace_check_active(agent: str = "", cid: str = "") -> JSONResponse:
     ident = agent.strip()
+    if ident.startswith("m_") and cid and is_spawned_subagent_cid(cid):
+        return JSONResponse({"active": False, "hijack": True, "conv": ""})
     row = agent_row(ident) if ident else None
     if row is None or row["status"] != "active":
         return JSONResponse({"active": False, "conv": row["conv"] if row else ""})
@@ -10329,11 +10350,21 @@ async def trace_check_active(agent: str = "") -> JSONResponse:
 
 
 @app.get("/trace/peek")
-async def trace_peek_inbox(agent: str = "") -> JSONResponse:
+async def trace_peek_inbox(agent: str = "", cid: str = "") -> JSONResponse:
     """每次 AI 在 VM 内跑任何 Shell 命令（或工具）时自动顺带检查收件箱与停用状态：
-    1) 若身份已被停用（stopped），立即返回 stopped=True，钩子直接命令 AI 停手退出；
+    1) 若身份已被停用（stopped）或子会话误持了顶层 m_ 身份，立即返回 stopped=True，钩子直接命令该会话停手退出；
     2) 若有用户/主控/其他 Agent 未读消息，立即插播提醒，不改 read_cursor 防丢信。"""
     ident = agent.strip()
+    if ident.startswith("m_") and cid and is_spawned_subagent_cid(cid):
+        log.warning("evicted rogue subagent cid=%s impersonating executor %s via /trace/peek", cid, mask_identity(ident))
+        return JSONResponse({
+            "ok": True,
+            "has_messages": False,
+            "stopped": True,
+            "hijack": True,
+            "conv": "",
+            "note": "当前会话是没有 Task 工具的子会话，误持了顶层主执行器 m_ 身份，已被自动剥离停用",
+        })
     arow = agent_row(ident) if ident else None
     if arow is None:
         return JSONResponse({"ok": False, "has_messages": False, "stopped": False})
@@ -10549,6 +10580,9 @@ async def trace_post_event(request: Request) -> JSONResponse:
     is_hb = bool(body.get("heartbeat", False))
 
     arow = agent_row(agent_id) if agent_id else None
+    if agent_id.startswith("m_") and cid and is_spawned_subagent_cid(cid):
+        store.run("UPDATE agent_traces SET conversation_id='' WHERE conversation_id=? AND agent_id LIKE 'm_%'", (cid,))
+        return JSONResponse({"ok": True, "ignored": True, "stopped": True, "hijack": True})
     if arow is not None and cid and arow["status"] == "active":
         # 这个会话明确报了自己的身份：它以前要是被记到别的聊天名下，那边的绑定作废
         stale_bind = store.one(

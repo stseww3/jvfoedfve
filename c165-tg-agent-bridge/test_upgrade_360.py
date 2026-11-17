@@ -905,6 +905,14 @@ def run_web_console_tests() -> None:
             )
             assert auto_wake_op is not None and auto_wake_op["target_node"] == "main2"
 
+            # 12d: Verify rogue spawned subagent cid ('bc-auto-env-1') impersonating m2_ag is surgically denied & evicted while real main2 ('main2-top-conv') is unharmed!
+            pk_rogue = client.get(f"/trace/peek?agent={m2_ag}&cid=bc-auto-env-1").json()
+            assert pk_rogue["stopped"] is True and pk_rogue.get("hijack") is True
+            pk_real = client.get(f"/trace/peek?agent={m2_ag}&cid=main2-top-conv").json()
+            assert not pk_real.get("stopped")
+            chk_rogue = client.get(f"/trace/check-active?agent={m2_ag}&cid=bc-auto-env-1").json()
+            assert chk_rogue["active"] is False and chk_rogue.get("hijack") is True
+
         if log_file.exists():
             log_txt = log_file.read_text(encoding="utf-8", errors="replace")
             assert secret_pw not in log_txt and sub_pw not in log_txt
