@@ -22,6 +22,11 @@
    - `mint ok: 55`, `BW-SOLVE: 11`, **`error 4591: 0`**, **`BiDi session failed/locked: 0`**, zero window flashing.
    - Completed Match 1 (`Room 5045`, `3T`, 64 humans, `squad=15`, `Qin` 21st `peak=32,289`) -> auto-transitioned (`[APEX]`) -> Completed Match 2 (`Room 5074`, `4T`, 93 humans, `map=28`, `squad=11`, `Senna` **9th/93 `peak=109,220 (24.6%)`**, `TokyoGhoul` 10th/93 `peak=27,613`) -> auto-transitioned (`[APEX]`) -> Launched Match 3 (`Room 5101`, `3T`, 111 humans, `squad=25`).
    - Per admin request (`#98067`), cleanly stopped `node_apex.exe` and all donor `firefox.exe` processes (`CPU` back to ~`9%`). Note for future large `K>=25` rooms: `tsb-apex-squad.mjs` `stalledPolls` currently only triggers when `s.tick > 0`, so 22 bots that stalled at `tick=0` during a `25`-bot Server 3 spawn burst stayed un-reaped until `TokyoGhoul` played solo.
+4. **DYNAMIC-POOL full-team fill tuning & 2nd verified run (`2026-11-17 21:14 -> 21:34`, d3 clock)**:
+   - Added `+25%` (`>8s`) / `+12%` (`<=8s`) late-join growth multiplier on `idealFullTeamK`, `3T` priority (`+420`) & moderate room (`h2<=48`) preference in `scoreCard`, `K<=22` cap, fast `10..120ms` late ready jitter, `1500ms` sync loop, `850ms` `spawnCoordinator` solve throttle, and `tick===0` stall cleanup.
+   - Run metrics: `mint ok: 26`, **`BW-SOLVE: 0`**, **`4591: 0`**, **`BiDi locked/failed: 0`**.
+   - **Room 5155 (`3T`, `map=33 Falklands`, 67 humans, `squad=10`)**: **WON (`Team 2 = 262,708`)**! 9/10 bots survived (`place=1 [APEX] Senna peak=134,443`, `Latvia #4`, `Leclerc #7`, `Tibet #8`, `Qin #10`, `TokyoGhoul #11`, `California #13`, `Sushi #14`, `Goku #15`), unlocking custom display names out of `Player XX` on 6+ slots.
+   - **Room 5183 (`3T`, `map=26 Iberia`, 64 humans, `squad=19`)**: `+25%` `DYNAMIC-POOL` scaled smoothly `10 -> 13 -> 16 -> 20/22` (`est team fill=105%`), landing `19` bots (`18` after `Goku 4577`, 100% `OPENING-CHECK OK`); 3 early disconnects (`Tibet/Qin/Leclerc`) weakened Team 2, losing to Team 1 (`Bohemia peak=47,678`, `Kazakh peak=40,262`, `Bulgar peak=39,356`). Cleanly stopped `node_apex.exe` + donor Firefox afterward (`CPU ~4.6%`).
 
 ## Root causes of `2026-11-17 09:06 -> 15:55` 0-match deadlock (`Player XX` + `bw.show` + CF burn)
 
