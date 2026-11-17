@@ -2885,6 +2885,18 @@ def ensure_controller_alive(force: bool = False) -> str | None:
     if not cur_ctrl_m or cur_ctrl_m.lower() == "grok-4.7":
         update_conv_model("ctrl", DEFAULT_CTRL_MODEL)
         ctrl = conv_row("ctrl")
+    # 防重入锁：若刚在 UNCLAIMED_SEC (3分钟) 内签发过 ctrl 启动码且对应宿主在线，等待新云机开机 join，绝不重复叠发多张 bridge_bootstrap 单！
+    if (ctrl["task_code"] or "") and (now() - float(ctrl["task_ts"] or 0)) < UNCLAIMED_SEC:
+        pending_ctrl = store.one(
+            "SELECT op_id, target_node, created_ts FROM dispatch_ops "
+            "WHERE conv_id='ctrl' AND op_type='launch_subagent' ORDER BY created_ts DESC LIMIT 1"
+        )
+        if pending_ctrl is None:
+            return None
+        tnode = node_row(pending_ctrl["target_node"])
+        if tnode is not None and node_is_online(tnode):
+            return None
+
     ag = active_agent(ctrl)
     if ag is not None and not force:
         if waiting.get(ag["id"]):
@@ -2895,7 +2907,17 @@ def ensure_controller_alive(force: bool = False) -> str | None:
         raw_idle = now() - float(ag["last_seen"] or 0)
         idle_since_boot = now() - max(float(ag["last_seen"] or 0), STARTED)
         has_unread = any(r["wake"] for r in pending_rows("ctrl", ctrl["read_cursor"]))
-        need_wake = think_stuck or (has_unread and raw_idle >= 35.0 and (now() - STARTED) >= 8.0) or raw_idle >= 360.0
+        probe_waiting_ok = (
+            trow is not None
+            and (trow["agent_id"] or "") == ag["id"]
+            and (trow["phase"] or "") == "idle_wait"
+            and float(trow["hb_ts"] or 0) > 0
+            and (now() - float(trow["hb_ts"] or 0)) < 90.0
+        )
+        if probe_waiting_ok and not has_unread:
+            _ctrl_resume_probe.clear()
+            return None
+        need_wake = think_stuck or (has_unread and raw_idle >= 35.0 and (now() - STARTED) >= 8.0) or idle_since_boot >= 360.0
         if not need_wake and idle_since_boot < LOST_SEC:
             return None
 
@@ -2926,6 +2948,11 @@ def ensure_controller_alive(force: bool = False) -> str | None:
 
         _ctrl_resume_probe.clear()
         stop_identity(ag["id"], "总控会话失联且 resume 未恢复，自动自愈重拉")
+        store.run("UPDATE convs SET agent='', task_agent_id='' WHERE id='ctrl'")
+    elif ag is not None and force:
+        _ctrl_resume_probe.clear()
+        stop_identity(ag["id"], "总控会话探活确认已终止，自动自愈重拉")
+        store.run("UPDATE convs SET agent='', task_agent_id='' WHERE id='ctrl'")
     elif not force:
         if (ctrl["task_code"] or "") and (now() - float(ctrl["task_ts"] or 0)) < LOST_SEC:
             pending_ctrl = store.one(
@@ -6299,8 +6326,16 @@ async def t_submit_op_result(agent, args):
     if op_type == "resume_subagent":
         if requester == "watchdog_ctrl_resume":
             if is_resume_dead_output(status, output):
-                _ctrl_resume_probe.clear()
-                ensure_controller_alive(force=True)
+                try:
+                    probed_tid = str(json.loads(op["payload_json"] or "{}").get("task_agent_id") or "").strip()
+                except Exception:
+                    probed_tid = ""
+                cur_ctrl = conv_row("ctrl")
+                cur_tid = (cur_ctrl["task_agent_id"] or "").strip() if cur_ctrl is not None else ""
+                # 仅当报错的探活单针对的仍是当前这任 ctrl（且当前没有正在开机待 join 的新 ctrl）时才触发重拉，杜绝旧单晚到引发连环重开！
+                if cur_ctrl is not None and not (cur_ctrl["task_code"] or "") and (not probed_tid or probed_tid == cur_tid):
+                    _ctrl_resume_probe.clear()
+                    ensure_controller_alive(force=True)
             return text_result(f"已回传总控探活结果 {op_id}。现在请立即调用 read_chat 继续等待下一条指令。")
         if requester == "watchdog_runner_resume":
             if is_quota_exceeded_output(output):
