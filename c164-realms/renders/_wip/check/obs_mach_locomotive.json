@@ -1,0 +1,158 @@
+{
+ "scene": "obs_mach_locomotive",
+ "commit": "721892c",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "704 blocks, 23 entities, 7 models, 718 resource-pack files, 30 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (1.0 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 717 files, no file written twice, the folders and the prefix of machines are kept (15 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "136 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "543 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "4 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "PASS",
+   "summary": "no wall face runs flat over more than 5x5",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "23 display entities",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "13 shots, most display entities in view: 23 (front), limit 600; counted without what walls hide; the game draws up to 23 (side): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "side",
+      "in_view": 15,
+      "drawn": 23,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "front",
+      "in_view": 23,
+      "drawn": 23,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "front_near",
+      "in_view": 23,
+      "drawn": 23,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "cab",
+      "in_view": 8,
+      "drawn": 23,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "cab_in",
+      "in_view": 8,
+      "drawn": 23,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "gear",
+      "in_view": 8,
+      "drawn": 23,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "above",
+      "in_view": 23,
+      "drawn": 23,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "north",
+      "in_view": 14,
+      "drawn": 23,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "stand",
+      "in_view": 23,
+      "drawn": 23,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "stand_gear",
+      "in_view": 7,
+      "drawn": 23,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "quarter",
+      "in_view": 15,
+      "drawn": 23,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "quarter_gear",
+      "in_view": 8,
+      "drawn": 23,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "row",
+      "in_view": 23,
+      "drawn": 23,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "5 parts and 0 points on 2 chains, 22 function files; 10 commands in the busiest tick (limit 120), 0.9 a tick on average (limit 40)",
+   "details": [
+    "chain of 41 ticks: 4 functions, 10 commands a cycle, starts 1 ticks after start",
+    "chain of 64 ticks: 12 functions, 45 commands a cycle, starts 1 ticks after start"
+   ]
+  }
+ ]
+}

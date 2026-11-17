@@ -1,0 +1,31 @@
+check obs_site_viaduct at 721892c
+[PASS] regen     191025 blocks, 581 entities, 543 models, 2332 resource-pack files, 1655 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (9.0 s)
+[PASS] conflicts the scene writes 2331 files, no file written twice, the folders and the prefix of site are kept (3 packages run alone)
+[PASS] strays    672 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      1615 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[WARN] blocks    84 kinds of block placed, 425 barrier cells (x -1..94, y -6..20, z -38..47), barriers away from any model
+                 195 barrier cells have no model within 3 blocks (x 0..47, y -4..20, z -34..47): not inside a model that is seen (a door leaf, the cable car); a barrier anywhere else is the wall nobody sees (A0 #457, 4)
+[PASS] flatwall  no wall face runs flat over more than 5x5
+[WARN] entities  581 display entities, 32 drawn out along one axis, 31 shown through a matrix that is no turn, no face stretched, 310 models never placed
+                 prop_pneu_plate_a1 x1: 64/64/64 pixels to the block along x/y/z, not 16
+[WARN] views     11 shots, most display entities in view: 326 (side), limit 600; counted without what walls hide; the game draws up to 418 (stair_head): a display entity without width and height is drawn outside the view too
+                 side: 28 of the 326 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 ride_in: 102 of the 258 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+                 (the tracking range is read off the game's code, not yet seen on the real machine)
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    84 parts and 18 points, 1 that travel on 32 chains, 1562 function files and 1 of the packages' own; 50 commands in the busiest tick (limit 120), 8.3 a tick on average (limit 40)
+                 functions of the packages' own: train/board (14 commands)
+                 chain of 16 ticks: 4 functions, 10 commands a cycle, starts 4 ticks after start
+                 chain of 24 ticks: 4 functions, 9 commands a cycle, starts 5 ticks after start
+                 chain of 28 ticks: 10 functions, 29 commands a cycle, starts 10 ticks after start
+                 chain of 32 ticks: 4 functions, 9 commands a cycle, starts 3 ticks after start
+                 chain of 40 ticks: 8 functions, 17 commands a cycle, starts 3 ticks after start
+                 chain of 48 ticks: 12 functions, 65 commands a cycle, starts 6 ticks after start
+                 chain of 60 ticks: 8 functions, 17 commands a cycle, starts 17 ticks after start
+                 chain of 64 ticks: 4 functions, 9 commands a cycle, starts 16 ticks after start
+                 chain of 80 ticks: 2 functions, 5 commands a cycle, starts 9 ticks after start
+                 chain of 90 ticks: 8 functions, 17 commands a cycle, starts 5 ticks after start
+                 chain of 100 ticks: 8 functions, 25 commands a cycle, starts 10 ticks after start
+                 ... and 61 more
+result: PASS (0 failed, 3 with warnings)

@@ -1,0 +1,129 @@
+{
+ "scene": "obs_mach_batteryboard",
+ "commit": "721892c",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "1047 blocks, 32 entities, 12 models, 732 resource-pack files, 38 data-pack files, look: carried by the resource pack (10 files), the clock at 20370 (0.9 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 731 files, no file written twice, the folders and the prefix of machines are kept (15 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "141 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "553 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "7 kinds of block placed, 12 barrier cells (x 5..10, y 1..2, z -25), all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "PASS",
+   "summary": "no wall face runs flat over more than 5x5",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "32 display entities, 16 drawn out along one axis, 3 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "8 shots, most display entities in view: 32 (aisle), limit 600; counted without what walls hide",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "aisle",
+      "in_view": 32,
+      "drawn": 32,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "mid",
+      "in_view": 20,
+      "drawn": 32,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "board",
+      "in_view": 14,
+      "drawn": 32,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "main",
+      "in_view": 12,
+      "drawn": 32,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "west",
+      "in_view": 12,
+      "drawn": 32,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "east",
+      "in_view": 16,
+      "drawn": 32,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "head",
+      "in_view": 14,
+      "drawn": 32,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "bars",
+      "in_view": 19,
+      "drawn": 32,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "3 parts and 0 points on 3 chains, 30 function files; 5 commands in the busiest tick (limit 120), 0.3 a tick on average (limit 40)",
+   "details": [
+    "chain of 110 ticks: 8 functions, 18 commands a cycle, starts 1 ticks after start",
+    "chain of 150 ticks: 8 functions, 17 commands a cycle, starts 4 ticks after start",
+    "chain of 260 ticks: 8 functions, 17 commands a cycle, starts 5 ticks after start"
+   ]
+  }
+ ]
+}
