@@ -69,13 +69,13 @@ const BW_AUTO_SOLVER_SNIPPET = `    if (typeof bw === "object" && bw && typeof b
           }
           return d;
         }
-        function cleanGlyph(t) {
+        function cleanGlyph(t, thStart) {
           const d = chamfer(t);
-          let th = 8;
+          let th = thStart;
           let cnt = 0;
           for (let i = 0; i < 16384; i++) if (d[i] >= th) cnt++;
-          if (cnt < 140) th = 7;
-          if (cnt < 70) th = 6;
+          if (cnt < 140) th = Math.min(th, 7);
+          if (cnt < 70) th = Math.min(th, 6);
           const core = new Uint8Array(16384);
           for (let i = 0; i < 16384; i++) if (d[i] >= th) core[i] = 1;
           const vis = new Uint8Array(16384);
@@ -109,7 +109,7 @@ const BW_AUTO_SOLVER_SNIPPET = `    if (typeof bw === "object" && bw && typeof b
           const out = new Uint8Array(16384);
           const remArr = new Int16Array(16384);
           let head = 0, tail = 0;
-          const minKeep = Math.max(20, Math.floor(maxLen * 0.14));
+          const minKeep = Math.max(12, Math.floor(maxLen * 0.10));
           for (const comp of comps) {
             if (comp.length >= minKeep) {
               for (let k = 0; k < comp.length; k++) {
@@ -143,13 +143,13 @@ const BW_AUTO_SOLVER_SNIPPET = `    if (typeof bw === "object" && bw && typeof b
           }
           return out;
         }
-        function norm32(g, rotRad) {
+        function prep(raw, thStart) {
+          const g = cleanGlyph(raw, thStart);
           let sx = 0, sy = 0, n = 0;
           for (let i = 0; i < 16384; i++) {
             if (g[i]) { sx += (i & 127); sy += (i >> 7); n++; }
           }
-          const out = new Float32Array(1024);
-          if (n < 30) return { v: out, ok: false, n };
+          if (n < 30) return null;
           const cx = sx / n, cy = sy / n;
           let sr2 = 0;
           for (let i = 0; i < 16384; i++) {
@@ -158,13 +158,17 @@ const BW_AUTO_SOLVER_SNIPPET = `    if (typeof bw === "object" && bw && typeof b
               sr2 += dx * dx + dy * dy;
             }
           }
-          const r = Math.max(8, Math.sqrt(sr2 / n));
+          return { g, cx, cy, n, rRms: Math.max(8, Math.sqrt(sr2 / n)) };
+        }
+        function render32(info, rotRad, dxShift, dyShift) {
+          const g = info.g, cx = info.cx, cy = info.cy, rRms = info.rRms;
+          const out = new Float32Array(1024);
           const cosA = Math.cos(rotRad), sinA = Math.sin(rotRad);
-          const scale = r / 9.5;
+          const scale = rRms / 9.2;
           for (let gy = 0; gy < 32; gy++) {
-            const uy = (gy - 15.5) * scale;
+            const uy = (gy - 15.5 - dyShift) * scale;
             for (let gx = 0; gx < 32; gx++) {
-              const ux = (gx - 15.5) * scale;
+              const ux = (gx - 15.5 - dxShift) * scale;
               const px = cx + ux * cosA - uy * sinA;
               const py = cy + ux * sinA + uy * cosA;
               const ix = Math.floor(px), iy = Math.floor(py);
@@ -177,67 +181,99 @@ const BW_AUTO_SOLVER_SNIPPET = `    if (typeof bw === "object" && bw && typeof b
             }
           }
           const blur = new Float32Array(1024);
-          let norm2 = 0;
+          let sum = 0;
           for (let y = 0; y < 32; y++) {
             for (let x = 0; x < 32; x++) {
-              let s = 0;
-              for (let dy = -1; dy <= 1; dy++) {
-                const yy = y + dy;
-                if (yy < 0 || yy > 31) continue;
-                for (let dx = -1; dx <= 1; dx++) {
-                  const xx = x + dx;
-                  if (xx >= 0 && xx <= 31) s += out[(yy << 5) + xx] * ((dx === 0 && dy === 0) ? 4 : (dx === 0 || dy === 0) ? 2 : 1);
-                }
-              }
+              let s = out[(y << 5) + x] * 10;
+              if (y > 0) s += out[((y - 1) << 5) + x] * 1.5;
+              if (y < 31) s += out[((y + 1) << 5) + x] * 1.5;
+              if (x > 0) s += out[(y << 5) + x - 1] * 1.5;
+              if (x < 31) s += out[(y << 5) + x + 1] * 1.5;
               blur[(y << 5) + x] = s;
-              norm2 += s * s;
+              sum += s;
             }
+          }
+          const mean = sum / 1024;
+          let norm2 = 0;
+          for (let i = 0; i < 1024; i++) {
+            blur[i] -= mean;
+            norm2 += blur[i] * blur[i];
           }
           const inv = norm2 > 0 ? 1 / Math.sqrt(norm2) : 0;
           for (let i = 0; i < 1024; i++) blur[i] *= inv;
-          return { v: blur, ok: true, n };
+          return blur;
         }
-        const refG = cleanGlyph(dec(pB[0]));
-        const refCheck = norm32(refG, 0);
-        if (!refCheck.ok) return { reload: true, top: 0, bestGap: 0 };
-        const refRots = [];
-        for (let deg = -75; deg <= 75; deg += 5) {
-          refRots.push(norm32(refG, (deg * Math.PI) / 180).v);
-        }
-        const scores = new Float32Array(16);
-        for (let i = 0; i < 16; i++) {
-          const cg = cleanGlyph(dec(pB[i + 1]));
-          const cn = norm32(cg, 0);
-          if (!cn.ok) { scores[i] = 0; continue; }
-          const cv = cn.v;
-          let best = 0;
-          for (let r = 0; r < refRots.length; r++) {
-            const rv = refRots[r];
-            let dot = 0;
-            for (let k = 0; k < 1024; k++) dot += rv[k] * cv[k];
-            if (dot > best) best = dot;
+        const rawTiles = [];
+        for (let i = 0; i < 17; i++) rawTiles.push(dec(pB[i]));
+        const shifts = [[0, 0], [-1, 0], [1, 0], [0, -1], [0, 1]];
+        function runWithTh(thStart) {
+          const refInfo = prep(rawTiles[0], thStart);
+          if (!refInfo) return { reload: true, top: 0, bestGap: 0, maskFallback: 0, countFallback: 0 };
+          const refRots = [];
+          for (let deg = 0; deg < 360; deg += 5) {
+            const rad = (deg * Math.PI) / 180;
+            for (let s = 0; s < shifts.length; s++) {
+              refRots.push(render32(refInfo, rad, shifts[s][0], shifts[s][1]));
+            }
           }
-          scores[i] = best;
-        }
-        const sorted = Array.from(scores).sort((a, b) => b - a);
-        let bestGap = 0, bestCutIdx = -1;
-        for (let k = 0; k < 13; k++) {
-          if (sorted[k] < 0.77) break;
-          const gap = sorted[k] - sorted[k + 1];
-          if (gap > bestGap && sorted[k + 1] < 0.80) {
-            bestGap = gap;
-            bestCutIdx = k;
+          const scores = new Float32Array(16);
+          for (let i = 0; i < 16; i++) {
+            const ci = prep(rawTiles[i + 1], thStart);
+            if (!ci) { scores[i] = 0; continue; }
+            const cv = render32(ci, 0, 0, 0);
+            let best = -1;
+            for (let r = 0; r < refRots.length; r++) {
+              const rv = refRots[r];
+              let dot = 0;
+              for (let k = 0; k < 1024; k++) dot += rv[k] * cv[k];
+              if (dot > best) best = dot;
+            }
+            scores[i] = best;
           }
+          const sorted = Array.from(scores).sort((a, b) => b - a);
+          let bestGap = 0, bestCutIdx = -1;
+          for (let k = 0; k < 13; k++) {
+            if (sorted[k] < 0.75) break;
+            const gap = sorted[k] - sorted[k + 1];
+            if (gap > bestGap && sorted[k + 1] < 0.80) {
+              bestGap = gap;
+              bestCutIdx = k;
+            }
+          }
+          let maskFallback = 0;
+          let countFallback = 0;
+          if (bestCutIdx >= 0) {
+            const thF = (sorted[bestCutIdx] + sorted[bestCutIdx + 1]) / 2;
+            for (let i = 0; i < 16; i++) {
+              if (scores[i] >= thF) { maskFallback |= (1 << i); countFallback++; }
+            }
+          } else {
+            let maxG = 0, cutF = 0;
+            for (let k = 0; k < 9; k++) {
+              const g = sorted[k] - sorted[k + 1];
+              if (g > maxG) { maxG = g; cutF = k; }
+            }
+            const thF = (sorted[cutF] + sorted[cutF + 1]) / 2;
+            for (let i = 0; i < 16; i++) {
+              if (scores[i] >= thF) { maskFallback |= (1 << i); countFallback++; }
+            }
+          }
+          if (sorted[0] < 0.86 || bestCutIdx < 0 || bestGap < 0.095) {
+            return { reload: true, top: Number(sorted[0].toFixed(3)), bestGap: Number(bestGap.toFixed(3)), maskFallback, countFallback };
+          }
+          const thresh = (sorted[bestCutIdx] + sorted[bestCutIdx + 1]) / 2;
+          let mask = 0;
+          for (let i = 0; i < 16; i++) {
+            if (scores[i] >= thresh) mask |= (1 << i);
+          }
+          return { reload: false, mask, top: Number(sorted[0].toFixed(3)), thresh: Number(thresh.toFixed(3)), bestGap: Number(bestGap.toFixed(3)), count: bestCutIdx + 1 };
         }
-        if (sorted[0] < 0.88 || bestCutIdx < 0 || bestGap < 0.09) {
-          return { reload: true, top: Number(sorted[0].toFixed(3)), bestGap: Number(bestGap.toFixed(3)) };
+        let res = runWithTh(8);
+        if (res.reload) {
+          const r7 = runWithTh(7);
+          if (!r7.reload || r7.bestGap > res.bestGap) res = r7;
         }
-        const thresh = (sorted[bestCutIdx] + sorted[bestCutIdx + 1]) / 2;
-        let mask = 0;
-        for (let i = 0; i < 16; i++) {
-          if (scores[i] >= thresh) mask |= (1 << i);
-        }
-        return { reload: false, mask, top: Number(sorted[0].toFixed(3)), thresh: Number(thresh.toFixed(3)), bestGap: Number(bestGap.toFixed(3)), count: bestCutIdx + 1 };
+        return res;
       };
       bw.show = function(pB, pA, oN, pow) {
         window.__lastBwChallengeAt = Date.now();
@@ -254,23 +290,24 @@ const BW_AUTO_SOLVER_SNIPPET = `    if (typeof bw === "object" && bw && typeof b
         const sendCaptchaAns = b1?.eg?.p8 || b1?.er?.pJ;
         if (typeof sendCaptchaAns !== "function") return;
         const holder = b1?.eg?.p8 ? b1.eg : b1.er;
-        if (res.reload || !res.mask) {
+        if ((res.reload || !res.mask) && (window.__bwReloadStreak || 0) < 3) {
           window.__bwReloadStreak = (window.__bwReloadStreak || 0) + 1;
-          if (window.__bwReloadStreak > 6) {
-            window.__bwReloadStreak = 0;
-            window.__bwCooldownUntil = Date.now() + 30000;
-            if (window.__hlLog) window.__hlLog("[BW-SOLVE] oN=" + oN + " reload streak > 6 (top=" + res.top + " gap=" + res.bestGap + ") -> cooldown 30s");
-            return;
-          }
-          const delay = 450 + Math.floor(Math.random() * 260);
+          const delay = 800 + Math.floor(Math.random() * 350);
           setTimeout(() => { try { sendCaptchaAns.call(holder, 0, 0, oN, pow); } catch {} }, delay);
         } else {
+          const finalMask = res.mask || res.maskFallback || 0;
+          const finalCnt = res.count || res.countFallback || 0;
           window.__bwReloadStreak = 0;
-          if (window.__hlLog) {
-            window.__hlLog("[BW-SOLVE] oN=" + oN + " mask=0x" + res.mask.toString(16) + " count=" + res.count + " top=" + res.top + " gap=" + res.bestGap + " (" + ms + "ms)");
+          if (!finalMask) {
+            window.__bwCooldownUntil = Date.now() + 25000;
+            if (window.__hlLog) window.__hlLog("[BW-SOLVE] oN=" + oN + " empty mask -> cooldown 25s");
+            return;
           }
-          const delay = 480 + Math.floor(Math.random() * 320);
-          setTimeout(() => { try { sendCaptchaAns.call(holder, res.mask, pA, oN, pow); } catch {} }, delay);
+          if (window.__hlLog) {
+            window.__hlLog("[BW-SOLVE] oN=" + oN + " mask=0x" + finalMask.toString(16) + " count=" + finalCnt + " top=" + res.top + " gap=" + res.bestGap + (res.reload ? " (fallback)" : "") + " (" + ms + "ms)");
+          }
+          const delay = 1100 + Math.floor(Math.random() * 600);
+          setTimeout(() => { try { sendCaptchaAns.call(holder, finalMask, pA, oN, pow); } catch {} }, delay);
         }
       };
     }`;
@@ -289,7 +326,6 @@ const hbNorm = hb.replace(/\r\n/g, '\n');
 if (!hbNorm.includes(hbOldNameAssign)) throw new Error('hbOldNameAssign not found');
 hb = hbNorm.replace(hbOldNameAssign, hbNewNameAssign);
 
-// Also forward [BW-SOLVE] / [BW-ERR] from customConsole / __hlLog (already forwarded via __hlLog -> parentPort 'log')
 fs.writeFileSync(hbPath, hb, 'utf8');
 console.log('Patched', hbPath, 'len=', hb.length);
 
@@ -331,7 +367,7 @@ sqNorm = sqNorm.replaceAll(
   `await callBidi('browsingContext.navigate', { context: ctx, url: 'https://territorial.io/', wait: 'interactive' });`
 );
 
-// 2. Replace 3s eh(5) CPU storm with passive Server 1 auto-challenge + 60s gentle fallback + myLobbyRealName
+// 2. Remove eh(5) Propaganda spam completely and track myLobbyRealName
 const sqOldEh5 = `        const myLobbyObj = typeof bq === "object" ? (bq?.aFv || bq?.aF0) : null;
         const myLobbyUsername = myLobbyObj ? myLobbyObj.username : null;
         if (myLobbyUsername && (myLobbyUsername.startsWith("Player ") || myLobbyUsername.includes("Redacted")) && typeof b1 === "object" && b1?.eg?.eh && b1?.z?.ef?.(0)) {
@@ -342,25 +378,7 @@ const sqOldEh5 = `        const myLobbyObj = typeof bq === "object" ? (bq?.aFv |
         }`;
 const sqNewEh5 = `        const myLobbyObj = typeof bq === "object" ? (bq?.aFv || bq?.aF0) : null;
         const myLobbyUsername = myLobbyObj ? myLobbyObj.username : null;
-        const myLobbyRealName = myLobbyObj ? (myLobbyObj.aGM || myLobbyObj.username || null) : null;
-        if (
-          myLobbyUsername &&
-          myLobbyUsername.startsWith("Player ") &&
-          !(myLobbyRealName && myLobbyRealName.includes("Redacted")) &&
-          typeof b1 === "object" &&
-          b1?.eg?.eh &&
-          b1?.z?.ef?.(0)
-        ) {
-          const nowMs = Date.now();
-          if (!window.__playerNameSeenSince) window.__playerNameSeenSince = nowMs;
-          const bwRecent = window.__lastBwChallengeAt && (nowMs - window.__lastBwChallengeAt < 45000);
-          if (!bwRecent && nowMs - window.__playerNameSeenSince > 15000 && (!window.__lastNameVerifyAsk || nowMs - window.__lastNameVerifyAsk > 60000)) {
-            window.__lastNameVerifyAsk = nowMs;
-            try { b1.eg.eh(5); } catch {}
-          }
-        } else {
-          window.__playerNameSeenSince = 0;
-        }`;
+        const myLobbyRealName = myLobbyObj ? (myLobbyObj.aGM || myLobbyObj.username || null) : null;`;
 if (!sqNorm.includes(sqOldEh5)) throw new Error('sqOldEh5 not found');
 sqNorm = sqNorm.replace(sqOldEh5, sqNewEh5);
 
@@ -369,11 +387,62 @@ const sqNewSetLobbyUser = `        s.myLobbyUsername = myLobbyUsername;\n       
 if (!sqNorm.includes(sqOldSetLobbyUser)) throw new Error('sqOldSetLobbyUser not found');
 sqNorm = sqNorm.replace(sqOldSetLobbyUser, sqNewSetLobbyUser);
 
-// 3. Instant Redacted detection via s.myLobbyRealName even before bw.show unlock
+// 3. Instant Redacted detection via s.myLobbyRealName
 const sqOldRedactedChk = `      if (s.myLobbyUsername.includes('Redacted')) {`;
 const sqNewRedactedChk = `      if (s.myLobbyUsername.includes('Redacted') || (typeof s.myLobbyRealName === 'string' && s.myLobbyRealName.includes('Redacted'))) {`;
 if (!sqNorm.includes(sqOldRedactedChk)) throw new Error('sqOldRedactedChk not found');
 sqNorm = sqNorm.replace(sqOldRedactedChk, sqNewRedactedChk);
+
+// 4. Use recognized clan tag [APEX] (random 3-letter tags are stripped by 2.17.13 in "Player XX" mode)
+const sqOldClanPool = `const CLAN_TAG_POOL = [
+  "V7K", "R4P", "N2X", "Q8M", "Z3L", "K9T", "M5J", "T2W", "H6C", "B4F",
+  "X9D", "P3V", "J7R", "C2N", "L8G", "W4S", "F6Y", "D5H", "G3K", "S8P",
+  "A4Z", "E9M", "U2C", "Y5B", "V3N", "R8X", "K4D", "M9W", "T7L", "H2Q"
+];
+let activeClanTag = CLAN_TAG_POOL[Math.floor(Math.random() * CLAN_TAG_POOL.length)];`;
+const sqNewClanPool = `const CLAN_TAG_POOL = ["APEX"];
+let activeClanTag = "APEX";`;
+if (!sqNorm.includes(sqOldClanPool)) throw new Error('sqOldClanPool not found');
+sqNorm = sqNorm.replace(sqOldClanPool, sqNewClanPool);
+
+// 5. Keep tag on in lobby while accounts are in "Player XX" mode (only custom-name accounts hide until commit window)
+const sqOldWantTag = `      const wantTag = allowReady && targetRoomId > 0 && !waitMode;`;
+const sqNewWantTag = `      const curLobbyStr0 = String(states[idx]?.myLobbyUsername || '');
+      const hasCustomNameUnlocked = curLobbyStr0.length > 0 && !curLobbyStr0.includes('Player ') && !curLobbyStr0.includes('Redacted');
+      const wantTag = !isStandby && !waitMode && (hasCustomNameUnlocked ? (allowReady && targetRoomId > 0) : true);`;
+if (!sqNorm.includes(sqOldWantTag)) throw new Error('sqOldWantTag not found');
+sqNorm = sqNorm.replace(sqOldWantTag, sqNewWantTag);
+
+// 6. Do not burn Turnstile tokens on 4563 lobby bounces (only invalidate after 24 consecutive failures)
+const sqOldFailCnt = `      c.lobbyFailCount = (c.lobbyFailCount || 0) + 1;
+      if (c.lobbyFailCount >= 4) {
+        c.freshToken = false;
+        c.lobbyFailCount = 0;
+        c.enteredLobbyAt = now;
+        continue;
+      }
+      c.enteredLobbyAt = now;
+      const enterJitterMs = i * 65 + Math.floor(Math.random() * 80);
+      setTimeout(() => {
+        c.evalJs(\`(() => {`;
+const sqNewFailCnt = `      c.lobbyFailCount = (c.lobbyFailCount || 0) + 1;
+      if (c.lobbyFailCount >= 24) {
+        c.freshToken = false;
+        c.lobbyFailCount = 0;
+        c.enteredLobbyAt = now;
+        continue;
+      }
+      c.enteredLobbyAt = now;
+      const enterJitterMs = i * 65 + Math.floor(Math.random() * 80);
+      setTimeout(() => {
+        c.evalJs(\`(() => {
+          try {
+            localStorage.setItem("d122", \${JSON.stringify(c.name)});
+            localStorage.setItem("v122", "0");
+            if (typeof bm === "object" && bm?.buffer?.data?.[122]) bm.buffer.data[122].value = \${JSON.stringify(c.name)};
+          } catch {}`;
+if (!sqNorm.includes(sqOldFailCnt)) throw new Error('sqOldFailCnt not found');
+sqNorm = sqNorm.replace(sqOldFailCnt, sqNewFailCnt);
 
 fs.writeFileSync(sqPath, sqNorm, 'utf8');
 console.log('Patched', sqPath, 'len=', sqNorm.length);
