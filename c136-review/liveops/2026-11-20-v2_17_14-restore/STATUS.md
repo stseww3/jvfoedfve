@@ -44,5 +44,14 @@ On Ryzen 7 9700X (8C/16T), `node_apex.exe` pegged all 16 threads at ~95-100% CPU
   - 500 ticks: **`4,994.1ms` (`9.99ms/t`) → `543.9ms` (`1.09ms/t`, `9.18×` faster)**, 100% bit-exact state parity (`sumLand=322583, top0=916`).
   - 1,500 ticks (early + mid + late): **`>45,000ms` (`>30ms/t`, timed out) → `1,579.1ms` (`1.05ms/t`, `~28×` faster)**, 100% bit-exact pixel+balance hash parity (`hash=3843778001`).
   - Full-stack integration (`page.js` + IIFE `live_game_js.js` + `v27-team-live.js`, 1,500 ticks): `0` errors, `replayLen=410`, `2.85ms/t` combined (projected **~1.5–2.0 / 16 cores total** for 22 bots in mid-game instead of 16/16 pegged).
-- **Deployment status**: All 4 patched files are verified (`--check OK`, idempotent) and written to `c116/` on disk. Holding the single restart of `node_apex.exe` (PID `10148`, currently running Phase 1+2 with 28 active bots in Room 843) because Cloudflare Turnstile donor mint budget is at `90/90` in the last 60 min (`27` slots age out at `22:42`, `40+` by `22:55`).
+- **Deployment & Live Verification (`PID 34968`, restarted cleanly at `22:45:20` with `free=24` Turnstile mint headroom)**:
+  - All 40 workers booted with `0` errors (`err.log` empty, `hlErr=0`), `24` Turnstile mints succeeded cleanly, `OPENING-CHECK: 9/9 (100%) OK`, `BACKEND-SPAWN-COORD: 14.2–67.0ms`.
+  - **Idle lobby (23 bots, 40 workers)**: `node_apex = 0.38 / 16 cores (2.4%)`, `SysCPU = 10.2%–10.8%`, `RSS = 1,636 MB`, `threads >= 50% = 0` (top thread `4.8%`).
+  - **Live mid-game (`Room 955`, `4T`, `map=23`, `t=1260..1440`, 9 active bots)**:
+    - `node_apex`: **`0.57 / 16 cores (3.6%)`**, `SysCPU = 14.1%–15.8%`, `RSS = 2,357 MB`, `threads >= 20% = 0`.
+    - Per active mid-game bot thread: **`3.9%–5.9%` of 1 core** (down from **`82%–94%` of 1 core** before Phase 3 — **~16×–18× reduction per bot**).
+  - **Live late-mid-game (`Room 955`, `t=2160..2250`, 9 active bots + active boats)**:
+    - `node_apex`: **`0.31 / 16 cores (2.0%)`**, `SysCPU = 12.7%–17.1%`, `RSS = 2,455 MB`, per-bot **`1.8%–3.3%` of 1 core**.
+    - `HL-SLOW-TICK = 0`, `error 4229 = 0`, `error 4591 = 0`, `error 4211 = 0`, `hlErr = 0`, `skip = 0`, `afterTick avgMs = 0.58–0.67ms`.
+
 
