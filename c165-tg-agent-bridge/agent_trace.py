@@ -715,7 +715,7 @@ def _is_protected_shell_command(cmd: str, allow_system_install: bool = False) ->
         return False
     has_rt_tmp_bootstrap = "/tmp/.cr_rt_" in cmd and "/trace/dais_runtime.pyz" in cmd
     for seg in _split_shell_segments(cmd):
-        if _PRIV_CMD_RE.search(seg):
+        if re.search(r"\binstall\s+--system\b", seg, re.I):
             if allow_system_install and (
                 _SYSTEM_INSTALL_CMD_RE.match(seg)
                 or (has_rt_tmp_bootstrap and _SYSTEM_INSTALL_TMPVAR_RE.match(seg))
@@ -905,14 +905,25 @@ def process_hook_payload(raw: str, via_daemon: bool = False) -> str:
     is_main_exec = bool(agent_id and agent_id.startswith("m_"))
     is_confirmed_subagent = bool(agent_id and agent_id.startswith("a_"))
 
-    # 主执行器 (m_) 物理级盲区隔离：严禁查看、搜索或改写任何业务仓库/本地文件/子会话日志，仅放行初始化与 /wait
+    # 主执行器 (m_) 物理级盲区隔离：严禁查看、搜索或改写任何业务仓库/本地文件/子会话日志，仅放行初始化、/wait 与 AwaitShell 底层终端流读取
     if is_main_exec:
         tname_m = str(payload.get("tool_name") or "")
-        if event == "beforeReadFile" or (event == "preToolUse" and tname_m in ("Read", "Grep", "Glob", "Write", "StrReplace", "Delete")):
+        if event == "beforeReadFile":
+            bf_path = str(payload.get("file_path") or payload.get("path") or ti.get("path") or ti.get("file_path") or "")
+            # 放行 Cursor 原生 AwaitShell 底层触发的 terminals/*.txt 读取（循环 Read 工具已在上方 preToolUse 被拦截）
+            if not ("/terminals/" in bf_path and bf_path.endswith(".txt")):
+                return json.dumps(
+                    {
+                        "permission": "deny",
+                        "user_message": "权限禁止：主 Agent 执行器严禁查看、检索或修改任何业务代码仓库与本地文件，请只原样执行 [STANDARD_OP] 单据并继续等待。",
+                    },
+                    ensure_ascii=False,
+                )
+        elif event == "preToolUse" and tname_m in ("Read", "Grep", "Glob", "Write", "StrReplace", "Delete"):
             return json.dumps(
                 {
                     "permission": "deny",
-                    "user_message": "权限禁止：主 Agent 执行器严禁查看、检索或修改任何业务代码仓库与本地文件，请只原样执行 [STANDARD_OP] 单据并回到 read_chat。",
+                    "user_message": "权限禁止：主 Agent 执行器严禁查看、检索或修改任何业务代码仓库与本地文件，请只原样执行 [STANDARD_OP] 单据并继续等待。",
                 },
                 ensure_ascii=False,
             )
@@ -922,7 +933,7 @@ def process_hook_payload(raw: str, via_daemon: bool = False) -> str:
                 return json.dumps(
                     {
                         "permission": "deny",
-                        "user_message": "权限禁止：主 Agent 执行器严禁在终端运行 git 或查看业务仓库/子会话目录，请只运行初始化、/wait 或回到 read_chat。",
+                        "user_message": "权限禁止：主 Agent 执行器严禁在终端运行 git 或查看业务仓库/子会话目录，请只运行 /wait 或回到 read_chat。",
                     },
                     ensure_ascii=False,
                 )
@@ -2149,7 +2160,7 @@ def install_hooks(bridge_url: str, system_flag: bool | None = None) -> int:
     return 0
 
 
-def wait_loop(agent_id: str, bridge_url: str, max_sec: int = 6660) -> int:
+def wait_loop(agent_id: str, bridge_url: str, max_sec: int = 1560) -> int:
     """第 3 层防断连：断线/平滑重启自愈长等待，收到真正终端通知行或超时才返回。"""
     bridge_url = bridge_url.rstrip("/")
     if not _is_system_mode() or os.geteuid() == 0 or os.environ.get("DAIS_VAULT_DIR"):
@@ -2397,7 +2408,7 @@ def _execute_worker_job(agent_id: str, bridge_url: str, node_id: str, job: dict[
     return status_str, rc_final, "\n".join(parts)[:7900]
 
 
-def worker_loop(agent_id: str, bridge_url: str, max_sec: int = 6660) -> int:
+def worker_loop(agent_id: str, bridge_url: str, max_sec: int = 1560) -> int:
     """纯 Python 常驻工作守护循环：直接通过 HTTP 从桥拉取 workspace_job 并在本机 bash 执行回传，全程 0 大模型调用、0 Token 消耗！"""
     bridge_url = bridge_url.rstrip("/")
     with StateLock() as state:
@@ -2579,7 +2590,7 @@ def main() -> int:
             print("缺少 agent_id", file=sys.stderr)
             return 2
         url = ""
-        max_sec = 6660
+        max_sec = 1560
         for item in rest[1:]:
             if item.startswith("http"):
                 url = item

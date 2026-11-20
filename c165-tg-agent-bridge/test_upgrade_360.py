@@ -1168,16 +1168,19 @@ def run_stealth_and_onboarding_370_tests() -> None:
             allow_test = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": ob_cid, "command": "PYTHONPATH=/tmp/bridge-pkgs python3 test_upgrade_360.py"})
             assert allow_test.get("permission") != "deny"
 
-            # Pre-join unjoined new main MUST be allowed to run real trace_system_install_cmd, while arbitrary sudo bash & subagent install are denied!
+            # Pre-join unjoined new main MUST be allowed to run real trace_system_install_cmd, while subagent install is denied and remote SSH sudo is NOT falsely blocked!
             real_sys_inst_cmd = bridge.trace_system_install_cmd(m_sudo_ag)
             assert ".pyz" in real_sys_inst_cmd
-            assert "[ -S /run/cursor-hooks/hook.sock ]" in sh_m
+            assert "install --system" not in sh_m and "sudo" not in sh_m
+            assert "install --system" not in bridge.welcome_main_executor("main2", m_sudo_ag)
             allow_prejoin_inst = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": "unjoined-cid-1", "command": real_sys_inst_cmd})
             assert allow_prejoin_inst.get("permission") != "deny", allow_prejoin_inst
             deny_sub_real_inst = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": ob_cid, "command": real_sys_inst_cmd})
             assert deny_sub_real_inst.get("permission") == "deny", deny_sub_real_inst
-            deny_prejoin_bash = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": "unjoined-cid-1", "command": "sudo bash"})
-            assert deny_prejoin_bash.get("permission") == "deny"
+            allow_sub_ssh_sudo = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": ob_cid, "command": "ssh tmp5h@198.51.100.10 'sudo systemctl status tg-agent-bridge'"})
+            assert allow_sub_ssh_sudo.get("permission") != "deny", f"Remote SSH sudo wrongly blocked: {allow_sub_ssh_sudo}"
+            deny_sub_kill_rt = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": ob_cid, "command": "pkill -f dais_runtime"})
+            assert deny_sub_kill_rt.get("permission") == "deny"
 
             # Top-level m_ executor MUST be allowed to run real trace_system_install_cmd, /wait & echo ok,
             # while blocked from reading/editing business repos, git commands & subagent details!
@@ -1200,6 +1203,13 @@ def run_stealth_and_onboarding_370_tests() -> None:
             assert allow_m_echo.get("permission") != "deny"
             deny_m_read = call_relay({"hook_event_name": "preToolUse", "conversation_id": "legacy-cid-1", "tool_name": "Read", "tool_input": {"path": "/agent/repos/fdvg/app.js"}})
             assert deny_m_read.get("permission") == "deny"
+            # Verify m_ AwaitShell internal beforeReadFile on terminals/*.txt is ALLOWED (fix main18 bug!), while Read preToolUse & repo beforeReadFile remain DENIED!
+            allow_m_await_bf = call_relay({"hook_event_name": "beforeReadFile", "conversation_id": "legacy-cid-1", "file_path": "/home/ubuntu/.cursor/projects/agent/terminals/356258.txt"})
+            assert allow_m_await_bf.get("permission") != "deny", f"m_ AwaitShell beforeReadFile wrongly blocked: {allow_m_await_bf}"
+            deny_m_repo_bf = call_relay({"hook_event_name": "beforeReadFile", "conversation_id": "legacy-cid-1", "file_path": "/agent/repos/fdvg/app.js"})
+            assert deny_m_repo_bf.get("permission") == "deny"
+            deny_m_term_read_tool = call_relay({"hook_event_name": "preToolUse", "conversation_id": "legacy-cid-1", "tool_name": "Read", "tool_input": {"path": "/home/ubuntu/.cursor/projects/agent/terminals/356258.txt"}})
+            assert deny_m_term_read_tool.get("permission") == "deny"
             deny_m_edit = call_relay({"hook_event_name": "preToolUse", "conversation_id": "legacy-cid-1", "tool_name": "StrReplace", "tool_input": {"path": "/agent/repos/fdvg/LEDGER.md", "old_string": "a", "new_string": "b"}})
             assert deny_m_edit.get("permission") == "deny"
             deny_m_git = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": "legacy-cid-1", "command": "git -C /agent/repos/fdvg status && git log -n 3"})
@@ -1404,13 +1414,40 @@ async def run_v371_bugfix_regression_tests() -> None:
     finally:
         bridge.SHELL_WAIT = old_sw
 
+    # 4. Verify v3.7.3 fixes:
+    # 4a. Foreground-safe SHELL_WAIT == 1500s (25m), clean shell_command without curl+sudo install
+    assert bridge.SHELL_WAIT == 1500
+    assert "-m 1620" in bridge.shell_command(m_ag_live) and "install --system" not in bridge.shell_command(m_ag_live)
+    # 4b. is_resume_dead_output MUST return False when status='error' with 'Sub-agent is currently running'
+    assert bridge.is_resume_dead_output("error", "Error: Sub-agent is currently running; wait for completion before resuming") is False
+    assert bridge.is_resume_dead_output("error", "Subagent not found") is True
+    # 4c. Admin scolding / human message to mainN gets mandatory tool_call guard + send_message/send_agent_message append next-step script
+    bridge.post(m_node["id"], chat_id=7001, chat_type="private", user_id=7001, user_name="Alpine", text="你在干什么？停手！", wake=1)
+    m_scold_txt = text_of(await bridge.call_tool("read_chat", {"agent": m_ag_live, "wait_sec": 0}))
+    assert "严禁直接输出纯文字检讨或结束回合" in m_scold_txt and "send_message" in m_scold_txt, m_scold_txt
+    m_sm_res = text_of(await bridge.call_tool("send_message", {"agent": m_ag_live, "text": "收到，继续待命执行标准单据。"}))
+    assert "必须带 tool_call" in m_sm_res and "/wait" in m_sm_res, m_sm_res
+    m_dm_res = text_of(await bridge.call_tool("send_agent_message", {"agent": m_ag_live, "to": "ctrl", "text": "同步状态", "wake": False}))
+    assert "必须带 tool_call" in m_dm_res and "/wait" in m_dm_res, m_dm_res
+    # 4d. Strict ctrl-only routing even during brief ctrl restart window (ctrl_is_active() == False)
+    bridge.stop_identity(ctrl_ag, "模拟总控重开瞬时空窗")
+    assert bridge.ctrl_is_active() is False
+    ops_m_before = bridge.store.one("SELECT COUNT(*) AS n FROM dispatch_ops WHERE conv_id!='ctrl'")["n"]
+    c_win = bridge.create_conv("总控空窗期防绕过测试", 7001, name="空窗测试", owner=0)
+    routed_win = bridge.dispatch_conv_to_cluster(c_win, "新建聊天")
+    assert routed_win == "ctrl", f"Bypassed ctrl during restart window: {routed_win}"
+    ops_m_after = bridge.store.one("SELECT COUNT(*) AS n FROM dispatch_ops WHERE conv_id!='ctrl'")["n"]
+    assert ops_m_after == ops_m_before, "Business launch op bypassed ctrl into mainN during ctrl restart window!"
+    # Re-join ctrl so state stays clean
+    await bridge.call_tool("join", {"code": bridge.conv_row("ctrl")["task_code"]})
+
 
 def main() -> None:
     asyncio.run(run_cluster_and_device_tests())
     run_web_console_tests()
     run_stealth_and_onboarding_370_tests()
     asyncio.run(run_v371_bugfix_regression_tests())
-    print("ALL_372_TESTS_PASSED_OK")
+    print("ALL_373_TESTS_PASSED_OK")
 
 
 if __name__ == "__main__":

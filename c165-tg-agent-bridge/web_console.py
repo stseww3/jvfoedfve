@@ -985,27 +985,21 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
             bridge.stop_identity(old_ag["id"], "管理员在 Web 控制台点击重开")
         store.run("UPDATE convs SET task_agent_id='', read_cursor=MAX(read_cursor, ?) WHERE id=?", (max_mid, cid))
 
-        if bridge.ctrl_is_active():
-            # 按用户要求：通知唯一主控（ctrl），把完整无损上下文信息全量交给主控去向主 Agent 发标准化命令！
+        if bridge.cluster_ctrl_configured():
+            # 严格单一入口：只要配置了总控集群，一律交由唯一总控（ctrl）决策派单（即使 ctrl 此刻正在重开，也写入 ctrl 队列并触发拉起 ctrl，绝不绕过 ctrl 直塞 mainN！）
+            bridge.ensure_main_conv()
             bridge.issue_task(cid)
             if target_main and target_main != "auto":
                 dossier += f"\n（管理员建议优先派往主 Agent：`{target_main}`）"
             bridge.system_note("ctrl", dossier, wake=1)
+            if not bridge.ctrl_is_active():
+                bridge.ensure_controller_alive()
             routed = "ctrl"
         else:
-            # 若总控此刻恰好不在线，直接向最优在线 mainN 下发标准化启动单兜底，同时把完整档案留存给 ctrl
-            launcher = bridge.node_row(target_main) if target_main and target_main != "auto" else None
-            if launcher is None or not bridge.node_is_online(launcher):
-                launcher = bridge.select_best_launcher(for_conv=cid)
-            if launcher is not None and bridge.is_main_node_id(launcher["id"]):
-                _, nid = bridge.enqueue_launch_op(bridge.conv_row(cid), launcher, requester="web_restart")
-                bridge.system_note("ctrl", dossier + f"\n（注：因总控暂未在线，桥已先行向 {nid} 下发标准化启动单兜底）", wake=0)
-                routed = nid
-            else:
-                bridge.restart_conv(bridge.conv_row(cid), "Web 控制台重开")
-                fresh = bridge.conv_row(cid)
-                bridge.system_note("main", dossier + "\n\n" + bridge.task_note(fresh, "Web 控制台重开"), wake=1)
-                routed = "main"
+            bridge.restart_conv(bridge.conv_row(cid), "Web 控制台重开")
+            fresh = bridge.conv_row(cid)
+            bridge.system_note("main", dossier + "\n\n" + bridge.task_note(fresh, "Web 控制台重开"), wake=1)
+            routed = "main"
 
         return JSONResponse({
             "ok": True,

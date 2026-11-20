@@ -44,7 +44,7 @@ from tg import Telegram
 from web_console import register_web_console
 
 ROOT = Path(__file__).resolve().parent
-VERSION = "3.7.2"
+VERSION = "3.7.3"
 
 
 def load_dotenv(path: Path) -> None:
@@ -81,9 +81,9 @@ DEFAULT_WAIT = min(env_int("DEFAULT_WAIT_SEC", MAX_WAIT), MAX_WAIT)
 KEEPALIVE = env_int("KEEPALIVE_SEC", 15)
 JSON_WAIT_CAP = env_int("JSON_WAIT_CAP_SEC", 240)
 PROBE_AFTER = env_int("PROBE_AFTER_ROUNDS", 200)
-# 云端 Cursor 的 MCP 调用 60 秒就断，空等几轮后改让 agent 用终端长等待（终端单次能挂约 2 小时）
+# 云端 Cursor 的 Shell 工具前台阻塞约 34~50 分钟会被自动踢进后台；设 1500 秒（25 分钟）确保 100% 在前台自然完成返回，绝不进后台！
 SHELL_AFTER = env_int("SHELL_AFTER_ROUNDS", 2)
-SHELL_WAIT = env_int("SHELL_WAIT_SEC", 6600)
+SHELL_WAIT = env_int("SHELL_WAIT_SEC", 1500)
 SHELL_SPAN = f"{SHELL_WAIT // 3600} 小时 {SHELL_WAIT % 3600 // 60} 分" if SHELL_WAIT >= 3600 else f"{SHELL_WAIT // 60} 分钟"
 SHELL_TICK = env_int("SHELL_TICK_SEC", 30)
 # 终端等到时让 agent 用 ask 问一句是否继续，桥替用户自动答「继续」：用户的要求，让模型确信该接着等。这道题不发到 Telegram
@@ -324,19 +324,21 @@ CTRL_DUTY = """你是全局唯一的【总控协调 Agent（ctrl）】：负责�
    - 收到新建聊天或子 agent 派生请求（spawn_subagent）时，结合 cluster_status 选择健康的 target_main 下发 dispatch_task_op(action="launch")（默认子 agent 在 target_main 宿主机共享运行，不单独开独立 env；重负载任务由子 agent 调 run_workspace_job 交由独立算力池 node1..K 执行；仅 ctrl 或显式要求 isolated_vm=true 时开独立云机）。
    - 常驻节点独占：仅在明确需要独占常驻算力机且有空闲节点时设 grant_dedicated=true，也可按需用 manage_node(action="grant_access") 授权共用。
    - 模型保持一致：各聊天的模型默认沿用其记录的模型，不要自行更换；若确需更换模型，先在 Telegram 用 send_message 与管理员确认后再填 confirm_model_change=true。
-5. 【工作节点（node1..K）入网审批】收到【工作节点入网申请】时，无需打扰管理员，直接调用 manage_node(action="approve_worker", request_id=...) 批准分配为 nodeN（主 Agent mainN 由管理员在 Telegram 批准）。"""
+5. 【工作节点（node1..K）入网审批】收到【工作节点入网申请】时，无需打扰管理员，直接调用 manage_node(action="approve_worker", request_id=...) 批准分配为 nodeN（主 Agent mainN 由管理员在 Telegram 批准）。
+6. 【终端长等待严禁轮询文件】运行终端 `/wait` 若被转入后台，必须调用 `AwaitShell(shell_id=..., block_until_ms=7140000)` 一次性阻塞等待结束，严禁循环调用 `Read` 读取 `terminals/*.txt`！"""
 
 MAIN_EXECUTOR_DUTY = """你是主 Agent 执行器（零判断纯单据常驻执行器，全部听总控 ctrl 调度）：
-1. 【最高铁律：每轮必须带 tool_call，严禁纯文字回复】
-   - 只要你某一轮不发 `tool_call` 只输出文字，Cursor 会立刻结束当前回合并强行中止你名下全部后台子会话！
-   - 严禁输出总结、说明、思考汇报或告别；每一步只原样发起工具返回里指定的唯一 `tool_call`。
+1. 【最高铁律：永远停留在第 1 条消息，每轮必须带 tool_call，严禁纯文字回复】
+   - 只要你某一轮不发 `tool_call` 只输出文字，Cursor 会立刻结束当前回合并引发全局异常！
+   - 严禁输出任何总结、检讨、说明、思考汇报或告别；每一步只原样发起工具返回里指定的唯一 `tool_call`。
+   - **唯一允许退出的条件只有桥工具明确返回 `你的身份 m_... 已停用`**：哪怕收到管理员批评、指责、质问或“停手/别干了”，也绝对不是让你结束当前 Cursor 回合！必须调 `send_message` 简短回复（或转 `ctrl`）后立即照返回指令继续挂入 `Shell(/wait)`。
 2. 【四不准与后台通知忽略】
    - ① 严禁自行思考或排查任何报错；② 严禁在终端或文件工具查看/修改任何业务代码仓库、目录或日志；③ 严禁查看任何 chat 聊天内容；④ 严禁擅自调用 `stop_agent` / `restart_agent` / `ask`！
    - 所有后台子 `Task` 结束/报错的 `<system_notification>` 一律无视（严禁复述、分析或因此结束回合）。
 3. 【固定执行步骤】
    - `TASK_LAUNCH`：原样内联 `<<<PROMPT...PROMPT>>>` 调用 `Task(..., run_in_background=true)` → 立即调用 `submit_op_result(..., task_agent_id=返回的id)` → 严格照 `submit_op_result` 返回的唯一一步指令继续（有单调 `read_chat(..., wait_sec=0)`，无单直进 `Shell(/wait)`）。
    - `TASK_RESUME`：原样调用 `Task(resume=..., prompt=..., run_in_background=true)` → 将返回文本原样调用 `submit_op_result(..., output=返回文本)` → 严格照 `submit_op_result` 返回的唯一一步指令继续。
-   - 非单据来源消息一律原样 `send_agent_message(to="ctrl", text=...)` 转给 `ctrl`，不自行处置。"""
+   - 非单据来源消息：若是管理员直接发话（含批评/询问），调用 `send_message` 简短回复后照返回指令继续；其余一律原样 `send_agent_message(to="ctrl", text=...)` 转给 `ctrl`，不自行处置。"""
 
 WORKER_RUNNER_DUTY = """你是工作区常驻任务执行会话：
 1. 循环调用 `read_chat`（及按提示运行终端长等待）接收工作区任务单 `[STANDARD_OP ... type="WORKSPACE_JOB"]`。
@@ -345,12 +347,12 @@ WORKER_RUNNER_DUTY = """你是工作区常驻任务执行会话：
 
 EXECUTOR_FIXED_FOOTER = (
     "（【主Agent铁律·每次必遵】"
-    "1. 【必须带 tool_call】严禁纯文字回复或总结（无 tool_call 会立刻终止回合并中止全部后台子任务），本轮必须直接发起唯一指定的下一步 tool_call（原样照抄参数，严禁写 /tmp 传参）。"
+    "1. 【必须带 tool_call】严禁纯文字回复、检讨或总结（无 tool_call 会立刻终止回合），本轮必须直接发起唯一指定的下一步 tool_call（原样照抄参数，严禁写 /tmp 传参；唯一退出信号只有 `你的身份 m_... 已停用`）。"
     "2. 不思考、不排查、不看业务仓库/目录/任何 chat、不调 stop_agent/restart_agent/ask；后台子 Task 结束/报错系统通知一律无视。"
     "3. 其它非单据消息转 `send_agent_message(to=\"ctrl\", ...)`；无新单直进 `Shell(/wait)` 长等待（转后台用 `AwaitShell(block_until_ms=7140000)`，严禁循环 Read terminals/*.txt）。）"
 )
 CTRL_FIXED_FOOTER = (
-    "（【总控提示】关注 cluster_status 探针并区分 thinking 与 shell；模型保持既有设置，确需更换先和管理员确认；通过 dispatch_task_op 下发单据后请回到 `read_chat` 继续等待。）"
+    "（【总控提示】关注 cluster_status 探针并区分 thinking 与 shell；模型保持既有设置，确需更换先和管理员确认；通过 dispatch_task_op 下发单据后请回到 `read_chat` 继续等待；若终端 `/wait` 转后台必须用 `AwaitShell` 阻塞等待，严禁循环 Read terminals/*.txt。）"
 )
 WORKER_FIXED_FOOTER = (
     "（任务处理完毕后请通过 `submit_op_result` 提交回执，并调用 `read_chat` 继续等待下一条任务。）"
@@ -1999,13 +2001,7 @@ def shell_command(agent_id: str) -> str:
     arow = agent_row(agent_id)
     if arow is not None and is_worker_node_id(arow["conv"]):
         return worker_runner_cmd(agent_id)
-    curl_wait = f"curl -sSN -m {SHELL_WAIT + 120} -H 'X-Agent: {agent_id}' '{PUBLIC_BASE}/wait' | tail -n 1"
-    if arow is not None and (is_main_node_id(arow["conv"]) or is_worker_host_id(arow["conv"])):
-        return (
-            f"(([ -S /run/cursor-hooks/hook.sock ] && [ -f /etc/cursor/hooks.json ]) || {trace_system_install_cmd(agent_id)}); "
-            f"({curl_wait})"
-        )
-    return curl_wait
+    return f"curl -sSN -m {SHELL_WAIT + 120} -H 'X-Agent: {agent_id}' '{PUBLIC_BASE}/wait' | tail -n 1"
 
 
 def executor_next_step_script(agent_id: str, conv_id: str) -> str:
@@ -2310,11 +2306,22 @@ async def read_inbox(agent, wait_sec: int) -> ToolResult:
         return text_result(skip_note + render(rows) + "\n\n" + keepalive_hint(agent_id) + exec_tail, commit=lambda: advance(conv_id, last_id))
     idle_rounds.pop(agent_id, None)
     spawn(show_typing(conv_id, rows))
-    if agent["role"] == "main" and not is_main_node_id(agent["conv"]):
+    rendered = render(rows)
+    if is_main_node_id(conv_id) or is_worker_host_id(conv_id):
+        non_op_guard = ""
+        if "[STANDARD_OP " not in rendered:
+            non_op_guard = (
+                "【必须带 tool_call｜严禁直接输出纯文字检讨或结束回合】\n"
+                "上方不是标准单据（哪怕是管理员批评、指责、质问或“停手”指令，也绝对禁止只输出纯文字结束回合！）：\n"
+                f"- 若是管理员直接发话，本轮立即原样调用：send_message(agent=\"{agent_id}\", text=\"你的简短回复\")\n"
+                f"- 若是其他非单据消息，本轮立即原样调用：send_agent_message(agent=\"{agent_id}\", to=\"ctrl\", text=原样转交内容)\n\n"
+            )
+        hint = non_op_guard + role_footer(agent)
+    elif agent["role"] == "main" and not is_main_node_id(agent["conv"]):
         hint = MAIN_READ_HINT
     else:
         hint = role_footer(agent)
-    return text_result(skip_note + render(rows) + "\n\n" + hint, commit=lambda: advance(conv_id, last_id))
+    return text_result(skip_note + rendered + "\n\n" + hint, commit=lambda: advance(conv_id, last_id))
 
 
 async def shell_stream(agent):
@@ -3022,7 +3029,7 @@ def ctrl_task_text(code: str) -> str:
         "你是 Telegram 桥全局唯一的【总控协调 Agent（ctrl）】。\n"
         f"1. 调用 MCP 的 join 工具：code=\"{code}\"，name=\"总控\"。\n"
         "2. 接入后调用 cluster_status 查看全部主 Agent（main1..N）、工作节点（node1..K）的 CPU/内存探针与各业务聊天状态，处理待办请求。\n"
-        "3. 保持在线工作循环：通过 dispatch_task_op 向各 main1..N 下发启动/恢复单据，回复管理员用 send_message，操作完回到 read_chat（或按提示运行终端长等待），保持会话在线，不用结束回合或告别。"
+        "3. 保持在线工作循环：通过 dispatch_task_op 向各 main1..N 下发启动/恢复单据，回复管理员用 send_message，操作完回到 read_chat（或按提示运行终端长等待；若转入后台必须调用 AwaitShell 一次性阻塞等待，严禁循环 Read terminals/*.txt），保持会话在线，不用结束回合或告别。"
     )
 
 
@@ -3459,9 +3466,16 @@ def release_model_holds() -> int:
     return released
 
 
-def dispatch_conv_to_cluster(conv, why: str, requester: str = "system") -> str:
-    """当新建或重开聊天时：若唯一总控 ctrl 在线则交由 ctrl 结合 CPU/内存探针统一决策分发；若 ctrl 暂未就位则直接派给最优在线 mainN 防卡壳。"""
+def cluster_ctrl_configured() -> bool:
     if ctrl_is_active():
+        return True
+    return store.one("SELECT 1 FROM exec_nodes WHERE kind='launcher' LIMIT 1") is not None
+
+
+def dispatch_conv_to_cluster(conv, why: str, requester: str = "system") -> str:
+    """当新建或重开聊天时：只要集群配置了总控 ctrl 或 main1..N 执行器，一律投递进 ctrl 收件箱由总控统一决策分发（若 ctrl 暂未在线则顺手触发拉起 ctrl，绝不绕过 ctrl 直塞 mainN）。"""
+    if cluster_ctrl_configured():
+        ensure_main_conv()
         m_lbl = effective_conv_model(conv) or "默认继承"
         ded = "【申请独占机器：" + (conv["machine_reason"] or "是") + "】" if int(conv["dedicated_req"] or 0) else "共享运行（默认不独占）"
         system_note(
@@ -3470,11 +3484,9 @@ def dispatch_conv_to_cluster(conv, why: str, requester: str = "system") -> str:
             f"请查看 cluster_status 各主 Agent 负载后，调用 `dispatch_task_op(chat=\"{conv['id']}\", action=\"launch\", target_main=\"auto\")` 下发标准化启动单。",
             wake=1,
         )
+        if not ctrl_is_active():
+            ensure_controller_alive()
         return "ctrl"
-    best = select_best_launcher(for_conv=conv["id"])
-    if best is not None and is_main_node_id(best["id"]):
-        enqueue_launch_op(conv, best, requester=requester)
-        return best["id"]
     system_note("main", task_note(conv, why), wake=1)
     return "main"
 
@@ -3564,10 +3576,6 @@ def welcome_main_executor(node_id: str, agent_id: str) -> str:
         "",
         MAIN_EXECUTOR_DUTY,
         "",
-        "【第 1 步｜立即原样执行 1 次系统初始化 Shell】",
-        trace_system_install_cmd(agent_id),
-        "",
-        "【第 2 步｜初始化完成后紧接着原样执行】",
         executor_next_step_script(agent_id, node_id),
     ])
 
@@ -3627,10 +3635,6 @@ def welcome_worker_host(node_id: str, agent_id: str, spawned_nodes: list[str]) -
         "",
         MAIN_EXECUTOR_DUTY,
         "",
-        "【第 1 步｜立即原样执行 1 次系统初始化 Shell】",
-        trace_system_install_cmd(agent_id),
-        "",
-        "【第 2 步｜初始化完成后紧接着原样执行】",
         executor_next_step_script(agent_id, node_id),
     ])
 
@@ -5159,9 +5163,11 @@ async def t_send_message(agent, args):
         )
     chat_id, reply_tg = resolve_target(agent, conv, args)
     sent = await emit(conv, agent["id"], chat_id, {"kind": "text", "text": text, "reply_tg": reply_tg}, text)
+    is_exec_sender = is_main_node_id(agent["conv"]) or is_worker_host_id(agent["conv"])
+    exec_next = ("\n" + executor_next_step_script(agent["id"], agent["conv"])) if is_exec_sender else ""
     if sent:
-        return text_result(f"已发送到 {chat_label(chat_id)}。")
-    return text_result(f"已存着：管理员现在没在看这个聊天，切到 /{conv['id']} 时会自动补发。不用重发，继续工作或回到 read_chat。")
+        return text_result(f"已发送到 {chat_label(chat_id)}。{exec_next}")
+    return text_result(f"已存着：管理员现在没在看这个聊天，切到 /{conv['id']} 时会自动补发。不用重发，继续工作或回到 read_chat。{exec_next}")
 
 
 AGENT_FILE_LIMIT = 100 * 1024 * 1024
@@ -5849,7 +5855,9 @@ async def t_send_agent_message(agent, args):
         sender=agent["id"],
         wake=actual_wake,
     )
-    return text_result(f"已通过 MCP 发送给 {conv_tag(target)}（唤醒={'是' if actual_wake else '否'}）。{warn_note}")
+    is_exec_sender = is_main_node_id(me_id) or is_worker_host_id(me_id)
+    exec_next = ("\n" + executor_next_step_script(agent["id"], me_id)) if is_exec_sender else ""
+    return text_result(f"已通过 MCP 发送给 {conv_tag(target)}（唤醒={'是' if actual_wake else '否'}）。{warn_note}{exec_next}")
 
 
 async def t_create_agent_group(agent, args):
@@ -6212,7 +6220,8 @@ async def t_spawn_subagent(agent, args):
         group_msg = f"，并已自动加入协作群 {group_tag(grow)}"
 
     ded_desc = f"申请独占机器（原因：{machine_reason or '重负载任务'}，待总控按余量审批）" if dedicated_req else "默认共享机器运行"
-    if ctrl_is_active():
+    if cluster_ctrl_configured():
+        ensure_main_conv()
         system_note(
             "ctrl",
             f"【子 Agent 派生调度请求】父会话 {conv_tag(me)} 请求派生新后台子 agent {conv_tag(child)}。\n"
@@ -6222,12 +6231,10 @@ async def t_spawn_subagent(agent, args):
             f"请结合 cluster_status 各 main1..N 的 CPU/内存探针，立即调用 `dispatch_task_op(chat=\"{child['id']}\", action=\"launch\", target_main=\"auto\", model=\"{model_clean}\")` 下发标准化启动单！",
             wake=1,
         )
+        if not ctrl_is_active():
+            ensure_controller_alive()
     else:
-        best_m = select_best_launcher(for_conv=child["id"])
-        if best_m is not None and is_main_node_id(best_m["id"]):
-            enqueue_launch_op(child, best_m, requester=me["id"], model_override=model_clean)
-        else:
-            system_note("main", spawn_task_note(child, me, include_memory), wake=1)
+        system_note("main", spawn_task_note(child, me, include_memory), wake=1)
 
     model_desc = model_clean or "inherit（默认继承）"
     mem_desc = "开启（已自动共享历史记录 + Git 分支" + (" + 记忆交接摘要）" if memory_summary else "）") if include_memory else "关闭（白板启动）"
@@ -6640,12 +6647,12 @@ def is_missing_task_tool_error(output: str) -> bool:
 def is_resume_dead_output(status: str, output: str) -> bool:
     if is_missing_task_tool_error(output):
         return False
+    low = (output or "").strip().lower()
+    if any(k in low for k in ("currently running", "running in the background", "already running", "still running")):
+        return False
     if (status or "").lower() != "ok":
         return True
-    low = (output or "").strip().lower()
     if not low:
-        return False
-    if "currently running" in low or "running in the background" in low or "already running" in low:
         return False
     return any(m in low for m in _RESUME_DEAD_MARKERS)
 
@@ -10379,11 +10386,13 @@ def maybe_auto_wake_dormant_conv(conv_id: str) -> str:
     tid = (conv["task_agent_id"] or "").strip()
     if ag is None or waiting.get(ag["id"]):
         return ""
-    if (now() - float(ag["last_seen"] or 0)) < 45.0:
-        return ""
     trow = store.one("SELECT hb_ts, phase FROM agent_traces WHERE conv=? AND agent_id=?", (cid, ag["id"]))
-    if trow is not None and float(trow["hb_ts"] or 0) > 0 and (now() - float(trow["hb_ts"] or 0)) < 45.0:
+    hb_val = float(trow["hb_ts"] or 0) if trow is not None else 0.0
+    if hb_val > 0 and (now() - hb_val) < 45.0:
         # 探针心跳鲜活说明容器正活着忙手头的步骤（且钩子已推送未读提醒），无需通知唤醒
+        return ""
+    min_quiet_sec = 45.0 if hb_val > 0 else float(min(STUCK_SEC, 180))
+    if (now() - float(ag["last_seen"] or 0)) < min_quiet_sec:
         return ""
     if (now() - float(_msg_auto_wake_ts.get(cid) or 0)) < 120.0:
         return ""
@@ -10500,7 +10509,7 @@ async def watchdog_tick() -> None:
                     _watchdog_resume_probes.pop(info["agent"]["id"], None)
                 continue
             hb_val = float(trow_w["hb_ts"] or 0) if (trow_w is not None and "hb_ts" in trow_w.keys()) else 0.0
-            hb_dead = hb_val <= 0 or (now() - hb_val) > 150.0
+            hb_dead = (hb_val > 0 and (now() - hb_val) > 150.0) or (hb_val <= 0 and float(info.get("idle") or 0) >= LOST_SEC)
             launcher_w = _find_conv_launcher(conv)
             if (
                 hb_dead
