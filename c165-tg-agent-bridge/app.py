@@ -3585,17 +3585,36 @@ def enqueue_launch_op(conv, launcher_node, requester: str = "ctrl", model_overri
 
 def enqueue_resume_op(conv, launcher_node, requester: str = "ctrl", resume_prompt: str = "") -> str:
     node_id = launcher_node["id"]
-    tid = (conv["task_agent_id"] or "").strip()
+    fresh_conv = conv_row(conv["id"]) or conv
+    tid = (fresh_conv["task_agent_id"] or "").strip()
     if not tid:
-        raise ToolFail(f"{conv['id']} 尚未记录 task_agent_id，无法执行 resume，请直接用 action='restart' 重新拉起。")
-    r_prompt = (resume_prompt or "").strip() or default_resume_prompt(conv)
+        raise ToolFail(f"{fresh_conv['id']} 尚未记录 task_agent_id，无法执行 resume，请直接用 action='restart' 重新拉起。")
+    r_prompt = (resume_prompt or "").strip() or default_resume_prompt(fresh_conv)
+    ag = active_agent(fresh_conv)
+    if ag is not None:
+        ag_id = (ag["id"] or "").strip()
+        if ag_id and ag_id not in r_prompt:
+            r_prompt = (
+                f"{r_prompt}\n"
+                f"（凭据自愈兜底：你是会话 {fresh_conv['id']}，当前有效身份为 agent=\"{ag_id}\"。"
+                f"若首轮中断导致上下文未保留 join 凭据，请直接从动态工具 dhdh/djsj 加载后调用 read_chat(agent=\"{ag_id}\") 接回消息通道并持续留守；"
+                "收到身份已停用需要退出时，严禁输出任何总结或报错，最终回复严格只输出 ok 两个字。）"
+            )
+    else:
+        tcode = (fresh_conv["task_code"] or "").strip()
+        if tcode and tcode not in r_prompt:
+            r_prompt = (
+                f"{r_prompt}\n"
+                f"（凭据自愈兜底：你是会话 {fresh_conv['id']}，尚未完成首次接入，请先从动态工具 dhdh/djsj 加载后调用 join(code=\"{tcode}\") 接入，再调用 read_chat 持续留守；"
+                "收到身份已停用需要退出时，最终回复严格只输出 ok 两个字。）"
+            )
     op_id = "op_" + secrets.token_hex(5)
-    payload = {"conv_id": conv["id"], "task_agent_id": tid, "prompt": r_prompt}
+    payload = {"conv_id": fresh_conv["id"], "task_agent_id": tid, "prompt": r_prompt}
     store.run(
         "INSERT INTO dispatch_ops(op_id,target_node,op_type,conv_id,requester,payload_json,status,created_ts) VALUES(?,?,?,?,?,?,?,?)",
-        (op_id, node_id, "resume_subagent", conv["id"], requester, json.dumps(payload, ensure_ascii=False), "pending", now()),
+        (op_id, node_id, "resume_subagent", fresh_conv["id"], requester, json.dumps(payload, ensure_ascii=False), "pending", now()),
     )
-    msg_txt = format_standard_resume_op(op_id, launcher_node["agent"], conv["id"], tid, r_prompt, requester=requester)
+    msg_txt = format_standard_resume_op(op_id, launcher_node["agent"], fresh_conv["id"], tid, r_prompt, requester=requester)
     system_note(node_id, msg_txt, wake=1)
     return op_id
 

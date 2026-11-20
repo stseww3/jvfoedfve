@@ -311,10 +311,16 @@ async def run_cluster_and_device_tests() -> dict[str, str]:
     c3_inbox = text_of(await bridge.call_tool("read_chat", {"agent": a3, "wait_sec": 0}))
     assert "render_ok_4k.png" in c3_inbox
 
-    # 7. Standardized TASK_RESUME round-trip
-    res_op = await bridge.call_tool("dispatch_task_op", {"agent": ctrl_ag, "chat": "c1", "action": "resume"})
+    # 7. Standardized TASK_RESUME round-trip (including turn-0 interrupted credential self-healing!)
+    res_op = await bridge.call_tool("dispatch_task_op", {"agent": ctrl_ag, "chat": "c1", "action": "resume", "resume_prompt": "看门狗探活，请确认在线并回到 read_chat 待命。"})
     assert not res_op.is_error
-    op_res_id = bridge.store.one("SELECT op_id FROM dispatch_ops WHERE op_type='resume_subagent' ORDER BY created_ts DESC LIMIT 1")["op_id"]
+    op_res_row = bridge.store.one("SELECT op_id, payload_json FROM dispatch_ops WHERE op_type='resume_subagent' ORDER BY created_ts DESC LIMIT 1")
+    op_res_id = op_res_row["op_id"]
+    op_res_payload = json.loads(op_res_row["payload_json"])
+    c1_active_ag = bridge.conv_row("c1")["agent"]
+    assert f'agent="{c1_active_ag}"' in op_res_payload["prompt"], f"Missing active a_ credential in TASK_RESUME prompt: {op_res_payload}"
+    assert "严格只输出 ok 两个字" in op_res_payload["prompt"]
+    assert m2 not in op_res_payload["prompt"], "Launcher m_ identity leaked into child TASK_RESUME prompt!"
     await bridge.call_tool("submit_op_result", {"agent": m2, "op_id": op_res_id, "status": "ok", "output": "Task is currently running"})
     ctrl_inbox = text_of(await bridge.call_tool("read_chat", {"agent": ctrl_ag, "wait_sec": 0}))
     assert "currently running" in ctrl_inbox
