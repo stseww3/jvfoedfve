@@ -321,6 +321,7 @@ def run_http_and_hook_tests(ids: dict[str, str]) -> None:
     env = dict(os.environ)
     env["HOME"] = str(HOME_DIR)
     env["BRIDGE_URL"] = "http://127.0.0.1:18787"
+    env["DAIS_SKIP_RELOAD"] = "1"
     trace_py = str(Path(__file__).resolve().parent / "agent_trace.py")
 
     try:

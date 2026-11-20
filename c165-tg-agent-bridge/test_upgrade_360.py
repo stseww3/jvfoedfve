@@ -452,9 +452,11 @@ async def run_cluster_and_device_tests() -> dict[str, str]:
     wh_txt = text_of(wh_join)
     assert "whost1" in wh_txt and "算力" not in wh_txt
     wh_ag = bridge.node_row("whost1")["agent"]
-    # node1 was already online, so pool_size=3 must auto-enqueue node2 and node3 onto whost1!
-    wh_inbox = text_of(await bridge.call_tool("read_chat", {"agent": wh_ag, "wait_sec": 0}))
-    assert "node2" in wh_inbox and "node3" in wh_inbox and "独立的云工作区" in wh_inbox
+    # node1 was already online, so pool_size=3 must auto-enqueue node2 and node3 onto whost1 (popped 1 op at a time with 0 loss)!
+    wh_inbox1 = text_of(await bridge.call_tool("read_chat", {"agent": wh_ag, "wait_sec": 0}))
+    wh_inbox2 = text_of(await bridge.call_tool("read_chat", {"agent": wh_ag, "wait_sec": 0}))
+    assert "node2" in wh_inbox1 and "node3" not in wh_inbox1 and "独立的云工作区" in wh_inbox1
+    assert "node3" in wh_inbox2 and "独立的云工作区" in wh_inbox2
     w2_code = bridge.conv_row("node2")["task_code"]
     assert w2_code.startswith("w-")
     # Newly booted VM joins with `code=w2_code` in 0ms without approval!
@@ -1442,12 +1444,352 @@ async def run_v371_bugfix_regression_tests() -> None:
     await bridge.call_tool("join", {"code": bridge.conv_row("ctrl")["task_code"]})
 
 
+def run_v374_scale_and_jobs_tests() -> None:
+    import hashlib
+    import re as _re374
+    import subprocess
+    import threading
+    from http.server import BaseHTTPRequestHandler, HTTPServer
+    from fastapi.testclient import TestClient
+
+    assert bridge.VERSION == "3.7.4"
+    assert bridge.MAX_WORKER_POOL == 500
+    assert bridge.MAX_JOB_TIMEOUT_SEC == 86400
+
+    # 1. Anti-hijack Hook regression: running /tmp agent_trace.py when ~/.cursor/dais_runtime.pyz is absent
+    #    MUST NOT create ~/.cursor/hooks.json or overwrite an existing remote bridge_url with 127.0.0.1!
+    clean_home = TMP_ROOT / "empty_no_install_home"
+    clean_home.mkdir(parents=True, exist_ok=True)
+    trace_py = Path(__file__).resolve().parent / "agent_trace.py"
+    env_clean = dict(os.environ)
+    env_clean["HOME"] = str(clean_home)
+    env_clean["DAIS_SKIP_RELOAD"] = "1"
+    env_clean.pop("BRIDGE_URL", None)
+    hk_run = subprocess.run(
+        [sys.executable, str(trace_py), "hook"],
+        input="{}",
+        text=True,
+        capture_output=True,
+        env=env_clean,
+        timeout=10,
+    )
+    assert hk_run.returncode == 0
+    assert not (clean_home / ".cursor" / "hooks.json").exists(), "Uninstalled /tmp script hijacked ~/.cursor/hooks.json!"
+
+    # Verify local 127.0.0.1 install preserves existing remote bridge_url in state.json
+    pres_home = TMP_ROOT / "preserve_burl_home"
+    (pres_home / ".cursor").mkdir(parents=True, exist_ok=True)
+    import shutil as _shutil374
+    _shutil374.copy2(trace_py, pres_home / ".cursor" / "agent_trace.py")
+    st_file = pres_home / ".cursor" / ".dais_trace_state.json"
+    st_file.write_text(json.dumps({"bridge_url": "http://198.51.100.42:8787"}), encoding="utf-8")
+    env_pres = dict(env_clean)
+    env_pres["HOME"] = str(pres_home)
+    inst_run = subprocess.run(
+        [sys.executable, str(pres_home / ".cursor" / "agent_trace.py"), "install", "--user"],
+        text=True,
+        capture_output=True,
+        env=env_pres,
+        timeout=10,
+    )
+    assert inst_run.returncode == 0
+    saved_st = json.loads(st_file.read_text(encoding="utf-8"))
+    assert saved_st.get("bridge_url") == "http://198.51.100.42:8787", f"127.0.0.1 install wiped remote bridge_url: {saved_st}"
+
+    # 2. Executor 250-op burst 0-loss + inline submit_op_result continuation + superseded op auto-skip!
+    async def _test_250_burst() -> None:
+        ctrl_ag = bridge.conv_row("ctrl")["agent"]
+        m_node = bridge.store.one("SELECT * FROM exec_nodes WHERE kind='launcher' AND status='online' ORDER BY num DESC LIMIT 1")
+        assert m_node is not None
+        m_id = m_node["id"]
+        m_ag = m_node["agent"]
+        # Drain any prior items on m_node
+        while True:
+            d_txt = text_of(await bridge.call_tool("read_chat", {"agent": m_ag, "wait_sec": 0}))
+            m_hit = _re374.search(r'\[STANDARD_OP\b[^\]]*\bop_id="([^"]+)"', d_txt)
+            if not m_hit:
+                break
+            await bridge.call_tool("submit_op_result", {"agent": m_ag, "op_id": m_hit.group(1), "status": "ok", "task_agent_id": "bc-drain"})
+
+        burst_convs: list[str] = []
+        for idx in range(250):
+            crow = bridge.create_conv(f"并发压测第{idx}单", 7001, name=f"压测{idx}", owner=0)
+            burst_convs.append(crow["id"])
+            r_disp = await bridge.call_tool(
+                "dispatch_task_op",
+                {"agent": ctrl_ag, "chat": crow["id"], "action": "launch", "target_main": m_id},
+            )
+            assert not r_disp.is_error
+        # Restart burst_convs[4] while still queued so its first op becomes superseded and a fresh op is appended
+        r_sup = await bridge.call_tool(
+            "dispatch_task_op",
+            {"agent": ctrl_ag, "chat": burst_convs[4], "action": "restart", "target_main": m_id},
+        )
+        assert not r_sup.is_error
+        latest_code_4 = bridge.conv_row(burst_convs[4])["task_code"]
+
+        # Read ONLY ONCE via read_chat, then chain all remaining 249 ops purely via submit_op_result inline continuation!
+        cur_txt = text_of(await bridge.call_tool("read_chat", {"agent": m_ag, "wait_sec": 0}))
+        executed_chats: list[str] = []
+        seen_code_4 = ""
+        for step in range(260):
+            m_op = _re374.search(r'\[STANDARD_OP\b[^\]]*\bop_id="([^"]+)"\s+type="TASK_LAUNCH"\s+chat="([^"]+)"', cur_txt)
+            assert m_op is not None, f"Stopped early at step={step}: {cur_txt[:300]}"
+            oid, cid = m_op.group(1), m_op.group(2)
+            if cid == burst_convs[4]:
+                m_c = _re374.search(r'code="(t-[^"]+)"', cur_txt)
+                seen_code_4 = m_c.group(1) if m_c else ""
+            executed_chats.append(cid)
+            cur_txt = text_of(
+                await bridge.call_tool(
+                    "submit_op_result",
+                    {"agent": m_ag, "op_id": oid, "status": "ok", "task_agent_id": f"bc-burst-{step}"},
+                )
+            )
+            if len(executed_chats) == 250:
+                break
+
+        assert len(executed_chats) == 250, f"Expected 250 ops, got {len(executed_chats)}"
+        assert set(executed_chats) == set(burst_convs), "Some chats were swallowed or duplicated in 250-op burst!"
+        assert seen_code_4 == latest_code_4, "Superseded launch op was NOT pruned in favor of latest restart op!"
+        assert "/wait" in cur_txt and "[STANDARD_OP " not in cur_txt, f"After 250th op expected /wait, got: {cur_txt[:300]}"
+
+        # Verify shell_stream does NOT falsely wake after inline completion
+        old_sw = bridge.SHELL_WAIT
+        bridge.SHELL_WAIT = 0
+        try:
+            s_gen = bridge.shell_stream(bridge.agent_row(m_ag))
+            _ = await asyncio.wait_for(s_gen.__anext__(), timeout=2.0)
+            s_end = await asyncio.wait_for(s_gen.__anext__(), timeout=2.0)
+            await s_gen.aclose()
+            assert "【有新消息" not in s_end and "【续棒" in s_end, f"Spurious wake in shell_stream: {s_end}"
+        finally:
+            bridge.SHELL_WAIT = old_sw
+
+    asyncio.run(_test_250_burst())
+
+    # 3. /jobs/submit + /jobs/status + /jobs/wait + /jobs/cancel + binary files + >256KB stdout_file + lease requeue!
+    c_caller = bridge.create_conv("千单闭环调用方", 7001, name="闭环方", owner=0)
+    asyncio.run(bridge.call_tool("join", {"code": c_caller["task_code"]}))
+    caller_ag = bridge.conv_row(c_caller["id"])["agent"]
+    asyncio.run(finish_onboard(caller_ag))
+    # Drain caller inbox so we can prove 0 inbox spam
+    asyncio.run(bridge.call_tool("read_chat", {"agent": caller_ag, "wait_sec": 0}))
+    caller_cursor_before = bridge.conv_row(c_caller["id"])["read_cursor"]
+
+    c_nonadmin = bridge.create_conv("外部受限方", 8002, name="外部方", owner=8002)
+    asyncio.run(bridge.call_tool("join", {"code": c_nonadmin["task_code"]}))
+    nonadmin_ag = bridge.conv_row(c_nonadmin["id"])["agent"]
+
+    # Prepare two clean online runner nodes without exclusive locks
+    n_a_id, n10_ag = bridge.make_worker_node("", "算力A")
+    n_b_id, n11_ag = bridge.make_worker_node("", "算力B")
+
+    with TestClient(bridge.app) as client:
+        class _JobsProxy(BaseHTTPRequestHandler):
+            def do_GET(self):
+                hdrs = {k: v for k, v in self.headers.items() if k.lower() not in ("host", "content-length")}
+                r = client.get(self.path, headers=hdrs)
+                self.send_response(r.status_code)
+                for hk, hv in r.headers.items():
+                    if hk.lower() not in ("content-length", "transfer-encoding", "content-encoding"):
+                        self.send_header(hk, hv)
+                self.end_headers()
+                self.wfile.write(r.content)
+
+            def do_POST(self):
+                ln = int(self.headers.get("Content-Length", "0") or 0)
+                raw_b = self.rfile.read(ln) if ln > 0 else b""
+                hdrs = {k: v for k, v in self.headers.items() if k.lower() not in ("host", "content-length")}
+                r = client.post(self.path, content=raw_b, headers=hdrs)
+                self.send_response(r.status_code)
+                for hk, hv in r.headers.items():
+                    if hk.lower() not in ("content-length", "transfer-encoding", "content-encoding"):
+                        self.send_header(hk, hv)
+                self.end_headers()
+                self.wfile.write(r.content)
+
+            def log_message(self, fmt, *args):
+                return
+
+        srv = HTTPServer(("127.0.0.1", 0), _JobsProxy)
+        port = srv.server_address[1]
+        proxy_url = f"http://127.0.0.1:{port}"
+        old_pub = bridge.PUBLIC_BASE
+        bridge.PUBLIC_BASE = proxy_url
+        th = threading.Thread(target=srv.serve_forever, daemon=True)
+        th.start()
+        try:
+            # Non-admin must get 403 on /jobs/submit
+            r_403 = client.post("/jobs/submit", json={"command": "echo nope"}, headers={"X-Agent": nonadmin_ag})
+            assert r_403.status_code == 403
+
+            # Upload raw binary input artifact via /files/upload
+            raw_in_bytes = bytes(range(256)) * 16 + b"\x00\xffNEST_INPUT_V374\xfe"
+            up_in = client.post(
+                "/files/upload?filename=input_piece.bin",
+                content=raw_in_bytes,
+                headers={"X-Agent": caller_ag, "Content-Type": "application/octet-stream"},
+            ).json()
+            assert up_in["ok"]
+            in_fid = up_in["file_id"]
+
+            job_wdir = TMP_ROOT / "v374_worker_exec"
+            sub = client.post(
+                "/jobs/submit",
+                headers={"X-Agent": caller_ag},
+                json={
+                    "batch_id": "exam_batch_374",
+                    "defaults": {
+                        "timeout_sec": 7200,
+                        "max_retries": 2,
+                    },
+                    "jobs": [
+                        {
+                            "tag": "piece_0",
+                            "meta": {"idx": 0},
+                            "workdir": str(job_wdir / "j0"),
+                            "input_files": [{"file_id": in_fid, "dest": "in/piece.bin"}],
+                            "output_files": ["out/*.bin", "out/*.svg"],
+                            "command": (
+                                "mkdir -p out && "
+                                "python3 -c 'import pathlib; d=pathlib.Path(\"in/piece.bin\").read_bytes(); "
+                                "pathlib.Path(\"out/solved.bin\").write_bytes(d[::-1]); "
+                                "pathlib.Path(\"out/layout.svg\").write_text(\"<svg>NEST_OK</svg>\"); "
+                                "print(\"EXACT_SCORE=0.994182736\\nCHECKSUM=\" + str(len(d)))'"
+                            ),
+                        },
+                        {
+                            "tag": "big_stdout_1",
+                            "workdir": str(job_wdir / "j1"),
+                            "command": "python3 -c 'import sys; sys.stdout.write(\"LINE_0123456789_ABCDEF\\n\" * 14000)'",
+                        },
+                        {
+                            "tag": "requeue_2",
+                            "workdir": str(job_wdir / "j2"),
+                            "command": "echo RECOVERED_ON_HEALTHY_NODE",
+                        },
+                        {
+                            "tag": "cancel_3",
+                            "workdir": str(job_wdir / "j3"),
+                            "command": "echo SHOULD_BE_CANCELLED",
+                        },
+                    ],
+                },
+            ).json()
+            assert sub["ok"] and sub["count"] == 4 and sub["batch_id"] == "exam_batch_374"
+            op0, op1, op2, op3 = sub["op_ids"]
+
+            # Cancel job 3 before execution
+            canc = client.post("/jobs/cancel", headers={"X-Agent": caller_ag}, json={"op_id": op3}).json()
+            assert canc["ok"] and canc["cancelled"] == 1 and op3 in canc["op_ids"]
+
+            import agent_trace as _at374
+
+            # Node10 claims & executes job 0 (binary input -> binary + svg output + exact stdout)
+            c0 = client.post("/worker/claim", headers={"X-Agent": n10_ag}, json={"wait_sec": 0}).json()
+            assert c0["ok"] and c0["job"]["op_id"] == op0 and c0["job"]["timeout_sec"] == 7200
+            res0 = _at374._execute_worker_job_full(n10_ag, proxy_url, "node10", c0["job"])
+            assert res0["status"] == "ok" and len(res0["output_files"]) == 2
+            comp0 = client.post(
+                "/worker/complete",
+                headers={"X-Agent": n10_ag},
+                json={"op_id": op0, **res0},
+            ).json()
+            assert comp0["ok"] and comp0["notified_chat"] is False
+
+            # /jobs/wait with until="any_done" returns immediately since job 0 & job 3 finished!
+            w_any = client.post(
+                "/jobs/wait",
+                headers={"X-Agent": caller_ag},
+                json={"batch_id": "exam_batch_374", "until": "any_done", "wait_sec": 2},
+            ).json()
+            assert w_any["ok"] and w_any["timed_out_wait"] is False and w_any["summary"]["done"] == 1
+
+            # Node10 claims & executes job 1 (>256KB stdout -> auto-uploads stdout_file!)
+            c1_claim = client.post("/worker/claim", headers={"X-Agent": n10_ag}, json={"wait_sec": 0}).json()
+            assert c1_claim["ok"] and c1_claim["job"]["op_id"] == op1
+            res1 = _at374._execute_worker_job_full(n10_ag, proxy_url, "node10", c1_claim["job"])
+            assert res1["status"] == "ok" and res1["stdout_truncated_inline"] is True and res1["stdout_file"] is not None
+            client.post("/worker/complete", headers={"X-Agent": n10_ag}, json={"op_id": op1, **res1})
+
+            # Node10 claims job 2, then stalls past WORKER_LEASE_TIMEOUT_SEC -> auto-requeued -> Node11 completes it!
+            c2_first = client.post("/worker/claim", headers={"X-Agent": n10_ag}, json={"wait_sec": 0}).json()
+            assert c2_first["ok"] and c2_first["job"]["op_id"] == op2 and c2_first["job"]["attempts"] == 1
+            old_lease_to = bridge.WORKER_LEASE_TIMEOUT_SEC
+            bridge.WORKER_LEASE_TIMEOUT_SEC = 5
+            try:
+                bridge.store.run(
+                    "UPDATE dispatch_ops SET lease_ts=?, started_ts=?, created_ts=? WHERE op_id=?",
+                    (bridge.now() - 20, bridge.now() - 20, bridge.now() - 20, op2),
+                )
+                rq_stats = bridge.requeue_stale_workspace_jobs()
+                assert rq_stats["requeued"] == 1, f"Expected requeue of stalled op2: {rq_stats}"
+                c2_second = client.post("/worker/claim", headers={"X-Agent": n11_ag}, json={"wait_sec": 0}).json()
+                assert c2_second["ok"] and c2_second["job"]["op_id"] == op2 and c2_second["job"]["attempts"] == 2
+                res2 = _at374._execute_worker_job_full(n11_ag, proxy_url, "node11", c2_second["job"])
+                assert res2["status"] == "ok"
+                client.post("/worker/complete", headers={"X-Agent": n11_ag}, json={"op_id": op2, **res2})
+
+                # Late duplicate /worker/complete from zombie node10 MUST be ignored!
+                dup_c = client.post(
+                    "/worker/complete",
+                    headers={"X-Agent": n10_ag},
+                    json={"op_id": op2, "status": "error", "exit_code": 137, "stdout": "STALE_CRASH", "output": "STALE_CRASH"},
+                ).json()
+                assert dup_c["ok"] and dup_c.get("duplicate_ignored") is True
+            finally:
+                bridge.WORKER_LEASE_TIMEOUT_SEC = old_lease_to
+
+            # /jobs/wait until="all" returns complete batch with exact un-rewritten outputs & downloadable files!
+            w_all = client.post(
+                "/jobs/wait",
+                headers={"X-Agent": caller_ag},
+                json={"batch_id": "exam_batch_374", "until": "all", "wait_sec": 5},
+            ).json()
+            assert w_all["ok"] and w_all["summary"]["all_finished"] is True
+            assert w_all["summary"]["done"] == 3 and w_all["summary"]["cancelled"] == 1
+            by_id = {j["op_id"]: j for j in w_all["jobs"]}
+
+            # Check job 0 exact stdout & reversed binary artifact
+            j0 = by_id[op0]
+            assert "EXACT_SCORE=0.994182736" in j0["stdout"] and f"CHECKSUM={len(raw_in_bytes)}" in j0["stdout"]
+            bin_art = next(f for f in j0["output_files"] if f["name"] == "solved.bin")
+            dl_bin = client.get(bin_art["download_url"].replace(proxy_url, "")).content
+            assert dl_bin == raw_in_bytes[::-1] and hashlib.sha256(dl_bin).hexdigest() == bin_art["sha256"]
+
+            # Check job 1 full >256KB stdout_file download
+            j1 = by_id[op1]
+            expected_big = ("LINE_0123456789_ABCDEF\n" * 14000).encode("utf-8")
+            assert j1["stdout_size"] == len(expected_big) and j1["stdout_file"] is not None
+            dl_stdout = client.get(j1["stdout_file"]["download_url"].replace(proxy_url, "")).content
+            assert dl_stdout == expected_big
+
+            # Check job 2 recovered on n_b_id with attempts=2
+            j2 = by_id[op2]
+            assert j2["status"] == "done" and j2["node"] == n_b_id and j2["attempts"] == 2
+            assert "RECOVERED_ON_HEALTHY_NODE" in j2["stdout"]
+
+            # Verify ZERO messages were spammed into caller chat's inbox!
+            unread_caller = bridge.store.one(
+                "SELECT COUNT(*) AS n FROM messages WHERE target=? AND id>? AND outgoing=0 AND wake=1",
+                (c_caller["id"], caller_cursor_before),
+            )["n"]
+            assert unread_caller == 0, f"Silent /jobs/submit batch polluted chat inbox with {unread_caller} messages!"
+        finally:
+            bridge.PUBLIC_BASE = old_pub
+            srv.shutdown()
+            srv.server_close()
+
+
 def main() -> None:
     asyncio.run(run_cluster_and_device_tests())
     run_web_console_tests()
     run_stealth_and_onboarding_370_tests()
     asyncio.run(run_v371_bugfix_regression_tests())
+    run_v374_scale_and_jobs_tests()
     print("ALL_373_TESTS_PASSED_OK")
+    print("ALL_374_TESTS_PASSED_OK")
 
 
 if __name__ == "__main__":

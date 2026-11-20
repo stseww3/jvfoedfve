@@ -307,6 +307,13 @@ COLUMNS = (
     ("convs", "onboard_stage", "TEXT DEFAULT ''"),    # 接入进度：'' | awaiting_join | icebreak_pending | icebreak_waiting_reply | memory_pending | ready
     ("convs", "onboard_ts", "REAL DEFAULT 0"),        # 当前接入阶段更新时间戳
     ("convs", "isolated_vm", "INTEGER DEFAULT -1"),   # -1=沿用默认策略(共享宿主机) | 0=共享宿主机 | 1=单独开独立云机
+    ("dispatch_ops", "batch_id", "TEXT DEFAULT ''"),      # /jobs/submit 批量任务组编号
+    ("dispatch_ops", "started_ts", "REAL DEFAULT 0"),     # worker 实际领单起跑时间戳
+    ("dispatch_ops", "lease_ts", "REAL DEFAULT 0"),       # worker 最近一次运行中心跳续租时间戳
+    ("dispatch_ops", "attempts", "INTEGER DEFAULT 0"),    # 已尝试领单执行次数
+    ("dispatch_ops", "max_retries", "INTEGER DEFAULT 2"), # 节点掉线/失联时的最大自动重排次数
+    ("dispatch_ops", "claimed_by", "TEXT DEFAULT ''"),    # 实际领单执行的节点编号（target_node 可为 auto）
+    ("dispatch_ops", "notify_chat", "INTEGER DEFAULT 1"), # 1=完成后推送聊天消息；0=纯HTTP静默队列不刷对话框
 )
 
 INDEXES = """
@@ -321,6 +328,8 @@ CREATE INDEX IF NOT EXISTS idx_agent_group_members_conv ON agent_group_members(c
 CREATE INDEX IF NOT EXISTS idx_agent_trace_events_conv ON agent_trace_events(conv, id);
 CREATE INDEX IF NOT EXISTS idx_dispatch_ops_node ON dispatch_ops(target_node, status, created_ts);
 CREATE INDEX IF NOT EXISTS idx_dispatch_ops_conv ON dispatch_ops(conv_id, created_ts);
+CREATE INDEX IF NOT EXISTS idx_dispatch_ops_batch ON dispatch_ops(batch_id, status, created_ts);
+CREATE INDEX IF NOT EXISTS idx_dispatch_ops_type_status ON dispatch_ops(op_type, status, created_ts);
 """
 
 

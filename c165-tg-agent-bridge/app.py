@@ -44,7 +44,7 @@ from tg import Telegram
 from web_console import register_web_console
 
 ROOT = Path(__file__).resolve().parent
-VERSION = "3.7.3"
+VERSION = "3.7.4"
 
 
 def load_dotenv(path: Path) -> None:
@@ -107,6 +107,8 @@ MAX_SPAWN_TOTAL = env_int("MAX_SPAWN_TOTAL", 0)              # 全局活跃派�
 TRACE_STALL_SEC = env_int("TRACE_STALL_SEC", 600)            # 追踪事件/终端输出停滞告警秒数
 THINK_STUCK_SEC = env_int("THINK_STUCK_SEC", 300)            # 思考阶段（非 shell、非挂起等待）卡死自动重开秒数（默认 5 分钟）
 SHELL_STALL_SEC = env_int("SHELL_STALL_SEC", 3600)           # Shell 长命令停滞秒数（区分长编译/渲染与思考卡死）
+MAX_JOB_TIMEOUT_SEC = env_int("MAX_JOB_TIMEOUT_SEC", 86400)  # 工作区单任务最大超时秒数（默认 24 小时，解除 1h 硬限制）
+WORKER_LEASE_TIMEOUT_SEC = env_int("WORKER_LEASE_TIMEOUT_SEC", 180)  # 运行中任务节点断联自动重排秒数
 PERMANENT_SEC = 10 * 365 * 86400                             # 「永久」授权对应的秒数（10 年）
 PERMANENT_THRESHOLD = 5 * 365 * 86400                        # 剩余大于 5 年即显示为「永久」
 
@@ -141,11 +143,15 @@ def build_runtime_pyz(bridge_url: str = "") -> bytes:
     _PYZ_CACHE["sig"] = sig
     _PYZ_CACHE["data"] = raw
     try:
-        (DATA / "dais_runtime.pyz").write_bytes(raw)
-        (DATA / "dais_runtime.pyz").chmod(0o755)
+        tmp_d = DATA / f".dais_runtime.pyz.{os.getpid()}.tmp"
+        tmp_d.write_bytes(raw)
+        tmp_d.chmod(0o755)
+        tmp_d.replace(DATA / "dais_runtime.pyz")
         if eff_url == "http://127.0.0.1:8787":
-            (ROOT / "dais_runtime.pyz").write_bytes(raw)
-            (ROOT / "dais_runtime.pyz").chmod(0o755)
+            tmp_r = ROOT / f".dais_runtime.pyz.{os.getpid()}.tmp"
+            tmp_r.write_bytes(raw)
+            tmp_r.chmod(0o755)
+            tmp_r.replace(ROOT / "dais_runtime.pyz")
     except Exception:
         pass
     return raw
@@ -246,6 +252,11 @@ def trigger_graceful_shutdown() -> None:
             ev.set()
         except Exception:
             pass
+    for ev in list(globals().get("job_done_events", {}).values()):
+        try:
+            ev.set()
+        except Exception:
+            pass
 
 
 def spawn(coro) -> asyncio.Task:
@@ -278,7 +289,9 @@ LOOP_RULES = f"""工作循环（持续在线留守）：
 
 CHAT_RULES_SPAWN_LINE = (
     "- 算力与重型任务：当前会话默认在宿主机共享运行，耗时编译、大规模测试、求解、渲染等重负载命令请优先调用 "
-    "run_workspace_job(command=..., repo=..., branch=..., node=\"auto\") 投递到独立算力池（node1..K）执行。\n"
+    "run_workspace_job(command=..., repo=..., branch=..., node=\"auto\") 投递到独立算力池（node1..K）执行；"
+    "若有上百/几千单大规模闭环批处理或需原样回传大文件/不占对话上下文，可让本地脚本带 `X-Agent` 头直接调桥 HTTP 批量接口 "
+    "`POST /jobs/submit`（批量投单，支持 `input_files`/`output_files` 原字节直传与 24h 超时、节点掉线自动重排）、`GET /jobs/status`、`POST /jobs/wait`。\n"
     "- Agent 协作（纯走 MCP）：用 list_peers 查看同主人的其他在线 agent 和协作群；用 send_agent_message 和其他 agent 私聊；"
     "用 create_agent_group / send_group_message / group_history 建群互聊；需要帮手时用 spawn_subagent 请求主控按你指定的记忆和模型开新子 agent"
     "（可选申请 dedicated_machine 独占机器，因资源有限默认 false 共享运行；就位后会唤醒通知你；临时帮手用完可用 stop_spawned_agent 停掉）；"
@@ -422,10 +435,9 @@ def main_prompt_text() -> str:
         "你是 Telegram 桥的主 Agent 单据执行器。请先通过 GetDynamicTools 加载 cursor 命名空间下的 AwaitShell、cursor-cloud 命名空间下的 environment-info 与 mcp 命名空间工具，"
         "先调用一次 environment-info 读取本机 environment.environmentPublicId，"
         f"再调用 MCP 的 join(mode=\"main\", main_key=\"{main_join_key()}\", environment_id=读到的environmentPublicId)，等我在 Telegram 里点批准后按说明运行：\n"
-        "1. 你只负责原样处理 [STANDARD_OP] 单据（按给定参数调 Task(..., run_in_background=true) 并调 submit_op_result 回填），全部听总控 ctrl 的；其它非单据消息转给 ctrl，你不要自己思考排查问题，不得查看任何开的 chat 内容，忽略后台子 Task 完成/失败的系统通知。\n"
-        f"2. 请保持循环调用 read_chat 等待指令单。没收到消息（【续棒】、报错、超时、断开）就直接进入下一轮等待；"
-        f"空等几轮后按提示改用终端长等待（一次 {SHELL_SPAN}；若转入后台必须调 AwaitShell(block_until_ms=7140000) 阻塞等，严禁循环 Read terminals/*.txt），等满后按提示询问是否继续。\n"
-        "3. 严禁输出总结或结束回合（结束回合会导致名下后台子 agent 被中止）；只有我在 Telegram 明确叫停你，或工具返回身份已停用时才结束。"
+        "1. 你只负责原样处理 [STANDARD_OP] 单据（按给定参数调 Task(..., run_in_background=true) 并调 submit_op_result 回填），全部听总控 ctrl 的；其它非单据消息（含批评/询问）调 send_message 简短回复或转给 ctrl，不要自己思考排查问题，不得查看任何开的 chat 内容，忽略后台子 Task 完成/失败的系统通知。\n"
+        f"2. 请严格保持每轮都有 tool_call：无单时按返回指令直接运行终端长等待（一次 {SHELL_SPAN}；若转入后台必须调 AwaitShell(block_until_ms=7140000) 阻塞等，严禁循环 Read terminals/*.txt），有单时按 submit_op_result 内联返回的下一张单据连续处理。\n"
+        "3. 严禁输出纯文字总结、检讨或结束回合（无 tool_call 会立刻终止回合并中止名下后台子 agent）；唯一退出条件只有桥工具明确返回「你的身份 m_... 已停用」。"
     )
 
 
@@ -443,7 +455,7 @@ def worker_host_prompt_text(pool_size: int | None = None) -> str:
         "你是工作区任务协调会话。请先通过 GetDynamicTools 加载 cursor 命名空间下的 AwaitShell、cursor-cloud 命名空间下的 environment-info 与 mcp 命名空间工具，"
         "先调用一次 environment-info 读取本机 environment.environmentPublicId，"
         f"再调用 MCP 的 join(mode=\"coordinator\", main_key=\"{main_join_key()}\"{p_arg}, environment_id=读到的environmentPublicId) 接入，按返回说明运行：\n"
-        "循环调用 read_chat 等待标准任务单。收到 `[STANDARD_OP ... type=\"TASK_LAUNCH\"]` 单据时，原样按单据给定的参数调用 `Task(..., run_in_background=true)` 启动后台子会话并用 `submit_op_result` 回填 `task_agent_id`，随后回到 `read_chat` 继续等待（空等几轮后按提示运行终端长等待，转后台必须调 AwaitShell(block_until_ms=7140000) 阻塞等，严禁循环 Read terminals/*.txt）。只有工具返回身份已停用时才结束。"
+        "循环调用 read_chat 等待标准任务单。收到 `[STANDARD_OP ... type=\"TASK_LAUNCH\"]` 单据时，原样按单据给定的参数调用 `Task(..., run_in_background=true)` 启动后台子会话并用 `submit_op_result` 回填 `task_agent_id`；后续按 `submit_op_result` 内联返回的下一张单据连续处理，无单时运行终端长等待（转后台必须调 AwaitShell(block_until_ms=7140000) 阻塞等，严禁循环 Read terminals/*.txt）。严禁输出纯文字总结或结束回合，唯一退出条件只有工具明确返回身份已停用。"
     )
 
 
@@ -1573,8 +1585,12 @@ def trace_liveness(trow) -> tuple[bool, float, float]:
     return is_zombie, thought_ts, last_active
 
 
-def trace_one_liner(conv_id: str) -> str:
-    trow = store.one("SELECT * FROM agent_traces WHERE conv=?", (conv_id,))
+_TROW_UNSET = object()
+
+
+def trace_one_liner(conv_id: str, trow: Any = _TROW_UNSET) -> str:
+    if trow is _TROW_UNSET:
+        trow = store.one("SELECT * FROM agent_traces WHERE conv=?", (conv_id,))
     if trow is None or not trow["phase"]:
         return ""
     phase = trow["phase"]
@@ -1840,10 +1856,36 @@ def event_for(conv_id: str) -> asyncio.Event:
 
 worker_job_events: dict[str, asyncio.Event] = {}
 worker_daemon_ts: dict[str, float] = {}
+job_done_events: dict[str, asyncio.Event] = {}
 
 
 def worker_job_event(node_id: str) -> asyncio.Event:
     return worker_job_events.setdefault(node_id, asyncio.Event())
+
+
+def job_done_event(key: str) -> asyncio.Event:
+    return job_done_events.setdefault(key, asyncio.Event())
+
+
+def _notify_job_waiters(op_id: str, batch_id: str = "") -> None:
+    ev_op = job_done_events.get(op_id)
+    if ev_op is not None:
+        ev_op.set()
+    if batch_id:
+        ev_b = job_done_events.get(f"batch:{batch_id}")
+        if ev_b is not None:
+            ev_b.set()
+
+
+def wake_all_workers(target_node: str = "auto") -> None:
+    tgt = (target_node or "auto").strip().lower()
+    if tgt and tgt != "auto":
+        worker_job_event(tgt).set()
+        return
+    for r in store.q("SELECT id FROM exec_nodes WHERE kind='runner' AND status='online'"):
+        worker_job_event(r["id"]).set()
+    for ev in list(worker_job_events.values()):
+        ev.set()
 
 
 def worker_daemon_is_alive(node_id: str) -> bool:
@@ -1991,7 +2033,7 @@ def role_footer(agent) -> str:
     if r == "ctrl":
         return CTRL_FIXED_FOOTER
     if r == "main":
-        return EXECUTOR_FIXED_FOOTER if is_main_node_id(agent["conv"]) else MAIN_FIXED_FOOTER
+        return EXECUTOR_FIXED_FOOTER if (is_main_node_id(agent["conv"]) or is_worker_host_id(agent["conv"])) else MAIN_FIXED_FOOTER
     if r == "runner":
         return WORKER_FIXED_FOOTER
     return CHAT_FIXED_FOOTER
@@ -2004,10 +2046,114 @@ def shell_command(agent_id: str) -> str:
     return f"curl -sSN -m {SHELL_WAIT + 120} -H 'X-Agent: {agent_id}' '{PUBLIC_BASE}/wait' | tail -n 1"
 
 
-def executor_next_step_script(agent_id: str, conv_id: str) -> str:
-    """给 mainN / whostN 的零判断保姆级唯一一步指令（强制带 tool_call，严禁纯文字，无新单直进 /wait、取消 ask）。"""
-    crow = conv_row(conv_id)
-    if crow is not None and has_wake_pending(conv_id, crow["read_cursor"]):
+_STD_OP_ID_RE = re.compile(r'\[STANDARD_OP\b[^\]]*\bop_id="([^"]+)"')
+
+
+def _extract_standard_op_id(text: str) -> str:
+    m = _STD_OP_ID_RE.search(text or "")
+    return m.group(1).strip() if m else ""
+
+
+def _is_stale_standard_op_row(row) -> bool:
+    op_id = _extract_standard_op_id(row["text"] or "")
+    if not op_id:
+        return False
+    op = store.one("SELECT op_type, conv_id, status, payload_json FROM dispatch_ops WHERE op_id=?", (op_id,))
+    if op is None:
+        return False
+    if op["status"] in ("done", "failed", "cancelled", "superseded"):
+        return True
+    if op["status"] == "pending":
+        try:
+            pay = json.loads(op["payload_json"] or "{}")
+        except Exception:
+            pay = {}
+        if op["op_type"] == "launch_subagent":
+            tcode = str(pay.get("task_code") or "").strip()
+            if tcode:
+                crow = conv_row(op["conv_id"])
+                if crow is None or crow["status"] != "open" or (crow["task_code"] or "") != tcode:
+                    new_st = "done" if (crow is not None and crow["agent"]) else "superseded"
+                    store.run("UPDATE dispatch_ops SET status=?, done_ts=? WHERE op_id=? AND status='pending'", (new_st, now(), op_id))
+                    return True
+        elif op["op_type"] == "resume_subagent":
+            tid = str(pay.get("task_agent_id") or "").strip()
+            if tid:
+                crow = conv_row(op["conv_id"])
+                if crow is None or crow["status"] != "open" or (crow["task_agent_id"] or "") != tid:
+                    store.run("UPDATE dispatch_ops SET status='superseded', done_ts=? WHERE op_id=? AND status='pending'", (now(), op_id))
+                    return True
+    return False
+
+
+def _prune_and_slice_executor_rows(conv_id: str, rows: list) -> list:
+    """对 mainN / whostN 收件箱做无损单张弹出与已完结/已取消旧单自动跳过：
+    - 避免一次派几百单时 pending_rows 500 条 + render(per_chat=60) 折叠把 read_cursor 一把推到末尾导致吞单；
+    - 已完结/取消的队首单据自动推进游标，每次遇到活的 [STANDARD_OP] 严格只弹出 1 张，确保千张并发单 100% 逐单无损执行。"""
+    if not rows:
+        return []
+    first_idx = -1
+    last_skip_id = 0
+    for idx, r in enumerate(rows):
+        if not r["wake"] or _is_stale_standard_op_row(r):
+            last_skip_id = r["id"]
+            continue
+        first_idx = idx
+        break
+    if last_skip_id > 0:
+        advance(conv_id, last_skip_id)
+    if first_idx < 0:
+        return []
+    first_row = rows[first_idx]
+    if "[STANDARD_OP " in (first_row["text"] or ""):
+        return [first_row]
+    out = [first_row]
+    for r in rows[first_idx + 1 :]:
+        if "[STANDARD_OP " in (r["text"] or "") or _is_stale_standard_op_row(r):
+            break
+        out.append(r)
+    return out
+
+
+def _next_executor_rows(conv_id: str) -> list:
+    """拉取并裁剪执行器下一批有效消息；若前 500 条全是已完结/取消旧单，自动循环推进游标穿透至真实待办单。"""
+    for _ in range(50):
+        crow = conv_row(conv_id)
+        if crow is None:
+            return []
+        raw_rows = pending_rows(conv_id, crow["read_cursor"])
+        if not raw_rows:
+            return []
+        sliced = _prune_and_slice_executor_rows(conv_id, raw_rows)
+        if sliced or len(raw_rows) < 500:
+            return sliced
+    return []
+
+
+def executor_next_step_script(agent_id: str, conv_id: str, allow_inline_op: bool = False) -> str:
+    """给 mainN / whostN 的零判断保姆级唯一一步指令（强制带 tool_call，严禁纯文字，无新单直进 /wait、取消 ask）。
+    当 allow_inline_op=True（刚调完 submit_op_result）且队首就是下一张活的 [STANDARD_OP] 时，直接内联弹出下一单省去中间 read_chat 轮次；
+    不提前推进未执行单据的 read_cursor，待该单 submit_op_result 标为 done/failed 后自动跳过，进程重启或中途调 read_chat 均 100% 零丢单。"""
+    sliced = _next_executor_rows(conv_id)
+    if sliced:
+        first_txt = sliced[0]["text"] or ""
+        if allow_inline_op and len(sliced) == 1 and "[STANDARD_OP " in first_txt:
+            rendered_op = render(sliced)
+            rem_cnt = int(
+                (
+                    store.one(
+                        "SELECT COUNT(*) AS n FROM dispatch_ops WHERE target_node=? AND status='pending'",
+                        (conv_id,),
+                    )
+                    or {"n": 1}
+                )["n"]
+                or 1
+            )
+            return (
+                f"【队列下一单（剩余待办 {rem_cnt} 单）｜必须带 tool_call，严禁纯文字回复】\n"
+                "无需再调 read_chat，本轮直接原样执行下方下一张单据的第 1 步（唯一 Task 工具调用）：\n\n"
+                f"{rendered_op}"
+            )
         return (
             "【必须带 tool_call｜严禁纯文字回复】\n"
             "队列里还有待处理单据。不要输出任何文字总结，本轮立即原样发起以下唯一 1 个工具调用：\n"
@@ -2232,7 +2378,10 @@ async def read_inbox(agent, wait_sec: int) -> ToolResult:
             if current is None or current["status"] != "active":
                 return text_result(stopped_text(current))
             conv = conv_row(conv_id)
-            rows = pending_rows(conv_id, conv["read_cursor"])
+            if is_main_node_id(conv_id) or is_worker_host_id(conv_id):
+                rows = _next_executor_rows(conv_id)
+            else:
+                rows = pending_rows(conv_id, conv["read_cursor"])
             if rows and (wait_sec == 0 or any(r["wake"] for r in rows)):
                 break
             if wait_sec > 0 and is_worker_node_id(conv_id):
@@ -2356,7 +2505,11 @@ async def shell_stream(agent):
                 yield (f"【有新消息】这一行不是消息内容。现在调用 read_chat(agent=\"{agent_id}\") 取消息并处理，"
                        f"之后照 read_chat 的提示继续等。{m_rule}用户强制要求：不要结束回合。\n")
                 return
-            if has_wake_pending(conv_id, conv["read_cursor"]):
+            if is_main_node_id(conv_id) or is_worker_host_id(conv_id):
+                has_pend = bool(_next_executor_rows(conv_id))
+            else:
+                has_pend = has_wake_pending(conv_id, conv["read_cursor"])
+            if has_pend:
                 idle_rounds.pop(agent_id, None)
                 if is_main_node_id(conv_id) or is_worker_host_id(conv_id):
                     yield (
@@ -2748,7 +2901,7 @@ def next_worker_host_num() -> int:
     return r + 1
 
 
-MAX_WORKER_POOL = 200
+MAX_WORKER_POOL = 500
 
 
 def worker_pool_target() -> int:
@@ -2876,20 +3029,131 @@ def _retire_offline_launchers(except_id: str = "") -> None:
         )
 
 
+def _reap_node_pending_ops(node_id: str) -> None:
+    """节点离线时清理其队列：非 workspace_job 单据取消；workspace_job 中 auto 单自动转回共享池供健康节点抢单，专属指定单写明失败回执（绝不静默丢单）。"""
+    store.run(
+        "UPDATE dispatch_ops SET status='cancelled' WHERE target_node=? AND status='pending' AND op_type!='workspace_job'",
+        (node_id,),
+    )
+    pend_jobs = store.q(
+        "SELECT * FROM dispatch_ops WHERE target_node=? AND status='pending' AND op_type='workspace_job'",
+        (node_id,),
+    )
+    woke_auto = False
+    t_now = now()
+    for op in pend_jobs:
+        try:
+            pay = json.loads(op["payload_json"] or "{}")
+        except Exception:
+            pay = {}
+        want_node = str(pay.get("want_node") or ("auto" if op["target_node"] == "auto" else "")).strip().lower()
+        if want_node in ("", "auto"):
+            store.run(
+                "UPDATE dispatch_ops SET target_node='auto', claimed_by='', lease_ts=0 WHERE op_id=? AND status='pending'",
+                (op["op_id"],),
+            )
+            woke_auto = True
+        else:
+            err_msg = f"[error] 指定的工作节点 {node_id} 已离线，未执行的任务已终止。"
+            res_obj = {
+                "status": "error",
+                "exit_code": -1,
+                "timed_out": False,
+                "error": "target_node_offline",
+                "output": err_msg,
+                "stdout": "",
+                "output_files": [],
+                "by": node_id,
+                "ts": t_now,
+            }
+            store.run(
+                "UPDATE dispatch_ops SET status='failed', result_json=?, done_ts=? WHERE op_id=? AND status='pending'",
+                (json.dumps(res_obj, ensure_ascii=False), t_now, op["op_id"]),
+            )
+            _notify_job_waiters(op["op_id"], op["batch_id"] or "")
+            if int(op["notify_chat"] if op["notify_chat"] is not None else 1) != 0:
+                req = op["requester"] or route_control_target()
+                dest = req if conv_row(req) is not None else route_control_target()
+                system_note(dest, f"🖥 `[工作区任务回执 op_id={op['op_id']} 节点={node_id} 状态=error]`\n{err_msg}", wake=1)
+    if woke_auto:
+        wake_all_workers("auto")
+
+
+def requeue_stale_workspace_jobs() -> dict[str, int]:
+    """扫描 status='running' 但执行节点已离线或租约心跳超时的 workspace_job：
+    - 未超 max_retries 时自动退回 pending 供健康节点接手重试；
+    - 超过重试上限时明确标记 failed 并唤醒等待方/推送回执，彻底解决 running 单黑洞悬挂。"""
+    running_rows = store.q("SELECT * FROM dispatch_ops WHERE op_type='workspace_job' AND status='running'")
+    requeued = 0
+    failed = 0
+    t_now = now()
+    for op in running_rows:
+        cnode = (op["claimed_by"] or op["target_node"] or "").strip().lower()
+        nrow = node_row(cnode) if (cnode and cnode != "auto") else None
+        node_dead = nrow is not None and nrow["status"] != "online"
+        last_lease = max(float(op["lease_ts"] or 0), float(op["started_ts"] or 0), float(op["created_ts"] or 0))
+        lease_expired = (t_now - last_lease) >= WORKER_LEASE_TIMEOUT_SEC
+        if not node_dead and not lease_expired:
+            continue
+        try:
+            pay = json.loads(op["payload_json"] or "{}")
+        except Exception:
+            pay = {}
+        want_node = str(pay.get("want_node") or ("auto" if op["target_node"] == "auto" else op["target_node"]) or "auto").strip().lower()
+        attempts = max(1, int(op["attempts"] or 1))
+        max_ret = int(op["max_retries"] if op["max_retries"] is not None else 2)
+        can_retry = attempts <= max_ret and (want_node in ("", "auto") or not node_dead)
+        if can_retry:
+            new_target = "auto" if want_node in ("", "auto") else want_node
+            changed = store.run(
+                "UPDATE dispatch_ops SET status='pending', target_node=?, claimed_by='', lease_ts=0 WHERE op_id=? AND status='running'",
+                (new_target, op["op_id"]),
+            )
+            if changed:
+                requeued += 1
+                wake_all_workers(new_target)
+        else:
+            err_msg = f"[error] 工作节点 {cnode or want_node} 失联中断且已达重试上限 (attempts={attempts}, max_retries={max_ret})"
+            res_obj = {
+                "status": "error",
+                "exit_code": -1,
+                "timed_out": True,
+                "error": "worker_lost",
+                "output": err_msg,
+                "stdout": "",
+                "output_files": [],
+                "by": cnode or want_node,
+                "attempts": attempts,
+                "ts": t_now,
+            }
+            changed = store.run(
+                "UPDATE dispatch_ops SET status='failed', result_json=?, done_ts=? WHERE op_id=? AND status='running'",
+                (json.dumps(res_obj, ensure_ascii=False), t_now, op["op_id"]),
+            )
+            if changed:
+                failed += 1
+                _notify_job_waiters(op["op_id"], op["batch_id"] or "")
+                if int(op["notify_chat"] if op["notify_chat"] is not None else 1) != 0:
+                    req = op["requester"] or route_control_target()
+                    dest = req if conv_row(req) is not None else route_control_target()
+                    system_note(dest, f"🖥 `[工作区任务回执 op_id={op['op_id']} 节点={cnode or 'offline'} 状态=error]`\n{err_msg}", wake=1)
+    return {"requeued": requeued, "failed": failed}
+
+
 def reap_offline_exec_nodes() -> list[str]:
-    """将已停用或长时间失联的 mainN / nodeN / whostN 自动标记为 offline，并清理超时未接手的预创建节点。"""
+    """将已停用或长时间失联的 mainN / nodeN / whostN 自动标记为 offline，并重排离线节点上的待跑/在跑任务。"""
     reaped: list[str] = []
     for r in store.q("SELECT * FROM exec_nodes WHERE status IN ('online','starting')"):
         if r["status"] == "starting":
             if (now() - float(r["created"] or 0)) >= 300:
                 store.run("UPDATE exec_nodes SET status='offline' WHERE id=?", (r["id"],))
-                store.run("UPDATE dispatch_ops SET status='cancelled' WHERE target_node=? AND status='pending'", (r["id"],))
+                _reap_node_pending_ops(r["id"])
                 reaped.append(r["id"])
             continue
         ag = agent_row(r["agent"]) if r["agent"] else None
         if ag is None or ag["status"] != "active":
             store.run("UPDATE exec_nodes SET status='offline' WHERE id=?", (r["id"],))
-            store.run("UPDATE dispatch_ops SET status='cancelled' WHERE target_node=? AND status='pending'", (r["id"],))
+            _reap_node_pending_ops(r["id"])
             reaped.append(r["id"])
             continue
         if waiting.get(ag["id"]):
@@ -2897,9 +3161,10 @@ def reap_offline_exec_nodes() -> list[str]:
         last_act = max(float(ag["last_seen"] or 0), float(r["last_seen"] or 0), STARTED)
         if (now() - last_act) >= LOST_SEC:
             store.run("UPDATE exec_nodes SET status='offline' WHERE id=?", (r["id"],))
-            store.run("UPDATE dispatch_ops SET status='cancelled' WHERE target_node=? AND status='pending'", (r["id"],))
+            _reap_node_pending_ops(r["id"])
             reaped.append(r["id"])
     _retire_offline_launchers()
+    requeue_stale_workspace_jobs()
     if reaped:
         log.info("marked offline stale exec_nodes: %s", reaped)
         mark_menu_dirty()
@@ -2994,8 +3259,10 @@ def select_best_runner(for_conv: str = "", target_node: str = "auto"):
         if excl and cid != excl and cid not in allowed and cid not in ("ctrl", "main"):
             continue
         running_ops = store.one(
-            "SELECT COUNT(*) AS n FROM dispatch_ops WHERE target_node=? AND status IN ('pending','running')",
-            (r["id"],),
+            "SELECT COUNT(*) AS n FROM dispatch_ops WHERE op_type='workspace_job' AND ("
+            "(target_node=? AND status='pending') OR ((claimed_by=? OR target_node=?) AND status='running')"
+            ")",
+            (r["id"], r["id"], r["id"]),
         )["n"]
         m = node_metrics_dict(r)
         cpu_p = float(m.get("cpu_percent") or 0.0)
@@ -3263,6 +3530,10 @@ def enqueue_launch_op(conv, launcher_node, requester: str = "ctrl", model_overri
             "INSERT INTO agent_trace_events(conv,event,phase,summary,duration_ms,ts) VALUES(?,?,?,?,?,?)",
             (conv["id"], "onboard_awaiting_join", "onboarding", f"⏳ 1/4 已向 {node_id} 派发启动单，待调 join", 0, ts_now),
         )
+    store.run(
+        "UPDATE dispatch_ops SET status='superseded', done_ts=? WHERE conv_id=? AND op_type IN ('launch_subagent','resume_subagent') AND status='pending'",
+        (now(), conv["id"]),
+    )
     op_id = "op_" + secrets.token_hex(5)
     payload = {
         "conv_id": conv["id"],
@@ -3590,7 +3861,7 @@ def welcome_worker(node_id: str, agent_id: str) -> str:
         "",
         "运行说明：",
         "1. 若该终端命令被系统转入后台（background），必须先调用 GetDynamicTools(namespace=\"cursor\", toolName=\"AwaitShell\")，再调用 CallDynamicTool(namespace=\"cursor\", toolName=\"AwaitShell\", arguments={\"shell_id\": \"对应终端编号\", \"block_until_ms\": 7140000}) 一次性长阻塞等待，严禁循环调用 Read 读取 terminals/*.txt 轮询！",
-        "2. 当命令在约 1 小时 51 分钟后输出【常驻执行进程周期续接】返回时，直接再次运行同一条终端命令继续保持常驻（不要调用 read_chat，不要总结或告别）。",
+        f"2. 当命令在约 {SHELL_SPAN} 后输出【常驻执行进程周期续接】返回时，直接再次运行同一条终端命令继续保持常驻（不要调用 read_chat，不要总结或告别）。",
         "3. 只有当命令输出明确提示「身份已停用」时，才结束当前回合。",
     ])
 
@@ -3643,7 +3914,7 @@ def worker_spawn_task_text(code: str) -> str:
     return (
         "你是工作区常驻任务执行会话。\n"
         f"1. 调用 MCP 的 join 工具接入：code=\"{code}\"。\n"
-        "2. 接入后直接按 join 返回里给定的终端命令启动常驻工作进程（block_until_ms=6780000），无需轮询 read_chat；周期到时返回后直接再次运行同一条终端命令继续保持常驻，只有提示身份已停用时才结束。"
+        f"2. 接入后直接按 join 返回里给定的终端命令启动常驻工作进程（block_until_ms={(SHELL_WAIT + 180) * 1000}），无需轮询 read_chat；周期到时返回后直接再次运行同一条终端命令继续保持常驻，只有提示身份已停用时才结束。"
     )
 
 
@@ -3935,7 +4206,7 @@ def heal_runner_nodes(max_batch: int = 12) -> dict[str, list[str]]:
                 if int(h_pend or 0) >= 20:
                     continue
                 r_prompt = (
-                    f"工作区会话 {nid} 巡检：请在终端运行常驻工作进程（block_until_ms=6780000）：\n"
+                    f"工作区会话 {nid} 巡检：请在终端运行常驻工作进程（block_until_ms={(SHELL_WAIT + 180) * 1000}）：\n"
                     f"{worker_runner_cmd(ag['id'])}"
                 )
                 op_id = enqueue_resume_op(crow, host, requester="watchdog_runner_resume", resume_prompt=r_prompt)
@@ -4990,14 +5261,15 @@ COMMON_TOOLS = [
     ),
     tool(
         "run_workspace_job",
-        "（仅管理员名下会话与总控可用）将重负载构建、渲染、批量处理任务投递到云端工作节点（node1..K）执行并异步回传结果。",
+        "（仅管理员名下会话与总控可用）将重负载构建、渲染、批量处理任务投递到云端工作节点（node1..K）执行并异步回传结果；超大规模千级批处理与原文件直传可改用桥 HTTP /jobs/submit 接口。",
         {
             "command": prop("string", "要在云端工作区执行的终端命令"),
-            "node": prop("string", "目标工作节点（默认 auto 自动按 CPU/内存探针选最空闲节点，或填指定 node1、node2）"),
+            "node": prop("string", "目标工作节点（默认 auto 自动按共享队列与 CPU/内存探针抢单，或填指定 node1、node2）"),
             "repo": prop("string", "可选：要先准备的 GitHub 仓库（如 owner/repo）"),
             "branch": prop("string", "可选：要切到的 Git 分支名"),
             "workdir": prop("string", "可选：云端工作目录路径"),
-            "timeout_sec": prop("integer", "超时秒数，默认 600，最大 3600"),
+            "timeout_sec": prop("integer", "超时秒数，默认 600，最大 86400（24 小时）"),
+            "notify_chat": prop("boolean", "完成后是否推送到 read_chat 收件箱，默认 true；大批量脚本轮询时可传 false"),
         },
         ["command"],
     ),
@@ -6700,7 +6972,7 @@ async def t_submit_op_result(agent, args):
 
     def _exec_reply(head: str) -> ToolResult:
         if is_exec:
-            return text_result(head + "\n" + executor_next_step_script(agent["id"], agent["conv"]))
+            return text_result(head + "\n" + executor_next_step_script(agent["id"], agent["conv"], allow_inline_op=True))
         return text_result(head + "现在请立即调用 read_chat 继续等待下一条指令。")
 
     if op_type == "launch_subagent":
@@ -6786,12 +7058,14 @@ async def t_submit_op_result(agent, args):
         return _exec_reply(f"已回传探活结果 {op_id}。")
 
     if op_type == "workspace_job":
+        _notify_job_waiters(op_id, op["batch_id"] or "")
         dest = requester if conv_row(requester) is not None else route_control_target()
-        system_note(
-            dest,
-            f"🖥 `[工作区任务回执 op_id={op_id} 节点={agent['conv']} 状态={status}]`\n{output or '（执行完成，无额外输出）'}",
-            wake=1,
-        )
+        if int(op["notify_chat"] if op["notify_chat"] is not None else 1) != 0:
+            system_note(
+                dest,
+                f"🖥 `[工作区任务回执 op_id={op_id} 节点={agent['conv']} 状态={status}]`\n{output or '（执行完成，无额外输出）'}",
+                wake=1,
+            )
         if is_worker_node_id(agent["conv"]):
             return text_result(
                 f"已提交工作单 {op_id} 的执行结果。\n"
@@ -6821,14 +7095,20 @@ async def t_run_workspace_job(agent, args):
     repo = clean_repo(args.get("repo") or "")
     branch = re.sub(r"\s+", "", str(args.get("branch") or ""))[:120]
     workdir = str(args.get("workdir") or "").strip()[:300]
-    timeout_sec = arg_int(args, "timeout_sec", 600, 10, 3600)
+    timeout_sec = arg_int(args, "timeout_sec", 600, 10, MAX_JOB_TIMEOUT_SEC)
+    notify_chat = 0 if args.get("notify_chat") is False else 1
 
     runner = None
     auto_spawned_note = ""
     try:
         runner = select_best_runner(for_conv=caller_id, target_node=want_node)
         if want_node in ("", "auto"):
-            cur_pend = store.one("SELECT COUNT(*) AS n FROM dispatch_ops WHERE target_node=? AND status IN ('pending','running')", (runner["id"],))["n"]
+            cur_pend = store.one(
+                "SELECT COUNT(*) AS n FROM dispatch_ops WHERE op_type='workspace_job' AND ("
+                "(target_node IN (?, 'auto') AND status='pending') OR ((claimed_by=? OR target_node=?) AND status='running')"
+                ")",
+                (runner["id"], runner["id"], runner["id"]),
+            )["n"]
             if cur_pend > 0:
                 sp = spawn_worker_vm_via_host(requester=f"autoscale:{caller_id}")
                 if sp:
@@ -6848,9 +7128,14 @@ async def t_run_workspace_job(agent, args):
             auto_spawned_note = f"（已通过 {sp[1]} 自动初始化后台工作会话 {sp[0]}，就绪后即刻执行）"
 
     op_id = "op_" + secrets.token_hex(5)
+    is_auto = want_node in ("", "auto")
+    daemon_alive = worker_daemon_is_alive(runner["id"])
+    # 当走纯 Python 守护进程且未硬绑指定节点时，写入共享池 target_node='auto'，任意空闲健康节点均可毫秒级抢单且单机掉线自动重排！
+    effective_target = "auto" if (is_auto and daemon_alive) else runner["id"]
     payload = {
         "conv_id": caller_id,
         "requester": caller_id,
+        "want_node": "auto" if is_auto else want_node,
         "command": cmd,
         "repo": repo,
         "branch": branch,
@@ -6858,18 +7143,24 @@ async def t_run_workspace_job(agent, args):
         "timeout_sec": timeout_sec,
     }
     store.run(
-        "INSERT INTO dispatch_ops(op_id,target_node,op_type,conv_id,requester,payload_json,status,created_ts) VALUES(?,?,?,?,?,?,?,?)",
-        (op_id, runner["id"], "workspace_job", caller_id, caller_id, json.dumps(payload, ensure_ascii=False), "pending", now()),
+        "INSERT INTO dispatch_ops(op_id,batch_id,target_node,op_type,conv_id,requester,payload_json,status,created_ts,notify_chat) "
+        "VALUES(?,?,?,?,?,?,?,?,?,?)",
+        (op_id, "", effective_target, "workspace_job", caller_id, caller_id, json.dumps(payload, ensure_ascii=False), "pending", now(), notify_chat),
     )
-    # 唤醒该节点上的纯 Python worker_loop 守护进程直接领单执行（0 大模型调用、0 Token！）
-    worker_job_event(runner["id"]).set()
+    # 唤醒算力池纯 Python worker_loop 守护进程直接领单执行（0 大模型调用、0 Token！）
+    wake_all_workers(effective_target)
     # 仅在节点尚未接入纯 Python 守护进程（如单测或旧版过渡期）时才写收件箱兜底
-    if not worker_daemon_is_alive(runner["id"]):
+    if not daemon_alive:
         msg_txt = format_standard_workspace_job(op_id, runner["agent"] or "", payload)
         system_note(runner["id"], msg_txt, wake=1)
+    push_tip = (
+        f"执行完毕后结果会自动推送到你的 read_chat 收件箱（亦可用 GET {PUBLIC_BASE}/jobs/status?op_id={op_id} 查询原样结果）。"
+        if notify_chat
+        else f"已设为静默模式（不推聊天收件箱），请通过 GET {PUBLIC_BASE}/jobs/status?op_id={op_id} 或 POST {PUBLIC_BASE}/jobs/wait 获取结果。"
+    )
     return text_result(
         f"已将工作区任务投递至云端节点 {runner['id']}（op_id={op_id}，超时 {timeout_sec}s）{auto_spawned_note}。\n"
-        f"{runner['id']} 执行完毕后结果会自动推送到你的 read_chat 收件箱。"
+        f"{push_tip}"
     )
 
 
@@ -6976,6 +7267,8 @@ def inline_unread_banner(agent) -> str:
         return ""
     conv = conv_row(agent["conv"])
     if conv is None or conv["status"] != "open":
+        return ""
+    if is_main_node_id(conv["id"]) or is_worker_host_id(conv["id"]):
         return ""
     if agent["role"] == "chat" and is_onboarding_stage(conv_onboard_stage(conv)):
         return ""
@@ -10752,7 +11045,15 @@ async def upload_agent_file(request: Request, filename: str = "") -> JSONRespons
         return JSONResponse({"ok": False, "error": "empty file content"}, status_code=400)
     if len(content) > AGENT_FILE_LIMIT:
         return JSONResponse({"ok": False, "error": "file exceeds 100MB limit"}, status_code=413)
-    store.run("UPDATE agents SET last_seen=?, last_tool='upload_file' WHERE id=?", (now(), arow["id"]))
+    t_now = now()
+    store.run("UPDATE agents SET last_seen=?, last_tool='upload_file' WHERE id=?", (t_now, arow["id"]))
+    if is_worker_node_id(arow["conv"]):
+        worker_daemon_ts[arow["conv"]] = t_now
+        store.run("UPDATE exec_nodes SET status='online', last_seen=? WHERE id=?", (t_now, arow["conv"]))
+        store.run(
+            "UPDATE dispatch_ops SET lease_ts=? WHERE (claimed_by=? OR target_node=?) AND op_type='workspace_job' AND status='running'",
+            (t_now, arow["conv"], arow["conv"]),
+        )
     fid, url = store_shared_agent_file(arow, filename, content, mime=mime)
     return JSONResponse(
         {
@@ -10937,8 +11238,8 @@ async def trace_peek_inbox(agent: str = "", cid: str = "") -> JSONResponse:
     rows = pending_wake_rows(conv["id"], conv["read_cursor"])
     if not rows:
         return JSONResponse({"ok": True, "has_messages": False, "conv": conv["id"]})
-    # 过滤掉纯保活自动问答
-    real_rows = [r for r in rows if not is_keepalive(r)]
+    # 过滤掉纯保活自动问答与已完结/已取消的历史单据
+    real_rows = [r for r in rows if not is_keepalive(r) and not _is_stale_standard_op_row(r)]
     if not real_rows:
         return JSONResponse({"ok": True, "has_messages": False, "conv": conv["id"]})
     has_human = any(r["chat_type"] not in ("system", "agent_dm", "agent_group") for r in real_rows)
@@ -10964,9 +11265,52 @@ async def worker_check_role(agent: str = "") -> JSONResponse:
     return JSONResponse({"ok": True, "is_runner": is_worker_node_id(arow["conv"]), "conv": arow["conv"]})
 
 
+def claim_next_workspace_job(node_id: str):
+    """原子抢单（支持指定节点队列 + target_node='auto' 全局共享工作池抢单，严格遵守机器独占锁与授权表）。"""
+    nid = (node_id or "").strip().lower()
+    if not nid:
+        return None
+    with store._lock:
+        nrow = store._con.execute("SELECT * FROM exec_nodes WHERE id=?", (nid,)).fetchone()
+        excl = (nrow["exclusive_conv"] or "").strip().lower() if nrow is not None else ""
+        allowed = set(node_allowed_list(nrow)) if nrow is not None else set()
+
+        cand = store._con.execute(
+            "SELECT * FROM dispatch_ops WHERE target_node=? AND op_type='workspace_job' AND status='pending' "
+            "ORDER BY created_ts ASC, rowid ASC LIMIT 1",
+            (nid,),
+        ).fetchone()
+
+        if cand is None:
+            auto_rows = store._con.execute(
+                "SELECT * FROM dispatch_ops WHERE target_node='auto' AND op_type='workspace_job' AND status='pending' "
+                "ORDER BY created_ts ASC, rowid ASC LIMIT 100"
+            ).fetchall()
+            for r in auto_rows:
+                cid = (r["conv_id"] or "").strip().lower()
+                if excl and cid != excl and cid not in allowed:
+                    continue
+                cand = r
+                break
+
+        if cand is None:
+            return None
+
+        t_now = now()
+        cur = store._con.execute(
+            "UPDATE dispatch_ops SET status='running', claimed_by=?, attempts=IFNULL(attempts,0)+1, started_ts=?, lease_ts=? "
+            "WHERE op_id=? AND status='pending'",
+            (nid, t_now, t_now, cand["op_id"]),
+        )
+        store._con.commit()
+        if cur.rowcount != 1:
+            return None
+        return store._con.execute("SELECT * FROM dispatch_ops WHERE op_id=?", (cand["op_id"],)).fetchone()
+
+
 @app.post("/worker/claim")
 async def worker_claim_job(request: Request) -> JSONResponse:
-    """供 node1..K 上的纯 Python worker_loop 直接长轮询领单（全程绕开节点大模型，0 Token 消耗！）。"""
+    """供 node1..K 上的纯 Python worker_loop 直接长轮询领单（全程绕开节点大模型，0 Token 消耗！支持共享池抢单与断联重排）。"""
     ident = (request.headers.get("X-Agent") or "").strip()
     arow = agent_row(ident) if ident else None
     if arow is None:
@@ -10993,6 +11337,8 @@ async def worker_claim_job(request: Request) -> JSONResponse:
     else:
         store.run("UPDATE exec_nodes SET status='online', agent=?, last_seen=? WHERE id=?", (ident, now_ts, node_id))
 
+    requeue_stale_workspace_jobs()
+
     store.run(
         "INSERT INTO agent_traces(conv,agent_id,phase,tool_name,summary,started_ts,updated_ts,hb_ts) VALUES(?,?,?,?,?,?,?,?) "
         "ON CONFLICT(conv) DO UPDATE SET agent_id=excluded.agent_id, phase='idle_wait', tool_name='WorkerDaemon', "
@@ -11012,12 +11358,8 @@ async def worker_claim_job(request: Request) -> JSONResponse:
             cur_ag = agent_row(ident)
             if cur_ag is None or cur_ag["status"] != "active":
                 return JSONResponse({"ok": False, "stopped": True, "message": stopped_text(cur_ag)})
-            op = store.one(
-                "SELECT * FROM dispatch_ops WHERE target_node=? AND op_type='workspace_job' AND status='pending' ORDER BY created_ts ASC LIMIT 1",
-                (node_id,),
-            )
+            op = claim_next_workspace_job(node_id)
             if op is not None:
-                store.run("UPDATE dispatch_ops SET status='running' WHERE op_id=? AND status='pending'", (op["op_id"],))
                 # 若曾写入过收件箱兜底消息，同步推进 read_cursor 避免任何残留未读
                 mx_m = int((store.one("SELECT IFNULL(MAX(id),0) AS n FROM messages WHERE target=?", (node_id,)) or {"n": 0})["n"] or 0)
                 if mx_m > 0:
@@ -11027,6 +11369,7 @@ async def worker_claim_job(request: Request) -> JSONResponse:
                 except Exception:
                     pay = {}
                 pay["op_id"] = op["op_id"]
+                pay["attempts"] = int(op["attempts"] or 1)
                 t_now = now()
                 worker_daemon_ts[node_id] = t_now
                 store.run(
@@ -11041,6 +11384,7 @@ async def worker_claim_job(request: Request) -> JSONResponse:
                 await asyncio.wait_for(ev.wait(), timeout=min(rem, 15.0))
             except asyncio.TimeoutError:
                 worker_daemon_ts[node_id] = now()
+                requeue_stale_workspace_jobs()
     finally:
         waiting[ident] = waiting.get(ident, 1) - 1
         if waiting[ident] <= 0:
@@ -11050,9 +11394,46 @@ async def worker_claim_job(request: Request) -> JSONResponse:
         touch(ident, "worker_daemon")
 
 
+@app.post("/worker/heartbeat")
+async def worker_heartbeat_job(request: Request) -> JSONResponse:
+    """工作节点长任务执行期间租约续期接口。"""
+    ident = (request.headers.get("X-Agent") or "").strip()
+    arow = agent_row(ident) if ident else None
+    if arow is None or arow["status"] != "active":
+        return JSONResponse({"ok": False, "stopped": True}, status_code=403)
+    node_id = arow["conv"]
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    op_id = str((body or {}).get("op_id") or "").strip()
+    metrics = (body or {}).get("metrics")
+    t_now = now()
+    worker_daemon_ts[node_id] = t_now
+    touch(ident, "worker_hb")
+    if isinstance(metrics, dict) and metrics:
+        store.run(
+            "UPDATE exec_nodes SET status='online', last_seen=?, metrics_json=?, metrics_ts=? WHERE id=?",
+            (t_now, json.dumps(metrics, ensure_ascii=False), t_now, node_id),
+        )
+    else:
+        store.run("UPDATE exec_nodes SET status='online', last_seen=? WHERE id=?", (t_now, node_id))
+    if op_id:
+        store.run(
+            "UPDATE dispatch_ops SET lease_ts=? WHERE op_id=? AND status='running'",
+            (t_now, op_id),
+        )
+    else:
+        store.run(
+            "UPDATE dispatch_ops SET lease_ts=? WHERE (claimed_by=? OR target_node=?) AND op_type='workspace_job' AND status='running'",
+            (t_now, node_id, node_id),
+        )
+    return JSONResponse({"ok": True, "ts": t_now})
+
+
 @app.post("/worker/complete")
 async def worker_complete_job(request: Request) -> JSONResponse:
-    """接收 node1..K 纯 Python worker_loop 直接回传的任务结果并秒推给调用方（0 大模型参与）。"""
+    """接收 node1..K 纯 Python worker_loop 直接回传的任务结果（保留完整原始 stdout / 产物文件链接，按 notify_chat 决定是否打扰收件箱）。"""
     ident = (request.headers.get("X-Agent") or "").strip()
     arow = agent_row(ident) if ident else None
     if arow is None or arow["status"] != "active":
@@ -11067,7 +11448,17 @@ async def worker_complete_job(request: Request) -> JSONResponse:
     status = str((body or {}).get("status") or "ok").strip().lower()
     if status not in ("ok", "error"):
         status = "ok"
-    output = str((body or {}).get("output") or "").strip()[:8000]
+    raw_stdout = str((body or {}).get("stdout") if "stdout" in (body or {}) else ((body or {}).get("output") or ""))
+    if len(raw_stdout) > 512_000:
+        raw_stdout = raw_stdout[:512_000]
+    output = str((body or {}).get("output") or raw_stdout).strip()[:8000]
+    exit_code = (body or {}).get("exit_code")
+    timed_out = bool((body or {}).get("timed_out", False))
+    elapsed_sec = (body or {}).get("elapsed_sec")
+    stdout_size = int((body or {}).get("stdout_size") or len(raw_stdout.encode("utf-8", "replace")))
+    stdout_trunc = bool((body or {}).get("stdout_truncated_inline", False))
+    stdout_file = (body or {}).get("stdout_file") if isinstance((body or {}).get("stdout_file"), dict) else None
+    output_files = (body or {}).get("output_files") if isinstance((body or {}).get("output_files"), list) else []
     metrics = (body or {}).get("metrics")
 
     op = store.one("SELECT * FROM dispatch_ops WHERE op_id=?", (op_id,))
@@ -11085,25 +11476,550 @@ async def worker_complete_job(request: Request) -> JSONResponse:
     else:
         store.run("UPDATE exec_nodes SET status='online', last_seen=? WHERE id=?", (t_now, node_id))
 
+    # 若该单在超时重排后已被其他健康节点成功完成，忽略迟到的旧回执避免覆盖成功结果
+    if op["status"] == "done" and (op["claimed_by"] or "") not in ("", node_id):
+        return JSONResponse({"ok": True, "op_id": op_id, "duplicate_ignored": True})
+
     done_status = "done" if status == "ok" else "failed"
-    res_obj = {"status": status, "task_agent_id": "", "output": output, "by": node_id, "mode": "python_direct", "ts": t_now}
+    res_obj = {
+        "status": status,
+        "task_agent_id": "",
+        "exit_code": int(exit_code) if exit_code is not None else (0 if status == "ok" else -1),
+        "timed_out": timed_out,
+        "elapsed_sec": float(elapsed_sec) if elapsed_sec is not None else None,
+        "stdout": raw_stdout,
+        "stdout_size": stdout_size,
+        "stdout_truncated_inline": stdout_trunc,
+        "stdout_file": stdout_file,
+        "output_files": output_files[:200],
+        "output": output,
+        "by": node_id,
+        "attempts": int(op["attempts"] or 1),
+        "mode": "python_direct",
+        "ts": t_now,
+    }
     store.run(
-        "UPDATE dispatch_ops SET status=?, result_json=?, done_ts=? WHERE op_id=?",
-        (done_status, json.dumps(res_obj, ensure_ascii=False), t_now, op_id),
+        "UPDATE dispatch_ops SET status=?, claimed_by=?, result_json=?, done_ts=?, lease_ts=? WHERE op_id=?",
+        (done_status, node_id, json.dumps(res_obj, ensure_ascii=False), t_now, t_now, op_id),
     )
     store.run(
         "UPDATE agent_traces SET phase='idle_wait', tool_name='WorkerDaemon', summary='🟢 纯Python本地进程常驻待命 (跑单 0 Token)', updated_ts=?, hb_ts=? WHERE conv=?",
         (t_now, t_now, node_id),
     )
 
+    _notify_job_waiters(op_id, op["batch_id"] or "")
+
     requester = op["requester"] or route_control_target()
     dest = requester if conv_row(requester) is not None else route_control_target()
-    system_note(
-        dest,
-        f"🖥 `[工作区任务回执 op_id={op_id} 节点={node_id} 状态={status}]`\n{output or '（执行完成，无额外输出）'}",
-        wake=1,
+    if int(op["notify_chat"] if op["notify_chat"] is not None else 1) != 0:
+        extra_art = ""
+        if stdout_file and stdout_file.get("file_id"):
+            extra_art += f"\n📎 完整标准输出文件：`{stdout_file['file_id']}` ({size_text(int(stdout_file.get('size') or 0))})"
+        if output_files:
+            f_brief = ", ".join(f"`{f.get('file_id')}`({f.get('name')})" for f in output_files[:10] if isinstance(f, dict) and f.get("file_id"))
+            if f_brief:
+                extra_art += f"\n📦 产物文件：{f_brief}"
+        system_note(
+            dest,
+            f"🖥 `[工作区任务回执 op_id={op_id} 节点={node_id} 状态={status}]`\n{output or '（执行完成，无额外输出）'}{extra_art}",
+            wake=1,
+        )
+    return JSONResponse({"ok": True, "op_id": op_id, "delivered_to": dest, "notified_chat": bool(int(op["notify_chat"] if op["notify_chat"] is not None else 1))})
+
+
+def _jobs_http_auth(request: Request) -> tuple[Any, str, bool, JSONResponse | None]:
+    """校验 /jobs/* HTTP 批量任务接口权限（仅管理员名下活跃 chat / ctrl / main 可调用）。"""
+    ident = (request.headers.get("X-Agent") or "").strip()
+    if not ident:
+        auth_h = (request.headers.get("Authorization") or "").strip()
+        if auth_h.lower().startswith("bearer "):
+            ident = auth_h[7:].strip()
+    if not ident:
+        ident = (request.query_params.get("agent") or "").strip()
+    arow = agent_row(ident) if ident else None
+    if arow is None or arow["status"] != "active":
+        return None, "", False, JSONResponse({"ok": False, "error": "invalid_or_inactive_agent"}, status_code=403)
+    if arow["role"] == "chat":
+        me = conv_row(arow["conv"])
+        if me is None or conv_owner(me) != 0:
+            return None, "", False, JSONResponse({"ok": False, "error": "admin_conv_only"}, status_code=403)
+        return arow, me["id"], False, None
+    if arow["role"] in ("ctrl", "main"):
+        return arow, arow["conv"], True, None
+    return None, "", False, JSONResponse({"ok": False, "error": "role_not_allowed"}, status_code=403)
+
+
+def _resolve_job_input_files(arow, raw_inputs: Any) -> list[dict[str, Any]]:
+    if not isinstance(raw_inputs, list):
+        return []
+    resolved: list[dict[str, Any]] = []
+    for item in raw_inputs[:100]:
+        if isinstance(item, str):
+            fid = item.strip()
+            dest = ""
+            url = ""
+        elif isinstance(item, dict):
+            fid = str(item.get("file_id") or "").strip()
+            dest = str(item.get("dest") or item.get("path") or item.get("name") or "").strip()[:260]
+            url = str(item.get("download_url") or item.get("url") or "").strip()[:1000]
+        else:
+            continue
+        if fid:
+            frow = store.one("SELECT * FROM files WHERE id=?", (fid,))
+            if frow is None:
+                raise ToolFail(f"input_files 文件 {fid!r} 不存在。")
+            if not can_read_file_row(arow, frow):
+                raise ToolFail(f"无权读取 input_files 文件 {fid!r}。")
+            resolved.append({
+                "file_id": fid,
+                "name": frow["name"],
+                "size": int(frow["size"] or 0),
+                "dest": dest or frow["name"],
+                "download_url": f"{PUBLIC_BASE}/files/{fid}?sig={sign(fid)}",
+            })
+        elif url:
+            resolved.append({
+                "file_id": "",
+                "dest": dest or "input.bin",
+                "download_url": url,
+            })
+    return resolved
+
+
+def _serialize_job_op(op, include_stdout: bool = True) -> dict[str, Any]:
+    try:
+        pay = json.loads(op["payload_json"] or "{}")
+    except Exception:
+        pay = {}
+    try:
+        res = json.loads(op["result_json"] or "{}")
+    except Exception:
+        res = {}
+
+    sf = res.get("stdout_file")
+    if isinstance(sf, dict) and sf.get("file_id"):
+        fid = str(sf["file_id"])
+        sf = {**sf, "download_url": f"{PUBLIC_BASE}/files/{fid}?sig={sign(fid)}"}
+    else:
+        sf = None
+
+    out_files = []
+    for f in (res.get("output_files") or []):
+        if isinstance(f, dict):
+            fid = str(f.get("file_id") or "")
+            if fid:
+                out_files.append({**f, "download_url": f"{PUBLIC_BASE}/files/{fid}?sig={sign(fid)}"})
+            else:
+                out_files.append(f)
+
+    raw_stdout = res.get("stdout") if "stdout" in res else res.get("output", "")
+    d: dict[str, Any] = {
+        "op_id": op["op_id"],
+        "batch_id": op["batch_id"] or "",
+        "tag": pay.get("tag", ""),
+        "meta": pay.get("meta"),
+        "status": op["status"],
+        "exec_status": res.get("status", ""),
+        "node": op["claimed_by"] or res.get("by") or op["target_node"],
+        "target_node": op["target_node"],
+        "attempts": int(op["attempts"] or 0),
+        "max_retries": int(op["max_retries"] if op["max_retries"] is not None else 2),
+        "exit_code": res.get("exit_code"),
+        "timed_out": bool(res.get("timed_out", False)),
+        "elapsed_sec": res.get("elapsed_sec"),
+        "stdout_size": int(res.get("stdout_size") if res.get("stdout_size") is not None else len((raw_stdout or "").encode("utf-8", "replace"))),
+        "stdout_truncated_inline": bool(res.get("stdout_truncated_inline", False)),
+        "stdout_file": sf,
+        "output_files": out_files,
+        "error": res.get("error", ""),
+        "created_ts": float(op["created_ts"] or 0),
+        "started_ts": float(op["started_ts"] or 0),
+        "lease_ts": float(op["lease_ts"] or 0),
+        "done_ts": float(op["done_ts"] or 0),
+    }
+    if include_stdout:
+        d["stdout"] = raw_stdout if raw_stdout is not None else ""
+        d["output"] = res.get("output", "")
+    return d
+
+
+def _load_owned_job_ops(
+    caller_id: str,
+    is_priv: bool,
+    op_ids: list[str],
+    batch_id: str,
+) -> list[Any]:
+    if batch_id:
+        rows = store.q(
+            "SELECT * FROM dispatch_ops WHERE batch_id=? AND op_type='workspace_job' ORDER BY created_ts ASC, rowid ASC",
+            (batch_id,),
+        )
+    elif op_ids:
+        marks = ",".join("?" for _ in op_ids)
+        rows = store.q(
+            f"SELECT * FROM dispatch_ops WHERE op_id IN ({marks}) AND op_type='workspace_job' ORDER BY created_ts ASC, rowid ASC",
+            tuple(op_ids),
+        )
+    else:
+        rows = store.q(
+            "SELECT * FROM dispatch_ops WHERE conv_id=? AND op_type='workspace_job' ORDER BY created_ts DESC, rowid DESC LIMIT 200",
+            (caller_id,),
+        )
+    if is_priv:
+        return rows
+    return [r for r in rows if (r["conv_id"] == caller_id or r["requester"] == caller_id)]
+
+
+def _build_jobs_status_payload(
+    rows: list[Any],
+    batch_id: str = "",
+    status_filter: str = "",
+    include_stdout: bool = True,
+    after_done_ts: float = 0.0,
+) -> dict[str, Any]:
+    counts = {"total": len(rows), "pending": 0, "running": 0, "done": 0, "failed": 0, "cancelled": 0}
+    for r in rows:
+        st = str(r["status"] or "pending")
+        if st in counts:
+            counts[st] += 1
+    counts["finished"] = counts["done"] + counts["failed"] + counts["cancelled"]
+    counts["all_finished"] = counts["total"] > 0 and counts["pending"] == 0 and counts["running"] == 0
+
+    sf = status_filter.strip().lower()
+    filtered = rows
+    if sf:
+        allowed_st = {s.strip() for s in sf.split(",") if s.strip()}
+        filtered = [r for r in filtered if r["status"] in allowed_st]
+    if after_done_ts > 0:
+        filtered = [r for r in filtered if float(r["done_ts"] or 0) > after_done_ts]
+
+    return {
+        "ok": True,
+        "batch_id": batch_id,
+        "summary": counts,
+        "jobs": [_serialize_job_op(r, include_stdout=include_stdout) for r in filtered],
+    }
+
+
+@app.post("/jobs/submit")
+async def http_jobs_submit(request: Request) -> JSONResponse:
+    """纯 HTTP 原生批量算力投递接口（供业务子 agent 的本地脚本直接投递几百/几千单闭环计算，0 聊天刷屏、0 输出截断改写、支持文件直传与断联自动重排）。"""
+    arow, caller_id, _is_priv, err_resp = _jobs_http_auth(request)
+    if err_resp is not None:
+        return err_resp
+    try:
+        body = await request.json()
+    except Exception:
+        return JSONResponse({"ok": False, "error": "invalid_json"}, status_code=400)
+    if not isinstance(body, dict):
+        return JSONResponse({"ok": False, "error": "body_must_be_object"}, status_code=400)
+
+    touch(arow["id"], "jobs_submit")
+    defaults = body.get("defaults") if isinstance(body.get("defaults"), dict) else {}
+    raw_jobs = body.get("jobs")
+    if raw_jobs is None:
+        if "command" in body:
+            raw_jobs = [body]
+        else:
+            return JSONResponse({"ok": False, "error": "missing_jobs_or_command"}, status_code=400)
+    if not isinstance(raw_jobs, list) or not raw_jobs:
+        return JSONResponse({"ok": False, "error": "jobs_must_be_non_empty_list"}, status_code=400)
+    if len(raw_jobs) > 5000:
+        return JSONResponse({"ok": False, "error": "max_5000_jobs_per_submit"}, status_code=400)
+
+    batch_id = re.sub(r"[^a-zA-Z0-9_.:-]", "_", str(body.get("batch_id") or ""))[:80]
+    if not batch_id:
+        batch_id = "jb_" + secrets.token_hex(6)
+    default_notify = 1 if body.get("notify_chat") is True else 0
+
+    validated_explicit_nodes: dict[str, Any] = {}
+    has_auto_jobs = False
+    to_insert: list[tuple] = []
+    out_meta: list[dict[str, Any]] = []
+    legacy_inbox_notes: list[tuple[str, str]] = []
+    t_now = now()
+
+    try:
+        for idx, item in enumerate(raw_jobs):
+            if not isinstance(item, dict):
+                return JSONResponse({"ok": False, "error": f"job[{idx}] must be object"}, status_code=400)
+            cmd = str(item.get("command") or defaults.get("command") or "").strip()
+            if not cmd:
+                return JSONResponse({"ok": False, "error": f"job[{idx}] empty command"}, status_code=400)
+            want_node = str(item.get("node") or defaults.get("node") or "auto").strip().lower()
+            is_auto = want_node in ("", "auto")
+            if not is_auto:
+                if want_node not in validated_explicit_nodes:
+                    validated_explicit_nodes[want_node] = select_best_runner(for_conv=caller_id, target_node=want_node)
+                target_node = want_node
+            else:
+                has_auto_jobs = True
+                target_node = "auto"
+
+            repo = clean_repo(item.get("repo") if "repo" in item else (defaults.get("repo") or ""))
+            branch = re.sub(r"\s+", "", str(item.get("branch") if "branch" in item else (defaults.get("branch") or "")))[:120]
+            workdir = str(item.get("workdir") if "workdir" in item else (defaults.get("workdir") or "")).strip()[:300]
+            raw_to = item.get("timeout_sec") if "timeout_sec" in item else defaults.get("timeout_sec", 600)
+            try:
+                timeout_sec = max(10, min(MAX_JOB_TIMEOUT_SEC, int(raw_to or 600)))
+            except (TypeError, ValueError):
+                timeout_sec = 600
+            raw_mr = item.get("max_retries") if "max_retries" in item else defaults.get("max_retries", 2)
+            try:
+                max_retries = max(0, min(10, int(raw_mr if raw_mr is not None else 2)))
+            except (TypeError, ValueError):
+                max_retries = 2
+            notify_job = (1 if item.get("notify_chat") is True else 0) if "notify_chat" in item else default_notify
+            tag = str(item.get("tag") or "")[:160]
+            meta = item.get("meta")
+            raw_env = item.get("env") if isinstance(item.get("env"), dict) else defaults.get("env")
+            env_map = (
+                {str(k)[:120]: str(v)[:4000] for k, v in raw_env.items() if k}
+                if isinstance(raw_env, dict)
+                else {}
+            )
+            in_files = _resolve_job_input_files(
+                arow,
+                item.get("input_files") if "input_files" in item else defaults.get("input_files"),
+            )
+            raw_out_files = item.get("output_files") if "output_files" in item else defaults.get("output_files")
+            out_files_spec = (
+                [str(p).strip()[:260] for p in raw_out_files[:100] if str(p).strip()]
+                if isinstance(raw_out_files, list)
+                else []
+            )
+
+            op_id = "op_" + secrets.token_hex(6)
+            payload: dict[str, Any] = {
+                "conv_id": caller_id,
+                "requester": caller_id,
+                "batch_id": batch_id,
+                "want_node": "auto" if is_auto else want_node,
+                "command": cmd,
+                "repo": repo,
+                "branch": branch,
+                "workdir": workdir,
+                "timeout_sec": timeout_sec,
+            }
+            if tag:
+                payload["tag"] = tag
+            if meta is not None:
+                payload["meta"] = meta
+            if env_map:
+                payload["env"] = env_map
+            if in_files:
+                payload["input_files"] = in_files
+            if out_files_spec:
+                payload["output_files"] = out_files_spec
+
+            to_insert.append((
+                op_id,
+                batch_id,
+                target_node,
+                "workspace_job",
+                caller_id,
+                caller_id,
+                json.dumps(payload, ensure_ascii=False),
+                "pending",
+                t_now + idx * 1e-6,
+                max_retries,
+                notify_job,
+            ))
+            out_meta.append({"op_id": op_id, "tag": tag, "target_node": target_node})
+            if not is_auto and not worker_daemon_is_alive(target_node):
+                r_ag = validated_explicit_nodes[target_node]["agent"] or ""
+                legacy_inbox_notes.append((target_node, format_standard_workspace_job(op_id, r_ag, payload)))
+    except ToolFail as e:
+        return JSONResponse({"ok": False, "error": str(e)}, status_code=400)
+
+    online_runners = [
+        r for r in store.q("SELECT * FROM exec_nodes WHERE kind='runner' AND status='online'") if node_is_online(r)
+    ]
+    autoscale_spawned = ""
+    if has_auto_jobs and len(online_runners) < min(worker_pool_target(), len(to_insert)):
+        try:
+            sp = spawn_worker_vm_via_host(requester=f"autoscale:{caller_id}", allow_main_fallback=(len(online_runners) == 0))
+            if sp:
+                autoscale_spawned = sp[0]
+        except Exception:
+            pass
+
+    with store._lock:
+        store._con.executemany(
+            "INSERT INTO dispatch_ops(op_id,batch_id,target_node,op_type,conv_id,requester,payload_json,status,created_ts,max_retries,notify_chat) "
+            "VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+            to_insert,
+        )
+        store._con.commit()
+
+    for tgt_n, note_txt in legacy_inbox_notes:
+        system_note(tgt_n, note_txt, wake=1)
+    if has_auto_jobs:
+        wake_all_workers("auto")
+    for explicit_n in validated_explicit_nodes:
+        wake_all_workers(explicit_n)
+
+    return JSONResponse({
+        "ok": True,
+        "batch_id": batch_id,
+        "count": len(out_meta),
+        "op_ids": [m["op_id"] for m in out_meta],
+        "jobs": out_meta,
+        "online_workers": len(online_runners),
+        "autoscale_spawned": autoscale_spawned,
+    })
+
+
+@app.get("/jobs/status")
+async def http_jobs_status(
+    request: Request,
+    op_id: str = "",
+    batch_id: str = "",
+    status: str = "",
+    include_stdout: int = 1,
+    after_done_ts: float = 0.0,
+) -> JSONResponse:
+    """查询单笔或整批 /jobs/submit 任务的实时进度、原始未截断 stdout、exit_code 与产物文件下载链接。"""
+    arow, caller_id, is_priv, err_resp = _jobs_http_auth(request)
+    if err_resp is not None:
+        return err_resp
+    touch(arow["id"], "jobs_status")
+    requeue_stale_workspace_jobs()
+    op_ids = [s.strip() for s in (op_id or "").split(",") if s.strip()]
+    rows = _load_owned_job_ops(caller_id, is_priv, op_ids, batch_id.strip())
+    return JSONResponse(
+        _build_jobs_status_payload(
+            rows,
+            batch_id=batch_id.strip(),
+            status_filter=status,
+            include_stdout=bool(include_stdout),
+            after_done_ts=float(after_done_ts or 0.0),
+        )
     )
-    return JSONResponse({"ok": True, "op_id": op_id, "delivered_to": dest})
+
+
+@app.post("/jobs/wait")
+async def http_jobs_wait(request: Request) -> JSONResponse:
+    """长轮询阻塞等待单笔或整批任务完成（until='all' 等全部结束，until='any_done' 等任一新完成单即刻返回流式闭环）。"""
+    arow, caller_id, is_priv, err_resp = _jobs_http_auth(request)
+    if err_resp is not None:
+        return err_resp
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    if not isinstance(body, dict):
+        body = {}
+    touch(arow["id"], "jobs_wait")
+
+    raw_op = body.get("op_id") or ""
+    if isinstance(raw_op, list):
+        op_ids = [str(x).strip() for x in raw_op if str(x).strip()]
+    else:
+        op_ids = [s.strip() for s in str(raw_op).split(",") if s.strip()]
+    batch_id = str(body.get("batch_id") or "").strip()
+    if not batch_id and not op_ids:
+        return JSONResponse({"ok": False, "error": "missing_batch_id_or_op_id"}, status_code=400)
+
+    wait_sec = max(0.0, min(300.0, float(body.get("wait_sec") if body.get("wait_sec") is not None else 55.0)))
+    until_mode = str(body.get("until") or "all").strip().lower()
+    after_done_ts = float(body.get("after_done_ts") or 0.0)
+    include_stdout = bool(body.get("include_stdout", True))
+    status_filter = str(body.get("status") or "")
+
+    wait_keys = [f"batch:{batch_id}"] if batch_id else [oid for oid in op_ids[:64]]
+    wait_evs = [job_done_event(k) for k in wait_keys]
+    deadline = now() + wait_sec
+
+    while True:
+        for wev in wait_evs:
+            wev.clear()
+        requeue_stale_workspace_jobs()
+        rows = _load_owned_job_ops(caller_id, is_priv, op_ids, batch_id)
+        if not rows:
+            return JSONResponse({"ok": True, "batch_id": batch_id, "summary": {"total": 0, "all_finished": True}, "jobs": [], "timed_out_wait": False})
+        pend_or_run = sum(1 for r in rows if r["status"] in ("pending", "running"))
+        if until_mode == "any_done":
+            newly_done = any(
+                r["status"] in ("done", "failed", "cancelled") and float(r["done_ts"] or 0) > after_done_ts
+                for r in rows
+            )
+            matched = newly_done or pend_or_run == 0
+        else:
+            matched = pend_or_run == 0
+
+        if matched or SHUTDOWN["active"]:
+            res = _build_jobs_status_payload(
+                rows,
+                batch_id=batch_id,
+                status_filter=status_filter,
+                include_stdout=include_stdout,
+                after_done_ts=after_done_ts if until_mode == "any_done" else 0.0,
+            )
+            res["timed_out_wait"] = False
+            return JSONResponse(res)
+
+        rem = deadline - now()
+        if rem <= 0 or await request.is_disconnected():
+            res = _build_jobs_status_payload(
+                rows,
+                batch_id=batch_id,
+                status_filter=status_filter,
+                include_stdout=include_stdout,
+                after_done_ts=after_done_ts if until_mode == "any_done" else 0.0,
+            )
+            res["timed_out_wait"] = True
+            return JSONResponse(res)
+        if len(wait_evs) == 1:
+            try:
+                await asyncio.wait_for(wait_evs[0].wait(), timeout=min(rem, 5.0))
+            except asyncio.TimeoutError:
+                pass
+        else:
+            tasks = [asyncio.create_task(wev.wait()) for wev in wait_evs]
+            try:
+                _, pend_tasks = await asyncio.wait(tasks, timeout=min(rem, 5.0), return_when=asyncio.FIRST_COMPLETED)
+                for pt in pend_tasks:
+                    pt.cancel()
+            except Exception:
+                for t in tasks:
+                    t.cancel()
+
+
+@app.post("/jobs/cancel")
+async def http_jobs_cancel(request: Request) -> JSONResponse:
+    """批量取消尚未开始执行的 pending 任务。"""
+    arow, caller_id, is_priv, err_resp = _jobs_http_auth(request)
+    if err_resp is not None:
+        return err_resp
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    if not isinstance(body, dict):
+        body = {}
+    raw_op = body.get("op_id") or ""
+    if isinstance(raw_op, list):
+        op_ids = [str(x).strip() for x in raw_op if str(x).strip()]
+    else:
+        op_ids = [s.strip() for s in str(raw_op).split(",") if s.strip()]
+    batch_id = str(body.get("batch_id") or "").strip()
+    if not batch_id and not op_ids:
+        return JSONResponse({"ok": False, "error": "missing_batch_id_or_op_id"}, status_code=400)
+
+    rows = _load_owned_job_ops(caller_id, is_priv, op_ids, batch_id)
+    t_now = now()
+    cancelled_ids: list[str] = []
+    for r in rows:
+        if r["status"] == "pending":
+            changed = store.run(
+                "UPDATE dispatch_ops SET status='cancelled', done_ts=? WHERE op_id=? AND status='pending'",
+                (t_now, r["op_id"]),
+            )
+            if changed:
+                cancelled_ids.append(r["op_id"])
+                _notify_job_waiters(r["op_id"], r["batch_id"] or "")
+    return JSONResponse({"ok": True, "batch_id": batch_id, "cancelled": len(cancelled_ids), "op_ids": cancelled_ids})
 
 
 @app.post("/trace/event")
@@ -11232,6 +12148,23 @@ async def trace_post_event(request: Request) -> JSONResponse:
                 conv_key != "ctrl" and has_obvious_model_family_conflict(cur_rec_m, reported_m)
             ):
                 store.run("UPDATE convs SET model=? WHERE id=?", (reported_m, conv_key))
+
+    # 工作节点在跑超长计算单（最长达 24h）期间每 10s 上报 trace/event 心跳：同步续期租约与在线时间，杜绝超过 LOST_SEC(600s) 被误判离线！
+    if arow is not None and is_worker_node_id(conv_key):
+        worker_daemon_ts[conv_key] = now_hb
+        store.run("UPDATE agents SET last_seen=? WHERE id=?", (now_hb, arow["id"]))
+        store.run("UPDATE exec_nodes SET status='online', last_seen=? WHERE id=?", (now_hb, conv_key))
+        hb_op_id = str(body.get("op_id") or detail_obj.get("op_id") or "").strip()
+        if hb_op_id:
+            store.run(
+                "UPDATE dispatch_ops SET lease_ts=? WHERE op_id=? AND (claimed_by=? OR claimed_by='') AND status='running'",
+                (now_hb, hb_op_id, conv_key),
+            )
+        else:
+            store.run(
+                "UPDATE dispatch_ops SET lease_ts=? WHERE (claimed_by=? OR target_node=?) AND op_type='workspace_job' AND status='running'",
+                (now_hb, conv_key, conv_key),
+            )
 
     # 同步刷新所属主 Agent (mainN) 或工作节点 (nodeN) 的实时 CPU/内存探针快照！
     if metrics_str and not conv_key.startswith("cid:"):

@@ -380,6 +380,8 @@ def build_inbox_alert(bridge_url: str, agent_id: str) -> str:
         )
     if not peek.get("has_messages"):
         return ""
+    if agent_id.startswith("m_"):
+        return ""
     cnt = int(peek.get("count") or 1)
     conv_s = str(peek.get("conv") or "")
     src = "Telegram user/admin" if peek.get("has_human") else "peer agent / coordinator"
@@ -703,7 +705,8 @@ def _segment_is_safe_repo_or_test(seg: str) -> bool:
     if verb == "git":
         return not any(_arg_hits_protected_path(a) for a in args)
     if verb.startswith("python") and any(
-        a.endswith(("test_upgrade_340.py", "test_upgrade_360.py")) or a in ("test_upgrade_340", "test_upgrade_360")
+        a.endswith(("test_upgrade_340.py", "test_upgrade_360.py", "test_upgrade_374.py"))
+        or a in ("test_upgrade_340", "test_upgrade_360", "test_upgrade_374")
         for a in args
     ):
         return not any(_arg_hits_protected_path(a) for a in args)
@@ -761,13 +764,16 @@ def daemon_alive() -> bool:
 def ensure_daemon() -> None:
     if _is_system_mode() and os.geteuid() != 0 and not os.environ.get("DAIS_VAULT_DIR"):
         return
-    if not _is_system_mode() and os.environ.get("DAIS_SKIP_RELOAD") != "1" and _socket_accepting(SOCK_PATH):
-        return
+    if not _is_system_mode():
+        if os.environ.get("DAIS_SKIP_RELOAD") != "1" and _socket_accepting(SOCK_PATH):
+            return
+        if _user_installed_runtime_or_none() is None:
+            return
     if daemon_alive():
         return
     err_fp = None
     try:
-        entry_p = _installed_runtime_path() if _is_system_mode() else runtime_entry_path()
+        entry_p = _installed_runtime_path() if _is_system_mode() else (_user_installed_runtime_or_none() or runtime_entry_path())
         cmd = [sys.executable, str(entry_p), "daemon"]
         if _is_system_mode():
             cmd.append("--system")
@@ -1662,13 +1668,20 @@ def reload_exec_daemon() -> str:
     return "hooks.json configured"
 
 
-def _resolve_installed_runtime() -> Path:
+def _user_installed_runtime_or_none() -> Path | None:
     pyz_cand = CURSOR_DIR / "dais_runtime.pyz"
     if pyz_cand.exists():
         return pyz_cand
     py_cand = CURSOR_DIR / "agent_trace.py"
     if py_cand.exists():
         return py_cand
+    return None
+
+
+def _resolve_installed_runtime() -> Path:
+    inst = _user_installed_runtime_or_none()
+    if inst is not None:
+        return inst
     return runtime_entry_path()
 
 
@@ -1765,8 +1778,10 @@ def ensure_hooks_intact(target_script: Path | None = None, reload_if_changed: bo
         _cleanup_user_dot_cursor()
         cmd_str = f"{RELAY_PATH} || printf '{{}}'"
     else:
+        script = target_script or _user_installed_runtime_or_none()
+        if script is None:
+            return False
         CURSOR_DIR.mkdir(parents=True, exist_ok=True)
-        script = target_script or _resolve_installed_runtime()
         if script.name in ("__main__.py", "__main__.pyc") or script.suffix == ".pyc" or not script.is_file():
             for cand in [script, *script.parents]:
                 if cand.is_file():
@@ -2099,6 +2114,12 @@ def install_hooks(bridge_url: str, system_flag: bool | None = None) -> int:
     with StateLock() as st:
         if bridge_url and bridge_url != baked_bridge_url():
             st["bridge_url"] = bridge_url
+        elif not bridge_url and baked_bridge_url() in ("http://127.0.0.1:8787", "http://localhost:8787"):
+            existing_burl = str(st.get("bridge_url") or "").strip()
+            if existing_burl and "127.0.0.1" not in existing_burl and "localhost" not in existing_burl:
+                st["bridge_url"] = existing_burl
+            else:
+                st.pop("bridge_url", None)
         else:
             st.pop("bridge_url", None)
         if sys_mode and ag_hint.startswith("m_"):
@@ -2275,8 +2296,108 @@ def _prepare_worker_repo(repo: str, branch: str, workdir: str) -> str:
     return "\n".join(logs)
 
 
-def _execute_worker_job(agent_id: str, bridge_url: str, node_id: str, job: dict[str, Any]) -> tuple[str, int, str]:
+def _upload_worker_artifact(agent_id: str, bridge_url: str, filename: str, data: bytes) -> dict[str, Any] | None:
+    if not data:
+        return None
+    clean_name = Path(filename or "artifact.bin").name or "artifact.bin"
+    q_name = urllib.parse.quote(clean_name, safe="")
+    url = f"{bridge_url.rstrip('/')}/files/upload?filename={q_name}"
+    sha = hashlib.sha256(data).hexdigest()
+    for attempt in range(4):
+        req = urllib.request.Request(
+            url,
+            data=data,
+            headers={
+                "Content-Type": "application/octet-stream",
+                "X-Agent": agent_id,
+                "X-Filename": clean_name,
+            },
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=45) as resp:
+                res = json.loads(resp.read().decode("utf-8", errors="replace"))
+                if res.get("ok") and res.get("file_id"):
+                    return {
+                        "file_id": str(res["file_id"]),
+                        "name": clean_name,
+                        "size": len(data),
+                        "sha256": sha,
+                        "download_url": str(res.get("download_url") or ""),
+                    }
+        except Exception:
+            time.sleep(1.0 * (attempt + 1))
+    return None
+
+
+def _stage_worker_input_files(bridge_url: str, workdir: str, input_files: Any) -> list[str]:
+    notes: list[str] = []
+    if not isinstance(input_files, list) or not input_files:
+        return notes
+    wroot = Path(workdir).resolve()
+    wroot.mkdir(parents=True, exist_ok=True)
+    for item in input_files:
+        if not isinstance(item, dict):
+            continue
+        dl_url = str(item.get("url") or item.get("download_url") or "").strip()
+        rel = str(item.get("dest") or item.get("path") or item.get("name") or "").strip()
+        if not dl_url or not rel:
+            continue
+        if dl_url.startswith("/"):
+            dl_url = bridge_url.rstrip("/") + dl_url
+        dest = Path(rel) if Path(rel).is_absolute() else (wroot / rel)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            with urllib.request.urlopen(dl_url, timeout=60) as resp:
+                dest.write_bytes(resp.read())
+        except Exception as exc:
+            notes.append(f"[input_file_error {rel}]: {exc}")
+    return notes
+
+
+def _collect_worker_output_files(agent_id: str, bridge_url: str, workdir: str, output_specs: Any) -> list[dict[str, Any]]:
+    uploaded: list[dict[str, Any]] = []
+    if not isinstance(output_specs, list) or not output_specs:
+        return uploaded
+    wroot = Path(workdir).resolve()
+    seen_paths: set[str] = set()
+    for raw_spec in output_specs:
+        spec = str(raw_spec or "").strip()
+        if not spec:
+            continue
+        pattern = spec if os.path.isabs(spec) else str(wroot / spec)
+        matches = sorted(glob.glob(pattern, recursive=True))
+        if not matches and os.path.isfile(pattern):
+            matches = [pattern]
+        for mpath in matches:
+            p = Path(mpath)
+            if not p.is_file():
+                continue
+            rp = str(p.resolve())
+            if rp in seen_paths:
+                continue
+            seen_paths.add(rp)
+            try:
+                raw_b = p.read_bytes()
+            except Exception:
+                continue
+            if not raw_b or len(raw_b) > 100 * 1024 * 1024:
+                continue
+            up = _upload_worker_artifact(agent_id, bridge_url, p.name, raw_b)
+            if up:
+                try:
+                    rel_disp = str(p.resolve().relative_to(wroot))
+                except Exception:
+                    rel_disp = rp
+                up["spec"] = spec
+                up["path"] = rel_disp
+                uploaded.append(up)
+    return uploaded
+
+
+def _execute_worker_job_full(agent_id: str, bridge_url: str, node_id: str, job: dict[str, Any]) -> dict[str, Any]:
     import signal
+    import tempfile
     import threading
 
     op_id = str(job.get("op_id") or "")
@@ -2284,13 +2405,14 @@ def _execute_worker_job(agent_id: str, bridge_url: str, node_id: str, job: dict[
     repo = str(job.get("repo") or "").strip()
     branch = str(job.get("branch") or "").strip()
     workdir = str(job.get("workdir") or "").strip() or f"/tmp/dais_jobs/{job.get('conv_id') or 'task'}"
-    timeout_sec = max(10, min(3600, int(job.get("timeout_sec") or 600)))
+    timeout_sec = max(5, min(86400, int(job.get("timeout_sec") or 600)))
 
     started = time.time()
     post_json(
         f"{bridge_url}/trace/event",
         {
             "agent_id": agent_id,
+            "op_id": op_id,
             "event": "worker_job_start",
             "phase": "shell",
             "tool_name": "WorkerExec",
@@ -2302,42 +2424,74 @@ def _execute_worker_job(agent_id: str, bridge_url: str, node_id: str, job: dict[
         timeout=2.0,
     )
 
-    prep_note = ""
-    try:
-        prep_note = _prepare_worker_repo(repo, branch, workdir)
-    except Exception as exc:
-        prep_note = f"[repo_prep_error]: {exc}"
+    stop_lease_hb = threading.Event()
 
-    chunks: list[str] = []
-    total_chars = 0
-    lock = threading.Lock()
+    def _lease_keeper() -> None:
+        while not stop_lease_hb.wait(15.0):
+            hb_req = urllib.request.Request(
+                f"{bridge_url.rstrip('/')}/worker/heartbeat",
+                data=json.dumps({"op_id": op_id, "metrics": collect_machine_metrics(None)}, ensure_ascii=False).encode("utf-8"),
+                headers={"Content-Type": "application/json; charset=utf-8", "X-Agent": agent_id},
+                method="POST",
+            )
+            try:
+                with urllib.request.urlopen(hb_req, timeout=3.0) as _r:
+                    _r.read()
+            except Exception:
+                pass
+
+    lease_thread = threading.Thread(target=_lease_keeper, daemon=True)
+    lease_thread.start()
+
+    prep_notes: list[str] = []
+    try:
+        r_note = _prepare_worker_repo(repo, branch, workdir)
+        if r_note:
+            prep_notes.append(r_note)
+    except Exception as exc:
+        prep_notes.append(f"[repo_prep_error]: {exc}")
+
+    try:
+        prep_notes.extend(_stage_worker_input_files(bridge_url, workdir, job.get("input_files")))
+    except Exception as exc:
+        prep_notes.append(f"[input_stage_error]: {exc}")
+
+    prep_note = "\n".join(x for x in prep_notes if x).strip()
+    proc_env = os.environ.copy()
+    extra_env = job.get("env")
+    if isinstance(extra_env, dict):
+        for ek, ev in extra_env.items():
+            if ek and isinstance(ek, str):
+                proc_env[ek] = str(ev if ev is not None else "")
+
+    fd_out, tmp_out_path = tempfile.mkstemp(prefix=f".dais_job_{op_id or 'x'}_", suffix=".log")
+    os.close(fd_out)
+    out_file_path = Path(tmp_out_path)
+    max_capture_bytes = 95 * 1024 * 1024
+    captured_bytes = 0
 
     proc = subprocess.Popen(
         ["bash", "-lc", cmd],
         cwd=workdir,
+        env=proc_env,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
-        text=True,
-        errors="replace",
         start_new_session=True,
     )
 
     def _reader() -> None:
-        nonlocal total_chars
+        nonlocal captured_bytes
         assert proc.stdout is not None
         try:
-            while True:
-                buf = proc.stdout.read(4096)
-                if not buf:
-                    break
-                with lock:
-                    chunks.append(buf)
-                    total_chars += len(buf)
-                    # 防止极端超大输出撑爆内存：超过 2MB 时仅保留头尾
-                    if total_chars > 2_000_000 and len(chunks) > 40:
-                        joined = "".join(chunks)
-                        chunks[:] = [joined[:120_000], "\n...[stream trimmed]...\n", joined[-280_000:]]
-                        total_chars = sum(len(x) for x in chunks)
+            with out_file_path.open("wb") as wf:
+                while True:
+                    buf = proc.stdout.read(16384)
+                    if not buf:
+                        break
+                    if captured_bytes < max_capture_bytes:
+                        take = buf[: max_capture_bytes - captured_bytes]
+                        wf.write(take)
+                        captured_bytes += len(take)
         except Exception:
             pass
 
@@ -2371,6 +2525,7 @@ def _execute_worker_job(agent_id: str, bridge_url: str, node_id: str, job: dict[
                 f"{bridge_url}/trace/event",
                 {
                     "agent_id": agent_id,
+                    "op_id": op_id,
                     "event": "heartbeat",
                     "phase": "shell",
                     "tool_name": "WorkerExec",
@@ -2389,11 +2544,37 @@ def _execute_worker_job(agent_id: str, bridge_url: str, node_id: str, job: dict[
         proc.wait(timeout=5)
     except Exception:
         pass
-    rd_thread.join(timeout=3.0)
+    rd_thread.join(timeout=5.0)
     rc_final = int(proc.returncode if proc.returncode is not None else (-9 if timed_out else 1))
-    dur = time.time() - started
+    dur = round(time.time() - started, 3)
 
-    raw_out = "".join(chunks).strip()
+    try:
+        raw_bytes = out_file_path.read_bytes()
+    except Exception:
+        raw_bytes = b""
+    finally:
+        try:
+            out_file_path.unlink(missing_ok=True)
+        except Exception:
+            pass
+
+    stdout_file_meta: dict[str, Any] | None = None
+    inline_limit = 256 * 1024
+    need_upload_stdout = bool(job.get("upload_stdout")) or len(raw_bytes) > inline_limit
+    if need_upload_stdout and raw_bytes:
+        stdout_file_meta = _upload_worker_artifact(agent_id, bridge_url, f"{op_id or 'job'}.stdout.log", raw_bytes)
+
+    raw_text_full = raw_bytes.decode("utf-8", errors="replace")
+    if len(raw_bytes) <= inline_limit:
+        exact_stdout = raw_text_full
+    else:
+        exact_stdout = raw_text_full[:65536] + f"\n...[raw_bytes={len(raw_bytes)}, see stdout_file]...\n" + raw_text_full[-131072:]
+
+    uploaded_outputs = _collect_worker_output_files(agent_id, bridge_url, workdir, job.get("output_files"))
+    stop_lease_hb.set()
+    lease_thread.join(timeout=1.0)
+
+    raw_out = raw_text_full.strip()
     if len(raw_out) > 7200:
         omitted = len(raw_out) - 6900
         raw_out = f"{raw_out[:1900]}\n\n...[中间已省略 {omitted} 字符]...\n\n{raw_out[-5000:]}"
@@ -2405,7 +2586,24 @@ def _execute_worker_job(agent_id: str, bridge_url: str, node_id: str, job: dict[
     if raw_out:
         parts.append(raw_out)
     status_str = "ok" if (rc_final == 0 and not timed_out) else "error"
-    return status_str, rc_final, "\n".join(parts)[:7900]
+    return {
+        "status": status_str,
+        "exit_code": rc_final,
+        "elapsed_sec": dur,
+        "timed_out": timed_out,
+        "output": "\n".join(parts)[:7900],
+        "stdout": exact_stdout,
+        "stdout_size": len(raw_bytes),
+        "stdout_truncated_inline": len(raw_bytes) > inline_limit,
+        "stdout_file": stdout_file_meta,
+        "output_files": uploaded_outputs,
+        "prep_note": prep_note,
+    }
+
+
+def _execute_worker_job(agent_id: str, bridge_url: str, node_id: str, job: dict[str, Any]) -> tuple[str, int, str]:
+    res = _execute_worker_job_full(agent_id, bridge_url, node_id, job)
+    return str(res["status"]), int(res["exit_code"]), str(res["output"])
 
 
 def worker_loop(agent_id: str, bridge_url: str, max_sec: int = 1560) -> int:
@@ -2458,15 +2656,22 @@ def worker_loop(agent_id: str, bridge_url: str, max_sec: int = 1560) -> int:
 
         node_id = str(data.get("node_id") or "node")
         op_id = str(job["op_id"])
-        status_s, rc_val, out_txt = _execute_worker_job(agent_id, bridge_url, node_id, job)
+        exec_res = _execute_worker_job_full(agent_id, bridge_url, node_id, job)
 
         # 回传执行结果（若遇网络抖动或服务瞬时重启，重试最多 8 次确保不丢回执！）
         comp_payload = json.dumps(
             {
                 "op_id": op_id,
-                "status": status_s,
-                "exit_code": rc_val,
-                "output": out_txt,
+                "status": exec_res["status"],
+                "exit_code": exec_res["exit_code"],
+                "elapsed_sec": exec_res["elapsed_sec"],
+                "timed_out": exec_res["timed_out"],
+                "output": exec_res["output"],
+                "stdout": exec_res["stdout"],
+                "stdout_size": exec_res["stdout_size"],
+                "stdout_truncated_inline": exec_res["stdout_truncated_inline"],
+                "stdout_file": exec_res["stdout_file"],
+                "output_files": exec_res["output_files"],
                 "metrics": collect_machine_metrics(None, force=True),
             },
             ensure_ascii=False,
@@ -2487,7 +2692,7 @@ def worker_loop(agent_id: str, bridge_url: str, max_sec: int = 1560) -> int:
                 time.sleep(1.5 * (attempt + 1))
 
     print(
-        f"【常驻执行进程周期续接】这不是用户消息。请立即再次在终端运行同一条命令继续保持常驻（block_until_ms=6780000），无需调用 read_chat 或其他工具，不要结束回合。",
+        "【常驻执行进程周期续接】这不是用户消息。请立即再次在终端运行同一条命令继续保持常驻（block_until_ms=1680000），无需调用 read_chat 或其他工具，不要结束回合。",
         flush=True,
     )
     return 0

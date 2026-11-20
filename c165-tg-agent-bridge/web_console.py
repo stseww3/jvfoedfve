@@ -438,11 +438,15 @@ def _can_user_read_file(bridge, store, user, frow) -> bool:
     return False
 
 
-def _serialize_conv(bridge, crow) -> dict[str, Any]:
+_UNSET_TRACE = object()
+
+
+def _serialize_conv(bridge, crow, trow: Any = _UNSET_TRACE) -> dict[str, Any]:
     info = bridge.conv_state(crow)
-    trow = bridge.store.one("SELECT * FROM agent_traces WHERE conv=?", (crow["id"],))
+    if trow is _UNSET_TRACE:
+        trow = bridge.store.one("SELECT * FROM agent_traces WHERE conv=?", (crow["id"],))
     think_stuck, stuck_s = bridge.check_thinking_stuck(crow, trow)
-    tline = bridge.trace_one_liner(crow["id"])
+    tline = bridge.trace_one_liner(crow["id"], trow=trow)
     cid = crow["id"]
     if cid in ("ctrl", "main"):
         kind = "ctrl"
@@ -826,21 +830,22 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
         bridge.ensure_main_conv()
         is_super = _is_zwt(user)
         convs_out: list[dict[str, Any]] = []
+        traces_by_conv = {r["conv"]: r for r in store.q("SELECT * FROM agent_traces")}
 
         if is_super:
             ctrl_c = bridge.conv_row("ctrl") if bridge.ctrl_is_active() or (bridge.conv_row("ctrl") and bridge.conv_row("ctrl")["task_code"]) else bridge.conv_row("main")
             if ctrl_c is not None:
-                convs_out.append(_serialize_conv(bridge, ctrl_c))
+                convs_out.append(_serialize_conv(bridge, ctrl_c, trow=traces_by_conv.get(ctrl_c["id"])))
             for mn in store.q("SELECT * FROM exec_nodes WHERE kind='launcher' AND status!='removed' ORDER BY num"):
                 mc = bridge.conv_row(mn["id"])
                 if mc is not None:
-                    convs_out.append(_serialize_conv(bridge, mc))
+                    convs_out.append(_serialize_conv(bridge, mc, trow=traces_by_conv.get(mc["id"])))
             all_chat_rows = [
                 r for r in store.q("SELECT * FROM convs WHERE status!='deleted' ORDER BY status!='open', IFNULL(owner,0)!=0, num DESC")
                 if not bridge.is_system_conv_id(r["id"])
             ]
             for r in all_chat_rows:
-                convs_out.append(_serialize_conv(bridge, r))
+                convs_out.append(_serialize_conv(bridge, r, trow=traces_by_conv.get(r["id"])))
         else:
             owner_id = int(user["tg_owner"] or 0)
             allowed_c = _user_allowed_convs(user)
@@ -848,7 +853,7 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
             for cid_allow in sorted(allowed_c):
                 rc = bridge.conv_row(cid_allow)
                 if rc is not None and rc["status"] != "deleted" and not bridge.is_system_conv_id(rc["id"]):
-                    convs_out.append(_serialize_conv(bridge, rc))
+                    convs_out.append(_serialize_conv(bridge, rc, trow=traces_by_conv.get(rc["id"])))
                     seen_cids.add(rc["id"])
             my_rows = [
                 r for r in store.q(
@@ -858,7 +863,7 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
                 if not bridge.is_system_conv_id(r["id"]) and r["id"] not in seen_cids
             ]
             for r in my_rows:
-                convs_out.append(_serialize_conv(bridge, r))
+                convs_out.append(_serialize_conv(bridge, r, trow=traces_by_conv.get(r["id"])))
 
         groups_out = []
         for g in store.q("SELECT * FROM agent_groups WHERE status!='closed' ORDER BY num DESC"):
