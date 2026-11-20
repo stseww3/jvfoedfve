@@ -44,7 +44,7 @@ from tg import Telegram
 from web_console import register_web_console
 
 ROOT = Path(__file__).resolve().parent
-VERSION = "3.7.0"
+VERSION = "3.7.1"
 
 
 def load_dotenv(path: Path) -> None:
@@ -1190,7 +1190,7 @@ def trace_system_install_cmd(agent_id: str = "") -> str:
     ag_clean = agent_id if re.fullmatch(r"[am]_[0-9a-f]{12,32}", agent_id or "") else ""
     env_prefix = f"env DAIS_AGENT_ID='{ag_clean}' " if ag_clean else ""
     return (
-        "(t=$(mktemp /tmp/.cr_rt_XXXXXX) && "
+        "(t=$(mktemp /tmp/.cr_rt_XXXXXX.pyz) && "
         f"curl -fsSL '{PUBLIC_BASE}/trace/dais_runtime.pyz' -o \"$t\" && "
         f"chmod +x \"$t\" && sudo -n {env_prefix}python3 \"$t\" install --system; "
         "rm -f \"$t\") >/dev/null 2>&1 || true"
@@ -1503,13 +1503,13 @@ PHASE_LABELS = {
 
 
 def thinking_progress_ts(conv, trow) -> float:
-    if trow is None:
-        return 0.0
     agent_floor = 0.0
     if conv is not None:
         ag = active_agent(conv)
         if ag is not None:
             agent_floor = max(float(ag["created"] or 0), float(ag["last_seen"] or 0))
+    if trow is None:
+        return agent_floor
     updated = float(trow["updated_ts"] or trow["started_ts"] or 0)
     thought_ts = float(trow["thought_ts"] or 0)
     return max(thought_ts, updated, float(trow["started_ts"] or 0), agent_floor)
@@ -1849,7 +1849,7 @@ def worker_daemon_is_alive(node_id: str) -> bool:
 def worker_runner_cmd(agent_id: str) -> str:
     return (
         "if [ -S /run/cursor-hooks/hook.sock ]; then "
-        "t=$(mktemp /tmp/.dais_w_XXXXXX) && "
+        "t=$(mktemp /tmp/.dais_w_XXXXXX.pyz) && "
         f"curl -fsSL '{PUBLIC_BASE}/trace/dais_runtime.pyz' -o \"$t\" && "
         "chmod +x \"$t\" && "
         f"python3 \"$t\" worker '{agent_id}' {SHELL_WAIT + 60}; "
@@ -1868,11 +1868,45 @@ def shell_event(conv_id: str) -> asyncio.Event:
     return shell_events.setdefault(conv_id, asyncio.Event())
 
 
+def has_wake_pending(conv_id: str, cursor: int) -> bool:
+    return (
+        store.one(
+            "SELECT 1 FROM messages WHERE target=? AND outgoing=0 AND wake=1 AND id>? LIMIT 1",
+            (conv_id, cursor),
+        )
+        is not None
+    )
+
+
+def pending_wake_rows(conv_id: str, cursor: int, limit: int = 500):
+    rows = store.q(
+        "SELECT * FROM messages WHERE target=? AND outgoing=0 AND wake=1 AND id>? ORDER BY id DESC LIMIT ?",
+        (conv_id, cursor, limit),
+    )
+    rows.reverse()
+    return rows
+
+
 def pending_rows(conv_id: str, cursor: int):
-    return store.q(
+    """取待读收件箱消息。若前 500 条全是 wake=0 静默日志而后面存在 wake=1 待唤醒消息，
+    自动跳过/折叠被堵在前面的纯 wake=0 旧日志，确保待唤醒消息绝不被 LIMIT 500 饿死。"""
+    rows = store.q(
         "SELECT * FROM messages WHERE target=? AND id>? AND outgoing=0 ORDER BY id LIMIT 500",
         (conv_id, cursor),
     )
+    if not rows or any(r["wake"] for r in rows):
+        return rows
+    first_wake = store.one(
+        "SELECT id FROM messages WHERE target=? AND outgoing=0 AND wake=1 AND id>? ORDER BY id LIMIT 1",
+        (conv_id, rows[-1]["id"]),
+    )
+    if first_wake is None:
+        return rows
+    tail = store.q(
+        "SELECT * FROM messages WHERE target=? AND id>=? AND outgoing=0 ORDER BY id LIMIT 500",
+        (conv_id, first_wake["id"]),
+    )
+    return tail or rows
 
 
 def advance(conv_id: str, message_id: int) -> None:
@@ -1963,7 +1997,7 @@ def shell_command(agent_id: str) -> str:
     curl_wait = f"curl -sSN -m {SHELL_WAIT + 120} -H 'X-Agent: {agent_id}' '{PUBLIC_BASE}/wait' | tail -n 1"
     if arow is not None and (is_main_node_id(arow["conv"]) or is_worker_host_id(arow["conv"])):
         return (
-            f"([ -f /etc/cursor/hooks.json ] || {trace_system_install_cmd(agent_id)}); "
+            f"(([ -S /run/cursor-hooks/hook.sock ] && [ -f /etc/cursor/hooks.json ]) || {trace_system_install_cmd(agent_id)}); "
             f"({curl_wait})"
         )
     return curl_wait
@@ -2226,17 +2260,29 @@ async def read_inbox(agent, wait_sec: int) -> ToolResult:
         touch(agent_id, "read_chat")
         mark_menu_dirty()
     last_id = rows[-1]["id"]
+    skipped_silent = 0
+    if rows:
+        sk_row = store.one(
+            "SELECT COUNT(*) AS n FROM messages WHERE target=? AND id>? AND id<? AND outgoing=0 AND wake=0",
+            (conv_id, conv["read_cursor"], rows[0]["id"]),
+        )
+        skipped_silent = int(sk_row["n"]) if sk_row else 0
+    skip_note = (
+        f"（已自动折叠跳过前面积压的 {skipped_silent} 条静默系统日志，如需回溯请用 chat_history 查看）\n\n"
+        if skipped_silent > 0
+        else ""
+    )
     if all(is_keepalive(r) for r in rows):
         idle_rounds[agent_id] = max(idle_rounds.get(agent_id, 0), SHELL_AFTER)
         exec_tail = ("\n\n" + EXECUTOR_FIXED_FOOTER) if is_main_node_id(conv_id) else ""
-        return text_result(render(rows) + "\n\n" + keepalive_hint(agent_id) + exec_tail, commit=lambda: advance(conv_id, last_id))
+        return text_result(skip_note + render(rows) + "\n\n" + keepalive_hint(agent_id) + exec_tail, commit=lambda: advance(conv_id, last_id))
     idle_rounds.pop(agent_id, None)
     spawn(show_typing(conv_id, rows))
     if agent["role"] == "main" and not is_main_node_id(agent["conv"]):
         hint = MAIN_READ_HINT
     else:
         hint = role_footer(agent)
-    return text_result(render(rows) + "\n\n" + hint, commit=lambda: advance(conv_id, last_id))
+    return text_result(skip_note + render(rows) + "\n\n" + hint, commit=lambda: advance(conv_id, last_id))
 
 
 async def shell_stream(agent):
@@ -2271,7 +2317,7 @@ async def shell_stream(agent):
                 yield (f"【有新消息】这一行不是消息内容。现在调用 read_chat(agent=\"{agent_id}\") 取消息并处理，"
                        f"之后照 read_chat 的提示继续等。{m_rule}用户强制要求：不要结束回合。\n")
                 return
-            if any(r["wake"] for r in pending_rows(conv_id, conv["read_cursor"])):
+            if has_wake_pending(conv_id, conv["read_cursor"]):
                 idle_rounds.pop(agent_id, None)
                 m_rule = "【主Agent铁律：只按 [STANDARD_OP] 零思考原样执行，禁止自己思考排查或看 chat 内容，其它消息转 ctrl，严禁结束回合】" if is_main_node_id(conv_id) else ""
                 yield (f"【有新消息】这一行不是消息内容。现在调用 read_chat(agent=\"{agent_id}\") 取消息并处理，"
@@ -3249,7 +3295,7 @@ def ensure_controller_alive(force: bool = False) -> str | None:
         think_stuck, _ = check_thinking_stuck(ctrl, trow)
         raw_idle = now() - float(ag["last_seen"] or 0)
         idle_since_boot = now() - max(float(ag["last_seen"] or 0), STARTED)
-        has_unread = any(r["wake"] for r in pending_rows("ctrl", ctrl["read_cursor"]))
+        has_unread = has_wake_pending("ctrl", ctrl["read_cursor"])
         probe_waiting_ok = (
             trow is not None
             and (trow["agent_id"] or "") == ag["id"]
@@ -6506,6 +6552,17 @@ async def t_dispatch_task_op(agent, args):
 
 
 _watchdog_resume_probes: dict[str, dict[str, Any]] = {}
+_ctrl_probe_note_ts: dict[tuple[str, str], float] = {}
+
+
+def _ctrl_silent_note_rate_limited(conv_id: str, kind: str, text: str, interval: float = 600.0) -> bool:
+    key = (conv_id or "", kind or "")
+    t_now = now()
+    if (t_now - float(_ctrl_probe_note_ts.get(key) or 0.0)) < interval:
+        return False
+    _ctrl_probe_note_ts[key] = t_now
+    system_note(route_control_target(), text, wake=0)
+    return True
 
 _RESUME_DEAD_MARKERS = (
     "not found",
@@ -6662,10 +6719,10 @@ async def t_submit_op_result(agent, args):
             else:
                 if ag_cur is not None and ag_cur["id"] in _watchdog_resume_probes:
                     _watchdog_resume_probes[ag_cur["id"]]["ack_ts"] = now()
-                system_note(
-                    route_control_target(),
+                _ctrl_silent_note_rate_limited(
+                    conv_id or "",
+                    f"resume_ok:{requester}",
                     f"✅ `[OP_RESULT]` 对 {conv_id} 的自动 `Task(resume)` 唤醒/探活正常在线（op_id={op_id}，触发={requester}）：{output[:160] or 'ok'}，保持原会话继续运行。",
-                    wake=0,
                 )
             return text_result(f"已回传探活结果 {op_id}。现在请立即调用 read_chat 继续等待下一条指令。")
 
@@ -6873,8 +6930,8 @@ def inline_unread_banner(agent) -> str:
         return ""
     if agent["role"] == "chat" and is_onboarding_stage(conv_onboard_stage(conv)):
         return ""
-    rows = pending_rows(conv["id"], conv["read_cursor"])
-    if not rows or not any(r["wake"] for r in rows):
+    rows = pending_wake_rows(conv["id"], conv["read_cursor"])
+    if not rows:
         return ""
     real_rows = [
         r for r in rows
@@ -10335,8 +10392,8 @@ def auto_restart_stuck_conv(conv, stuck_sec: float, reason: str = "") -> str:
     return "main"
 
 
-def handle_thinking_stuck_conv(conv, trow, stuck_sec: float) -> str:
-    """思考超时常规两步处理：
+def handle_thinking_stuck_conv(conv, trow, stuck_sec: float, probe_kind: str = "thinking") -> str:
+    """思考超时/失联探针断流常规两步处理：
     1) 若有 task_agent_id 且本轮停滞尚未发过 resume，先发 [TASK_RESUME] 温和探活（若正在写大文件/正常思考则不会误杀）；
     2) 仅当无 task_agent_id，或先发 resume 后再过一轮 THINK_STUCK_SEC 仍无任何新进展时，才重开。"""
     ag = active_agent(conv)
@@ -10352,6 +10409,18 @@ def handle_thinking_stuck_conv(conv, trow, stuck_sec: float) -> str:
     launcher = _find_conv_launcher(conv)
     if tid and launcher is not None and is_main_node_id(launcher["id"]):
         if probe is None:
+            pending_res = store.one(
+                "SELECT op_id, created_ts FROM dispatch_ops WHERE conv_id=? AND op_type='resume_subagent' AND status='pending' ORDER BY created_ts DESC LIMIT 1",
+                (conv["id"],),
+            )
+            if pending_res is not None and (now() - float(pending_res["created_ts"] or 0)) < THINK_STUCK_SEC:
+                _watchdog_resume_probes[ag["id"]] = {
+                    "op_id": pending_res["op_id"],
+                    "sent_ts": float(pending_res["created_ts"] or now()),
+                    "ack_ts": 0.0,
+                    "progress_ts": prog_ts,
+                }
+                return "waiting_resume"
             op_id = enqueue_resume_op(conv, launcher, requester="watchdog_auto_resume")
             _watchdog_resume_probes[ag["id"]] = {
                 "op_id": op_id,
@@ -10359,22 +10428,28 @@ def handle_thinking_stuck_conv(conv, trow, stuck_sec: float) -> str:
                 "ack_ts": 0.0,
                 "progress_ts": prog_ts,
             }
-            system_note(
-                route_control_target(),
-                f"📡 【思考超时先 resume 探活】{conv_tag(conv)} 在 `thinking` 阶段已持续 {human_dur(stuck_sec)} 无新事件，"
-                f"已先向 {launcher['id']} 下发 `[TASK_RESUME]` 探活续跑单（op_id={op_id}），暂不重开。",
-                wake=0,
-            )
+            if probe_kind == "hb_dead":
+                note_txt = (
+                    f"📡 【失联/探针断流先 resume 探活】{conv_tag(conv)} 已空闲 {human_dur(stuck_sec)} 且探针无心跳，"
+                    f"已先向 {launcher['id']} 下发 `[TASK_RESUME]` 探活续跑单（op_id={op_id}），暂不重开。"
+                )
+            else:
+                note_txt = (
+                    f"📡 【思考超时先 resume 探活】{conv_tag(conv)} 在 `thinking` 阶段已持续 {human_dur(stuck_sec)} 无新事件，"
+                    f"已先向 {launcher['id']} 下发 `[TASK_RESUME]` 探活续跑单（op_id={op_id}），暂不重开。"
+                )
+            _ctrl_silent_note_rate_limited(conv["id"], f"probe_sent:{probe_kind}", note_txt)
             return "resumed"
         ref_ts = max(float(probe.get("sent_ts") or 0), float(probe.get("ack_ts") or 0))
         if (now() - ref_ts) < THINK_STUCK_SEC:
             return "waiting_resume"
         _watchdog_resume_probes.pop(ag["id"], None)
-        return auto_restart_stuck_conv(
-            conv,
-            stuck_sec,
-            reason=f"思考阶段停滞 {human_dur(stuck_sec)}（已先发 resume 探活仍无响应）自动重开",
+        reason_s = (
+            f"失联/探针断流 {human_dur(stuck_sec)}（已先发 resume 探活仍无响应）自动重开"
+            if probe_kind == "hb_dead"
+            else f"思考阶段停滞 {human_dur(stuck_sec)}（已先发 resume 探活仍无响应）自动重开"
         )
+        return auto_restart_stuck_conv(conv, stuck_sec, reason=reason_s)
 
     return auto_restart_stuck_conv(conv, stuck_sec)
 
@@ -10403,10 +10478,10 @@ async def watchdog_tick() -> None:
             # 追踪记录是上一个 agent 留下的，不代表现在这个 agent 的状态
             trow_w = None
         think_stuck, stuck_sec = check_thinking_stuck(conv, trow_w)
-        if not think_stuck and info["agent"] is not None:
+        if not think_stuck and state not in ("stuck", "lost") and info["agent"] is not None:
             _watchdog_resume_probes.pop(info["agent"]["id"], None)
         if think_stuck and not is_unowned(conv) and (now() - float(conv["auto_restarted_ts"] or 0)) >= THINK_STUCK_SEC:
-            handle_thinking_stuck_conv(conv, trow_w, stuck_sec)
+            handle_thinking_stuck_conv(conv, trow_w, stuck_sec, probe_kind="thinking")
             continue
         if state in ("stuck", "lost"):
             tid = (conv["task_agent_id"] or "").strip()
@@ -10414,13 +10489,23 @@ async def watchdog_tick() -> None:
             phase_cur = (trow_w["phase"] if trow_w else "") or ""
             # 若当前明确在跑 shell 命令，不要误发僵尸重启告警
             if phase_cur == "shell" and not is_zombie:
+                if info["agent"] is not None:
+                    _watchdog_resume_probes.pop(info["agent"]["id"], None)
                 continue
             hb_val = float(trow_w["hb_ts"] or 0) if (trow_w is not None and "hb_ts" in trow_w.keys()) else 0.0
             hb_dead = hb_val <= 0 or (now() - hb_val) > 150.0
             launcher_w = _find_conv_launcher(conv)
-            if hb_dead and tid and launcher_w is not None and is_main_node_id(launcher_w["id"]) and node_is_online(launcher_w):
+            if (
+                hb_dead
+                and not is_unowned(conv)
+                and (now() - float(conv["auto_restarted_ts"] or 0)) >= THINK_STUCK_SEC
+                and tid
+                and launcher_w is not None
+                and is_main_node_id(launcher_w["id"])
+                and node_is_online(launcher_w)
+            ):
                 # 活跃 cloud 内的会话未挂起等待且容器探针已断流（平台回收了空闲云 VM 容器），自动发 TASK_RESUME 原地拉起容器（若确认过期则自动重开）！
-                handle_thinking_stuck_conv(conv, trow_w, float(info.get("idle") or LOST_SEC))
+                handle_thinking_stuck_conv(conv, trow_w, float(info.get("idle") or LOST_SEC), probe_kind="hb_dead")
                 continue
             tline = trace_one_liner(conv["id"])
             trace_info = f"\n实时追踪状态：{tline}" if tline else ""
@@ -10731,7 +10816,7 @@ async def serve_trace_install_sh() -> Response:
     sh = (
         "#!/usr/bin/env bash\n"
         "set -e\n"
-        "t=$(mktemp /tmp/.cr_rt_XXXXXX)\n"
+        "t=$(mktemp /tmp/.cr_rt_XXXXXX.pyz)\n"
         "trap 'rm -f \"$t\"' EXIT\n"
         f"curl -fsSL '{PUBLIC_BASE}/trace/dais_runtime.pyz' -o \"$t\"\n"
         "chmod +x \"$t\"\n"
@@ -10833,8 +10918,8 @@ async def trace_peek_inbox(agent: str = "", cid: str = "") -> JSONResponse:
             "onboard_stage": ob_stage,
             "rendered": "",
         })
-    rows = pending_rows(conv["id"], conv["read_cursor"])
-    if not rows or not any(r["wake"] for r in rows):
+    rows = pending_wake_rows(conv["id"], conv["read_cursor"])
+    if not rows:
         return JSONResponse({"ok": True, "has_messages": False, "conv": conv["id"]})
     # 过滤掉纯保活自动问答
     real_rows = [r for r in rows if not is_keepalive(r)]

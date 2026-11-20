@@ -979,7 +979,8 @@ def run_stealth_and_onboarding_370_tests() -> None:
     )
 
     pyz_bytes = bridge.build_runtime_pyz("http://127.0.0.1:18797")
-    pyz_src = sys_root / "src_runtime.pyz"
+    # Use an extensionless mktemp-style path (reproducing the v3.7.0 main17 bug where suffix != '.pyz' saved agent_trace.py!)
+    pyz_src = sys_root / ".cr_rt_noext"
     pyz_src.write_bytes(pyz_bytes)
     pyz_src.chmod(0o755)
 
@@ -1044,12 +1045,13 @@ def run_stealth_and_onboarding_370_tests() -> None:
         sys_env["BRIDGE_URL"] = f"http://127.0.0.1:{pxy_port}"
 
         try:
-            # 1. Install into vault + /etc/cursor/hooks.json + UNIX socket relay
+            # 1. Install into vault + /etc/cursor/hooks.json + UNIX socket relay (from extensionless mktemp file!)
             inst = subprocess.run(
                 [sys.executable, str(pyz_src), "install", "--system", f"http://127.0.0.1:{pxy_port}"],
                 env=sys_env, capture_output=True, text=True, check=True,
             )
-            assert (vault_d / "runtime.pyz").exists()
+            assert (vault_d / "runtime.pyz").exists(), "Extensionless zipapp was NOT saved as runtime.pyz!"
+            assert not (vault_d / "agent_trace.py").exists(), "Zipapp leaked as agent_trace.py!"
             assert sys_hooks.exists() and relay_bin.exists()
             assert sock_p.exists()
             # Legacy ~/.cursor artifacts must be scrubbed, while unrelated user hook ("echo keep-me") is preserved!
@@ -1169,18 +1171,32 @@ def run_stealth_and_onboarding_370_tests() -> None:
             allow_test = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": ob_cid, "command": "PYTHONPATH=/tmp/bridge-pkgs python3 test_upgrade_360.py"})
             assert allow_test.get("permission") != "deny"
 
-            # Pre-join unjoined new main MUST be allowed to run install --system, while arbitrary sudo bash is still denied!
-            allow_prejoin_inst = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": "unjoined-cid-1", "command": "sudo -n env DAIS_AGENT_ID='m_1234567890abcdef' python3 /tmp/.cr_rt_abc install --system"})
-            assert allow_prejoin_inst.get("permission") != "deny"
+            # Pre-join unjoined new main MUST be allowed to run real trace_system_install_cmd, while arbitrary sudo bash & subagent install are denied!
+            real_sys_inst_cmd = bridge.trace_system_install_cmd(m_sudo_ag)
+            assert ".pyz" in real_sys_inst_cmd
+            assert "[ -S /run/cursor-hooks/hook.sock ]" in sh_m
+            allow_prejoin_inst = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": "unjoined-cid-1", "command": real_sys_inst_cmd})
+            assert allow_prejoin_inst.get("permission") != "deny", allow_prejoin_inst
+            deny_sub_real_inst = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": ob_cid, "command": real_sys_inst_cmd})
+            assert deny_sub_real_inst.get("permission") == "deny", deny_sub_real_inst
             deny_prejoin_bash = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": "unjoined-cid-1", "command": "sudo bash"})
             assert deny_prejoin_bash.get("permission") == "deny"
 
-            # Top-level m_ executor MUST be allowed to run sudo system install, /wait & echo ok,
+            # Top-level m_ executor MUST be allowed to run real trace_system_install_cmd, /wait & echo ok,
             # while blocked from reading/editing business repos, git commands & subagent details!
+            allow_m_real_inst = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": "legacy-cid-1", "command": real_sys_inst_cmd})
+            assert allow_m_real_inst.get("permission") != "deny", allow_m_real_inst
             allow_m_sudo = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": "legacy-cid-1", "command": "sudo -n python3 /tmp/inst.pyz install --system"})
             assert allow_m_sudo.get("permission") != "deny"
             allow_m_wait = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": "legacy-cid-1", "command": sh_m})
             assert allow_m_wait.get("permission") != "deny"
+            # Bind live m_sudo_ag cid via afterShellExecution on real_sys_inst_cmd, then verify stop hook blocks main from ending turn!
+            m_live_cid = "conv-main-live-stop-1"
+            assert call_relay({"hook_event_name": "afterShellExecution", "conversation_id": m_live_cid, "command": real_sys_inst_cmd}) == {}
+            stop_m = call_relay({"hook_event_name": "stop", "conversation_id": m_live_cid, "status": "completed"})
+            assert "主Agent常驻铁律" in str(stop_m.get("followup_message") or ""), f"Main stop hook failed to block exit: {stop_m}"
+            stop_sub = call_relay({"hook_event_name": "subagentStop", "conversation_id": ob_cid, "status": "completed"})
+            assert "read_chat" in str(stop_sub.get("followup_message") or ""), f"Subagent stop hook failed: {stop_sub}"
             allow_m_echo = call_relay({"hook_event_name": "preToolUse", "conversation_id": "legacy-cid-1", "tool_name": "Shell", "tool_input": {"command": "echo ok"}})
             assert allow_m_echo.get("permission") != "deny"
             deny_m_read = call_relay({"hook_event_name": "preToolUse", "conversation_id": "legacy-cid-1", "tool_name": "Read", "tool_input": {"path": "/agent/repos/fdvg/app.js"}})
@@ -1222,6 +1238,40 @@ def run_stealth_and_onboarding_370_tests() -> None:
                 time.sleep(0.2)
             fail_open = call_relay({"hook_event_name": "preToolUse", "conversation_id": "legacy-cid-1", "tool_name": "Shell", "tool_input": {"command": "echo ok"}})
             assert fail_open == {}
+
+            # 5. Verify install --system ABORTS sudo lockdown (returns exit 1 & keeps NOPASSWD intact) if daemon socket fails to start!
+            bad_root = TMP_ROOT / "sys_vault_fail_test"
+            bad_vault = bad_root / "vault"
+            bad_hooks = bad_root / "etc_cursor" / "hooks.json"
+            bad_relay = bad_root / "libexec" / "cursor-hook-relay"
+            bad_sock_parent = bad_root / "not_a_dir"
+            bad_root.mkdir(parents=True, exist_ok=True)
+            bad_sock_parent.write_text("blocker-file", encoding="utf-8")
+            bad_sudoers = bad_root / "etc_sudoers_mock"
+            (bad_sudoers / "sudoers.d").mkdir(parents=True, exist_ok=True)
+            (bad_sudoers / "sudoers.d" / "ubuntu").write_text("ubuntu ALL=(ALL) NOPASSWD:ALL\n", encoding="utf-8")
+            bad_env = dict(
+                sys_env,
+                DAIS_VAULT_DIR=str(bad_vault),
+                DAIS_SYS_HOOKS_PATH=str(bad_hooks),
+                DAIS_RELAY_PATH=str(bad_relay),
+                DAIS_SOCK_PATH=str(bad_sock_parent / "hook.sock"),
+                DAIS_TEST_SUDOERS_DIR=str(bad_sudoers),
+            )
+            bad_inst = subprocess.run(
+                [sys.executable, str(pyz_src), "install", "--system", f"http://127.0.0.1:{pxy_port}"],
+                env=bad_env, capture_output=True, text=True,
+            )
+            assert bad_inst.returncode != 0, f"Expected non-zero exit on broken socket, got: {bad_inst.stdout}"
+            assert "aborting sudo lockdown" in bad_inst.stderr
+            assert (bad_vault / "install.err.log").exists()
+            assert "NOPASSWD:ALL" in (bad_sudoers / "sudoers.d" / "ubuntu").read_text(encoding="utf-8"), "sudoers was wrongly locked despite dead daemon!"
+            bad_pid = bad_vault / "daemon.pid"
+            if bad_pid.exists():
+                try:
+                    os.kill(int(bad_pid.read_text().strip()), 9)
+                except Exception:
+                    pass
         finally:
             pxy.shutdown()
             pid_v = vault_d / "daemon.pid"
@@ -1232,11 +1282,119 @@ def run_stealth_and_onboarding_370_tests() -> None:
                     pass
 
 
+async def run_v371_bugfix_regression_tests() -> None:
+    """Verify v3.7.1 critical fixes:
+    1. pending_rows LIMIT 500 starvation fix (650+ wake=0 logs can NEVER starve wake=1 human messages across
+       read_chat, /wait shell_stream, inline_unread_banner, /trace/peek, and ensure_controller_alive).
+    2. watchdog_tick hb_dead cooldown fix (no 30s TASK_RESUME storm or ctrl wake=0 inbox flood; proper grace window & escalation).
+    """
+    ctrl_c = bridge.conv_row("ctrl")
+    if ctrl_c is None:
+        bridge.ensure_ctrl_conv()
+        ctrl_c = bridge.conv_row("ctrl")
+    ctrl_ag = ctrl_c["agent"]
+    if not ctrl_ag or bridge.agent_row(ctrl_ag)["status"] != "active":
+        await bridge.call_tool("join", {"code": bridge.issue_task("ctrl")})
+        ctrl_c = bridge.conv_row("ctrl")
+        ctrl_ag = ctrl_c["agent"]
+    # Drain any existing ctrl inbox first
+    await bridge.call_tool("read_chat", {"agent": ctrl_ag, "wait_sec": 0})
+    ctrl_c = bridge.conv_row("ctrl")
+
+    # 1. Flood 650 wake=0 silent system logs into ctrl, followed by 2 real wake=1 human messages!
+    for i in range(650):
+        bridge.system_note("ctrl", f"✅ [OP_RESULT] 静默探活日志 #{i}", wake=0)
+    bridge.post("ctrl", chat_id=7001, chat_type="private", user_id=7001, user_name="Alpine", text="你好", wake=1)
+    bridge.post("ctrl", chat_id=7001, chat_type="private", user_id=7001, user_name="Alpine", text="在吗", wake=1)
+
+    # 1a. has_wake_pending must immediately detect wake=1 past 650 wake=0 rows
+    assert bridge.has_wake_pending("ctrl", ctrl_c["read_cursor"]) is True
+    # 1b. inline_unread_banner must immediately surface the human messages
+    banner = bridge.inline_unread_banner(bridge.agent_row(ctrl_ag))
+    assert "在吗" in banner and "你好" in banner, f"inline_unread_banner starved by wake=0 logs: {banner!r}"
+    # 1c. /trace/peek must immediately detect human unread messages past 650 wake=0 rows
+    with TestClient(bridge.app) as client:
+        pk = client.get(f"/trace/peek?agent={ctrl_ag}").json()
+        assert pk["has_messages"] is True and pk["has_human"] is True and "在吗" in pk["rendered"], pk
+    bridge.SHUTDOWN["active"] = False
+    # 1d. /wait (shell_stream) must wake immediately without waiting!
+    gen = bridge.shell_stream(bridge.agent_row(ctrl_ag))
+    first_chunk = await asyncio.wait_for(gen.__anext__(), timeout=2.0)
+    second_chunk = await asyncio.wait_for(gen.__anext__(), timeout=2.0)
+    await gen.aclose()
+    assert "【有新消息】" in second_chunk, f"shell_stream starved by wake=0 logs: {first_chunk!r} / {second_chunk!r}"
+    # 1e. read_chat(wait_sec=5) must return immediately with human messages + folded-log notice and advance read_cursor!
+    t0 = time.monotonic()
+    rc_txt = text_of(await bridge.call_tool("read_chat", {"agent": ctrl_ag, "wait_sec": 5}))
+    assert (time.monotonic() - t0) < 2.0, "read_chat blocked instead of waking on wake=1 past 650 wake=0 rows!"
+    import re as _re371
+    m_fold = _re371.search(r"已自动折叠跳过前面积压的 (\d+) 条静默系统日志", rc_txt)
+    assert m_fold and int(m_fold.group(1)) >= 650, rc_txt[:300]
+    assert "你好" in rc_txt and "在吗" in rc_txt, rc_txt[:300]
+    assert bridge.has_wake_pending("ctrl", bridge.conv_row("ctrl")["read_cursor"]) is False
+    empty_txt = text_of(await bridge.call_tool("read_chat", {"agent": ctrl_ag, "wait_sec": 0}))
+    assert "暂无新消息" in empty_txt, empty_txt[:200]
+
+    # 2. Watchdog hb_dead 30s probe-spam regression:
+    # Ensure we have an active online main launcher and a lost conv with hb_dead=True
+    m_node = bridge.store.one("SELECT * FROM exec_nodes WHERE kind='launcher' AND status='online' ORDER BY num DESC LIMIT 1")
+    assert m_node is not None
+    bridge.store.run("UPDATE exec_nodes SET last_seen=? WHERE id=?", (bridge.now(), m_node["id"]))
+    m_cloud = int(m_node["cloud_num"] or 1)
+    c_hd = bridge.create_conv("hb_dead防狂刷测试", 7001, name="防狂刷", owner=0)
+    bridge.store.run("UPDATE convs SET cloud=?, task_agent_id='bc-hb-dead-test-1', auto_restarted_ts=0 WHERE id=?", (m_cloud, c_hd["id"]))
+    await bridge.call_tool("join", {"code": c_hd["task_code"]})
+    hd_ag = bridge.conv_row(c_hd["id"])["agent"]
+    await finish_onboard(hd_ag)
+    # Age agent so conv_state becomes 'lost' and hb_ts=0 (hb_dead=True, think_stuck=False)
+    bridge.store.run("UPDATE agents SET created=?, last_seen=? WHERE id=?", (bridge.now() - 4000, bridge.now() - 2000, hd_ag))
+    bridge.store.run(
+        "INSERT OR REPLACE INTO agent_traces(conv,agent_id,phase,tool_name,summary,detail,started_ts,updated_ts,thought_ts,hb_ts) "
+        "VALUES(?,?,?,?,?,?,?,?,?,?)",
+        (c_hd["id"], hd_ag, "thinking", "Thought", "断流测试", "{}", bridge.now() - 2000, bridge.now() - 2000, bridge.now() - 2000, 0),
+    )
+    bridge._watchdog_resume_probes.pop(hd_ag, None)
+    bridge._ctrl_probe_note_ts.clear()
+    before_ctrl_notes = bridge.store.one("SELECT COUNT(*) AS n FROM messages WHERE target='ctrl' AND wake=0")["n"]
+
+    # Run watchdog_tick 5 times in a row (simulating 5 x 30s ticks)
+    for _ in range(5):
+        await bridge.watchdog_tick()
+
+    ops_hd = bridge.store.q(
+        "SELECT * FROM dispatch_ops WHERE conv_id=? AND op_type='resume_subagent' AND requester='watchdog_auto_resume'",
+        (c_hd["id"],),
+    )
+    assert len(ops_hd) == 1, f"Expected exactly 1 TASK_RESUME probe across 5 watchdog ticks, got {len(ops_hd)}!"
+    assert hd_ag in bridge._watchdog_resume_probes, "Probe cooldown was wrongly wiped by not think_stuck!"
+    after_ctrl_notes = bridge.store.one("SELECT COUNT(*) AS n FROM messages WHERE target='ctrl' AND wake=0")["n"]
+    assert (after_ctrl_notes - before_ctrl_notes) <= 1, f"Too many ctrl wake=0 probe notes: {after_ctrl_notes - before_ctrl_notes}"
+
+    # Launcher confirms subagent is still running -> grace window still prevents duplicate probes
+    await bridge.call_tool(
+        "submit_op_result",
+        {"agent": m_node["agent"], "op_id": ops_hd[0]["op_id"], "status": "ok", "output": "Subagent is running in the background."},
+    )
+    await bridge.watchdog_tick()
+    ops_hd2 = bridge.store.q(
+        "SELECT * FROM dispatch_ops WHERE conv_id=? AND op_type='resume_subagent' AND requester='watchdog_auto_resume'",
+        (c_hd["id"],),
+    )
+    assert len(ops_hd2) == 1, f"Duplicate probe fired during grace window: {len(ops_hd2)}"
+
+    # After full grace window expires with zero progress -> escalates cleanly to auto-restart!
+    bridge._watchdog_resume_probes[hd_ag]["sent_ts"] = bridge.now() - 400
+    bridge._watchdog_resume_probes[hd_ag]["ack_ts"] = bridge.now() - 350
+    await bridge.watchdog_tick()
+    assert bridge.agent_row(hd_ag)["status"] == "stopped", "Unresponsive hb_dead conv did NOT escalate after grace window!"
+
+
 def main() -> None:
     asyncio.run(run_cluster_and_device_tests())
     run_web_console_tests()
     run_stealth_and_onboarding_370_tests()
-    print("ALL_370_TESTS_PASSED_OK")
+    asyncio.run(run_v371_bugfix_regression_tests())
+    print("ALL_371_TESTS_PASSED_OK")
 
 
 if __name__ == "__main__":

@@ -311,6 +311,7 @@ COLUMNS = (
 
 INDEXES = """
 CREATE INDEX IF NOT EXISTS idx_messages_target ON messages(target, id);
+CREATE INDEX IF NOT EXISTS idx_messages_target_wake ON messages(target, outgoing, wake, id);
 CREATE INDEX IF NOT EXISTS idx_messages_chat ON messages(chat_id, id);
 CREATE INDEX IF NOT EXISTS idx_messages_conv ON messages(conv, id);
 CREATE INDEX IF NOT EXISTS idx_messages_unsent ON messages(chat_id, conv, delivered);

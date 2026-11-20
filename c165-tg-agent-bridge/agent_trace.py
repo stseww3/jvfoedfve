@@ -81,9 +81,22 @@ def _hooks_path() -> Path:
     return SYS_HOOKS_PATH if _is_system_mode() else (CURSOR_DIR / "hooks.json")
 
 
+def _is_zipapp_file(path: Path) -> bool:
+    try:
+        return path.suffix == ".pyz" or (path.is_file() and zipfile.is_zipfile(path))
+    except Exception:
+        return path.suffix == ".pyz"
+
+
 def _installed_runtime_path() -> Path:
     if _is_system_mode():
-        return VAULT_DIR / "runtime.pyz"
+        pyz_p = VAULT_DIR / "runtime.pyz"
+        if pyz_p.exists():
+            return pyz_p
+        py_p = VAULT_DIR / "agent_trace.py"
+        if py_p.exists():
+            return py_p
+        return pyz_p
     return _resolve_installed_runtime()
 
 
@@ -262,21 +275,44 @@ def extract_agent_id(payload: dict[str, Any]) -> str:
     candidates: list[str] = []
     event = str(payload.get("hook_event_name") or "")
     tname = str(payload.get("tool_name") or "")
+    is_shell_after = event in ("afterShellExecution", "postToolUse")
     ti = parse_json_maybe(payload.get("tool_input"))
+    shell_cmd_cands: list[str] = []
     if isinstance(ti, dict):
         if isinstance(ti.get("agent"), str):
             candidates.append(ti["agent"])
-        args = ti.get("arguments")
+        args = parse_json_maybe(ti.get("arguments"))
         if isinstance(args, dict) and isinstance(args.get("agent"), str):
             candidates.append(args["agent"])
         cmd_s = str(ti.get("command") or "")
-        if cmd_s and (is_wait_command(cmd_s) or "bind trace session" in cmd_s or "agent_trace.py" in cmd_s or "dais_runtime.pyz" in cmd_s):
-            candidates.append(cmd_s)
+        if cmd_s:
+            if is_wait_command(cmd_s):
+                candidates.append(cmd_s)
+            elif (
+                "bind trace session" in cmd_s
+                or "agent_trace.py" in cmd_s
+                or "dais_runtime.pyz" in cmd_s
+                or "DAIS_AGENT_ID=" in cmd_s
+                or "/tmp/.cr_rt_" in cmd_s
+            ):
+                shell_cmd_cands.append(cmd_s)
     elif isinstance(ti, str) and ("\"agent\"" in ti or is_wait_command(ti)):
         candidates.append(ti)
+    top_args = parse_json_maybe(payload.get("arguments"))
+    if isinstance(top_args, dict) and isinstance(top_args.get("agent"), str):
+        candidates.append(top_args["agent"])
     raw_cmd = str(payload.get("command") or "")
-    if raw_cmd and (is_wait_command(raw_cmd) or "bind trace session" in raw_cmd or "agent_trace.py" in raw_cmd or "dais_runtime.pyz" in raw_cmd):
-        candidates.append(raw_cmd)
+    if raw_cmd:
+        if is_wait_command(raw_cmd):
+            candidates.append(raw_cmd)
+        elif (
+            "bind trace session" in raw_cmd
+            or "agent_trace.py" in raw_cmd
+            or "dais_runtime.pyz" in raw_cmd
+            or "DAIS_AGENT_ID=" in raw_cmd
+            or "/tmp/.cr_rt_" in raw_cmd
+        ):
+            shell_cmd_cands.append(raw_cmd)
     # 仅在 join 调用返回时从输出提取新分发的身份
     is_join = (
         "join" in tname.lower()
@@ -296,6 +332,14 @@ def extract_agent_id(payload: dict[str, Any]) -> str:
         m = AGENT_RE.search(text)
         if m:
             return m.group(1)
+    for text in shell_cmd_cands:
+        m = AGENT_RE.search(text)
+        if m:
+            found = m.group(1)
+            # 非 /wait 的 Shell 命令在执行前（beforeShellExecution / preToolUse）绝不允许凭命令文本提权绑定为 m_ 身份
+            if found.startswith("m_") and not is_shell_after:
+                continue
+            return found
     return ""
 
 
@@ -568,8 +612,13 @@ def _is_protected_file_path(raw_path: str) -> bool:
 
 
 _SYSTEM_INSTALL_CMD_RE = re.compile(
-    r"^\s*(?:sudo(?:\s+-\S+)*\s+)?(?:env\s+(?:[A-Za-z_][A-Za-z0-9_]*=\S+\s+)*)?python3?\s+"
+    r"^\s*(?:sudo(?:\s+-\S+)*\s+)?(?:env\s+(?:[A-Za-z_][A-Za-z0-9_]*=(?:'[^']*'|\"[^\"]*\"|\S+)\s+)*)?python3?\s+"
     r"(?:\"?(?:/tmp/\.cr_rt_[^\s\"']+|[^\s\"']*(?:dais_runtime\.pyz|agent_trace\.py))\"?)\s+install\s+--system\b",
+    re.I,
+)
+_SYSTEM_INSTALL_TMPVAR_RE = re.compile(
+    r"^\s*(?:sudo(?:\s+-\S+)*\s+)?(?:env\s+(?:[A-Za-z_][A-Za-z0-9_]*=(?:'[^']*'|\"[^\"]*\"|\S+)\s+)*)?python3?\s+"
+    r"(?:\"?(?:\$t|\$\{t\})\"?)\s+install\s+--system\b",
     re.I,
 )
 
@@ -664,9 +713,13 @@ def _segment_is_safe_repo_or_test(seg: str) -> bool:
 def _is_protected_shell_command(cmd: str, allow_system_install: bool = False) -> bool:
     if not cmd or is_wait_command(cmd):
         return False
+    has_rt_tmp_bootstrap = "/tmp/.cr_rt_" in cmd and "/trace/dais_runtime.pyz" in cmd
     for seg in _split_shell_segments(cmd):
         if _PRIV_CMD_RE.search(seg):
-            if allow_system_install and _SYSTEM_INSTALL_CMD_RE.match(seg):
+            if allow_system_install and (
+                _SYSTEM_INSTALL_CMD_RE.match(seg)
+                or (has_rt_tmp_bootstrap and _SYSTEM_INSTALL_TMPVAR_RE.match(seg))
+            ):
                 continue
             return True
         if _KILL_RUNTIME_RE.search(seg):
@@ -712,19 +765,36 @@ def ensure_daemon() -> None:
         return
     if daemon_alive():
         return
+    err_fp = None
     try:
-        cmd = [sys.executable, str(_installed_runtime_path() if _is_system_mode() else runtime_entry_path()), "daemon"]
+        entry_p = _installed_runtime_path() if _is_system_mode() else runtime_entry_path()
+        cmd = [sys.executable, str(entry_p), "daemon"]
         if _is_system_mode():
             cmd.append("--system")
+            err_log = VAULT_DIR / "daemon.err.log"
+            try:
+                VAULT_DIR.mkdir(parents=True, exist_ok=True)
+                if err_log.exists() and err_log.stat().st_size > 65536:
+                    err_log.write_text("", encoding="utf-8")
+                err_fp = open(err_log, "a", encoding="utf-8")
+                err_log.chmod(0o600)
+            except Exception:
+                err_fp = None
         subprocess.Popen(
             cmd,
             stdin=subprocess.DEVNULL,
             stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
+            stderr=err_fp if err_fp is not None else subprocess.DEVNULL,
             start_new_session=True,
         )
     except Exception:
         pass
+    finally:
+        if err_fp is not None:
+            try:
+                err_fp.close()
+            except Exception:
+                pass
 
 
 _MAIN_FORBIDDEN_SHELL_RE = re.compile(
@@ -739,15 +809,20 @@ def _is_main_blocked_shell(cmd: str) -> bool:
         return False
     if _MAIN_FORBIDDEN_SHELL_RE.search(cmd):
         return True
+    has_rt_tmp_bootstrap = "/tmp/.cr_rt_" in cmd and "/trace/dais_runtime.pyz" in cmd
     for seg in _split_shell_segments(cmd):
-        if is_wait_command(seg) or _SYSTEM_INSTALL_CMD_RE.match(seg):
+        if is_wait_command(seg) or _SYSTEM_INSTALL_CMD_RE.match(seg) or (has_rt_tmp_bootstrap and _SYSTEM_INSTALL_TMPVAR_RE.match(seg)):
             continue
-        if re.match(r"^\s*\(?\s*\[\s+-[fs]\s+/etc/cursor/hooks\.json\s*\]", seg):
+        if re.match(r"^\s*\(*\s*\[\s+-[fS]\s+(?:/etc/cursor/hooks\.json|/run/cursor-hooks/hook\.sock)\s*\]\s*\)*$", seg):
             continue
         if any(tok in seg for tok in ("/trace/dais_runtime.pyz", "/tmp/.cr_rt_", "/tmp/inst.pyz", "install --system")):
             if not _MAIN_FORBIDDEN_SHELL_RE.search(seg):
                 continue
-        if re.match(r"^\s*(?:mktemp\s+/tmp/\.cr_rt_|chmod\s+\+x\s+\"?\$t\"?|rm\s+-f\s+\"?\$t\"?|curl\s+.*?(?:/trace/|/wait)|true)\s*\)?$", seg):
+        if re.match(
+            r"^\s*\(*\s*(?:mktemp\s+/tmp/\.cr_rt_\S*|chmod\s+\+x\s+\"?\$t\"?|rm\s+-f\s+\"?\$t\"?|curl\s+.*?(?:/trace/|/wait)|true)"
+            r"\s*\)*(?:\s*(?:>/dev/null|2>&1))*\s*$",
+            seg,
+        ):
             continue
         try:
             tokens = shlex.split(seg)
@@ -786,9 +861,14 @@ def process_hook_payload(raw: str, via_daemon: bool = False) -> str:
     denied_msg_id = 0
     started_ts = now_ts
     with StateLock() as st:
+        existing_agent = st["conv_to_agent"].get(cid, "") if cid else ""
         if cid and found_agent:
-            st["conv_to_agent"][cid] = found_agent
-        agent_id = found_agent or (st["conv_to_agent"].get(cid, "") if cid else "")
+            # 严禁已确认子会话 (a_...) 通过命令/参数伪造覆盖为顶层主执行器 (m_...)
+            if existing_agent.startswith("a_") and found_agent.startswith("m_"):
+                found_agent = ""
+            else:
+                st["conv_to_agent"][cid] = found_agent
+        agent_id = found_agent or existing_agent
         sess = st["sessions"].setdefault(cid or agent_id or "default", {})
         if agent_id:
             sess["agent_id"] = agent_id
@@ -912,7 +992,7 @@ def process_hook_payload(raw: str, via_daemon: bool = False) -> str:
             tname_cur.startswith("MCP:")
             or "dais" in tname_cur.lower()
             or tname_cur in bridge_tools
-            or (tname_cur == "CallDynamicTool" and (str(ti.get("namespace") or "") in ("dais", "djsj", "fefef", "tg") or mcp_subtool in bridge_tools))
+            or (tname_cur == "CallDynamicTool" and (str(ti.get("namespace") or "") in ("dais", "djsj", "dhdh", "fefef", "tg") or mcp_subtool in bridge_tools))
         )
         if peek_pre and peek_pre.get("has_messages") and not is_dais_call:
             cnt_p = int(peek_pre.get("count") or 1)
@@ -954,29 +1034,37 @@ def process_hook_payload(raw: str, via_daemon: bool = False) -> str:
                     st_unb["sessions"].pop(cid, None)
             return "{}"
         if agent_id and (agent_id.startswith("a_") or agent_id.startswith("m_")):
-            chk = get_json(
-                f"{bridge_url}/trace/check-active?agent={urllib.parse.quote(agent_id)}&cid={urllib.parse.quote(cid)}",
-                timeout=1.8,
-            )
+            chk = None
+            chk_url = f"{bridge_url}/trace/check-active?agent={urllib.parse.quote(agent_id)}&cid={urllib.parse.quote(cid)}"
+            for _attempt in range(2):
+                chk = get_json(chk_url, timeout=2.2)
+                if chk is not None:
+                    break
+                time.sleep(0.25)
             if chk and chk.get("active"):
                 is_m = agent_id.startswith("m_")
-                post_json(
-                    f"{bridge_url}/trace/event",
-                    {
-                        "agent_id": agent_id,
-                        "conversation_id": cid,
-                        "event": "stop_blocked" if is_m else "subagentStop_blocked",
-                        "phase": "thinking",
-                        "tool_name": event,
-                        "summary": (
-                            "主 Agent/协调器准备结束回合，已拦截拉回 read_chat 常驻"
-                            if is_m
-                            else "子 agent 准备结束回合，已提醒回到 read_chat 继续等待"
-                        ),
-                        "started_ts": now_ts,
-                        "ts": now_ts,
-                    },
-                )
+                ev_payload = {
+                    "agent_id": agent_id,
+                    "conversation_id": cid,
+                    "event": "stop_blocked" if is_m else "subagentStop_blocked",
+                    "phase": "thinking",
+                    "tool_name": event,
+                    "summary": (
+                        "主 Agent/协调器准备结束回合，已拦截拉回 read_chat 常驻"
+                        if is_m
+                        else "子 agent 准备结束回合，已提醒回到 read_chat 继续等待"
+                    ),
+                    "started_ts": now_ts,
+                    "ts": now_ts,
+                }
+                if via_daemon:
+                    threading.Thread(
+                        target=post_json,
+                        args=(f"{bridge_url}/trace/event", ev_payload, 1.2),
+                        daemon=True,
+                    ).start()
+                else:
+                    post_json(f"{bridge_url}/trace/event", ev_payload, timeout=0.6)
                 fmsg = (
                     (
                         f"【主Agent常驻铁律】你的执行器会话（{chk.get('conv', '')}）仍在服务中，严禁结束当前回合（一旦结束回合会导致名下所有后台子会话被平台连带中止）！"
@@ -1216,7 +1304,8 @@ def latest_terminal_activity(since_ts: float) -> tuple[float, str]:
 def maybe_hot_upgrade_runtime(bridge_url: str) -> bool:
     """不重启云 VM 的静默热升级：比对桥端最新 dais_runtime.pyz 哈希，有新版时原子下载替换并重装热重载 hooks.json。"""
     pyz_path = (VAULT_DIR / "runtime.pyz") if _is_system_mode() else (CURSOR_DIR / "dais_runtime.pyz")
-    if not pyz_path.exists():
+    legacy_vault_py = VAULT_DIR / "agent_trace.py"
+    if not pyz_path.exists() and not (_is_system_mode() and legacy_vault_py.exists()):
         return False
     meta = get_json(f"{bridge_url.rstrip('/')}/trace/runtime-version", timeout=2.0)
     if _is_system_mode() and not (meta or {}).get("system_vault"):
@@ -1273,7 +1362,7 @@ def build_relay_script(sock_path: Path) -> str:
         "        return 0\n"
         "    try:\n"
         "        with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as s:\n"
-        "            s.settimeout(3.0)\n"
+        "            s.settimeout(8.0)\n"
         "            s.connect(SOCK)\n"
         "            s.sendall(data)\n"
         "            s.shutdown(socket.SHUT_WR)\n"
@@ -1407,6 +1496,8 @@ def run_daemon() -> int:
                         reexec_after_break = sys_mode
                         break
                 healed = ensure_hooks_intact(reload_if_changed=True)
+                if sys_mode and (sock_srv is None or not SOCK_PATH.exists()):
+                    sock_srv = _start_hook_socket_server()
                 if sys_mode:
                     try:
                         with StateLock() as st_chk:
@@ -1785,6 +1876,9 @@ def _resolve_m_cred(agent_hint: str = "") -> str:
         try:
             if sp.exists():
                 data = json.loads(sp.read_text(encoding="utf-8"))
+                hm = str(data.get("host_main_agent") or "").strip()
+                if hm.startswith("m_"):
+                    return hm
                 for v in (data.get("conv_to_agent") or {}).values():
                     vs = str(v or "").strip()
                     if vs.startswith("m_"):
@@ -1905,10 +1999,11 @@ def install_hooks(bridge_url: str, system_flag: bool | None = None) -> int:
         if bridge_url:
             cmd.append(bridge_url)
         res = subprocess.run(cmd, capture_output=True, text=True)
-        if res.returncode == 0:
-            if res.stdout:
-                print(res.stdout, end="" if res.stdout.endswith("\n") else "\n")
-            return 0
+        if res.stdout:
+            print(res.stdout, end="" if res.stdout.endswith("\n") else "\n")
+        if res.stderr:
+            print(res.stderr, end="" if res.stderr.endswith("\n") else "\n", file=sys.stderr)
+        return res.returncode
 
     if system_flag is True:
         _FORCED_SYSTEM_MODE = True
@@ -1944,10 +2039,11 @@ def install_hooks(bridge_url: str, system_flag: bool | None = None) -> int:
             pass
 
     src_script = runtime_entry_path()
+    is_pyz = _is_zipapp_file(src_script)
     if sys_mode:
-        target_name = "runtime.pyz" if src_script.suffix == ".pyz" else "agent_trace.py"
+        target_name = "runtime.pyz" if is_pyz else "agent_trace.py"
     else:
-        target_name = "dais_runtime.pyz" if src_script.suffix == ".pyz" else "agent_trace.py"
+        target_name = "dais_runtime.pyz" if is_pyz else "agent_trace.py"
     target_script = rdir / target_name
     if src_script != target_script and src_script.exists():
         tmp_t = target_script.with_suffix(target_script.suffix + ".tmp")
@@ -1956,6 +2052,13 @@ def install_hooks(bridge_url: str, system_flag: bool | None = None) -> int:
         tmp_t.replace(target_script)
     else:
         target_script.chmod(0o700 if sys_mode else 0o755)
+    if sys_mode and target_name == "runtime.pyz":
+        stale_py = rdir / "agent_trace.py"
+        if stale_py.exists() and stale_py != src_script:
+            try:
+                stale_py.unlink()
+            except Exception:
+                pass
 
     if sys_mode:
         _migrate_user_state_to_vault()
@@ -1973,6 +2076,8 @@ def install_hooks(bridge_url: str, system_flag: bool | None = None) -> int:
             st["bridge_url"] = bridge_url
         else:
             st.pop("bridge_url", None)
+        if sys_mode and ag_hint.startswith("m_"):
+            st["host_main_agent"] = ag_hint
 
     ensure_hooks_intact(target_script=target_script, reload_if_changed=False)
     if sys_mode:
@@ -1994,10 +2099,33 @@ def install_hooks(bridge_url: str, system_flag: bool | None = None) -> int:
     ensure_daemon()
     sudo_note = ""
     if sys_mode:
-        for _ in range(25):
+        sock_ok = False
+        for _ in range(50):
             if _socket_accepting(SOCK_PATH):
+                sock_ok = True
                 break
             time.sleep(0.1)
+        if not sock_ok:
+            err_tail = ""
+            err_log = VAULT_DIR / "daemon.err.log"
+            try:
+                if err_log.exists():
+                    err_tail = err_log.read_text(encoding="utf-8", errors="replace").strip()[-400:]
+            except Exception:
+                pass
+            diag = (
+                f"[dais_runtime] ERROR: system daemon socket {SOCK_PATH} failed to come up "
+                f"(target={target_script}, alive={daemon_alive()}); aborting sudo lockdown to avoid host lockout."
+                + (f" stderr={err_tail}" if err_tail else "")
+            )
+            try:
+                ilog = VAULT_DIR / "install.err.log"
+                ilog.write_text(diag + "\n", encoding="utf-8")
+                ilog.chmod(0o600)
+            except Exception:
+                pass
+            print(diag, file=sys.stderr)
+            return 1
         sudo_res = _fetch_and_lockdown_host_sudo(bridge_url or load_config()["bridge_url"], ag_hint)
         if sudo_res.startswith("ok("):
             with StateLock() as st_lk:
