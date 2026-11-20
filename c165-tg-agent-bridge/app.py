@@ -2368,6 +2368,17 @@ async def read_inbox(agent, wait_sec: int) -> ToolResult:
     mark_menu_dirty()
     try:
         while True:
+            if SHUTDOWN["active"]:
+                if is_main_node_id(conv_id) or is_worker_host_id(conv_id):
+                    return text_result(
+                        "服务平滑热更新中（不是用户消息）。\n"
+                        + executor_next_step_script(agent_id, conv_id)
+                        + "\n\n"
+                        + EXECUTOR_FIXED_FOOTER
+                    )
+                return text_result(
+                    f"服务平滑热更新中（不是用户消息），请立即再调用 read_chat(agent=\"{agent_id}\")。{MUST_WAIT}"
+                )
             if reader_gen.get(conv_id) != my_gen:
                 return text_result(
                     "这次 read_chat 被同一个聊天的另一次 read_chat 顶替了（不是用户消息）。"
@@ -2488,6 +2499,12 @@ async def shell_stream(agent):
         yield "开始等待（这一行不是消息）\n"
         while True:
             if SHUTDOWN["active"]:
+                if is_main_node_id(conv_id) or is_worker_host_id(conv_id):
+                    yield (
+                        f"【服务平滑热更新｜必须带 tool_call】这不是用户消息，严禁输出纯文字或结束回合！"
+                        f"立即原样再次运行终端长等待命令（block_until_ms={(SHELL_WAIT + 180) * 1000}）：{shell_command(agent_id)}\n"
+                    )
+                    return
                 yield f"服务平滑热更新中（不是用户消息），请立即重新运行等待命令或调用 read_chat(agent=\"{agent_id}\")。{MUST_WAIT}\n"
                 return
             if shell_gen.get(agent_id) != gen:
@@ -3091,7 +3108,10 @@ def requeue_stale_workspace_jobs() -> dict[str, int]:
         cnode = (op["claimed_by"] or op["target_node"] or "").strip().lower()
         nrow = node_row(cnode) if (cnode and cnode != "auto") else None
         node_dead = nrow is not None and nrow["status"] != "online"
-        last_lease = max(float(op["lease_ts"] or 0), float(op["started_ts"] or 0), float(op["created_ts"] or 0))
+        raw_lease = float(op["lease_ts"] or 0)
+        raw_started = float(op["started_ts"] or 0)
+        boot_grace = STARTED if (raw_lease == 0.0 and raw_started == 0.0) else 0.0
+        last_lease = max(raw_lease, raw_started, float(op["created_ts"] or 0), boot_grace)
         lease_expired = (t_now - last_lease) >= WORKER_LEASE_TIMEOUT_SEC
         if not node_dead and not lease_expired:
             continue
