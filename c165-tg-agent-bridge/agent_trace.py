@@ -976,7 +976,10 @@ def process_hook_payload(raw: str, via_daemon: bool = False) -> str:
             return json.dumps(
                 {
                     "permission": "deny",
-                    "user_message": f"{stop_reason}。严禁再调用 read_chat、send_message、wait 等任何工具，请直接结束当前回合退出即可。",
+                    "user_message": (
+                        f"{stop_reason}。严禁再调用 read_chat、send_message、wait 等任何工具，"
+                        "也严禁输出任何总结、进展、报错、业务细节或告别语——最终回复严格只能输出 `ok` 两个字并立即结束回合。"
+                    ),
                 },
                 ensure_ascii=False,
             )
@@ -1021,19 +1024,41 @@ def process_hook_payload(raw: str, via_daemon: bool = False) -> str:
                 f"Immediately after this step completes, call `read_chat(agent=\"{agent_id}\", wait_sec=0)` and reply first."
             )
 
-    # 子 agent 或顶层主 Agent 执行器试图结束回合时向桥查询身份是否仍有效，有效则提醒回到 read_chat 继续等待（防顶层 main 结束回合连带中止名下后台子会话！）
+    # 顶层会话 stop 不发 followup_message（严格保持 Cursor 单条初始消息不断，仅后台上报事件）；
+    # 后台子会话 subagentStop 仍保留拉回 read_chat，防止子会话意外退出向父 main 推送 taskend 干扰上下文。
     if event in ("subagentStop", "stop"):
         run_st = str(payload.get("status") or "").strip().lower()
         if run_st in ("aborted", "error"):
             return "{}"
+        if event == "stop":
+            if agent_id and (agent_id.startswith("m_") or agent_id.startswith("a_")):
+                ev_stop = {
+                    "agent_id": agent_id,
+                    "conversation_id": cid,
+                    "event": "main_turn_stopped" if agent_id.startswith("m_") else "top_turn_stopped",
+                    "phase": "stopped",
+                    "tool_name": "stop",
+                    "summary": "顶层会话结束回合（按配置不发 follow-up 新消息）",
+                    "started_ts": now_ts,
+                    "ts": now_ts,
+                }
+                if via_daemon:
+                    threading.Thread(
+                        target=post_json,
+                        args=(f"{bridge_url}/trace/event", ev_stop, 1.0),
+                        daemon=True,
+                    ).start()
+                else:
+                    post_json(f"{bridge_url}/trace/event", ev_stop, timeout=0.5)
+            return "{}"
         # 主执行器身份 (m_...) 永远是顶层会话 (stop)，绝不可能是子会话 (subagentStop)；若子会话误绑了 m_ 身份，直接解绑放行退出！
-        if event == "subagentStop" and agent_id and agent_id.startswith("m_"):
+        if agent_id and agent_id.startswith("m_"):
             if cid:
                 with StateLock() as st_unb:
                     st_unb["conv_to_agent"].pop(cid, None)
                     st_unb["sessions"].pop(cid, None)
             return "{}"
-        if agent_id and (agent_id.startswith("a_") or agent_id.startswith("m_")):
+        if agent_id and agent_id.startswith("a_"):
             chk = None
             chk_url = f"{bridge_url}/trace/check-active?agent={urllib.parse.quote(agent_id)}&cid={urllib.parse.quote(cid)}"
             for _attempt in range(2):
@@ -1042,18 +1067,13 @@ def process_hook_payload(raw: str, via_daemon: bool = False) -> str:
                     break
                 time.sleep(0.25)
             if chk and chk.get("active"):
-                is_m = agent_id.startswith("m_")
                 ev_payload = {
                     "agent_id": agent_id,
                     "conversation_id": cid,
-                    "event": "stop_blocked" if is_m else "subagentStop_blocked",
+                    "event": "subagentStop_blocked",
                     "phase": "thinking",
                     "tool_name": event,
-                    "summary": (
-                        "主 Agent/协调器准备结束回合，已拦截拉回 read_chat 常驻"
-                        if is_m
-                        else "子 agent 准备结束回合，已提醒回到 read_chat 继续等待"
-                    ),
+                    "summary": "子 agent 准备结束回合，已提醒回到 read_chat 继续等待",
                     "started_ts": now_ts,
                     "ts": now_ts,
                 }
@@ -1066,15 +1086,8 @@ def process_hook_payload(raw: str, via_daemon: bool = False) -> str:
                 else:
                     post_json(f"{bridge_url}/trace/event", ev_payload, timeout=0.6)
                 fmsg = (
-                    (
-                        f"【主Agent常驻铁律】你的执行器会话（{chk.get('conv', '')}）仍在服务中，严禁结束当前回合（一旦结束回合会导致名下所有后台子会话被平台连带中止）！"
-                        f"严禁输出排查总结、严禁自行思考解决问题或查看 chat 内容。请立即调用 read_chat(agent=\"{agent_id}\") 继续等待标准单据。"
-                    )
-                    if is_m
-                    else (
-                        f"提示：你的聊天会话（{chk.get('conv', '')}）仍在服务中，身份有效。"
-                        f"请继续调用 read_chat(agent=\"{agent_id}\") 等待后续消息，不用结束回合或发送告别语。"
-                    )
+                    f"提示：你的聊天会话（{chk.get('conv', '')}）仍在服务中，身份有效。"
+                    f"请继续调用 read_chat(agent=\"{agent_id}\") 等待后续消息，不用结束回合或发送告别语。"
                 )
                 return json.dumps({"followup_message": fmsg}, ensure_ascii=False)
         return "{}"
@@ -1253,9 +1266,10 @@ def process_hook_payload(raw: str, via_daemon: bool = False) -> str:
                 ctx_parts.append(alert_txt)
             if agent_id.startswith("m_"):
                 ctx_parts.append(
-                    f"[main-executor iron rule] 你是纯单据执行器（{agent_id[:8]}…），全部听 ctrl 调度："
-                    "严禁自行思考排查报错、严禁查看任何 chat 聊天内容或仓库分支、忽略后台子 Task 完成/失败通知、严禁结束回合！"
-                    f"处理完当前单据请立即调用 read_chat(agent=\"{agent_id}\") 继续等待。"
+                    f"[main-executor MANDATORY tool_call] 你是纯单据执行器（{agent_id[:8]}…），全部听 ctrl 调度："
+                    "严禁输出纯文字回复或总结（无 tool_call 会立刻终止回合并杀死全部后台子会话）！"
+                    "严禁自行思考排查报错、严禁查看任何 chat 内容或仓库分支、忽略所有后台子 Task 结束/报错通知！"
+                    f"本轮你必须直接发起下一步 tool_call（若刚调完 Task 请立即原样调 submit_op_result；否则立即原样执行上一步指定的 Shell(/wait) 或 read_chat(agent=\"{agent_id}\", wait_sec=0)）。"
                 )
             if ctx_parts:
                 out_obj["additional_context"] = "\n".join(ctx_parts)

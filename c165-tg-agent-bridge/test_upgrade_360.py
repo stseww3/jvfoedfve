@@ -355,34 +355,27 @@ async def run_cluster_and_device_tests() -> dict[str, str]:
     put_trace("c1", a1, "thinking", 360, 5)
     bridge.store.run("UPDATE agents SET last_seen=? WHERE id=?", (bridge.now() - 60, a1))
     assert not stuck("c1")
-    # B2: genuinely stuck >= 5m AND has task_agent_id -> Step 1 MUST send TASK_RESUME first (NOT kill immediately!).
+    # B2: genuinely stuck >= 5m -> Watchdog MUST notify ctrl ONLY (NEVER bypass ctrl directly into main2!)
     bridge.store.run("UPDATE agents SET last_seen=? WHERE id=?", (bridge.now() - 400, a1))
     assert stuck("c1")
+    await bridge.call_tool("read_chat", {"agent": ctrl_ag, "wait_sec": 0})
+    ops_before_wd = bridge.store.one("SELECT COUNT(*) AS n FROM dispatch_ops WHERE conv_id='c1'")["n"]
     await bridge.watchdog_tick()
-    assert bridge.agent_row(a1)["status"] == "active", "Watchdog killed agent immediately instead of probing via TASK_RESUME first!"
-    w_res_op = bridge.store.one(
-        "SELECT * FROM dispatch_ops WHERE conv_id='c1' AND op_type='resume_subagent' AND requester='watchdog_auto_resume' ORDER BY created_ts DESC LIMIT 1"
-    )
-    assert w_res_op is not None, "Watchdog did not enqueue TASK_RESUME probe!"
-    w_res_payload = json.loads(w_res_op["payload_json"])
-    assert "挂起等待" not in w_res_payload["prompt"] and "立刻回到" not in w_res_payload["prompt"]
-    m2_inbox_res = text_of(await bridge.call_tool("read_chat", {"agent": m2, "wait_sec": 0}))
-    assert 'source="watchdog_auto_resume"' in m2_inbox_res
+    assert bridge.agent_row(a1)["status"] == "active", "Watchdog killed agent directly instead of notifying ctrl!"
+    ops_after_wd = bridge.store.one("SELECT COUNT(*) AS n FROM dispatch_ops WHERE conv_id='c1'")["n"]
+    assert ops_after_wd == ops_before_wd, "Watchdog bypassed ctrl and enqueued direct op into mainN!"
+    ctrl_wd_msg = text_of(await bridge.call_tool("read_chat", {"agent": ctrl_ag, "wait_sec": 0}))
+    assert "思考超时，请总控决策" in ctrl_wd_msg and 'action="resume"' in ctrl_wd_msg
 
-    # B2a: Launcher reports "Subagent is running in the background" -> agent stays ALIVE during grace window!
-    await bridge.call_tool(
-        "submit_op_result",
-        {"agent": m2, "op_id": w_res_op["op_id"], "status": "ok", "output": "Subagent is running in the background."},
-    )
-    assert bridge.agent_row(a1)["status"] == "active", "Running subagent was killed after healthy TASK_RESUME!"
+    # B2a: Repeated tick inside cooldown MUST NOT spam ctrl again!
     await bridge.watchdog_tick()
-    assert bridge.agent_row(a1)["status"] == "active", "Running subagent was killed inside post-resume grace window!"
+    ctrl_wd_msg2 = text_of(await bridge.call_tool("read_chat", {"agent": ctrl_ag, "wait_sec": 0}))
+    assert "暂无新消息" in ctrl_wd_msg2, f"Watchdog spammed ctrl inside cooldown: {ctrl_wd_msg2}"
 
-    # B2b: Still zero new progress after full post-resume grace window -> Step 2 escalates to auto-restart!
-    bridge._watchdog_resume_probes[a1]["sent_ts"] = bridge.now() - 400
-    bridge._watchdog_resume_probes[a1]["ack_ts"] = bridge.now() - 350
-    await bridge.watchdog_tick()
-    assert bridge.agent_row(a1)["status"] == "stopped", "Unresponsive agent was NOT restarted after post-resume grace window!"
+    # B2b: Ctrl explicitly dispatches restart -> c1 old agent stops and main2 gets clean TASK_LAUNCH op!
+    rs_by_ctrl = await bridge.call_tool("dispatch_task_op", {"agent": ctrl_ag, "chat": "c1", "action": "restart", "target_main": "main2"})
+    assert not rs_by_ctrl.is_error and bridge.agent_row(a1)["status"] == "stopped"
+    await bridge.call_tool("read_chat", {"agent": m2, "wait_sec": 0})
 
     # Case C: the replacement agent must not inherit the stopped agent's trace (the 2026-11-15 false-stop storm:
     # 43 freshly joined agents were stopped as "thinking-stuck for 20-40 hours" at the first watchdog tick after join).
@@ -785,7 +778,8 @@ def run_web_console_tests() -> None:
                     env=hook_env, capture_output=True, text=True, check=True,
                 )
                 stop_json = json.loads(stop_hook_out.stdout.strip() or "{}")
-                assert "followup_message" in stop_json and "严禁结束当前回合" in stop_json["followup_message"]
+                # v3.7.2: top-level `stop` MUST NOT inject followup_message (keep strictly 1 user message in Cursor!)
+                assert stop_json == {}, f"Top-level stop wrongly injected followup_message: {stop_json}"
             finally:
                 proxy_srv.shutdown()
                 pid_f2 = HOME_DIR / ".cursor" / "agent_trace_daemon.pid"
@@ -924,7 +918,7 @@ def run_web_console_tests() -> None:
                     except Exception:
                         pass
 
-            # 12c: Verify 0-second automatic TASK_RESUME wake when Cloud VM pod was evicted and admin sends a message!
+            # 12c: Verify incoming message to dormant pod notifies ctrl ONLY (NO direct main2 TASK_RESUME bypass!)
             c1_code_now = bridge.conv_row("c1")["task_code"]
             asyncio.run(bridge.call_tool("join", {"code": c1_code_now}))
             c1_ag_ev = bridge.conv_row("c1")["agent"]
@@ -936,11 +930,14 @@ def run_web_console_tests() -> None:
                 (bridge.now() - 600, bridge.now() - 600),
             )
             bridge._msg_auto_wake_ts.clear()
-            bridge.post("c1", chat_id=7001, chat_type="private", user_id=7001, user_name="Alpine", text="自动拉起休眠容器测试", wake=1)
-            auto_wake_op = bridge.store.one(
-                "SELECT * FROM dispatch_ops WHERE conv_id='c1' AND op_type='resume_subagent' AND requester='auto_msg_wake' ORDER BY created_ts DESC LIMIT 1"
-            )
-            assert auto_wake_op is not None and auto_wake_op["target_node"] == "main2"
+            ctrl_cur_ag = bridge.conv_row("ctrl")["agent"]
+            asyncio.run(bridge.call_tool("read_chat", {"agent": ctrl_cur_ag, "wait_sec": 0}))
+            ops_before_wake = bridge.store.one("SELECT COUNT(*) AS n FROM dispatch_ops WHERE conv_id='c1' AND op_type='resume_subagent'")["n"]
+            bridge.post("c1", chat_id=7001, chat_type="private", user_id=7001, user_name="Alpine", text="休眠容器通知总控测试", wake=1)
+            ops_after_wake = bridge.store.one("SELECT COUNT(*) AS n FROM dispatch_ops WHERE conv_id='c1' AND op_type='resume_subagent'")["n"]
+            assert ops_after_wake == ops_before_wake, "auto_msg_wake bypassed ctrl directly into main2!"
+            ctrl_wake_note = text_of(asyncio.run(bridge.call_tool("read_chat", {"agent": ctrl_cur_ag, "wait_sec": 0})))
+            assert "休眠会话收到新消息，请总控决策" in ctrl_wake_note and "c1" in ctrl_wake_note
 
             # 12d: Verify rogue spawned subagent cid ('bc-auto-env-1') impersonating m2_ag is surgically denied & evicted while real main2 ('main2-top-conv') is unharmed!
             pk_rogue = client.get(f"/trace/peek?agent={m2_ag}&cid=bc-auto-env-1").json()
@@ -1190,11 +1187,13 @@ def run_stealth_and_onboarding_370_tests() -> None:
             assert allow_m_sudo.get("permission") != "deny"
             allow_m_wait = call_relay({"hook_event_name": "beforeShellExecution", "conversation_id": "legacy-cid-1", "command": sh_m})
             assert allow_m_wait.get("permission") != "deny"
-            # Bind live m_sudo_ag cid via afterShellExecution on real_sys_inst_cmd, then verify stop hook blocks main from ending turn!
+            # Bind live m_sudo_ag cid via afterShellExecution on real_sys_inst_cmd, then verify:
+            # - top-level `stop` returns {} (NO follow-up message, keeping strictly 1 user message in Cursor!)
+            # - background `subagentStop` for active subagent STILL bounces back to read_chat (preventing taskend spam!)
             m_live_cid = "conv-main-live-stop-1"
             assert call_relay({"hook_event_name": "afterShellExecution", "conversation_id": m_live_cid, "command": real_sys_inst_cmd}) == {}
             stop_m = call_relay({"hook_event_name": "stop", "conversation_id": m_live_cid, "status": "completed"})
-            assert "主Agent常驻铁律" in str(stop_m.get("followup_message") or ""), f"Main stop hook failed to block exit: {stop_m}"
+            assert stop_m == {}, f"Top-level stop hook should NOT emit followup_message: {stop_m}"
             stop_sub = call_relay({"hook_event_name": "subagentStop", "conversation_id": ob_cid, "status": "completed"})
             assert "read_chat" in str(stop_sub.get("followup_message") or ""), f"Subagent stop hook failed: {stop_sub}"
             allow_m_echo = call_relay({"hook_event_name": "preToolUse", "conversation_id": "legacy-cid-1", "tool_name": "Shell", "tool_input": {"command": "echo ok"}})
@@ -1335,13 +1334,21 @@ async def run_v371_bugfix_regression_tests() -> None:
     empty_txt = text_of(await bridge.call_tool("read_chat", {"agent": ctrl_ag, "wait_sec": 0}))
     assert "暂无新消息" in empty_txt, empty_txt[:200]
 
-    # 2. Watchdog hb_dead 30s probe-spam regression:
+    # 2. Watchdog hb_dead 30s spam + ctrl-only routing regression:
     # Ensure we have an active online main launcher and a lost conv with hb_dead=True
     m_node = bridge.store.one("SELECT * FROM exec_nodes WHERE kind='launcher' AND status='online' ORDER BY num DESC LIMIT 1")
     assert m_node is not None
     bridge.store.run("UPDATE exec_nodes SET last_seen=? WHERE id=?", (bridge.now(), m_node["id"]))
     m_cloud = int(m_node["cloud_num"] or 1)
-    c_hd = bridge.create_conv("hb_dead防狂刷测试", 7001, name="防狂刷", owner=0)
+    c_hd = bridge.create_conv("hb_dead防狂刷测试", 7001, name="SENSITIVE_CHAT_NAME_NEVER_LEAK", owner=0)
+    # 2a. task_text MUST NOT leak conv['name'] and MUST enforce 2-char `ok` silent exit!
+    tt_hd = bridge.task_text(bridge.conv_row(c_hd["id"]))
+    assert "SENSITIVE_CHAT_NAME_NEVER_LEAK" not in tt_hd, f"conv['name'] leaked into main Task prompt: {tt_hd}"
+    assert "`ok`" in tt_hd and "严禁输出任何总结" in tt_hd
+    assert "`ok`" in bridge.stopped_text(bridge.agent_row(ctrl_ag))
+    rules_txt = bridge.build_chat_rules(is_admin_owner=False)
+    assert "拒而不退" in rules_txt and "`ok`" in rules_txt
+
     bridge.store.run("UPDATE convs SET cloud=?, task_agent_id='bc-hb-dead-test-1', auto_restarted_ts=0 WHERE id=?", (m_cloud, c_hd["id"]))
     await bridge.call_tool("join", {"code": c_hd["task_code"]})
     hd_ag = bridge.conv_row(c_hd["id"])["agent"]
@@ -1354,39 +1361,48 @@ async def run_v371_bugfix_regression_tests() -> None:
         (c_hd["id"], hd_ag, "thinking", "Thought", "断流测试", "{}", bridge.now() - 2000, bridge.now() - 2000, bridge.now() - 2000, 0),
     )
     bridge._watchdog_resume_probes.pop(hd_ag, None)
-    bridge._ctrl_probe_note_ts.clear()
-    before_ctrl_notes = bridge.store.one("SELECT COUNT(*) AS n FROM messages WHERE target='ctrl' AND wake=0")["n"]
+    text_of(await bridge.call_tool("read_chat", {"agent": ctrl_ag, "wait_sec": 0}))
+    ops_before_hd = bridge.store.one("SELECT COUNT(*) AS n FROM dispatch_ops WHERE conv_id=?", (c_hd["id"],))["n"]
 
     # Run watchdog_tick 5 times in a row (simulating 5 x 30s ticks)
     for _ in range(5):
         await bridge.watchdog_tick()
 
-    ops_hd = bridge.store.q(
-        "SELECT * FROM dispatch_ops WHERE conv_id=? AND op_type='resume_subagent' AND requester='watchdog_auto_resume'",
-        (c_hd["id"],),
-    )
-    assert len(ops_hd) == 1, f"Expected exactly 1 TASK_RESUME probe across 5 watchdog ticks, got {len(ops_hd)}!"
+    # ZERO direct ops sent into mainN! Only 1 ctrl alert across all 5 ticks!
+    ops_after_hd = bridge.store.one("SELECT COUNT(*) AS n FROM dispatch_ops WHERE conv_id=?", (c_hd["id"],))["n"]
+    assert ops_after_hd == ops_before_hd, f"Watchdog bypassed ctrl into mainN: {ops_after_hd - ops_before_hd}"
     assert hd_ag in bridge._watchdog_resume_probes, "Probe cooldown was wrongly wiped by not think_stuck!"
-    after_ctrl_notes = bridge.store.one("SELECT COUNT(*) AS n FROM messages WHERE target='ctrl' AND wake=0")["n"]
-    assert (after_ctrl_notes - before_ctrl_notes) <= 1, f"Too many ctrl wake=0 probe notes: {after_ctrl_notes - before_ctrl_notes}"
+    ctrl_hd_msgs = [
+        r["text"] for r in bridge.store.q(
+            "SELECT text FROM messages WHERE target='ctrl' AND id>? AND text LIKE ?",
+            (bridge.conv_row("ctrl")["read_cursor"], f"%{c_hd['id']}%"),
+        )
+    ]
+    assert len(ctrl_hd_msgs) == 1 and "失联/探针断流，请总控决策" in ctrl_hd_msgs[0], ctrl_hd_msgs
 
-    # Launcher confirms subagent is still running -> grace window still prevents duplicate probes
-    await bridge.call_tool(
-        "submit_op_result",
-        {"agent": m_node["agent"], "op_id": ops_hd[0]["op_id"], "status": "ok", "output": "Subagent is running in the background."},
-    )
-    await bridge.watchdog_tick()
-    ops_hd2 = bridge.store.q(
-        "SELECT * FROM dispatch_ops WHERE conv_id=? AND op_type='resume_subagent' AND requester='watchdog_auto_resume'",
-        (c_hd["id"],),
-    )
-    assert len(ops_hd2) == 1, f"Duplicate probe fired during grace window: {len(ops_hd2)}"
-
-    # After full grace window expires with zero progress -> escalates cleanly to auto-restart!
-    bridge._watchdog_resume_probes[hd_ag]["sent_ts"] = bridge.now() - 400
-    bridge._watchdog_resume_probes[hd_ag]["ack_ts"] = bridge.now() - 350
-    await bridge.watchdog_tick()
-    assert bridge.agent_row(hd_ag)["status"] == "stopped", "Unresponsive hb_dead conv did NOT escalate after grace window!"
+    # 3. Verify mainN scripted mandatory-tool_call flow (submit_op_result -> direct /wait, no ask!)
+    m_ag_live = m_node["agent"]
+    # Drain m_node inbox first
+    text_of(await bridge.call_tool("read_chat", {"agent": m_ag_live, "wait_sec": 0}))
+    disp_hd = await bridge.call_tool("dispatch_task_op", {"agent": ctrl_ag, "chat": c_hd["id"], "action": "resume", "target_main": m_node["id"]})
+    assert not disp_hd.is_error
+    m_op_txt = text_of(await bridge.call_tool("read_chat", {"agent": m_ag_live, "wait_sec": 0}))
+    assert "必须带 tool_call" in m_op_txt
+    op_hd_row = bridge.store.one("SELECT op_id FROM dispatch_ops WHERE conv_id=? ORDER BY created_ts DESC LIMIT 1", (c_hd["id"],))
+    sub_empty = text_of(await bridge.call_tool("submit_op_result", {"agent": m_ag_live, "op_id": op_hd_row["op_id"], "status": "ok", "output": "running in the background"}))
+    assert "必须带 tool_call" in sub_empty and "/wait" in sub_empty and "不要调 ask" in sub_empty, sub_empty
+    # Verify mainN shell_stream timeout directly re-runs /wait with ZERO ask() prompt!
+    old_sw = bridge.SHELL_WAIT
+    bridge.SHELL_WAIT = 0
+    bridge.SHUTDOWN["active"] = False
+    try:
+        m_gen = bridge.shell_stream(bridge.agent_row(m_ag_live))
+        _ = await asyncio.wait_for(m_gen.__anext__(), timeout=2.0)
+        m_tout = await asyncio.wait_for(m_gen.__anext__(), timeout=2.0)
+        await m_gen.aclose()
+        assert "必须带 tool_call" in m_tout and "/wait" in m_tout and "ask(agent=" not in m_tout, m_tout
+    finally:
+        bridge.SHELL_WAIT = old_sw
 
 
 def main() -> None:
@@ -1394,7 +1410,7 @@ def main() -> None:
     run_web_console_tests()
     run_stealth_and_onboarding_370_tests()
     asyncio.run(run_v371_bugfix_regression_tests())
-    print("ALL_371_TESTS_PASSED_OK")
+    print("ALL_372_TESTS_PASSED_OK")
 
 
 if __name__ == "__main__":
