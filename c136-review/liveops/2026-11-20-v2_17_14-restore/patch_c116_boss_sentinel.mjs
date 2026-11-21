@@ -295,6 +295,115 @@ if (!v27.includes('isBossDoveActive(g, bossId)')) {
   v27 = v27.slice(0, sIdx) + newBossSupport + v27.slice(eIdx + oldBossRescueEnd.length);
 }
 
+// Replace tryPeaceVote(g) so when Boss (9JNYv / [APEX] ok) is in the match:
+//   - NEVER initiate a peace vote
+//   - Vote NO (hz.iN(0)) on anyone else's peace vote
+//   - Vote YES (hz.iN(1)) on Boss's peace vote (regardless of crown/land)
+const oldPeaceStart = `  // AUTO PEACE VOTE CALL & ACCEPT:
+  tryPeaceVote(g) {`;
+const oldPeaceEnd = `  isBossDoveActive(g, bossId) {`;
+
+if (!v27.includes('voted NO on non-Boss peace call')) {
+  const pStart = v27.indexOf(oldPeaceStart);
+  const pEnd = v27.indexOf(oldPeaceEnd, pStart);
+  if (pStart < 0 || pEnd < 0) throw new Error('Anchor not found: v27 tryPeaceVote block');
+  const newPeaceBlock = `  findAnyBossInMatch(g) {
+    const aliveBoss = this.findBossId(g);
+    if (aliveBoss >= 0) return aliveBoss;
+    const accArr = (typeof window !== "undefined" && window.aE?.data?.a7z) ? window.aE.data.a7z : null;
+    for (let p = 0; p < g.humans; p++) {
+      if (p === this.me) continue;
+      if (typeof window !== "undefined" && window.__quitPlayers && window.__quitPlayers.has(p)) continue;
+      const accUx = accArr ? (accArr[p] >>> 0) : 0;
+      const low = String(g.names?.[p] ?? "").trim().toLowerCase();
+      if (accUx === ${BOSS_ACC_UX} || low === "[apex] ok" || low === "[apex]ok") {
+        if (!g.teams || this.isTeammate(g, p)) return p;
+      }
+    }
+    return -1;
+  }
+
+  // AUTO PEACE VOTE CALL & ACCEPT:
+  // Boss rule: when Boss is in the match, NEVER initiate peace vote; vote NO on others; vote YES on Boss!
+  tryPeaceVote(g) {
+    if (typeof window === "undefined" || !window.ax || !window.dictionary || g.t < 1610) return;
+    const me = this.me;
+    const hz = window[window.dictionary.sbCommands]?.hz;
+    if (!hz) return;
+
+    const bossAnyId = this.findAnyBossInMatch(g);
+    if (bossAnyId >= 0) {
+      // Boss is present in this match: NEVER initiate peace vote; YES on Boss, NO on everyone else.
+      if (window.ax.iL && typeof window.ax.iM === "function" && window.ax.iM(me) && typeof hz.iN === "function") {
+        if (g.t - (this._lastPeaceReplyTick ?? -999) < 25) return;
+        const caller = window.__lastPeaceCaller;
+        const callerIsBoss =
+          Number.isInteger(caller) &&
+          caller >= 0 &&
+          caller < g.humans &&
+          (caller === bossAnyId || this.isBossNpl(g, caller));
+        this._lastPeaceReplyTick = g.t;
+        if (callerIsBoss) {
+          hz.iN(1);
+          if (window.__hlLog) {
+            window.__hlLog(\`[HL-PEACE] t=\${g.t} voted YES on Boss peace call by p=\${caller}(\${g.names?.[caller] || ""})\`);
+          }
+        } else {
+          hz.iN(0);
+          if (window.__hlLog) {
+            window.__hlLog(\`[HL-PEACE] t=\${g.t} voted NO on non-Boss peace call by p=\${caller}(\${g.names?.[caller] || ""})\`);
+          }
+        }
+      }
+      return;
+    }
+
+    if (g.t < 7500) return; // Autonomous squad: allow peace vote after t>=7500 when holding crown + >=85% teamLand
+    let ourTeamLand = g.terr[me] || 0;
+    if (g.teams && g.teams[me] > 0) {
+      ourTeamLand = 0;
+      for (let p = 0; p < g.players; p++) {
+        if (g.alive[p] && g.teams[p] === g.teams[me]) ourTeamLand += g.terr[p];
+      }
+    }
+    let topPlayer = -1, topTerr = -1;
+    for (let p = 0; p < g.players; p++) {
+      if (g.alive[p] && g.terr[p] > topTerr) {
+        topTerr = g.terr[p];
+        topPlayer = p;
+      }
+    }
+    const weHoldCrown = topPlayer >= 0 && (topPlayer === me || this.isOurSquadBot(g, topPlayer));
+    const weLead = weHoldCrown && (ourTeamLand >= 0.85 * Math.max(1, g.land) || this.isMopUp(g));
+    const caller = window.__lastPeaceCaller;
+    const callerIsOurs =
+      weHoldCrown &&
+      Number.isInteger(caller) &&
+      caller >= 0 &&
+      caller < g.humans &&
+      (caller === me || this.isOurSquadBot(g, caller));
+    if (window.ax.iL && typeof window.ax.iM === "function" && window.ax.iM(me)) {
+      if (callerIsOurs && typeof hz.iN === "function") {
+        hz.iN(1);
+        if (window.__hlLog && g.t - (this._lastPeaceVoteLog ?? -999) >= 100) {
+          this._lastPeaceVoteLog = g.t;
+          window.__hlLog(\`[HL-PEACE] t=\${g.t} voted YES on our squad's peace call by p=\${caller}(\${g.names?.[caller] || ""}) (teamLand=\${(100 * ourTeamLand / Math.max(1, g.land)).toFixed(1)}%)\`);
+        }
+      }
+    } else if (!window.ax.iL && weLead && g.t - (this.lastPeaceKeyTick ?? -999) >= 105 && typeof window.ax.iO === "function" && window.ax.iO(me)) {
+      this.lastPeaceKeyTick = g.t;
+      window.__lastPeaceCaller = me;
+      if (typeof hz.iK === "function") {
+        hz.iK();
+        if (window.__hlLog) window.__hlLog(\`[HL-PEACE] t=\${g.t} initiated peace vote (teamLand=\${(100 * ourTeamLand / Math.max(1, g.land)).toFixed(1)}%)\`);
+      }
+    }
+  }
+
+  isBossDoveActive(g, bossId) {`;
+  v27 = v27.slice(0, pStart) + newPeaceBlock + v27.slice(pEnd + oldPeaceEnd.length);
+}
+
 // In tryDonateToTeammate: remove the old aggressive bossDonate hijack and instead hold rear surplus for Boss while Peace Dove is active
 v27 = replaceOnce(
   v27,
