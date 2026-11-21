@@ -203,12 +203,12 @@ if (!v27.includes('isBossDoveActive(g, bossId)')) {
   }
 
   // Safe-Rear Boss Support (Default light skim + Peace Dove 1017 non-suicidal rear full support)
+  // Uses exact p6MaxQuotaTroops(g, bossId) instead of UI-slider ao.iD(bossId) so mid-game donations never stall!
   tryEmergencyBossRescue(g) {
     const me = this.me;
     if (!g.teams || !(g.teams[me] > 0) || !g.canAct(me) || typeof g.donate !== "function") return false;
     const bossId = this.findBossId(g);
     if (bossId < 0 || !g.alive[bossId] || g.terr[bossId] < 100) return false;
-    if (typeof window !== "undefined" && window.ao?.iD && !window.ao.iD(bossId)) return false;
 
     const doveActive = this.isBossDoveActive(g, bossId);
     if (!doveActive && g.t < 1500) return false;
@@ -217,7 +217,7 @@ if (!v27.includes('isBossDoveActive(g, bossId)')) {
     const B = g.bal[me], L = Math.max(1, g.terr[me]), dMe = B / L;
     if (doveActive ? (L < 400 || B < 15000) : (L < 1200 || B < 35000)) return false;
 
-    // Strictly SAFE REAR ONLY: zero incoming human attack, not fighting a human, zero enemy land borders!
+    // Strictly SAFE REAR ONLY: zero incoming human attack, not fighting a human, zero enemy human land borders!
     let myHumanInAtk = 0, myHumanOutAtk = 0;
     for (const a of g.attackersOf(me)) {
       if (!g.isBot(a) && !this.isTeammate(g, a)) myHumanInAtk += g.attackTroopsOn(a, me);
@@ -234,7 +234,7 @@ if (!v27.includes('isBossDoveActive(g, bossId)')) {
     if (enemyHumanNbs.length > 0) return false;
     if (this.cnt) {
       for (let p = 0; p < g.humans; p++) {
-        if (p !== me && g.alive[p] && !this.isTeammate(g, p) && (this.cnt[p] ?? 0) > 0) {
+        if (p !== me && g.alive[p] && !g.isBot(p) && !this.isTeammate(g, p) && (this.cnt[p] ?? 0) > 0) {
           return false;
         }
       }
@@ -246,25 +246,38 @@ if (!v27.includes('isBossDoveActive(g, bossId)')) {
       if (a !== me && !this.isTeammate(g, a)) bossInAtk += g.attackTroopsOn(a, bossId);
     }
 
+    const inflightToBoss = typeof this.p6InflightTo === "function" ? this.p6InflightTo(g, bossId) : 0;
+    const recipRoom = Math.max(0, 145 * L_boss - B_boss - inflightToBoss);
+    const quotaMax = typeof this.p6MaxQuotaTroops === "function" ? this.p6MaxQuotaTroops(g, bossId) : Infinity;
+    const serverCapTroops = Math.min(recipRoom, quotaMax);
+    if (serverCapTroops < 8000) return false;
+
     const hasExposedCoast = (g.coast?.[me]?.length ?? 0) > 0;
     const hasSeaEnemy = hasExposedCoast && this.seaPeople(g).length > 0;
     const isPureInlandSafe = !hasExposedCoast;
+    const mySlot = typeof window !== "undefined" && Number.isInteger(window.__tsbSquadSlot) ? window.__tsbSquadSlot : (me % 10);
 
     if (doveActive) {
-      // Peace Dove (r5===1017): rear full support while strictly preserving non-suicidal reserve floors
+      // Peace Dove (r5===1017): rear full support while strictly preserving non-suicidal reserve floors & server quota
       if (dBoss >= 138) return false;
+      const doveTick = typeof window !== "undefined" ? (window.__doveEmoteTicks?.get(bossId) ?? -999) : -999;
+      const staggerMod = (g.t >= doveTick && g.t - doveTick <= 25) ? 3 : 4;
+      if (((g.t / 5) | 0) % staggerMod !== (mySlot % staggerMod)) return false;
       const keepFloor = isPureInlandSafe ? 42 * L : (hasSeaEnemy && g.t >= 1000 ? 72 * L : 52 * L);
       const cooldown = isPureInlandSafe ? 16 : 22;
       if (B <= 1.08 * keepFloor || g.t - (this.lastBossDonateTick ?? -999) < cooldown) return false;
-      const maxPct = Math.floor(((B - keepFloor) * 1024) / Math.max(1, B));
+      const maxTransfer = Math.min(Math.max(0, B - keepFloor), serverCapTroops);
+      const maxPct = Math.floor((maxTransfer * 1024) / Math.max(1, B));
       const targetPct = isPureInlandSafe ? 280 : 200;
       const pct = Math.min(maxPct, targetPct);
-      if (pct >= 55 && this.xDonate(g, pct, bossId, 'bossDoveSupport')) {
+      const sendTroops = Math.floor((B * pct) / 1024);
+      if (pct >= 18 && sendTroops >= 8000 && this.xDonate(g, pct, bossId, 'bossDoveSupport')) {
+        if (typeof this.p6RecordDonate === "function") this.p6RecordDonate(g, bossId, iV(B * (pct + 1), 1024));
         this.lastDonateTick = g.t;
         this.lastBossDonateTick = g.t;
         this.cmds++;
         if (typeof window !== "undefined" && window.__hlLog) {
-          window.__hlLog(\`[HL-DOVE-DONATE] t=\${g.t} rear dove support pct=\${pct}/1024 -> boss=\${bossId}(\${g.names?.[bossId] || "boss"}) myBal=\${B} dMe=\${Math.round(dMe)} floor=\${Math.round(keepFloor / L)} dBoss=\${Math.round(dBoss)} inland=\${isPureInlandSafe ? 1 : 0}\`);
+          window.__hlLog(\`[HL-DOVE-DONATE] t=\${g.t} rear dove support pct=\${pct}/1024 (~\${Math.round(sendTroops / 1000)}k) -> boss=\${bossId}(\${g.names?.[bossId] || "boss"}) myBal=\${B} dMe=\${Math.round(dMe)} floor=\${Math.round(keepFloor / L)} dBoss=\${Math.round(dBoss)} qMax=\${Number.isFinite(quotaMax) ? Math.round(quotaMax / 1000) + "k" : "inf"} inland=\${isPureInlandSafe ? 1 : 0}\`);
         }
         return true;
       }
@@ -274,15 +287,17 @@ if (!v27.includes('isBossDoveActive(g, bossId)')) {
     // Default mode: gentle rear light skim only (never drains squad macro or frontline)
     const maxBossDens = bossInAtk > 0 ? 116 : 104;
     if (dBoss >= maxBossDens) return false;
-    const mySlot = typeof window !== "undefined" && Number.isInteger(window.__tsbSquadSlot) ? window.__tsbSquadSlot : (me % 10);
     if (((g.t / 5) | 0) % 5 !== (mySlot % 5)) return false;
     const keepFloor = isPureInlandSafe ? 82 * L : 88 * L;
     const cooldown = 75;
     if (B <= 1.08 * keepFloor || g.t - (this.lastBossDonateTick ?? -999) < cooldown) return false;
-    const maxPct = Math.floor(((B - keepFloor) * 1024) / Math.max(1, B));
+    const maxTransfer = Math.min(Math.max(0, B - keepFloor), serverCapTroops);
+    const maxPct = Math.floor((maxTransfer * 1024) / Math.max(1, B));
     const targetPct = isPureInlandSafe ? 95 : 75;
     const pct = Math.min(maxPct, targetPct);
-    if (pct >= 55 && this.xDonate(g, pct, bossId, 'bossLightSkim')) {
+    const sendTroops = Math.floor((B * pct) / 1024);
+    if (pct >= 35 && sendTroops >= 10000 && this.xDonate(g, pct, bossId, 'bossLightSkim')) {
+      if (typeof this.p6RecordDonate === "function") this.p6RecordDonate(g, bossId, iV(B * (pct + 1), 1024));
       this.lastDonateTick = g.t;
       this.lastBossDonateTick = g.t;
       this.cmds++;
@@ -427,8 +442,10 @@ v27 = replaceOnce(
   `    const bossId = this.findBossId(g);
     if (bossId >= 0 && g.alive[bossId] && g.terr[bossId] >= 100 && !anyEnemyNb && this.isBossDoveActive(g, bossId)) {
       const dBoss = g.bal[bossId] / Math.max(1, g.terr[bossId]);
-      if (dBoss < 135) {
-        // Peace Dove active: safe rear bots reserve their surplus for Boss instead of diverting it elsewhere
+      const bossQuotaRem = typeof this.p6MaxQuotaTroops === "function" ? this.p6MaxQuotaTroops(g, bossId) : Infinity;
+      const bossRoomRem = Math.max(0, 145 * Math.max(1, g.terr[bossId]) - g.bal[bossId] - (typeof this.p6InflightTo === "function" ? this.p6InflightTo(g, bossId) : 0));
+      if (dBoss < 135 && bossQuotaRem >= 15000 && bossRoomRem >= 15000) {
+        // Peace Dove active & Boss still has server quota: reserve rear surplus for Boss
         return false;
       }
     }`,
