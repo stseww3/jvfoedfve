@@ -44,7 +44,7 @@ from tg import Telegram
 from web_console import register_web_console
 
 ROOT = Path(__file__).resolve().parent
-VERSION = "3.7.4"
+VERSION = "3.7.5"
 
 
 def load_dotenv(path: Path) -> None:
@@ -443,19 +443,20 @@ def main_prompt_text() -> str:
 
 def worker_prompt_text() -> str:
     return (
-        f"你是工作区常驻任务执行会话。调用 MCP 的 join(mode=\"worker\", main_key=\"{main_join_key()}\") 接入，接入后按返回的说明运行：\n"
-        f"循环调用 read_chat 等待任务单。没收到消息（【续棒】、报错、超时、断开）就直接进入下一轮等待；空等几轮后按提示运行终端长等待（一次 {SHELL_SPAN}）。"
-        "收到任务单后在当前工作区终端执行并通过 submit_op_result 提交结果，随后回到 read_chat 继续等待。只有工具返回身份已停用时才结束。"
+        f"你是工作区常驻任务执行会话。调用桥 MCP 的 join(mode=\"worker\", main_key=\"{main_join_key()}\") 接入，"
+        f"接入拿到身份后，直接按 join 返回里给定的终端命令从本调度服务（{PUBLIC_BASE}/trace/dais_runtime.pyz）下载并启动本地常驻 worker 进程自动拉单执行（block_until_ms={(SHELL_WAIT + 180) * 1000}，无需轮询 read_chat；若转后台调 AwaitShell(block_until_ms=7140000) 阻塞等，周期返回后再次运行同一条终端命令保持常驻），只有提示身份已停用时才结束。"
     )
 
 
 def worker_host_prompt_text(pool_size: int | None = None) -> str:
     p_arg = f", pool_size={int(pool_size)}" if pool_size is not None else ""
     return (
-        "你是工作区任务协调会话。请先通过 GetDynamicTools 加载 cursor 命名空间下的 AwaitShell、cursor-cloud 命名空间下的 environment-info 与 mcp 命名空间工具，"
+        "你是工作区任务协调会话。请先通过 GetDynamicTools 加载 cursor 命名空间下的 AwaitShell、cursor-cloud 命名空间下的 environment-info 以及 Telegram 桥 MCP 命名空间（dhdh 或 tg）工具，"
         "先调用一次 environment-info 读取本机 environment.environmentPublicId，"
-        f"再调用 MCP 的 join(mode=\"coordinator\", main_key=\"{main_join_key()}\"{p_arg}, environment_id=读到的environmentPublicId) 接入，按返回说明运行：\n"
-        "循环调用 read_chat 等待标准任务单。收到 `[STANDARD_OP ... type=\"TASK_LAUNCH\"]` 单据时，原样按单据给定的参数调用 `Task(..., run_in_background=true)` 启动后台子会话并用 `submit_op_result` 回填 `task_agent_id`；后续按 `submit_op_result` 内联返回的下一张单据连续处理，无单时运行终端长等待（转后台必须调 AwaitShell(block_until_ms=7140000) 阻塞等，严禁循环 Read terminals/*.txt）。严禁输出纯文字总结或结束回合，唯一退出条件只有工具明确返回身份已停用。"
+        f"再调用桥 MCP 的 join(mode=\"coordinator\", main_key=\"{main_join_key()}\"{p_arg}, environment_id=读到的environmentPublicId) 接入，按返回说明运行：\n"
+        "1. 你只负责原样处理 [STANDARD_OP] 单据：收到 type=\"TASK_LAUNCH\" 或 \"TASK_RESUME\" 单据时，严格按单据参数原样调用 Task(..., run_in_background=true) 并立即调用 submit_op_result 回填结果；后续按 submit_op_result 内联返回的下一张单据连续执行。\n"
+        f"2. 请严格保持每轮都有 tool_call：无单时按返回指令直接运行终端长等待（一次 {SHELL_SPAN}；若转入后台必须调 AwaitShell(block_until_ms=7140000) 阻塞等待，严禁循环 Read terminals/*.txt），忽略后台子 Task 结束/报错通知。\n"
+        "3. 严禁输出纯文字总结或结束回合；唯一退出条件只有桥工具明确返回「你的身份 m_... 已停用」。"
     )
 
 
@@ -2918,19 +2919,48 @@ def next_worker_host_num() -> int:
     return r + 1
 
 
-MAX_WORKER_POOL = 500
+# 0 表示算力池总台数不设上限（默认随在线母机 whost 数量 × MAX_VM_PER_HOST 自动全量拉满）
+MAX_WORKER_POOL = 0
+_ARG_POOL_HI = 1_000_000
+
+
+def worker_pool_is_unlimited() -> bool:
+    raw = (store.get("worker_pool_cap") or "").strip().lower()
+    return raw in ("", "unlimited", "auto", "max", "inf", "-1")
+
+
+def set_worker_pool_unlimited() -> None:
+    store.set("worker_pool_cap", "unlimited")
+
+
+def online_worker_host_capacity() -> int:
+    whosts = [
+        r for r in store.q("SELECT * FROM exec_nodes WHERE kind='worker_host' AND status='online'")
+        if node_is_online(r)
+    ]
+    return len(whosts) * MAX_VM_PER_HOST
 
 
 def worker_pool_target() -> int:
-    raw = (store.get("worker_pool_target") or "").strip()
-    if raw.lstrip("-").isdigit():
-        return max(0, min(MAX_WORKER_POOL, int(raw)))
-    return DEFAULT_WORKER_POOL_SIZE
+    raw = (store.get("worker_pool_cap") or "").strip()
+    if raw.isdigit():
+        return max(0, int(raw))
+    return max(DEFAULT_WORKER_POOL_SIZE, online_worker_host_capacity(), active_or_starting_runner_count())
+
+
+def worker_pool_target_label() -> str:
+    if worker_pool_is_unlimited():
+        cap_wh = online_worker_host_capacity()
+        return f"无上限（当前母机容量 {cap_wh} 台）" if cap_wh else "无上限（随在线母机自动全开）"
+    return f"{worker_pool_target()} 台"
 
 
 def set_worker_pool_target(count: int) -> int:
-    val = max(0, min(MAX_WORKER_POOL, int(count)))
-    store.set("worker_pool_target", str(val))
+    if int(count) < 0:
+        set_worker_pool_unlimited()
+        return -1
+    val = max(0, int(count))
+    store.set("worker_pool_cap", str(val))
     return val
 
 
@@ -4082,12 +4112,21 @@ def reconcile_worker_pool(
     min_target: int | None = None,
     requester: str = "auto_pool",
     allow_main_fallback: bool = False,
-    max_batch: int = 25,
+    max_batch: int = 0,
 ) -> list[str]:
-    target = worker_pool_target() if min_target is None else max(0, min(MAX_WORKER_POOL, int(min_target)))
-    cur = active_or_starting_runner_count()
     spawned: list[str] = []
-    while cur < target and len(spawned) < max_batch:
+    if min_target is None and worker_pool_is_unlimited():
+        # 无上限模式：把所有在线算力母机 whost1..M 的 20-VM 配额全部拉满，不设总台数封顶
+        while max_batch <= 0 or len(spawned) < max_batch:
+            res = spawn_worker_vm_via_host(requester=requester, allow_main_fallback=False)
+            if res is None:
+                break
+            spawned.append(res[0])
+        return spawned
+
+    target = worker_pool_target() if min_target is None else max(0, int(min_target))
+    cur = active_or_starting_runner_count()
+    while cur < target and (max_batch <= 0 or len(spawned) < max_batch):
         res = spawn_worker_vm_via_host(requester=requester, allow_main_fallback=allow_main_fallback)
         if res is None:
             break
@@ -4188,11 +4227,14 @@ def heal_runner_nodes(max_batch: int = 12) -> dict[str, list[str]]:
     resumed: list[str] = []
     relaunched: list[str] = []
     dispatched = 0
-    cap_slots = max(20, worker_pool_target())
-    rows = store.q(
-        "SELECT * FROM exec_nodes WHERE kind='runner' AND status IN ('online','offline') AND num<=? ORDER BY num",
-        (cap_slots,),
-    )
+    if worker_pool_is_unlimited():
+        rows = store.q("SELECT * FROM exec_nodes WHERE kind='runner' AND status IN ('online','offline') ORDER BY num")
+    else:
+        cap_slots = max(20, worker_pool_target())
+        rows = store.q(
+            "SELECT * FROM exec_nodes WHERE kind='runner' AND status IN ('online','offline') AND num<=? ORDER BY num",
+            (cap_slots,),
+        )
     for r in rows:
         nid = r["id"]
         ag = agent_row(r["agent"]) if r["agent"] else None
@@ -4525,9 +4567,12 @@ async def t_join(args: dict) -> ToolResult:
     if mode in ("worker_host", "coordinator"):
         # 算力池母机一号入网：携带合法 main_key 直接 0 秒自动放行，并立即自动投递独立新云机算力节点启动单！
         if "pool_size" in args and args.get("pool_size") is not None:
-            set_worker_pool_target(arg_int(args, "pool_size", DEFAULT_WORKER_POOL_SIZE, 0, MAX_WORKER_POOL))
+            set_worker_pool_target(arg_int(args, "pool_size", -1, -1, _ARG_POOL_HI))
         join_env_id = clean_env_id(args.get("environment_id"))
         whost_id, whost_ag = make_worker_host_node(custom_name=name, env_id=join_env_id)
+        if ("pool_size" not in args or args.get("pool_size") is None) and not worker_pool_is_unlimited() and worker_pool_target() > 0:
+            if online_worker_host_capacity() > worker_pool_target():
+                set_worker_pool_unlimited()
         spawned_list = reconcile_worker_pool(requester=whost_id)
         ensure_controller_alive()
         system_note(
@@ -6614,7 +6659,7 @@ def render_cluster_overview() -> str:
 
     whosts = store.q("SELECT * FROM exec_nodes WHERE kind='worker_host' AND status!='removed' ORDER BY num")
     if whosts:
-        lines.append(f"\n【算力池自动裂变母机（whost1..M，共 {len(whosts)} 台，目标常驻算力池={worker_pool_target()} 台）】")
+        lines.append(f"\n【算力池自动裂变母机（whost1..M，共 {len(whosts)} 台，目标常驻算力池={worker_pool_target_label()}）】")
         for wh in whosts:
             st_lbl = "🟢 在线" if node_is_online(wh) else f"⚪ {wh['status']}"
             used_vm = host_active_vm_count(wh["id"])
@@ -6693,7 +6738,7 @@ async def t_manage_node(agent, args):
         return text_result(f"已批准工作会话入网：分配节点编号 {node_id}（云端模式，已接入算力池）。")
 
     if action == "heal_workers":
-        res_h = heal_runner_nodes(max_batch=60)
+        res_h = heal_runner_nodes(max_batch=10000)
         sp = reconcile_worker_pool(requester=agent["conv"], allow_main_fallback=False)
         return text_result(
             f"已执行工作节点池自愈：原地 resume 唤醒 {len(res_h['resumed'])} 台（{', '.join(res_h['resumed'][:20])}），"
@@ -6702,8 +6747,19 @@ async def t_manage_node(agent, args):
         )
 
     if action == "scale_workers":
-        cnt = arg_int(args, "count", worker_pool_target(), 0, MAX_WORKER_POOL)
+        raw_cnt = args.get("count")
+        if isinstance(raw_cnt, str) and raw_cnt.strip().lower() in ("unlimited", "auto", "max", "inf", "无上限"):
+            cnt = -1
+        else:
+            cnt = arg_int(args, "count", -1, -1, _ARG_POOL_HI)
         new_target = set_worker_pool_target(cnt)
+        if new_target < 0:
+            spawned = reconcile_worker_pool(requester=agent["conv"], allow_main_fallback=False)
+            cur_total = active_or_starting_runner_count()
+            return text_result(
+                f"已将常驻云端算力池切换为【无上限模式】（随在线母机自动拉满，当前在线/启动中 {cur_total} 台）"
+                + (f"，本次自动触发拉起：{', '.join(spawned)}。" if spawned else "。")
+            )
         spawned = reconcile_worker_pool(min_target=new_target, requester=agent["conv"], allow_main_fallback=True)
         cur_total = active_or_starting_runner_count()
         return text_result(
@@ -9022,7 +9078,7 @@ async def on_command(message: dict, command: str, rest: str, chat_id: int, chat_
             return
         sub = rest.strip().split()
         if sub and sub[0].lower() == "heal":
-            res_h = heal_runner_nodes(max_batch=60)
+            res_h = heal_runner_nodes(max_batch=10000)
             sp = reconcile_worker_pool(requester="admin_heal", allow_main_fallback=False)
             await reply(
                 chat_id,
@@ -9035,17 +9091,30 @@ async def on_command(message: dict, command: str, rest: str, chat_id: int, chat_
             new_wm = set_worker_pool_model(" ".join(sub[1:]))
             await reply(chat_id, f"✅ 已将自动工作节点默认启动模型设为：`{new_wm or '继承宿主默认'}`（可发 `/nodes heal` 按新模型批量重拉离线节点）。")
             return
-        if len(sub) >= 2 and sub[0].lower() == "scale" and sub[1].lstrip("-").isdigit():
-            new_t = set_worker_pool_target(int(sub[1]))
-            sp = reconcile_worker_pool(min_target=new_t, requester="admin_tg", allow_main_fallback=True)
-            await reply(
-                chat_id,
-                f"✅ 已将常驻算力云机池目标设为 {new_t} 台"
-                + (f"，已自动下发启动单：{', '.join(sp)}" if sp else "（当前在线/启动中算力机已满足，或等待算力母机接入）")
-                + "。",
-            )
-            return
-        await reply(chat_id, render_cluster_overview() + f"\n\n💡 随时发 `/nodes scale 数量` 调整自动算力机台数\n🌐 Web 控制台：{PUBLIC_BASE}/web")
+        if len(sub) >= 2 and sub[0].lower() == "scale":
+            arg_s = sub[1].strip().lower()
+            if arg_s in ("unlimited", "auto", "max", "inf", "-1", "无上限"):
+                set_worker_pool_unlimited()
+                sp = reconcile_worker_pool(requester="admin_tg", allow_main_fallback=False)
+                await reply(
+                    chat_id,
+                    "✅ 已切换为【无上限模式】（每台在线母鸡自动拉满 20 台算力云机，上不封顶）"
+                    + (f"，已立即补齐下发 {len(sp)} 台：{', '.join(sp[:30])}{'…' if len(sp) > 30 else ''}" if sp else "")
+                    + "。",
+                )
+                return
+            if arg_s.lstrip("-").isdigit():
+                new_t = set_worker_pool_target(int(arg_s))
+                sp = reconcile_worker_pool(min_target=None if new_t < 0 else new_t, requester="admin_tg", allow_main_fallback=(new_t > 0))
+                lbl = "无上限" if new_t < 0 else f"{new_t} 台"
+                await reply(
+                    chat_id,
+                    f"✅ 已将常驻算力云机池目标设为 {lbl}"
+                    + (f"，已自动下发启动单：{', '.join(sp[:30])}{'…' if len(sp) > 30 else ''}" if sp else "（当前在线/启动中算力机已满足，或等待算力母机接入）")
+                    + "。",
+                )
+                return
+        await reply(chat_id, render_cluster_overview() + f"\n\n💡 默认无上限（每台母鸡自动拉满 {MAX_VM_PER_HOST} 台）；也可发 `/nodes scale max` 或 `/nodes scale 数量`\n🌐 Web 控制台：{PUBLIC_BASE}/web")
         return
 
     if command in ("/main", "/ctrl") or re.fullmatch(r"/(?:c|main)\d+", command):
@@ -9159,13 +9228,15 @@ async def on_command(message: dict, command: str, rest: str, chat_id: int, chat_
             await reply(chat_id, "已换新密钥：所有云 agent 都断开了，没批的接入和本地申请也作废了。\n"
                         "把下面的配置换进 cursor.com/agents，再开一个云端聊天，发开场提示词重新接入主 Agent：\n" + config
                         + "\n\n【1】主 Agent 执行器开场提示词：\n" + main_prompt_text()
-                        + "\n\n【2】云端常驻工作会话（算力机）开场提示词：\n" + worker_prompt_text())
+                        + "\n\n【2】算力母机（母鸡 whost，1 台免审自动拉 20 台算力云机，上不封顶）开场提示词：\n" + worker_host_prompt_text()
+                        + "\n\n【3】单台云端常驻算力机（worker）开场提示词：\n" + worker_prompt_text())
         elif command == "/key":
             await reply(chat_id, "账号级 MCP 配置，填进 cursor.com/agents 的 MCP 设置（所有云 agent 共用，不要贴进聊天内容）：\n"
                         + mcp_config()
                         + f"\n\n🌐 Web 全功能控制台地址：{PUBLIC_BASE}/web（超级管理员账号：zwt）"
                         + "\n\n【1】主 Agent 执行器开场提示词（新开主 Agent 时发给它，你在 TG 点批准）：\n" + main_prompt_text()
-                        + "\n\n【2】云端常驻工作会话（算力机）开场提示词（总控免打扰自动审批）：\n" + worker_prompt_text()
+                        + "\n\n【2】算力母机（母鸡 whost，1 台免审自动拉 20 台算力云机，上不封顶）：\n" + worker_host_prompt_text()
+                        + "\n\n【3】单台云端常驻算力机（worker，总控免打扰自动审批）：\n" + worker_prompt_text()
                         + "\n\n会话停了：打开它那个云端聊天，发：\n" + RESUME_PROMPT
                         + "\n\n怀疑密钥泄露或有云 agent 失控：发 /key reset 换密钥，所有云 agent 立刻断开。")
         else:
@@ -10805,7 +10876,7 @@ def handle_thinking_stuck_conv(conv, trow, stuck_sec: float, probe_kind: str = "
 async def watchdog_tick() -> None:
     mark_menu_dirty()
     reap_offline_exec_nodes()
-    heal_runner_nodes(max_batch=15)
+    heal_runner_nodes(max_batch=50)
     reconcile_worker_pool(requester="watchdog_pool", allow_main_fallback=False)
     has_online_launchers = any(
         node_is_online(r) for r in store.q("SELECT * FROM exec_nodes WHERE kind='launcher' AND status='online'")
@@ -10923,7 +10994,7 @@ async def watchdog_tick() -> None:
 async def watchdog_loop() -> None:
     await asyncio.sleep(5)
     try:
-        reconcile_worker_pool(requester="startup_pool", allow_main_fallback=False, max_batch=25)
+        reconcile_worker_pool(requester="startup_pool", allow_main_fallback=False)
     except Exception:
         log.exception("initial reconcile_worker_pool failed")
     while True:
@@ -11763,8 +11834,6 @@ async def http_jobs_submit(request: Request) -> JSONResponse:
             return JSONResponse({"ok": False, "error": "missing_jobs_or_command"}, status_code=400)
     if not isinstance(raw_jobs, list) or not raw_jobs:
         return JSONResponse({"ok": False, "error": "jobs_must_be_non_empty_list"}, status_code=400)
-    if len(raw_jobs) > 5000:
-        return JSONResponse({"ok": False, "error": "max_5000_jobs_per_submit"}, status_code=400)
 
     batch_id = re.sub(r"[^a-zA-Z0-9_.:-]", "_", str(body.get("batch_id") or ""))[:80]
     if not batch_id:
@@ -11875,7 +11944,7 @@ async def http_jobs_submit(request: Request) -> JSONResponse:
         r for r in store.q("SELECT * FROM exec_nodes WHERE kind='runner' AND status='online'") if node_is_online(r)
     ]
     autoscale_spawned = ""
-    if has_auto_jobs and len(online_runners) < min(worker_pool_target(), len(to_insert)):
+    if has_auto_jobs and (worker_pool_is_unlimited() or len(online_runners) < min(worker_pool_target(), len(to_insert))):
         try:
             sp = spawn_worker_vm_via_host(requester=f"autoscale:{caller_id}", allow_main_fallback=(len(online_runners) == 0))
             if sp:

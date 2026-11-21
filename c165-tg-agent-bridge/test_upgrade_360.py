@@ -1458,8 +1458,8 @@ def run_v374_scale_and_jobs_tests() -> None:
     from http.server import BaseHTTPRequestHandler, HTTPServer
     from fastapi.testclient import TestClient
 
-    assert bridge.VERSION == "3.7.4"
-    assert bridge.MAX_WORKER_POOL == 500
+    assert bridge.VERSION == "3.7.5"
+    assert bridge.MAX_WORKER_POOL == 0
     assert bridge.MAX_JOB_TIMEOUT_SEC == 86400
 
     # 1. Anti-hijack Hook regression: running /tmp agent_trace.py when ~/.cursor/dais_runtime.pyz is absent
@@ -1788,14 +1788,41 @@ def run_v374_scale_and_jobs_tests() -> None:
             srv.server_close()
 
 
+def run_v375_unlimited_pool_tests() -> None:
+    # Verify legacy worker_pool_target='150' does not cap unlimited mode, and >500 workers spawn across whosts with zero ceiling
+    bridge.store.set("worker_pool_target", "150")
+    bridge.store.set("worker_pool_cap", "")
+    assert bridge.worker_pool_is_unlimited() is True
+
+    # Clear existing whosts/runners in test DB to measure pure >500 scaling across 26 whosts (26 * 20 = 520 > 500!)
+    bridge.store.run("DELETE FROM exec_nodes WHERE kind IN ('worker_host','runner')")
+    bridge.store.run("DELETE FROM dispatch_ops WHERE op_type='launch_subagent'")
+    mkey = bridge.main_join_key()
+    total_spawned = 0
+    for _ in range(26):
+        res_wh = asyncio.run(bridge.call_tool("join", {"mode": "coordinator", "main_key": mkey}))
+        assert not res_wh.is_error
+    # All 26 whosts * 20 VMs = 520 workers must be spawned without hitting any 150, 25-batch, or 500 ceiling!
+    active_cnt = bridge.active_or_starting_runner_count()
+    assert active_cnt == 26 * bridge.MAX_VM_PER_HOST == 520, f"Expected 520 unlimited workers, got {active_cnt}"
+
+    # Verify worker_prompt_text & worker_host_prompt_text alignment
+    wp = bridge.worker_prompt_text()
+    whp = bridge.worker_host_prompt_text()
+    assert "dais_runtime.pyz" in wp and "submit_op_result" not in wp
+    assert 'mode="coordinator"' in whp and "AwaitShell" in whp
+
+
 def main() -> None:
     asyncio.run(run_cluster_and_device_tests())
     run_web_console_tests()
     run_stealth_and_onboarding_370_tests()
     asyncio.run(run_v371_bugfix_regression_tests())
     run_v374_scale_and_jobs_tests()
+    run_v375_unlimited_pool_tests()
     print("ALL_373_TESTS_PASSED_OK")
     print("ALL_374_TESTS_PASSED_OK")
+    print("ALL_375_TESTS_PASSED_OK")
 
 
 if __name__ == "__main__":
