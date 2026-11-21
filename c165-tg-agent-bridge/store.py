@@ -314,6 +314,10 @@ COLUMNS = (
     ("dispatch_ops", "max_retries", "INTEGER DEFAULT 2"), # 节点掉线/失联时的最大自动重排次数
     ("dispatch_ops", "claimed_by", "TEXT DEFAULT ''"),    # 实际领单执行的节点编号（target_node 可为 auto）
     ("dispatch_ops", "notify_chat", "INTEGER DEFAULT 1"), # 1=完成后推送聊天消息；0=纯HTTP静默队列不刷对话框
+    ("files", "expires_ts", "REAL DEFAULT 0"),            # >0 时到期自动清理磁盘与记录（流水中转临时文件）
+    ("files", "max_downloads", "INTEGER DEFAULT 0"),      # >0 时累计下载满 N 次自动删除释放磁盘
+    ("files", "downloads", "INTEGER DEFAULT 0"),          # 已完成下载次数
+    ("files", "sha256", "TEXT DEFAULT ''"),               # 文件内容 SHA-256 校验值
 )
 
 INDEXES = """
@@ -330,6 +334,7 @@ CREATE INDEX IF NOT EXISTS idx_dispatch_ops_node ON dispatch_ops(target_node, st
 CREATE INDEX IF NOT EXISTS idx_dispatch_ops_conv ON dispatch_ops(conv_id, created_ts);
 CREATE INDEX IF NOT EXISTS idx_dispatch_ops_batch ON dispatch_ops(batch_id, status, created_ts);
 CREATE INDEX IF NOT EXISTS idx_dispatch_ops_type_status ON dispatch_ops(op_type, status, created_ts);
+CREATE INDEX IF NOT EXISTS idx_files_expires ON files(expires_ts);
 """
 
 

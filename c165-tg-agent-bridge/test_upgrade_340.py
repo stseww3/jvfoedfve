@@ -6,12 +6,18 @@ from __future__ import annotations
 import asyncio
 import json
 import os
+import socket
 import subprocess
 import sys
 import tempfile
 import threading
 import time
 from pathlib import Path
+
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as _s:
+    _s.bind(("127.0.0.1", 0))
+    TEST_PORT = _s.getsockname()[1]
+TEST_BASE = f"http://127.0.0.1:{TEST_PORT}"
 
 TMP_ROOT = Path(tempfile.mkdtemp(prefix="tgb340_test_"))
 DATA_DIR = TMP_ROOT / "data"
@@ -20,7 +26,7 @@ HOME_DIR.mkdir(parents=True, exist_ok=True)
 
 os.environ["DATA_DIR"] = str(DATA_DIR)
 os.environ["TG_TOKEN"] = "123456:TEST_DUMMY_TOKEN_DO_NOT_USE"
-os.environ["PUBLIC_BASE"] = "http://127.0.0.1:18787"
+os.environ["PUBLIC_BASE"] = TEST_BASE
 os.environ["AGENT_STREAK_LIMIT"] = "4"
 os.environ["GROUP_STREAK_LIMIT"] = "5"
 
@@ -312,7 +318,7 @@ async def run_core_tests() -> dict[str, str]:
 
 
 def run_http_and_hook_tests(ids: dict[str, str]) -> None:
-    cfg = uvicorn.Config(bridge.app, host="127.0.0.1", port=18787, log_level="error")
+    cfg = uvicorn.Config(bridge.app, host="127.0.0.1", port=TEST_PORT, log_level="error")
     server = uvicorn.Server(cfg)
     th = threading.Thread(target=server.run, daemon=True)
     th.start()
@@ -320,14 +326,14 @@ def run_http_and_hook_tests(ids: dict[str, str]) -> None:
 
     env = dict(os.environ)
     env["HOME"] = str(HOME_DIR)
-    env["BRIDGE_URL"] = "http://127.0.0.1:18787"
+    env["BRIDGE_URL"] = f"{TEST_BASE}"
     env["DAIS_SKIP_RELOAD"] = "1"
     trace_py = str(Path(__file__).resolve().parent / "agent_trace.py")
 
     try:
         # 1. Install hooks into fake HOME
         inst = subprocess.run(
-            [sys.executable, trace_py, "install", "http://127.0.0.1:18787"],
+            [sys.executable, trace_py, "install", f"{TEST_BASE}"],
             env=env,
             capture_output=True,
             text=True,
@@ -411,13 +417,13 @@ def run_http_and_hook_tests(ids: dict[str, str]) -> None:
         import urllib.error
         import urllib.request
         try:
-            urllib.request.urlopen("http://127.0.0.1:18787/trace?chat=c1&limit=10", timeout=3)
+            urllib.request.urlopen(f"{TEST_BASE}/trace?chat=c1&limit=10", timeout=3)
             raise AssertionError("Unauthenticated GET /trace should return 403!")
         except urllib.error.HTTPError as exc:
             assert exc.code == 403
 
         req_admin_sub = urllib.request.Request(
-            "http://127.0.0.1:18787/trace?chat=c1&limit=10",
+            f"{TEST_BASE}/trace?chat=c1&limit=10",
             headers={"X-Agent": ids["a1"]},
         )
         with urllib.request.urlopen(req_admin_sub, timeout=3) as resp:
@@ -501,14 +507,14 @@ def run_http_and_hook_tests(ids: dict[str, str]) -> None:
 
         # External user's sub-agent MUST NOT see c1 in GET /trace!
         req_ext_sub = urllib.request.Request(
-            "http://127.0.0.1:18787/trace?chat=c1&limit=10",
+            f"{TEST_BASE}/trace?chat=c1&limit=10",
             headers={"X-Agent": ids["a3_ext"]},
         )
         with urllib.request.urlopen(req_ext_sub, timeout=3) as resp:
             tdata_ext = json.loads(resp.read().decode("utf-8"))
         assert tdata_ext["traces"] == [], f"Owner leak in GET /trace: {tdata_ext}"
 
-        with urllib.request.urlopen("http://127.0.0.1:18787/trace/install.sh", timeout=3) as resp:
+        with urllib.request.urlopen(f"{TEST_BASE}/trace/install.sh", timeout=3) as resp:
             install_sh = resp.read().decode("utf-8")
         assert "dais_runtime.pyz install" in install_sh or "agent_trace.py install" in install_sh
 

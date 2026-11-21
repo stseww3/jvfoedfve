@@ -26,6 +26,7 @@ import os
 import py_compile
 import re
 import secrets
+import shutil
 import sys
 import tempfile
 import time
@@ -38,13 +39,14 @@ from typing import Any, Awaitable, Callable
 import httpx
 from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse, Response, StreamingResponse
+from starlette.background import BackgroundTask
 
 from store import Store, migrate_v1
 from tg import Telegram
 from web_console import register_web_console
 
 ROOT = Path(__file__).resolve().parent
-VERSION = "3.7.5"
+VERSION = "3.7.6"
 
 
 def load_dotenv(path: Path) -> None:
@@ -5167,7 +5169,8 @@ COMMON_TOOLS = [
         "send_file",
         "发文件到 Telegram，或跨云机直接传给其他 agent / 协作群（不刷 Telegram）。"
         "内容三选一：content_base64（二进制）、text（纯文本内容）、url（服务器去下载）。"
-        "大文件也可用 curl -fsS -H 'X-Agent: 你的身份' --data-binary @本地路径 服务器/files/upload?filename=文件名 上传拿 file_id。",
+        "大文件流式上传/流水中转：curl -fsS -H 'X-Agent: 你的身份' -T 本地路径 '服务器/files/upload?filename=文件名&ttl_sec=7200&max_downloads=5'（单文件最高20GB，支持 GET /files/quota 查剩余中转空间、DELETE /files/{file_id} 删中转文件）；"
+        "零落盘点对点/一对多直通管道：发送方 curl -fsS -H 'X-Agent: 身份' -T 本地文件 '服务器/pipe/频道名?readers=1'，接收方 curl -fsS -H 'X-Agent: 身份' '服务器/pipe/频道名' -o 本地文件（0磁盘占用）。",
         {
             "filename": prop("string", "文件名，例如 report.pdf"),
             "content_base64": prop("string", "文件内容的 base64"),
@@ -5527,20 +5530,122 @@ async def t_send_message(agent, args):
 
 
 AGENT_FILE_LIMIT = 100 * 1024 * 1024
+DEFAULT_STREAM_FILE_LIMIT = 20 * 1024 * 1024 * 1024  # 流式直传单文件上限 20GB
+DEFAULT_MIN_FREE_DISK_GB = 10.0  # 硬性保留 10GB 系统与 SQLite 安全磁盘水位
 
 
-def store_shared_agent_file(agent, filename: str, content: bytes, mime: str = "") -> tuple[str, str]:
+def stream_file_limit_bytes() -> int:
+    raw = os.environ.get("BRIDGE_MAX_STREAM_FILE_BYTES", "").strip()
+    if raw:
+        try:
+            return max(1024 * 1024, int(raw))
+        except ValueError:
+            pass
+    return DEFAULT_STREAM_FILE_LIMIT
+
+
+def relay_min_free_bytes() -> int:
+    raw_b = os.environ.get("BRIDGE_MIN_FREE_BYTES", "").strip()
+    if raw_b:
+        try:
+            return max(0, int(raw_b))
+        except ValueError:
+            pass
+    raw_gb = os.environ.get("BRIDGE_MIN_FREE_GB", "").strip()
+    if raw_gb:
+        try:
+            return max(0, int(float(raw_gb) * (1024 ** 3)))
+        except ValueError:
+            pass
+    return int(DEFAULT_MIN_FREE_DISK_GB * (1024 ** 3))
+
+
+def touch_agent_transfer_hb(arow, tool_label: str = "file_stream") -> None:
+    if arow is None:
+        return
+    t_now = now()
+    store.run("UPDATE agents SET last_seen=?, last_tool=? WHERE id=?", (t_now, tool_label, arow["id"]))
+    if is_worker_node_id(arow["conv"]):
+        worker_daemon_ts[arow["conv"]] = t_now
+        store.run("UPDATE exec_nodes SET status='online', last_seen=? WHERE id=?", (t_now, arow["conv"]))
+        store.run(
+            "UPDATE dispatch_ops SET lease_ts=? WHERE (claimed_by=? OR target_node=?) AND op_type='workspace_job' AND status='running'",
+            (t_now, arow["conv"], arow["conv"]),
+        )
+
+
+def delete_stored_file(file_id: str) -> tuple[bool, int]:
+    row = store.one("SELECT id, path, size FROM files WHERE id=?", (file_id,))
+    if row is None:
+        return False, 0
+    fsize = int(row["size"] or 0)
+    fpath = str(row["path"] or "")
+    store.run("DELETE FROM files WHERE id=?", (file_id,))
+    if fpath:
+        try:
+            Path(fpath).unlink(missing_ok=True)
+        except OSError:
+            pass
+    return True, fsize
+
+
+def prune_expired_files() -> int:
+    """清理到期流水中转文件与异常中断遗留的超过1小时的临时上传分片。"""
+    t_now = now()
+    removed = 0
+    expired_rows = store.q("SELECT id FROM files WHERE expires_ts>0 AND expires_ts<=?", (t_now,))
+    for r in expired_rows:
+        ok, _ = delete_stored_file(r["id"])
+        if ok:
+            removed += 1
+    files_dir = DATA / "files"
+    if files_dir.exists():
+        for p in files_dir.glob(".tmp_upload_*"):
+            try:
+                if t_now - p.stat().st_mtime > 3600:
+                    p.unlink(missing_ok=True)
+            except OSError:
+                pass
+    return removed
+
+
+def store_shared_agent_file(
+    agent,
+    filename: str,
+    content: bytes,
+    mime: str = "",
+    expires_ts: float = 0.0,
+    max_downloads: int = 0,
+) -> tuple[str, str]:
     """将 agent 上传的文件存入桥文件库并绑定到当前主人作用域（owner:<uid>），返回 (file_id, signed_url)。"""
     clean_name = re.sub(r"[\\/]", "_", str(filename or "file"))[:100] or "file"
     safe = re.sub(r"[^\w.\-]", "_", clean_name)[:80] or "file"
     file_id = "f_" + secrets.token_hex(5)
-    path = DATA / "files" / f"{file_id}_{safe}"
+    files_dir = DATA / "files"
+    files_dir.mkdir(parents=True, exist_ok=True)
+    path = files_dir / f"{file_id}_{safe}"
     path.write_bytes(content)
+    digest = hashlib.sha256(content).hexdigest()
     eff_mime = mime or mimetypes.guess_type(clean_name)[0] or "application/octet-stream"
     owner = agent_owner_scope(agent)
     store.run(
-        "INSERT INTO files(id,chat_id,tg_file_id,name,size,mime,path,ts,conv) VALUES(?,?,?,?,?,?,?,?,?)",
-        (file_id, 0, "", clean_name, len(content), eff_mime, str(path), now(), f"owner:{owner}"),
+        "INSERT INTO files(id,chat_id,tg_file_id,name,size,mime,path,ts,conv,expires_ts,max_downloads,downloads,sha256) "
+        "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        (
+            file_id,
+            0,
+            "",
+            clean_name,
+            len(content),
+            eff_mime,
+            str(path),
+            now(),
+            f"owner:{owner}",
+            float(expires_ts or 0),
+            max(0, int(max_downloads or 0)),
+            0,
+            digest,
+        ),
     )
     url = f"{PUBLIC_BASE}/files/{file_id}?sig={sign(file_id)}"
     return file_id, url
@@ -10994,12 +11099,14 @@ async def watchdog_tick() -> None:
 async def watchdog_loop() -> None:
     await asyncio.sleep(5)
     try:
+        prune_expired_files()
         reconcile_worker_pool(requester="startup_pool", allow_main_fallback=False)
     except Exception:
         log.exception("initial reconcile_worker_pool failed")
     while True:
         await asyncio.sleep(WATCHDOG_SEC)
         try:
+            prune_expired_files()
             await watchdog_tick()
         except Exception:
             log.exception("watchdog failed")
@@ -11129,62 +11236,501 @@ async def mcp_delete() -> Response:
     return Response(status_code=200)
 
 
-@app.post("/files/upload")
-async def upload_agent_file(request: Request, filename: str = "") -> JSONResponse:
-    """供不同云机上的 agent 直接通过 HTTP curl 上传二进制大文件（无需把大文件转成 base64 塞进模型上下文），返回 f_xxx 与签名下载链接。"""
+PIPE_SESSIONS: dict[tuple[int, str], dict[str, Any]] = {}
+
+
+def _clean_pipe_channel(raw: str) -> str:
+    return re.sub(r"[^A-Za-z0-9._\-]", "_", (raw or "").strip())[:128]
+
+
+@app.get("/files/quota")
+async def get_files_quota(request: Request) -> JSONResponse:
+    """查询桥文件库/流水中转仓的磁盘总容量、安全保底水位与当前可用暂存字节数。"""
     ident = (request.headers.get("X-Agent") or request.query_params.get("agent") or "").strip()
+    tok = bearer(request)
+    is_admin_tok = bool(tok and hmac.compare_digest(tok, store.get("account_key")))
     arow = agent_row(ident) if ident else None
-    if arow is None or arow["status"] != "active":
+    if not is_admin_tok and (arow is None or arow["status"] != "active"):
         return JSONResponse({"ok": False, "error": "invalid or inactive X-Agent"}, status_code=403)
-    ctype = (request.headers.get("content-type") or "").lower()
-    mime = ""
-    if "multipart/form-data" in ctype:
-        form = await request.form()
-        up = form.get("file")
-        if up is None or not hasattr(up, "read"):
-            return JSONResponse({"ok": False, "error": "missing 'file' form field"}, status_code=400)
-        content = await up.read()
-        if not filename:
-            filename = str(getattr(up, "filename", "") or "file")
-        mime = str(getattr(up, "content_type", "") or "")
-    else:
-        content = await request.body()
-        if not filename:
-            filename = request.headers.get("X-Filename") or "file.bin"
-    if not content:
-        return JSONResponse({"ok": False, "error": "empty file content"}, status_code=400)
-    if len(content) > AGENT_FILE_LIMIT:
-        return JSONResponse({"ok": False, "error": "file exceeds 100MB limit"}, status_code=413)
-    t_now = now()
-    store.run("UPDATE agents SET last_seen=?, last_tool='upload_file' WHERE id=?", (t_now, arow["id"]))
-    if is_worker_node_id(arow["conv"]):
-        worker_daemon_ts[arow["conv"]] = t_now
-        store.run("UPDATE exec_nodes SET status='online', last_seen=? WHERE id=?", (t_now, arow["conv"]))
-        store.run(
-            "UPDATE dispatch_ops SET lease_ts=? WHERE (claimed_by=? OR target_node=?) AND op_type='workspace_job' AND status='running'",
-            (t_now, arow["conv"], arow["conv"]),
-        )
-    fid, url = store_shared_agent_file(arow, filename, content, mime=mime)
+    prune_expired_files()
+    files_dir = DATA / "files"
+    files_dir.mkdir(parents=True, exist_ok=True)
+    usage = shutil.disk_usage(files_dir)
+    min_free = relay_min_free_bytes()
+    usable = max(0, int(usage.free) - min_free)
+    agg = store.one("SELECT COUNT(*) AS cnt, COALESCE(SUM(size), 0) AS bytes FROM files")
     return JSONResponse(
         {
             "ok": True,
-            "file_id": fid,
-            "name": filename,
-            "size": len(content),
-            "note": file_note(fid),
-            "download_url": url,
+            "version": VERSION,
+            "disk_total_bytes": int(usage.total),
+            "disk_free_bytes": int(usage.free),
+            "reserve_bytes": min_free,
+            "usable_relay_bytes": usable,
+            "max_single_file_bytes": stream_file_limit_bytes(),
+            "stored_files_count": int(agg["cnt"] or 0) if agg else 0,
+            "stored_files_bytes": int(agg["bytes"] or 0) if agg else 0,
+            "active_pipes": len(PIPE_SESSIONS),
         }
     )
 
 
-@app.get("/files/{file_id}")
-async def get_file(file_id: str, sig: str = "") -> Response:
-    if not hmac.compare_digest(sig, sign(file_id)):
-        return PlainTextResponse("forbidden", status_code=403)
+@app.post("/files/upload")
+@app.put("/files/upload")
+async def upload_agent_file(
+    request: Request,
+    filename: str = "",
+    ttl_sec: int = 0,
+    max_downloads: int = 0,
+) -> JSONResponse:
+    """流式接收跨云机二进制大文件或临时流水中转分片（0内存堆积，支持10GB安全磁盘水位锁、TTL到期与下载满N次自动清理）。"""
+    ident = (request.headers.get("X-Agent") or request.query_params.get("agent") or "").strip()
+    arow = agent_row(ident) if ident else None
+    if arow is None or arow["status"] != "active":
+        return JSONResponse({"ok": False, "error": "invalid or inactive X-Agent"}, status_code=403)
+
+    prune_expired_files()
+    files_dir = DATA / "files"
+    files_dir.mkdir(parents=True, exist_ok=True)
+    min_free = relay_min_free_bytes()
+    max_single = stream_file_limit_bytes()
+
+    clen_hdr = (request.headers.get("content-length") or "").strip()
+    if clen_hdr.isdigit():
+        declared_len = int(clen_hdr)
+        if declared_len > max_single:
+            return JSONResponse(
+                {"ok": False, "error": f"file exceeds {max_single // (1024 * 1024)}MB single-file limit", "max_single_file_bytes": max_single},
+                status_code=413,
+            )
+        cur_free = int(shutil.disk_usage(files_dir).free)
+        if cur_free - declared_len < min_free:
+            return JSONResponse(
+                {
+                    "ok": False,
+                    "error": "insufficient relay disk space (safety reserve protected)",
+                    "usable_relay_bytes": max(0, cur_free - min_free),
+                    "reserve_bytes": min_free,
+                },
+                status_code=507,
+            )
+    else:
+        cur_free = int(shutil.disk_usage(files_dir).free)
+        if cur_free <= min_free:
+            return JSONResponse(
+                {
+                    "ok": False,
+                    "error": "insufficient relay disk space (safety reserve protected)",
+                    "usable_relay_bytes": 0,
+                    "reserve_bytes": min_free,
+                },
+                status_code=507,
+            )
+
+    file_id = "f_" + secrets.token_hex(5)
+    tmp_path = files_dir / f".tmp_upload_{file_id}_{secrets.token_hex(4)}"
+    ctype = (request.headers.get("content-type") or "").lower()
+    mime = ""
+    written = 0
+    last_check_bytes = 0
+    last_hb = now()
+    hasher = hashlib.sha256()
+    touch_agent_transfer_hb(arow, "upload_file")
+
+    try:
+        with tmp_path.open("wb") as fp:
+            if "multipart/form-data" in ctype:
+                form = await request.form()
+                up = form.get("file")
+                if up is None or not hasattr(up, "read"):
+                    tmp_path.unlink(missing_ok=True)
+                    return JSONResponse({"ok": False, "error": "missing 'file' form field"}, status_code=400)
+                if not filename:
+                    filename = str(getattr(up, "filename") or "file")
+                mime = str(getattr(up, "content_type") or "")
+                while True:
+                    chunk = await up.read(262144)
+                    if not chunk:
+                        break
+                    fp.write(chunk)
+                    hasher.update(chunk)
+                    written += len(chunk)
+                    if written > max_single:
+                        fp.close()
+                        tmp_path.unlink(missing_ok=True)
+                        return JSONResponse({"ok": False, "error": f"file exceeds {max_single // (1024 * 1024)}MB limit"}, status_code=413)
+                    if written - last_check_bytes >= 4 * 1024 * 1024:
+                        last_check_bytes = written
+                        if int(shutil.disk_usage(files_dir).free) < min_free:
+                            fp.close()
+                            tmp_path.unlink(missing_ok=True)
+                            return JSONResponse({"ok": False, "error": "insufficient relay disk space (safety reserve protected)"}, status_code=507)
+                    if now() - last_hb >= 5.0:
+                        last_hb = now()
+                        touch_agent_transfer_hb(arow, "upload_file")
+            else:
+                if not filename:
+                    filename = request.headers.get("X-Filename") or "file.bin"
+                async for chunk in request.stream():
+                    if not chunk:
+                        continue
+                    fp.write(chunk)
+                    hasher.update(chunk)
+                    written += len(chunk)
+                    if written > max_single:
+                        fp.close()
+                        tmp_path.unlink(missing_ok=True)
+                        return JSONResponse({"ok": False, "error": f"file exceeds {max_single // (1024 * 1024)}MB limit"}, status_code=413)
+                    if written - last_check_bytes >= 4 * 1024 * 1024:
+                        last_check_bytes = written
+                        if int(shutil.disk_usage(files_dir).free) < min_free:
+                            fp.close()
+                            tmp_path.unlink(missing_ok=True)
+                            return JSONResponse({"ok": False, "error": "insufficient relay disk space (safety reserve protected)"}, status_code=507)
+                    if now() - last_hb >= 5.0:
+                        last_hb = now()
+                        touch_agent_transfer_hb(arow, "upload_file")
+    except Exception as exc:
+        tmp_path.unlink(missing_ok=True)
+        return JSONResponse({"ok": False, "error": f"stream upload interrupted: {exc}"}, status_code=400)
+
+    if written <= 0:
+        tmp_path.unlink(missing_ok=True)
+        return JSONResponse({"ok": False, "error": "empty file content"}, status_code=400)
+    if int(shutil.disk_usage(files_dir).free) < min_free:
+        tmp_path.unlink(missing_ok=True)
+        return JSONResponse({"ok": False, "error": "insufficient relay disk space (safety reserve protected)"}, status_code=507)
+
+    clean_name = re.sub(r"[\\/]", "_", str(filename or "file"))[:100] or "file"
+    safe = re.sub(r"[^\w.\-]", "_", clean_name)[:80] or "file"
+    final_path = files_dir / f"{file_id}_{safe}"
+    tmp_path.replace(final_path)
+
+    eff_mime = mime or mimetypes.guess_type(clean_name)[0] or "application/octet-stream"
+    owner = agent_owner_scope(arow)
+    t_now = now()
+    exp_ts = (t_now + max(1, int(ttl_sec))) if int(ttl_sec or 0) > 0 else 0.0
+    max_dl = max(0, int(max_downloads or 0))
+    digest = hasher.hexdigest()
+    store.run(
+        "INSERT INTO files(id,chat_id,tg_file_id,name,size,mime,path,ts,conv,expires_ts,max_downloads,downloads,sha256) "
+        "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        (file_id, 0, "", clean_name, written, eff_mime, str(final_path), t_now, f"owner:{owner}", exp_ts, max_dl, 0, digest),
+    )
+    touch_agent_transfer_hb(arow, "upload_file")
+    sig_val = sign(file_id)
+    url = f"{PUBLIC_BASE}/files/{file_id}?sig={sig_val}"
+    return JSONResponse(
+        {
+            "ok": True,
+            "file_id": file_id,
+            "name": clean_name,
+            "size": written,
+            "sha256": digest,
+            "expires_ts": exp_ts,
+            "max_downloads": max_dl,
+            "note": file_note(file_id),
+            "download_url": url,
+            "delete_url": url,
+        }
+    )
+
+
+def _after_file_served(file_id: str) -> None:
+    store.run("UPDATE files SET downloads = COALESCE(downloads, 0) + 1 WHERE id=?", (file_id,))
+    row = store.one("SELECT id, downloads, max_downloads, expires_ts FROM files WHERE id=?", (file_id,))
+    if row is None:
+        return
+    dl = int(row["downloads"] or 0)
+    max_dl = int(row["max_downloads"] or 0)
+    exp_ts = float(row["expires_ts"] or 0)
+    if (max_dl > 0 and dl >= max_dl) or (exp_ts > 0 and now() >= exp_ts):
+        delete_stored_file(file_id)
+
+
+@app.delete("/files/{file_id}")
+@app.post("/files/{file_id}/delete")
+async def delete_agent_file(request: Request, file_id: str, sig: str = "") -> JSONResponse:
+    """删除中转临时文件并立即释放桥磁盘空间（支持签名 sig 或同主人 X-Agent 鉴权）。"""
     row = store.one("SELECT * FROM files WHERE id=?", (file_id,))
-    if row is None or not Path(row["path"]).exists():
+    if row is None:
+        return JSONResponse({"ok": False, "error": "not found"}, status_code=404)
+    sig_ok = bool(sig and hmac.compare_digest(sig, sign(file_id)))
+    if not sig_ok:
+        ident = (request.headers.get("X-Agent") or request.query_params.get("agent") or "").strip()
+        arow = agent_row(ident) if ident else None
+        if arow is None or arow["status"] != "active" or not can_read_file_row(arow, row):
+            return JSONResponse({"ok": False, "error": "forbidden"}, status_code=403)
+        touch_agent_transfer_hb(arow, "delete_file")
+    _, freed = delete_stored_file(file_id)
+    return JSONResponse({"ok": True, "deleted": file_id, "freed_bytes": freed})
+
+
+@app.get("/files/{file_id}")
+async def get_file(request: Request, file_id: str, sig: str = "") -> Response:
+    sig_ok = bool(sig and hmac.compare_digest(sig, sign(file_id)))
+    arow = None
+    if not sig_ok:
+        ident = (request.headers.get("X-Agent") or request.query_params.get("agent") or "").strip()
+        arow = agent_row(ident) if ident else None
+        if arow is None or arow["status"] != "active":
+            return PlainTextResponse("forbidden", status_code=403)
+    row = store.one("SELECT * FROM files WHERE id=?", (file_id,))
+    if row is None:
         return PlainTextResponse("not found", status_code=404)
-    return FileResponse(row["path"], filename=row["name"], media_type=row["mime"])
+    if not sig_ok and not can_read_file_row(arow, row):
+        return PlainTextResponse("forbidden", status_code=403)
+    exp_ts = float(row["expires_ts"] or 0)
+    if exp_ts > 0 and now() >= exp_ts:
+        delete_stored_file(file_id)
+        return PlainTextResponse("expired", status_code=404)
+    if not Path(row["path"]).exists():
+        delete_stored_file(file_id)
+        return PlainTextResponse("not found", status_code=404)
+    if arow is not None:
+        touch_agent_transfer_hb(arow, "download_file")
+    headers = {}
+    if row["sha256"]:
+        headers["X-File-Sha256"] = str(row["sha256"])
+    bg = BackgroundTask(_after_file_served, file_id) if request.method.upper() == "GET" else None
+    return FileResponse(row["path"], filename=row["name"], media_type=row["mime"], headers=headers, background=bg)
+
+
+@app.post("/pipe/{channel}")
+@app.put("/pipe/{channel}")
+async def pipe_push(
+    request: Request,
+    channel: str,
+    readers: int = 1,
+    wait_sec: int = 600,
+    filename: str = "",
+) -> JSONResponse:
+    """零落盘点对点/一对多流式直通发送端：边收边发直推给1..N个下游云机，0字节写桥硬盘，内置TCP背压与SHA256校验。"""
+    ident = (request.headers.get("X-Agent") or request.query_params.get("agent") or "").strip()
+    arow = agent_row(ident) if ident else None
+    if arow is None or arow["status"] != "active":
+        return JSONResponse({"ok": False, "error": "invalid or inactive X-Agent"}, status_code=403)
+    chan = _clean_pipe_channel(channel)
+    if not chan:
+        return JSONResponse({"ok": False, "error": "invalid channel name"}, status_code=400)
+    wait_bound = max(1, min(int(wait_sec or 600), 3600))
+    owner = agent_owner_scope(arow)
+    key = (owner, chan)
+
+    sess = PIPE_SESSIONS.get(key)
+    if sess is not None and sess.get("sender_ready"):
+        return JSONResponse({"ok": False, "error": f"channel {chan!r} already has an active sender"}, status_code=409)
+    if sess is None:
+        sess = {
+            "key": key,
+            "channel": chan,
+            "sender_ready": False,
+            "expected_readers": 1,
+            "readers": [],
+            "start_evt": asyncio.Event(),
+            "started": False,
+            "abort_err": "",
+            "filename": "",
+            "mime": "application/octet-stream",
+        }
+        PIPE_SESSIONS[key] = sess
+
+    clean_name = re.sub(r"[\\/]", "_", str(filename or request.headers.get("X-Filename") or chan))[:100] or chan
+    sess["filename"] = clean_name
+    sess["mime"] = (request.headers.get("content-type") or "").strip() or (mimetypes.guess_type(clean_name)[0] or "application/octet-stream")
+    sess["sender_ready"] = True
+    eff_readers = max(1, len(sess["readers"])) if int(readers) == 0 else max(1, min(int(readers), 64))
+    sess["expected_readers"] = eff_readers
+    touch_agent_transfer_hb(arow, "pipe_push")
+
+    if len(sess["readers"]) >= eff_readers and not sess["started"]:
+        sess["started"] = True
+        PIPE_SESSIONS.pop(key, None)
+        sess["start_evt"].set()
+
+    if not sess["started"]:
+        try:
+            await asyncio.wait_for(sess["start_evt"].wait(), timeout=wait_bound)
+        except asyncio.TimeoutError:
+            PIPE_SESSIONS.pop(key, None)
+            sess["abort_err"] = f"timed out waiting for {eff_readers} reader(s) (connected={len(sess['readers'])})"
+            sess["start_evt"].set()
+            return JSONResponse({"ok": False, "error": sess["abort_err"], "connected_readers": len(sess["readers"])}, status_code=408)
+
+    if sess.get("abort_err"):
+        return JSONResponse({"ok": False, "error": sess["abort_err"]}, status_code=408)
+
+    active_readers = list(sess["readers"])
+    total_bytes = 0
+    hasher = hashlib.sha256()
+    last_hb = now()
+
+    try:
+        async for chunk in request.stream():
+            if not chunk:
+                continue
+            total_bytes += len(chunk)
+            hasher.update(chunk)
+            for r in active_readers:
+                if r["closed"]:
+                    raise RuntimeError("downstream reader disconnected mid-stream")
+                pushed = False
+                deadline = time.monotonic() + 180.0
+                while not pushed:
+                    if r["closed"]:
+                        raise RuntimeError("downstream reader disconnected mid-stream")
+                    rem = deadline - time.monotonic()
+                    if rem <= 0:
+                        raise RuntimeError("downstream reader stalled >180s")
+                    try:
+                        await asyncio.wait_for(r["q"].put(chunk), timeout=min(2.0, rem))
+                        pushed = True
+                    except asyncio.TimeoutError:
+                        continue
+            if now() - last_hb >= 5.0:
+                last_hb = now()
+                touch_agent_transfer_hb(arow, "pipe_push")
+                for r in active_readers:
+                    if r.get("agent") is not None:
+                        touch_agent_transfer_hb(r["agent"], "pipe_pull")
+    except Exception as exc:
+        err_obj = RuntimeError(f"pipe stream aborted: {exc}")
+        for r in active_readers:
+            if not r["closed"]:
+                try:
+                    r["q"].put_nowait(err_obj)
+                except asyncio.QueueFull:
+                    try:
+                        r["q"].get_nowait()
+                    except asyncio.QueueEmpty:
+                        pass
+                    try:
+                        r["q"].put_nowait(err_obj)
+                    except asyncio.QueueFull:
+                        pass
+        return JSONResponse({"ok": False, "error": str(exc), "bytes_sent": total_bytes}, status_code=502)
+
+    for r in active_readers:
+        while not r["closed"]:
+            try:
+                await asyncio.wait_for(r["q"].put(None), timeout=2.0)
+                break
+            except asyncio.TimeoutError:
+                continue
+
+    for r in active_readers:
+        try:
+            await asyncio.wait_for(r["done_evt"].wait(), timeout=180.0)
+        except asyncio.TimeoutError:
+            return JSONResponse({"ok": False, "error": "timed out waiting for reader flush", "bytes": total_bytes}, status_code=504)
+        if r.get("stream_err"):
+            return JSONResponse({"ok": False, "error": r["stream_err"], "bytes": total_bytes}, status_code=502)
+
+    touch_agent_transfer_hb(arow, "pipe_push")
+    return JSONResponse(
+        {
+            "ok": True,
+            "channel": chan,
+            "filename": sess["filename"],
+            "bytes": total_bytes,
+            "sha256": hasher.hexdigest(),
+            "readers": len(active_readers),
+        }
+    )
+
+
+@app.get("/pipe/{channel}")
+async def pipe_pull(request: Request, channel: str, wait_sec: int = 600) -> Response:
+    """零落盘点对点/一对多流式直通接收端：挂起等待发送端推流并直接落接收方本地盘。"""
+    ident = (request.headers.get("X-Agent") or request.query_params.get("agent") or "").strip()
+    arow = agent_row(ident) if ident else None
+    if arow is None or arow["status"] != "active":
+        return JSONResponse({"ok": False, "error": "invalid or inactive X-Agent"}, status_code=403)
+    chan = _clean_pipe_channel(channel)
+    if not chan:
+        return JSONResponse({"ok": False, "error": "invalid channel name"}, status_code=400)
+    wait_bound = max(1, min(int(wait_sec or 600), 3600))
+    owner = agent_owner_scope(arow)
+    key = (owner, chan)
+
+    sess = PIPE_SESSIONS.get(key)
+    if sess is None:
+        sess = {
+            "key": key,
+            "channel": chan,
+            "sender_ready": False,
+            "expected_readers": 1,
+            "readers": [],
+            "start_evt": asyncio.Event(),
+            "started": False,
+            "abort_err": "",
+            "filename": chan,
+            "mime": "application/octet-stream",
+        }
+        PIPE_SESSIONS[key] = sess
+    elif sess["started"] or (sess["sender_ready"] and len(sess["readers"]) >= sess["expected_readers"]):
+        return JSONResponse({"ok": False, "error": f"channel {chan!r} already full or streaming"}, status_code=409)
+
+    reader_entry: dict[str, Any] = {
+        "q": asyncio.Queue(maxsize=32),
+        "done_evt": asyncio.Event(),
+        "closed": False,
+        "stream_err": "",
+        "agent": arow,
+    }
+    sess["readers"].append(reader_entry)
+    touch_agent_transfer_hb(arow, "pipe_pull")
+
+    if sess["sender_ready"] and len(sess["readers"]) >= sess["expected_readers"] and not sess["started"]:
+        sess["started"] = True
+        PIPE_SESSIONS.pop(key, None)
+        sess["start_evt"].set()
+
+    if not sess["started"]:
+        try:
+            await asyncio.wait_for(sess["start_evt"].wait(), timeout=wait_bound)
+        except asyncio.TimeoutError:
+            reader_entry["closed"] = True
+            if reader_entry in sess["readers"]:
+                sess["readers"].remove(reader_entry)
+            if not sess["sender_ready"] and not sess["readers"] and PIPE_SESSIONS.get(key) is sess:
+                PIPE_SESSIONS.pop(key, None)
+            return JSONResponse({"ok": False, "error": f"timed out waiting for sender/peers on channel {chan!r}"}, status_code=408)
+
+    if sess.get("abort_err") or not sess["started"]:
+        reader_entry["closed"] = True
+        return JSONResponse({"ok": False, "error": sess.get("abort_err") or "pipe cancelled"}, status_code=408)
+
+    async def _stream_body():
+        q = reader_entry["q"]
+        try:
+            while True:
+                item = await q.get()
+                if item is None:
+                    break
+                if isinstance(item, Exception):
+                    reader_entry["stream_err"] = str(item)
+                    raise item
+                yield item
+        except BaseException as exc:
+            if not reader_entry["stream_err"]:
+                reader_entry["stream_err"] = str(exc) or "reader disconnected"
+            raise
+        finally:
+            reader_entry["closed"] = True
+            reader_entry["done_evt"].set()
+            while not q.empty():
+                try:
+                    q.get_nowait()
+                except asyncio.QueueEmpty:
+                    break
+
+    headers = {
+        "Cache-Control": "no-store",
+        "X-Accel-Buffering": "no",
+        "Content-Disposition": f'attachment; filename="{sess["filename"]}"',
+    }
+    return StreamingResponse(_stream_body(), media_type=sess["mime"], headers=headers)
 
 
 # ---------------------------------------------------------------- 实时动作追踪与防断连钩子接口

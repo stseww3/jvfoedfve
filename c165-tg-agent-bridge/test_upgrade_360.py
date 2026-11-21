@@ -1458,7 +1458,7 @@ def run_v374_scale_and_jobs_tests() -> None:
     from http.server import BaseHTTPRequestHandler, HTTPServer
     from fastapi.testclient import TestClient
 
-    assert bridge.VERSION == "3.7.5"
+    assert bridge.VERSION == "3.7.6"
     assert bridge.MAX_WORKER_POOL == 0
     assert bridge.MAX_JOB_TIMEOUT_SEC == 86400
 
@@ -1813,6 +1813,105 @@ def run_v375_unlimited_pool_tests() -> None:
     assert 'mode="coordinator"' in whp and "AwaitShell" in whp
 
 
+def run_v376_streaming_pipe_and_relay_tests() -> None:
+    import hashlib
+    import httpx
+    import re
+    c_rel = bridge.create_conv("流水中转测试", 7001, name="中转方", owner=0)
+    a_rel = re.search(r"a_[0-9a-f]+", asyncio.run(bridge.call_tool("join", {"code": c_rel["task_code"]})).content[0]["text"]).group(0)
+
+    with TestClient(bridge.app) as client:
+        # 1. Quota endpoint
+        q = client.get("/files/quota", headers={"X-Agent": a_rel}).json()
+        assert q["ok"] is True and q["max_single_file_bytes"] >= 20 * 1024**3 and "usable_relay_bytes" in q
+
+        # 2. Streaming PUT /files/upload with max_downloads=2 auto-cleanup
+        payload = b"PARQUET_CHUNK_DATA_" * 8000
+        expected_sha = hashlib.sha256(payload).hexdigest()
+        up = client.put(
+            "/files/upload?filename=epoch1084.parquet&max_downloads=2&ttl_sec=3600",
+            headers={"X-Agent": a_rel},
+            content=payload,
+        )
+        assert up.status_code == 200, up.text
+        up_data = up.json()
+        assert up_data["ok"] is True and up_data["sha256"] == expected_sha and up_data["size"] == len(payload)
+        fid = up_data["file_id"]
+
+        # Download #1 (via X-Agent header) -> 200, still retained for #2
+        dl1 = client.get(f"/files/{fid}", headers={"X-Agent": a_rel})
+        assert dl1.status_code == 200 and dl1.content == payload and dl1.headers.get("x-file-sha256") == expected_sha
+        assert bridge.store.one("SELECT id FROM files WHERE id=?", (fid,)) is not None
+
+        # Download #2 -> 200, then BackgroundTask auto-unlinks and deletes from DB!
+        dl2 = client.get(f"/files/{fid}", headers={"X-Agent": a_rel})
+        assert dl2.status_code == 200 and dl2.content == payload
+        assert bridge.store.one("SELECT id FROM files WHERE id=?", (fid,)) is None
+        dl3 = client.get(f"/files/{fid}", headers={"X-Agent": a_rel})
+        assert dl3.status_code == 404
+
+        # 3. Explicit DELETE /files/{file_id}
+        up2 = client.post("/files/upload?filename=temp.parquet", headers={"X-Agent": a_rel}, content=b"1234567890").json()
+        fid2 = up2["file_id"]
+        del_r = client.delete(f"/files/{fid2}", headers={"X-Agent": a_rel})
+        assert del_r.status_code == 200 and del_r.json()["freed_bytes"] == 10
+        assert client.get(f"/files/{fid2}", headers={"X-Agent": a_rel}).status_code == 404
+
+        # 4. Safety disk reserve guard (HTTP 507)
+        old_min = os.environ.get("BRIDGE_MIN_FREE_BYTES")
+        os.environ["BRIDGE_MIN_FREE_BYTES"] = str(10**18)
+        try:
+            r507 = client.put("/files/upload?filename=overflow.parquet", headers={"X-Agent": a_rel}, content=b"abc")
+            assert r507.status_code == 507
+            assert list((bridge.DATA / "files").glob(".tmp_upload_*")) == []
+        finally:
+            if old_min is None:
+                os.environ.pop("BRIDGE_MIN_FREE_BYTES", None)
+            else:
+                os.environ["BRIDGE_MIN_FREE_BYTES"] = old_min
+
+    # 5. Zero-disk P2P & 1-to-3 multicast streaming pipe (/pipe/{channel}) via ASGI AsyncClient
+    async def _test_async_pipe():
+        transport = httpx.ASGITransport(app=bridge.app)
+        pipe_bytes = os.urandom(512 * 1024)
+        pipe_sha = hashlib.sha256(pipe_bytes).hexdigest()
+        files_before = set((bridge.DATA / "files").glob("*")) if (bridge.DATA / "files").exists() else set()
+        async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as ac:
+            async def _sender():
+                async def _chunks():
+                    for off in range(0, len(pipe_bytes), 65536):
+                        await asyncio.sleep(0.005)
+                        yield pipe_bytes[off : off + 65536]
+                return await ac.put(
+                    "/pipe/e1084_test?readers=3&wait_sec=15&filename=e1084.parquet",
+                    headers={"X-Agent": a_rel},
+                    content=_chunks(),
+                )
+
+            async def _reader():
+                r = await ac.get("/pipe/e1084_test?wait_sec=15", headers={"X-Agent": a_rel})
+                return r.status_code, r.content
+
+            # Mixed arrival order: 2 readers start first, then sender, then 3rd reader!
+            t_r1 = asyncio.create_task(_reader())
+            t_r2 = asyncio.create_task(_reader())
+            await asyncio.sleep(0.02)
+            t_s = asyncio.create_task(_sender())
+            await asyncio.sleep(0.02)
+            t_r3 = asyncio.create_task(_reader())
+
+            (sc1, b1), (sc2, b2), (sc3, b3), sr = await asyncio.gather(t_r1, t_r2, t_r3, t_s)
+            assert sr.status_code == 200, sr.text
+            sj = sr.json()
+            assert sj["ok"] is True and sj["bytes"] == len(pipe_bytes) and sj["sha256"] == pipe_sha and sj["readers"] == 3
+            assert sc1 == 200 and sc2 == 200 and sc3 == 200
+            assert b1 == pipe_bytes and b2 == pipe_bytes and b3 == pipe_bytes
+        files_after = set((bridge.DATA / "files").glob("*")) if (bridge.DATA / "files").exists() else set()
+        assert files_after == files_before, "Pipe must write ZERO files to bridge disk!"
+
+    asyncio.run(_test_async_pipe())
+
+
 def main() -> None:
     asyncio.run(run_cluster_and_device_tests())
     run_web_console_tests()
@@ -1820,9 +1919,11 @@ def main() -> None:
     asyncio.run(run_v371_bugfix_regression_tests())
     run_v374_scale_and_jobs_tests()
     run_v375_unlimited_pool_tests()
+    run_v376_streaming_pipe_and_relay_tests()
     print("ALL_373_TESTS_PASSED_OK")
     print("ALL_374_TESTS_PASSED_OK")
     print("ALL_375_TESTS_PASSED_OK")
+    print("ALL_376_TESTS_PASSED_OK")
 
 
 if __name__ == "__main__":
