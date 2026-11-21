@@ -46,7 +46,34 @@ from tg import Telegram
 from web_console import register_web_console
 
 ROOT = Path(__file__).resolve().parent
-VERSION = "3.7.6"
+VERSION = "3.7.7"
+
+
+def ensure_high_nofile_limit(target_soft: int = 262144) -> tuple[int, int]:
+    """启动时自动将进程 RLIMIT_NOFILE 软上限拉升至硬上限允许范围内（Ubuntu systemd 默认 1024:524288，无需 root 即可免除 EMFILE）。"""
+    try:
+        import resource
+        soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
+        if hard == resource.RLIM_INFINITY or hard < 0:
+            want = max(soft, target_soft)
+        else:
+            want = min(max(soft, target_soft), hard)
+        if want > soft:
+            resource.setrlimit(resource.RLIMIT_NOFILE, (want, hard))
+            soft = want
+        return int(soft), int(hard)
+    except Exception:
+        return -1, -1
+
+
+def open_fd_count() -> int:
+    try:
+        return len(os.listdir("/proc/self/fd"))
+    except Exception:
+        return -1
+
+
+NOFILE_SOFT_LIMIT, NOFILE_HARD_LIMIT = ensure_high_nofile_limit()
 
 
 def load_dotenv(path: Path) -> None:
@@ -2676,8 +2703,38 @@ def record_out(conv, sender: str, chat_id: int, text: str, *, tg_msg_id: int = 0
     )
 
 
+_TRANSIENT_TG_ERR_MARKERS = (
+    "connecterror",
+    "connecttimeout",
+    "readtimeout",
+    "writetimeout",
+    "pooltimeout",
+    "remoteprotocolerror",
+    "networkerror",
+    "too many open files",
+    "errno 24",
+    "temporarily unavailable",
+    "connection reset",
+    "server disconnected",
+    "too many requests",
+    "retry after",
+    "bad gateway",
+    "service unavailable",
+    "gateway timeout",
+    "http 502",
+    "http 503",
+    "http 504",
+    "internal server error",
+)
+
+
+def is_transient_tg_error(exc: BaseException) -> bool:
+    low = f"{type(exc).__name__}: {exc}".lower()
+    return any(m in low for m in _TRANSIENT_TG_ERR_MARKERS)
+
+
 async def emit(conv, sender: str, chat_id: int, payload: dict, record: str) -> bool:
-    """AI 发消息。管理员或用户的私聊里没选中这个聊天就先存着，返回 False。"""
+    """AI 发消息。管理员或用户的私聊里没选中这个聊天（或遇临时网络/句柄抖动）就先存着，返回 False。"""
     payload = dict(payload)
     payload["text"] = conv_prefix(conv) + (payload.get("text") or "")
     extra_full = json.dumps(payload, ensure_ascii=False)
@@ -2691,10 +2748,25 @@ async def emit(conv, sender: str, chat_id: int, payload: dict, record: str) -> b
                 record_out(conv, sender, chat_id, record, delivered=0, extra=extra_full)
                 mark_menu_dirty()
                 return False
-            tg_id = await send_payload(chat_id, conv["id"], payload)
+            try:
+                tg_id = await send_payload(chat_id, conv["id"], payload)
+            except Exception as exc:
+                if is_transient_tg_error(exc):
+                    log.warning("emit transient failure on %s/%s (queued delivered=0): %s", chat_id, conv["id"], exc)
+                    record_out(conv, sender, chat_id, record, delivered=0, extra=extra_full)
+                    mark_menu_dirty()
+                    return False
+                raise
             record_out(conv, sender, chat_id, record, tg_msg_id=tg_id, extra=extra_sent)
             return True
-    tg_id = await send_payload(chat_id, conv["id"], payload)
+    try:
+        tg_id = await send_payload(chat_id, conv["id"], payload)
+    except Exception as exc:
+        if is_transient_tg_error(exc):
+            log.warning("emit group transient failure on %s/%s (queued delivered=0): %s", chat_id, conv["id"], exc)
+            record_out(conv, sender, chat_id, record, delivered=0, extra=extra_full)
+            return False
+        raise
     record_out(conv, sender, chat_id, record, tg_msg_id=tg_id, extra=extra_sent)
     return True
 
@@ -2706,6 +2778,7 @@ async def flush_locked(dm: int, conv_id: str) -> int:
         "SELECT id, text, extra FROM messages WHERE chat_id=? AND conv=? AND outgoing=1 AND delivered=0 ORDER BY id",
         (dm, conv_id),
     )
+    flushed = 0
     for row in rows:
         try:
             payload = json.loads(row["extra"]) if row["extra"] else {"kind": "text", "text": row["text"]}
@@ -2714,13 +2787,39 @@ async def flush_locked(dm: int, conv_id: str) -> int:
         try:
             tg_id = await send_payload(dm, conv_id, payload)
         except Exception as exc:
-            log.warning("flush %s/%s #%s failed: %s", dm, conv_id, row["id"], exc)
+            if is_transient_tg_error(exc):
+                # 临时网络/句柄池异常：严禁把 delivered 标成 1 吞消息！保留 delivered=0 退出本轮，待看门狗或下次切回原序重放
+                log.warning("flush transient %s/%s #%s (kept delivered=0 for retry): %s", dm, conv_id, row["id"], exc)
+                break
+            log.warning("flush permanent %s/%s #%s failed: %s", dm, conv_id, row["id"], exc)
             sent = await tg.try_call("sendMessage", chat_id=dm, text=f"（一条存着的消息补发失败：{exc}）")
             tg_id = sent["message_id"] if sent else 0
         store.run("UPDATE messages SET delivered=1, tg_msg_id=? WHERE id=?", (tg_id, row["id"]))
-    if rows:
+        flushed += 1
+    if flushed:
         mark_menu_dirty()
-    return len(rows)
+    return flushed
+
+
+async def flush_selected_outboxes() -> int:
+    """后台自愈重放：若当前选中的 DM 会话或直发群聊存在因临时网络/句柄抖动暂存的 delivered=0 消息，自动按序补发。"""
+    rows = store.q(
+        "SELECT DISTINCT chat_id, conv FROM messages WHERE outgoing=1 AND delivered=0 AND chat_id!=0 ORDER BY id LIMIT 40"
+    )
+    total = 0
+    for r in rows:
+        cid = int(r["chat_id"] or 0)
+        conv_id = str(r["conv"] or "")
+        if not cid or not conv_id or is_muted_tg_target(cid):
+            continue
+        if is_hub(cid):
+            async with dm_lock(cid):
+                if selected(cid) == conv_id:
+                    total += await flush_locked(cid, conv_id)
+        else:
+            async with dm_lock(cid):
+                total += await flush_locked(cid, conv_id)
+    return total
 
 
 async def switch_to(dm: int, conv_id: str, announce: bool = True) -> None:
@@ -6749,16 +6848,16 @@ def render_cluster_overview() -> str:
         else:
             lines.append("  （暂无已登记的主 Agent，新开云端会话调 join(mode=\"main\") 由管理员批准接入）")
     for m in mains:
-        st_lbl = "🟢 在线" if node_is_online(m) else f"⚪ {m['status']}"
+        st_lbl = "🟢 在线" if node_is_online(m) else f"⚪ {m['status']}(离线不可派单)"
         mounted = [c["id"] for c in open_convs() if cloud_of(c) == int(m["cloud_num"] or 0)]
         active_cnt = sum(1 for c in open_convs() if cloud_of(c) == int(m["cloud_num"] or 0) and active_agent(c) is not None)
-        excl = f" | 🔒独占={m['exclusive_conv']}" if m["exclusive_conv"] else " | 共享池"
+        excl = f" | 🔒独占={m['exclusive_conv']}" if m["exclusive_conv"] else " | 共享池(共享模式无20台上限)"
         allow = node_allowed_list(m)
         allow_s = f" (额外授权:{','.join(allow)})" if allow else ""
         m_env = clean_env_id(m["env_id"] if "env_id" in m.keys() else "")
         env_s = f" | ☁️env={m_env[:8]}…" if m_env else " | ☁️env=首次自动识别"
         lines.append(
-            f"  - {m['id']}「{m['name']}」(cloud{m['cloud_num']})：{st_lbl} | 活跃子agent {active_cnt}/{len(mounted)} 个{excl}{allow_s}{env_s}\n"
+            f"  - {m['id']}「{m['name']}」(cloud{m['cloud_num']})：{st_lbl} | 在线子agent {active_cnt} 个(历史归属 {len(mounted)} 个){excl}{allow_s}{env_s}\n"
             f"    📊 探针：{format_node_metrics(m)}"
         )
 
@@ -7122,6 +7221,8 @@ def is_resume_dead_output(status: str, output: str) -> bool:
     low = (output or "").strip().lower()
     if any(k in low for k in ("currently running", "running in the background", "already running", "still running")):
         return False
+    if any(k in low for k in ("skipped", "skip ", "跳过", "忽略")):
+        return False
     if (status or "").lower() != "ok":
         return True
     if not low:
@@ -7213,8 +7314,17 @@ async def t_submit_op_result(agent, args):
                     probed_tid = ""
                 cur_ctrl = conv_row("ctrl")
                 cur_tid = (cur_ctrl["task_agent_id"] or "").strip() if cur_ctrl is not None else ""
-                # 仅当报错的探活单针对的仍是当前这任 ctrl（且当前没有正在开机待 join 的新 ctrl）时才触发重拉，杜绝旧单晚到引发连环重开！
-                if cur_ctrl is not None and not (cur_ctrl["task_code"] or "") and (not probed_tid or probed_tid == cur_tid):
+                ag_ctrl = active_agent(cur_ctrl) if cur_ctrl is not None else None
+                ctrl_fresh_live = ag_ctrl is not None and (
+                    bool(waiting.get(ag_ctrl["id"])) or (now() - float(ag_ctrl["last_seen"] or 0)) < 180.0
+                )
+                # 仅当报错的探活单针对的仍是当前这任 ctrl、无正在待 join 的新 ctrl、且当前 ctrl 无鲜活在线心跳时才触发重拉，杜绝误杀活总控！
+                if (
+                    cur_ctrl is not None
+                    and not (cur_ctrl["task_code"] or "")
+                    and (not probed_tid or probed_tid == cur_tid)
+                    and not ctrl_fresh_live
+                ):
                     _ctrl_resume_probe.clear()
                     ensure_controller_alive(force=True)
             return _exec_reply(f"已回传总控探活结果 {op_id}。")
@@ -10980,6 +11090,10 @@ def handle_thinking_stuck_conv(conv, trow, stuck_sec: float, probe_kind: str = "
 
 async def watchdog_tick() -> None:
     mark_menu_dirty()
+    try:
+        await flush_selected_outboxes()
+    except Exception:
+        log.exception("flush_selected_outboxes failed")
     reap_offline_exec_nodes()
     heal_runner_nodes(max_batch=50)
     reconcile_worker_pool(requester="watchdog_pool", allow_main_fallback=False)
@@ -11168,6 +11282,7 @@ async def lifespan(_app: FastAPI):
     trigger_graceful_shutdown()
     for task in tasks:
         task.cancel()
+    await tg.aclose()
 
 
 app = FastAPI(lifespan=lifespan, docs_url=None, redoc_url=None, openapi_url=None)
@@ -11199,6 +11314,8 @@ async def healthz() -> JSONResponse:
         "cloud": main_cloud(),
         "chats_open": len(open_convs()),
         "waiting": len(waiting),
+        "open_fds": open_fd_count(),
+        "nofile_soft": NOFILE_SOFT_LIMIT,
         "local_client": bool(LOCAL["clients"]),
     })
 

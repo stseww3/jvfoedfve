@@ -36,7 +36,41 @@ class Telegram:
         self.token = token
         self.api_base = api_base.rstrip("/")
         self.base = f"{self.api_base}/bot{token}"
-        self.client = httpx.AsyncClient(timeout=httpx.Timeout(70, connect=15))
+        self.client = self._make_api_client()
+        self.poll_client = self._make_poll_client()
+
+    @staticmethod
+    def _make_api_client() -> httpx.AsyncClient:
+        return httpx.AsyncClient(
+            timeout=httpx.Timeout(45.0, connect=10.0, pool=10.0),
+            limits=httpx.Limits(max_connections=32, max_keepalive_connections=6, keepalive_expiry=15.0),
+        )
+
+    @staticmethod
+    def _make_poll_client() -> httpx.AsyncClient:
+        return httpx.AsyncClient(
+            timeout=httpx.Timeout(70.0, connect=15.0, pool=10.0),
+            limits=httpx.Limits(max_connections=4, max_keepalive_connections=2, keepalive_expiry=65.0),
+        )
+
+    async def _recycle_client(self, *, is_poll: bool = False) -> None:
+        attr = "poll_client" if is_poll else "client"
+        old = getattr(self, attr, None)
+        setattr(self, attr, self._make_poll_client() if is_poll else self._make_api_client())
+        if old is not None:
+            try:
+                await old.aclose()
+            except Exception:
+                pass
+
+    async def aclose(self) -> None:
+        for attr in ("client", "poll_client"):
+            cli = getattr(self, attr, None)
+            if cli is not None:
+                try:
+                    await cli.aclose()
+                except Exception:
+                    pass
 
     def scrubbed(self, exc: Exception) -> TelegramError:
         # httpx 的报错可能带完整 URL，URL 里有 bot token：不能流进日志、聊天记录或 agent
@@ -46,16 +80,34 @@ class Telegram:
     async def call(self, method: str, **payload: Any) -> Any:
         if not self.token:
             raise TelegramError("没有配置 Telegram bot token（.env 里的 TG_TOKEN）")
-        for attempt in range(4):
+        is_poll = method == "getUpdates"
+        max_attempts = 2 if is_poll else 4
+        for attempt in range(max_attempts):
+            cli = self.poll_client if is_poll else self.client
             try:
-                res = await self.client.post(f"{self.base}/{method}", json=payload)
+                res = await cli.post(f"{self.base}/{method}", json=payload)
+            except httpx.TransportError as exc:
+                await self._recycle_client(is_poll=is_poll)
+                if not is_poll and attempt + 1 < max_attempts:
+                    await asyncio.sleep(0.4 * (2 ** attempt))
+                    continue
+                raise self.scrubbed(exc) from None
             except httpx.HTTPError as exc:
                 raise self.scrubbed(exc) from None
-            data = res.json()
+            if res.status_code in (502, 503, 504) and not is_poll and attempt + 1 < max_attempts:
+                await asyncio.sleep(0.5 * (2 ** attempt))
+                continue
+            try:
+                data = res.json()
+            except ValueError as exc:
+                if not is_poll and attempt + 1 < max_attempts:
+                    await asyncio.sleep(0.5 * (2 ** attempt))
+                    continue
+                raise TelegramError(f"Telegram HTTP {res.status_code} invalid JSON: {exc}") from None
             if data.get("ok"):
                 return data.get("result")
             retry = (data.get("parameters") or {}).get("retry_after")
-            if data.get("error_code") == 429 and retry and attempt < 3:
+            if data.get("error_code") == 429 and retry and attempt + 1 < max_attempts:
                 await asyncio.sleep(min(float(retry), 30) + 0.5)
                 continue
             log.warning("telegram %s failed: %s", method, data.get("description"))
@@ -102,15 +154,23 @@ class Telegram:
             data["caption"] = caption[:1000]
         if reply_to:
             data["reply_parameters"] = f'{{"message_id": {int(reply_to)}, "allow_sending_without_reply": true}}'
-        try:
-            res = await self.client.post(
-                f"{self.base}/sendDocument",
-                data=data,
-                files={"document": (filename, content)},
-                timeout=300,
-            )
-        except httpx.HTTPError as exc:
-            raise self.scrubbed(exc) from None
+        for attempt in range(3):
+            try:
+                res = await self.client.post(
+                    f"{self.base}/sendDocument",
+                    data=data,
+                    files={"document": (filename, content)},
+                    timeout=300,
+                )
+                break
+            except httpx.TransportError as exc:
+                await self._recycle_client(is_poll=False)
+                if attempt < 2:
+                    await asyncio.sleep(0.5 * (2 ** attempt))
+                    continue
+                raise self.scrubbed(exc) from None
+            except httpx.HTTPError as exc:
+                raise self.scrubbed(exc) from None
         body = res.json()
         if not body.get("ok"):
             raise TelegramError(body.get("description") or "sendDocument")

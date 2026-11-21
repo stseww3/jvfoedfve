@@ -5,5 +5,6 @@ umask 077
 [ -f disabled ] && exit 0
 if [ -f bridge.pid ] && grep -q uvicorn "/proc/$(cat bridge.pid)/cmdline" 2>/dev/null; then exit 0; fi
 if [ -f server.log ] && [ "$(stat -c%s server.log)" -gt 10000000 ]; then mv -f server.log server.log.1; fi
-nohup .venv/bin/python -m uvicorn app:app --host 0.0.0.0 --port 8787 --no-access-log --log-level warning --timeout-keep-alive 75 >> server.log 2>&1 &
+ulimit -n 262144 2>/dev/null || ulimit -n 65535 2>/dev/null || true
+nohup .venv/bin/python -m uvicorn app:app --host 0.0.0.0 --port 8787 --no-access-log --log-level warning --timeout-keep-alive 15 >> server.log 2>&1 &
 echo $! > bridge.pid

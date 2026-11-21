@@ -1458,7 +1458,7 @@ def run_v374_scale_and_jobs_tests() -> None:
     from http.server import BaseHTTPRequestHandler, HTTPServer
     from fastapi.testclient import TestClient
 
-    assert bridge.VERSION == "3.7.6"
+    assert bridge.VERSION == "3.7.7"
     assert bridge.MAX_WORKER_POOL == 0
     assert bridge.MAX_JOB_TIMEOUT_SEC == 86400
 
@@ -1912,6 +1912,125 @@ def run_v376_streaming_pipe_and_relay_tests() -> None:
     asyncio.run(_test_async_pipe())
 
 
+def run_v377_fd_and_outbox_resilience_tests() -> None:
+    import httpx
+    import re
+    from fastapi.testclient import TestClient
+    from tg import Telegram, TelegramError
+
+    # 1. Auto-raised RLIMIT_NOFILE + /healthz telemetry
+    assert bridge.NOFILE_SOFT_LIMIT >= 4096, f"Expected high NOFILE_SOFT_LIMIT, got {bridge.NOFILE_SOFT_LIMIT}"
+    assert bridge.open_fd_count() > 0
+    with TestClient(bridge.app) as client:
+        hz = client.get("/healthz").json()
+        assert hz["version"] == "3.7.7"
+        assert hz["open_fds"] > 0 and hz["nofile_soft"] == bridge.NOFILE_SOFT_LIMIT
+
+    # 2. Telegram client isolation + automatic TransportError recycle & retry
+    async def _test_tg_retry_and_outbox() -> None:
+        tg_inst = Telegram("123456:TEST_SECRET_TOKEN", "https://api.telegram.org")
+        assert tg_inst.client is not tg_inst.poll_client
+        attempts = {"n": 0}
+
+        async def _flaky_post(url: str, **kwargs):
+            attempts["n"] += 1
+            if attempts["n"] < 3:
+                raise httpx.ConnectError("[Errno 24] Too many open files")
+            return httpx.Response(200, json={"ok": True, "result": {"message_id": 777}})
+
+        tg_inst.client.post = _flaky_post  # type: ignore[method-assign]
+        orig_make_api = tg_inst._make_api_client
+
+        def _make_patched_api():
+            c = orig_make_api()
+            c.post = _flaky_post  # type: ignore[method-assign]
+            return c
+
+        tg_inst._make_api_client = _make_patched_api  # type: ignore[method-assign]
+        res = await tg_inst.call("sendMessage", chat_id=1001, text="hello")
+        assert res["message_id"] == 777 and attempts["n"] == 3
+        await tg_inst.aclose()
+
+        # 3. Zero-loss outbox when EMFILE / ConnectError hits BOTH emit() and flush_locked()
+        admin_dm = bridge.admin_chats()[0]
+        c_em = bridge.create_conv("v377-emfile-chat", admin_dm, name="句柄自愈测试", owner=0)
+        a_em = text_of(await bridge.call_tool("join", {"code": c_em["task_code"]}))
+        ag_em_id = re.search(r"a_[0-9a-f]+", a_em).group(0)
+        # Complete icebreak if active
+        conv_em = bridge.conv_row(c_em["id"])
+        if bridge.conv_onboard_stage(conv_em) == "icebreak_waiting_reply":
+            await bridge.call_tool("send_message", {"agent": ag_em_id, "text": "收到"})
+            await bridge.call_tool("read_chat", {"agent": ag_em_id, "wait_sec": 0})
+        bridge.store.set(f"sel:{admin_dm}", c_em["id"])
+
+        delivered_texts: list[str] = []
+        fail_mode = {"emfile": True}
+        orig_send_text = bridge.tg.send_text
+
+        async def _emfile_send_text(chat_id: int, text: str, **kwargs):
+            if fail_mode["emfile"]:
+                raise TelegramError("ConnectError: [Errno 24] Too many open files")
+            delivered_texts.append(text)
+            return [{"message_id": 9000 + len(delivered_texts)}]
+
+        bridge.tg.send_text = _emfile_send_text
+        try:
+            # Selected DM chat hits EMFILE during send_message -> MUST queue delivered=0 without raising!
+            r1 = text_of(await bridge.call_tool("send_message", {"agent": ag_em_id, "text": "MSG_DURING_EMFILE_1"}))
+            r2 = text_of(await bridge.call_tool("send_message", {"agent": ag_em_id, "text": "MSG_DURING_EMFILE_2"}))
+            assert "已存着" in r1 and "已存着" in r2
+            undeliv = bridge.store.q(
+                "SELECT text, delivered FROM messages WHERE conv=? AND outgoing=1 AND text LIKE '%MSG_DURING_EMFILE_%' ORDER BY id",
+                (c_em["id"],),
+            )
+            assert len(undeliv) == 2 and all(int(x["delivered"]) == 0 for x in undeliv)
+
+            # Even if flush_locked runs while EMFILE is still active, it MUST NOT swallow messages as delivered=1!
+            fl0 = await bridge.flush_locked(admin_dm, c_em["id"])
+            assert fl0 == 0
+            undeliv_after = bridge.store.q(
+                "SELECT delivered FROM messages WHERE conv=? AND outgoing=1 AND text LIKE '%MSG_DURING_EMFILE_%'",
+                (c_em["id"],),
+            )
+            assert all(int(x["delivered"]) == 0 for x in undeliv_after), "Transient EMFILE swallowed queued messages!"
+
+            # Once FDs recover, watchdog_tick / flush_selected_outboxes delivers both in exact FIFO order!
+            fail_mode["emfile"] = False
+            fl_ok = await bridge.flush_selected_outboxes()
+            assert fl_ok >= 2
+            em_delivered = [t for t in delivered_texts if "MSG_DURING_EMFILE_" in t]
+            assert len(em_delivered) == 2
+            assert "MSG_DURING_EMFILE_1" in em_delivered[0] and "MSG_DURING_EMFILE_2" in em_delivered[1]
+        finally:
+            bridge.tg.send_text = orig_send_text
+
+        # 4. Skipped watchdog probe & live-ctrl heartbeat guard MUST NOT kill active ctrl!
+        assert bridge.is_resume_dead_output("error", "Skipped automatic watchdog resume task per admin instruction") is False
+        ctrl_before = bridge.conv_row("ctrl")
+        ctrl_ag_before = bridge.active_agent(ctrl_before)
+        assert ctrl_ag_before is not None
+        bridge.store.run("UPDATE agents SET last_seen=? WHERE id=?", (bridge.now(), ctrl_ag_before["id"]))
+        m_node = bridge.store.one("SELECT * FROM exec_nodes WHERE kind='launcher' AND status='online' ORDER BY num DESC LIMIT 1")
+        fake_op_id = "op_v377ctrlguard"
+        bridge.store.run(
+            "INSERT OR REPLACE INTO dispatch_ops(op_id, op_type, conv_id, target_node, requester, payload_json, status, created_ts) "
+            "VALUES (?, 'resume_subagent', 'ctrl', ?, 'watchdog_ctrl_resume', ?, 'pending', ?)",
+            (fake_op_id, m_node["id"], json.dumps({"task_agent_id": ctrl_before["task_agent_id"] or ""}), bridge.now()),
+        )
+        await bridge.call_tool(
+            "submit_op_result",
+            {"agent": m_node["agent"], "op_id": fake_op_id, "status": "error", "output": "session not found"},
+        )
+        ctrl_after = bridge.conv_row("ctrl")
+        assert ctrl_after["agent"] == ctrl_before["agent"], "Live ctrl with fresh MCP heartbeat must NOT be killed!"
+
+        # 5. cluster_status clarifies shared mode & offline launchers
+        cs_txt = text_of(await bridge.call_tool("cluster_status", {"agent": ctrl_before["agent"]}))
+        assert "共享模式无20台上限" in cs_txt
+
+    asyncio.run(_test_tg_retry_and_outbox())
+
+
 def main() -> None:
     asyncio.run(run_cluster_and_device_tests())
     run_web_console_tests()
@@ -1920,10 +2039,12 @@ def main() -> None:
     run_v374_scale_and_jobs_tests()
     run_v375_unlimited_pool_tests()
     run_v376_streaming_pipe_and_relay_tests()
+    run_v377_fd_and_outbox_resilience_tests()
     print("ALL_373_TESTS_PASSED_OK")
     print("ALL_374_TESTS_PASSED_OK")
     print("ALL_375_TESTS_PASSED_OK")
     print("ALL_376_TESTS_PASSED_OK")
+    print("ALL_377_TESTS_PASSED_OK")
 
 
 if __name__ == "__main__":
